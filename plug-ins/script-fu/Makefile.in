@@ -152,8 +152,7 @@ LDADD = \
 	$(top_builddir)/plug-ins/dbbrowser/dbbrowser_utils.o	\
 	$(top_builddir)/libgimp/libgimpui.la			\
 	$(top_builddir)/libgimp/libgimp.la			\
-	$(X_LIBS)						\
-	-lc
+	$(X_LIBS)
 
 DEPS = \
 	$(top_builddir)/plug-ins/dbbrowser/dbbrowser_utils.o	\
@@ -353,6 +352,27 @@ distdir: $(DISTFILES)
 	  (cd $$subdir && $(MAKE) top_distdir=../$(top_distdir) distdir=../$(distdir)/$$subdir distdir) \
 	    || exit 1; \
 	done
+interp_md5.o: interp_md5.c interp_md5.h
+interp_regex.o: interp_regex.c regex.h siod.h
+interp_slib.o: interp_slib.c siod.h siodp.h
+interp_sliba.o: interp_sliba.c siod.h siodp.h
+interp_trace.o: interp_trace.c siod.h siodp.h
+regex.o: regex.c ../../config.h regex.h
+script-fu-console.o: script-fu-console.c ../../libgimp/gimp.h \
+	../../libgimp/gimpfeatures.h ../../libgimp/gimpenums.h \
+	../../libgimp/gimpui.h ../../libgimp/gimpmenu.h siod.h \
+	script-fu-console.h ../../plug-ins/dbbrowser/dbbrowser.h
+script-fu-scripts.o: script-fu-scripts.c ../../libgimp/gimp.h \
+	../../libgimp/gimpfeatures.h ../../libgimp/gimpenums.h \
+	../../libgimp/gimpui.h ../../libgimp/gimpmenu.h siod.h \
+	script-fu-scripts.h script-fu-enums.h
+script-fu-server.o: script-fu-server.c ../../config.h \
+	../../libgimp/gimp.h ../../libgimp/gimpfeatures.h \
+	../../libgimp/gimpenums.h siod.h script-fu-server.h
+script-fu.o: script-fu.c ../../libgimp/gimp.h \
+	../../libgimp/gimpfeatures.h ../../libgimp/gimpenums.h siod.h \
+	script-fu-console.h script-fu-scripts.h script-fu-enums.h \
+	script-fu-server.h
 
 info: info-recursive
 dvi: dvi-recursive

@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/* $Id: hrz.c,v 1.2 1998/04/13 05:42:21 yosh Exp $ */
+/* $Id: hrz.c,v 1.2.2.1 1998/09/09 09:45:04 yosh Exp $ */
 
 /*
  * Albert Cahalan <acahalan at cs.uml.edu>, 1997  -  Initial HRZ support.
@@ -316,7 +316,9 @@ load_image (char *filename)
   do_hrz_load(mapped, &pixel_rgn);
 
   /* close the file */
+#ifndef NeXT /* @#%@! NeXTStep */
   munmap(mapped, 256*240*3);
+#endif
 
   /* Tell the GIMP to display the image.
    */

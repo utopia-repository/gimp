@@ -7,8 +7,19 @@ manipulate them any way you want!
 This is the developers' release of Gimp. It's a full featured, freely
 available, non-Motif version of The Gimp.
 
-Version 1.0.0 full layers support, tile-based memory allocation, and a
-whole bunch of other nifty features.
+***WARNING***
+
+You MUST have the xfnt75 and xfnt100 sets of fonts available, either
+via the .deb packages, or a remote font server like xfs, before
+running The GIMP. The gimp package Recommends: these two packages,
+but it is not required to have them installed locally if you have
+a remote font server set up. However, if you don't have either,
+GIMP *will* crash with a really esoteric error message.
+
+The lesson is: INSTALL THE xfnt75 AND xfnt100 PACKAGES!
+
+Version 1.0.2 has full layers support, tile-based memory allocation,
+and a whole bunch of other nifty features.
 
                  *************** NOTE ****************
    If you've ever used an older version of The GIMP on your system,
@@ -16,9 +27,8 @@ whole bunch of other nifty features.
    are not always compatible.
                  *************************************
 
-If you want a full documentation, either see the upcoming
-gimp-doc package in slink (Debian 2.1) or the wonderful online
-docs at:
+If you want full documentation, either see the gimp-doc package in
+slink (Debian 2.1) or the wonderful online docs at:
 
 http://www.dtek.chalmers.se/~d95olofs/manual/
 

@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/* $Id: pnm.c,v 1.6 1998/05/30 07:32:32 yosh Exp $ */
+/* $Id: pnm.c,v 1.6.2.1 1998/08/24 01:46:19 yosh Exp $ */
 
 /*
  * The pnm reading and writing code was written from scratch by Erik Nygren
@@ -297,7 +297,7 @@ run (char    *name,
 
 	case RUN_NONINTERACTIVE:
 	  /*  Make sure all the arguments are there!  */
-	  if (nparams != 5)
+	  if (nparams != 6)
 	    status = STATUS_CALLING_ERROR;
 	  if (status == STATUS_SUCCESS)
 	    {

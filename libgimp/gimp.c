@@ -25,11 +25,17 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
 #include <sys/time.h>
 #include <sys/param.h>
 #include <unistd.h>
+
+#ifdef HAVE_IPC_H
+#include <sys/ipc.h>
+#endif
+
+#ifdef HAVE_SHM_H
+#include <sys/shm.h>
+#endif
 
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
@@ -59,6 +65,10 @@ int _readfd = 0;
 int _writefd = 0;
 int _shm_ID = -1;
 guchar *_shm_addr = NULL;
+
+const guint gimp_major_version = GIMP_MAJOR_VERSION;
+const guint gimp_minor_version = GIMP_MINOR_VERSION;
+const guint gimp_micro_version = GIMP_MICRO_VERSION;
 
 static gdouble _gamma_val;
 static gint _install_cmap;
@@ -124,8 +134,10 @@ gimp_quit ()
   if (PLUG_IN_INFO.quit_proc)
     (* PLUG_IN_INFO.quit_proc) ();
 
+#ifdef HAVE_SHM_H
   if ((_shm_ID != -1) && _shm_addr)
     shmdt ((char*) _shm_addr);
+#endif
 
   gp_quit_write (_writefd);
   exit (0);
@@ -796,7 +808,7 @@ gimp_gtkrc ()
   if (!home_dir)
     return NULL;
 
-  sprintf (filename, "%s/.gimp/gtkrc", home_dir);
+  sprintf (filename, "%s/%s/gtkrc", home_dir, GIMPDIR);
 
   return filename;
 }
@@ -1030,6 +1042,7 @@ gimp_config (GPConfig *config)
   _color_cube[2] = config->color_cube[2];
   _color_cube[3] = config->color_cube[3];
 
+#ifdef HAVE_SHM_H
   if (_shm_ID != -1)
     {
       _shm_addr = (guchar*) shmat (_shm_ID, 0, 0);
@@ -1037,6 +1050,7 @@ gimp_config (GPConfig *config)
       if (_shm_addr == (guchar*) -1)
 	g_error ("could not attach to gimp shared memory segment\n");
     }
+#endif
 }
 
 static void

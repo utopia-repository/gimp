@@ -136,9 +136,7 @@ INCLUDES = \
 LDADD = \
 	$(top_builddir)/libgimp/libgimpui.la	\
 	$(top_builddir)/libgimp/libgimp.la	\
-	$(X_LIBS)				\
-					\
-	-lc
+	$(X_LIBS)
 
 DEPS = \
 	$(top_builddir)/libgimp/libgimpui.la	\
@@ -287,6 +285,16 @@ distdir: $(DISTFILES)
 	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
 	  || cp -p $$d/$$file $(distdir)/$$file; \
 	done
+print-escp2.o: print-escp2.c print.h ../../libgimp/gimp.h \
+	../../libgimp/gimpfeatures.h ../../libgimp/gimpenums.h
+print-pcl.o: print-pcl.c print.h ../../libgimp/gimp.h \
+	../../libgimp/gimpfeatures.h ../../libgimp/gimpenums.h
+print-ps.o: print-ps.c print.h ../../libgimp/gimp.h \
+	../../libgimp/gimpfeatures.h ../../libgimp/gimpenums.h
+print-util.o: print-util.c print.h ../../libgimp/gimp.h \
+	../../libgimp/gimpfeatures.h ../../libgimp/gimpenums.h
+print.o: print.c print.h ../../libgimp/gimp.h \
+	../../libgimp/gimpfeatures.h ../../libgimp/gimpenums.h
 
 info:
 dvi:

@@ -132,9 +132,7 @@ INCLUDES = \
 LDADD = \
 	$(top_builddir)/libgimp/libgimpui.la	\
 	$(top_builddir)/libgimp/libgimp.la	\
-	$(X_LIBS)				\
-					\
-	-lc
+	$(X_LIBS)
 
 DEPS = \
 	$(top_builddir)/libgimp/libgimpui.la	\
@@ -283,6 +281,9 @@ distdir: $(DISTFILES)
 	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
 	  || cp -p $$d/$$file $(distdir)/$$file; \
 	done
+fli.o: fli.c fli.h
+gfli.o: gfli.c ../../libgimp/gimp.h ../../libgimp/gimpfeatures.h \
+	../../libgimp/gimpenums.h fli.h
 
 info:
 dvi:

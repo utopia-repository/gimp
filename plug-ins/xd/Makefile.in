@@ -131,8 +131,7 @@ LDADD = \
 	$(top_builddir)/libgimp/libgimpui.la	\
 	$(top_builddir)/libgimp/libgimp.la	\
 	$(X_LIBS)				\
-	@LIBXDELTA_LIB@				\
-	-lc
+	@LIBXDELTA_LIB@
 
 DEPS = \
 	$(top_builddir)/libgimp/libgimpui.la	\
@@ -281,7 +280,6 @@ distdir: $(DISTFILES)
 	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
 	  || cp -p $$d/$$file $(distdir)/$$file; \
 	done
-
 info:
 dvi:
 check: all

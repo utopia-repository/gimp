@@ -1,3 +1,376 @@
+Wed Oct 14 20:11:29 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* Made 1.0.2 release
+
+Wed Oct 14 22:58:04 BST 1998  Austin Donnelly  <austin@greenend.org.uk>
+
+	* app/color_select.c: fix silly bug with off-by-one error in
+	redraw of crosshair.
+
+Tue Oct 13 18:16:38 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* app/color_select.c: applied gimp-austin-981011-1, fixes color
+	selector redraw bug
+
+	* plug-ins/compose/compose.c
+	* plug-ins/decompose/decompose.c
+	* plug-ins/ps/ps.c: updates from the registry
+
+	* libgimp/gimp.h
+	* plug-ins/jpeg.c
+	* plug-ins/tiff.c: applied gimp-austin-981010-0, fixes compilation
+	warnings for jpeg and tiff plugin
+
+	* app/procedural_db.c: fix PDB arg allocation bug, thanks to
+	Frank Loemker <floemker@TechFak.Uni-Bielefeld.DE>
+
+Fri Oct  9 15:36:52 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* app/temp_buf.c: applied gimp-entity-980929-1, adds
+	write error handling
+
+	* app/gimprc.c
+	* app/install.c
+	* app/tips_dialog.c: allow use of GIMP_DATADIR to override
+	compiled in default
+
+Tue Oct  6 23:40:22 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* app/interface.c: applied gimp-quinn-981004-0, make the
+	dont-show-rulers gimprc option actually work
+
+Thu Oct  1 14:05:06 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* app/general.c: applied gimp-bjj-980922-0, makes get_token's
+	EOF report "sticky"
+
+	* README: cleanups
+
+	* ltconfig: use hacked libtool for shlib deps
+
+Mon Sep 28 18:08:14 BST 1998  Adam D. Moss <adam@gimp.org>
+
+	* plug-ins/gif.c: Fixed an uninitialized variable bug
+	which was making TigerT's gifs blow up.  Sigh!
+
+Sun Sep 27 14:55:23 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* Made 1.0.1 release
+
+Sun Sep 27 14:51:47 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* gimptool.in: sync with 1.1 gimptool
+	
+	* gimptool.1: man page update
+
+Mon Sep 21 02:11:27 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* app/text_tool.c: correct test for restoring old foundry in
+	callback (from Trent Piepho)
+
+	* plug-ins/gauss_iir/gauss_iir.c
+	* plug-ins/gauss_rle/gauss_rle.c: better test for bad values,
+	put fix in gauss_rle too
+
+	* plug-ins/script-fu/script-fu.c
+	* plug-ins/script-fu/script-fu-console.[ch]: added an eval
+	PDB interface for running arbitrary scheme code
+        
+	* app/batch.c: redid batch mode to use script-fu-eval
+
+	* app/main.c: fixed command line parsing for batch mode and
+	image loading
+
+Tue Sep 15 21:27:10 BST 1998  Adam D. Moss <adam@gimp.org>
+
+	* plug-ins/gif.c:
+	The facility to specify the background colour of
+	a transparent/animated GIF for non-transparent
+	viewers now works very much more consistantly.
+	The only situations in which it will fail to work
+	as expected now are those where file size can be reduced
+	(abeit not by much, as the plugin is sometimes more pessimistic
+	than it need be) by re-using an existing unused colour
+	index rather than using another bit per pixel in the
+	encoded file.  That will never be an issue with an image
+	which was freshly converted from RGB to INDEXED with the
+	Quantize option, as that option removes any unused colours
+	from the image.
+
+	Let me know if you find the consistancy/size tradeoff more
+	annoying than helpful and I can adjust it.  IMHO it is too
+	arcane a feature to present to any user as a runtime option.
+
+Wed Sep  9 02:41:36 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* configure.in: added -std1 check for DU4
+
+	* gimptool.1: updated man page
+
+	* gimptool.in: added strip options
+
+	* plug-ins/hrz/hrz.c: #ifndef'd NeXT out munmap call
+
+	* plug-ins/maze/maze.c: commented out some debug code differently
+	so NeXT compiler won't barf.
+
+Sun Sep  6 12:48:32 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* configure.in: see if CC needs -posix (for NeXTStep)
+
+	* app/gimage.c: fix for layer merge opacity, originally from Zach.
+	Sets opacity to 100%, and makes the mode normal.
+
+	* app/channels_dialog.c: added clarifying {}'s around if block
+
+Sun Aug 30 16:33:30 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* plug-ins/*/Makefile.am: removed -lc from all Makefiles, since it
+	causes weird problems on DU4
+
+Thu Aug 27 18:58:44 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* acconfig.h
+	* configure.in
+	* app/main.c: added check for putenv and #ifdefed it's usage since
+	NeXTStep is lame
+
+	* libgimp/gimp.c
+	* app/main.c
+	* app/plug_in.c: conditionally compile shared mem stuff so platforms
+	without it can still work
+
+Thu Aug 27 18:53:50 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* plug-ins/CEL/CEL.c
+	* plug-ins/palette/palette.c
+	* plug-ins/print/print-escp2.c
+	* plug-ins/print/print-pcl.c
+	* plug-ins/print/print-ps.c: s/strdup/g_strdup/ for portability
+
+Tue Aug 25 14:55:25 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* gimptool.in: use LDFLAGS and LIBS for building too
+
+Sun Aug 23 18:33:42 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* configure.in: make xdelta not built by default, so poor users
+	aren't confused
+
+	* plug-ins/depthmerge.c
+	* plug-ins/fli.[ch]
+	* plug-ins/gfli.c: updates from the registry
+
+	* plug-ins/pnm/pnm.c: fix for non-interactive mode
+
+	* plug-ins/fractaltrace/fractaltrace.c
+	* plug-ins/pagecurl/pagecurl.c: minor code cleanups
+
+Fri Jul 31 10:11:54 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* plug-ins/psd/psd.c: sync with 1.1 (but turn debugging off)
+
+Thu Jul 23 10:30:12 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* app/fileops.c: tell the PDB that gimp_register_magic_load_handler
+	takes 4 args
+
+Wed Jul 22 23:32:50 MEST 1998 Sven Neumann <sven@gimp.org>
+
+	* docs/quick_reference.ps
+	* docs/quick_reference.tar.gz: 
+	Updated the Quick Reference Sheet to the much improved version made 
+	by Sven Anders <anderss@fmi.uni-passau.de>.
+
+Fri Jul 17 01:37:21 PDT 1998 Manish Singh <yosh@gimp.org>
+
+        * gimptool.in: Added --cflags-noui and --libs-noui flags and
+        appropriate sed junk to craft it. Don't call gtk-config unless
+        GTK_CONFIG is set; hard code the info. Strip out redundant
+        stuff from the output. Made usage printout more verbose, added
+        --quiet and -n options
+
+        * gimp.m4: set NOUI stuff if available
+
+        * libgimp/gimp.h
+        * libgimp/gimpimage.c: make gimp_image_flatten return a value
+        to be consistent with the PDB
+
+Wed Jul 15 23:01:14 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* acconfig.h
+	* configure.in
+	* app/about_dialog.c
+	* app/app_procs.c
+	* app/main.c
+	* libgimp/gimp.[ch]
+	* libgimp/gimpfeatures.h.in: added features header
+
+Mon Jul 13 23:15:15 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* configure.in: check for inline by ourselves if it's not
+	defined in glibconfig.h. So inline works if glib is compiled
+	with a different compiler than gimp. The plug-ins that use
+	inline #include "config.h" now (blur, destripe, emboss,
+	gfli, nlfilt, ps, randomize, sinus, and zealouscrop)
+
+	* plug-ins/dbbrowser/dbbrowser_utils.c: searching by name does
+	- <-> _ translation
+
+Tue Jul  7 23:50:23 EST 1998 Kevin Cozens <kcozens@interlog.com>
+
+	* Force a redraw of the image after applying a layer mask
+
+Tue Jul  7 13:52:23 EST 1998 Kevin Cozens <kcozens@interlog.com>
+
+	* Dialog boxes for creating a new image or a new layer now include
+	foreground as a fill type option.
+
+Mon Jul  6 5:12:00 CST  1998 Seth Burgess <sjburges@gimp.org>
+        
+        * plug-ins/gbr/gbr.c: added gbr version 1 support
+
+Mon Jul  6 12:07:37 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* app/convert.c: check for > 256 colors palettes when indexing,
+	since the code doesn't handle it (from Yasuhiro SHIRASAKI)
+
+Sat Jul  4 22:58:23 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* plug-ins/autostretch_hsv/autostretch_hsv.c: corrected progress
+	display caption
+
+Sat Jul  4 16:58:43 PDT 1998 Manish Singh <yosh@gimp.org>
+
+        * app/tile_swap.c: made the g_message errors a little smarter instead
+        of popping up a ton of dialogs
+
+Fri Jul  3 02:15:45 EST 1998 Kevin Cozens <kcozens@interlog.com>
+
+	* Fixed a bug in the command line parsing that caused GIMP to crash
+	on startup if there were more arguments following a -b argument
+	and a list of batch commands. Also eliminated setting of command
+	line arguments to NULL as there seemed to be no reason for this.
+
+Wed Jul  1 14:13:45 PDT 1998 Manish Singh <yosh@gimp.org>
+
+        * plug-ins/jpeg/jpeg.c: fix for non-interactive mode
+
+Wed Jul  1 10:23:07 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* app/convert.c: PDB wrapper for convert_indexed_palette should
+	return args associated with it's own proc
+
+Wed Jul  1 09:59:58 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* ltconfig: fix for properly detecting shared lib support on
+	SunPro cc (taken from libtool 1.2.a)
+
+Sat Jun 27 23:34:00 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* plug-ins/gpc/Makefile.am
+	* plug-ins/megawidget/Makefile.am: install in $libdir instead
+	of $gimpplugindir since they *are* libs. Some archs try to
+	exec them, and it barfs
+
+Fri Jun 26 10:57:25 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* plug-ins/illusion/illusion.c: parse gtkrc
+
+Tue Jun 23 22:33:05 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* plug-ins/gif/gif.c: make it less verbose
+
+Fri Jun 19 16:32:21 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* app/appenv.h
+	* app/app_procs.c
+	* app/errors.[ch]
+	* app/main.c
+	* app/plug_in.c: implemented PDB interface for changing
+	the g_message handler
+
+	* plug-ins/gif/gif.c: g_printized "no comment" warning
+
+	* Bunch o' build stuff fixes
+
+Sun Jun 14 22:11:19 EDT 1998  Matthew Wilson  <msw@gimp.org>
+
+	* app/tools.c: fix the initialization for by color select
+	(from lewing)
+
+Sun Jun 14 01:01:49 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* plug-ins/gif/gif.c: don't pop up dialog for informational
+	"Too many colors?" message
+
+	* Makefile.am: install gimp.m4 too
+
+	* libgimp/Makefile.am
+	* libgimp/gimp.c: make the plugins aware of $gimpdir for gtkrc
+	parsing
+
+Thu Jun 11 23:37:06 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* gimp.m4: .m4 file for autoconf gimptool stuff
+
+Thu Jun 11 00:34:51 1998  Owen Taylor  <otaylor@gtk.org>
+
+        * app/color_area.c (color_area_events): Create/resize
+        the pixmap on every expose CONFIGURE event, not just
+        on the first expose event.
+
+Tue Jun  9 11:22:32 MEST 1998 Sven Neumann <sven@gimp.org>
+
+	* updated pagecurl plug-in
+
+Mon Jun  8 21:55:55 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* gimptool.in: use @gimpdir@ instead of hardcoding .gimp
+
+	* app/palette.c: remove unnecessary gtk_widget_destroy for menus
+	that have already been removed (from Shuji Narazaki)
+
+Mon Jun  8 04:30:00 EDT 1998 Chris Lahey  <clahey@umich.edu>
+
+        * plug-ins/depthmerge/depthmerge.c: stdio.h
+        * plug-ins/gtm/gtm.c: stdio.h
+        * plug-ins/nlfilt/nlfilt.c: stdio.h, stdlib.h
+        Added the listed includes to get it to compile. (1-1-0 sync)
+
+Sun Jun  7 18:44:17 EDT 1998  Matthew Wilson  <msw@gimp.org>
+
+	* plug-ins/webbrowser/web-browser.scm: changed the URL for the
+	Manual
+
+Sun Jun  7 01:39:30 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* plug-ins/script-fu/script-fu.c: fixed param passing for
+	INT8 and INT16 types. This used to fail on big endian machines
+
+	* plug-ins/maze/maze.c: properly handle INT8 and INT16 types.
+	With these two fixes, circuit.scm will no longer crash on
+	big endian machines
+
+Sat Jun  6 16:12:20 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* updated despeckle, png, sgi, and sharpen
+
+Sat Jun  6 14:53:43 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* plug-ins/gfli/gfli.c: fixed gccism
+
+	* plug-ins/MapObject/mapobject_main.c: update display when
+	we're done (from seth)
+
+Sat Jun  6 20:23:16 MEST 1998 Sven Neumann <sven@gimp.org>
+
+	* fixed a bug in the screenshot plug-in
+
+Thu Jun  4 18:12:14 MEST 1998 Sven Neumann <sven@gimp.org>
+
+        * updated screenshot plug-in
+
 Tue Jun  2 16:40:33 PDT 1998 Manish Singh <yosh@gimp.org>
 
 	* Made 1.0.0 release

@@ -203,13 +203,13 @@ run    (gchar    *name,
 	}
       if (status == STATUS_SUCCESS)
 	{
-	  mvals.width = (gint16)    param[3].data.d_int32;
-	  mvals.height = (gint16)   param[4].data.d_int32;
-	  mvals.tile = (gint8)      param[5].data.d_int32;
-          mvals.algorithm = (gint8) param[6].data.d_int32;
+	  mvals.width = (gint16)    param[3].data.d_int16;
+	  mvals.height = (gint16)   param[4].data.d_int16;
+	  mvals.tile = (gint8)      param[5].data.d_int8;
+          mvals.algorithm = (gint8) param[6].data.d_int8;
 	  mvals.seed = (gint32)     param[7].data.d_int32;
-	  mvals.multiple = (gint16) param[8].data.d_int32;
-	  mvals.offset = (gint16)   param[9].data.d_int32;
+	  mvals.multiple = (gint16) param[8].data.d_int16;
+	  mvals.offset = (gint16)   param[9].data.d_int16;
 	}
       break;
     case RUN_WITH_LAST_VALS:
@@ -668,8 +668,8 @@ mask_maze(gint32 drawable_ID, guchar *maz, guint mw, guint mh,
 	  } /* next yy */	    
 
      } /* next pr sel_rgn tile thing */
-  /* #ifdef MAZE_DEBUG
-     maze_dump(maz,mw,mh);
-     #endif */
+#ifdef MAZE_DEBUG
+     /* maze_dump(maz,mw,mh); */
+#endif
 } /* mask_maze */
 #endif /* 0 */

@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $Id: emboss.c,v 1.6 1998/03/21 02:17:42 yosh Exp $
+ * $Id: emboss.c,v 1.6.4.1 1998/07/14 06:20:10 yosh Exp $
  */
 
 #include <stdio.h>
@@ -33,10 +33,12 @@
 #include <sys/types.h>
 
 #include <libgimp/gimp.h>
-
 #include <gtk/gtk.h>
-
 #include <plug-ins/megawidget/megawidget.h>
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #ifndef M_PI
 #define M_PI    3.14159265358979323846

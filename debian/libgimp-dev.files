@@ -6,3 +6,4 @@ usr/lib/libgck.so
 usr/lib/libgck.a
 usr/include/libgimp/
 usr/include/gck/
+usr/share/aclocal/

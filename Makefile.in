@@ -119,13 +119,16 @@ SUBDIRS = libgimp plug-ins app data
 
 bin_SCRIPTS = gimptool
 
-EXTRA_DIST = TODO gtkrc gimp_logo.ppm gimp_splash.ppm rmshm user_install gimp_tips.txt ps-menurc gimp.1 gimptool.1 gtkrc.forest2
+EXTRA_DIST = TODO gtkrc gimp_logo.ppm gimp_splash.ppm rmshm user_install gimp_tips.txt ps-menurc gimp.1 gimptool.1 gtkrc.forest2 gimp.m4
 
 gimpdata_DATA = gimprc gimprc_user gtkrc gimp_logo.ppm gimp_splash.ppm gimp_tips.txt ps-menurc gtkrc.forest2
 
 gimpdata_SCRIPTS = user_install
 
 man_MANS=gimp.1 gimptool.1
+
+m4datadir = $(datadir)/aclocal
+m4data_DATA = gimp.m4
 
 scriptdata =
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -138,7 +141,7 @@ man1dir = $(mandir)/man1
 MANS = $(man_MANS)
 
 NROFF = nroff
-DATA =  $(gimpdata_DATA)
+DATA =  $(gimpdata_DATA) $(m4data_DATA)
 
 DIST_COMMON =  README AUTHORS COPYING ChangeLog INSTALL Makefile.am \
 Makefile.in NEWS TODO acconfig.h aclocal.m4 config.guess config.h.in \
@@ -291,6 +294,25 @@ uninstall-gimpdataDATA:
 	  rm -f $(DESTDIR)$(gimpdatadir)/$$p; \
 	done
 
+install-m4dataDATA: $(m4data_DATA)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(m4datadir)
+	@list='$(m4data_DATA)'; for p in $$list; do \
+	  if test -f $(srcdir)/$$p; then \
+	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(m4datadir)/$$p"; \
+	    $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(m4datadir)/$$p; \
+	  else if test -f $$p; then \
+	    echo " $(INSTALL_DATA) $$p $(DESTDIR)$(m4datadir)/$$p"; \
+	    $(INSTALL_DATA) $$p $(DESTDIR)$(m4datadir)/$$p; \
+	  fi; fi; \
+	done
+
+uninstall-m4dataDATA:
+	@$(NORMAL_UNINSTALL)
+	list='$(m4data_DATA)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(m4datadir)/$$p; \
+	done
+
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run `make' without going through this Makefile.
 # To change the values of `make' variables: instead of editing Makefiles,
@@ -418,9 +440,9 @@ all-am: Makefile $(SCRIPTS) $(MANS) $(DATA) config.h
 
 install-exec-am: install-binSCRIPTS
 
-install-data-am: install-gimpdataSCRIPTS install-man install-gimpdataDATA
+install-data-am: install-gimpdataSCRIPTS install-man install-gimpdataDATA install-m4dataDATA
 
-uninstall-am: uninstall-binSCRIPTS uninstall-gimpdataSCRIPTS uninstall-man uninstall-gimpdataDATA
+uninstall-am: uninstall-binSCRIPTS uninstall-gimpdataSCRIPTS uninstall-man uninstall-gimpdataDATA uninstall-m4dataDATA
 
 install-exec: install-exec-recursive install-exec-am
 	@$(NORMAL_INSTALL)
@@ -437,7 +459,8 @@ install-strip:
 	$(MAKE) INSTALL_PROGRAM='$(INSTALL_PROGRAM) -s' INSTALL_SCRIPT='$(INSTALL_PROGRAM)' install
 installdirs: installdirs-recursive
 	$(mkinstalldirs)  $(DATADIR)$(bindir) $(DATADIR)$(gimpdatadir) \
-		$(DESTDIR)$(mandir)/man1 $(DATADIR)$(gimpdatadir)
+		$(DESTDIR)$(mandir)/man1 $(DATADIR)$(gimpdatadir) \
+		$(DATADIR)$(m4datadir)
 
 
 mostlyclean-generic:
@@ -480,7 +503,8 @@ maintainer-clean:  maintainer-clean-recursive maintainer-clean-am
 uninstall-binSCRIPTS install-binSCRIPTS uninstall-gimpdataSCRIPTS \
 install-gimpdataSCRIPTS install-man1 uninstall-man1 install-man \
 uninstall-man uninstall-gimpdataDATA install-gimpdataDATA \
-install-data-recursive uninstall-data-recursive install-exec-recursive \
+uninstall-m4dataDATA install-m4dataDATA install-data-recursive \
+uninstall-data-recursive install-exec-recursive \
 uninstall-exec-recursive installdirs-recursive uninstalldirs-recursive \
 all-recursive check-recursive installcheck-recursive info-recursive \
 dvi-recursive mostlyclean-recursive distclean-recursive clean-recursive \

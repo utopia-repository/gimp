@@ -25,6 +25,8 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+#include "libgimp/gimpfeatures.h"
+
 #ifndef  WAIT_ANY
 #define  WAIT_ANY -1
 #endif   /*  WAIT_ANY  */
@@ -48,6 +50,9 @@ int be_verbose;
 int use_shm;
 int use_debug_handler;
 int console_messages;
+
+MessageHandlerType message_handler;
+
 char *prog_name;		/* The path name we are invoked with */
 char **batch_cmds;
 
@@ -60,7 +65,9 @@ static char **gimp_argv;
  *      Arguments are either switches, their associated
  *      values, or image files.  As switches and their
  *      associated values are processed, those slots in
- *      the argv[] array are NULLed.
+ *      the argv[] array are NULLed. We do this because
+ *      unparsed args are treated as images to load on
+ *      startup.
  *
  *      The GTK switches are processed first (X switches are
  *      processed here, not by any X routines).  Then the
@@ -79,9 +86,11 @@ main (int argc, char **argv)
   int show_version;
   int show_help;
   int i, j;
+#ifdef HAVE_PUTENV
   gchar *display_name, *display_env;
+#endif
 
-  ATEXIT (g_mem_profile);
+  /* ATEXIT (g_mem_profile); */
 
   /* Initialize variables */
   prog_name = argv[0];
@@ -94,20 +103,29 @@ main (int argc, char **argv)
                                             GDK_CONTROL_MASK |
                                             GDK_MOD1_MASK);
 
+#ifdef HAVE_PUTENV
   display_name = gdk_get_display ();
   display_env = g_new (gchar, strlen (display_name) + 9);
   *display_env = 0;
   strcat (display_env, "DISPLAY=");
   strcat (display_env, display_name);
   putenv (display_env);
+#endif
 
   no_interface = FALSE;
   no_data = FALSE;
   no_splash = FALSE;
   no_splash_image = FALSE;
+#ifdef HAVE_SHM_H
   use_shm = TRUE;
+#else
+  use_shm = FALSE;
+#endif
   use_debug_handler = FALSE;
   console_messages = FALSE;
+
+  message_handler = CONSOLE;
+
   batch_cmds = g_new (char*, argc);
   batch_cmds[0] = NULL;
 
@@ -132,44 +150,56 @@ main (int argc, char **argv)
 	      argv[i] = NULL;
 	    }
 	  batch_cmds[j] = NULL;
+
+	  if (batch_cmds[0] == NULL)  /* We need at least one batch command */
+	    show_help = TRUE;
 	}
       else if ((strcmp (argv[i], "--help") == 0) ||
 	       (strcmp (argv[i], "-h") == 0))
 	{
 	  show_help = TRUE;
+	  argv[i] = NULL;
 	}
       else if (strcmp (argv[i], "--version") == 0 ||
 	       strcmp (argv[i], "-v") == 0)
 	{
 	  show_version = TRUE;
+	  argv[i] = NULL;
 	}
       else if (strcmp (argv[i], "--no-data") == 0)
 	{
 	  no_data = TRUE;
+	  argv[i] = NULL;
 	}
       else if (strcmp (argv[i], "--no-splash") == 0)
 	{
 	  no_splash = TRUE;
+	  argv[i] = NULL;
 	}
       else if (strcmp (argv[i], "--no-splash-image") == 0)
 	{
 	  no_splash_image = TRUE;
+	  argv[i] = NULL;
 	}
       else if (strcmp (argv[i], "--verbose") == 0)
 	{
 	  be_verbose = TRUE;
+	  argv[i] = NULL;
 	}
       else if (strcmp (argv[i], "--no-shm") == 0)
 	{
 	  use_shm = FALSE;
+	  argv[i] = NULL;
 	}
       else if (strcmp (argv[i], "--debug-handlers") == 0)
 	{
 	  use_debug_handler = TRUE;
+	  argv[i] = NULL;
 	}
       else if (strcmp (argv[i], "--console-messages") == 0)
 	{
 	  console_messages = TRUE;
+	  argv[i] = NULL;
 	}
 /*
  *    ANYTHING ELSE starting with a '-' is an error.
@@ -206,8 +236,7 @@ main (int argc, char **argv)
   if (show_version || show_help)
     exit (0);
 
-  /* Print to console at first */
-  g_set_message_handler (&message_console_func);
+  g_set_message_handler (&message_func);
 
   /* Handle some signals */
   signal (SIGHUP, on_signal);

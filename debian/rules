@@ -6,9 +6,10 @@
 build: build-stamp
 build-stamp:
 	dh_testdir
-	automake
-	aclocal
-	autoconf
+# Manish sez we don't need this any more.. hope he's right :)
+#	aclocal
+#	automake
+#	autoconf
 	# Add here commands to compile the pacckage.
 	./configure --prefix=/usr
 	$(MAKE)

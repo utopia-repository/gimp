@@ -130,14 +130,10 @@ INCLUDES = \
 LDADD = \
 	$(top_builddir)/libgimp/libgimpui.la	\
 	$(top_builddir)/libgimp/libgimp.la	\
-	$(X_LIBS)				\
-					\
-			\
-	-lc
+	$(X_LIBS)
 
 DEPS = \
 	$(top_builddir)/libgimp/libgimpui.la	\
-			\
 	$(top_builddir)/libgimp/libgimp.la
 
 faxg3_DEPENDENCIES = $(DEPS)
@@ -283,6 +279,10 @@ distdir: $(DISTFILES)
 	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
 	  || cp -p $$d/$$file $(distdir)/$$file; \
 	done
+faxg3.o: faxg3.c ../../libgimp/gimp.h ../../libgimp/gimpfeatures.h \
+	../../libgimp/gimpenums.h g3.h
+g3.o: g3.c g3.h
+run_tbl.o: run_tbl.c
 
 info:
 dvi:

@@ -1,5 +1,5 @@
 /*
- * "$Id: print-pcl.c,v 1.9 1998/05/17 07:16:46 yosh Exp $"
+ * "$Id: print-pcl.c,v 1.9.4.1 1998/08/28 01:58:14 yosh Exp $"
  *
  *   Print plug-in HP PCL driver for the GIMP.
  *
@@ -34,6 +34,11 @@
  * Revision History:
  *
  *   $Log: print-pcl.c,v $
+ *   Revision 1.9.4.1  1998/08/28 01:58:14  yosh
+ *   s/strdup/g_strdup/ for portability
+ *
+ *   -Yosh
+ *
  *   Revision 1.9  1998/05/17 07:16:46  yosh
  *   0.99.31 fun
  *
@@ -218,7 +223,7 @@ pcl_parameters(int  model,	/* I - Printer model */
 
   valptrs = g_new(char *, *count);
   for (i = 0; i < *count; i ++)
-    valptrs[i] = strdup(p[i]);
+    valptrs[i] = g_strdup(p[i]);
 
   return (valptrs);
 }
@@ -1393,5 +1398,5 @@ pcl_mode2(FILE          *prn,		/* I - Print file or command */
 
 
 /*
- * End of "$Id: print-pcl.c,v 1.9 1998/05/17 07:16:46 yosh Exp $".
+ * End of "$Id: print-pcl.c,v 1.9.4.1 1998/08/28 01:58:14 yosh Exp $".
  */

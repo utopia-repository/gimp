@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-pluginlibdir = $(gimpplugindir)/plug-ins
+pluginlibdir = $(libdir)
 
 pluginlib_LIBRARIES = libgpc.a
 
@@ -15,14 +15,13 @@ INCLUDES = \
 LDADD = \
 	$(top_builddir)/libgimp/libgimpui.la	\
 	$(top_builddir)/libgimp/libgimp.la	\
-	$(X_LIBS)				\
-	-lc
+	$(X_LIBS)
 
 DEPS = \
 	$(top_builddir)/libgimp/libgimpui.la	\
 	$(top_builddir)/libgimp/libgimp.la
 
-libgpc_aDEPENDENCIES = $(DEPS)
+libgpc_a_DEPENDENCIES = $(DEPS)
 
 EXTRA_DIST=gpc.3 gpc.man
 

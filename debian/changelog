@@ -1,3 +1,40 @@
+gimp (1.0.2-3) frozen unstable; urgency=low
+
+  * Recompile for ncurses 4.2 and related aalib
+
+ -- Ben Gertzfield <che@debian.org>  Mon,  9 Nov 1998 20:29:13 -0800
+
+gimp (1.0.2-2) frozen unstable; urgency=low
+
+  * The gimp package no longer depends explicitly on xfnt{75,100}. I
+    downgraded the relationship to a Recommends: and added big fat
+    warnings in the README and in the package description.
+    Fixes bugs #14600 and #21055. This has been changed because it's
+    possible to run GIMP using a remote font server to serve the 75/100dpi
+    fonts. However, it's really no big deal to ask for them to be installed
+    locally, so the relationship should be Recommends:.
+  * The above Recommends: has been changed to xfonts-{75,100}dpi, although
+    it's pretty silly that their names were changed without adding a
+    Provides:. *grumble*
+  * Bumped the version number in the dependancy of gimp on gimp-data-extras
+    to (>= 1:1.0.0).
+  * libgimp-dev now conflicts with libglib-dev, so people don't try
+    compiling plugins when they only have GTK+ 1.1 installed.
+
+ -- Ben Gertzfield <che@debian.org>  Sun, 25 Oct 1998 10:46:23 -0800
+
+gimp (1.0.2-1) unstable; urgency=low
+
+  * New upstream version. This better make it in before the freeze :)
+
+ -- Ben Gertzfield <che@debian.org>  Wed, 14 Oct 1998 22:47:25 -0700
+
+gimp (1.0.1-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Ben Gertzfield <che@debian.org>  Sun, 27 Sep 1998 21:37:45 -0700
+
 gimp (1.0.0-1) frozen unstable; urgency=low
 
   * We made it! All the way to 1.0.0! Huzzah!

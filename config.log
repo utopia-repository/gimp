@@ -1,0 +1,43 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:596: checking for a BSD compatible install
+configure:649: checking whether build environment is sane
+configure:706: checking whether make sets ${MAKE}
+configure:745: checking for working aclocal
+configure:758: checking for working autoconf
+configure:771: checking for working automake
+configure:784: checking for working autoheader
+configure:797: checking for working makeinfo
+configure:868: checking host system type
+configure:891: checking for ranlib
+configure:920: checking for gcc
+configure:997: checking whether the C compiler (gcc  ) works
+configure:1011: gcc -o conftest    conftest.c  1>&5
+configure:1031: checking whether the C compiler (gcc  ) is a cross-compiler
+configure:1036: checking whether we are using GNU C
+configure:1045: gcc -E conftest.c
+configure:1060: checking whether gcc accepts -g
+configure:1100: checking for ld used by GCC
+configure:1157: checking if the linker (/usr/bin/ld) is GNU ld
+GNU ld version 2.9.1 (with BFD 2.9.1)
+configure:1173: checking for BSD-compatible nm
+configure:1210: checking whether ln -s works
+configure:1278: checking whether to enable maintainer-specific portions of Makefiles
+configure:1303: checking host system type
+configure:1363: checking for gcc
+configure:1440: checking whether the C compiler (gcc -g -O2 ) works
+configure:1454: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:1474: checking whether the C compiler (gcc -g -O2 ) is a cross-compiler
+configure:1479: checking whether we are using GNU C
+configure:1503: checking whether gcc accepts -g
+configure:1534: checking for gcc option to accept ANSI C
+configure:1587: gcc  -c -g -O2  conftest.c 1>&5
+configure:1621: checking for a BSD compatible install
+configure:1671: checking whether ln -s works
+configure:1692: checking whether make sets ${MAKE}
+configure:1719: checking how to run the C preprocessor
+configure:1740: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1822: checking for gtk-config
+configure:1853: checking for GTK - version >= 1.0.1
+configure:1954: gcc -o conftest -g -O2 -I/usr/X11R6/include -I/usr/lib/glib/include   conftest.c  -L/usr/lib -L/usr/X11R6/lib -lgtk -lgdk -rdynamic -lgmodule -lglib -ldl -lXi -lXext -lX11 -lm 1>&5

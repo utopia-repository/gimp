@@ -13,26 +13,33 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __MENUS_H__
 #define __MENUS_H__
 
-#include "buildmenu.h"
 
-#define FILEMENU    0
-#define EDITMENU    1
-#define TOOLMENU    2
-#define BRUSHMENU   3
+#include "gtk/gtk.h"
 
-extern int num_menus;
-extern Widget mainmenu_widgets [];
 
-/* function declarations */
+void menus_get_toolbox_menubar (GtkWidget           **menubar,
+				GtkAcceleratorTable **table);
+void menus_get_image_menu      (GtkWidget           **menu,
+				GtkAcceleratorTable **table);
+void menus_get_load_menu       (GtkWidget           **menu,
+				GtkAcceleratorTable **table);
+void menus_get_save_menu       (GtkWidget           **menu,
+				GtkAcceleratorTable **table);
+void menus_create              (GtkMenuEntry         *entries,
+				int                   nmenu_entries);
+void menus_set_sensitive       (char                 *path,
+				int                   sensitive);
+void menus_set_state           (char                 *path,
+				int                   state);
+void menus_add_path            (char                 *path,
+				char                 *accelerator);
+void menus_destroy             (char                 *path);
+void menus_quit                (void);
 
-MenuItem * get_menu_options (int);
-char *     get_menu_class (int);
-MenuItem * get_image_menu_options ();
-void       set_filter_menu (MenuItem *);
 
 #endif /* MENUS_H */

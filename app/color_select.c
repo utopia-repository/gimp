@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,12 +22,18 @@
 #include "color_select.h"
 #include "colormaps.h"
 #include "errors.h"
-#include "visual.h"
+#include "gimprc.h"
 
-#define XY_DEF_WIDTH  256
-#define XY_DEF_HEIGHT 256
-#define Z_DEF_WIDTH   20
-#define Z_DEF_HEIGHT  256
+#define XY_DEF_WIDTH       192
+#define XY_DEF_HEIGHT      192
+#define Z_DEF_WIDTH        15
+#define Z_DEF_HEIGHT       192
+#define COLOR_AREA_WIDTH   74
+#define COLOR_AREA_HEIGHT  20
+
+#define COLOR_AREA_MASK GDK_EXPOSURE_MASK | \
+                        GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | \
+			GDK_BUTTON1_MOTION_MASK | GDK_ENTER_NOTIFY_MASK
 
 typedef enum {
   HUE = 0,
@@ -50,7 +56,8 @@ typedef enum {
   UPDATE_XY_COLOR = 1 << 2,
   UPDATE_Z_COLOR = 1 << 3,
   UPDATE_NEW_COLOR = 1 << 4,
-  UPDATE_ORIG_COLOR = 1 << 5
+  UPDATE_ORIG_COLOR = 1 << 5,
+  UPDATE_CALLER = 1 << 6
 } ColorSelectUpdateType;
 
 typedef struct _ColorSelectFill ColorSelectFill;
@@ -66,30 +73,28 @@ struct _ColorSelectFill {
 };
 
 static void color_select_update (ColorSelectP, ColorSelectUpdateType);
+static void color_select_update_caller (ColorSelectP);
 static void color_select_update_values (ColorSelectP);
 static void color_select_update_rgb_values (ColorSelectP);
 static void color_select_update_hsv_values (ColorSelectP);
 static void color_select_update_pos (ColorSelectP);
-static void color_select_update_sliders (ColorSelectP);
+static void color_select_update_sliders (ColorSelectP, int);
+static void color_select_update_entries (ColorSelectP, int);
 static void color_select_update_colors (ColorSelectP, int);
 
-static void color_select_ok_callback (Widget, XtPointer, XtPointer);
-static void color_select_cancel_callback (Widget, XtPointer, XtPointer);
-static void color_select_xy_draw_callback (Widget, XtPointer, XtPointer);
-static void color_select_xy_resize_callback (Widget, XtPointer, XtPointer);
-static void color_select_xy_motion (Widget, XtPointer, XEvent *, Boolean *);
-static void color_select_xy_button_press (Widget, XtPointer, XEvent *, Boolean *);
-static void color_select_xy_button_release (Widget, XtPointer, XEvent *, Boolean *);
-static void color_select_z_draw_callback (Widget, XtPointer, XtPointer);
-static void color_select_z_resize_callback (Widget, XtPointer, XtPointer);
-static void color_select_z_motion (Widget, XtPointer, XEvent *, Boolean *);
-static void color_select_z_button_press (Widget, XtPointer, XEvent *, Boolean *);
-static void color_select_z_button_release (Widget, XtPointer, XEvent *, Boolean *);
-static void color_select_color_draw_callback (Widget, XtPointer, XtPointer);
-static void color_select_slider_callback (Widget, XtPointer, XtPointer);
-static void color_select_toggle_callback (Widget, XtPointer, XtPointer);
+static void color_select_ok_callback (GtkWidget *, gpointer);
+static void color_select_cancel_callback (GtkWidget *, gpointer);
+static gint color_select_delete_callback (GtkWidget *, GdkEvent *, gpointer);
+static gint color_select_xy_expose (GtkWidget *, GdkEventExpose *, ColorSelectP);
+static gint color_select_xy_events (GtkWidget *, GdkEvent *, ColorSelectP);
+static gint color_select_z_expose (GtkWidget *, GdkEventExpose *, ColorSelectP);
+static gint color_select_z_events (GtkWidget *, GdkEvent *, ColorSelectP);
+static gint color_select_color_events (GtkWidget *, GdkEvent *);
+static void color_select_slider_update (GtkAdjustment *, gpointer);
+static void color_select_entry_update (GtkWidget *, gpointer);
+static void color_select_toggle_update (GtkWidget *, gpointer);
 
-static void color_select_image_fill (ImageBuf, ColorSelectFillType, int *);
+static void color_select_image_fill (GtkWidget *, ColorSelectFillType, int *);
 
 static void color_select_draw_z_marker (ColorSelectP, int);
 static void color_select_draw_xy_marker (ColorSelectP, int);
@@ -123,41 +128,47 @@ static ColorSelectFillUpdateProc update_procs[] =
   color_select_update_green_blue,
 };
 
-static ActionAreaItem action_items[2] = 
+static ActionAreaItem action_items[2] =
 {
   { "OK", color_select_ok_callback, NULL, NULL },
   { "Cancel", color_select_cancel_callback, NULL, NULL },
 };
 
 ColorSelectP
-color_select_new (r, g, b, callback)
-     int r, g, b;
-     ColorSelectCallback callback;
+color_select_new (int                  r,
+		  int                  g,
+		  int                  b,
+		  ColorSelectCallback  callback,
+		  void                *client_data,
+		  int                  wants_updates)
 {
-  extern Widget interface;
+  /*  static char *toggle_titles[6] = { "Hue", "Saturation", "Value", "Red", "Green", "Blue" }; */
+  static char *toggle_titles[6] = { "H", "S", "V", "R", "G", "B" };
+  static gfloat slider_max_vals[6] = { 360, 100, 100, 255, 255, 255 };
+  static gfloat slider_incs[6] = { 0.1, 0.1, 0.1, 1.0, 1.0, 1.0 };
 
-  static char *toggle_titles[6] = { "Hue", "Saturation", "Value", "Red", "Green", "Blue" };
-  static char *slider_titles[6] = { "hSlider", "sSlider", "vSlider", "rSlider", "gSlider", "bSlider" };
-  static int slider_max_vals[6] = { 3600, 1000, 1000, 255, 255, 255 };
-  static int slider_decimals[6] = { 1, 1, 1, 0, 0, 0 };
-  
   ColorSelectP csp;
-  Widget xy_frame_widget;
-  Widget z_frame_widget;
-  Widget colors_frame_widget;
-  Widget colors_form_widget;
-  Widget action_widget;
-  Widget row_col_widget;
-  XGCValues gcv;
-  Arg xt_args[6];
-  Dimension width, height;
-  int i, n;
+  GtkWidget *main_vbox;
+  GtkWidget *main_hbox;
+  GtkWidget *xy_frame;
+  GtkWidget *z_frame;
+  GtkWidget *colors_frame;
+  GtkWidget *colors_hbox;
+  GtkWidget *right_vbox;
+  GtkWidget *table;
+  GtkWidget *slider;
+  GSList *group;
+  char buffer[16];
+  int i;
 
-  csp = xmalloc (sizeof (_ColorSelect));
+  csp = g_malloc (sizeof (_ColorSelect));
 
   csp->callback = callback;
+  csp->client_data = client_data;
   csp->z_color_fill = HUE;
   csp->xy_color_fill = SATURATION_VALUE;
+  csp->gc = NULL;
+  csp->wants_updates = wants_updates;
 
   csp->values[RED] = csp->orig_values[0] = r;
   csp->values[GREEN] = csp->orig_values[1] = g;
@@ -165,276 +176,197 @@ color_select_new (r, g, b, callback)
   color_select_update_hsv_values (csp);
   color_select_update_pos (csp);
 
-  csp->shell = XtVaCreatePopupShell ("colorSelectDialog",
-/*				     xmDialogShellWidgetClass, toplevel, */
-				     topLevelShellWidgetClass, interface,
-				     XmNtitle, "Color Selection",
-				     XmNvisual, color_visual,
-				     XmNcolormap, get_colormap (RGB_GIMAGE),
-				     XmNdepth, color_depth,
-				     NULL);
+  csp->shell = gtk_dialog_new ();
+  gtk_window_set_wmclass (GTK_WINDOW (csp->shell), "color_selection", "Gimp");
+  gtk_window_set_title (GTK_WINDOW (csp->shell), "Color Selection");
+  gtk_window_set_policy (GTK_WINDOW (csp->shell), FALSE, FALSE, FALSE);
+  gtk_widget_set_uposition (csp->shell, color_select_x, color_select_y);
 
-  csp->dialog = XtVaCreateWidget ("dialog",
-				  xmFormWidgetClass, csp->shell,
-				  NULL);
-
-  xy_frame_widget = XtVaCreateManagedWidget ("xyColorFrame",
-					     xmFrameWidgetClass, csp->dialog,
-					     XmNshadowType, XmSHADOW_IN,
-					     XmNshadowThickness, 2,
-					     XmNleftAttachment, XmATTACH_FORM,
-					     XmNtopAttachment, XmATTACH_FORM,
-					     XmNleftOffset, 10,
-					     XmNtopOffset, 10,
-					     NULL);
+  /*  handle the wm close signal */
+  gtk_signal_connect (GTK_OBJECT (csp->shell), "delete_event",
+		      (GtkSignalFunc) color_select_delete_callback, csp);
   
-  csp->xy_color = XtVaCreateManagedWidget ("xyColor",
-					   xmDrawingAreaWidgetClass, xy_frame_widget,
-					   XmNwidth, XY_DEF_WIDTH,
-					   XmNheight, XY_DEF_HEIGHT,
-					   NULL);
+  main_vbox = gtk_vbox_new (FALSE, 2);
+  gtk_container_border_width (GTK_CONTAINER (main_vbox), 2);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (csp->shell)->vbox), main_vbox, TRUE, TRUE, 0);
+  gtk_widget_show (main_vbox);
 
-  csp->xy_color_image = image_buf_create (1, COLOR_BUF, XY_DEF_WIDTH, XY_DEF_HEIGHT);
+  main_hbox = gtk_hbox_new (FALSE, 2);
+  gtk_container_border_width (GTK_CONTAINER (main_hbox), 0);
+  gtk_box_pack_start (GTK_BOX (main_vbox), main_hbox, TRUE, TRUE, 2);
+  gtk_widget_show (main_hbox);
 
-  XtAddCallback (csp->xy_color, XmNexposeCallback, color_select_xy_draw_callback, csp);
-  XtAddCallback (csp->xy_color, XmNresizeCallback, color_select_xy_resize_callback, csp);
-  XtAddEventHandler (csp->xy_color, ButtonPressMask, False, color_select_xy_button_press, csp);
-  XtAddEventHandler (csp->xy_color, ButtonReleaseMask, False, color_select_xy_button_release, csp);
-  XtAddEventHandler (csp->xy_color, Button1MotionMask, False, color_select_xy_motion, csp);
+  xy_frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (xy_frame), GTK_SHADOW_IN);
+  gtk_box_pack_start (GTK_BOX (main_hbox), xy_frame, FALSE, FALSE, 2);
+  gtk_widget_show (xy_frame);
 
+  csp->xy_color = gtk_preview_new (GTK_PREVIEW_COLOR);
+  gtk_preview_size (GTK_PREVIEW (csp->xy_color), XY_DEF_WIDTH, XY_DEF_HEIGHT);
+  gtk_widget_set_events (csp->xy_color, COLOR_AREA_MASK);
+  gtk_signal_connect_after (GTK_OBJECT (csp->xy_color), "expose_event",
+			    (GtkSignalFunc) color_select_xy_expose,
+			    csp);
+  gtk_signal_connect (GTK_OBJECT (csp->xy_color), "event",
+		      (GtkSignalFunc) color_select_xy_events,
+		      csp);
+  gtk_container_add (GTK_CONTAINER (xy_frame), csp->xy_color);
+  gtk_widget_show (csp->xy_color);
 
-  z_frame_widget = XtVaCreateManagedWidget ("zColorFrame",
-					    xmFrameWidgetClass, csp->dialog,
-					    XmNshadowType, XmSHADOW_IN,
-					    XmNshadowThickness, 2,
-					    XmNleftAttachment, XmATTACH_WIDGET,
-					    XmNleftWidget, xy_frame_widget,
-					    XmNtopAttachment, XmATTACH_FORM,
-					    XmNbottomAttachment, XmATTACH_OPPOSITE_WIDGET,
-					    XmNbottomWidget, xy_frame_widget,
-					    XmNleftOffset, 10,
-					    XmNtopOffset, 10,
-					    NULL);
+  z_frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (z_frame), GTK_SHADOW_IN);
+  gtk_box_pack_start (GTK_BOX (main_hbox), z_frame, FALSE, FALSE, 2);
+  gtk_widget_show (z_frame);
 
-  csp->z_color = XtVaCreateManagedWidget ("zColor",
-					  xmDrawingAreaWidgetClass, z_frame_widget,
-					  XmNwidth, Z_DEF_WIDTH,
-					  NULL);
-					  
-  csp->z_color_image = image_buf_create (1, COLOR_BUF, Z_DEF_WIDTH, Z_DEF_HEIGHT);
+  csp->z_color = gtk_preview_new (GTK_PREVIEW_COLOR);
+  gtk_preview_size (GTK_PREVIEW (csp->z_color), Z_DEF_WIDTH, Z_DEF_HEIGHT);
+  gtk_widget_set_events (csp->z_color, COLOR_AREA_MASK);
+  gtk_signal_connect_after (GTK_OBJECT (csp->z_color), "expose_event",
+			    (GtkSignalFunc) color_select_z_expose,
+			    csp);
+  gtk_signal_connect (GTK_OBJECT (csp->z_color), "event",
+		      (GtkSignalFunc) color_select_z_events,
+		      csp);
+  gtk_container_add (GTK_CONTAINER (z_frame), csp->z_color);
+  gtk_widget_show (csp->z_color);
 
-  XtAddCallback (csp->z_color, XmNexposeCallback, color_select_z_draw_callback, csp);
-  XtAddCallback (csp->z_color, XmNresizeCallback, color_select_z_resize_callback, csp);
-  XtAddEventHandler (csp->z_color, ButtonPressMask, False, color_select_z_button_press, csp);
-  XtAddEventHandler (csp->z_color, ButtonReleaseMask, False, color_select_z_button_release, csp);
-  XtAddEventHandler (csp->z_color, Button1MotionMask, False, color_select_z_motion, csp);
+  /*  The right vertical box with old/new color area and color space sliders  */
+  right_vbox = gtk_vbox_new (FALSE, 2);
+  gtk_container_border_width (GTK_CONTAINER (right_vbox), 0);
+  gtk_box_pack_start (GTK_BOX (main_hbox), right_vbox, TRUE, TRUE, 0);
+  gtk_widget_show (right_vbox);
 
-  colors_frame_widget = XtVaCreateManagedWidget ("colorsFrame",
-						 xmFrameWidgetClass, csp->dialog,
-						 XmNshadowType, XmSHADOW_IN,
-						 XmNshadowThickness, 2,
-						 XmNleftAttachment, XmATTACH_WIDGET,
-						 XmNleftWidget, z_frame_widget,
-						 XmNtopAttachment, XmATTACH_FORM,
-						 XmNrightAttachment, XmATTACH_FORM,
-						 XmNleftOffset, 10,
-						 XmNtopOffset, 10,
-						 XmNrightOffset, 10,
-						 NULL);
+  /*  The old/new color area  */
+  colors_frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (colors_frame), GTK_SHADOW_IN);
+  gtk_box_pack_start (GTK_BOX (right_vbox), colors_frame, FALSE, FALSE, 0);
+  gtk_widget_show (colors_frame);
 
-  colors_form_widget = XtVaCreateManagedWidget ("colorsForm",
-						xmFormWidgetClass, colors_frame_widget,
-						XmNfractionBase, 2,
-						NULL);
+  colors_hbox = gtk_hbox_new (TRUE, 2);
+  gtk_container_add (GTK_CONTAINER (colors_frame), colors_hbox);
+  gtk_widget_show (colors_hbox);
 
-  csp->new_color = XtVaCreateManagedWidget ("newColor",
-					    xmDrawingAreaWidgetClass, colors_form_widget,
-					    XmNleftAttachment, XmATTACH_FORM,
-					    XmNrightAttachment, XmATTACH_POSITION,
-					    XmNrightPosition, 1,
-					    XmNtopAttachment, XmATTACH_FORM,
-					    XmNbottomAttachment, XmATTACH_FORM,
-					    NULL);
-  XtAddCallback (csp->new_color, XmNexposeCallback, color_select_color_draw_callback, csp);
+  csp->new_color = gtk_drawing_area_new ();
+  gtk_drawing_area_size (GTK_DRAWING_AREA (csp->new_color), COLOR_AREA_WIDTH, COLOR_AREA_HEIGHT);
+  gtk_widget_set_events (csp->new_color, GDK_EXPOSURE_MASK);
+  gtk_signal_connect (GTK_OBJECT (csp->new_color), "event",
+		      (GtkSignalFunc) color_select_color_events,
+		      csp);
+  gtk_object_set_user_data (GTK_OBJECT (csp->new_color), csp);
+  gtk_box_pack_start (GTK_BOX (colors_hbox), csp->new_color, TRUE, TRUE, 0);
+  gtk_widget_show (csp->new_color);
 
-  csp->orig_color = XtVaCreateManagedWidget ("origColor", 
-					     xmDrawingAreaWidgetClass, colors_form_widget,
-					     XmNleftAttachment, XmATTACH_POSITION,
-					     XmNleftPosition, 1,
-					     XmNrightAttachment, XmATTACH_FORM,
-					     XmNtopAttachment, XmATTACH_FORM,
-					     XmNbottomAttachment, XmATTACH_FORM,
-					     NULL);
-  XtAddCallback (csp->orig_color, XmNexposeCallback, color_select_color_draw_callback, csp);
+  csp->orig_color = gtk_drawing_area_new ();
+  gtk_drawing_area_size (GTK_DRAWING_AREA (csp->orig_color), COLOR_AREA_WIDTH, COLOR_AREA_HEIGHT);
+  gtk_widget_set_events (csp->orig_color, GDK_EXPOSURE_MASK);
+  gtk_signal_connect (GTK_OBJECT (csp->orig_color), "event",
+		      (GtkSignalFunc) color_select_color_events,
+		      csp);
+  gtk_object_set_user_data (GTK_OBJECT (csp->orig_color), csp);
+  gtk_box_pack_start (GTK_BOX (colors_hbox), csp->orig_color, TRUE, TRUE, 0);
+  gtk_widget_show (csp->orig_color);
 
+  /*  The color space sliders, toggle buttons and entries  */
+  table = gtk_table_new (6, 3, FALSE);
+  gtk_table_set_row_spacings (GTK_TABLE (table), 3);
+  gtk_table_set_col_spacings (GTK_TABLE (table), 3);
+  gtk_container_border_width (GTK_CONTAINER (table), 2);
+  gtk_box_pack_start (GTK_BOX (right_vbox), table, TRUE, TRUE, 0);
+  gtk_widget_show (table);
 
-  row_col_widget = XtVaCreateWidget ("dialogPartition", 
-				     xmRowColumnWidgetClass, csp->dialog,
-				     XmNorientation, XmVERTICAL,
-				     XmNnumColumns, 2,
-				     XmNpacking, XmPACK_COLUMN,
-				     XmNradioBehavior, True,
-				     XmNleftAttachment, XmATTACH_WIDGET,
-				     XmNleftWidget, z_frame_widget,
-				     XmNtopAttachment, XmATTACH_NONE,
-				     XmNbottomAttachment, XmATTACH_OPPOSITE_WIDGET,
-				     XmNbottomWidget, z_frame_widget,
-				     XmNrightAttachment, XmATTACH_FORM,
-				     XmNleftOffset, 10,
-				     XmNtopOffset, 10,
-				     XmNrightOffset, 10,
-				     NULL);
-
-  XtVaSetValues (colors_frame_widget,
-		 XmNbottomAttachment, XmATTACH_WIDGET,
-		 XmNbottomWidget, row_col_widget,
-		 NULL);
-
-  
-  n = 0;
-  XtSetArg (xt_args[n], XmNminimum, 0); n++;
-  XtSetArg (xt_args[n], XmNmaximum, 255); n++;
-  XtSetArg (xt_args[n], XmNvalue, 0); n++;
-  XtSetArg (xt_args[n], XmNdecimalPoints, 0); n++;
-  XtSetArg (xt_args[n], XmNshowValue, True); n++;
-  XtSetArg (xt_args[n], XmNorientation, XmHORIZONTAL); n++;
-
+  group = NULL;
   for (i = 0; i < 6; i++)
     {
-      csp->toggles[i] = XtVaCreateWidget (toggle_titles[i], 
-					  xmToggleButtonWidgetClass, row_col_widget,
-					  XmNset, i == 0,
-					  NULL);
+      csp->toggles[i] = gtk_radio_button_new_with_label (group, toggle_titles[i]);
+      group = gtk_radio_button_group (GTK_RADIO_BUTTON (csp->toggles[i]));
+      gtk_table_attach (GTK_TABLE (table), csp->toggles[i],
+			0, 1, i, i+1, GTK_FILL, GTK_EXPAND, 0, 0);
+      gtk_signal_connect (GTK_OBJECT (csp->toggles[i]), "toggled",
+			  (GtkSignalFunc) color_select_toggle_update,
+			  csp);
+      gtk_widget_show (csp->toggles[i]);
+
+      csp->slider_data[i] = GTK_ADJUSTMENT (gtk_adjustment_new (csp->values[i], 0.0,
+								slider_max_vals[i],
+								slider_incs[i],
+								1.0, 0.0));
+
+      slider = gtk_hscale_new (csp->slider_data[i]);
+      gtk_table_attach (GTK_TABLE (table), slider, 1, 2, i, i+1,
+			GTK_EXPAND | GTK_FILL, GTK_EXPAND, 0, 0);
+      gtk_scale_set_value_pos (GTK_SCALE (slider), GTK_POS_TOP);
+      gtk_scale_set_draw_value (GTK_SCALE (slider), FALSE);
+      gtk_signal_connect (GTK_OBJECT (csp->slider_data[i]), "value_changed",
+			  (GtkSignalFunc) color_select_slider_update,
+			  csp);
+      gtk_widget_show (slider);
+
+      csp->entries[i] = gtk_entry_new ();
+      sprintf (buffer, "%d", csp->values[i]);
+      gtk_entry_set_text (GTK_ENTRY (csp->entries[i]), buffer);
+      gtk_widget_set_usize (GTK_WIDGET (csp->entries[i]), 40, 0);
+      gtk_table_attach (GTK_TABLE (table), csp->entries[i],
+			2, 3, i, i+1, GTK_FILL, GTK_EXPAND, 0, 0);
+      gtk_signal_connect (GTK_OBJECT (csp->entries[i]), "changed",
+			  (GtkSignalFunc) color_select_entry_update,
+			  csp);
+      gtk_widget_show (csp->entries[i]);
     }
 
-  for (i = 0; i < 6; i++)
+  /*  The action area  */
+  action_items[0].user_data = csp;
+  action_items[1].user_data = csp;
+  if (csp->wants_updates)
     {
-      XtSetArg (xt_args[1], XmNmaximum, slider_max_vals[i]);
-      XtSetArg (xt_args[3], XmNdecimalPoints, slider_decimals[i]);
-
-      csp->sliders[i] = XmCreateScale (row_col_widget, slider_titles[i], xt_args, n);
+      action_items[0].label = "Close";
+      action_items[1].label = "Revert to Old Color";
     }
-
-  for (i = 0; i < 6; i++)
+  else
     {
-      XtAddCallback (csp->toggles[i], XmNvalueChangedCallback, color_select_toggle_callback, csp);
-      XtAddCallback (csp->sliders[i], XmNvalueChangedCallback, color_select_slider_callback, csp);
-
-      XtManageChild (csp->toggles[i]);
-      XtManageChild (csp->sliders[i]);
+      action_items[0].label = "OK";
+      action_items[1].label = "Cancel";
     }
+  build_action_area (GTK_DIALOG (csp->shell), action_items, 2, 0);
 
-  XtManageChild (row_col_widget);
+  color_select_image_fill (csp->z_color, csp->z_color_fill, csp->values);
+  color_select_image_fill (csp->xy_color, csp->xy_color_fill, csp->values);
 
-  action_items[0].data = csp;
-  action_items[1].data = csp;
-  action_widget = build_action_area (csp->dialog, action_items, 2);
-  XtVaSetValues (action_widget,
-		 XmNleftAttachment, XmATTACH_FORM,
-		 XmNrightAttachment, XmATTACH_FORM,
-		 XmNbottomAttachment, XmATTACH_FORM,
-		 XmNtopAttachment, XmATTACH_WIDGET,
-		 XmNtopWidget, xy_frame_widget,
-		 XmNleftOffset, 10,
-		 XmNrightOffset, 10,
-		 XmNtopOffset, 10,
-		 XmNbottomOffset, 10,
-		 NULL);
-
-  XtVaSetValues (csp->dialog, XmNdefaultPosition, False, NULL);
-
-  XtManageChild (action_widget);
-  XtManageChild (csp->dialog);
-  XtPopup (csp->shell, XtGrabNone);
-
-  XtVaGetValues (csp->new_color,
-		 XtNwidth, &width,
-		 XtNheight, &height,
-		 NULL);
-  csp->new_color_pixmap = XCreatePixmap (DISPLAY, XtWindow (csp->new_color),
-					 width, height, color_depth);
-
-  XtVaGetValues (csp->orig_color, 
-		 XtNwidth, &width,
-		 XtNheight, &height,
-		 NULL);
-  csp->orig_color_pixmap = XCreatePixmap (DISPLAY, XtWindow (csp->orig_color),
-					  width, height, color_depth);
-
-  csp->alloc_colors = (color_depth == 8);
-  if (csp->alloc_colors)
-    {
-      Colormap cmap;
-      unsigned long pixels[2];
-      
-      XtVaGetValues (csp->new_color, XmNcolormap, &cmap, NULL);
-      
-      if (!XAllocColorCells (DISPLAY, cmap, False, NULL, 0, pixels, 2))
-	fatal_error ("unable to allocate 2 colormap entries");
-      
-      csp->ncolor.pixel = pixels[0];
-      csp->ocolor.pixel = pixels[1];
-    }
-
-  gcv.foreground = BlackPixelOfScreen (XtScreen (csp->dialog));
-  csp->gc = XCreateGC (DISPLAY, XtWindow (csp->dialog), GCForeground, &gcv);
-
-  color_select_image_fill (csp->z_color_image, csp->z_color_fill, csp->values);
-  color_select_image_fill (csp->xy_color_image, csp->xy_color_fill, csp->values);
+  gtk_widget_show (csp->shell);
 
   return csp;
 }
 
 void
-color_select_show (csp)
-     ColorSelectP csp;
+color_select_show (ColorSelectP csp)
 {
   if (csp)
-    XtPopup (csp->shell, XtGrabNone);
+    gtk_widget_show (csp->shell);
 }
 
 void
-color_select_hide (csp)
-     ColorSelectP csp;
+color_select_hide (ColorSelectP csp)
 {
   if (csp)
-    XtPopdown (csp->shell);
+    gtk_widget_hide (csp->shell);
 }
 
 void
-color_select_free (csp)
-     ColorSelectP csp;
+color_select_free (ColorSelectP csp)
 {
   if (csp)
     {
-      if (csp->alloc_colors)
-	{
-	  Colormap cmap;
-	  unsigned long pixels[2];
-
-	  XtVaGetValues (csp->new_color, XmNcolormap, &cmap, NULL);
-	  
-	  pixels[0] = csp->ncolor.pixel;
-	  pixels[1] = csp->ocolor.pixel;
-	  XFreeColors (DISPLAY, cmap, pixels, 2, 0);
-	}
-
-      XtDestroyWidget (csp->dialog);
-      XtDestroyWidget (csp->shell);
-      XFreeGC (DISPLAY, csp->gc);
-      XFreePixmap (DISPLAY, csp->orig_color_pixmap);
-      XFreePixmap (DISPLAY, csp->new_color_pixmap);
-      image_buf_destroy (csp->xy_color_image);
-      image_buf_destroy (csp->z_color_image);
-      xfree (csp);
+      gtk_widget_destroy (csp->shell);
+      gdk_gc_destroy (csp->gc);
+      g_free (csp);
     }
 }
 
 void
-color_select_set_color (csp, r, g, b, set_current)
-     ColorSelectP csp;
-     int r, g, b;
-     int set_current;
+color_select_set_color (ColorSelectP csp,
+			int          r,
+			int          g,
+			int          b,
+			int          set_current)
 {
   if (csp)
     {
@@ -443,28 +375,28 @@ color_select_set_color (csp, r, g, b, set_current)
       csp->orig_values[2] = b;
 
       color_select_update_colors (csp, 1);
-      
+
       if (set_current)
 	{
 	  csp->values[RED] = r;
 	  csp->values[GREEN] = g;
 	  csp->values[BLUE] = b;
-	  
+
 	  color_select_update_hsv_values (csp);
 	  color_select_update_pos (csp);
-	  color_select_update_sliders (csp);
+	  color_select_update_sliders (csp, -1);
+	  color_select_update_entries (csp, -1);
 	  color_select_update_colors (csp, 0);
-	  
+
 	  color_select_update (csp, UPDATE_Z_COLOR);
 	  color_select_update (csp, UPDATE_XY_COLOR);
 	}
     }
 }
 
-static void 
-color_select_update (csp, update)
-     ColorSelectP csp;
-     ColorSelectUpdateType update;
+static void
+color_select_update (ColorSelectP          csp,
+		     ColorSelectUpdateType update)
 {
   if (csp)
     {
@@ -474,7 +406,8 @@ color_select_update (csp, update)
       if (update & UPDATE_VALUES)
 	{
 	  color_select_update_values (csp);
-	  color_select_update_sliders (csp);
+	  color_select_update_sliders (csp, -1);
+	  color_select_update_entries (csp, -1);
 
 	  if (!(update & UPDATE_NEW_COLOR))
 	    color_select_update_colors (csp, 0);
@@ -482,29 +415,42 @@ color_select_update (csp, update)
 
       if (update & UPDATE_XY_COLOR)
 	{
-	  color_select_image_fill (csp->xy_color_image, csp->xy_color_fill, csp->values);
-	  image_buf_put (csp->xy_color_image, XtWindow (csp->xy_color), csp->gc);
-	  color_select_draw_xy_marker (csp, 1);
+	  color_select_image_fill (csp->xy_color, csp->xy_color_fill, csp->values);
+	  gtk_widget_draw (csp->xy_color, NULL);
 	}
 
       if (update & UPDATE_Z_COLOR)
 	{
-	  color_select_image_fill (csp->z_color_image, csp->z_color_fill, csp->values);
-	  image_buf_put (csp->z_color_image, XtWindow (csp->z_color), csp->gc);
-	  color_select_draw_z_marker (csp, 1);
+	  color_select_image_fill (csp->z_color, csp->z_color_fill, csp->values);
+	  gtk_widget_draw (csp->z_color, NULL);
 	}
 
       if (update & UPDATE_NEW_COLOR)
 	color_select_update_colors (csp, 0);
-      
+
       if (update & UPDATE_ORIG_COLOR)
 	color_select_update_colors (csp, 1);
+
+      /*if (update & UPDATE_CALLER)*/
+      color_select_update_caller (csp);
     }
 }
 
 static void
-color_select_update_values (csp)
-     ColorSelectP csp;
+color_select_update_caller (ColorSelectP csp)
+{
+  if (csp && csp->wants_updates && csp->callback)
+    {
+      (* csp->callback) (csp->values[RED],
+			 csp->values[GREEN],
+			 csp->values[BLUE],
+			 COLOR_SELECT_UPDATE,
+			 csp->client_data);
+    }
+}
+
+static void
+color_select_update_values (ColorSelectP csp)
 {
   if (csp)
     {
@@ -526,22 +472,22 @@ color_select_update_values (csp)
 	  csp->values[BLUE] = csp->pos[2];
 	  break;
 	case HUE:
-	  csp->values[VALUE] = csp->pos[0] * 1000 / 255;
-	  csp->values[SATURATION] = csp->pos[1] * 1000 / 255;
-	  csp->values[HUE] = csp->pos[2] * 3600 / 255;
+	  csp->values[VALUE] = csp->pos[0] * 100 / 255;
+	  csp->values[SATURATION] = csp->pos[1] * 100 / 255;
+	  csp->values[HUE] = csp->pos[2] * 360 / 255;
 	  break;
 	case SATURATION:
-	  csp->values[VALUE] = csp->pos[0] * 1000 / 255;
-	  csp->values[HUE] = csp->pos[1] * 3600 / 255;
-	  csp->values[SATURATION] = csp->pos[2] * 1000 / 255;
+	  csp->values[VALUE] = csp->pos[0] * 100 / 255;
+	  csp->values[HUE] = csp->pos[1] * 360 / 255;
+	  csp->values[SATURATION] = csp->pos[2] * 100 / 255;
 	  break;
 	case VALUE:
-	  csp->values[SATURATION] = csp->pos[0] * 1000 / 255;
-	  csp->values[HUE] = csp->pos[1] * 3600 / 255;
-	  csp->values[VALUE] = csp->pos[2] * 1000 / 255;
+	  csp->values[SATURATION] = csp->pos[0] * 100 / 255;
+	  csp->values[HUE] = csp->pos[1] * 360 / 255;
+	  csp->values[VALUE] = csp->pos[2] * 100 / 255;
 	  break;
 	}
-      
+
       switch (csp->z_color_fill)
 	{
 	case RED:
@@ -558,18 +504,17 @@ color_select_update_values (csp)
     }
 }
 
-static void 
-color_select_update_rgb_values (csp)
-     ColorSelectP csp;
+static void
+color_select_update_rgb_values (ColorSelectP csp)
 {
   float h, s, v;
   float f, p, q, t;
-  
+
   if (csp)
     {
-      h = csp->values[HUE] / 10.0;
-      s = csp->values[SATURATION] / 1000.0;
-      v = csp->values[VALUE] / 1000.0;
+      h = csp->values[HUE];
+      s = csp->values[SATURATION] / 100.0;
+      v = csp->values[VALUE] / 100.0;
 
       if (s == 0)
 	{
@@ -587,7 +532,7 @@ color_select_update_rgb_values (csp)
 	  p = v * (1 - s);
 	  q = v * (1 - (s * f));
 	  t = v * (1 - (s * (1 - f)));
-	  
+
 	  switch ((int) h)
 	    {
 	    case 0:
@@ -625,9 +570,8 @@ color_select_update_rgb_values (csp)
     }
 }
 
-static void 
-color_select_update_hsv_values (csp)
-     ColorSelectP csp;
+static void
+color_select_update_hsv_values (ColorSelectP csp)
 {
   int r, g, b;
   float h, s, v;
@@ -676,6 +620,7 @@ color_select_update_hsv_values (csp)
 	h = 0;
       else
 	{
+	  h = 0;
 	  delta = max - min;
 	  if (r == max)
 	    h = (g - b) / (float) delta;
@@ -689,15 +634,14 @@ color_select_update_hsv_values (csp)
 	    h += 360;
 	}
 
-      csp->values[HUE] = h * 10;
-      csp->values[SATURATION] = s * 1000;
-      csp->values[VALUE] = v * 1000 / 255;
+      csp->values[HUE] = h;
+      csp->values[SATURATION] = s * 100;
+      csp->values[VALUE] = v * 100 / 255;
     }
 }
 
-static void 
-color_select_update_pos (csp)
-     ColorSelectP csp;
+static void
+color_select_update_pos (ColorSelectP csp)
 {
   if (csp)
     {
@@ -719,98 +663,109 @@ color_select_update_pos (csp)
 	  csp->pos[2] = csp->values[BLUE];
 	  break;
 	case HUE:
-	  csp->pos[0] = csp->values[VALUE] * 255 / 1000;
-	  csp->pos[1] = csp->values[SATURATION] * 255 / 1000;
-	  csp->pos[2] = csp->values[HUE] * 255 / 3600;
+	  csp->pos[0] = csp->values[VALUE] * 255 / 100;
+	  csp->pos[1] = csp->values[SATURATION] * 255 / 100;
+	  csp->pos[2] = csp->values[HUE] * 255 / 360;
 	  break;
 	case SATURATION:
-	  csp->pos[0] = csp->values[VALUE] * 255 / 1000;
-	  csp->pos[1] = csp->values[HUE] * 255 / 3600;
-	  csp->pos[2] = csp->values[SATURATION] * 255 / 1000;
+	  csp->pos[0] = csp->values[VALUE] * 255 / 100;
+	  csp->pos[1] = csp->values[HUE] * 255 / 360;
+	  csp->pos[2] = csp->values[SATURATION] * 255 / 100;
 	  break;
 	case VALUE:
-	  csp->pos[0] = csp->values[SATURATION] * 255 / 1000;
-	  csp->pos[1] = csp->values[HUE] * 255 / 3600;
-	  csp->pos[2] = csp->values[VALUE] * 255 / 1000;
+	  csp->pos[0] = csp->values[SATURATION] * 255 / 100;
+	  csp->pos[1] = csp->values[HUE] * 255 / 360;
+	  csp->pos[2] = csp->values[VALUE] * 255 / 100;
 	  break;
 	}
     }
 }
 
-static void 
-color_select_update_sliders (csp)
-     ColorSelectP csp;
+static void
+color_select_update_sliders (ColorSelectP csp,
+			     int          skip)
 {
   int i;
-  
+
   if (csp)
     {
       for (i = 0; i < 6; i++)
-	XmScaleSetValue (csp->sliders[i], csp->values[i]);
+	if (i != skip)
+	  {
+	    csp->slider_data[i]->value = (gfloat) csp->values[i];
+
+	    gtk_signal_handler_block_by_data (GTK_OBJECT (csp->slider_data[i]), csp);
+	    gtk_signal_emit_by_name (GTK_OBJECT (csp->slider_data[i]), "value_changed");
+	    gtk_signal_handler_unblock_by_data (GTK_OBJECT (csp->slider_data[i]), csp);
+	  }
     }
 }
 
-static void 
-color_select_update_colors (csp, which)
-     ColorSelectP csp;
-     int which;
+static void
+color_select_update_entries (ColorSelectP csp,
+			     int          skip)
 {
-  Widget widget;
-  Pixmap pixmap;
-  Colormap cmap;
-  XColor *color;
-  Dimension width;
-  Dimension height;
+  char buffer[16];
+  int i;
+
+  if (csp)
+    {
+      for (i = 0; i < 6; i++)
+	if (i != skip)
+	  {
+	    sprintf (buffer, "%d", csp->values[i]);
+
+	    gtk_signal_handler_block_by_data (GTK_OBJECT (csp->entries[i]), csp);
+	    gtk_entry_set_text (GTK_ENTRY (csp->entries[i]), buffer);
+	    gtk_signal_handler_unblock_by_data (GTK_OBJECT (csp->entries[i]), csp);
+	  }
+    }
+}
+
+static void
+color_select_update_colors (ColorSelectP csp,
+			    int          which)
+{
+  GdkWindow *window;
+  GdkColor color;
+  int red, green, blue;
+  int width, height;
 
   if (csp)
     {
       if (which)
 	{
-	  widget = csp->orig_color;
-	  pixmap = csp->orig_color_pixmap;
-	  color = &csp->ocolor;
-	  color->red = csp->orig_values[0] << 8;
-	  color->green = csp->orig_values[1] << 8;
-	  color->blue = csp->orig_values[2] << 8;
-	  color->flags = DoRed | DoGreen | DoBlue;
+	  window = csp->orig_color->window;
+	  color.pixel = old_color_pixel;
+	  red = csp->orig_values[0];
+	  green = csp->orig_values[1];
+	  blue = csp->orig_values[2];
 	}
       else
 	{
-	  widget = csp->new_color;
-	  pixmap = csp->new_color_pixmap;
-	  color = &csp->ncolor;
-	  color->red = csp->values[RED] << 8;
-	  color->green = csp->values[GREEN] << 8;
-	  color->blue = csp->values[BLUE] << 8;
-	  color->flags = DoRed | DoGreen | DoBlue;
+	  window = csp->new_color->window;
+	  color.pixel = new_color_pixel;
+	  red = csp->values[RED];
+	  green = csp->values[GREEN];
+	  blue = csp->values[BLUE];
 	}
 
-      XtVaGetValues (widget, 
-		     XmNcolormap, &cmap, 
-		     XmNwidth, &width,
-		     XmNheight, &height,
-		     NULL);
+      gdk_window_get_size (window, &width, &height);
 
-      if (csp->alloc_colors)
-	XStoreColor (DISPLAY, cmap, color);
-      else
-	if (!XAllocColor (DISPLAY, cmap, color))
-	  fatal_error ("unable to allocate a single colormap entry");
-      
-      XSetForeground (DISPLAY, csp->gc, color->pixel);
-      XFillRectangle (DISPLAY, pixmap, csp->gc,
-		      0, 0, width, height);
-      
-      XCopyArea (DISPLAY, pixmap, XtWindow (widget), csp->gc,
-		 0, 0, width, height, 0, 0);
+      store_color (&color.pixel, red, green, blue);
+
+      if (csp->gc)
+	{
+	  gdk_gc_set_foreground (csp->gc, &color);
+	  gdk_draw_rectangle (window, csp->gc, 1,
+			      0, 0, width, height);
+	}
     }
 }
 
 static void
-color_select_ok_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+color_select_ok_callback (GtkWidget *w,
+			  gpointer   client_data)
 {
   ColorSelectP csp;
 
@@ -818,15 +773,28 @@ color_select_ok_callback (w, client_data, call_data)
   if (csp)
     {
       if (csp->callback)
-	(* csp->callback) (csp->values[RED], csp->values[GREEN], csp->values[BLUE], 0);
+	(* csp->callback) (csp->values[RED],
+			   csp->values[GREEN],
+			   csp->values[BLUE],
+			   COLOR_SELECT_OK,
+			   csp->client_data);
     }
 }
 
+static gint
+color_select_delete_callback (GtkWidget *w,
+			      GdkEvent  *e,
+			      gpointer   client_data)
+{
+  color_select_cancel_callback (w, client_data);
+
+  return TRUE;
+}
+  
+
 static void
-color_select_cancel_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+color_select_cancel_callback (GtkWidget *w,
+			      gpointer   client_data)
 {
   ColorSelectP csp;
 
@@ -834,59 +802,98 @@ color_select_cancel_callback (w, client_data, call_data)
   if (csp)
     {
       if (csp->callback)
-	(* csp->callback) (csp->orig_values[0], csp->orig_values[1], csp->orig_values[2], 1);
+	(* csp->callback) (csp->orig_values[0],
+			   csp->orig_values[1],
+			   csp->orig_values[2],
+			   COLOR_SELECT_CANCEL,
+			   csp->client_data);
     }
 }
 
-static void
-color_select_xy_draw_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+static gint
+color_select_xy_expose (GtkWidget      *widget,
+			GdkEventExpose *event,
+			ColorSelectP    csp)
 {
-  ColorSelectP csp;
+  if (!csp->gc)
+    csp->gc = gdk_gc_new (widget->window);
 
-  csp = (ColorSelectP) client_data;
-  if (csp)
-    {
-      image_buf_put (csp->xy_color_image, XtWindow (csp->xy_color), csp->gc);
-      color_select_draw_xy_marker (csp, 1);
-    }
+  color_select_draw_xy_marker (csp, 1);
+
+  return FALSE;
 }
 
-static void
-color_select_xy_resize_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+static gint
+color_select_xy_events (GtkWidget    *widget,
+			GdkEvent     *event,
+			ColorSelectP  csp)
 {
-  ColorSelectP csp;
+  GdkEventButton *bevent;
+  GdkEventMotion *mevent;
+  int tx, ty;
 
-  csp = (ColorSelectP) client_data;
-  if (csp)
+  switch (event->type)
     {
-    }
-}
+    case GDK_BUTTON_PRESS:
+      bevent = (GdkEventButton *) event;
 
-static void
-color_select_xy_button_press (drawing_a, client_data, event, continue_to_dispatch)
-     Widget drawing_a;
-     XtPointer client_data;
-     XEvent * event;
-     Boolean *continue_to_dispatch;
-{
-  XButtonPressedEvent *bevent;
-  ColorSelectP csp;
-
-  csp = (ColorSelectP) client_data;
-  if (csp)
-    {
-      bevent = (XButtonPressedEvent *) event;
-      
       color_select_draw_xy_marker (csp, 1);
 
-      csp->pos[0] = bevent->x;
-      csp->pos[1] = 255 - bevent->y;
+      csp->pos[0] = (bevent->x * 255) / (XY_DEF_WIDTH - 1);
+      csp->pos[1] = 255 - (bevent->y * 255) / (XY_DEF_HEIGHT - 1);
+
+      if (csp->pos[0] < 0)
+	csp->pos[0] = 0;
+      if (csp->pos[0] > 255)
+	csp->pos[0] = 255;
+      if (csp->pos[1] < 0)
+	csp->pos[1] = 0;
+      if (csp->pos[1] > 255)
+	csp->pos[1] = 255;
+
+      gdk_pointer_grab (csp->xy_color->window, FALSE,
+			GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON1_MOTION_MASK | GDK_BUTTON_RELEASE_MASK,
+			NULL, NULL, bevent->time);
+      color_select_draw_xy_marker (csp, 1);
+
+      color_select_update (csp, UPDATE_VALUES);
+      break;
+
+    case GDK_BUTTON_RELEASE:
+      bevent = (GdkEventButton *) event;
+
+      color_select_draw_xy_marker (csp, 1);
+
+      csp->pos[0] = (bevent->x * 255) / (XY_DEF_WIDTH - 1);
+      csp->pos[1] = 255 - (bevent->y * 255) / (XY_DEF_HEIGHT - 1);
+
+      if (csp->pos[0] < 0)
+	csp->pos[0] = 0;
+      if (csp->pos[0] > 255)
+	csp->pos[0] = 255;
+      if (csp->pos[1] < 0)
+	csp->pos[1] = 0;
+      if (csp->pos[1] > 255)
+	csp->pos[1] = 255;
+
+      gdk_pointer_ungrab (bevent->time);
+      color_select_draw_xy_marker (csp, 1);
+      color_select_update (csp, UPDATE_VALUES);
+      break;
+
+    case GDK_MOTION_NOTIFY:
+      mevent = (GdkEventMotion *) event;
+      if (mevent->is_hint)
+	{
+	  gdk_window_get_pointer (widget->window, &tx, &ty, NULL);
+	  mevent->x = tx;
+	  mevent->y = ty;
+	}
+
+      color_select_draw_xy_marker (csp, 1);
+
+      csp->pos[0] = (mevent->x * 255) / (XY_DEF_WIDTH - 1);
+      csp->pos[1] = 255 - (mevent->y * 255) / (XY_DEF_HEIGHT - 1);
 
       if (csp->pos[0] < 0)
 	csp->pos[0] = 0;
@@ -898,248 +905,160 @@ color_select_xy_button_press (drawing_a, client_data, event, continue_to_dispatc
 	csp->pos[1] = 255;
 
       color_select_draw_xy_marker (csp, 1);
-
       color_select_update (csp, UPDATE_VALUES);
+      break;
+
+    default:
+      break;
     }
+
+  return FALSE;
 }
 
-static void
-color_select_xy_button_release (drawing_a, client_data, event, continue_to_dispatch)
-     Widget drawing_a;
-     XtPointer client_data;
-     XEvent * event;
-     Boolean *continue_to_dispatch;
+static gint
+color_select_z_expose (GtkWidget      *widget,
+		       GdkEventExpose *event,
+		       ColorSelectP    csp)
 {
-  XButtonReleasedEvent *bevent;
-  ColorSelectP csp;
+  if (!csp->gc)
+    csp->gc = gdk_gc_new (widget->window);
 
-  csp = (ColorSelectP) client_data;
-  if (csp)
-    {
-      bevent = (XButtonReleasedEvent *) event;
-     
-      color_select_draw_xy_marker (csp, 1);
+  color_select_draw_z_marker (csp, 1);
 
-      csp->pos[0] = bevent->x;
-      csp->pos[1] = 255 - bevent->y;
-
-      if (csp->pos[0] < 0)
-	csp->pos[0] = 0;
-      if (csp->pos[0] > 255)
-	csp->pos[0] = 255;
-      if (csp->pos[1] < 0)
-	csp->pos[1] = 0;
-      if (csp->pos[1] > 255)
-	csp->pos[1] = 255;
-
-      color_select_draw_xy_marker (csp, 1);
-
-      color_select_update (csp, UPDATE_VALUES);
-    }
+  return FALSE;
 }
 
-static void
-color_select_xy_motion (drawing_a, client_data, event, continue_to_dispatch)
-     Widget drawing_a;
-     XtPointer client_data;
-     XEvent * event;
-     Boolean *continue_to_dispatch;
+static gint
+color_select_z_events (GtkWidget    *widget,
+		       GdkEvent     *event,
+		       ColorSelectP  csp)
 {
-  XMotionEvent *mevent;
-  ColorSelectP csp;
+  GdkEventButton *bevent;
+  GdkEventMotion *mevent;
+  int tx, ty;
 
-  csp = (ColorSelectP) client_data;
-  if (csp)
+  switch (event->type)
     {
-      mevent = (XMotionEvent *) event;
-      
-      color_select_draw_xy_marker (csp, 1);
-
-      csp->pos[0] = mevent->x;
-      csp->pos[1] = 255 - mevent->y;
-
-      if (csp->pos[0] < 0)
-	csp->pos[0] = 0;
-      if (csp->pos[0] > 255)
-	csp->pos[0] = 255;
-      if (csp->pos[1] < 0)
-	csp->pos[1] = 0;
-      if (csp->pos[1] > 255)
-	csp->pos[1] = 255;
-
-      color_select_draw_xy_marker (csp, 1);
-
-      color_select_update (csp, UPDATE_VALUES);
-    }
-}
-
-static void
-color_select_z_draw_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
-{
-  ColorSelectP csp;
-
-  csp = (ColorSelectP) client_data;
-  if (csp)
-    {
-      image_buf_put (csp->z_color_image, XtWindow (csp->z_color), csp->gc);
-      color_select_draw_z_marker (csp, 1);
-    }
-}
-
-static void
-color_select_z_resize_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
-{
-  ColorSelectP csp;
-
-  csp = (ColorSelectP) client_data;
-  if (csp)
-    {
-    }
-}
-
-static void
-color_select_z_button_press (drawing_a, client_data, event, continue_to_dispatch)
-     Widget drawing_a;
-     XtPointer client_data;
-     XEvent * event;
-     Boolean *continue_to_dispatch;
-{
-  XButtonPressedEvent *bevent;
-  ColorSelectP csp;
-
-  csp = (ColorSelectP) client_data;
-  if (csp)
-    {
-      bevent = (XButtonPressedEvent *) event;
+    case GDK_BUTTON_PRESS:
+      bevent = (GdkEventButton *) event;
 
       color_select_draw_z_marker (csp, 1);
 
-      csp->pos[2] = 255 - bevent->y;
+      csp->pos[2] = 255 - (bevent->y * 255) / (Z_DEF_HEIGHT - 1);
+      if (csp->pos[2] < 0)
+	csp->pos[2] = 0;
+      if (csp->pos[2] > 255)
+	csp->pos[2] = 255;
+
+      gdk_pointer_grab (csp->z_color->window, FALSE,
+			GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON1_MOTION_MASK | GDK_BUTTON_RELEASE_MASK,
+			NULL, NULL, bevent->time);
+      color_select_draw_z_marker (csp, 1);
+      color_select_update (csp, UPDATE_VALUES);
+      break;
+
+    case GDK_BUTTON_RELEASE:
+      bevent = (GdkEventButton *) event;
+
+      color_select_draw_z_marker (csp, 1);
+
+      csp->pos[2] = 255 - (bevent->y * 255) / (Z_DEF_HEIGHT - 1);
+      if (csp->pos[2] < 0)
+	csp->pos[2] = 0;
+      if (csp->pos[2] > 255)
+	csp->pos[2] = 255;
+
+      gdk_pointer_ungrab (bevent->time);
+      color_select_draw_z_marker (csp, 1);
+      color_select_update (csp, UPDATE_VALUES | UPDATE_XY_COLOR);
+      break;
+
+    case GDK_MOTION_NOTIFY:
+      mevent = (GdkEventMotion *) event;
+      if (mevent->is_hint)
+	{
+	  gdk_window_get_pointer (widget->window, &tx, &ty, NULL);
+	  mevent->x = tx;
+	  mevent->y = ty;
+	}
+
+      color_select_draw_z_marker (csp, 1);
+
+      csp->pos[2] = 255 - (mevent->y * 255) / (Z_DEF_HEIGHT - 1);
       if (csp->pos[2] < 0)
 	csp->pos[2] = 0;
       if (csp->pos[2] > 255)
 	csp->pos[2] = 255;
 
       color_select_draw_z_marker (csp, 1);
+      color_select_update (csp, UPDATE_VALUES);
+      break;
 
-      color_select_update (csp, UPDATE_VALUES | UPDATE_XY_COLOR);
+    default:
+      break;
     }
+
+  return FALSE;
 }
 
-static void
-color_select_z_button_release (drawing_a, client_data, event, continue_to_dispatch)
-     Widget drawing_a;
-     XtPointer client_data;
-     XEvent * event;
-     Boolean *continue_to_dispatch;
-{
-  XButtonReleasedEvent *bevent;
-  ColorSelectP csp;
-
-  csp = (ColorSelectP) client_data;
-  if (csp)
-    {
-      bevent = (XButtonReleasedEvent *) event;
-
-      color_select_draw_z_marker (csp, 1);
-
-      csp->pos[2] = 255 - bevent->y;
-      if (csp->pos[2] < 0)
-	csp->pos[2] = 0;
-      if (csp->pos[2] > 255)
-	csp->pos[2] = 255;
-
-      color_select_draw_z_marker (csp, 1);
-
-      color_select_update (csp, UPDATE_VALUES | UPDATE_XY_COLOR);
-    }
-}
-
-static void
-color_select_z_motion (drawing_a, client_data, event, continue_to_dispatch)
-     Widget drawing_a;
-     XtPointer client_data;
-     XEvent * event;
-     Boolean *continue_to_dispatch;
-{
-  XMotionEvent *mevent;
-  ColorSelectP csp;
-
-  csp = (ColorSelectP) client_data;
-  if (csp)
-    {
-      mevent = (XMotionEvent *) event;
-     
-      color_select_draw_z_marker (csp, 1);
-
-      csp->pos[2] = 255 - mevent->y;
-      if (csp->pos[2] < 0)
-	csp->pos[2] = 0;
-      if (csp->pos[2] > 255)
-	csp->pos[2] = 255;
-
-      color_select_draw_z_marker (csp, 1);
-
-      color_select_update (csp, UPDATE_VALUES | UPDATE_XY_COLOR);
-    }
-}
-
-static void
-color_select_color_draw_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+static gint
+color_select_color_events (GtkWidget *widget,
+			   GdkEvent  *event)
 {
   ColorSelectP csp;
 
-  csp = (ColorSelectP) client_data;
-  if (csp)
+  csp = (ColorSelectP) gtk_object_get_user_data (GTK_OBJECT (widget));
+  if (!csp)
+    return FALSE;
+
+  switch (event->type)
     {
-      if (w == csp->new_color)
+    case GDK_EXPOSE:
+      if (!csp->gc)
+	csp->gc = gdk_gc_new (widget->window);
+
+      if (widget == csp->new_color)
 	color_select_update (csp, UPDATE_NEW_COLOR);
-      else if (w == csp->orig_color)
+      else if (widget == csp->orig_color)
 	color_select_update (csp, UPDATE_ORIG_COLOR);
+      break;
+
+    default:
+      break;
     }
+
+  return FALSE;
 }
 
-static void 
-color_select_slider_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+static void
+color_select_slider_update (GtkAdjustment *adjustment,
+			    gpointer       data)
 {
   ColorSelectP csp;
-  XmScaleCallbackStruct *info;
   int old_values[6];
   int update_z_marker;
   int update_xy_marker;
   int i, j;
 
-  csp = (ColorSelectP) client_data;
-  info = (XmScaleCallbackStruct*) call_data;
+  csp = (ColorSelectP) data;
 
   if (csp)
     {
       for (i = 0; i < 6; i++)
-	if (csp->sliders[i] == w)
+	if (csp->slider_data[i] == adjustment)
 	  break;
 
       for (j = 0; j < 6; j++)
 	old_values[j] = csp->values[j];
-      
-      csp->values[i] = info->value;
-      
+
+      csp->values[i] = (int) adjustment->value;
+
       if ((i >= HUE) && (i <= VALUE))
 	color_select_update_rgb_values (csp);
       else if ((i >= RED) && (i <= BLUE))
 	color_select_update_hsv_values (csp);
-      color_select_update_sliders (csp);
+      color_select_update_sliders (csp, i);
+      color_select_update_entries (csp, -1);
 
       update_z_marker = 0;
       update_xy_marker = 0;
@@ -1169,39 +1088,112 @@ color_select_slider_callback (w, client_data, call_data)
 	    color_select_draw_z_marker (csp, 1);
 	  if (update_xy_marker)
 	    color_select_draw_xy_marker (csp, 1);
-	  
+
 	  color_select_update (csp, UPDATE_POS);
-	  
+
 	  if (update_z_marker)
 	    color_select_draw_z_marker (csp, 1);
 	  if (update_xy_marker)
 	    color_select_draw_xy_marker (csp, 1);
 	}
-      
+
       color_select_update (csp, UPDATE_NEW_COLOR);
     }
 }
 
-static void 
-color_select_toggle_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+static void
+color_select_entry_update (GtkWidget *w,
+			   gpointer   data)
 {
   ColorSelectP csp;
-  XmToggleButtonCallbackStruct *tbcs;
-  int i;
+  int old_values[6];
+  int update_z_marker;
+  int update_xy_marker;
+  int i, j;
 
-  csp = (ColorSelectP) client_data;
-  tbcs = (XmToggleButtonCallbackStruct*) call_data;
+  csp = (ColorSelectP) data;
 
-  if (csp && tbcs->set)
+  if (csp)
     {
       for (i = 0; i < 6; i++)
-	if (csp->toggles[i] == w)
+	if (csp->entries[i] == w)
 	  break;
 
-      switch ((ColorSelectFillType) i)
+      for (j = 0; j < 6; j++)
+	old_values[j] = csp->values[j];
+
+      csp->values[i] = atoi (gtk_entry_get_text (GTK_ENTRY (csp->entries[i])));
+      if (csp->values[i] == old_values[i])
+	return;
+
+      if ((i >= HUE) && (i <= VALUE))
+	color_select_update_rgb_values (csp);
+      else if ((i >= RED) && (i <= BLUE))
+	color_select_update_hsv_values (csp);
+      color_select_update_entries (csp, i);
+      color_select_update_sliders (csp, -1);
+
+      update_z_marker = 0;
+      update_xy_marker = 0;
+      for (j = 0; j < 6; j++)
+	{
+	  if (j == csp->z_color_fill)
+	    {
+	      if (old_values[j] != csp->values[j])
+		update_z_marker = 1;
+	    }
+	  else
+	    {
+	      if (old_values[j] != csp->values[j])
+		update_xy_marker = 1;
+	    }
+	}
+
+      if (update_z_marker)
+	{
+	  color_select_draw_z_marker (csp, 1);
+	  color_select_update (csp, UPDATE_POS | UPDATE_XY_COLOR);
+	  color_select_draw_z_marker (csp, 1);
+	}
+      else
+	{
+	  if (update_z_marker)
+	    color_select_draw_z_marker (csp, 1);
+	  if (update_xy_marker)
+	    color_select_draw_xy_marker (csp, 1);
+
+	  color_select_update (csp, UPDATE_POS);
+
+	  if (update_z_marker)
+	    color_select_draw_z_marker (csp, 1);
+	  if (update_xy_marker)
+	    color_select_draw_xy_marker (csp, 1);
+	}
+
+      color_select_update (csp, UPDATE_NEW_COLOR);
+    }
+}
+
+static void
+color_select_toggle_update (GtkWidget *w,
+			    gpointer   data)
+{
+  ColorSelectP csp;
+  ColorSelectFillType type = HUE;
+  int i;
+
+  if (!GTK_TOGGLE_BUTTON (w)->active)
+    return;
+
+  csp = (ColorSelectP) data;
+
+  if (csp)
+    {
+      for (i = 0; i < 6; i++)
+	if (w == csp->toggles[i])
+	  type = (ColorSelectFillType) i;
+
+      switch (type)
 	{
 	case HUE:
 	  csp->z_color_fill = HUE;
@@ -1236,82 +1228,84 @@ color_select_toggle_callback (w, client_data, call_data)
     }
 }
 
-static void 
-color_select_image_fill (csi, type, values)
-     ImageBuf csi;
-     ColorSelectFillType type;
-     int *values;
+static void
+color_select_image_fill (GtkWidget           *preview,
+			 ColorSelectFillType  type,
+			 int                 *values)
 {
   ColorSelectFill csf;
   int height;
 
-  csf.buffer = xmalloc (image_buf_width (csi) * 3);
+  csf.buffer = g_malloc (preview->requisition.width * 3);
 
   csf.update = update_procs[type];
 
   csf.y = -1;
-  csf.width = image_buf_width (csi);
-  csf.height = image_buf_height (csi);
+  csf.width = preview->requisition.width;
+  csf.height = preview->requisition.height;
   csf.values = values;
 
-  height = image_buf_height (csi);
+  height = csf.height;
   if (height > 0)
     while (height--)
       {
 	(* csf.update) (&csf);
-	image_buf_draw_row (csi, csf.buffer, 0, csf.y, image_buf_width (csi));
+	gtk_preview_draw_row (GTK_PREVIEW (preview), csf.buffer, 0, csf.y, csf.width);
       }
 
-  xfree (csf.buffer);
+  g_free (csf.buffer);
 }
 
 static void
-color_select_draw_z_marker (csp, update)
-     ColorSelectP csp;
-     int update;
+color_select_draw_z_marker (ColorSelectP csp,
+			    int          update)
 {
   int width;
   int y;
 
-  y = 255 - csp->pos[2];
-  width = image_buf_width (csp->z_color_image);
-  if (width <= 0)
-    return;
-  
-  XSetFunction (DISPLAY, csp->gc, GXinvert);
-  XDrawLine (DISPLAY, XtWindow (csp->z_color), csp->gc, 0, y, width, y);
-  XSetFunction (DISPLAY, csp->gc, GXcopy);
+  if (csp->gc)
+    {
+      y = (Z_DEF_HEIGHT - 1) - ((Z_DEF_HEIGHT - 1) * csp->pos[2]) / 255;
+      width = csp->z_color->requisition.width;
+      if (width <= 0)
+	return;
+
+      gdk_gc_set_function (csp->gc, GDK_INVERT);
+      gdk_draw_line (csp->z_color->window, csp->gc, 0, y, width, y);
+      gdk_gc_set_function (csp->gc, GDK_COPY);
+    }
 }
 
 static void
-color_select_draw_xy_marker (csp, update)
-     ColorSelectP csp;
-     int update;
+color_select_draw_xy_marker (ColorSelectP csp,
+			     int          update)
 {
   int width;
   int height;
   int x, y;
 
-  x = csp->pos[0];
-  y = 255 - csp->pos[1];
-  width = image_buf_width (csp->xy_color_image);
-  height = image_buf_height (csp->xy_color_image);
-  if ((width <= 0) || (height <= 0))
-    return;
-  
-  XSetFunction (DISPLAY, csp->gc, GXinvert);
-  XDrawLine (DISPLAY, XtWindow (csp->xy_color), csp->gc, 0, y, width, y);
-  XDrawLine (DISPLAY, XtWindow (csp->xy_color), csp->gc, x, 0, x, height);
-  XSetFunction (DISPLAY, csp->gc, GXcopy);
+  if (csp->gc)
+    {
+      x = ((XY_DEF_WIDTH - 1) * csp->pos[0]) / 255;
+      y = (XY_DEF_HEIGHT - 1) - ((XY_DEF_HEIGHT - 1) * csp->pos[1]) / 255;
+      width = csp->xy_color->requisition.width;
+      height = csp->xy_color->requisition.height;
+      if ((width <= 0) || (height <= 0))
+	return;
+
+      gdk_gc_set_function (csp->gc, GDK_INVERT);
+      gdk_draw_line (csp->xy_color->window, csp->gc, 0, y, width, y);
+      gdk_draw_line (csp->xy_color->window, csp->gc, x, 0, x, height);
+      gdk_gc_set_function (csp->gc, GDK_COPY);
+    }
 }
 
-static void 
-color_select_update_red (csf)
-     ColorSelectFill *csf;
+static void
+color_select_update_red (ColorSelectFill *csf)
 {
   unsigned char *p;
   int i, r;
-  
+
   p = csf->buffer;
 
   csf->y += 1;
@@ -1331,12 +1325,11 @@ color_select_update_red (csf)
 }
 
 static void
-color_select_update_green (csf)
-     ColorSelectFill *csf;
+color_select_update_green (ColorSelectFill *csf)
 {
   unsigned char *p;
   int i, g;
-  
+
   p = csf->buffer;
 
   csf->y += 1;
@@ -1356,12 +1349,11 @@ color_select_update_green (csf)
 }
 
 static void
-color_select_update_blue (csf)
-     ColorSelectFill *csf;
+color_select_update_blue (ColorSelectFill *csf)
 {
   unsigned char *p;
   int i, b;
-  
+
   p = csf->buffer;
 
   csf->y += 1;
@@ -1371,7 +1363,7 @@ color_select_update_blue (csf)
     b = 0;
   if (b > 255)
     b = 255;
-  
+
   for (i = 0; i < csf->width; i++)
     {
       *p++ = 0;
@@ -1381,14 +1373,13 @@ color_select_update_blue (csf)
 }
 
 static void
-color_select_update_hue (csf)
-     ColorSelectFill *csf;
+color_select_update_hue (ColorSelectFill *csf)
 {
   unsigned char *p;
   float h, f;
   int r, g, b;
   int i;
-  
+
   p = csf->buffer;
 
   csf->y += 1;
@@ -1403,7 +1394,9 @@ color_select_update_hue (csf)
 
   h /= 60;
   f = (h - (int) h) * 255;
-  
+
+  r = g = b = 0;
+
   switch ((int) h)
     {
     case 0:
@@ -1447,13 +1440,12 @@ color_select_update_hue (csf)
 }
 
 static void
-color_select_update_saturation (csf)
-     ColorSelectFill *csf;
+color_select_update_saturation (ColorSelectFill *csf)
 {
   unsigned char *p;
   int s;
   int i;
-  
+
   p = csf->buffer;
 
   csf->y += 1;
@@ -1475,13 +1467,12 @@ color_select_update_saturation (csf)
 }
 
 static void
-color_select_update_value (csf)
-     ColorSelectFill *csf;
+color_select_update_value (ColorSelectFill *csf)
 {
   unsigned char *p;
   int v;
   int i;
-  
+
   p = csf->buffer;
 
   csf->y += 1;
@@ -1502,14 +1493,13 @@ color_select_update_value (csf)
     }
 }
 
-static void 
-color_select_update_red_green (csf)
-     ColorSelectFill *csf;
+static void
+color_select_update_red_green (ColorSelectFill *csf)
 {
   unsigned char *p;
   int i, r, b;
   float g, dg;
-  
+
   p = csf->buffer;
 
   csf->y += 1;
@@ -1534,14 +1524,13 @@ color_select_update_red_green (csf)
     }
 }
 
-static void 
-color_select_update_red_blue (csf)
-     ColorSelectFill *csf;
+static void
+color_select_update_red_blue (ColorSelectFill *csf)
 {
   unsigned char *p;
   int i, r, g;
   float b, db;
-  
+
   p = csf->buffer;
 
   csf->y += 1;
@@ -1566,14 +1555,13 @@ color_select_update_red_blue (csf)
     }
 }
 
-static void 
-color_select_update_green_blue (csf)
-     ColorSelectFill *csf;
+static void
+color_select_update_green_blue (ColorSelectFill *csf)
 {
   unsigned char *p;
   int i, g, r;
   float b, db;
-  
+
   p = csf->buffer;
 
   csf->y += 1;
@@ -1598,9 +1586,8 @@ color_select_update_green_blue (csf)
     }
 }
 
-static void 
-color_select_update_hue_saturation (csf)
-     ColorSelectFill *csf;
+static void
+color_select_update_hue_saturation (ColorSelectFill *csf)
 {
   unsigned char *p;
   float h, v, s, ds;
@@ -1610,7 +1597,7 @@ color_select_update_hue_saturation (csf)
   p = csf->buffer;
 
   csf->y += 1;
-  h = (255 - csf->y) * 359 / csf->height;
+  h = 360 - (csf->y * 360 / csf->height);
 
   if (h < 0)
     h = 0;
@@ -1619,12 +1606,12 @@ color_select_update_hue_saturation (csf)
 
   h /= 60;
   f = (h - (int) h) * 255;
-  
+
   s = 0;
   ds = 1.0 / csf->width;
 
-  v = csf->values[VALUE] / 1000.0;
-  
+  v = csf->values[VALUE] / 100.0;
+
   switch ((int) h)
     {
     case 0:
@@ -1690,9 +1677,8 @@ color_select_update_hue_saturation (csf)
     }
 }
 
-static void 
-color_select_update_hue_value (csf)
-     ColorSelectFill *csf;
+static void
+color_select_update_hue_value (ColorSelectFill *csf)
 {
   unsigned char *p;
   float h, v, dv, s;
@@ -1702,7 +1688,7 @@ color_select_update_hue_value (csf)
   p = csf->buffer;
 
   csf->y += 1;
-  h = (255 - csf->y) * 359 / csf->height;
+  h = 360 - (csf->y * 360 / csf->height);
 
   if (h < 0)
     h = 0;
@@ -1711,12 +1697,12 @@ color_select_update_hue_value (csf)
 
   h /= 60;
   f = (h - (int) h) * 255;
-  
+
   v = 0;
   dv = 1.0 / csf->width;
 
-  s = csf->values[SATURATION] / 1000.0;
-  
+  s = csf->values[SATURATION] / 100.0;
+
   switch ((int) h)
     {
     case 0:
@@ -1782,9 +1768,8 @@ color_select_update_hue_value (csf)
     }
 }
 
-static void 
-color_select_update_saturation_value (csf)
-     ColorSelectFill *csf;
+static void
+color_select_update_saturation_value (ColorSelectFill *csf)
 {
   unsigned char *p;
   float h, v, dv, s;
@@ -1803,12 +1788,12 @@ color_select_update_saturation_value (csf)
 
   s = 1 - s;
 
-  h = (float) csf->values[HUE] / 10;
+  h = (float) csf->values[HUE];
   if (h >= 360)
     h -= 360;
   h /= 60;
   f = (h - (int) h) * 255;
-  
+
   v = 0;
   dv = 1.0 / csf->width;
 

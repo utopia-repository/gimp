@@ -13,24 +13,13 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __ISCISSORS_H__
 #define __ISCISSORS_H__
 
-/*  rect select action functions  */
-
-void          iscissors_button_press      (Tool *, XButtonEvent *, XtPointer);
-void          iscissors_button_release    (Tool *, XButtonEvent *, XtPointer);
-void          iscissors_motion            (Tool *, XMotionEvent *, XtPointer);
-void          iscissors_control           (Tool *, int, void *);
-
-
-/*  rect select functions  */
-
-void          iscissors_draw         (Tool *);
-Tool *        tools_new_iscissors    ();
+void          iscissors_dialog       (void);
+Tool *        tools_new_iscissors    (void);
 void          tools_free_iscissors   (Tool *);
-
 
 #endif  /*  __ISCISSORS_H__  */

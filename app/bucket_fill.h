@@ -13,16 +13,18 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef  __BUCKET_FILL_H__
 #define  __BUCKET_FILL_H__
 
 #include "tools.h"
+#include "procedural_db.h"
 
-void        bucket_fill_dialog      (void);
 Tool *      tools_new_bucket_fill   (void);
 void        tools_free_bucket_fill  (Tool *);
 
+/*  Procedure definition and marshalling function  */
+extern ProcRecord bucket_fill_proc;
 
 #endif  /*  __BUCKET_FILL_H__  */

@@ -13,287 +13,217 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
-#include <X11/IntrinsicP.h>
 #include "appenv.h"
+#include "actionarea.h"
 #include "colormaps.h"
 #include "cursorutil.h"
-#include "disp-callbacks.h"
 #include "fileops.h"
-#include "gconvert.h"
 #include "gdisplay_ops.h"
+#include "general.h"
 #include "gimage.h"
 #include "gximage.h"
+#include "interface.h"
+#include "menus.h"
 #include "scale.h"
-#include "widget.h"
+#include "gimprc.h"
 
-/*  a macro for finding the intensity of a pixel  */
-#define INTENSITY(r,g,b) (r * 0.30 + g * 0.59 + b * 0.11)
 
-/*  arrays that need to be accessed by the qsort function  */
-int system_intensity[256];
-int indexed_intensity[256];
+static void gdisplay_close_warning_callback (GtkWidget *, gpointer);
+static void gdisplay_cancel_warning_callback (GtkWidget *, gpointer);
+static void gdisplay_close_warning_dialog   (char *, GDisplay *);
 
-/*  function prototypes for sort compare functions  */
-int system_index_compare (const void *, const void *);
-int indexed_index_compare (const void *, const void *);
-
-/*  global done variable for modal system dialog  */
-static int done;
+static GtkWidget *warning_dialog = NULL;
 
 /*
  *  This file is for operations on the gdisplay object
- */   
+ */
 
-Pixel
-gdisplay_black_pixel (gdisp)
-     GDisplay * gdisp;
+gulong
+gdisplay_white_pixel (GDisplay *gdisp)
 {
-  Pixel p;
-  float val, min;
-  int i;
-
-  /*  set foreground and background colors  */
-  if (gdisp->depth == 8 && gdisp->gimage->type == INDEXED_GIMAGE)
-    {
-      /*  Need to find the closest color to black possible  */
-      p = 0;
-      min = INTENSITY (gdisp->gimage->cmap [0],
-		       gdisp->gimage->cmap [1],
-		       gdisp->gimage->cmap [2]);
-      for (i = 1; i < gdisp->gimage->num_cols; i++)
-	{
-	  val = INTENSITY (gdisp->gimage->cmap [i * 3],
-			   gdisp->gimage->cmap [i * 3 + 1],
-			   gdisp->gimage->cmap [i * 3 + 2]);
-	  if (val < min)
-	    {
-	      min = val;
-	      p = i;
-	    }
-	}
-
-      return p;
-    }
-  if (gdisp->gimage->type == RGB_GIMAGE || gdisp->gimage->type == INDEXED_GIMAGE)
-    return color_black_pixel;
-  else if (gdisp->gimage->type == GREY_GIMAGE)
-    return grey_black_pixel;
-
-  return 0;
+  return g_white_pixel;
 }
 
-
-Pixel
-gdisplay_white_pixel (gdisp)
-     GDisplay * gdisp;
+gulong
+gdisplay_gray_pixel (GDisplay *gdisp)
 {
-  Pixel p;
-  float val, max;
-  int i;
+  return g_gray_pixel;
+}
 
-  /*  set foreground and background colors  */
-  if (gdisp->depth == 8 && gdisp->gimage->type == INDEXED_GIMAGE)
-    {
-      /*  Need to find the closest color to white possible  */
-      p = 0;
-      max = INTENSITY (gdisp->gimage->cmap [0],
-		       gdisp->gimage->cmap [1],
-		       gdisp->gimage->cmap [2]);
-      for (i = 1; i < gdisp->gimage->num_cols; i++)
-	{
-	  val = INTENSITY (gdisp->gimage->cmap [i * 3],
-			   gdisp->gimage->cmap [i * 3 + 1],
-			   gdisp->gimage->cmap [i * 3 + 2]);
-	  if (val > max)
-	    {
-	      max = val;
-	      p = i;
-	    }
-	}
+gulong
+gdisplay_black_pixel (GDisplay *gdisp)
+{
+  return g_black_pixel;
+}
 
-      return p;
-    }
-  if (gdisp->gimage->type == RGB_GIMAGE || gdisp->gimage->type == INDEXED_GIMAGE)
-    return color_white_pixel;
-  else if (gdisp->gimage->type == GREY_GIMAGE)
-    return grey_white_pixel;
-
-  return 1;
+gulong
+gdisplay_color_pixel (GDisplay *gdisp)
+{
+  return g_color_pixel;
 }
 
 
 void
-gdisplay_new_view (gdisp)
-     GDisplay *gdisp;
+gdisplay_new_view (GDisplay *gdisp)
 {
-  GImage *gimage;
   GDisplay *new_gdisp;
 
   /* make sure the image has been fully loaded... */
-  if (!gdisp->gimage->busy)
+  if (gdisp->gimage)
     {
-      gimage = gdisp->gimage;
-      
-      if (gimage)
-	{
-	  new_gdisp = gdisplay_gimage (gimage, gdisp->scale);
-
-	  new_gdisp->dither_type   = gdisp->dither_type;
-/*
-	  new_gdisp->scale         = gdisp->scale;
-	  new_gdisp->offset_x      = gdisp->offset_x;
-	  new_gdisp->offset_y      = gdisp->offset_y;
-*/
-
-	  /*  Make sure the scale setup is correct  */
-/*	  resize_display (new_gdisp); */
-
-	  gdisplay_paint (new_gdisp);
-	}
+      new_gdisp = gdisplay_new (gdisp->gimage, gdisp->scale);
+      new_gdisp->scale = gdisp->scale;
+      new_gdisp->offset_x = gdisp->offset_x;
+      new_gdisp->offset_y = gdisp->offset_y;
     }
-  /* complain if the image isn't fully loaded yet */
-  else
-    XBell (DISPLAY, 0);
-
 }
 
 
 void
-gdisplay_close_window (gdisp)
-     GDisplay *gdisp;
+gdisplay_close_window (GDisplay *gdisp,
+		       int       kill_it)
 {
-  Widget shell;
-  
-  shell = gdisp->disp_image->shell;
-
   /*  If the image has been modified, give the user a chance to save
    *  it before nuking it--this only applies if its the last view
    *  to an image canvas.  (a gimage with ref_count = 1)
    */
-  if (gdisp->gimage->ref_count == 1 && gdisp->gimage->dirty > 0)
+  if (!kill_it && (gdisp->gimage->ref_count == 1) &&
+      (gdisp->gimage->dirty > 0) && confirm_on_close )
+    gdisplay_close_warning_dialog (prune_filename (gimage_filename (gdisp->gimage)), gdisp);
+  else
     {
-      int result;
-
-      result = save_before_closing_dialog ("Image X");
-      if (result == -1)
-	return;
-      else if (result == 1)
-	{
-	  file_save_callback (gdisp->shell, NULL, NULL);
-	}
+      /* If POPUP_SHELL references this shell, then reset it. */
+      if (popup_shell == gdisp->shell)
+	popup_shell = NULL;
+      gtk_widget_destroy (gdisp->shell);
     }
-
-  XtVaSetValues (get_top_shell (gdisp->disp_image->canvas),
-		 XmNuserData, NULL,
-		 NULL);
-
-  gdisplay_remove_and_delete (gdisp);
-
-  XtDestroyWidget (shell);
 }
 
 
 void
-gdisplay_shrink_wrap (gdisp)
-     GDisplay *gdisp;
+gdisplay_shrink_wrap (GDisplay *gdisp)
 {
-  long width, height;
-  Dimension vsb_width, hsb_height;
-  Dimension shell_x, shell_y;
-  Dimension shadow, spacing;
-  Dimension x, y;
+  gint x, y;
+  gint disp_width, disp_height;
+  gint width, height;
+  gint shell_x, shell_y;
+  gint shell_width, shell_height;
+  gint max_auto_width, max_auto_height;
+  gint border_x, border_y;
   int s_width, s_height;
 
-  s_width = WidthOfScreen (XtScreen (toplevel));
-  s_height = HeightOfScreen (XtScreen (toplevel));
+  s_width = gdk_screen_width ();
+  s_height = gdk_screen_height ();
 
   width = SCALE (gdisp, gdisp->gimage->width);
   height = SCALE (gdisp, gdisp->gimage->height);
 
-  if (width < s_width && height < s_height)
+  disp_width = gdisp->disp_width;
+  disp_height = gdisp->disp_height;
+
+  shell_width = gdisp->shell->allocation.width;
+  shell_height = gdisp->shell->allocation.height;
+
+  border_x = shell_width - disp_width;
+  border_y = shell_height - disp_height;
+
+  max_auto_width = (s_width - border_x) * 0.75;
+  max_auto_height = (s_height - border_y) * 0.75;
+
+  /*  If 1) the projected width & height are smaller than screen size, &
+   *     2) the current display size isn't already the desired size, expand
+   */
+  if (((width + border_x) < s_width || (height + border_y) < s_height) &&
+      (width != disp_width || height != disp_height))
     {
-      XtVaGetValues (XtParent (gdisp->disp_image->canvas),
-		     XmNspacing, &spacing,
-		     NULL);
-      XtVaGetValues (XtParent (gdisp->disp_image->canvas), 
-		     XmNshadowThickness, &shadow,
-		     NULL);
-      XtVaGetValues (gdisp->hsb,
-		     XtNheight, &hsb_height,
-		     NULL);
-      XtVaGetValues (gdisp->vsb,
-		     XtNwidth, &vsb_width,
-		     NULL);
+      width = ((width + border_x) < s_width) ? width : max_auto_width;
+      height = ((height + border_y) < s_height) ? height : max_auto_height;
 
-      width += (spacing*2 + shadow*2 + vsb_width);
-      height += (spacing*2 + shadow*2 + hsb_height);
+      gtk_widget_set_usize (gdisp->canvas,
+			    width, height);
 
-      XtVaGetValues (gdisp->disp_image->shell,
-		     XtNx, &shell_x,
-		     XtNy, &shell_y,
-		     NULL);
-      
-      x = HIGHPASS (shell_x, bounds (s_width - width, 0, s_width));
-      y = HIGHPASS (shell_y, bounds (s_height - height, 0, s_height));
-      
-      XtConfigureWidget (gdisp->disp_image->shell,
-			 x, y, width, height,
-			 0);
+      gtk_widget_show (gdisp->canvas);
+
+      gdk_window_get_origin (gdisp->shell->window, &shell_x, &shell_y);
+
+      shell_width = width + border_x;
+      shell_height = height + border_y;
+
+      x = HIGHPASS (shell_x, BOUNDS (s_width - shell_width, border_x, s_width));
+      y = HIGHPASS (shell_y, BOUNDS (s_height - shell_height, border_y, s_height));
+
+      if (x != shell_x || y != shell_y)
+	gdk_window_move (gdisp->shell->window, x, y);
+
+      /*  Set the new disp_width and disp_height values  */
+      gdisp->disp_width = width;
+      gdisp->disp_height = height;
     }
+  /*  If the projected width is greater than current, but less than
+   *  3/4 of the screen size, expand automagically
+   */
+  else if ((width > disp_width || height > disp_height) &&
+	   (disp_width < max_auto_width || disp_height < max_auto_height))
+    {
+      max_auto_width = MINIMUM (max_auto_width, width);
+      max_auto_height = MINIMUM (max_auto_height, height);
+      
+      gtk_widget_set_usize (gdisp->canvas,
+			    max_auto_width, max_auto_height);
+
+      gtk_widget_show (gdisp->canvas);
+
+      gdk_window_get_origin (gdisp->shell->window, &shell_x, &shell_y);
+
+      shell_width = width + border_x;
+      shell_height = height + border_y;
+
+      x = HIGHPASS (shell_x, BOUNDS (s_width - shell_width, border_x, s_width));
+      y = HIGHPASS (shell_y, BOUNDS (s_height - shell_height, border_y, s_height));
+
+      if (x != shell_x || y != shell_y)
+	gdk_window_move (gdisp->shell->window, x, y);
+
+      /*  Set the new disp_width and disp_height values  */
+      gdisp->disp_width = max_auto_width;
+      gdisp->disp_height = max_auto_height;
+    }
+  /*  Otherwise, reexpose by hand to reflect changes  */
   else
-    XBell (DISPLAY, 0);
+    gdisplay_expose_full (gdisp);
+
+  /*  If the width or height of the display has changed, recalculate
+   *  the display offsets...
+   */
+  if (disp_width != gdisp->disp_width ||
+      disp_height != gdisp->disp_height)
+    {
+      gdisp->offset_x += (disp_width - gdisp->disp_width) / 2;
+      gdisp->offset_y += (disp_height - gdisp->disp_height) / 2;
+      bounds_checking (gdisp);
+    }
 }
 
 
-Boolean
-gdisplay_resize_image (gdisp)
-     GDisplay *gdisp;
+int
+gdisplay_resize_image (GDisplay *gdisp)
 {
-  Dimension win_width, win_height;
-  Dimension hsb_height, vsb_width;
-  Dimension spacing, border, ht;
-  Dimension sx, sy;
+  int sx, sy;
   int width, height;
-  int offset_x, offset_y;
-
-  /*  set the shadow thickness for the manager widget to 1  */
-  ht = 1;
-
-  /*  find the maximum size available for the work area  */
-  XtVaGetValues (gdisp->hsb,
-		 XmNheight, &hsb_height,
-		 NULL);
-  XtVaGetValues (gdisp->vsb,
-		 XmNwidth, &vsb_width,
-		 NULL);
-  XtVaGetValues (XtParent (gdisp->disp_image->canvas),
-                 XmNwidth, &win_width,
-                 XmNheight, &win_height,
-		 XmNborderWidth, &border,
-		 XmNspacing, &spacing,
-                 NULL);
-
-  win_width  -= (vsb_width + (spacing) * 2);
-  win_height -= (hsb_height + (spacing) * 2);
 
   /*  Calculate the width and height of the new canvas  */
   sx = SCALE (gdisp, gdisp->gimage->width);
   sy = SCALE (gdisp, gdisp->gimage->height);
-  width = HIGHPASS (sx, win_width);
-  height = HIGHPASS (sy, win_height);
-
-  gdisplay_remove_processes (gdisp);
-
-  /*  calculate the offset from the scrolled window to the work area window  */
-  offset_x = ((win_width - width) >> 1) + ht;
-  offset_y = ((win_height - height) >> 1) + ht;
+  width = HIGHPASS (sx, gdisp->disp_width);
+  height = HIGHPASS (sy, gdisp->disp_height);
 
   /* if the new dimensions of the ximage are different than the old...resize */
-  if (width != gdisp->disp_image->width || height != gdisp->disp_image->height)
+  if (width != gdisp->disp_width || height != gdisp->disp_height)
     {
       /*  adjust the gdisplay offsets -- we need to set them so that the
        *  center of our viewport is at the center of the image.
@@ -301,152 +231,21 @@ gdisplay_resize_image (gdisp)
       gdisp->offset_x = (sx / 2) - (width / 2);
       gdisp->offset_y = (sy / 2) - (height / 2);
 
-      resize_image (gdisp->disp_image, width, height);
+      gdisp->disp_width = width;
+      gdisp->disp_height = height;
 
-      /*  Clear the window for a cleaner redraw  */
-      XClearWindow (DISPLAY, XtWindow (gdisp->disp_image->canvas));
+      if (GTK_WIDGET_VISIBLE (gdisp->canvas))
+	gtk_widget_hide (gdisp->canvas);
+
+      gtk_widget_set_usize (gdisp->canvas,
+			    gdisp->disp_width,
+			    gdisp->disp_height);
+
+      gtk_widget_show (gdisp->canvas);
     }
 
-  XtConfigureWidget (gdisp->disp_image->canvas,
-		     offset_x, offset_y,
-		     width, height, border);
-
-  return True;
+  return 1;
 }
-
-
-/*  match an indexed colormap to the system colormap as closely as possible  */
-
-void
-gdisplay_fit_colormap (xcmap, cmap, num_cols)
-     Colormap xcmap;
-     unsigned char * cmap;
-     int num_cols;
-{
-  int i, index;
-  Colormap sys_cmap;
-  int system_index[256];
-  int indexed_index[256];
-  XColor indexed_pal[256];
-  XColor system_pal[256];
-
-  sys_cmap = DefaultColormapOfScreen (XtScreen (toplevel));
-  XQueryColors (DISPLAY, sys_cmap, system_pal, 256);
-
-  for (i = 0; i < 256; i++)
-    {
-      system_intensity [i] = INTENSITY ((system_pal [i].red >> 8),
-					(system_pal [i].green >> 8),
-					(system_pal [i].blue >> 8));
-      indexed_intensity [i] = INTENSITY (cmap [i * 3],
-					 cmap [i * 3 + 1],
-					 cmap [i * 3 + 2]);
-      system_index[i] = i;
-      indexed_index[i] = i;
-    }
-
-  /*  sort the two index arrays to reflect increasing intensities  */
-  qsort (system_index, 256, sizeof (int), system_index_compare);
-  qsort (indexed_index, 256, sizeof (int), indexed_index_compare);
-
-  for (i = 0; i < 256; i++)
-    {
-      index = system_index [indexed_index [i]];
-      indexed_pal[i].pixel = index;
-      indexed_pal[i].red = ((int) cmap[index*3]) << 8;
-      indexed_pal[i].green = ((int) cmap[index*3 + 1]) << 8;
-      indexed_pal[i].blue = ((int) cmap[index*3 + 2]) << 8;
-      indexed_pal[i].flags = DoRed | DoGreen | DoBlue;
-    }
-      
-  XStoreColors (DISPLAY, xcmap, indexed_pal, 256);
-}
-
-int system_index_compare (el1, el2)
-     const void * el1;
-     const void * el2;
-{
-  int e1, e2;
-  
-  e1 = *((int *) el1);
-  e2 = *((int *) el2);
-
-  if (system_intensity [e1] < system_intensity [e2])
-    return -1;
-  else if (system_intensity [e1] == system_intensity [e2])
-    return 0;
-  else
-    return 1;
-}
-
-     
-int indexed_index_compare (el1, el2)
-     const void * el1;
-     const void * el2;
-{
-  int e1, e2;
-  
-  e1 = *((int *) el1);
-  e2 = *((int *) el2);
-
-  if (indexed_intensity [e1] < indexed_intensity [e2])
-    return -1;
-  else if (indexed_intensity [e1] == indexed_intensity [e2])
-    return 0;
-  else
-    return 1;
-
-}
-
-     
-/*  convert temp buffers to gdisplays & vice-versa  */
-
-
-int
-temp_buf_to_gdisplay (buf)
-     TempBuf * buf;
-{
-  /*  This function creates the new gdisplay  */
-  if (buf->width && buf->height)
-  {
-    GImage * new_gimage;
-    GDisplay * new_gdisp;
-    int type;
-    
-    type = (buf->bytes == 3) ? RGB_GIMAGE : GREY_GIMAGE;
-
-    new_gimage = gimage_new (buf->width, buf->height, type, buf->bytes);
-    
-    /*  copy the src image to the dest image  */
-    memcpy (new_gimage->raw_image, temp_buf_data (buf), buf->height * buf->width * buf->bytes);
-
-    /*  create the new gdisplay  */
-    new_gdisp = gdisplay_gimage (new_gimage, 0x0101);
-    
-    /*  paint the new gdisplay  */
-    gdisplay_paint (new_gdisp);
-
-    return 1;
-  }
-
-  return 0;
-}
-
-
-/*  IMPORTANT:  this takes a GImage, not a GDisplay  */
-
-TempBuf *
-gdisplay_to_temp_buf (gimage)
-     GImage * gimage;
-{
-  TempBuf * buf;
-
-  buf = temp_buf_load (NULL, (void *) gimage, 0, 0, 
-		       gimage->width, gimage->height);
-
-  return buf;
-}
-
 
 
 /********************************************************
@@ -454,83 +253,109 @@ gdisplay_to_temp_buf (gimage)
  ********************************************************/
 
 static void
-save_before_closing_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+gdisplay_close_warning_callback (GtkWidget *w,
+				 gpointer   client_data)
 {
-  int * done;
-  XmSelectionBoxCallbackStruct * cbs = 
-    (XmSelectionBoxCallbackStruct *) call_data;
+  GDisplay *gdisp;
+  GtkWidget *mbox;
 
-  done = (int *) client_data;
+  menus_set_sensitive ("<Image>/File/Close", TRUE);
+  mbox = (GtkWidget *) client_data;
+  gdisp = (GDisplay *) gtk_object_get_user_data (GTK_OBJECT (mbox));
 
-  *done = cbs->reason;
+  /* If POPUP_SHELL references this shell, then reset it. */
+  if (popup_shell == gdisp->shell)
+    popup_shell = NULL;
+  
+  gtk_widget_destroy (gdisp->shell);
+  gtk_widget_destroy (mbox);
 }
 
 
-int
-save_before_closing_dialog (image_name)
-     char * image_name;
+static void
+gdisplay_cancel_warning_callback (GtkWidget *w,
+				  gpointer   client_data)
 {
-  Widget dialog;
-  XmString warning;
-  XmString yes, no, cancel;
-  char * warning_buf;
+  GtkWidget *mbox;
 
-  done = 0;
+  menus_set_sensitive ("<Image>/File/Close", TRUE);
+  mbox = (GtkWidget *) client_data;
+  gtk_widget_destroy (mbox);
+}
 
-  warning_buf = (char *) xmalloc (strlen (image_name) + 50);
-  sprintf (warning_buf, "Changes made to %s.  Save before closing?", image_name);
+static gint
+gdisplay_delete_warning_callback (GtkWidget *widget,
+				  GdkEvent  *event,
+				  gpointer  client_data)
+{
+  menus_set_sensitive ("<Image>/File/Close", TRUE);
 
-  /*  Create the dialog box to ask whether image should be saved  */
-  warning = XmStringCreateLocalized (warning_buf);
-  yes = XmStringCreateLocalized ("Yes");
-  no = XmStringCreateLocalized ("No");
-  cancel = XmStringCreateLocalized ("Cancel");
-  dialog = XmCreateWarningDialog (toplevel, "Warning!", NULL, 0);
-  XtVaSetValues (dialog, XmNmessageString, warning, NULL);
-  XtVaSetValues (XmMessageBoxGetChild (dialog, XmDIALOG_OK_BUTTON),
-		 XmNlabelString, yes, NULL);
-  XtVaSetValues (XmMessageBoxGetChild (dialog, XmDIALOG_CANCEL_BUTTON),
-		 XmNlabelString, no, NULL);
-  XtVaSetValues (XmMessageBoxGetChild (dialog, XmDIALOG_HELP_BUTTON),
-		 XmNlabelString, cancel, NULL);
-  XtVaSetValues (dialog,
-		 XmNdialogStyle, XmDIALOG_FULL_APPLICATION_MODAL,
-		 XmNdefaultPosition, False, NULL);
-  XtAddCallback (dialog, XmNokCallback, save_before_closing_callback, (XtPointer) &done);
-  XtAddCallback (dialog, XmNcancelCallback, save_before_closing_callback, (XtPointer) &done);
-  XtAddCallback (dialog, XmNhelpCallback, save_before_closing_callback, (XtPointer) &done);
-  XtAddCallback (dialog, XmNmapCallback, map_dialog, NULL);
-  XmStringFree (warning);
-  XmStringFree (yes);
-  XmStringFree (no);
-  XmStringFree (cancel);
+  return FALSE;
+}
 
-  XtManageChild (dialog);
-  XtPopup (XtParent (dialog), XtGrabNone);
+static void
+gdisplay_destroy_warning_callback (GtkWidget *widget,
+				  gpointer client_data)
+{
+  warning_dialog = NULL;
+}
 
-  while (done == 0)
-    XtAppProcessEvent (app_context, XtIMAll);
+static void
+gdisplay_close_warning_dialog (char     *image_name,
+			       GDisplay *gdisp)
+{
+  static ActionAreaItem mbox_action_items[2] =
+  {
+    { "Close", gdisplay_close_warning_callback, NULL, NULL },
+    { "Cancel", gdisplay_cancel_warning_callback, NULL, NULL }
+  };
+  GtkWidget *mbox;
+  GtkWidget *vbox;
+  GtkWidget *label;
+  char *warning_buf;
 
-  XtPopdown (XtParent (dialog));
-
-  xfree (warning_buf);
-
-  switch (done)
+  /* FIXUP this will raise any prexsisting close dialogs, which can be a
+     a bit confusing if you tried to close a new window because you had
+     forgotten the old dialog was still around */
+  /* If a warning dialog already exists raise the window and get out */
+  if (warning_dialog != NULL)
     {
-    case XmCR_OK :
-      return 1;
-      break;
-    case XmCR_CANCEL :
-      return 0;
-      break;
-    case XmCR_HELP :
-      return -1;
-      break;
-    default :
-      return 0;
+      gdk_window_raise (warning_dialog->window);
+      return;
     }
-}
 
+  menus_set_sensitive ("<Image>/File/Close", FALSE);
+
+  warning_dialog = mbox = gtk_dialog_new ();
+  /* should this be image_window or the actual image name??? */
+  gtk_window_set_wmclass (GTK_WINDOW (mbox), "really_close", "Gimp");
+  gtk_window_set_title (GTK_WINDOW (mbox), image_name);
+  gtk_window_position (GTK_WINDOW (mbox), GTK_WIN_POS_MOUSE);
+  gtk_object_set_user_data (GTK_OBJECT (mbox), gdisp);
+
+  gtk_signal_connect (GTK_OBJECT (mbox), "delete_event",
+		      GTK_SIGNAL_FUNC (gdisplay_delete_warning_callback),
+		      mbox);
+
+  gtk_signal_connect (GTK_OBJECT (mbox), "destroy",
+		      GTK_SIGNAL_FUNC (gdisplay_destroy_warning_callback),
+		      mbox);
+
+  vbox = gtk_vbox_new (FALSE, 1);
+  gtk_container_border_width (GTK_CONTAINER (vbox), 1);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (mbox)->vbox), vbox, TRUE, TRUE, 0);
+  gtk_widget_show (vbox);
+
+  warning_buf = (char *) g_malloc (strlen (image_name) + 50);
+  sprintf (warning_buf, "Changes made to %s.  Close anyway?", image_name);
+  label = gtk_label_new (warning_buf);
+  gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, FALSE, 0);
+  gtk_widget_show (label);
+  g_free (warning_buf);
+
+  mbox_action_items[0].user_data = mbox;
+  mbox_action_items[1].user_data = mbox;
+  build_action_area (GTK_DIALOG (mbox), mbox_action_items, 2, 0);
+
+  gtk_widget_show (mbox);
+}

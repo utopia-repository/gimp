@@ -13,42 +13,27 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __APPENV_H__
 #define __APPENV_H__
 
-#include <Xm/XmAll.h>
-#include "memutils.h"        /* all gimp files should use xfree and xmalloc */
+#include "gdk/gdkx.h"
+#include "gtk/gtk.h"
 
-#define STATIC static
+#define DISPLAY              ((Display *) GDK_DISPLAY())
 
-#define DISPLAY              (XtDisplay (toplevel))
+/*   important macros  */
+#define BOUNDS(a,x,y)  ((a < x) ? x : ((a > y) ? y : a))
+#define MINIMUM(x,y) ((x < y) ? x : y)
+#define MAXIMUM(x,y) ((x > y) ? x : y)
 
-
-typedef struct _appdata
-  {
-    int depth;               /* depth of color visual */
-    int dither_type;	     /* type of dithering algorithm */
-    int threshold;           /* sensitivity value for soft seed fills--magic wand */
-    int levels_of_undo;      /* number of undo levels */
-    int bytes_of_undo;       /* max number of bytes allowed in undo stack */
-    int arrow_accel;         /* increment to move selections with arrow keys when shift key is down */
-    char *colorcube;         /* string of the form: "8.6.4" specifying RGB colorcube */
-    char *insignia;          /* application insignia */
-    char *bitmap_dir;        /* bitmap directory for tool icons, etc */
-    char *gimprc_search_path;/* paths in which to search for gimprc file  */
-    Boolean mit_shm;         /* used shared memory for XImages? */
-    Boolean stingy;          /* implement stingy memory management  */
-    Boolean quick_16bit;     /* implement faster 16 bit drawing at memory penalty */
-    Boolean use_bbox;        /* draw bounding box instead of full outline when moving selections */
-  }
-appdata;
-
-/* toplevel widget */
-extern appdata app_data;
-extern Widget toplevel;
-extern XtAppContext app_context;
-
+extern int no_interface;
+extern int no_splash;
+extern int no_splash_image;
+extern int no_data;
+extern int be_verbose;
+extern int use_debug_handler;
+extern int console_messages;
 
 #endif /*  APPENV_H  */

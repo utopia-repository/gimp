@@ -13,12 +13,16 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __INFO_WINDOW_H__
 #define __INFO_WINDOW_H__
 
-Widget create_info_window (XtPointer);
+#include "info_dialog.h"
+
+InfoDialog *info_window_create (void *);
+void        info_window_free   (InfoDialog *);
+void        info_window_update (InfoDialog *, void *);
 
 
 #endif /*  __INFO_WINDOW_H__  */

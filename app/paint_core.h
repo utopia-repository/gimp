@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __PAINT_CORE_H__
 #define __PAINT_CORE_H__
@@ -28,59 +28,75 @@
 #define RESUME_PAINT    3
 #define FINISH_PAINT    4
 
+/* brush application types  */
+#define HARD            0  /* pencil */
+#define SOFT            1  /* paintbrush */
 
-typedef void * (* PaintFunc)   (Tool *, int);
+/* paint application modes  */
+#define CONSTANT        0  /* pencil, paintbrush, airbrush, clone */
+#define INCREMENTAL     1  /* convolve, smudge */
+
 typedef struct _paint_core PaintCore;
-
+typedef void * (* PaintFunc)   (PaintCore *, GimpDrawable *, int);
 struct _paint_core
 {
   DrawCore *      core;         /*  Core select object          */
-  
-  int             startx;       /*  starting x coord            */
-  int             starty;       /*  starting y coord            */
 
-  int             curx;         /*  current x coord             */
-  int             cury;         /*  current y coord             */
+  double          startx;       /*  starting x coord            */
+  double          starty;       /*  starting y coord            */
 
-  int             lastx;        /*  last x coord                */
-  int             lasty;        /*  last y coord                */
+  double          curx;         /*  current x coord             */
+  double          cury;         /*  current y coord             */
+
+  double          lastx;        /*  last x coord                */
+  double          lasty;        /*  last y coord                */
 
   int             state;        /*  state of buttons and keys   */
 
-  int             num_movements;/*  number of motion events     */
+  double          distance;     /*  distance traveled by brush  */
+  double          spacing;      /*  distance traveled by brush  */
 
   int             x1, y1;       /*  image space coordinate      */
   int             x2, y2;       /*  image space coords          */
 
-  int             floating;     /*  floating selection?         */
-
-  TempBuf *       brush_mask;   /*  mask for current brush      */
+  MaskBuf *       brush_mask;   /*  mask for current brush      */
 
   PaintFunc       paint_func;   /*  painting function           */
 };
 
+extern PaintCore  non_gui_paint_core;
+
+/*  Special undo type  */
+typedef struct _paint_undo PaintUndo;
+
+struct _paint_undo
+{
+  int             tool_ID;
+  double          lastx;
+  double          lasty;
+};
 
 /*  paint tool action functions  */
-void          paint_core_button_press      (Tool *, XButtonEvent *, XtPointer);
-void          paint_core_button_release    (Tool *, XButtonEvent *, XtPointer);
-void          paint_core_motion            (Tool *, XMotionEvent *, XtPointer);
-void          paint_core_control           (Tool *, int, void *);
+void          paint_core_button_press      (Tool *, GdkEventButton *, gpointer);
+void          paint_core_button_release    (Tool *, GdkEventButton *, gpointer);
+void          paint_core_motion            (Tool *, GdkEventMotion *, gpointer);
+void          paint_core_cursor_update     (Tool *, GdkEventMotion *, gpointer);
+void          paint_core_control           (Tool *, int, gpointer);
 
 /*  paint tool functions  */
 void          paint_core_no_draw      (Tool *);
 Tool *        paint_core_new          (int);
 void          paint_core_free         (Tool *);
+int           paint_core_init         (PaintCore *, GimpDrawable *, double, double);
+void          paint_core_interpolate  (PaintCore *, GimpDrawable *);
+void          paint_core_finish       (PaintCore *, GimpDrawable *, int);
+void          paint_core_cleanup      (void);
 
 /*  paint tool painting functions  */
-TempBuf *     paint_core_init_discrete     (Tool *, int, int, TempBuf *);
-TempBuf *     paint_core_init_stroke       (Tool *, int, int, int, int, TempBuf *);
-TempBuf *     paint_core_get_orig_image    (Tool *, int, int, int, int);
-void          paint_core_paste_canvas      (Tool *, int, int, int, int);
+TempBuf *     paint_core_get_paint_area    (PaintCore *, GimpDrawable *);
+TempBuf *     paint_core_get_orig_image    (PaintCore *, GimpDrawable *, int, int, int, int);
+void          paint_core_paste_canvas      (PaintCore *, GimpDrawable *, int, int, int, int, int);
+void          paint_core_replace_canvas    (PaintCore *, GimpDrawable *, int, int, int, int);
+
 
 #endif  /*  __PAINT_CORE_H__  */
-
-
-
-
-
-

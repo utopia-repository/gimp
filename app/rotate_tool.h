@@ -13,16 +13,19 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __ROTATE_TOOL_H__
 #define __ROTATE_TOOL_H__
 
 #include "tools.h"
+#include "procedural_db.h"
 
-void *        rotate_tool_transform (Tool *, XtPointer, int);
-Tool *        tools_new_rotate_tool    ();
+void *        rotate_tool_transform    (Tool *, gpointer, int);
+Tool *        tools_new_rotate_tool    (void);
 void          tools_free_rotate_tool   (Tool *);
 
+/*  Procedure definition and marshalling function  */
+extern ProcRecord rotate_proc;
 
 #endif  /*  __ROTATE_TOOL_H__  */

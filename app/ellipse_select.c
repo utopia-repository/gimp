@@ -13,13 +13,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdlib.h>
 #include "appenv.h"
 #include "edit_selection.h"
 #include "ellipse_select.h"
 #include "gdisplay.h"
+#include "gimage_mask.h"
 #include "rect_select.h"
 /*  private header file for rect_select data structure  */
 #include "rect_selectP.h"
@@ -27,43 +28,57 @@
 #define NO  0
 #define YES 1
 
+SelectionOptions *ellipse_options = NULL;
+void ellipse_select (GImage *, int, int, int, int, int, int, int, double);
+
+static Argument *ellipse_select_invoker (Argument *);
+
 /*************************************/
 /*  Ellipsoidal selection apparatus  */
 
-/*  ellipse select action functions  */
-
-static void  ellipse_dialog_callback (int, int, void *, void *);
-
-long                antialiasing = NO;   /*  rect_select accesses this variable  */
-static long         antialiasing_value;
-static AutoDialog   ellipse_dlg = NULL;
-static int          antialiasing_ID;
-
-
 void
-ellipse_dialog ()
+ellipse_select (gimage, x, y, w, h, op, antialias, feather, feather_radius)
+     GImage *gimage;
+     int x, y;
+     int w, h;
+     int op;
+     int antialias;
+     int feather;
+     double feather_radius;
 {
-  int group_ID;
+  Channel * new_mask;
 
-  if (!ellipse_dlg)
+  /*  if applicable, replace the current selection  */
+  if (op == REPLACE)
+    gimage_mask_clear (gimage);
+  else
+    gimage_mask_undo (gimage);
+
+  /*  if feathering for rect, make a new mask with the
+   *  rectangle and feather that with the old mask
+   */
+  if (feather)
     {
-      ellipse_dlg = dialog_new ("Ellipse Select Options", ellipse_dialog_callback, NULL);
-      
-      group_ID = dialog_new_item (ellipse_dlg, 0, GROUP_ROWS, NULL, NULL);
-
-      antialiasing_value = antialiasing;
-      antialiasing_ID = dialog_new_item (ellipse_dlg, group_ID, ITEM_CHECK_BUTTON, 
-					 "Anti-Aliasing", NULL);
-      dialog_change_item (ellipse_dlg, antialiasing_ID, &antialiasing_value);
-
-      dialog_show (ellipse_dlg);
+      new_mask = channel_new_mask (gimage->ID, gimage->width, gimage->height);
+      channel_combine_ellipse (new_mask, ADD, x, y, w, h, antialias);
+      channel_feather (new_mask, gimage_get_mask (gimage),
+		       feather_radius, op, 0, 0);
+      channel_delete (new_mask);
     }
+  else if (op == INTERSECT)
+    {
+      new_mask = channel_new_mask (gimage->ID, gimage->width, gimage->height);
+      channel_combine_ellipse (new_mask, ADD, x, y, w, h, antialias);
+      channel_combine_mask (gimage_get_mask (gimage), new_mask, op, 0, 0);
+      channel_delete (new_mask);
+    }
+  else
+    channel_combine_ellipse (gimage_get_mask (gimage), op, x, y, w, h, antialias);
 }
-
 
 void
 ellipse_select_draw (tool)
-     Tool * tool;
+     Tool *tool;
 {
   GDisplay * gdisp;
   EllipseSelect * ellipse_sel;
@@ -77,24 +92,26 @@ ellipse_select_draw (tool)
   x2 = MAXIMUM (ellipse_sel->x, ellipse_sel->x + ellipse_sel->w);
   y2 = MAXIMUM (ellipse_sel->y, ellipse_sel->y + ellipse_sel->h);
 
-  gdisplay_transform_coords (gdisp, x1, y1, &x1, &y1);
-  gdisplay_transform_coords (gdisp, x2, y2, &x2, &y2);
+  gdisplay_transform_coords (gdisp, x1, y1, &x1, &y1, 0);
+  gdisplay_transform_coords (gdisp, x2, y2, &x2, &y2, 0);
 
-  XDrawArc (DISPLAY, ellipse_sel->core->win,
-	    ellipse_sel->core->gc,
-	    x1, y1,
-	    (x2 - x1), (y2 - y1), 0, 23040);
+  gdk_draw_arc (ellipse_sel->core->win,
+		ellipse_sel->core->gc, 0,
+		x1, y1, (x2 - x1), (y2 - y1), 0, 23040);
 }
-
 
 Tool *
 tools_new_ellipse_select ()
 {
-  Tool * tool;
-  EllipseSelect * private;
+  Tool *tool;
+  EllipseSelect *private;
 
-  tool = (Tool *) xmalloc (sizeof (Tool));
-  private = (EllipseSelect *) xmalloc (sizeof (EllipseSelect));
+  /*  The tool options  */
+  if (!ellipse_options)
+    ellipse_options = create_selection_options (ELLIPSE_SELECT);
+
+  tool = (Tool *) g_malloc (sizeof (Tool));
+  private = (EllipseSelect *) g_malloc (sizeof (EllipseSelect));
 
   private->core = draw_core_new (ellipse_select_draw);
   /*  Make the selection static, not blinking  */
@@ -104,55 +121,161 @@ tools_new_ellipse_select ()
   tool->type = ELLIPSE_SELECT;
   tool->state = INACTIVE;
   tool->scroll_lock = 0;  /*  Allow scrolling  */
+  tool->auto_snap_to = TRUE;
   tool->private = (void *) private;
   tool->button_press_func = rect_select_button_press;
   tool->button_release_func = rect_select_button_release;
   tool->motion_func = rect_select_motion;
-  tool->arrow_keys_func = edit_sel_arrow_keys_func;
+  tool->arrow_keys_func = standard_arrow_keys_func;
+  tool->cursor_update_func = rect_select_cursor_update;
   tool->control_func = rect_select_control;
+  tool->preserve = TRUE;
 
   return tool;
 }
 
-
 void
 tools_free_ellipse_select (tool)
-     Tool * tool;
+     Tool *tool;
 {
-  EllipseSelect * ellipse_sel;
+  EllipseSelect *ellipse_sel;
 
   ellipse_sel = (EllipseSelect *) tool->private;
 
   draw_core_free (ellipse_sel->core);
-  xfree (ellipse_sel);
- 
+  g_free (ellipse_sel);
 }
 
-
-/*  ellipse dialog callback function  */
-
-static void
-ellipse_dialog_callback (dialog_ID, item_ID, client_data, call_data)
-     int dialog_ID, item_ID;
-     void *client_data, *call_data;
+/*  The ellipse_select procedure definition  */
+ProcArg ellipse_select_args[] =
 {
-  switch (item_ID)
+  { PDB_IMAGE,
+    "image",
+    "The image"
+  },
+  { PDB_FLOAT,
+    "x",
+    "x coordinate of upper-left corner of ellipse bounding box"
+  },
+  { PDB_FLOAT,
+    "y",
+    "y coordinate of upper-left corner of ellipse bounding box"
+  },
+  { PDB_FLOAT,
+    "width",
+    "the width of the ellipse: width > 0"
+  },
+  { PDB_FLOAT,
+    "height",
+    "the height of the ellipse: height > 0"
+  },
+  { PDB_INT32,
+    "operation",
+    "the selection operation: { ADD (0), SUB (1), REPLACE (2), INTERSECT (3) }"
+  },
+  { PDB_INT32,
+    "antialias",
+    "antialiasing On/Off"
+  },
+  { PDB_INT32,
+    "feather",
+    "feather option for selections"
+  },
+  { PDB_FLOAT,
+    "feather_radius",
+    "radius for feather operation"
+  }
+};
+
+ProcRecord ellipse_select_proc =
+{
+  "gimp_ellipse_select",
+  "Create an elliptical selection over the specified image",
+  "This tool creates an elliptical selection over the specified image.  The elliptical region can be either added to, subtracted from, or replace the contents of the previous selection mask.  If antialiasing is turned on, the edges of the elliptical region will contain intermediate values which give the appearance of a sharper, less pixelized edge.  This should be set as TRUE most of the time.  If the feather option is enabled, the resulting selection is blurred before combining.  The blur is a gaussian blur with the specified feather radius.",
+  "Spencer Kimball & Peter Mattis",
+  "Spencer Kimball & Peter Mattis",
+  "1995-1996",
+  PDB_INTERNAL,
+
+  /*  Input arguments  */
+  9,
+  ellipse_select_args,
+
+  /*  Output arguments  */
+  0,
+  NULL,
+
+  /*  Exec method  */
+  { { ellipse_select_invoker } },
+};
+
+
+static Argument *
+ellipse_select_invoker (args)
+     Argument *args;
+{
+  int success = TRUE;
+  GImage *gimage;
+  int op;
+  int antialias;
+  int feather;
+  double x, y;
+  double w, h;
+  double feather_radius;
+  int int_value;
+
+  op = REPLACE;
+
+  /*  the gimage  */
+  if (success)
     {
-    case OK_ID:
-      dialog_close (ellipse_dlg);
-      ellipse_dlg = NULL;
-      break;
-    case CANCEL_ID:
-      dialog_close (ellipse_dlg);
-      ellipse_dlg = NULL;
-      antialiasing = (int) antialiasing_value;
-      break;
-    default:
-      if (item_ID == antialiasing_ID)
-	antialiasing = *((long*) call_data);
-      break;
+      int_value = args[0].value.pdb_int;
+      if (! (gimage = gimage_get_ID (int_value)))
+	success = FALSE;
     }
+  /*  x, y, w, h  */
+  if (success)
+    {
+      x = args[1].value.pdb_float;
+      y = args[2].value.pdb_float;
+      w = args[3].value.pdb_float;
+      h = args[4].value.pdb_float;
+    }
+  /*  operation  */
+  if (success)
+    {
+      int_value = args[5].value.pdb_int;
+      switch (int_value)
+	{
+	case 0: op = ADD; break;
+	case 1: op = SUB; break;
+	case 2: op = REPLACE; break;
+	case 3: op = INTERSECT; break;
+	default: success = FALSE;
+	}
+    }
+  /*  antialiasing?  */
+  if (success)
+    {
+      int_value = args[6].value.pdb_int;
+      antialias = (int_value) ? TRUE : FALSE;
+    }
+  /*  feathering  */
+  if (success)
+    {
+      int_value = args[7].value.pdb_int;
+      feather = (int_value) ? TRUE : FALSE;
+    }
+  /*  feather radius  */
+  if (success)
+    {
+      feather_radius = args[8].value.pdb_float;
+    }
+
+  /*  call the ellipse_select procedure  */
+  if (success)
+    ellipse_select (gimage, (int) x, (int) y, (int) w, (int) h,
+		    op, antialias, feather, feather_radius);
+
+  return procedural_db_return_args (&ellipse_select_proc, success);
 }
-
-
-

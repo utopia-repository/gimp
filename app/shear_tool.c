@@ -13,18 +13,25 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 #include "appenv.h"
+#include "drawable.h"
 #include "gdisplay.h"
+#include "gimage_mask.h"
 #include "info_dialog.h"
 #include "palette.h"
 #include "shear_tool.h"
 #include "selection.h"
 #include "tools.h"
 #include "transform_core.h"
+#include "transform_tool.h"
+#include "undo.h"
+
+#include "tile_manager_pvt.h"
 
 /*  index into trans_info array  */
 #define HORZ_OR_VERT   0
@@ -44,26 +51,30 @@ static char        xshear_buf  [MAX_INFO_BUF];
 static char        yshear_buf  [MAX_INFO_BUF];
 
 /*  forward function declarations  */
-static void *      shear_tool_recalc      (Tool *, void *);
-static void        shear_tool_motion      (Tool *, void *);
-static void        shear_info_update      (Tool *);
+static void *      shear_tool_shear   (GImage *, GimpDrawable *, TileManager *, int, Matrix);
+static void *      shear_tool_recalc  (Tool *, void *);
+static void        shear_tool_motion  (Tool *, void *);
+static void        shear_info_update  (Tool *);
+static Argument *  shear_invoker      (Argument *);
 
 void *
 shear_tool_transform (tool, gdisp_ptr, state)
      Tool * tool;
-     XtPointer gdisp_ptr;
+     gpointer gdisp_ptr;
      int state;
 {
   TransformCore * transform_core;
+  GDisplay *gdisp;
 
   transform_core = (TransformCore *) tool->private;
+  gdisp = (GDisplay *) gdisp_ptr;
 
   switch (state)
     {
     case INIT :
       if (!transform_info)
 	{
-	  transform_info = info_dialog_new ("shearInfoDialog", "Shear Information");
+	  transform_info = info_dialog_new ("Shear Information");
 	  info_dialog_add_field (transform_info, "X Shear Magnitude: ", xshear_buf);
 	  info_dialog_add_field (transform_info, "Y Shear Magnitude: ", yshear_buf);
 	}
@@ -87,6 +98,9 @@ shear_tool_transform (tool, gdisp_ptr, state)
 
     case FINISH :
       direction_unknown = 1;
+      return shear_tool_shear (gdisp->gimage, gimage_active_drawable (gdisp->gimage),
+			       transform_core->original, transform_tool_smoothing (),
+			       transform_core->transform);
       break;
     }
 
@@ -100,7 +114,7 @@ tools_new_shear_tool ()
   Tool * tool;
   TransformCore * private;
 
-  tool = transform_core_new (TRANSFORM_TOOL, INTERACTIVE);
+  tool = transform_core_new (SHEAR, INTERACTIVE);
 
   private = tool->private;
 
@@ -214,9 +228,7 @@ shear_tool_motion (tool, gdisp_ptr)
 	  return;
 	}
     }
-  
 }
-
 
 
 static void *
@@ -225,58 +237,218 @@ shear_tool_recalc (tool, gdisp_ptr)
      void * gdisp_ptr;
 {
   TransformCore * transform_core;
-  Selection * select;
   GDisplay * gdisp;
   float width, height;
   float cx, cy;
-  
+
   gdisp = (GDisplay *) tool->gdisp_ptr;
   transform_core = (TransformCore *) tool->private;
 
-  /*  find the correct selection structure  */
-  if (transform_core->select_ptr)
-    select = (Selection *) transform_core->select_ptr;
+  cx = (transform_core->x1 + transform_core->x2) / 2.0;
+  cy = (transform_core->y1 + transform_core->y2) / 2.0;
+
+  width = transform_core->x2 - transform_core->x1;
+  height = transform_core->y2 - transform_core->y1;
+
+  if (width == 0)
+    width = 1;
+  if (height == 0)
+    height = 1;
+
+  /*  assemble the transformation matrix  */
+  identity_matrix  (transform_core->transform);
+  translate_matrix (transform_core->transform, -cx, -cy);
+
+  /*  shear matrix  */
+  if (transform_core->trans_info[HORZ_OR_VERT] == HORZ)
+    xshear_matrix (transform_core->transform,
+		   (float) transform_core->trans_info [XSHEAR] / height);
   else
-    select = gdisp->select;
+    yshear_matrix (transform_core->transform,
+		   (float) transform_core->trans_info [YSHEAR] / width);
 
-  /*  find the boundaries  */
-  if (selection_find_bounds (select, &transform_core->x1, &transform_core->y1,
-			     &transform_core->x2, &transform_core->y2))
-    {
-      cx = (transform_core->x1 + transform_core->x2) / 2.0;
-      cy = (transform_core->y1 + transform_core->y2) / 2.0;
+  translate_matrix (transform_core->transform, +cx, +cy);
 
-      width = transform_core->x2 - transform_core->x1;
-      height = transform_core->y2 - transform_core->y1;
+  /*  transform the bounding box  */
+  transform_bounding_box (tool);
 
-      if (width == 0)
-	width = 1;
-      if (height == 0)
-	height = 1;
+  /*  update the information dialog  */
+  shear_info_update (tool);
 
-      /*  assemble the transformation matrix  */
-      identity_matrix  (transform_core->transform);
-      translate_matrix (transform_core->transform, -cx, -cy);
-
-      /*  shear matrix  */
-      if (transform_core->trans_info[HORZ_OR_VERT] == HORZ)
-	xshear_matrix (transform_core->transform, 
-		       (float) transform_core->trans_info [XSHEAR] / height);
-      else
-	yshear_matrix (transform_core->transform, 
-		       (float) transform_core->trans_info [YSHEAR] / width);
-
-      translate_matrix (transform_core->transform, +cx, +cy);
-  
-      /*  transform the bounding box  */
-      transform_bounding_box (tool);
-
-      /*  update the information dialog  */
-      shear_info_update (tool);
-
-      return (void *) select;
-    }
-
-  return (void *) NULL;
+  return (void *) 1;
 }
 
+
+static void *
+shear_tool_shear (gimage, drawable, float_tiles, interpolation, matrix)
+     GImage *gimage;
+     GimpDrawable *drawable;
+     TileManager *float_tiles;
+     int interpolation;
+     Matrix matrix;
+{
+  return transform_core_do (gimage, drawable, float_tiles, interpolation, matrix);
+}
+
+
+/*  The shear procedure definition  */
+ProcArg shear_args[] =
+{
+  { PDB_IMAGE,
+    "image",
+    "the image"
+  },
+  { PDB_DRAWABLE,
+    "drawable",
+    "the affected drawable"
+  },
+  { PDB_INT32,
+    "interpolation",
+    "whether to use interpolation"
+  },
+  { PDB_INT32,
+    "shear_type",
+    "Type of shear: { HORIZONTAL (0), VERTICAL (1) }"
+  },
+  { PDB_FLOAT,
+    "magnitude",
+    "the magnitude of the shear"
+  }
+};
+
+ProcArg shear_out_args[] =
+{
+  { PDB_DRAWABLE,
+    "drawable",
+    "the sheard drawable"
+  }
+};
+
+ProcRecord shear_proc =
+{
+  "gimp_shear",
+  "Shear the specified drawable about its center by the specified magnitude",
+  "This tool shears the specified drawable if no selection exists.  If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then sheard by the specified amount.  The interpolation parameter can be set to TRUE to indicate that either linear or cubic interpolation should be used to smooth the resulting sheard drawable.  The return value is the ID of the sheard drawable.  If there was no selection, this will be equal to the drawable ID supplied as input.  Otherwise, this will be the newly created and sheard drawable.  The shear type parameter indicates whether the shear will be applied horizontally or vertically.  The magnitude can be either positive or negative and indicates the extent (in pixels) to shear by.",
+  "Spencer Kimball & Peter Mattis",
+  "Spencer Kimball & Peter Mattis",
+  "1995-1996",
+  PDB_INTERNAL,
+
+  /*  Input arguments  */
+  5,
+  shear_args,
+
+  /*  Output arguments  */
+  1,
+  shear_out_args,
+
+  /*  Exec method  */
+  { { shear_invoker } },
+};
+
+
+static Argument *
+shear_invoker (args)
+     Argument *args;
+{
+  int success = TRUE;
+  GImage *gimage;
+  GimpDrawable *drawable;
+  int interpolation;
+  int shear_type;
+  double shear_magnitude;
+  int int_value;
+  TileManager *float_tiles;
+  TileManager *new_tiles;
+  Matrix matrix;
+  int new_layer;
+  Layer *layer;
+  Argument *return_args;
+
+  drawable = NULL;
+  shear_type  = HORZ;
+  layer       = NULL;
+
+  /*  the gimage  */
+  if (success)
+    {
+      int_value = args[0].value.pdb_int;
+      if (! (gimage = gimage_get_ID (int_value)))
+	success = FALSE;
+    }
+  /*  the drawable  */
+  if (success)
+    {
+      int_value = args[1].value.pdb_int;
+      drawable = drawable_get_ID (int_value);
+      if (drawable == NULL || gimage != drawable_gimage (drawable))
+	success = FALSE;
+    }
+  /*  interpolation  */
+  if (success)
+    {
+      int_value = args[2].value.pdb_int;
+      interpolation = (int_value) ? TRUE : FALSE;
+    }
+  /*  shear type */
+  if (success)
+    {
+      int_value = args[3].value.pdb_int;
+      switch (int_value)
+	{
+	case 0: shear_type = HORZ; break;
+	case 1: shear_type = VERT; break;
+	default: success = FALSE;
+	}
+    }
+  /*  shear extents  */
+  if (success)
+    {
+      shear_magnitude = args[4].value.pdb_float;
+    }
+
+  /*  call the shear procedure  */
+  if (success)
+    {
+      double cx, cy;
+
+      /*  Start a transform undo group  */
+      undo_push_group_start (gimage, TRANSFORM_CORE_UNDO);
+
+      /*  Cut/Copy from the specified drawable  */
+      float_tiles = transform_core_cut (gimage, drawable, &new_layer);
+
+      cx = float_tiles->x + float_tiles->levels[0].width / 2.0;
+      cy = float_tiles->y + float_tiles->levels[0].height / 2.0;
+
+      identity_matrix  (matrix);
+      translate_matrix (matrix, -cx, -cy);
+      /*  shear matrix  */
+      if (shear_type == HORZ)
+	xshear_matrix (matrix, shear_magnitude / float_tiles->levels[0].height);
+      else if (shear_type == VERT)
+	yshear_matrix (matrix, shear_magnitude / float_tiles->levels[0].width);
+      translate_matrix (matrix, +cx, +cy);
+
+      /*  shear the buffer  */
+      new_tiles = shear_tool_shear (gimage, drawable, float_tiles, interpolation, matrix);
+
+      /*  free the cut/copied buffer  */
+      tile_manager_destroy (float_tiles);
+
+      if (new_tiles)
+	success = (layer = transform_core_paste (gimage, drawable, new_tiles, new_layer)) != NULL;
+      else
+	success = FALSE;
+
+      /*  push the undo group end  */
+      undo_push_group_end (gimage);
+    }
+
+  return_args = procedural_db_return_args (&shear_proc, success);
+
+  if (success)
+    return_args[1].value.pdb_int = drawable_ID (GIMP_DRAWABLE(layer));
+
+  return return_args;
+}

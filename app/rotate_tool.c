@@ -13,52 +13,69 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 #include "appenv.h"
+#include "drawable.h"
 #include "gdisplay.h"
+#include "gimage_mask.h"
 #include "info_dialog.h"
 #include "palette.h"
 #include "rotate_tool.h"
 #include "selection.h"
 #include "tools.h"
 #include "transform_core.h"
+#include "transform_tool.h"
+#include "undo.h"
+
+#include "tile_manager_pvt.h"
+
+#ifndef M_PI
+#define M_PI    3.14159265358979323846
+#endif /* M_PI */
 
 /*  index into trans_info array  */
 #define ANGLE          0
+#define REAL_ANGLE     1
 #define EPSILON        0.018  /*  ~ 1 degree  */
+#define FIFTEEN_DEG    (M_PI / 12.0)
 
 /*  variables local to this file  */
 char          angle_buf  [MAX_INFO_BUF];
 
 /*  forward function declarations  */
-static void *      rotate_tool_rotate      (Tool *, void *);
-static void *      rotate_tool_recalc      (Tool *, void *);
-static void        rotate_tool_motion      (Tool *, void *);
-static void        rotate_info_update      (Tool *);
+static void *      rotate_tool_rotate  (GImage *, GimpDrawable *, double, TileManager *, int, Matrix);
+static void *      rotate_tool_recalc  (Tool *, void *);
+static void        rotate_tool_motion  (Tool *, void *);
+static void        rotate_info_update  (Tool *);
+static Argument *  rotate_invoker      (Argument *);
 
 void *
 rotate_tool_transform (tool, gdisp_ptr, state)
      Tool * tool;
-     XtPointer gdisp_ptr;
+     gpointer gdisp_ptr;
      int state;
 {
   TransformCore * transform_core;
+  GDisplay *gdisp;
 
   transform_core = (TransformCore *) tool->private;
+  gdisp = (GDisplay *) gdisp_ptr;
 
   switch (state)
     {
     case INIT :
       if (!transform_info)
 	{
-	  transform_info = info_dialog_new ("rotateInfoDialog", "Rotation Information");
+	  transform_info = info_dialog_new ("Rotation Information");
 	  info_dialog_add_field (transform_info, "Angle: ", angle_buf);
 	}
 
-      transform_core->trans_info[ANGLE] = 0.0;
+      transform_core->trans_info[ANGLE]      = 0.0;
+      transform_core->trans_info[REAL_ANGLE] = 0.0;
 
       return NULL;
       break;
@@ -74,13 +91,14 @@ rotate_tool_transform (tool, gdisp_ptr, state)
       break;
 
     case FINISH :
-      return (rotate_tool_rotate (tool, gdisp_ptr));
+      return rotate_tool_rotate (gdisp->gimage, gimage_active_drawable (gdisp->gimage),
+				 transform_core->trans_info[ANGLE], transform_core->original,
+				 transform_tool_smoothing (), transform_core->transform);
       break;
     }
 
   return NULL;
 }
-
 
 Tool *
 tools_new_rotate_tool ()
@@ -88,20 +106,20 @@ tools_new_rotate_tool ()
   Tool * tool;
   TransformCore * private;
 
-  tool = transform_core_new (TRANSFORM_TOOL, INTERACTIVE);
+  tool = transform_core_new (ROTATE, INTERACTIVE);
 
   private = tool->private;
 
   /*  set the rotation specific transformation attributes  */
   private->trans_func = rotate_tool_transform;
-  private->trans_info[ANGLE] = 0.0;
+  private->trans_info[ANGLE]      = 0.0;
+  private->trans_info[REAL_ANGLE] = 0.0;
 
   /*  assemble the transformation matrix  */
   identity_matrix (private->transform);
 
   return tool;
 }
-
 
 void
 tools_free_rotate_tool (tool)
@@ -116,7 +134,7 @@ rotate_info_update (tool)
 {
   GDisplay * gdisp;
   TransformCore * transform_core;
-  float angle;
+  double angle;
 
   gdisp = (GDisplay *) tool->gdisp_ptr;
   transform_core = (TransformCore *) tool->private;
@@ -129,16 +147,15 @@ rotate_info_update (tool)
   info_dialog_popup (transform_info);
 }
 
-
 static void
 rotate_tool_motion (tool, gdisp_ptr)
      Tool * tool;
      void * gdisp_ptr;
 {
   TransformCore * transform_core;
-  float angle1, angle2, angle;
-  float cx, cy;
-  float x1, y1, x2, y2;
+  double angle1, angle2, angle;
+  double cx, cy;
+  double x1, y1, x2, y2;
 
   transform_core = (TransformCore *) tool->private;
 
@@ -149,30 +166,36 @@ rotate_tool_motion (tool, gdisp_ptr)
   x2 = transform_core->lastx - cx;
   y1 = cy - transform_core->cury;
   y2 = cy - transform_core->lasty;
-  
+
   /*  find the first angle  */
   angle1 = atan2 (y1, x1);
-  
+
   /*  find the angle  */
   angle2 = atan2 (y2, x2);
-  
+
   angle = angle2 - angle1;
-  
+
   if (angle > M_PI || angle < -M_PI)
     angle = angle2 - ((angle1 < 0) ? 2*M_PI + angle1 : angle1 - 2*M_PI);
 
   /*  increment the transform tool's angle  */
-  transform_core->trans_info[ANGLE] += angle;
+  transform_core->trans_info[REAL_ANGLE] += angle;
 
   /*  limit the angle to between 0 and 360 degrees  */
-  if (transform_core->trans_info[ANGLE] < - M_PI)
-    transform_core->trans_info[ANGLE] = 2 * M_PI - transform_core->trans_info[ANGLE];
-  else if (transform_core->trans_info[ANGLE] > M_PI)
-    transform_core->trans_info[ANGLE] = transform_core->trans_info[ANGLE] - 2 * M_PI;
+  if (transform_core->trans_info[REAL_ANGLE] < - M_PI)
+    transform_core->trans_info[REAL_ANGLE] = 2 * M_PI - transform_core->trans_info[REAL_ANGLE];
+  else if (transform_core->trans_info[REAL_ANGLE] > M_PI)
+    transform_core->trans_info[REAL_ANGLE] = transform_core->trans_info[REAL_ANGLE] - 2 * M_PI;
+
+  /* constrain the angle to 15-degree multiples if ctrl is held down */
   
+  if (transform_core->state & ControlMask)
+    transform_core->trans_info[ANGLE] = FIFTEEN_DEG * (int) ((transform_core->trans_info[REAL_ANGLE] +
+							      FIFTEEN_DEG / 2.0) /
+							     FIFTEEN_DEG);
+  else
+    transform_core->trans_info[ANGLE] = transform_core->trans_info[REAL_ANGLE];
 }
-
-
 
 static void *
 rotate_tool_recalc (tool, gdisp_ptr)
@@ -180,260 +203,184 @@ rotate_tool_recalc (tool, gdisp_ptr)
      void * gdisp_ptr;
 {
   TransformCore * transform_core;
-  Selection * select;
   GDisplay * gdisp;
-  float cx, cy;
-  
+  double cx, cy;
+
   gdisp = (GDisplay *) tool->gdisp_ptr;
   transform_core = (TransformCore *) tool->private;
 
-  /*  find the correct selection structure  */
-  if (transform_core->select_ptr)
-    select = (Selection *) transform_core->select_ptr;
-  else
-    select = gdisp->select;
+  cx = (transform_core->x1 + transform_core->x2) / 2.0;
+  cy = (transform_core->y1 + transform_core->y2) / 2.0;
 
+  /*  assemble the transformation matrix  */
+  identity_matrix  (transform_core->transform);
+  translate_matrix (transform_core->transform, -cx, -cy);
+  rotate_matrix    (transform_core->transform, transform_core->trans_info[ANGLE]);
+  translate_matrix (transform_core->transform, +cx, +cy);
 
-  /*  find the boundaries  */
-  if (selection_find_bounds (select, &transform_core->x1, &transform_core->y1,
-			     &transform_core->x2, &transform_core->y2))
-    {
-      cx = (transform_core->x1 + transform_core->x2) / 2.0;
-      cy = (transform_core->y1 + transform_core->y2) / 2.0;
+  /*  transform the bounding box  */
+  transform_bounding_box (tool);
 
-      /*  assemble the transformation matrix  */
-      identity_matrix  (transform_core->transform);
-      translate_matrix (transform_core->transform, -cx, -cy);
-      rotate_matrix    (transform_core->transform, transform_core->trans_info[ANGLE]);
-      translate_matrix (transform_core->transform, +cx, +cy);
-  
-      /*  transform the bounding box  */
-      transform_bounding_box (tool);
+  /*  update the information dialog  */
+  rotate_info_update (tool);
 
-      /*  update the information dialog  */
-      rotate_info_update (tool);
-
-      return (void *) select;
-    }
-
-  return (void *) NULL;
+  return (void *) 1;
 }
 
-
-static TempBuf *
-rotate_image_90_180_270 (image, degrees)
-     TempBuf * image;
-     float * degrees;
-{
-  TempBuf * new;
-  unsigned char * src, * s;
-  unsigned char * dest, * d;
-  int image_width, image_height;
-  int new_width, new_height;
-  int bytes, b;
-  int rowstride_src, rowstride_dest;
-  
-  int x, y;
-
-  /*
-   *  This procedure rotates the input image by either 90, 180, or 270 degrees.
-   *  This process is necessary because the standard 3 step raster rotation
-   *  works best for rotations between -45 and 45 degrees.
-   */
-
-  image_width = image->width;
-  image_height = image->height;
-  bytes = image->bytes;
-
-  if (*degrees >= (-0.25 * M_PI) && *degrees <= (0.25 * M_PI))
-    {
-      new_width = image_width;
-      new_height = image_height;
-      new = temp_buf_new (new_width, new_height, bytes, 0, 0, NULL);
-      rowstride_src = image_width * bytes;
-      rowstride_dest = new_width * bytes;
-
-      src = temp_buf_data (image);
-      dest = temp_buf_data (new);
-
-      for (y = 0; y < new_height; y++)
-	{
-	  s = src;
-	  d = dest;
-
-	  for (x = 0; x < new_width; x++)
-	    {
-	      b = bytes;
-	      while (b--)
-		*d++ = *s++;
-	    }
-
-	  src += rowstride_src;
-	  dest += rowstride_dest;
-	}
-    }
-  else if (*degrees > (0.25 * M_PI) && *degrees < (0.75 * M_PI))
-    {
-      /*  for 90 degrees, x = y & y = x  */
-      new_width = image_height;
-      new_height = image_width;
-      new = temp_buf_new (new_width, new_height, bytes, 0, 0, NULL);
-      rowstride_src = image_width * bytes;
-      rowstride_dest = new_width * bytes;
-
-      src = temp_buf_data (image) + rowstride_src * (image_height - 1);
-      dest = temp_buf_data (new);
-
-      for (y = 0; y < new_height; y++)
-	{
-	  s = src;
-	  d = dest;
-
-	  for (x = 0; x < new_width; x++)
-	    {
-	      for (b = 0; b < bytes; b++)
-		*d++ = s[b];
-	      s -= rowstride_src;
-	    }
-
-	  src += bytes;
-	  dest += rowstride_dest;
-	}
-
-      *degrees -= 0.5 * M_PI;
-      
-    }
-  else if (*degrees >= (0.75 * M_PI) || *degrees <= (-0.75 * M_PI))
-    {
-      /*  for 180 degrees, x = -x & y = -y  */
-      new_width = image_width;
-      new_height = image_height;
-      new = temp_buf_new (new_width, new_height, bytes, 0, 0, NULL);
-      rowstride_src = image_width * bytes;
-      rowstride_dest = new_width * bytes;
-
-      src = temp_buf_data (image) + rowstride_src * image_height - bytes;
-      dest = temp_buf_data (new);
-
-      for (y = 0; y < new_height; y++)
-	{
-	  s = src;
-	  d = dest;
-
-	  for (x = 0; x < new_width; x++)
-	    {
-	      for (b = 0; b < bytes; b++)
-		*d++ = s[b];
-
-	      s -= bytes;
-	    }
-
-	  src -= rowstride_src;
-	  dest += rowstride_dest;
-	}
-      if (*degrees < 0)
-	*degrees += M_PI;
-      else
-	*degrees -= M_PI;
-    }
-  else if (*degrees > (-0.75 * M_PI) && *degrees < (-0.25 * M_PI))
-    {
-      /*  for 270 degrees, x = y & y = -x */
-      new_width = image_height;
-      new_height = image_width;
-      new = temp_buf_new (new_width, new_height, bytes, 0, 0, NULL);
-      rowstride_src = image_width * bytes;
-      rowstride_dest = new_width * bytes;
-
-      src = temp_buf_data (image) + rowstride_src - bytes;
-      dest = temp_buf_data (new);
-
-      for (y = 0; y < new_height; y++)
-	{
-	  s = src;
-	  d = dest;
-
-	  for (x = 0; x < new_width; x++)
-	    {
-	      for (b = 0; b < bytes; b++)
-		*d++ = s[b];
-	      s += rowstride_src;
-	    }
-
-	  src -= bytes;
-	  dest += rowstride_dest;
-	}
-
-      *degrees += 0.5 * M_PI;
-    }
-
-  else
-    return NULL;
-
-  return new;
-}
 
 /*  This procedure returns a valid pointer to a new selection if the
  *  requested angle is a multiple of 90 degrees...
  */
 
 static void *
-rotate_tool_rotate (tool, gdisp_ptr)
-     Tool * tool;
-     void * gdisp_ptr;
+rotate_tool_rotate (gimage, drawable, angle, float_tiles, interpolation, matrix)
+     GImage *gimage;
+     GimpDrawable *drawable;
+     double angle;
+     TileManager *float_tiles;
+     int interpolation;
+     Matrix matrix;
 {
-  TransformCore * transform_core;
-  Selection * new, * select;
-  GDisplay * gdisp;
-  GRegion * region;
-  MaskBuf * mask, * new_mask;
-  TempBuf * new_image;
-  float angle;
-  int xo, yo;
-  int num_incs;
-
-  gdisp = (GDisplay *) gdisp_ptr;
-  transform_core = (TransformCore *) tool->private;
-  select = (Selection *) transform_core->select_ptr;
-
-  /*  make a copy of the angle measurement so that rotate_image_90_180_270
-   *  can modify it to reflect the new angle after some rotation
-   */
-  num_incs = (transform_core->trans_info[ANGLE] + EPSILON) / (M_PI / 2.0);
-  angle = num_incs * (M_PI / 2.0);
-  if (fabs (angle - transform_core->trans_info[ANGLE]) > EPSILON)
-    return NULL;
-
-  /*  generate a mask from the transform_core's region  */
-  mask = mask_convert_from_region (select->region, TRUE);
-
-  /*  Based on the angle, rotate by an integral multiple of 90 degrees  */
-  angle = transform_core->trans_info[ANGLE];
-  new_image = rotate_image_90_180_270 (select->float_buf, &angle);
-
-  angle = transform_core->trans_info[ANGLE];
-  new_mask = rotate_image_90_180_270 ((TempBuf *) mask, &angle);
-
-  region = gregion_new (new_mask->height, new_mask->width);
-  mask_convert_to_region (new_mask, region);
-
-  /*  Find the origin of the bounding box  */
-  xo = MINIMUM (transform_core->tx1, transform_core->tx2);
-  xo = MINIMUM (xo, transform_core->tx3);
-  xo = MINIMUM (xo, transform_core->tx4);
-  yo = MINIMUM (transform_core->ty1, transform_core->ty2);
-  yo = MINIMUM (yo, transform_core->ty3);
-  yo = MINIMUM (yo, transform_core->ty4);
-
-  /*  Create the new selection object  */
-  new = selection_generic_new (region, xo, yo, new_image);
-
-  /*  Free mask buffers...  */
-  mask_buf_free (mask);
-  mask_buf_free (new_mask);
-
-  return (void *) new;
+  return transform_core_do (gimage, drawable, float_tiles, interpolation, matrix);
 }
 
 
+/*  The rotate procedure definition  */
+ProcArg rotate_args[] =
+{
+  { PDB_IMAGE,
+    "image",
+    "the image"
+  },
+  { PDB_DRAWABLE,
+    "drawable",
+    "the affected drawable"
+  },
+  { PDB_INT32,
+    "interpolation",
+    "whether to use interpolation"
+  },
+  { PDB_FLOAT,
+    "angle",
+    "the angle of rotation (radians)",
+  }
+};
 
+ProcArg rotate_out_args[] =
+{
+  { PDB_DRAWABLE,
+    "drawable",
+    "the rotated drawable"
+  }
+};
+
+ProcRecord rotate_proc =
+{
+  "gimp_rotate",
+  "Rotate the specified drawable about its center through the specified angle",
+  "This tool rotates the specified drawable if no selection exists.  If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then rotated by the specified amount.  The interpolation parameter can be set to TRUE to indicate that either linear or cubic interpolation should be used to smooth the resulting rotated drawable.  The return value is the ID of the rotated drawable.  If there was no selection, this will be equal to the drawable ID supplied as input.  Otherwise, this will be the newly created and rotated drawable.",
+  "Spencer Kimball & Peter Mattis",
+  "Spencer Kimball & Peter Mattis",
+  "1995-1996",
+  PDB_INTERNAL,
+
+  /*  Input arguments  */
+  4,
+  rotate_args,
+
+  /*  Output arguments  */
+  1,
+  rotate_out_args,
+
+  /*  Exec method  */
+  { { rotate_invoker } },
+};
+
+
+static Argument *
+rotate_invoker (args)
+     Argument *args;
+{
+  int success = TRUE;
+  GImage *gimage;
+  GimpDrawable *drawable;
+  int interpolation;
+  double angle;
+  int int_value;
+  TileManager *float_tiles;
+  TileManager *new_tiles;
+  Matrix matrix;
+  int new_layer;
+  Layer *layer;
+  Argument *return_args;
+
+  drawable = NULL;
+  layer = NULL;
+
+  /*  the gimage  */
+  if (success)
+    {
+      int_value = args[0].value.pdb_int;
+      if (! (gimage = gimage_get_ID (int_value)))
+	success = FALSE;
+    }
+  /*  the drawable  */
+  if (success)
+    {
+      int_value = args[1].value.pdb_int;
+      drawable = drawable_get_ID (int_value);
+      if (drawable == NULL || gimage != drawable_gimage (drawable))
+	success = FALSE;
+    }
+  /*  interpolation  */
+  if (success)
+    {
+      int_value = args[2].value.pdb_int;
+      interpolation = (int_value) ? TRUE : FALSE;
+    }
+  /*  angle of rotation  */
+  if (success)
+    angle = args[3].value.pdb_float;
+
+  /*  call the rotate procedure  */
+  if (success)
+    {
+      double cx, cy;
+
+      /*  Start a transform undo group  */
+      undo_push_group_start (gimage, TRANSFORM_CORE_UNDO);
+
+      /*  Cut/Copy from the specified drawable  */
+      float_tiles = transform_core_cut (gimage, drawable, &new_layer);
+
+      cx = float_tiles->x + float_tiles->levels[0].width / 2.0;
+      cy = float_tiles->y + float_tiles->levels[0].height / 2.0;
+
+      /*  assemble the transformation matrix  */
+      identity_matrix  (matrix);
+      translate_matrix (matrix, -cx, -cy);
+      rotate_matrix    (matrix, angle);
+      translate_matrix (matrix, +cx, +cy);
+
+      /*  rotate the buffer  */
+      new_tiles = rotate_tool_rotate (gimage, drawable, angle, float_tiles, interpolation, matrix);
+
+      /*  free the cut/copied buffer  */
+      tile_manager_destroy (float_tiles);
+
+      if (new_tiles)
+	success = (layer = transform_core_paste (gimage, drawable, new_tiles, new_layer)) != NULL;
+      else
+	success = FALSE;
+
+      /*  push the undo group end  */
+      undo_push_group_end (gimage);
+    }
+
+  return_args = procedural_db_return_args (&rotate_proc, success);
+
+  if (success)
+    return_args[1].value.pdb_int = drawable_ID (GIMP_DRAWABLE(layer));
+
+  return return_args;
+}

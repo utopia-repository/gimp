@@ -13,315 +13,289 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "appenv.h"
 #include "actionarea.h"
 #include "brushes.h"
 #include "brush_select.h"
 #include "buildmenu.h"
 #include "colormaps.h"
+#include "disp_callbacks.h"
 #include "errors.h"
-#include "gconvert.h"
 #include "paint_funcs.h"
-#include "visual.h"
 
 
-#define MIN_WIDTH         32
-#define MIN_HEIGHT        32
-#define MAX_WIN_WIDTH     245
-#define MAX_WIN_HEIGHT    245
-#define NUM_BRUSH_COLUMNS 7
+#define STD_CELL_WIDTH    24
+#define STD_CELL_HEIGHT   24
+
+#define STD_BRUSH_COLUMNS 5
+#define STD_BRUSH_ROWS    5
+
+#define MAX_WIN_WIDTH     (STD_CELL_WIDTH * NUM_BRUSH_COLUMNS)
+#define MAX_WIN_HEIGHT    (STD_CELL_HEIGHT * NUM_BRUSH_ROWS)
 #define MARGIN_WIDTH      3
 #define MARGIN_HEIGHT     3
 
+#define BRUSH_EVENT_MASK  GDK_EXPOSURE_MASK | \
+                          GDK_BUTTON_PRESS_MASK | \
+			  GDK_BUTTON_RELEASE_MASK | \
+                          GDK_BUTTON1_MOTION_MASK | \
+			  GDK_ENTER_NOTIFY_MASK
 
 /*  local function prototypes  */
-static void create_preview               (BrushSelectP);
+static void brush_popup_open             (BrushSelectP, int, int, GBrushP);
+static void brush_popup_close            (BrushSelectP);
 static void display_brush                (BrushSelectP, GBrushP, int, int);
 static void display_brushes              (BrushSelectP);
 static void display_setup                (BrushSelectP);
-static void draw_preview                 (BrushSelectP);
+static void preview_calc_scrollbar       (BrushSelectP);
 static void brush_select_show_selected   (BrushSelectP, int, int);
 static void update_active_brush_field    (BrushSelectP);
-static void brush_select_close_callback  (Widget, XtPointer, XtPointer);
-static void brush_select_refresh_callback(Widget, XtPointer, XtPointer);
-static void brush_select_cancel_callback (Widget, XtPointer, XtPointer);
-static void brush_select_button_press    (Widget, XtPointer, XEvent *, Boolean *);
-static void preview_draw_callback        (Widget, XtPointer, XtPointer);
-static void paint_mode_menu_callback     (Widget, XtPointer, XtPointer);
-static void opacity_scale_callback       (Widget, XtPointer, XtPointer);
-static void interpolate_callback         (Widget, XtPointer, XtPointer);
-static void max_brush_extents            (int *, int *);
+static void brush_select_close_callback  (GtkWidget *, gpointer);
+static void brush_select_refresh_callback(GtkWidget *, gpointer);
+static void paint_mode_menu_callback     (GtkWidget *, gpointer);
+static gint brush_select_events          (GtkWidget *, GdkEvent *, BrushSelectP);
+static gint brush_select_resize		 (GtkWidget *, GdkEvent *, BrushSelectP);
+
+static gint brush_select_delete_callback        (GtkWidget *, GdkEvent *, gpointer);
+static void preview_scroll_update        (GtkAdjustment *, gpointer);
+static void opacity_scale_update         (GtkAdjustment *, gpointer);
+static void spacing_scale_update         (GtkAdjustment *, gpointer);
 
 /*  the option menu items -- the paint modes  */
-static MenuItem option_items[] = 
+static MenuItem option_items[] =
 {
-  { "Normal", &xmPushButtonGadgetClass, 0, NULL, NULL, 
-      paint_mode_menu_callback, (void*) NORMAL, NULL, NULL },
-  { "Darken Only", &xmPushButtonGadgetClass, 0, NULL, NULL, 
-      paint_mode_menu_callback, (void*) DARKEN_ONLY, NULL, NULL },
-  { "Lighten Only", &xmPushButtonGadgetClass, 0, NULL, NULL, 
-      paint_mode_menu_callback, (void*) LIGHTEN_ONLY, NULL, NULL },
-  { "Red Only", &xmPushButtonGadgetClass, 0, NULL, NULL, 
-      paint_mode_menu_callback, (void*) RED_ONLY, NULL, NULL },
-  { "Green Only", &xmPushButtonGadgetClass, 0, NULL, NULL, 
-      paint_mode_menu_callback, (void*) GREEN_ONLY, NULL, NULL },
-  { "Blue Only", &xmPushButtonGadgetClass, 0, NULL, NULL, 
-      paint_mode_menu_callback, (void*) BLUE_ONLY, NULL, NULL },
-  { "Hue Only", &xmPushButtonGadgetClass, 0, NULL, NULL, 
-      paint_mode_menu_callback, (void*) HUE_ONLY, NULL, NULL },
-  { "Saturation Only", &xmPushButtonGadgetClass, 0, NULL, NULL, 
-      paint_mode_menu_callback, (void*) SATURATION_ONLY, NULL, NULL },
-  { "Value Only", &xmPushButtonGadgetClass, 0, NULL, NULL, 
-      paint_mode_menu_callback, (void*) VALUE_ONLY, NULL, NULL },
-  { NULL },
+  { "Normal", 0, 0, paint_mode_menu_callback, (gpointer) NORMAL_MODE, NULL, NULL },
+  { "Dissolve", 0, 0, paint_mode_menu_callback, (gpointer) DISSOLVE_MODE, NULL, NULL },
+  { "Behind", 0, 0, paint_mode_menu_callback, (gpointer) BEHIND_MODE, NULL, NULL },
+  { "Multiply", 0, 0, paint_mode_menu_callback, (gpointer) MULTIPLY_MODE, NULL, NULL },
+  { "Screen", 0, 0, paint_mode_menu_callback, (gpointer) SCREEN_MODE, NULL, NULL },
+  { "Overlay", 0, 0, paint_mode_menu_callback, (gpointer) OVERLAY_MODE, NULL, NULL },
+  { "Difference", 0, 0, paint_mode_menu_callback, (gpointer) DIFFERENCE_MODE, NULL, NULL },
+  { "Addition", 0, 0, paint_mode_menu_callback, (gpointer) ADDITION_MODE, NULL, NULL },
+  { "Subtract", 0, 0, paint_mode_menu_callback, (gpointer) SUBTRACT_MODE, NULL, NULL },
+  { "Darken Only", 0, 0, paint_mode_menu_callback, (gpointer) DARKEN_ONLY_MODE, NULL, NULL },
+  { "Lighten Only", 0, 0, paint_mode_menu_callback, (gpointer) LIGHTEN_ONLY_MODE, NULL, NULL },
+  { "Hue", 0, 0, paint_mode_menu_callback, (gpointer) HUE_MODE, NULL, NULL },
+  { "Saturation", 0, 0, paint_mode_menu_callback, (gpointer) SATURATION_MODE, NULL, NULL },
+  { "Color", 0, 0, paint_mode_menu_callback, (gpointer) COLOR_MODE, NULL, NULL },
+  { "Value", 0, 0, paint_mode_menu_callback, (gpointer) VALUE_MODE, NULL, NULL },
+  { NULL, 0, 0, NULL, NULL, NULL, NULL }
 };
 
 /*  the action area structure  */
-static ActionAreaItem action_items[] = 
+static ActionAreaItem action_items[] =
 {
   { "Close", brush_select_close_callback, NULL, NULL },
   { "Refresh", brush_select_refresh_callback, NULL, NULL },
-  { "Cancel", brush_select_cancel_callback, NULL, NULL },
 };
 
-static float old_opacity;
-static int old_interpolate;
+static double old_opacity;
+static int old_spacing;
 static int old_paint_mode;
 
+int NUM_BRUSH_COLUMNS=5;
+int NUM_BRUSH_ROWS=5;
 
-static void
-create_preview (bsp)
-     BrushSelectP bsp;
+
+GtkWidget *
+create_paint_mode_menu (MenuItemCallback callback)
 {
-  Dimension win_width, win_height, shadow;
+  GtkWidget *menu;
+  int i;
 
-  /*  Get the maximum brush extents  */
-  max_brush_extents (&bsp->cell_width, &bsp->cell_height);
+  for (i = 0; i <= VALUE_MODE; i++)
+    option_items[i].callback = callback;
 
-  bsp->width = bsp->cell_width * NUM_BRUSH_COLUMNS;
-  bsp->height = bsp->cell_height * ((num_brushes + NUM_BRUSH_COLUMNS - 1) / NUM_BRUSH_COLUMNS);
-  if (!bsp->height)
-    bsp->height = bsp->cell_height;
+  menu = build_menu (option_items, NULL);
 
-  XtVaGetValues (bsp->swin, XmNshadowThickness, &shadow, NULL);
-
-  win_width = MAX_WIN_WIDTH + shadow*2;
-  win_height = MAX_WIN_HEIGHT + shadow*2;
-
-  XtVaSetValues (bsp->swin, XmNwidth, win_width, 
-		 XmNheight, win_height, NULL);
-
-  bsp->width = (bsp->width < MAX_WIN_WIDTH) ? MAX_WIN_WIDTH : bsp->width;
-  bsp->height = (bsp->height < MAX_WIN_HEIGHT) ? MAX_WIN_HEIGHT : bsp->height;
-
-  if (bsp->preview)
-    XtDestroyWidget (bsp->preview);
-
-  bsp->preview = XtVaCreateWidget ("brushPreview",
-				   xmDrawingAreaWidgetClass, bsp->swin,
-				   XmNwidth, (Dimension) bsp->width,
-				   XmNheight, (Dimension) bsp->height,
-				   NULL);
-
-  if (bsp->image)
-    image_buf_destroy (bsp->image);
-  bsp->image = image_buf_create (1, GREY_BUF, bsp->width, bsp->height);
-  if (!bsp->image)
-    fatal_error ("Could not allocate image for brush select dialog.");
-
-  /*  render the brushes into the newly created image structure  */
-  display_brushes (bsp);
-
-  /*  Add callbacks  */
-  XtAddCallback (bsp->preview, XmNexposeCallback, preview_draw_callback, bsp);
-  XtAddCallback (bsp->preview, XmNresizeCallback, preview_draw_callback, bsp);
-  XtAddEventHandler (bsp->preview, ButtonPressMask, False,
-		     brush_select_button_press, bsp);
-
-  XtManageChild (bsp->preview);
+  return menu;
 }
 
 
 BrushSelectP
 brush_select_new ()
 {
-  extern Widget interface;
   BrushSelectP bsp;
+  GtkWidget *vbox;
+  GtkWidget *hbox;
+  GtkWidget *sbar;
+  GtkWidget *label;
+  GtkWidget *menu;
+  GtkWidget *util_box;
+  GtkWidget *option_menu;
+  GtkWidget *slider;
   GBrushP active;
-  Widget action_widget;
-  Widget row_col_widget;
-  Widget options_form_widget;
-  Widget opacity_scale_widget;
-  Widget interpolate_widget;
-  Widget label_rc_widget;
-  Widget active_label;
-  Widget opacity_label;
-  Widget option_menu;
-  XGCValues gcv;
-  Arg xt_args[6];
-  int n;
 
-  XSynchronize (DISPLAY, True);
+  bsp = g_malloc (sizeof (_BrushSelect));
+  bsp->redraw = TRUE;
+  bsp->scroll_offset = 0;
+  bsp->brush_popup = NULL;
 
-  bsp = xmalloc (sizeof (_BrushSelect));
-  bsp->preview = NULL;
-  bsp->image = NULL;
+  /*  The shell and main vbox  */
+  bsp->shell = gtk_dialog_new ();
+  gtk_window_set_wmclass (GTK_WINDOW (bsp->shell), "brushselection", "Gimp");
+  gtk_window_set_title (GTK_WINDOW (bsp->shell), "Brush Selection");
+  gtk_window_set_policy(GTK_WINDOW(bsp->shell), FALSE, TRUE, FALSE);
+  vbox = gtk_vbox_new (FALSE, 1);
+  gtk_container_border_width (GTK_CONTAINER (vbox), 2);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (bsp->shell)->vbox), vbox, TRUE, TRUE, 0);
 
-  bsp->shell = XtVaCreatePopupShell ("brushSelectDialog",
-/*				     xmDialogShellWidgetClass, toplevel, */
-				     topLevelShellWidgetClass, interface,
-				     XmNtitle, "Brush Selection",
-				     XmNvisual, grey_visual,
-				     XmNcolormap, get_colormap (GREY_GIMAGE),
-				     XmNdepth, grey_depth,
-				     XmNdeleteResponse, XmDESTROY,
-				     NULL);
+  /* handle the wm close signal */
+  gtk_signal_connect (GTK_OBJECT (bsp->shell), "delete_event",
+		      GTK_SIGNAL_FUNC (brush_select_delete_callback),
+		      bsp);
 
-  bsp->dialog = XtVaCreateWidget ("dialog",
-				  xmFormWidgetClass, bsp->shell,
-				  NULL);
+  /*  The horizontal box containing preview & scrollbar & options box */
+  hbox = gtk_hbox_new (FALSE, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 0);
+  bsp->frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (bsp->frame), GTK_SHADOW_IN);
+  gtk_box_pack_start (GTK_BOX (hbox), bsp->frame, TRUE, TRUE, 0);
+  bsp->sbar_data = GTK_ADJUSTMENT (gtk_adjustment_new (0, 0, MAX_WIN_HEIGHT, 1, 1, MAX_WIN_HEIGHT));
+  sbar = gtk_vscrollbar_new (bsp->sbar_data);
+  gtk_signal_connect (GTK_OBJECT (bsp->sbar_data), "value_changed",
+		      (GtkSignalFunc) preview_scroll_update, bsp);
+  gtk_box_pack_start (GTK_BOX (hbox), sbar, FALSE, FALSE, 0);
 
-  row_col_widget = XtVaCreateWidget ("dialogPartition",
-				     xmRowColumnWidgetClass, bsp->dialog,
-				     XmNorientation, XmHORIZONTAL,
-				     XmNnumColumns, 2,
-				     XmNtopAttachment, XmATTACH_FORM,
-				     XmNleftAttachment, XmATTACH_FORM,
-				     XmNrightAttachment, XmATTACH_FORM,
-				     XmNtopOffset, 10,
-				     XmNleftOffset, 10,
-				     XmNrightOffset, 10,
-				     NULL);
-			      
-  bsp->swin = XtVaCreateWidget ("scrolledBrushPreview",
-				xmScrolledWindowWidgetClass, row_col_widget,
-				XmNscrollBarDisplayPolicy, XmAS_NEEDED,
-				XmNscrollingPolicy, XmAUTOMATIC,
-				XmNvisualPolicy, XmSTATIC,
-				NULL);
 
   /*  Create the brush preview window and the underlying image  */
-  create_preview (bsp);
+  /*  Get the maximum brush extents  */
 
-  options_form_widget = XtVaCreateWidget ("brushOptionsRowCol",
-					  xmRowColumnWidgetClass, row_col_widget,
-					  NULL);
+  bsp->cell_width = STD_CELL_WIDTH;
+  bsp->cell_height = STD_CELL_HEIGHT;
+
+  bsp->width = MAX_WIN_WIDTH;
+  bsp->height = MAX_WIN_HEIGHT;
+
+  bsp->preview = gtk_preview_new (GTK_PREVIEW_GRAYSCALE);
+  gtk_preview_size (GTK_PREVIEW (bsp->preview), bsp->width, bsp->height);
+  gtk_widget_set_events (bsp->preview, BRUSH_EVENT_MASK);
+  gtk_signal_connect (GTK_OBJECT (bsp->preview), "event",
+		      (GtkSignalFunc) brush_select_events,
+		      bsp);
+  gtk_signal_connect_after (GTK_OBJECT(bsp->frame), "size_allocate",
+		       (GtkSignalFunc) brush_select_resize,
+		       bsp);
+
+  gtk_container_add (GTK_CONTAINER (bsp->frame), bsp->preview);
+  gtk_widget_show (bsp->preview);
+
+  gtk_widget_show (sbar);
+  gtk_widget_show (bsp->frame);
+
+  /*  options box  */
+  bsp->options_box = gtk_vbox_new (TRUE, 4);
+  gtk_box_pack_start (GTK_BOX (hbox), bsp->options_box, TRUE, TRUE, 0);
+
+  /*  Create the active brush label  */
+  util_box = gtk_hbox_new (FALSE, 5);
+  gtk_box_pack_start (GTK_BOX (bsp->options_box), util_box, FALSE, FALSE, 0);
+
+  bsp->brush_name = gtk_label_new ("Active");
+  gtk_box_pack_start (GTK_BOX (util_box), bsp->brush_name, FALSE, FALSE, 2);
+  bsp->brush_size = gtk_label_new ("(0x0)");
+  gtk_box_pack_start (GTK_BOX (util_box), bsp->brush_size, FALSE, FALSE, 2);
+
+  gtk_widget_show (bsp->brush_name);
+  gtk_widget_show (bsp->brush_size);
+  gtk_widget_show (util_box);
 
   /*  Create the paint mode option menu  */
   old_paint_mode = get_brush_paint_mode ();
-  option_menu = BuildMenu (options_form_widget, XmMENU_OPTION, "Mode: ",
-			   0, False, option_items,
-			   DefaultVisualOfScreen (XtScreen (toplevel)),
-			   DefaultColormapOfScreen (XtScreen (toplevel)),
-			   DefaultDepthOfScreen (XtScreen (toplevel)));
 
-  XtManageChild (option_menu);
+  util_box = gtk_hbox_new (FALSE, 2);
+  gtk_box_pack_start (GTK_BOX (bsp->options_box), util_box, FALSE, FALSE, 0);
+  label = gtk_label_new ("Mode:");
+  gtk_box_pack_start (GTK_BOX (util_box), label, FALSE, FALSE, 2);
+  menu = create_paint_mode_menu (paint_mode_menu_callback);
+  option_menu = gtk_option_menu_new ();
+  gtk_box_pack_start (GTK_BOX (util_box), option_menu, FALSE, FALSE, 2);
 
+  gtk_widget_show (label);
+  gtk_widget_show (option_menu);
+  gtk_widget_show (util_box);
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
 
-  /*  Create the interpolation check box  */
-  old_interpolate = get_brush_interpolate ();
-  interpolate_widget = XtVaCreateWidget ("Interpolate", 
-					 xmToggleButtonWidgetClass, options_form_widget,
-					 XmNset, (get_brush_interpolate ()) ? True : False,
-					 NULL);
-  XtAddCallback (interpolate_widget, XmNvalueChangedCallback, interpolate_callback, NULL);
-
-  XtManageChild (interpolate_widget);
-
-  /*  Create the opacity text widget  */
+  /*  Create the opacity scale widget  */
   old_opacity = get_brush_opacity ();
 
-  n = 0;
-  XtSetArg (xt_args[n], XmNminimum, 0); n++;
-  XtSetArg (xt_args[n], XmNmaximum, 1000); n++;
-  XtSetArg (xt_args[n], XmNdecimalPoints, 1); n++;
-  XtSetArg (xt_args[n], XmNvalue, (long) (old_opacity * 1000)); n++;
-  XtSetArg (xt_args[n], XmNshowValue, True); n++;
-  XtSetArg (xt_args[n], XmNorientation, XmHORIZONTAL); n++;
+  util_box = gtk_hbox_new (FALSE, 2);
+  gtk_box_pack_start (GTK_BOX (bsp->options_box), util_box, FALSE, FALSE, 0);
+  label = gtk_label_new ("Opacity:");
+  gtk_box_pack_start (GTK_BOX (util_box), label, FALSE, FALSE, 2);
+  bsp->opacity_data = GTK_ADJUSTMENT (gtk_adjustment_new (100.0, 0.0, 100.0, 1.0, 1.0, 0.0));
+  slider = gtk_hscale_new (bsp->opacity_data);
+  gtk_box_pack_start (GTK_BOX (util_box), slider, TRUE, TRUE, 0);
+  gtk_scale_set_value_pos (GTK_SCALE (slider), GTK_POS_TOP);
+  gtk_range_set_update_policy (GTK_RANGE (slider), GTK_UPDATE_DELAYED);
+  gtk_signal_connect (GTK_OBJECT (bsp->opacity_data), "value_changed",
+		      (GtkSignalFunc) opacity_scale_update, bsp);
 
-  label_rc_widget = XtVaCreateWidget ("labelRowCol",
-				      xmRowColumnWidgetClass, options_form_widget,
-				      XmNorientation, XmHORIZONTAL,
-				      XmNnumColumns, 2, NULL);
+  gtk_widget_show (label);
+  gtk_widget_show (slider);
+  gtk_widget_show (util_box);
 
-  opacity_label = XtVaCreateManagedWidget ("Opacity:", 
-					   xmLabelWidgetClass, label_rc_widget,
-					   NULL);
+  /*  Create the brush spacing scale widget  */
+  old_spacing = get_brush_spacing ();
 
-  opacity_scale_widget = XmCreateScale (label_rc_widget, "brushOpacityScale", xt_args, n);
+  util_box = gtk_hbox_new (FALSE, 2);
+  gtk_box_pack_start (GTK_BOX (bsp->options_box), util_box, FALSE, FALSE, 0);
+  label = gtk_label_new ("Spacing:");
+  gtk_box_pack_start (GTK_BOX (util_box), label, FALSE, FALSE, 2);
+  bsp->spacing_data = GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 0.0, 1000.0, 1.0, 1.0, 0.0));
+  slider = gtk_hscale_new (bsp->spacing_data);
+  gtk_box_pack_start (GTK_BOX (util_box), slider, TRUE, TRUE, 0);
+  gtk_scale_set_value_pos (GTK_SCALE (slider), GTK_POS_TOP);
+  gtk_range_set_update_policy (GTK_RANGE (slider), GTK_UPDATE_DELAYED);
+  gtk_signal_connect (GTK_OBJECT (bsp->spacing_data), "value_changed",
+		      (GtkSignalFunc) spacing_scale_update, bsp);
 
-  XtAddCallback (opacity_scale_widget, XmNvalueChangedCallback, 
-		 opacity_scale_callback, NULL);
-	  
-  XtManageChild (opacity_scale_widget);
-  XtManageChild (label_rc_widget);
-
-
-  /*  Create the active brush label  */
-
-  label_rc_widget = XtVaCreateWidget ("labelRowCol",
-				      xmRowColumnWidgetClass, options_form_widget,
-				      XmNorientation, XmHORIZONTAL,
-				      XmNnumColumns, 2, NULL);
-
-  active_label = XtVaCreateManagedWidget ("Active:",
-					  xmLabelGadgetClass, label_rc_widget,
-					  NULL);
-
-  bsp->active_brush = XtVaCreateManagedWidget ("activeBrushLabel",
-					       xmLabelGadgetClass, label_rc_widget,
-					       NULL);
-
-  XtManageChild (label_rc_widget);
+  gtk_widget_show (label);
+  gtk_widget_show (slider);
+  gtk_widget_show (util_box);
 
   /*  The action area  */
-  action_items[0].data = bsp;
-  action_items[1].data = bsp;
-  action_items[2].data = bsp;
-  action_widget = build_action_area (bsp->dialog, action_items, XtNumber (action_items));
+  action_items[0].user_data = bsp;
+  action_items[1].user_data = bsp;
+  build_action_area (GTK_DIALOG (bsp->shell), action_items, 2, 0);
 
-  XtVaSetValues (action_widget,
-		 XmNtopAttachment, XmATTACH_WIDGET,
-		 XmNtopWidget, row_col_widget,
-		 XmNleftAttachment, XmATTACH_FORM,
-		 XmNrightAttachment, XmATTACH_FORM,
-		 XmNbottomAttachment, XmATTACH_FORM,
-		 XmNtopOffset, 10,
-		 XmNleftOffset, 10,
-		 XmNrightOffset, 10,
-		 XmNbottomOffset, 10,
-		 NULL);
-  XtVaSetValues (bsp->dialog, XmNdefaultPosition, False, NULL);
+  gtk_widget_show (bsp->options_box);
+  gtk_widget_show (hbox);
+  gtk_widget_show (vbox);
+  gtk_widget_show (bsp->shell);
 
-  /*  Manage the widgets  */
-  XtManageChild (action_widget);
-  XtManageChild (bsp->swin);
-  XtManageChild (options_form_widget);
-  XtManageChild (row_col_widget);
-  XtManageChild (bsp->dialog);  
+  /* calculate the scrollbar */
+  if(no_data)
+    brushes_init(FALSE);
+  /* This is done by size_allocate anyway, which is much better */
+  preview_calc_scrollbar (bsp);
 
-  XtPopup (bsp->shell, XtGrabNone);
 
-  gcv.foreground = BlackPixelOfScreen (XtScreen (bsp->dialog));
-  bsp->gc = XCreateGC (DISPLAY, XtWindow (bsp->dialog), GCForeground, &gcv);
+  /*  render the brushes into the newly created image structure  */
+  display_brushes (bsp);
 
   /*  update the active selection  */
   active = get_active_brush ();
   if (active)
-    brush_select_select (bsp, active->index);
+    {
+      int old_value = bsp->redraw;
+      bsp->redraw = FALSE;
+      brush_select_select (bsp, active->index);
+      bsp->redraw = old_value;
+    }
 
   return bsp;
 }
 
 
 void
-brush_select_select (bsp, index)
-     BrushSelectP bsp;
-     int index;
+brush_select_select (BrushSelectP bsp,
+		     int          index)
 {
   int row, col;
 
@@ -334,86 +308,184 @@ brush_select_select (bsp, index)
 
 
 void
-brush_select_free (bsp)
-     BrushSelectP bsp;
+brush_select_free (BrushSelectP bsp)
 {
   if (bsp)
     {
-      XFreeGC (DISPLAY, bsp->gc);
-      if (bsp->image)
-	image_buf_destroy (bsp->image);
-      xfree (bsp);
+      if (bsp->brush_popup != NULL)
+	gtk_widget_destroy (bsp->brush_popup);
+      g_free (bsp);
     }
 }
 
 
+/*
+ *  Local functions
+ */
 static void
-display_brush (bsp, brush, x, y)
-     BrushSelectP bsp;
-     GBrushP brush;
-     int x, y;
+brush_popup_open (BrushSelectP bsp,
+		  int          x,
+		  int          y,
+		  GBrushP      brush)
 {
+  gint x_org, y_org;
+  gint scr_w, scr_h;
+  gchar *src, *buf;
+
+  /* make sure the popup exists and is not visible */
+  if (bsp->brush_popup == NULL)
+    {
+      GtkWidget *frame;
+
+      bsp->brush_popup = gtk_window_new (GTK_WINDOW_POPUP);
+      gtk_window_set_policy (GTK_WINDOW (bsp->brush_popup), FALSE, FALSE, TRUE);
+
+      frame = gtk_frame_new (NULL);
+      gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+      gtk_container_add (GTK_CONTAINER (bsp->brush_popup), frame);
+      gtk_widget_show (frame);
+      bsp->brush_preview = gtk_preview_new (GTK_PREVIEW_GRAYSCALE);
+      gtk_container_add (GTK_CONTAINER (frame), bsp->brush_preview);
+      gtk_widget_show (bsp->brush_preview);
+    }
+  else
+    {
+      gtk_widget_hide (bsp->brush_popup);
+    }
+
+  /* decide where to put the popup */
+  gdk_window_get_origin (bsp->preview->window, &x_org, &y_org);
+  scr_w = gdk_screen_width ();
+  scr_h = gdk_screen_height ();
+  x = x_org + x - brush->mask->width * 0.5;
+  y = y_org + y - brush->mask->height * 0.5;
+  x = (x < 0) ? 0 : x;
+  y = (y < 0) ? 0 : y;
+  x = (x + brush->mask->width > scr_w) ? scr_w - brush->mask->width : x;
+  y = (y + brush->mask->height > scr_h) ? scr_h - brush->mask->height : y;
+  gtk_preview_size (GTK_PREVIEW (bsp->brush_preview), brush->mask->width, brush->mask->height);
+
+  gtk_widget_popup (bsp->brush_popup, x, y);
+  
+  /*  Draw the brush  */
+  buf = g_new (gchar, brush->mask->width);
+  src = (gchar *)temp_buf_data (brush->mask);
+  for (y = 0; y < brush->mask->height; y++)
+    {
+      /*  Invert the mask for display.  We're doing this because
+       *  a value of 255 in the  mask means it is full intensity.
+       *  However, it makes more sense for full intensity to show
+       *  up as black in this brush preview window...
+       */
+      for (x = 0; x < brush->mask->width; x++)
+	buf[x] = 255 - src[x];
+      gtk_preview_draw_row (GTK_PREVIEW (bsp->brush_preview), (guchar *)buf, 0, y, brush->mask->width);
+      src += brush->mask->width;
+    }
+  g_free(buf);
+  
+  /*  Draw the brush preview  */
+  gtk_widget_draw (bsp->brush_preview, NULL);
+}
+
+
+static void
+brush_popup_close (BrushSelectP bsp)
+{
+  if (bsp->brush_popup != NULL)
+    gtk_widget_hide (bsp->brush_popup);
+}
+static void
+display_brush (BrushSelectP bsp,
+	       GBrushP      brush,
+	       int          col,
+	       int          row)
+{
+  TempBuf * brush_buf;
   unsigned char * src, *s;
   unsigned char * buf, *b;
-  long src_width;
+  int width, height;
+  int offset_x, offset_y;
+  int yend;
+  int ystart;
   int i, j;
 
-  buf = (unsigned char *) xmalloc (sizeof (char) * brush->mask->width);
+  buf = (unsigned char *) g_malloc (sizeof (char) * bsp->cell_width);
 
-  /*  Draw the brush mask to the image buffer  */
-  src_width = brush->mask->width * brush->mask->bytes;
-  src = temp_buf_data (brush->mask);
+  brush_buf = brush->mask;
 
-  for (i = y; i < y + brush->mask->height; i++)
+  /*  calculate the offset into the image  */
+  width = (brush_buf->width > bsp->cell_width) ? bsp->cell_width :
+    brush_buf->width;
+  height = (brush_buf->height > bsp->cell_height) ? bsp->cell_height :
+    brush_buf->height;
+
+  offset_x = col * bsp->cell_width + ((bsp->cell_width - width) >> 1);
+  offset_y = row * bsp->cell_height + ((bsp->cell_height - height) >> 1)
+    - bsp->scroll_offset;
+
+  ystart = BOUNDS (offset_y, 0, bsp->preview->requisition.height);
+  yend = BOUNDS (offset_y + height, 0, bsp->preview->requisition.height);
+
+  /*  Get the pointer into the brush mask data  */
+  src = mask_buf_data (brush_buf) + (ystart - offset_y) * brush_buf->width;
+
+  for (i = ystart; i < yend; i++)
     {
-      /*  Invert the mask for display.  We're doing this because a value of 255 in the
-       *  mask means that is full intensity.  However, it makes more sense for full
-       *  intensity to show up as black in this brush preview window...
+      /*  Invert the mask for display.  We're doing this because
+       *  a value of 255 in the  mask means it is full intensity.
+       *  However, it makes more sense for full intensity to show
+       *  up as black in this brush preview window...
        */
       s = src;
       b = buf;
-      j = src_width;
-      while (j--)
+      for (j = 0; j < width; j++)
 	*b++ = 255 - *s++;
 
-      image_buf_draw_row (bsp->image, buf, x, i, brush->mask->width);
+      gtk_preview_draw_row (GTK_PREVIEW (bsp->preview), buf, offset_x, i, width);
 
-      src += src_width;
+      src += brush_buf->width;
     }
 
-  xfree (buf);
+  g_free (buf);
 }
 
 
 static void
-display_setup (bsp)
-     BrushSelectP bsp;
+display_setup (BrushSelectP bsp)
 {
   unsigned char * buf;
   int i;
 
-  buf = (unsigned char *) xmalloc (sizeof (char) * image_buf_width (bsp->image));
+  buf = (unsigned char *) g_malloc (sizeof (char) * bsp->preview->requisition.width);
 
   /*  Set the buffer to white  */
-  memset (buf, 255, image_buf_width (bsp->image));
+  memset (buf, 255, bsp->preview->requisition.width);
 
   /*  Set the image buffer to white  */
-  for (i = 0; i < image_buf_height (bsp->image); i++)
-    image_buf_draw_row (bsp->image, buf, 0, i, image_buf_width (bsp->image));
+  for (i = 0; i < bsp->preview->requisition.height; i++)
+    gtk_preview_draw_row (GTK_PREVIEW (bsp->preview), buf, 0, i, bsp->preview->requisition.width);
 
-  xfree (buf);
-
+  g_free (buf);
 }
 
 
 static void
-display_brushes (bsp)
-     BrushSelectP bsp;
+display_brushes (BrushSelectP bsp)
 {
-  link_ptr list = brush_list;    /*  the global brush list  */
+  GSList * list = brush_list;    /*  the global brush list  */
+  int row, col;
   GBrushP brush;
-  int row, col;                  /*  current row and column  */
-  int offset_x, offset_y;        /*  offset into brush box  */
+
+  /*  If there are no brushes, insensitize widgets  */
+  if (brush_list == NULL)
+    {
+      gtk_widget_set_sensitive (bsp->options_box, FALSE);
+      return;
+    }
+  /*  Else, sensitize widgets  */
+  else
+    gtk_widget_set_sensitive (bsp->options_box, TRUE);
 
   /*  setup the display area  */
   display_setup (bsp);
@@ -423,12 +495,8 @@ display_brushes (bsp)
     {
       brush = (GBrushP) list->data;
 
-      /*  calculate the offset into the image  */
-      offset_x = col * bsp->cell_width + ((bsp->cell_width - brush->mask->width) >> 1);
-      offset_y = row * bsp->cell_height + ((bsp->cell_height - brush->mask->height) >> 1);
-
-      /*  draw the brush  */
-      display_brush (bsp, brush, offset_x, offset_y);
+      /*  Display the brush  */
+      display_brush (bsp, brush, col, row);
 
       /*  increment the counts  */
       if (++col == NUM_BRUSH_COLUMNS)
@@ -437,105 +505,258 @@ display_brushes (bsp)
 	  col = 0;
 	}
 
-      list = next_item (list);
+      list = g_slist_next (list);
     }
 }
 
 
 static void
-brush_select_show_selected (bsp, row, col)
-     BrushSelectP bsp;
-     int row, col;
+brush_select_show_selected (BrushSelectP bsp,
+			    int          row,
+			    int          col)
 {
+  GdkRectangle area;
   static int old_row = 0;
   static int old_col = 0;
   unsigned char * buf;
+  int yend;
+  int ystart;
   int offset_x, offset_y;
   int i;
 
-  buf = (unsigned char *) xmalloc (sizeof (char) * bsp->cell_width);
+  buf = (unsigned char *) g_malloc (sizeof (char) * bsp->cell_width);
 
-  /*  remove the old selection  */
-  offset_x = old_col * bsp->cell_width;
-  offset_y = old_row * bsp->cell_height;
-
-  /*  set the buf to white  */
-  memset (buf, 255, bsp->cell_width);
-
-  for (i = 0; i < bsp->cell_height; i++)
+  if (old_col != col || old_row != row)
     {
-      if (i == 0 || i == (bsp->cell_height - 1))
-	image_buf_draw_row (bsp->image, buf, offset_x, offset_y + i, bsp->cell_width);
-      else
+      /*  remove the old selection  */
+      offset_x = old_col * bsp->cell_width;
+      offset_y = old_row * bsp->cell_height - bsp->scroll_offset;
+
+      ystart = BOUNDS (offset_y , 0, bsp->preview->requisition.height);
+      yend = BOUNDS (offset_y + bsp->cell_height, 0, bsp->preview->requisition.height);
+
+      /*  set the buf to white  */
+      memset (buf, 255, bsp->cell_width);
+
+      for (i = ystart; i < yend; i++)
 	{
-	  image_buf_draw_row (bsp->image, buf, offset_x, offset_y + i, 1);
-	  image_buf_draw_row (bsp->image, buf, offset_x + bsp->cell_width - 1, offset_y + i, 1);
+	  if (i == offset_y || i == (offset_y + bsp->cell_height - 1))
+	    gtk_preview_draw_row (GTK_PREVIEW (bsp->preview), buf, offset_x, i, bsp->cell_width);
+	  else
+	    {
+	      gtk_preview_draw_row (GTK_PREVIEW (bsp->preview), buf, offset_x, i, 1);
+	      gtk_preview_draw_row (GTK_PREVIEW (bsp->preview), buf, offset_x + bsp->cell_width - 1, i, 1);
+	    }
+	}
+
+      if (bsp->redraw)
+	{
+	  area.x = offset_x;
+	  area.y = ystart;
+	  area.width = bsp->cell_width;
+	  area.height = (yend - ystart);
+	  gtk_widget_draw (bsp->preview, &area);
 	}
     }
-  image_buf_put_area (bsp->image, XtWindow (bsp->preview), bsp->gc, offset_x, offset_y,
-					    bsp->cell_width, bsp->cell_height);
 
   /*  make the new selection  */
   offset_x = col * bsp->cell_width;
-  offset_y = row * bsp->cell_height;
+  offset_y = row * bsp->cell_height - bsp->scroll_offset;
+
+  ystart = BOUNDS (offset_y , 0, bsp->preview->requisition.height);
+  yend = BOUNDS (offset_y + bsp->cell_height, 0, bsp->preview->requisition.height);
 
   /*  set the buf to black  */
   memset (buf, 0, bsp->cell_width);
 
-  for (i = 0; i < bsp->cell_height; i++)
+  for (i = ystart; i < yend; i++)
     {
-      if (i == 0 || i == (bsp->cell_height - 1))
-	image_buf_draw_row (bsp->image, buf, offset_x, offset_y + i, bsp->cell_width);
+      if (i == offset_y || i == (offset_y + bsp->cell_height - 1))
+	gtk_preview_draw_row (GTK_PREVIEW (bsp->preview), buf, offset_x, i, bsp->cell_width);
       else
 	{
-	  image_buf_draw_row (bsp->image, buf, offset_x, offset_y + i, 1);
-	  image_buf_draw_row (bsp->image, buf, offset_x + bsp->cell_width - 1, offset_y + i, 1);
+	  gtk_preview_draw_row (GTK_PREVIEW (bsp->preview), buf, offset_x, i, 1);
+	  gtk_preview_draw_row (GTK_PREVIEW (bsp->preview), buf, offset_x + bsp->cell_width - 1, i, 1);
 	}
     }
-  image_buf_put_area (bsp->image, XtWindow (bsp->preview), bsp->gc, offset_x, offset_y,
-					    bsp->cell_width, bsp->cell_height);
+
+  if (bsp->redraw)
+    {
+      area.x = offset_x;
+      area.y = ystart;
+      area.width = bsp->cell_width;
+      area.height = (yend - ystart);
+      gtk_widget_draw (bsp->preview, &area);
+    }
 
   old_row = row;
   old_col = col;
 
-  xfree (buf);
-}
-
-
-static void 
-draw_preview (bsp)
-     BrushSelectP bsp;
-{
-  /*  Draw the image buf to the preview window  */
-  image_buf_put (bsp->image, XtWindow (bsp->preview), bsp->gc);
+  g_free (buf);
 }
 
 
 static void
-update_active_brush_field (bsp)
-     BrushSelectP bsp;
+preview_calc_scrollbar (BrushSelectP bsp)
+{
+  int num_rows;
+  int page_size;
+  int max;
+  int offs;
+  /* int rowy; */
+
+  offs = bsp->scroll_offset;
+  num_rows = (num_brushes + NUM_BRUSH_COLUMNS - 1) / NUM_BRUSH_COLUMNS;
+  max = num_rows * bsp->cell_width;
+  if (!num_rows) num_rows = 1;
+  page_size = bsp->preview->allocation.height;
+  page_size = ((page_size < max) ? page_size : max);
+  /*
+  rowy = (get_active_brush()->index / NUM_BRUSH_COLUMNS) * bsp->cell_width
+	 + bsp->cell_width/2;
+  if((rowy < offs) || (rowy > (offs + page_size)))
+    offs = rowy - page_size/2;
+  offs = MIN(MAX(offs, 0), max - page_size);
+  */
+
+  bsp->scroll_offset = offs;
+  bsp->sbar_data->value = bsp->scroll_offset;
+  bsp->sbar_data->upper = max;
+  /* bsp->sbar_data->page_size = page_size; */
+  bsp->sbar_data->page_size = ((page_size < max) ? page_size : max);
+  bsp->sbar_data->page_increment = (page_size >> 1);
+  bsp->sbar_data->step_increment = bsp->cell_width;
+
+  gtk_signal_emit_by_name (GTK_OBJECT (bsp->sbar_data), "changed");
+}
+
+static gint 
+brush_select_resize (GtkWidget *widget, 
+		     GdkEvent *event, 
+		     BrushSelectP bsp)
+{
+   NUM_BRUSH_COLUMNS = (gint)((widget->allocation.width - 4) / STD_CELL_WIDTH);
+   NUM_BRUSH_ROWS = (num_brushes + NUM_BRUSH_COLUMNS - 1) / NUM_BRUSH_COLUMNS;
+   
+   bsp->width = widget->allocation.width - 4;
+   bsp->height = widget->allocation.height - 4;
+ 
+   gtk_preview_size (GTK_PREVIEW (bsp->preview), bsp->width, bsp->height);
+   
+   /*  recalculate scrollbar extents  */
+   preview_calc_scrollbar (bsp);
+ 
+   /*  render the patterns into the newly created image structure  */
+   display_brushes (bsp);
+ 
+   /*  update the display  */   
+   if (bsp->redraw)
+	gtk_widget_draw (bsp->preview, NULL);
+   
+   return FALSE;
+}
+ 
+static void
+update_active_brush_field (BrushSelectP bsp)
 {
   GBrushP brush;
-  XmString str;
+  char buf[32];
 
   brush = get_active_brush ();
 
-  if (!brush) 
+  if (!brush)
     return;
 
-  str = XmStringCreateLocalized (brush->name);
+  /*  Set brush name  */
+  gtk_label_set (GTK_LABEL (bsp->brush_name), brush->name);
 
-  XtVaSetValues (bsp->active_brush, XmNlabelString, str, NULL);
+  /*  Set brush size  */
+  sprintf (buf, "(%d X %d)", brush->mask->width, brush->mask->height);
+  gtk_label_set (GTK_LABEL (bsp->brush_size), buf);
 
-  XmStringFree (str);
+  /*  Set brush spacing  */
+  bsp->spacing_data->value = get_brush_spacing ();
+  gtk_signal_emit_by_name (GTK_OBJECT (bsp->spacing_data), "value_changed");
 }
 
 
+static gint
+brush_select_events (GtkWidget    *widget,
+		     GdkEvent     *event,
+		     BrushSelectP  bsp)
+{
+  GdkEventButton *bevent;
+  GBrushP brush;
+  int row, col, index;
+
+  switch (event->type)
+    {
+    case GDK_EXPOSE:
+      break;
+
+    case GDK_BUTTON_PRESS:
+      bevent = (GdkEventButton *) event;
+
+      if (bevent->button == 1)
+	{
+	  col = bevent->x / bsp->cell_width;
+	  row = (bevent->y + bsp->scroll_offset) / bsp->cell_height;
+	  index = row * NUM_BRUSH_COLUMNS + col;
+
+	  /*  Get the brush and display the popup brush preview  */
+	  if ((brush = get_brush_by_index (index)))
+	    {
+	      gdk_pointer_grab (bsp->preview->window, FALSE,
+				(GDK_POINTER_MOTION_HINT_MASK |
+				 GDK_BUTTON1_MOTION_MASK |
+				 GDK_BUTTON_RELEASE_MASK),
+				NULL, NULL, bevent->time);
+
+	      /*  Make this brush the active brush  */
+	      select_brush (brush);
+
+	      /*  Show the brush popup window if the brush is too large  */
+	      if (brush->mask->width > bsp->cell_width ||
+		  brush->mask->height > bsp->cell_height)
+		brush_popup_open (bsp, bevent->x, bevent->y, brush);
+	    }
+	}
+      break;
+
+    case GDK_BUTTON_RELEASE:
+      bevent = (GdkEventButton *) event;
+
+      if (bevent->button == 1)
+	{
+	  /*  Ungrab the pointer  */
+	  gdk_pointer_ungrab (bevent->time);
+
+	  /*  Close the brush popup window  */
+	  brush_popup_close (bsp);
+	}
+      break;
+    case GDK_DELETE:
+      /* g_warning ("test"); */
+      break;
+
+    default:
+      break;
+    }
+
+  return FALSE;
+}
+
+static gint
+brush_select_delete_callback (GtkWidget *w, GdkEvent *e, gpointer data)
+{
+  brush_select_close_callback (w, data);
+
+  return TRUE;
+}
+
 static void
-brush_select_close_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+brush_select_close_callback (GtkWidget *w,
+			     gpointer   client_data)
 {
   BrushSelectP bsp;
 
@@ -543,17 +764,16 @@ brush_select_close_callback (w, client_data, call_data)
 
   old_paint_mode = get_brush_paint_mode ();
   old_opacity = get_brush_opacity ();
-  old_interpolate = get_brush_interpolate ();
+  old_spacing = get_brush_spacing ();
 
-  XtPopdown (bsp->shell);
+  if (GTK_WIDGET_VISIBLE (bsp->shell))
+    gtk_widget_hide (bsp->shell);
 }
 
 
 static void
-brush_select_refresh_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+brush_select_refresh_callback (GtkWidget *w,
+			       gpointer   client_data)
 {
   BrushSelectP bsp;
   GBrushP active;
@@ -561,140 +781,74 @@ brush_select_refresh_callback (w, client_data, call_data)
   bsp = (BrushSelectP) client_data;
 
   /*  re-init the brush list  */
-  brushes_init ();
-
-  /*  recreate the preview window  */
-  create_preview (bsp);
+  brushes_init(FALSE);
 
   /*  update the active selection  */
   active = get_active_brush ();
   if (active)
     brush_select_select (bsp, active->index);
 
+  /*  recalculate scrollbar extents  */
+  preview_calc_scrollbar (bsp);
+
+  /*  render the brushes into the newly created image structure  */
+  display_brushes (bsp);
+
+ 
+
   /*  update the display  */
-  draw_preview (bsp);
+  if (bsp->redraw)
+    gtk_widget_draw (bsp->preview, NULL);
 }
 
 
 static void
-brush_select_cancel_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+preview_scroll_update (GtkAdjustment *adjustment,
+		       gpointer       data)
 {
   BrushSelectP bsp;
+  GBrushP active;
+  int row, col;
 
-  bsp = (BrushSelectP) client_data;
+  bsp = data;
 
-  set_brush_paint_mode (old_paint_mode);
-  set_brush_opacity (old_opacity);
-  set_brush_interpolate (old_interpolate);
-
-  XtPopdown (bsp->shell);
-}
-
-
-static void
-brush_select_button_press (w, client_data, event, continue_to_dispatch)
-     Widget w;
-     XtPointer client_data;
-     XEvent * event;
-     Boolean * continue_to_dispatch;
-{
-  XButtonPressedEvent *bevent;
-  BrushSelectP bsp;
-  GBrushP brush;
-  int row, col, index;
-  
-  bsp = (BrushSelectP) client_data;
-  bevent = (XButtonPressedEvent*) event;
-
-  col = bevent->x / bsp->cell_width;
-  row = bevent->y / bsp->cell_height;
-  index = row * NUM_BRUSH_COLUMNS + col;
-
-  brush = get_brush_by_index (index);
-
-  if (brush)
-    /*  Make this brush the active brush  */
-    select_brush (brush);
-}
-
-
-static void
-preview_draw_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
-{
-  draw_preview ((BrushSelectP) client_data);
-}
-
-
-static void
-paint_mode_menu_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
-{
-  set_brush_paint_mode ((int) client_data);
-}
-
-
-static void
-opacity_scale_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
-{
-  XmScaleCallbackStruct *info;
-  float opacity;
-
-  info = (XmScaleCallbackStruct*) call_data;
-
-  /*  convert opacity value  */
-  opacity = info->value / 1000.0;
-
-  set_brush_opacity (opacity);
-}
-
-
-static void
-interpolate_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
-{
-  XmToggleButtonCallbackStruct * tbcs = (XmToggleButtonCallbackStruct *) call_data;
-
-  set_brush_interpolate (tbcs->set);
-}
-
-
-static void
-max_brush_extents (width, height)
-     int * width, * height;
-{
-  link_ptr list = brush_list;   /*  the global brush list  */
-  GBrushP brush;
-
-  *width = MIN_WIDTH;
-  *height = MIN_HEIGHT;
-
-  while (list)
+  if (bsp)
     {
-      brush = (GBrushP) list->data;
+      bsp->scroll_offset = adjustment->value;
+      display_brushes (bsp);
 
-      if (*width < brush->mask->width)
-	*width = brush->mask->width;
+      active = get_active_brush ();
+      if (active)
+	{
+	  row = active->index / NUM_BRUSH_COLUMNS;
+	  col = active->index - row * NUM_BRUSH_COLUMNS;
+	  brush_select_show_selected (bsp, row, col);
+	}
 
-      if (*height < brush->mask->height)
-	*height = brush->mask->height;
-
-      list = next_item (list);
+      if (bsp->redraw)
+	gtk_widget_draw (bsp->preview, NULL);
     }
-  *width += MARGIN_WIDTH;
-  *height += MARGIN_HEIGHT;
+}
+
+static void
+paint_mode_menu_callback (GtkWidget *w,
+			  gpointer   client_data)
+{
+  set_brush_paint_mode ((long) client_data);
 }
 
 
+static void
+opacity_scale_update (GtkAdjustment *adjustment,
+		      gpointer       data)
+{
+  set_brush_opacity (adjustment->value / 100.0);
+}
+
+
+static void
+spacing_scale_update (GtkAdjustment *adjustment,
+		      gpointer       data)
+{
+  set_brush_spacing ((int) adjustment->value);
+}

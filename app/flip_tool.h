@@ -13,19 +13,21 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __FLIP_TOOL_H__
 #define __FLIP_TOOL_H__
 
 #include "tools.h"
+#include "procedural_db.h"
 
 /*  Flip tool functions  */
 
-void *        flip_tool_transform (Tool *, XtPointer, int);
-Tool *        tools_new_flip_horz    ();
-Tool *        tools_new_flip_vert    ();
+void *        flip_tool_transform    (Tool *, gpointer, int);
+Tool *        tools_new_flip         (void);
 void          tools_free_flip_tool   (Tool *);
 
+/*  Procedure definition and marshalling function  */
+extern ProcRecord flip_proc;
 
 #endif  /*  __FLIP_TOOL_H__  */

@@ -13,13 +13,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdlib.h>
 #include "appenv.h"
 #include "scale.h"
 #include "scroll.h"
 #include "cursorutil.h"
+#include "tools.h"
 
 
 /*  This is the delay before dithering begins
@@ -27,161 +28,198 @@
  */
 #define DITHER_DELAY 250  /*  milliseconds  */
 
+/*  Locally defined functions  */
+static int scroll_display (GDisplay *, int, int);
 
 /*  STATIC variables  */
 /*  These are the values of the initial pointer grab   */
 static int startx, starty;
 
-
-void
-vert_scrolled (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+gint
+scrollbar_vert_update (GtkAdjustment *adjustment,
+		       gpointer       data)
 {
   GDisplay *gdisp;
-  XmScrollBarCallbackStruct *cbs =
-    (XmScrollBarCallbackStruct *) call_data;
 
-  gdisp = (GDisplay *) client_data;
+  gdisp = (GDisplay *) data;
 
-  if (cbs->value != gdisp->offset_y)
-    {
-      gdisp->offset_y = cbs->value;
+  scroll_display (gdisp, 0, (adjustment->value - gdisp->offset_y));
 
-      gdisplay_disp_region (gdisp, 0, 0, gdisp->disp_image->width, 
-			    gdisp->disp_image->height,
-			    DITHER_DELAY);
-    }
+  return FALSE;
 }
 
 
-void
-horz_scrolled (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+gint
+scrollbar_horz_update (GtkAdjustment *adjustment,
+		       gpointer       data)
 {
   GDisplay *gdisp;
-  XmScrollBarCallbackStruct *cbs =
-    (XmScrollBarCallbackStruct *) call_data;
 
-  gdisp = (GDisplay *) client_data;
+  gdisp = (GDisplay *) data;
 
-  if (cbs->value != gdisp->offset_x)
-    {
-      gdisp->offset_x = cbs->value;
-  
-      gdisplay_disp_region (gdisp, 0, 0, gdisp->disp_image->width, 
-			    gdisp->disp_image->height,
-			    DITHER_DELAY);
-    }
+  scroll_display (gdisp, (adjustment->value - gdisp->offset_x), 0);
 
+  return FALSE;
 }
 
-void start_grab_and_scroll (gdisp, bevent)
-     GDisplay *gdisp;
-     XButtonPressedEvent *bevent;
+void
+start_grab_and_scroll (GDisplay       *gdisp,
+		       GdkEventButton *bevent)
 {
-  Cursor cursor;
-
-  cursor = XCreateFontCursor (DISPLAY, XC_fleur);
+  GdkCursor *cursor;
 
   startx = bevent->x + gdisp->offset_x;
   starty = bevent->y + gdisp->offset_y;
 
-  XGrabPointer (DISPLAY, XtWindow (gdisp->disp_image->canvas), False,
-		Button2MotionMask | ButtonReleaseMask, GrabModeAsync,
-		GrabModeAsync, None, cursor, bevent->time);
-
-  XFreeCursor (DISPLAY, cursor);
+  cursor = gdk_cursor_new (GDK_FLEUR);
+  gdk_window_set_cursor (gdisp->canvas->window, cursor);
+  gdk_cursor_destroy (cursor);
 }
 
 
-void end_grab_and_scroll (gdisp, bevent)
-     GDisplay *gdisp;
-     XButtonReleasedEvent *bevent;
+void
+end_grab_and_scroll (GDisplay       *gdisp,
+		     GdkEventButton *bevent)
 {
-  XUngrabPointer (DISPLAY, bevent->time);
+  GdkCursor *cursor;
+
+  cursor = gdk_cursor_new (gdisp->current_cursor);
+  gdk_window_set_cursor (gdisp->canvas->window, cursor);
+  gdk_cursor_destroy (cursor);
 }
 
 
-void grab_and_scroll (drawing_a, client_data, event, continue_to_dispatch)
-     Widget drawing_a;
-     XtPointer client_data;
-     XEvent * event;
-     Boolean *continue_to_dispatch;
+void
+grab_and_scroll (GDisplay       *gdisp,
+		 GdkEventMotion *mevent)
 {
-  XMotionEvent *mevent;
-  GDisplay *gdisp;
-  int old_x, old_y;
-
-  gdisp = (GDisplay *) client_data;
-  mevent = (XMotionEvent *) event;
-
-  old_x = gdisp->offset_x;
-  old_y = gdisp->offset_y;
-
-  gdisp->offset_x = startx - mevent->x;
-  gdisp->offset_y = starty - mevent->y;
-
-  bounds_checking (gdisp);
-
-  if (gdisp->offset_x != old_x || gdisp->offset_y != old_y)
-    {
-      setup_scale (gdisp);
-
-      gdisplay_disp_region (gdisp, 0, 0, gdisp->disp_image->width, 
-			    gdisp->disp_image->height,
-			    DITHER_DELAY);
-    }
+  scroll_display (gdisp, (startx - mevent->x - gdisp->offset_x),
+		  (starty - mevent->y - gdisp->offset_y));
 }
 
 
-void scroll_to_pointer_position (gdisp, mevent)
-     GDisplay * gdisp;
-     XMotionEvent * mevent;
+void
+scroll_to_pointer_position (GDisplay       *gdisp,
+			    GdkEventMotion *mevent)
 {
-  int old_x, old_y;
-
-  Window root, child;
-  int root_x, root_y;
   int child_x, child_y;
-  unsigned int mask;
-  
-  old_x = gdisp->offset_x;
-  old_y = gdisp->offset_y;
+  int off_x, off_y;
+
+  off_x = off_y = 0;
 
   /*  The cases for scrolling  */
   if (mevent->x < 0)
-    gdisp->offset_x += mevent->x;
-  else if (mevent->x > gdisp->disp_image->width)
-    gdisp->offset_x += (mevent->x - gdisp->disp_image->width);
+    off_x = mevent->x;
+  else if (mevent->x > gdisp->disp_width)
+    off_x = mevent->x - gdisp->disp_width;
   if (mevent->y < 0)
-    gdisp->offset_y += mevent->y;
-  else if (mevent->y > gdisp->disp_image->height)
-    gdisp->offset_y += (mevent->y - gdisp->disp_image->height);
+    off_y = mevent->y;
+  else if (mevent->y > gdisp->disp_height)
+    off_y = mevent->y - gdisp->disp_height;
 
-  bounds_checking (gdisp);
-
-  if (gdisp->offset_x != old_x || gdisp->offset_y != old_y)
+  if (scroll_display (gdisp, off_x, off_y))
     {
-      setup_scale (gdisp);
-
-      gdisplay_disp_region (gdisp, 0, 0, gdisp->disp_image->width, 
-			    gdisp->disp_image->height,
-			    DITHER_DELAY);
-
-      XQueryPointer (DISPLAY, XtWindow (gdisp->disp_image->canvas),
-		     &root, &child,
-		     &root_x, &root_y,
-		     &child_x, &child_y,
-		     &mask);
+      gdk_window_get_pointer (gdisp->canvas->window, &child_x, &child_y, NULL);
 
       if (child_x == mevent->x && child_y == mevent->y)
 	/*  Put this event back on the queue -- so it keeps scrolling */
-	XPutBackEvent (DISPLAY, (XEvent *) mevent);
+	gdk_event_put ((GdkEvent *) mevent);
     }
 }
 
 
+static int
+scroll_display (GDisplay *gdisp,
+		int       x_offset,
+		int       y_offset)
+{
+  int old_x, old_y;
+  int src_x, src_y;
+  int dest_x, dest_y;
+  GdkEvent *event;
+
+  old_x = gdisp->offset_x;
+  old_y = gdisp->offset_y;
+
+  gdisp->offset_x += x_offset;
+  gdisp->offset_y += y_offset;
+
+  bounds_checking (gdisp);
+
+  /*  the actual changes in offset  */
+  x_offset = (gdisp->offset_x - old_x);
+  y_offset = (gdisp->offset_y - old_y);
+
+  if (x_offset || y_offset)
+    {
+      setup_scale (gdisp);
+
+      src_x = (x_offset < 0) ? 0 : x_offset;
+      src_y = (y_offset < 0) ? 0 : y_offset;
+      dest_x = (x_offset < 0) ? -x_offset : 0;
+      dest_y = (y_offset < 0) ? -y_offset : 0;
+
+      /*  reset the old values so that the tool can accurately redraw  */
+      gdisp->offset_x = old_x;
+      gdisp->offset_y = old_y;
+
+      /*  stop the currently active tool  */
+      active_tool_control (PAUSE, (void *) gdisp);
+
+      /*  set the offsets back to the new values  */
+      gdisp->offset_x += x_offset;
+      gdisp->offset_y += y_offset;
+
+      gdk_draw_pixmap (gdisp->canvas->window,
+		       gdisp->scroll_gc,
+		       gdisp->canvas->window,
+		       src_x, src_y,
+		       dest_x, dest_y,
+		       (gdisp->disp_width - abs (x_offset)),
+		       (gdisp->disp_height - abs (y_offset)));
+
+      /*  resume the currently active tool  */
+      active_tool_control (RESUME, (void *) gdisp);
+
+      /*  scale the image into the exposed regions  */
+      if (x_offset)
+	{
+	  src_x = (x_offset < 0) ? 0 : gdisp->disp_width - x_offset;
+	  src_y = 0;
+	  gdisplay_expose_area (gdisp,
+				src_x, src_y,
+				abs (x_offset), gdisp->disp_height);
+	}
+      if (y_offset)
+	{
+	  src_x = 0;
+	  src_y = (y_offset < 0) ? 0 : gdisp->disp_height - y_offset;
+	  gdisplay_expose_area (gdisp,
+				src_x, src_y,
+				gdisp->disp_width, abs (y_offset));
+	}
+
+      if (x_offset || y_offset)
+	gdisplays_flush ();
+
+
+      /* Make sure graphics expose events are processed before scrolling
+       * again */
+      
+      while ((event = gdk_event_get_graphics_expose (gdisp->canvas->window)) 
+           != NULL)
+      {
+        gtk_widget_event (gdisp->canvas, event);
+        if (event->expose.count == 0)
+          {
+            gdk_event_free (event);
+            break;
+          }
+        gdk_event_free (event);
+      }
+
+      return 1;
+    }
+
+  return 0;
+}

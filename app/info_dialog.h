@@ -13,19 +13,19 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __INFO_DIALOG_H__
 #define __INFO_DIALOG_H__
 
-#include "linked.h"
+#include "gtk/gtk.h"
 
 typedef struct _info_field InfoField;
 
 struct _info_field
 {
-  Widget   w;
-  char *   text_ptr;
+  GtkWidget *w;
+  char *     text_ptr;
 };
 
 
@@ -33,21 +33,21 @@ typedef struct _info_dialog InfoDialog;
 
 struct _info_dialog
 {
-  Widget    shell;
-  Widget    dialog;
-  Widget    rowcol;
-  Widget    info_area;
-  Widget    action_area;
-  Widget    ok_button;
-  Widget    cancel_button;
+  GtkWidget   *shell;
+  GtkWidget   *vbox;
+  GtkWidget   *info_area;
+  GtkWidget   *labels;
+  GtkWidget   *values;
 
-  link_ptr  field_list;
+  GSList      *field_list;
+
+  void        *user_data;
 };
 
 
 /*  Info Dialog functions  */
 
-InfoDialog *  info_dialog_new         (char *, char *);
+InfoDialog *  info_dialog_new         (char *);
 void          info_dialog_free        (InfoDialog *);
 void          info_dialog_add_field   (InfoDialog *, char *, char *);
 void          info_dialog_popup       (InfoDialog *);
@@ -55,8 +55,3 @@ void          info_dialog_popdown     (InfoDialog *);
 void          info_dialog_update      (InfoDialog *);
 
 #endif  /*  __INFO_DIALOG_H__  */
-
-
-
-
-

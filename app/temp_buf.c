@@ -13,14 +13,16 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+#include <errno.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/errno.h>
 #include "appenv.h"
+#include "drawable.h"
 #include "errors.h"
 #include "gdisplay.h"
 #include "general.h"
@@ -31,7 +33,7 @@
 
 static unsigned char *   temp_buf_allocate (unsigned int);
 static void              temp_buf_to_color (TempBuf *, TempBuf *);
-static void              temp_buf_to_grey (TempBuf *, TempBuf *);
+static void              temp_buf_to_gray (TempBuf *, TempBuf *);
 
 
 /*  Memory management  */
@@ -42,7 +44,7 @@ temp_buf_allocate (size)
 {
   unsigned char * data;
 
-  data = (unsigned char *) xmalloc (size);
+  data = (unsigned char *) g_malloc (size);
 
   return data;
 }
@@ -66,15 +68,17 @@ temp_buf_to_color (src_buf, dest_buf)
 
   while (num_bytes--)
     {
-      *dest++ = *src;
-      *dest++ = *src;
-      *dest++ = *src++;
+      unsigned char tmpch;
+      *dest++ = *src++;  /* alpha channel */
+      *dest++ = tmpch = *src++;
+      *dest++ = tmpch;
+      *dest++ = tmpch;
     }
 }
 
 
 static void
-temp_buf_to_grey (src_buf, dest_buf)
+temp_buf_to_gray (src_buf, dest_buf)
      TempBuf * src_buf;
      TempBuf * dest_buf;
 {
@@ -90,7 +94,10 @@ temp_buf_to_grey (src_buf, dest_buf)
 
   while (num_bytes--)
     {
-      pix =  0.30 * *src++;
+      *dest++ = *src++;  /* alpha channel */
+
+      pix =  0.001;
+      pix += 0.30 * *src++;
       pix += 0.59 * *src++;
       pix += 0.11 * *src++;
 
@@ -99,7 +106,7 @@ temp_buf_to_grey (src_buf, dest_buf)
 }
 
 
-TempBuf * 
+TempBuf *
 temp_buf_new (width, height, bytes, x, y, col)
      int width;
      int height;
@@ -109,36 +116,61 @@ temp_buf_new (width, height, bytes, x, y, col)
 {
   long i;
   int j;
-  unsigned char * init, * data;
+  unsigned char * data;
   TempBuf * temp;
 
-  temp = (TempBuf *) xmalloc (sizeof (TempBuf));
+  temp = (TempBuf *) g_malloc (sizeof (TempBuf));
 
   temp->width  = width;
   temp->height = height;
   temp->bytes  = bytes;
   temp->x      = x;
   temp->y      = y;
-  temp->swapped = False;
+  temp->swapped = FALSE;
   temp->filename = NULL;
 
-  temp->data   = temp_buf_allocate (width * height * bytes);
+  temp->data = data = temp_buf_allocate (width * height * bytes);
 
   /*  initialize the data  */
   if (col)
     {
-      i = width * height;
-      data = temp->data;
-      
-      while (i--)
-	{
-	  j = bytes;
-	  init = col;
-	  while (j--)
-	    *data++ = *init++;
-	}
+      /* First check if we can save a lot of work */
+      if (bytes == 1)
+        {
+          memset (data, *col, width * height);
+        }
+      else if ((bytes == 3) && (col[1] == *col) && (*col == col[2]))
+        {
+          memset (data, *col, width * height * 3);
+        }
+      else if ((bytes == 4) && (col[1] == *col) && (*col == col[2]) && (col[2] == col[3]))
+        {
+          memset (data, *col, (width * height) << 2);
+        }
+      else
+        {
+          /* No, we cannot */
+          unsigned char * dptr;
+          /* Fill the first row */
+          dptr = data;
+          for (i = width - 1; i >= 0; --i)
+            {
+              unsigned char * init;
+              j = bytes;
+              init = col;
+              while (j--)
+                *dptr++ = *init++;
+            }
+          /* Now copy from it (we set bytes to bytesperrow now) */
+          bytes *= width;
+          while (--height)
+            {
+              memcpy (dptr, data, bytes);
+              dptr += bytes;
+            }
+        }
     }
-  
+
   return temp;
 }
 
@@ -153,7 +185,7 @@ temp_buf_copy (src, dest)
 
   if (!src)
     {
-      warning ("trying to copy a temp buf which is NULL.");
+      g_message ("trying to copy a temp buf which is NULL.");
       return dest;
     }
 
@@ -163,23 +195,24 @@ temp_buf_copy (src, dest)
     {
       new = dest;
       if (dest->width != src->width || dest->height != src->height)
-	warning ("In temp_buf_copy, the widths or heights don't match.");
+	g_message ("In temp_buf_copy, the widths or heights don't match.");
+      /*  The temp buf is smart, and can translate between color and gray  */
+      /*  (only necessary if not we allocated it */
+      if (src->bytes != new->bytes)
+        {
+          if (src->bytes == 4)  /* RGB color */
+	    temp_buf_to_gray (src, new);
+          else if (src->bytes == 2) /* grayscale */
+	    temp_buf_to_color (src, new);
+          else
+	    g_message ("Cannot convert from indexed color.");
+	  return new;
+        }
     }
 
-  /*  The temp buf is smart, and can translate between color and grey  */
-  if (src->bytes != new->bytes)
-    {
-      if (src->bytes == 3)
-	temp_buf_to_grey (src, new);
-      else  /*  src->bytes == 1, new->bytes == 3  */
-	temp_buf_to_color (src, new);
-    }
-  else
-    {
-      /* make the copy */
-      length = src->width * src->height * src->bytes;
-      memcpy (temp_buf_data (new), temp_buf_data (src), length);
-    }
+  /* make the copy */
+  length = src->width * src->height * src->bytes;
+  memcpy (temp_buf_data (new), temp_buf_data (src), length);
 
   return new;
 }
@@ -200,7 +233,7 @@ temp_buf_resize (buf, bytes, x, y, w, h)
   /*  First, configure the canvas buffer  */
   if (!buf)
     buf = temp_buf_new (w, h, bytes, x, y, NULL);
-  else 
+  else
     {
       if (size != (buf->width * buf->height * buf->bytes))
       {
@@ -208,7 +241,7 @@ temp_buf_resize (buf, bytes, x, y, w, h)
 	temp_buf_unswap (buf);
 
 	/*  Reallocate the data for it  */
-	buf->data = xrealloc (buf->data, size);
+	buf->data = g_realloc (buf->data, size);
       }
 
       /*  Make sure the temp buf fields are valid  */
@@ -224,39 +257,50 @@ temp_buf_resize (buf, bytes, x, y, w, h)
 
 
 TempBuf *
-temp_buf_copy_area (src, dest, x, y, w, h)
+temp_buf_copy_area (src, dest, x, y, w, h, border)
      TempBuf * src;
      TempBuf * dest;
      int x, y;
      int w, h;
+     int border;
 {
   TempBuf * new;
   PixelRegion srcR, destR;
+  unsigned char empty[MAX_CHANNELS] = { 0, 0, 0, 0 };
   int x1, y1, x2, y2;
 
   if (!src)
     {
-      warning ("trying to copy a temp buf which is NULL.");
+      g_message ("trying to copy a temp buf which is NULL.");
       return dest;
     }
 
   /*  some bounds checking  */
-  x1 = bounds (x, 0, src->width);
-  y1 = bounds (y, 0, src->height);
-  x2 = bounds (x + w, 0, src->width);
-  y2 = bounds (y + h, 0, src->height);
+  x1 = BOUNDS (x, 0, src->width);
+  y1 = BOUNDS (y, 0, src->height);
+  x2 = BOUNDS (x + w, 0, src->width);
+  y2 = BOUNDS (y + h, 0, src->height);
 
   if (!(x2 - x1) || !(y2 - y1))
     return dest;
 
+  x = x1 - border;
+  y = y1 - border;
+  w = (x2 - x1) + border * 2;
+  h = (y2 - y1) + border * 2;
+
   if (!dest)
-    new = temp_buf_new (w, h, src->bytes, x, y, NULL);
+    new = temp_buf_new (w, h, src->bytes, x, y, empty);
   else
     {
       new = dest;
       if (dest->bytes != src->bytes)
-	warning ("In temp_buf_copy_area, the widths or heights or bytes don't match.");
+	g_message ("In temp_buf_copy_area, the widths or heights or bytes don't match.");
     }
+
+  /*  Set the offsets for the dest  */
+  new->x = src->x + x;
+  new->y = src->y + y;
 
   /*  Copy the region  */
   srcR.bytes = src->bytes;
@@ -274,123 +318,17 @@ temp_buf_copy_area (src, dest, x, y, w, h)
 }
 
 
-TempBuf *
-temp_buf_load (temp, gimage_ptr, x, y, w, h)
-     TempBuf * temp;
-     void * gimage_ptr;
-     int x, y;
-     int w, h;
-{
-  GImage * gimage;
-  int x1, y1, x2, y2;
-  int bytes;
-  PixelRegion srcPR, destPR;
-
-  gimage = (GImage *) gimage_ptr;
-  bytes  = gimage->bpp;
-
-  /*  a little bounds checking here...  */
-  x1 = bounds (x, 0, gimage->width);
-  x2 = bounds (x + w, 0, gimage->width);
-  y1 = bounds (y, 0, gimage->height);
-  y2 = bounds (y + h, 0, gimage->height);
-
-  w  = (x2 - x1);
-  h  = (y2 - y1);
-
-  /*  ignore degenerate case  */
-  if (!w || !h)
-    return temp;
-
-  if (! temp)
-    /*  Create a new temporary buffer  */
-    temp = temp_buf_new (w, h, bytes, x1, y1, NULL);
-  else
-    {
-      /*  set the origin of the temp buf  */
-      temp->x = x;
-      temp->y = y;
-    }
-
-  srcPR.w = w;
-  srcPR.h = h;
-  srcPR.bytes = bytes;
-
-  srcPR.rowstride = bytes * gimage->width;
-  destPR.rowstride = temp->bytes * temp->width;
-
-  srcPR.data = gimage->raw_image + bytes * (y1 * gimage->width + x1);
-  destPR.data = temp_buf_data (temp) + bytes * ((y1 - y) * temp->width + (x1 - x));
-
-  copy_region (&srcPR, &destPR);
-
-  return temp;
-}
-
-
-void
-temp_buf_paste (temp, gimage_ptr, x, y, w, h)
-     TempBuf * temp;
-     void * gimage_ptr;
-     int x, y;
-     int w, h;
-{
-  GImage * gimage;
-  int x1, y1, x2, y2;
-  int bytes;
-  PixelRegion srcPR, destPR;
-
-  gimage = (GImage *) gimage_ptr;
-  bytes  = gimage->bpp;
-
-  /*  make sure the temp buffer and the gimage have the same number of bytes  */
-  if (bytes != temp->bytes)
-    {
-      warning ("can't paste temp buffer because gimage and temp buf have different depths.");
-      return;
-    }
-
-  /*  a little bounds checking here...  */
-  x1 = bounds (x, 0, gimage->width);
-  x2 = bounds (x + w, 0, gimage->width);
-  y1 = bounds (y, 0, gimage->height);
-  y2 = bounds (y + h, 0, gimage->height);
-
-  w  = (x2 - x1);
-  h  = (y2 - y1);
-
-  /*  ignore degenerate case  */
-  if (!w || !h)
-    return;
-
-  srcPR.w = w;
-  srcPR.h = h;
-  srcPR.bytes = bytes;
-
-  srcPR.rowstride = bytes * temp->width;
-  destPR.rowstride = bytes * gimage->width;
-
-  srcPR.data = temp_buf_data (temp) + bytes * ((y1 - y) * temp->width + (x1 - x));
-  destPR.data = gimage->raw_image + bytes * (y1 * gimage->width + x1);
-
-  copy_region (&srcPR, &destPR);
-
-  return;
-}
-     
-
 void
 temp_buf_free (temp_buf)
      TempBuf * temp_buf;
 {
   if (temp_buf->data)
-    xfree (temp_buf->data);
-      
+    g_free (temp_buf->data);
 
   if (temp_buf->swapped)
     temp_buf_swap_free (temp_buf);
 
-  xfree (temp_buf);
+  g_free (temp_buf);
 }
 
 
@@ -426,108 +364,6 @@ mask_buf_free (mask)
      MaskBuf * mask;
 {
   temp_buf_free ((TempBuf *) mask);
-}
-
-
-MaskBuf *
-mask_convert_from_region (region_ptr, minimize)
-     void * region_ptr;
-     int minimize;
-{
-  MaskBuf * new;
-  GRegion * region;
-  link_ptr list;
-  GSegment * seg;
-  unsigned char * data, * d;
-  int x1, y1, x2, y2;
-  int i, j;
-
-  region = (GRegion *) region_ptr;
-
-  /*  find the bounds  */
-  if (minimize)
-    gregion_find_bounds (region, &x1, &y1, &x2, &y2);
-  else
-    {
-      x1 = 0; y1 = 0;
-      x2 = region->width;
-      y2 = region->extent;
-    }
-
-  /*  make sure there is a valid region defined  */
-  if (!(x2 - x1) || !(y2 - y1))
-    return NULL;
-
-  /*  create the new mask  */
-  new = mask_buf_new ((x2 - x1), (y2 - y1));
-
-  data = mask_buf_data (new);
-
-  for (i = y1; i < y2; i++)
-    {
-      list = region->segments[i];
-      
-      if (list)
-	seg = (GSegment *) list->data;
-      else
-	seg = NULL;
-
-      d = data;
-
-      for (j = x1; j < x2; j++)
-	{
-	  *d++ = (seg && j >= seg->start && j < seg->end) ? seg->value : 0;
-	  
-	  if (seg && j == seg->end - 1) 
-	    {
-	      if ((list = next_item (list)))
-		seg = (GSegment *) list->data;
-	      else
-		seg = NULL;
-	    }
-
-	}
-
-      data += new->width;
-    }
-
-  return new;
-}
-
-
-void
-mask_convert_to_region (mask, region_ptr)
-     MaskBuf * mask;
-     void * region_ptr;
-{
-  GRegion * region;
-  unsigned char * data;
-  int i, j, w;
-  unsigned char last_data;
-
-  region = (GRegion *) region_ptr;
-  data = mask_buf_data (mask);
-  
-  for (i = 0; i < mask->height; i++)
-    {
-      w = 0;
-      last_data = 0;
-      for (j = 0; j < mask->width; j++)
-	{
-	  if (w && (*data != last_data))
-	    {
-	      gregion_add_segment (region, j - w, i, w, last_data);
-	      w = 0;
-	    }
-
-	  if (*data)
-	    w++;
-
-	  last_data = *data++;
-	}
-      if (w)
-	gregion_add_segment (region, j - w, i, w, last_data);
-    }
 }
 
 
@@ -568,30 +404,26 @@ mask_buf_data (mask_buf)
  *    temp bufs are not cached in memory at all, they go right to disk.
  */
 
-#define MAX_FILENAME    256
-#define COMMAND_LENGTH  262
+#define MAX_FILENAME    2048
 
 /*  a static counter for generating unique filenames  */
 static int swap_index = 0;
-static char buf[MAX_FILENAME];
+static char filename_buf[MAX_FILENAME];
 
 /*  a static pointer which keeps track of the last request for a swapped buffer  */
 static TempBuf * cached_in_memory = NULL;
 
-/*  external error number  */
-extern int errno;
-
 
 static char *
-generate_unique_filename ()
+generate_unique_filename (void)
 {
   pid_t pid;
 
   pid = getpid ();
 
-  sprintf (buf, "%s/gimp%d.%d", swap_path, (int) pid, swap_index++);
+  sprintf (filename_buf, "%s/gimp%d.%d", temp_path, (int) pid, swap_index++);
 
-  return xstrdup (buf);
+  return g_strdup (filename_buf);
 }
 
 
@@ -609,9 +441,9 @@ temp_buf_swap (buf)
     return;
 
   /*  Set the swapped flag  */
-  buf->swapped = True;
+  buf->swapped = TRUE;
 
-  if (app_data.stingy)
+  if (stingy_memory_use)
     swap = buf;
   else
     {
@@ -632,9 +464,9 @@ temp_buf_swap (buf)
     {
       if (stat_buf.st_mode & S_IFDIR)
 	{
-	  warning ("Error in temp buf caching: \"%s\" is a directory (cannot overwrite)", 
+	  g_message ("Error in temp buf caching: \"%s\" is a directory (cannot overwrite)",
 		   filename);
-	  xfree (filename);
+	  g_free (filename);
 	  return;
 	}
     }
@@ -648,12 +480,12 @@ temp_buf_swap (buf)
   else
     {
       perror ("Error in temp buf caching");
-      warning ("Cannot write \"%s\"", filename);
-      xfree (filename);
+      g_message ("Cannot write \"%s\"", filename);
+      g_free (filename);
       return;
     }
   /*  Finally, free the buffer's data  */
-  xfree (swap->data);
+  g_free (swap->data);
   swap->data = NULL;
 
   swap->filename = filename;
@@ -666,13 +498,13 @@ temp_buf_unswap (buf)
 {
   struct stat stat_buf;
   FILE * fp;
-  char command[COMMAND_LENGTH];
+  gboolean succ = FALSE;
 
   if (!buf || !buf->swapped)
     return;
 
   /*  Set the swapped flag  */
-  buf->swapped = False;
+  buf->swapped = FALSE;
 
   /*  If the requested temp buf is still in memory, simply return  */
   if (cached_in_memory == buf)
@@ -685,24 +517,29 @@ temp_buf_unswap (buf)
   buf->data   = temp_buf_allocate (buf->width * buf->height * buf->bytes);
 
   /*  Find out if the filename of the swapped data is an existing file... */
+  /*  (buf->filname HAS to be != 0 */
   if (!stat (buf->filename, &stat_buf))
     {
       if ((fp = fopen (buf->filename, "r")))
 	{
-	  fread (buf->data, buf->width * buf->height * buf->bytes, 1, fp);
+	  size_t blocksRead;
+	  blocksRead = fread (buf->data, buf->width * buf->height * buf->bytes, 1, fp);
 	  fclose (fp);
+	  if (blocksRead != 1)
+	    perror ("Read error on temp buf");
+	  else
+	    succ = TRUE;
 	}
       else
 	perror ("Error in temp buf caching");
 
       /*  Delete the swap file  */
-      sprintf (command, "rm -f %s", buf->filename);
-      system (command);
+      unlink (buf->filename);
     }
-  else
-    warning ("Error in temp buf caching: information swapped to disk was lost!");
+  if (!succ)
+    g_message ("Error in temp buf caching: information swapped to disk was lost!");
 
-  xfree (buf->filename);   /*  free filename  */
+  g_free (buf->filename);   /*  free filename  */
   buf->filename = NULL;
 }
 
@@ -712,13 +549,12 @@ temp_buf_swap_free (buf)
      TempBuf * buf;
 {
   struct stat stat_buf;
-  char command[COMMAND_LENGTH];
 
   if (!buf->swapped)
     return;
 
   /*  Set the swapped flag  */
-  buf->swapped = False;
+  buf->swapped = FALSE;
 
   /*  If the requested temp buf is cached in memory...  */
   if (cached_in_memory == buf)
@@ -731,25 +567,20 @@ temp_buf_swap_free (buf)
   if (!stat (buf->filename, &stat_buf))
     {
       /*  Delete the swap file  */
-      sprintf (command, "rm -f %s", buf->filename);
-      system (command);
+      unlink (buf->filename);
     }
   else
-    warning ("Error in temp buf disk swapping: information swapped to disk was lost!");
+    g_message ("Error in temp buf disk swapping: information swapped to disk was lost!");
 
-  xfree (buf->filename);   /*  free filename  */
+  if (buf->filename)
+    g_free (buf->filename);   /*  free filename  */
   buf->filename = NULL;
 }
 
 
 void
-swapping_free ()
+swapping_free (void)
 {
   if (cached_in_memory)
     temp_buf_free (cached_in_memory);
 }
-
-
-
-
-

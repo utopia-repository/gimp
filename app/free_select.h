@@ -13,23 +13,28 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __FREE_SELECT_H__
 #define __FREE_SELECT_H__
 
+#include "procedural_db.h"
+
 /*  free select action functions  */
 
-void          free_select_button_press      (Tool *, XButtonEvent *, XtPointer);
-void          free_select_button_release    (Tool *, XButtonEvent *, XtPointer);
-void          free_select_motion            (Tool *, XMotionEvent *, XtPointer);
+void          free_select_button_press      (Tool *, GdkEventButton *, gpointer);
+void          free_select_button_release    (Tool *, GdkEventButton *, gpointer);
+void          free_select_motion            (Tool *, GdkEventMotion *, gpointer);
 
 
 /*  free select functions  */
 
+void          free_select_dialog       (void);
 void          free_select_draw         (Tool *);
-Tool *        tools_new_free_select    ();
+Tool *        tools_new_free_select    (void);
 void          tools_free_free_select   (Tool *);
 
+/*  Procedure definition and marshalling function  */
+extern ProcRecord free_select_proc;
 
 #endif  /*  __FREE_SELECT_H__  */

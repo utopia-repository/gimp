@@ -13,15 +13,18 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef  __COLOR_PICKER_H__
 #define  __COLOR_PICKER_H__
 
+#include "procedural_db.h"
 #include "tools.h"
 
 Tool *      tools_new_color_picker   (void);
 void        tools_free_color_picker  (Tool *);
 
+/*  Procedure definition and marshalling function  */
+extern ProcRecord color_picker_proc;
 
 #endif  /*  __COLOR_PICKER_H__  */

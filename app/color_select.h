@@ -13,42 +13,41 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __COLOR_SELECT_H__
 #define __COLOR_SELECT_H__
 
-#include "image_buf.h"
+typedef enum {
+  COLOR_SELECT_OK,
+  COLOR_SELECT_CANCEL,
+  COLOR_SELECT_UPDATE
+} ColorSelectState;
 
 typedef struct _ColorSelect _ColorSelect, *ColorSelectP;
-typedef void (*ColorSelectCallback) (int, int, int, int);
+typedef void (*ColorSelectCallback) (int, int, int, ColorSelectState, void *);
 
 struct _ColorSelect {
-  Widget shell;
-  Widget dialog;
-  Widget xy_color;
-  Widget z_color;
-  Widget sliders[6];
-  Widget toggles[6];
-  Widget new_color;
-  Widget orig_color;
-  Pixmap new_color_pixmap;
-  Pixmap orig_color_pixmap;
-  int alloc_colors;
-  XColor ncolor;
-  XColor ocolor;
-  ImageBuf xy_color_image;
-  ImageBuf z_color_image;
+  GtkWidget *shell;
+  GtkWidget *xy_color;
+  GtkWidget *z_color;
+  GtkWidget *new_color;
+  GtkWidget *orig_color;
+  GtkWidget *toggles[6];
+  GtkWidget *entries[6];
+  GtkAdjustment *slider_data[6];
   int pos[3];
   int values[6];
   int z_color_fill;
   int xy_color_fill;
   int orig_values[3];
   ColorSelectCallback callback;
-  GC gc;
+  void *client_data;
+  int wants_updates;
+  GdkGC *gc;
 };
 
-ColorSelectP color_select_new (int, int, int, ColorSelectCallback);
+ColorSelectP color_select_new (int, int, int, ColorSelectCallback, void *, int);
 void color_select_show (ColorSelectP);
 void color_select_hide (ColorSelectP);
 void color_select_free (ColorSelectP);

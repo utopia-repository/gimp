@@ -13,14 +13,12 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __CURSORUTIL_H__
 #define __CURSORUTIL_H__
 
-#include <X11/cursorfont.h>
-
-void change_win_cursor(Display *, Window, int);
-void unset_win_cursor(Display *, Window);
+void change_win_cursor(GdkWindow *, GdkCursorType);
+void unset_win_cursor(GdkWindow *);
 
 #endif /*  __CURSORUTIL_H__  */

@@ -1,0 +1,424 @@
+# Makefile.in generated automatically by automake 1.3 from Makefile.am
+
+# Copyright (C) 1994, 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+
+SHELL = /bin/sh
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DISTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+host_alias = @host_alias@
+host_triplet = @host@
+AA = @AA@
+CC = @CC@
+CPP = @CPP@
+EMACS = @EMACS@
+GIMP_MAJOR_VERSION = @GIMP_MAJOR_VERSION@
+GIMP_MICRO_VERSION = @GIMP_MICRO_VERSION@
+GIMP_MINOR_VERSION = @GIMP_MINOR_VERSION@
+GIMP_VERSION = @GIMP_VERSION@
+GTK_CFLAGS = @GTK_CFLAGS@
+GTK_CONFIG = @GTK_CONFIG@
+GTK_LIBS = @GTK_LIBS@
+JPEG = @JPEG@
+LD = @LD@
+LIBAA_LIB = @LIBAA_LIB@
+LIBJPEG_LIB = @LIBJPEG_LIB@
+LIBMPEG_LIB = @LIBMPEG_LIB@
+LIBPNG_LIB = @LIBPNG_LIB@
+LIBTIFF_LIB = @LIBTIFF_LIB@
+LIBTOOL = @LIBTOOL@
+LIBUCB_LIB = @LIBUCB_LIB@
+LIBXDELTA_LIB = @LIBXDELTA_LIB@
+LIBXMU_LIB = @LIBXMU_LIB@
+LIBXPM_LIB = @LIBXPM_LIB@
+LN_S = @LN_S@
+LPC_COMMAND = @LPC_COMMAND@
+LPC_DEF = @LPC_DEF@
+LPR_COMMAND = @LPR_COMMAND@
+LPR_DEF = @LPR_DEF@
+LPSTAT_COMMAND = @LPSTAT_COMMAND@
+LPSTAT_DEF = @LPSTAT_DEF@
+LP_COMMAND = @LP_COMMAND@
+LP_DEF = @LP_DEF@
+MAILER = @MAILER@
+MAINT = @MAINT@
+MAKEINFO = @MAKEINFO@
+MPEG = @MPEG@
+NM = @NM@
+PACKAGE = @PACKAGE@
+PNG = @PNG@
+RANLIB = @RANLIB@
+SENDMAIL = @SENDMAIL@
+TIFF = @TIFF@
+VERSION = @VERSION@
+WEBBROWSER = @WEBBROWSER@
+XD = @XD@
+XPM = @XPM@
+X_CFLAGS = @X_CFLAGS@
+X_LIBS = @X_LIBS@
+brushdata = @brushdata@
+gimpdatadir = @gimpdatadir@
+gimpdir = @gimpdir@
+gimpplugindir = @gimpplugindir@
+gradientdata = @gradientdata@
+palettedata = @palettedata@
+patterndata = @patterndata@
+
+gimpincludedir = $(includedir)/libgimp
+
+scriptdata =
+
+lib_LTLIBRARIES = libgimp.la libgimpui.la
+noinst_LIBRARIES = libgimpi.a
+
+libgimpi_a_SOURCES =	gimpprotocol.c	\
+			gimpprotocol.h	\
+			gimpwire.c	\
+			gimpwire.h
+
+libgimp_la_SOURCES =	gimp.c		\
+			gimpchannel.c	\
+			gimpdisplay.c	\
+			gimpdrawable.c	\
+			gimpgradient.c	\
+			gimpimage.c	\
+			gimplayer.c	\
+			gimppalette.c	\
+			gimppixelrgn.c	\
+			gimpprotocol.c	\
+			gimpprotocol.h	\
+			gimptile.c	\
+			gimpwire.c	\
+			gimpwire.h
+
+libgimpui_la_SOURCES =	gimpmenu.c
+
+gimpinclude_HEADERS =	gimp.h		\
+			gimpenums.h	\
+			gimpmenu.h	\
+			gimpui.h
+
+libgimp_la_LDFLAGS = -version-info 1:0:0
+libgimpui_la_LDFLAGS = -version-info 1:0:0
+
+INCLUDES = \
+	$(X_CFLAGS)			\
+	-I$(top_srcdir)			\
+	-I$(includedir)
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = ../config.h
+CONFIG_CLEAN_FILES = 
+LIBRARIES =  $(noinst_LIBRARIES)
+
+
+DEFS = @DEFS@ -I. -I$(srcdir) -I..
+CPPFLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+LIBS = @LIBS@
+libgimpi_a_LIBADD = 
+libgimpi_a_OBJECTS =  gimpprotocol.o gimpwire.o
+AR = ar
+LTLIBRARIES =  $(lib_LTLIBRARIES)
+
+libgimp_la_LIBADD = 
+libgimp_la_OBJECTS =  gimp.lo gimpchannel.lo gimpdisplay.lo \
+gimpdrawable.lo gimpgradient.lo gimpimage.lo gimplayer.lo \
+gimppalette.lo gimppixelrgn.lo gimpprotocol.lo gimptile.lo gimpwire.lo
+libgimpui_la_LIBADD = 
+libgimpui_la_OBJECTS =  gimpmenu.lo
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
+LINK = $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) -o $@
+HEADERS =  $(gimpinclude_HEADERS)
+
+DIST_COMMON =  COPYING Makefile.am Makefile.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP = --best
+SOURCES = $(libgimpi_a_SOURCES) $(libgimp_la_SOURCES) $(libgimpui_la_SOURCES)
+OBJECTS = $(libgimpi_a_OBJECTS) $(libgimp_la_OBJECTS) $(libgimpui_la_OBJECTS)
+
+all: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
+
+.SUFFIXES:
+.SUFFIXES: .S .c .lo .o .s
+$(srcdir)/Makefile.in: @MAINT@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4)
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps libgimp/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+mostlyclean-noinstLIBRARIES:
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+distclean-noinstLIBRARIES:
+
+maintainer-clean-noinstLIBRARIES:
+
+.c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+.c.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
+.s.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
+.S.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+
+maintainer-clean-libtool:
+
+libgimpi.a: $(libgimpi_a_OBJECTS) $(libgimpi_a_DEPENDENCIES)
+	-rm -f libgimpi.a
+	$(AR) cru libgimpi.a $(libgimpi_a_OBJECTS) $(libgimpi_a_LIBADD)
+	$(RANLIB) libgimpi.a
+
+mostlyclean-libLTLIBRARIES:
+
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+
+distclean-libLTLIBRARIES:
+
+maintainer-clean-libLTLIBRARIES:
+
+install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libdir)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo "$(LIBTOOL)  --mode=install $(INSTALL_DATA) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL)  --mode=install $(INSTALL_DATA) $$p $(DESTDIR)$(libdir)/$$p; \
+	  else :; fi; \
+	done
+
+uninstall-libLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
+	done
+
+libgimp.la: $(libgimp_la_OBJECTS) $(libgimp_la_DEPENDENCIES)
+	$(LINK) -rpath $(libdir) $(libgimp_la_LDFLAGS) $(libgimp_la_OBJECTS) $(libgimp_la_LIBADD) $(LIBS)
+
+libgimpui.la: $(libgimpui_la_OBJECTS) $(libgimpui_la_DEPENDENCIES)
+	$(LINK) -rpath $(libdir) $(libgimpui_la_LDFLAGS) $(libgimpui_la_OBJECTS) $(libgimpui_la_LIBADD) $(LIBS)
+
+install-gimpincludeHEADERS: $(gimpinclude_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(gimpincludedir)
+	@list='$(gimpinclude_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(gimpincludedir)/$$p"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(gimpincludedir)/$$p; \
+	done
+
+uninstall-gimpincludeHEADERS:
+	@$(NORMAL_UNINSTALL)
+	list='$(gimpinclude_HEADERS)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(gimpincludedir)/$$p; \
+	done
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $(SOURCES) $(HEADERS) $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = libgimp
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  test -f $(distdir)/$$file \
+	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	  || cp -p $$d/$$file $(distdir)/$$file; \
+	done
+
+info:
+dvi:
+check: all
+	$(MAKE)
+installcheck:
+install-exec: install-libLTLIBRARIES
+	@$(NORMAL_INSTALL)
+
+install-data: install-gimpincludeHEADERS
+	@$(NORMAL_INSTALL)
+
+install: install-exec install-data all
+	@:
+
+uninstall: uninstall-libLTLIBRARIES uninstall-gimpincludeHEADERS
+
+install-strip:
+	$(MAKE) INSTALL_PROGRAM='$(INSTALL_PROGRAM) -s' INSTALL_SCRIPT='$(INSTALL_PROGRAM)' install
+installdirs:
+	$(mkinstalldirs)  $(DATADIR)$(libdir) $(DATADIR)$(gimpincludedir)
+
+
+mostlyclean-generic:
+	-test -z "$(MOSTLYCLEANFILES)" || rm -f $(MOSTLYCLEANFILES)
+
+clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
+
+distclean-generic:
+	-rm -f Makefile $(DISTCLEANFILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
+
+maintainer-clean-generic:
+	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
+mostlyclean:  mostlyclean-noinstLIBRARIES mostlyclean-compile \
+		mostlyclean-libtool mostlyclean-libLTLIBRARIES \
+		mostlyclean-tags mostlyclean-generic
+
+clean:  clean-noinstLIBRARIES clean-compile clean-libtool \
+		clean-libLTLIBRARIES clean-tags clean-generic \
+		mostlyclean
+
+distclean:  distclean-noinstLIBRARIES distclean-compile \
+		distclean-libtool distclean-libLTLIBRARIES \
+		distclean-tags distclean-generic clean
+	-rm -f config.status
+	-rm -f libtool
+
+maintainer-clean:  maintainer-clean-noinstLIBRARIES \
+		maintainer-clean-compile maintainer-clean-libtool \
+		maintainer-clean-libLTLIBRARIES maintainer-clean-tags \
+		maintainer-clean-generic distclean
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+.PHONY: mostlyclean-noinstLIBRARIES distclean-noinstLIBRARIES \
+clean-noinstLIBRARIES maintainer-clean-noinstLIBRARIES \
+mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile mostlyclean-libtool distclean-libtool \
+clean-libtool maintainer-clean-libtool mostlyclean-libLTLIBRARIES \
+distclean-libLTLIBRARIES clean-libLTLIBRARIES \
+maintainer-clean-libLTLIBRARIES uninstall-libLTLIBRARIES \
+install-libLTLIBRARIES uninstall-gimpincludeHEADERS \
+install-gimpincludeHEADERS tags mostlyclean-tags distclean-tags \
+clean-tags maintainer-clean-tags distdir info dvi installcheck \
+install-exec install-data install uninstall all installdirs \
+mostlyclean-generic distclean-generic clean-generic \
+maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+
+
+.PHONY: files
+
+files:
+	@files=`ls $(DISTFILES) 2> /dev/null`; for p in $$files; do \
+	  echo $$p; \
+	done
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

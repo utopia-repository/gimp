@@ -13,30 +13,28 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include "appenv.h"
 #include "cursorutil.h"
 
 void
-change_win_cursor (disp, win, cursortype)
-     Display *disp;
-     Window win;
-     int cursortype;
+change_win_cursor (win, cursortype)
+     GdkWindow *win;
+     GdkCursorType cursortype;
 {
-  Cursor cursor;
+  GdkCursor *cursor;
 
-  cursor = XCreateFontCursor (disp, cursortype);
-  XDefineCursor (disp, win, cursor);
-  XFreeCursor (disp, cursor);
+  cursor = gdk_cursor_new (cursortype);
+  gdk_window_set_cursor (win, cursor);
+  gdk_cursor_destroy (cursor);
 }
 
 void
-unset_win_cursor (disp, win)
-     Display *disp;
-     Window win;
+unset_win_cursor (win)
+     GdkWindow *win;
 {
-  XDefineCursor (disp, win, None);
+  gdk_window_set_cursor (win, NULL);
 }
      
 

@@ -13,457 +13,214 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdlib.h>
 #include "appenv.h"
+#include "errors.h"
 #include "gdisplay.h"
 #include "gdisplay_ops.h"
+#include "gimprc.h"
+#include "info_window.h"
 #include "scale.h"
 #include "tools.h"
-#include "visual.h"
 
 void
-bounds_checking (gdisp)
-     GDisplay *gdisp;
+bounds_checking (GDisplay *gdisp)
 {
-  Dimension sx, sy;
+  int sx, sy;
 
   sx = SCALE(gdisp, gdisp->gimage->width);
   sy = SCALE(gdisp, gdisp->gimage->height);
-  
-  gdisp->offset_x = bounds (gdisp->offset_x, 0,
-			    LOWPASS (sx - gdisp->disp_image->width));
-  
-  gdisp->offset_y = bounds (gdisp->offset_y, 0, 
-			    LOWPASS (sy - gdisp->disp_image->height));
 
+  gdisp->offset_x = BOUNDS (gdisp->offset_x, 0,
+			    LOWPASS (sx - gdisp->disp_width));
 
+  gdisp->offset_y = BOUNDS (gdisp->offset_y, 0,
+			    LOWPASS (sy - gdisp->disp_height));
 }
 
 
 void
-resize_display (gdisp)
-     GDisplay *gdisp;
+resize_display (GDisplay *gdisp,
+		int       resize_window,
+		int       redisplay)
 {
   /* freeze the active tool */
   active_tool_control (PAUSE, (void *) gdisp);
 
-  gdisplay_resize_image (gdisp);
+  if (resize_window)
+    gdisplay_shrink_wrap (gdisp);
 
   bounds_checking (gdisp);
   setup_scale (gdisp);
 
-  gdisplay_disp_region (gdisp, 0, 0,
-			gdisp->disp_image->width, 
-			gdisp->disp_image->height, 0);
+  if (redisplay)
+    {
+      gdisplay_expose_full (gdisp);
+      gdisplays_flush ();
+    }
 
   /* re-enable the active tool */
   active_tool_control (RESUME, (void *) gdisp);
-
 }
 
 
 void
-change_scale (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+shrink_wrap_display (GDisplay *gdisp)
 {
-  int dir;
-  GDisplay *gdisp;
+  /* freeze the active tool */
+  active_tool_control (PAUSE, (void *) gdisp);
+
+  gdisplay_shrink_wrap (gdisp);
+
+  bounds_checking (gdisp);
+  setup_scale (gdisp);
+
+  gdisplay_expose_full (gdisp);
+  gdisplays_flush ();
+
+  /* re-enable the active tool */
+  active_tool_control (RESUME, (void *) gdisp);
+}
+
+
+void
+change_scale (GDisplay *gdisp,
+	      int       dir)
+{
   unsigned char scalesrc, scaledest;
   double offset_x, offset_y;
   long sx, sy;
 
-  gdisp = gdisplay_active (w);
+  scalesrc = SCALESRC(gdisp);
+  scaledest = SCALEDEST(gdisp);
 
-  if (gdisp)
+  offset_x = gdisp->offset_x + (gdisp->disp_width/2.0);
+  offset_y = gdisp->offset_y + (gdisp->disp_height/2.0);
+
+  offset_x *= ((double) scalesrc / (double) scaledest);
+  offset_y *= ((double) scalesrc / (double) scaledest);
+
+  switch (dir)
     {
-      scalesrc = SCALESRC(gdisp);
-      scaledest = SCALEDEST(gdisp);
+    case ZOOMIN :
+      if (scalesrc > 1)
+	scalesrc--;
+      else
+	if (scaledest < 0x10)
+	  scaledest++;
 
-      offset_x = gdisp->offset_x + (gdisp->disp_image->width/2.0);
-      offset_y = gdisp->offset_y + (gdisp->disp_image->height/2.0);
+      break;
+    case ZOOMOUT :
+      if (scaledest > 1)
+	scaledest--;
+      else
+	if (scalesrc < 0x10)
+	  scalesrc++;
 
-      offset_x *= ((double) scalesrc / (double) scaledest);
-      offset_y *= ((double) scalesrc / (double) scaledest);
+      break;
+    default :
+      scalesrc = dir%100;
+      if (scalesrc < 1)
+	scalesrc = 1;
+      else if (scalesrc > 0x10)
+	scalesrc = 0x10;
+      scaledest = dir/100;
+      if (scaledest < 1)
+	scaledest = 1;
+      else if (scaledest > 0x10)
+	scaledest = 0x10;
+      break;
+    }
 
-      dir = (int) client_data;
+  sx = (gdisp->gimage->width * scaledest) / scalesrc;
+  sy = (gdisp->gimage->height * scaledest) / scalesrc;
 
-      switch (dir)
-	{
-	case ZOOMIN :
-	  if (scalesrc > 1)
-	    scalesrc--;
-	  else
-	    if (scaledest < 0xff)
-	      scaledest++;
+  /*  The slider value is a short, so make sure we are within its
+      range.  If we are trying to scale past it, then stop the scale  */
+  if (sx < 0xffff && sy < 0xffff)
+    {
+      gdisp->scale = (scaledest << 8) + scalesrc;
 
-	  break;
-	case ZOOMOUT :
-	  if (scaledest > 1)
-	    scaledest--;
-	  else
-	    if (scalesrc < 0xff)
-	      scalesrc++;
+      /*  set the offsets  */
+      offset_x *= ((double) scaledest / (double) scalesrc);
+      offset_y *= ((double) scaledest / (double) scalesrc);
 
-	  break;
-	default :
-	  break;
-	}
+      gdisp->offset_x = (int) (offset_x - (gdisp->disp_width / 2));
+      gdisp->offset_y = (int) (offset_y - (gdisp->disp_height / 2));
 
-      sx = (gdisp->gimage->width * scaledest) / scalesrc;
-      sy = (gdisp->gimage->height * scaledest) / scalesrc;
+      /*  resize the image  */
+      resize_display (gdisp, allow_resize_windows, TRUE);
 
-      /*  The slider value is a short, so make sure we are within its
-	  range.  If we are trying to scale past it, then stop the scale  */
-      if (sx < 0xffff && sy < 0xffff)
-	{
-	  gdisp->scale = (scaledest << 8) + scalesrc;
-
-	  /*  set the offsets  */
-	  offset_x *= ((double) scaledest / (double) scalesrc);
-	  offset_y *= ((double) scaledest / (double) scalesrc);
-	  
-	  gdisp->offset_x = (long) (offset_x - (gdisp->disp_image->width/2.0));
-	  gdisp->offset_y = (long) (offset_y - (gdisp->disp_image->height/2.0));
-
-	  /*  resize the image  */
-	  resize_display (gdisp);
-
-	}
     }
 }
 
 
 void
-setup_scale (gdisp)
-     GDisplay *gdisp;
+setup_scale (GDisplay *gdisp)
 {
-  Dimension sx, sy;
+  GtkRuler *hruler;
+  GtkRuler *vruler;
+  gfloat sx, sy;
+  gfloat step;
 
   sx = SCALE(gdisp, gdisp->gimage->width);
   sy = SCALE(gdisp, gdisp->gimage->height);
+  step = SCALE(gdisp, 1);
 
-  XtVaSetValues (gdisp->hsb,
-		 XmNvalue, gdisp->offset_x,
-		 XmNmaximum, sx,
-		 XmNsliderSize, gdisp->disp_image->width,
-		 XmNpageIncrement, gdisp->disp_image->width,
-		 NULL);
+  gdisp->hsbdata->value = gdisp->offset_x;
+  gdisp->hsbdata->upper = sx;
+  gdisp->hsbdata->page_size = MIN (sx, gdisp->disp_width);
+  gdisp->hsbdata->page_increment = (gdisp->disp_width / 2);
+  gdisp->hsbdata->step_increment = step;
 
-  XtVaSetValues (gdisp->vsb,
-		 XmNvalue, gdisp->offset_y,
-		 XmNmaximum, sy,
-		 XmNsliderSize, gdisp->disp_image->height,
-		 XmNpageIncrement, gdisp->disp_image->height,
-		 NULL);
+  gdisp->vsbdata->value = gdisp->offset_y;
+  gdisp->vsbdata->upper = sy;
+  gdisp->vsbdata->page_size = MIN (sy, gdisp->disp_height);
+  gdisp->vsbdata->page_increment = (gdisp->disp_height / 2);
+  gdisp->vsbdata->step_increment = step;
 
-}
+  gtk_signal_emit_by_name (GTK_OBJECT (gdisp->hsbdata), "changed");
+  gtk_signal_emit_by_name (GTK_OBJECT (gdisp->vsbdata), "changed");
 
+  hruler = GTK_RULER (gdisp->hrule);
+  vruler = GTK_RULER (gdisp->vrule);
 
-unsigned char *
-accelerate_scaling (width, start, bpp, scalesrc, scaledest)
-     long width;
-     long start;
-     int bpp;
-     int scalesrc;
-     int scaledest;
-{
-  long i;
-  unsigned char *scale;
+  hruler->lower = 0;
+  hruler->upper = UNSCALE (gdisp, gdisp->disp_width);
+  hruler->max_size = MAXIMUM (gdisp->gimage->width, gdisp->gimage->height);
 
-  scale = (unsigned char *) xmalloc (sizeof (unsigned char) * width + 1);
-  if (!scale)
+  vruler->lower = 0;
+  vruler->upper = UNSCALE (gdisp, gdisp->disp_height);
+  vruler->max_size = MAXIMUM (gdisp->gimage->width, gdisp->gimage->height);
+
+  if (sx < gdisp->disp_width)
     {
-      fprintf(stderr, "Unable to allocate memory for accelerated scaling.\n");
-      exit (1);
+      gdisp->disp_xoffset = (gdisp->disp_width - sx) / 2;
+      hruler->lower -= UNSCALE (gdisp, (double) gdisp->disp_xoffset);
+      hruler->upper -= UNSCALE (gdisp, (double) gdisp->disp_xoffset);
+    }
+  else
+    {
+      gdisp->disp_xoffset = 0;
+      hruler->lower += UNSCALE (gdisp, (double) gdisp->offset_x);
+      hruler->upper += UNSCALE (gdisp, (double) gdisp->offset_x);
     }
 
-/*
-  for (i = start+1; i < start+width; i++)
-    scale[i-start-1] = (i % scaledest) ? 0 : scalesrc*bpp;
-*/
-
-  for (i = 0; i <= width; i++)
-    scale[i] = ((i + start + 1) % scaledest) ? 0 : scalesrc * bpp;
-    
-  return scale;
-}
-
-
-
-/*****************************************************************/
-/*  This function is the core of the display--it offsets and     */
-/*  scales the image according to the current parameters in the  */
-/*  gdisp object.  It handles color, greyscale, 8, 15, 16, 24,   */
-/*  & 32 bit output depths.                                      */
-/*                                                               */
-/*****************************************************************/
-
-
-void
-scale_image (gdisp, x, y, w, h)
-     GDisplay *gdisp;
-     long x, y;       /* vert & horiz offsets */
-     long w, h;       /* width and height to be scaled */
-{
-  unsigned char *src, *s;
-  unsigned char *dest, *d;
-  unsigned short *d16_bit;
-  unsigned long *d24_bit;
-  short bpp;
-  long width, height;
-  long srcwidth, destwidth, destlength;
-  unsigned char scalesrc, scaledest;
-  unsigned char *scale, *scalewalk;
-  unsigned char *cmap;
-  int red_byte, green_byte, blue_byte;
-  int val;
-  long i, j;
-  long sx, sy;
-  int bytes_per_pixel;
-  Boolean initial;
-  Boolean byte_order;
-
-  byte_order = ImageByteOrder (DISPLAY);
-
-  scalesrc = SCALESRC (gdisp);
-  scaledest = SCALEDEST (gdisp);
-
-  width = gdisp->gimage->width;
-  height = gdisp->gimage->height;
-
-  red_byte = 0;
-  green_byte = 0;
-  blue_byte = 0;
-
-  switch (gdisp->depth)
+  if (sy < gdisp->disp_height)
     {
-    case 8 :
-      switch (gdisp->gimage->type)
-	{
-	case RGB_GIMAGE:
-	  bpp = 1;
-	  src = gdisp->gimage->indexed_raw_image;
-	  break;
-	case GREY_GIMAGE:
-	  /*  Set the appropriate variables for emulating greyscale  */
-	  bpp = 1;
-	  src = gdisp->gimage->indexed_raw_image;
-	  break;
-	case INDEXED_GIMAGE:
-	  bpp = 1;
-	  src = gdisp->gimage->raw_image;
-	  break;
-	}
-
-      bytes_per_pixel = (gdisp->disp_image->bits_per_pixel >> 3);
-      break;
-
-    case 15 : 
-    case 16 : 
-    case 24 :
-      switch (gdisp->gimage->type)
-	{
-	case RGB_GIMAGE:
-	  bpp = 3;
-	  red_byte = 0;
-	  green_byte = 1;
-	  blue_byte = 2;
-	  break;
-	case GREY_GIMAGE:
-	  /*  Set the appropriate variables for emulating greyscale  */
-	  bpp = 1;
-	  red_byte = 0;
-	  green_byte = 0;
-	  blue_byte = 0;
-	  break;
-	case INDEXED_GIMAGE:
-	  bpp = 1;
-	  red_byte = 0;
-	  green_byte = 0;
-	  blue_byte = 0;
-	  break;
-	}
-
-      bytes_per_pixel = (gdisp->disp_image->bits_per_pixel >> 3);
-      src = gdisp->gimage->raw_image;
-      break;
-
-    default :
-      return;
+      gdisp->disp_yoffset = (gdisp->disp_height - sy) / 2;
+      vruler->lower -= UNSCALE (gdisp, (double) gdisp->disp_yoffset);
+      vruler->upper -= UNSCALE (gdisp, (double) gdisp->disp_yoffset);
+    }
+  else
+    {
+      gdisp->disp_yoffset = 0;
+      vruler->lower += UNSCALE (gdisp, (double) gdisp->offset_y);
+      vruler->upper += UNSCALE (gdisp, (double) gdisp->offset_y);
     }
 
-  srcwidth = width * bpp;
-  destwidth =  gdisp->disp_image->bytes_per_line;
-  destlength = w * bytes_per_pixel;
-  
-  sy = ((gdisp->offset_y + y) * scalesrc) / scaledest;
-  sx = ((gdisp->offset_x + x) * scalesrc) / scaledest;
-
-  src += (sy * srcwidth) + (sx * bpp);
-
-  dest = gdisp->disp_image->data;
-  dest += (y * destwidth) + (x * bytes_per_pixel);
-
-  x += gdisp->offset_x;
-  y += gdisp->offset_y;
-
-  scale = accelerate_scaling (w, x, bpp, scalesrc, scaledest);
-
-  i = y + h;
-  initial = True;
-
-  switch (gdisp->depth)
-    {
-    case 8:
-      for ( ; y < i; y++)
-	{
-	  s = src;
-	  d = dest;
-	  if ((y % scaledest) && !initial)
-	    memcpy (dest, d - destwidth, destlength);
-	  else
-	    {
-	      scalewalk = scale;
-	      j = w;
-	      while (j--) 
-		{
-		  *d++ = *s;
-		  s = s + *scalewalk++;
-		}
-	      
-	      src += srcwidth * scalesrc;
-	    }
-	  
-	  dest += destwidth;
-	  initial = False;
-	}
-      break;
-      
-    case 15:
-    case 16:
-      if (gdisp->gimage->type == INDEXED_GIMAGE)
-	{
-	  cmap = gdisp->gimage->cmap;
-	  
-	  for ( ; y < i; y++)
-	    {
-	      s = src;
-	      d16_bit = (unsigned short *) dest;
-	      if ((y % scaledest) && !initial)
-		memcpy (dest, dest - destwidth, destlength);
-	      else
-		{
-		  scalewalk = scale;
-		  j = w;
-
-		  while (j--)
-		    {
-		      val = *s * 3;
-		      *d16_bit++ =
-			COLOR_COMPOSE (cmap[val], cmap[val+1], cmap[val+2]);
-		      s += *scalewalk++;
-		    }
-		  src += srcwidth * scalesrc;
-		}
-	      
-	      dest += destwidth;
-	      initial = False;
-	    }
-	}
-      else
-	{
-	  for ( ; y < i; y++)
-	    {
-	      s = src;
-	      d16_bit = (unsigned short *) dest;
-	      if ((y % scaledest) && !initial)
-		memcpy (dest, dest - destwidth, destlength);
-	      else
-		{
-		  scalewalk = scale;
-		  j = w;
-		  
-		  while (j--) 
-		    {
-		      *d16_bit++ = 
-			COLOR_COMPOSE (s[red_byte], s[green_byte], s[blue_byte]);
-		      s += *scalewalk++;
-		    }
-		  src += srcwidth * scalesrc;
-		}
-	      
-	      dest += destwidth;
-	      initial = False;
-	    }
-	}
-      break;
-
-    case 24:
-      /* 3 bytes per pixel is not yet handled */
-      if (bytes_per_pixel == 4)
-	{
-	  if (gdisp->gimage->type == INDEXED_GIMAGE)
-	    {
-	      cmap = gdisp->gimage->cmap;
-	  
-	      for ( ; y < i; y++)
-		{
-		  s = src;
-		  d24_bit = (unsigned long *) dest;
-		  if ((y % scaledest) && !initial)
-		    memcpy (dest, dest - destwidth, destlength);
-		  else
-		    {
-		      scalewalk = scale;
-		      j = w;
-		      
-		      while (j--) 
-			{
-			  val = *s * 3;
-			  *d24_bit++ = 
-			    COLOR_COMPOSE (cmap[val], cmap[val+1], cmap[val+2]);
-			  s += *scalewalk++;
-			}
-		      src += srcwidth * scalesrc;
-		    }
-		  
-		  dest += destwidth;
-		  initial = False;
-		}
-	    }
-	  else
-	    {
-	      for ( ; y < i; y++)
-		{
-		  s = src;
-		  d24_bit = (unsigned long *) dest;
-		  if ((y % scaledest) && !initial)
-		    memcpy (dest, dest - destwidth, destlength);
-		  else
-		    {
-		      scalewalk = scale;
-		      j = w;
-		      
-		      while (j--) 
-			{
-			  *d24_bit++ = 
-			    COLOR_COMPOSE (s[red_byte], s[green_byte], s[blue_byte]);
-			  s += *scalewalk++;
-			}
-		      src += srcwidth * scalesrc;
-		    }
-		  
-		  dest += destwidth;
-		  initial = False;
-		}
-	    }
-	}
-      break;
-    }
-  
-  xfree (scale);
+  gtk_widget_draw (GTK_WIDGET (hruler), NULL);
+  gtk_widget_draw (GTK_WIDGET (vruler), NULL);
 }

@@ -13,19 +13,21 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __ELLIPSE_SELECT_H__
 #define __ELLIPSE_SELECT_H__
 
+#include "procedural_db.h"
 #include "tools.h"
 
 /*  ellipse select functions  */
 
-void          ellipse_dialog              (void);
 void          ellipse_select_draw         (Tool *);
-Tool *        tools_new_ellipse_select    ();
+Tool *        tools_new_ellipse_select    (void);
 void          tools_free_ellipse_select   (Tool *);
 
+/*  Procedure definition and marshalling function  */
+extern ProcRecord ellipse_select_proc;
 
 #endif  /*  __ELLIPSE_SELECT_H__  */

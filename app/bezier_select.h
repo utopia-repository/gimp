@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __BEZIER_SELECT_H__
 #define __BEZIER_SELECT_H__
@@ -22,6 +22,7 @@
 
 /*  bezier select functions  */
 
+void    bezier_select_dialog      (void);
 Tool *  tools_new_bezier_select   (void);
 void    tools_free_bezier_select  (Tool *);
 

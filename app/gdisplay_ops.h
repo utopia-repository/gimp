@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __GDISPLAY_OPS_H__
 #define __GDISPLAY_OPS_H__
@@ -21,20 +21,13 @@
 #include "gdisplay.h"
 #include "temp_buf.h"
 
-
-Pixel    gdisplay_black_pixel  (GDisplay *);
-Pixel    gdisplay_white_pixel  (GDisplay *);
-void     gdisplay_new_view     (GDisplay *);
-void     gdisplay_close_window (GDisplay *);
-void     gdisplay_shrink_wrap  (GDisplay *);
-void     gdisplay_change_type  (GDisplay *, int);
-Boolean  gdisplay_resize_image (GDisplay *);
-void     gdisplay_fit_colormap (Colormap, unsigned char *, int);
-
-int      temp_buf_to_gdisplay  (TempBuf *);
-TempBuf *gdisplay_to_temp_buf  (GImage *);
-
-int      save_before_closing_dialog (char *);
-
+gulong  gdisplay_black_pixel  (GDisplay *);
+gulong  gdisplay_gray_pixel   (GDisplay *);
+gulong  gdisplay_white_pixel  (GDisplay *);
+gulong  gdisplay_color_pixel  (GDisplay *);
+void    gdisplay_new_view     (GDisplay *);
+void    gdisplay_close_window (GDisplay *, int);
+void    gdisplay_shrink_wrap  (GDisplay *);
+int     gdisplay_resize_image (GDisplay *);
 
 #endif  /* __GDISPLAY_OPS_H__ */

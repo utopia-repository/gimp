@@ -13,15 +13,19 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __SCALE_TOOL_H__
 #define __SCALE_TOOL_H__
 
 #include "tools.h"
+#include "procedural_db.h"
 
-void *        scale_tool_transform  (Tool *, XtPointer, int);
-Tool *        tools_new_scale_tool  ();
+void *        scale_tool_transform  (Tool *, gpointer, int);
+Tool *        tools_new_scale_tool  (void);
 void          tools_free_scale_tool (Tool *);
+
+/*  Procedure definition and marshalling function  */
+extern ProcRecord scale_proc;
 
 #endif  /*  __SCALE_TOOL_H__  */

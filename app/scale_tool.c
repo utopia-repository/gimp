@@ -13,22 +13,28 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdlib.h>
+#include <stdio.h>
 #include "appenv.h"
+#include "drawable.h"
 #include "gdisplay.h"
+#include "gimage_mask.h"
 #include "info_dialog.h"
 #include "scale_tool.h"
 #include "selection.h"
 #include "tools.h"
 #include "transform_core.h"
+#include "transform_tool.h"
+#include "undo.h"
 
-#define ABS(x) ((x < 0) ? -x : x)
+#include "tile_manager_pvt.h"
+
 #define X1 0
 #define Y1 1
 #define X2 2
-#define Y2 3 
+#define Y2 3
 
 /*  storage for information dialog fields  */
 char          orig_width_buf  [MAX_INFO_BUF];
@@ -39,21 +45,20 @@ char          x_ratio_buf     [MAX_INFO_BUF];
 char          y_ratio_buf     [MAX_INFO_BUF];
 
 /*  forward function declarations  */
-static void *      scale_tool_scale       (Tool *, void *);
-static void *      scale_tool_recalc      (Tool *, void *);
-static void        scale_tool_motion      (Tool *, void *);
-static void        scale_info_update      (Tool *);
-
+static void *      scale_tool_scale   (GImage *, GimpDrawable *, double *, TileManager *, int, Matrix);
+static void *      scale_tool_recalc  (Tool *, void *);
+static void        scale_tool_motion  (Tool *, void *);
+static void        scale_info_update  (Tool *);
+static Argument *  scale_invoker      (Argument *);
 
 void *
 scale_tool_transform (tool, gdisp_ptr, state)
      Tool * tool;
-     XtPointer gdisp_ptr;
+     gpointer gdisp_ptr;
      int state;
 {
   GDisplay * gdisp;
   TransformCore * transform_core;
-  int x1, y1, x2, y2;
 
   gdisp = (GDisplay *) gdisp_ptr;
   transform_core = (TransformCore *) tool->private;
@@ -63,7 +68,7 @@ scale_tool_transform (tool, gdisp_ptr, state)
     case INIT :
       if (!transform_info)
 	{
-	  transform_info = info_dialog_new ("scaleInfoDialog", "Scaling Information");
+	  transform_info = info_dialog_new ("Scaling Information");
 	  info_dialog_add_field (transform_info, "Original Width: ", orig_width_buf);
 	  info_dialog_add_field (transform_info, "Original Height: ", orig_height_buf);
 	  info_dialog_add_field (transform_info, "Current Width: ", width_buf);
@@ -72,11 +77,10 @@ scale_tool_transform (tool, gdisp_ptr, state)
 	  info_dialog_add_field (transform_info, "Y Scale Ratio: ", y_ratio_buf);
 	}
 
-      selection_find_bounds (gdisp->select, &x1, &y1, &x2, &y2);
-      transform_core->trans_info [X1] = (double) x1;
-      transform_core->trans_info [Y1] = (double) y1;
-      transform_core->trans_info [X2] = (double) x2;
-      transform_core->trans_info [Y2] = (double) y2;
+      transform_core->trans_info [X1] = (double) transform_core->x1;
+      transform_core->trans_info [Y1] = (double) transform_core->y1;
+      transform_core->trans_info [X2] = (double) transform_core->x2;
+      transform_core->trans_info [Y2] = (double) transform_core->y2;
 
       return NULL;
       break;
@@ -92,13 +96,9 @@ scale_tool_transform (tool, gdisp_ptr, state)
       break;
 
     case FINISH :
-      /*  If we're in indexed color, let the transform core take care of scaling
-       *  since we can't assume that colors won't change otherwise...
-       */
-      if (gdisp->gimage->type == INDEXED_GIMAGE)
-	return NULL;
-      else
-	return (scale_tool_scale (tool, gdisp_ptr));
+      return scale_tool_scale (gdisp->gimage, gimage_active_drawable (gdisp->gimage),
+			       transform_core->trans_info, transform_core->original,
+			       transform_tool_smoothing (), transform_core->transform);
       break;
     }
 
@@ -112,7 +112,7 @@ tools_new_scale_tool ()
   Tool * tool;
   TransformCore * private;
 
-  tool = transform_core_new (TRANSFORM_TOOL, INTERACTIVE);
+  tool = transform_core_new (SCALE, INTERACTIVE);
 
   private = tool->private;
 
@@ -144,20 +144,17 @@ scale_info_update (tool)
 {
   GDisplay * gdisp;
   TransformCore * transform_core;
-  Selection * select;
   double ratio_x, ratio_y;
   int x1, y1, x2, y2, x3, y3, x4, y4;
 
   gdisp = (GDisplay *) tool->gdisp_ptr;
   transform_core = (TransformCore *) tool->private;
 
-  if (transform_core->select_ptr)
-    select = (Selection *) transform_core->select_ptr;
-  else
-    select = gdisp->select;
-
   /*  Find original sizes  */
-  gregion_find_bounds (select->region, &x1, &y1, &x2, &y2);
+  x1 = transform_core->x1;
+  y1 = transform_core->y1;
+  x2 = transform_core->x2;
+  y2 = transform_core->y2;
   sprintf (orig_width_buf, "%d", x2 - x1);
   sprintf (orig_height_buf, "%d", y2 - y1);
 
@@ -184,8 +181,7 @@ scale_info_update (tool)
   info_dialog_popup (transform_info);
 }
 
-
-void
+static void
 scale_tool_motion (tool, gdisp_ptr)
      Tool * tool;
      void * gdisp_ptr;
@@ -271,9 +267,9 @@ scale_tool_motion (tool, gdisp_ptr)
 
   /*  if both the control key & shift keys are down, keep the aspect ratio intac
 t  */
-  if (transform_core->state & ControlMask && transform_core->state & ShiftMask)
+  if (transform_core->state & GDK_CONTROL_MASK && transform_core->state & GDK_SHIFT_MASK)
     {
-      ratio = (double) (transform_core->x2 - transform_core->x1) / 
+      ratio = (double) (transform_core->x2 - transform_core->x1) /
         (double) (transform_core->y2 - transform_core->y1);
 
       w = ABS ((*x2 - *x1));
@@ -287,9 +283,7 @@ t  */
       *y1 = *y2 - dir_y * h;
       *x1 = *x2 - dir_x * w;
     }
-
 }
-
 
 static void *
 scale_tool_recalc (tool, gdisp_ptr)
@@ -297,307 +291,270 @@ scale_tool_recalc (tool, gdisp_ptr)
      void * gdisp_ptr;
 {
   TransformCore * transform_core;
-  Selection * select;
   GDisplay * gdisp;
   int x1, y1, x2, y2;
   int diffx, diffy;
   int cx, cy;
   double scalex, scaley;
-  
+
   gdisp = (GDisplay *) tool->gdisp_ptr;
   transform_core = (TransformCore *) tool->private;
+  x1 = (int) transform_core->trans_info [X1];
+  y1 = (int) transform_core->trans_info [Y1];
+  x2 = (int) transform_core->trans_info [X2];
+  y2 = (int) transform_core->trans_info [Y2];
 
-  /*  find the correct selection structure  */
-  if (transform_core->select_ptr)
-    select = (Selection *) transform_core->select_ptr;
-  else
-    select = gdisp->select;
+  scalex = scaley = 1.0;
+  if (transform_core->x2 - transform_core->x1)
+    scalex = (double) (x2 - x1) / (double) (transform_core->x2 - transform_core->x1);
+  if (transform_core->y2 - transform_core->y1)
+    scaley = (double) (y2 - y1) / (double) (transform_core->y2 - transform_core->y1);
 
-
-  /*  find the boundaries of the current selection  */
-  if (selection_find_bounds (select, &transform_core->x1, &transform_core->y1,
-			     &transform_core->x2, &transform_core->y2))
+  switch (transform_core->function)
     {
-      x1 = (int) transform_core->trans_info [X1];
-      y1 = (int) transform_core->trans_info [Y1];
-      x2 = (int) transform_core->trans_info [X2];
-      y2 = (int) transform_core->trans_info [Y2];
-
-      scalex = scaley = 1.0;
-      if (transform_core->x2 - transform_core->x1)
-	scalex = (double) (x2 - x1) / (double) (transform_core->x2 - transform_core->x1);
-      if (transform_core->y2 - transform_core->y1)
-	scaley = (double) (y2 - y1) / (double) (transform_core->y2 - transform_core->y1);
-
-      switch (transform_core->function)
-	{
-	case HANDLE_1 :
-	  cx = x2;  cy = y2;
-	  diffx = x2 - transform_core->x2;
-	  diffy = y2 - transform_core->y2;
-	  break;
-	case HANDLE_2 :
-	  cx = x1;  cy = y2;
-	  diffx = x1 - transform_core->x1;
-	  diffy = y2 - transform_core->y2;
-	  break;
-	case HANDLE_3 :
-	  cx = x2;  cy = y1;
-	  diffx = x2 - transform_core->x2;
-	  diffy = y1 - transform_core->y1;
-	  break;
-	case HANDLE_4 :
-	  cx = x1;  cy = y1;
-	  diffx = x1 - transform_core->x1;
-	  diffy = y1 - transform_core->y1;
-	  break;
-	default :
-	  cx = x1; cy = y1;
-	  diffx = diffy = 0;
-	  break;
-	}
-
-      /*  assemble the transformation matrix  */
-      identity_matrix  (transform_core->transform);
-      translate_matrix (transform_core->transform, (double) -cx + diffx, (double) -cy + diffy);
-      scale_matrix     (transform_core->transform, scalex, scaley);
-      translate_matrix (transform_core->transform, (double) cx, (double) cy);
-  
-      /*  transform the bounding box  */
-      transform_bounding_box (tool);
-
-      /*  update the information dialog  */
-      scale_info_update (tool);
-
-      return (void *) select;
+    case HANDLE_1 :
+      cx = x2;  cy = y2;
+      diffx = x2 - transform_core->x2;
+      diffy = y2 - transform_core->y2;
+      break;
+    case HANDLE_2 :
+      cx = x1;  cy = y2;
+      diffx = x1 - transform_core->x1;
+      diffy = y2 - transform_core->y2;
+      break;
+    case HANDLE_3 :
+      cx = x2;  cy = y1;
+      diffx = x2 - transform_core->x2;
+      diffy = y1 - transform_core->y1;
+      break;
+    case HANDLE_4 :
+      cx = x1;  cy = y1;
+      diffx = x1 - transform_core->x1;
+      diffy = y1 - transform_core->y1;
+      break;
+    default :
+      cx = x1; cy = y1;
+      diffx = diffy = 0;
+      break;
     }
 
-  return (void *) NULL;
-}
+  /*  assemble the transformation matrix  */
+  identity_matrix  (transform_core->transform);
+  translate_matrix (transform_core->transform, (double) -cx + diffx, (double) -cy + diffy);
+  scale_matrix     (transform_core->transform, scalex, scaley);
+  translate_matrix (transform_core->transform, (double) cx, (double) cy);
 
+  /*  transform the bounding box  */
+  transform_bounding_box (tool);
+
+  /*  update the information dialog  */
+  scale_info_update (tool);
+
+  return (void *) 1;
+}
 
 static void *
-scale_tool_scale (tool, gdisp_ptr)
-     Tool * tool;
-     void * gdisp_ptr;
+scale_tool_scale (gimage, drawable, trans_info, float_tiles, interpolation, matrix)
+     GImage *gimage;
+     GimpDrawable *drawable;
+     double *trans_info;
+     TileManager *float_tiles;
+     int interpolation;
+     Matrix matrix;
 {
-  TransformCore * transform_core;
-  Selection * new, * select;
-  GDisplay * gdisp;
-  GRegion * region;
-  MaskBuf * mask;
-  unsigned char * msk, * m, mask_val;
-  unsigned char * src, * s;
-  unsigned char * dest, * d;
-  double * row, * r;
-  long srcwidth, destwidth;
-  int src_row, src_col;
-  int bytes, b;
-  int width, height;
-  int orig_width, orig_height;
-  double x_rat, y_rat;
-  double x_cum, y_cum;
-  double x_last, y_last;
-  double * x_frac, y_frac, tot_frac;
-  int i, j;
-  int frac;
-  link_ptr list;
-  GSegment * seg;
+  TileManager *new_tiles;
   int x1, y1, x2, y2;
-  int x3, y3, x4, y4;
-  Boolean advance_dest;
+  PixelRegion srcPR, destPR;
 
-  gdisp = (GDisplay *) gdisp_ptr;
-  transform_core = (TransformCore *) tool->private;
-  select = (Selection *) transform_core->select_ptr;
-  
-  region = select->region;
+  x1 = trans_info[X1];
+  y1 = trans_info[Y1];
+  x2 = trans_info[X2];
+  y2 = trans_info[Y2];
 
-  gregion_find_bounds (region, &x1, &y1, &x2, &y2);
+  pixel_region_init (&srcPR, float_tiles, 0, 0,
+                     float_tiles->levels[0].width,
+                     float_tiles->levels[0].height, FALSE);
 
-  orig_width = x2 - x1;
-  orig_height = y2 - y1;
+  /*  Create the new tile manager  */
+  new_tiles = tile_manager_new ((x2 - x1), (y2 - y1), float_tiles->levels[0].bpp);
+  pixel_region_init (&destPR, new_tiles, 0, 0, (x2 - x1), (y2 - y1), TRUE);
 
-  x3 = transform_core->trans_info[X1];
-  y3 = transform_core->trans_info[Y1];
-  x4 = transform_core->trans_info[X2];
-  y4 = transform_core->trans_info[Y2];
 
-  width = x4 - x3;
-  height = y4 - y3;
+  if (drawable_type (drawable) == INDEXED_GIMAGE ||
+      drawable_type (drawable) == INDEXEDA_GIMAGE ||
+      !interpolation)
+    scale_region_no_resample (&srcPR, &destPR);
+  else
+    scale_region (&srcPR, &destPR);
 
-  /*  Create the new selection object  */
-  new = selection_generic_new (gregion_new (height, width), x3, y3,
-	  temp_buf_new (width, height, select->float_buf->bytes, 0, 0, NULL));
+  new_tiles->x = x1;
+  new_tiles->y = y1;
 
-  /*  Create a mask buffer for transforming the selected region  */
-  mask = mask_buf_new (width, height);
-
-  /*  Some calculations...  */
-  bytes = select->float_buf->bytes;
-  srcwidth = bytes * select->float_buf->width;
-  destwidth = bytes * width;
-
-  /*  the data pointers...  */
-  src  = temp_buf_data (select->float_buf);
-  dest = temp_buf_data (new->float_buf);
-  msk  = mask_buf_data (mask);
-
-  /*  find the ratios of old x to new x and old y to new y  */
-  x_rat = (double) orig_width / (double) width;
-  y_rat = (double) orig_height / (double) height;
-
-  /*  allocate an array to help with the calculations  */
-  row    = (double *) xmalloc (sizeof (double) * width * (bytes + 1));
-  x_frac = (double *) xmalloc (sizeof (double) * (width + orig_width));
-
-  /*  initialize the pre-calculated pixel fraction array  */
-  src_col = x1;
-  x_cum = (double) src_col;
-  x_last = x_cum;
-
-  for (i = 0; i < width + orig_width; i++)
-    {
-      if (x_cum + x_rat <= src_col + 1)
-	{
-	  x_cum += x_rat;
-	  x_frac[i] = x_cum - x_last;
-	}
-      else
-	{
-	  src_col ++;
-	  x_frac[i] = src_col - x_last;
-	}
-      x_last += x_frac[i];
-    }
-
-  /*  clear the "row" array  */
-  memset (row, 0, sizeof (double) * width * (bytes + 1));
-
-  /*  counters...  */
-  src_row = y1;
-  y_cum = (double) src_row;
-  y_last = y_cum;
-
-  /*  Scale the selected region  */
-  i = height;
-  while (i)
-    {
-      /* set up the mask variables  */
-      if (src_row < region->extent)
-	list = region->segments[src_row];
-      else
-	list = NULL;
-
-      if (list)
-	seg = (GSegment *) list->data;
-      else
-	seg = NULL;
-
-      src_col = x1;
-      x_cum = (double) src_col;
-
-      mask_val = (seg && src_col >= seg->start && src_col < seg->end) ? seg->value : 0;
-
-      /* determine the fraction of the src pixel we are using for y */
-      if (y_cum + y_rat <= src_row + 1)
-	{
-	  y_cum += y_rat;
-	  y_frac = y_cum - y_last;
-	  advance_dest = True;
-	}
-      else
-	{
-	  src_row ++;
-	  y_frac = src_row - y_last;
-	  advance_dest = False;
-	}
-      y_last += y_frac;
-
-      s = src;
-      r = row;
-
-      frac = 0;
-      j = width;
-
-      while (j)
-	{
-	  tot_frac = x_frac[frac++] * y_frac;
-
-	  for (b = 0; b < bytes; b++)
-	    r[b] += s[b] * tot_frac;
-
-	  /*  set the alpha (mask) channel...  */
-	  r[b] += mask_val * tot_frac;
-
-	  /*  increment the destination  */
-	  if (x_cum + x_rat <= src_col + 1)
-	    {
-	      r += (bytes + 1);
-	      x_cum += x_rat;
-	      j--;
-	    }
-
-	  /* increment the source */
-	  else
-	    {
-	      s += bytes;
-	      src_col++;
-
-	      /*  figure out the mask  */
-	      if (seg && src_col >= seg->end) 
-		{
-		  if ((list = next_item (list)))
-		    seg = (GSegment *) list->data;
-		  else
-		    seg = NULL;
-		}
-
-	      mask_val = (seg && src_col >= seg->start) ? seg->value : 0;
-	    }
-
-	}
-
-      if (advance_dest)
-	{
-	  tot_frac = 1.0 / (x_rat * y_rat);
-
-	  /*  copy "row" to "dest"  */
-	  d = dest;
-	  r = row;
-	  m = msk;
-
-	  j = width;
-	  while (j--)
-	    {
-	      b = bytes;
-	      while (b--)
-		*d++ = (unsigned char) (*r++ * tot_frac);
-	      *m++ = (unsigned char) (*r++ * tot_frac);
-	    }
-
-	  dest += destwidth;
-	  msk += mask->width;
-
-	  /*  clear the "row" array  */
-	  memset (row, 0, sizeof (double) * width * (bytes + 1));
-
-	  i--;
-	}
-      else
-	src += srcwidth;
-      
-    }
-
-  /*  free up temporary arrays  */
-  xfree (row);
-  xfree (x_frac);
-
-  mask_convert_to_region (mask, new->region);
-
-  mask_buf_free (mask);
-
-  return (void *) new;
+  return (void *) new_tiles;
 }
 
 
+/*  The scale procedure definition  */
+ProcArg scale_args[] =
+{
+  { PDB_IMAGE,
+    "image",
+    "the image"
+  },
+  { PDB_DRAWABLE,
+    "drawable",
+    "the affected drawable"
+  },
+  { PDB_INT32,
+    "interpolation",
+    "whether to use interpolation"
+  },
+  { PDB_FLOAT,
+    "x1",
+    "the x coordinate of the upper-left corner of newly scaled region"
+  },
+  { PDB_FLOAT,
+    "y1",
+    "the y coordinate of the upper-left corner of newly scaled region"
+  },
+  { PDB_FLOAT,
+    "x2",
+    "the x coordinate of the lower-right corner of newly scaled region"
+  },
+  { PDB_FLOAT,
+    "y2",
+    "the y coordinate of the lower-right corner of newly scaled region"
+  }
+};
+
+ProcArg scale_out_args[] =
+{
+  { PDB_DRAWABLE,
+    "drawable",
+    "the scaled drawable"
+  }
+};
+
+ProcRecord scale_proc =
+{
+  "gimp_scale",
+  "Scale the specified drawable",
+  "This tool scales the specified drawable if no selection exists.  If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then scaled by the specified amount.  The interpolation parameter can be set to TRUE to indicate that either linear or cubic interpolation should be used to smooth the resulting scaled drawable.  The return value is the ID of the scaled drawable.  If there was no selection, this will be equal to the drawable ID supplied as input.  Otherwise, this will be the newly created and scaled drawable.",
+  "Spencer Kimball & Peter Mattis",
+  "Spencer Kimball & Peter Mattis",
+  "1995-1996",
+  PDB_INTERNAL,
+
+  /*  Input arguments  */
+  7,
+  scale_args,
+
+  /*  Output arguments  */
+  1,
+  scale_out_args,
+
+  /*  Exec method  */
+  { { scale_invoker } },
+};
+
+
+static Argument *
+scale_invoker (args)
+     Argument *args;
+{
+  int success = TRUE;
+  GImage *gimage;
+  GimpDrawable *drawable;
+  int interpolation;
+  double trans_info[4];
+  int int_value;
+  TileManager *float_tiles;
+  TileManager *new_tiles;
+  Matrix matrix;
+  int new_layer;
+  Layer *layer;
+  Argument *return_args;
+
+  drawable = NULL;
+  layer = NULL;
+
+  /*  the gimage  */
+  if (success)
+    {
+      int_value = args[0].value.pdb_int;
+      if (! (gimage = gimage_get_ID (int_value)))
+	success = FALSE;
+    }
+  /*  the drawable  */
+  if (success)
+    {
+      int_value = args[1].value.pdb_int;
+      drawable = drawable_get_ID (int_value);
+      if (drawable == NULL || gimage != drawable_gimage (drawable))
+	success = FALSE;
+    }
+  /*  interpolation  */
+  if (success)
+    {
+      int_value = args[2].value.pdb_int;
+      interpolation = (int_value) ? TRUE : FALSE;
+    }
+  /*  scale extents  */
+  if (success)
+    {
+      trans_info[X1] = args[3].value.pdb_float;
+      trans_info[Y1] = args[4].value.pdb_float;
+      trans_info[X2] = args[5].value.pdb_float;
+      trans_info[Y2] = args[6].value.pdb_float;
+
+      if (trans_info[X1] >= trans_info[X2] ||
+	  trans_info[Y1] >= trans_info[Y2])
+	success = FALSE;
+    }
+
+  /*  call the scale procedure  */
+  if (success)
+    {
+      double scalex, scaley;
+
+      /*  Start a transform undo group  */
+      undo_push_group_start (gimage, TRANSFORM_CORE_UNDO);
+
+      /*  Cut/Copy from the specified drawable  */
+      float_tiles = transform_core_cut (gimage, drawable, &new_layer);
+
+      scalex = scaley = 1.0;
+      if (float_tiles->levels[0].width)
+	scalex = (trans_info[X2] - trans_info[X1]) / (double) float_tiles->levels[0].width;
+      if (float_tiles->levels[0].height)
+	scaley = (trans_info[Y2] - trans_info[Y1]) / (double) float_tiles->levels[0].height;
+
+      /*  assemble the transformation matrix  */
+      identity_matrix  (matrix);
+      translate_matrix (matrix, float_tiles->x, float_tiles->y);
+      scale_matrix     (matrix, scalex, scaley);
+      translate_matrix (matrix, trans_info[X1], trans_info[Y1]);
+
+      /*  scale the buffer  */
+      new_tiles = scale_tool_scale (gimage, drawable, trans_info,
+				    float_tiles, interpolation, matrix);
+
+      /*  free the cut/copied buffer  */
+      tile_manager_destroy (float_tiles);
+
+      if (new_tiles)
+	success = (layer = transform_core_paste (gimage, drawable, new_tiles, new_layer)) != NULL;
+      else
+	success = FALSE;
+
+      /*  push the undo group end  */
+      undo_push_group_end (gimage);
+    }
+
+  return_args = procedural_db_return_args (&scale_proc, success);
+
+  if (success)
+    return_args[1].value.pdb_int = drawable_ID (GIMP_DRAWABLE(layer));
+
+  return return_args;
+}

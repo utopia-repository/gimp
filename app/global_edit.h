@@ -13,23 +13,29 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __GLOBAL_EDIT_H__
 #define __GLOBAL_EDIT_H__
 
+#include "gimage.h"
+
 /*  The interface functions  */
-Boolean        global_edit_cut        (void *);
-Boolean        global_edit_copy       (void *);
-Boolean        global_edit_paste      (void *);
-void           global_edit_free       ();
+TileManager *  crop_buffer            (TileManager *, int);
+TileManager *  edit_cut               (GImage *, GimpDrawable *);
+TileManager *  edit_copy              (GImage *, GimpDrawable *);
+int            edit_paste             (GImage *, GimpDrawable *, TileManager *, int);
+int            edit_clear             (GImage *, GimpDrawable *);
+int            edit_fill              (GImage *, GimpDrawable *);
 
-Boolean        named_edit_cut         (void *);
-Boolean        named_edit_copy        (void *);
-Boolean        named_edit_paste       (void *);
-void           named_buffers_free     ();
+int            global_edit_cut        (void *);
+int            global_edit_copy       (void *);
+int            global_edit_paste      (void *, int);
+void           global_edit_free       (void);
 
-/*  The options dialog  */
-void           edit_options           (void *);
+int            named_edit_cut         (void *);
+int            named_edit_copy        (void *);
+int            named_edit_paste       (void *);
+void           named_buffers_free     (void);
 
 #endif  /*  __GLOBAL_EDIT_H__  */

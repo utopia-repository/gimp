@@ -1,1 +1,0 @@
-shlibs:Depends=libc5 (>= 5.4.0-0), libpng1 (>= 0.88), xlib6 (>= 3.2-0), xpm4.7 (>= 3.4g-0), zlib1 (>= 1.00)

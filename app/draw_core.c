@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdlib.h>
 #include "appenv.h"
@@ -26,7 +26,7 @@ draw_core_new (draw_func)
 {
   DrawCore * core;
 
-  core = (DrawCore *) xmalloc (sizeof (DrawCore));
+  core = (DrawCore *) g_malloc (sizeof (DrawCore));
 
   core->draw_func    = draw_func;
   core->draw_state   = INVISIBLE;
@@ -34,6 +34,9 @@ draw_core_new (draw_func)
   core->paused_count = 0;
   core->data         = NULL;
   core->line_width   = 1;
+  core->line_style   = GDK_LINE_SOLID;
+  core->cap_style    = GDK_CAP_BUTT;
+  core->join_style   = GDK_JOIN_MITER;
 
   return core;
 }
@@ -41,11 +44,11 @@ draw_core_new (draw_func)
 
 void
 draw_core_start (core, win, tool)
-     DrawCore * core;
-     Window win;
-     Tool * tool;
+     DrawCore *core;
+     GdkWindow *win;
+     Tool *tool;
 {
-  XGCValues gcv;
+  GdkColor fg, bg;
 
   if (core->draw_state != INVISIBLE)
     draw_core_stop (core, tool);
@@ -55,14 +58,16 @@ draw_core_start (core, win, tool)
   core->paused_count = 0;  /*  reset pause counter to 0  */
 
   /*  create a new graphics context  */
-  if (core->gc)
-    XFreeGC (DISPLAY, core->gc);
+  if (! core->gc)
+    core->gc = gdk_gc_new (win);
 
-  gcv.function = GXinvert;
-  gcv.foreground = 0xFFFFFFFF;
-  gcv.background = 0x00000000;
-  core->gc = XCreateGC (DISPLAY, core->win, GCFunction | GCForeground | GCBackground, &gcv);
-  XSetLineAttributes (DISPLAY, core->gc, core->line_width, LineSolid, CapButt, JoinBevel);
+  gdk_gc_set_function (core->gc, GDK_INVERT);
+  fg.pixel = 0xFFFFFFFF;
+  bg.pixel = 0x00000000;
+  gdk_gc_set_foreground (core->gc, &fg);
+  gdk_gc_set_background (core->gc, &bg);
+  gdk_gc_set_line_attributes (core->gc, core->line_width, core->line_style, 
+			      core->cap_style, core->join_style);
 
   (* core->draw_func) (tool);
 
@@ -119,8 +124,8 @@ draw_core_free (core)
   if (core)
     {
       if (core->gc)
-	XFreeGC (DISPLAY, core->gc);
-      xfree (core);
+	gdk_gc_destroy (core->gc);
+      g_free (core);
     }
 }
 

@@ -1,130 +1,660 @@
-# set up so stupid things
+# Makefile.in generated automatically by automake 1.3 from Makefile.am
+
+# Copyright (C) 1994, 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+
 SHELL = /bin/sh
-.SUFFIXES:
-.SUFFIXES: .c .o
 
-# set the MAKE variable if necessary
-@SET_MAKE@
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
 
-# set the compiler variable
-CC		=	@CC@
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
 
-# set the various libraries that are needed
-LIBS		=	@LIBS@
+DISTDIR =
 
-# remember to add the includes
-X_CFLAGS	=	@X_CFLAGS@
-CFLAGS		=	@CFLAGS@ $(X_CFLAGS)
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
 
-# set the linker flags
-X_LDFLAGS	=	@X_LDFLAGS@
-LDFLAGS		=	@LDFLAGS@ $(X_LDFLAGS)
+top_builddir = ..
 
-# specify how depends are remade
-MAKEDEPEND	=	$(CC) -MM
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
 
-# the name of the program to create
-PROGRAM	= gimp
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
 
-# all of the sources
-SRCS =				\
-	main.c			\
-	errors.c		\
-				\
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+host_alias = @host_alias@
+host_triplet = @host@
+AA = @AA@
+CC = @CC@
+CPP = @CPP@
+EMACS = @EMACS@
+GIMP_MAJOR_VERSION = @GIMP_MAJOR_VERSION@
+GIMP_MICRO_VERSION = @GIMP_MICRO_VERSION@
+GIMP_MINOR_VERSION = @GIMP_MINOR_VERSION@
+GIMP_VERSION = @GIMP_VERSION@
+GTK_CFLAGS = @GTK_CFLAGS@
+GTK_CONFIG = @GTK_CONFIG@
+GTK_LIBS = @GTK_LIBS@
+JPEG = @JPEG@
+LD = @LD@
+LIBAA_LIB = @LIBAA_LIB@
+LIBJPEG_LIB = @LIBJPEG_LIB@
+LIBMPEG_LIB = @LIBMPEG_LIB@
+LIBPNG_LIB = @LIBPNG_LIB@
+LIBTIFF_LIB = @LIBTIFF_LIB@
+LIBTOOL = @LIBTOOL@
+LIBUCB_LIB = @LIBUCB_LIB@
+LIBXDELTA_LIB = @LIBXDELTA_LIB@
+LIBXMU_LIB = @LIBXMU_LIB@
+LIBXPM_LIB = @LIBXPM_LIB@
+LN_S = @LN_S@
+LPC_COMMAND = @LPC_COMMAND@
+LPC_DEF = @LPC_DEF@
+LPR_COMMAND = @LPR_COMMAND@
+LPR_DEF = @LPR_DEF@
+LPSTAT_COMMAND = @LPSTAT_COMMAND@
+LPSTAT_DEF = @LPSTAT_DEF@
+LP_COMMAND = @LP_COMMAND@
+LP_DEF = @LP_DEF@
+MAILER = @MAILER@
+MAINT = @MAINT@
+MAKEINFO = @MAKEINFO@
+MPEG = @MPEG@
+NM = @NM@
+PACKAGE = @PACKAGE@
+PNG = @PNG@
+RANLIB = @RANLIB@
+SENDMAIL = @SENDMAIL@
+TIFF = @TIFF@
+VERSION = @VERSION@
+WEBBROWSER = @WEBBROWSER@
+XD = @XD@
+XPM = @XPM@
+X_CFLAGS = @X_CFLAGS@
+X_LIBS = @X_LIBS@
+brushdata = @brushdata@
+gimpdatadir = @gimpdatadir@
+gimpdir = @gimpdir@
+gimpplugindir = @gimpplugindir@
+gradientdata = @gradientdata@
+palettedata = @palettedata@
+patterndata = @patterndata@
+
+scriptdata =
+
+bin_PROGRAMS = gimp
+
+gimp_SOURCES = \
+	about_dialog.c		\
+	about_dialog.h		\
 	actionarea.c		\
-	app-procs.c		\
-	buildmenu.c		\
-	callbacks.c		\
-	color_select.c		\
-	fileops.c		\
-	gimprc.c		\
-	menus.c			\
-	interface.c		\
-	palette.c		\
-	widget.c		\
-				\
-	colormaps.c		\
-	disp-callbacks.c	\
-	gconvert.c		\
-	gdither.c 		\
-	gimage.c		\
-	gdisplay.c		\
-	gdisplay_ops.c		\
-	gximage.c		\
-	image_buf.c		\
-	info_dialog.c		\
-	info_window.c		\
-	scale.c			\
-	scroll.c		\
-	shadow_ops.c		\
-	status.c		\
-	view_ops.c		\
-	visual.c		\
-	workprocs.c		\
-				\
-	cursorutil.c		\
-	general.c		\
-	linked.c		\
-	memutils.c		\
-	progress.c		\
-	timer.c			\
-				\
-	plug_in.c		\
-	autodialog.c		\
-				\
-        bezier_select.c         \
-        boundary.c              \
-        crop.c                  \
-        draw_core.c             \
-        global_edit.c           \
-        gregion.c               \
-        edit_selection.c        \
-        ellipse_select.c        \
-        flip_tool.c             \
-        free_select.c           \
-        fuzzy_select.c          \
-        iscissors.c             \
-        rect_select.c           \
-        rotate_tool.c           \
-        scale_tool.c            \
-        selection.c             \
-        shear_tool.c            \
-        temp_buf.c              \
-        text_tool.c             \
-        tools.c                 \
-        transform_core.c        \
-        transform_tool.c        \
-        undo.c                  \
-				\
+	actionarea.h		\
 	airbrush.c		\
+	airbrush.h		\
+	app_procs.c		\
+	app_procs.h		\
+	appenv.h		\
+	asupsample.c		\
+	asupsample.h		\
+	batch.c			\
+	batch.h			\
+	bezier_select.c		\
+	bezier_select.h		\
+	bezier_selectP.h	\
 	blend.c			\
-	brushes.c		\
+	blend.h			\
+	boundary.c		\
+	boundary.h		\
+	brightness_contrast.c	\
+	brightness_contrast.h	\
+	brush_header.h		\
 	brush_select.c		\
+	brush_select.h		\
+	brushes.c		\
+	brushes.h		\
 	bucket_fill.c		\
+	bucket_fill.h		\
+	buildmenu.c		\
+	buildmenu.h		\
+	by_color_select.c	\
+	by_color_select.h	\
+	channel.c		\
+	channel.h		\
+	channel_pvt.h		\
+	channel_cmds.c		\
+	channel_cmds.h		\
+	channels_dialog.c	\
+	channels_dialog.h	\
+	channel_ops.c		\
+	channel_ops.h		\
 	clone.c			\
+	clone.h			\
+	color_area.c		\
+	color_area.h		\
+	color_balance.c		\
+	color_balance.h		\
+	color_panel.c		\
+	color_panel.h		\
 	color_picker.c		\
+	color_picker.h		\
+	color_select.c		\
+	color_select.h		\
+	color_transfer.c	\
+	color_transfer.h	\
+	colormaps.c		\
+	colormaps.h		\
+	commands.c		\
+	commands.h		\
+	convert.c		\
+	convert.h		\
 	convolve.c		\
-	paintbrush.c		\
+	convolve.h		\
+	crop.c			\
+	crop.h			\
+	cursorutil.c		\
+	cursorutil.h		\
+	curves.c		\
+	curves.h		\
+	datafiles.c		\
+	datafiles.h		\
+	desaturate.c		\
+	desaturate.h		\
+	dialog_types.h		\
+	disp_callbacks.c	\
+	disp_callbacks.h	\
+	draw_core.c		\
+	draw_core.h		\
+	drawable.c		\
+	drawable.h		\
+	drawable_pvt.h		\
+	drawable_cmds.c		\
+	drawable_cmds.h		\
+	edit_cmds.c		\
+	edit_cmds.h		\
+	edit_selection.c	\
+	edit_selection.h	\
+	ellipse_select.c	\
+	ellipse_select.h	\
+	eraser.c		\
+	eraser.h		\
+	errors.c		\
+	errors.h		\
+	equalize.c		\
+	equalize.h		\
+	fileops.c		\
+	fileops.h		\
+	flip_tool.c		\
+	flip_tool.h		\
+	floating_sel.c		\
+	floating_sel.h		\
+	floating_sel_cmds.c	\
+	floating_sel_cmds.h	\
+	frac.c			\
+	frac.h			\
+	free_select.c		\
+	free_select.h		\
+	fsdither.h		\
+	fuzzy_select.c		\
+	fuzzy_select.h		\
+	gdisplay.c		\
+	gdisplay.h		\
+	gdisplayP.h		\
+	gdisplay_cmds.c		\
+	gdisplay_cmds.h		\
+	gdisplay_ops.c		\
+	gdisplay_ops.h		\
+	general.c		\
+	general.h		\
+	gimage.c		\
+	gimage.h		\
+	gimage_cmds.c		\
+	gimage_cmds.h		\
+	gimage_mask.c		\
+	gimage_mask.h		\
+	gimage_mask_cmds.c	\
+	gimage_mask_cmds.h	\
+	gimprc.c		\
+	gimprc.h		\
+	global_edit.c		\
+	global_edit.h		\
+	gradient.c		\
+	gradient.h		\
+	gximage.c		\
+	gximage.h		\
+	histogram.c		\
+	histogram.h		\
+	histogram_tool.c	\
+	histogram_tool.h	\
+	hue_saturation.c	\
+	hue_saturation.h	\
+	image_map.c		\
+	image_map.h		\
+	image_render.c		\
+	image_render.h		\
+	indexed_palette.c	\
+	indexed_palette.h	\
+	info_dialog.c		\
+	info_dialog.h		\
+	info_window.c		\
+	info_window.h		\
+	install.c		\
+	install.h		\
+	interface.c		\
+	interface.h		\
+	internal_procs.c	\
+	internal_procs.h	\
+	invert.c		\
+	invert.h		\
+	iscissors.c		\
+	iscissors.h		\
+	layer.c			\
+	layer.h			\
+	layer_pvt.h		\
+	layer_cmds.c		\
+	layer_cmds.h		\
+	layer_select.c		\
+	layer_select.h		\
+	layers_dialog.c		\
+	layers_dialog.h		\
+	layers_dialogP.h	\
+	levels.c		\
+	levels.h		\
+	magnify.c		\
+	magnify.h		\
+	main.c			\
+	marching_ants.h		\
+	menus.c			\
+	menus.h			\
+	move.c			\
+	move.h			\
+	ops_buttons.c		\
+	ops_buttons.h		\
+	palette.c		\
+	palette.h		\
 	paint_core.c		\
-	paint_funcs.c		
+	paint_core.h		\
+	paint_funcs.c		\
+	paint_funcs.h		\
+	paintbrush.c		\
+	paintbrush.h		\
+	pattern_header.h	\
+	pattern_select.c	\
+	pattern_select.h	\
+	patterns.c		\
+	patterns.h		\
+	pencil.c		\
+	pencil.h		\
+	perspective_tool.c	\
+	perspective_tool.h	\
+	pixel_region.c		\
+	pixel_region.h		\
+	pixmaps.h		\
+	plug_in.c		\
+	plug_in.h		\
+	posterize.c		\
+	posterize.h		\
+	procedural_db.c		\
+	procedural_db.h		\
+	rect_select.c		\
+	rect_select.h		\
+	rect_selectP.h		\
+	regex.h			\
+	regex.c			\
+	resize.c		\
+	resize.h		\
+	rotate_tool.c		\
+	rotate_tool.h		\
+	scale.c			\
+	scale.h			\
+	scale_tool.c		\
+	scale_tool.h		\
+	scroll.c		\
+	scroll.h		\
+	selection.c		\
+	selection.h		\
+	shear_tool.c		\
+	shear_tool.h		\
+	temp_buf.c		\
+	temp_buf.h		\
+	text_tool.c		\
+	text_tool.h		\
+	threshold.c		\
+	threshold.h		\
+	tile.c			\
+	tile.h			\
+	tile_cache.c		\
+	tile_cache.h		\
+	tile_manager.c		\
+	tile_manager.h		\
+	tile_manager_pvt.h	\
+	tile_swap.c		\
+	tile_swap.h		\
+	tips_dialog.c		\
+	tips_dialog.h		\
+	tools.c			\
+	tools.h			\
+	transform_core.c	\
+	transform_core.h	\
+	transform_tool.c	\
+	transform_tool.h	\
+	undo.c			\
+	undo.h			\
+	undo_cmds.c		\
+	undo_cmds.h		\
+	wilber.h		\
+	xcf.c			\
+	xcf.h
+
+EXTRA_DIST = \
+	tools/channel.xbm	\
+	tools/eye.xbm		\
+	tools/layer.xbm		\
+	tools/linked.xbm	\
+	tools/mask.xbm		\
+	tools/anchor.xpm	\
+	tools/anchor_is.xpm	\
+	tools/delete.xpm	\
+	tools/delete_is.xpm	\
+	tools/duplicate.xpm	\
+	tools/duplicate_is.xpm	\
+	tools/lower.xpm		\
+	tools/lower_is.xpm	\
+	tools/new.xpm		\
+	tools/new_is.xpm	\
+	tools/raise.xpm		\
+	tools/raise_is.xpm
+
+CPPFLAGS = \
+	-DLIBDIR=\""$(gimpplugindir)"\"	\
+	-DDATADIR=\""$(gimpdatadir)"\"	\
+	-DGIMPDIR=\""$(gimpdir)"\"
+
+INCLUDES = \
+	$(X_CFLAGS)			\
+	-I$(top_srcdir)			\
+	-I$(includedir)
+
+gimp_LDADD = \
+	$(top_builddir)/libgimp/libgimpi.a	\
+	$(X_LIBS)
+
+DEPS = \
+	$(top_builddir)/libgimp/libgimpi.a
+
+gimp_DEPENDENCIES = $(DEPS)
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = ../config.h
+CONFIG_CLEAN_FILES = 
+PROGRAMS =  $(bin_PROGRAMS)
 
 
-# all of the objects
-OBJS =	$(SRCS:.c=.o)
+DEFS = @DEFS@ -I. -I$(srcdir) -I..
+LDFLAGS = @LDFLAGS@
+LIBS = @LIBS@
+gimp_OBJECTS =  about_dialog.o actionarea.o airbrush.o app_procs.o \
+asupsample.o batch.o bezier_select.o blend.o boundary.o \
+brightness_contrast.o brush_select.o brushes.o bucket_fill.o \
+buildmenu.o by_color_select.o channel.o channel_cmds.o \
+channels_dialog.o channel_ops.o clone.o color_area.o color_balance.o \
+color_panel.o color_picker.o color_select.o color_transfer.o \
+colormaps.o commands.o convert.o convolve.o crop.o cursorutil.o \
+curves.o datafiles.o desaturate.o disp_callbacks.o draw_core.o \
+drawable.o drawable_cmds.o edit_cmds.o edit_selection.o \
+ellipse_select.o eraser.o errors.o equalize.o fileops.o flip_tool.o \
+floating_sel.o floating_sel_cmds.o frac.o free_select.o fuzzy_select.o \
+gdisplay.o gdisplay_cmds.o gdisplay_ops.o general.o gimage.o \
+gimage_cmds.o gimage_mask.o gimage_mask_cmds.o gimprc.o global_edit.o \
+gradient.o gximage.o histogram.o histogram_tool.o hue_saturation.o \
+image_map.o image_render.o indexed_palette.o info_dialog.o \
+info_window.o install.o interface.o internal_procs.o invert.o \
+iscissors.o layer.o layer_cmds.o layer_select.o layers_dialog.o \
+levels.o magnify.o main.o menus.o move.o ops_buttons.o palette.o \
+paint_core.o paint_funcs.o paintbrush.o pattern_select.o patterns.o \
+pencil.o perspective_tool.o pixel_region.o plug_in.o posterize.o \
+procedural_db.o rect_select.o regex.o resize.o rotate_tool.o scale.o \
+scale_tool.o scroll.o selection.o shear_tool.o temp_buf.o text_tool.o \
+threshold.o tile.o tile_cache.o tile_manager.o tile_swap.o \
+tips_dialog.o tools.o transform_core.o transform_tool.o undo.o \
+undo_cmds.o xcf.o
+gimp_LDFLAGS = 
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
+LINK = $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) -o $@
+DIST_COMMON =  Makefile.am Makefile.in TODO
 
-all: $(PROGRAM)
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP = --best
+SOURCES = $(gimp_SOURCES)
+OBJECTS = $(gimp_OBJECTS)
+
+all: Makefile $(PROGRAMS)
+
+.SUFFIXES:
+.SUFFIXES: .S .c .lo .o .s
+$(srcdir)/Makefile.in: @MAINT@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4)
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps app/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 
-$(PROGRAM): $(OBJS)
-	$(CC) $(OBJS) $(LINCLUDE) $(LIBS) $(LDFLAGS) -o $(PROGRAM)
+mostlyclean-binPROGRAMS:
 
-depend:
-	$(MAKEDEPEND) $(CFLAGS) $(SRCS) > .depend
+clean-binPROGRAMS:
+	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 
-.depend:
-	touch .depend
+distclean-binPROGRAMS:
 
-clean:
-	rm -f *.o *~ $(PROGRAM) gimp-static gimp-dynamic
+maintainer-clean-binPROGRAMS:
 
-include .depend
+install-binPROGRAMS: $(bin_PROGRAMS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(bindir)
+	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo " $(LIBTOOL)  --mode=install $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`"; \
+	    $(LIBTOOL)  --mode=install $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`; \
+	  else :; fi; \
+	done
+
+uninstall-binPROGRAMS:
+	@$(NORMAL_UNINSTALL)
+	list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`; \
+	done
+
+.c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+.c.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
+.s.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
+.S.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+
+maintainer-clean-libtool:
+
+gimp: $(gimp_OBJECTS) $(gimp_DEPENDENCIES)
+	@rm -f gimp
+	$(LINK) $(gimp_LDFLAGS) $(gimp_OBJECTS) $(gimp_LDADD) $(LIBS)
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $(SOURCES) $(HEADERS) $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = app
+
+distdir: $(DISTFILES)
+	$(mkinstalldirs) $(distdir)/tools
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  test -f $(distdir)/$$file \
+	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	  || cp -p $$d/$$file $(distdir)/$$file; \
+	done
+
+info:
+dvi:
+check: all
+	$(MAKE)
+installcheck:
+install-exec: install-binPROGRAMS
+	@$(NORMAL_INSTALL)
+
+install-data: 
+	@$(NORMAL_INSTALL)
+
+install: install-exec install-data all
+	@:
+
+uninstall: uninstall-binPROGRAMS
+
+install-strip:
+	$(MAKE) INSTALL_PROGRAM='$(INSTALL_PROGRAM) -s' INSTALL_SCRIPT='$(INSTALL_PROGRAM)' install
+installdirs:
+	$(mkinstalldirs)  $(DATADIR)$(bindir)
+
+
+mostlyclean-generic:
+	-test -z "$(MOSTLYCLEANFILES)" || rm -f $(MOSTLYCLEANFILES)
+
+clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
+
+distclean-generic:
+	-rm -f Makefile $(DISTCLEANFILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
+
+maintainer-clean-generic:
+	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
+mostlyclean:  mostlyclean-binPROGRAMS mostlyclean-compile \
+		mostlyclean-libtool mostlyclean-tags \
+		mostlyclean-generic
+
+clean:  clean-binPROGRAMS clean-compile clean-libtool clean-tags \
+		clean-generic mostlyclean
+
+distclean:  distclean-binPROGRAMS distclean-compile distclean-libtool \
+		distclean-tags distclean-generic clean
+	-rm -f config.status
+	-rm -f libtool
+
+maintainer-clean:  maintainer-clean-binPROGRAMS maintainer-clean-compile \
+		maintainer-clean-libtool maintainer-clean-tags \
+		maintainer-clean-generic distclean
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+.PHONY: mostlyclean-binPROGRAMS distclean-binPROGRAMS clean-binPROGRAMS \
+maintainer-clean-binPROGRAMS uninstall-binPROGRAMS install-binPROGRAMS \
+mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile mostlyclean-libtool distclean-libtool \
+clean-libtool maintainer-clean-libtool tags mostlyclean-tags \
+distclean-tags clean-tags maintainer-clean-tags distdir info dvi \
+installcheck install-exec install-data install uninstall all \
+installdirs mostlyclean-generic distclean-generic clean-generic \
+maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+
+
+.PHONY: files
+
+files:
+	@files=`ls $(DISTFILES) 2> /dev/null`; for p in $$files; do \
+	  echo $$p; \
+	done
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

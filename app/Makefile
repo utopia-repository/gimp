@@ -1,24 +1,25 @@
+# Generated automatically from Makefile.in by configure.
 # set up so stupid things
 SHELL = /bin/sh
 .SUFFIXES:
 .SUFFIXES: .c .o
 
 # set the MAKE variable if necessary
-@SET_MAKE@
+
 
 # set the compiler variable
-CC		=	@CC@
+CC		=	gcc
 
 # set the various libraries that are needed
-LIBS		=	@LIBS@
+LIBS		=	$(DESIRED_MOTIF_LIB) -lXpm -lXmu -lXt  -lSM -lICE -lXext -lX11  -lm 
 
 # remember to add the includes
-X_CFLAGS	=	@X_CFLAGS@
-CFLAGS		=	@CFLAGS@ $(X_CFLAGS)
+X_CFLAGS	=	 -I/usr/X11R6/include
+CFLAGS		=	-g -O2 -Wall $(X_CFLAGS)
 
 # set the linker flags
-X_LDFLAGS	=	@X_LDFLAGS@
-LDFLAGS		=	@LDFLAGS@ $(X_LDFLAGS)
+X_LDFLAGS	=	-L/usr/X11R6/lib
+LDFLAGS		=	 $(X_LDFLAGS)
 
 # specify how depends are remade
 MAKEDEPEND	=	$(CC) -MM

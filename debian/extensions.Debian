@@ -1,0 +1,10 @@
+I have added support for "include" directives in the gimprc file to
+the Debian version of the GIMP.  I'll forward these changes upstream
+in case the developers are interested.
+
+The syntax is
+
+ include "full-path-to-file"
+
+-- Rob
+

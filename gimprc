@@ -7,7 +7,8 @@ swap-path "/tmp"
 
 # Set the brush search path...this path will be searched for valid
 #  brushes at startup.
-brush-path "~/gimp/brushes:/usr/local/lib/gimp/brushes"
+brush-path "~/gimp/brushes:/usr/local/lib/gimp/brushes:/usr/lib/gimp/brushes"
+
 
 # Specify a default brush. If none is specified it defaults to the
 #  "1circle.gbr" brush which is just a single pixel sized brush.
@@ -16,7 +17,7 @@ default-brush "19fcircle.gbr"
 
 # Set the plug-in search path...this path will be searched for
 #  plug-ins when the plug-in is run.
-plug-in-path "./:~/gimp/plug-ins:/usr/local/lib/gimp/plug-ins"
+plug-in-path "./:~/gimp/plug-ins:/usr/local/lib/gimp/plug-ins:/usr/lib/gimp/plug-ins"
 
 # Notify the GIMP of the available file plug-ins.
 # The format of the line is as follows:
@@ -103,3 +104,7 @@ plug-in offset     "Channel Ops/Offset"         "Alt<Key>O"        "Alt+O"
 plug-in subtract   "Channel Ops/Subtract"       
 
 plug-in netpbm	   "Miscellaneous/Netpbm Filter" "Shift Alt<Key>N"  "Shft+Alt+N"
+
+# <BEGIN AUTOMATICALLY ADDED INCLUDES> Do not edit this section
+include "/etc/gimp/add-ons.rc
+# <END AUTOMATICALLY ADDED INCLUDES> Do not edit this section

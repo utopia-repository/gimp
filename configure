@@ -1174,7 +1174,7 @@ if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   ac_save_LIBS="$LIBS"
-LIBS="-lXm -lXt $X_PRE_LIBS -lX11 $X_LDFLAGS $LIBS"
+LIBS="-lXm -lXt -lXpm -lXmu $X_PRE_LIBS -lX11 $X_LDFLAGS $LIBS"
 cat > conftest.$ac_ext <<EOF
 #line 1180 "configure"
 #include "confdefs.h"
@@ -1197,10 +1197,10 @@ LIBS="$ac_save_LIBS"
 fi
 if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
   echo "$ac_t""yes" 1>&6
-  LIBS="-lXm"
+  LIBS="-lXpm -lXmu"
 else
   echo "$ac_t""no" 1>&6
-no_motif=yes
+	no_motif=yes
 fi
 
 
@@ -1918,10 +1918,13 @@ else
 fi
 done
 
+if test "x$no_motif" = xyes; then
+	LIBS="$SAVE_LIBS $LIBS"
+else
+	LIBS="\$(DESIRED_MOTIF_LIB) $SAVE_LIBS $LIBS"
+fi
 
-LIBS="$SAVE_LIBS $LIBS"
-
-CFLAGS="-g -Wall"
+CFLAGS="-g -O2 -Wall"
 
 
 trap '' 1 2 15

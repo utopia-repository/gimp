@@ -1,0 +1,28 @@
+gimp (0.54.1-6) unstable; urgency=low
+
+  * Fixed menu problem.
+  * Fixed problem with simultaneous gimp-plugins install.
+  * Added minimal man page.
+  * Killed README.debian (copyright already had the info).
+
+ -- Rob Browning <osiris@cs.utexas.edu>  Sun, 13 Apr 1997 20:49:59 -0500
+
+gimp (0.54.1-5) unstable; urgency=low
+
+  * added new gimprc parsing.
+  * moved /etc/gimprc to /etc/gimp/gimprc 
+
+ -- Rob Browning <osiris@cs.utexas.edu>  Sun, 2 Feb 1997 03:08:03 -0600
+
+gimp (0.54.1-4) unstable; urgency=low
+
+  * Change to new packaging standards.
+  * Added X menu entry.
+  * Fixed config file placement and loading (bug #4303)
+  * Fixed dependencies (bug #6691)
+
+ -- Rob Browning <osiris@cs.utexas.edu>  Mon, 27 Jan 1997 01:04:31 -0600
+
+Local variables:
+mode: debian-changelog
+End:

@@ -78,7 +78,7 @@ png: png.c $(LIBGIMP)
 	-$(CC) $(CFLAGS) $(LINCLUDE) -o png png.c $(LIBGIMP) -lpng -lz -lc -lm
 
 tiff: tiff.c $(LIBGIMP)
-	-$(CC) $(CFLAGS) $(LINCLUDE) -o tiff tiff.c $(LIBGIMP) -ltiff -lc -lm
+	-$(CC) $(CFLAGS) $(LINCLUDE) -o tiff tiff.c $(LIBGIMP) -ltiff -ljpeg -lc -lm
 
 xpm: xpm.c $(LIBGIMP)
 	-$(CC) $(CFLAGS) $(LINCLUDE) -o xpm xpm.c $(LIBGIMP) -lXpm -lX11 -lc

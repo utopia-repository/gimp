@@ -22,7 +22,7 @@ RANLIB		=	ranlib
 #RANLIB		=	echo
 
 # remember to add the includes
-CFLAGS		=	-O -Wall $(INCLUDE)
+CFLAGS		=	-g -Wall $(INCLUDE)
 
 # specify how depends are remade
 MAKEDEPEND	=	gcc -MM
@@ -48,18 +48,18 @@ all: $(LIBGIMP) $(FILTERS)
 
 
 # If you are using gmake use the following 2 rules...
-%: %.c $(LIBGIMP)
-	$(CC) $(CFLAGS) -o $@ $< $(LIBGIMP) -lc
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-# If you are using make use the following 2 rules...
-# .c: $(LIBGIMP)
+# %: %.c $(LIBGIMP)
 #	$(CC) $(CFLAGS) -o $@ $< $(LIBGIMP)
 #
-# .c.o:
+# %.o: %.c
 #	$(CC) $(CFLAGS) -c $< -o $@
+
+# If you are using make use the following 2 rules...
+.c: $(LIBGIMP)
+	$(CC) $(CFLAGS) -o $@ $< $(LIBGIMP)
+
+.c.o:
+	$(CC) $(CFLAGS) -c $< -o $@
 
 
 gamma:  gamma.c $(LIBGIMP)
@@ -72,13 +72,13 @@ gauss: gauss.c $(LIBGIMP)
 	-$(CC) $(CFLAGS) $(LINCLUDE) -o gauss gauss.c $(LIBGIMP) -lc -lm
 
 jpeg: jpeg.c $(LIBGIMP)
-	-$(CC) $(CFLAGS) $(LINCLUDE) -o jpeg jpeg.c $(LIBGIMP) -ljpeg -lc
+	-$(CC) $(CFLAGS) $(LINCLUDE) -o jpeg jpeg.c $(LIBGIMP) -ljpeg
 
 png: png.c $(LIBGIMP)
 	-$(CC) $(CFLAGS) $(LINCLUDE) -o png png.c $(LIBGIMP) -lpng -lz -lc -lm
 
 tiff: tiff.c $(LIBGIMP)
-	-$(CC) $(CFLAGS) $(LINCLUDE) -o tiff tiff.c $(LIBGIMP) -ltiff -ljpeg -lc -lm
+	-$(CC) $(CFLAGS) $(LINCLUDE) -o tiff tiff.c $(LIBGIMP) -ltiff -lc -lm
 
 xpm: xpm.c $(LIBGIMP)
 	-$(CC) $(CFLAGS) $(LINCLUDE) -o xpm xpm.c $(LIBGIMP) -lXpm -lX11 -lc

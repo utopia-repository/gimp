@@ -3,7 +3,7 @@ Priority: optional
 Section: graphics
 Maintainer: Ari Pollak <ari@debian.org>
 Standards-Version: 3.6.1
-Build-Depends: debhelper (>= 4.2.21), gettext, intltool, aalib1-dev, libgtk2.0-dev (>= 2.4.4-1), libgtkhtml2-dev (>= 2.0.0), libgimpprint1-dev (>= 4.2.6), libjpeg62-dev, libmpeg-dev, libart-2.0-dev, libpng-dev, xlibs-dev, zlib1g-dev, slang1-dev, libtiff4-dev, python-dev, python-gtk2-dev, libexif-dev (>= 0.6.9), libmng-dev, librsvg2-dev (>= 2.7.2-2), libfontconfig1-dev (>= 2.2.0), libwmf-dev (>= 0.2.8-1.1), sharutils, sed (>= 3.95)
+Build-Depends: debhelper (>= 4.2.21), gettext, intltool, aalib1-dev, libgtk2.0-dev (>= 2.4.4-1), libgtkhtml2-dev (>= 2.0.0), libgimpprint1-dev (>= 4.2.6), libjpeg62-dev, libmpeg-dev, libart-2.0-dev, libpng-dev, xlibs-dev, zlib1g-dev, slang1-dev, libtiff4-dev, python-dev, python-gtk2-dev, libexif-dev (>= 0.6.9), libmng-dev, librsvg2-dev (>= 2.7.2-2), libfontconfig1-dev (>= 2.2.0), libwmf-dev (>= 0.2.8-1.1), sharutils, sed (>= 3.95), libasound2-dev (>= 1.0.0)
 
 Package: libgimp2.0
 Architecture: any
@@ -57,11 +57,15 @@ Conflicts: gimp1.3, gimp-nonfree, gimp-data (<< 2.0.2-4)
 Replaces: gimp1.3, gimp-nonfree, gimp-data (<< 2.0.2-4)
 Provides: gimp2.0, gimp-nonfree
 Recommends: gimp-svg
-Suggests: gimp-help-en | gimp-help, gimp-python, libgimp-perl, gimp-data-extras
+Suggests: gimp-help-en | gimp-help, gimp-python, libgimp-perl, gimp-data-extras, libasound2 (>= 1.0.0)
 Description: The GNU Image Manipulation Program
  The GIMP lets you draw, paint, edit images, and much more! GIMP
  includes the functionality and plug-ins of other famous image
  editing and processing programs.
+ .
+ If you'd like to use a MIDI device as an input controller in GIMP,
+ install libasound2 and read the how-to at
+ <http://www.gimp.org/unix/howtos/gimp-midi.html>.
 
 Package: gimp-data
 Architecture: all

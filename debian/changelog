@@ -1,3 +1,12 @@
+gimp (2.2.4-2) unstable; urgency=low
+
+  * Make libasound2-dev an actual build-dependency, and suggest libasound2
+    instead of depend on it. Also add a note into the gimp description
+    about how to use the MIDI controller, which is what links against ALSA.
+    (Closes: #299600)
+
+ -- Ari Pollak <ari@debian.org>  Tue, 15 Mar 2005 10:59:18 -0500
+
 gimp (2.2.4-1) unstable; urgency=low
 
   * New upstream release

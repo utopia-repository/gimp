@@ -173,7 +173,7 @@ binary-arch: build install
 
 	dh_installdeb -a
 #	dh_perl
-	dh_shlibdeps -a -L libgimp$(major) -l$(CURDIR)/debian/libgimp$(major)/usr/lib
+	dh_shlibdeps -a -L libgimp$(major) -l$(CURDIR)/debian/libgimp$(major)/usr/lib -Xlibcontroller_midi.so
 	sed -i -e 's/libfreetype6 (>= 2.1.5-1)/libfreetype6 (>= 2.1.7)/' \
 		debian/gimp.substvars
 	dh_gencontrol -a

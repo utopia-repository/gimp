@@ -1,0 +1,136 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpHelpUI</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="up" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities"><link rel="prev" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities"><link rel="next" href="libgimpwidgets-GimpQueryBox.html" title="GimpQueryBox"><meta name="generator" content="GTK-Doc V1.2 (XML mode)"><style type="text/css">
+        .synopsis, .classsynopsis {
+            background: #eeeeee;
+            border: solid 1px #aaaaaa;
+            padding: 0.5em;
+        }
+        .programlisting {
+            background: #eeeeff;
+            border: solid 1px #aaaaff;
+            padding: 0.5em;
+        }
+        .variablelist {
+            padding: 4px;
+            margin-left: 3em;
+        }
+        .navigation {
+            background: #ffeeee;
+            border: solid 1px #ffaaaa;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+        .navigation a {
+            color: #770000;
+        }
+        .navigation a:visited {
+            color: #550000;
+        }
+        .navigation .title {
+            font-size: 200%;
+        }
+      </style></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpwidgets-utils.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpwidgets-utils.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Widgets Library Reference Manual</th><td><a accesskey="n" href="libgimpwidgets-GimpQueryBox.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimpwidgets-GimpHelpUI"></a><div class="titlepage"></div><div class="refnamediv"><h2><span class="refentrytitle">GimpHelpUI</span></h2><p>GimpHelpUI &#8212; Functions for setting <span class="type">GtkTooltips</span> and help identifier used by GIMP help
+system.</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+
+
+
+void        (<a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">*GimpHelpFunc</a>)                 (const gchar *help_id,
+                                             gpointer help_data);
+#define     <a href="libgimpwidgets-GimpHelpUI.html#GIMP-HELP-ID-CAPS">GIMP_HELP_ID</a>
+void        <a href="libgimpwidgets-GimpHelpUI.html#gimp-help-enable-tooltips">gimp_help_enable_tooltips</a>       (void);
+void        <a href="libgimpwidgets-GimpHelpUI.html#gimp-help-disable-tooltips">gimp_help_disable_tooltips</a>      (void);
+void        <a href="libgimpwidgets-GimpHelpUI.html#gimp-standard-help-func">gimp_standard_help_func</a>         (const gchar *help_id,
+                                             gpointer help_data);
+void        <a href="libgimpwidgets-GimpHelpUI.html#gimp-help-connect">gimp_help_connect</a>               (GtkWidget *widget,
+                                             <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
+                                             const gchar *help_id,
+                                             gpointer help_data);
+void        <a href="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data">gimp_help_set_help_data</a>         (GtkWidget *widget,
+                                             const gchar *tooltip,
+                                             const gchar *help_id);
+void        <a href="libgimpwidgets-GimpHelpUI.html#gimp-context-help">gimp_context_help</a>               (GtkWidget *widget);
+
+</pre></div><div class="refsect1" lang="en"><a name="id2607424"></a><h2>Description</h2><p>
+
+</p></div><div class="refsect1" lang="en"><a name="id2594353"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2594358"></a><h3><a name="GimpHelpFunc"></a>GimpHelpFunc ()</h3><a class="indexterm" name="id2594366"></a><pre class="programlisting">void        (*GimpHelpFunc)                 (const gchar *help_id,
+                                             gpointer help_data);</pre><p>
+This is the prototype for all functions you pass as <i class="parameter"><tt>help_func</tt></i> to the
+various GIMP dialog constructors like <a href="GimpDialog.html#gimp-dialog-new"><tt class="function">gimp_dialog_new()</tt></a>,
+<a href="libgimpwidgets-GimpQueryBox.html#gimp-query-int-box"><tt class="function">gimp_query_int_box()</tt></a> etc.
+</p><p>
+Help IDs are textual identifiers the help system uses to figure which
+page to display.
+</p><p>
+All these dialog constructors functions call <a href="libgimpwidgets-GimpHelpUI.html#gimp-help-connect"><tt class="function">gimp_help_connect()</tt></a>.
+</p><p>
+In most cases it will be ok to use <a href="libgimpwidgets-GimpHelpUI.html#gimp-standard-help-func"><tt class="function">gimp_standard_help_func()</tt></a> which does
+nothing but passing the <i class="parameter"><tt>help_id</tt></i> string to <a
+href="../libgimp/libgimp-gimphelp.html#gimp-help"
+><tt class="function">gimp_help()</tt></a>. If your
+plug-in needs some more sophisticated help handling you can provide
+your own <i class="parameter"><tt>help_func</tt></i> which has to call <a
+href="../libgimp/libgimp-gimphelp.html#gimp-help"
+><tt class="function">gimp_help()</tt></a> to actually display
+the help.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>help_id</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>help_data</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2594480"></a><h3><a name="GIMP-HELP-ID-CAPS"></a>GIMP_HELP_ID</h3><a class="indexterm" name="id2605485"></a><pre class="programlisting">#define GIMP_HELP_ID (gimp_help_id_quark ())
+</pre><p>
+Since: GIMP 2.2
+</p></div><hr><div class="refsect2" lang="en"><a name="id2605496"></a><h3><a name="gimp-help-enable-tooltips"></a>gimp_help_enable_tooltips ()</h3><a class="indexterm" name="id2605504"></a><pre class="programlisting">void        gimp_help_enable_tooltips       (void);</pre><p>
+This function calls <tt class="function">gtk_tooltips_enable()</tt>.</p><p>
+
+</p></div><hr><div class="refsect2" lang="en"><a name="id2605528"></a><h3><a name="gimp-help-disable-tooltips"></a>gimp_help_disable_tooltips ()</h3><a class="indexterm" name="id2605537"></a><pre class="programlisting">void        gimp_help_disable_tooltips      (void);</pre><p>
+This function calls <tt class="function">gtk_tooltips_disable()</tt>.</p><p>
+
+</p></div><hr><div class="refsect2" lang="en"><a name="id2605561"></a><h3><a name="gimp-standard-help-func"></a>gimp_standard_help_func ()</h3><a class="indexterm" name="id2605569"></a><pre class="programlisting">void        gimp_standard_help_func         (const gchar *help_id,
+                                             gpointer help_data);</pre><p>
+This is the standard GIMP help function which does nothing but calling
+<a
+href="../libgimp/libgimp-gimphelp.html#gimp-help"
+><tt class="function">gimp_help()</tt></a>. It is the right function to use in almost all cases.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>help_id</tt></i> :</span></td><td>   A unique help identifier.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>help_data</tt></i> :</span></td><td> The <i class="parameter"><tt>help_data</tt></i> passed to <a href="libgimpwidgets-GimpHelpUI.html#gimp-help-connect"><tt class="function">gimp_help_connect()</tt></a>.
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2605642"></a><h3><a name="gimp-help-connect"></a>gimp_help_connect ()</h3><a class="indexterm" name="id2605650"></a><pre class="programlisting">void        gimp_help_connect               (GtkWidget *widget,
+                                             <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
+                                             const gchar *help_id,
+                                             gpointer help_data);</pre><p>
+Note that this function is automatically called by all libgimp dialog
+constructors. You only have to call it for windows/dialogs you created
+"manually".</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>widget</tt></i> :</span></td><td> The widget you want to connect the help accelerator for. Will
+         be a <span class="type">GtkWindow</span> in most cases.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>help_func</tt></i> :</span></td><td> The function which will be called if the user presses "F1".
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>help_id</tt></i> :</span></td><td>   The <i class="parameter"><tt>help_id</tt></i> which will be passed to <i class="parameter"><tt>help_func</tt></i>.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>help_data</tt></i> :</span></td><td> The <i class="parameter"><tt>help_data</tt></i> pointer which will be passed to <i class="parameter"><tt>help_func</tt></i>.
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2600880"></a><h3><a name="gimp-help-set-help-data"></a>gimp_help_set_help_data ()</h3><a class="indexterm" name="id2600889"></a><pre class="programlisting">void        gimp_help_set_help_data         (GtkWidget *widget,
+                                             const gchar *tooltip,
+                                             const gchar *help_id);</pre><p>
+The reason why we don't use <tt class="function">gtk_tooltips_set_tip()</tt> is that it's
+impossible to set a <i class="parameter"><tt>private_tip</tt></i> (aka <i class="parameter"><tt>help_id</tt></i>) without a visible
+<i class="parameter"><tt>tooltip</tt></i>.
+</p><p>
+This function can be called with <span class="type">NULL</span> for <i class="parameter"><tt>tooltip</tt></i>. Use this feature
+if you want to set a help link for a widget which shouldn't have
+a visible tooltip.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>widget</tt></i> :</span></td><td>  The <span class="type">GtkWidget</span> you want to set a <i class="parameter"><tt>tooltip</tt></i> and/or <i class="parameter"><tt>help_id</tt></i> for.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>tooltip</tt></i> :</span></td><td> The text for this widget's tooltip (or <tt class="literal">NULL</tt>).
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>help_id</tt></i> :</span></td><td> The <i class="parameter"><tt>help_id</tt></i> for the <span class="type">GtkTipsQuery</span> tooltips inspector.
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2601016"></a><h3><a name="gimp-context-help"></a>gimp_context_help ()</h3><a class="indexterm" name="id2601024"></a><pre class="programlisting">void        gimp_context_help               (GtkWidget *widget);</pre><p>
+This function invokes the context help inspector.
+</p><p>
+The mouse cursor will turn turn into a question mark and the user can
+click on any widget of the application which started the inspector.
+</p><p>
+If the widget the user clicked on has a <i class="parameter"><tt>help_id</tt></i> string attached
+(see <a href="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data"><tt class="function">gimp_help_set_help_data()</tt></a>), the corresponding help page will
+be displayed. Otherwise the help system will ascend the widget hierarchy
+until it finds an attached <i class="parameter"><tt>help_id</tt></i> string (which should be the
+case at least for every window/dialog).</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>widget</tt></i> :</span></td><td> Any <span class="type">GtkWidget</span> on the screen.
+</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpwidgets-utils.html"><b>&lt;&lt; Part V. GIMP Widgets Utilities</b></a></td><td align="right"><a accesskey="n" href="libgimpwidgets-GimpQueryBox.html"><b>GimpQueryBox &gt;&gt;</b></a></td></tr></table></body></html>

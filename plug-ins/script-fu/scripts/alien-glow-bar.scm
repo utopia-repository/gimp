@@ -20,62 +20,79 @@
 ; along with this program; if not, write to the Free Software
 ; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-(define (script-fu-alien-glow-horizontal-ruler  length height glow-color bg-color flatten)
+(define (script-fu-alien-glow-horizontal-ruler length
+					       height
+					       glow-color
+					       bg-color
+					       flatten)
   (let* ((img (car (gimp-image-new height length RGB)))
 	 (border (/ height 4))
-	 (ruler-layer (car (gimp-layer-new img (+ length height) (+ height height) RGBA_IMAGE "Ruler" 100 NORMAL)))
-	 (glow-layer (car (gimp-layer-new img (+ length height) (+ height height) RGBA_IMAGE "ALien Glow" 100 NORMAL)))
-	 (bg-layer (car (gimp-layer-new img (+ length height) (+ height height) RGB_IMAGE "Back" 100 NORMAL)))
-	 (old-fg (car (gimp-palette-get-foreground)))
-	 (old-bg (car (gimp-palette-get-background))))
-    (gimp-image-disable-undo img)
+	 (ruler-layer (car (gimp-layer-new img
+					   (+ length height) (+ height height)
+					   RGBA-IMAGE "Ruler"
+					   100 NORMAL-MODE)))
+	 (glow-layer (car (gimp-layer-new img
+					  (+ length height) (+ height height)
+					  RGBA-IMAGE "ALien Glow"
+					  100 NORMAL-MODE)))
+	 (bg-layer (car (gimp-layer-new img
+					(+ length height) (+ height height)
+					RGB-IMAGE "Backround"
+					100 NORMAL-MODE))))
+
+    (gimp-context-push)
+
+    (gimp-image-undo-disable img)
     (gimp-image-resize img (+ length height) (+ height height) 0 0)
     (gimp-image-add-layer img bg-layer 1)
     (gimp-image-add-layer img glow-layer -1)
     (gimp-image-add-layer img ruler-layer -1)
      
    ; (gimp-layer-set-preserve-trans ruler-layer TRUE)
-    (gimp-palette-set-background bg-color)
-    (gimp-edit-fill img bg-layer)
-    (gimp-edit-clear img glow-layer)
-    (gimp-edit-clear img ruler-layer)
+    (gimp-context-set-background bg-color)
+    (gimp-edit-fill bg-layer BACKGROUND-FILL)
+    (gimp-edit-clear glow-layer)
+    (gimp-edit-clear ruler-layer)
     
-    (gimp-rect-select img (/ height 2) (/ height 2) length height REPLACE FALSE 0)
-    (gimp-palette-set-foreground '(79 79 79))
-    (gimp-palette-set-background '(0 0 0))
-    (gimp-blend img ruler-layer FG-BG-RGB NORMAL SHAPEBURST-ANGULAR 100 0 REPEAT-NONE FALSE 0 0 0 0 height height)
+    (gimp-rect-select img
+		      (/ height 2) (/ height 2)
+		      length height CHANNEL-OP-REPLACE FALSE 0)
+    (gimp-context-set-foreground '(79 79 79))
+    (gimp-context-set-background '(0 0 0))
 
-    (gimp-palette-set-background glow-color)
+    (gimp-edit-blend ruler-layer FG-BG-RGB-MODE NORMAL-MODE
+		     GRADIENT-SHAPEBURST-ANGULAR 100 0 REPEAT-NONE FALSE
+		     FALSE 0 0 TRUE
+		     0 0 height height)
+
+    (gimp-context-set-foreground glow-color)
     (gimp-selection-grow img border)
-    (gimp-edit-fill img glow-layer)
+    (gimp-edit-fill glow-layer FOREGROUND-FILL)
     (gimp-selection-none img)
     (plug-in-gauss-rle 1 img glow-layer 25 TRUE TRUE)
 
-    (gimp-palette-set-background old-bg)
-    (gimp-palette-set-foreground old-fg)
-    (gimp-image-enable-undo img)
+    (gimp-image-undo-enable img)
 
     (if (= flatten TRUE)
 	(gimp-image-flatten img))
 
-    (gimp-display-new img)))
-
-
+    (gimp-display-new img)
+    
+    (gimp-context-pop)))
 
 
 (script-fu-register "script-fu-alien-glow-horizontal-ruler"
-		    "<Toolbox>/Xtns/Script-Fu/Web page themes/Alien Glow/Hrule"
+		    _"_Hrule..."
 		    "Create an Hrule with the Alien Glow look"
 		    "Adrian Likins"
 		    "Adrian Likins"
 		    "1997"
 		    ""
-		    SF-VALUE "Bar length" "480"
-		    SF-VALUE "Bar Height" "16"
-		    SF-COLOR "Glow Color" '(63 252 0)
-		    SF-COLOR "Background Color" '(0 0 0)
-		    SF-TOGGLE "Flatten Image" TRUE)
+		    SF-ADJUSTMENT _"Bar length"       '(480 5 1500 1 10 0 1)
+		    SF-ADJUSTMENT _"Bar height"       '(16 1 100 1 10 0 1)
+		    SF-COLOR      _"Glow color"       '(63 252 0)
+		    SF-COLOR      _"Background color" '(0 0 0)
+		    SF-TOGGLE     _"Flatten image"    TRUE)
 
-
-
-
+(script-fu-menu-register "script-fu-alien-glow-horizontal-ruler"
+			 _"<Toolbox>/Xtns/Script-Fu/Web Page Themes/Alien Glow")

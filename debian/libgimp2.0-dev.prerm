@@ -1,0 +1,10 @@
+#! /bin/sh -e
+                                                                                
+ver=2.0
+
+if [ "$1" = "remove" ]; then
+    update-alternatives --remove gimptool /usr/bin/gimptool-$ver
+fi
+                                                                                
+#DEBHELPER#
+

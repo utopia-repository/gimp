@@ -88,7 +88,7 @@ void render_rectangle(spec, out, out_width, field, nchan, progress)
    int out_width;
    int field;
    int nchan;
-   void progress(double);
+   int progress(double);
 {
    int i, j, k, nsamples, nbuckets, batch_size, batch_num, sub_batch;
    bucket  *buckets;
@@ -217,7 +217,7 @@ void render_rectangle(spec, out, out_width, field, nchan, progress)
 
       /* compute camera */
       if (1) {
-	double t0, t1, shift, corner0, corner1;
+	double t0, t1, shift = 0.0, corner0, corner1;
 	double scale;
 
 	scale = pow(2.0, cp.zoom);

@@ -1,6 +1,3 @@
-;
-;
-;
 ; Chris Gutteridge (cjg@ecs.soton.ac.uk)
 ; At ECS Dept, University of Southampton, England.
 
@@ -19,18 +16,18 @@
 ; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
-(define (script-fu-tile-blur inImage inLayer inRadius inHoriz inVert inType)
+(define (script-fu-tile-blur inImage inLayer inRadius inVert inHoriz inType)
 
    (set! theImage inImage)
    (set! theLayer inLayer)
    (set! theHeight (car (gimp-drawable-height theLayer)))
    (set! theWidth (car (gimp-drawable-width theLayer)))
 
-   (gimp-image-disable-undo theImage)
+   (gimp-image-undo-group-start theImage)
    (gimp-layer-resize theLayer (* 3 theWidth) (* 3 theHeight) 0 0)
 
-   (gimp-rect-select theImage 0 0 theWidth theHeight REPLACE 0 0)
-   (gimp-edit-cut theImage theLayer)
+   (gimp-rect-select theImage 0 0 theWidth theHeight CHANNEL-OP-REPLACE 0 0)
+   (gimp-edit-cut theLayer)
 
    (gimp-selection-none theImage)
    (gimp-layer-set-offsets theLayer theWidth theHeight)
@@ -40,38 +37,38 @@
    (cjg-pasteat 3 1) (cjg-pasteat 3 2) (cjg-pasteat 3 3)
 
    (gimp-selection-none theImage)
-   (if (= inType FALSE) 
+   (if (= inType 0)
        (plug-in-gauss-iir TRUE theImage theLayer inRadius inHoriz inVert)
        (plug-in-gauss-rle TRUE theImage theLayer inRadius inHoriz inVert)
    )
 
    (gimp-layer-resize theLayer theWidth theHeight (- 0 theWidth) (- 0 theHeight))
    (gimp-layer-set-offsets theLayer 0 0)
-   (gimp-image-enable-undo theImage)
+   (gimp-image-undo-group-end theImage)
    (gimp-displays-flush)
 )
 
-(define (cjg-pasteat xoff yoff) 
-   (let 	((theFloat (car(gimp-edit-paste theImage theLayer 0)))) 
+(define (cjg-pasteat xoff yoff)
+   (let 	((theFloat (car(gimp-edit-paste theLayer 0))))
 		(gimp-layer-set-offsets theFloat (* xoff theWidth) (* yoff theHeight) )
 		(gimp-floating-sel-anchor theFloat)
    )
 )
 
-; Register the function with the GIMP:
 
-(script-fu-register
-    "script-fu-tile-blur"
-	"<Image>/Filters/Blur/Tilable Blur"
-    "foo"
-    "Chris Gutteridge"
-    "1998, Chris Gutteridge / ECS dept, University of Southampton, England."
-    "25th April 1998"
-    "RGBA RGB"
-    SF-IMAGE "The Image" 0
-    SF-DRAWABLE "The Layer" 0
-    SF-VALUE "Radius:" "5"
-    SF-TOGGLE "Blur Vertically?" TRUE
-    SF-TOGGLE "Blur Horizontally?" TRUE
-    SF-TOGGLE "Blur Type: TRUE=RLE, FALSE=IIR" FALSE
-)
+(script-fu-register "script-fu-tile-blur"
+		    _"_Tileable Blur..."
+		    "Blurs image edges so that the final result tiles seamlessly"
+		    "Chris Gutteridge"
+		    "1998, Chris Gutteridge / ECS dept, University of Southampton, England."
+		    "25th April 1998"
+		    "RGB*"
+		    SF-IMAGE       "The Image"         0
+		    SF-DRAWABLE    "The Layer"         0
+		    SF-ADJUSTMENT _"Radius"            '(5 0 128 1 1 0 0)
+		    SF-TOGGLE     _"Blur vertically"   TRUE
+		    SF-TOGGLE     _"Blur horizontally" TRUE
+		    SF-OPTION     _"Blur type"         '(_"IIR" _"RLE"))
+
+(script-fu-menu-register "script-fu-tile-blur"
+			 "<Image>/Filters/Blur")

@@ -17,17 +17,14 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-
-#include <ctype.h>
-#include <stdlib.h>
-
-#include "libifs.h"
-
 #include "config.h"
 
-#ifndef M_PI
-#define M_PI    3.14159265358979323846
-#endif /* M_PI */
+#include <stdlib.h>
+#include <string.h> /* strcmp */
+
+#include "libgimp/gimp.h"
+
+#include "libifs.h"
 
 #define CHOOSE_XFORM_GRAIN 100
 
@@ -74,7 +71,7 @@ void iterate(cp, n, fuse, points)
    }
 
    for (i = -fuse; i < n; i++) {
-      int fn = xform_distrib[RAND_FUNC () % CHOOSE_XFORM_GRAIN];
+      int fn = xform_distrib[g_random_int_range (0, CHOOSE_XFORM_GRAIN) ];
       double tx, ty, v;
 
       if (p[0] > 100.0 || p[0] < -100.0 ||
@@ -160,7 +157,7 @@ void iterate(cp, n, fuse, points)
 	 double nx, ny;
 	 if (tx < -EPS || tx > EPS ||
 	     ty < -EPS || ty > EPS)
-	    nx = atan2(tx, ty) / M_PI;
+	    nx = atan2(tx, ty) / G_PI;
 	 else
 	    nx = 0.0;
 
@@ -402,23 +399,23 @@ void interpolate_angle(t, s, v1, v2, v3, tie, cross)
    /* take the shorter way around the circle... */
    if (x > y) {
       d = x - y;
-      if (d > M_PI + EPS ||
-	  (d > M_PI - EPS && tie))
-	 y += 2*M_PI;
+      if (d > G_PI + EPS ||
+	  (d > G_PI - EPS && tie))
+	 y += 2*G_PI;
    } else {
       d = y - x;
-      if (d > M_PI + EPS ||
-	  (d > M_PI - EPS && tie))
-	 x += 2*M_PI;
+      if (d > G_PI + EPS ||
+	  (d > G_PI - EPS && tie))
+	 x += 2*G_PI;
    }
    /* unless we are supposed to avoid crossing */
    if (cross) {
       if (lastx > x) {
 	 if (lasty < y)
-	    y -= 2*M_PI;
+	    y -= 2*G_PI;
       } else {
 	 if (lasty > y)
-	    y += 2*M_PI;
+	    y += 2*G_PI;
       }
    } else {
       lastx = x;
@@ -551,7 +548,7 @@ void interpolate(cps, ncps, time, result)
    if (cps[i1].cmap_inter) {
      for (i = 0; i < 256; i++) {
        double spread = 0.15;
-       double d0, d1, e0, e1, c = 2 * M_PI * i / 256.0;
+       double d0, d1, e0, e1, c = 2 * G_PI * i / 256.0;
        c = cos(c * cps[i1].cmap_inter) + 4.0 * c1 - 2.0;
        if (c >  spread) c =  spread;
        if (c < -spread) c = -spread;
@@ -625,7 +622,7 @@ void interpolate(cps, ncps, time, result)
 			 result->xform[i].c);
 
       if (1) {
-	 double rh_time = time * 2*M_PI / (60.0 * 30.0);
+	 double rh_time = time * 2*G_PI / (60.0 * 30.0);
 
 	 /* apply pulse factor. */
 	 r = 1.0;
@@ -670,13 +667,13 @@ void tokenize(ss, argv, argc)
        case 0:
 	 if ('#' == c)
 	    state = 2;
-	 else if (!isspace(c)) {
+	 else if (!g_ascii_isspace(c)) {
 	    argv[i] = s;
 	    i++;
 	    state = 1;
 	 }
        case 1:
-	 if (isspace(c)) {
+	 if (g_ascii_isspace(c)) {
 	    *s = 0;
 	    state = 0;
 	 }
@@ -730,7 +727,7 @@ void parse_control_point(ss, cp)
    int argc, i, j;
    int set_cm = 0, set_image_size = 0, set_nbatches = 0, set_white_level = 0, set_cmap_inter = 0;
    int set_spatial_oversample = 0;
-   double *slot, xf, cm, t, nbatches, white_level, spatial_oversample, cmap_inter;
+   double *slot = NULL, xf, cm, t, nbatches, white_level, spatial_oversample, cmap_inter;
    double image_size[2];
 
    for (i = 0; i < NXFORMS; i++) {
@@ -873,11 +870,11 @@ void print_control_point(f, cp, quote)
 
 /* returns a uniform variable from 0 to 1 */
 double random_uniform01() {
-   return (RAND_FUNC () & 0xfffffff) / (double) 0xfffffff;
+   return g_random_double ();
 }
 
 double random_uniform11() {
-   return ((RAND_FUNC () & 0xfffffff) - 0x7ffffff) / (double) 0x7ffffff;
+   return g_random_double_range (-1, 1);
 }
 
 /* returns a mean 0 variance 1 random variable
@@ -914,7 +911,7 @@ copy_variation(control_point *cp0, control_point *cp1) {
 
      
 
-#define random_distrib(v) ((v)[RAND_FUNC ()%vlen(v)])
+#define random_distrib(v) ((v)[g_random_int_range (0, vlen(v))])
 
 void random_control_point(cp, ivar) 
    control_point *cp;
@@ -1047,8 +1044,8 @@ void sort_control_points(cps, ncps, metric)
    double same, swap;
    for (i = 0; i < niter; i++) {
       /* consider switching points with indexes n and m */
-      n = RAND_FUNC () % ncps;
-      m = RAND_FUNC () % ncps;
+      n = g_random_int_range (0, ncps);
+      m = g_random_int_range (0, ncps);
 
       same = (metric(cps + n, cps + (n - 1) % ncps) +
 	      metric(cps + n, cps + (n + 1) % ncps) +

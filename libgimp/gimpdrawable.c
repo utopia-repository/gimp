@@ -1,577 +1,348 @@
-/* LIBGIMP - The GIMP Library                                                   
- * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball                
+/* LIBGIMP - The GIMP Library
+ * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
+ *
+ * gimpdrawable.c
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.             
- *                                                                              
- * This library is distributed in the hope that it will be useful,              
- * but WITHOUT ANY WARRANTY; without even the implied warranty of               
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU            
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Library General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public
+ * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
- */                                                                             
+ */
+
+#include "config.h"
+
 #include "gimp.h"
 
 
-#define TILE_WIDTH   _gimp_tile_width
-#define TILE_HEIGHT  _gimp_tile_height
+#define TILE_WIDTH  gimp_tile_width()
+#define TILE_HEIGHT gimp_tile_height()
 
 
-extern gint _gimp_tile_width;
-extern gint _gimp_tile_height;
-
-
-GDrawable*
+/**
+ * gimp_drawable_get:
+ * @drawable_ID: the ID of the drawable
+ *
+ * This function creates a #GimpDrawable structure for the core
+ * drawable identified by @drawable_ID. The returned structure
+ * contains some basic information about the drawable and can also
+ * hold tile data for transfer to and from the core.
+ *
+ * Note that the name of this function is somewhat misleading, because
+ * it suggests that it simply returns a handle.  This is not the case:
+ * if the function is called multiple times, it creates separate tile
+ * lists each time, which will usually produce undesired results.
+ *
+ * When a plug-in has finished working with a drawable, before exiting
+ * it should call gimp_drawable_detach() to make sure that all tile data is
+ * transferred back to the core.
+ *
+ * Return value: a new #GimpDrawable wrapper
+ **/
+GimpDrawable *
 gimp_drawable_get (gint32 drawable_ID)
 {
-  GDrawable *drawable;
+  GimpDrawable *drawable;
+  gint          width;
+  gint          height;
+  gint          bpp;
 
-  drawable = g_new (GDrawable, 1);
-  drawable->id = drawable_ID;
-  drawable->width = gimp_drawable_width (drawable_ID);
-  drawable->height = gimp_drawable_height (drawable_ID);
-  drawable->bpp = gimp_drawable_bpp (drawable_ID);
-  drawable->ntile_rows = (drawable->height + TILE_HEIGHT - 1) / TILE_HEIGHT;
-  drawable->ntile_cols = (drawable->width + TILE_WIDTH - 1) / TILE_WIDTH;
-  drawable->tiles = NULL;
-  drawable->shadow_tiles = NULL;
+  width  = gimp_drawable_width  (drawable_ID);
+  height = gimp_drawable_height (drawable_ID);
+  bpp    = gimp_drawable_bpp    (drawable_ID);
+
+  g_return_val_if_fail (width > 0 && height > 0 && bpp > 0, NULL);
+
+  drawable = g_new0 (GimpDrawable, 1);
+
+  drawable->drawable_id  = drawable_ID;
+  drawable->width        = width;
+  drawable->height       = height;
+  drawable->bpp          = bpp;
+  drawable->ntile_rows   = (height + TILE_HEIGHT - 1) / TILE_HEIGHT;
+  drawable->ntile_cols   = (width  + TILE_WIDTH  - 1) / TILE_WIDTH;
 
   return drawable;
 }
 
+/**
+ * gimp_drawable_detach:
+ * @drawable: The #GimpDrawable to detach from the core
+ *
+ * This function is called when a plug-in is finished working
+ * with a drawable.  It forces all tile data held in the tile
+ * list of the #GimpDrawable to be transferred to the core, and
+ * then frees all associated memory. You must not access the
+ * @drawable after having called gimp_drawable_detach().
+ **/
 void
-gimp_drawable_detach (GDrawable *drawable)
+gimp_drawable_detach (GimpDrawable *drawable)
 {
-  if (drawable)
+  g_return_if_fail (drawable != NULL);
+
+  gimp_drawable_flush (drawable);
+
+  if (drawable->tiles)
+    g_free (drawable->tiles);
+  if (drawable->shadow_tiles)
+    g_free (drawable->shadow_tiles);
+
+  g_free (drawable);
+}
+
+/**
+ * gimp_drawable_flush:
+ * @drawable: The #GimpDrawable whose tile data is to be transferred
+ * to the core.
+ *
+ * This function causes all tile data in the tile list of @drawable to be
+ * transferred to the core.  It is usually called in situations where a
+ * plug-in acts on a drawable, and then needs to read the results of its
+ * actions.  Data transferred back from the core will not generally be valid
+ * unless gimp_drawable_flush() has been called beforehand.
+ **/
+void
+gimp_drawable_flush (GimpDrawable *drawable)
+{
+  GimpTile *tiles;
+  gint      n_tiles;
+  gint      i;
+
+  g_return_if_fail (drawable != NULL);
+
+  if (drawable->tiles)
     {
-      gimp_drawable_flush (drawable);
-      if (drawable->tiles)
-	g_free (drawable->tiles);
-      if (drawable->shadow_tiles)
-	g_free (drawable->shadow_tiles);
-      g_free (drawable);
-    }
-}
-
-void
-gimp_drawable_flush (GDrawable *drawable)
-{
-  GTile *tiles;
-  int ntiles;
-  int i;
-
-  if (drawable)
-    {
-      if (drawable->tiles)
-	{
-	  tiles = drawable->tiles;
-	  ntiles = drawable->ntile_rows * drawable->ntile_cols;
-
-	  for (i = 0; i < ntiles; i++)
-	    if ((tiles[i].ref_count > 0) && tiles[i].dirty)
-	      gimp_tile_flush (&tiles[i]);
-	}
-
-      if (drawable->shadow_tiles)
-	{
-	  tiles = drawable->shadow_tiles;
-	  ntiles = drawable->ntile_rows * drawable->ntile_cols;
-
-	  for (i = 0; i < ntiles; i++)
-	    if ((tiles[i].ref_count > 0) && tiles[i].dirty)
-	      gimp_tile_flush (&tiles[i]);
-	}
-    }
-}
-
-void
-gimp_drawable_delete (GDrawable *drawable)
-{
-  if (drawable)
-    {
-      if (gimp_drawable_layer (drawable->id))
-	gimp_layer_delete (drawable->id);
-      else
-	gimp_channel_delete (drawable->id);
-    }
-}
-
-void
-gimp_drawable_update (gint32 drawable_ID,
-		      gint   x,
-		      gint   y,
-		      guint  width,
-		      guint  height)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-
-  return_vals = gimp_run_procedure ("gimp_drawable_update",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_INT32, x,
-				    PARAM_INT32, y,
-				    PARAM_INT32, width,
-				    PARAM_INT32, height,
-				    PARAM_END);
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-}
-
-void
-gimp_drawable_merge_shadow (gint32 drawable_ID,
-			    gint   undoable)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-
-  return_vals = gimp_run_procedure ("gimp_drawable_merge_shadow",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_INT32, undoable,
-				    PARAM_END);
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-}
-
-gint32
-gimp_drawable_image_id (gint32 drawable_ID)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-  gint32 image_ID;
-
-  return_vals = gimp_run_procedure ("gimp_drawable_image",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_END);
-
-  image_ID = -1;
-  if (return_vals[0].data.d_int32 == STATUS_SUCCESS)
-    image_ID = return_vals[1].data.d_image;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return image_ID;
-}
-
-char*
-gimp_drawable_name (gint32 drawable_ID)
-{
-  if (gimp_drawable_layer (drawable_ID))
-    return gimp_layer_get_name (drawable_ID);
-  return gimp_channel_get_name (drawable_ID);
-}
-
-guint
-gimp_drawable_width (gint32 drawable_ID)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-  guint width;
-
-  return_vals = gimp_run_procedure ("gimp_drawable_width",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_END);
-
-  width = 0;
-  if (return_vals[0].data.d_int32 == STATUS_SUCCESS)
-    width = return_vals[1].data.d_int32;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return width;
-}
-
-guint
-gimp_drawable_height (gint32 drawable_ID)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-  guint height;
-
-  return_vals = gimp_run_procedure ("gimp_drawable_height",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_END);
-
-  height = 0;
-  if (return_vals[0].data.d_int32 == STATUS_SUCCESS)
-    height = return_vals[1].data.d_int32;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return height;
-}
-
-guint
-gimp_drawable_bpp (gint32 drawable_ID)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-  guint bpp;
-
-  return_vals = gimp_run_procedure ("gimp_drawable_bytes",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_END);
-
-  bpp = 0;
-  if (return_vals[0].data.d_int32 == STATUS_SUCCESS)
-    bpp = return_vals[1].data.d_int32;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return bpp;
-}
-
-GDrawableType
-gimp_drawable_type (gint32 drawable_ID)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-  int result;
-
-  return_vals = gimp_run_procedure ("gimp_drawable_type",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_END);
-
-  result = -1;
-  if (return_vals[0].data.d_int32 == STATUS_SUCCESS)
-    result = return_vals[1].data.d_int32;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return result;
-}
-
-gint
-gimp_drawable_visible (gint32 drawable_ID)
-{
-  if (gimp_drawable_layer (drawable_ID))
-    return gimp_layer_get_visible (drawable_ID);
-  return gimp_channel_get_visible (drawable_ID);
-}
-
-gint
-gimp_drawable_channel (gint32 drawable_ID)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-  int result;
-
-  return_vals = gimp_run_procedure ("gimp_drawable_channel",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_END);
-
-  result = FALSE;
-  if (return_vals[0].data.d_status == STATUS_SUCCESS)
-    result = return_vals[1].data.d_int32;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return result;
-}
-
-gint
-gimp_drawable_color (gint32 drawable_ID)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-  int result;
-
-  return_vals = gimp_run_procedure ("gimp_drawable_color",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_END);
-
-  result = FALSE;
-  if (return_vals[0].data.d_status == STATUS_SUCCESS)
-    result = return_vals[1].data.d_int32;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return result;
-}
-
-gint
-gimp_drawable_gray (gint32 drawable_ID)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-  int result;
-
-  return_vals = gimp_run_procedure ("gimp_drawable_gray",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_END);
-
-  result = FALSE;
-  if (return_vals[0].data.d_status == STATUS_SUCCESS)
-    result = return_vals[1].data.d_int32;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return result;
-}
-
-gint
-gimp_drawable_has_alpha (gint32 drawable_ID)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-  int result;
-
-  return_vals = gimp_run_procedure ("gimp_drawable_has_alpha",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_END);
-
-  result = FALSE;
-  if (return_vals[0].data.d_status == STATUS_SUCCESS)
-    result = return_vals[1].data.d_int32;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return result;
-}
-
-gint
-gimp_drawable_indexed (gint32 drawable_ID)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-  int result;
-
-  return_vals = gimp_run_procedure ("gimp_drawable_indexed",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_END);
-
-  result = FALSE;
-  if (return_vals[0].data.d_status == STATUS_SUCCESS)
-    result = return_vals[1].data.d_int32;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return result;
-}
-
-gint
-gimp_drawable_layer (gint32 drawable_ID)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-  int result;
-
-  return_vals = gimp_run_procedure ("gimp_drawable_layer",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_END);
-
-  result = FALSE;
-  if (return_vals[0].data.d_status == STATUS_SUCCESS)
-    result = return_vals[1].data.d_int32;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return result;
-}
-
-gint
-gimp_drawable_layer_mask (gint32 drawable_ID)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-  int result;
-
-  return_vals = gimp_run_procedure ("gimp_drawable_layer_mask",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_END);
-
-  result = FALSE;
-  if (return_vals[0].data.d_status == STATUS_SUCCESS)
-    result = return_vals[1].data.d_int32;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return result;
-}
-
-gint
-gimp_drawable_mask_bounds (gint32  drawable_ID,
-			   gint   *x1,
-			   gint   *y1,
-			   gint   *x2,
-			   gint   *y2)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-  int result;
-
-  return_vals = gimp_run_procedure ("gimp_drawable_mask_bounds",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_END);
-
-  result = FALSE;
-  if (return_vals[0].data.d_status == STATUS_SUCCESS)
-    {
-      result = return_vals[1].data.d_int32;
-      *x1 = return_vals[2].data.d_int32;
-      *y1 = return_vals[3].data.d_int32;
-      *x2 = return_vals[4].data.d_int32;
-      *y2 = return_vals[5].data.d_int32;
+      tiles   = drawable->tiles;
+      n_tiles = drawable->ntile_rows * drawable->ntile_cols;
+
+      for (i = 0; i < n_tiles; i++)
+        if ((tiles[i].ref_count > 0) && tiles[i].dirty)
+          gimp_tile_flush (&tiles[i]);
     }
 
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return result;
-}
-
-void
-gimp_drawable_offsets (gint32  drawable_ID,
-		       gint   *offset_x,
-		       gint   *offset_y)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-
-  return_vals = gimp_run_procedure ("gimp_drawable_offsets",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_END);
-
-  if (return_vals[0].data.d_status == STATUS_SUCCESS)
+  if (drawable->shadow_tiles)
     {
-      *offset_x = return_vals[1].data.d_int32;
-      *offset_y = return_vals[2].data.d_int32;
+      tiles   = drawable->shadow_tiles;
+      n_tiles = drawable->ntile_rows * drawable->ntile_cols;
+
+      for (i = 0; i < n_tiles; i++)
+        if ((tiles[i].ref_count > 0) && tiles[i].dirty)
+          gimp_tile_flush (&tiles[i]);
     }
 
-  gimp_destroy_params (return_vals, nreturn_vals);
+  /*  nuke all references to this drawable from the cache  */
+  _gimp_tile_cache_flush_drawable (drawable);
 }
 
-void
-gimp_drawable_fill (gint32 drawable_ID,
-		    gint   fill_type)
+GimpTile *
+gimp_drawable_get_tile (GimpDrawable *drawable,
+			gboolean      shadow,
+			gint          row,
+			gint          col)
 {
-  GParam *return_vals;
-  int nreturn_vals;
+  GimpTile *tiles;
+  guint     right_tile;
+  guint     bottom_tile;
+  gint      n_tiles;
+  gint      tile_num;
+  gint      i, j, k;
 
-  return_vals = gimp_run_procedure ("gimp_drawable_fill",
-				    &nreturn_vals,
-				    PARAM_DRAWABLE, drawable_ID,
-				    PARAM_INT32, fill_type,
-				    PARAM_END);
+  g_return_val_if_fail (drawable != NULL, NULL);
 
-  gimp_destroy_params (return_vals, nreturn_vals);
-}
-
-void
-gimp_drawable_set_name (gint32  drawable_ID,
-			char   *name)
-{
-  if (gimp_drawable_layer (drawable_ID))
-    gimp_layer_set_name (drawable_ID, name);
+  if (shadow)
+    tiles = drawable->shadow_tiles;
   else
-    gimp_channel_set_name (drawable_ID, name);
-}
+    tiles = drawable->tiles;
 
-void
-gimp_drawable_set_visible (gint32 drawable_ID,
-			   gint   visible)
-{
-  if (gimp_drawable_layer (drawable_ID))
-    gimp_layer_set_visible (drawable_ID, visible);
-  else
-    gimp_channel_set_visible (drawable_ID, visible);
-}
-
-GTile*
-gimp_drawable_get_tile (GDrawable *drawable,
-			gint      shadow,
-			gint      row,
-			gint      col)
-{
-  GTile *tiles;
-  guint right_tile;
-  guint bottom_tile;
-  int ntiles;
-  int tile_num;
-  int i, j, k;
-
-  if (drawable)
+  if (! tiles)
     {
+      n_tiles = drawable->ntile_rows * drawable->ntile_cols;
+      tiles = g_new (GimpTile, n_tiles);
+
+      right_tile  = (drawable->width  -
+                     ((drawable->ntile_cols - 1) * TILE_WIDTH));
+      bottom_tile = (drawable->height -
+                     ((drawable->ntile_rows - 1) * TILE_HEIGHT));
+
+      for (i = 0, k = 0; i < drawable->ntile_rows; i++)
+        {
+          for (j = 0; j < drawable->ntile_cols; j++, k++)
+            {
+              tiles[k].bpp       = drawable->bpp;
+              tiles[k].tile_num  = k;
+              tiles[k].ref_count = 0;
+              tiles[k].dirty     = FALSE;
+              tiles[k].shadow    = shadow;
+              tiles[k].data      = NULL;
+              tiles[k].drawable  = drawable;
+
+              if (j == (drawable->ntile_cols - 1))
+                tiles[k].ewidth  = right_tile;
+              else
+                tiles[k].ewidth  = TILE_WIDTH;
+
+              if (i == (drawable->ntile_rows - 1))
+                tiles[k].eheight = bottom_tile;
+              else
+                tiles[k].eheight = TILE_HEIGHT;
+            }
+        }
+
       if (shadow)
-	tiles = drawable->shadow_tiles;
+        drawable->shadow_tiles = tiles;
       else
-	tiles = drawable->tiles;
-
-      if (!tiles)
-	{
-	  ntiles = drawable->ntile_rows * drawable->ntile_cols;
-	  tiles = g_new (GTile, ntiles);
-
-	  right_tile = drawable->width - ((drawable->ntile_cols - 1) * TILE_WIDTH);
-	  bottom_tile = drawable->height - ((drawable->ntile_rows - 1) * TILE_HEIGHT);
-
-	  for (i = 0, k = 0; i < drawable->ntile_rows; i++)
-	    {
-	      for (j = 0; j < drawable->ntile_cols; j++, k++)
-		{
-		  tiles[k].bpp = drawable->bpp;
-		  tiles[k].tile_num = k;
-		  tiles[k].ref_count = 0;
-		  tiles[k].dirty = FALSE;
-		  tiles[k].shadow = shadow;
-		  tiles[k].data = NULL;
-		  tiles[k].drawable = drawable;
-
-		  if (j == (drawable->ntile_cols - 1))
-		    tiles[k].ewidth = right_tile;
-		  else
-		    tiles[k].ewidth = TILE_WIDTH;
-
-		  if (i == (drawable->ntile_rows - 1))
-		    tiles[k].eheight = bottom_tile;
-		  else
-		    tiles[k].eheight = TILE_HEIGHT;
-		}
-	    }
-
-	  if (shadow)
-	    drawable->shadow_tiles = tiles;
-	  else
-	    drawable->tiles = tiles;
-	}
-
-      tile_num = row * drawable->ntile_cols + col;
-      return &tiles[tile_num];
+        drawable->tiles = tiles;
     }
 
-  return NULL;
+  tile_num = row * drawable->ntile_cols + col;
+
+  return &tiles[tile_num];
 }
 
-GTile*
-gimp_drawable_get_tile2 (GDrawable *drawable,
-			 gint      shadow,
-			 gint      x,
-			 gint      y)
+GimpTile *
+gimp_drawable_get_tile2 (GimpDrawable *drawable,
+			 gint          shadow,
+			 gint          x,
+			 gint          y)
 {
-  gint row, col;
+  gint row;
+  gint col;
+
+  g_return_val_if_fail (drawable != NULL, NULL);
 
   col = x / TILE_WIDTH;
   row = y / TILE_HEIGHT;
 
   return gimp_drawable_get_tile (drawable, shadow, row, col);
+}
+
+void
+gimp_drawable_get_color_uchar (gint32         drawable_ID,
+                               const GimpRGB *color,
+                               guchar        *color_uchar)
+{
+  g_return_if_fail (color != NULL);
+  g_return_if_fail (color_uchar != NULL);
+
+  switch (gimp_drawable_type (drawable_ID))
+    {
+    case GIMP_RGB_IMAGE:
+      gimp_rgb_get_uchar (color,
+                          &color_uchar[0], &color_uchar[1], &color_uchar[2]);
+      color_uchar[3] = 255;
+      break;
+
+    case GIMP_RGBA_IMAGE:
+      gimp_rgba_get_uchar (color,
+                           &color_uchar[0], &color_uchar[1], &color_uchar[2],
+                           &color_uchar[3]);
+      break;
+
+    case GIMP_GRAY_IMAGE:
+      color_uchar[0] = gimp_rgb_intensity_uchar (color);
+      color_uchar[1] = 255;
+      break;
+
+    case GIMP_GRAYA_IMAGE:
+      color_uchar[0] = gimp_rgb_intensity_uchar (color);
+      gimp_rgba_get_uchar (color, NULL, NULL, NULL, &color_uchar[1]);
+      break;
+
+    default:
+      break;
+    }
+}
+
+guchar *
+gimp_drawable_get_thumbnail_data (gint32  drawable_ID,
+				  gint   *width,
+				  gint   *height,
+				  gint   *bpp)
+{
+  gint    ret_width;
+  gint    ret_height;
+  guchar *image_data;
+  gint    data_size;
+
+  _gimp_drawable_thumbnail (drawable_ID,
+			    *width,
+			    *height,
+			    &ret_width,
+			    &ret_height,
+			    bpp,
+			    &data_size,
+			    &image_data);
+
+  *width  = ret_width;
+  *height = ret_height;
+
+  return image_data;
+}
+
+guchar *
+gimp_drawable_get_sub_thumbnail_data (gint32  drawable_ID,
+                                      gint    src_x,
+                                      gint    src_y,
+                                      gint    src_width,
+                                      gint    src_height,
+                                      gint   *dest_width,
+                                      gint   *dest_height,
+                                      gint   *bpp)
+{
+  gint    ret_width;
+  gint    ret_height;
+  guchar *image_data;
+  gint    data_size;
+
+  _gimp_drawable_sub_thumbnail (drawable_ID,
+                                src_x, src_y,
+                                src_width, src_height,
+                                *dest_width,
+                                *dest_height,
+                                &ret_width,
+                                &ret_height,
+                                bpp,
+                                &data_size,
+                                &image_data);
+
+  *dest_width  = ret_width;
+  *dest_height = ret_height;
+
+  return image_data;
+}
+
+/**
+ * gimp_drawable_attach_new_parasite:
+ * @drawable_ID: the ID of the #GimpDrawable to attach the #GimpParasite to.
+ * @name: the name of the #GimpParasite to create and attach.
+ * @flags: the flags set on the #GimpParasite.
+ * @size: the size of the parasite data in bytes.
+ * @data: a pointer to the data attached with the #GimpParasite.
+ *
+ * Convenience function that creates a parasite and attaches it
+ * to the GIMP.
+ *
+ * See Also: gimp_drawable_parasite_attach()
+ */
+void
+gimp_drawable_attach_new_parasite (gint32          drawable_ID,
+				   const gchar    *name,
+				   gint            flags,
+				   gint            size,
+				   gconstpointer   data)
+{
+  GimpParasite *parasite = gimp_parasite_new (name, flags, size, data);
+
+  gimp_drawable_parasite_attach (drawable_ID, parasite);
+
+  gimp_parasite_free (parasite);
 }

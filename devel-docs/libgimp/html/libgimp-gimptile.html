@@ -1,0 +1,69 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimptile</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="prev" href="libgimp-gimptexttool.html" title="gimptexttool"><link rel="next" href="libgimp-gimptools.html" title="gimptools"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimp-gimptexttool.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th><td><a accesskey="n" href="libgimp-gimptools.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimp-gimptile"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimptile</span></h2><p>gimptile &#8212; Functions for working with tiles.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+
+
+
+            <a href="libgimp-gimptile.html#GimpTile">GimpTile</a>;
+void        <a href="libgimp-gimptile.html#gimp-tile-ref">gimp_tile_ref</a>                   (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);
+void        <a href="libgimp-gimptile.html#gimp-tile-ref-zero">gimp_tile_ref_zero</a>              (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);
+void        <a href="libgimp-gimptile.html#gimp-tile-unref">gimp_tile_unref</a>                 (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile,
+                                             gboolean dirty);
+void        <a href="libgimp-gimptile.html#gimp-tile-flush">gimp_tile_flush</a>                 (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);
+void        <a href="libgimp-gimptile.html#gimp-tile-cache-size">gimp_tile_cache_size</a>            (gulong kilobytes);
+void        <a href="libgimp-gimptile.html#gimp-tile-cache-ntiles">gimp_tile_cache_ntiles</a>          (gulong ntiles);
+</pre></div><div class="refsect1" lang="en"><a name="id2633165"></a><h2>Description</h2><p>
+Functions for working with tiles.
+
+</p></div><div class="refsect1" lang="en"><a name="id2633175"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2633180"></a><h3><a name="GimpTile"></a>GimpTile</h3><a class="indexterm" name="id2633189"></a><pre class="programlisting">typedef struct {
+  guint         ewidth;     /* the effective width of the tile */
+  guint         eheight;    /* the effective height of the tile */
+  guint         bpp;        /* the bytes per pixel (1, 2, 3 or 4 ) */
+  guint         tile_num;   /* the number of this tile within the drawable */
+  guint16       ref_count;  /* reference count for the tile */
+  guint         dirty : 1;  /* is the tile dirty? has it been modified? */
+  guint         shadow: 1;  /* is this a shadow tile */
+  guchar       *data;       /* the pixel data for the tile */
+  GimpDrawable *drawable;   /* the drawable this tile came from */
+} GimpTile;
+</pre><p>
+
+</p></div><hr><div class="refsect2" lang="en"><a name="id2642607"></a><h3><a name="gimp-tile-ref"></a>gimp_tile_ref ()</h3><a class="indexterm" name="id2558118"></a><pre class="programlisting">void        gimp_tile_ref                   (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>tile</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2545681"></a><h3><a name="gimp-tile-ref-zero"></a>gimp_tile_ref_zero ()</h3><a class="indexterm" name="id2633208"></a><pre class="programlisting">void        gimp_tile_ref_zero              (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>tile</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2620259"></a><h3><a name="gimp-tile-unref"></a>gimp_tile_unref ()</h3><a class="indexterm" name="id2620266"></a><pre class="programlisting">void        gimp_tile_unref                 (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile,
+                                             gboolean dirty);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>tile</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>dirty</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2620313"></a><h3><a name="gimp-tile-flush"></a>gimp_tile_flush ()</h3><a class="indexterm" name="id2620321"></a><pre class="programlisting">void        gimp_tile_flush                 (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>tile</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2620352"></a><h3><a name="gimp-tile-cache-size"></a>gimp_tile_cache_size ()</h3><a class="indexterm" name="id2620359"></a><pre class="programlisting">void        gimp_tile_cache_size            (gulong kilobytes);</pre><p>
+Sets the size of the tile cache on the plug-in side. The tile cache
+is used to reduce the number of tiles exchanged between the GIMP core
+and the plug-in. See also <a href="libgimp-gimptile.html#gimp-tile-cache-ntiles"><tt class="function">gimp_tile_cache_ntiles()</tt></a>.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>kilobytes</tt></i> :</span></td><td> new cache size in kilobytes
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2634131"></a><h3><a name="gimp-tile-cache-ntiles"></a>gimp_tile_cache_ntiles ()</h3><a class="indexterm" name="id2634139"></a><pre class="programlisting">void        gimp_tile_cache_ntiles          (gulong ntiles);</pre><p>
+Sets the size of the tile cache on the plug-in side. This function
+is similar to <a href="libgimp-gimptile.html#gimp-tile-cache-size"><tt class="function">gimp_tile_cache_size()</tt></a> but allows to specify the
+number of tiles directly.
+</p><p>
+If your plug-in access pixels tile-by-tile, it doesn't need a tile
+cache at all. If however the plug-in accesses drawable pixel data
+row-by-row, it should set the tile cache large enough to hold the
+number of tiles per row. Double this size if your plug-in uses
+shadow tiles.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ntiles</tt></i> :</span></td><td> number of tiles that should fit into the cache
+</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimp-gimptexttool.html"><b>&lt;&lt; gimptexttool</b></a></td><td align="right"><a accesskey="n" href="libgimp-gimptools.html"><b>gimptools &gt;&gt;</b></a></td></tr></table></body></html>

@@ -1,8 +1,10 @@
 /* LIBGIMP - The GIMP Library
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
  *
+ * gimp.c
+ *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
  *
@@ -11,23 +13,54 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Library General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public
+ * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 #include "config.h"
 
 #include <errno.h>
-#include <signal.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#endif
+
+#ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
+#endif
+
+#ifdef HAVE_SYS_WAIT_H
+#include <sys/wait.h>
+#endif
+
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
+
+#ifndef WAIT_ANY
+#define WAIT_ANY -1
+#endif
+
+#include <glib-object.h>
+
+#ifndef G_OS_WIN32
+#include "libgimpbase/gimpsignal.h"
+#else
+#include <signal.h>
+#endif
+
+#ifdef HAVE_SYS_SELECT_H
+#include <sys/select.h>
+#endif
+
+#if defined(USE_SYSV_SHM)
 
 #ifdef HAVE_IPC_H
 #include <sys/ipc.h>
@@ -37,882 +70,1444 @@
 #include <sys/shm.h>
 #endif
 
-#ifdef HAVE_SYS_SELECT_H
-#include <sys/select.h>
+#elif defined(USE_POSIX_SHM)
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
 #endif
 
-#include "gimp.h"
-#include "gimpprotocol.h"
-#include "gimpwire.h"
+#include <fcntl.h>
+#include <sys/mman.h>
 
+#endif /* USE_POSIX_SHM */
+
+#if defined(G_OS_WIN32) || defined(G_WITH_CYGWIN)
+#  define STRICT
+#  include <windows.h>
+#  undef RGB
+#  define USE_WIN32_SHM 1
+#endif
+
+#include <libintl.h>
+#include <locale.h>
+
+#ifndef LIBGIMP_COMPILATION
+#define LIBGIMP_COMPILATION
+#endif
+
+#include "libgimpbase/gimpbasetypes.h"
+
+#include "libgimpbase/gimpbase-private.h"
+#include "libgimpbase/gimpenv.h"
+#include "libgimpbase/gimpprotocol.h"
+#include "libgimpbase/gimpwire.h"
+
+#include "gimp.h"
+#include "gimpunitcache.h"
+
+
+#define TILE_MAP_SIZE (_tile_width * _tile_height * 4)
+
+#define ERRMSG_SHM_FAILED "Could not attach to gimp shared memory segment"
+
+/* Maybe this should go in a public header if we add other things to it */
+typedef enum
+{
+  GIMP_DEBUG_PID            = 1 << 0,
+  GIMP_DEBUG_FATAL_WARNINGS = 1 << 1,
+  GIMP_DEBUG_QUERY          = 1 << 2,
+  GIMP_DEBUG_INIT           = 1 << 3,
+  GIMP_DEBUG_RUN            = 1 << 4,
+  GIMP_DEBUG_QUIT           = 1 << 5,
+
+  GIMP_DEBUG_DEFAULT        = (GIMP_DEBUG_RUN | GIMP_DEBUG_FATAL_WARNINGS)
+} GimpDebugFlag;
 
 #define WRITE_BUFFER_SIZE  1024
 
-void gimp_extension_process (guint timeout);
-void gimp_extension_ack     (void);
-
-static RETSIGTYPE gimp_signal        (int signum);
-static int        gimp_write         (int fd, guint8 *buf, gulong count);
-static int        gimp_flush         (int fd);
-static void       gimp_loop          (void);
-static void       gimp_config        (GPConfig *config);
-static void       gimp_proc_run      (GPProcRun *proc_run);
-static void       gimp_temp_proc_run (GPProcRun *proc_run);
-static void       gimp_message_func  (char *str);
+void gimp_read_expect_msg   (WireMessage *msg,
+			     gint         type);
 
 
-int _readfd = 0;
-int _writefd = 0;
-int _shm_ID = -1;
-guchar *_shm_addr = NULL;
+static void       gimp_close                   (void);
+static void       gimp_debug_stop              (void);
+static void       gimp_message_func            (const gchar    *log_domain,
+						GLogLevelFlags  log_level,
+						const gchar    *message,
+						gpointer        data);
+#ifndef G_OS_WIN32
+static void       gimp_plugin_sigfatal_handler (gint            sig_num);
+#endif
+static gboolean   gimp_plugin_io_error_handler (GIOChannel     *channel,
+						GIOCondition    cond,
+						gpointer        data);
+static gboolean   gimp_write                   (GIOChannel     *channel,
+						guint8         *buf,
+						gulong          count,
+                                                gpointer        user_data);
+static gboolean   gimp_flush                   (GIOChannel     *channel,
+                                                gpointer        user_data);
+static void       gimp_loop                    (void);
+static void       gimp_config                  (GPConfig       *config);
+static void       gimp_proc_run                (GPProcRun      *proc_run);
+static void       gimp_temp_proc_run           (GPProcRun      *proc_run);
+static void       gimp_process_message         (WireMessage    *msg);
+static void       gimp_single_message          (void);
+static gboolean   gimp_extension_read          (GIOChannel     *channel,
+                                                GIOCondition    condition,
+                                                gpointer        data);
+
+
+static GIOChannel *_readchannel  = NULL;
+GIOChannel *_writechannel = NULL;
 
 const guint gimp_major_version = GIMP_MAJOR_VERSION;
 const guint gimp_minor_version = GIMP_MINOR_VERSION;
 const guint gimp_micro_version = GIMP_MICRO_VERSION;
 
-static gdouble _gamma_val;
-static gint _install_cmap;
-static gint _use_xshm;
-static guchar _color_cube[4];
+#ifdef USE_WIN32_SHM
+static HANDLE shm_handle;
+#endif
 
-static char *progname = NULL;
-static guint8 write_buffer[WRITE_BUFFER_SIZE];
-static guint write_buffer_index = 0;
+static gint           _tile_width        = -1;
+static gint           _tile_height       = -1;
+static gint           _shm_ID            = -1;
+static guchar        *_shm_addr          = NULL;
+static gdouble        _gamma_val         = 1.0;
+static gboolean       _install_cmap      = FALSE;
+static gboolean       _show_tool_tips    = TRUE;
+static gboolean       _show_help_button  = TRUE;
+static GimpCheckSize  _check_size        = GIMP_CHECK_SIZE_MEDIUM_CHECKS;
+static GimpCheckType  _check_type        = GIMP_CHECK_TYPE_GRAY_CHECKS;
+static gint           _min_colors        = 144;
+static gint           _gdisp_ID          = -1;
+static gchar         *_wm_class          = NULL;
+static gchar         *_display_name      = NULL;
+static gint           _monitor_number    = 0;
+static const gchar   *progname           = NULL;
 
-static GHashTable *temp_proc_ht = NULL;
+static guint8         write_buffer[WRITE_BUFFER_SIZE];
+static guint          write_buffer_index = 0;
 
-extern GPlugInInfo PLUG_IN_INFO;
+static GimpStackTraceMode stack_trace_mode = GIMP_STACK_TRACE_NEVER;
 
+static GHashTable    *temp_proc_ht       = NULL;
 
-int
-gimp_main (int   argc,
-	   char *argv[])
+static guint          gimp_debug_flags   = 0;
+
+static const GDebugKey gimp_debug_keys[] =
 {
-  if ((argc < 4) || (strcmp (argv[1], "-gimp") != 0))
+  { "pid",            GIMP_DEBUG_PID            },
+  { "fatal-warnings", GIMP_DEBUG_FATAL_WARNINGS },
+  { "fw",             GIMP_DEBUG_FATAL_WARNINGS },
+  { "query",          GIMP_DEBUG_QUERY          },
+  { "init",           GIMP_DEBUG_INIT           },
+  { "run",            GIMP_DEBUG_RUN            },
+  { "quit",           GIMP_DEBUG_QUIT           },
+  { "on",             GIMP_DEBUG_DEFAULT        }
+};
+
+
+static GimpPlugInInfo PLUG_IN_INFO;
+
+
+/**
+ * gimp_main:
+ * @info: the PLUG_IN_INFO structure
+ * @argc: the number of arguments
+ * @argv: the arguments
+ *
+ * The main procedure that must be called with the PLUG_IN_INFO structure
+ * and the 'argc' and 'argv' that are passed to "main".
+ *
+ * Return value:
+ **/
+gint
+gimp_main (const GimpPlugInInfo *info,
+           gint                  argc,
+	   gchar                *argv[])
+{
+  gchar       *basename;
+  const gchar *env_string;
+  gchar       *debug_string;
+
+#ifdef G_OS_WIN32
+  gint i, j, k;
+
+  /* Check for exe file name with spaces in the path having been split up
+   * by buggy NT C runtime, or something. I don't know why this happens
+   * on NT (including w2k), but not on w95/98.
+   */
+
+  for (i = 1; i < argc; i++)
     {
-      g_print ("%s is a gimp plug-in and must be run by the gimp to be used\n", argv[0]);
+      k = strlen (argv[i]);
+
+      if (k > 10)
+	{
+	  if (g_ascii_strcasecmp (argv[i] + k - 4, ".exe") == 0)
+	    {
+	      /* Found the end of the executable name, most probably.
+	       * Splice the parts of the name back together.
+	       */
+	      GString *s;
+
+	      s = g_string_new (argv[0]);
+
+	      for (j = 1; j <= i; j++)
+		{
+		  s = g_string_append_c (s, ' ');
+		  s = g_string_append (s, argv[j]);
+		}
+
+	      argv[0] = s->str;
+
+	      /* Move rest of argv down */
+	      for (j = 1; j < argc - i; j++)
+		argv[j] = argv[j + i];
+
+	      argv[argc - i] = NULL;
+	      argc -= i;
+
+	      break;
+	  }
+       }
+    }
+#endif
+
+  g_assert (info != NULL);
+
+  PLUG_IN_INFO = *info;
+
+  if ((argc != 6) || (strcmp (argv[1], "-gimp") != 0))
+    {
+      g_printerr ("%s is a GIMP plug-in and must be run by GIMP to be used\n",
+                  argv[0]);
       return 1;
     }
 
   progname = argv[0];
 
-  signal (SIGHUP, gimp_signal);
-  signal (SIGINT, gimp_signal);
-  signal (SIGQUIT, gimp_signal);
-  signal (SIGBUS, gimp_signal);
-  signal (SIGSEGV, gimp_signal);
-  signal (SIGPIPE, gimp_signal);
-  signal (SIGTERM, gimp_signal);
-  signal (SIGFPE, gimp_signal);
+  basename = g_path_get_basename (progname);
 
-  _readfd = atoi (argv[2]);
-  _writefd = atoi (argv[3]);
+  g_set_prgname (basename);
+
+  env_string = g_getenv ("GIMP_PLUGIN_DEBUG");
+
+  if (env_string)
+    {
+      debug_string = strchr (env_string, ',');
+
+      if (debug_string)
+        {
+          gint len = debug_string - env_string;
+
+	  if ((strlen (basename) == len) &&
+              (strncmp (basename, env_string, len) == 0))
+            {
+              gimp_debug_flags =
+                g_parse_debug_string (debug_string + 1,
+                                      gimp_debug_keys,
+                                      G_N_ELEMENTS (gimp_debug_keys));
+            }
+        }
+      else if (strcmp (env_string, basename) == 0)
+        {
+          gimp_debug_flags = GIMP_DEBUG_DEFAULT;
+        }
+    }
+
+  g_free (basename);
+
+  stack_trace_mode = (GimpStackTraceMode) CLAMP (atoi (argv[5]),
+						 GIMP_STACK_TRACE_NEVER,
+						 GIMP_STACK_TRACE_ALWAYS);
+
+#ifndef G_OS_WIN32
+  /* No use catching these on Win32, the user won't get any meaningful
+   * stack trace from glib anyhow. It's better to let Windows inform
+   * about the program error, and offer debugging if the plug-in
+   * has been built with MSVC, and the user has MSVC installed.
+   */
+  gimp_signal_private (SIGHUP,  gimp_plugin_sigfatal_handler, 0);
+  gimp_signal_private (SIGINT,  gimp_plugin_sigfatal_handler, 0);
+  gimp_signal_private (SIGQUIT, gimp_plugin_sigfatal_handler, 0);
+  gimp_signal_private (SIGBUS,  gimp_plugin_sigfatal_handler, 0);
+  gimp_signal_private (SIGSEGV, gimp_plugin_sigfatal_handler, 0);
+  gimp_signal_private (SIGTERM, gimp_plugin_sigfatal_handler, 0);
+  gimp_signal_private (SIGFPE,  gimp_plugin_sigfatal_handler, 0);
+
+  /* Ignore SIGPIPE from crashing Gimp */
+  gimp_signal_private (SIGPIPE, SIG_IGN, 0);
+
+  /* Restart syscalls interrupted by SIGCHLD */
+  gimp_signal_private (SIGCHLD, SIG_DFL, SA_RESTART);
+#endif
+
+  _readchannel  = g_io_channel_unix_new (atoi (argv[2]));
+  _writechannel = g_io_channel_unix_new (atoi (argv[3]));
+
+  g_io_channel_set_encoding (_readchannel, NULL, NULL);
+  g_io_channel_set_encoding (_writechannel, NULL, NULL);
+
+  g_io_channel_set_buffered (_readchannel, FALSE);
+  g_io_channel_set_buffered (_writechannel, FALSE);
+
+  g_io_channel_set_close_on_unref (_readchannel, TRUE);
+  g_io_channel_set_close_on_unref (_writechannel, TRUE);
 
   gp_init ();
   wire_set_writer (gimp_write);
   wire_set_flusher (gimp_flush);
 
-  if ((argc == 5) && (strcmp (argv[4], "-query") == 0))
-    {
-      if (PLUG_IN_INFO.query_proc)
-	(* PLUG_IN_INFO.query_proc) ();
-      gimp_quit ();
-      return 0;
-    }
+  g_type_init ();
+  _gimp_enums_init ();
 
-  g_set_message_handler ((GPrintFunc) gimp_message_func);
+  /*  initialize units  */
+  {
+    GimpUnitVTable vtable;
 
-  temp_proc_ht = g_hash_table_new (&g_str_hash, &g_str_equal);
+    vtable.unit_get_number_of_units = _gimp_unit_cache_get_number_of_units;
+    vtable.unit_get_number_of_built_in_units =
+      _gimp_unit_cache_get_number_of_built_in_units;
+    vtable.unit_new                 = _gimp_unit_cache_new;
+    vtable.unit_get_deletion_flag   = _gimp_unit_cache_get_deletion_flag;
+    vtable.unit_set_deletion_flag   = _gimp_unit_cache_set_deletion_flag;
+    vtable.unit_get_factor          = _gimp_unit_cache_get_factor;
+    vtable.unit_get_digits          = _gimp_unit_cache_get_digits;
+    vtable.unit_get_identifier      = _gimp_unit_cache_get_identifier;
+    vtable.unit_get_symbol          = _gimp_unit_cache_get_symbol;
+    vtable.unit_get_abbreviation    = _gimp_unit_cache_get_abbreviation;
+    vtable.unit_get_singular        = _gimp_unit_cache_get_singular;
+    vtable.unit_get_plural          = _gimp_unit_cache_get_plural;
 
-  gimp_loop ();
-  return 0;
-}
+    gimp_base_init (&vtable);
+  }
 
-void G_GNUC_NORETURN
-gimp_quit ()
-{
-  if (PLUG_IN_INFO.quit_proc)
-    (* PLUG_IN_INFO.quit_proc) ();
 
-#ifdef HAVE_SHM_H
-  if ((_shm_ID != -1) && _shm_addr)
-    shmdt ((char*) _shm_addr);
+  /* initialize i18n support */
+
+  setlocale (LC_ALL, "");
+
+  bindtextdomain (GETTEXT_PACKAGE"-libgimp", gimp_locale_directory ());
+#ifdef HAVE_BIND_TEXTDOMAIN_CODESET
+  bind_textdomain_codeset (GETTEXT_PACKAGE"-libgimp", "UTF-8");
 #endif
 
-  gp_quit_write (_writefd);
-  exit (0);
-}
 
-void
-gimp_set_data (gchar *  id,
-	       gpointer data,
-	       guint32  length)
-{
-  GParam *return_vals;
-  int nreturn_vals;
+  /* set handler both for the "LibGimp" and "" domains */
 
-  return_vals = gimp_run_procedure ("gimp_procedural_db_set_data",
-				    &nreturn_vals,
-				    PARAM_STRING, id,
-				    PARAM_INT32, length,
-				    PARAM_INT8ARRAY, data,
-				    PARAM_END);
+  g_log_set_handler (G_LOG_DOMAIN,
+		     G_LOG_LEVEL_MESSAGE,
+		     gimp_message_func,
+		     NULL);
+  g_log_set_handler (NULL,
+		     G_LOG_LEVEL_MESSAGE,
+		     gimp_message_func,
+		     NULL);
 
-  gimp_destroy_params (return_vals, nreturn_vals);
-}
-
-void
-gimp_get_data (gchar *  id,
-	       gpointer data)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-  int length;
-  gchar *returned_data;
-
-  return_vals = gimp_run_procedure ("gimp_procedural_db_get_data",
-				    &nreturn_vals,
-				    PARAM_STRING, id,
-				    PARAM_END);
-
-  if (return_vals[0].data.d_status == STATUS_SUCCESS)
+  if (gimp_debug_flags & GIMP_DEBUG_FATAL_WARNINGS)
     {
-      length = return_vals[1].data.d_int32;
-      returned_data = (gchar *) return_vals[2].data.d_int8array;
+      GLogLevelFlags fatal_mask;
 
-      memcpy (data, returned_data, length);
+      fatal_mask = g_log_set_always_fatal (G_LOG_FATAL_MASK);
+      fatal_mask |= G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL;
+      g_log_set_always_fatal (fatal_mask);
     }
 
-  gimp_destroy_params (return_vals, nreturn_vals);
-}
-
-
-void
-gimp_progress_init (char *message)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-
-  return_vals = gimp_run_procedure ("gimp_progress_init",
-				    &nreturn_vals,
-				    PARAM_STRING, message,
-				    PARAM_END);
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-}
-
-void
-gimp_progress_update (gdouble percentage)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-
-  return_vals = gimp_run_procedure ("gimp_progress_update",
-				    &nreturn_vals,
-				    PARAM_FLOAT, percentage,
-				    PARAM_END);
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-}
-
-
-void
-gimp_message (char *message)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-
-  return_vals = gimp_run_procedure ("gimp_message",
-				    &nreturn_vals,
-				    PARAM_STRING, message,
-				    PARAM_END);
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-}
-
-static void
-gimp_message_func (char *str)
-{
-  gimp_message (str);
-}
-
-
-void
-gimp_query_database (char   *name_regexp,
-		     char   *blurb_regexp,
-		     char   *help_regexp,
-		     char   *author_regexp,
-		     char   *copyright_regexp,
-		     char   *date_regexp,
-		     char   *proc_type_regexp,
-		     int    *nprocs,
-		     char ***proc_names)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-  int i;
-
-  return_vals = gimp_run_procedure ("gimp_procedural_db_query",
-				    &nreturn_vals,
-				    PARAM_STRING, name_regexp,
-				    PARAM_STRING, blurb_regexp,
-				    PARAM_STRING, help_regexp,
-				    PARAM_STRING, author_regexp,
-				    PARAM_STRING, copyright_regexp,
-				    PARAM_STRING, date_regexp,
-				    PARAM_STRING, proc_type_regexp,
-				    PARAM_END);
-
-  *nprocs = 0;
-  *proc_names = NULL;
-
-  if (return_vals[0].data.d_status == STATUS_SUCCESS)
+  if (strcmp (argv[4], "-query") == 0)
     {
-      *nprocs = return_vals[1].data.d_int32;
-      *proc_names = g_new (gchar*, *nprocs);
+      if (PLUG_IN_INFO.init_proc)
+        gp_has_init_write (_writechannel, NULL);
 
-      for (i = 0; i < *nprocs; i++)
-	(*proc_names)[i] = g_strdup (return_vals[2].data.d_stringarray[i]);
+      if (gimp_debug_flags & GIMP_DEBUG_QUERY)
+        gimp_debug_stop ();
+
+      if (PLUG_IN_INFO.query_proc)
+	(* PLUG_IN_INFO.query_proc) ();
+
+      gimp_close ();
+
+      return EXIT_SUCCESS;
     }
 
-  gimp_destroy_params (return_vals, nreturn_vals);
-}
-
-gint
-gimp_query_procedure (char      *proc_name,
-		      char     **proc_blurb,
-		      char     **proc_help,
-		      char     **proc_author,
-		      char     **proc_copyright,
-		      char     **proc_date,
-		      int       *proc_type,
-		      int       *nparams,
-		      int       *nreturn_vals,
-		      GParamDef **params,
-		      GParamDef **return_vals)
-{
-  GParam *ret_vals;
-  int nret_vals;
-  int i;
-  int success = TRUE;
-
-  ret_vals = gimp_run_procedure ("gimp_procedural_db_proc_info",
-				 &nret_vals,
-				 PARAM_STRING, proc_name,
-				 PARAM_END);
-
-  if (ret_vals[0].data.d_status == STATUS_SUCCESS)
+  if (strcmp (argv[4], "-init") == 0)
     {
-      *proc_blurb = g_strdup (ret_vals[1].data.d_string);
-      *proc_help = g_strdup (ret_vals[2].data.d_string);
-      *proc_author = g_strdup (ret_vals[3].data.d_string);
-      *proc_copyright = g_strdup (ret_vals[4].data.d_string);
-      *proc_date = g_strdup (ret_vals[5].data.d_string);
-      *proc_type = ret_vals[6].data.d_int32;
-      *nparams = ret_vals[7].data.d_int32;
-      *nreturn_vals = ret_vals[8].data.d_int32;
-      *params = g_new (GParamDef, *nparams);
-      *return_vals = g_new (GParamDef, *nreturn_vals);
+      if (gimp_debug_flags & GIMP_DEBUG_INIT)
+        gimp_debug_stop ();
 
-      for (i = 0; i < *nparams; i++)
-	{
-	  GParam *rvals;
-	  int nrvals;
+      if (PLUG_IN_INFO.init_proc)
+	(* PLUG_IN_INFO.init_proc) ();
 
-	  rvals = gimp_run_procedure ("gimp_procedural_db_proc_arg",
-				      &nrvals,
-				      PARAM_STRING, proc_name,
-				      PARAM_INT32, i,
-				      PARAM_END);
+      gimp_close ();
 
-	  if (rvals[0].data.d_status == STATUS_SUCCESS)
-	    {
-	      (*params)[i].type = rvals[1].data.d_int32;
-	      (*params)[i].name = g_strdup (rvals[2].data.d_string);
-	      (*params)[i].description = g_strdup (rvals[3].data.d_string);
-	    }
-	  else
-	    {
-	      g_free (*params);
-	      g_free (*return_vals);
-	      gimp_destroy_params (rvals, nrvals);
-	      return FALSE;
-	    }
-
-	  gimp_destroy_params (rvals, nrvals);
-	}
-
-      for (i = 0; i < *nreturn_vals; i++)
-	{
-	  GParam *rvals;
-	  int nrvals;
-
-	  rvals = gimp_run_procedure ("gimp_procedural_db_proc_val",
-				      &nrvals,
-				      PARAM_STRING, proc_name,
-				      PARAM_INT32, i,
-				      PARAM_END);
-
-	  if (rvals[0].data.d_status == STATUS_SUCCESS)
-	    {
-	      (*return_vals)[i].type = rvals[1].data.d_int32;
-	      (*return_vals)[i].name = g_strdup (rvals[2].data.d_string);
-	      (*return_vals)[i].description = g_strdup (rvals[3].data.d_string);
-	    }
-	  else
-	    {
-	      g_free (*params);
-	      g_free (*return_vals);
-	      gimp_destroy_params (rvals, nrvals);
-	      return FALSE;
-	    }
-
-	  gimp_destroy_params (rvals, nrvals);
-	}
-    }
-  else
-    success = FALSE;
-
-  gimp_destroy_params (ret_vals, nret_vals);
-
-  return success;
-}
-
-gint32*
-gimp_query_images (int *nimages)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-  gint32 *images;
-
-  return_vals = gimp_run_procedure ("gimp_list_images",
-				    &nreturn_vals,
-				    PARAM_END);
-
-  images = NULL;
-  if (return_vals[0].data.d_status == STATUS_SUCCESS)
-    {
-      *nimages = return_vals[1].data.d_int32;
-      images = g_new (gint32, *nimages);
-      memcpy (images, return_vals[2].data.d_int32array, *nimages * 4);
+      return EXIT_SUCCESS;
     }
 
-  gimp_destroy_params (return_vals, nreturn_vals);
+  if (gimp_debug_flags & GIMP_DEBUG_RUN)
+    gimp_debug_stop ();
+  else if (gimp_debug_flags & GIMP_DEBUG_PID)
+    g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, "Here I am!");
 
-  return images;
+  temp_proc_ht = g_hash_table_new (g_str_hash, g_str_equal);
+
+  g_io_add_watch (_readchannel,
+		  G_IO_ERR | G_IO_HUP,
+		  gimp_plugin_io_error_handler,
+		  NULL);
+
+  gimp_loop ();
+
+  return EXIT_SUCCESS;
 }
 
+/**
+ * gimp_quit:
+ *
+ * Forcefully causes the gimp library to exit and close down its
+ * connection to main gimp application. This function never returns.
+ **/
 void
-gimp_install_procedure (char     *name,
-			char     *blurb,
-			char     *help,
-			char     *author,
-			char     *copyright,
-			char     *date,
-			char     *menu_path,
-			char     *image_types,
-			int       type,
-			int       nparams,
-			int       nreturn_vals,
-			GParamDef *params,
-			GParamDef *return_vals)
+gimp_quit (void)
+{
+  gimp_close ();
+
+  exit (EXIT_SUCCESS);
+}
+
+/**
+ * gimp_install_procedure:
+ * @name:          the procedure's name.
+ * @blurb:         a short text describing what the procedure does.
+ * @help:          the help text for the procedure (usually considerably
+ *                 longer than @blurb).
+ * @author:        the procedure's author(s).
+ * @copyright:     the procedure's copyright.
+ * @date:          the date the procedure was added.
+ * @menu_label:    the label to use for the procedure's menu entry,
+ *                 or #NULL if the procedure has no menu entry.
+ * @image_types:   the drawable types the procedure can handle.
+ * @type:          the type of the procedure.
+ * @n_params:      the number of parameters the procedure takes.
+ * @n_return_vals: the number of return values the procedure returns.
+ * @params:        the procedure's parameters.
+ * @return_vals:   the procedure's return values.
+ *
+ * Installs a new procedure with the PDB (procedural database).
+ *
+ * Call this function from within your Plug-In's query() function for
+ * each procedure your Plug-In implements.
+ *
+ * The @name parameter is mandatory and should be unique, or it will
+ * overwrite an already existing procedure (overwrite procedures only
+ * if you know what you're doing).
+ *
+ * The @blurb, @help, @author, @copyright and @date parameters are
+ * optional but then you shouldn't write procedures without proper
+ * documentation, should you.
+ *
+ * @menu_label defines the label that should be used for the
+ * procedure's menu entry (use #NULL if the procedure shouldn't have a
+ * menu entry).  The position where to register in the menu hierarchy
+ * is choosen using gimp_plugin_menu_register().  This function also
+ * still accepts the old (pre-2.2) way of registering a menu entry and
+ * takes a string in the form "&lt;Domain&gt;/Path/To/My/Menu"
+ * (e.g. "&lt;Image&gt;/Filters/Render/Useless").
+ *
+ * @type must be one of #GIMP_PLUGIN or #GIMP_EXTENSION. Note that
+ * temporary procedures must be installed using
+ * gimp_install_temp_proc().
+ *
+ * NOTE: Unlike the GIMP 1.2 API, #GIMP_EXTENSION no longer means
+ * that the procedure's menu prefix is &lt;Toolbox&gt;, but that
+ * it will install temporary procedures. Therefore, the GIMP core
+ * will wait until the #GIMP_EXTENSION procedure has called
+ * gimp_extension_ack(), which means that the procedure has done
+ * its initialization, installed its temporary procedures and is
+ * ready to run.
+ *
+ * <emphasis>Not calling gimp_extension_ack() from a #GIMP_EXTENSION
+ * procedure will cause th GIMP core to lock up.</emphasis>
+ *
+ * Additionally, a #GIMP_EXTENSION procedure with no parameters
+ * (@n_params == 0 and @params == #NULL) is an "automatic" extension
+ * that will be automatically started on each GIMP startup.
+ **/
+void
+gimp_install_procedure (const gchar        *name,
+			const gchar        *blurb,
+			const gchar        *help,
+			const gchar        *author,
+			const gchar        *copyright,
+			const gchar        *date,
+			const gchar        *menu_label,
+			const gchar        *image_types,
+			GimpPDBProcType     type,
+			gint                n_params,
+			gint                n_return_vals,
+			const GimpParamDef *params,
+			const GimpParamDef *return_vals)
 {
   GPProcInstall proc_install;
 
-  proc_install.name = name;
-  proc_install.blurb = blurb;
-  proc_install.help = help;
-  proc_install.author = author;
-  proc_install.copyright = copyright;
-  proc_install.date = date;
-  proc_install.menu_path = menu_path;
-  proc_install.image_types = image_types;
-  proc_install.type = type;
-  proc_install.nparams = nparams;
-  proc_install.nreturn_vals = nreturn_vals;
-  proc_install.params = (GPParamDef*) params;
-  proc_install.return_vals = (GPParamDef*) return_vals;
+  g_return_if_fail (name != NULL);
+  g_return_if_fail (type != GIMP_INTERNAL);
+  g_return_if_fail ((n_params == 0 && params == NULL) ||
+                    (n_params > 0  && params != NULL));
+  g_return_if_fail ((n_return_vals == 0 && return_vals == NULL) ||
+                    (n_return_vals > 0  && return_vals != NULL));
 
-  if (!gp_proc_install_write (_writefd, &proc_install))
+  proc_install.name         = (gchar *) name;
+  proc_install.blurb        = (gchar *) blurb;
+  proc_install.help         = (gchar *) help;
+  proc_install.author       = (gchar *) author;
+  proc_install.copyright    = (gchar *) copyright;
+  proc_install.date         = (gchar *) date;
+  proc_install.menu_path    = (gchar *) menu_label;
+  proc_install.image_types  = (gchar *) image_types;
+  proc_install.type         = type;
+  proc_install.nparams      = n_params;
+  proc_install.nreturn_vals = n_return_vals;
+  proc_install.params       = (GPParamDef *) params;
+  proc_install.return_vals  = (GPParamDef *) return_vals;
+
+  if (! gp_proc_install_write (_writechannel, &proc_install, NULL))
     gimp_quit ();
 }
 
+/**
+ * gimp_install_temp_proc:
+ * @name:          the procedure's name.
+ * @blurb:         a short text describing what the procedure does.
+ * @help:          the help text for the procedure (usually considerably
+ *                 longer than @blurb).
+ * @author:        the procedure's author(s).
+ * @copyright:     the procedure's copyright.
+ * @date:          the date the procedure was added.
+ * @menu_label:    the procedure's menu label, or #NULL if the procedure has
+ *                 no menu entry.
+ * @image_types:   the drawable types the procedure can handle.
+ * @type:          the type of the procedure.
+ * @n_params:      the number of parameters the procedure takes.
+ * @n_return_vals: the number of return values the procedure returns.
+ * @params:        the procedure's parameters.
+ * @return_vals:   the procedure's return values.
+ * @run_proc:      the function to call for executing the procedure.
+ *
+ * Installs a new temporary procedure with the PDB (procedural database).
+ *
+ * A temporary procedure is a procedure which is only available while
+ * one of your Plug-In's "real" procedures is running.
+ *
+ * See gimp_install_procedure() for most details.
+ *
+ * @type <emphasis>must</emphasis> be #GIMP_TEMPORARY or the function
+ * will fail.
+ *
+ * @run_proc is the function which will be called to execute the
+ * procedure.
+ *
+ * NOTE: Normally, Plug-In communication is triggered by the Plug-In
+ * and the GIMP core only responds to the Plug-In's requests. You must
+ * explicitely enable receiving of temporary procedure run requests
+ * using either gimp_extension_enable() or
+ * gimp_extension_process(). See this functions' documentation for
+ * details.
+ **/
 void
-gimp_install_temp_proc (char     *name,
-			char     *blurb,
-			char     *help,
-			char     *author,
-			char     *copyright,
-			char     *date,
-			char     *menu_path,
-			char     *image_types,
-			int       type,
-			int       nparams,
-			int       nreturn_vals,
-			GParamDef *params,
-			GParamDef *return_vals,
-			GRunProc   run_proc)
+gimp_install_temp_proc (const gchar        *name,
+			const gchar        *blurb,
+			const gchar        *help,
+			const gchar        *author,
+			const gchar        *copyright,
+			const gchar        *date,
+			const gchar        *menu_label,
+			const gchar        *image_types,
+			GimpPDBProcType     type,
+			gint                n_params,
+			gint                n_return_vals,
+			const GimpParamDef *params,
+			const GimpParamDef *return_vals,
+			GimpRunProc         run_proc)
 {
-  gimp_install_procedure (name, blurb, help, author, copyright, date,
-			  menu_path, image_types, type,
-			  nparams, nreturn_vals, params, return_vals);
+  g_return_if_fail (name != NULL);
+  g_return_if_fail ((n_params == 0 && params == NULL) ||
+                    (n_params > 0  && params != NULL));
+  g_return_if_fail ((n_return_vals == 0 && return_vals == NULL) ||
+                    (n_return_vals > 0  && return_vals != NULL));
+  g_return_if_fail (type == GIMP_TEMPORARY);
+  g_return_if_fail (run_proc != NULL);
+
+  gimp_install_procedure (name,
+			  blurb, help,
+			  author, copyright, date,
+			  menu_label,
+			  image_types,
+			  type,
+			  n_params, n_return_vals,
+			  params, return_vals);
 
   /*  Insert the temp proc run function into the hash table  */
-  g_hash_table_insert (temp_proc_ht, (gpointer) name, (gpointer) run_proc);
+  g_hash_table_insert (temp_proc_ht, g_strdup (name), (gpointer) run_proc);
 }
 
+/**
+ * gimp_uninstall_temp_proc:
+ * @name: the procedure's name
+ *
+ * Uninstalls a temporary procedure which has previously been
+ * installed using gimp_install_temp_proc().
+ **/
 void
-gimp_uninstall_temp_proc (char *name)
+gimp_uninstall_temp_proc (const gchar *name)
 {
   GPProcUninstall proc_uninstall;
+  gpointer        hash_name;
+  gboolean        found;
 
-  proc_uninstall.name = name;
+  g_return_if_fail (name != NULL);
 
-  if (!gp_proc_uninstall_write (_writefd, &proc_uninstall))
+  proc_uninstall.name = (gchar *) name;
+
+  if (! gp_proc_uninstall_write (_writechannel, &proc_uninstall, NULL))
     gimp_quit ();
-  g_hash_table_remove (temp_proc_ht, (gpointer) name);
+
+  found = g_hash_table_lookup_extended (temp_proc_ht, name, &hash_name, NULL);
+  if (found)
+    {
+      g_hash_table_remove (temp_proc_ht, (gpointer) name);
+      g_free (hash_name);
+    }
 }
 
-void
-gimp_register_magic_load_handler (char *name,
-				  char *extensions,
-				  char *prefixes,
-				  char *magics)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-
-  return_vals = gimp_run_procedure ("gimp_register_magic_load_handler",
-				    &nreturn_vals,
-				    PARAM_STRING, name,
-				    PARAM_STRING, extensions,
-				    PARAM_STRING, prefixes,
-				    PARAM_STRING, magics,
-				    PARAM_END);
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-}
-
-void
-gimp_register_load_handler (char *name,
-			    char *extensions,
-			    char *prefixes)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-
-  return_vals = gimp_run_procedure ("gimp_register_load_handler",
-				    &nreturn_vals,
-				    PARAM_STRING, name,
-				    PARAM_STRING, extensions,
-				    PARAM_STRING, prefixes,
-				    PARAM_END);
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-}
-
-void
-gimp_register_save_handler (char *name,
-			    char *extensions,
-			    char *prefixes)
-{
-  GParam *return_vals;
-  int nreturn_vals;
-
-  return_vals = gimp_run_procedure ("gimp_register_save_handler",
-				    &nreturn_vals,
-				    PARAM_STRING, name,
-				    PARAM_STRING, extensions,
-				    PARAM_STRING, prefixes,
-				    PARAM_END);
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-}
-
-GParam*
-gimp_run_procedure (char *name,
-		    int  *nreturn_vals,
+/**
+ * gimp_run_procedure:
+ * @name:          the name of the procedure to run
+ * @n_return_vals: return location for the number of return values
+ * @Varargs:       list of procedure parameters
+ *
+ * This function calls a GIMP procedure and returns its return values.
+ *
+ * The procedure's parameters are given by a va_list in the format
+ * (type, value, type, value) and must be terminated by #GIMP_PDB_END.
+ *
+ * This function converts the va_list of parameters into an array
+ * and passes them to gimp_run_procedure2().
+ *
+ * Return value: the procedure's return values.
+ **/
+GimpParam *
+gimp_run_procedure (const gchar *name,
+		    gint        *n_return_vals,
 		    ...)
 {
-  GPProcRun proc_run;
-  GPProcReturn *proc_return;
-  WireMessage msg;
-  GParamType param_type;
-  GParam *return_vals;
-  va_list args;
-  guchar *color;
-  int i;
+  GimpPDBArgType  param_type;
+  GimpParam      *return_vals;
+  GimpParam      *params   = NULL;
+  gint            n_params = 0;
+  va_list         args;
+  gint            i;
 
-  proc_run.name = name;
-  proc_run.nparams = 0;
-  proc_run.params = NULL;
+  g_return_val_if_fail (name != NULL, NULL);
+  g_return_val_if_fail (n_return_vals != NULL, NULL);
 
-  va_start (args, nreturn_vals);
-  param_type = va_arg (args, GParamType);
+  va_start (args, n_return_vals);
+  param_type = va_arg (args, GimpPDBArgType);
 
-  while (param_type != PARAM_END)
+  while (param_type != GIMP_PDB_END)
     {
       switch (param_type)
 	{
-	case PARAM_INT32:
-        case PARAM_DISPLAY:
-        case PARAM_IMAGE:
-        case PARAM_LAYER:
-        case PARAM_CHANNEL:
-        case PARAM_DRAWABLE:
-        case PARAM_SELECTION:
-        case PARAM_BOUNDARY:
-        case PARAM_PATH:
-        case PARAM_STATUS:
-	  (void) va_arg (args, int);
+	case GIMP_PDB_INT32:
+        case GIMP_PDB_DISPLAY:
+        case GIMP_PDB_IMAGE:
+        case GIMP_PDB_LAYER:
+        case GIMP_PDB_CHANNEL:
+        case GIMP_PDB_DRAWABLE:
+        case GIMP_PDB_SELECTION:
+        case GIMP_PDB_BOUNDARY:
+        case GIMP_PDB_PATH:
+        case GIMP_PDB_STATUS:
+	  (void) va_arg (args, gint);
 	  break;
-	case PARAM_INT16:
-	  (void) va_arg (args, int);
+	case GIMP_PDB_INT16:
+	  (void) va_arg (args, gint);
 	  break;
-	case PARAM_INT8:
-	  (void) va_arg (args, int);
+	case GIMP_PDB_INT8:
+	  (void) va_arg (args, gint);
 	  break;
-        case PARAM_FLOAT:
-          (void) va_arg (args, double);
+        case GIMP_PDB_FLOAT:
+          (void) va_arg (args, gdouble);
           break;
-        case PARAM_STRING:
-          (void) va_arg (args, gchar*);
+        case GIMP_PDB_STRING:
+          (void) va_arg (args, gchar *);
           break;
-        case PARAM_INT32ARRAY:
-          (void) va_arg (args, gint32*);
+        case GIMP_PDB_INT32ARRAY:
+          (void) va_arg (args, gint32 *);
           break;
-        case PARAM_INT16ARRAY:
-          (void) va_arg (args, gint16*);
+        case GIMP_PDB_INT16ARRAY:
+          (void) va_arg (args, gint16 *);
           break;
-        case PARAM_INT8ARRAY:
-          (void) va_arg (args, gint8*);
+        case GIMP_PDB_INT8ARRAY:
+          (void) va_arg (args, gint8 *);
           break;
-        case PARAM_FLOATARRAY:
-          (void) va_arg (args, gdouble*);
+        case GIMP_PDB_FLOATARRAY:
+          (void) va_arg (args, gdouble *);
           break;
-        case PARAM_STRINGARRAY:
-          (void) va_arg (args, gchar**);
+        case GIMP_PDB_STRINGARRAY:
+          (void) va_arg (args, gchar **);
           break;
-        case PARAM_COLOR:
-          (void) va_arg (args, guchar*);
+        case GIMP_PDB_COLOR:
+	  (void) va_arg (args, GimpRGB *);
           break;
-        case PARAM_REGION:
+        case GIMP_PDB_PARASITE:
+          (void) va_arg (args, GimpParasite *);
           break;
-	case PARAM_END:
+        case GIMP_PDB_REGION:
+          break;
+	case GIMP_PDB_END:
 	  break;
 	}
 
-      proc_run.nparams += 1;
-      param_type = va_arg (args, GParamType);
+      n_params++;
+
+      param_type = va_arg (args, GimpPDBArgType);
     }
 
   va_end (args);
 
-  proc_run.params = g_new (GPParam, proc_run.nparams);
+  params = g_new0 (GimpParam, n_params);
 
-  va_start (args, nreturn_vals);
+  va_start (args, n_return_vals);
 
-  for (i = 0; i < proc_run.nparams; i++)
+  for (i = 0; i < n_params; i++)
     {
-      proc_run.params[i].type = va_arg (args, GParamType);
+      params[i].type = va_arg (args, GimpPDBArgType);
 
-      switch (proc_run.params[i].type)
+      switch (params[i].type)
 	{
-	case PARAM_INT32:
-	  proc_run.params[i].data.d_int32 = (gint32) va_arg (args, int);
+	case GIMP_PDB_INT32:
+	  params[i].data.d_int32 = (gint32) va_arg (args, gint);
 	  break;
-	case PARAM_INT16:
-	  proc_run.params[i].data.d_int16 = (gint16) va_arg (args, int);
+	case GIMP_PDB_INT16:
+	  params[i].data.d_int16 = (gint16) va_arg (args, gint);
 	  break;
-	case PARAM_INT8:
-	  proc_run.params[i].data.d_int8 = (gint8) va_arg (args, int);
+	case GIMP_PDB_INT8:
+	  params[i].data.d_int8 = (gint8) va_arg (args, gint);
 	  break;
-        case PARAM_FLOAT:
-          proc_run.params[i].data.d_float = (gdouble) va_arg (args, double);
+        case GIMP_PDB_FLOAT:
+          params[i].data.d_float = (gdouble) va_arg (args, gdouble);
           break;
-        case PARAM_STRING:
-          proc_run.params[i].data.d_string = va_arg (args, gchar*);
+        case GIMP_PDB_STRING:
+          params[i].data.d_string = va_arg (args, gchar *);
           break;
-        case PARAM_INT32ARRAY:
-          proc_run.params[i].data.d_int32array = va_arg (args, gint32*);
+        case GIMP_PDB_INT32ARRAY:
+          params[i].data.d_int32array = va_arg (args, gint32 *);
           break;
-        case PARAM_INT16ARRAY:
-          proc_run.params[i].data.d_int16array = va_arg (args, gint16*);
+        case GIMP_PDB_INT16ARRAY:
+          params[i].data.d_int16array = va_arg (args, gint16 *);
           break;
-        case PARAM_INT8ARRAY:
-          proc_run.params[i].data.d_int8array = va_arg (args, gint8*);
+        case GIMP_PDB_INT8ARRAY:
+          params[i].data.d_int8array = va_arg (args, gint8 *);
           break;
-        case PARAM_FLOATARRAY:
-          proc_run.params[i].data.d_floatarray = va_arg (args, gdouble*);
+        case GIMP_PDB_FLOATARRAY:
+          params[i].data.d_floatarray = va_arg (args, gdouble *);
           break;
-        case PARAM_STRINGARRAY:
-          proc_run.params[i].data.d_stringarray = va_arg (args, gchar**);
+        case GIMP_PDB_STRINGARRAY:
+          params[i].data.d_stringarray = va_arg (args, gchar **);
           break;
-        case PARAM_COLOR:
-	  color = va_arg (args, guchar*);
-          proc_run.params[i].data.d_color.red = color[0];
-          proc_run.params[i].data.d_color.green = color[1];
-          proc_run.params[i].data.d_color.blue = color[2];
+        case GIMP_PDB_COLOR:
+	  params[i].data.d_color = *va_arg (args, GimpRGB *);
           break;
-        case PARAM_REGION:
+        case GIMP_PDB_REGION:
           break;
-        case PARAM_DISPLAY:
-	  proc_run.params[i].data.d_display = va_arg (args, gint32);
+        case GIMP_PDB_DISPLAY:
+	  params[i].data.d_display = va_arg (args, gint32);
           break;
-        case PARAM_IMAGE:
-	  proc_run.params[i].data.d_image = va_arg (args, gint32);
+        case GIMP_PDB_IMAGE:
+	  params[i].data.d_image = va_arg (args, gint32);
           break;
-        case PARAM_LAYER:
-	  proc_run.params[i].data.d_layer = va_arg (args, gint32);
+        case GIMP_PDB_LAYER:
+	  params[i].data.d_layer = va_arg (args, gint32);
           break;
-        case PARAM_CHANNEL:
-	  proc_run.params[i].data.d_channel = va_arg (args, gint32);
+        case GIMP_PDB_CHANNEL:
+	  params[i].data.d_channel = va_arg (args, gint32);
           break;
-        case PARAM_DRAWABLE:
-	  proc_run.params[i].data.d_drawable = va_arg (args, gint32);
+        case GIMP_PDB_DRAWABLE:
+	  params[i].data.d_drawable = va_arg (args, gint32);
           break;
-        case PARAM_SELECTION:
-	  proc_run.params[i].data.d_selection = va_arg (args, gint32);
+        case GIMP_PDB_SELECTION:
+	  params[i].data.d_selection = va_arg (args, gint32);
           break;
-        case PARAM_BOUNDARY:
-	  proc_run.params[i].data.d_boundary = va_arg (args, gint32);
+        case GIMP_PDB_BOUNDARY:
+	  params[i].data.d_boundary = va_arg (args, gint32);
           break;
-        case PARAM_PATH:
-	  proc_run.params[i].data.d_path = va_arg (args, gint32);
+        case GIMP_PDB_PATH:
+	  params[i].data.d_path = va_arg (args, gint32);
           break;
-        case PARAM_STATUS:
-	  proc_run.params[i].data.d_status = va_arg (args, gint32);
+        case GIMP_PDB_PARASITE:
+          {
+            GimpParasite *parasite = va_arg (args, GimpParasite *);
+
+            if (parasite == NULL)
+              {
+                params[i].data.d_parasite.name = NULL;
+                params[i].data.d_parasite.data = NULL;
+              }
+            else
+              {
+                params[i].data.d_parasite.name  = parasite->name;
+                params[i].data.d_parasite.flags = parasite->flags;
+                params[i].data.d_parasite.size  = parasite->size;
+                params[i].data.d_parasite.data  = parasite->data;
+              }
+          }
           break;
-	case PARAM_END:
+        case GIMP_PDB_STATUS:
+          params[i].data.d_status = va_arg (args, gint32);
+          break;
+	case GIMP_PDB_END:
 	  break;
 	}
     }
 
   va_end (args);
 
-  if (!gp_proc_run_write (_writefd, &proc_run))
-    gimp_quit ();
-  if (!wire_read_msg (_readfd, &msg))
+  return_vals = gimp_run_procedure2 (name, n_return_vals,
+                                     n_params, params);
+
+  g_free (params);
+
+  return return_vals;
+}
+
+void
+gimp_read_expect_msg (WireMessage *msg,
+		      gint         type)
+{
+  while (TRUE)
+    {
+      if (! wire_read_msg (_readchannel, msg, NULL))
+	gimp_quit ();
+
+      if (msg->type != type)
+	{
+	  if (msg->type == GP_TEMP_PROC_RUN || msg->type == GP_QUIT)
+	    {
+	      gimp_process_message (msg);
+	      continue;
+	    }
+	  else
+	    g_error ("unexpected message: %d", msg->type);
+	}
+      else
+	break;
+    }
+}
+
+
+/**
+ * gimp_run_procedure2:
+ * @name:          the name of the procedure to run
+ * @n_return_vals: return location for the number of return values
+ * @n_params:      the number of parameters the procedure takes.
+ * @params:        the procedure's parameters array.
+ *
+ * This function calls a GIMP procedure and returns its return values.
+ *
+ * Return value: the procedure's return values.
+ **/
+GimpParam *
+gimp_run_procedure2 (const gchar     *name,
+		     gint            *n_return_vals,
+		     gint             n_params,
+		     const GimpParam *params)
+{
+  GPProcRun     proc_run;
+  GPProcReturn *proc_return;
+  WireMessage   msg;
+  GimpParam    *return_vals;
+
+  g_return_val_if_fail (name != NULL, NULL);
+  g_return_val_if_fail (n_return_vals != NULL, NULL);
+
+  proc_run.name    = (gchar *) name;
+  proc_run.nparams = n_params;
+  proc_run.params  = (GPParam *) params;
+
+  if (! gp_proc_run_write (_writechannel, &proc_run, NULL))
     gimp_quit ();
 
-  if (msg.type != GP_PROC_RETURN)
-    g_error ("unexpected message: %d\n", msg.type);
+  gimp_read_expect_msg (&msg, GP_PROC_RETURN);
 
   proc_return = msg.data;
-  *nreturn_vals = proc_return->nparams;
-  return_vals = (GParam*) proc_return->params;
+  *n_return_vals = proc_return->nparams;
+  return_vals = (GimpParam *) proc_return->params;
 
   switch (return_vals[0].data.d_status)
     {
-    case STATUS_EXECUTION_ERROR:
-      /*g_warning ("an execution error occured while trying to run: \"%s\"", name);*/
+    case GIMP_PDB_EXECUTION_ERROR:
       break;
-    case STATUS_CALLING_ERROR:
-      g_warning ("a calling error occured while trying to run: \"%s\"", name);
+
+    case GIMP_PDB_CALLING_ERROR:
+      g_printerr ("a calling error occured while trying to run: \"%s\"", name);
       break;
+
     default:
       break;
     }
 
-  g_free (proc_run.params);
   g_free (proc_return->name);
   g_free (proc_return);
 
   return return_vals;
 }
 
-GParam*
-gimp_run_procedure2 (char   *name,
-		     int    *nreturn_vals,
-		     int     nparams,
-		     GParam *params)
+/**
+ * gimp_destroy_params:
+ * @params:   the #GimpParam array to destroy
+ * @n_params: the number of elements in the array
+ *
+ * Destroys a #GimpParam array as returned by gimp_run_procedure()
+ **/
+void
+gimp_destroy_params (GimpParam *params,
+		     gint       n_params)
 {
-  GPProcRun proc_run;
-  GPProcReturn *proc_return;
-  WireMessage msg;
-  GParam *return_vals;
+  extern void _gp_params_destroy (GPParam *params, gint n_params);
 
-  proc_run.name = name;
-  proc_run.nparams = nparams;
-  proc_run.params = (GPParam *) params;
+  _gp_params_destroy ((GPParam*) params, n_params);
+}
 
-  if (!gp_proc_run_write (_writefd, &proc_run))
-    gimp_quit ();
-  if (!wire_read_msg (_readfd, &msg))
-    gimp_quit ();
-
-  if (msg.type != GP_PROC_RETURN)
-    g_error ("unexpected message: %d\n", msg.type);
-
-  proc_return = msg.data;
-  *nreturn_vals = proc_return->nparams;
-  return_vals = (GParam*) proc_return->params;
-
-  switch (return_vals[0].data.d_status)
+/**
+ * gimp_destroy_paramdefs:
+ * @paramdefs: the #GimpParamDef array to destroy
+ * @n_params:  the number of elements in the array
+ *
+ * Destroys a #GimpParamDef array as returned by gimp_query_procedure()
+ **/
+void
+gimp_destroy_paramdefs (GimpParamDef *paramdefs,
+			gint          n_params)
+{
+  while (n_params--)
     {
-    case STATUS_EXECUTION_ERROR:
-      /*g_warning ("an execution error occured while trying to run: \"%s\"", name);*/
-      break;
-    case STATUS_CALLING_ERROR:
-      g_warning ("a calling error occured while trying to run: \"%s\"", name);
-      break;
-    default:
-      break;
+      g_free (paramdefs[n_params].name);
+      g_free (paramdefs[n_params].description);
     }
 
-  g_free (proc_return);
-
-  return return_vals;
+  g_free (paramdefs);
 }
 
-void
-gimp_destroy_params (GParam *params,
-		     int    nparams)
+/**
+ * gimp_tile_width:
+ *
+ * Returns the tile_width the GIMP is using. This is a constant value
+ * given at Plug-In config time.
+ *
+ * Return value: the tile_width
+ **/
+guint
+gimp_tile_width (void)
 {
-  extern void _gp_params_destroy (GPParam *params, int nparams);
-
-  _gp_params_destroy ((GPParam*) params, nparams);
+  return _tile_width;
 }
 
+/**
+ * gimp_tile_height:
+ *
+ * Returns the tile_height the GIMP is using. This is a constant value
+ * given at Plug-In config time.
+ *
+ * Return value: the tile_height
+ **/
+guint
+gimp_tile_height (void)
+{
+  return _tile_height;
+}
+
+/**
+ * gimp_shm_ID:
+ *
+ * Returns the shared memory ID used for passing tile data between the GIMP
+ * core and the Plug-In. This is a constant value
+ * given at Plug-In config time.
+ *
+ * Return value: the shared memory ID
+ **/
+gint
+gimp_shm_ID (void)
+{
+  return _shm_ID;
+}
+
+/**
+ * gimp_shm_addr:
+ *
+ * Returns the address of the shared memory segment used for passing
+ * tile data between the GIMP core and the Plug-In. This is a constant
+ * value given at Plug-In config time.
+ *
+ * Return value: the shared memory address
+ **/
+guchar *
+gimp_shm_addr (void)
+{
+  return _shm_addr;
+}
+
+/**
+ * gimp_gamma:
+ *
+ * Returns the global gamma value the GIMP and all its Plug-Ins should
+ * use. This is a constant value given at Plug-In config time.
+ *
+ * NOTE: this feature is unimplemented.
+ *
+ * Return value: the gamma value
+ **/
 gdouble
-gimp_gamma ()
+gimp_gamma (void)
 {
   return _gamma_val;
 }
 
-gint
-gimp_install_cmap ()
+/**
+ * gimp_install_cmap:
+ *
+ * Returns whether or not the Plug-In should allocate an own colormap
+ * when running on an 8 bit display. This is a constant value given at
+ * Plug-In config time.
+ *
+ * See also: gimp_min_colors()
+ *
+ * Return value: the install_cmap boolean
+ **/
+gboolean
+gimp_install_cmap (void)
 {
   return _install_cmap;
 }
 
+/**
+ * gimp_min_colors:
+ *
+ * Returns the minimum number of colors to use when allocating an own
+ * colormap on 8 bit displays. This is a constant value given at
+ * Plug-In config time.
+ *
+ * See also: gimp_install_cmap()
+ *
+ * Return value: the minimum number of colors to allocate
+ **/
 gint
-gimp_use_xshm ()
+gimp_min_colors (void)
 {
-  return _use_xshm;
+  return _min_colors;
 }
 
-guchar*
-gimp_color_cube ()
+/**
+ * gimp_show_tool_tips:
+ *
+ * Returns whether or not the Plug-In should show tooltips. This is a
+ * constant value given at Plug-In config time.
+ *
+ * Return value: the show_tool_tips boolean
+ **/
+gboolean
+gimp_show_tool_tips (void)
 {
-  return _color_cube;
+  return _show_tool_tips;
 }
 
-gchar*
-gimp_gtkrc ()
+/**
+ * gimp_show_help_button:
+ *
+ * Returns whether or not GimpDialog should automatically add a help
+ * button if help_func and help_id are given.
+ *
+ * Return value: the show_help_button boolean
+ *
+ * Since: GIMP 2.2
+ **/
+gboolean
+gimp_show_help_button (void)
 {
-  static char filename[MAXPATHLEN];
-  char *home_dir;
-
-  home_dir = getenv ("HOME");
-  if (!home_dir)
-    return NULL;
-
-  sprintf (filename, "%s/%s/gtkrc", home_dir, GIMPDIR);
-
-  return filename;
+  return _show_help_button;
 }
 
+/**
+ * gimp_check_size:
+ *
+ * Returns the size of the checkerboard to be used in previews.
+ * This is a constant value given at Plug-In config time.
+ *
+ * Return value: the check_size value
+ *
+ * Since: GIMP 2.2
+ **/
+GimpCheckSize
+gimp_check_size (void)
+{
+  return _check_size;
+}
+
+/**
+ * gimp_check_type:
+ *
+ * Returns the type of the checkerboard to be used in previews.
+ * This is a constant value given at Plug-In config time.
+ *
+ * Return value: the check_type value
+ *
+ * Since: GIMP 2.2
+ **/
+GimpCheckType
+gimp_check_type (void)
+{
+  return _check_type;
+}
+
+/**
+ * gimp_default_display:
+ *
+ * Returns the default display ID. This corresponds to the display the
+ * running procedure's menu entry was invoked from. This is a
+ * constant value given at Plug-In config time.
+ *
+ * Return value: the default display ID
+ **/
+gint32
+gimp_default_display (void)
+{
+  return _gdisp_ID;
+}
+
+/**
+ * gimp_wm_class:
+ *
+ * Returns the window manager class to be used for plug-in windows.
+ * This is a constant value given at Plug-In config time.
+ *
+ * Return value: the window manager class
+ **/
+const gchar *
+gimp_wm_class (void)
+{
+  return (const gchar *) _wm_class;
+}
+
+/**
+ * gimp_display_name:
+ *
+ * Returns the display to be used for plug-in windows.
+ * This is a constant value given at Plug-In config time.
+ *
+ * Return value: the display name
+ **/
+const gchar *
+gimp_display_name (void)
+{
+  return (const gchar *) _display_name;
+}
+
+/**
+ * gimp_monitor_number:
+ *
+ * Returns the monitor number to be used for plug-in windows.
+ * This is a constant value given at Plug-In config time.
+ *
+ * Return value: the monitor number
+ **/
+gint
+gimp_monitor_number (void)
+{
+  return _monitor_number;
+}
+
+/**
+ * gimp_get_progname:
+ *
+ * Returns the Plug-In's executable name.
+ *
+ * Return value: the executable name
+ **/
+const gchar *
+gimp_get_progname (void)
+{
+  return progname;
+}
+
+/**
+ * gimp_extension_ack:
+ *
+ * Notify the main GIMP application that the extension has been properly
+ * initialized and is ready to run.
+ *
+ * This function <emphasis>must</emphasis> be called from every
+ * procedure that was registered as #GIMP_EXTENSION.
+ *
+ * Subsequently, extensions can process temporary procedure run
+ * requests using either gimp_extension_enable() or
+ * gimp_extension_process().
+ *
+ * See also: gimp_install_procedure(), gimp_install_temp_proc()
+ **/
+void
+gimp_extension_ack (void)
+{
+  if (! gp_extension_ack_write (_writechannel, NULL))
+    gimp_quit ();
+}
+
+/**
+ * gimp_extension_enable:
+ *
+ * Enables asnychronous processing of messages from the main GIMP
+ * application.
+ *
+ * Normally, a plug-in is not called by the GIMP except for the call
+ * to the procedure it implements. All subsequent communication is
+ * triggered by the plug-in and all messages sent from the GIMP to the
+ * plug-in are just answers to requests the plug-in made.
+ *
+ * If the plug-in however registered temporary procedures using
+ * gimp_install_temp_proc(), it needs to be able to receive requests
+ * to execute them. Usually this will be done by running
+ * gimp_extension_process() in an endless loop.
+ *
+ * If the plug-in cannot use gimp_extension_process(), i.e. if it has
+ * a GUI and is hanging around in a #GMainLoop, it must call
+ * gimp_extension_enable().
+ *
+ * Note that the plug-in does not need to be a #GIMP_EXTENSION to
+ * register temporary procedures.
+ *
+ * See also: gimp_install_procedure(), gimp_install_temp_proc()
+ **/
+void
+gimp_extension_enable (void)
+{
+  static gboolean callback_added = FALSE;
+
+  if (! callback_added)
+    {
+      g_io_add_watch (_readchannel, G_IO_IN | G_IO_PRI, gimp_extension_read,
+                      NULL);
+
+      callback_added = TRUE;
+    }
+}
+
+/**
+ * gimp_extension_process:
+ * @timeout: The timeout (in ms) to use for the select() call.
+ *
+ * Processes one message sent by the GIMP and returns.
+ *
+ * Call this function in an endless loop after calling
+ * gimp_extension_ack() to process requests for running temporary
+ * procedures.
+ *
+ * See gimp_extension_enable() for an asynchronous way of doing the
+ * same if running an endless loop is not an option.
+ *
+ * See also: gimp_install_procedure(), gimp_install_temp_proc()
+ **/
 void
 gimp_extension_process (guint timeout)
 {
-  WireMessage msg;
+#ifndef G_OS_WIN32
   fd_set readfds;
-  int select_val;
-  struct timeval tv;
+  gint   select_val;
+  struct timeval  tv;
   struct timeval *tvp;
 
   if (timeout)
     {
-      tv.tv_sec = timeout / 1000;
-      tv.tv_usec = timeout % 1000;
+      tv.tv_sec  = timeout / 1000;
+      tv.tv_usec = (timeout % 1000) * 1000;
       tvp = &tv;
     }
   else
     tvp = NULL;
 
   FD_ZERO (&readfds);
-  FD_SET (_readfd, &readfds);
+  FD_SET (g_io_channel_unix_get_fd (_readchannel), &readfds);
 
   if ((select_val = select (FD_SETSIZE, &readfds, NULL, NULL, tvp)) > 0)
     {
-      if (!wire_read_msg (_readfd, &msg))
-	gimp_quit ();
-
-      switch (msg.type)
-	{
-	case GP_QUIT:
-	  gimp_quit ();
-	  break;
-	case GP_CONFIG:
-	  gimp_config (msg.data);
-	  break;
-	case GP_TILE_REQ:
-	case GP_TILE_ACK:
-	case GP_TILE_DATA:
-	  g_warning ("unexpected tile message received (should not happen)\n");
-	  break;
-	case GP_PROC_RUN:
-	  g_warning ("unexpected proc run message received (should not happen)\n");
-	  break;
-	case GP_PROC_RETURN:
-	  g_warning ("unexpected proc return message received (should not happen)\n");
-	  break;
-	case GP_TEMP_PROC_RUN:
-	  gimp_temp_proc_run (msg.data);
-	  break;
-	case GP_TEMP_PROC_RETURN:
-	  g_warning ("unexpected temp proc return message received (should not happen)\n");
-	  break;
-	case GP_PROC_INSTALL:
-	  g_warning ("unexpected proc install message received (should not happen)\n");
-	  break;
-	}
-
-      wire_destroy (&msg);
+      gimp_single_message ();
     }
   else if (select_val == -1)
     {
-      perror ("gimp_process");
+      perror ("gimp_extension_process");
       gimp_quit ();
     }
+#else
+  /* Zero means infinite wait for us, but g_poll and
+   * g_io_channel_win32_poll use -1 to indicate
+   * infinite wait.
+   */
+  GPollFD pollfd;
+
+  if (timeout == 0)
+    timeout = -1;
+
+  g_io_channel_win32_make_pollfd (_readchannel, G_IO_IN, &pollfd);
+
+  if (g_io_channel_win32_poll (&pollfd, 1, timeout) == 1)
+    gimp_single_message ();
+#endif
 }
 
+/**
+ * gimp_attach_new_parasite:
+ * @name: the name of the #GimpParasite to create and attach.
+ * @flags: the flags set on the #GimpParasite.
+ * @size: the size of the parasite data in bytes.
+ * @data: a pointer to the data attached with the #GimpParasite.
+ *
+ * Convenience function that creates a parasite and attaches it
+ * to the GIMP.
+ *
+ * See Also: gimp_parasite_attach()
+ */
 void
-gimp_extension_ack ()
+gimp_attach_new_parasite (const gchar   *name,
+			  gint           flags,
+			  gint           size,
+			  gconstpointer  data)
 {
-  /*  Send an extension initialization acknowledgement  */
-  if (! gp_extension_ack_write (_writefd))
-    gimp_quit ();
+  GimpParasite *parasite = gimp_parasite_new (name, flags, size, data);
+
+  gimp_parasite_attach (parasite);
+
+  gimp_parasite_free (parasite);
 }
 
-static RETSIGTYPE
-gimp_signal (int signum)
+
+/*  private functions  */
+
+static void
+gimp_close (void)
 {
-  static int caught_fatal_sig = 0;
+  if (gimp_debug_flags & GIMP_DEBUG_QUIT)
+    gimp_debug_stop ();
 
-  if (caught_fatal_sig)
-    kill (getpid (), signum);
-  caught_fatal_sig = 1;
+  if (PLUG_IN_INFO.quit_proc)
+    (* PLUG_IN_INFO.quit_proc) ();
 
-  fprintf (stderr, "\n%s: %s caught\n", progname, g_strsignal (signum));
+#if defined(USE_SYSV_SHM)
 
-  switch (signum)
+  if ((_shm_ID != -1) && _shm_addr)
+    shmdt ((char*) _shm_addr);
+
+#elif defined(USE_WIN32_SHM)
+
+  if (shm_handle)
+    CloseHandle (shm_handle);
+
+#elif defined(USE_POSIX_SHM)
+
+  if ((_shm_ID != -1) && (_shm_addr != MAP_FAILED))
+    munmap (_shm_addr, TILE_MAP_SIZE);
+
+#endif
+
+  gp_quit_write (_writechannel, NULL);
+}
+
+static void
+gimp_debug_stop (void)
+{
+#ifndef G_OS_WIN32
+  g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, "Waiting for debugger...");
+  raise (SIGSTOP);
+#else
+  g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, "Debugging not implemented on Win32");
+#endif
+}
+
+static void
+gimp_message_func (const gchar    *log_domain,
+		   GLogLevelFlags  log_level,
+		   const gchar    *message,
+		   gpointer        data)
+{
+  gimp_message ((gchar *) message);
+}
+
+#ifndef G_OS_WIN32
+static void
+gimp_plugin_sigfatal_handler (gint sig_num)
+{
+  switch (sig_num)
     {
+    case SIGHUP:
+    case SIGINT:
+    case SIGQUIT:
+    case SIGABRT:
+    case SIGTERM:
+      g_printerr ("%s terminated: %s\n", progname, g_strsignal (sig_num));
+      break;
+
     case SIGBUS:
     case SIGSEGV:
     case SIGFPE:
-      g_on_error_query (progname);
-      break;
+    case SIGPIPE:
     default:
+      g_printerr ("%s: fatal error: %s\n", progname, g_strsignal (sig_num));
+      switch (stack_trace_mode)
+	{
+	case GIMP_STACK_TRACE_NEVER:
+	  break;
+
+	case GIMP_STACK_TRACE_QUERY:
+	  {
+	    sigset_t sigset;
+
+	    sigemptyset (&sigset);
+	    sigprocmask (SIG_SETMASK, &sigset, NULL);
+	    g_on_error_query (progname);
+	  }
+	  break;
+
+	case GIMP_STACK_TRACE_ALWAYS:
+	  {
+	    sigset_t sigset;
+
+	    sigemptyset (&sigset);
+	    sigprocmask (SIG_SETMASK, &sigset, NULL);
+	    g_on_error_stack_trace (progname);
+	  }
+	  break;
+	}
       break;
     }
 
   gimp_quit ();
 }
+#endif
 
-static int
-gimp_write (int fd, guint8 *buf, gulong count)
+static gboolean
+gimp_plugin_io_error_handler (GIOChannel   *channel,
+			      GIOCondition  cond,
+			      gpointer      data)
+{
+  g_printerr ("%s: fatal error: GIMP crashed\n", progname);
+  gimp_quit ();
+
+  /* never reached */
+  return TRUE;
+}
+
+static gboolean
+gimp_write (GIOChannel *channel,
+	    guint8     *buf,
+	    gulong      count,
+            gpointer    user_data)
 {
   gulong bytes;
 
@@ -923,7 +1518,7 @@ gimp_write (int fd, guint8 *buf, gulong count)
 	  bytes = WRITE_BUFFER_SIZE - write_buffer_index;
 	  memcpy (&write_buffer[write_buffer_index], buf, bytes);
 	  write_buffer_index += bytes;
-	  if (!wire_flush (fd))
+	  if (! wire_flush (channel, NULL))
 	    return FALSE;
 	}
       else
@@ -940,23 +1535,46 @@ gimp_write (int fd, guint8 *buf, gulong count)
   return TRUE;
 }
 
-static int
-gimp_flush (int fd)
+static gboolean
+gimp_flush (GIOChannel *channel,
+            gpointer    user_data)
 {
-  int count;
-  int bytes;
+  GIOStatus  status;
+  GError    *error = NULL;
+  gsize      count;
+  gsize      bytes;
 
   if (write_buffer_index > 0)
     {
       count = 0;
       while (count != write_buffer_index)
         {
-	  do {
-	    bytes = write (fd, &write_buffer[count], (write_buffer_index - count));
-	  } while ((bytes == -1) && (errno == EAGAIN));
+	  do
+	    {
+	      bytes = 0;
+	      status = g_io_channel_write_chars (channel,
+						 &write_buffer[count],
+						 (write_buffer_index - count),
+						 &bytes,
+						 &error);
+	    }
+	  while (status == G_IO_STATUS_AGAIN);
 
-	  if (bytes == -1)
-	    return FALSE;
+	  if (status != G_IO_STATUS_NORMAL)
+	    {
+	      if (error)
+		{
+		  g_warning ("%s: gimp_flush(): error: %s",
+			     g_get_prgname (), error->message);
+		  g_error_free (error);
+		}
+	      else
+		{
+		  g_warning ("%s: gimp_flush(): error", g_get_prgname ());
+		}
+
+	      return FALSE;
+	    }
 
           count += bytes;
         }
@@ -968,43 +1586,49 @@ gimp_flush (int fd)
 }
 
 static void
-gimp_loop ()
+gimp_loop (void)
 {
   WireMessage msg;
 
-  while (1)
+  while (TRUE)
     {
-      if (!wire_read_msg (_readfd, &msg))
-	gimp_quit ();
+      if (! wire_read_msg (_readchannel, &msg, NULL))
+        {
+	  gimp_close ();
+          return;
+        }
 
       switch (msg.type)
 	{
 	case GP_QUIT:
-	  gimp_quit ();
-	  break;
+	  gimp_close ();
+	  return;
 	case GP_CONFIG:
 	  gimp_config (msg.data);
 	  break;
 	case GP_TILE_REQ:
 	case GP_TILE_ACK:
 	case GP_TILE_DATA:
-	  g_warning ("unexpected tile message received (should not happen)\n");
+	  g_warning ("unexpected tile message received (should not happen)");
 	  break;
 	case GP_PROC_RUN:
 	  gimp_proc_run (msg.data);
-	  gimp_quit ();
-	  break;
+	  gimp_close ();
+          return;
 	case GP_PROC_RETURN:
-	  g_warning ("unexpected proc return message received (should not happen)\n");
+	  g_warning ("unexpected proc return message received (should not happen)");
 	  break;
 	case GP_TEMP_PROC_RUN:
-	  g_warning ("unexpected temp proc run message received (should not happen\n");
+	  g_warning ("unexpected temp proc run message received (should not happen");
 	  break;
 	case GP_TEMP_PROC_RETURN:
-	  g_warning ("unexpected temp proc return message received (should not happen\n");
+	  g_warning ("unexpected temp proc return message received (should not happen");
 	  break;
 	case GP_PROC_INSTALL:
-	  g_warning ("unexpected proc install message received (should not happen)\n");
+	  g_warning ("unexpected proc install message received (should not happen)");
+	  break;
+	case GP_HAS_INIT:
+	  g_warning ("unexpected has init message received (should not happen)");
 	  break;
 	}
 
@@ -1015,91 +1639,238 @@ gimp_loop ()
 static void
 gimp_config (GPConfig *config)
 {
-  extern gint _gimp_tile_width;
-  extern gint _gimp_tile_height;
-
-  if (config->version < GP_VERSION)
+  if (config->version < GIMP_PROTOCOL_VERSION)
     {
-      g_message ("%s: the gimp is using an older version of the "
-		 "plug-in protocol than this plug-in\n", progname);
+      g_message ("Could not execute plug-in \"%s\"\n(%s)\n"
+		 "because the GIMP is using an older version of the "
+		 "plug-in protocol.",
+		 gimp_filename_to_utf8 (g_get_prgname ()),
+                 gimp_filename_to_utf8 (progname));
       gimp_quit ();
     }
-  else if (config->version > GP_VERSION)
+  else if (config->version > GIMP_PROTOCOL_VERSION)
     {
-      g_message ("%s: the gimp is using a newer version of the "
-		 "plug-in protocol than this plug-in\n", progname);
+      g_message ("Could not execute plug-in \"%s\"\n(%s)\n"
+		 "because it uses an obsolete version of the "
+		 "plug-in protocol.",
+		 gimp_filename_to_utf8 (g_get_prgname ()),
+                 gimp_filename_to_utf8 (progname));
       gimp_quit ();
     }
 
-  _gimp_tile_width = config->tile_width;
-  _gimp_tile_height = config->tile_height;
-  _shm_ID = config->shm_ID;
-  _gamma_val = config->gamma;
-  _install_cmap = config->install_cmap;
-  _use_xshm = config->use_xshm;
-  _color_cube[0] = config->color_cube[0];
-  _color_cube[1] = config->color_cube[1];
-  _color_cube[2] = config->color_cube[2];
-  _color_cube[3] = config->color_cube[3];
+  _tile_width       = config->tile_width;
+  _tile_height      = config->tile_height;
+  _shm_ID           = config->shm_ID;
+  _check_size       = config->check_size;
+  _check_type       = config->check_type;
+  _install_cmap     = config->install_cmap;
+  _show_tool_tips   = config->show_tool_tips;
+  _show_help_button = config->show_help_button;
+  _min_colors       = config->min_colors;
+  _gdisp_ID         = config->gdisp_ID;
+  _wm_class         = g_strdup (config->wm_class);
+  _display_name     = g_strdup (config->display_name);
+  _monitor_number   = config->monitor_number;
 
-#ifdef HAVE_SHM_H
+  if (config->app_name)
+    g_set_application_name (config->app_name);
+
   if (_shm_ID != -1)
     {
-      _shm_addr = (guchar*) shmat (_shm_ID, 0, 0);
+#if defined(USE_SYSV_SHM)
 
-      if (_shm_addr == (guchar*) -1)
-	g_error ("could not attach to gimp shared memory segment\n");
-    }
+      /* Use SysV shared memory mechanisms for transferring tile data. */
+
+      _shm_addr = (guchar *) shmat (_shm_ID, NULL, 0);
+
+      if (_shm_addr == (guchar *) -1)
+	{
+          g_error ("shmat() failed: %s\n" ERRMSG_SHM_FAILED,
+                   g_strerror (errno));
+        }
+
+#elif defined(USE_WIN32_SHM)
+
+      /* Use Win32 shared memory mechanisms for transferring tile data. */
+
+      gchar fileMapName[128];
+
+      /* From the id, derive the file map name */
+      g_snprintf (fileMapName, sizeof (fileMapName), "GIMP%d.SHM", _shm_ID);
+
+      /* Open the file mapping */
+      shm_handle = OpenFileMapping (FILE_MAP_ALL_ACCESS,
+				    0, fileMapName);
+      if (shm_handle)
+	{
+	  /* Map the shared memory into our address space for use */
+	  _shm_addr = (guchar *) MapViewOfFile (shm_handle,
+						FILE_MAP_ALL_ACCESS,
+						0, 0, TILE_MAP_SIZE);
+
+	  /* Verify that we mapped our view */
+	  if (!_shm_addr)
+	    {
+	      g_error ("MapViewOfFile error: %d... " ERRMSG_SHM_FAILED,
+		       GetLastError ());
+	    }
+	}
+      else
+	{
+	  g_error ("OpenFileMapping error: %d... " ERRMSG_SHM_FAILED,
+		   GetLastError ());
+	}
+
+#elif defined(USE_POSIX_SHM)
+
+      /* Use POSIX shared memory mechanisms for transferring tile data. */
+
+      gchar map_file[32];
+      gint  shm_fd;
+
+      /* From the id, derive the file map name */
+      g_snprintf (map_file, sizeof (map_file), "/gimp-shm-%d", _shm_ID);
+
+      /* Open the file mapping */
+      shm_fd = shm_open (map_file, O_RDWR, 0600);
+
+      if (shm_fd != -1)
+        {
+          /* Map the shared memory into our address space for use */
+          _shm_addr = (guchar *) mmap (NULL, TILE_MAP_SIZE,
+                                       PROT_READ | PROT_WRITE, MAP_SHARED,
+                                       shm_fd, 0);
+
+          /* Verify that we mapped our view */
+          if (_shm_addr == MAP_FAILED)
+            {
+              g_error ("mmap() failed: %s\n" ERRMSG_SHM_FAILED,
+                       g_strerror (errno));
+            }
+
+          close (shm_fd);
+        }
+      else
+        {
+          g_error ("shm_open() failed: %s\n" ERRMSG_SHM_FAILED,
+                   g_strerror (errno));
+        }
+
 #endif
+    }
 }
 
 static void
 gimp_proc_run (GPProcRun *proc_run)
 {
-  GPProcReturn proc_return;
-  GParam *return_vals;
-  int nreturn_vals;
-
   if (PLUG_IN_INFO.run_proc)
     {
+      GPProcReturn  proc_return;
+      GimpParam    *return_vals;
+      gint          n_return_vals;
+
       (* PLUG_IN_INFO.run_proc) (proc_run->name,
 				 proc_run->nparams,
-				 (GParam*) proc_run->params,
-				 &nreturn_vals,
+				 (GimpParam*) proc_run->params,
+				 &n_return_vals,
 				 &return_vals);
 
-      proc_return.name = proc_run->name;
-      proc_return.nparams = nreturn_vals;
-      proc_return.params = (GPParam*) return_vals;
+      proc_return.name    = proc_run->name;
+      proc_return.nparams = n_return_vals;
+      proc_return.params  = (GPParam *) return_vals;
 
-      if (!gp_proc_return_write (_writefd, &proc_return))
+      if (! gp_proc_return_write (_writechannel, &proc_return, NULL))
 	gimp_quit ();
     }
 }
 
+
 static void
 gimp_temp_proc_run (GPProcRun *proc_run)
 {
-  GPProcReturn proc_return;
-  GParam *return_vals;
-  int nreturn_vals;
-  GRunProc run_proc;
+  GimpRunProc run_proc;
 
-  run_proc = (GRunProc)g_hash_table_lookup (temp_proc_ht, (gpointer) proc_run->name);
+  run_proc = (GimpRunProc) g_hash_table_lookup (temp_proc_ht,
+						(gpointer) proc_run->name);
 
   if (run_proc)
     {
+      GPProcReturn  proc_return;
+      GimpParam    *return_vals;
+      gint          n_return_vals;
+
       (* run_proc) (proc_run->name,
 		    proc_run->nparams,
-		    (GParam*) proc_run->params,
-		    &nreturn_vals,
+		    (GimpParam*) proc_run->params,
+		    &n_return_vals,
 		    &return_vals);
 
-      proc_return.name = proc_run->name;
-      proc_return.nparams = nreturn_vals;
-      proc_return.params = (GPParam*) return_vals;
+      proc_return.name    = proc_run->name;
+      proc_return.nparams = n_return_vals;
+      proc_return.params  = (GPParam *) return_vals;
 
-      if (!gp_temp_proc_return_write (_writefd, &proc_return))
-	gimp_quit ();
+      if (! gp_temp_proc_return_write (_writechannel, &proc_return, NULL))
+        gimp_quit ();
     }
+}
+
+static void
+gimp_process_message (WireMessage *msg)
+{
+  switch (msg->type)
+    {
+    case GP_QUIT:
+      gimp_quit ();
+      break;
+    case GP_CONFIG:
+      gimp_config (msg->data);
+      break;
+    case GP_TILE_REQ:
+    case GP_TILE_ACK:
+    case GP_TILE_DATA:
+      g_warning ("unexpected tile message received (should not happen)");
+      break;
+    case GP_PROC_RUN:
+      g_warning ("unexpected proc run message received (should not happen)");
+      break;
+    case GP_PROC_RETURN:
+      g_warning ("unexpected proc return message received (should not happen)");
+      break;
+    case GP_TEMP_PROC_RUN:
+      gimp_temp_proc_run (msg->data);
+      break;
+    case GP_TEMP_PROC_RETURN:
+      g_warning ("unexpected temp proc return message received (should not happen)");
+      break;
+    case GP_PROC_INSTALL:
+      g_warning ("unexpected proc install message received (should not happen)");
+      break;
+    case GP_HAS_INIT:
+      g_warning ("unexpected has init message received (should not happen)");
+      break;
+    }
+}
+
+static void
+gimp_single_message (void)
+{
+  WireMessage msg;
+
+  /* Run a temp function */
+  if (! wire_read_msg (_readchannel, &msg, NULL))
+    gimp_quit ();
+
+  gimp_process_message (&msg);
+
+  wire_destroy (&msg);
+}
+
+static gboolean
+gimp_extension_read (GIOChannel  *channel,
+                     GIOCondition condition,
+                     gpointer     data)
+{
+  gimp_single_message ();
+
+  return TRUE;
 }

@@ -1,3 +1,40 @@
+2002-07-16  Christophe Merlet  <christophe@merlet.net>
+
+        * misc/Makefile.am: added $(DESTDIR) variable.
+
+2001-04-06  Simon Budig  <simon@gimp.org>
+
+        * brushes/Makefile.am: added feltpen.gih
+	
+2000-12-29  Sven Neumann  <sven@gimp.org>
+
+	* brushes/Makefile.am: added confetti.gih and hsparks.gih
+
+Fri Dec 29 18:14:46 CET 2000  Simon Budig  <simon@gimp.org>
+
+        * brushes/confetti.gih:  New brushpipe: basically the
+        components of confetti.gbr. Works great with the "size"-pressure
+        option.
+
+Thu Nov  9 16:52:49 CET 2000  Marc Lehmann <pcg@goof.com>
+
+        * brushes/hsparks.gih: This small gem(?), (before you cry, it's
+        <20k gzipped) is from http://bart.northnet.com.au/~robrow/tubes/.
+
+Thu Aug 12 20:57:02 MEST 1999  Sven Neumann <sven@gimp.org>
+
+	* palettes/Makefile.am
+	* palettes/Visibone
+	* palettes/Visibone2: added Visibone palettes with the kind
+	permission of Bob Stein <stein@visibone.com>.
+
+1999-01-20  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* brushes/Makefile.am (EXTRA_DATA): Remove spurious variable.
+	* gradients/Makefile.am (EXTRA_DATA): Likewise.
+	* palettes/Makefile.am (EXTRA_DATA): Likewise.
+	* patterns/Makefile.am (EXTRA_DATA): Likewise.
+	
 Mon Sep 22 17:34:53 1997  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
 
 	* Made 0.99.11 release.

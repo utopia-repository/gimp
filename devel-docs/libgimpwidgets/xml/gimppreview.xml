@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<refentry id="GimpPreview">
+<refmeta>
+<refentrytitle>GimpPreview</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>GimpPreview</refname><refpurpose>A widget providing a <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type></link> plus framework to update the preview.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+
+<synopsis>
+
+
+
+struct      <link linkend="GimpPreview-struct">GimpPreview</link>;
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-preview-get-update">gimp_preview_get_update</link>         (<link linkend="GimpPreview">GimpPreview</link> *preview);
+<link linkend="void">void</link>        <link linkend="gimp-preview-set-update">gimp_preview_set_update</link>         (<link linkend="GimpPreview">GimpPreview</link> *preview,
+                                             <link linkend="gboolean">gboolean</link> update);
+<link linkend="void">void</link>        <link linkend="gimp-preview-set-bounds">gimp_preview_set_bounds</link>         (<link linkend="GimpPreview">GimpPreview</link> *preview,
+                                             <link linkend="gint">gint</link> xmin,
+                                             <link linkend="gint">gint</link> ymin,
+                                             <link linkend="gint">gint</link> xmax,
+                                             <link linkend="gint">gint</link> ymax);
+<link linkend="void">void</link>        <link linkend="gimp-preview-get-size">gimp_preview_get_size</link>           (<link linkend="GimpPreview">GimpPreview</link> *preview,
+                                             <link linkend="gint">gint</link> *width,
+                                             <link linkend="gint">gint</link> *height);
+<link linkend="void">void</link>        <link linkend="gimp-preview-get-position">gimp_preview_get_position</link>       (<link linkend="GimpPreview">GimpPreview</link> *preview,
+                                             <link linkend="gint">gint</link> *x,
+                                             <link linkend="gint">gint</link> *y);
+<link linkend="void">void</link>        <link linkend="gimp-preview-draw">gimp_preview_draw</link>               (<link linkend="GimpPreview">GimpPreview</link> *preview);
+<link linkend="void">void</link>        <link linkend="gimp-preview-draw-buffer">gimp_preview_draw_buffer</link>        (<link linkend="GimpPreview">GimpPreview</link> *preview,
+                                             const <link linkend="guchar">guchar</link> *buffer,
+                                             <link linkend="gint">gint</link> rowstride);
+<link linkend="void">void</link>        <link linkend="gimp-preview-invalidate">gimp_preview_invalidate</link>         (<link linkend="GimpPreview">GimpPreview</link> *preview);
+<link linkend="void">void</link>        <link linkend="gimp-preview-set-default-cursor">gimp_preview_set_default_cursor</link> (<link linkend="GimpPreview">GimpPreview</link> *preview,
+                                             <link linkend="GdkCursor">GdkCursor</link> *cursor);
+
+</synopsis>
+</refsynopsisdiv>
+
+<refsect1>
+<title>Object Hierarchy</title>
+<synopsis>
+
+  <link linkend="GObject">GObject</link>
+   +----<link linkend="GtkObject">GtkObject</link>
+         +----<link linkend="GtkWidget">GtkWidget</link>
+               +----<link linkend="GtkContainer">GtkContainer</link>
+                     +----<link linkend="GtkBox">GtkBox</link>
+                           +----<link linkend="GtkVBox">GtkVBox</link>
+                                 +----GimpPreview
+</synopsis>
+
+</refsect1>
+
+
+
+<refsect1>
+<title>Implemented Interfaces</title>
+<para>
+GimpPreview implements
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
+
+</refsect1>
+
+
+<refsect1>
+<title>Properties</title>
+<synopsis>
+
+  &quot;<link linkend="GimpPreview--update">update</link>&quot;               <link linkend="gboolean">gboolean</link>             : Read / Write / Construct
+</synopsis>
+</refsect1>
+<refsect1>
+<title>Style Properties</title>
+<synopsis>
+
+  &quot;<link linkend="GimpPreview--size">size</link>&quot;                 <link linkend="gint">gint</link>                 : Read
+</synopsis>
+</refsect1>
+
+<refsect1>
+<title>Signal Prototypes</title>
+<synopsis>
+
+&quot;<link linkend="GimpPreview-invalidated">invalidated</link>&quot;
+            <link linkend="void">void</link>        user_function      (<link linkend="GimpPreview">GimpPreview</link> *gimppreview,
+                                            <link linkend="gpointer">gpointer</link> user_data);
+</synopsis>
+</refsect1>
+
+
+<refsect1>
+<title>Description</title>
+<para>
+A widget providing a <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type></link> plus framework to update the preview.
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="GimpPreview-struct"/>struct GimpPreview</title>
+<indexterm><primary>GimpPreview</primary></indexterm><programlisting>struct GimpPreview;</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-preview-get-update"/>gimp_preview_get_update ()</title>
+<indexterm><primary>gimp_preview_get_update</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_preview_get_update         (<link linkend="GimpPreview">GimpPreview</link> *preview);</programlisting>
+<para>
+</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GimpPreview"><type>GimpPreview</type></link> widget
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the state of the "Preview" check button.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.2
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-preview-set-update"/>gimp_preview_set_update ()</title>
+<indexterm><primary>gimp_preview_set_update</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_set_update         (<link linkend="GimpPreview">GimpPreview</link> *preview,
+                                             <link linkend="gboolean">gboolean</link> update);</programlisting>
+<para>
+Sets the state of the "Preview" check button.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GimpPreview"><type>GimpPreview</type></link> widget
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>update</parameter>&nbsp;:</term>
+<listitem><simpara> <literal>TRUE</literal> if the preview should invalidate itself when being
+         scrolled or when <link linkend="gimp-preview-invalidate"><function>gimp_preview_invalidate()</function></link> is being called
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.2
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-preview-set-bounds"/>gimp_preview_set_bounds ()</title>
+<indexterm><primary>gimp_preview_set_bounds</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_set_bounds         (<link linkend="GimpPreview">GimpPreview</link> *preview,
+                                             <link linkend="gint">gint</link> xmin,
+                                             <link linkend="gint">gint</link> ymin,
+                                             <link linkend="gint">gint</link> xmax,
+                                             <link linkend="gint">gint</link> ymax);</programlisting>
+<para>
+Sets the lower and upper limits for the previewed area. The
+difference between the upper and lower value is used to set the
+maximum size of the <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type></link> used in the <parameter>preview</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GimpPreview"><type>GimpPreview</type></link> widget
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>xmin</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ymin</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>xmax</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ymax</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.2
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-preview-get-size"/>gimp_preview_get_size ()</title>
+<indexterm><primary>gimp_preview_get_size</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_get_size           (<link linkend="GimpPreview">GimpPreview</link> *preview,
+                                             <link linkend="gint">gint</link> *width,
+                                             <link linkend="gint">gint</link> *height);</programlisting>
+<para>
+</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GimpPreview"><type>GimpPreview</type></link> widget
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>width</parameter>&nbsp;:</term>
+<listitem><simpara>   return location for the preview area width
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>height</parameter>&nbsp;:</term>
+<listitem><simpara>  return location for the preview area height
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.2
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-preview-get-position"/>gimp_preview_get_position ()</title>
+<indexterm><primary>gimp_preview_get_position</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_get_position       (<link linkend="GimpPreview">GimpPreview</link> *preview,
+                                             <link linkend="gint">gint</link> *x,
+                                             <link linkend="gint">gint</link> *y);</programlisting>
+<para>
+</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GimpPreview"><type>GimpPreview</type></link> widget
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>x</parameter>&nbsp;:</term>
+<listitem><simpara>       return location for the horizontal offset
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>y</parameter>&nbsp;:</term>
+<listitem><simpara>       return location for the vertical offset
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.2
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-preview-draw"/>gimp_preview_draw ()</title>
+<indexterm><primary>gimp_preview_draw</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_draw               (<link linkend="GimpPreview">GimpPreview</link> *preview);</programlisting>
+<para>
+Calls the GimpPreview::draw method. GimpPreview itself doesn't
+implement a default draw method so the behaviour is determined by
+the derived class implementing this method.
+</para>
+<para>
+<link linkend="GimpDrawablePreview"><type>GimpDrawablePreview</type></link> implements <link linkend="gimp-preview-draw"><function>gimp_preview_draw()</function></link> by drawing the
+original, unmodified drawable to the <parameter>preview</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GimpPreview"><type>GimpPreview</type></link> widget
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.2
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-preview-draw-buffer"/>gimp_preview_draw_buffer ()</title>
+<indexterm><primary>gimp_preview_draw_buffer</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_draw_buffer        (<link linkend="GimpPreview">GimpPreview</link> *preview,
+                                             const <link linkend="guchar">guchar</link> *buffer,
+                                             <link linkend="gint">gint</link> rowstride);</programlisting>
+<para>
+Calls the GimpPreview::draw_buffer method. GimpPreview itself
+doesn't implement this method so the behaviour is determined by the
+derived class implementing this method.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
+<listitem><simpara>   a <link linkend="GimpPreview"><type>GimpPreview</type></link> widget
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buffer</parameter>&nbsp;:</term>
+<listitem><simpara>    a pixel buffer the size of the preview
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>rowstride</parameter>&nbsp;:</term>
+<listitem><simpara> the <parameter>buffer</parameter>'s rowstride
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.2
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-preview-invalidate"/>gimp_preview_invalidate ()</title>
+<indexterm><primary>gimp_preview_invalidate</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_invalidate         (<link linkend="GimpPreview">GimpPreview</link> *preview);</programlisting>
+<para>
+This function starts or renews a short low-priority timeout. When
+the timeout expires, the GimpPreview::invalidated signal is emitted
+which will usually cause the <parameter>preview</parameter> to be updated.
+</para>
+<para>
+This function does nothing unless the "Preview" button is checked.
+</para>
+<para>
+During the emission of the signal a busy cursor is set on the
+toplevel window containing the <parameter>preview</parameter> and on the preview area
+itself.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GimpPreview"><type>GimpPreview</type></link> widget
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.2
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-preview-set-default-cursor"/>gimp_preview_set_default_cursor ()</title>
+<indexterm><primary>gimp_preview_set_default_cursor</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_set_default_cursor (<link linkend="GimpPreview">GimpPreview</link> *preview,
+                                             <link linkend="GdkCursor">GdkCursor</link> *cursor);</programlisting>
+<para>
+Sets the default mouse cursor for the preview.  Note that this will
+be overriden by a <literal>GDK_FLEUR</literal> if the preview has scrollbars, or by a
+<literal>GDK_WATCH</literal> when the preview is invalidated.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GimpPreview"><type>GimpPreview</type></link> widget
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cursor</parameter>&nbsp;:</term>
+<listitem><simpara>  a <link linkend="GdkCursor"><type>GdkCursor</type></link> or <literal>NULL</literal>
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.2
+</para></refsect2>
+
+</refsect1>
+<refsect1>
+<title>Properties</title>
+<variablelist>
+<varlistentry><term><anchor id="GimpPreview--update"/>&quot;<literal>update</literal>&quot; (<link linkend="gboolean">gboolean</link> : Read / Write / Construct)</term>
+<listitem>
+<para></para>
+</listitem></varlistentry>
+
+</variablelist>
+</refsect1>
+<refsect1>
+<title>Style Properties</title>
+<variablelist>
+<varlistentry><term><anchor id="GimpPreview--size"/>&quot;<literal>size</literal>&quot; (<link linkend="gint">gint</link> : Read)</term>
+<listitem>
+<para></para>
+</listitem></varlistentry>
+
+</variablelist>
+</refsect1>
+
+<refsect1>
+<title>Signals</title>
+<refsect2><title><anchor id="GimpPreview-invalidated"/>The &quot;invalidated&quot; signal</title>
+<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpPreview">GimpPreview</link> *gimppreview,
+                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>gimppreview</parameter>&nbsp;:</term>
+<listitem><simpara>the object which received the signal.
+
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+</refsect1>
+
+
+
+</refentry>

@@ -1,5 +1,0 @@
-usr/lib/*.so
-usr/lib/*.a
-usr/include/libgimp/
-usr/include/gck/
-usr/share/aclocal/

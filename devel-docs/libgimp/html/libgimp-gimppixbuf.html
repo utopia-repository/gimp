@@ -1,0 +1,84 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimppixbuf</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="prev" href="libgimp-gimpimagecombobox.html" title="gimpimagecombobox"><link rel="next" href="GimpProgressBar.html" title="GimpProgressBar"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimp-gimpimagecombobox.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th><td><a accesskey="n" href="GimpProgressBar.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimp-gimppixbuf"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimppixbuf</span></h2><p>gimppixbuf &#8212; Get a thumbnail pixbuf for a drawable or image.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+
+
+
+enum        <a href="libgimp-gimppixbuf.html#GimpPixbufTransparency">GimpPixbufTransparency</a>;
+GdkPixbuf*  <a href="libgimp-gimppixbuf.html#gimp-image-get-thumbnail">gimp_image_get_thumbnail</a>        (gint32 image_ID,
+                                             gint width,
+                                             gint height,
+                                             <a href="libgimp-gimppixbuf.html#GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);
+GdkPixbuf*  <a href="libgimp-gimppixbuf.html#gimp-drawable-get-thumbnail">gimp_drawable_get_thumbnail</a>     (gint32 drawable_ID,
+                                             gint width,
+                                             gint height,
+                                             <a href="libgimp-gimppixbuf.html#GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);
+GdkPixbuf*  <a href="libgimp-gimppixbuf.html#gimp-drawable-get-sub-thumbnail">gimp_drawable_get_sub_thumbnail</a> (gint32 drawable_ID,
+                                             gint src_x,
+                                             gint src_y,
+                                             gint src_width,
+                                             gint src_height,
+                                             gint dest_width,
+                                             gint dest_height,
+                                             <a href="libgimp-gimppixbuf.html#GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);
+</pre></div><div class="refsect1" lang="en"><a name="id2652730"></a><h2>Description</h2><p>
+Get a thumbnail pixbuf for a drawable or image.
+</p></div><div class="refsect1" lang="en"><a name="id2652741"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2652746"></a><h3><a name="GimpPixbufTransparency"></a>enum GimpPixbufTransparency</h3><a class="indexterm" name="id2652754"></a><pre class="programlisting">typedef enum
+{
+  GIMP_PIXBUF_KEEP_ALPHA,
+  GIMP_PIXBUF_SMALL_CHECKS,
+  GIMP_PIXBUF_LARGE_CHECKS
+} GimpPixbufTransparency;
+</pre><p>
+
+</p></div><hr><div class="refsect2" lang="en"><a name="id2668098"></a><h3><a name="gimp-image-get-thumbnail"></a>gimp_image_get_thumbnail ()</h3><a class="indexterm" name="id2668105"></a><pre class="programlisting">GdkPixbuf*  gimp_image_get_thumbnail        (gint32 image_ID,
+                                             gint width,
+                                             gint height,
+                                             <a href="libgimp-gimppixbuf.html#GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);</pre><p>
+Retrieves a thumbnail pixbuf for the image identified by <i class="parameter"><tt>image_ID</tt></i>.
+The thumbnail will be not larger than the requested size.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>image_ID</tt></i> :</span></td><td> the image ID
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>width</tt></i> :</span></td><td>    the requested thumbnail width  (&lt;= 512 pixels)
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>height</tt></i> :</span></td><td>   the requested thumbnail height (&lt;= 512 pixels)
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>alpha</tt></i> :</span></td><td>    how to handle an alpha channel
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> a new <span class="type">GdkPixbuf</span>
+
+</td></tr></tbody></table></div><p>Since  GIMP 2.2
+</p></div><hr><div class="refsect2" lang="en"><a name="id2668220"></a><h3><a name="gimp-drawable-get-thumbnail"></a>gimp_drawable_get_thumbnail ()</h3><a class="indexterm" name="id2671554"></a><pre class="programlisting">GdkPixbuf*  gimp_drawable_get_thumbnail     (gint32 drawable_ID,
+                                             gint width,
+                                             gint height,
+                                             <a href="libgimp-gimppixbuf.html#GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);</pre><p>
+Retrieves a thumbnail pixbuf for the drawable identified by
+<i class="parameter"><tt>drawable_ID</tt></i>. The thumbnail will be not larger than the requested
+size.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>drawable_ID</tt></i> :</span></td><td> the drawable ID
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>width</tt></i> :</span></td><td>       the requested thumbnail width  (&lt;= 512 pixels)
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>height</tt></i> :</span></td><td>      the requested thumbnail height (&lt;= 512 pixels)
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>alpha</tt></i> :</span></td><td>       how to handle an alpha channel
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> a new <span class="type">GdkPixbuf</span>
+
+</td></tr></tbody></table></div><p>Since  GIMP 2.2
+</p></div><hr><div class="refsect2" lang="en"><a name="id2671670"></a><h3><a name="gimp-drawable-get-sub-thumbnail"></a>gimp_drawable_get_sub_thumbnail ()</h3><a class="indexterm" name="id2671678"></a><pre class="programlisting">GdkPixbuf*  gimp_drawable_get_sub_thumbnail (gint32 drawable_ID,
+                                             gint src_x,
+                                             gint src_y,
+                                             gint src_width,
+                                             gint src_height,
+                                             gint dest_width,
+                                             gint dest_height,
+                                             <a href="libgimp-gimppixbuf.html#GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);</pre><p>
+Retrieves a thumbnail pixbuf for the drawable identified by
+<i class="parameter"><tt>drawable_ID</tt></i>. The thumbnail will be not larger than the requested
+size.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>drawable_ID</tt></i> :</span></td><td> the drawable ID
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>src_x</tt></i> :</span></td><td>       the x coordinate of the area
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>src_y</tt></i> :</span></td><td>       the y coordinate of the area
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>src_width</tt></i> :</span></td><td>   the width of the area
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>src_height</tt></i> :</span></td><td>  the height of the area
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>dest_width</tt></i> :</span></td><td>  the requested thumbnail width  (&lt;= 512 pixels)
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>dest_height</tt></i> :</span></td><td> the requested thumbnail height (&lt;= 512 pixels)
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>alpha</tt></i> :</span></td><td>       how to handle an alpha channel
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> a new <span class="type">GdkPixbuf</span>
+
+</td></tr></tbody></table></div><p>Since  GIMP 2.2
+</p></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimp-gimpimagecombobox.html"><b>&lt;&lt; gimpimagecombobox</b></a></td><td align="right"><a accesskey="n" href="GimpProgressBar.html"><b>GimpProgressBar &gt;&gt;</b></a></td></tr></table></body></html>

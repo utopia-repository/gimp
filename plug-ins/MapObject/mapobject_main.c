@@ -1,28 +1,40 @@
-/*********************************************************************************/
-/* MapObject 1.00 -- image filter plug-in for The Gimp program                   */
-/* Copyright (C) 1996-98 Tom Bech                                                */
-/* Copyright (C) 1996-98 Federico Mena Quintero                                  */
-/*===============================================================================*/
-/* E-mail: tomb@gimp.org (Tom) or quartic@gimp.org (Federico)                    */
-/* You can contact the original The Gimp authors at gimp@xcf.berkeley.edu        */
-/*===============================================================================*/
-/* This program is free software; you can redistribute it and/or modify it under */
-/* the terms of the GNU General Public License as published by the Free Software */
-/* Foundation; either version 2 of the License, or (at your option) any later    */
-/* version.                                                                      */
-/*===============================================================================*/
-/* This program is distributed in the hope that it will be useful, but WITHOUT   */
-/* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS */
-/* FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.*/
-/*===============================================================================*/
-/* You should have received a copy of the GNU General Public License along with  */
-/* this program (read the "COPYING" file); if not, write to the Free Software    */
-/* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.    */
-/*===============================================================================*/
-/* In other words, you can't sue us for whatever happens while using this ;)     */
-/*********************************************************************************/
+/* MapObject 1.2.0 -- image filter plug-in for The Gimp program
+ *
+ * Copyright (C) 1996-98 Tom Bech
+ * Copyright (C) 1996-98 Federico Mena Quintero
+ *
+ * E-mail: tomb@gimp.org (Tom) or quartic@gimp.org (Federico)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
 
+#include "config.h"
+
+#include <gtk/gtk.h>
+
+#include <libgimp/gimp.h>
+#include <libgimp/gimpui.h>
+
+#include "mapobject_ui.h"
+#include "mapobject_image.h"
+#include "mapobject_apply.h"
+#include "mapobject_preview.h"
 #include "mapobject_main.h"
+
+#include "libgimp/stdplugins-intl.h"
+
 
 /* Global variables */
 /* ================ */
@@ -33,128 +45,184 @@ MapObjectValues mapvals;
 /* Implementation */
 /******************/
 
-void mapobject_interactive    (GDrawable *drawable);
-void mapobject_noninteractive (GDrawable *drawable);
-
 /*************************************/
 /* Set parameters to standard values */
 /*************************************/
 
-void set_default_settings(void)
+static void
+set_default_settings (void)
 {
-  gck_vector3_set(&mapvals.viewpoint,  0.5,0.5,2.0);
-  gck_vector3_set(&mapvals.firstaxis,  1.0,0.0,0.0);
-  gck_vector3_set(&mapvals.secondaxis, 0.0,1.0,0.0);
-  gck_vector3_set(&mapvals.normal,     0.0,0.0,1.0);
-  gck_vector3_set(&mapvals.position,   0.5,0.5,0.0);
-  gck_vector3_set(&mapvals.lightsource.position, -0.5,-0.5,2.0);
-  gck_vector3_set(&mapvals.lightsource.direction, -1.0,-1.0,1.0);
+  gint i;
 
-  mapvals.maptype=MAP_PLANE;
+  gimp_vector3_set (&mapvals.viewpoint,  0.5, 0.5, 2.0);
+  gimp_vector3_set (&mapvals.firstaxis,  1.0, 0.0, 0.0);
+  gimp_vector3_set (&mapvals.secondaxis, 0.0, 1.0, 0.0);
+  gimp_vector3_set (&mapvals.normal,     0.0, 0.0, 1.0);
+  gimp_vector3_set (&mapvals.position,   0.5, 0.5, 0.0);
+  gimp_vector3_set (&mapvals.lightsource.position,  -0.5, -0.5, 2.0);
+  gimp_vector3_set (&mapvals.lightsource.direction, -1.0, -1.0, 1.0);
+  gimp_vector3_set (&mapvals.scale,      0.5, 0.5, 0.5);
 
-  mapvals.pixeltreshold=0.25;
-  mapvals.alpha=mapvals.beta=mapvals.gamma=0.0;
-  mapvals.maxdepth=3.0;
-  mapvals.radius=0.25;
+  mapvals.maptype = MAP_PLANE;
 
-  mapvals.preview_zoom_factor=0;
+  mapvals.pixeltreshold   = 0.25;
+  mapvals.alpha           = 0.0;
+  mapvals.beta            = 0.0;
+  mapvals.gamma           = 0.0;
+  mapvals.maxdepth        = 3.0;
+  mapvals.radius          = 0.25;
+  mapvals.cylinder_radius = 0.25;
+  mapvals.cylinder_length = 1.0;
 
-  mapvals.lightsource.type=POINT_LIGHT;
+  mapvals.preview_zoom_factor = 0;
 
-  mapvals.antialiasing=TRUE;
-  mapvals.create_new_image=FALSE;
-  mapvals.transparent_background=FALSE;
-  mapvals.tiled=FALSE;
-  mapvals.showgrid=FALSE;
-  mapvals.tooltips_enabled=TRUE;
+  mapvals.lightsource.type = POINT_LIGHT;
+
+  mapvals.antialiasing           = TRUE;
+  mapvals.create_new_image       = FALSE;
+  mapvals.transparent_background = FALSE;
+  mapvals.tiled                  = FALSE;
+  mapvals.showgrid               = FALSE;
 
   mapvals.lightsource.intensity = 1.0;
-  gck_rgb_set(&mapvals.lightsource.color,1.0,1.0,1.0);
+  gimp_rgba_set (&mapvals.lightsource.color, 1.0, 1.0, 1.0, 1.0);
 
-  mapvals.material.ambient_int = 0.3;
-  mapvals.material.diffuse_int = 1.0;
-  mapvals.material.diffuse_ref = 0.5;
+  mapvals.material.ambient_int  = 0.3;
+  mapvals.material.diffuse_int  = 1.0;
+  mapvals.material.diffuse_ref  = 0.5;
   mapvals.material.specular_ref = 0.5;
-  mapvals.material.highlight = 27.0;
+  mapvals.material.highlight    = 27.0;
+
+  for (i = 0; i < 6; i++)
+    mapvals.boxmap_id[i] = -1;
+
+  for (i = 0; i < 2; i++)
+    mapvals.cylindermap_id[i] = -1;
 }
 
-MAIN()
-
-static void query(void)
+static void
+check_drawables (GimpDrawable *drawable)
 {
+  gint i;
 
-  static GParamDef args[] =
+  /* Check that boxmap images are valid */
+  /* ================================== */
+
+  for (i = 0; i < 6; i++)
     {
-      { PARAM_INT32,      "run_mode",              "Interactive (0), non-interactive (1)" },
-      { PARAM_IMAGE,      "image",                 "Input image" },
-      { PARAM_DRAWABLE,   "drawable",              "Input drawable" },
-      { PARAM_INT32,      "maptype",               "Type of mapping (0=plane,1=sphere)" },
-      { PARAM_FLOAT, "viewpoint_x",                "Position of viewpoint (x,y,z)" },
-      { PARAM_FLOAT, "viewpoint_y",                "Position of viewpoint (x,y,z)" },
-      { PARAM_FLOAT, "viewpoint_z",                "Position of viewpoint (x,y,z)" },
-      { PARAM_FLOAT, "position_x",              "Object position (x,y,z)" },
-      { PARAM_FLOAT, "position_y",              "Object position (x,y,z)" },
-      { PARAM_FLOAT, "position_z",              "Object position (x,y,z)" },
-      { PARAM_FLOAT, "firstaxis_x",             "First axis of object [x,y,z]" },
-      { PARAM_FLOAT, "firstaxis_y",             "First axis of object [x,y,z]" },
-      { PARAM_FLOAT, "firstaxis_z",             "First axis of object [x,y,z]" },
-      { PARAM_FLOAT, "secondaxis_x",            "Second axis of object [x,y,z]" },
-      { PARAM_FLOAT, "secondaxis_y",            "Second axis of object [x,y,z]" },
-      { PARAM_FLOAT, "secondaxis_z",            "Second axis of object [x,y,z]" },
-      { PARAM_FLOAT, "rotationangle_x",         "Axis rotation (xy,xz,yz) in degrees" },
-      { PARAM_FLOAT, "rotationangle_y",         "Axis rotation (xy,xz,yz) in degrees" },
-      { PARAM_FLOAT, "rotationangle_z",         "Axis rotation (xy,xz,yz) in degrees" },
-      { PARAM_INT32,      "lighttype",             "Type of lightsource (0=point,1=directional,3=none)" },
-      { PARAM_COLOR,      "lightcolor",            "Lightsource color (r,g,b)" },
-      { PARAM_FLOAT, "lightposition_x",         "Lightsource position (x,y,z)" },
-      { PARAM_FLOAT, "lightposition_y",         "Lightsource position (x,y,z)" },
-      { PARAM_FLOAT, "lightposition_z",         "Lightsource position (x,y,z)" },
-      { PARAM_FLOAT, "lightdirection_x",        "Lightsource direction [x,y,z]" },
-      { PARAM_FLOAT, "lightdirection_y",        "Lightsource direction [x,y,z]" },
-      { PARAM_FLOAT, "lightdirection_z",        "Lightsource direction [x,y,z]" },
-      { PARAM_FLOAT,      "ambient_intensity",     "Material ambient intensity (0..1)" },
-      { PARAM_FLOAT,      "diffuse_intensity",     "Material diffuse intensity (0..1)" },
-      { PARAM_FLOAT,      "diffuse_reflectivity",  "Material diffuse reflectivity (0..1)" },
-      { PARAM_FLOAT,      "specular_reflectivity", "Material specular reflectivity (0..1)" },
-      { PARAM_FLOAT,      "highlight",             "Material highlight (0..->), note: it's expotential" },
-      { PARAM_INT32,      "antialiasing",          "Apply antialiasing (TRUE/FALSE)" },
-      { PARAM_INT32,      "tiled",                 "Tile source image (TRUE/FALSE)" },
-      { PARAM_INT32,      "newimage",              "Create a new image (TRUE/FALSE)" },
-      { PARAM_INT32,      "transparentbackground", "Make background transparent (TRUE/FALSE)" },
-      { PARAM_FLOAT,      "radius",                "Sphere radius (only used when maptype=1)" }
-    };
+      if (mapvals.boxmap_id[i] == -1)
+        mapvals.boxmap_id[i] = drawable->drawable_id;
+      else if (mapvals.boxmap_id[i] != -1 &&
+	       gimp_drawable_get_image (mapvals.boxmap_id[i]) == -1)
+        mapvals.boxmap_id[i] = drawable->drawable_id;
+      else if (gimp_drawable_is_gray (mapvals.boxmap_id[i]))
+        mapvals.boxmap_id[i] = drawable->drawable_id;
+    }
 
-  static GParamDef *return_vals = NULL;
-  static gint nargs = sizeof (args) / sizeof (args[0]);
-  static gint nreturn_vals = 0;
+  /* Check that cylindermap images are valid */
+  /* ======================================= */
+
+  for (i = 0; i < 2; i++)
+    {
+      if (mapvals.cylindermap_id[i] == -1)
+        mapvals.cylindermap_id[i] = drawable->drawable_id;
+      else if (mapvals.cylindermap_id[i]!=-1 &&
+               gimp_drawable_get_image (mapvals.cylindermap_id[i]) == -1)
+        mapvals.cylindermap_id[i] = drawable->drawable_id;
+      else if (gimp_drawable_is_gray (mapvals.cylindermap_id[i]))
+        mapvals.cylindermap_id[i] = drawable->drawable_id;
+    }
+}
+
+static void
+query (void)
+{
+  static GimpParamDef args[] =
+  {
+    { GIMP_PDB_INT32,    "run_mode",              "Interactive (0), non-interactive (1)" },
+    { GIMP_PDB_IMAGE,    "image",                 "Input image" },
+    { GIMP_PDB_DRAWABLE, "drawable",              "Input drawable" },
+    { GIMP_PDB_INT32,    "maptype",               "Type of mapping (0=plane,1=sphere,2=box,3=cylinder)" },
+    { GIMP_PDB_FLOAT,    "viewpoint_x",           "Position of viewpoint (x,y,z)" },
+    { GIMP_PDB_FLOAT,    "viewpoint_y",           "Position of viewpoint (x,y,z)" },
+    { GIMP_PDB_FLOAT,    "viewpoint_z",           "Position of viewpoint (x,y,z)" },
+    { GIMP_PDB_FLOAT,    "position_x",            "Object position (x,y,z)" },
+    { GIMP_PDB_FLOAT,    "position_y",            "Object position (x,y,z)" },
+    { GIMP_PDB_FLOAT,    "position_z",            "Object position (x,y,z)" },
+    { GIMP_PDB_FLOAT,    "firstaxis_x",           "First axis of object [x,y,z]" },
+    { GIMP_PDB_FLOAT,    "firstaxis_y",           "First axis of object [x,y,z]" },
+    { GIMP_PDB_FLOAT,    "firstaxis_z",           "First axis of object [x,y,z]" },
+    { GIMP_PDB_FLOAT,    "secondaxis_x",          "Second axis of object [x,y,z]" },
+    { GIMP_PDB_FLOAT,    "secondaxis_y",          "Second axis of object [x,y,z]" },
+    { GIMP_PDB_FLOAT,    "secondaxis_z",          "Second axis of object [x,y,z]" },
+    { GIMP_PDB_FLOAT,    "rotationangle_x",       "Rotation about X axis in degrees" },
+    { GIMP_PDB_FLOAT,    "rotationangle_y",       "Rotation about Y axis in degrees" },
+    { GIMP_PDB_FLOAT,    "rotationangle_z",       "Rotation about Z axis in degrees" },
+    { GIMP_PDB_INT32,    "lighttype",             "Type of lightsource (0=point,1=directional,3=none)" },
+    { GIMP_PDB_COLOR,    "lightcolor",            "Lightsource color (r,g,b)" },
+    { GIMP_PDB_FLOAT,    "lightposition_x",       "Lightsource position (x,y,z)" },
+    { GIMP_PDB_FLOAT,    "lightposition_y",       "Lightsource position (x,y,z)" },
+    { GIMP_PDB_FLOAT,    "lightposition_z",       "Lightsource position (x,y,z)" },
+    { GIMP_PDB_FLOAT,    "lightdirection_x",      "Lightsource direction [x,y,z]" },
+    { GIMP_PDB_FLOAT,    "lightdirection_y",      "Lightsource direction [x,y,z]" },
+    { GIMP_PDB_FLOAT,    "lightdirection_z",      "Lightsource direction [x,y,z]" },
+    { GIMP_PDB_FLOAT,    "ambient_intensity",     "Material ambient intensity (0..1)" },
+    { GIMP_PDB_FLOAT,    "diffuse_intensity",     "Material diffuse intensity (0..1)" },
+    { GIMP_PDB_FLOAT,    "diffuse_reflectivity",  "Material diffuse reflectivity (0..1)" },
+    { GIMP_PDB_FLOAT,    "specular_reflectivity", "Material specular reflectivity (0..1)" },
+    { GIMP_PDB_FLOAT,    "highlight",             "Material highlight (0..->), note: it's expotential" },
+    { GIMP_PDB_INT32,    "antialiasing",          "Apply antialiasing (TRUE/FALSE)" },
+    { GIMP_PDB_INT32,    "tiled",                 "Tile source image (TRUE/FALSE)" },
+    { GIMP_PDB_INT32,    "newimage",              "Create a new image (TRUE/FALSE)" },
+    { GIMP_PDB_INT32,    "transparentbackground", "Make background transparent (TRUE/FALSE)" },
+    { GIMP_PDB_FLOAT,    "radius",                "Sphere/cylinder radius (only used when maptype=1 or 3)" },
+    { GIMP_PDB_FLOAT,    "x_scale",               "Box x size (0..->)" },
+    { GIMP_PDB_FLOAT,    "y_scale",               "Box y size (0..->)" },
+    { GIMP_PDB_FLOAT,    "z_scale",               "Box z size (0..->)"},
+    { GIMP_PDB_FLOAT,    "cylinder_length",       "Cylinder length (0..->)"},
+    { GIMP_PDB_DRAWABLE, "box_front_drawable",    "Box front face (set these to -1 if not used)" },
+    { GIMP_PDB_DRAWABLE, "box_back_drawable",     "Box back face" },
+    { GIMP_PDB_DRAWABLE, "box_top_drawable",      "Box top face" },
+    { GIMP_PDB_DRAWABLE, "box_bottom_drawable",   "Box bottom face" },
+    { GIMP_PDB_DRAWABLE, "box_left_drawable",     "Box left face" },
+    { GIMP_PDB_DRAWABLE, "box_right_drawable",    "Box right face" },
+    { GIMP_PDB_DRAWABLE, "cyl_top_drawable",      "Cylinder top face (set these to -1 if not used)" },
+    { GIMP_PDB_DRAWABLE, "cyl_bottom_drawable",   "Cylinder bottom face" }
+  };
 
   gimp_install_procedure ("plug_in_map_object",
-			  "Maps a picture to a object (plane, sphere)",
+			  "Maps a picture to a object (plane, sphere, box or cylinder)",
 			  "No help yet",
 			  "Tom Bech & Federico Mena Quintero",
 			  "Tom Bech & Federico Mena Quintero",
-			  "Version 1.00, March 15 1998",
-			  "<Image>/Filters/Map/Map Object",
+			  "Version 1.2.0, July 16 1998",
+			  N_("Map _Object..."),
 			  "RGB*",
-			  PROC_PLUG_IN,
-			  nargs, nreturn_vals,
-			  args, return_vals);
+			  GIMP_PLUGIN,
+			  G_N_ELEMENTS (args), 0,
+			  args, NULL);
+
+  gimp_plugin_menu_register ("plug_in_map_object", "<Image>/Filters/Map");
 }
 
-static void run(gchar   *name,
-                gint     nparams,
-                GParam  *param,
-                gint    *nreturn_vals,
-                GParam **return_vals)
+static void
+run (const gchar      *name,
+     gint              nparams,
+     const GimpParam  *param,
+     gint             *nreturn_vals,
+     GimpParam       **return_vals)
 {
-  static GParam values[1];
-  GDrawable *drawable;
-  GRunModeType run_mode;
-  GStatusType status = STATUS_SUCCESS;
+  static GimpParam   values[1];
+  GimpDrawable      *drawable;
+  GimpRunMode    run_mode;
+  GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
+  gint               i;
 
   run_mode = param[0].data.d_int32;
 
-  values[0].type = PARAM_STATUS;
+  INIT_I18N ();
+
+  values[0].type = GIMP_PDB_STATUS;
   values[0].data.d_status = status;
 
   *nreturn_vals = 1;
@@ -163,35 +231,46 @@ static void run(gchar   *name,
   /* Set default values */
   /* ================== */
 
-  set_default_settings();
+  set_default_settings ();
 
   /* Get the specified drawable */
   /* ========================== */
-  
+
   drawable = gimp_drawable_get (param[2].data.d_drawable);
 
   switch (run_mode)
     {
-      case RUN_INTERACTIVE:
-        
+      case GIMP_RUN_INTERACTIVE:
+
         /* Possibly retrieve data */
         /* ====================== */
-    
+
         gimp_get_data ("plug_in_map_object", &mapvals);
-        mapobject_interactive(drawable);
-        gimp_set_data("plug_in_map_object", &mapvals, sizeof(MapObjectValues));
+        check_drawables (drawable);
+        if (main_dialog (drawable))
+	  {
+	    compute_image ();
+
+	    gimp_set_data ("plug_in_map_object",
+			   &mapvals, sizeof (MapObjectValues));
+	  }
         break;
-      case RUN_WITH_LAST_VALS:
+
+      case GIMP_RUN_WITH_LAST_VALS:
         gimp_get_data ("plug_in_map_object", &mapvals);
-        image_setup(drawable,FALSE);
-        compute_image();
+        check_drawables (drawable);
+        image_setup (drawable, FALSE);
+        compute_image ();
         break;
-      case RUN_NONINTERACTIVE:
-        if (nparams != 37)
-          status = STATUS_CALLING_ERROR;
-        else if (status == STATUS_SUCCESS)
+
+      case GIMP_RUN_NONINTERACTIVE:
+        if (nparams != 49)
+	  {
+	    status = GIMP_PDB_CALLING_ERROR;
+	  }
+        else
           {
-            mapvals.maptype                 = (MapType)param[3].data.d_int32;
+            mapvals.maptype                 = (MapType) param[3].data.d_int32;
             mapvals.viewpoint.x             = param[4].data.d_float;
             mapvals.viewpoint.y             = param[5].data.d_float;
             mapvals.viewpoint.z             = param[6].data.d_float;
@@ -207,10 +286,8 @@ static void run(gchar   *name,
             mapvals.alpha                   = param[16].data.d_float;
             mapvals.beta                    = param[17].data.d_float;
             mapvals.gamma                   = param[18].data.d_float;
-            mapvals.lightsource.type        = (LightType)param[19].data.d_int32;
-            mapvals.lightsource.color.r     = param[20].data.d_color.red;
-            mapvals.lightsource.color.g     = param[20].data.d_color.green;
-            mapvals.lightsource.color.b     = param[20].data.d_color.blue;
+            mapvals.lightsource.type        = (LightType) param[19].data.d_int32;
+	    mapvals.lightsource.color       = param[20].data.d_color;
             mapvals.lightsource.position.x  = param[21].data.d_float;
             mapvals.lightsource.position.y  = param[22].data.d_float;
             mapvals.lightsource.position.z  = param[23].data.d_float;
@@ -222,68 +299,44 @@ static void run(gchar   *name,
             mapvals.material.diffuse_ref    = param[29].data.d_float;
             mapvals.material.specular_ref   = param[30].data.d_float;
             mapvals.material.highlight      = param[31].data.d_float;
-            mapvals.antialiasing            = (gint)param[32].data.d_int32;
-            mapvals.tiled                   = (gint)param[33].data.d_int32;
-            mapvals.create_new_image        = (gint)param[34].data.d_int32;
-            mapvals.transparent_background  = (gint)param[35].data.d_int32;
+            mapvals.antialiasing            = (gint) param[32].data.d_int32;
+            mapvals.tiled                   = (gint) param[33].data.d_int32;
+            mapvals.create_new_image        = (gint) param[34].data.d_int32;
+            mapvals.transparent_background  = (gint) param[35].data.d_int32;
             mapvals.radius                  = param[36].data.d_float;
+            mapvals.cylinder_radius         = param[36].data.d_float;
+            mapvals.scale.x                 = param[37].data.d_float;
+            mapvals.scale.y                 = param[38].data.d_float;
+            mapvals.scale.z                 = param[39].data.d_float;
+            mapvals.cylinder_length         = param[40].data.d_float;
 
-            image_setup(drawable, FALSE);
-            compute_image();
+            for (i = 0; i < 6; i++)
+              mapvals.boxmap_id[i] = param[41+i].data.d_drawable;
+
+            for (i = 0; i < 2; i++)
+              mapvals.cylindermap_id[i] = param[47+i].data.d_drawable;
+
+            check_drawables (drawable);
+            image_setup (drawable, FALSE);
+            compute_image ();
           }
         break;
     }
 
-  if (run_mode != RUN_NONINTERACTIVE)
-     gimp_displays_flush();
-
-
   values[0].data.d_status = status;
-  gimp_drawable_detach(drawable);
-  	
+
+  if (run_mode != GIMP_RUN_NONINTERACTIVE)
+    gimp_displays_flush ();
+
+  gimp_drawable_detach (drawable);
 }
 
-GPlugInInfo PLUG_IN_INFO =
+GimpPlugInInfo PLUG_IN_INFO =
 {
-  NULL,    /* init_proc */
-  NULL,    /* quit_proc */
-  query,   /* query_proc */
-  run,     /* run_proc */
+  NULL,  /* init_proc  */
+  NULL,  /* quit_proc  */
+  query, /* query_proc */
+  run,   /* run_proc   */
 };
 
-void mapobject_interactive(GDrawable *drawable)
-{
-  gchar **argv;
-  gint argc;
-
-  argc = 1;
-  argv = g_new (gchar *, 1);
-  argv[0] = g_strdup ("map_object");
-
-  gdk_set_use_xshm(gimp_use_xshm());
-
-  gtk_init (&argc, &argv);
-  gtk_rc_parse (gimp_gtkrc ());
-
-  /* Set up ArcBall stuff */
-  /* ==================== */
-
-  /*ArcBall_Init(); */
-
-  /* Create application window */
-  /* ========================= */
-
-  create_main_dialog();
-  
-  /* Prepare images */
-  /* ============== */
-
-  image_setup(drawable,TRUE);
-  
-  /* Gtk main event loop */
-  /* =================== */
-  
-  gtk_main();
-  gdk_flush();
-}
-
+MAIN ()

@@ -1,154 +1,62 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = 			\
-	libgck			\
-	megawidget		\
-	gpc			\
+EXTRA_DIST = \
+	makefile.msc
+
+
+if BUILD_HELPBROWSER
+helpbrowser = helpbrowser
+endif
+
+if BUILD_PRINT
+print = print
+endif
+
+if BUILD_PYTHON
+pygimp = pygimp
+endif
+
+if HAVE_MAC_TWAIN
+twain = twain
+endif
+
+if OS_WIN32
+twain = twain
+winsnap = winsnap
+endif
+
+if BUILD_XJT
+xjt = xjt
+endif
+
+
+SUBDIRS = \
 	dbbrowser		\
 	script-fu		\
-	@AA@			\
-	@JPEG@			\
-	@MPEG@			\
-	@PNG@			\
-	@TIFF@			\
-	@WEBBROWSER@		\
-	@XD@			\
-	@XPM@			\
-	AlienMap		\
-	CEL			\
-	CML_explorer		\
+	FractalExplorer		\
+	Lighting		\
 	MapObject		\
-	align_layers		\
-	animoptimize		\
-	apply_lens		\
-	autocrop		\
-	animationplay		\
-	autostretch_hsv		\
-	blinds			\
-	blur			\
 	bmp			\
-	bumpmap			\
-	bz2			\
-	c_astretch		\
-	checkerboard		\
-	colorify		\
-	compose			\
-	convmatrix		\
-	cubism			\
-	decompose		\
-	deinterlace		\
-	depthmerge		\
-	despeckle		\
-	destripe		\
-	diffraction		\
-	displace		\
-	edge			\
-	emboss			\
-	engrave			\
-	exchange		\
 	faxg3			\
-	film			\
 	fits			\
 	flame			\
-	flarefx			\
-	fractaltrace		\
-	gauss_iir		\
-	gauss_rle		\
-	gbr			\
-	gee			\
 	gfig			\
+	gflare			\
 	gfli			\
-	gicon			\
-	gif			\
-	glasstile		\
-	gqbist			\
-	gradmap			\
-	grid			\
-	gtm			\
-	gz			\
-	header			\
-	hot			\
-	hrz			\
+	gimpressionist		\
+	help			\
+	$(helpbrowser)		\
 	ifscompose		\
-	illusion		\
-	iwarp			\
-	laplace			\
-	mail			\
-	max_rgb			\
+	imagemap		\
 	maze			\
-	mblur			\
-	mosaic			\
-	nlfilt			\
-	noisify			\
-	normalize		\
-	nova			\
-	oilify			\
 	pagecurl		\
-	palette			\
-	papertile		\
-	pat			\
-	pcx			\
-	pix			\
-	pixelize		\
-	plasma			\
-	pnm			\
-	polar			\
-	print			\
-	ps			\
-	psd			\
-	randomize		\
-	ripple			\
-	rotate			\
-	rotators		\
-	scatter_hsv		\
-	screenshot		\
-	semiflatten		\
+	$(print)		\
+	$(pygimp)		\
+	rcm			\
 	sgi			\
-	sharpen			\
-	shift			\
-	sinus			\
-	smooth_palette		\
-	snoise			\
-	snp			\
-	sobel			\
-	sparkle			\
-	spread			\
-	struc			\
-	sunras			\
-	tga			\
-	threshold_alpha		\
-	tile			\
-	tileit			\
-	tiler			\
-	url			\
-	video			\
-	vinvert			\
-	vpropagate		\
-	waves			\
-	whirlpinch		\
-	xwd			\
-	zealouscrop
-
-scriptdata =
-
-pluginlibdir = $(gimpplugindir)/plug-ins
-
-INCLUDES = \
-	$(X_CFLAGS)			\
-	-I$(top_srcdir)			\
-	-I$(includedir)
-
-LIBGIMPUI = $(top_builddir)/libgimp/libgimpui.la
-
-.PHONY: files
-
-files:
-	@files=`ls $(DISTFILES) 2> /dev/null`; for p in $$files; do \
-	  echo $$p; \
-	done
-	@for subdir in $(SUBDIRS); do \
-	  files=`cd $$subdir; $(MAKE) files | grep -v "make\[[1-9]\]"`; \
-	  for file in $$files; do \
-	    echo $$subdir/$$file; \
-	  done; \
-	done
+	sel2path		\
+	$(twain)		\
+	winicon			\
+	$(winsnap)		\
+	$(xjt)			\
+	common

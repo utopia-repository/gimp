@@ -1,312 +1,219 @@
 ## Process this file with automake to produce Makefile.in
 
+libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
+libgimpmodule = $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la
+libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
+libgimpthumb = $(top_builddir)/libgimpthumb/libgimpthumb-$(GIMP_API_VERSION).la
+
+SUBDIRS = \
+	paint-funcs	\
+	composite	\
+	base 		\
+	config		\
+	core		\
+	paint		\
+	text		\
+	vectors		\
+	xcf		\
+	file		\
+	plug-in		\
+	tools		\
+	widgets		\
+	display		\
+	dialogs		\
+	actions		\
+	menus		\
+	gui		\
+	pdb
+
 scriptdata =
 
-bin_PROGRAMS = gimp
+if ENABLE_GIMP_CONSOLE
+bin_PROGRAMS = gimp-2.2 gimp-console-2.2
+else
+bin_PROGRAMS = gimp-2.2
+endif
 
-gimp_SOURCES = \
-	about_dialog.c		\
-	about_dialog.h		\
-	actionarea.c		\
-	actionarea.h		\
-	airbrush.c		\
-	airbrush.h		\
-	app_procs.c		\
-	app_procs.h		\
-	appenv.h		\
-	asupsample.c		\
-	asupsample.h		\
-	batch.c			\
-	batch.h			\
-	bezier_select.c		\
-	bezier_select.h		\
-	bezier_selectP.h	\
-	blend.c			\
-	blend.h			\
-	boundary.c		\
-	boundary.h		\
-	brightness_contrast.c	\
-	brightness_contrast.h	\
-	brush_header.h		\
-	brush_select.c		\
-	brush_select.h		\
-	brushes.c		\
-	brushes.h		\
-	bucket_fill.c		\
-	bucket_fill.h		\
-	buildmenu.c		\
-	buildmenu.h		\
-	by_color_select.c	\
-	by_color_select.h	\
-	channel.c		\
-	channel.h		\
-	channel_pvt.h		\
-	channel_cmds.c		\
-	channel_cmds.h		\
-	channels_dialog.c	\
-	channels_dialog.h	\
-	channel_ops.c		\
-	channel_ops.h		\
-	clone.c			\
-	clone.h			\
-	color_area.c		\
-	color_area.h		\
-	color_balance.c		\
-	color_balance.h		\
-	color_panel.c		\
-	color_panel.h		\
-	color_picker.c		\
-	color_picker.h		\
-	color_select.c		\
-	color_select.h		\
-	color_transfer.c	\
-	color_transfer.h	\
-	colormaps.c		\
-	colormaps.h		\
-	commands.c		\
-	commands.h		\
-	convert.c		\
-	convert.h		\
-	convolve.c		\
-	convolve.h		\
-	crop.c			\
-	crop.h			\
-	cursorutil.c		\
-	cursorutil.h		\
-	curves.c		\
-	curves.h		\
-	datafiles.c		\
-	datafiles.h		\
-	desaturate.c		\
-	desaturate.h		\
-	dialog_types.h		\
-	disp_callbacks.c	\
-	disp_callbacks.h	\
-	draw_core.c		\
-	draw_core.h		\
-	drawable.c		\
-	drawable.h		\
-	drawable_pvt.h		\
-	drawable_cmds.c		\
-	drawable_cmds.h		\
-	edit_cmds.c		\
-	edit_cmds.h		\
-	edit_selection.c	\
-	edit_selection.h	\
-	ellipse_select.c	\
-	ellipse_select.h	\
-	eraser.c		\
-	eraser.h		\
-	errors.c		\
-	errors.h		\
-	equalize.c		\
-	equalize.h		\
-	fileops.c		\
-	fileops.h		\
-	flip_tool.c		\
-	flip_tool.h		\
-	floating_sel.c		\
-	floating_sel.h		\
-	floating_sel_cmds.c	\
-	floating_sel_cmds.h	\
-	frac.c			\
-	frac.h			\
-	free_select.c		\
-	free_select.h		\
-	fsdither.h		\
-	fuzzy_select.c		\
-	fuzzy_select.h		\
-	gdisplay.c		\
-	gdisplay.h		\
-	gdisplayP.h		\
-	gdisplay_cmds.c		\
-	gdisplay_cmds.h		\
-	gdisplay_ops.c		\
-	gdisplay_ops.h		\
-	general.c		\
-	general.h		\
-	gimage.c		\
-	gimage.h		\
-	gimage_cmds.c		\
-	gimage_cmds.h		\
-	gimage_mask.c		\
-	gimage_mask.h		\
-	gimage_mask_cmds.c	\
-	gimage_mask_cmds.h	\
-	gimprc.c		\
-	gimprc.h		\
-	global_edit.c		\
-	global_edit.h		\
-	gradient.c		\
-	gradient.h		\
-	gximage.c		\
-	gximage.h		\
-	histogram.c		\
-	histogram.h		\
-	histogram_tool.c	\
-	histogram_tool.h	\
-	hue_saturation.c	\
-	hue_saturation.h	\
-	image_map.c		\
-	image_map.h		\
-	image_render.c		\
-	image_render.h		\
-	indexed_palette.c	\
-	indexed_palette.h	\
-	info_dialog.c		\
-	info_dialog.h		\
-	info_window.c		\
-	info_window.h		\
-	install.c		\
-	install.h		\
-	interface.c		\
-	interface.h		\
-	internal_procs.c	\
-	internal_procs.h	\
-	invert.c		\
-	invert.h		\
-	iscissors.c		\
-	iscissors.h		\
-	layer.c			\
-	layer.h			\
-	layer_pvt.h		\
-	layer_cmds.c		\
-	layer_cmds.h		\
-	layer_select.c		\
-	layer_select.h		\
-	layers_dialog.c		\
-	layers_dialog.h		\
-	layers_dialogP.h	\
-	levels.c		\
-	levels.h		\
-	magnify.c		\
-	magnify.h		\
-	main.c			\
-	marching_ants.h		\
-	menus.c			\
-	menus.h			\
-	move.c			\
-	move.h			\
-	ops_buttons.c		\
-	ops_buttons.h		\
-	palette.c		\
-	palette.h		\
-	paint_core.c		\
-	paint_core.h		\
-	paint_funcs.c		\
-	paint_funcs.h		\
-	paintbrush.c		\
-	paintbrush.h		\
-	pattern_header.h	\
-	pattern_select.c	\
-	pattern_select.h	\
-	patterns.c		\
-	patterns.h		\
-	pencil.c		\
-	pencil.h		\
-	perspective_tool.c	\
-	perspective_tool.h	\
-	pixel_region.c		\
-	pixel_region.h		\
-	pixmaps.h		\
-	plug_in.c		\
-	plug_in.h		\
-	posterize.c		\
-	posterize.h		\
-	procedural_db.c		\
-	procedural_db.h		\
-	rect_select.c		\
-	rect_select.h		\
-	rect_selectP.h		\
-	regex.h			\
-	regex.c			\
-	resize.c		\
-	resize.h		\
-	rotate_tool.c		\
-	rotate_tool.h		\
-	scale.c			\
-	scale.h			\
-	scale_tool.c		\
-	scale_tool.h		\
-	scroll.c		\
-	scroll.h		\
-	selection.c		\
-	selection.h		\
-	shear_tool.c		\
-	shear_tool.h		\
-	temp_buf.c		\
-	temp_buf.h		\
-	text_tool.c		\
-	text_tool.h		\
-	threshold.c		\
-	threshold.h		\
-	tile.c			\
-	tile.h			\
-	tile_cache.c		\
-	tile_cache.h		\
-	tile_manager.c		\
-	tile_manager.h		\
-	tile_manager_pvt.h	\
-	tile_swap.c		\
-	tile_swap.h		\
-	tips_dialog.c		\
-	tips_dialog.h		\
-	tools.c			\
-	tools.h			\
-	transform_core.c	\
-	transform_core.h	\
-	transform_tool.c	\
-	transform_tool.h	\
-	undo.c			\
-	undo.h			\
-	undo_cmds.c		\
-	undo_cmds.h		\
-	wilber.h		\
-	xcf.c			\
-	xcf.h
+app_sources = \
+	app_procs.c	\
+	app_procs.h	\
+	main.c		\
+	batch.c		\
+	batch.h		\
+	errors.c	\
+	errors.h	\
+	sanity.c	\
+	sanity.h	\
+	units.c		\
+	units.h		\
+	gimp-intl.h
+
+gimp_2_2_SOURCES = $(app_sources)
+
 
 EXTRA_DIST = \
-	tools/channel.xbm	\
-	tools/eye.xbm		\
-	tools/layer.xbm		\
-	tools/linked.xbm	\
-	tools/mask.xbm		\
-	tools/anchor.xpm	\
-	tools/anchor_is.xpm	\
-	tools/delete.xpm	\
-	tools/delete_is.xpm	\
-	tools/duplicate.xpm	\
-	tools/duplicate_is.xpm	\
-	tools/lower.xpm		\
-	tools/lower_is.xpm	\
-	tools/new.xpm		\
-	tools/new_is.xpm	\
-	tools/raise.xpm		\
-	tools/raise_is.xpm
+	makefile.msc	\
+	gimp.rc		\
+	fileicon.ico	\
+	wilber.ico
 
-CPPFLAGS = \
-	-DLIBDIR=\""$(gimpplugindir)"\"	\
-	-DDATADIR=\""$(gimpdatadir)"\"	\
-	-DGIMPDIR=\""$(gimpdir)"\"	\
-	-DREGEX_MALLOC
+
+if HAVE_GLIBC_REGEX
+REGEXREPL =
+else
+REGEXREPL = $(top_builddir)/regexrepl/libregex.a
+endif
+
+if OS_WIN32
+mwindows = -mwindows
+endif
+
+if HAVE_WINDRES
+GIMPICONRC = gimprc.o
+endif
+
+AM_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"Gimp\"		\
+	-DGIMP_APP_GLUE_COMPILATION	\
+	@GIMP_THREAD_FLAGS@ 		\
+	@GIMP_MP_FLAGS@
 
 INCLUDES = \
-	$(X_CFLAGS)			\
-	-I$(top_srcdir)			\
+	-I$(top_srcdir)	\
+	$(GTK_CFLAGS)	\
+	$(PANGOFT2_CFLAGS) \
 	-I$(includedir)
 
-gimp_LDADD = \
-	$(top_builddir)/libgimp/libgimpi.a	\
-	$(X_LIBS)
+gimp_2_2_LDFLAGS = $(mwindows)
 
-DEPS = \
-	$(top_builddir)/libgimp/libgimpi.a
+gimp_2_2_LDADD = \
+	gui/libappgui.a			\
+	actions/libappactions.a		\
+	dialogs/libappdialogs.a		\
+	menus/libappmenus.a		\
+	display/libappdisplay.a		\
+	tools/libapptools.a		\
+	widgets/libappwidgets.a		\
+	pdb/libapppdb.a			\
+	vectors/libappvectors.a		\
+	plug-in/libappplug-in.a		\
+	core/libappcore.a		\
+	paint/libapppaint.a		\
+	xcf/libappxcf.a			\
+	text/libapptext.a		\
+	file/libappfile.a		\
+	config/libappconfig.a		\
+	paint-funcs/libapppaint-funcs.a	\
+	composite/libappcomposite.a	\
+	base/libappbase.a		\
+	$(libgimpwidgets)		\
+	$(libgimpmodule)		\
+	$(libgimpcolor)			\
+	$(libgimpthumb)			\
+	$(libgimpmath)			\
+	$(libgimpbase)			\
+	$(REGEXREPL)			\
+	$(GTK_LIBS)			\
+	$(LIBART_LIBS)			\
+	$(PANGOFT2_LIBS)		\
+	$(FONTCONFIG_LIBS)		\
+	$(FREETYPE_LIBS)		\
+	$(GIMP_THREAD_LIBS)		\
+	$(GIMP_MP_LIBS)			\
+	$(RT_LIBS)			\
+	$(INTLLIBS)			\
+	$(GIMPICONRC)
 
-gimp_DEPENDENCIES = $(DEPS)
 
-.PHONY: files
+if ENABLE_GIMP_CONSOLE
 
-files:
-	@files=`ls $(DISTFILES) 2> /dev/null`; for p in $$files; do \
-	  echo $$p; \
-	done
+gimp_console_2_2_SOURCES = $(app_sources)
+
+gimp_console_2_2_CPPFLAGS = \
+	$(AM_CPPFLAGS)			\
+	-DGIMP_CONSOLE_COMPILATION
+
+gimp_console_2_2_LDFLAGS = $(gimp_2_2_LDFLAGS)
+
+gimp_console_2_2_LDADD = \
+	widgets/widgets-enums.o		\
+	display/display-enums.o		\
+	display/gimpdisplayoptions.o	\
+	pdb/libapppdb.a			\
+	vectors/libappvectors.a		\
+	plug-in/libappplug-in.a		\
+	core/libappcore.a		\
+	paint/libapppaint.a		\
+	xcf/libappxcf.a			\
+	text/libapptext.a		\
+	file/libappfile.a		\
+	config/libappconfig.a		\
+	paint-funcs/libapppaint-funcs.a	\
+	composite/libappcomposite.a	\
+	base/libappbase.a		\
+	$(libgimpmodule)		\
+	$(libgimpcolor)			\
+	$(libgimpthumb)			\
+	$(libgimpmath)			\
+	$(libgimpbase)			\
+	$(REGEXREPL)			\
+	$(GDK_PIXBUF_LIBS)		\
+	$(LIBART_LIBS)			\
+	$(PANGOFT2_LIBS)		\
+	$(FONTCONFIG_LIBS)		\
+	$(FREETYPE_LIBS)		\
+	$(GIMP_THREAD_LIBS)		\
+	$(GIMP_MP_LIBS)			\
+	$(RT_LIBS)			\
+	$(INTLLIBS)			\
+	$(GIMPICONRC)
+
+endif
+
+
+install-exec-hook:
+if DEFAULT_BINARY
+	cd $(DESTDIR)$(bindir) \
+	&& rm -f gimp$(EXEEXT) \
+	&& $(LN_S) gimp-$(GIMP_APP_VERSION)$(EXEEXT) gimp$(EXEEXT)
+if ENABLE_GIMP_CONSOLE
+	cd $(DESTDIR)$(bindir) \
+	&& rm -f gimp-console$(EXEEXT) \
+	&& $(LN_S) gimp-console-$(GIMP_APP_VERSION)$(EXEEXT) gimp-console$(EXEEXT)
+endif
+endif
+
+uninstall-local:
+if DEFAULT_BINARY
+	rm -f $(DESTDIR)$(bindir)/gimp$(EXEEXT)
+if ENABLE_GIMP_CONSOLE
+	rm -f $(DESTDIR)$(bindir)/gimp-console$(EXEEXT)
+endif
+endif
+
+
+# require gimp-console when making dist
+#
+if ENABLE_GIMP_CONSOLE
+dist-check-gimp-console:
+else
+dist-check-gimp-console:
+	@echo "*** gimp-console must be enabled in order to make dist"
+	@false
+endif
+
+
+# hook to assure that the system gimprc and the gimprc manpage are
+# uptodate when a release is made
+#
+dist-dump-gimprc: gimp-console-$(GIMP_APP_VERSION)$(EXEEXT)
+	./$< --dump-gimprc-system > $(top_srcdir)/etc/gimprc
+	./$< --dump-gimprc-manpage > $(top_srcdir)/docs/gimprc.5.in
+
+
+dist-hook: dist-check-gimp-console dist-dump-gimprc
+
+gimprc.o:
+	$(WINDRES) gimp.rc gimprc.o

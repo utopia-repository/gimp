@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<refentry id="libgimpbase-gimpbaseenums">
+<refmeta>
+<refentrytitle>gimpbaseenums</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>gimpbaseenums</refname><refpurpose>Basic GIMP enumeration data types.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+
+<synopsis>
+
+
+
+enum        <link linkend="GimpCheckSize">GimpCheckSize</link>;
+enum        <link linkend="GimpCheckType">GimpCheckType</link>;
+enum        <link linkend="GimpImageBaseType">GimpImageBaseType</link>;
+enum        <link linkend="GimpImageType">GimpImageType</link>;
+enum        <link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link>;
+enum        <link linkend="GimpPDBArgType">GimpPDBArgType</link>;
+enum        <link linkend="GimpPDBProcType">GimpPDBProcType</link>;
+enum        <link linkend="GimpPDBStatusType">GimpPDBStatusType</link>;
+enum        <link linkend="GimpProgressCommand">GimpProgressCommand</link>;
+enum        <link linkend="GimpStackTraceMode">GimpStackTraceMode</link>;
+
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+Basic GIMP enumeration data types.
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="GimpCheckSize"/>enum GimpCheckSize</title>
+<indexterm><primary>GimpCheckSize</primary></indexterm><programlisting>typedef enum  /*&lt; pdb-skip &gt;*/
+{
+  GIMP_CHECK_SIZE_SMALL_CHECKS  = 0,  /*&lt; desc="Small"  &gt;*/
+  GIMP_CHECK_SIZE_MEDIUM_CHECKS = 1,  /*&lt; desc="Medium" &gt;*/
+  GIMP_CHECK_SIZE_LARGE_CHECKS  = 2   /*&lt; desc="Large"  &gt;*/
+} GimpCheckSize;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpCheckType"/>enum GimpCheckType</title>
+<indexterm><primary>GimpCheckType</primary></indexterm><programlisting>typedef enum  /*&lt; pdb-skip &gt;*/
+{
+  GIMP_CHECK_TYPE_LIGHT_CHECKS = 0,  /*&lt; desc="Light Checks"    &gt;*/
+  GIMP_CHECK_TYPE_GRAY_CHECKS  = 1,  /*&lt; desc="Mid-Tone Checks" &gt;*/
+  GIMP_CHECK_TYPE_DARK_CHECKS  = 2,  /*&lt; desc="Dark Checks"     &gt;*/
+  GIMP_CHECK_TYPE_WHITE_ONLY   = 3,  /*&lt; desc="White Only"      &gt;*/
+  GIMP_CHECK_TYPE_GRAY_ONLY    = 4,  /*&lt; desc="Gray Only"       &gt;*/
+  GIMP_CHECK_TYPE_BLACK_ONLY   = 5   /*&lt; desc="Black Only"      &gt;*/
+} GimpCheckType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpImageBaseType"/>enum GimpImageBaseType</title>
+<indexterm><primary>GimpImageBaseType</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_RGB,     /*&lt; desc="RGB color"     &gt;*/
+  GIMP_GRAY,    /*&lt; desc="Grayscale"     &gt;*/
+  GIMP_INDEXED  /*&lt; desc="Indexed color" &gt;*/
+} GimpImageBaseType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpImageType"/>enum GimpImageType</title>
+<indexterm><primary>GimpImageType</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_RGB_IMAGE,      /*&lt; desc="RGB"             &gt;*/
+  GIMP_RGBA_IMAGE,     /*&lt; desc="RGB-alpha"       &gt;*/
+  GIMP_GRAY_IMAGE,     /*&lt; desc="Grayscale"       &gt;*/
+  GIMP_GRAYA_IMAGE,    /*&lt; desc="Grayscale-alpha" &gt;*/
+  GIMP_INDEXED_IMAGE,  /*&lt; desc="Indexed"         &gt;*/
+  GIMP_INDEXEDA_IMAGE  /*&lt; desc="Indexed-alpha"   &gt;*/
+} GimpImageType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpMessageHandlerType"/>enum GimpMessageHandlerType</title>
+<indexterm><primary>GimpMessageHandlerType</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_MESSAGE_BOX,
+  GIMP_CONSOLE,
+  GIMP_ERROR_CONSOLE
+} GimpMessageHandlerType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpPDBArgType"/>enum GimpPDBArgType</title>
+<indexterm><primary>GimpPDBArgType</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_PDB_INT32,
+  GIMP_PDB_INT16,
+  GIMP_PDB_INT8,
+  GIMP_PDB_FLOAT,
+  GIMP_PDB_STRING,
+  GIMP_PDB_INT32ARRAY,
+  GIMP_PDB_INT16ARRAY,
+  GIMP_PDB_INT8ARRAY,
+  GIMP_PDB_FLOATARRAY,
+  GIMP_PDB_STRINGARRAY,
+  GIMP_PDB_COLOR,
+  GIMP_PDB_REGION,
+  GIMP_PDB_DISPLAY,
+  GIMP_PDB_IMAGE,
+  GIMP_PDB_LAYER,
+  GIMP_PDB_CHANNEL,
+  GIMP_PDB_DRAWABLE,
+  GIMP_PDB_SELECTION,
+  GIMP_PDB_BOUNDARY,
+  GIMP_PDB_PATH,
+  GIMP_PDB_PARASITE,
+  GIMP_PDB_STATUS,
+  GIMP_PDB_END
+} GimpPDBArgType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpPDBProcType"/>enum GimpPDBProcType</title>
+<indexterm><primary>GimpPDBProcType</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_INTERNAL,
+  GIMP_PLUGIN,
+  GIMP_EXTENSION,
+  GIMP_TEMPORARY
+} GimpPDBProcType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpPDBStatusType"/>enum GimpPDBStatusType</title>
+<indexterm><primary>GimpPDBStatusType</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_PDB_EXECUTION_ERROR,
+  GIMP_PDB_CALLING_ERROR,
+  GIMP_PDB_PASS_THROUGH,
+  GIMP_PDB_SUCCESS,
+  GIMP_PDB_CANCEL
+} GimpPDBStatusType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpProgressCommand"/>enum GimpProgressCommand</title>
+<indexterm><primary>GimpProgressCommand</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_PROGRESS_COMMAND_START,
+  GIMP_PROGRESS_COMMAND_END,
+  GIMP_PROGRESS_COMMAND_SET_TEXT,
+  GIMP_PROGRESS_COMMAND_SET_VALUE
+} GimpProgressCommand;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpStackTraceMode"/>enum GimpStackTraceMode</title>
+<indexterm><primary>GimpStackTraceMode</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_STACK_TRACE_NEVER,
+  GIMP_STACK_TRACE_QUERY,
+  GIMP_STACK_TRACE_ALWAYS
+} GimpStackTraceMode;
+</programlisting>
+<para>
+
+</para></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

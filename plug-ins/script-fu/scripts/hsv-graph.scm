@@ -2,6 +2,12 @@
 ;;; Author: Shuji Narazaki <narazaki@InetQ.or.jp>
 ;;; Time-stamp: <1998/01/18 05:25:03 narazaki@InetQ.or.jp>
 ;;; Version: 1.2
+; ************************************************************************
+; Changed on Feb 4, 1999 by Piet van Oostrum <piet@cs.uu.nl>
+; For use with GIMP 1.1.
+; All calls to gimp-text-* have been converted to use the *-fontname form.
+; The corresponding parameters have been replaced by an SF-FONT parameter.
+; ************************************************************************
 ;;; Code:
 
 (if (not (symbol-bound? 'script-fu-hsv-graph-scale (the-environment)))
@@ -31,7 +37,7 @@
     fvec)
 
   (define (plot-dot img drawable x y)
-    (gimp-pencil img drawable 1 (set-point! *pos* 0 x y)))
+    (gimp-pencil drawable 1 (set-point! *pos* 0 x y)))
 
   (define (rgb-to-hsv rgb hsv)
     (let* ((red (floor (nth 0 rgb)))
@@ -96,7 +102,7 @@
 	       (aset vec (+ (* 2 base) 1)
 		     (aref vec (+ (* 2 (- size (- offset base))) 1)))
 	       (set! base (+ base 1)))
-	(set-car! segment base)))  
+	(set-car! segment base)))
     (let ((base (car segment))
 	  (size (cadr segment))
 	  (vec (caddr segment)))
@@ -120,8 +126,8 @@
 		  #f))))))
 
   (define (draw-segment img drawable segment limit rgb)
-    (gimp-palette-set-foreground rgb)
-    (gimp-airbrush img drawable 100 (* 2 limit) (segment-strokes segment)))
+    (gimp-context-set-foreground rgb)
+    (gimp-airbrush drawable 100 (* 2 limit) (segment-strokes segment)))
 
   (define red-color '(255 10 10))
   (define green-color '(10 255 10))
@@ -137,15 +143,15 @@
   (define (fill-dot img drawable x y segment color)
     (if (fill-segment! segment x y)
 	(begin
-	  (gimp-palette-set-foreground color)	
+	  (gimp-context-set-foreground color)
 	  (draw-segment img drawable segment (segment-max-size segment) color)
 	  #t)
 	#f))
 
   (define (fill-color-band img drawable x scale x-base y-base color)
-    (gimp-palette-set-foreground color)
-    (gimp-rect-select img (+ x-base (* scale x)) 0 scale y-base REPLACE FALSE 0)
-    (gimp-bucket-fill img drawable FG-BUCKET-FILL NORMAL 100 0 FALSE 0 0)
+    (gimp-context-set-foreground color)
+    (gimp-rect-select img (+ x-base (* scale x)) 0 scale y-base CHANNEL-OP-REPLACE FALSE 0)
+    (gimp-edit-bucket-fill drawable FG-BUCKET-FILL NORMAL-MODE 100 0 FALSE 0 0)
     (gimp-selection-none img))
 
   (define (plot-hsv img drawable x scale x-base y-base hsv)
@@ -207,16 +213,16 @@
       (let ((offsets (gimp-drawable-offsets drawable)))
 	(set! beg-x (clamp-value beg-x 0
 				 (+ (nth 0 offsets)
-				    (gimp-drawable-width drawable))))
-	(set! end-x (clamp-value end-x 0 
+				    (car (gimp-drawable-width drawable)))))
+	(set! end-x (clamp-value end-x 0
 				 (+ (nth 0 offsets)
-				    (gimp-drawable-width drawable))))
-	(set! beg-y (clamp-value beg-y 0 
+				    (car (gimp-drawable-width drawable)))))
+	(set! beg-y (clamp-value beg-y 0
 				 (+ (nth 1 offsets)
-				    (gimp-drawable-height drawable))))
-	(set! end-y (clamp-value beg-y 0
+				    (car (gimp-drawable-height drawable)))))
+	(set! end-y (clamp-value end-y 0
 				 (+ (nth 1 offsets)
-				    (gimp-drawable-height drawable))))))
+				    (car (gimp-drawable-height drawable)))))))
   (set! opacity (clamp-value opacity 0 100))
   (let* ((x-len (- end-x beg-x))
 	 (y-len (- end-y beg-y))
@@ -228,39 +234,37 @@
 	 (bglayer (car (gimp-layer-new gimg
 				       (+ (* 2 border-size) gimg-width)
 				       (+ (* 2 border-size) gimg-height)
-				       1 "Background" 100 NORMAL)))
+				       1 "Background" 100 NORMAL-MODE)))
 	 (hsv-layer (car (gimp-layer-new gimg
 				       (+ (* 2 border-size) gimg-width)
 				       (+ (* 2 border-size) gimg-height)
-				      RGBA_IMAGE "HSV Graph" 100 NORMAL)))
+				      RGBA-IMAGE "HSV Graph" 100 NORMAL-MODE)))
 	 (rgb-layer (car (gimp-layer-new gimg
 				       (+ (* 2 border-size) gimg-width)
 				       (+ (* 2 border-size) gimg-height)
-				      RGBA_IMAGE "RGB Graph" 100 NORMAL)))
-	 (clayer (car (gimp-layer-new gimg gimg-width 40 RGBA_IMAGE
-				       "Color Sampled" opacity NORMAL)))
+				      RGBA-IMAGE "RGB Graph" 100 NORMAL-MODE)))
+	 (clayer (car (gimp-layer-new gimg gimg-width 40 RGBA-IMAGE
+				       "Color Sampled" opacity NORMAL-MODE)))
 	 (rgb '(255 255 255))
 	 (hsv '(254 255 255))
 	 (x-base border-size)
 	 (y-base (+ gimg-height border-size))
-	 (index 0)
-	 (old-foreground (car (gimp-palette-get-foreground)))
-	 (old-background (car (gimp-palette-get-background)))
-	 (old-paint-mode (car (gimp-brushes-get-paint-mode)))
-	 (old-brush (car (gimp-brushes-get-brush)))
-	 (old-opacity (car (gimp-brushes-get-opacity))))
-    (gimp-image-disable-undo gimg)
+	 (index 0))
+
+    (gimp-context-push)
+
+    (gimp-image-undo-disable gimg)
     (gimp-image-add-layer gimg bglayer -1)
     (gimp-selection-all gimg)
-    (gimp-palette-set-background '(255 255 255))
-    (gimp-edit-fill gimg bglayer)
+    (gimp-context-set-background '(255 255 255))
+    (gimp-edit-fill bglayer BACKGROUND-FILL)
     (gimp-image-add-layer gimg hsv-layer -1)
-    (gimp-edit-clear gimg hsv-layer)
+    (gimp-edit-clear hsv-layer)
     (gimp-image-add-layer gimg rgb-layer -1)
-    (gimp-layer-set-visible rgb-layer FALSE)
-    (gimp-edit-clear gimg rgb-layer)
+    (gimp-drawable-set-visible rgb-layer FALSE)
+    (gimp-edit-clear rgb-layer)
     (gimp-image-add-layer gimg clayer -1)
-    (gimp-edit-clear gimg clayer)
+    (gimp-edit-clear clayer)
     (gimp-layer-translate clayer border-size 0)
     (gimp-selection-none gimg)
     (set! red-segment (make-segment 64 x-base y-base))
@@ -269,15 +273,15 @@
     (set! hue-segment (make-segment 64 x-base y-base))
     (set! saturation-segment (make-segment 64 x-base y-base))
     (set! value-segment (make-segment 64 x-base y-base))
-    (gimp-brushes-set-brush "Circle (01)")
-    (gimp-brushes-set-paint-mode NORMAL)
-    (gimp-brushes-set-opacity 70)
+    (gimp-context-set-brush "Circle (01)")
+    (gimp-context-set-paint-mode NORMAL-MODE)
+    (gimp-context-set-opacity 70)
     (gimp-display-new gimg)
     (while (< index limit)
-      (set! rgb (car (gimp-color-picker img drawable
-					(+ beg-x (* x-len (/ index limit)))
-					(+ beg-y (* y-len (/ index limit)))
-					TRUE FALSE)))
+      (set! rgb (car (gimp-image-pick-color img drawable
+					    (+ beg-x (* x-len (/ index limit)))
+					    (+ beg-y (* y-len (/ index limit)))
+					    TRUE FALSE 0)))
       (fill-color-band gimg clayer index scale x-base 40 rgb)
       (rgb-to-hsv rgb hsv)
       (plot-hsv gimg hsv-layer index scale x-base y-base hsv)
@@ -286,8 +290,8 @@
     (mapcar
      (lambda (segment color)
        (if (< 1 (segment-filled-size segment))
-	(begin 
-	  (gimp-palette-set-foreground color)
+	(begin
+	  (gimp-context-set-foreground color)
 	  (draw-segment gimg hsv-layer segment (segment-filled-size segment)
 			color))))
      (list hue-segment saturation-segment value-segment)
@@ -295,30 +299,25 @@
     (mapcar
      (lambda (segment color)
        (if (< 1 (segment-filled-size segment))
-	(begin 
-	  (gimp-palette-set-foreground color)
+	(begin
+	  (gimp-context-set-foreground color)
 	  (draw-segment gimg rgb-layer segment (segment-filled-size segment)
 			color))))
      (list red-segment green-segment blue-segment)
      (list red-color green-color blue-color))
-    (gimp-palette-set-foreground '(255 255 255))
-    (let ((text-layer (car (gimp-text gimg -1 0 0 
+    (gimp-context-set-foreground '(255 255 255))
+    (let ((text-layer (car (gimp-text-fontname gimg -1 0 0
 				      "Red: Hue, Green: Sat, Blue: Val"
-				      1 1 12 PIXELS "*" 
-				      "helvetica" "*" "*" "*" "*")))
+				      1 1 12 PIXELS
+				      "Sans")))
 	  (offset-y (- y-base (car (gimp-drawable-height clayer)))))
-      (gimp-layer-set-mode text-layer DIFFERENCE)
+      (gimp-layer-set-mode text-layer DIFFERENCE-MODE)
       (gimp-layer-translate clayer 0 offset-y)
       (gimp-layer-translate text-layer border-size (+ offset-y 15)))
     (gimp-image-set-active-layer gimg bglayer)
     (gimp-image-clean-all gimg)
-    ;; return back the state
-    (gimp-palette-set-foreground old-foreground)
-    (gimp-palette-set-foreground old-background)
-    (gimp-brushes-set-brush old-brush)
-    (gimp-brushes-set-paint-mode old-paint-mode)
-    (gimp-brushes-set-opacity old-opacity)
-    (gimp-image-enable-undo gimg)
+    (gimp-image-undo-enable gimg)
+
     (set! script-fu-hsv-graph-scale scale)
     (set! script-fu-hsv-graph-opacity opacity)
     (set! script-fu-hsv-graph-bounds? bounds?)
@@ -327,26 +326,27 @@
     (set! script-fu-hsv-graph-beg-y beg-y)
     (set! script-fu-hsv-graph-end-x end-x)
     (set! script-fu-hsv-graph-end-y end-y)
-    (gimp-displays-flush)))
+    (gimp-displays-flush)
 
-(script-fu-register
- "script-fu-hsv-graph"
- "<Image>/Script-Fu/Utils/Draw HSV Graph"
- "Draph the graph of H/S/V values on the drawable"
- "Shuji Narazaki <narazaki@InetQ.or.jp>"
- "Shuji Narazaki"
- "1997"
- "RGB*"
- SF-IMAGE "Image to analyze" 0
- SF-DRAWABLE "Drawable to analyze" 0
- SF-VALUE "Graph Scale" (number->string script-fu-hsv-graph-scale)
- SF-VALUE "BG Opacity" (number->string script-fu-hsv-graph-opacity)
- SF-TOGGLE "Use Selection Bounds instead of belows" script-fu-hsv-graph-bounds?
- SF-TOGGLE "from Top-Left to Bottom-Right" script-fu-hsv-graph-left2right?
- SF-VALUE "Start X" (number->string script-fu-hsv-graph-beg-x)
- SF-VALUE "Start Y" (number->string script-fu-hsv-graph-beg-y)
- SF-VALUE "End X" (number->string script-fu-hsv-graph-end-x)
- SF-VALUE "End Y" (number->string script-fu-hsv-graph-end-y)
-)
+    (gimp-context-pop)))
 
-;;; hsv-graph.scm ends here
+(script-fu-register "script-fu-hsv-graph"
+		    _"Draw _HSV Graph..."
+		    "Draph the graph of H/S/V values on the drawable"
+		    "Shuji Narazaki <narazaki@InetQ.or.jp>"
+		    "Shuji Narazaki"
+		    "1997"
+		    "RGB*"
+		    SF-IMAGE       "Image to analyze"    0
+		    SF-DRAWABLE    "Drawable to analyze" 0
+		    SF-ADJUSTMENT _"Graph scale" (cons script-fu-hsv-graph-scale '(0.1 5 0.1 1 1 1))
+		    SF-ADJUSTMENT _"BG opacity"  (cons script-fu-hsv-graph-opacity '(0 100 1 10 0 1))
+		    SF-TOGGLE     _"Use selection bounds instead of belows" script-fu-hsv-graph-bounds?
+		    SF-TOGGLE     _"From top-left to bottom-right" script-fu-hsv-graph-left2right?
+		    SF-ADJUSTMENT _"Start X" (cons script-fu-hsv-graph-beg-x '(0 5000 1 10 0 1))
+		    SF-ADJUSTMENT _"Start Y" (cons script-fu-hsv-graph-beg-y '(0 5000 1 10 0 1))
+		    SF-ADJUSTMENT _"End X" (cons script-fu-hsv-graph-end-x '(0 5000 1 10 0 1))
+		    SF-ADJUSTMENT _"End Y" (cons script-fu-hsv-graph-end-y '(0 5000 1 10 0 1)))
+
+(script-fu-menu-register "script-fu-hsv-graph"
+			 _"<Image>/Script-Fu/Utils")

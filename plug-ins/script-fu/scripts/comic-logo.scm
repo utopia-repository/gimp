@@ -19,74 +19,145 @@
 ;  by Brian McFee
 ;  Creates snazzy-looking text, inspired by watching a Maxx marathon :)
 
-(define (script-fu-comic-logo text size font gradient ol-width)
-  (let* ((img (car (gimp-image-new 256 256 RGB)))
-         (border (/ size 4))
-	 (text-layer (car (gimp-text img -1 0 0 text border TRUE size PIXELS "*" font "*" "*" "*" "*")))
-	 (width (car (gimp-drawable-width text-layer)))
-	 (height (car (gimp-drawable-height text-layer)))
-	 (bg-layer (car (gimp-layer-new img width height RGBA_IMAGE "Background" 100 NORMAL)))
-	 (white-layer (car (gimp-layer-copy text-layer 1)))
-	 (black-layer (car (gimp-layer-copy text-layer 1)))
-	 (old-fg (car (gimp-palette-get-foreground)))
-	 (old-bg (car (gimp-palette-get-background))))
-    (gimp-image-disable-undo img)
-    (gimp-image-resize img width height 0 0)
+(define (apply-comic-logo-effect img
+				 logo-layer
+				 gradient
+				 gradient-reverse
+				 ol-width
+				 ol-color
+				 bg-color)
+  (let* ((width (car (gimp-drawable-width logo-layer)))
+	 (height (car (gimp-drawable-height logo-layer)))
+	 (posx (- (car (gimp-drawable-offsets logo-layer))))
+	 (posy (- (cadr (gimp-drawable-offsets logo-layer))))
+	 (bg-layer (car (gimp-layer-new img width height RGBA-IMAGE
+					"Background" 100 NORMAL-MODE)))
+	 (white-layer (car (gimp-layer-copy logo-layer 1)))
+	 (black-layer (car (gimp-layer-copy logo-layer 1))))
+
+    (gimp-context-push)
+
+    (script-fu-util-image-resize-from-layer img logo-layer)
     (gimp-image-add-layer img bg-layer 1)
     (gimp-image-add-layer img white-layer 1)
-    (gimp-layer-set-name white-layer "White")
+    (gimp-layer-translate white-layer posx posy)
+    (gimp-drawable-set-name white-layer "White")
     (gimp-image-add-layer img black-layer 1)
-    (gimp-layer-set-name black-layer "Black")
+    (gimp-layer-translate black-layer posx posy)
+    (gimp-drawable-set-name black-layer "Black")
   
-    (gimp-selection-all img bg-layer)
-    (gimp-edit-fill img bg-layer)
+    (gimp-selection-all img)
+    (gimp-context-set-background bg-color)
+    (gimp-edit-fill bg-layer BACKGROUND-FILL)
     (gimp-selection-none img)
 
     (gimp-layer-set-preserve-trans white-layer TRUE)
-    (gimp-palette-set-background '(255 255 255))
-    (gimp-selection-all img white-layer)
-    (gimp-edit-fill img white-layer)
+    (gimp-context-set-background ol-color)
+    (gimp-selection-all img)
+    (gimp-edit-fill white-layer BACKGROUND-FILL)
     (gimp-layer-set-preserve-trans white-layer FALSE)
     (plug-in-spread 1 img white-layer (* 3 ol-width) (* 3 ol-width))
     (plug-in-gauss-rle 1 img white-layer (* 2 ol-width) 1 1)
     (plug-in-threshold-alpha 1 img white-layer 0)
+    (gimp-layer-set-preserve-trans white-layer TRUE)
+    (gimp-edit-fill white-layer BACKGROUND-FILL)
     (gimp-selection-none img)
 
-    (gimp-palette-set-background '(0 0 0))
+    (gimp-context-set-background '(0 0 0))
     (gimp-layer-set-preserve-trans black-layer TRUE)
-    (gimp-selection-all img black-layer)
-    (gimp-edit-fill img black-layer)
+    (gimp-selection-all img)
+    (gimp-edit-fill black-layer BACKGROUND-FILL)
     (gimp-selection-none img)
     (gimp-layer-set-preserve-trans black-layer FALSE)
     (plug-in-gauss-rle 1 img black-layer ol-width 1 1)
     (plug-in-threshold-alpha 1 img black-layer 0)
 
-    (gimp-gradients-set-active gradient)
-    (gimp-layer-set-preserve-trans text-layer TRUE)
-    (gimp-selection-all img text-layer)
-    (gimp-blend img text-layer CUSTOM NORMAL LINEAR 100 0 REPEAT-NONE FALSE 0 0 0 (* 2 border) 0 (- height border))
-    (plug-in-noisify 1 img text-layer 0 0.20 0.20 0.20 0.20)
+    (gimp-context-set-gradient gradient)
+    (gimp-layer-set-preserve-trans logo-layer TRUE)
+    (gimp-selection-all img)
+
+    (gimp-edit-blend logo-layer CUSTOM-MODE NORMAL-MODE
+		     GRADIENT-LINEAR 100 0 REPEAT-NONE gradient-reverse
+		     FALSE 0 0 TRUE
+		     0 (* height 0.3) 0 (* height 0.78))
+
+    (plug-in-noisify 1 img logo-layer 0 0.20 0.20 0.20 0.20)
     (gimp-selection-none img)
-    (gimp-layer-set-preserve-trans text-layer FALSE)
-    (gimp-brightness-contrast img text-layer 0 30)
-    (plug-in-threshold-alpha 1 img text-layer 60)
-    (gimp-layer-set-name text-layer text)
-    (gimp-image-set-active-layer img text-layer)
-    (gimp-palette-set-background old-bg)
-    (gimp-palette-set-foreground old-fg)
-    (gimp-image-enable-undo img)
+    (gimp-layer-set-preserve-trans logo-layer FALSE)
+    (gimp-brightness-contrast logo-layer 0 30)
+    (plug-in-threshold-alpha 1 img logo-layer 60)
+    (gimp-image-set-active-layer img logo-layer)
+
+    (gimp-context-pop)))
+
+(define (script-fu-comic-logo-alpha img
+				    logo-layer
+				    gradient
+				    gradient-reverse
+				    ol-width
+				    ol-color
+				    bg-color)
+  (begin
+    (gimp-image-undo-group-start img)
+    (apply-comic-logo-effect img logo-layer
+			     gradient gradient-reverse
+			     ol-width ol-color bg-color)
+    (gimp-image-undo-group-end img)
+    (gimp-displays-flush)))
+
+(script-fu-register "script-fu-comic-logo-alpha"
+		    _"Comic Boo_k..."
+		    "Comic-book Style Logos"
+		    "Brian McFee <keebler@wco.com>"
+		    "Brian McFee"
+		    "April 1998"
+		    "RGBA"
+                    SF-IMAGE       "Image"            0
+                    SF-DRAWABLE    "Drawable"         0
+		    SF-GRADIENT   _"Gradient"         "Incandescent"
+		    SF-TOGGLE     _"Gradient reverse" FALSE
+		    SF-ADJUSTMENT _"Outline size"     '(5 1 100 1 10 0 1)
+		    SF-COLOR      _"Outline color"    '(255 255 255)
+		    SF-COLOR      _"Background color" '(255 255 255))
+
+(script-fu-menu-register "script-fu-comic-logo-alpha"
+			 _"<Image>/Script-Fu/Alpha to Logo")
+
+
+(define (script-fu-comic-logo text
+			      size
+			      font
+			      gradient
+			      gradient-reverse
+			      ol-width
+			      ol-color
+			      bg-color)
+  (let* ((img (car (gimp-image-new 256 256 RGB)))
+         (border (/ size 4))
+	 (text-layer (car (gimp-text-fontname
+			   img -1 0 0 text border TRUE size PIXELS font))))
+    (gimp-image-undo-disable img)
+    (gimp-drawable-set-name text-layer text)
+    (apply-comic-logo-effect img text-layer gradient gradient-reverse
+			     ol-width ol-color bg-color)
+    (gimp-image-undo-enable img)
     (gimp-display-new img)))
 
-
 (script-fu-register "script-fu-comic-logo"
-		    "<Toolbox>/Xtns/Script-Fu/Logos/Comic Book"
+		    _"Comic Boo_k..."
 		    "Comic-book Style Logos"
 		    "Brian McFee <keebler@wco.com>"
 		    "Brian McFee"
 		    "April 1998"
 		    ""
-		    SF-VALUE "Text String" "\"Moo\""
-		    SF-VALUE "Font Size (in pixels)" "85"
-		    SF-VALUE "Font" "\"tribeca\""
-		    SF-VALUE "Gradient" "\"Incandescent\""
-		    SF-VALUE "Outline width" "5")
+		    SF-STRING     _"Text"               "Moo"
+		    SF-ADJUSTMENT _"Font size (pixels)" '(85 2 1000 1 10 0 1)
+		    SF-FONT       _"Font"               "Tribeca"
+		    SF-GRADIENT   _"Gradient"           "Incandescent"
+		    SF-TOGGLE     _"Gradient reverse"   FALSE
+		    SF-ADJUSTMENT _"Outline size"       '(5 1 100 1 10 0 1)
+		    SF-COLOR      _"Outline color"      '(255 255 255)
+		    SF-COLOR      _"Background color"   '(255 255 255))
+
+(script-fu-menu-register "script-fu-comic-logo"
+			 _"<Toolbox>/Xtns/Script-Fu/Logos")

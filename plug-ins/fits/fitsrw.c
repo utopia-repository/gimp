@@ -84,10 +84,14 @@ static char ident[] = "@(#) libfits.c              0.11  20-Dec-97  (%I%)";
 /* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 /******************************************************************************/
 
+#include "config.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 
 #include "fitsrw.h"
 
@@ -475,7 +479,7 @@ static void fits_drop_error (void)
 /* #END-PAR                                                                  */
 /*****************************************************************************/
 
-FITS_FILE *fits_open (char *filename, char *openmode)
+FITS_FILE *fits_open (const char *filename, const char *openmode)
 
 {int reading, writing, n_rec, n_hdr;
  long fpos_header, fpos_data;

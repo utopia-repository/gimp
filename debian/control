@@ -1,68 +1,104 @@
 Source: gimp
 Priority: optional
 Section: graphics
-Maintainer: Ben Gertzfield <che@debian.org>
-Standards-Version: 2.4.0.0
+Maintainer: Ari Pollak <ari@debian.org>
+Standards-Version: 3.6.1
+Build-Depends: debhelper (>= 4.2.21), gettext, intltool, aalib1-dev, libgtk2.0-dev (>= 2.4.4-1), libgtkhtml2-dev (>= 2.0.0), libgimpprint1-dev (>= 4.2.6), libjpeg62-dev, libmpeg-dev, libart-2.0-dev, libpng-dev, xlibs-dev, zlib1g-dev, slang1-dev, libtiff4-dev, python-dev, python-gtk2-dev, libexif-dev (>= 0.6.9), libmng-dev, librsvg2-dev (>= 2.7.2-2), libfontconfig1-dev (>= 2.2.0), libwmf-dev (>= 0.2.8-1.1), sharutils, sed (>= 3.95)
 
-Package: libgimp1
+Package: libgimp2.0
 Architecture: any
 Section: libs
 Depends: ${shlibs:Depends}
+Replaces: libgimp1.3, gimp1.3-data, gimp-data (<< 2.0.0-6)
+Conflicts: libgimp1.3, gimp1.3-data, gimp-data (<< 2.0.0-6)
 Description: Libraries necessary to run the GIMP
- This package includes the libgimp and libgimpui libraries, necessary
- to run The GIMP.
+ This package includes the developers' release of the libgimp and
+ libgimpui libraries, necessary to run The GIMP.
  .
  It has been split off from the main gimp package in order to 
  facilitate easy development for packages that use libgimp and libgimpui,
- like SANE, the Scanner Access package for GIMP.
+ like SANE, the Scanner Access package for GIMP, as well as any other
+ third-party plugins.
+
+Package: gimp-helpbrowser
+Architecture: any
+Section: graphics
+Conflicts: gimp (<< 2.0.2-6)
+Replaces: gimp (<< 2.0.2-6)
+Depends: gimp (= ${Source-Version}), ${shlibs:Depends}
+Description: Built-in Help Browser plugin for The GIMP
+ This package includes the browser for reading documentation for The GIMP,
+ accessible from within the program.
+
+Package: gimp-python
+Architecture: any
+Section: graphics
+Conflicts: gimp (<< 2.0.2-6)
+Replaces: gimp (<< 2.0.2-6)
+Depends: python-gtk2 (>= 1.99.12), ${shlibs:Depends}, ${python:Depends}
+Description: Python support and plugins for The GIMP, stable version 2.0
+ This package includes the Python modules necessary to write Python-based
+ plugins for The GIMP. It includes several plugins with various useful
+ features.
+
+Package: gimp-svg
+Architecture: any
+Section: graphics
+Depends: gimp (= ${Source-Version}), ${shlibs:Depends}
+Description: SVG plugin for The GIMP, stable version 2.0
+ This package includes the plugin necessary for opening SVG (Scalable
+ Vector Graphics) files in The GIMP.
 
 Package: gimp
 Architecture: any
 Section: graphics
-Conflicts: gimp-smotif, gimp-dmotif, gimp099, gimp-data-min
-Replaces: gimp-smotif, gimp-dmotif, gimp099, gimp-data-min
-Provides: gimp-data-min
-Depends: ${shlibs:Depends}
-Suggests: freefont, sharefont, gimp-nonfree, gimp-data-extras (>= 1:1.0.0)
-Recommends: xfonts-75dpi, xfonts-100dpi
+Depends: wget, gimp-data (= ${Source-Version}), ${shlibs:Depends}
+Conflicts: gimp1.3, gimp-nonfree, gimp-data (<< 2.0.2-4)
+Replaces: gimp1.3, gimp-nonfree, gimp-data (<< 2.0.2-4)
+Provides: gimp2.0, gimp-nonfree
+Recommends: gimp-svg
+Suggests: gimp-help-en | gimp-help, gimp-python, libgimp-perl, gimp-data-extras
 Description: The GNU Image Manipulation Program
  The GIMP lets you draw, paint, edit images, and much more! GIMP
  includes the functionality and plug-ins of other famous image
  editing and processing programs.
- .
- You ***MUST*** <--- (really!) have the xfnt75 and xfnt100 fonts
- available on the X server, whether via files or via a font server
- like xfs. The gimp package only Recommends: these packages because
- it's possible to have them served remotely, but you really should
- install them. :)
- .
- Version 1.0 of The GIMP is a total re-write of the old 0.54 code.
- It's fully layers-based, making it easy to use and more powerful.
- .
- This version is not based on Motif code, so it is entirely free!
- However, GIF and TIFF support have been moved to a separate package
- (gimp-nonfree) because of the UNISYS patent. 
 
-Package: gimp-nonfree
-Architecture: any
-Section: non-free/graphics
-Depends: gimp (= ${Source-Version}), ${shlibs:Depends}
-Description: GIF and TIFF support for the GNU Image Manipulation Program
- This package includes the gif and tiff support for The GNU Image
- Manipulation Program. These files are not freely available; their
- use is disallowed by the UNISYS patent on LZW compression.
- .
- Use at your own legal risk.
+Package: gimp-data
+Architecture: all
+Section: graphics
+Conflicts: gimp1.3-data, gimp (<< 2.0.2-4)
+Replaces: gimp1.3-data, gimp (<< 2.0.2-4)
+Description: Data files for The GIMP
+ This package contains architecture-independent supporting data files
+ for use with The GIMP
 
-Package: libgimp-dev
+Package: libgimp2.0-dev
 Architecture: any
-Section: devel
-Depends: libgtk1.2-dev
-Conflicts: gimp-dev
-Replaces: gimp-dev, libglib-dev, libgimp1 (<< 1.0.4-2)
-Description: Header files for compiling plugins for The GIMP
+Section: libdevel
+Depends: libgimp2.0 (= ${Source-Version}), libgtk2.0-dev (>= 2.4.4-1)
+Conflicts: libgimp1.2-dev (<< 1.2.5-4), libgimp1.3-dev
+Replaces: libgimp1.2-dev (<< 1.2.5-4), libgimp1.3-dev
+Description: Headers and other files for compiling plugins for The GIMP
  This package contains the header files for the GNU Image Manipulation
  Program, along with the static versions of libgimp and libgimpui.
+ It also includes the gimptool-2.0 utility.
  .
  Install this package if you wish to compile your own plugins,
  or if you wish to develop packages that use libgimp or libgimpui. 
+
+Package: libgimp2.0-doc
+Architecture: all
+Section: doc
+Depends: lynx | www-browser
+Description: Documentation for the GIMP library, stable version 2.0
+ This package contains the HTML documentation for the GIMP library in
+ /usr/share/gtk-doc/html/ .
+
+Package: gimp1.2
+Architecture: all
+Section: graphics
+Depends: gimp (>= 1.2.5-1)
+Description: Transitional dummy package for upgrading The GIMP
+ The gimp1.2 package has been renamed to 'gimp'.  To make upgrades easy,
+ this package simply depends on the proper version of 'gimp' to get the
+ new packages automatically.

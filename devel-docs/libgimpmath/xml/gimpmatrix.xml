@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<refentry id="libgimpmath-GimpMatrix">
+<refmeta>
+<refentrytitle>GimpMatrix</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBGIMPMATH Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>GimpMatrix</refname><refpurpose>Utilities to set up and manipulate 3x3 transformation matrices.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+
+<synopsis>
+
+
+
+struct      <link linkend="GimpMatrix2">GimpMatrix2</link>;
+struct      <link linkend="GimpMatrix3">GimpMatrix3</link>;
+struct      <link linkend="GimpMatrix4">GimpMatrix4</link>;
+<link linkend="void">void</link>        <link linkend="gimp-matrix2-identity">gimp_matrix2_identity</link>           (<link linkend="GimpMatrix2">GimpMatrix2</link> *matrix);
+<link linkend="void">void</link>        <link linkend="gimp-matrix2-mult">gimp_matrix2_mult</link>               (const <link linkend="GimpMatrix2">GimpMatrix2</link> *matrix1,
+                                             <link linkend="GimpMatrix2">GimpMatrix2</link> *matrix2);
+<link linkend="void">void</link>        <link linkend="gimp-matrix3-identity">gimp_matrix3_identity</link>           (<link linkend="GimpMatrix3">GimpMatrix3</link> *matrix);
+<link linkend="void">void</link>        <link linkend="gimp-matrix3-mult">gimp_matrix3_mult</link>               (const <link linkend="GimpMatrix3">GimpMatrix3</link> *matrix1,
+                                             <link linkend="GimpMatrix3">GimpMatrix3</link> *matrix2);
+<link linkend="void">void</link>        <link linkend="gimp-matrix3-translate">gimp_matrix3_translate</link>          (<link linkend="GimpMatrix3">GimpMatrix3</link> *matrix,
+                                             <link linkend="gdouble">gdouble</link> x,
+                                             <link linkend="gdouble">gdouble</link> y);
+<link linkend="void">void</link>        <link linkend="gimp-matrix3-scale">gimp_matrix3_scale</link>              (<link linkend="GimpMatrix3">GimpMatrix3</link> *matrix,
+                                             <link linkend="gdouble">gdouble</link> x,
+                                             <link linkend="gdouble">gdouble</link> y);
+<link linkend="void">void</link>        <link linkend="gimp-matrix3-rotate">gimp_matrix3_rotate</link>             (<link linkend="GimpMatrix3">GimpMatrix3</link> *matrix,
+                                             <link linkend="gdouble">gdouble</link> theta);
+<link linkend="void">void</link>        <link linkend="gimp-matrix3-xshear">gimp_matrix3_xshear</link>             (<link linkend="GimpMatrix3">GimpMatrix3</link> *matrix,
+                                             <link linkend="gdouble">gdouble</link> amount);
+<link linkend="void">void</link>        <link linkend="gimp-matrix3-yshear">gimp_matrix3_yshear</link>             (<link linkend="GimpMatrix3">GimpMatrix3</link> *matrix,
+                                             <link linkend="gdouble">gdouble</link> amount);
+<link linkend="void">void</link>        <link linkend="gimp-matrix3-affine">gimp_matrix3_affine</link>             (<link linkend="GimpMatrix3">GimpMatrix3</link> *matrix,
+                                             <link linkend="gdouble">gdouble</link> a,
+                                             <link linkend="gdouble">gdouble</link> b,
+                                             <link linkend="gdouble">gdouble</link> c,
+                                             <link linkend="gdouble">gdouble</link> d,
+                                             <link linkend="gdouble">gdouble</link> e,
+                                             <link linkend="gdouble">gdouble</link> f);
+<link linkend="void">void</link>        <link linkend="gimp-matrix3-transform-point">gimp_matrix3_transform_point</link>    (const <link linkend="GimpMatrix3">GimpMatrix3</link> *matrix,
+                                             <link linkend="gdouble">gdouble</link> x,
+                                             <link linkend="gdouble">gdouble</link> y,
+                                             <link linkend="gdouble">gdouble</link> *newx,
+                                             <link linkend="gdouble">gdouble</link> *newy);
+<link linkend="gdouble">gdouble</link>     <link linkend="gimp-matrix3-determinant">gimp_matrix3_determinant</link>        (const <link linkend="GimpMatrix3">GimpMatrix3</link> *matrix);
+<link linkend="void">void</link>        <link linkend="gimp-matrix3-invert">gimp_matrix3_invert</link>             (<link linkend="GimpMatrix3">GimpMatrix3</link> *matrix);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-matrix3-is-diagonal">gimp_matrix3_is_diagonal</link>        (const <link linkend="GimpMatrix3">GimpMatrix3</link> *matrix);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-matrix3-is-identity">gimp_matrix3_is_identity</link>        (const <link linkend="GimpMatrix3">GimpMatrix3</link> *matrix);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-matrix3-is-simple">gimp_matrix3_is_simple</link>          (const <link linkend="GimpMatrix3">GimpMatrix3</link> *matrix);
+<link linkend="void">void</link>        <link linkend="gimp-matrix4-to-deg">gimp_matrix4_to_deg</link>             (const <link linkend="GimpMatrix4">GimpMatrix4</link> *matrix,
+                                             <link linkend="gdouble">gdouble</link> *a,
+                                             <link linkend="gdouble">gdouble</link> *b,
+                                             <link linkend="gdouble">gdouble</link> *c);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+When doing image manipulation you will often need 3x3 transformation
+matrices that define translation, rotation, scaling, shearing and 
+arbitrary perspective transformations using a 3x3 matrix. Here you'll 
+find a set of utility functions to set up those matrices and to perform 
+basic matrix manipulations and tests.
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="GimpMatrix2"/>struct GimpMatrix2</title>
+<indexterm><primary>GimpMatrix2</primary></indexterm><programlisting>struct GimpMatrix2 {
+
+  gdouble coeff[2][2];
+};
+</programlisting>
+<para>
+A two by two matrix.
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpMatrix3"/>struct GimpMatrix3</title>
+<indexterm><primary>GimpMatrix3</primary></indexterm><programlisting>struct GimpMatrix3 {
+
+  gdouble coeff[3][3];
+};
+</programlisting>
+<para>
+A three by three matrix.
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpMatrix4"/>struct GimpMatrix4</title>
+<indexterm><primary>GimpMatrix4</primary></indexterm><programlisting>struct GimpMatrix4 {
+
+  gdouble coeff[4][4];
+};
+</programlisting>
+<para>
+A four by four matrix.
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix2-identity"/>gimp_matrix2_identity ()</title>
+<indexterm><primary>gimp_matrix2_identity</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_matrix2_identity           (<link linkend="GimpMatrix2">GimpMatrix2</link> *matrix);</programlisting>
+<para>
+Sets the matrix to the identity matrix.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
+<listitem><simpara> A matrix.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix2-mult"/>gimp_matrix2_mult ()</title>
+<indexterm><primary>gimp_matrix2_mult</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_matrix2_mult               (const <link linkend="GimpMatrix2">GimpMatrix2</link> *matrix1,
+                                             <link linkend="GimpMatrix2">GimpMatrix2</link> *matrix2);</programlisting>
+<para>
+Multiplies two matrices and puts the result into the second one.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix1</parameter>&nbsp;:</term>
+<listitem><simpara> The first input matrix.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>matrix2</parameter>&nbsp;:</term>
+<listitem><simpara> The second input matrix which will be overwritten by the result.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix3-identity"/>gimp_matrix3_identity ()</title>
+<indexterm><primary>gimp_matrix3_identity</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_matrix3_identity           (<link linkend="GimpMatrix3">GimpMatrix3</link> *matrix);</programlisting>
+<para>
+Sets the matrix to the identity matrix.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
+<listitem><simpara> A matrix.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix3-mult"/>gimp_matrix3_mult ()</title>
+<indexterm><primary>gimp_matrix3_mult</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_matrix3_mult               (const <link linkend="GimpMatrix3">GimpMatrix3</link> *matrix1,
+                                             <link linkend="GimpMatrix3">GimpMatrix3</link> *matrix2);</programlisting>
+<para>
+Multiplies two matrices and puts the result into the second one.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix1</parameter>&nbsp;:</term>
+<listitem><simpara> The first input matrix.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>matrix2</parameter>&nbsp;:</term>
+<listitem><simpara> The second input matrix which will be overwritten by the result.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix3-translate"/>gimp_matrix3_translate ()</title>
+<indexterm><primary>gimp_matrix3_translate</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_matrix3_translate          (<link linkend="GimpMatrix3">GimpMatrix3</link> *matrix,
+                                             <link linkend="gdouble">gdouble</link> x,
+                                             <link linkend="gdouble">gdouble</link> y);</programlisting>
+<para>
+Translates the matrix by x and y.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
+<listitem><simpara> The matrix that is to be translated.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>x</parameter>&nbsp;:</term>
+<listitem><simpara> Translation in X direction.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>y</parameter>&nbsp;:</term>
+<listitem><simpara> Translation in Y direction.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix3-scale"/>gimp_matrix3_scale ()</title>
+<indexterm><primary>gimp_matrix3_scale</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_matrix3_scale              (<link linkend="GimpMatrix3">GimpMatrix3</link> *matrix,
+                                             <link linkend="gdouble">gdouble</link> x,
+                                             <link linkend="gdouble">gdouble</link> y);</programlisting>
+<para>
+Scales the matrix by x and y</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
+<listitem><simpara> The matrix that is to be scaled.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>x</parameter>&nbsp;:</term>
+<listitem><simpara> X scale factor.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>y</parameter>&nbsp;:</term>
+<listitem><simpara> Y scale factor.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix3-rotate"/>gimp_matrix3_rotate ()</title>
+<indexterm><primary>gimp_matrix3_rotate</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_matrix3_rotate             (<link linkend="GimpMatrix3">GimpMatrix3</link> *matrix,
+                                             <link linkend="gdouble">gdouble</link> theta);</programlisting>
+<para>
+Rotates the matrix by theta degrees.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
+<listitem><simpara> The matrix that is to be rotated.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>theta</parameter>&nbsp;:</term>
+<listitem><simpara> The angle of rotation (in radians).
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix3-xshear"/>gimp_matrix3_xshear ()</title>
+<indexterm><primary>gimp_matrix3_xshear</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_matrix3_xshear             (<link linkend="GimpMatrix3">GimpMatrix3</link> *matrix,
+                                             <link linkend="gdouble">gdouble</link> amount);</programlisting>
+<para>
+Shears the matrix in the X direction.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
+<listitem><simpara> The matrix that is to be sheared.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>amount</parameter>&nbsp;:</term>
+<listitem><simpara> X shear amount.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix3-yshear"/>gimp_matrix3_yshear ()</title>
+<indexterm><primary>gimp_matrix3_yshear</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_matrix3_yshear             (<link linkend="GimpMatrix3">GimpMatrix3</link> *matrix,
+                                             <link linkend="gdouble">gdouble</link> amount);</programlisting>
+<para>
+Shears the matrix in the Y direction.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
+<listitem><simpara> The matrix that is to be sheared.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>amount</parameter>&nbsp;:</term>
+<listitem><simpara> Y shear amount.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix3-affine"/>gimp_matrix3_affine ()</title>
+<indexterm><primary>gimp_matrix3_affine</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_matrix3_affine             (<link linkend="GimpMatrix3">GimpMatrix3</link> *matrix,
+                                             <link linkend="gdouble">gdouble</link> a,
+                                             <link linkend="gdouble">gdouble</link> b,
+                                             <link linkend="gdouble">gdouble</link> c,
+                                             <link linkend="gdouble">gdouble</link> d,
+                                             <link linkend="gdouble">gdouble</link> e,
+                                             <link linkend="gdouble">gdouble</link> f);</programlisting>
+<para>
+Applies the affine transformation given by six values to <parameter>matrix</parameter>.
+The six values form define an affine transformation matrix as
+illustrated below:
+</para>
+<para>
+ ( a c e )
+ ( b d f )
+ ( 0 0 1 )</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
+<listitem><simpara> The input matrix.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>a</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>b</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>c</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>d</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>e</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>f</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix3-transform-point"/>gimp_matrix3_transform_point ()</title>
+<indexterm><primary>gimp_matrix3_transform_point</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_matrix3_transform_point    (const <link linkend="GimpMatrix3">GimpMatrix3</link> *matrix,
+                                             <link linkend="gdouble">gdouble</link> x,
+                                             <link linkend="gdouble">gdouble</link> y,
+                                             <link linkend="gdouble">gdouble</link> *newx,
+                                             <link linkend="gdouble">gdouble</link> *newy);</programlisting>
+<para>
+Transforms a point in 2D as specified by the transformation matrix.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
+<listitem><simpara> The transformation matrix.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>x</parameter>&nbsp;:</term>
+<listitem><simpara> The source X coordinate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>y</parameter>&nbsp;:</term>
+<listitem><simpara> The source Y coordinate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>newx</parameter>&nbsp;:</term>
+<listitem><simpara> The transformed X coordinate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>newy</parameter>&nbsp;:</term>
+<listitem><simpara> The transformed Y coordinate.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix3-determinant"/>gimp_matrix3_determinant ()</title>
+<indexterm><primary>gimp_matrix3_determinant</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_matrix3_determinant        (const <link linkend="GimpMatrix3">GimpMatrix3</link> *matrix);</programlisting>
+<para>
+Calculates the determinant of the given matrix.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
+<listitem><simpara> The input matrix.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The determinant.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix3-invert"/>gimp_matrix3_invert ()</title>
+<indexterm><primary>gimp_matrix3_invert</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_matrix3_invert             (<link linkend="GimpMatrix3">GimpMatrix3</link> *matrix);</programlisting>
+<para>
+Inverts the given matrix.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
+<listitem><simpara> The matrix that is to be inverted.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix3-is-diagonal"/>gimp_matrix3_is_diagonal ()</title>
+<indexterm><primary>gimp_matrix3_is_diagonal</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_matrix3_is_diagonal        (const <link linkend="GimpMatrix3">GimpMatrix3</link> *matrix);</programlisting>
+<para>
+Checks if the given matrix is diagonal.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
+<listitem><simpara> The matrix that is to be tested.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> TRUE if the matrix is diagonal.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix3-is-identity"/>gimp_matrix3_is_identity ()</title>
+<indexterm><primary>gimp_matrix3_is_identity</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_matrix3_is_identity        (const <link linkend="GimpMatrix3">GimpMatrix3</link> *matrix);</programlisting>
+<para>
+Checks if the given matrix is the identity matrix.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
+<listitem><simpara> The matrix that is to be tested.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> TRUE if the matrix is the identity matrix.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix3-is-simple"/>gimp_matrix3_is_simple ()</title>
+<indexterm><primary>gimp_matrix3_is_simple</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_matrix3_is_simple          (const <link linkend="GimpMatrix3">GimpMatrix3</link> *matrix);</programlisting>
+<para>
+Checks if we'll need to interpolate when applying this matrix as
+a transformation.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
+<listitem><simpara> The matrix that is to be tested.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> TRUE if all entries of the upper left 2x2 matrix are either
+0 or 1
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-matrix4-to-deg"/>gimp_matrix4_to_deg ()</title>
+<indexterm><primary>gimp_matrix4_to_deg</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_matrix4_to_deg             (const <link linkend="GimpMatrix4">GimpMatrix4</link> *matrix,
+                                             <link linkend="gdouble">gdouble</link> *a,
+                                             <link linkend="gdouble">gdouble</link> *b,
+                                             <link linkend="gdouble">gdouble</link> *c);</programlisting>
+<para>
+</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>a</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>b</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>c</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+<refsect1>
+<title>See Also</title>
+<para>
+<link linkend="GimpVector2"><type>GimpVector2</type></link>
+</para>
+<para>
+<link linkend="GimpVector3"><type>GimpVector3</type></link>
+</para>
+<para>
+<link linkend="GimpVector4"><type>GimpVector4</type></link>
+</para>
+</refsect1>
+
+</refentry>

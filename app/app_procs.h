@@ -15,15 +15,41 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+
 #ifndef __APP_PROCS_H__
 #define __APP_PROCS_H__
 
-/* Function declarations */
-void gimp_init (int, char **);
-void app_init (void);
-void app_exit (int);
-void app_exit_finish (void);
-int app_exit_finish_done (void);
-void app_init_update_status(char *label1val, char *label2val, float pct_progress);
 
-#endif /* APP_PROCS_H */
+#ifndef GIMP_APP_GLUE_COMPILATION
+#error You must not #include "app_procs.h" from an app/ subdir
+#endif
+
+
+gboolean  app_libs_init (gboolean            *no_interface,
+                         gint                *gimp_argc,
+                         gchar             ***gimp_argv);
+void      app_abort     (gboolean             no_interface,
+                         const gchar         *abort_message) G_GNUC_NORETURN;
+void      app_exit      (gint                 status) G_GNUC_NORETURN;
+
+void      app_run       (const gchar         *full_prog_name,
+                         gint                 gimp_argc,
+                         gchar              **gimp_argv,
+                         const gchar         *alternate_system_gimprc,
+                         const gchar         *alternate_gimprc,
+                         const gchar         *session_name,
+                         const gchar         *batch_interpreter,
+                         const gchar        **batch_commands,
+                         gboolean             no_interface,
+                         gboolean             no_data,
+                         gboolean             no_fonts,
+                         gboolean             no_splash,
+                         gboolean             be_verbose,
+                         gboolean             use_shm,
+                         gboolean             use_cpu_accel,
+                         gboolean             console_messages,
+                         GimpStackTraceMode   stack_trace_mode,
+                         GimpPDBCompatMode    pdb_compat_mode);
+
+
+#endif /* __APP_PROCS_H__ */

@@ -15,50 +15,60 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+
 #include "config.h"
-#include <locale.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
 #include <string.h>
 #include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
 
-#include "libgimp/gimpfeatures.h"
+#ifdef HAVE_SYS_WAIT_H
+#include <sys/wait.h>
+#endif
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#ifdef __GLIBC__
+#include <malloc.h>
+#endif
 
 #ifndef  WAIT_ANY
 #define  WAIT_ANY -1
-#endif   /*  WAIT_ANY  */
+#endif
 
-#include "appenv.h"
+#include <locale.h>
+
+#include <glib-object.h>
+
+#include "libgimpbase/gimpbase.h"
+
+#include "config/gimpconfig-dump.h"
+
+#include "core/core-types.h"
+#include "core/gimp.h"
+
 #include "app_procs.h"
 #include "errors.h"
-#include "install.h"
-#include "tile.h"
+#include "sanity.h"
+#include "units.h"
 
-static RETSIGTYPE on_signal (int);
-static RETSIGTYPE on_sig_child (int);
-static void       init (void);
+#include "gimp-intl.h"
 
-/* GLOBAL data */
-int no_interface;
-int no_data;
-int no_splash;
-int no_splash_image;
-int be_verbose;
-int use_shm;
-int use_debug_handler;
-int console_messages;
 
-MessageHandlerType message_handler;
+#ifdef G_OS_WIN32
+#include <windows.h>
+#else
+static void  gimp_sigfatal_handler (gint         sig_num) G_GNUC_NORETURN;
+static void  gimp_sigchld_handler  (gint         sig_num);
+#endif
 
-char *prog_name;		/* The path name we are invoked with */
-char **batch_cmds;
+static void  gimp_show_version     (void);
+static void  gimp_show_help        (const gchar *progname);
 
-/* LOCAL data */
-static int gimp_argc;
-static char **gimp_argv;
 
 /*
  *  argv processing:
@@ -81,61 +91,179 @@ static char **gimp_argv;
  */
 
 int
-main (int argc, char **argv)
+main (int    argc,
+      char **argv)
 {
-  int show_version;
-  int show_help;
-  int i, j;
-#ifdef HAVE_PUTENV
-  gchar *display_name, *display_env;
+  const gchar        *abort_message           = NULL;
+  const gchar        *full_prog_name          = NULL;
+  const gchar        *alternate_system_gimprc = NULL;
+  const gchar        *alternate_gimprc        = NULL;
+  const gchar        *session_name            = NULL;
+  const gchar        *batch_interpreter       = NULL;
+  const gchar       **batch_commands          = NULL;
+  gboolean            show_help               = FALSE;
+  gboolean            no_interface            = FALSE;
+  gboolean            no_data                 = FALSE;
+  gboolean            no_fonts                = FALSE;
+  gboolean            no_splash               = FALSE;
+  gboolean            be_verbose              = FALSE;
+  gboolean            use_shm                 = FALSE;
+  gboolean            use_cpu_accel           = TRUE;
+  gboolean            console_messages        = FALSE;
+  gboolean            use_debug_handler       = FALSE;
+#ifdef GIMP_UNSTABLE
+  GimpStackTraceMode  stack_trace_mode        = GIMP_STACK_TRACE_QUERY;
+  GimpPDBCompatMode   pdb_compat_mode         = GIMP_PDB_COMPAT_WARN;
+#else
+  GimpStackTraceMode  stack_trace_mode        = GIMP_STACK_TRACE_NEVER;
+  GimpPDBCompatMode   pdb_compat_mode         = GIMP_PDB_COMPAT_ON;
 #endif
+  gint                i, j;
 
-  /* ATEXIT (g_mem_profile); */
+#if 0
+  g_mem_set_vtable (glib_mem_profiler_table);
+  g_atexit (g_mem_profile);
+#endif
 
   /* Initialize variables */
-  prog_name = argv[0];
 
-  /* Initialize Gtk toolkit */
-  gtk_set_locale ();
-  setlocale(LC_NUMERIC, "C");  /* must use dot, not comma, as decimal separator */
-  gtk_init (&argc, &argv);
+  full_prog_name = argv[0];
 
-#ifdef HAVE_PUTENV
-  display_name = gdk_get_display ();
-  display_env = g_new (gchar, strlen (display_name) + 9);
-  *display_env = 0;
-  strcat (display_env, "DISPLAY=");
-  strcat (display_env, display_name);
-  putenv (display_env);
+  /* Initialize i18n support */
+
+  setlocale (LC_ALL, "");
+
+  bindtextdomain (GETTEXT_PACKAGE"-libgimp", gimp_locale_directory ());
+#ifdef HAVE_BIND_TEXTDOMAIN_CODESET
+  bind_textdomain_codeset (GETTEXT_PACKAGE"-libgimp", "UTF-8");
 #endif
 
-  no_interface = FALSE;
-  no_data = FALSE;
-  no_splash = FALSE;
-  no_splash_image = FALSE;
-#ifdef HAVE_SHM_H
+  bindtextdomain (GETTEXT_PACKAGE, gimp_locale_directory ());
+#ifdef HAVE_BIND_TEXTDOMAIN_CODESET
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+#endif
+
+  textdomain (GETTEXT_PACKAGE);
+
+  /* Check argv[] for "--no-interface" before trying to initialize gtk+.
+   * We also check for "--help" or "--version" here since those shouldn't
+   * require gui libs either.
+   */
+  for (i = 1; i < argc; i++)
+    {
+      const gchar *arg = argv[i];
+
+      if (arg[0] != '-')
+        continue;
+
+      if ((strcmp (arg, "--no-interface") == 0) ||
+	  (strcmp (arg, "-i") == 0))
+	{
+	  no_interface = TRUE;
+	}
+      else if ((strcmp (arg, "--version") == 0) ||
+               (strcmp (arg, "-v") == 0))
+	{
+	  gimp_show_version ();
+	  app_exit (EXIT_SUCCESS);
+	}
+      else if ((strcmp (arg, "--help") == 0) ||
+	       (strcmp (arg, "-h") == 0))
+	{
+	  gimp_show_help (full_prog_name);
+	  app_exit (EXIT_SUCCESS);
+	}
+      else if (strncmp (arg, "--dump-gimprc", 13) == 0)
+        {
+          GimpConfigDumpFormat format = GIMP_CONFIG_DUMP_NONE;
+
+          if (strcmp (arg, "--dump-gimprc") == 0)
+            format = GIMP_CONFIG_DUMP_GIMPRC;
+          if (strcmp (arg, "--dump-gimprc-system") == 0)
+            format = GIMP_CONFIG_DUMP_GIMPRC_SYSTEM;
+          else if (strcmp (arg, "--dump-gimprc-manpage") == 0)
+            format = GIMP_CONFIG_DUMP_GIMPRC_MANPAGE;
+
+          if (format)
+            {
+              Gimp     *gimp;
+              gboolean  success;
+
+              g_type_init ();
+
+              gimp = g_object_new (GIMP_TYPE_GIMP, NULL);
+
+              units_init (gimp);
+
+              success = gimp_config_dump (format);
+
+              g_object_unref (gimp);
+
+              app_exit (success ? EXIT_SUCCESS : EXIT_FAILURE);
+            }
+        }
+    }
+
+  if (! app_libs_init (&no_interface, &argc, &argv))
+    {
+      const gchar *msg;
+
+      msg = _("GIMP could not initialize the graphical user interface.\n"
+              "Make sure a proper setup for your display environment exists.");
+      g_print ("%s\n\n", msg);
+
+      app_exit (EXIT_FAILURE);
+    }
+
+  abort_message = sanity_check ();
+  if (abort_message)
+    app_abort (no_interface, abort_message);
+
+  g_set_application_name (_("The GIMP"));
+
+#if defined (USE_SYSV_SHM) || defined (USE_POSIX_SHM) || defined (G_OS_WIN32)
   use_shm = TRUE;
-#else
-  use_shm = FALSE;
 #endif
-  use_debug_handler = FALSE;
-  console_messages = FALSE;
 
-  message_handler = CONSOLE;
+#ifdef __GLIBC__
+  /* Tweak memory allocation so that memory allocated in chunks >= 4k
+   * (64x64 pixel 1bpp tile) gets returned to the system when free'd ().
+   */
+  mallopt (M_MMAP_THRESHOLD, 64 * 64 - 1);
+#endif
 
-  batch_cmds = g_new (char*, argc);
-  batch_cmds[0] = NULL;
-
-  show_version = FALSE;
-  show_help = FALSE;
+  batch_commands    = g_new (const gchar *, argc);
+  batch_commands[0] = NULL;
 
   for (i = 1; i < argc; i++)
     {
-      if ((strcmp (argv[i], "--no-interface") == 0) ||
-	  (strcmp (argv[i], "-n") == 0))
+      if (strcmp (argv[i], "--g-fatal-warnings") == 0)
+	{
+          GLogLevelFlags fatal_mask;
+
+          fatal_mask = g_log_set_always_fatal (G_LOG_FATAL_MASK);
+          fatal_mask |= G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL;
+          g_log_set_always_fatal (fatal_mask);
+ 	  argv[i] = NULL;
+	}
+      else if ((strcmp (argv[i], "--no-interface") == 0) ||
+               (strcmp (argv[i], "-i") == 0))
 	{
 	  no_interface = TRUE;
+ 	  argv[i] = NULL;
+	}
+      else if (strcmp (argv[i], "--batch-interpreter") == 0)
+	{
 	  argv[i] = NULL;
+	  if (argc <= ++i)
+            {
+	      show_help = TRUE;
+	    }
+          else
+            {
+	      batch_interpreter = argv[i];
+	      argv[i] = NULL;
+            }
 	}
       else if ((strcmp (argv[i], "--batch") == 0) ||
 	       (strcmp (argv[i], "-b") == 0))
@@ -143,188 +271,334 @@ main (int argc, char **argv)
 	  argv[i] = NULL;
 	  for (j = 0, i++ ; i < argc; j++, i++)
 	    {
-	      batch_cmds[j] = argv[i];
+	      batch_commands[j] = argv[i];
 	      argv[i] = NULL;
 	    }
-	  batch_cmds[j] = NULL;
+	  batch_commands[j] = NULL;
 
-	  if (batch_cmds[0] == NULL)  /* We need at least one batch command */
+          /* We need at least one batch command */
+	  if (batch_commands[0] == NULL)
 	    show_help = TRUE;
 	}
-      else if ((strcmp (argv[i], "--help") == 0) ||
-	       (strcmp (argv[i], "-h") == 0))
+      else if (strcmp (argv[i], "--system-gimprc") == 0)
 	{
-	  show_help = TRUE;
-	  argv[i] = NULL;
+ 	  argv[i] = NULL;
+	  if (argc <= ++i)
+            {
+	      show_help = TRUE;
+	    }
+          else
+            {
+	      alternate_system_gimprc = argv[i];
+	      argv[i] = NULL;
+            }
 	}
-      else if (strcmp (argv[i], "--version") == 0 ||
-	       strcmp (argv[i], "-v") == 0)
+      else if ((strcmp (argv[i], "--gimprc") == 0) ||
+               (strcmp (argv[i], "-g") == 0))
 	{
-	  show_version = TRUE;
 	  argv[i] = NULL;
+	  if (argc <= ++i)
+            {
+	      show_help = TRUE;
+	    }
+          else
+            {
+	      alternate_gimprc = argv[i];
+	      argv[i] = NULL;
+            }
 	}
-      else if (strcmp (argv[i], "--no-data") == 0)
+      else if ((strcmp (argv[i], "--no-data") == 0) ||
+	       (strcmp (argv[i], "-d") == 0))
 	{
 	  no_data = TRUE;
-	  argv[i] = NULL;
+ 	  argv[i] = NULL;
 	}
-      else if (strcmp (argv[i], "--no-splash") == 0)
+      else if ((strcmp (argv[i], "--no-fonts") == 0) ||
+	       (strcmp (argv[i], "-f") == 0))
+	{
+	  no_fonts = TRUE;
+ 	  argv[i] = NULL;
+	}
+      else if ((strcmp (argv[i], "--no-splash") == 0) ||
+	       (strcmp (argv[i], "-s") == 0))
 	{
 	  no_splash = TRUE;
-	  argv[i] = NULL;
-	}
-      else if (strcmp (argv[i], "--no-splash-image") == 0)
-	{
-	  no_splash_image = TRUE;
-	  argv[i] = NULL;
+ 	  argv[i] = NULL;
 	}
       else if (strcmp (argv[i], "--verbose") == 0)
 	{
 	  be_verbose = TRUE;
-	  argv[i] = NULL;
+ 	  argv[i] = NULL;
 	}
       else if (strcmp (argv[i], "--no-shm") == 0)
 	{
 	  use_shm = FALSE;
-	  argv[i] = NULL;
+ 	  argv[i] = NULL;
+	}
+      else if (strcmp (argv[i], "--no-cpu-accel") == 0)
+	{
+	  use_cpu_accel = FALSE;
+ 	  argv[i] = NULL;
 	}
       else if (strcmp (argv[i], "--debug-handlers") == 0)
 	{
 	  use_debug_handler = TRUE;
-	  argv[i] = NULL;
+ 	  argv[i] = NULL;
 	}
-      else if (strcmp (argv[i], "--console-messages") == 0)
+      else if ((strcmp (argv[i], "--console-messages") == 0) ||
+	       (strcmp (argv[i], "-c") == 0))
 	{
 	  console_messages = TRUE;
-	  argv[i] = NULL;
+ 	  argv[i] = NULL;
 	}
-/*
- *    ANYTHING ELSE starting with a '-' is an error.
- */
+      else if (strcmp (argv[i], "--session") == 0)
+	{
+	  argv[i] = NULL;
+	  if (argc <= ++i)
+            {
+	      show_help = TRUE;
+	    }
+          else
+            {
+	      session_name = argv[i];
+	      argv[i] = NULL;
+            }
+	}
+      else if (strcmp (argv[i], "--stack-trace-mode") == 0)
+	{
+ 	  argv[i] = NULL;
+	  if (argc <= ++i)
+            {
+	      show_help = TRUE;
+	    }
+          else
+            {
+	      if (! strcmp (argv[i], "never"))
+		stack_trace_mode = GIMP_STACK_TRACE_NEVER;
+	      else if (! strcmp (argv[i], "query"))
+		stack_trace_mode = GIMP_STACK_TRACE_QUERY;
+	      else if (! strcmp (argv[i], "always"))
+		stack_trace_mode = GIMP_STACK_TRACE_ALWAYS;
+	      else
+		show_help = TRUE;
+
+	      argv[i] = NULL;
+            }
+	}
+      else if (strcmp (argv[i], "--pdb-compat-mode") == 0)
+	{
+ 	  argv[i] = NULL;
+	  if (argc <= ++i)
+            {
+	      show_help = TRUE;
+	    }
+          else
+            {
+	      if (! strcmp (argv[i], "off"))
+		pdb_compat_mode = GIMP_PDB_COMPAT_OFF;
+	      else if (! strcmp (argv[i], "on"))
+		pdb_compat_mode = GIMP_PDB_COMPAT_ON;
+	      else if (! strcmp (argv[i], "warn"))
+		pdb_compat_mode = GIMP_PDB_COMPAT_WARN;
+	      else
+		show_help = TRUE;
+
+	      argv[i] = NULL;
+            }
+	}
+      else if (strcmp (argv[i], "--") == 0)
+        {
+          /*
+           *  everything after "--" is a parameter (i.e. image to load)
+           */
+          argv[i] = NULL;
+          break;
+        }
       else if (argv[i][0] == '-')
 	{
+          /*
+           *  anything else starting with a '-' is an error.
+           */
+	  g_print (_("\nInvalid option \"%s\"\n"), argv[i]);
 	  show_help = TRUE;
 	}
     }
 
-  if (show_version)
-    g_print ("GIMP version " GIMP_VERSION "\n");
-
   if (show_help)
     {
-      g_print ("\007Usage: %s [option ...] [files ...]\n", argv[0]);
-      g_print ("Valid options are:\n");
-      g_print ("  -h --help              Output this help.\n");
-      g_print ("  -v --version           Output version info.\n");
-      g_print ("  -b --batch <commands>  Run in batch mode.\n");
-      g_print ("  -n --no-interface      Run without a user interface.\n");
-      g_print ("  --no-data              Do not load patterns, gradients, palettes, brushes.\n");
-      g_print ("  --verbose              Show startup messages.\n");
-      g_print ("  --no-splash            Do not show the startup window.\n");
-      g_print ("  --no-splash-image      Do not add an image to the startup window.\n");
-      g_print ("  --no-shm               Do not use shared memory between GIMP and its plugins.\n");
-      g_print ("  --no-xshm              Do not use the X Shared Memory extension.\n");
-      g_print ("  --console-messages     Display warnings to console instead of a dialog box.\n");
-      g_print ("  --debug-handlers       Enable debugging signal handlers.\n");
-      g_print ("  --display <display>    Use the designated X display.\n\n");
-
+      gimp_show_help (full_prog_name);
+      app_exit (EXIT_FAILURE);
     }
 
-  if (show_version || show_help)
-    exit (0);
+#ifndef G_OS_WIN32
 
-  g_set_message_handler ((GPrintFunc) message_func);
+  /* No use catching these on Win32, the user won't get any
+   * stack trace from glib anyhow. It's better to let Windows inform
+   * about the program error, and offer debugging (if the user
+   * has installed MSVC or some other compiler that knows how to
+   * install itself as a handler for program errors).
+   */
 
-  /* Handle some signals */
-  signal (SIGHUP, on_signal);
-  signal (SIGINT, on_signal);
-  signal (SIGQUIT, on_signal);
-  signal (SIGABRT, on_signal);
-  signal (SIGBUS, on_signal);
-  signal (SIGSEGV, on_signal);
-  signal (SIGPIPE, on_signal);
-  signal (SIGTERM, on_signal);
-  signal (SIGFPE, on_signal);
+  /* Handle fatal signals */
 
-  /* Handle child exits */
-  signal (SIGCHLD, on_sig_child);
+  /* these are handled by gimp_terminate() */
+  gimp_signal_private (SIGHUP,  gimp_sigfatal_handler, 0);
+  gimp_signal_private (SIGINT,  gimp_sigfatal_handler, 0);
+  gimp_signal_private (SIGQUIT, gimp_sigfatal_handler, 0);
+  gimp_signal_private (SIGABRT, gimp_sigfatal_handler, 0);
+  gimp_signal_private (SIGTERM, gimp_sigfatal_handler, 0);
 
-  /* Keep the command line arguments--for use in gimp_init */
-  gimp_argc = argc - 1;
-  gimp_argv = argv + 1;
+  if (stack_trace_mode != GIMP_STACK_TRACE_NEVER)
+    {
+      /* these are handled by gimp_fatal_error() */
+      gimp_signal_private (SIGBUS,  gimp_sigfatal_handler, 0);
+      gimp_signal_private (SIGSEGV, gimp_sigfatal_handler, 0);
+      gimp_signal_private (SIGFPE,  gimp_sigfatal_handler, 0);
+    }
 
-  /* Check the installation */
-  install_verify (init);
+  /* Ignore SIGPIPE because plug_in.c handles broken pipes */
 
-  /* Main application loop */
-  if (!app_exit_finish_done ())
-    gtk_main ();
+  gimp_signal_private (SIGPIPE, SIG_IGN, 0);
 
-  return 0;
+  /* Collect dead children */
+
+  gimp_signal_private (SIGCHLD, gimp_sigchld_handler, SA_RESTART);
+
+#endif /* G_OS_WIN32 */
+
+  gimp_errors_init (full_prog_name,
+                    use_debug_handler,
+                    stack_trace_mode);
+
+  app_run (full_prog_name,
+           argc - 1,
+           argv + 1,
+           alternate_system_gimprc,
+           alternate_gimprc,
+           session_name,
+           batch_interpreter,
+           batch_commands,
+           no_interface,
+           no_data,
+           no_fonts,
+           no_splash,
+           be_verbose,
+           use_shm,
+           use_cpu_accel,
+           console_messages,
+           stack_trace_mode,
+           pdb_compat_mode);
+
+  g_free (batch_commands);
+
+  return EXIT_SUCCESS;
+}
+
+
+static void
+gimp_show_version (void)
+{
+  g_print ("%s %s\n", _("GIMP version"), GIMP_VERSION);
 }
 
 static void
-init ()
+gimp_show_help (const gchar *progname)
 {
-  /*  Continue initializing  */
-  gimp_init (gimp_argc, gimp_argv);
+  gimp_show_version ();
+
+  g_print (_("\nUsage: %s [option ... ] [file ... ]\n\n"),
+           gimp_filename_to_utf8 (progname));
+  g_print (_("Options:\n"));
+  g_print (_("  -h, --help               Output this help.\n"));
+  g_print (_("  -v, --version            Output version information.\n"));
+  g_print (_("  --verbose                Show startup messages.\n"));
+  g_print (_("  --no-shm                 Do not use shared memory between GIMP and plugins.\n"));
+  g_print (_("  --no-cpu-accel           Do not use special CPU accelerations.\n"));
+  g_print (_("  -d, --no-data            Do not load brushes, gradients, palettes, patterns.\n"));
+  g_print (_("  -f, --no-fonts           Do not load any fonts.\n"));
+  g_print (_("  -i, --no-interface       Run without a user interface.\n"));
+  g_print (_("  --display <display>      Use the designated X display.\n"));
+  g_print (_("  -s, --no-splash          Do not show the startup window.\n"));
+  g_print (_("  --session <name>         Use an alternate sessionrc file.\n"));
+  g_print (_("  -g, --gimprc <gimprc>    Use an alternate gimprc file.\n"));
+  g_print (_("  --system-gimprc <gimprc> Use an alternate system gimprc file.\n"));
+  g_print (_("  --dump-gimprc            Output a gimprc file with default settings.\n"));
+  g_print (_("  -c, --console-messages   Display warnings to console instead of a dialog box.\n"));
+  g_print (_("  --debug-handlers         Enable non-fatal debugging signal handlers.\n"));
+  g_print (_("  --stack-trace-mode <never | query | always>\n"
+             "                           Debugging mode for fatal signals.\n"));
+  g_print (_("  --pdb-compat-mode <off | on | warn>\n"
+             "                           Procedural Database compatibility mode.\n"));
+  g_print (_("  --batch-interpreter <procedure>\n"
+             "                           The procedure to process batch commands with.\n"));
+  g_print (_("  -b, --batch <commands>   Process commands in batch mode.\n"));
+  g_print ("\n");
 }
 
-static int caught_fatal_sig = 0;
 
-static RETSIGTYPE
-on_signal (int sig_num)
+#ifdef G_OS_WIN32
+
+/* In case we build this as a windowed application */
+
+#ifdef __GNUC__
+#  ifndef _stdcall
+#    define _stdcall  __attribute__((stdcall))
+#  endif
+#endif
+
+int _stdcall
+WinMain (struct HINSTANCE__ *hInstance,
+	 struct HINSTANCE__ *hPrevInstance,
+	 char               *lpszCmdLine,
+	 int                 nCmdShow)
 {
-  if (caught_fatal_sig)
-/*    raise (sig_num);*/
-    kill (getpid (), sig_num);
-  caught_fatal_sig = 1;
+  return main (__argc, __argv);
+}
 
+#endif /* G_OS_WIN32 */
+
+
+#ifndef G_OS_WIN32
+
+/* gimp core signal handler for fatal signals */
+
+static void
+gimp_sigfatal_handler (gint sig_num)
+{
   switch (sig_num)
     {
     case SIGHUP:
-      terminate ("sighup caught");
-      break;
     case SIGINT:
-      terminate ("sigint caught");
-      break;
     case SIGQUIT:
-      terminate ("sigquit caught");
-      break;
     case SIGABRT:
-      terminate ("sigabrt caught");
-      break;
-    case SIGBUS:
-      fatal_error ("sigbus caught");
-      break;
-    case SIGSEGV:
-      fatal_error ("sigsegv caught");
-      break;
-    case SIGPIPE:
-      terminate ("sigpipe caught");
-      break;
     case SIGTERM:
-      terminate ("sigterm caught");
+      gimp_terminate (g_strsignal (sig_num));
       break;
+
+    case SIGBUS:
+    case SIGSEGV:
     case SIGFPE:
-      fatal_error ("sigfpe caught");
-      break;
     default:
-      fatal_error ("unknown signal");
+      gimp_fatal_error (g_strsignal (sig_num));
       break;
     }
 }
 
-static RETSIGTYPE
-on_sig_child (int sig_num)
-{
-  int pid;
-  int status;
+/* gimp core signal handler for death-of-child signals */
 
-  while (1)
+static void
+gimp_sigchld_handler (gint sig_num)
+{
+  gint pid;
+  gint status;
+
+  while (TRUE)
     {
       pid = waitpid (WAIT_ANY, &status, WNOHANG);
+
       if (pid <= 0)
 	break;
     }
 }
+
+#endif /* ! G_OS_WIN32 */

@@ -20,7 +20,7 @@
 ; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;
-; FaltLand 
+; FlatLand 
 ;
 ;    When used with the Land gradient It produces a tileble pattern that
 ;    looks a lot like a map. 
@@ -36,10 +36,12 @@
 (define (script-fu-flatland width height seed detail xscale yscale)
   (let* (
 	 (img (car (gimp-image-new width height RGB)))
-	 (layer-one (car (gimp-layer-new img width height RGB "bottom" 100 NORMAL)))
+	 (layer-one (car (gimp-layer-new img width height
+					 RGB-IMAGE "bottom" 100 NORMAL-MODE)))
+     (layer-two)
 	)
 
-  (gimp-image-disable-undo img)
+  (gimp-image-undo-disable img)
   (gimp-image-add-layer img layer-one 0)
  ; (gimp-img-add-layer img layer-two 1)
 
@@ -50,24 +52,23 @@
   (gimp-image-set-active-layer img layer-two)
 
   (plug-in-gradmap 1 img layer-two)
+  (gimp-image-undo-enable img)
   (gimp-display-new img)
-  (gimp-image-enable-undo img)
 ))
 
 (script-fu-register "script-fu-flatland"
-		    "<Toolbox>/Xtns/Script-Fu/Patterns/Flatland"
+		    _"_Flatland..."
 		    "A Land Pattern"
 		    "Adrian Likins <aklikins@eos.ncsu.edu>"
 		    "Adrian Likins"
 		    "1997"
 		    ""
-       		    SF-VALUE "Image Width" "256"
-		    SF-VALUE "Image Height" "256"
-		    SF-VALUE "Random Seed" "80"
-		    SF-VALUE "Detail Level" "3.0"
-		    SF-VALUE "X Scale" "4"
-		    SF-VALUE "Y Scale" "4")
+		    SF-ADJUSTMENT _"Image width"  '(256 10 2000 1 10 0 1)
+		    SF-ADJUSTMENT _"Image height" '(256 10 2000 1 10 0 1)
+		    SF-ADJUSTMENT _"Random seed"  '(80 1 2000000 1 10 0 1)
+		    SF-ADJUSTMENT _"Detail level" '(3 1 15 1 10 1 0)
+		    SF-ADJUSTMENT _"Scale X"      '(4 0.1 16 0.1 2 1 1)
+		    SF-ADJUSTMENT _"Scale Y"      '(4 0.1 16 0.1 2 1 1))
 
-
-
-
+(script-fu-menu-register "script-fu-flatland"
+			 _"<Toolbox>/Xtns/Script-Fu/Patterns")

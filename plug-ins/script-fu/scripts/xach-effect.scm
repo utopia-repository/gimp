@@ -30,7 +30,7 @@
 			       hl-offset-x
 			       hl-offset-y
 			       hl-color
-			       hl-opacity
+			       hl-opacity-comp
 			       ds-color
 			       ds-opacity
 			       ds-blur
@@ -42,41 +42,42 @@
 	 (ds-opacity (max ds-opacity 0))
 	 (type (car (gimp-drawable-type-with-alpha drawable)))
 	 (image-width (car (gimp-image-width image)))
-	 (image-height (car (gimp-image-height image)))
-	 (old-bg (car (gimp-palette-get-background))))
-    
-    (gimp-image-disable-undo image)
+	 (hl-opacity (list hl-opacity-comp hl-opacity-comp hl-opacity-comp))
+	 (image-height (car (gimp-image-height image))))
+
+    (gimp-context-push)
+
+    (gimp-image-undo-group-start image)
     (gimp-layer-add-alpha drawable)
-    
+
     (if (= (car (gimp-selection-is-empty image)) TRUE)
 	(begin
-	  (gimp-selection-layer-alpha image drawable)
+	  (gimp-selection-layer-alpha drawable)
 	  (set! active-selection (car (gimp-selection-save image)))
 	  (set! from-selection FALSE))
-	(begin 
+	(begin
 	  (set! from-selection TRUE)
 	  (set! active-selection (car (gimp-selection-save image)))))
-    
-    (set! hl-layer (car (gimp-layer-new image image-width image-height type "Highlight" 100 NORMAL)))
+
+    (set! hl-layer (car (gimp-layer-new image image-width image-height type "Highlight" 100 NORMAL-MODE)))
     (gimp-image-add-layer image hl-layer -1)
-    
 
     (gimp-selection-none image)
-    (gimp-edit-clear image hl-layer)
-    (gimp-selection-load image active-selection)
+    (gimp-edit-clear hl-layer)
+    (gimp-selection-load active-selection)
     
-    (gimp-palette-set-background hl-color)
-    (gimp-edit-fill image hl-layer)
+    (gimp-context-set-background hl-color)
+    (gimp-edit-fill hl-layer BACKGROUND-FILL)
     (gimp-selection-translate image hl-offset-x hl-offset-y)
-    (gimp-edit-fill image hl-layer)
+    (gimp-edit-fill hl-layer BACKGROUND-FILL)
     (gimp-selection-none image)
-    (gimp-selection-load image active-selection)
+    (gimp-selection-load active-selection)
     
-    (set! mask (car (gimp-layer-create-mask hl-layer WHITE-MASK)))
-    (gimp-image-add-layer-mask image hl-layer mask)
+    (set! mask (car (gimp-layer-create-mask hl-layer ADD-WHITE-MASK)))
+    (gimp-layer-add-mask hl-layer mask)
     
-    (gimp-palette-set-background hl-opacity)
-    (gimp-edit-fill image mask)
+    (gimp-context-set-background hl-opacity)
+    (gimp-edit-fill mask BACKGROUND-FILL)
 
     (set! shadow-layer (car (gimp-layer-new image
 					    image-width
@@ -84,50 +85,50 @@
 					    type
 					    "Shadow"
 					    ds-opacity
-					    NORMAL)))
+					    NORMAL-MODE)))
     (gimp-image-add-layer image shadow-layer -1)
     (gimp-selection-none image)
-    (gimp-edit-clear image shadow-layer)
-    (gimp-selection-load image active-selection)
+    (gimp-edit-clear shadow-layer)
+    (gimp-selection-load active-selection)
     (gimp-selection-translate image ds-offset-x ds-offset-y)
-    (gimp-palette-set-background ds-color)
-    (gimp-edit-fill image shadow-layer)
+    (gimp-context-set-background ds-color)
+    (gimp-edit-fill shadow-layer BACKGROUND-FILL)
     (gimp-selection-none image)
     (plug-in-gauss-rle 1 image shadow-layer ds-blur TRUE TRUE)
-    (gimp-selection-load image active-selection)
-    (gimp-edit-clear image shadow-layer)
+    (gimp-selection-load active-selection)
+    (gimp-edit-clear shadow-layer)
     (gimp-image-lower-layer image shadow-layer)
-
-
-    (gimp-palette-set-background old-bg)
 
     (if (= keep-selection FALSE)
 	(gimp-selection-none image))
 
     (gimp-image-set-active-layer image drawable)
     (gimp-image-remove-channel image active-selection)
-    (gimp-image-enable-undo image)
-    (gimp-displays-flush)))
+    (gimp-image-undo-group-end image)
+    (gimp-displays-flush)
+
+    (gimp-context-pop)))
+
 
 (script-fu-register "script-fu-xach-effect"
-		    "<Image>/Script-Fu/Decor/Xach-Effect"
+		    _"_Xach-Effect..."
 		    "Add a subtle translucent 3-d effect to the current selection or alpha channel"
 		    "Adrian Likins <adrian@gimp.org>"
 		    "Adrian Likins"
 		    "9/28/97"
-		    "RGB RGBA GRAY GRAYA"
-		    SF-IMAGE "Image" 0
-		    SF-DRAWABLE "Drawable" 0
-		    SF-VALUE "highlight X offset" "-1"
-		    SF-VALUE "highlight Y offset" "-1"
-		    SF-COLOR "Highlight Color" '(255 255 255)
-		    SF-COLOR "Opacity" '(66 66 66)
-		    SF-COLOR "Drop Shadow Color" '(0 0 0)
-		    SF-VALUE "Drop shadow Opacity" "100"
-		    SF-VALUE "Drop shadow Blur Radius" "12"
-		    SF-VALUE "Drop shadow X offset" "5"
-                    SF-VALUE "Drop shadow Y offset" "5"
-		    SF-TOGGLE "Keep Selection?" TRUE)
+		    "RGB* GRAY*"
+		    SF-IMAGE       "Image"                0
+		    SF-DRAWABLE    "Drawable"             0
+		    SF-ADJUSTMENT _"Highlight X offset"   '(-1 -100 100 1 10 0 1)
+		    SF-ADJUSTMENT _"Highlight Y offset"   '(-1 -100 100 1 10 0 1)
+		    SF-COLOR      _"Highlight color"      '(255 255 255)
+		    SF-ADJUSTMENT _"Highlight opacity"    '(66 0 255 1 10 0 0)
+		    SF-COLOR      _"Drop shadow color"    '(0 0 0)
+		    SF-ADJUSTMENT _"Drop shadow opacity"  '(100 0 100 1 10 0 0)
+		    SF-ADJUSTMENT _"Drop shadow blur radius" '(12 0 255 1 10 0 1)
+		    SF-ADJUSTMENT _"Drop shadow X offset" '(5 0 255 1 10 0 1)
+		    SF-ADJUSTMENT _"Drop shadow Y offset" '(5 0 255 1 10 0 1)
+		    SF-TOGGLE     _"Keep selection"       TRUE)
 
-
-
+(script-fu-menu-register "script-fu-xach-effect"
+			 _"<Image>/Script-Fu/Shadow")

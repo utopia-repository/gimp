@@ -6,7 +6,7 @@
 ; aklikins@eos.ncsu.edu
 ;
 ; based on a idea by Sven Riedel <lynx@heim8.tu-clausthal.de>
-; tweaked a little by Sven Neumann <neumanns@uni-duesseldorf.de>
+; tweaked a bit by Sven Neumann <neumanns@uni-duesseldorf.de>
 ;
 ; This program is free software; you can redistribute it and/or modify
 ; it under the terms of the GNU General Public License as published by
@@ -30,24 +30,24 @@
 			mask_size
 			gradient
 			keep-selection
-			seperate-layer
+			separate-layer
 			current-grad)
   (let* (
 	 (type (car (gimp-drawable-type-with-alpha drawable)))
 	 (image-width (car (gimp-image-width image)))
-	 (image-height (car (gimp-image-height image)))
-	 (old-gradient (car (gimp-gradients-get-active)))
-	 (old-bg (car (gimp-palette-get-background))))
+	 (image-height (car (gimp-image-height image))))
     
-    (gimp-image-disable-undo image)
+    (gimp-context-push)
+
+    (gimp-image-undo-group-start image)
     (gimp-layer-add-alpha drawable)
     
     (if (= (car (gimp-selection-is-empty image)) TRUE)
 	(begin
-	  (gimp-selection-layer-alpha image drawable)
+	  (gimp-selection-layer-alpha drawable)
 	  (set! active-selection (car (gimp-selection-save image)))
 	  (set! from-selection FALSE))
-	(begin 
+	(begin
 	  (set! from-selection TRUE)
 	  (set! active-selection (car (gimp-selection-save image)))))
     
@@ -57,66 +57,62 @@
     (set! select-width (- (cadr (cddr selection-bounds)) select-offset-x))
     (set! select-height (- (caddr (cddr selection-bounds)) select-offset-y))
     
-    (if (= seperate-layer TRUE)
+    (if (= separate-layer TRUE)
 	(begin
-	  (set! lava-layer (car (gimp-layer-new image 
-						select-width 
-						select-height 
-						type 
-						"Lava Layer" 
-						100 
-						NORMAL)))
+	  (set! lava-layer (car (gimp-layer-new image
+						select-width
+						select-height
+						type
+						"Lava Layer"
+						100
+						NORMAL-MODE)))
 	  
-	  (gimp-layer-set-offsets lava-layer select-offset-x select-offset-y)
 	  (gimp-image-add-layer image lava-layer -1)
+	  (gimp-layer-set-offsets lava-layer select-offset-x select-offset-y)
 	  (gimp-selection-none image)
-	  (gimp-edit-clear image lava-layer)
+	  (gimp-edit-clear lava-layer)
 	  
-	  (gimp-selection-load image active-selection)
-	  (gimp-image-set-active-layer image lava-layer))) 
+	  (gimp-selection-load active-selection)
+	  (gimp-image-set-active-layer image lava-layer)))
     
     (set! active-layer (car (gimp-image-get-active-layer image)))
     
     (if (= current-grad FALSE)
-	(gimp-gradients-set-active gradient))
+	(gimp-context-set-gradient gradient))
     
     (plug-in-solid-noise 1 image active-layer FALSE TRUE seed 2 2 2)
     (plug-in-cubism 1 image active-layer tile_size 2.5 0)
     (plug-in-oilify 1 image active-layer mask_size 0)
-    (plug-in-edge 1 image active-layer 2 0)
+    (plug-in-edge 1 image active-layer 2 0 0)
     (plug-in-gauss-rle 1 image active-layer 2 TRUE TRUE)
     (plug-in-gradmap 1 image active-layer)
-
-    (gimp-gradients-set-active old-gradient)
-    (gimp-palette-set-background old-bg)
 
     (if (= keep-selection FALSE)
 	(gimp-selection-none image))
    
     (gimp-image-set-active-layer image drawable)
     (gimp-image-remove-channel image active-selection)
-    (gimp-image-enable-undo image)
-    (gimp-displays-flush)))
+    (gimp-image-undo-group-end image)
+    (gimp-displays-flush)
+
+    (gimp-context-pop)))
 
 (script-fu-register "script-fu-lava"
-		    "<Image>/Script-Fu/Decor/Lava"
+		    _"_Lava..."
 		    "Fills the current selection with lava."
 		    "Adrian Likins <adrian@gimp.org>"
 		    "Adrian Likins"
 		    "10/12/97"
-		    "RGB RGBA GRAY GRAYA"
-		    SF-IMAGE "Image" 0
-		    SF-DRAWABLE "Drawable" 0
-		    SF-VALUE "Seed" "2"
-		    SF-VALUE "Size" "10"
-		    SF-VALUE "Roughness" "7"
-		    SF-VALUE "Gradient" "\"German_flag_smooth\""
-		    SF-TOGGLE "Keep Selection?" TRUE
-		    SF-TOGGLE "Seperate Layer?" TRUE
-		    SF-TOGGLE "Use current Gradient?" FALSE)
+		    "RGB* GRAY*"
+		    SF-IMAGE       "Image"                0
+		    SF-DRAWABLE    "Drawable"             0
+		    SF-ADJUSTMENT _"Seed"                 '(10 1 30000 1 10 0 1)
+		    SF-ADJUSTMENT _"Size"                 '(10 0 100 1 10 0 1)
+		    SF-ADJUSTMENT _"Roughness"            '(7 3 50 1 10 0 0)
+		    SF-GRADIENT   _"Gradient"             "German flag smooth"
+		    SF-TOGGLE     _"Keep selection"       TRUE
+		    SF-TOGGLE     _"Separate layer"       TRUE
+		    SF-TOGGLE     _"Use current gradient" FALSE)
 
-
-
-
-
-
+(script-fu-menu-register "script-fu-lava"
+			 _"<Image>/Script-Fu/Render")

@@ -1,4 +1,3 @@
-
 ; The GIMP -- an image manipulation program
 ; Copyright (C) 1995 Spencer Kimball and Peter Mattis
 ;
@@ -30,8 +29,8 @@
   (gimp-ellipse-select img (- cx rx) (- cy ry) (+ rx rx ) (+ ry ry ) op aa feather frad))
 
 (define (use-tiles img drawable height width img2 drawable2 xoffset yoffset)
-  (gimp-edit-copy img2 drawable2)
-  (let ((floating-sel (car (gimp-edit-paste img drawable FALSE))))
+  (gimp-edit-copy drawable2)
+  (let ((floating-sel (car (gimp-edit-paste drawable FALSE))))
     (gimp-layer-set-offsets floating-sel xoffset yoffset)
     (gimp-floating-sel-anchor floating-sel)
     )
@@ -46,27 +45,27 @@
 	 )
 
     (gimp-selection-all img)
-    (gimp-palette-set-background backcolor)
-    (gimp-edit-fill img drawable1)
+    (gimp-context-set-background backcolor)
+    (gimp-edit-fill drawable1 BACKGROUND-FILL)
 
     (let* (
 	   (tempSize (* size 3))
-	   (temp-img (car (gimp-image-new tempSize tempSize RGB))) 
-	   (temp-draw (car (gimp-layer-new temp-img tempSize tempSize RGB_IMAGE "Jabar" 100 NORMAL)))
+	   (temp-img (car (gimp-image-new tempSize tempSize RGB)))
+	   (temp-draw (car (gimp-layer-new temp-img tempSize tempSize RGB-IMAGE "Jabar" 100 NORMAL-MODE)))
 	  )
-      (gimp-image-disable-undo temp-img)
+      (gimp-image-undo-disable temp-img)
       (gimp-image-add-layer temp-img temp-draw 0)
-      (gimp-palette-set-background backcolor)
-      (gimp-edit-fill temp-img temp-draw)
+      (gimp-context-set-background backcolor)
+      (gimp-edit-fill temp-draw BACKGROUND-FILL)
       
       
-      (center-ellipse temp-img size size outer-radius outer-radius REPLACE TRUE FALSE 0)
-      (center-ellipse temp-img size size inner-radius inner-radius SUB TRUE FALSE 0)
+      (center-ellipse temp-img size size outer-radius outer-radius CHANNEL-OP-REPLACE TRUE FALSE 0)
+      (center-ellipse temp-img size size inner-radius inner-radius CHANNEL-OP-SUBTRACT TRUE FALSE 0)
       
-      (center-ellipse temp-img (* size 2) (*  size 2)  outer-radius outer-radius ADD TRUE FALSE 0)
-      (center-ellipse temp-img (* size 2) (*  size 2)  inner-radius inner-radius SUB TRUE FALSE 0)
-      (gimp-palette-set-background forecolor)
-      (gimp-edit-fill temp-img temp-draw)
+      (center-ellipse temp-img (* size 2) (*  size 2)  outer-radius outer-radius CHANNEL-OP-ADD TRUE FALSE 0)
+      (center-ellipse temp-img (* size 2) (*  size 2)  inner-radius inner-radius CHANNEL-OP-SUBTRACT TRUE FALSE 0)
+      (gimp-context-set-background forecolor)
+      (gimp-edit-fill temp-draw BACKGROUND-FILL)
       
       (gimp-selection-none temp-img)
 
@@ -75,39 +74,45 @@
 
 
       (gimp-selection-all temp-img)
-      (gimp-edit-copy temp-img temp-draw)
-      (let ((floating-sel (car (gimp-edit-paste img drawable2 FALSE))))
+      (gimp-edit-copy temp-draw)
+      (let ((floating-sel (car (gimp-edit-paste drawable2 FALSE))))
 	(gimp-floating-sel-anchor floating-sel))
 
       
-      (let ((floating-sel (car (gimp-edit-paste img drawable1 FALSE))))
+      (let ((floating-sel (car (gimp-edit-paste drawable1 FALSE))))
 	(gimp-floating-sel-anchor floating-sel))
 
-      (let ((drawble (car (gimp-flip img drawable1 0)))))
+      (let ((drawble (car (gimp-drawable-transform-flip-simple drawable1
+							       ORIENTATION-VERTICAL
+							       TRUE 0 TRUE)))))
 	
 
       ;(gimp-display-new temp-img)
       (gimp-image-delete temp-img)
       )
     )
-)  
+)
 
 
 (define (script-fu-truchet size thickness backcolor forecolor xtiles ytiles)
-  (let* (	 
+  (let* (
 	 (width (* size xtiles))
 	 (height (* size ytiles))
 	 (img (car (gimp-image-new width height RGB)))
 	 (tile (car (gimp-image-new size size RGB)))
-	 (layer-one (car (gimp-layer-new img width height RGB "Rambis" 100 NORMAL)))
-	 (tiledraw1 (car (gimp-layer-new tile size size RGB "Johnson" 100 NORMAL)))
-	 (tiledraw2 (car (gimp-layer-new tile size size RGB "Cooper" 100 NORMAL)))
+	 (layer-one (car (gimp-layer-new img width height
+					 RGB-IMAGE "Rambis" 100 NORMAL-MODE)))
+	 (tiledraw1 (car (gimp-layer-new tile size size
+					 RGB-IMAGE "Johnson" 100 NORMAL-MODE)))
+	 (tiledraw2 (car (gimp-layer-new tile size size
+					 RGB-IMAGE "Cooper" 100 NORMAL-MODE)))
 	 (Xindex 0)
-	 (Yindex 0) 
-	 )
+	 (Yindex 0))
 
-    (gimp-image-disable-undo img)
-    (gimp-image-disable-undo tile)
+    (gimp-context-push)
+
+    (gimp-image-undo-disable img)
+    (gimp-image-undo-disable tile)
     
     (gimp-image-add-layer img layer-one 0)
     (gimp-image-add-layer tile tiledraw1 0)
@@ -116,8 +121,8 @@
  
     ;just to look a little better
     (gimp-selection-all img)
-    (gimp-palette-set-background backcolor) 
-    (gimp-edit-fill img layer-one)
+    (gimp-context-set-background backcolor)
+    (gimp-edit-fill layer-one BACKGROUND-FILL)
     (gimp-selection-none img)
 
     (create-tiles tile tiledraw1 tiledraw2 size thickness backcolor forecolor)
@@ -137,39 +142,25 @@
     
     
     (gimp-image-delete tile)
+    (gimp-image-undo-enable img)
     (gimp-display-new img)
-    (gimp-image-enable-undo img)
-    )
-  )
+
+    (gimp-context-pop)))
+
 
 (script-fu-register "script-fu-truchet"
-		    "<Toolbox>/Xtns/Script-Fu/Patterns/Truchet"
-		    "Create a Truchet pattern"
+		    _"T_ruchet..."
+		    "Create a Truchet pattern \n\nWorks best with even sized thicknesses"
 		    "Adrian Likins <aklikins@eos.ncsu.edu>"
 		    "Adrian Likins"
 		    "1997"
 		    ""
-		    SF-VALUE "Block Size" "32"
-		    SF-VALUE "Thickness" "2"
-		    SF-COLOR "Background Color" '(255 255 255)
-		    SF-COLOR "Foreground Color" '(0 0 0)
-		    SF-VALUE "Number of Xtiles" "5"
-		    SF-VALUE "Number of Ytiles" "5"
-		    )
+		    SF-ADJUSTMENT _"Block size"        '(32 2 512 1 10 1 1)
+		    SF-ADJUSTMENT _"Thickness"         '(2 1 512 1 10 1 1)
+		    SF-COLOR      _"Background color"  '(255 255 255)
+		    SF-COLOR      _"Foreground color"  '(0 0 0)
+		    SF-ADJUSTMENT _"Number of X tiles" '(5 1 512 1 10 1 1)
+		    SF-ADJUSTMENT _"Number of Y tiles" '(5 1 512 1 10 1 1))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+(script-fu-menu-register "script-fu-truchet"
+			 _"<Toolbox>/Xtns/Script-Fu/Patterns")

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<refentry id="libgimpwidgets-GimpScrolledPreview">
+<refmeta>
+<refentrytitle>GimpScrolledPreview</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>GimpScrolledPreview</refname><refpurpose>A widget providing a <link linkend="GimpPreview"><type>GimpPreview</type></link> enhanced by scrolling capabilities.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+
+<synopsis>
+
+
+
+struct      <link linkend="GimpScrolledPreview">GimpScrolledPreview</link>;
+
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+A widget providing a <link linkend="GimpPreview"><type>GimpPreview</type></link> enhanced by scrolling capabilities.
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="GimpScrolledPreview"/>struct GimpScrolledPreview</title>
+<indexterm><primary>GimpScrolledPreview</primary></indexterm><programlisting>struct GimpScrolledPreview {
+
+  GimpPreview   parent_instance;
+
+};
+</programlisting>
+<para>
+
+</para></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -1,5 +1,5 @@
 /*
- * "$Id: sgi.h,v 1.7.2.1 1998/06/06 23:28:16 yosh Exp $"
+ * "$Id: sgi.h,v 1.11 2003/04/07 11:59:33 neo Exp $"
  *
  *   SGI image file format library definitions.
  *
@@ -21,42 +21,19 @@
  *
  * Revision History:
  *
- *   $Log: sgi.h,v $
- *   Revision 1.7.2.1  1998/06/06 23:28:16  yosh
- *   * updated despeckle, png, sgi, and sharpen
- *
- *   -Yosh
- *
- *   Revision 1.8  1998/06/06 23:22:20  yosh
- *   * adding Lighting plugin
- *
- *   * updated despeckle, png, sgi, and sharpen
- *
- *   -Yosh
- *
- *   Revision 1.5  1998/05/17 16:01:33  mike
- *   Added <unistd.h> header file.
- *
- *   Revision 1.4  1998/04/23  17:40:49  mike
- *   Updated to support 16-bit <unsigned> image data.
- *
- *   Revision 1.3  1998/02/05  17:10:58  mike
- *   Added sgiOpenFile() function for opening an existing file pointer.
- *
- *   Revision 1.2  1997/06/18  00:55:28  mike
- *   Updated to hold length table when writing.
- *   Updated to hold current length when doing ARLE.
- *
- *   Revision 1.1  1997/06/15  03:37:19  mike
- *   Initial revision
+ *   see ChangeLog
  */
 
 #ifndef _SGI_H_
 #  define _SGI_H_
 
+#  include "config.h" 
+
 #  include <stdio.h>
 #  include <stdlib.h>
-#  include <unistd.h>
+#  ifdef HAVE_UNISTD_H
+#    include <unistd.h>
+#  endif
 #  include <string.h>
 
 #  ifdef __cplusplus
@@ -87,7 +64,8 @@ typedef struct
   FILE			*file;		/* Image file */
   int			mode,		/* File open mode */
 			bpp,		/* Bytes per pixel/channel */
-			comp;		/* Compression */
+			comp,		/* Compression */
+			swapBytes;	/* SwapBytes flag */
   unsigned short	xsize,		/* Width in pixels */
 			ysize,		/* Height in pixels */
 			zsize;		/* Number of channels */
@@ -119,5 +97,5 @@ extern int	sgiPutRow(sgi_t *sgip, unsigned short *row, int y, int z);
 #endif /* !_SGI_H_ */
 
 /*
- * End of "$Id: sgi.h,v 1.7.2.1 1998/06/06 23:28:16 yosh Exp $".
+ * End of "$Id: sgi.h,v 1.11 2003/04/07 11:59:33 neo Exp $".
  */

@@ -1,0 +1,40 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimplimits</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Base Library Reference Manual"><link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library"><link rel="prev" href="libgimpbase-gimpversion.html" title="gimpversion"><link rel="next" href="libgimpbase-gimpchecks.html" title="gimpchecks"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpbase.html" title="Part I. GIMP Base Library"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpbase-gimpversion.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpbase.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Base Library Reference Manual</th><td><a accesskey="n" href="libgimpbase-gimpchecks.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimpbase-gimplimits"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimplimits</span></h2><p>gimplimits &#8212; Boundaries of some GIMP data types and some global constants.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+
+
+
+#define     <a href="libgimpbase-gimplimits.html#GIMP-MIN-IMAGE-SIZE:CAPS">GIMP_MIN_IMAGE_SIZE</a>
+#define     <a href="libgimpbase-gimplimits.html#GIMP-MAX-IMAGE-SIZE:CAPS">GIMP_MAX_IMAGE_SIZE</a>
+#define     <a href="libgimpbase-gimplimits.html#GIMP-MIN-RESOLUTION:CAPS">GIMP_MIN_RESOLUTION</a>
+#define     <a href="libgimpbase-gimplimits.html#GIMP-MAX-RESOLUTION:CAPS">GIMP_MAX_RESOLUTION</a>
+#define     <a href="libgimpbase-gimplimits.html#GIMP-MAX-MEMSIZE:CAPS">GIMP_MAX_MEMSIZE</a>
+</pre></div><div class="refsect1" lang="en"><a name="id2532666"></a><h2>Description</h2><p>
+Boundaries of some GIMP data types and some global constants.
+
+</p></div><div class="refsect1" lang="en"><a name="id2575989"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2575994"></a><h3><a name="GIMP-MIN-IMAGE-SIZE:CAPS"></a>GIMP_MIN_IMAGE_SIZE</h3><a class="indexterm" name="id2538216"></a><pre class="programlisting">#define GIMP_MIN_IMAGE_SIZE  1
+</pre><p>
+The minimum width and height of a GIMP image in pixels.
+</p></div><hr><div class="refsect2" lang="en"><a name="id2538226"></a><h3><a name="GIMP-MAX-IMAGE-SIZE:CAPS"></a>GIMP_MAX_IMAGE_SIZE</h3><a class="indexterm" name="id2538235"></a><pre class="programlisting">#define GIMP_MAX_IMAGE_SIZE  262144    /*  2^18  */
+</pre><p>
+The maximum width and height of a GIMP image in pixels. This is a
+somewhat arbitray value that can be used when an upper value for pixel
+sizes is needed; for example to give a spin button an upper limit.
+</p></div><hr><div class="refsect2" lang="en"><a name="id2538249"></a><h3><a name="GIMP-MIN-RESOLUTION:CAPS"></a>GIMP_MIN_RESOLUTION</h3><a class="indexterm" name="id2538257"></a><pre class="programlisting">#define GIMP_MIN_RESOLUTION  5e-3      /*  shouldn't display as 0.000  */
+</pre><p>
+The minimum resolution of a GIMP image in pixels per inch. This is a
+somewhat arbitray value that can be used to when a lower value for a
+resolution is needed. GIMP will not accept resolutions smaller than
+this value.
+</p></div><hr><div class="refsect2" lang="en"><a name="id2538272"></a><h3><a name="GIMP-MAX-RESOLUTION:CAPS"></a>GIMP_MAX_RESOLUTION</h3><a class="indexterm" name="id2538280"></a><pre class="programlisting">#define GIMP_MAX_RESOLUTION  65536.0
+</pre><p>
+The maximum resolution of a GIMP image in pixels per inch. This is a
+somewhat arbitray value that can be used to when an upper value for a
+resolution is needed. GIMP will not accept resolutions larger than
+this value.
+</p></div><hr><div class="refsect2" lang="en"><a name="id2538294"></a><h3><a name="GIMP-MAX-MEMSIZE:CAPS"></a>GIMP_MAX_MEMSIZE</h3><a class="indexterm" name="id2538302"></a><pre class="programlisting">#define GIMP_MAX_MEMSIZE     ((guint64) 1 &lt;&lt; 42) /*  4 terabyte;
+</pre><p>
+A large but arbitrary value that can be used when an upper limit for a
+memory size (in bytes) is needed. It is smaller than <tt class="literal">G_MAXDOUBLE</tt> since
+the <a
+href="../libgimpwidgets/GimpMemsizeEntry.html"
+><span class="type">GimpMemsizeEntry</span></a> doesn't handle larger values.
+</p></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpbase-gimpversion.html"><b>&lt;&lt; gimpversion</b></a></td><td align="right"><a accesskey="n" href="libgimpbase-gimpchecks.html"><b>gimpchecks &gt;&gt;</b></a></td></tr></table></body></html>

@@ -1,9 +1,10 @@
-/* maze_face.c
+/* -*- mode: C; c-file-style: "gnu"; c-basic-offset: 2; -*- */
+/*
  * User interface for plug-in-maze.
- * 
- * Implemented as a GIMP 0.99 Plugin by 
- * Kevin Turner <kevint@poboxes.com>
- * http://www.poboxes.com/kevint/gimp/maze.html
+ *
+ * Implemented as a GIMP 0.99 Plugin by
+ * Kevin Turner <acapnotic@users.sourceforge.net>
+ * http://gimp-plug-ins.sourceforge.net/maze/
  */
 
 /*
@@ -23,38 +24,61 @@
  *
  */
 
-#include <stdio.h>
+#include "config.h"
+
 #include <stdlib.h>
 
+#include <libgimp/gimp.h>
+#include <libgimp/gimpui.h>
+
 #include "maze.h"
-#include "libgimp/gimp.h"
-#include "libgimp/gimpui.h"
+
+#include "libgimp/stdplugins-intl.h"
+
 
 #define BORDER_TOLERANCE 1.00 /* maximum ratio of (max % divs) to width */
-#define ENTRY_WIDTH 75
+#define ENTRY_WIDTH      75
 
 /* entscale stuff begin */
+/* FIXME: Entry-Scale stuff is probably in libgimpui by now.
+          Should use that instead.*/
+/* Indeed! By using the gimp_scale_entry you could get along without the
+   EntscaleIntData structure, since it has accessors to all objects  (Sven) */
+
 #define ENTSCALE_INT_SCALE_WIDTH 125
 #define ENTSCALE_INT_ENTRY_WIDTH 40
 
+#define MORE  1
+#define LESS -1
+
 typedef void (*EntscaleIntCallbackFunc) (gint value, gpointer data);
 
-typedef struct {
-  GtkObject     *adjustment;
-  GtkWidget     *entry;
-  gint          constraint;
-  EntscaleIntCallbackFunc	callback;
-  gpointer	call_data;
+typedef struct
+{
+  GtkObject               *adjustment;
+  GtkWidget               *entry;
+  gint                     constraint;
+  EntscaleIntCallbackFunc  callback;
+  gpointer	           call_data;
 } EntscaleIntData;
 /* entscale stuff end */
 
-gint maze_dialog (void);
 
-static void maze_msg (gchar *msg);
-static void maze_close_callback (GtkWidget *widget, gpointer data);
-static void maze_ok_callback  (GtkWidget *widget, gpointer data);
-static void maze_entry_callback  (GtkWidget *widget, gpointer data);
-static void maze_help (GtkWidget *widget, gpointer foo);
+/* one buffer fits all */
+#define BUFSIZE 128
+gchar buffer[BUFSIZE];
+
+
+gboolean     maze_dialog         (void);
+
+static void  maze_msg            (const gchar *format,
+                                  ...) G_GNUC_PRINTF (1, 2);
+
+#ifdef SHOW_PRNG_PRIVATES
+static void  maze_entry_callback (GtkWidget   *widget,
+                                  gpointer     data);
+#endif
+
 
 /* Looking back, it would probably have been easier to completely
  * re-write the whole entry/scale thing to work with the divbox stuff.
@@ -96,629 +120,450 @@ static void maze_help (GtkWidget *widget, gpointer foo);
        signal_handler_block_by_name?
      That would make life so much nicer.
 
-     Pointing to static variables "less" and "more" (for the buttons
-     in divbox_new) is stupid.  Is there a way to store integer values
-     in userdata or use intergers as parameters to callbacks?  The
-     only alternative I could think of was seperate "button_less" and
-     "button_more" callbacks, which did nothing but pass data on to
-     what is now the div_button_callback function with an additional
-     -1 or 1 parameter...  And that idea was at least as brain-damaged. 
-
+         You could pass the handler_id around and use
+         gtk_signal_handler_block ().   (Sven)
 */
 
-static void div_button_callback (GtkWidget *button, GtkWidget *entry);
-static void div_entry_callback (GtkWidget *entry, GtkWidget *friend);
+static void div_button_callback   (GtkWidget *button, GtkWidget *entry);
+static void div_entry_callback    (GtkWidget *entry, GtkWidget *friend);
 static void height_width_callback (gint width, GtkWidget **div_entry);
-static void toggle_callback (GtkWidget *widget, gboolean *data);
-static void alg_radio_callback (GtkWidget *widget, gpointer data);
 
 static GtkWidget* divbox_new (guint *max,
-			      GtkWidget *friend, 
+			      GtkWidget *friend,
 			      GtkWidget **div_entry);
 
 #if 0
 static void div_buttonl_callback (GtkObject *object);
 static void div_buttonr_callback (GtkObject *object);
-#endif 
+#endif
 
 /* entscale stuff begin */
 static GtkWidget*   entscale_int_new ( GtkWidget *table, gint x, gint y,
-				       gchar *caption, gint *intvar, 
+				       gchar *caption, gint *intvar,
 				       gint min, gint max, gboolean constraint,
 				       EntscaleIntCallbackFunc callback,
 				       gpointer data );
 
-static void   entscale_int_destroy_callback (GtkWidget *widget,
-					     gpointer data);
-static void   entscale_int_scale_update (GtkAdjustment *adjustment,
-					 gpointer      data);
-static void   entscale_int_entry_update (GtkWidget *widget,
-					 gpointer   data);
+static void   entscale_int_destroy_callback (GtkWidget     *widget,
+					     gpointer       data);
+static void   entscale_int_scale_update     (GtkAdjustment *adjustment,
+					     gpointer       data);
+static void   entscale_int_entry_update     (GtkWidget     *widget,
+					     gpointer       data);
+
+#define ISODD(X) ((X) & 1)
 /* entscale stuff end */
 
 extern MazeValues mvals;
-extern guint sel_w, sel_h;
+extern guint      sel_w, sel_h;
 
-static gint maze_run=FALSE;
 static GtkWidget *msg_label;
 
-/* I only deal with setting up a few widgets at a time, so I could get
-   by on a handful of generic GtkWidget variables.  But I've noticed
-   that's not the way things are done around here...  I read it
-   enhances optimization or some such thing.  Oh well.  Pointers are
-   cheap, right? */
-gint maze_dialog() 
+gboolean
+maze_dialog (void)
 {
-  GtkWidget *dlg;
-  GtkWidget *msg_frame;
-  GtkWidget *frame;
+  GtkWidget *dialog;
+  GtkWidget *vbox;
   GtkWidget *table;
-  gint trow;
-  GtkWidget *button;
-  GtkWidget *label;
-  GtkWidget *entry;
-  GtkWidget *notebook;
   GtkWidget *tilecheck;
+  GtkWidget *entry;
+  GtkWidget *hbox;
+  GtkWidget *frame;
+  gboolean   run;
+  gint       trow = 0;
 
-  GtkWidget *help_button;
+  gimp_ui_init ("maze", FALSE);
 
-  GtkWidget *width_entry, *height_entry;
-  GtkWidget *seed_hbox, *seed_entry, *time_button;
-  GtkWidget *div_x_hbox, *div_y_hbox;
-  GtkWidget *div_x_label, *div_y_label, *div_x_entry, *div_y_entry;
+  dialog = gimp_dialog_new (_(MAZE_TITLE), "maze",
+                         NULL, 0,
+			 gimp_standard_help_func, "plug-in-maze",
 
-  GtkWidget *alg_box, *alg_button;
+			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+			 GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
-  gchar **argv;
-  gint  argc;
-  gchar buffer[32];
+			 NULL);
 
-  argc = 1;
-  argv = g_new (gchar *, 1);
-  argv[0] = g_strdup ("maze");
+  vbox = gtk_vbox_new (FALSE, 12);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+                      vbox, FALSE, FALSE, 0);
 
-  gtk_init (&argc, &argv);
-  gtk_rc_parse (gimp_gtkrc ());
-  gdk_set_use_xshm(gimp_use_xshm());
-
-  dlg = gtk_dialog_new ();
-
-  gtk_window_set_title (GTK_WINDOW (dlg), MAZE_TITLE);
-  gtk_window_position (GTK_WINDOW (dlg), GTK_WIN_POS_MOUSE);
-  gtk_signal_connect (GTK_OBJECT (dlg), "destroy",
-		      (GtkSignalFunc) maze_close_callback,
-		      NULL);
-
-  /*  Action area  */
-  button = gtk_button_new_with_label ("OK");
-  GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
-  gtk_signal_connect (GTK_OBJECT (button), "clicked",
-                      (GtkSignalFunc) maze_ok_callback,
-                      dlg);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->action_area), button, TRUE, TRUE, 0);
-  gtk_widget_grab_default (button);
-  gtk_widget_show (button);
-
-  button = gtk_button_new_with_label ("Cancel");
-  GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
-  gtk_signal_connect_object (GTK_OBJECT (button), "clicked",
-			     (GtkSignalFunc) gtk_widget_destroy,
-			     GTK_OBJECT (dlg));
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->action_area), button, TRUE, TRUE, 0);
-  gtk_widget_show (button);
-
-  help_button = gtk_button_new_with_label ("Help");
-  gtk_signal_connect (GTK_OBJECT (help_button), "clicked",
-		      (GtkSignalFunc) maze_help, NULL);
-
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->action_area), 
-		      help_button, TRUE, TRUE, 0);
-  gtk_widget_show (help_button);
-
-
-  /* Create notebook */
-  notebook = gtk_notebook_new ();
-  gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook), GTK_POS_TOP);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), notebook, FALSE, FALSE, 0);
-  gtk_widget_show (notebook);
-
-  msg_frame = gtk_frame_new(MAZE_TITLE);
-  gtk_frame_set_shadow_type (GTK_FRAME (msg_frame), GTK_SHADOW_ETCHED_IN);
-  gtk_container_border_width (GTK_CONTAINER (msg_frame), 5);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), msg_frame, FALSE, FALSE, 0);
-
-  sprintf(buffer,"Selection is %dx%d",sel_w, sel_h);
-  msg_label = gtk_label_new (buffer);
-  gtk_container_add (GTK_CONTAINER(msg_frame), msg_label);
-  gtk_widget_show (msg_label);
-  gtk_widget_show (msg_frame);
-
-#if 0
-  g_print("label_width: %d, %d\n",
-	  GTK_FRAME(msg_frame)->label_width,
-	  gdk_string_measure (GTK_WIDGET(msg_frame)->style->font, 
-			      GTK_FRAME(msg_frame)->label) + 7);
+#ifdef SHOW_PRNG_PRIVATES
+  table = gtk_table_new (8, 3, FALSE);
+#else
+  table = gtk_table_new (6, 3, FALSE);
 #endif
-
-  /*  Set up Options page  */
-  frame = gtk_frame_new ("Maze Options");
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
-  gtk_container_border_width (GTK_CONTAINER (frame), 5);
-  table = gtk_table_new (5, 2, FALSE);
-  gtk_container_border_width (GTK_CONTAINER (table), 5);
-  gtk_container_add (GTK_CONTAINER (frame), table);
-
-  trow = 0;
-
-  /* Tileable checkbox */
-  tilecheck = gtk_check_button_new_with_label ("Tileable?");
-  gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (tilecheck), mvals.tile);
-  gtk_signal_connect (GTK_OBJECT (tilecheck), "clicked",
-		      GTK_SIGNAL_FUNC (toggle_callback), &mvals.tile);
-  gtk_table_attach (GTK_TABLE (table), tilecheck, 0, 2, trow, trow+1, 
-		    GTK_FILL, 0, 5, 0 );
-  gtk_widget_show (tilecheck);
-
-  trow++;
+  gtk_table_set_col_spacings (GTK_TABLE (table), 6);
+  gtk_table_set_row_spacings (GTK_TABLE (table), 6);
+  gtk_box_pack_start (GTK_BOX (vbox), table, TRUE, TRUE, 0);
+  gtk_widget_show (table);
 
   /* entscale == Entry and Scale pair function found in pixelize.c */
-  width_entry = entscale_int_new (table, 0, trow, "Width (pixels):", 
-				  &mvals.width, 
-				  1, sel_w/4, TRUE, 
-				  (EntscaleIntCallbackFunc) height_width_callback,
-				  &div_x_entry);
-
+  entry = entscale_int_new (table, 0, trow, _("Width (pixels):"),
+                            &mvals.width,
+                            1, sel_w/4, TRUE,
+                            (EntscaleIntCallbackFunc) height_width_callback,
+                            &entry);
+  trow++;
 
   /* Number of Divisions entry */
+  hbox = divbox_new (&sel_w, entry, &entry);
+  g_snprintf (buffer, BUFSIZE, "%d", (sel_w / mvals.width));
+  gtk_entry_set_text (GTK_ENTRY (entry), buffer);
+  gimp_table_attach_aligned (GTK_TABLE (table), 0, trow,
+			     _("Pieces:"), 0.0, 0.5,
+			     hbox, 1, TRUE);
+  gtk_table_set_row_spacing (GTK_TABLE (table), trow, 12);
   trow++;
 
-  div_x_label = gtk_label_new("Pieces:");
-
-  gtk_table_attach (GTK_TABLE (table), div_x_label, 0,1, trow, trow+1, 
-		    0, 0, 5, 5);
-
-  gtk_widget_show(div_x_label);
-
-  div_x_hbox = divbox_new(&sel_w, 
-			  width_entry,
-			  &div_x_entry);
-
-  sprintf(buffer, "%d", (sel_w / mvals.width) );
-  gtk_entry_set_text(GTK_ENTRY(div_x_entry), buffer);
-
-  gtk_table_attach (GTK_TABLE (table), div_x_hbox, 1, 2, trow, trow+1, 
-		    0, 0, 5, 5);
-
-  gtk_widget_show (div_x_hbox);
-
+  entry = entscale_int_new (table, 0, trow, _("Height (pixels):"),
+                            &mvals.height,
+                            1, sel_h/4, TRUE,
+                            (EntscaleIntCallbackFunc) height_width_callback,
+                            &entry);
   trow++;
 
-
-  height_entry = entscale_int_new (table, 0, trow, "Height (pixels):", 
-				   &mvals.height, 
-				   1, sel_h/4, TRUE, 
-				   (EntscaleIntCallbackFunc) height_width_callback,
-				   &div_y_entry);
-
+  hbox = divbox_new (&sel_h, entry, &entry);
+  g_snprintf (buffer, BUFSIZE, "%d", (sel_h / mvals.height));
+  gtk_entry_set_text (GTK_ENTRY (entry), buffer);
+  gimp_table_attach_aligned (GTK_TABLE (table), 0, trow,
+			     _("Pieces:"), 0.0, 0.5,
+			     hbox, 1, TRUE);
+  gtk_table_set_row_spacing (GTK_TABLE (table), trow, 12);
   trow++;
 
-  div_y_label = gtk_label_new("Pieces:");
-
-  gtk_table_attach (GTK_TABLE (table), div_y_label, 0, 1, trow, trow+1, 
-		    0, 0, 5, 5);
-
-  gtk_widget_show(div_y_label);
-
-  div_y_hbox = divbox_new(&sel_h,
-			  height_entry,
-			  &div_y_entry);
-
-  sprintf(buffer, "%d", (sel_h / mvals.height) );
-  gtk_entry_set_text(GTK_ENTRY(div_y_entry), buffer);
-
-  gtk_table_attach (GTK_TABLE (table), div_y_hbox, 1, 2, trow, trow+1, 
-		    0, 0, 5, 5);
-
-  gtk_widget_show (div_y_hbox);
-
-  /* Add Options page to notebook */
-  gtk_widget_show (frame);
-  gtk_widget_show (table);
-
-  gtk_notebook_append_page (GTK_NOTEBOOK (notebook), frame, 
-			    gtk_label_new ("Options"));
-
-  /* Set up other page */
-  frame = gtk_frame_new ("At Your Own Risk");
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
-  gtk_container_border_width (GTK_CONTAINER (frame), 10);
-  table = gtk_table_new (4, 2, FALSE);
-  gtk_container_border_width (GTK_CONTAINER (table), 10);
-  gtk_container_add (GTK_CONTAINER (frame), table);
-
+#ifdef SHOW_PRNG_PRIVATES
   /* Multiple input box */
-  label = gtk_label_new ("Multiple (57)");
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1, GTK_FILL, 0, 5, 0 );
-  gtk_widget_show (label);
   entry = gtk_entry_new ();
-  gtk_table_attach (GTK_TABLE (table), entry, 1, 2, 0, 1, GTK_FILL, GTK_FILL, 0, 0 );
-  gtk_widget_set_usize( entry, ENTRY_WIDTH, 0 );
-  sprintf( buffer, "%d", mvals.multiple );
+  gtk_widget_set_size_request (entry, ENTRY_WIDTH, -1);
+  g_snprintf (buffer, BUFSIZE, "%d", mvals.multiple);
   gtk_entry_set_text (GTK_ENTRY (entry), buffer );
-  gtk_signal_connect (GTK_OBJECT (entry), "changed",
-		      (GtkSignalFunc) maze_entry_callback,
-		      &mvals.multiple);
-  gtk_widget_show (entry);
+  gimp_table_attach_aligned (GTK_TABLE (table), 0, trow,
+			     _("Multiple (57):"), 0.0, 0.5,
+			     entry, 1, FALSE);
+  trow++;
+  g_signal_connect (entry, "changed",
+                    G_CALLBACK (maze_entry_callback),
+                    &mvals.multiple);
 
   /* Offset input box */
-  label = gtk_label_new ("Offset (1)");
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2, GTK_FILL, 0, 5, 0 );
-  gtk_widget_show (label);
   entry = gtk_entry_new ();
-  gtk_table_attach (GTK_TABLE (table), entry, 1, 2, 1, 2, GTK_FILL, GTK_FILL, 0, 0 );
-  gtk_widget_set_usize( entry, ENTRY_WIDTH, 0 );
-  sprintf( buffer, "%d", mvals.offset );
+  gtk_widget_set_size_request (entry, ENTRY_WIDTH, -1);
+  g_snprintf (buffer, BUFSIZE, "%d", mvals.offset);
   gtk_entry_set_text (GTK_ENTRY (entry), buffer );
-  gtk_signal_connect (GTK_OBJECT (entry), "changed",
-		      (GtkSignalFunc) maze_entry_callback,
-		      &mvals.offset);
-  gtk_widget_show (entry);
+  gimp_table_attach_aligned (GTK_TABLE (table), 0, trow,
+			     _("Offset (1):"), 0.0, 0.5,
+			     entry, 1, FALSE);
+  trow++;
+  g_signal_connect (entry, "changed",
+                    G_CALLBACK (maze_entry_callback),
+                    &mvals.offset);
+#endif
+
+  /* Tileable checkbox */
+  tilecheck = gtk_check_button_new_with_label (_("Tileable"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (tilecheck), mvals.tile);
+  gimp_table_attach_aligned (GTK_TABLE (table), 0, trow,
+			     NULL, 0.0, 0.5,
+			     tilecheck, 1, FALSE);
+  trow++;
+  g_signal_connect (tilecheck, "clicked",
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &mvals.tile);
 
   /* Seed input box */
-  label = gtk_label_new ("Seed");
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3, 
-		    GTK_FILL, 0, 5, 5);
-  gtk_widget_show (label);
+  hbox = gimp_random_seed_new (&mvals.seed, &mvals.random_seed);
+  gimp_table_attach_aligned (GTK_TABLE (table), 0, trow,
+			     _("Seed:"), 0.0, 0.5,
+			     hbox, 1, TRUE);
+  trow++;
 
-  seed_hbox = gtk_hbox_new(FALSE, 2);
-  gtk_table_attach (GTK_TABLE (table), seed_hbox, 1, 2, 2, 3, 
-		    GTK_FILL | GTK_EXPAND, GTK_FILL, 0, 5);
+  /* Algorithm Choice */
+  frame =
+    gimp_int_radio_group_new (FALSE, NULL,
+                              G_CALLBACK (gimp_radio_button_update),
+                              &mvals.algorithm, mvals.algorithm,
 
-  seed_entry = gtk_entry_new ();
-  gtk_widget_set_usize( seed_entry, ENTRY_WIDTH, 0 );
-  sprintf( buffer, "%d", mvals.seed );
-  gtk_entry_set_text (GTK_ENTRY (seed_entry), buffer );
-  gtk_signal_connect (GTK_OBJECT (seed_entry), "changed",
-		      (GtkSignalFunc) maze_entry_callback,
-		      &mvals.seed);
-  gtk_box_pack_start(GTK_BOX(seed_hbox), seed_entry, TRUE, TRUE, 0);
-  gtk_widget_show (seed_entry);
+                              _("Depth first"),      DEPTH_FIRST,     NULL,
+                              _("Prim's algorithm"), PRIMS_ALGORITHM, NULL,
 
-  time_button = gtk_toggle_button_new_with_label ("Time");
-  gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(time_button),mvals.timeseed);
-  gtk_signal_connect (GTK_OBJECT (time_button), "clicked",
-		      (GtkSignalFunc) toggle_callback,
-		      &mvals.timeseed);
-  gtk_box_pack_end (GTK_BOX (seed_hbox), time_button, FALSE, FALSE, 0);
-  gtk_widget_show (time_button);
-  gtk_widget_show (seed_hbox);
+                              NULL);
 
-  label = gtk_label_new("Algorithm");
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4, 
-		    GTK_FILL, 0, 5, 5);
-  gtk_widget_show (label);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
-  alg_box=gtk_vbox_new(FALSE, 5);
-  gtk_table_attach (GTK_TABLE (table), alg_box, 1, 2, 3, 4, 
-		    GTK_FILL, 0, 5, 5);
-  gtk_widget_show (alg_box);
+  msg_label = gtk_label_new (NULL);
+  gimp_label_set_attributes (GTK_LABEL (msg_label),
+                             PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
+                             -1);
+  gtk_box_pack_start (GTK_BOX (vbox), msg_label, FALSE, FALSE, 0);
 
-  alg_button=gtk_radio_button_new_with_label (NULL,"Depth First");
-  gtk_signal_connect(GTK_OBJECT(alg_button),"toggled",
-		     GTK_SIGNAL_FUNC(alg_radio_callback), (gpointer)DEPTH_FIRST);
-  if(mvals.algorithm==DEPTH_FIRST)
-       gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(alg_button), TRUE);
-  gtk_container_add(GTK_CONTAINER(alg_box),alg_button);
-  gtk_widget_show(alg_button);
+  gtk_widget_show_all (dialog);
 
-  alg_button=gtk_radio_button_new_with_label (gtk_radio_button_group(
-       GTK_RADIO_BUTTON(alg_button)), "Prim's Algorithm");
-  gtk_signal_connect(GTK_OBJECT(alg_button),"toggled",
-		     GTK_SIGNAL_FUNC(alg_radio_callback), (gpointer)PRIMS_ALGORITHM);
-  if(mvals.algorithm==PRIMS_ALGORITHM)
-       gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(alg_button), TRUE);
+  run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
 
-  gtk_container_add(GTK_CONTAINER(alg_box),alg_button);
-  gtk_widget_show(alg_button);
+  gtk_widget_destroy (dialog);
 
-   /* Add Advanced page to notebook */
-  gtk_widget_show (frame);
-  gtk_widget_show (table);
-  gtk_notebook_append_page (GTK_NOTEBOOK (notebook), frame, 
-			    gtk_label_new ("Advanced"));
-
-  gtk_widget_show (dlg);
-
-  gtk_main ();
-  gdk_flush ();
-
-  return maze_run;
+  return run;
 }
 
 static GtkWidget*
-divbox_new (guint *max, GtkWidget *friend, GtkWidget **div_entry)
+divbox_new (guint      *max,
+	    GtkWidget  *friend,
+	    GtkWidget **div_entry)
 {
-     GtkWidget *div_hbox;
-     GtkWidget *arrowl, *arrowr, *buttonl, *buttonr;
-     static gshort less= -1, more= 1;
+  GtkWidget *align;
+  GtkWidget *hbox;
+  GtkWidget *arrowl, *arrowr;
+  GtkWidget *buttonl, *buttonr;
 #if DIVBOX_LOOKS_LIKE_SPINBUTTON
-     GtkWidget *buttonbox;
-#endif     
-
-
-     div_hbox=gtk_hbox_new(FALSE, 0);
-
-#if DIVBOX_LOOKS_LIKE_SPINBUTTON     
-     arrowl=gtk_arrow_new(GTK_ARROW_DOWN,  GTK_SHADOW_OUT);
-     arrowr=gtk_arrow_new(GTK_ARROW_UP, GTK_SHADOW_OUT);
-#else
-     arrowl=gtk_arrow_new(GTK_ARROW_LEFT,  GTK_SHADOW_IN);
-     arrowr=gtk_arrow_new(GTK_ARROW_RIGHT, GTK_SHADOW_IN);
+  GtkWidget *buttonbox;
 #endif
 
-     buttonl=gtk_button_new();
-     buttonr=gtk_button_new();
-     
-     gtk_object_set_data(GTK_OBJECT(buttonl), "direction", &less);
-     gtk_object_set_data(GTK_OBJECT(buttonr), "direction", &more);
-
-     *div_entry= gtk_entry_new();
-
-     gtk_object_set_data(GTK_OBJECT(*div_entry), "max", max);
-     gtk_object_set_data(GTK_OBJECT(*div_entry), "friend", friend);
-
-     gtk_container_add(GTK_CONTAINER(buttonl),arrowl);
-     gtk_container_add(GTK_CONTAINER(buttonr),arrowr);
-
-     gtk_widget_set_usize( *div_entry, ENTRY_WIDTH, 0 );
+  align = gtk_alignment_new (0.5, 0.5, 0.0, 0.0);
+  hbox = gtk_hbox_new (FALSE, 0);
+  gtk_container_add (GTK_CONTAINER (align), hbox);
 
 #if DIVBOX_LOOKS_LIKE_SPINBUTTON
-     buttonbox = gtk_vbox_new(FALSE, 0);
-
-     gtk_box_pack_start(GTK_BOX(buttonbox), buttonr, FALSE, FALSE, 0);
-     gtk_box_pack_start(GTK_BOX(buttonbox), buttonl, FALSE, FALSE, 0);
-     gtk_widget_show(buttonbox);
-
-     gtk_box_pack_start(GTK_BOX(div_hbox), *div_entry, FALSE, FALSE, 2);
-     gtk_box_pack_start(GTK_BOX(div_hbox), buttonbox, FALSE, FALSE, 0);
+  arrowl = gtk_arrow_new (GTK_ARROW_DOWN,  GTK_SHADOW_OUT);
+  arrowr = gtk_arrow_new (GTK_ARROW_UP, GTK_SHADOW_OUT);
 #else
-     gtk_misc_set_padding(GTK_MISC(arrowl),2,2);
-     gtk_misc_set_padding(GTK_MISC(arrowr),2,2);
+  arrowl = gtk_arrow_new (GTK_ARROW_LEFT,  GTK_SHADOW_IN);
+  arrowr = gtk_arrow_new (GTK_ARROW_RIGHT, GTK_SHADOW_IN);
+#endif
 
-     gtk_box_pack_start(GTK_BOX(div_hbox), buttonl, FALSE, FALSE, 0);
-     gtk_box_pack_start(GTK_BOX(div_hbox), *div_entry,   FALSE, FALSE, 2);
-     gtk_box_pack_start(GTK_BOX(div_hbox), buttonr, FALSE, FALSE, 0);
-#endif     
+  buttonl = gtk_button_new ();
+  buttonr = gtk_button_new ();
 
-     gtk_widget_show (arrowl); gtk_widget_show (arrowr);
-     gtk_widget_show (*div_entry);
-     gtk_widget_show (buttonl); gtk_widget_show (buttonr);
+  g_object_set_data (G_OBJECT (buttonl), "direction", GINT_TO_POINTER (LESS));
+  g_object_set_data (G_OBJECT (buttonr), "direction", GINT_TO_POINTER (MORE));
 
-     gtk_signal_connect(GTK_OBJECT(buttonl), "clicked",
-			(GtkSignalFunc) div_button_callback, 
-			*div_entry);
+  *div_entry = gtk_entry_new ();
 
-     gtk_signal_connect(GTK_OBJECT(buttonr), "clicked",
-			(GtkSignalFunc) div_button_callback, 
-			*div_entry);     
+  g_object_set_data (G_OBJECT (*div_entry), "max", max);
+  g_object_set_data (G_OBJECT (*div_entry), "friend", friend);
 
-     gtk_signal_connect(GTK_OBJECT(*div_entry), "changed",
-			(GtkSignalFunc) div_entry_callback,
-			friend);
+  gtk_container_add (GTK_CONTAINER (buttonl), arrowl);
+  gtk_container_add (GTK_CONTAINER (buttonr), arrowr);
 
-     return div_hbox;
+  gtk_widget_set_size_request (*div_entry, ENTRY_WIDTH, -1);
+
+#if DIVBOX_LOOKS_LIKE_SPINBUTTON
+  buttonbox = gtk_vbox_new (FALSE, 0);
+
+  gtk_box_pack_start (GTK_BOX (buttonbox), buttonr, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (buttonbox), buttonl, FALSE, FALSE, 0);
+  gtk_widget_show (buttonbox);
+
+  gtk_box_pack_start (GTK_BOX (hbox), *div_entry, FALSE, FALSE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), buttonbox, FALSE, FALSE, 0);
+#else
+  gtk_box_pack_start (GTK_BOX (hbox), buttonl, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), *div_entry, FALSE, FALSE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), buttonr, FALSE, FALSE, 0);
+#endif
+
+  gtk_widget_show_all (hbox);
+
+  g_signal_connect (buttonl, "clicked",
+                    G_CALLBACK (div_button_callback),
+                    *div_entry);
+  g_signal_connect (buttonr, "clicked",
+                    G_CALLBACK (div_button_callback),
+                    *div_entry);
+  g_signal_connect (*div_entry, "changed",
+                    G_CALLBACK (div_entry_callback),
+                    friend);
+
+  return align;
 }
 
 static void
-div_button_callback (GtkWidget *button, GtkWidget *entry)
+div_button_callback (GtkWidget *button,
+		     GtkWidget *entry)
 {
-     guint max, divs, even;
-     gchar *text, *text2;
-     gshort direction;
+  const gchar *text;
+  guint        max, divs;
+  gint         direction;
 
-     direction = *((gshort*) gtk_object_get_data(GTK_OBJECT(button), "direction"));
-     max = *((guint*) gtk_object_get_data(GTK_OBJECT(entry), "max"));
+  direction = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (button), "direction"));
+  max = *((guint*) g_object_get_data (G_OBJECT (entry), "max"));
 
-     /* Tileable mazes shall have only an even number of divisions.
-        Other mazes have odd. */
-     /* Logic games!
+  /* Tileable mazes shall have only an even number of divisions.
+     Other mazes have odd. */
 
-     If BIT1 is and "even" is then add:
-	 FALSE        TRUE        0
-         TRUE         TRUE        1
-	 FALSE        FALSE       1
-	 TRUE         FALSE       0
+  /* Sanity check: */
+  if (mvals.tile && ISODD(max))
+    {
+      maze_msg (_("Selection size is not even.\n"
+		  "Tileable maze won't work perfectly."));
+      return;
+    }
 
-	 That's where the +((foo & 1) == even) stuff comes from. */
+  text = gtk_entry_get_text (GTK_ENTRY (entry));
 
-     /* Sanity check: */
-     if (mvals.tile && (max & 1)) {
-	  maze_msg("Selection size is not even.  \nTileable maze won't work perfectly.");
-	  return;
-     }
+  divs = atoi (text);
 
-     even = mvals.tile ? 1 : 0;
+  if (divs <= 3)
+    {
+      divs = mvals.tile ?
+	max - (ISODD(max) ? 1 : 0) :
+	max - (ISODD(max) ? 0 : 1);
+    }
+  else if (divs > max)
+    {
+      divs = mvals.tile ? 6 : 5;
+    }
 
-     text = gtk_entry_get_text (GTK_ENTRY (entry));
+  /* Makes sure we're appropriately even or odd, adjusting in the
+     proper direction. */
 
-     divs=atoi(text);
-     if (divs <= 3) {
-	  divs= max - ((max & 1) == even);	  
-     } else if (divs > max) {
-	  divs= 5 + even;
-     }
-     
-     /* Makes sure we're appropriately even or odd, adjusting in the
-        proper direction. */
-     divs += direction * ((divs & 1) == even);
-	  
-     if (mvals.tile) {	  
-	  if (direction > 0) {
-	       do {
-		    divs += 2;
-		    if (divs > max)
-			 divs = 4;
-	       } while (max % divs);
-	  } else { /* direction < 0 */
-	       do {
-		    divs -= 2;
-		    if (divs < 4)
-			 divs = max - (max & 1);
-	       } while (max % divs);
-	  } /* endif direction < 0 */
-     } else { /* If not tiling, having a non-zero remainder doesn't bother us much. */
-	  if (direction > 0) {
-	       do {
-		    divs += 2;
-	       } while ((max % divs > max / divs * BORDER_TOLERANCE ) && divs < max);
-	  } else { /* direction < 0 */
-	       do {
-		    divs -= 2;
-	       } while ((max % divs > max / divs * BORDER_TOLERANCE) && divs > 5);
-	  } /* endif direction < 0 */
-     } /* endif not tiling */
+  divs += direction * (mvals.tile ? (ISODD(divs) ? 1 : 0) :
+                                    (ISODD(divs) ? 0 : 1));
 
-     if (divs <= 3) {
-	  divs= max - ((max & 1) == even);	  
-     } else if (divs > max) {
-	  divs= 5 - even;
-     } /* endif divs > max */
+  if (mvals.tile)
+    {
+      if (direction > 0)
+	{
+	  do
+	    {
+	      divs += 2;
+	      if (divs > max)
+		divs = 4;
+	    }
+	  while (max % divs);
+	}
+      else
+	{ /* direction < 0 */
+	  do
+	    {
+	      divs -= 2;
+	      if (divs < 4)
+		divs = max - (max & 1);
+	    }
+	  while (max % divs);
+	} /* endif direction < 0 */
+    }
+  else
+    { /* If not tiling, having a non-zero remainder doesn't bother us much. */
+      if (direction > 0)
+	{
+	  do
+	    {
+	      divs += 2;
+	    }
+	  while ((max % divs > max / divs * BORDER_TOLERANCE) && divs < max);
+	}
+      else
+	{ /* direction < 0 */
+	  do
+	    {
+	      divs -= 2;
+	    }
+	  while ((max % divs > max / divs * BORDER_TOLERANCE) && divs > 5);
+	} /* endif direction < 0 */
+    } /* endif not tiling */
 
-     text2 = g_new(gchar, 16);
-     sprintf (text2,"%d",divs);
+  if (divs <= 3)
+    {
+      divs = mvals.tile ?
+	max - (ISODD(max) ? 1 : 0) :
+	max - (ISODD(max) ? 0 : 1);
+    }
+  else if (divs > max)
+    {
+      divs = mvals.tile ? 4 : 5;
+    }
 
-     gtk_entry_set_text (GTK_ENTRY(entry),text2);
+  g_snprintf (buffer, BUFSIZE, "%d", divs);
+  gtk_entry_set_text (GTK_ENTRY (entry), buffer);
 
-     return;
+  return;
 }
 
 static void
-div_entry_callback (GtkWidget *entry, GtkWidget *friend)
+div_entry_callback (GtkWidget *entry,
+		    GtkWidget *friend)
 {
-     guint divs, width, max;
-     gchar *buffer;
-     EntscaleIntData *userdata;
-     EntscaleIntCallbackFunc friend_callback;
+  guint divs, width, max;
+  EntscaleIntData *userdata;
+  EntscaleIntCallbackFunc friend_callback;
 
-     divs = atoi(gtk_entry_get_text (GTK_ENTRY (entry)));
-     if (divs < 4) /* If this is under 4 (e.g. 0), something's weird. */
-	  return;  /* But it'll probably be ok, so just return and ignore. */
+  divs = atoi (gtk_entry_get_text (GTK_ENTRY (entry)));
+  if (divs < 4) /* If this is under 4 (e.g. 0), something's weird.      */
+    return;     /* But it'll probably be ok, so just return and ignore. */
 
-     max = *((guint*) gtk_object_get_data(GTK_OBJECT(entry), "max"));     
-     buffer = g_new(gchar, 16);
+  max = *((guint*) g_object_get_data (G_OBJECT (entry), "max"));
 
-     /* I say "width" here, but it could be height.*/
+  /* I say "width" here, but it could be height.*/
 
-     width = max/divs;
-     sprintf (buffer,"%d", width );
+  width = max / divs;
+  g_snprintf (buffer, BUFSIZE, "%d", width);
 
-     /* No tagbacks from our friend... */
-     userdata = gtk_object_get_user_data (GTK_OBJECT (friend));
-     friend_callback = userdata->callback;
-     userdata->callback = NULL;
+  /* No tagbacks from our friend... */
+  userdata = g_object_get_data (G_OBJECT (friend), "userdata");
+  friend_callback = userdata->callback;
+  userdata->callback = NULL;
 
-     gtk_entry_set_text(GTK_ENTRY(friend), buffer);
+  gtk_entry_set_text (GTK_ENTRY (friend), buffer);
 
-     userdata->callback = friend_callback;
+  userdata->callback = friend_callback;
 }
 
 static void
-height_width_callback (gint width, GtkWidget **div_entry)
+height_width_callback (gint        width,
+		       GtkWidget **div_entry)
 {
-     guint divs, max;
-     gpointer data;
-     gchar *buffer;
+  guint divs, max;
+  gpointer data;
 
-     max = *((guint*) gtk_object_get_data(GTK_OBJECT(*div_entry), "max"));
-     divs = max / width;
+  max = *((guint*) g_object_get_data(G_OBJECT(*div_entry), "max"));
+  divs = max / width;
 
-     buffer = g_new(gchar, 16);
-     sprintf (buffer,"%d", divs );
+  g_snprintf (buffer, BUFSIZE, "%d", divs );
 
-     data = gtk_object_get_data(GTK_OBJECT(*div_entry), "friend");
-     gtk_signal_handler_block_by_data ( GTK_OBJECT(*div_entry), data );
-     
-     gtk_entry_set_text(GTK_ENTRY(*div_entry), buffer);
+  data = g_object_get_data (G_OBJECT(*div_entry), "friend");
 
-     gtk_signal_handler_unblock_by_data ( GTK_OBJECT(*div_entry), data );
-     
-}
+  g_signal_handlers_block_by_func (*div_entry,
+                                   entscale_int_entry_update,
+                                   data);
 
+  gtk_entry_set_text (GTK_ENTRY (*div_entry), buffer);
 
-static void 
-maze_close_callback (GtkWidget *widget, 
-		     gpointer data)
-{
-    gtk_main_quit ();
+  g_signal_handlers_unblock_by_func (*div_entry,
+                                     entscale_int_entry_update,
+                                     data);
 }
 
 static void
-maze_help (GtkWidget *widget, gpointer foo)
+maze_msg (const gchar *format,
+          ...)
 {
-     char *proc_blurb, *proc_help, *proc_author, *proc_copyright, *proc_date;
-     int proc_type, nparams, nreturn_vals;
-     GParamDef *params, *return_vals;
-     gint baz;
+  gchar *message;
 
-     if (gimp_query_procedure("extension_web_browser",
-                              &proc_blurb, &proc_help, 
-			      &proc_author, &proc_copyright, &proc_date,
-			      &proc_type, &nparams, &nreturn_vals,
-			      &params, &return_vals)) {
-          maze_msg("Opening " MAZE_URL);
-          gimp_run_procedure("extension_web_browser", &baz,
-                             PARAM_INT32, RUN_NONINTERACTIVE,
-                             PARAM_STRING, MAZE_URL,
-                             PARAM_INT32, HELP_OPENS_NEW_WINDOW,
-                             PARAM_END);
-     } else {
-          maze_msg("See " MAZE_URL);
-     }                                            
+  va_list args;
+
+  va_start (args, format);
+  message = g_strdup_vprintf (format, args);
+  va_end (args);
+
+  gtk_label_set_text (GTK_LABEL (msg_label), message);
+
+  g_free (message);
 }
 
+#ifdef SHOW_PRNG_PRIVATES
 static void
-maze_msg (gchar *msg)
-{
-     gtk_label_set(GTK_LABEL(msg_label), msg);
-}
-
-static void
-maze_ok_callback (GtkWidget *widget,
-		  gpointer data)
-{
-    maze_run = TRUE;
-    gtk_widget_destroy (GTK_WIDGET (data));
-}
-
-static void 
 maze_entry_callback (GtkWidget *widget,
-		       gpointer data)
+		     gpointer   data)
 {
-    gint *text_val;
+  gint *text_val = (gint *) data;
 
-    text_val = (gint *) data;
-
-    *text_val = atoi (gtk_entry_get_text (GTK_ENTRY (widget)));
+  *text_val = atoi (gtk_entry_get_text (GTK_ENTRY (widget)));
 }
-
-static void 
-toggle_callback (GtkWidget *widget, gboolean *data)
-{
-    *data = GTK_TOGGLE_BUTTON (widget)->active;
-}
-
-static void
-alg_radio_callback (GtkWidget *widget, gpointer data)
-{
-     mvals.algorithm=(MazeAlgoType)data;
-}
+#endif
 
 /* ==================================================================== */
-/* As found in pixelize.c, 
+/* As found in pixelize.c,
  * hacked to return a pointer to the entry widget. */
 
 /*
@@ -744,11 +589,16 @@ alg_radio_callback (GtkWidget *widget, gpointer data)
  *    call_data:  data for callback func
  */
 static GtkWidget*
-entscale_int_new ( GtkWidget *table, gint x, gint y,
-		   gchar *caption, gint *intvar,
-		   gint min, gint max, gboolean constraint,
-		   EntscaleIntCallbackFunc callback,
-		   gpointer call_data)
+entscale_int_new (GtkWidget *table,
+		  gint       x,
+		  gint       y,
+		  gchar     *caption,
+		  gint      *intvar,
+		  gint       min,
+		  gint       max,
+		  gboolean   constraint,
+		  EntscaleIntCallbackFunc callback,
+		  gpointer   call_data)
 {
   EntscaleIntData *userdata;
   GtkWidget *hbox;
@@ -756,10 +606,9 @@ entscale_int_new ( GtkWidget *table, gint x, gint y,
   GtkWidget *entry;
   GtkWidget *scale;
   GtkObject *adjustment;
-  gchar    buffer[256];
-  gint	    constraint_val;
+  gint	     constraint_val;
 
-  userdata = g_new ( EntscaleIntData, 1 );
+  userdata = g_new (EntscaleIntData, 1);
 
   label = gtk_label_new (caption);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -777,34 +626,34 @@ entscale_int_new ( GtkWidget *table, gint x, gint y,
   else
     constraint_val = ( *intvar < min ? min : *intvar > max ? max : *intvar );
 
-  userdata->adjustment = adjustment = 
-    gtk_adjustment_new ( constraint_val, min, max, 1.0, 1.0, 0.0);
-  scale = gtk_hscale_new ( GTK_ADJUSTMENT(adjustment) );
-  gtk_widget_set_usize (scale, ENTSCALE_INT_SCALE_WIDTH, 0);
+  userdata->adjustment = adjustment =
+    gtk_adjustment_new (constraint_val, min, max, 1.0, 1.0, 0.0);
+  scale = gtk_hscale_new (GTK_ADJUSTMENT (adjustment));
+  gtk_widget_set_size_request (scale, ENTSCALE_INT_SCALE_WIDTH, -1);
   gtk_scale_set_draw_value (GTK_SCALE (scale), FALSE);
 
   userdata->entry = entry = gtk_entry_new ();
-  gtk_widget_set_usize (entry, ENTSCALE_INT_ENTRY_WIDTH, 0);
-  sprintf( buffer, "%d", *intvar );
-  gtk_entry_set_text( GTK_ENTRY (entry), buffer );
+  gtk_widget_set_size_request (entry, ENTSCALE_INT_ENTRY_WIDTH, -1);
+  g_snprintf (buffer, BUFSIZE, "%d", *intvar);
+  gtk_entry_set_text (GTK_ENTRY (entry), buffer);
 
   userdata->callback = callback;
   userdata->call_data = call_data;
 
   /* userdata is done */
-  gtk_object_set_user_data (GTK_OBJECT(adjustment), userdata);
-  gtk_object_set_user_data (GTK_OBJECT(entry), userdata);
+  g_object_set_data (G_OBJECT (adjustment), "userdata", userdata);
+  g_object_set_data (G_OBJECT (entry), "userdata", userdata);
 
   /* now ready for signals */
-  gtk_signal_connect (GTK_OBJECT (entry), "changed",
-		      (GtkSignalFunc) entscale_int_entry_update,
-		      intvar);
-  gtk_signal_connect (GTK_OBJECT (adjustment), "value_changed",
-		      (GtkSignalFunc) entscale_int_scale_update,
-		      intvar);
-  gtk_signal_connect (GTK_OBJECT (entry), "destroy",
-		      (GtkSignalFunc) entscale_int_destroy_callback,
-		      userdata );
+  g_signal_connect (entry, "changed",
+                    G_CALLBACK (entscale_int_entry_update),
+                    intvar);
+  g_signal_connect (adjustment, "value_changed",
+                    G_CALLBACK (entscale_int_scale_update),
+                    intvar);
+  g_signal_connect (entry, "destroy",
+                    G_CALLBACK (entscale_int_destroy_callback),
+                    userdata );
 
   /* start packing */
   hbox = gtk_hbox_new (FALSE, 5);
@@ -822,43 +671,48 @@ entscale_int_new ( GtkWidget *table, gint x, gint y,
   gtk_widget_show (hbox);
 
   return entry;
-}  
+}
 
 
 /* when destroyed, userdata is destroyed too */
 static void
 entscale_int_destroy_callback (GtkWidget *widget,
-			       gpointer data)
+			       gpointer   data)
 {
   EntscaleIntData *userdata;
 
   userdata = data;
-  g_free ( userdata );
+  g_free (userdata);
 }
 
 static void
 entscale_int_scale_update (GtkAdjustment *adjustment,
-			   gpointer      data)
+			   gpointer       data)
 {
   EntscaleIntData *userdata;
-  GtkEntry	*entry;
-  gchar		buffer[256];
-  gint		*intvar = data;
-  gint		new_val;
+  GtkEntry *entry;
+  gint     *intvar = data;
+  gint      new_val;
 
-  userdata = gtk_object_get_user_data (GTK_OBJECT (adjustment));
+  userdata = g_object_get_data (G_OBJECT (adjustment), "userdata");
 
   new_val = (gint) adjustment->value;
 
   *intvar = new_val;
 
-  entry = GTK_ENTRY( userdata->entry );
-  sprintf (buffer, "%d", (int) new_val );
-  
+  entry = GTK_ENTRY (userdata->entry);
+  g_snprintf (buffer, BUFSIZE, "%d", (int) new_val);
+
   /* avoid infinite loop (scale, entry, scale, entry ...) */
-  gtk_signal_handler_block_by_data ( GTK_OBJECT(entry), data );
-  gtk_entry_set_text ( entry, buffer);
-  gtk_signal_handler_unblock_by_data ( GTK_OBJECT(entry), data );
+  g_signal_handlers_block_by_func (entry,
+                                   entscale_int_entry_update,
+                                   data);
+
+  gtk_entry_set_text (entry, buffer);
+
+  g_signal_handlers_unblock_by_func (entry,
+                                     entscale_int_entry_update,
+                                     data);
 
   if (userdata->callback)
     (*userdata->callback) (*intvar, userdata->call_data);
@@ -869,12 +723,12 @@ entscale_int_entry_update (GtkWidget *widget,
 			   gpointer   data)
 {
   EntscaleIntData *userdata;
-  GtkAdjustment	*adjustment;
-  int		new_val, constraint_val;
-  int		*intvar = data;
+  GtkAdjustment	  *adjustment;
+  gint		   new_val, constraint_val;
+  gint		  *intvar = data;
 
-  userdata = gtk_object_get_user_data (GTK_OBJECT (widget));
-  adjustment = GTK_ADJUSTMENT( userdata->adjustment );
+  userdata = g_object_get_data (G_OBJECT (widget), "userdata");
+  adjustment = GTK_ADJUSTMENT (userdata->adjustment);
 
   new_val = atoi (gtk_entry_get_text (GTK_ENTRY (widget)));
   constraint_val = new_val;
@@ -889,10 +743,17 @@ entscale_int_entry_update (GtkWidget *widget,
     *intvar = new_val;
 
   adjustment->value = constraint_val;
-  gtk_signal_handler_block_by_data ( GTK_OBJECT(adjustment), data );
-  gtk_signal_emit_by_name ( GTK_OBJECT(adjustment), "value_changed");
-  gtk_signal_handler_unblock_by_data ( GTK_OBJECT(adjustment), data );
-  
+
+  g_signal_handlers_block_by_func (adjustment,
+                                   entscale_int_scale_update,
+                                   data);
+
+  gtk_adjustment_value_changed (adjustment);
+
+  g_signal_handlers_unblock_by_func (adjustment,
+                                     entscale_int_scale_update,
+                                     data);
+
   if (userdata->callback)
     (*userdata->callback) (*intvar, userdata->call_data);
 }

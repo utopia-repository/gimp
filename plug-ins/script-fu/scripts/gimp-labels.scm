@@ -29,53 +29,59 @@
 ;  with higher quality vector fonts. This is how the actual www.gimp.org
 ;  logos were created.
 ;
+; ************************************************************************
+; Changed on Feb 4, 1999 by Piet van Oostrum <piet@cs.uu.nl>
+; For use with GIMP 1.1.
+; All calls to gimp-text-* have been converted to use the *-fontname form.
+; The corresponding parameters have been replaced by an SF-FONT parameter.
+; ************************************************************************
 
 
-(define (script-fu-labels-gimp-org text font font-size weight slant width text-color shadow-color bg-color rm-bg index num-colors color-thresh yoff xoff height)
+(define (script-fu-labels-gimp-org text font font-size text-color shadow-color bg-color rm-bg index num-colors color-thresh yoff xoff height)
   (let* ((img (car (gimp-image-new 125 height RGB)))
-	 (text-layer (car (gimp-text img -1 xoff yoff text 0
+	 (text-layer (car (gimp-text-fontname img -1 xoff yoff text 0
 				     TRUE font-size PIXELS
-				     "*" font weight slant width "*")))
+				     font)))
 	 (bg-layer (car (gimp-layer-new  img 125 height
-					 RGB_IMAGE "Background" 100 NORMAL)))
-	 (shadow-layer (car (gimp-layer-copy text-layer TRUE)))
-	 (old-fg (car (gimp-palette-get-foreground)))
-	 (old-bg (car (gimp-palette-get-background))))
-    
-    (gimp-image-disable-undo img)
+					 RGB-IMAGE "Background" 100 NORMAL-MODE)))
+	 (shadow-layer (car (gimp-layer-copy text-layer TRUE))))
+
+    (gimp-context-push)
+
+    (gimp-image-undo-disable img)
     (gimp-image-add-layer img shadow-layer 1)
     (gimp-image-add-layer img bg-layer 2)
     
     (gimp-layer-set-preserve-trans text-layer TRUE)
     (gimp-layer-set-preserve-trans shadow-layer TRUE)
     
-    (gimp-palette-set-background text-color)
-    (gimp-edit-fill img text-layer)
+    (gimp-context-set-background text-color)
+    (gimp-edit-fill text-layer BACKGROUND-FILL)
 
-    (gimp-palette-set-background bg-color)
-    (gimp-edit-fill img bg-layer)
+    (gimp-context-set-background bg-color)
+    (gimp-edit-fill bg-layer BACKGROUND-FILL)
 
-    (gimp-palette-set-background shadow-color)
-    (gimp-edit-fill img shadow-layer)
+    (gimp-context-set-background shadow-color)
+    (gimp-edit-fill shadow-layer BACKGROUND-FILL)
     (gimp-layer-translate shadow-layer 1 1)
 
     (set! text-layer (car (gimp-image-flatten img)))
-    (gimp-layer-add-alpha text-layer)	   
+    (gimp-layer-add-alpha text-layer)
 
     (if (= rm-bg TRUE)
 	(begin
-	  (gimp-by-color-select img text-layer bg-color
-				color-thresh REPLACE TRUE FALSE 0 FALSE)
-	  (gimp-edit-clear img text-layer)
-	  (gimp-selection-clear img)))
+	  (gimp-by-color-select text-layer bg-color
+				color-thresh CHANNEL-OP-REPLACE TRUE FALSE 0 FALSE)
+	  (gimp-edit-clear text-layer)
+	  (gimp-selection-none img)))
     
     (if (= index TRUE)
-	(gimp-convert-indexed img TRUE num-colors))
-   
-    (gimp-palette-set-foreground old-fg)
-    (gimp-palette-set-background old-bg)
-    (gimp-image-enable-undo img)
-    (gimp-display-new img)))
+   	(gimp-image-convert-indexed img FS-DITHER MAKE-PALETTE num-colors
+				    FALSE FALSE ""))
+    (gimp-image-undo-enable img)
+    (gimp-display-new img)
+
+    (gimp-context-pop)))
 
 
 ;;;(define (script-fu-tube-button-label-gimp-org text rm-bg index)
@@ -89,69 +95,80 @@
 ;;;
 
 (define (script-fu-tube-button-label-gimp-org text rm-bg index)
-  (script-fu-labels-gimp-org text "helvetica" 14 "medium" "r" "normal" '(86 114 172) '(255 255 255) '(255 255 255) rm-bg index 15 1 8 0 30))
+  (script-fu-labels-gimp-org text "helvetica" 14 '(86 114 172) '(255 255 255) '(255 255 255) rm-bg index 15 1 8 0 30))
 
 (define (script-fu-tube-subbutton-label-gimp-org text rm-bg index)
-  (script-fu-labels-gimp-org text "helvetica" 12 "medium" "r" "normal" '(86 114 172) '(255 255 255) '(255 255 255) rm-bg index 15 1 7 10 24))
+  (script-fu-labels-gimp-org text "helvetica" 12 '(86 114 172) '(255 255 255) '(255 255 255) rm-bg index 15 1 7 10 24))
   
 (define (script-fu-tube-subsubbutton-label-gimp-org text rm-bg index)
-  (script-fu-labels-gimp-org text "helvetica" 10 "medium" "r" "normal" '(86 114 172) '(255 255 255) '(255 255 255) rm-bg index 15 1 6 20 18))
+  (script-fu-labels-gimp-org text "helvetica" 10 '(86 114 172) '(255 255 255) '(255 255 255) rm-bg index 15 1 6 20 18))
 
 
 (script-fu-register "script-fu-tube-button-label-gimp-org"
-		    "<Toolbox>/Xtns/Script-Fu/Web page themes/Gimp.Org/Tube Button Label"
+		    _"_Tube Button Label..."
 		    "Tube Button Label Header for gimp.org"
 		    "Adrian Likins & Jens Lautenbacher"
 		    "Adrian Likins & Jens Lautenbacher"
 		    "1997"
 		    ""
-		    SF-VALUE "Text String" "\"?\""
-		    SF-TOGGLE "Remove Background" TRUE
-		    SF-TOGGLE "Index Image" TRUE)
+		    SF-STRING _"Text"              "?"
+		    SF-TOGGLE _"Remove background" TRUE
+		    SF-TOGGLE _"Index image"       TRUE)
+
+(script-fu-menu-register "script-fu-tube-button-label-gimp-org"
+			 _"<Toolbox>/Xtns/Script-Fu/Web Page Themes/Classic.Gimp.Org")
+
 
 (script-fu-register "script-fu-tube-subbutton-label-gimp-org"
-		    "<Toolbox>/Xtns/Script-Fu/Web page themes/Gimp.Org/Tube Sub-Button Label"
+		    _"T_ube Sub-Button Label..."
 		    "Tube Button Label Header for gimp.org"
 		    "Adrian Likins & Jens Lautenbacher"
 		    "Adrian Likins & Jens Lautenbacher"
 		    "1997"
 		    ""
-		    SF-VALUE "Text String" "\"?\""
-		    SF-TOGGLE "Remove Background" TRUE
-		    SF-TOGGLE "Index Image" TRUE)
+		    SF-STRING _"Text"              "?"
+		    SF-TOGGLE _"Remove background" TRUE
+		    SF-TOGGLE _"Index image"       TRUE)
+
+(script-fu-menu-register "script-fu-tube-subbutton-label-gimp-org"
+			 _"<Toolbox>/Xtns/Script-Fu/Web Page Themes/Classic.Gimp.Org")
+
 
 (script-fu-register "script-fu-tube-subsubbutton-label-gimp-org"
-		    "<Toolbox>/Xtns/Script-Fu/Web page themes/Gimp.Org/Tube Sub-Sub-Button Label"
+		    _"Tub_e Sub-Sub-Button Label..."
 		    "Tube Button Label Header for gimp.org"
 		    "Adrian Likins & Jens Lautenbacher"
 		    "Adrian Likins & Jens Lautenbacher"
 		    "1997"
 		    ""
-		    SF-VALUE "Text String" "\"?\""
-		    SF-TOGGLE "Remove Background" TRUE
-		    SF-TOGGLE "Index Image" TRUE)
+		    SF-STRING _"Text"              "?"
+		    SF-TOGGLE _"Remove background" TRUE
+		    SF-TOGGLE _"Index image"       TRUE)
+
+(script-fu-menu-register "script-fu-tube-subsubbutton-label-gimp-org"
+			 _"<Toolbox>/Xtns/Script-Fu/Web Page Themes/Classic.Gimp.Org")
 
 
 (script-fu-register "script-fu-labels-gimp-org"
-		    "<Toolbox>/Xtns/Script-Fu/Web page themes/Gimp.Org/General Tube Labels"
+		    _"_General Tube Labels..."
 		    "Tube Button Label Header for gimp.org"
 		    "Adrian Likins & Jens Lautenbacher"
 		    "Adrian Likins & Jens Lautenbacher"
 		    "1997"
 		    ""
-		    SF-VALUE "Text String" "\"Gimp.Org\""
-		    SF-VALUE "Font" "\"helvetica\""
-		    SF-VALUE "Font Size" "18"
-		    SF-VALUE "Weight" "\"medium\""
-		    SF-VALUE "Slant" "\"r\""
-		    SF-VALUE "Width" "\"normal\""
- 		    SF-COLOR "Text Color" '(130 165 235)
-	 	    SF-COLOR "Shadow Color" '(0 0 0)
-		    SF-COLOR "Background Color" '(255 255 255)
-		    SF-TOGGLE "Remove Background" TRUE
-		    SF-TOGGLE "Index Image" TRUE
-		    SF-VALUE "# of colors" "15"
-		    SF-VALUE "select-by-color threshold" "1"
-		    SF-VALUE "Y-Offset" "8"
-		    SF-VALUE "X-Offset" "0"
-		    SF-VALUE "Height"   "30")
+		    SF-STRING     _"Text"               "Gimp.Org"
+		    SF-FONT       _"Font"               "Sans"
+		    SF-ADJUSTMENT _"Font size (pixels)" '(18 2 1000 1 10 0 1)
+ 		    SF-COLOR      _"Text color"         '(130 165 235)
+	 	    SF-COLOR      _"Shadow color"       '(0 0 0)
+		    SF-COLOR      _"Background color"   '(255 255 255)
+		    SF-TOGGLE     _"Remove background"  TRUE
+		    SF-TOGGLE     _"Index image"        TRUE
+		    SF-ADJUSTMENT _"Number of colors"   '(15 2 255 1 10 0 1)
+		    SF-ADJUSTMENT _"Select-by-color threshold" '(1 1 256 1 10 0 1)
+		    SF-ADJUSTMENT _"Offset X"           '(8 0 50 1 10 0 1)
+		    SF-ADJUSTMENT _"Offset Y"           '(0 0 50 1 10 0 1)
+		    SF-ADJUSTMENT _"Height"             '(30 2 1000 1 10 0 1))
+
+(script-fu-menu-register "script-fu-labels-gimp-org"
+			 _"<Toolbox>/Xtns/Script-Fu/Web Page Themes/Classic.Gimp.Org")

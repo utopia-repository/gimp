@@ -1,0 +1,86 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimppatternselect</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="prev" href="libgimp-gimppaletteselect.html" title="gimppaletteselect"><link rel="next" href="libgimpui.html" title="Part III. GIMP User Interface Library"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimp-gimppaletteselect.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimp-selectors.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th><td><a accesskey="n" href="libgimpui.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimp-gimppatternselect"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimppatternselect</span></h2><p>gimppatternselect &#8212; Functions providing a pattern selection dialog.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+
+
+
+void        (<a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">*GimpRunPatternCallback</a>)       (const gchar *pattern_name,
+                                             gint width,
+                                             gint height,
+                                             gint bpp,
+                                             const guchar *mask_data,
+                                             gboolean dialog_closing,
+                                             gpointer user_data);
+const gchar* <a href="libgimp-gimppatternselect.html#gimp-pattern-select-new">gimp_pattern_select_new</a>        (const gchar *title,
+                                             const gchar *pattern_name,
+                                             <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
+                                             gpointer data);
+void        <a href="libgimp-gimppatternselect.html#gimp-pattern-select-destroy">gimp_pattern_select_destroy</a>     (const gchar *pattern_callback);
+gboolean    <a href="libgimp-gimppatternselect.html#gimp-patterns-popup">gimp_patterns_popup</a>             (const gchar *pattern_callback,
+                                             const gchar *popup_title,
+                                             const gchar *initial_pattern);
+gboolean    <a href="libgimp-gimppatternselect.html#gimp-patterns-close-popup">gimp_patterns_close_popup</a>       (const gchar *pattern_callback);
+gboolean    <a href="libgimp-gimppatternselect.html#gimp-patterns-set-popup">gimp_patterns_set_popup</a>         (const gchar *pattern_callback,
+                                             const gchar *pattern_name);
+</pre></div><div class="refsect1" lang="en"><a name="id2643871"></a><h2>Description</h2><p>
+Functions providing a pattern selection dialog.
+</p></div><div class="refsect1" lang="en"><a name="id2643882"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2643887"></a><h3><a name="GimpRunPatternCallback"></a>GimpRunPatternCallback ()</h3><a class="indexterm" name="id2643895"></a><pre class="programlisting">void        (*GimpRunPatternCallback)       (const gchar *pattern_name,
+                                             gint width,
+                                             gint height,
+                                             gint bpp,
+                                             const guchar *mask_data,
+                                             gboolean dialog_closing,
+                                             gpointer user_data);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>pattern_name</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>width</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>height</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>bpp</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>mask_data</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>dialog_closing</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>user_data</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2665240"></a><h3><a name="gimp-pattern-select-new"></a>gimp_pattern_select_new ()</h3><a class="indexterm" name="id2665249"></a><pre class="programlisting">const gchar* gimp_pattern_select_new        (const gchar *title,
+                                             const gchar *pattern_name,
+                                             <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
+                                             gpointer data);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>title</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>pattern_name</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>callback</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2665344"></a><h3><a name="gimp-pattern-select-destroy"></a>gimp_pattern_select_destroy ()</h3><a class="indexterm" name="id2665352"></a><pre class="programlisting">void        gimp_pattern_select_destroy     (const gchar *pattern_callback);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>pattern_callback</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2665387"></a><h3><a name="gimp-patterns-popup"></a>gimp_patterns_popup ()</h3><a class="indexterm" name="id2665396"></a><pre class="programlisting">gboolean    gimp_patterns_popup             (const gchar *pattern_callback,
+                                             const gchar *popup_title,
+                                             const gchar *initial_pattern);</pre><p>
+Invokes the Gimp pattern selection.
+</p><p>
+This procedure popups the pattern selection dialog.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>pattern_callback</tt></i> :</span></td><td> The callback PDB proc to call when pattern selection is made.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>popup_title</tt></i> :</span></td><td> Title to give the pattern popup window.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>initial_pattern</tt></i> :</span></td><td> The name of the pattern to set as the first selected.
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2661970"></a><h3><a name="gimp-patterns-close-popup"></a>gimp_patterns_close_popup ()</h3><a class="indexterm" name="id2661978"></a><pre class="programlisting">gboolean    gimp_patterns_close_popup       (const gchar *pattern_callback);</pre><p>
+Popdown the Gimp pattern selection.
+</p><p>
+This procedure closes an opened pattern selection dialog.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>pattern_callback</tt></i> :</span></td><td> The name of the callback registered for this popup.
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2662031"></a><h3><a name="gimp-patterns-set-popup"></a>gimp_patterns_set_popup ()</h3><a class="indexterm" name="id2662039"></a><pre class="programlisting">gboolean    gimp_patterns_set_popup         (const gchar *pattern_callback,
+                                             const gchar *pattern_name);</pre><p>
+Sets the current pattern selection in a popup.
+</p><p>
+Sets the current pattern selection in a popup.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>pattern_callback</tt></i> :</span></td><td> The name of the callback registered for this popup.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>pattern_name</tt></i> :</span></td><td> The name of the pattern to set as selected.
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
+</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimp-gimppaletteselect.html"><b>&lt;&lt; gimppaletteselect</b></a></td><td align="right"><a accesskey="n" href="libgimpui.html"><b>Part III. GIMP User Interface Library &gt;&gt;</b></a></td></tr></table></body></html>

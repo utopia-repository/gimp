@@ -1,132 +1,131 @@
-/* LIBGIMP - The GIMP Library                                                   
- * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball                
+/* LIBGIMP - The GIMP Library
+ * Copyright (C) 1995-2003 Peter Mattis and Spencer Kimball
+ *
+ * gimppalette.c
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.             
- *                                                                              
- * This library is distributed in the hope that it will be useful,              
- * but WITHOUT ANY WARRANTY; without even the implied warranty of               
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU            
- * Library General Public License for more details.
+ * version 2 of the License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU Library General Public
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
- */                                                                             
+ */
+
+#include "config.h"
+
 #include "gimp.h"
 
-
-void
-gimp_palette_get_background (guchar *red,
-			     guchar *green,
-			     guchar *blue)
+/**
+ * gimp_palette_get_foreground:
+ * @foreground: The foreground color.
+ *
+ * Get the current GIMP foreground color.
+ *
+ * This procedure retrieves the current GIMP foreground color. The
+ * foreground color is used in a variety of tools such as paint tools,
+ * blending, and bucket fill.
+ *
+ * Returns: TRUE on success.
+ */
+gboolean
+gimp_palette_get_foreground (GimpRGB *foreground)
 {
-  GParam *return_vals;
-  int nreturn_vals;
-
-  return_vals = gimp_run_procedure ("gimp_palette_get_background",
-                                    &nreturn_vals,
-                                    PARAM_END);
-
-  if (return_vals[0].data.d_status == STATUS_SUCCESS)
-    {
-      *red = return_vals[1].data.d_color.red;
-      *green = return_vals[1].data.d_color.green;
-      *blue = return_vals[1].data.d_color.blue;
-    }
-
-  gimp_destroy_params (return_vals, nreturn_vals);
+  return gimp_context_get_foreground (foreground);
 }
 
-void
-gimp_palette_get_foreground (guchar *red,
-			     guchar *green,
-			     guchar *blue)
+/**
+ * gimp_palette_get_background:
+ * @background: The background color.
+ *
+ * Get the current GIMP background color.
+ *
+ * This procedure retrieves the current GIMP background color. The
+ * background color is used in a variety of tools such as blending,
+ * erasing (with non-alpha images), and image filling.
+ *
+ * Returns: TRUE on success.
+ */
+gboolean
+gimp_palette_get_background (GimpRGB *background)
 {
-  GParam *return_vals;
-  int nreturn_vals;
-
-  return_vals = gimp_run_procedure ("gimp_palette_get_foreground",
-                                    &nreturn_vals,
-                                    PARAM_END);
-
-  if (return_vals[0].data.d_status == STATUS_SUCCESS)
-    {
-      *red = return_vals[1].data.d_color.red;
-      *green = return_vals[1].data.d_color.green;
-      *blue = return_vals[1].data.d_color.blue;
-    }
-
-  gimp_destroy_params (return_vals, nreturn_vals);
+  return gimp_context_get_background (background);
 }
 
-void
-gimp_palette_set_background (guchar red,
-			     guchar green,
-			     guchar blue)
+/**
+ * gimp_palette_set_foreground:
+ * @foreground: The foreground color.
+ *
+ * Set the current GIMP foreground color.
+ *
+ * This procedure sets the current GIMP foreground color. After this is
+ * set, operations which use foreground such as paint tools, blending,
+ * and bucket fill will use the new value.
+ *
+ * Returns: TRUE on success.
+ */
+gboolean
+gimp_palette_set_foreground (const GimpRGB *foreground)
 {
-  GParam *return_vals;
-  int nreturn_vals;
-  guchar color[3];
-
-  color[0] = red;
-  color[1] = green;
-  color[2] = blue;
-
-  return_vals = gimp_run_procedure ("gimp_palette_set_background",
-                                    &nreturn_vals,
-				    PARAM_COLOR, color,
-                                    PARAM_END);
-
-  gimp_destroy_params (return_vals, nreturn_vals);
+  return gimp_context_set_foreground (foreground);
 }
 
-void
-gimp_palette_set_foreground (guchar red,
-			     guchar green,
-			     guchar blue)
+/**
+ * gimp_palette_set_background:
+ * @background: The background color.
+ *
+ * Set the current GIMP background color.
+ *
+ * This procedure sets the current GIMP background color. After this is
+ * set, operations which use background such as blending, filling
+ * images, clearing, and erasing (in non-alpha images) will use the new
+ * value.
+ *
+ * Returns: TRUE on success.
+ */
+gboolean
+gimp_palette_set_background (const GimpRGB *background)
 {
-  GParam *return_vals;
-  int nreturn_vals;
-  guchar color[3];
-
-  color[0] = red;
-  color[1] = green;
-  color[2] = blue;
-
-  return_vals = gimp_run_procedure ("gimp_palette_set_foreground",
-                                    &nreturn_vals,
-				    PARAM_COLOR, color,
-                                    PARAM_END);
-
-  gimp_destroy_params (return_vals, nreturn_vals);
+  return gimp_context_set_background (background);
 }
 
-void
+/**
+ * gimp_palette_set_default_colors:
+ *
+ * Set the current GIMP foreground and background colors to black and
+ * white.
+ *
+ * This procedure sets the current GIMP foreground and background
+ * colors to their initial default values, black and white.
+ *
+ * Returns: TRUE on success.
+ */
+gboolean
 gimp_palette_set_default_colors (void)
 {
-  GParam *return_vals;
-  int nreturn_vals;
-
-  return_vals = gimp_run_procedure ("gimp_palette_set_default_colors",
-                                    &nreturn_vals,
-                                    PARAM_END);
-
-  gimp_destroy_params (return_vals, nreturn_vals);
+  return gimp_context_set_default_colors ();
 }
 
-void
+/**
+ * gimp_palette_swap_colors:
+ *
+ * Swap the current GIMP foreground and background colors.
+ *
+ * This procedure swaps the current GIMP foreground and background
+ * colors, so that the new foreground color becomes the old background
+ * color and vice versa.
+ *
+ * Returns: TRUE on success.
+ */
+gboolean
 gimp_palette_swap_colors (void)
 {
-  GParam *return_vals;
-  int nreturn_vals;
-
-  return_vals = gimp_run_procedure ("gimp_palette_swap_colors",
-                                    &nreturn_vals,
-                                    PARAM_END);
-
-  gimp_destroy_params (return_vals, nreturn_vals);
+  return gimp_context_swap_colors ();
 }

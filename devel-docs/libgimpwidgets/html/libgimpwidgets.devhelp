@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<book xmlns="http://www.devhelp.net/book" title="GIMP Widgets Library Reference Manual" link="index.html" author="" name="libgimpwidgets">
+  <chapters>
+    <sub name="GIMP Widgets" link="libgimpwidgets-widgets.html">
+      <sub name="Object Hierarchy" link="libgimpwidgets-hierarchy.html"/>
+      <sub name="GimpButton" link="GimpButton.html"/>
+      <sub name="GimpChainButton" link="GimpChainButton.html"/>
+      <sub name="GimpColorArea" link="GimpColorArea.html"/>
+      <sub name="GimpColorButton" link="GimpColorButton.html"/>
+      <sub name="GimpColorHexEntry" link="GimpColorHexEntry.html"/>
+      <sub name="GimpColorScale" link="GimpColorScale.html"/>
+      <sub name="GimpColorSelection" link="GimpColorSelection.html"/>
+      <sub name="GimpDialog" link="GimpDialog.html"/>
+      <sub name="GimpFileEntry" link="GimpFileEntry.html"/>
+      <sub name="GimpFrame" link="GimpFrame.html"/>
+      <sub name="GimpIntComboBox" link="GimpIntComboBox.html"/>
+      <sub name="GimpIntStore" link="GimpIntStore.html"/>
+      <sub name="GimpMemsizeEntry" link="GimpMemsizeEntry.html"/>
+      <sub name="GimpOffsetArea" link="GimpOffsetArea.html"/>
+      <sub name="GimpPathEditor" link="GimpPathEditor.html"/>
+      <sub name="GimpPickButton" link="GimpPickButton.html"/>
+      <sub name="GimpPixmap" link="GimpPixmap.html"/>
+      <sub name="GimpPreviewArea" link="GimpPreviewArea.html"/>
+      <sub name="GimpPreview" link="GimpPreview.html"/>
+      <sub name="GimpScrolledPreview" link="libgimpwidgets-GimpScrolledPreview.html"/>
+      <sub name="GimpUnitMenu" link="GimpUnitMenu.html"/>
+    </sub>
+    <sub name="Cell Renderers for GtkTreeView" link="libgimpwidgets-cell-renderers.html">
+      <sub name="GimpCellRendererColor" link="GimpCellRendererColor.html"/>
+      <sub name="GimpCellRendererToggle" link="GimpCellRendererToggle.html"/>
+    </sub>
+    <sub name="GIMP Display Filters" link="libgimpwidgets-colordisplay.html">
+      <sub name="GimpColorDisplay" link="GimpColorDisplay.html"/>
+      <sub name="GimpColorDisplayStack" link="GimpColorDisplayStack.html"/>
+    </sub>
+    <sub name="GIMP Color Selectors" link="libgimpwidgets-colorselector.html">
+      <sub name="GimpColorSelector" link="GimpColorSelector.html"/>
+      <sub name="GimpColorNotebook" link="GimpColorNotebook.html"/>
+      <sub name="GimpColorScales" link="GimpColorScales.html"/>
+      <sub name="GimpColorSelect" link="GimpColorSelect.html"/>
+    </sub>
+    <sub name="GIMP Controllers" link="libgimpwidgets-controller.html">
+      <sub name="GimpController" link="GimpController.html"/>
+    </sub>
+    <sub name="GIMP Widgets Utilities" link="libgimpwidgets-utils.html">
+      <sub name="GimpHelpUI" link="libgimpwidgets-GimpHelpUI.html"/>
+      <sub name="GimpQueryBox" link="libgimpwidgets-GimpQueryBox.html"/>
+      <sub name="GimpSizeEntry" link="GimpSizeEntry.html"/>
+      <sub name="GimpStock" link="libgimpwidgets-GimpStock.html"/>
+      <sub name="GimpWidgets" link="libgimpwidgets-GimpWidgets.html"/>
+    </sub>
+    <sub name="Deprecated API" link="libgimpwidgets-deprecated.html">
+      <sub name="gimpoldwidgets" link="libgimpwidgets-gimpoldwidgets.html"/>
+    </sub>
+  </chapters>
+  <functions>
+    <function name="struct GimpButton" link="GimpButton.html#GimpButton-struct"/>
+    <function name="gimp_button_new ()" link="GimpButton.html#gimp-button-new"/>
+    <function name="gimp_button_extended_clicked ()" link="GimpButton.html#gimp-button-extended-clicked"/>
+    <function name="The &quot;extended-clicked&quot; signal" link="GimpButton.html#GimpButton-extended-clicked"/>
+    <function name="struct GimpChainButton" link="GimpChainButton.html#GimpChainButton-struct"/>
+    <function name="enum GimpChainPosition" link="GimpChainButton.html#GimpChainPosition"/>
+    <function name="gimp_chain_button_new ()" link="GimpChainButton.html#gimp-chain-button-new"/>
+    <function name="gimp_chain_button_set_active ()" link="GimpChainButton.html#gimp-chain-button-set-active"/>
+    <function name="gimp_chain_button_get_active ()" link="GimpChainButton.html#gimp-chain-button-get-active"/>
+    <function name="The &quot;toggled&quot; signal" link="GimpChainButton.html#GimpChainButton-toggled"/>
+    <function name="struct GimpColorArea" link="GimpColorArea.html#GimpColorArea-struct"/>
+    <function name="enum GimpColorAreaType" link="GimpColorArea.html#GimpColorAreaType"/>
+    <function name="gimp_color_area_new ()" link="GimpColorArea.html#gimp-color-area-new"/>
+    <function name="gimp_color_area_set_color ()" link="GimpColorArea.html#gimp-color-area-set-color"/>
+    <function name="gimp_color_area_get_color ()" link="GimpColorArea.html#gimp-color-area-get-color"/>
+    <function name="gimp_color_area_has_alpha ()" link="GimpColorArea.html#gimp-color-area-has-alpha"/>
+    <function name="gimp_color_area_set_type ()" link="GimpColorArea.html#gimp-color-area-set-type"/>
+    <function name="gimp_color_area_set_draw_border ()" link="GimpColorArea.html#gimp-color-area-set-draw-border"/>
+    <function name="The &quot;color-changed&quot; signal" link="GimpColorArea.html#GimpColorArea-color-changed"/>
+    <function name="struct GimpColorButton" link="GimpColorButton.html#GimpColorButton-struct"/>
+    <function name="gimp_color_button_new ()" link="GimpColorButton.html#gimp-color-button-new"/>
+    <function name="gimp_color_button_set_color ()" link="GimpColorButton.html#gimp-color-button-set-color"/>
+    <function name="gimp_color_button_get_color ()" link="GimpColorButton.html#gimp-color-button-get-color"/>
+    <function name="gimp_color_button_set_update ()" link="GimpColorButton.html#gimp-color-button-set-update"/>
+    <function name="gimp_color_button_get_update ()" link="GimpColorButton.html#gimp-color-button-get-update"/>
+    <function name="gimp_color_button_has_alpha ()" link="GimpColorButton.html#gimp-color-button-has-alpha"/>
+    <function name="gimp_color_button_set_type ()" link="GimpColorButton.html#gimp-color-button-set-type"/>
+    <function name="The &quot;color-changed&quot; signal" link="GimpColorButton.html#GimpColorButton-color-changed"/>
+    <function name="struct GimpColorHexEntry" link="GimpColorHexEntry.html#GimpColorHexEntry-struct"/>
+    <function name="gimp_color_hex_entry_new ()" link="GimpColorHexEntry.html#gimp-color-hex-entry-new"/>
+    <function name="gimp_color_hex_entry_set_color ()" link="GimpColorHexEntry.html#gimp-color-hex-entry-set-color"/>
+    <function name="gimp_color_hex_entry_get_color ()" link="GimpColorHexEntry.html#gimp-color-hex-entry-get-color"/>
+    <function name="The &quot;color-changed&quot; signal" link="GimpColorHexEntry.html#GimpColorHexEntry-color-changed"/>
+    <function name="struct GimpColorScale" link="GimpColorScale.html#GimpColorScale-struct"/>
+    <function name="gimp_color_scale_new ()" link="GimpColorScale.html#gimp-color-scale-new"/>
+    <function name="gimp_color_scale_set_channel ()" link="GimpColorScale.html#gimp-color-scale-set-channel"/>
+    <function name="gimp_color_scale_set_color ()" link="GimpColorScale.html#gimp-color-scale-set-color"/>
+    <function name="struct GimpColorSelection" link="GimpColorSelection.html#GimpColorSelection-struct"/>
+    <function name="gimp_color_selection_new ()" link="GimpColorSelection.html#gimp-color-selection-new"/>
+    <function name="gimp_color_selection_set_show_alpha ()" link="GimpColorSelection.html#gimp-color-selection-set-show-alpha"/>
+    <function name="gimp_color_selection_get_show_alpha ()" link="GimpColorSelection.html#gimp-color-selection-get-show-alpha"/>
+    <function name="gimp_color_selection_set_color ()" link="GimpColorSelection.html#gimp-color-selection-set-color"/>
+    <function name="gimp_color_selection_get_color ()" link="GimpColorSelection.html#gimp-color-selection-get-color"/>
+    <function name="gimp_color_selection_set_old_color ()" link="GimpColorSelection.html#gimp-color-selection-set-old-color"/>
+    <function name="gimp_color_selection_get_old_color ()" link="GimpColorSelection.html#gimp-color-selection-get-old-color"/>
+    <function name="gimp_color_selection_reset ()" link="GimpColorSelection.html#gimp-color-selection-reset"/>
+    <function name="gimp_color_selection_color_changed ()" link="GimpColorSelection.html#gimp-color-selection-color-changed"/>
+    <function name="The &quot;color-changed&quot; signal" link="GimpColorSelection.html#GimpColorSelection-color-changed"/>
+    <function name="struct GimpDialog" link="GimpDialog.html#GimpDialog-struct"/>
+    <function name="gimp_dialog_new ()" link="GimpDialog.html#gimp-dialog-new"/>
+    <function name="gimp_dialog_new_valist ()" link="GimpDialog.html#gimp-dialog-new-valist"/>
+    <function name="gimp_dialog_add_buttons_valist ()" link="GimpDialog.html#gimp-dialog-add-buttons-valist"/>
+    <function name="gimp_dialog_run ()" link="GimpDialog.html#gimp-dialog-run"/>
+    <function name="gimp_dialogs_show_help_button ()" link="GimpDialog.html#gimp-dialogs-show-help-button"/>
+    <function name="struct GimpFileEntry" link="GimpFileEntry.html#GimpFileEntry-struct"/>
+    <function name="gimp_file_entry_new ()" link="GimpFileEntry.html#gimp-file-entry-new"/>
+    <function name="gimp_file_entry_get_filename ()" link="GimpFileEntry.html#gimp-file-entry-get-filename"/>
+    <function name="gimp_file_entry_set_filename ()" link="GimpFileEntry.html#gimp-file-entry-set-filename"/>
+    <function name="The &quot;filename-changed&quot; signal" link="GimpFileEntry.html#GimpFileEntry-filename-changed"/>
+    <function name="struct GimpFrame" link="GimpFrame.html#GimpFrame-struct"/>
+    <function name="gimp_frame_new ()" link="GimpFrame.html#gimp-frame-new"/>
+    <function name="struct GimpIntComboBox" link="GimpIntComboBox.html#GimpIntComboBox-struct"/>
+    <function name="gimp_int_combo_box_new ()" link="GimpIntComboBox.html#gimp-int-combo-box-new"/>
+    <function name="gimp_int_combo_box_new_valist ()" link="GimpIntComboBox.html#gimp-int-combo-box-new-valist"/>
+    <function name="gimp_int_combo_box_new_array ()" link="GimpIntComboBox.html#gimp-int-combo-box-new-array"/>
+    <function name="gimp_int_combo_box_prepend ()" link="GimpIntComboBox.html#gimp-int-combo-box-prepend"/>
+    <function name="gimp_int_combo_box_append ()" link="GimpIntComboBox.html#gimp-int-combo-box-append"/>
+    <function name="gimp_int_combo_box_set_active ()" link="GimpIntComboBox.html#gimp-int-combo-box-set-active"/>
+    <function name="gimp_int_combo_box_get_active ()" link="GimpIntComboBox.html#gimp-int-combo-box-get-active"/>
+    <function name="gimp_int_combo_box_connect ()" link="GimpIntComboBox.html#gimp-int-combo-box-connect"/>
+    <function name="struct GimpIntStore" link="GimpIntStore.html#GimpIntStore-struct"/>
+    <function name="enum GimpIntStoreColumns" link="GimpIntStore.html#GimpIntStoreColumns"/>
+    <function name="gimp_int_store_new ()" link="GimpIntStore.html#gimp-int-store-new"/>
+    <function name="gimp_int_store_lookup_by_value ()" link="GimpIntStore.html#gimp-int-store-lookup-by-value"/>
+    <function name="struct GimpMemsizeEntry" link="GimpMemsizeEntry.html#GimpMemsizeEntry-struct"/>
+    <function name="gimp_memsize_entry_new ()" link="GimpMemsizeEntry.html#gimp-memsize-entry-new"/>
+    <function name="gimp_memsize_entry_set_value ()" link="GimpMemsizeEntry.html#gimp-memsize-entry-set-value"/>
+    <function name="gimp_memsize_entry_get_value ()" link="GimpMemsizeEntry.html#gimp-memsize-entry-get-value"/>
+    <function name="The &quot;value-changed&quot; signal" link="GimpMemsizeEntry.html#GimpMemsizeEntry-value-changed"/>
+    <function name="struct GimpOffsetArea" link="GimpOffsetArea.html#GimpOffsetArea-struct"/>
+    <function name="gimp_offset_area_new ()" link="GimpOffsetArea.html#gimp-offset-area-new"/>
+    <function name="gimp_offset_area_set_size ()" link="GimpOffsetArea.html#gimp-offset-area-set-size"/>
+    <function name="gimp_offset_area_set_offsets ()" link="GimpOffsetArea.html#gimp-offset-area-set-offsets"/>
+    <function name="gimp_offset_area_set_pixbuf ()" link="GimpOffsetArea.html#gimp-offset-area-set-pixbuf"/>
+    <function name="The &quot;offsets-changed&quot; signal" link="GimpOffsetArea.html#GimpOffsetArea-offsets-changed"/>
+    <function name="struct GimpPathEditor" link="GimpPathEditor.html#GimpPathEditor-struct"/>
+    <function name="gimp_path_editor_new ()" link="GimpPathEditor.html#gimp-path-editor-new"/>
+    <function name="gimp_path_editor_get_path ()" link="GimpPathEditor.html#gimp-path-editor-get-path"/>
+    <function name="gimp_path_editor_set_path ()" link="GimpPathEditor.html#gimp-path-editor-set-path"/>
+    <function name="gimp_path_editor_get_writable_path ()" link="GimpPathEditor.html#gimp-path-editor-get-writable-path"/>
+    <function name="gimp_path_editor_set_writable_path ()" link="GimpPathEditor.html#gimp-path-editor-set-writable-path"/>
+    <function name="gimp_path_editor_get_dir_writable ()" link="GimpPathEditor.html#gimp-path-editor-get-dir-writable"/>
+    <function name="gimp_path_editor_set_dir_writable ()" link="GimpPathEditor.html#gimp-path-editor-set-dir-writable"/>
+    <function name="The &quot;path-changed&quot; signal" link="GimpPathEditor.html#GimpPathEditor-path-changed"/>
+    <function name="The &quot;writable-changed&quot; signal" link="GimpPathEditor.html#GimpPathEditor-writable-changed"/>
+    <function name="struct GimpPickButton" link="GimpPickButton.html#GimpPickButton-struct"/>
+    <function name="gimp_pick_button_new ()" link="GimpPickButton.html#gimp-pick-button-new"/>
+    <function name="The &quot;color-picked&quot; signal" link="GimpPickButton.html#GimpPickButton-color-picked"/>
+    <function name="struct GimpPixmap" link="GimpPixmap.html#GimpPixmap-struct"/>
+    <function name="gimp_pixmap_new ()" link="GimpPixmap.html#gimp-pixmap-new"/>
+    <function name="gimp_pixmap_set ()" link="GimpPixmap.html#gimp-pixmap-set"/>
+    <function name="struct GimpPreviewArea" link="GimpPreviewArea.html#GimpPreviewArea-struct"/>
+    <function name="gimp_preview_area_new ()" link="GimpPreviewArea.html#gimp-preview-area-new"/>
+    <function name="gimp_preview_area_draw ()" link="GimpPreviewArea.html#gimp-preview-area-draw"/>
+    <function name="gimp_preview_area_fill ()" link="GimpPreviewArea.html#gimp-preview-area-fill"/>
+    <function name="gimp_preview_area_blend ()" link="GimpPreviewArea.html#gimp-preview-area-blend"/>
+    <function name="gimp_preview_area_mask ()" link="GimpPreviewArea.html#gimp-preview-area-mask"/>
+    <function name="gimp_preview_area_set_offsets ()" link="GimpPreviewArea.html#gimp-preview-area-set-offsets"/>
+    <function name="gimp_preview_area_set_colormap ()" link="GimpPreviewArea.html#gimp-preview-area-set-colormap"/>
+    <function name="gimp_preview_area_set_max_size ()" link="GimpPreviewArea.html#gimp-preview-area-set-max-size"/>
+    <function name="gimp_preview_area_menu_popup ()" link="GimpPreviewArea.html#gimp-preview-area-menu-popup"/>
+    <function name="struct GimpPreview" link="GimpPreview.html#GimpPreview-struct"/>
+    <function name="gimp_preview_get_update ()" link="GimpPreview.html#gimp-preview-get-update"/>
+    <function name="gimp_preview_set_update ()" link="GimpPreview.html#gimp-preview-set-update"/>
+    <function name="gimp_preview_set_bounds ()" link="GimpPreview.html#gimp-preview-set-bounds"/>
+    <function name="gimp_preview_get_size ()" link="GimpPreview.html#gimp-preview-get-size"/>
+    <function name="gimp_preview_get_position ()" link="GimpPreview.html#gimp-preview-get-position"/>
+    <function name="gimp_preview_draw ()" link="GimpPreview.html#gimp-preview-draw"/>
+    <function name="gimp_preview_draw_buffer ()" link="GimpPreview.html#gimp-preview-draw-buffer"/>
+    <function name="gimp_preview_invalidate ()" link="GimpPreview.html#gimp-preview-invalidate"/>
+    <function name="gimp_preview_set_default_cursor ()" link="GimpPreview.html#gimp-preview-set-default-cursor"/>
+    <function name="The &quot;invalidated&quot; signal" link="GimpPreview.html#GimpPreview-invalidated"/>
+    <function name="struct GimpScrolledPreview" link="libgimpwidgets-GimpScrolledPreview.html#GimpScrolledPreview"/>
+    <function name="struct GimpUnitMenu" link="GimpUnitMenu.html#GimpUnitMenu-struct"/>
+    <function name="gimp_unit_menu_new ()" link="GimpUnitMenu.html#gimp-unit-menu-new"/>
+    <function name="gimp_unit_menu_set_unit ()" link="GimpUnitMenu.html#gimp-unit-menu-set-unit"/>
+    <function name="gimp_unit_menu_get_unit ()" link="GimpUnitMenu.html#gimp-unit-menu-get-unit"/>
+    <function name="gimp_unit_menu_get_pixel_digits ()" link="GimpUnitMenu.html#gimp-unit-menu-get-pixel-digits"/>
+    <function name="gimp_unit_menu_set_pixel_digits ()" link="GimpUnitMenu.html#gimp-unit-menu-set-pixel-digits"/>
+    <function name="The &quot;unit-changed&quot; signal" link="GimpUnitMenu.html#GimpUnitMenu-unit-changed"/>
+    <function name="struct GimpCellRendererColor" link="GimpCellRendererColor.html#GimpCellRendererColor-struct"/>
+    <function name="gimp_cell_renderer_color_new ()" link="GimpCellRendererColor.html#gimp-cell-renderer-color-new"/>
+    <function name="struct GimpCellRendererToggle" link="GimpCellRendererToggle.html#GimpCellRendererToggle-struct"/>
+    <function name="gimp_cell_renderer_toggle_new ()" link="GimpCellRendererToggle.html#gimp-cell-renderer-toggle-new"/>
+    <function name="gimp_cell_renderer_toggle_clicked ()" link="GimpCellRendererToggle.html#gimp-cell-renderer-toggle-clicked"/>
+    <function name="The &quot;clicked&quot; signal" link="GimpCellRendererToggle.html#GimpCellRendererToggle-clicked"/>
+    <function name="struct GimpColorDisplay" link="GimpColorDisplay.html#GimpColorDisplay-struct"/>
+    <function name="gimp_color_display_new ()" link="GimpColorDisplay.html#gimp-color-display-new"/>
+    <function name="gimp_color_display_clone ()" link="GimpColorDisplay.html#gimp-color-display-clone"/>
+    <function name="gimp_color_display_set_enabled ()" link="GimpColorDisplay.html#gimp-color-display-set-enabled"/>
+    <function name="gimp_color_display_get_enabled ()" link="GimpColorDisplay.html#gimp-color-display-get-enabled"/>
+    <function name="gimp_color_display_convert ()" link="GimpColorDisplay.html#gimp-color-display-convert"/>
+    <function name="gimp_color_display_load_state ()" link="GimpColorDisplay.html#gimp-color-display-load-state"/>
+    <function name="gimp_color_display_save_state ()" link="GimpColorDisplay.html#gimp-color-display-save-state"/>
+    <function name="gimp_color_display_configure ()" link="GimpColorDisplay.html#gimp-color-display-configure"/>
+    <function name="gimp_color_display_configure_reset ()" link="GimpColorDisplay.html#gimp-color-display-configure-reset"/>
+    <function name="gimp_color_display_changed ()" link="GimpColorDisplay.html#gimp-color-display-changed"/>
+    <function name="The &quot;changed&quot; signal" link="GimpColorDisplay.html#GimpColorDisplay-changed"/>
+    <function name="struct GimpColorDisplayStack" link="GimpColorDisplayStack.html#GimpColorDisplayStack-struct"/>
+    <function name="gimp_color_display_stack_new ()" link="GimpColorDisplayStack.html#gimp-color-display-stack-new"/>
+    <function name="gimp_color_display_stack_clone ()" link="GimpColorDisplayStack.html#gimp-color-display-stack-clone"/>
+    <function name="gimp_color_display_stack_changed ()" link="GimpColorDisplayStack.html#gimp-color-display-stack-changed"/>
+    <function name="gimp_color_display_stack_add ()" link="GimpColorDisplayStack.html#gimp-color-display-stack-add"/>
+    <function name="gimp_color_display_stack_remove ()" link="GimpColorDisplayStack.html#gimp-color-display-stack-remove"/>
+    <function name="gimp_color_display_stack_reorder_up ()" link="GimpColorDisplayStack.html#gimp-color-display-stack-reorder-up"/>
+    <function name="gimp_color_display_stack_reorder_down ()" link="GimpColorDisplayStack.html#gimp-color-display-stack-reorder-down"/>
+    <function name="gimp_color_display_stack_convert ()" link="GimpColorDisplayStack.html#gimp-color-display-stack-convert"/>
+    <function name="The &quot;added&quot; signal" link="GimpColorDisplayStack.html#GimpColorDisplayStack-added"/>
+    <function name="The &quot;changed&quot; signal" link="GimpColorDisplayStack.html#GimpColorDisplayStack-changed"/>
+    <function name="The &quot;removed&quot; signal" link="GimpColorDisplayStack.html#GimpColorDisplayStack-removed"/>
+    <function name="The &quot;reordered&quot; signal" link="GimpColorDisplayStack.html#GimpColorDisplayStack-reordered"/>
+    <function name="struct GimpColorSelector" link="GimpColorSelector.html#GimpColorSelector-struct"/>
+    <function name="GIMP_COLOR_SELECTOR_SIZE" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-SIZE-CAPS"/>
+    <function name="GIMP_COLOR_SELECTOR_BAR_SIZE" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-BAR-SIZE-CAPS"/>
+    <function name="enum GimpColorSelectorChannel" link="GimpColorSelector.html#GimpColorSelectorChannel"/>
+    <function name="gimp_color_selector_new ()" link="GimpColorSelector.html#gimp-color-selector-new"/>
+    <function name="gimp_color_selector_set_toggles_visible ()" link="GimpColorSelector.html#gimp-color-selector-set-toggles-visible"/>
+    <function name="gimp_color_selector_set_toggles_sensitive ()" link="GimpColorSelector.html#gimp-color-selector-set-toggles-sensitive"/>
+    <function name="gimp_color_selector_set_show_alpha ()" link="GimpColorSelector.html#gimp-color-selector-set-show-alpha"/>
+    <function name="gimp_color_selector_set_color ()" link="GimpColorSelector.html#gimp-color-selector-set-color"/>
+    <function name="gimp_color_selector_set_channel ()" link="GimpColorSelector.html#gimp-color-selector-set-channel"/>
+    <function name="gimp_color_selector_color_changed ()" link="GimpColorSelector.html#gimp-color-selector-color-changed"/>
+    <function name="gimp_color_selector_channel_changed ()" link="GimpColorSelector.html#gimp-color-selector-channel-changed"/>
+    <function name="The &quot;channel-changed&quot; signal" link="GimpColorSelector.html#GimpColorSelector-channel-changed"/>
+    <function name="The &quot;color-changed&quot; signal" link="GimpColorSelector.html#GimpColorSelector-color-changed"/>
+    <function name="struct GimpColorNotebook" link="GimpColorNotebook.html#GimpColorNotebook-struct"/>
+    <function name="gimp_color_notebook_set_has_page ()" link="GimpColorNotebook.html#gimp-color-notebook-set-has-page"/>
+    <function name="struct GimpColorScales" link="GimpColorScales.html#GimpColorScales-struct"/>
+    <function name="struct GimpColorSelect" link="GimpColorSelect.html#GimpColorSelect-struct"/>
+    <function name="enum GimpControllerEventType" link="GimpController.html#GimpControllerEventType"/>
+    <function name="struct GimpControllerEventAny" link="GimpController.html#GimpControllerEventAny"/>
+    <function name="struct GimpControllerEventTrigger" link="GimpController.html#GimpControllerEventTrigger"/>
+    <function name="struct GimpControllerEventValue" link="GimpController.html#GimpControllerEventValue"/>
+    <function name="union GimpControllerEvent" link="GimpController.html#GimpControllerEvent"/>
+    <function name="struct GimpController" link="GimpController.html#GimpController-struct"/>
+    <function name="gimp_controller_new ()" link="GimpController.html#gimp-controller-new"/>
+    <function name="gimp_controller_get_n_events ()" link="GimpController.html#gimp-controller-get-n-events"/>
+    <function name="gimp_controller_get_event_name ()" link="GimpController.html#gimp-controller-get-event-name"/>
+    <function name="gimp_controller_get_event_blurb ()" link="GimpController.html#gimp-controller-get-event-blurb"/>
+    <function name="gimp_controller_event ()" link="GimpController.html#gimp-controller-event"/>
+    <function name="The &quot;event&quot; signal" link="GimpController.html#GimpController-event"/>
+    <function name="GimpHelpFunc ()" link="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc"/>
+    <function name="GIMP_HELP_ID" link="libgimpwidgets-GimpHelpUI.html#GIMP-HELP-ID-CAPS"/>
+    <function name="gimp_help_enable_tooltips ()" link="libgimpwidgets-GimpHelpUI.html#gimp-help-enable-tooltips"/>
+    <function name="gimp_help_disable_tooltips ()" link="libgimpwidgets-GimpHelpUI.html#gimp-help-disable-tooltips"/>
+    <function name="gimp_standard_help_func ()" link="libgimpwidgets-GimpHelpUI.html#gimp-standard-help-func"/>
+    <function name="gimp_help_connect ()" link="libgimpwidgets-GimpHelpUI.html#gimp-help-connect"/>
+    <function name="gimp_help_set_help_data ()" link="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data"/>
+    <function name="gimp_context_help ()" link="libgimpwidgets-GimpHelpUI.html#gimp-context-help"/>
+    <function name="GimpQueryStringCallback ()" link="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback"/>
+    <function name="GimpQueryIntCallback ()" link="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback"/>
+    <function name="GimpQueryDoubleCallback ()" link="libgimpwidgets-GimpQueryBox.html#GimpQueryDoubleCallback"/>
+    <function name="GimpQuerySizeCallback ()" link="libgimpwidgets-GimpQueryBox.html#GimpQuerySizeCallback"/>
+    <function name="GimpQueryBooleanCallback ()" link="libgimpwidgets-GimpQueryBox.html#GimpQueryBooleanCallback"/>
+    <function name="gimp_query_string_box ()" link="libgimpwidgets-GimpQueryBox.html#gimp-query-string-box"/>
+    <function name="gimp_query_int_box ()" link="libgimpwidgets-GimpQueryBox.html#gimp-query-int-box"/>
+    <function name="gimp_query_double_box ()" link="libgimpwidgets-GimpQueryBox.html#gimp-query-double-box"/>
+    <function name="gimp_query_size_box ()" link="libgimpwidgets-GimpQueryBox.html#gimp-query-size-box"/>
+    <function name="gimp_query_boolean_box ()" link="libgimpwidgets-GimpQueryBox.html#gimp-query-boolean-box"/>
+    <function name="GIMP_QUERY_BOX_VBOX()" link="libgimpwidgets-GimpQueryBox.html#GIMP-QUERY-BOX-VBOX-CAPS"/>
+    <function name="struct GimpSizeEntry" link="GimpSizeEntry.html#GimpSizeEntry-struct"/>
+    <function name="struct GimpSizeEntryField" link="GimpSizeEntry.html#GimpSizeEntryField"/>
+    <function name="enum GimpSizeEntryUpdatePolicy" link="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy"/>
+    <function name="gimp_size_entry_new ()" link="GimpSizeEntry.html#gimp-size-entry-new"/>
+    <function name="gimp_size_entry_add_field ()" link="GimpSizeEntry.html#gimp-size-entry-add-field"/>
+    <function name="gimp_size_entry_attach_label ()" link="GimpSizeEntry.html#gimp-size-entry-attach-label"/>
+    <function name="gimp_size_entry_set_resolution ()" link="GimpSizeEntry.html#gimp-size-entry-set-resolution"/>
+    <function name="gimp_size_entry_set_size ()" link="GimpSizeEntry.html#gimp-size-entry-set-size"/>
+    <function name="gimp_size_entry_set_value_boundaries ()" link="GimpSizeEntry.html#gimp-size-entry-set-value-boundaries"/>
+    <function name="gimp_size_entry_get_value ()" link="GimpSizeEntry.html#gimp-size-entry-get-value"/>
+    <function name="gimp_size_entry_set_value ()" link="GimpSizeEntry.html#gimp-size-entry-set-value"/>
+    <function name="gimp_size_entry_set_refval_boundaries ()" link="GimpSizeEntry.html#gimp-size-entry-set-refval-boundaries"/>
+    <function name="gimp_size_entry_set_refval_digits ()" link="GimpSizeEntry.html#gimp-size-entry-set-refval-digits"/>
+    <function name="gimp_size_entry_get_refval ()" link="GimpSizeEntry.html#gimp-size-entry-get-refval"/>
+    <function name="gimp_size_entry_set_refval ()" link="GimpSizeEntry.html#gimp-size-entry-set-refval"/>
+    <function name="gimp_size_entry_get_unit ()" link="GimpSizeEntry.html#gimp-size-entry-get-unit"/>
+    <function name="gimp_size_entry_set_unit ()" link="GimpSizeEntry.html#gimp-size-entry-set-unit"/>
+    <function name="gimp_size_entry_set_pixel_digits ()" link="GimpSizeEntry.html#gimp-size-entry-set-pixel-digits"/>
+    <function name="gimp_size_entry_grab_focus ()" link="GimpSizeEntry.html#gimp-size-entry-grab-focus"/>
+    <function name="gimp_size_entry_get_help_widget ()" link="GimpSizeEntry.html#gimp-size-entry-get-help-widget"/>
+    <function name="The &quot;refval-changed&quot; signal" link="GimpSizeEntry.html#GimpSizeEntry-refval-changed"/>
+    <function name="The &quot;unit-changed&quot; signal" link="GimpSizeEntry.html#GimpSizeEntry-unit-changed"/>
+    <function name="The &quot;value-changed&quot; signal" link="GimpSizeEntry.html#GimpSizeEntry-value-changed"/>
+    <function name="gimp_stock_init ()" link="libgimpwidgets-GimpStock.html#gimp-stock-init"/>
+    <function name="GIMP_STOCK_ANCHOR" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-ANCHOR-CAPS"/>
+    <function name="GIMP_STOCK_CENTER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CENTER-CAPS"/>
+    <function name="GIMP_STOCK_DUPLICATE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-DUPLICATE-CAPS"/>
+    <function name="GIMP_STOCK_EDIT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-EDIT-CAPS"/>
+    <function name="GIMP_STOCK_RESET" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-RESET-CAPS"/>
+    <function name="GIMP_STOCK_CLOSE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CLOSE-CAPS"/>
+    <function name="GIMP_STOCK_MENU_LEFT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-MENU-LEFT-CAPS"/>
+    <function name="GIMP_STOCK_MENU_RIGHT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-MENU-RIGHT-CAPS"/>
+    <function name="GIMP_STOCK_MOVE_TO_SCREEN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-MOVE-TO-SCREEN-CAPS"/>
+    <function name="GIMP_STOCK_INVERT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-INVERT-CAPS"/>
+    <function name="GIMP_STOCK_LAYER_TO_IMAGESIZE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-LAYER-TO-IMAGESIZE-CAPS"/>
+    <function name="GIMP_STOCK_MERGE_DOWN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-MERGE-DOWN-CAPS"/>
+    <function name="GIMP_STOCK_NAVIGATION" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-NAVIGATION-CAPS"/>
+    <function name="GIMP_STOCK_PASTE_AS_NEW" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-PASTE-AS-NEW-CAPS"/>
+    <function name="GIMP_STOCK_PASTE_INTO" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-PASTE-INTO-CAPS"/>
+    <function name="GIMP_STOCK_PATH_STROKE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-PATH-STROKE-CAPS"/>
+    <function name="GIMP_STOCK_PLUGIN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-PLUGIN-CAPS"/>
+    <function name="GIMP_STOCK_QMASK_OFF" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-QMASK-OFF-CAPS"/>
+    <function name="GIMP_STOCK_QMASK_ON" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-QMASK-ON-CAPS"/>
+    <function name="GIMP_STOCK_HISTOGRAM" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-HISTOGRAM-CAPS"/>
+    <function name="GIMP_STOCK_HISTOGRAM_LINEAR" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-HISTOGRAM-LINEAR-CAPS"/>
+    <function name="GIMP_STOCK_HISTOGRAM_LOGARITHMIC" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-HISTOGRAM-LOGARITHMIC-CAPS"/>
+    <function name="GIMP_STOCK_RESHOW_FILTER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-RESHOW-FILTER-CAPS"/>
+    <function name="GIMP_STOCK_RESIZE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-RESIZE-CAPS"/>
+    <function name="GIMP_STOCK_FLIP_HORIZONTAL" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-FLIP-HORIZONTAL-CAPS"/>
+    <function name="GIMP_STOCK_FLIP_VERTICAL" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-FLIP-VERTICAL-CAPS"/>
+    <function name="GIMP_STOCK_ROTATE_180" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-ROTATE-180-CAPS"/>
+    <function name="GIMP_STOCK_ROTATE_270" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-ROTATE-270-CAPS"/>
+    <function name="GIMP_STOCK_ROTATE_90" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-ROTATE-90-CAPS"/>
+    <function name="GIMP_STOCK_SCALE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SCALE-CAPS"/>
+    <function name="GIMP_STOCK_LINKED" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-LINKED-CAPS"/>
+    <function name="GIMP_STOCK_VISIBLE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-VISIBLE-CAPS"/>
+    <function name="GIMP_STOCK_LIST" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-LIST-CAPS"/>
+    <function name="GIMP_STOCK_GRID" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRID-CAPS"/>
+    <function name="GIMP_STOCK_PORTRAIT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-PORTRAIT-CAPS"/>
+    <function name="GIMP_STOCK_LANDSCAPE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-LANDSCAPE-CAPS"/>
+    <function name="GIMP_STOCK_VIDEO" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-VIDEO-CAPS"/>
+    <function name="GIMP_STOCK_WEB" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-WEB-CAPS"/>
+    <function name="GIMP_STOCK_IMAGE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-IMAGE-CAPS"/>
+    <function name="GIMP_STOCK_LAYER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-LAYER-CAPS"/>
+    <function name="GIMP_STOCK_LAYER_MASK" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-LAYER-MASK-CAPS"/>
+    <function name="GIMP_STOCK_CHANNEL" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-CAPS"/>
+    <function name="GIMP_STOCK_CHANNEL_RED" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-RED-CAPS"/>
+    <function name="GIMP_STOCK_CHANNEL_GREEN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-GREEN-CAPS"/>
+    <function name="GIMP_STOCK_CHANNEL_BLUE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-BLUE-CAPS"/>
+    <function name="GIMP_STOCK_CHANNEL_GRAY" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-GRAY-CAPS"/>
+    <function name="GIMP_STOCK_CHANNEL_INDEXED" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-INDEXED-CAPS"/>
+    <function name="GIMP_STOCK_CHANNEL_ALPHA" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-ALPHA-CAPS"/>
+    <function name="GIMP_STOCK_PATH" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-PATH-CAPS"/>
+    <function name="GIMP_STOCK_TEXT_LAYER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEXT-LAYER-CAPS"/>
+    <function name="GIMP_STOCK_FLOATING_SELECTION" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-FLOATING-SELECTION-CAPS"/>
+    <function name="GIMP_STOCK_TEMPLATE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEMPLATE-CAPS"/>
+    <function name="GIMP_STOCK_IMAGES" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-IMAGES-CAPS"/>
+    <function name="GIMP_STOCK_LAYERS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-LAYERS-CAPS"/>
+    <function name="GIMP_STOCK_CHANNELS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNELS-CAPS"/>
+    <function name="GIMP_STOCK_PATHS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-PATHS-CAPS"/>
+    <function name="GIMP_STOCK_INDEXED_PALETTE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-INDEXED-PALETTE-CAPS"/>
+    <function name="GIMP_STOCK_SHAPE_CIRCLE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SHAPE-CIRCLE-CAPS"/>
+    <function name="GIMP_STOCK_SHAPE_SQUARE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SHAPE-SQUARE-CAPS"/>
+    <function name="GIMP_STOCK_SHAPE_DIAMOND" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SHAPE-DIAMOND-CAPS"/>
+    <function name="GIMP_STOCK_CAP_BUTT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CAP-BUTT-CAPS"/>
+    <function name="GIMP_STOCK_CAP_ROUND" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CAP-ROUND-CAPS"/>
+    <function name="GIMP_STOCK_CAP_SQUARE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CAP-SQUARE-CAPS"/>
+    <function name="GIMP_STOCK_JOIN_MITER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-JOIN-MITER-CAPS"/>
+    <function name="GIMP_STOCK_JOIN_ROUND" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-JOIN-ROUND-CAPS"/>
+    <function name="GIMP_STOCK_JOIN_BEVEL" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-JOIN-BEVEL-CAPS"/>
+    <function name="GIMP_STOCK_SELECTION" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-CAPS"/>
+    <function name="GIMP_STOCK_SELECTION_ALL" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-ALL-CAPS"/>
+    <function name="GIMP_STOCK_SELECTION_NONE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-NONE-CAPS"/>
+    <function name="GIMP_STOCK_SELECTION_GROW" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-GROW-CAPS"/>
+    <function name="GIMP_STOCK_SELECTION_SHRINK" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-SHRINK-CAPS"/>
+    <function name="GIMP_STOCK_SELECTION_BORDER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-BORDER-CAPS"/>
+    <function name="GIMP_STOCK_SELECTION_ADD" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-ADD-CAPS"/>
+    <function name="GIMP_STOCK_SELECTION_SUBTRACT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-SUBTRACT-CAPS"/>
+    <function name="GIMP_STOCK_SELECTION_REPLACE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-REPLACE-CAPS"/>
+    <function name="GIMP_STOCK_SELECTION_INTERSECT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-INTERSECT-CAPS"/>
+    <function name="GIMP_STOCK_SELECTION_STROKE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-STROKE-CAPS"/>
+    <function name="GIMP_STOCK_SELECTION_TO_CHANNEL" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-TO-CHANNEL-CAPS"/>
+    <function name="GIMP_STOCK_SELECTION_TO_PATH" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-TO-PATH-CAPS"/>
+    <function name="GIMP_STOCK_GRADIENT_LINEAR" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-LINEAR-CAPS"/>
+    <function name="GIMP_STOCK_GRADIENT_BILINEAR" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-BILINEAR-CAPS"/>
+    <function name="GIMP_STOCK_GRADIENT_RADIAL" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-RADIAL-CAPS"/>
+    <function name="GIMP_STOCK_GRADIENT_SQUARE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SQUARE-CAPS"/>
+    <function name="GIMP_STOCK_GRADIENT_CONICAL_SYMMETRIC" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-CONICAL-SYMMETRIC-CAPS"/>
+    <function name="GIMP_STOCK_GRADIENT_CONICAL_ASYMMETRIC" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-CONICAL-ASYMMETRIC-CAPS"/>
+    <function name="GIMP_STOCK_GRADIENT_SHAPEBURST_SPHERICAL" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SHAPEBURST-SPHERICAL-CAPS"/>
+    <function name="GIMP_STOCK_GRADIENT_SHAPEBURST_ANGULAR" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SHAPEBURST-ANGULAR-CAPS"/>
+    <function name="GIMP_STOCK_GRADIENT_SHAPEBURST_DIMPLED" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SHAPEBURST-DIMPLED-CAPS"/>
+    <function name="GIMP_STOCK_GRADIENT_SPIRAL_CLOCKWISE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SPIRAL-CLOCKWISE-CAPS"/>
+    <function name="GIMP_STOCK_GRADIENT_SPIRAL_ANTICLOCKWISE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SPIRAL-ANTICLOCKWISE-CAPS"/>
+    <function name="GIMP_STOCK_GRAVITY_NORTH_WEST" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-NORTH-WEST-CAPS"/>
+    <function name="GIMP_STOCK_GRAVITY_NORTH" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-NORTH-CAPS"/>
+    <function name="GIMP_STOCK_GRAVITY_NORTH_EAST" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-NORTH-EAST-CAPS"/>
+    <function name="GIMP_STOCK_GRAVITY_WEST" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-WEST-CAPS"/>
+    <function name="GIMP_STOCK_GRAVITY_EAST" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-EAST-CAPS"/>
+    <function name="GIMP_STOCK_GRAVITY_SOUTH_WEST" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-SOUTH-WEST-CAPS"/>
+    <function name="GIMP_STOCK_GRAVITY_SOUTH" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-SOUTH-CAPS"/>
+    <function name="GIMP_STOCK_GRAVITY_SOUTH_EAST" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-SOUTH-EAST-CAPS"/>
+    <function name="GIMP_STOCK_CHAR_PICKER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHAR-PICKER-CAPS"/>
+    <function name="GIMP_STOCK_LETTER_SPACING" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-LETTER-SPACING-CAPS"/>
+    <function name="GIMP_STOCK_LINE_SPACING" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-LINE-SPACING-CAPS"/>
+    <function name="GIMP_STOCK_TEXT_DIR_LTR" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEXT-DIR-LTR-CAPS"/>
+    <function name="GIMP_STOCK_TEXT_DIR_RTL" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEXT-DIR-RTL-CAPS"/>
+    <function name="GIMP_STOCK_PRINT_RESOLUTION" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-PRINT-RESOLUTION-CAPS"/>
+    <function name="GIMP_STOCK_TOOLS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOLS-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_OPTIONS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-OPTIONS-CAPS"/>
+    <function name="GIMP_STOCK_DEVICE_STATUS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-DEVICE-STATUS-CAPS"/>
+    <function name="GIMP_STOCK_DISPLAY_FILTER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER-CAPS"/>
+    <function name="GIMP_STOCK_CURVE_FREE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CURVE-FREE-CAPS"/>
+    <function name="GIMP_STOCK_CURVE_SMOOTH" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CURVE-SMOOTH-CAPS"/>
+    <function name="GIMP_STOCK_COLOR_PICKER_BLACK" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLOR-PICKER-BLACK-CAPS"/>
+    <function name="GIMP_STOCK_COLOR_PICKER_GRAY" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLOR-PICKER-GRAY-CAPS"/>
+    <function name="GIMP_STOCK_COLOR_PICKER_WHITE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLOR-PICKER-WHITE-CAPS"/>
+    <function name="GIMP_STOCK_COLOR_TRIANGLE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLOR-TRIANGLE-CAPS"/>
+    <function name="GIMP_STOCK_COLOR_PICK_FROM_SCREEN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLOR-PICK-FROM-SCREEN-CAPS"/>
+    <function name="GIMP_STOCK_CONVERT_GRAYSCALE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONVERT-GRAYSCALE-CAPS"/>
+    <function name="GIMP_STOCK_CONVERT_INDEXED" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONVERT-INDEXED-CAPS"/>
+    <function name="GIMP_STOCK_CONVERT_RGB" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONVERT-RGB-CAPS"/>
+    <function name="GIMP_STOCK_TRANSPARENCY" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TRANSPARENCY-CAPS"/>
+    <function name="GIMP_STOCK_DEFAULT_COLORS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-DEFAULT-COLORS-CAPS"/>
+    <function name="GIMP_STOCK_SWAP_COLORS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SWAP-COLORS-CAPS"/>
+    <function name="GIMP_STOCK_UNDO_HISTORY" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-UNDO-HISTORY-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_AIRBRUSH" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-AIRBRUSH-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_BLEND" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BLEND-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_BLUR" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BLUR-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BRIGHTNESS-CONTRAST-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_BUCKET_FILL" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BUCKET-FILL-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_BY_COLOR_SELECT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BY-COLOR-SELECT-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_CLONE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-CLONE-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_COLOR_BALANCE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-COLOR-BALANCE-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_COLOR_PICKER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-COLOR-PICKER-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_COLORIZE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-COLORIZE-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_CROP" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-CROP-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_CURVES" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-CURVES-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_DODGE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-DODGE-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_ELLIPSE_SELECT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ELLIPSE-SELECT-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_ERASER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ERASER-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_FLIP" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FLIP-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_FREE_SELECT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FREE-SELECT-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_FUZZY_SELECT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FUZZY-SELECT-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_HUE_SATURATION" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-HUE-SATURATION-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_INK" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-INK-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_ISCISSORS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ISCISSORS-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_LEVELS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-LEVELS-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_MEASURE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-MEASURE-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_MOVE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-MOVE-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_PAINTBRUSH" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PAINTBRUSH-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_PATH" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PATH-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_PENCIL" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PENCIL-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_PERSPECTIVE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PERSPECTIVE-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_POSTERIZE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-POSTERIZE-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_RECT_SELECT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-RECT-SELECT-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_ROTATE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ROTATE-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_SCALE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-SCALE-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_SHEAR" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-SHEAR-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_SMUDGE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-SMUDGE-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_TEXT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-TEXT-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_THRESHOLD" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-THRESHOLD-CAPS"/>
+    <function name="GIMP_STOCK_TOOL_ZOOM" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ZOOM-CAPS"/>
+    <function name="GIMP_STOCK_HCHAIN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-HCHAIN-CAPS"/>
+    <function name="GIMP_STOCK_HCHAIN_BROKEN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-HCHAIN-BROKEN-CAPS"/>
+    <function name="GIMP_STOCK_VCHAIN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-VCHAIN-CAPS"/>
+    <function name="GIMP_STOCK_VCHAIN_BROKEN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-VCHAIN-BROKEN-CAPS"/>
+    <function name="GIMP_STOCK_TEXTURE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEXTURE-CAPS"/>
+    <function name="GIMP_STOCK_FRAME" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-FRAME-CAPS"/>
+    <function name="GIMP_STOCK_ERROR" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-ERROR-CAPS"/>
+    <function name="GIMP_STOCK_INFO" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-INFO-CAPS"/>
+    <function name="GIMP_STOCK_QUESTION" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-QUESTION-CAPS"/>
+    <function name="GIMP_STOCK_WARNING" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-WARNING-CAPS"/>
+    <function name="GIMP_STOCK_WILBER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-WILBER-CAPS"/>
+    <function name="GIMP_STOCK_WILBER_EEK" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-WILBER-EEK-CAPS"/>
+    <function name="GIMP_STOCK_BRUSH" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-BRUSH-CAPS"/>
+    <function name="GIMP_STOCK_BUFFER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-BUFFER-CAPS"/>
+    <function name="GIMP_STOCK_FONT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-FONT-CAPS"/>
+    <function name="GIMP_STOCK_GRADIENT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-CAPS"/>
+    <function name="GIMP_STOCK_PALETTE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-PALETTE-CAPS"/>
+    <function name="GIMP_STOCK_PATTERN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-PATTERN-CAPS"/>
+    <function name="GIMP_STOCK_ZOOM_FOLLOW_WINDOW" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-ZOOM-FOLLOW-WINDOW-CAPS"/>
+    <function name="gimp_radio_group_new ()" link="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new"/>
+    <function name="gimp_radio_group_new2 ()" link="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new2"/>
+    <function name="gimp_radio_group_set_active ()" link="libgimpwidgets-GimpWidgets.html#gimp-radio-group-set-active"/>
+    <function name="gimp_int_radio_group_new ()" link="libgimpwidgets-GimpWidgets.html#gimp-int-radio-group-new"/>
+    <function name="gimp_int_radio_group_set_active ()" link="libgimpwidgets-GimpWidgets.html#gimp-int-radio-group-set-active"/>
+    <function name="gimp_spin_button_new ()" link="libgimpwidgets-GimpWidgets.html#gimp-spin-button-new"/>
+    <function name="GIMP_SCALE_ENTRY_LABEL()" link="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-LABEL-CAPS"/>
+    <function name="GIMP_SCALE_ENTRY_SCALE()" link="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SCALE-CAPS"/>
+    <function name="GIMP_SCALE_ENTRY_SCALE_ADJ()" link="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SCALE-ADJ-CAPS"/>
+    <function name="GIMP_SCALE_ENTRY_SPINBUTTON()" link="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SPINBUTTON-CAPS"/>
+    <function name="GIMP_SCALE_ENTRY_SPINBUTTON_ADJ()" link="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SPINBUTTON-ADJ-CAPS"/>
+    <function name="gimp_scale_entry_new ()" link="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"/>
+    <function name="gimp_scale_entry_set_sensitive ()" link="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-set-sensitive"/>
+    <function name="gimp_scale_entry_set_logarithmic ()" link="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-set-logarithmic"/>
+    <function name="gimp_scale_entry_get_logarithmic ()" link="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-get-logarithmic"/>
+    <function name="gimp_color_scale_entry_new ()" link="libgimpwidgets-GimpWidgets.html#gimp-color-scale-entry-new"/>
+    <function name="GIMP_RANDOM_SEED_SPINBUTTON()" link="libgimpwidgets-GimpWidgets.html#GIMP-RANDOM-SEED-SPINBUTTON-CAPS"/>
+    <function name="GIMP_RANDOM_SEED_SPINBUTTON_ADJ()" link="libgimpwidgets-GimpWidgets.html#GIMP-RANDOM-SEED-SPINBUTTON-ADJ-CAPS"/>
+    <function name="GIMP_RANDOM_SEED_TOGGLE()" link="libgimpwidgets-GimpWidgets.html#GIMP-RANDOM-SEED-TOGGLE-CAPS"/>
+    <function name="gimp_random_seed_new ()" link="libgimpwidgets-GimpWidgets.html#gimp-random-seed-new"/>
+    <function name="GIMP_COORDINATES_CHAINBUTTON()" link="libgimpwidgets-GimpWidgets.html#GIMP-COORDINATES-CHAINBUTTON-CAPS"/>
+    <function name="gimp_coordinates_new ()" link="libgimpwidgets-GimpWidgets.html#gimp-coordinates-new"/>
+    <function name="gimp_pixmap_button_new ()" link="libgimpwidgets-GimpWidgets.html#gimp-pixmap-button-new"/>
+    <function name="gimp_toggle_button_sensitive_update ()" link="libgimpwidgets-GimpWidgets.html#gimp-toggle-button-sensitive-update"/>
+    <function name="gimp_toggle_button_update ()" link="libgimpwidgets-GimpWidgets.html#gimp-toggle-button-update"/>
+    <function name="gimp_radio_button_update ()" link="libgimpwidgets-GimpWidgets.html#gimp-radio-button-update"/>
+    <function name="gimp_int_adjustment_update ()" link="libgimpwidgets-GimpWidgets.html#gimp-int-adjustment-update"/>
+    <function name="gimp_uint_adjustment_update ()" link="libgimpwidgets-GimpWidgets.html#gimp-uint-adjustment-update"/>
+    <function name="gimp_float_adjustment_update ()" link="libgimpwidgets-GimpWidgets.html#gimp-float-adjustment-update"/>
+    <function name="gimp_double_adjustment_update ()" link="libgimpwidgets-GimpWidgets.html#gimp-double-adjustment-update"/>
+    <function name="gimp_unit_menu_update ()" link="libgimpwidgets-GimpWidgets.html#gimp-unit-menu-update"/>
+    <function name="gimp_table_attach_aligned ()" link="libgimpwidgets-GimpWidgets.html#gimp-table-attach-aligned"/>
+    <function name="gimp_label_set_attributes ()" link="libgimpwidgets-GimpWidgets.html#gimp-label-set-attributes"/>
+    <function name="gimp_int_option_menu_new ()" link="libgimpwidgets-gimpoldwidgets.html#gimp-int-option-menu-new"/>
+    <function name="gimp_int_option_menu_set_history ()" link="libgimpwidgets-gimpoldwidgets.html#gimp-int-option-menu-set-history"/>
+    <function name="GimpIntOptionMenuSensitivityCallback ()" link="libgimpwidgets-gimpoldwidgets.html#GimpIntOptionMenuSensitivityCallback"/>
+    <function name="gimp_int_option_menu_set_sensitive ()" link="libgimpwidgets-gimpoldwidgets.html#gimp-int-option-menu-set-sensitive"/>
+    <function name="gimp_option_menu_new ()" link="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new"/>
+    <function name="gimp_option_menu_new2 ()" link="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new2"/>
+    <function name="gimp_option_menu_set_history ()" link="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-set-history"/>
+    <function name="GimpOptionMenuSensitivityCallback ()" link="libgimpwidgets-gimpoldwidgets.html#GimpOptionMenuSensitivityCallback"/>
+    <function name="gimp_option_menu_set_sensitive ()" link="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-set-sensitive"/>
+    <function name="gimp_menu_item_update ()" link="libgimpwidgets-gimpoldwidgets.html#gimp-menu-item-update"/>
+  </functions>
+</book>

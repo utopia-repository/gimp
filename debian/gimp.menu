@@ -1,2 +1,3 @@
-?package(gimp):command="/usr/X11R6/bin/gimp" hotkey="G" needs="X11" \
-	       section="Apps/Graphics" title="The GIMP"
+?package(gimp):command="/usr/bin/gimp-2.2" icon="/usr/share/gimp/2.0/images/wilber-icon.png" needs="X11" \
+	section="Apps/Graphics" title="The GIMP" hints="Bitmap" \
+	hotkey="Gimp"

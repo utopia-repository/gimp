@@ -30,16 +30,16 @@
 
 
 
-(define (script-fu-land width height seed detail landheight seadepth xscale yscale)
+(define (script-fu-land width height seed detail landheight seadepth xscale yscale gradient)
   (let* (
 	 (img (car (gimp-image-new width height RGB)))
-	 (layer-one (car (gimp-layer-new img width height RGB "bottom" 100 NORMAL)))
+	 (layer-one (car (gimp-layer-new img width height
+					 RGB-IMAGE "Bottom" 100 NORMAL-MODE)))
+     (layer-two)
 	)
-
-  (gimp-image-disable-undo img)
+  (gimp-context-set-gradient gradient)
+  (gimp-image-undo-disable img)
   (gimp-image-add-layer img layer-one 0)
- 
-
 
   (plug-in-solid-noise 1 img layer-one TRUE FALSE seed detail xscale yscale)
   (plug-in-c-astretch 1 img layer-one)
@@ -51,7 +51,7 @@
 
 
 
-  (gimp-by-color-select img layer-one '(190 190 190) 55 REPLACE FALSE FALSE 0 FALSE)
+  (gimp-by-color-select layer-one '(190 190 190) 55 CHANNEL-OP-REPLACE FALSE FALSE 0 FALSE)
   (plug-in-bump-map 1 img layer-two layer-one 135.0 35 landheight 0 0 0 0 TRUE FALSE 0)
 
   ;(plug-in-c-astretch 1 img layer-two)
@@ -60,29 +60,29 @@
 
   ;(plug-in-c-astretch 1 img layer-two)
 
-  ; uncomment the next lie if you wnat to keep a selrction of the "land"
+  ; uncomment the next line if you want to keep a selection of the "land"
   (gimp-selection-none img)
 
   (gimp-display-new img)
-  (gimp-image-enable-undo img)
+  (gimp-image-undo-enable img)
 ))
 
 (script-fu-register "script-fu-land"
-		    "<Toolbox>/Xtns/Script-Fu/Patterns/Land"
-		    "A Topgraphic Map  pattern"
+		    _"_Land..."
+		    "A Topgraphic map pattern"
 		    "Adrian Likins <aklikins@eos.ncsu.edu>"
 		    "Adrian Likins"
 		    "1997"
 		    ""
-		    SF-VALUE "Image Width" "256"
-		    SF-VALUE "Image Height" "256"
-		    SF-VALUE "Random Seed" "32"
-		    SF-VALUE "Detail Level" "4"
-		    SF-VALUE "Land height" "60"
-		    SF-VALUE "Sea depth" "4"
-		    SF-VALUE "X Scale" "4.0"
-		    SF-VALUE "Y Scale" "4.0")
+		    SF-ADJUSTMENT _"Image width"  '(256 10 1000 1 10 0 1)
+		    SF-ADJUSTMENT _"Image height" '(256 10 1000 1 10 0 1)
+		    SF-ADJUSTMENT _"Random seed"  '(32 0 15000000 1 10 0 1)
+		    SF-ADJUSTMENT _"Detail level" '(4 1 15 1 5 0 0)
+		    SF-ADJUSTMENT _"Land height"  '(60 1 65 1 10 0 1)
+		    SF-ADJUSTMENT _"Sea depth"    '(4 1 65 1 10 0 1)
+		    SF-ADJUSTMENT _"Scale X"      '(4 0.1 16 1 5 0.1 0)
+		    SF-ADJUSTMENT _"Scale Y"      '(4 0.1 16 1 5 0.1 0)
+		    SF-GRADIENT   _"Gradient"     "Land 1")
 
-
-
-
+(script-fu-menu-register "script-fu-land"
+			 _"<Toolbox>/Xtns/Script-Fu/Patterns")

@@ -18,7 +18,7 @@ GIMP *will* crash with a really esoteric error message.
 
 The lesson is: INSTALL THE xfnt75 AND xfnt100 PACKAGES!
 
-Version 1.0.2 has full layers support, tile-based memory allocation,
+Version 1.0 has full layers support, tile-based memory allocation,
 and a whole bunch of other nifty features.
 
                  *************** NOTE ****************

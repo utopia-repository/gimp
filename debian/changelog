@@ -1,3 +1,31 @@
+gimp (1.0.4-3) unstable; urgency=low
+
+  * Rebuild so we're up-to-date with most of potato's libraries.
+    Notably the slang dependancy needs to be updated.
+
+ -- Ben Gertzfield <che@debian.org>  Fri,  7 Jan 2000 18:51:45 -0800
+
+gimp (1.0.4-2) unstable; urgency=low
+
+  * Fix libgimp-dev so that it includes all .a files, even weird
+    ones like 'libgck.a' and 'libmegawidget.a'.
+
+ -- Ben Gertzfield <che@debian.org>  Thu,  1 Jul 1999 20:08:16 -0700
+
+gimp (1.0.4-1) unstable; urgency=low
+
+  * New upstream release.
+  * Don't know know, but the shlibs.local disappeared some time ago,
+    so dependancies from gimp to libgimp1 were gone. Very odd.
+
+ -- Ben Gertzfield <che@debian.org>  Sun, 11 Apr 1999 11:55:10 -0700
+
+gimp (1.0.3-1) unstable; urgency=low
+
+  * New version. Compiled with GTK+ 1.2.
+
+ -- Ben Gertzfield <che@debian.org>  Tue, 30 Mar 1999 09:58:22 -0800
+
 gimp (1.0.2-3) frozen unstable; urgency=low
 
   * Recompile for ncurses 4.2 and related aalib

@@ -120,7 +120,7 @@ gimp_main (int   argc,
       return 0;
     }
 
-  g_set_message_handler (&gimp_message_func);
+  g_set_message_handler ((GPrintFunc) gimp_message_func);
 
   temp_proc_ht = g_hash_table_new (&g_str_hash, &g_str_equal);
 
@@ -128,7 +128,7 @@ gimp_main (int   argc,
   return 0;
 }
 
-void
+void G_GNUC_NORETURN
 gimp_quit ()
 {
   if (PLUG_IN_INFO.quit_proc)
@@ -902,7 +902,7 @@ gimp_signal (int signum)
     case SIGBUS:
     case SIGSEGV:
     case SIGFPE:
-      g_debug (progname);
+      g_on_error_query (progname);
       break;
     default:
       break;

@@ -1,9 +1,5 @@
-usr/lib/libgimp.so
-usr/lib/libgimp.a
-usr/lib/libgimpui.so
-usr/lib/libgimpui.a
-usr/lib/libgck.so
-usr/lib/libgck.a
+usr/lib/*.so
+usr/lib/*.a
 usr/include/libgimp/
 usr/include/gck/
 usr/share/aclocal/

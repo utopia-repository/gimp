@@ -23,11 +23,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $Id: nlfilt.c,v 1.7.4.2 1998/07/14 06:20:14 yosh Exp $
+ * $Id: nlfilt.c,v 1.7.4.2.2.1 1999/03/29 19:39:55 yosh Exp $
  */
 
 /* add any necessary includes  */
 
+#include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>

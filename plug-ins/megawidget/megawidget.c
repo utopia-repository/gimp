@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $Id: megawidget.c,v 1.4 1998/03/22 20:44:28 adrian Exp $
+ * $Id: megawidget.c,v 1.4.6.1 1999/03/29 19:39:53 yosh Exp $
  */
 
 /* Functions added by Xavier Bouchoux (Xavier.Bouchoux@ensimag.imag.fr)
@@ -39,6 +39,8 @@
  */
 
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <gtk/gtk.h>
 #include <libgimp/gimp.h>
 

@@ -1,5 +1,5 @@
 /*
- * "$Id: png.c,v 1.7.2.1 1998/06/06 23:28:13 yosh Exp $"
+ * "$Id: png.c,v 1.7.2.4 1999/01/02 23:50:31 yosh Exp $"
  *
  *   Portable Network Graphics (PNG) plug-in for The GIMP -- an image
  *   manipulation program
@@ -37,6 +37,49 @@
  * Revision History:
  *
  *   $Log: png.c,v $
+ *   Revision 1.7.2.4  1999/01/02 23:50:31  yosh
+ *   Doh, thinko.
+ *
+ *   -Yosh
+ *
+ *   Revision 1.7.2.3  1999/01/02 23:11:53  yosh
+ *   * ltconfig: cases for Unixware 2.1.2 (from Geoff Clare)
+ *   and BSD/OS 4.0 (from Chris P. Ross)
+ *
+ *   * app/Makefile.am
+ *   * plug-ins/script-fu/scripts/Makefile.am: use -DREGEX_MALLOC,
+ *   seems to be more portable
+ *
+ *   * plug-ins/png/png.c: use a default gamma of 2.2 when gamma
+ *   correction isn't enabled
+ *
+ *   -Yosh
+ *
+ *   Revision 1.7.2.2  1998/11/09 02:26:44  yosh
+ *   * Makefile.am
+ *   * configure.in: check for GTK+ 1.0.3 or higher, we use stuff
+ *   from it. Add a convenience configure option for me.
+ *
+ *   * gimptool.in: sync with 1.1
+ *
+ *   * tile_swap.c: ok, a further attempt to get rid of a bunch o'
+ *   dialogs
+ *
+ *   * docs/Makefile.am
+ *   * docs/white-paper/Makefile.am: helpers for make dist
+ *
+ *   * libgimp/gimp.c: match header declaration
+ *
+ *   * checkerboard.c: avoid a FP exception in psychobilly mode
+ *
+ *   * plug-ins/cubism/cubism.c
+ *   * plug-ins/mosaic/mosaic.c: speedups from 1.1
+ *
+ *   * plug-ins/png/png.c: bugfix for indexed image, default to level 6
+ *   compression
+ *
+ *   -Yosh
+ *
  *   Revision 1.7.2.1  1998/06/06 23:28:13  yosh
  *   * updated despeckle, png, sgi, and sharpen
  *
@@ -121,6 +164,7 @@
 #define PLUG_IN_VERSION		"1.1.6 - 17 May 1998"
 #define SCALE_WIDTH		125
 
+#define DEFAULT_GAMMA		2.20
 
 /*
  * Structures...
@@ -163,7 +207,7 @@ GPlugInInfo	PLUG_IN_INFO =
 PngSaveVals	pngvals = 
 {
   FALSE,
-  9
+  6
 };
 
 int		runme = FALSE;
@@ -418,13 +462,20 @@ load_image(char *filename)	/* I - File to load */
 
   png_read_info(pp, info);
 
-  if (info->bit_depth < 8)
+ /*
+  * I have no idea why this used to be the way it was, luckily
+  * most people don't use 2bit or 4bit indexed images with PNG
+  */
+
+  if (info->bit_depth < 8) 
   {
     png_set_packing(pp);
-    png_set_expand(pp);
+    if (info->color_type != PNG_COLOR_TYPE_PALETTE) {
+      png_set_expand(pp);
 
-    if (info->valid & PNG_INFO_sBIT)
-      png_set_shift(pp, &(info->sig_bit));
+      if (info->valid & PNG_INFO_sBIT)
+        png_set_shift(pp, &(info->sig_bit));
+    }
   }
   else if (info->bit_depth == 16)
     png_set_strip_16(pp);
@@ -594,7 +645,7 @@ save_image(char   *filename,	/* I - File to save to */
   guchar	**pixels,	/* Pixel rows */
 		*pixel;		/* Pixel data */
   char		progress[255];	/* Title for progress display... */
-
+  gdouble	gamma;
 
  /*
   * Setup the PNG data structures...
@@ -652,10 +703,12 @@ save_image(char   *filename,	/* I - File to save to */
 
   png_set_compression_level(pp, pngvals.compression_level);
 
+  gamma = gimp_gamma();
+
   info->width          = drawable->width;
   info->height         = drawable->height;
   info->bit_depth      = 8;
-  info->gamma          = gimp_gamma();
+  info->gamma          = 1.0 / (gamma != 1.00 ? gamma : DEFAULT_GAMMA);
   info->sig_bit.red    = 8;
   info->sig_bit.green  = 8;
   info->sig_bit.blue   = 8;
@@ -912,5 +965,5 @@ save_dialog(void)
 }
 
 /*
- * End of "$Id: png.c,v 1.7.2.1 1998/06/06 23:28:13 yosh Exp $".
+ * End of "$Id: png.c,v 1.7.2.4 1999/01/02 23:50:31 yosh Exp $".
  */

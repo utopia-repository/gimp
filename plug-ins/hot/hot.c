@@ -1,7 +1,7 @@
 /*
  * file: hot/hot.c
  *
- * $Id: hot.c,v 1.7 1998/03/22 20:44:22 adrian Exp $
+ * $Id: hot.c,v 1.7.6.1 1999/03/29 19:39:44 yosh Exp $
  */
 
 /*
@@ -64,6 +64,7 @@
  *
  */
 #include <math.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <libgimp/gimp.h>

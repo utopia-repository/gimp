@@ -18,9 +18,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  *
- * $Id: oilify.c,v 1.6 1998/04/26 22:12:57 yosh Exp $
+ * $Id: oilify.c,v 1.6.4.1 1999/03/29 19:39:58 yosh Exp $
  */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "gtk/gtk.h"

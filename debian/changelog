@@ -1,3 +1,18 @@
+gimp (2.2.4-3) unstable; urgency=low
+
+  * gimp & gimp-data conflicts & replaces gimp1.2 << 1.2.5-1.
+  * Forcibly remove files from /etc/gimp/1.2 on purge of gimp1.2 package
+    (Closes: #303087)
+  * Apply patch from upstream to make wget output more consistent when run
+    under gimp (Closes: #298792)
+  * Apply patch from upstream to fix compile error on amd64/gcc-4.0
+    (Closes: #300227)
+  * Correct typos in gimp manpage (Closes: #302146)
+  * Add MIDI device howto to README.MIDI now that it's been licensed under
+    the GPL; update gimp description to point to the new readme.
+
+ -- Ari Pollak <ari@debian.org>  Wed,  6 Apr 2005 15:21:19 -0400
+
 gimp (2.2.4-2) unstable; urgency=low
 
   * Make libasound2-dev an actual build-dependency, and suggest libasound2

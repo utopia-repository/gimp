@@ -31,6 +31,7 @@
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
 
+#include "widgets/gimpactiongroup.h"
 #include "widgets/gimpactionfactory.h"
 #include "widgets/gimpcontainereditor.h"
 #include "widgets/gimpcontainerview.h"

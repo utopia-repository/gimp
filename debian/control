@@ -53,8 +53,8 @@ Package: gimp
 Architecture: any
 Section: graphics
 Depends: wget, gimp-data (= ${Source-Version}), ${shlibs:Depends}
-Conflicts: gimp1.3, gimp-nonfree, gimp-data (<< 2.0.2-4)
-Replaces: gimp1.3, gimp-nonfree, gimp-data (<< 2.0.2-4)
+Conflicts: gimp1.2 (<< 1.2.5-1), gimp1.3, gimp-nonfree, gimp-data (<< 2.0.2-4)
+Replaces: gimp1.2 (<< 1.2.5-1), gimp1.3, gimp-nonfree, gimp-data (<< 2.0.2-4)
 Provides: gimp2.0, gimp-nonfree
 Recommends: gimp-svg
 Suggests: gimp-help-en | gimp-help, gimp-python, libgimp-perl, gimp-data-extras, libasound2 (>= 1.0.0)
@@ -64,14 +64,13 @@ Description: The GNU Image Manipulation Program
  editing and processing programs.
  .
  If you'd like to use a MIDI device as an input controller in GIMP,
- install libasound2 and read the how-to at
- <http://www.gimp.org/unix/howtos/gimp-midi.html>.
+ install libasound2 and read the how-to at /usr/share/doc/gimp/README.MIDI
 
 Package: gimp-data
 Architecture: all
 Section: graphics
-Conflicts: gimp1.3-data, gimp (<< 2.0.2-4)
-Replaces: gimp1.3-data, gimp (<< 2.0.2-4)
+Conflicts: gimp1.2 (<< 1.2.5-1), gimp1.3-data, gimp (<< 2.0.2-4)
+Replaces: gimp1.2 (<< 1.2.5-1), gimp1.3-data, gimp (<< 2.0.2-4)
 Description: Data files for The GIMP
  This package contains architecture-independent supporting data files
  for use with The GIMP

@@ -1,0 +1,9 @@
+#! /bin/sh -e
+                                                                                
+if [ "$1" = "purge" ]; then
+	rm -f /etc/gimp/1.2/{gimprc,gimprc_user,gtkrc,gtkrc_user,ps-menurc,unitrc}
+	rmdir /etc/gimp/1.2 || /bin/true
+fi
+                                                                                
+#DEBHELPER#
+

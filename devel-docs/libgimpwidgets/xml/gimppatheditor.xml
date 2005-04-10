@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpPathEditor-struct">GimpPathEditor</link>;
+            <link linkend="GimpPathEditor-struct">GimpPathEditor</link>;
 <link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-path-editor-new">gimp_path_editor_new</link>            (const <link linkend="gchar">gchar</link> *filesel_title,
                                              const <link linkend="gchar">gchar</link> *path);
 <link linkend="gchar">gchar</link>*      <link linkend="gimp-path-editor-get-path">gimp_path_editor_get_path</link>       (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor);
@@ -73,10 +73,10 @@ GimpPathEditor implements
 <synopsis>
 
 &quot;<link linkend="GimpPathEditor-path-changed">path-changed</link>&quot;
-            <link linkend="void">void</link>        user_function      (<link linkend="GimpPathEditor">GimpPathEditor</link> *,
+            <link linkend="void">void</link>        user_function      (<link linkend="GimpPathEditor">GimpPathEditor</link> *arg0,
                                             <link linkend="gpointer">gpointer</link> user_data);
 &quot;<link linkend="GimpPathEditor-writable-changed">writable-changed</link>&quot;
-            <link linkend="void">void</link>        user_function      (<link linkend="GimpPathEditor">GimpPathEditor</link> *,
+            <link linkend="void">void</link>        user_function      (<link linkend="GimpPathEditor">GimpPathEditor</link> *arg0,
                                             <link linkend="gpointer">gpointer</link> user_data);
 </synopsis>
 </refsect1>
@@ -105,8 +105,8 @@ the search path, the "path_changed" signal will be emitted.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpPathEditor-struct"/>struct GimpPathEditor</title>
-<indexterm><primary>GimpPathEditor</primary></indexterm><programlisting>struct GimpPathEditor;</programlisting>
+<title><anchor id="GimpPathEditor-struct"/>GimpPathEditor</title>
+<indexterm><primary>GimpPathEditor</primary></indexterm><programlisting>typedef struct _GimpPathEditor GimpPathEditor;</programlisting>
 <para>
 
 </para></refsect2>
@@ -119,7 +119,7 @@ Creates a new <link linkend="GimpPathEditor"><type>GimpPathEditor</type></link> 
 </para>
 <para>
 The elements of the initial search path must be separated with the
-<link linkend="G-SEARCHPATH-SEPARATOR-CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> character.</para>
+<link linkend="G-SEARCHPATH-SEPARATOR--CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> character.</para>
 <para>
 
 </para><variablelist role="params">
@@ -130,7 +130,7 @@ The elements of the initial search path must be separated with the
 <varlistentry><term><parameter>path</parameter>&nbsp;:</term>
 <listitem><simpara>          The initial search path.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> A pointer to the new <link linkend="GimpPathEditor"><type>GimpPathEditor</type></link> widget.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A pointer to the new <link linkend="GimpPathEditor"><type>GimpPathEditor</type></link> widget.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -138,7 +138,7 @@ The elements of the initial search path must be separated with the
 <indexterm><primary>gimp_path_editor_get_path</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_path_editor_get_path       (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor);</programlisting>
 <para>
 The elements of the returned search path string are separated with the
-<link linkend="G-SEARCHPATH-SEPARATOR-CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> character.
+<link linkend="G-SEARCHPATH-SEPARATOR--CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> character.
 </para>
 <para>
 Note that you have to <link linkend="g-free"><function>g_free()</function></link> the returned string.</para>
@@ -148,7 +148,7 @@ Note that you have to <link linkend="g-free"><function>g_free()</function></link
 <varlistentry><term><parameter>editor</parameter>&nbsp;:</term>
 <listitem><simpara> The path editor you want to get the search path from.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The search path the user has selected in the path editor.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The search path the user has selected in the path editor.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -157,7 +157,7 @@ Note that you have to <link linkend="g-free"><function>g_free()</function></link
                                              const <link linkend="gchar">gchar</link> *path);</programlisting>
 <para>
 The elements of the initial search path must be separated with the
-<link linkend="G-SEARCHPATH-SEPARATOR-CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> character.</para>
+<link linkend="G-SEARCHPATH-SEPARATOR--CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> character.</para>
 <para>
 
 </para><variablelist role="params">
@@ -178,7 +178,7 @@ The elements of the initial search path must be separated with the
 <varlistentry><term><parameter>editor</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
@@ -214,7 +214,7 @@ The elements of the initial search path must be separated with the
 <varlistentry><term><parameter>directory</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
@@ -246,7 +246,7 @@ The elements of the initial search path must be separated with the
 <refsect1>
 <title>Signals</title>
 <refsect2><title><anchor id="GimpPathEditor-path-changed"/>The &quot;path-changed&quot; signal</title>
-<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpPathEditor">GimpPathEditor</link> *,
+<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpPathEditor">GimpPathEditor</link> *arg0,
                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 This signal is emitted whenever the user adds, deletes, modifies
@@ -257,7 +257,7 @@ or reorders an element of the search path.</para>
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
 </variablelist></refsect2><refsect2><title><anchor id="GimpPathEditor-writable-changed"/>The &quot;writable-changed&quot; signal</title>
-<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpPathEditor">GimpPathEditor</link> *,
+<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpPathEditor">GimpPathEditor</link> *arg0,
                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 This signal is emitted whenever the "writable" column of a directory
@@ -278,7 +278,7 @@ is changed, either by the user clicking on it or by calling
 <link linkend="GimpFileEntry"><type>GimpFileEntry</type></link>
 </para>
 <para>
-<link linkend="G-SEARCHPATH-SEPARATOR-CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link>
+<link linkend="G-SEARCHPATH-SEPARATOR--CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link>
 </para>
 </refsect1>
 

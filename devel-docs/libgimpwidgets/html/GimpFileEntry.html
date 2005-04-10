@@ -1,83 +1,99 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpFileEntry</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="prev" href="GimpDialog.html" title="GimpDialog"><link rel="next" href="GimpFrame.html" title="GimpFrame"><meta name="generator" content="GTK-Doc V1.2 (XML mode)"><style type="text/css">
-        .synopsis, .classsynopsis {
-            background: #eeeeee;
-            border: solid 1px #aaaaaa;
-            padding: 0.5em;
-        }
-        .programlisting {
-            background: #eeeeff;
-            border: solid 1px #aaaaff;
-            padding: 0.5em;
-        }
-        .variablelist {
-            padding: 4px;
-            margin-left: 3em;
-        }
-        .navigation {
-            background: #ffeeee;
-            border: solid 1px #ffaaaa;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-        }
-        .navigation a {
-            color: #770000;
-        }
-        .navigation a:visited {
-            color: #550000;
-        }
-        .navigation .title {
-            font-size: 200%;
-        }
-      </style></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="GimpDialog.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Widgets Library Reference Manual</th><td><a accesskey="n" href="GimpFrame.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="GimpFileEntry"></a><div class="titlepage"></div><div class="refnamediv"><h2><span class="refentrytitle">GimpFileEntry</span></h2><p>GimpFileEntry &#8212; Widget for entering a filename.</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpFileEntry</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="prev" href="GimpDialog.html" title="GimpDialog"><link rel="next" href="GimpFrame.html" title="GimpFrame"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy"><link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView"><link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters"><link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors"><link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers"><link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities"><link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="GimpDialog.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Widgets Library Reference Manual</th><td><a accesskey="n" href="GimpFrame.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="GimpFileEntry"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">GimpFileEntry</span></h2><p>GimpFileEntry &#8212; Widget for entering a filename.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
-struct      <a href="GimpFileEntry.html#GimpFileEntry-struct">GimpFileEntry</a>;
-GtkWidget*  <a href="GimpFileEntry.html#gimp-file-entry-new">gimp_file_entry_new</a>             (const gchar *title,
-                                             const gchar *filename,
-                                             gboolean dir_only,
-                                             gboolean check_valid);
-gchar*      <a href="GimpFileEntry.html#gimp-file-entry-get-filename">gimp_file_entry_get_filename</a>    (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *entry);
+            <a href="GimpFileEntry.html#GimpFileEntry-struct">GimpFileEntry</a>;
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="GimpFileEntry.html#gimp-file-entry-new">gimp_file_entry_new</a>             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> dir_only,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> check_valid);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*      <a href="GimpFileEntry.html#gimp-file-entry-get-filename">gimp_file_entry_get_filename</a>    (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *entry);
 void        <a href="GimpFileEntry.html#gimp-file-entry-set-filename">gimp_file_entry_set_filename</a>    (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *entry,
-                                             const gchar *filename);
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename);
 
-</pre></div><div class="refsect1" lang="en"><a name="id2581827"></a><h2>Object Hierarchy</h2><pre class="synopsis">
+</pre></div><div class="refsect1" lang="en"><a name="id2576697"></a><h2>Object Hierarchy</h2><pre class="synopsis">
 
-  GObject
-   +----GtkObject
-         +----GtkWidget
-               +----GtkContainer
-                     +----GtkBox
-                           +----GtkHBox
+  <a
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+         +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+               +----<a
+href="../gtk/GtkContainer.html"
+>GtkContainer</a>
+                     +----<a
+href="../gtk/GtkBox.html"
+>GtkBox</a>
+                           +----<a
+href="../gtk/GtkHBox.html"
+>GtkHBox</a>
                                  +----GimpFileEntry
-</pre></div><div class="refsect1" lang="en"><a name="id2581869"></a><h2>Implemented Interfaces</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2576739"></a><h2>Implemented Interfaces</h2><p>
 GimpFileEntry implements
- AtkImplementorIface.</p></div><div class="refsect1" lang="en"><a name="id2581884"></a><h2>Signal Prototypes</h2><pre class="synopsis">
+ AtkImplementorIface.</p></div><div class="refsect1" lang="en"><a name="id2576754"></a><h2>Signal Prototypes</h2><pre class="synopsis">
 
 "<a href="GimpFileEntry.html#GimpFileEntry-filename-changed">filename-changed</a>"
-            void        user_function      (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *,
-                                            gpointer user_data);
-</pre></div><div class="refsect1" lang="en"><a name="id2583029"></a><h2>Description</h2><p>
+            void        user_function      (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *arg0,
+                                            <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data);
+</pre></div><div class="refsect1" lang="en"><a name="id2527470"></a><h2>Description</h2><p>
 This widget is used to enter filenames or directories.
 </p><p>
-There is a <span class="type">GtkEntry</span> for entering the filename manually and a "..."
-button which will pop up a <span class="type">GtkFileSelection</span> dialog.
+There is a <a
+href="../gtk/GtkEntry.html"
+><span class="type">GtkEntry</span></a> for entering the filename manually and a "..."
+button which will pop up a <a
+href="../gtk/GtkFileSelection.html"
+><span class="type">GtkFileSelection</span></a> dialog.
 </p><p>
 You can restrict the <span class="type">GimpFileSelection</span> to directories. In this case
-the filename listbox of the <span class="type">GtkFileSelection</span> dialog will be hidden.
+the filename listbox of the <a
+href="../gtk/GtkFileSelection.html"
+><span class="type">GtkFileSelection</span></a> dialog will be hidden.
 </p><p>
-If you specify <i class="parameter"><tt>check_valid</tt></i> as <span class="type">TRUE</span> in <a href="GimpFileEntry.html#gimp-file-entry-new"><tt class="function">gimp_file_entry_new()</tt></a>
+If you specify <i class="parameter"><tt>check_valid</tt></i> as <a
+href="../glib/glib-Standard-Macros.html#TRUE--CAPS"
+><span class="type">TRUE</span></a> in <a href="GimpFileEntry.html#gimp-file-entry-new"><tt class="function">gimp_file_entry_new()</tt></a>
 the entered filename will be checked for validity and a pixmap will be
 shown which indicates if the file exists or not.
 </p><p>
 Whenever the user changes the filename, the "filename_changed" signal
 will be emitted.
-</p></div><div class="refsect1" lang="en"><a name="id2583099"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2583105"></a><h3><a name="GimpFileEntry-struct"></a>struct GimpFileEntry</h3><a class="indexterm" name="id2583113"></a><pre class="programlisting">struct GimpFileEntry;</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2527540"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2527546"></a><h3><a name="GimpFileEntry-struct"></a>GimpFileEntry</h3><a class="indexterm" name="id2527554"></a><pre class="programlisting">typedef struct _GimpFileEntry GimpFileEntry;</pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2583123"></a><h3><a name="gimp-file-entry-new"></a>gimp_file_entry_new ()</h3><a class="indexterm" name="id2583131"></a><pre class="programlisting">GtkWidget*  gimp_file_entry_new             (const gchar *title,
-                                             const gchar *filename,
-                                             gboolean dir_only,
-                                             gboolean check_valid);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2527565"></a><h3><a name="gimp-file-entry-new"></a>gimp_file_entry_new ()</h3><a class="indexterm" name="id2527573"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_file_entry_new             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> dir_only,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> check_valid);</pre><p>
 Creates a new <a href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a> widget.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>title</tt></i> :</span></td><td>       The title of the <span class="type">GtkFileEntry</span> dialog.
@@ -85,24 +101,32 @@ Creates a new <a href="GimpFileEntry.html" title="GimpFileEntry"><span class="ty
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>dir_only</tt></i> :</span></td><td>    <tt class="literal">TRUE</tt> if the file entry should accept directories only.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>check_valid</tt></i> :</span></td><td> <tt class="literal">TRUE</tt> if the widget should check if the entered file
               really exists.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A pointer to the new <a href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a> widget.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2567437"></a><h3><a name="gimp-file-entry-get-filename"></a>gimp_file_entry_get_filename ()</h3><a class="indexterm" name="id2567448"></a><pre class="programlisting">gchar*      gimp_file_entry_get_filename    (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *entry);</pre><p>
-Note that you have to <tt class="function">g_free()</tt> the returned string.</p><p>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A pointer to the new <a href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a> widget.
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2570972"></a><h3><a name="gimp-file-entry-get-filename"></a>gimp_file_entry_get_filename ()</h3><a class="indexterm" name="id2570980"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*      gimp_file_entry_get_filename    (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *entry);</pre><p>
+Note that you have to <a
+href="../glib/glib-Memory-Allocation.html#g-free"
+><tt class="function">g_free()</tt></a> the returned string.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>entry</tt></i> :</span></td><td> The file entry you want to know the filename from.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The file or directory the user has entered.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2583788"></a><h3><a name="gimp-file-entry-set-filename"></a>gimp_file_entry_set_filename ()</h3><a class="indexterm" name="id2583800"></a><pre class="programlisting">void        gimp_file_entry_set_filename    (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *entry,
-                                             const gchar *filename);</pre><p>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The file or directory the user has entered.
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2571035"></a><h3><a name="gimp-file-entry-set-filename"></a>gimp_file_entry_set_filename ()</h3><a class="indexterm" name="id2571046"></a><pre class="programlisting">void        gimp_file_entry_set_filename    (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *entry,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename);</pre><p>
 If you specified <i class="parameter"><tt>check_valid</tt></i> as <tt class="literal">TRUE</tt> in <a href="GimpFileEntry.html#gimp-file-entry-new"><tt class="function">gimp_file_entry_new()</tt></a>
 the <a href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a> will immediately check the validity of the file
 name.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>entry</tt></i> :</span></td><td>    The file entry you want to set the filename for.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td> The new filename.
-</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2583876"></a><h2>Signals</h2><div class="refsect2" lang="en"><a name="id2583882"></a><h3><a name="GimpFileEntry-filename-changed"></a>The "filename-changed" signal</h3><pre class="programlisting">void        user_function                  (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *,
-                                            gpointer user_data);</pre><p>
+</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2571123"></a><h2>Signals</h2><div class="refsect2" lang="en"><a name="id2571128"></a><h3><a name="GimpFileEntry-filename-changed"></a>The "filename-changed" signal</h3><pre class="programlisting">void        user_function                  (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *arg0,
+                                            <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data);</pre><p>
 This signal is emitted whenever the user changes the filename.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>user_data</tt></i> :</span></td><td>user data set when the signal handler was connected.</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2583935"></a><h2>See Also</h2><p>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>user_data</tt></i> :</span></td><td>user data set when the signal handler was connected.</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2586460"></a><h2>See Also</h2><p>
 <a href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a>
 </p></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="GimpDialog.html"><b>&lt;&lt; GimpDialog</b></a></td><td align="right"><a accesskey="n" href="GimpFrame.html"><b>GimpFrame &gt;&gt;</b></a></td></tr></table></body></html>

@@ -176,11 +176,12 @@ domain_map (HelpDomain   *domain,
           if (error->code == G_FILE_ERROR_NOENT)
             msg = _("The GIMP help files are not installed. Please make sure gimp-help-en is installed, or the appropriate gimp-help package for your language.");
           else
-            msg = _("There is a problem with the GIMP help files. Please check your installation.");
+            msg = _("There is a problem with the GIMP help files.");
 
-          g_message ("%s\n\n%s",
+          g_message ("%s\n\n%s\n\n%s",
                      msg,
-                     error->message);
+                     error->message,
+                     _("Please check your installation."));
 
           g_error_free (error);
 

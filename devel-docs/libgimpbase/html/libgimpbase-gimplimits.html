@@ -7,30 +7,30 @@
 #define     <a href="libgimpbase-gimplimits.html#GIMP-MIN-RESOLUTION:CAPS">GIMP_MIN_RESOLUTION</a>
 #define     <a href="libgimpbase-gimplimits.html#GIMP-MAX-RESOLUTION:CAPS">GIMP_MAX_RESOLUTION</a>
 #define     <a href="libgimpbase-gimplimits.html#GIMP-MAX-MEMSIZE:CAPS">GIMP_MAX_MEMSIZE</a>
-</pre></div><div class="refsect1" lang="en"><a name="id2532666"></a><h2>Description</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2546702"></a><h2>Description</h2><p>
 Boundaries of some GIMP data types and some global constants.
 
-</p></div><div class="refsect1" lang="en"><a name="id2575989"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2575994"></a><h3><a name="GIMP-MIN-IMAGE-SIZE:CAPS"></a>GIMP_MIN_IMAGE_SIZE</h3><a class="indexterm" name="id2538216"></a><pre class="programlisting">#define GIMP_MIN_IMAGE_SIZE  1
+</p></div><div class="refsect1" lang="en"><a name="id2535598"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2535603"></a><h3><a name="GIMP-MIN-IMAGE-SIZE:CAPS"></a>GIMP_MIN_IMAGE_SIZE</h3><a class="indexterm" name="id2537030"></a><pre class="programlisting">#define GIMP_MIN_IMAGE_SIZE  1
 </pre><p>
 The minimum width and height of a GIMP image in pixels.
-</p></div><hr><div class="refsect2" lang="en"><a name="id2538226"></a><h3><a name="GIMP-MAX-IMAGE-SIZE:CAPS"></a>GIMP_MAX_IMAGE_SIZE</h3><a class="indexterm" name="id2538235"></a><pre class="programlisting">#define GIMP_MAX_IMAGE_SIZE  262144    /*  2^18  */
+</p></div><hr><div class="refsect2" lang="en"><a name="id2537040"></a><h3><a name="GIMP-MAX-IMAGE-SIZE:CAPS"></a>GIMP_MAX_IMAGE_SIZE</h3><a class="indexterm" name="id2537049"></a><pre class="programlisting">#define GIMP_MAX_IMAGE_SIZE  262144    /*  2^18  */
 </pre><p>
 The maximum width and height of a GIMP image in pixels. This is a
 somewhat arbitray value that can be used when an upper value for pixel
 sizes is needed; for example to give a spin button an upper limit.
-</p></div><hr><div class="refsect2" lang="en"><a name="id2538249"></a><h3><a name="GIMP-MIN-RESOLUTION:CAPS"></a>GIMP_MIN_RESOLUTION</h3><a class="indexterm" name="id2538257"></a><pre class="programlisting">#define GIMP_MIN_RESOLUTION  5e-3      /*  shouldn't display as 0.000  */
+</p></div><hr><div class="refsect2" lang="en"><a name="id2537063"></a><h3><a name="GIMP-MIN-RESOLUTION:CAPS"></a>GIMP_MIN_RESOLUTION</h3><a class="indexterm" name="id2537072"></a><pre class="programlisting">#define GIMP_MIN_RESOLUTION  5e-3      /*  shouldn't display as 0.000  */
 </pre><p>
 The minimum resolution of a GIMP image in pixels per inch. This is a
 somewhat arbitray value that can be used to when a lower value for a
 resolution is needed. GIMP will not accept resolutions smaller than
 this value.
-</p></div><hr><div class="refsect2" lang="en"><a name="id2538272"></a><h3><a name="GIMP-MAX-RESOLUTION:CAPS"></a>GIMP_MAX_RESOLUTION</h3><a class="indexterm" name="id2538280"></a><pre class="programlisting">#define GIMP_MAX_RESOLUTION  65536.0
+</p></div><hr><div class="refsect2" lang="en"><a name="id2537086"></a><h3><a name="GIMP-MAX-RESOLUTION:CAPS"></a>GIMP_MAX_RESOLUTION</h3><a class="indexterm" name="id2537095"></a><pre class="programlisting">#define GIMP_MAX_RESOLUTION  65536.0
 </pre><p>
 The maximum resolution of a GIMP image in pixels per inch. This is a
 somewhat arbitray value that can be used to when an upper value for a
 resolution is needed. GIMP will not accept resolutions larger than
 this value.
-</p></div><hr><div class="refsect2" lang="en"><a name="id2538294"></a><h3><a name="GIMP-MAX-MEMSIZE:CAPS"></a>GIMP_MAX_MEMSIZE</h3><a class="indexterm" name="id2538302"></a><pre class="programlisting">#define GIMP_MAX_MEMSIZE     ((guint64) 1 &lt;&lt; 42) /*  4 terabyte;
+</p></div><hr><div class="refsect2" lang="en"><a name="id2537108"></a><h3><a name="GIMP-MAX-MEMSIZE:CAPS"></a>GIMP_MAX_MEMSIZE</h3><a class="indexterm" name="id2563533"></a><pre class="programlisting">#define GIMP_MAX_MEMSIZE     ((guint64) 1 &lt;&lt; 42) /*  4 terabyte;
 </pre><p>
 A large but arbitrary value that can be used when an upper limit for a
 memory size (in bytes) is needed. It is smaller than <tt class="literal">G_MAXDOUBLE</tt> since

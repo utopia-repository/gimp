@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpFileEntry-struct">GimpFileEntry</link>;
+            <link linkend="GimpFileEntry-struct">GimpFileEntry</link>;
 <link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-file-entry-new">gimp_file_entry_new</link>             (const <link linkend="gchar">gchar</link> *title,
                                              const <link linkend="gchar">gchar</link> *filename,
                                              <link linkend="gboolean">gboolean</link> dir_only,
@@ -63,7 +63,7 @@ GimpFileEntry implements
 <synopsis>
 
 &quot;<link linkend="GimpFileEntry-filename-changed">filename-changed</link>&quot;
-            <link linkend="void">void</link>        user_function      (<link linkend="GimpFileEntry">GimpFileEntry</link> *,
+            <link linkend="void">void</link>        user_function      (<link linkend="GimpFileEntry">GimpFileEntry</link> *arg0,
                                             <link linkend="gpointer">gpointer</link> user_data);
 </synopsis>
 </refsect1>
@@ -83,7 +83,7 @@ You can restrict the <link linkend="GimpFileSelection"><type>GimpFileSelection</
 the filename listbox of the <link linkend="GtkFileSelection"><type>GtkFileSelection</type></link> dialog will be hidden.
 </para>
 <para>
-If you specify <parameter>check_valid</parameter> as <link linkend="TRUE-CAPS"><type>TRUE</type></link> in <link linkend="gimp-file-entry-new"><function>gimp_file_entry_new()</function></link>
+If you specify <parameter>check_valid</parameter> as <link linkend="TRUE--CAPS"><type>TRUE</type></link> in <link linkend="gimp-file-entry-new"><function>gimp_file_entry_new()</function></link>
 the entered filename will be checked for validity and a pixmap will be
 shown which indicates if the file exists or not.
 </para>
@@ -96,8 +96,8 @@ will be emitted.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpFileEntry-struct"/>struct GimpFileEntry</title>
-<indexterm><primary>GimpFileEntry</primary></indexterm><programlisting>struct GimpFileEntry;</programlisting>
+<title><anchor id="GimpFileEntry-struct"/>GimpFileEntry</title>
+<indexterm><primary>GimpFileEntry</primary></indexterm><programlisting>typedef struct _GimpFileEntry GimpFileEntry;</programlisting>
 <para>
 
 </para></refsect2>
@@ -125,7 +125,7 @@ Creates a new <link linkend="GimpFileEntry"><type>GimpFileEntry</type></link> wi
 <listitem><simpara> <literal>TRUE</literal> if the widget should check if the entered file
               really exists.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> A pointer to the new <link linkend="GimpFileEntry"><type>GimpFileEntry</type></link> widget.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A pointer to the new <link linkend="GimpFileEntry"><type>GimpFileEntry</type></link> widget.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -139,7 +139,7 @@ Note that you have to <link linkend="g-free"><function>g_free()</function></link
 <varlistentry><term><parameter>entry</parameter>&nbsp;:</term>
 <listitem><simpara> The file entry you want to know the filename from.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The file or directory the user has entered.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The file or directory the user has entered.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -166,7 +166,7 @@ name.</para>
 <refsect1>
 <title>Signals</title>
 <refsect2><title><anchor id="GimpFileEntry-filename-changed"/>The &quot;filename-changed&quot; signal</title>
-<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpFileEntry">GimpFileEntry</link> *,
+<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpFileEntry">GimpFileEntry</link> *arg0,
                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 This signal is emitted whenever the user changes the filename.</para>

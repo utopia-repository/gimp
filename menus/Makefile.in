@@ -588,7 +588,8 @@ uninstall-am: uninstall-info-am uninstall-menudataDATA
 @HAVE_XSLTPROC_FALSE@	@echo "xsltproc is needed to build the menus XML files"; exit 1;
 
 validate: $(menudata_DATA)
-@HAVE_XMLLINT_TRUE@	@for menu in $(menudata_DATA); do \
+@HAVE_XMLLINT_TRUE@	@cd $(srcdir); \
+@HAVE_XMLLINT_TRUE@	for menu in $(menudata_DATA); do \
 @HAVE_XMLLINT_TRUE@	   $(XMLLINT) --noout --valid $$menu || \
 @HAVE_XMLLINT_TRUE@	   ( echo "* $$menu INVALID *"; exit 1; ) ; \
 @HAVE_XMLLINT_TRUE@	done

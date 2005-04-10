@@ -49,13 +49,13 @@ gboolean    <a href="libgimpbase-gimpprotocol.html#gp-proc-uninstall-write">gp_p
                                              gpointer user_data);
 gboolean    <a href="libgimpbase-gimpprotocol.html#gp-extension-ack-write">gp_extension_ack_write</a>          (GIOChannel *channel,
                                              gpointer user_data);
-</pre></div><div class="refsect1" lang="en"><a name="id2589678"></a><h2>Description</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2586762"></a><h2>Description</h2><p>
 The communication protocol between GIMP and it's plug-ins.
 
-</p></div><div class="refsect1" lang="en"><a name="id2574805"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2574810"></a><h3><a name="GIMP-PROTOCOL-VERSION:CAPS"></a>GIMP_PROTOCOL_VERSION</h3><a class="indexterm" name="id2574819"></a><pre class="programlisting">#define GIMP_PROTOCOL_VERSION  0x0011
+</p></div><div class="refsect1" lang="en"><a name="id2586773"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2586778"></a><h3><a name="GIMP-PROTOCOL-VERSION:CAPS"></a>GIMP_PROTOCOL_VERSION</h3><a class="indexterm" name="id2586786"></a><pre class="programlisting">#define GIMP_PROTOCOL_VERSION  0x0011
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2574828"></a><h3><a name="GPConfig"></a>GPConfig</h3><a class="indexterm" name="id2574837"></a><pre class="programlisting">typedef struct {
+</p></div><hr><div class="refsect2" lang="en"><a name="id2586796"></a><h3><a name="GPConfig"></a>GPConfig</h3><a class="indexterm" name="id2586804"></a><pre class="programlisting">typedef struct {
   guint32  version;
   guint32  tile_width;
   guint32  tile_height;
@@ -79,16 +79,16 @@ The communication protocol between GIMP and it's plug-ins.
 } GPConfig;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2556165"></a><h3><a name="GPTileReq"></a>GPTileReq</h3><a class="indexterm" name="id2581208"></a><pre class="programlisting">typedef struct {
+</p></div><hr><div class="refsect2" lang="en"><a name="id2555875"></a><h3><a name="GPTileReq"></a>GPTileReq</h3><a class="indexterm" name="id2494995"></a><pre class="programlisting">typedef struct {
   gint32   drawable_ID;
   guint32  tile_num;
   guint32  shadow;
 } GPTileReq;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2557980"></a><h3><a name="GPTileAck"></a>GPTileAck</h3><a class="indexterm" name="id2556851"></a><pre class="programlisting">typedef struct _GPTileAck GPTileAck;</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2540492"></a><h3><a name="GPTileAck"></a>GPTileAck</h3><a class="indexterm" name="id2567270"></a><pre class="programlisting">typedef struct _GPTileAck GPTileAck;</pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2574860"></a><h3><a name="GPTileData"></a>GPTileData</h3><a class="indexterm" name="id2574868"></a><pre class="programlisting">typedef struct {
+</p></div><hr><div class="refsect2" lang="en"><a name="id2527808"></a><h3><a name="GPTileData"></a>GPTileData</h3><a class="indexterm" name="id2537774"></a><pre class="programlisting">typedef struct {
   gint32   drawable_ID;
   guint32  tile_num;
   guint32  shadow;
@@ -100,7 +100,7 @@ The communication protocol between GIMP and it's plug-ins.
 } GPTileData;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2574880"></a><h3><a name="GPParam"></a>GPParam</h3><a class="indexterm" name="id2574888"></a><pre class="programlisting">typedef struct {
+</p></div><hr><div class="refsect2" lang="en"><a name="id2578348"></a><h3><a name="GPParam"></a>GPParam</h3><a class="indexterm" name="id2540087"></a><pre class="programlisting">typedef struct {
   guint32 type;
 
   union
@@ -143,28 +143,28 @@ The communication protocol between GIMP and it's plug-ins.
 } GPParam;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2534219"></a><h3><a name="GPParamDef"></a>GPParamDef</h3><a class="indexterm" name="id2574910"></a><pre class="programlisting">typedef struct {
+</p></div><hr><div class="refsect2" lang="en"><a name="id2556624"></a><h3><a name="GPParamDef"></a>GPParamDef</h3><a class="indexterm" name="id2586842"></a><pre class="programlisting">typedef struct {
   guint32  type;
   gchar   *name;
   gchar   *description;
 } GPParamDef;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2574922"></a><h3><a name="GPProcRun"></a>GPProcRun</h3><a class="indexterm" name="id2574929"></a><pre class="programlisting">typedef struct {
+</p></div><hr><div class="refsect2" lang="en"><a name="id2586853"></a><h3><a name="GPProcRun"></a>GPProcRun</h3><a class="indexterm" name="id2586860"></a><pre class="programlisting">typedef struct {
   gchar   *name;
   guint32  nparams;
   GPParam *params;
 } GPProcRun;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2574940"></a><h3><a name="GPProcReturn"></a>GPProcReturn</h3><a class="indexterm" name="id2574948"></a><pre class="programlisting">typedef struct {
+</p></div><hr><div class="refsect2" lang="en"><a name="id2586872"></a><h3><a name="GPProcReturn"></a>GPProcReturn</h3><a class="indexterm" name="id2586879"></a><pre class="programlisting">typedef struct {
   gchar   *name;
   guint32  nparams;
   GPParam *params;
 } GPProcReturn;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2574959"></a><h3><a name="GPProcInstall"></a>GPProcInstall</h3><a class="indexterm" name="id2574966"></a><pre class="programlisting">typedef struct {
+</p></div><hr><div class="refsect2" lang="en"><a name="id2586890"></a><h3><a name="GPProcInstall"></a>GPProcInstall</h3><a class="indexterm" name="id2586898"></a><pre class="programlisting">typedef struct {
   gchar      *name;
   gchar      *blurb;
   gchar      *help;
@@ -181,14 +181,14 @@ The communication protocol between GIMP and it's plug-ins.
 } GPProcInstall;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2574982"></a><h3><a name="GPProcUninstall"></a>GPProcUninstall</h3><a class="indexterm" name="id2574989"></a><pre class="programlisting">typedef struct {
+</p></div><hr><div class="refsect2" lang="en"><a name="id2586913"></a><h3><a name="GPProcUninstall"></a>GPProcUninstall</h3><a class="indexterm" name="id2586921"></a><pre class="programlisting">typedef struct {
   gchar *name;
 } GPProcUninstall;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2574999"></a><h3><a name="gp-init"></a>gp_init ()</h3><a class="indexterm" name="id2575006"></a><pre class="programlisting">void        gp_init                         (void);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2586930"></a><h3><a name="gp-init"></a>gp_init ()</h3><a class="indexterm" name="id2586938"></a><pre class="programlisting">void        gp_init                         (void);</pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2575019"></a><h3><a name="gp-has-init-write"></a>gp_has_init_write ()</h3><a class="indexterm" name="id2575027"></a><pre class="programlisting">gboolean    gp_has_init_write               (GIOChannel *channel,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2586950"></a><h3><a name="gp-has-init-write"></a>gp_has_init_write ()</h3><a class="indexterm" name="id2586958"></a><pre class="programlisting">gboolean    gp_has_init_write               (GIOChannel *channel,
                                              gpointer user_data);</pre><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>channel</tt></i> :</span></td><td>
@@ -196,7 +196,7 @@ The communication protocol between GIMP and it's plug-ins.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2575083"></a><h3><a name="gp-quit-write"></a>gp_quit_write ()</h3><a class="indexterm" name="id2575091"></a><pre class="programlisting">gboolean    gp_quit_write                   (GIOChannel *channel,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587014"></a><h3><a name="gp-quit-write"></a>gp_quit_write ()</h3><a class="indexterm" name="id2587022"></a><pre class="programlisting">gboolean    gp_quit_write                   (GIOChannel *channel,
                                              gpointer user_data);</pre><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>channel</tt></i> :</span></td><td>
@@ -204,7 +204,7 @@ The communication protocol between GIMP and it's plug-ins.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2575147"></a><h3><a name="gp-config-write"></a>gp_config_write ()</h3><a class="indexterm" name="id2575155"></a><pre class="programlisting">gboolean    gp_config_write                 (GIOChannel *channel,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587078"></a><h3><a name="gp-config-write"></a>gp_config_write ()</h3><a class="indexterm" name="id2587086"></a><pre class="programlisting">gboolean    gp_config_write                 (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPConfig">GPConfig</a> *config,
                                              gpointer user_data);</pre><p>
 
@@ -214,7 +214,7 @@ The communication protocol between GIMP and it's plug-ins.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593266"></a><h3><a name="gp-tile-req-write"></a>gp_tile_req_write ()</h3><a class="indexterm" name="id2593275"></a><pre class="programlisting">gboolean    gp_tile_req_write               (GIOChannel *channel,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587161"></a><h3><a name="gp-tile-req-write"></a>gp_tile_req_write ()</h3><a class="indexterm" name="id2587170"></a><pre class="programlisting">gboolean    gp_tile_req_write               (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPTileReq">GPTileReq</a> *tile_req,
                                              gpointer user_data);</pre><p>
 
@@ -224,7 +224,7 @@ The communication protocol between GIMP and it's plug-ins.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593352"></a><h3><a name="gp-tile-ack-write"></a>gp_tile_ack_write ()</h3><a class="indexterm" name="id2593360"></a><pre class="programlisting">gboolean    gp_tile_ack_write               (GIOChannel *channel,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2591544"></a><h3><a name="gp-tile-ack-write"></a>gp_tile_ack_write ()</h3><a class="indexterm" name="id2591552"></a><pre class="programlisting">gboolean    gp_tile_ack_write               (GIOChannel *channel,
                                              gpointer user_data);</pre><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>channel</tt></i> :</span></td><td>
@@ -232,7 +232,7 @@ The communication protocol between GIMP and it's plug-ins.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593421"></a><h3><a name="gp-tile-data-write"></a>gp_tile_data_write ()</h3><a class="indexterm" name="id2593429"></a><pre class="programlisting">gboolean    gp_tile_data_write              (GIOChannel *channel,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2591613"></a><h3><a name="gp-tile-data-write"></a>gp_tile_data_write ()</h3><a class="indexterm" name="id2591621"></a><pre class="programlisting">gboolean    gp_tile_data_write              (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPTileData">GPTileData</a> *tile_data,
                                              gpointer user_data);</pre><p>
 
@@ -242,7 +242,7 @@ The communication protocol between GIMP and it's plug-ins.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593506"></a><h3><a name="gp-proc-run-write"></a>gp_proc_run_write ()</h3><a class="indexterm" name="id2593515"></a><pre class="programlisting">gboolean    gp_proc_run_write               (GIOChannel *channel,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2591698"></a><h3><a name="gp-proc-run-write"></a>gp_proc_run_write ()</h3><a class="indexterm" name="id2591707"></a><pre class="programlisting">gboolean    gp_proc_run_write               (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPProcRun">GPProcRun</a> *proc_run,
                                              gpointer user_data);</pre><p>
 
@@ -252,7 +252,7 @@ The communication protocol between GIMP and it's plug-ins.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593592"></a><h3><a name="gp-proc-return-write"></a>gp_proc_return_write ()</h3><a class="indexterm" name="id2593600"></a><pre class="programlisting">gboolean    gp_proc_return_write            (GIOChannel *channel,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2591784"></a><h3><a name="gp-proc-return-write"></a>gp_proc_return_write ()</h3><a class="indexterm" name="id2591792"></a><pre class="programlisting">gboolean    gp_proc_return_write            (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPProcReturn">GPProcReturn</a> *proc_return,
                                              gpointer user_data);</pre><p>
 
@@ -262,7 +262,7 @@ The communication protocol between GIMP and it's plug-ins.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593678"></a><h3><a name="gp-temp-proc-run-write"></a>gp_temp_proc_run_write ()</h3><a class="indexterm" name="id2593686"></a><pre class="programlisting">gboolean    gp_temp_proc_run_write          (GIOChannel *channel,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2591870"></a><h3><a name="gp-temp-proc-run-write"></a>gp_temp_proc_run_write ()</h3><a class="indexterm" name="id2591878"></a><pre class="programlisting">gboolean    gp_temp_proc_run_write          (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPProcRun">GPProcRun</a> *proc_run,
                                              gpointer user_data);</pre><p>
 
@@ -272,7 +272,7 @@ The communication protocol between GIMP and it's plug-ins.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593763"></a><h3><a name="gp-temp-proc-return-write"></a>gp_temp_proc_return_write ()</h3><a class="indexterm" name="id2593772"></a><pre class="programlisting">gboolean    gp_temp_proc_return_write       (GIOChannel *channel,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2591955"></a><h3><a name="gp-temp-proc-return-write"></a>gp_temp_proc_return_write ()</h3><a class="indexterm" name="id2591964"></a><pre class="programlisting">gboolean    gp_temp_proc_return_write       (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPProcReturn">GPProcReturn</a> *proc_return,
                                              gpointer user_data);</pre><p>
 
@@ -282,7 +282,7 @@ The communication protocol between GIMP and it's plug-ins.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593849"></a><h3><a name="gp-proc-install-write"></a>gp_proc_install_write ()</h3><a class="indexterm" name="id2593857"></a><pre class="programlisting">gboolean    gp_proc_install_write           (GIOChannel *channel,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2592041"></a><h3><a name="gp-proc-install-write"></a>gp_proc_install_write ()</h3><a class="indexterm" name="id2592049"></a><pre class="programlisting">gboolean    gp_proc_install_write           (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPProcInstall">GPProcInstall</a> *proc_install,
                                              gpointer user_data);</pre><p>
 
@@ -292,7 +292,7 @@ The communication protocol between GIMP and it's plug-ins.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593935"></a><h3><a name="gp-proc-uninstall-write"></a>gp_proc_uninstall_write ()</h3><a class="indexterm" name="id2593943"></a><pre class="programlisting">gboolean    gp_proc_uninstall_write         (GIOChannel *channel,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2592127"></a><h3><a name="gp-proc-uninstall-write"></a>gp_proc_uninstall_write ()</h3><a class="indexterm" name="id2592135"></a><pre class="programlisting">gboolean    gp_proc_uninstall_write         (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPProcUninstall">GPProcUninstall</a> *proc_uninstall,
                                              gpointer user_data);</pre><p>
 
@@ -302,7 +302,7 @@ The communication protocol between GIMP and it's plug-ins.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2594020"></a><h3><a name="gp-extension-ack-write"></a>gp_extension_ack_write ()</h3><a class="indexterm" name="id2594029"></a><pre class="programlisting">gboolean    gp_extension_ack_write          (GIOChannel *channel,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2592212"></a><h3><a name="gp-extension-ack-write"></a>gp_extension_ack_write ()</h3><a class="indexterm" name="id2592221"></a><pre class="programlisting">gboolean    gp_extension_ack_write          (GIOChannel *channel,
                                              gpointer user_data);</pre><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>channel</tt></i> :</span></td><td>
@@ -310,6 +310,6 @@ The communication protocol between GIMP and it's plug-ins.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2594090"></a><h2>See Also</h2><p>
+</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2592282"></a><h2>See Also</h2><p>
 <span class="type">libgimp-gimpwire</span>
 </p></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpbase-gimputils.html"><b>&lt;&lt; gimputils</b></a></td><td align="right"><a accesskey="n" href="libgimpbase-gimpwire.html"><b>gimpwire &gt;&gt;</b></a></td></tr></table></body></html>

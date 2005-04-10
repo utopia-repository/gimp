@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpPreviewArea-struct">GimpPreviewArea</link>;
+            <link linkend="GimpPreviewArea-struct">GimpPreviewArea</link>;
 <link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-preview-area-new">gimp_preview_area_new</link>           (void);
 <link linkend="void">void</link>        <link linkend="gimp-preview-area-draw">gimp_preview_area_draw</link>          (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
                                              <link linkend="gint">gint</link> x,
@@ -103,8 +103,8 @@ GimpPreviewArea implements
 <title>Properties</title>
 <synopsis>
 
-  &quot;<link linkend="GimpPreviewArea--check-size">check-size</link>&quot;           <link linkend="GimpCheckSize">GimpCheckSize</link>        : Read / Write
-  &quot;<link linkend="GimpPreviewArea--check-type">check-type</link>&quot;           <link linkend="GimpCheckType">GimpCheckType</link>        : Read / Write
+  &quot;<link linkend="GimpPreviewArea--check-size">check-size</link>&quot;           <link linkend="GimpCheckSize">GimpCheckSize</link>         : Read / Write
+  &quot;<link linkend="GimpPreviewArea--check-type">check-type</link>&quot;           <link linkend="GimpCheckType">GimpCheckType</link>         : Read / Write
 </synopsis>
 </refsect1>
 
@@ -120,8 +120,8 @@ A general purpose preview widget which caches its pixel data.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpPreviewArea-struct"/>struct GimpPreviewArea</title>
-<indexterm><primary>GimpPreviewArea</primary></indexterm><programlisting>struct GimpPreviewArea;</programlisting>
+<title><anchor id="GimpPreviewArea-struct"/>GimpPreviewArea</title>
+<indexterm><primary>GimpPreviewArea</primary></indexterm><programlisting>typedef struct _GimpPreviewArea GimpPreviewArea;</programlisting>
 <para>
 
 </para></refsect2>
@@ -133,7 +133,7 @@ A general purpose preview widget which caches its pixel data.
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> a new <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type></link> widget.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a new <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type></link> widget.
 
 Since GIMP 2.2
 </simpara></listitem></varlistentry>
@@ -348,7 +348,7 @@ Since GIMP 2.2</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-preview-area-set-offsets"/>gimp_preview_area_set_offsets ()</title>
-<indexterm><primary>gimp_preview_area_set_offsets</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_area_set_offsets   (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+<indexterm role="GIMP 2.2"><primary>gimp_preview_area_set_offsets</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_area_set_offsets   (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
                                              <link linkend="gint">gint</link> x,
                                              <link linkend="gint">gint</link> y);</programlisting>
 <para>
@@ -395,7 +395,7 @@ Since GIMP 2.2</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-preview-area-set-max-size"/>gimp_preview_area_set_max_size ()</title>
-<indexterm><primary>gimp_preview_area_set_max_size</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_area_set_max_size  (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+<indexterm role="GIMP 2.2"><primary>gimp_preview_area_set_max_size</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_area_set_max_size  (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
                                              <link linkend="gint">gint</link> width,
                                              <link linkend="gint">gint</link> height);</programlisting>
 <para>
@@ -419,7 +419,7 @@ preview will draw itself centered into the allocated area.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-preview-area-menu-popup"/>gimp_preview_area_menu_popup ()</title>
-<indexterm><primary>gimp_preview_area_menu_popup</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_area_menu_popup    (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+<indexterm role="GIMP 2.2"><primary>gimp_preview_area_menu_popup</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_area_menu_popup    (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
                                              <link linkend="GdkEventButton">GdkEventButton</link> *event);</programlisting>
 <para>
 Creates a popup menu that allows to configure the size and type of
@@ -439,17 +439,15 @@ the checkerboard pattern that the <parameter>area</parameter> uses to visualize 
 </refsect1>
 <refsect1>
 <title>Properties</title>
-<variablelist>
-<varlistentry><term><anchor id="GimpPreviewArea--check-size"/>&quot;<literal>check-size</literal>&quot; (<link linkend="GimpCheckSize">GimpCheckSize</link> : Read / Write)</term>
-<listitem>
-<para></para>
-</listitem></varlistentry>
-<varlistentry><term><anchor id="GimpPreviewArea--check-type"/>&quot;<literal>check-type</literal>&quot; (<link linkend="GimpCheckType">GimpCheckType</link> : Read / Write)</term>
-<listitem>
-<para></para>
-</listitem></varlistentry>
+<refsect2><title><anchor id="GimpPreviewArea--check-size"/>The &quot;<literal>check-size</literal>&quot; property</title>
+<programlisting>  &quot;check-size&quot;           <link linkend="GimpCheckSize">GimpCheckSize</link>         : Read / Write</programlisting>
+<para></para><para>Default value: GIMP_CHECK_SIZE_MEDIUM_CHECKS</para>
+</refsect2>
+<refsect2><title><anchor id="GimpPreviewArea--check-type"/>The &quot;<literal>check-type</literal>&quot; property</title>
+<programlisting>  &quot;check-type&quot;           <link linkend="GimpCheckType">GimpCheckType</link>         : Read / Write</programlisting>
+<para></para><para>Default value: GIMP_CHECK_TYPE_GRAY_CHECKS</para>
+</refsect2>
 
-</variablelist>
 </refsect1>
 
 

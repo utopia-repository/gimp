@@ -1,55 +1,37 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpColorScales</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="up" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors"><link rel="prev" href="GimpColorNotebook.html" title="GimpColorNotebook"><link rel="next" href="GimpColorSelect.html" title="GimpColorSelect"><meta name="generator" content="GTK-Doc V1.2 (XML mode)"><style type="text/css">
-        .synopsis, .classsynopsis {
-            background: #eeeeee;
-            border: solid 1px #aaaaaa;
-            padding: 0.5em;
-        }
-        .programlisting {
-            background: #eeeeff;
-            border: solid 1px #aaaaff;
-            padding: 0.5em;
-        }
-        .variablelist {
-            padding: 4px;
-            margin-left: 3em;
-        }
-        .navigation {
-            background: #ffeeee;
-            border: solid 1px #ffaaaa;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-        }
-        .navigation a {
-            color: #770000;
-        }
-        .navigation a:visited {
-            color: #550000;
-        }
-        .navigation .title {
-            font-size: 200%;
-        }
-      </style></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="GimpColorNotebook.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpwidgets-colorselector.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Widgets Library Reference Manual</th><td><a accesskey="n" href="GimpColorSelect.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="GimpColorScales"></a><div class="titlepage"></div><div class="refnamediv"><h2><span class="refentrytitle">GimpColorScales</span></h2><p>GimpColorScales &#8212; A <a href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> implementation.</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpColorScales</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="up" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors"><link rel="prev" href="GimpColorNotebook.html" title="GimpColorNotebook"><link rel="next" href="GimpColorSelect.html" title="GimpColorSelect"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy"><link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView"><link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters"><link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors"><link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers"><link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities"><link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="GimpColorNotebook.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpwidgets-colorselector.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Widgets Library Reference Manual</th><td><a accesskey="n" href="GimpColorSelect.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="GimpColorScales"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">GimpColorScales</span></h2><p>GimpColorScales &#8212; A <a href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> implementation.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
-struct      <a href="GimpColorScales.html#GimpColorScales-struct">GimpColorScales</a>;
+            <a href="GimpColorScales.html#GimpColorScales-struct">GimpColorScales</a>;
 
-</pre></div><div class="refsect1" lang="en"><a name="id2575933"></a><h2>Object Hierarchy</h2><pre class="synopsis">
+</pre></div><div class="refsect1" lang="en"><a name="id2555568"></a><h2>Object Hierarchy</h2><pre class="synopsis">
 
-  GObject
-   +----GtkObject
-         +----GtkWidget
-               +----GtkContainer
-                     +----GtkBox
-                           +----GtkVBox
+  <a
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+         +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+               +----<a
+href="../gtk/GtkContainer.html"
+>GtkContainer</a>
+                     +----<a
+href="../gtk/GtkBox.html"
+>GtkBox</a>
+                           +----<a
+href="../gtk/GtkVBox.html"
+>GtkVBox</a>
                                  +----<a href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a>
                                        +----GimpColorScales
-</pre></div><div class="refsect1" lang="en"><a name="id2600690"></a><h2>Implemented Interfaces</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2604072"></a><h2>Implemented Interfaces</h2><p>
 GimpColorScales implements
- AtkImplementorIface.</p></div><div class="refsect1" lang="en"><a name="id2600705"></a><h2>Description</h2><p>
+ AtkImplementorIface.</p></div><div class="refsect1" lang="en"><a name="id2604086"></a><h2>Description</h2><p>
 The <a href="GimpColorScales.html" title="GimpColorScales"><span class="type">GimpColorScales</span></a> widget is an implementation of a <a href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a>.
 It shows a group of <a href="GimpColorScale.html" title="GimpColorScale"><span class="type">GimpColorScale</span></a> widgets that allow to adjust the
 HSV and RGB color channels.
-</p></div><div class="refsect1" lang="en"><a name="id2600734"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2600740"></a><h3><a name="GimpColorScales-struct"></a>struct GimpColorScales</h3><a class="indexterm" name="id2600748"></a><pre class="programlisting">struct GimpColorScales;</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2604116"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2604121"></a><h3><a name="GimpColorScales-struct"></a>GimpColorScales</h3><a class="indexterm" name="id2604130"></a><pre class="programlisting">typedef struct _GimpColorScales GimpColorScales;</pre><p>
 
 </p></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="GimpColorNotebook.html"><b>&lt;&lt; GimpColorNotebook</b></a></td><td align="right"><a accesskey="n" href="GimpColorSelect.html"><b>GimpColorSelect &gt;&gt;</b></a></td></tr></table></body></html>

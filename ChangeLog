@@ -1,3 +1,421 @@
+2005-04-10  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.2.6 release.
+
+2005-04-10  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/print/print.c: reverted the previous change, it was wrong
+	(see bug #169909).
+
+2005-04-10  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.2.6, interface_age 6.
+
+2005-04-09  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.2.5 release.
+
+2005-04-09  Sven Neumann  <sven@gimp.org>
+
+	* menus/Makefile.am
+	* tips/Makefile.am: changed the validate rules to work with srcdir
+	!= builddir.
+
+2005-04-09  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/print/print.c: quote the shell command passed to execl().
+	Fixes bug #169909.
+
+2005-04-09  Michael Natterer  <mitch@gimp.org>
+
+	* app/tools/gimp-tools.c (gimp_tools_register): manually hardwire
+	the global font and the text option's font together. Makes the
+	globally selected font persistant and fixes bug #171024.
+
+2005-04-09  Sven Neumann  <sven@gimp.org>
+
+	* app/paint/gimpink.c: merged changes to the time-smoother code
+	from the HEAD branch. Fixes bug #164272.
+
+2005-04-09  Manish Singh  <yosh@gimp.org>
+
+	* plug-ins/common/gifload.c (GetCode): GetDataBlock returns -1 on
+	error, so count should be an int, not an unsigned char. Fixes
+	bug #173119.
+
+2005-04-09  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/winicon/icosave.c: implement color counting without
+	changing the image-type to RGB. A save plug-in must not change the
+	image.
+
+2005-04-08  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/winicon/icodialog.c: rewrote preview code to use
+	GtkImage and pixbufs. The previous implementation was severily
+	broken.
+
+2005-04-08  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/gauss.c: fixed preview for zero blur radii
+	(bug #173039).
+
+2005-04-07  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* docs/gimp.1.in: fixed typos and improved explanation of parasiterc.
+
+2005-04-07  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/widgets/gimpcolorframe.c (gimp_color_frame_update)
+	* app/widgets/gimpmessagebox.c: plugged small memleaks.
+
+	* libgimpwidgets/gimpcontroller.c: added a finalizer and free the
+	allocated strings.
+
+2005-04-05  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD branch:
+
+	* tools/pdbgen/pdb/plug_in.pdb (plugins_query): strip the menu
+	strings from underlines before matching. Fixed function to not
+	match all procedures twice.
+
+	* app/pdb/plug_in_cmds.c: regenerated.
+
+2005-04-05  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/core/core-enums.[ch]
+	* app/core/gimpimage.c
+	(gimp_image_remove_layer, gimp_image_remove_channel): handle a
+	floating selection attached to the layer or channel that is being
+	removed.  Fixes bug #168582.
+
+2005-04-05  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* configure.in: select localedir according to the format of the
+	gettext message catalogs. Closes bug #169274 again.
+
+2005-04-04  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/core/gimpdata.c (gimp_data_create_filename): return early if
+	called for an internal data object. Fixes bug #172581.
+
+2005-04-04  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/deinterlace.c (deinterlace): fixed boundary
+	conditions that led to incorrect preview (bug #172589).
+
+2005-04-04  Tor Lillqvist  <tml@novell.com>
+
+	* app/widgets/gimpclipboard.c (gimp_clipboard_format_compare): On
+	Win32, move the "bmp" format to the front. Means less conversion
+	in most cases, as other apps on Win32 typically provide/want the
+	BMP format on the Clipboard. (Actually CF_DIB, but that's the
+	same, just without the BMP file header.) See also bug #168173.
+
+2005-04-04  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/FractalExplorer/FractalExplorer.c: fixed typo that
+	caused a crash when deleting a fractal from the list (bug #172347).
+
+2005-04-01  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/rcm/rcm_dialog.c: keep the previews from expanding. Fixes
+	bug #172284.
+
+2005-03-30  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/gimpwidgets.c (gimp_label_set_attributes): fixed
+	copy-n-paste bug that affected PANGO_ATTR_SIZE.
+
+2005-03-30  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/tools/gimpvectortool.c (gimp_vector_tool_status_update):
+	set a different help message in polygonal mode. Fixes bug #172051.
+
+2005-03-28  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/dialogs/resize-dialog.c (resize_dialog_new): handle
+	gimp_viewable_get_pixbuf() returning NULL. Fixes bug #171827.
+
+2005-03-25  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/bmp/bmpread.c: applied patch from David Costanzo that
+	initializes unspecified pixels in RLE bitmaps. Fixes bug #171562.
+
+2005-03-24  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/bmp/bmp.h (Bitmap_Head_Struct)
+	* plug-ins/bmp/bmpread.c: use a signed long for width and height
+	and check that width is > 0 (negative height is allowed and
+	handled by our code). Fixes bug #171453.
+
+2005-03-24  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/bmp/bmpread.c: applied a patch from David Costanzo that
+	fixes handling of odd-length pixel encodings in "absolute mode" of
+	RLE4 compressed data (bug #171306).
+
+2005-03-24  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/display/gimpstatusbar.c (gimp_statusbar_push_coords) 
+	(gimp_statusbar_set_cursor): use RINT() instead of ROUND() to get
+	proper rounding of negative values. Fixes bug #171497.
+
+2005-03-24  Sven Neumann  <sven@gimp.org>
+
+	* app/widgets/gimphistogrameditor.c: change to the Value channel
+	if the current channel becomes invalid due to an image mode change.
+	Fixes bug #170116.
+
+2005-03-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/colortoalpha.c: unset "Keep transparency", it is
+	not what the user wants if this plug-in is being used.
+
+2005-03-21  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/actions/dialogs-actions.h: bail out if
+	widgets/gimpactiongroup.h has not been included beforehand.
+
+	* app/actions/actions.c: include widgets/gimpactiongroup.h. Fixes
+	build with amd64/gcc-4.0 (Debian bug report #300227).
+
+2005-03-21  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* etc/controllerrc: fixed defaults for mouse wheel controller (bug
+	#171083, fix spotted by Michael Schumacher).
+
+2005-03-21  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/widgets/gimpcontainertreeview.c
+	(gimp_container_tree_view_constructor): disable search for tree
+	views so that treeview typeahead doesn't collide with global
+	accelerators. Fixes bug #169339 and would suck less if bug #170435
+	was fixed.
+
+2005-03-21  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/winicon/icosave.c (ico_create_palette): fixed parameter
+	check, NULL is valid for an empty palette. Fixes bug #170812.
+
+2005-03-21  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/dialogs/convert-dialog.c (convert_dialog_palette_filter): don't
+	show empty palettes. Fixes bug #170973.
+
+2005-03-20  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merged from HEAD branch:
+
+	* libgimpwidgets/gimpcolorscales.c (gimp_color_scales_update_scales):
+	Block callback when updating hex entry, fixes bug #169882.
+	
+2005-03-20  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/core/gimpimage-convert.c: applied patch from Adam
+	Moss converning gray->indexed conversion,
+	fixes bug #170825.
+
+2005-03-18  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merged from HEAD branch:
+
+	* app/core/gimpimage-convert.c:  when converting grayscale
+	to mono, treat the palette as gray rather than rgb, giving
+	more than tenfold speedup.  Fixes bug #170801.
+
+2005-03-18  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/tools/gimpellipseselecttool.c
+	* app/tools/gimprectselecttool.[ch]: applied a patch by Nils
+	Bjorklund that should fix bug #143887 (selection rectangle "moves"
+	when starting at the top-right corner).
+
+2005-03-14  Manish Singh  <yosh@gimp.org>
+
+	* libgimpwidgets/gimpwidgets-private.c (gimp_widgets_init): disable
+	"gtk-alternative-button-order" here, so the plug-ins get it unset
+	too. Completely fixes bug #170543.
+
+	* app/gui/gui.c (gui_int): removed now redundant code.
+
+2005-03-16  Sven Neumann  <sven@gimp.org>
+
+	* app/gui/gui.c (gui_init): disable "gtk-alternative-button-order"
+	since we don't provide an alternative button order in this branch.
+	Fixes bug #170543.
+
+2005-03-14  Manish Singh  <yosh@gimp.org>
+
+	* app/display/gimpstatusbar.c: Make sure "focus-on-click" property
+	exists before setting it on comboboxes (it didn't exist in GTK+ 2.4,
+	where the behavior was what we wanted anyway).
+
+2005-03-13  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/dialogs/print-size-dialog.c (print_size_dialog_response):
+	handle the resolution unit correctly, fixes bug #170200.
+
+2005-03-13  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD branch:
+
+	* tools/pdbgen/pdb/drawable_transform.pdb
+	(drawable_transform_scale)
+	(drawable_transform_scale_default): applied fix from Theodor de
+	Ment which fixes a wrong precondition check which made certain
+	scale operations impossible. Fixes bug #170195.
+
+	* tools/pdbgen/pdb/transform_tools.pdb (scale): fixed the same
+	copy & paste bug here.
+
+	* app/pdb/drawable_transform_cmds.c
+	* app/pdb/transform_tools_cmds.c: regenerated.
+
+2005-03-10  Manish Singh  <yosh@gimp.org>
+
+	* plug-ins/common/url.c: force the server-response wget option off
+	so it doesn't screw up our parsing.
+
+2005-03-08  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/file/file-open.c (file_open_layer): open images interactively.
+	Fixes bug #168936.
+
+2005-03-08  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/tools/gimppaintoptions-gui.c (fade_options_gui)
+	(gradient_options_gui)
+	* app/tools/gimpselectionoptions.c (gimp_selection_options_gui):
+	call gimp_unit_menu_set_pixel_digits() after connecting up the
+	spinbuttons and the unitmenu. Fixes initial display (bug #169066).
+
+2005-03-06  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/display/gimpdisplayshell-callbacks.c: applied patch from 
+	Robert Ögren to improve autoscrolling with tablets in Windows,
+	see bug #167960.
+	
+2005-03-05  Sven Neumann  <sven@gimp.org>
+
+	Fix for bug #169274, merged from HEAD:
+
+	* configure.in: updated definition of localedir.
+
+	* po-libgimp/Makefile.in.in
+	* po-plug-ins/Makefile.in.in
+	* po-script-fu/Makefile.in.in: synchronized with po/Makefile.in.in.
+
+2005-03-05  Manish Singh  <yosh@gimp.org>
+
+	* plug-ins/pygimp/*: Update or add missing copyright and GPL comments.
+
+2005-03-04  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD:
+
+	* plug-ins/script-fu/script-fu-scripts.c (script_fu_find_scripts):
+	need to convert script-fu-path to filesystem encoding. Should fix
+	bug #165002.
+
+2005-03-02  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD:
+
+	* app/dialogs/resize-dialog.c (resize_dialog_reset)
+	* app/dialogs/scale-dialog.c (scale_dialog_reset): don't rely on
+	GObject internals about the order in which properties are being
+	set. Fixes one aspect of bug #169011.
+
+2005-03-01  Jay Cox  <jaycox@gimp.org>
+
+	* plug-ins/common/psd.c:  Back port fix for loading layer masks.
+	Fixes bug #166976.
+
+	* plug-ins/common/psd_save.c: Back port fix for file corruption
+	bug.  Includes fix for excessive memory usage.  Fixes bug #167139
+	and bug #121871.
+
+2005-02-24  Manish Singh  <yosh@gimp.org>
+
+	* plug-ins/common/url.c: Handle HTTP 302 Redirect output from wget
+	properly. Also give a little more informative display for unspecified
+	sizes. Fixes bug #168322.
+
+2005-02-23  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD:
+
+	* libgimpwidgets/gimpbutton.c (gimp_button_button_press): don't
+	reset button->press_state on double clicks because
+	GDK_2BUTTON_PRESS always arrive immediately after
+	GDK_BUTTON_PRESS, so resetting the state causes the second click
+	of a double click to be always interpreted as "clicked", not
+	"extended-clicked", breaking e.g. adding of multiple layers by
+	shift-clicking the layers dialog's "new" button. Phew, too much
+	text for a one-liner bug fix, blah... Spotted by Jimmac.
+
+2005-02-23  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.2.5, interface_age 5.
+
 2005-02-22  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.2.4 release.

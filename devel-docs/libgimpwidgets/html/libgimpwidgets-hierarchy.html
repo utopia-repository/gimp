@@ -1,57 +1,55 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Object Hierarchy</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="prev" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="next" href="GimpButton.html" title="GimpButton"><meta name="generator" content="GTK-Doc V1.2 (XML mode)"><style type="text/css">
-        .synopsis, .classsynopsis {
-            background: #eeeeee;
-            border: solid 1px #aaaaaa;
-            padding: 0.5em;
-        }
-        .programlisting {
-            background: #eeeeff;
-            border: solid 1px #aaaaff;
-            padding: 0.5em;
-        }
-        .variablelist {
-            padding: 4px;
-            margin-left: 3em;
-        }
-        .navigation {
-            background: #ffeeee;
-            border: solid 1px #ffaaaa;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-        }
-        .navigation a {
-            color: #770000;
-        }
-        .navigation a:visited {
-            color: #550000;
-        }
-        .navigation .title {
-            font-size: 200%;
-        }
-      </style></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpwidgets-widgets.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Widgets Library Reference Manual</th><td><a accesskey="n" href="GimpButton.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="libgimpwidgets-hierarchy"></a>Object Hierarchy</h2></div></div></div><pre class="screen">
-    GObject
-        GtkObject
-            GtkWidget
-                GtkContainer
-                    GtkBin
-                        GtkButton
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Object Hierarchy</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="prev" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="next" href="GimpButton.html" title="GimpButton"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy"><link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView"><link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters"><link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors"><link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers"><link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities"><link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpwidgets-widgets.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Widgets Library Reference Manual</th><td><a accesskey="n" href="GimpButton.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="libgimpwidgets-hierarchy"></a>Object Hierarchy</h2></div></div></div><pre class="screen">
+    <a
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+        <a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+            <a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+                <a
+href="../gtk/GtkContainer.html"
+>GtkContainer</a>
+                    <a
+href="../gtk/GtkBin.html"
+>GtkBin</a>
+                        <a
+href="../gtk/GtkButton.html"
+>GtkButton</a>
                             <a href="GimpButton.html" title="GimpButton">GimpButton</a>
                                 <a href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a>
                             <a href="GimpPickButton.html" title="GimpPickButton">GimpPickButton</a>
-                            GtkOptionMenu
+                            <a
+href="../gtk/GtkOptionMenu.html"
+>GtkOptionMenu</a>
                                 <a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a>
-                        GtkWindow
-                            GtkDialog
+                        <a
+href="../gtk/GtkWindow.html"
+>GtkWindow</a>
+                            <a
+href="../gtk/GtkDialog.html"
+>GtkDialog</a>
                                 <a href="GimpDialog.html" title="GimpDialog">GimpDialog</a>
-                        GtkFrame
+                        <a
+href="../gtk/GtkFrame.html"
+>GtkFrame</a>
                             <a href="GimpFrame.html" title="GimpFrame">GimpFrame</a>
-                        GtkComboBox
+                        <a
+href="../gtk/GtkComboBox.html"
+>GtkComboBox</a>
                             <a href="GimpIntComboBox.html" title="GimpIntComboBox">GimpIntComboBox</a>
-                    GtkTable
+                    <a
+href="../gtk/GtkTable.html"
+>GtkTable</a>
                         <a href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a>
                         <a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a>
-                    GtkBox
-                        GtkVBox
+                    <a
+href="../gtk/GtkBox.html"
+>GtkBox</a>
+                        <a
+href="../gtk/GtkVBox.html"
+>GtkVBox</a>
                             <a href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a>
                                 <a href="GimpColorNotebook.html" title="GimpColorNotebook">GimpColorNotebook</a>
                                 <a href="GimpColorScales.html" title="GimpColorScales">GimpColorScales</a>
@@ -59,49 +57,48 @@
                             <a href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a>
                             <a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a>
                             <a href="GimpPreview.html" title="GimpPreview">GimpPreview</a>
-                        GtkHBox
+                        <a
+href="../gtk/GtkHBox.html"
+>GtkHBox</a>
                             <a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a>
                             <a href="GimpMemsizeEntry.html" title="GimpMemsizeEntry">GimpMemsizeEntry</a>
-                    GtkMenuShell
-                        GtkMenu
-                GtkDrawingArea
+                <a
+href="../gtk/GtkDrawingArea.html"
+>GtkDrawingArea</a>
                     <a href="GimpColorArea.html" title="GimpColorArea">GimpColorArea</a>
                     <a href="GimpOffsetArea.html" title="GimpOffsetArea">GimpOffsetArea</a>
                     <a href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a>
-                GtkEntry
+                <a
+href="../gtk/GtkEntry.html"
+>GtkEntry</a>
                     <a href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a>
-                GtkRange
-                    GtkScale
+                <a
+href="../gtk/GtkRange.html"
+>GtkRange</a>
+                    <a
+href="../gtk/GtkScale.html"
+>GtkScale</a>
                         <a href="GimpColorScale.html" title="GimpColorScale">GimpColorScale</a>
-                GtkMisc
-                    GtkImage
+                <a
+href="../gtk/GtkMisc.html"
+>GtkMisc</a>
+                    <a
+href="../gtk/GtkImage.html"
+>GtkImage</a>
                         <a href="GimpPixmap.html" title="GimpPixmap">GimpPixmap</a>
-            GtkCellRenderer
+            <a
+href="../gtk/GtkCellRenderer.html"
+>GtkCellRenderer</a>
                 <a href="GimpCellRendererColor.html" title="GimpCellRendererColor">GimpCellRendererColor</a>
-                GtkCellRendererToggle
+                <a
+href="../gtk/GtkCellRendererToggle.html"
+>GtkCellRendererToggle</a>
                     <a href="GimpCellRendererToggle.html" title="GimpCellRendererToggle">GimpCellRendererToggle</a>
-            GtkAdjustment
         <a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a>
         <a href="GimpColorDisplayStack.html" title="GimpColorDisplayStack">GimpColorDisplayStack</a>
         <a href="GimpController.html" title="GimpController">GimpController</a>
-        GtkListStore
+        <a
+href="../gtk/GtkListStore.html"
+>GtkListStore</a>
             <a href="GimpIntStore.html" title="GimpIntStore">GimpIntStore</a>
-        GtkStyle
-        GdkDragContext
-        GdkScreen
-        GtkSettings
-        GdkPixbuf
-        GdkDrawable
-            GdkPixmap
-        GdkImage
-        GdkPixbufAnimation
-    GInterface
-        AtkImplementorIface
-        GtkEditable
-        GtkCellEditable
-        GtkCellLayout
-        GtkTreeModel
-        GtkTreeDragSource
-        GtkTreeDragDest
-        GtkTreeSortable
 </pre></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpwidgets-widgets.html"><b>&lt;&lt; Part I. GIMP Widgets</b></a></td><td align="right"><a accesskey="n" href="GimpButton.html"><b>GimpButton &gt;&gt;</b></a></td></tr></table></body></html>

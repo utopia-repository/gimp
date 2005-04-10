@@ -1,23 +1,23 @@
 # translation of gimp-script-fu.HEAD.po to Slovak
 # translation of gimp-script-fu.HEAD.sk.po to Slovak
 # gimp-script-fu sk.po
-# Copyright (C) 2002,2003, 2004 Free Software Foundation, Inc.
+# Copyright (C) 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
 # Zdenko Podobný <zdpo@mailbox.sk>, 2002,2003, 2004.
+# Marcel Telka <marcel@telka.sk>, 2005.
+#
+# $Id: sk.po,v 1.64.2.5 2005/04/09 21:39:08 neo Exp $
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gimp-script-fu.HEAD\n"
+"Project-Id-Version: gimp-script-fu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-22 23:04+0100\n"
-"PO-Revision-Date: 2004-11-27 11:58+0100\n"
-"Last-Translator: Zdenko Podobný <zdpo@mailbox.sk>\n"
-"Language-Team: Slovak <<sk-i18n@lists.linux.sk>>\n"
+"POT-Creation-Date: 2005-04-09 21:56+0200\n"
+"PO-Revision-Date: 2005-03-20 20:28+0100\n"
+"Last-Translator: Marcel Telka <marcel@telka.sk>\n"
+"Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.3\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../plug-ins/script-fu/script-fu-console.c:129
 #: ../plug-ins/script-fu/script-fu-text-console.c:66
@@ -136,7 +136,7 @@ msgstr "Dátum:"
 msgid "Image Types:"
 msgstr "Typ obrázka:"
 
-#: ../plug-ins/script-fu/script-fu-scripts.c:611
+#: ../plug-ins/script-fu/script-fu-scripts.c:622
 #, c-format
 msgid ""
 "Error while executing\n"
@@ -662,12 +662,10 @@ msgid "_Arrow..."
 msgstr "Šípk_a..."
 
 #: ../plug-ins/script-fu/scripts/alien-glow-bar.scm.h:3
-#, fuzzy
 msgid "Bar height"
 msgstr "Výška kusu"
 
 #: ../plug-ins/script-fu/scripts/alien-glow-bar.scm.h:4
-#, fuzzy
 msgid "Bar length"
 msgstr "Dĺžka kusu"
 
@@ -1705,12 +1703,10 @@ msgid "Use selection bounds instead of belows"
 msgstr "Použiť hranice výberu namiesto nižšie uvedeného"
 
 #: ../plug-ins/script-fu/scripts/i26-gunya2.scm.h:4
-#, fuzzy
 msgid "Frame color"
 msgstr "Farba rámu"
 
 #: ../plug-ins/script-fu/scripts/i26-gunya2.scm.h:5
-#, fuzzy
 msgid "Frame size"
 msgstr "Veľkosť rámu"
 
@@ -2516,15 +2512,3 @@ msgstr "Krytie svetiel"
 #: ../plug-ins/script-fu/scripts/xach-effect.scm.h:12
 msgid "_Xach-Effect..."
 msgstr "Efekt _Xach..."
-
-#~ msgid "Buffer amount (% height of text)"
-#~ msgstr "Veľkosť zásobníka (% výšky textu)"
-
-#~ msgid "_ASCII to Image..."
-#~ msgstr "_ASCII do obrázku"
-
-#~ msgid "_ASCII to Layer..."
-#~ msgstr "_ASCII do vrstvy"
-
-#~ msgid "Copy _Visible"
-#~ msgstr "Kopírovať _viditeľné"

@@ -1,3 +1,10 @@
+gimp (2.2.6-1) unstable; urgency=low
+
+  * New upstream release
+  * Fixes saving certain multilayer ICO files (Closes: #300140)
+
+ -- Ari Pollak <ari@debian.org>  Sun, 10 Apr 2005 02:21:57 -0400
+
 gimp (2.2.4-3) unstable; urgency=low
 
   * gimp & gimp-data conflicts & replaces gimp1.2 << 1.2.5-1.

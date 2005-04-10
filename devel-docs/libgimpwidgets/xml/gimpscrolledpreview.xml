@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpScrolledPreview">GimpScrolledPreview</link>;
+            <link linkend="GimpScrolledPreview">GimpScrolledPreview</link>;
 
 </synopsis>
 </refsynopsisdiv>
@@ -42,12 +42,10 @@ A widget providing a <link linkend="GimpPreview"><type>GimpPreview</type></link>
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpScrolledPreview"/>struct GimpScrolledPreview</title>
-<indexterm><primary>GimpScrolledPreview</primary></indexterm><programlisting>struct GimpScrolledPreview {
-
+<title><anchor id="GimpScrolledPreview"/>GimpScrolledPreview</title>
+<indexterm><primary>GimpScrolledPreview</primary></indexterm><programlisting>typedef struct {
   GimpPreview   parent_instance;
-
-};
+} GimpScrolledPreview;
 </programlisting>
 <para>
 

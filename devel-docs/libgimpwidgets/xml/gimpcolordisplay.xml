@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpColorDisplay-struct">GimpColorDisplay</link>;
+            <link linkend="GimpColorDisplay-struct">GimpColorDisplay</link>;
 <link linkend="GimpColorDisplay">GimpColorDisplay</link>* <link linkend="gimp-color-display-new">gimp_color_display_new</link>    (<link linkend="GType">GType</link> display_type);
 <link linkend="GimpColorDisplay">GimpColorDisplay</link>* <link linkend="gimp-color-display-clone">gimp_color_display_clone</link>  (<link linkend="GimpColorDisplay">GimpColorDisplay</link> *display);
 <link linkend="void">void</link>        <link linkend="gimp-color-display-set-enabled">gimp_color_display_set_enabled</link>  (<link linkend="GimpColorDisplay">GimpColorDisplay</link> *display,
@@ -60,7 +60,7 @@ struct      <link linkend="GimpColorDisplay-struct">GimpColorDisplay</link>;
 <title>Properties</title>
 <synopsis>
 
-  &quot;<link linkend="GimpColorDisplay--enabled">enabled</link>&quot;              <link linkend="gboolean">gboolean</link>             : Read / Write / Construct
+  &quot;<link linkend="GimpColorDisplay--enabled">enabled</link>&quot;              <link linkend="gboolean">gboolean</link>              : Read / Write / Construct
 </synopsis>
 </refsect1>
 
@@ -85,8 +85,8 @@ display color correction modules.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpColorDisplay-struct"/>struct GimpColorDisplay</title>
-<indexterm><primary>GimpColorDisplay</primary></indexterm><programlisting>struct GimpColorDisplay;</programlisting>
+<title><anchor id="GimpColorDisplay-struct"/>GimpColorDisplay</title>
+<indexterm><primary>GimpColorDisplay</primary></indexterm><programlisting>typedef struct _GimpColorDisplay GimpColorDisplay;</programlisting>
 <para>
 
 </para></refsect2>
@@ -99,7 +99,7 @@ display color correction modules.
 <varlistentry><term><parameter>display_type</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
@@ -113,7 +113,7 @@ display color correction modules.
 <varlistentry><term><parameter>display</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
@@ -143,7 +143,7 @@ display color correction modules.
 <varlistentry><term><parameter>display</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
@@ -205,7 +205,7 @@ display color correction modules.
 <varlistentry><term><parameter>display</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
@@ -219,7 +219,7 @@ display color correction modules.
 <varlistentry><term><parameter>display</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
@@ -253,13 +253,11 @@ display color correction modules.
 </refsect1>
 <refsect1>
 <title>Properties</title>
-<variablelist>
-<varlistentry><term><anchor id="GimpColorDisplay--enabled"/>&quot;<literal>enabled</literal>&quot; (<link linkend="gboolean">gboolean</link> : Read / Write / Construct)</term>
-<listitem>
-<para></para>
-</listitem></varlistentry>
+<refsect2><title><anchor id="GimpColorDisplay--enabled"/>The &quot;<literal>enabled</literal>&quot; property</title>
+<programlisting>  &quot;enabled&quot;              <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<para></para><para>Default value: TRUE</para>
+</refsect2>
 
-</variablelist>
 </refsect1>
 
 <refsect1>

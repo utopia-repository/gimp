@@ -1,70 +1,64 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpPickButton</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="prev" href="GimpPathEditor.html" title="GimpPathEditor"><link rel="next" href="GimpPixmap.html" title="GimpPixmap"><meta name="generator" content="GTK-Doc V1.2 (XML mode)"><style type="text/css">
-        .synopsis, .classsynopsis {
-            background: #eeeeee;
-            border: solid 1px #aaaaaa;
-            padding: 0.5em;
-        }
-        .programlisting {
-            background: #eeeeff;
-            border: solid 1px #aaaaff;
-            padding: 0.5em;
-        }
-        .variablelist {
-            padding: 4px;
-            margin-left: 3em;
-        }
-        .navigation {
-            background: #ffeeee;
-            border: solid 1px #ffaaaa;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-        }
-        .navigation a {
-            color: #770000;
-        }
-        .navigation a:visited {
-            color: #550000;
-        }
-        .navigation .title {
-            font-size: 200%;
-        }
-      </style></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="GimpPathEditor.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Widgets Library Reference Manual</th><td><a accesskey="n" href="GimpPixmap.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="GimpPickButton"></a><div class="titlepage"></div><div class="refnamediv"><h2><span class="refentrytitle">GimpPickButton</span></h2><p>GimpPickButton &#8212; Widget to pick a color from screen.</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpPickButton</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="prev" href="GimpPathEditor.html" title="GimpPathEditor"><link rel="next" href="GimpPixmap.html" title="GimpPixmap"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy"><link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView"><link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters"><link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors"><link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers"><link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities"><link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="GimpPathEditor.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Widgets Library Reference Manual</th><td><a accesskey="n" href="GimpPixmap.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="GimpPickButton"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">GimpPickButton</span></h2><p>GimpPickButton &#8212; Widget to pick a color from screen.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
-struct      <a href="GimpPickButton.html#GimpPickButton-struct">GimpPickButton</a>;
-GtkWidget*  <a href="GimpPickButton.html#gimp-pick-button-new">gimp_pick_button_new</a>            (void);
+            <a href="GimpPickButton.html#GimpPickButton-struct">GimpPickButton</a>;
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="GimpPickButton.html#gimp-pick-button-new">gimp_pick_button_new</a>            (void);
 
-</pre></div><div class="refsect1" lang="en"><a name="id2556815"></a><h2>Object Hierarchy</h2><pre class="synopsis">
+</pre></div><div class="refsect1" lang="en"><a name="id2583185"></a><h2>Object Hierarchy</h2><pre class="synopsis">
 
-  GObject
-   +----GtkObject
-         +----GtkWidget
-               +----GtkContainer
-                     +----GtkBin
-                           +----GtkButton
+  <a
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+         +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+               +----<a
+href="../gtk/GtkContainer.html"
+>GtkContainer</a>
+                     +----<a
+href="../gtk/GtkBin.html"
+>GtkBin</a>
+                           +----<a
+href="../gtk/GtkButton.html"
+>GtkButton</a>
                                  +----GimpPickButton
-</pre></div><div class="refsect1" lang="en"><a name="id2588030"></a><h2>Implemented Interfaces</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2587805"></a><h2>Implemented Interfaces</h2><p>
 GimpPickButton implements
- AtkImplementorIface.</p></div><div class="refsect1" lang="en"><a name="id2588044"></a><h2>Signal Prototypes</h2><pre class="synopsis">
+ AtkImplementorIface.</p></div><div class="refsect1" lang="en"><a name="id2587820"></a><h2>Signal Prototypes</h2><pre class="synopsis">
 
 "<a href="GimpPickButton.html#GimpPickButton-color-picked">color-picked</a>"
             void        user_function      (<a href="GimpPickButton.html" title="GimpPickButton">GimpPickButton</a> *gimppickbutton,
-                                            gpointer arg1,
-                                            gpointer user_data);
-</pre></div><div class="refsect1" lang="en"><a name="id2588082"></a><h2>Description</h2><p>
+                                            <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> arg1,
+                                            <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data);
+</pre></div><div class="refsect1" lang="en"><a name="id2587856"></a><h2>Description</h2><p>
 <a href="GimpPickButton.html" title="GimpPickButton"><span class="type">GimpPickButton</span></a> is a specialized button. When clicked, it changes the
 cursor to a color-picker pipette and allows the user to pick a color
 from any point on the screen.
-</p></div><div class="refsect1" lang="en"><a name="id2588101"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2588106"></a><h3><a name="GimpPickButton-struct"></a>struct GimpPickButton</h3><a class="indexterm" name="id2588114"></a><pre class="programlisting">struct GimpPickButton;</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2587875"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2587880"></a><h3><a name="GimpPickButton-struct"></a>GimpPickButton</h3><a class="indexterm" name="id2587889"></a><pre class="programlisting">typedef struct _GimpPickButton GimpPickButton;</pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2588124"></a><h3><a name="gimp-pick-button-new"></a>gimp_pick_button_new ()</h3><a class="indexterm" name="id2588132"></a><pre class="programlisting">GtkWidget*  gimp_pick_button_new            (void);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2587899"></a><h3><a name="gimp-pick-button-new"></a>gimp_pick_button_new ()</h3><a class="indexterm" name="id2571541"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_pick_button_new            (void);</pre><p>
 Creates a new <a href="GimpPickButton.html" title="GimpPickButton"><span class="type">GimpPickButton</span></a> widget.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A new <a href="GimpPickButton.html" title="GimpPickButton"><span class="type">GimpPickButton</span></a> widget.
-</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2591541"></a><h2>Signals</h2><div class="refsect2" lang="en"><a name="id2591546"></a><h3><a name="GimpPickButton-color-picked"></a>The "color-picked" signal</h3><pre class="programlisting">void        user_function                  (<a href="GimpPickButton.html" title="GimpPickButton">GimpPickButton</a> *gimppickbutton,
-                                            gpointer arg1,
-                                            gpointer user_data);</pre><p>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A new <a href="GimpPickButton.html" title="GimpPickButton"><span class="type">GimpPickButton</span></a> widget.
+</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2571585"></a><h2>Signals</h2><div class="refsect2" lang="en"><a name="id2571590"></a><h3><a name="GimpPickButton-color-picked"></a>The "color-picked" signal</h3><pre class="programlisting">void        user_function                  (<a href="GimpPickButton.html" title="GimpPickButton">GimpPickButton</a> *gimppickbutton,
+                                            <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> arg1,
+                                            <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data);</pre><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>gimppickbutton</tt></i> :</span></td><td>the object which received the signal.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>arg1</tt></i> :</span></td><td>pointer to a <a

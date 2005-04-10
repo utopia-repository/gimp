@@ -98,7 +98,7 @@
                                              const <link linkend="gchar">gchar</link> *signal,
                                              <link linkend="GimpQueryBooleanCallback">GimpQueryBooleanCallback</link> callback,
                                              <link linkend="gpointer">gpointer</link> data);
-#define     <link linkend="GIMP-QUERY-BOX-VBOX-CAPS">GIMP_QUERY_BOX_VBOX</link>             (qbox)
+#define     <link linkend="GIMP-QUERY-BOX-VBOX--CAPS">GIMP_QUERY_BOX_VBOX</link>             (qbox)
 </synopsis>
 </refsynopsisdiv>
 
@@ -281,7 +281,7 @@ Creates a new <link linkend="GtkDialog"><type>GtkDialog</type></link> that queri
 <varlistentry><term><parameter>data</parameter>&nbsp;:</term>
 <listitem><simpara>      The callback's user data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> A pointer to the new <link linkend="GtkDialog"><type>GtkDialog</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A pointer to the new <link linkend="GtkDialog"><type>GtkDialog</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -339,7 +339,7 @@ Creates a new <link linkend="GtkDialog"><type>GtkDialog</type></link> that queri
 <varlistentry><term><parameter>data</parameter>&nbsp;:</term>
 <listitem><simpara>      The callback's user data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> A pointer to the new <link linkend="GtkDialog"><type>GtkDialog</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A pointer to the new <link linkend="GtkDialog"><type>GtkDialog</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -401,7 +401,7 @@ Creates a new <link linkend="GtkDialog"><type>GtkDialog</type></link> that queri
 <varlistentry><term><parameter>data</parameter>&nbsp;:</term>
 <listitem><simpara>      The callback's user data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> A pointer to the new <link linkend="GtkDialog"><type>GtkDialog</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A pointer to the new <link linkend="GtkDialog"><type>GtkDialog</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -479,7 +479,7 @@ Creates a new <link linkend="GtkDialog"><type>GtkDialog</type></link> that queri
 <varlistentry><term><parameter>data</parameter>&nbsp;:</term>
 <listitem><simpara>        The callback's user data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> A pointer to the new <link linkend="GtkDialog"><type>GtkDialog</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A pointer to the new <link linkend="GtkDialog"><type>GtkDialog</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -540,11 +540,11 @@ Creates a new <link linkend="GtkDialog"><type>GtkDialog</type></link> that asks 
 <varlistentry><term><parameter>data</parameter>&nbsp;:</term>
 <listitem><simpara>         The callback's user data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> A pointer to the new <link linkend="GtkDialog"><type>GtkDialog</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A pointer to the new <link linkend="GtkDialog"><type>GtkDialog</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-QUERY-BOX-VBOX-CAPS"/>GIMP_QUERY_BOX_VBOX()</title>
+<title><anchor id="GIMP-QUERY-BOX-VBOX--CAPS"/>GIMP_QUERY_BOX_VBOX()</title>
 <indexterm><primary>GIMP_QUERY_BOX_VBOX</primary></indexterm><programlisting>#define     GIMP_QUERY_BOX_VBOX(qbox)</programlisting>
 <para>
 A macro to access the <link linkend="GtkVBox"><type>GtkVBox</type></link> in a <link linkend="GimpQueryBox"><type>GimpQueryBox</type></link>. Useful if you want to add

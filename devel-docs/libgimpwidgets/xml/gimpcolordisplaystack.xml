@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpColorDisplayStack-struct">GimpColorDisplayStack</link>;
+            <link linkend="GimpColorDisplayStack-struct">GimpColorDisplayStack</link>;
 <link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link>* <link linkend="gimp-color-display-stack-new">gimp_color_display_stack_new</link>
                                             (void);
 <link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link>* <link linkend="gimp-color-display-stack-clone">gimp_color_display_stack_clone</link>
@@ -93,8 +93,8 @@ struct      <link linkend="GimpColorDisplayStack-struct">GimpColorDisplayStack</
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpColorDisplayStack-struct"/>struct GimpColorDisplayStack</title>
-<indexterm><primary>GimpColorDisplayStack</primary></indexterm><programlisting>struct GimpColorDisplayStack;</programlisting>
+<title><anchor id="GimpColorDisplayStack-struct"/>GimpColorDisplayStack</title>
+<indexterm><primary>GimpColorDisplayStack</primary></indexterm><programlisting>typedef struct _GimpColorDisplayStack GimpColorDisplayStack;</programlisting>
 <para>
 
 </para></refsect2>
@@ -105,7 +105,7 @@ struct      <link linkend="GimpColorDisplayStack-struct">GimpColorDisplayStack</
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
@@ -120,7 +120,7 @@ struct      <link linkend="GimpColorDisplayStack-struct">GimpColorDisplayStack</
 <varlistentry><term><parameter>stack</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 
 </simpara></listitem></varlistentry>

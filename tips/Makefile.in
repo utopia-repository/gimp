@@ -623,7 +623,8 @@ update-po: $(srcdir)/$(GETTEXT_PACKAGE)-tips.pot
 	done
 
 validate: update-po gimp-tips.xml
-@HAVE_XMLLINT_TRUE@	@$(XMLLINT) --noout --valid gimp-tips.xml || \
+@HAVE_XMLLINT_TRUE@	@cd $(srcdir); \
+@HAVE_XMLLINT_TRUE@	$(XMLLINT) --noout --valid gimp-tips.xml || \
 @HAVE_XMLLINT_TRUE@	  ( echo "* gimp-tips.xml INVALID *"; exit 1; )
 
 fortunes: gimp-tips.xml.in fortunes.xsl

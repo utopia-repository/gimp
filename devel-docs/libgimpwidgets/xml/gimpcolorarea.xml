@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpColorArea-struct">GimpColorArea</link>;
+            <link linkend="GimpColorArea-struct">GimpColorArea</link>;
 enum        <link linkend="GimpColorAreaType">GimpColorAreaType</link>;
 <link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-color-area-new">gimp_color_area_new</link>             (const <link linkend="GimpRGB">GimpRGB</link> *color,
                                              <link linkend="GimpColorAreaType">GimpColorAreaType</link> type,
@@ -83,8 +83,8 @@ GimpColorArea implements
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpColorArea-struct"/>struct GimpColorArea</title>
-<indexterm><primary>GimpColorArea</primary></indexterm><programlisting>struct GimpColorArea;</programlisting>
+<title><anchor id="GimpColorArea-struct"/>GimpColorArea</title>
+<indexterm><primary>GimpColorArea</primary></indexterm><programlisting>typedef struct _GimpColorArea GimpColorArea;</programlisting>
 <para>
 
 </para></refsect2>
@@ -123,7 +123,7 @@ DND. If the color changes, the "color_changed" signal is emitted.</para>
 <varlistentry><term><parameter>drag_mask</parameter>&nbsp;:</term>
 <listitem><simpara> The event_mask that should trigger drags.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> Pointer to the new <link linkend="GimpColorArea"><type>GimpColorArea</type></link> widget.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Pointer to the new <link linkend="GimpColorArea"><type>GimpColorArea</type></link> widget.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -170,7 +170,7 @@ via the <parameter>area</parameter>'s <link linkend="GimpColorAreaType"><type>Gi
 <varlistentry><term><parameter>area</parameter>&nbsp;:</term>
 <listitem><simpara> Pointer to a <link linkend="GimpColorArea"><type>GimpColorArea</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> <literal>TRUE</literal> if <parameter>area</parameter> shows transparency information, <literal>FALSE</literal> otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if <parameter>area</parameter> shows transparency information, <literal>FALSE</literal> otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

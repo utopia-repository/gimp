@@ -64,14 +64,14 @@ capabilities.
 </para></refsect2>
 <refsect2>
 <title><anchor id="GIMP-MICRO-VERSION:CAPS"/>GIMP_MICRO_VERSION</title>
-<indexterm><primary>GIMP_MICRO_VERSION</primary></indexterm><programlisting>#define GIMP_MICRO_VERSION                              (4)
+<indexterm><primary>GIMP_MICRO_VERSION</primary></indexterm><programlisting>#define GIMP_MICRO_VERSION                              (5)
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="GIMP-VERSION:CAPS"/>GIMP_VERSION</title>
-<indexterm><primary>GIMP_VERSION</primary></indexterm><programlisting>#define GIMP_VERSION                                    "2.2.4"
+<indexterm><primary>GIMP_VERSION</primary></indexterm><programlisting>#define GIMP_VERSION                                    "2.2.5"
 </programlisting>
 <para>
 

@@ -1,5 +1,5 @@
 /*
- * "$Id: print.c,v 1.66 2004/11/14 02:47:27 yosh Exp $"
+ * "$Id: print.c,v 1.66.2.2 2005/04/09 23:55:13 neo Exp $"
  *
  *   Print plug-in for the GIMP.
  *
@@ -1103,14 +1103,14 @@ get_system_printers (void)
   char	*ptr;			/* Pointer into line */
   char  name[128];		/* Printer name from status command */
 
-  static const char	*lpcs[] =	/* Possible locations of LPC... */
-		{
-		  "/etc"
-		  "/usr/bsd",
-		  "/usr/etc",
-		  "/usr/libexec",
-		  "/usr/sbin"
-		};
+  static const char *lpcs[] =   /* Possible locations of LPC... */
+    {
+      "/etc"
+      "/usr/bsd",
+      "/usr/etc",
+      "/usr/libexec",
+      "/usr/sbin"
+    };
 
  /*
   * Setup defaults...
@@ -1240,5 +1240,5 @@ get_system_printers (void)
 }
 
 /*
- * End of "$Id: print.c,v 1.66 2004/11/14 02:47:27 yosh Exp $".
+ * End of "$Id: print.c,v 1.66.2.2 2005/04/09 23:55:13 neo Exp $".
  */

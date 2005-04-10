@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpUnitMenu-struct">GimpUnitMenu</link>;
+            <link linkend="GimpUnitMenu-struct">GimpUnitMenu</link>;
 <link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-unit-menu-new">gimp_unit_menu_new</link>              (const <link linkend="gchar">gchar</link> *format,
                                              <link linkend="GimpUnit">GimpUnit</link> unit,
                                              <link linkend="gboolean">gboolean</link> show_pixels,
@@ -68,7 +68,7 @@ GimpUnitMenu implements
 <synopsis>
 
 &quot;<link linkend="GimpUnitMenu-unit-changed">unit-changed</link>&quot;
-            <link linkend="void">void</link>        user_function      (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *,
+            <link linkend="void">void</link>        user_function      (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *arg0,
                                             <link linkend="gpointer">gpointer</link> user_data);
 </synopsis>
 </refsect1>
@@ -97,8 +97,8 @@ Whenever the user selects a unit from the menu or the dialog, the
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpUnitMenu-struct"/>struct GimpUnitMenu</title>
-<indexterm><primary>GimpUnitMenu</primary></indexterm><programlisting>struct GimpUnitMenu;</programlisting>
+<title><anchor id="GimpUnitMenu-struct"/>GimpUnitMenu</title>
+<indexterm><primary>GimpUnitMenu</primary></indexterm><programlisting>typedef struct _GimpUnitMenu GimpUnitMenu;</programlisting>
 <para>
 
 </para></refsect2>
@@ -168,7 +168,7 @@ The <parameter>format</parameter> string supports the following percent expansio
 <listitem><simpara>  <literal>TRUE</literal> if the unit menu should contain a "More..." item for
                opening the user-defined-unit selection dialog.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> A pointer to the new <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link> widget.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A pointer to the new <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link> widget.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -198,7 +198,7 @@ Returns the <link linkend="GimpUnit"><type>GimpUnit</type></link> the user has s
 <varlistentry><term><parameter>menu</parameter>&nbsp;:</term>
 <listitem><simpara> The unit menu you want to know the unit of.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The unit the user has selected.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The unit the user has selected.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -213,7 +213,7 @@ Retrieve the number of digits for a pixel size as set by
 <varlistentry><term><parameter>menu</parameter>&nbsp;:</term>
 <listitem><simpara> a <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the configured number of digits for a pixel size
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the configured number of digits for a pixel size
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -247,7 +247,7 @@ here. You should do this after attaching your spinbuttons.</para>
 <refsect1>
 <title>Signals</title>
 <refsect2><title><anchor id="GimpUnitMenu-unit-changed"/>The &quot;unit-changed&quot; signal</title>
-<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *,
+<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *arg0,
                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 This signal is emitted whenever the user selects a <link linkend="GimpUnit"><type>GimpUnit</type></link> from

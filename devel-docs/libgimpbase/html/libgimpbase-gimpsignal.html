@@ -6,10 +6,10 @@ void        (<a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">*GimpSi
 <a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> <a href="libgimpbase-gimpsignal.html#gimp-signal-private">gimp_signal_private</a>   (gint signum,
                                              <a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> handler,
                                              gint flags);
-</pre></div><div class="refsect1" lang="en"><a name="id2585424"></a><h2>Description</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2585278"></a><h2>Description</h2><p>
 Portable signal handling.
 
-</p></div><div class="refsect1" lang="en"><a name="id2585433"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2585439"></a><h3><a name="GimpSignalHandlerFunc"></a>GimpSignalHandlerFunc ()</h3><a class="indexterm" name="id2585447"></a><pre class="programlisting">void        (*GimpSignalHandlerFunc)        (gint signum);</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2585287"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2585293"></a><h3><a name="GimpSignalHandlerFunc"></a>GimpSignalHandlerFunc ()</h3><a class="indexterm" name="id2585301"></a><pre class="programlisting">void        (*GimpSignalHandlerFunc)        (gint signum);</pre><p>
 A prototype for signal handler functions. Note that each function which
 takes or returns a variable of this type also accepts or may return
 special values defined by your system's signal.h header file (like
@@ -18,7 +18,7 @@ special values defined by your system's signal.h header file (like
          by a single handler.
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2585493"></a><h3><a name="gimp-signal-private"></a>gimp_signal_private ()</h3><a class="indexterm" name="id2585501"></a><pre class="programlisting"><a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> gimp_signal_private   (gint signum,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2585347"></a><h3><a name="gimp-signal-private"></a>gimp_signal_private ()</h3><a class="indexterm" name="id2585355"></a><pre class="programlisting"><a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> gimp_signal_private   (gint signum,
                                              <a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> handler,
                                              gint flags);</pre><p>
 This function furnishes a workalike for signal(2) but
@@ -42,6 +42,6 @@ exactly what we want. [austin 06.04.2000]</p><p>
         to the <i class="parameter"><tt>sa_flags</tt></i> field of the <i class="parameter"><tt>sigaction</tt></i> struct.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A reference to the signal handling function which was
          active before the call to <a href="libgimpbase-gimpsignal.html#gimp-signal-private"><tt class="function">gimp_signal_private()</tt></a>.
-</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2536296"></a><h2>See Also</h2><p>
+</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2527256"></a><h2>See Also</h2><p>
 signal(2), signal(5 or 7), sigaction(2).
 </p></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpbase-gimpparasiteio.html"><b>&lt;&lt; gimpparasiteio</b></a></td><td align="right"><a accesskey="n" href="libgimpbase-gimpunit.html"><b>gimpunit &gt;&gt;</b></a></td></tr></table></body></html>

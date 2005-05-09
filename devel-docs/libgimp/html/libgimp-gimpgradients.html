@@ -2,34 +2,82 @@
 
 
 
-gboolean    <a href="libgimp-gimpgradients.html#gimp-gradients-refresh">gimp_gradients_refresh</a>          (void);
-gchar**     <a href="libgimp-gimpgradients.html#gimp-gradients-get-list">gimp_gradients_get_list</a>         (const gchar *filter,
-                                             gint *num_gradients);
-gchar*      <a href="libgimp-gimpgradients.html#gimp-gradients-get-gradient">gimp_gradients_get_gradient</a>     (void);
-gboolean    <a href="libgimp-gimpgradients.html#gimp-gradients-set-gradient">gimp_gradients_set_gradient</a>     (const gchar *name);
-gdouble*    <a href="libgimp-gimpgradients.html#gimp-gradients-sample-uniform">gimp_gradients_sample_uniform</a>   (gint num_samples,
-                                             gboolean reverse);
-gdouble*    <a href="libgimp-gimpgradients.html#gimp-gradients-sample-custom">gimp_gradients_sample_custom</a>    (gint num_samples,
-                                             const gdouble *positions,
-                                             gboolean reverse);
-gchar*      <a href="libgimp-gimpgradients.html#gimp-gradients-get-gradient-data">gimp_gradients_get_gradient_data</a>
-                                            (const gchar *name,
-                                             gint sample_size,
-                                             gboolean reverse,
-                                             gint *width,
-                                             gdouble **grad_data);
-</pre></div><div class="refsect1" lang="en"><a name="id2647144"></a><h2>Description</h2><p>
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpgradients.html#gimp-gradients-refresh">gimp_gradients_refresh</a>          (void);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>**     <a href="libgimp-gimpgradients.html#gimp-gradients-get-list">gimp_gradients_get_list</a>         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filter,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_gradients);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*      <a href="libgimp-gimpgradients.html#gimp-gradients-get-gradient">gimp_gradients_get_gradient</a>     (void);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpgradients.html#gimp-gradients-set-gradient">gimp_gradients_set_gradient</a>     (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>*    <a href="libgimp-gimpgradients.html#gimp-gradients-sample-uniform">gimp_gradients_sample_uniform</a>   (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> num_samples,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> reverse);
+<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>*    <a href="libgimp-gimpgradients.html#gimp-gradients-sample-custom">gimp_gradients_sample_custom</a>    (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> num_samples,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *positions,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> reverse);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*      <a href="libgimp-gimpgradients.html#gimp-gradients-get-gradient-data">gimp_gradients_get_gradient_data</a>
+                                            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> sample_size,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> reverse,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *width,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> **grad_data);
+</pre></div><div class="refsect1" lang="en"><a name="id2639727"></a><h2>Description</h2><p>
 Operations related to gradients.
 
-</p></div><div class="refsect1" lang="en"><a name="id2647154"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2647159"></a><h3><a name="gimp-gradients-refresh"></a>gimp_gradients_refresh ()</h3><a class="indexterm" name="id2647168"></a><pre class="programlisting">gboolean    gimp_gradients_refresh          (void);</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2639737"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2628731"></a><h3><a name="gimp-gradients-refresh"></a>gimp_gradients_refresh ()</h3><a class="indexterm" name="id2628739"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_gradients_refresh          (void);</pre><p>
 Refresh current gradients. This function always succeeds.
 </p><p>
 This procedure retrieves all gradients currently in the user's
 gradient path and updates the gradient dialogs accordingly.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2652998"></a><h3><a name="gimp-gradients-get-list"></a>gimp_gradients_get_list ()</h3><a class="indexterm" name="id2653006"></a><pre class="programlisting">gchar**     gimp_gradients_get_list         (const gchar *filter,
-                                             gint *num_gradients);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2628776"></a><h3><a name="gimp-gradients-get-list"></a>gimp_gradients_get_list ()</h3><a class="indexterm" name="id2628785"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>**     gimp_gradients_get_list         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filter,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_gradients);</pre><p>
 Retrieve the list of loaded gradients.
 </p><p>
 This procedure returns a list of the gradients that are currently
@@ -39,26 +87,46 @@ to set the active gradient.</p><p>
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filter</tt></i> :</span></td><td> An optional regular expression used to filter the list.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>num_gradients</tt></i> :</span></td><td> The number of loaded gradients.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The list of gradient names.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2653078"></a><h3><a name="gimp-gradients-get-gradient"></a>gimp_gradients_get_gradient ()</h3><a class="indexterm" name="id2653086"></a><pre class="programlisting">gchar*      gimp_gradients_get_gradient     (void);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_gradients_get_gradient</tt> is deprecated and should not be used in newly-written code.</p></div><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2628856"></a><h3><a name="gimp-gradients-get-gradient"></a>gimp_gradients_get_gradient ()</h3><a class="indexterm" name="id2641658"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*      gimp_gradients_get_gradient     (void);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_gradients_get_gradient</tt> is deprecated and should not be used in newly-written code.</p></div><p>
 This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context-get-gradient"><tt class="function">gimp_context_get_gradient()</tt></a> instead.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The name of the active gradient.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2653134"></a><h3><a name="gimp-gradients-set-gradient"></a>gimp_gradients_set_gradient ()</h3><a class="indexterm" name="id2653142"></a><pre class="programlisting">gboolean    gimp_gradients_set_gradient     (const gchar *name);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_gradients_set_gradient</tt> is deprecated and should not be used in newly-written code.</p></div><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2641706"></a><h3><a name="gimp-gradients-set-gradient"></a>gimp_gradients_set_gradient ()</h3><a class="indexterm" name="id2641714"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_gradients_set_gradient     (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_gradients_set_gradient</tt> is deprecated and should not be used in newly-written code.</p></div><p>
 This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context-set-gradient"><tt class="function">gimp_context_set_gradient()</tt></a> instead.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> The name of the gradient to set.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2653205"></a><h3><a name="gimp-gradients-sample-uniform"></a>gimp_gradients_sample_uniform ()</h3><a class="indexterm" name="id2653213"></a><pre class="programlisting">gdouble*    gimp_gradients_sample_uniform   (gint num_samples,
-                                             gboolean reverse);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_gradients_sample_uniform</tt> is deprecated and should not be used in newly-written code.</p></div><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2641777"></a><h3><a name="gimp-gradients-sample-uniform"></a>gimp_gradients_sample_uniform ()</h3><a class="indexterm" name="id2641785"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>*    gimp_gradients_sample_uniform   (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> num_samples,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> reverse);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_gradients_sample_uniform</tt> is deprecated and should not be used in newly-written code.</p></div><p>
 This procedure is deprecated! Use
 <a href="libgimp-gimpgradient.html#gimp-gradient-get-uniform-samples"><tt class="function">gimp_gradient_get_uniform_samples()</tt></a> instead.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>num_samples</tt></i> :</span></td><td> The number of samples to take.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>reverse</tt></i> :</span></td><td> Use the reverse gradient.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> Color samples: { R1, G1, B1, A1, ..., Rn, Gn, Bn, An }.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2632513"></a><h3><a name="gimp-gradients-sample-custom"></a>gimp_gradients_sample_custom ()</h3><a class="indexterm" name="id2632521"></a><pre class="programlisting">gdouble*    gimp_gradients_sample_custom    (gint num_samples,
-                                             const gdouble *positions,
-                                             gboolean reverse);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_gradients_sample_custom</tt> is deprecated and should not be used in newly-written code.</p></div><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2646020"></a><h3><a name="gimp-gradients-sample-custom"></a>gimp_gradients_sample_custom ()</h3><a class="indexterm" name="id2646031"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>*    gimp_gradients_sample_custom    (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> num_samples,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *positions,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> reverse);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_gradients_sample_custom</tt> is deprecated and should not be used in newly-written code.</p></div><p>
 This procedure is deprecated! Use <a href="libgimp-gimpgradient.html#gimp-gradient-get-custom-samples"><tt class="function">gimp_gradient_get_custom_samples()</tt></a>
 instead.</p><p>
 
@@ -66,12 +134,24 @@ instead.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>positions</tt></i> :</span></td><td> The list of positions to sample along the gradient.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>reverse</tt></i> :</span></td><td> Use the reverse gradient.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> Color samples: { R1, G1, B1, A1, ..., Rn, Gn, Bn, An }.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2632621"></a><h3><a name="gimp-gradients-get-gradient-data"></a>gimp_gradients_get_gradient_data ()</h3><a class="indexterm" name="id2632629"></a><pre class="programlisting">gchar*      gimp_gradients_get_gradient_data
-                                            (const gchar *name,
-                                             gint sample_size,
-                                             gboolean reverse,
-                                             gint *width,
-                                             gdouble **grad_data);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_gradients_get_gradient_data</tt> is deprecated and should not be used in newly-written code.</p></div><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2646134"></a><h3><a name="gimp-gradients-get-gradient-data"></a>gimp_gradients_get_gradient_data ()</h3><a class="indexterm" name="id2646145"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*      gimp_gradients_get_gradient_data
+                                            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> sample_size,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> reverse,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *width,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> **grad_data);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_gradients_get_gradient_data</tt> is deprecated and should not be used in newly-written code.</p></div><p>
 This procedure is deprecated! Use
 <a href="libgimp-gimpgradient.html#gimp-gradient-get-uniform-samples"><tt class="function">gimp_gradient_get_uniform_samples()</tt></a> instead.</p><p>
 

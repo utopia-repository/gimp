@@ -2,18 +2,28 @@
 
 
 
-gboolean    <a href="libgimp-gimpmessage.html#gimp-message">gimp_message</a>                    (const gchar *message);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpmessage.html#gimp-message">gimp_message</a>                    (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *message);
 <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 >GimpMessageHandlerType</a> <a href="libgimp-gimpmessage.html#gimp-message-get-handler">gimp_message_get_handler</a>
                                             (void);
-gboolean    <a href="libgimp-gimpmessage.html#gimp-message-set-handler">gimp_message_set_handler</a>        (<a
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpmessage.html#gimp-message-set-handler">gimp_message_set_handler</a>        (<a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 >GimpMessageHandlerType</a> handler);
-</pre></div><div class="refsect1" lang="en"><a name="id2533325"></a><h2>Description</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2573810"></a><h2>Description</h2><p>
 Display a dialog box with a message.
 
-</p></div><div class="refsect1" lang="en"><a name="id2534309"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2534314"></a><h3><a name="gimp-message"></a>gimp_message ()</h3><a class="indexterm" name="id2534323"></a><pre class="programlisting">gboolean    gimp_message                    (const gchar *message);</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2573820"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2535090"></a><h3><a name="gimp-message"></a>gimp_message ()</h3><a class="indexterm" name="id2535098"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_message                    (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *message);</pre><p>
 Displays a dialog box with a message.
 </p><p>
 Displays a dialog box with a message. Useful for status or error
@@ -21,7 +31,7 @@ reporting. The message must be in UTF-8 encoding.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>message</tt></i> :</span></td><td> Message to display in the dialog.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2534374"></a><h3><a name="gimp-message-get-handler"></a>gimp_message_get_handler ()</h3><a class="indexterm" name="id2534383"></a><pre class="programlisting"><a
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2535150"></a><h3><a name="gimp-message-get-handler"></a>gimp_message_get_handler ()</h3><a class="indexterm" name="id2535159"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 >GimpMessageHandlerType</a> gimp_message_get_handler
                                             (void);</pre><p>
@@ -32,7 +42,9 @@ They can be shown in a dialog box or printed on the console where
 gimp was started.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The current handler type.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2581149"></a><h3><a name="gimp-message-set-handler"></a>gimp_message_set_handler ()</h3><a class="indexterm" name="id2581157"></a><pre class="programlisting">gboolean    gimp_message_set_handler        (<a
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2535198"></a><h3><a name="gimp-message-set-handler"></a>gimp_message_set_handler ()</h3><a class="indexterm" name="id2535206"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_message_set_handler        (<a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 >GimpMessageHandlerType</a> handler);</pre><p>
 Controls where warning messages are displayed.

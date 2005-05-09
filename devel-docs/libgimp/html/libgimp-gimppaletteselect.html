@@ -2,35 +2,83 @@
 
 
 
-void        (<a href="libgimp-gimppaletteselect.html#GimpRunPaletteCallback">*GimpRunPaletteCallback</a>)       (const gchar *palette_name,
-                                             gboolean dialog_closing,
-                                             gpointer user_data);
-const gchar* <a href="libgimp-gimppaletteselect.html#gimp-palette-select-new">gimp_palette_select_new</a>        (const gchar *title,
-                                             const gchar *palette_name,
+void        (<a href="libgimp-gimppaletteselect.html#GimpRunPaletteCallback">*GimpRunPaletteCallback</a>)       (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *palette_name,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> dialog_closing,
+                                             <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data);
+const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>* <a href="libgimp-gimppaletteselect.html#gimp-palette-select-new">gimp_palette_select_new</a>        (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *palette_name,
                                              <a href="libgimp-gimppaletteselect.html#GimpRunPaletteCallback">GimpRunPaletteCallback</a> callback,
-                                             gpointer data);
-void        <a href="libgimp-gimppaletteselect.html#gimp-palette-select-destroy">gimp_palette_select_destroy</a>     (const gchar *palette_callback);
-gboolean    <a href="libgimp-gimppaletteselect.html#gimp-palettes-popup">gimp_palettes_popup</a>             (const gchar *palette_callback,
-                                             const gchar *popup_title,
-                                             const gchar *initial_palette);
-gboolean    <a href="libgimp-gimppaletteselect.html#gimp-palettes-close-popup">gimp_palettes_close_popup</a>       (const gchar *palette_callback);
-gboolean    <a href="libgimp-gimppaletteselect.html#gimp-palettes-set-popup">gimp_palettes_set_popup</a>         (const gchar *palette_callback,
-                                             const gchar *palette_name);
-</pre></div><div class="refsect1" lang="en"><a name="id2663814"></a><h2>Description</h2><p>
+                                             <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);
+void        <a href="libgimp-gimppaletteselect.html#gimp-palette-select-destroy">gimp_palette_select_destroy</a>     (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *palette_callback);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimppaletteselect.html#gimp-palettes-popup">gimp_palettes_popup</a>             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *palette_callback,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *popup_title,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *initial_palette);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimppaletteselect.html#gimp-palettes-close-popup">gimp_palettes_close_popup</a>       (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *palette_callback);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimppaletteselect.html#gimp-palettes-set-popup">gimp_palettes_set_popup</a>         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *palette_callback,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *palette_name);
+</pre></div><div class="refsect1" lang="en"><a name="id2655164"></a><h2>Description</h2><p>
 Functions providing a palette selection dialog.
-</p></div><div class="refsect1" lang="en"><a name="id2663825"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2663830"></a><h3><a name="GimpRunPaletteCallback"></a>GimpRunPaletteCallback ()</h3><a class="indexterm" name="id2663839"></a><pre class="programlisting">void        (*GimpRunPaletteCallback)       (const gchar *palette_name,
-                                             gboolean dialog_closing,
-                                             gpointer user_data);</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2655174"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2655179"></a><h3><a name="GimpRunPaletteCallback"></a>GimpRunPaletteCallback ()</h3><a class="indexterm" name="id2655188"></a><pre class="programlisting">void        (*GimpRunPaletteCallback)       (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *palette_name,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> dialog_closing,
+                                             <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data);</pre><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>palette_name</tt></i> :</span></td><td>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>dialog_closing</tt></i> :</span></td><td>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>user_data</tt></i> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2665775"></a><h3><a name="gimp-palette-select-new"></a>gimp_palette_select_new ()</h3><a class="indexterm" name="id2665783"></a><pre class="programlisting">const gchar* gimp_palette_select_new        (const gchar *title,
-                                             const gchar *palette_name,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2655516"></a><h3><a name="gimp-palette-select-new"></a>gimp_palette_select_new ()</h3><a class="indexterm" name="id2655524"></a><pre class="programlisting">const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>* gimp_palette_select_new        (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *palette_name,
                                              <a href="libgimp-gimppaletteselect.html#GimpRunPaletteCallback">GimpRunPaletteCallback</a> callback,
-                                             gpointer data);</pre><p>
+                                             <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);</pre><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>title</tt></i> :</span></td><td>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>palette_name</tt></i> :</span></td><td>
@@ -39,14 +87,24 @@ Functions providing a palette selection dialog.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2662230"></a><h3><a name="gimp-palette-select-destroy"></a>gimp_palette_select_destroy ()</h3><a class="indexterm" name="id2662238"></a><pre class="programlisting">void        gimp_palette_select_destroy     (const gchar *palette_callback);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2655620"></a><h3><a name="gimp-palette-select-destroy"></a>gimp_palette_select_destroy ()</h3><a class="indexterm" name="id2655628"></a><pre class="programlisting">void        gimp_palette_select_destroy     (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *palette_callback);</pre><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>palette_callback</tt></i> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2662272"></a><h3><a name="gimp-palettes-popup"></a>gimp_palettes_popup ()</h3><a class="indexterm" name="id2662281"></a><pre class="programlisting">gboolean    gimp_palettes_popup             (const gchar *palette_callback,
-                                             const gchar *popup_title,
-                                             const gchar *initial_palette);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2657371"></a><h3><a name="gimp-palettes-popup"></a>gimp_palettes_popup ()</h3><a class="indexterm" name="id2657379"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_palettes_popup             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *palette_callback,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *popup_title,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *initial_palette);</pre><p>
 Invokes the Gimp palette selection.
 </p><p>
 This procedure popups the palette selection dialog.</p><p>
@@ -55,15 +113,25 @@ This procedure popups the palette selection dialog.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>popup_title</tt></i> :</span></td><td> Title to give the palette popup window.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>initial_palette</tt></i> :</span></td><td> The name of the palette to set as the first selected.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2662368"></a><h3><a name="gimp-palettes-close-popup"></a>gimp_palettes_close_popup ()</h3><a class="indexterm" name="id2662377"></a><pre class="programlisting">gboolean    gimp_palettes_close_popup       (const gchar *palette_callback);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2657467"></a><h3><a name="gimp-palettes-close-popup"></a>gimp_palettes_close_popup ()</h3><a class="indexterm" name="id2657475"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_palettes_close_popup       (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *palette_callback);</pre><p>
 Popdown the Gimp palette selection.
 </p><p>
 This procedure closes an opened palette selection dialog.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>palette_callback</tt></i> :</span></td><td> The name of the callback registered for this popup.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2662429"></a><h3><a name="gimp-palettes-set-popup"></a>gimp_palettes_set_popup ()</h3><a class="indexterm" name="id2662438"></a><pre class="programlisting">gboolean    gimp_palettes_set_popup         (const gchar *palette_callback,
-                                             const gchar *palette_name);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2657527"></a><h3><a name="gimp-palettes-set-popup"></a>gimp_palettes_set_popup ()</h3><a class="indexterm" name="id2657535"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_palettes_set_popup         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *palette_callback,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *palette_name);</pre><p>
 Sets the current palette selection in a popup.
 </p><p>
 Sets the current palette selection in a popup.</p><p>

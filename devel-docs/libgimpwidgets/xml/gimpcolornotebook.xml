@@ -103,8 +103,8 @@ The <parameter>page_type</parameter> passed must be a <link linkend="GimpColorSe
 <varlistentry><term><parameter>has_page</parameter>&nbsp;:</term>
 <listitem><simpara>  Whether the page should be added or removed.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The new page widget, if <parameter>has_page</parameter> was <link linkend="TRUE--CAPS"><type>TRUE</type></link>, or <link linkend="NULL--CAPS"><type>NULL</type></link>
-              if <parameter>has_page</parameter> was <link linkend="FALSE--CAPS"><type>FALSE</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The new page widget, if <parameter>has_page</parameter> was <link linkend="TRUE:CAPS"><type>TRUE</type></link>, or <link linkend="NULL:CAPS"><type>NULL</type></link>
+              if <parameter>has_page</parameter> was <link linkend="FALSE:CAPS"><type>FALSE</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

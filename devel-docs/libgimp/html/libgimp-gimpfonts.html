@@ -2,20 +2,36 @@
 
 
 
-gboolean    <a href="libgimp-gimpfonts.html#gimp-fonts-refresh">gimp_fonts_refresh</a>              (void);
-gchar**     <a href="libgimp-gimpfonts.html#gimp-fonts-get-list">gimp_fonts_get_list</a>             (const gchar *filter,
-                                             gint *num_fonts);
-</pre></div><div class="refsect1" lang="en"><a name="id2641691"></a><h2>Description</h2><p>
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpfonts.html#gimp-fonts-refresh">gimp_fonts_refresh</a>              (void);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>**     <a href="libgimp-gimpfonts.html#gimp-fonts-get-list">gimp_fonts_get_list</a>             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filter,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_fonts);
+</pre></div><div class="refsect1" lang="en"><a name="id2613247"></a><h2>Description</h2><p>
 
-</p></div><div class="refsect1" lang="en"><a name="id2552642"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2643269"></a><h3><a name="gimp-fonts-refresh"></a>gimp_fonts_refresh ()</h3><a class="indexterm" name="id2643276"></a><pre class="programlisting">gboolean    gimp_fonts_refresh              (void);</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2593611"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2638414"></a><h3><a name="gimp-fonts-refresh"></a>gimp_fonts_refresh ()</h3><a class="indexterm" name="id2638422"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_fonts_refresh              (void);</pre><p>
 Refresh current fonts. This function always succeeds.
 </p><p>
 This procedure retrieves all fonts currently in the user's font path
 and updates the font dialogs accordingly.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2646957"></a><h3><a name="gimp-fonts-get-list"></a>gimp_fonts_get_list ()</h3><a class="indexterm" name="id2646966"></a><pre class="programlisting">gchar**     gimp_fonts_get_list             (const gchar *filter,
-                                             gint *num_fonts);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2638459"></a><h3><a name="gimp-fonts-get-list"></a>gimp_fonts_get_list ()</h3><a class="indexterm" name="id2638468"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>**     gimp_fonts_get_list             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filter,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_fonts);</pre><p>
 Retrieve the list of loaded fonts.
 </p><p>
 This procedure returns a list of the fonts that are currently

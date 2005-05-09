@@ -31,7 +31,7 @@ void        <a href="GimpColorArea.html#gimp-color-area-set-draw-border">gimp_co
 href="../glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> draw_border);
 
-</pre></div><div class="refsect1" lang="en"><a name="id2538130"></a><h2>Object Hierarchy</h2><pre class="synopsis">
+</pre></div><div class="refsect1" lang="en"><a name="id2556011"></a><h2>Object Hierarchy</h2><pre class="synopsis">
 
   <a
 href="../gobject/gobject-The-Base-Object-Type.html#GObject"
@@ -46,20 +46,20 @@ href="../gtk/GtkWidget.html"
 href="../gtk/GtkDrawingArea.html"
 >GtkDrawingArea</a>
                      +----GimpColorArea
-</pre></div><div class="refsect1" lang="en"><a name="id2570744"></a><h2>Implemented Interfaces</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2580520"></a><h2>Implemented Interfaces</h2><p>
 GimpColorArea implements
- AtkImplementorIface.</p></div><div class="refsect1" lang="en"><a name="id2570758"></a><h2>Signal Prototypes</h2><pre class="synopsis">
+ AtkImplementorIface.</p></div><div class="refsect1" lang="en"><a name="id2580535"></a><h2>Signal Prototypes</h2><pre class="synopsis">
 
 "<a href="GimpColorArea.html#GimpColorArea-color-changed">color-changed</a>"
             void        user_function      (<a href="GimpColorArea.html" title="GimpColorArea">GimpColorArea</a> *gimpcolorarea,
                                             <a
 href="../glib/glib-Basic-Types.html#gpointer"
 >gpointer</a> user_data);
-</pre></div><div class="refsect1" lang="en"><a name="id2570789"></a><h2>Description</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2580565"></a><h2>Description</h2><p>
 
-</p></div><div class="refsect1" lang="en"><a name="id2570798"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2570804"></a><h3><a name="GimpColorArea-struct"></a>GimpColorArea</h3><a class="indexterm" name="id2570812"></a><pre class="programlisting">typedef struct _GimpColorArea GimpColorArea;</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2580575"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2580580"></a><h3><a name="GimpColorArea-struct"></a>GimpColorArea</h3><a class="indexterm" name="id2580588"></a><pre class="programlisting">typedef struct _GimpColorArea GimpColorArea;</pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2570823"></a><h3><a name="GimpColorAreaType"></a>enum GimpColorAreaType</h3><a class="indexterm" name="id2570831"></a><pre class="programlisting">typedef enum
+</p></div><hr><div class="refsect2" lang="en"><a name="id2580599"></a><h3><a name="GimpColorAreaType"></a>enum GimpColorAreaType</h3><a class="indexterm" name="id2580607"></a><pre class="programlisting">typedef enum
 {
   GIMP_COLOR_AREA_FLAT = 0,
   GIMP_COLOR_AREA_SMALL_CHECKS,
@@ -67,7 +67,7 @@ href="../glib/glib-Basic-Types.html#gpointer"
 } GimpColorAreaType;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2570843"></a><h3><a name="gimp-color-area-new"></a>gimp_color_area_new ()</h3><a class="indexterm" name="id2570851"></a><pre class="programlisting"><a
+</p></div><hr><div class="refsect2" lang="en"><a name="id2580619"></a><h3><a name="gimp-color-area-new"></a>gimp_color_area_new ()</h3><a class="indexterm" name="id2580628"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>*  gimp_color_area_new             (const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
@@ -87,7 +87,7 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>type</tt></i> :</span></td><td>      The type of color area to create.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>drag_mask</tt></i> :</span></td><td> The event_mask that should trigger drags.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> Pointer to the new <a href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> widget.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2579261"></a><h3><a name="gimp-color-area-set-color"></a>gimp_color_area_set_color ()</h3><a class="indexterm" name="id2579269"></a><pre class="programlisting">void        gimp_color_area_set_color       (<a href="GimpColorArea.html" title="GimpColorArea">GimpColorArea</a> *area,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2580337"></a><h3><a name="gimp-color-area-set-color"></a>gimp_color_area_set_color ()</h3><a class="indexterm" name="id2580346"></a><pre class="programlisting">void        gimp_color_area_set_color       (<a href="GimpColorArea.html" title="GimpColorArea">GimpColorArea</a> *area,
                                              const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre><p>
@@ -97,7 +97,7 @@ Sets <i class="parameter"><tt>area</tt></i> to a different <i class="parameter">
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>color</tt></i> :</span></td><td> Pointer to a <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 ><span class="type">GimpRGB</span></a> struct that defines the new color.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2579342"></a><h3><a name="gimp-color-area-get-color"></a>gimp_color_area_get_color ()</h3><a class="indexterm" name="id2579351"></a><pre class="programlisting">void        gimp_color_area_get_color       (<a href="GimpColorArea.html" title="GimpColorArea">GimpColorArea</a> *area,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2580419"></a><h3><a name="gimp-color-area-get-color"></a>gimp_color_area_get_color ()</h3><a class="indexterm" name="id2580427"></a><pre class="programlisting">void        gimp_color_area_get_color       (<a href="GimpColorArea.html" title="GimpColorArea">GimpColorArea</a> *area,
                                              <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre><p>
@@ -107,7 +107,7 @@ Retrieves the current color of the <i class="parameter"><tt>area</tt></i>.</p><p
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>color</tt></i> :</span></td><td> Pointer to a <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 ><span class="type">GimpRGB</span></a> struct that is used to return the color.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2579423"></a><h3><a name="gimp-color-area-has-alpha"></a>gimp_color_area_has_alpha ()</h3><a class="indexterm" name="id2547588"></a><pre class="programlisting"><a
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2580498"></a><h3><a name="gimp-color-area-has-alpha"></a>gimp_color_area_has_alpha ()</h3><a class="indexterm" name="id2579132"></a><pre class="programlisting"><a
 href="../glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>    gimp_color_area_has_alpha       (<a href="GimpColorArea.html" title="GimpColorArea">GimpColorArea</a> *area);</pre><p>
 Checks whether the <i class="parameter"><tt>area</tt></i> shows transparency information. This is determined
@@ -115,7 +115,7 @@ via the <i class="parameter"><tt>area</tt></i>'s <a href="GimpColorArea.html#Gim
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>area</tt></i> :</span></td><td> Pointer to a <a href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> <tt class="literal">TRUE</tt> if <i class="parameter"><tt>area</tt></i> shows transparency information, <tt class="literal">FALSE</tt> otherwise.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2547665"></a><h3><a name="gimp-color-area-set-type"></a>gimp_color_area_set_type ()</h3><a class="indexterm" name="id2547673"></a><pre class="programlisting">void        gimp_color_area_set_type        (<a href="GimpColorArea.html" title="GimpColorArea">GimpColorArea</a> *area,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2579209"></a><h3><a name="gimp-color-area-set-type"></a>gimp_color_area_set_type ()</h3><a class="indexterm" name="id2579217"></a><pre class="programlisting">void        gimp_color_area_set_type        (<a href="GimpColorArea.html" title="GimpColorArea">GimpColorArea</a> *area,
                                              <a href="GimpColorArea.html#GimpColorAreaType">GimpColorAreaType</a> type);</pre><p>
 Allows to change the type of <i class="parameter"><tt>area</tt></i>. The <a href="GimpColorArea.html#GimpColorAreaType"><span class="type">GimpColorAreaType</span></a> determines
 whether the widget shows transparency information and chooses the size of
@@ -123,7 +123,7 @@ the checkerboard used to do that.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>area</tt></i> :</span></td><td> Pointer to a <a href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>type</tt></i> :</span></td><td> A <a href="GimpColorArea.html#GimpColorAreaType"><span class="type">GimpColorAreaType</span></a>.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2547752"></a><h3><a name="gimp-color-area-set-draw-border"></a>gimp_color_area_set_draw_border ()</h3><a class="indexterm" name="id2547760"></a><pre class="programlisting">void        gimp_color_area_set_draw_border (<a href="GimpColorArea.html" title="GimpColorArea">GimpColorArea</a> *area,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2579296"></a><h3><a name="gimp-color-area-set-draw-border"></a>gimp_color_area_set_draw_border ()</h3><a class="indexterm" name="id2579304"></a><pre class="programlisting">void        gimp_color_area_set_draw_border (<a href="GimpColorArea.html" title="GimpColorArea">GimpColorArea</a> *area,
                                              <a
 href="../glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> draw_border);</pre><p>
@@ -133,7 +133,7 @@ off. The default is not draw a border.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>area</tt></i> :</span></td><td> Pointer to a <a href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>draw_border</tt></i> :</span></td><td> whether to draw a border or not
-</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2547829"></a><h2>Signals</h2><div class="refsect2" lang="en"><a name="id2547835"></a><h3><a name="GimpColorArea-color-changed"></a>The "color-changed" signal</h3><pre class="programlisting">void        user_function                  (<a href="GimpColorArea.html" title="GimpColorArea">GimpColorArea</a> *gimpcolorarea,
+</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2579373"></a><h2>Signals</h2><div class="refsect2" lang="en"><a name="id2579378"></a><h3><a name="GimpColorArea-color-changed"></a>The "color-changed" signal</h3><pre class="programlisting">void        user_function                  (<a href="GimpColorArea.html" title="GimpColorArea">GimpColorArea</a> *gimpcolorarea,
                                             <a
 href="../glib/glib-Basic-Types.html#gpointer"
 >gpointer</a> user_data);</pre><p>

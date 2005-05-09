@@ -2,20 +2,50 @@
 
 
 
-gboolean    <a href="libgimp-gimpplugin.html#gimp-plugin-domain-register">gimp_plugin_domain_register</a>     (const gchar *domain_name,
-                                             const gchar *domain_path);
-gboolean    <a href="libgimp-gimpplugin.html#gimp-plugin-help-register">gimp_plugin_help_register</a>       (const gchar *domain_name,
-                                             const gchar *domain_uri);
-gboolean    <a href="libgimp-gimpplugin.html#gimp-plugin-icon-register">gimp_plugin_icon_register</a>       (const gchar *procedure_name,
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpplugin.html#gimp-plugin-domain-register">gimp_plugin_domain_register</a>     (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *domain_name,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *domain_path);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpplugin.html#gimp-plugin-help-register">gimp_plugin_help_register</a>       (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *domain_name,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *domain_uri);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpplugin.html#gimp-plugin-icon-register">gimp_plugin_icon_register</a>       (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *procedure_name,
                                              <a href="libgimp-gimpenums.html#GimpIconType">GimpIconType</a> icon_type,
-                                             const guint8 *icon_data);
-gboolean    <a href="libgimp-gimpplugin.html#gimp-plugin-menu-register">gimp_plugin_menu_register</a>       (const gchar *procedure_name,
-                                             const gchar *menu_path);
-</pre></div><div class="refsect1" lang="en"><a name="id2577270"></a><h2>Description</h2><p>
+                                             const <a
+href="../glib/glib-Basic-Types.html#guint8"
+>guint8</a> *icon_data);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpplugin.html#gimp-plugin-menu-register">gimp_plugin_menu_register</a>       (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *procedure_name,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *menu_path);
+</pre></div><div class="refsect1" lang="en"><a name="id2526661"></a><h2>Description</h2><p>
 Functions useful for plugins, e.g. registration and progress indicators.
 
-</p></div><div class="refsect1" lang="en"><a name="id2577280"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2577286"></a><h3><a name="gimp-plugin-domain-register"></a>gimp_plugin_domain_register ()</h3><a class="indexterm" name="id2577294"></a><pre class="programlisting">gboolean    gimp_plugin_domain_register     (const gchar *domain_name,
-                                             const gchar *domain_path);</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2526672"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2526677"></a><h3><a name="gimp-plugin-domain-register"></a>gimp_plugin_domain_register ()</h3><a class="indexterm" name="id2526686"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_plugin_domain_register     (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *domain_name,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *domain_path);</pre><p>
 Registers a textdomain for localisation.
 </p><p>
 This procedure adds a textdomain to the list of domains Gimp
@@ -30,8 +60,14 @@ called before any procedure is installed.</p><p>
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>domain_name</tt></i> :</span></td><td> The name of the textdomain (must be unique).
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>domain_path</tt></i> :</span></td><td> The absolute path to the compiled message catalog (may be NULL).
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2571725"></a><h3><a name="gimp-plugin-help-register"></a>gimp_plugin_help_register ()</h3><a class="indexterm" name="id2538565"></a><pre class="programlisting">gboolean    gimp_plugin_help_register       (const gchar *domain_name,
-                                             const gchar *domain_uri);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2579531"></a><h3><a name="gimp-plugin-help-register"></a>gimp_plugin_help_register ()</h3><a class="indexterm" name="id2570042"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_plugin_help_register       (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *domain_name,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *domain_uri);</pre><p>
 Register a help path for a plug-in.
 </p><p>
 This procedure changes the help rootdir for the plug-in which calls
@@ -41,9 +77,15 @@ interpreted relative to this rootdir.</p><p>
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>domain_name</tt></i> :</span></td><td> The XML namespace of the plug-in's help pages.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>domain_uri</tt></i> :</span></td><td> The root URI of the plug-in's help pages.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2530927"></a><h3><a name="gimp-plugin-icon-register"></a>gimp_plugin_icon_register ()</h3><a class="indexterm" name="id2530935"></a><pre class="programlisting">gboolean    gimp_plugin_icon_register       (const gchar *procedure_name,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2526769"></a><h3><a name="gimp-plugin-icon-register"></a>gimp_plugin_icon_register ()</h3><a class="indexterm" name="id2565471"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_plugin_icon_register       (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *procedure_name,
                                              <a href="libgimp-gimpenums.html#GimpIconType">GimpIconType</a> icon_type,
-                                             const guint8 *icon_data);</pre><p>
+                                             const <a
+href="../glib/glib-Basic-Types.html#guint8"
+>guint8</a> *icon_data);</pre><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>procedure_name</tt></i> :</span></td><td>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>icon_type</tt></i> :</span></td><td>
@@ -51,8 +93,14 @@ interpreted relative to this rootdir.</p><p>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2531008"></a><h3><a name="gimp-plugin-menu-register"></a>gimp_plugin_menu_register ()</h3><a class="indexterm" name="id2589620"></a><pre class="programlisting">gboolean    gimp_plugin_menu_register       (const gchar *procedure_name,
-                                             const gchar *menu_path);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2565544"></a><h3><a name="gimp-plugin-menu-register"></a>gimp_plugin_menu_register ()</h3><a class="indexterm" name="id2565551"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_plugin_menu_register       (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *procedure_name,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *menu_path);</pre><p>
 Register an additional menu path for a plug-in procedure.
 </p><p>
 This procedure installs an additional menu entry for the given

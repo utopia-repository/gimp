@@ -2,19 +2,43 @@
 
 
 
-gboolean    <a href="libgimp-gimpconvert.html#gimp-image-convert-rgb">gimp_image_convert_rgb</a>          (gint32 image_ID);
-gboolean    <a href="libgimp-gimpconvert.html#gimp-image-convert-grayscale">gimp_image_convert_grayscale</a>    (gint32 image_ID);
-gboolean    <a href="libgimp-gimpconvert.html#gimp-image-convert-indexed">gimp_image_convert_indexed</a>      (gint32 image_ID,
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpconvert.html#gimp-image-convert-rgb">gimp_image_convert_rgb</a>          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpconvert.html#gimp-image-convert-grayscale">gimp_image_convert_grayscale</a>    (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpconvert.html#gimp-image-convert-indexed">gimp_image_convert_indexed</a>      (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
                                              <a href="libgimp-gimpenums.html#GimpConvertDitherType">GimpConvertDitherType</a> dither_type,
                                              <a href="libgimp-gimpenums.html#GimpConvertPaletteType">GimpConvertPaletteType</a> palette_type,
-                                             gint num_cols,
-                                             gboolean alpha_dither,
-                                             gboolean remove_unused,
-                                             const gchar *palette);
-</pre></div><div class="refsect1" lang="en"><a name="id2590279"></a><h2>Description</h2><p>
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> num_cols,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> alpha_dither,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> remove_unused,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *palette);
+</pre></div><div class="refsect1" lang="en"><a name="id2593338"></a><h2>Description</h2><p>
 Conversions between RGB, indexed, and grayscale modes.
 
-</p></div><div class="refsect1" lang="en"><a name="id2590290"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2590295"></a><h3><a name="gimp-image-convert-rgb"></a>gimp_image_convert_rgb ()</h3><a class="indexterm" name="id2590303"></a><pre class="programlisting">gboolean    gimp_image_convert_rgb          (gint32 image_ID);</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2593349"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2593354"></a><h3><a name="gimp-image-convert-rgb"></a>gimp_image_convert_rgb ()</h3><a class="indexterm" name="id2593362"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_image_convert_rgb          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);</pre><p>
 Convert specified image to RGB color
 </p><p>
 This procedure converts the specified image to RGB color. This
@@ -24,7 +48,11 @@ indexed image.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>image_ID</tt></i> :</span></td><td> The image.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2594814"></a><h3><a name="gimp-image-convert-grayscale"></a>gimp_image_convert_grayscale ()</h3><a class="indexterm" name="id2594823"></a><pre class="programlisting">gboolean    gimp_image_convert_grayscale    (gint32 image_ID);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2551708"></a><h3><a name="gimp-image-convert-grayscale"></a>gimp_image_convert_grayscale ()</h3><a class="indexterm" name="id2551716"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_image_convert_grayscale    (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);</pre><p>
 Convert specified image to grayscale (256 intensity levels)
 </p><p>
 This procedure converts the specified image to grayscale with 8 bits
@@ -33,13 +61,25 @@ type GIMP_RGB or GIMP_INDEXED.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>image_ID</tt></i> :</span></td><td> The image.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2594877"></a><h3><a name="gimp-image-convert-indexed"></a>gimp_image_convert_indexed ()</h3><a class="indexterm" name="id2594886"></a><pre class="programlisting">gboolean    gimp_image_convert_indexed      (gint32 image_ID,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2551770"></a><h3><a name="gimp-image-convert-indexed"></a>gimp_image_convert_indexed ()</h3><a class="indexterm" name="id2551778"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_image_convert_indexed      (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
                                              <a href="libgimp-gimpenums.html#GimpConvertDitherType">GimpConvertDitherType</a> dither_type,
                                              <a href="libgimp-gimpenums.html#GimpConvertPaletteType">GimpConvertPaletteType</a> palette_type,
-                                             gint num_cols,
-                                             gboolean alpha_dither,
-                                             gboolean remove_unused,
-                                             const gchar *palette);</pre><p>
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> num_cols,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> alpha_dither,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> remove_unused,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *palette);</pre><p>
 Convert specified image to and Indexed image
 </p><p>
 This procedure converts the specified image to 'indexed' color. This

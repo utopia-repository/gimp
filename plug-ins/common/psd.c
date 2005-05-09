@@ -396,7 +396,7 @@ static glong getglong(FILE *fd, gchar *why);
 static void xfread(FILE *fd, void *buf, long len, gchar *why);
 static void xfread_interlaced(FILE *fd, guchar *buf, long len, gchar *why,
 			      gint step);
-static void read_whole_file(FILE *fd, const gchar *name);
+static void read_whole_file(FILE *fd);
 static void reshuffle_cmap(guchar *map256);
 static gchar* getpascalstring(FILE *fd, gchar *why);
 static gchar* getstring(size_t n, FILE * fd, gchar *why);
@@ -953,17 +953,6 @@ do_layer_record(FILE *fd, guint32 *offset, gint layernum)
   layer->width = right - left;
   layer->height = bottom - top;
 
-  if ((layer->height > GIMP_MAX_IMAGE_SIZE) ||
-      (layer->width > GIMP_MAX_IMAGE_SIZE))
-    {
-      g_error ("Input file has a larger layer size than GIMP can handle.");
-    }
-
-  if (layer->height && layer->width > (G_MAXUINT / layer->height))
-    {
-      g_error ("Input file has a larger layer size than GIMP can handle.");
-    }
-
   IFDBG printf("\t\t\t\tLayer extents: (%d,%d) -> (%d,%d)\n",
 	       left,top,right,bottom);
 
@@ -972,13 +961,6 @@ do_layer_record(FILE *fd, guint32 *offset, gint layernum)
 
   IFDBG printf("\t\t\t\tNumber of channels: %d\n",
 	       (int)layer->num_channels);
-
-  if ((layer->num_channels < 0) || (layer->num_channels > 56))
-    {
-      g_message ("Error: invalid number of channels in layer %d: %d",
-                 layernum, layer->num_channels);
-      gimp_quit();
-    }
 
   if (layer->num_channels)
     {
@@ -1079,17 +1061,6 @@ do_layer_record(FILE *fd, guint32 *offset, gint layernum)
       layer->lm_y = top;
       layer->lm_width = right - left;
       layer->lm_height = bottom - top;
-
-      if ((layer->lm_height > GIMP_MAX_IMAGE_SIZE) ||
-          (layer->lm_width > GIMP_MAX_IMAGE_SIZE))
-        {
-          g_error ("Input file has a larger layer mask size than GIMP can handle.");
-        }
-
-      if (layer->lm_height && layer->lm_width > (G_MAXUINT / layer->lm_height))
-        {
-          g_error ("Input file has a larger layer mask size than GIMP can handle.");
-        }
 
       getglong(fd, "lmask data throw");
       (*offset) += 4;
@@ -1227,14 +1198,8 @@ seek_to_and_unpack_pixeldata(FILE* fd, gint layeri, gint channeli)
   compression = getgshort(fd, "layer channel compression type");
   offset+=2;
 
-  width  = channel->width;
+  width = channel->width;
   height = channel->height;
-
-  if (width > G_MAXINT16 || height > G_MAXINT16)
-    {
-      g_message ("Error: Invalid channel dimensions");
-      gimp_quit ();
-    }
 
   IFDBG
     {
@@ -1801,7 +1766,7 @@ load_image (const gchar *name)
   gimp_progress_init (name_buf);
   g_free (name_buf);
 
-  read_whole_file (fd, name);
+  read_whole_file (fd);
 
   if (psd_image.num_layers > 0) /* PS3-style */
     {
@@ -2772,7 +2737,7 @@ xfread_interlaced(FILE* fd, guchar* buf, long len, gchar *why, gint step)
 }
 
 static void
-read_whole_file(FILE * fd, const gchar *filename)
+read_whole_file(FILE * fd)
 {
     guint16 w;
     gint32 pos;
@@ -2782,36 +2747,9 @@ read_whole_file(FILE * fd, const gchar *filename)
     xfread(fd, &PSDheader.signature, 4, "signature");
     PSDheader.version = getgshort(fd, "version");
     xfread(fd, &dummy, 6, "reserved");
-
     PSDheader.channels = getgshort(fd, "channels");
-
-    /* Photoshop CS (version 8) supports a maximum of 56 channels */
-
-    if (PSDheader.channels > 56)
-      {
-        g_error ("'%s' has more channels than GIMP can handle.",
-                 gimp_filename_to_utf8 (filename));
-      }
-
     PSDheader.rows = getglong(fd, "rows");
     PSDheader.columns = getglong(fd, "columns");
-
-    /* Photoshop CS (version 8) supports 300000 x 300000, but this
-       is currently larger than GIMP_MAX_IMAGE_SIZE */
-
-    if ((PSDheader.rows > GIMP_MAX_IMAGE_SIZE) ||
-        (PSDheader.columns > GIMP_MAX_IMAGE_SIZE))
-      {
-        g_error ("'%s' has a larger image size than GIMP can handle.",
-                 gimp_filename_to_utf8 (filename));
-      }
-
-    if (PSDheader.rows && PSDheader.columns > (G_MAXUINT / PSDheader.rows))
-      {
-        g_error ("'%s' has a larger image size than GIMP can handle.",
-                 gimp_filename_to_utf8 (filename));
-      }
-
     PSDheader.bpp = getgshort(fd, "depth");
     PSDheader.mode = getgshort(fd, "mode");
 

@@ -1,31 +1,8 @@
-gimp (2.2.6-1sarge4) oldstable-security; urgency=high
+gimp (2.2.7-1) unstable; urgency=low
 
-  * Fix regresion in XCF loader
+  * New upstream release
 
- -- Moritz Muehlenhoff <jmm@debian.org>  Sun, 15 Jul 2007 17:57:05 +0000
-
-gimp (2.2.6-1sarge3) oldstable-security; urgency=high
-
-   * Backported security fixes from 2.2.16/2.2.17:
-     - Multiple buffer overflows and integer overflows in DICOM, PNM, PSD,
-       PCX, RAS, XBM and XWD loaders (CVE-2006-4519, CVE-2007-2949)
-
- -- Moritz Muehlenhoff <jmm@debian.org>  Sat, 14 Jul 2007 09:41:27 +0000
-
-gimp (2.2.6-1sarge2) oldstable-security; urgency=high
-
-  * Non-maintainer upload by the Security Team:
-    Fix buffer overflow in SUNRAS parser. [CVE-2006-2356]
-
- -- Moritz Muehlenhoff <jmm@debian.org>  Sun, 27 May 2007 01:03:45 +0200
-
-gimp (2.2.6-1sarge1) stable-security; urgency=high
-
-  * Non-maintainer upload by the Security Team:
-    Fix buffer overflow in XCF parser, discovered by Henning Makholm.
-    [CVE-2006-3404]
-
- -- Moritz Muehlenhoff <jmm@debian.org>  Thu, 13 Jul 2006 21:31:08 +0200
+ -- Ari Pollak <ari@debian.org>  Sun,  8 May 2005 21:55:38 -0400
 
 gimp (2.2.6-1) unstable; urgency=low
 

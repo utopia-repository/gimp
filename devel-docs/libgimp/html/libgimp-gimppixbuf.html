@@ -3,25 +3,57 @@
 
 
 enum        <a href="libgimp-gimppixbuf.html#GimpPixbufTransparency">GimpPixbufTransparency</a>;
-GdkPixbuf*  <a href="libgimp-gimppixbuf.html#gimp-image-get-thumbnail">gimp_image_get_thumbnail</a>        (gint32 image_ID,
-                                             gint width,
-                                             gint height,
+<a
+href="../gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+>GdkPixbuf</a>*  <a href="libgimp-gimppixbuf.html#gimp-image-get-thumbnail">gimp_image_get_thumbnail</a>        (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height,
                                              <a href="libgimp-gimppixbuf.html#GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);
-GdkPixbuf*  <a href="libgimp-gimppixbuf.html#gimp-drawable-get-thumbnail">gimp_drawable_get_thumbnail</a>     (gint32 drawable_ID,
-                                             gint width,
-                                             gint height,
+<a
+href="../gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+>GdkPixbuf</a>*  <a href="libgimp-gimppixbuf.html#gimp-drawable-get-thumbnail">gimp_drawable_get_thumbnail</a>     (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height,
                                              <a href="libgimp-gimppixbuf.html#GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);
-GdkPixbuf*  <a href="libgimp-gimppixbuf.html#gimp-drawable-get-sub-thumbnail">gimp_drawable_get_sub_thumbnail</a> (gint32 drawable_ID,
-                                             gint src_x,
-                                             gint src_y,
-                                             gint src_width,
-                                             gint src_height,
-                                             gint dest_width,
-                                             gint dest_height,
+<a
+href="../gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+>GdkPixbuf</a>*  <a href="libgimp-gimppixbuf.html#gimp-drawable-get-sub-thumbnail">gimp_drawable_get_sub_thumbnail</a> (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> src_x,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> src_y,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> src_width,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> src_height,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> dest_width,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> dest_height,
                                              <a href="libgimp-gimppixbuf.html#GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);
-</pre></div><div class="refsect1" lang="en"><a name="id2652730"></a><h2>Description</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2660663"></a><h2>Description</h2><p>
 Get a thumbnail pixbuf for a drawable or image.
-</p></div><div class="refsect1" lang="en"><a name="id2652741"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2652746"></a><h3><a name="GimpPixbufTransparency"></a>enum GimpPixbufTransparency</h3><a class="indexterm" name="id2652754"></a><pre class="programlisting">typedef enum
+</p></div><div class="refsect1" lang="en"><a name="id2660674"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2660679"></a><h3><a name="GimpPixbufTransparency"></a>enum GimpPixbufTransparency</h3><a class="indexterm" name="id2660687"></a><pre class="programlisting">typedef enum
 {
   GIMP_PIXBUF_KEEP_ALPHA,
   GIMP_PIXBUF_SMALL_CHECKS,
@@ -29,9 +61,17 @@ Get a thumbnail pixbuf for a drawable or image.
 } GimpPixbufTransparency;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2668098"></a><h3><a name="gimp-image-get-thumbnail"></a>gimp_image_get_thumbnail ()</h3><a class="indexterm" name="id2668105"></a><pre class="programlisting">GdkPixbuf*  gimp_image_get_thumbnail        (gint32 image_ID,
-                                             gint width,
-                                             gint height,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2660699"></a><h3><a name="gimp-image-get-thumbnail"></a>gimp_image_get_thumbnail ()</h3><a class="indexterm" name="id2660707"></a><pre class="programlisting"><a
+href="../gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+>GdkPixbuf</a>*  gimp_image_get_thumbnail        (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height,
                                              <a href="libgimp-gimppixbuf.html#GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);</pre><p>
 Retrieves a thumbnail pixbuf for the image identified by <i class="parameter"><tt>image_ID</tt></i>.
 The thumbnail will be not larger than the requested size.</p><p>
@@ -40,12 +80,22 @@ The thumbnail will be not larger than the requested size.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>width</tt></i> :</span></td><td>    the requested thumbnail width  (&lt;= 512 pixels)
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>height</tt></i> :</span></td><td>   the requested thumbnail height (&lt;= 512 pixels)
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>alpha</tt></i> :</span></td><td>    how to handle an alpha channel
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> a new <span class="type">GdkPixbuf</span>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> a new <a
+href="../gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+><span class="type">GdkPixbuf</span></a>
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2668220"></a><h3><a name="gimp-drawable-get-thumbnail"></a>gimp_drawable_get_thumbnail ()</h3><a class="indexterm" name="id2671554"></a><pre class="programlisting">GdkPixbuf*  gimp_drawable_get_thumbnail     (gint32 drawable_ID,
-                                             gint width,
-                                             gint height,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2659728"></a><h3><a name="gimp-drawable-get-thumbnail"></a>gimp_drawable_get_thumbnail ()</h3><a class="indexterm" name="id2659736"></a><pre class="programlisting"><a
+href="../gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+>GdkPixbuf</a>*  gimp_drawable_get_thumbnail     (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height,
                                              <a href="libgimp-gimppixbuf.html#GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);</pre><p>
 Retrieves a thumbnail pixbuf for the drawable identified by
 <i class="parameter"><tt>drawable_ID</tt></i>. The thumbnail will be not larger than the requested
@@ -55,16 +105,34 @@ size.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>width</tt></i> :</span></td><td>       the requested thumbnail width  (&lt;= 512 pixels)
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>height</tt></i> :</span></td><td>      the requested thumbnail height (&lt;= 512 pixels)
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>alpha</tt></i> :</span></td><td>       how to handle an alpha channel
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> a new <span class="type">GdkPixbuf</span>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> a new <a
+href="../gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+><span class="type">GdkPixbuf</span></a>
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2671670"></a><h3><a name="gimp-drawable-get-sub-thumbnail"></a>gimp_drawable_get_sub_thumbnail ()</h3><a class="indexterm" name="id2671678"></a><pre class="programlisting">GdkPixbuf*  gimp_drawable_get_sub_thumbnail (gint32 drawable_ID,
-                                             gint src_x,
-                                             gint src_y,
-                                             gint src_width,
-                                             gint src_height,
-                                             gint dest_width,
-                                             gint dest_height,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2659850"></a><h3><a name="gimp-drawable-get-sub-thumbnail"></a>gimp_drawable_get_sub_thumbnail ()</h3><a class="indexterm" name="id2659859"></a><pre class="programlisting"><a
+href="../gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+>GdkPixbuf</a>*  gimp_drawable_get_sub_thumbnail (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> src_x,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> src_y,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> src_width,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> src_height,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> dest_width,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> dest_height,
                                              <a href="libgimp-gimppixbuf.html#GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);</pre><p>
 Retrieves a thumbnail pixbuf for the drawable identified by
 <i class="parameter"><tt>drawable_ID</tt></i>. The thumbnail will be not larger than the requested
@@ -78,7 +146,9 @@ size.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>dest_width</tt></i> :</span></td><td>  the requested thumbnail width  (&lt;= 512 pixels)
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>dest_height</tt></i> :</span></td><td> the requested thumbnail height (&lt;= 512 pixels)
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>alpha</tt></i> :</span></td><td>       how to handle an alpha channel
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> a new <span class="type">GdkPixbuf</span>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> a new <a
+href="../gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+><span class="type">GdkPixbuf</span></a>
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
 </p></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimp-gimpimagecombobox.html"><b>&lt;&lt; gimpimagecombobox</b></a></td><td align="right"><a accesskey="n" href="GimpProgressBar.html"><b>GimpProgressBar &gt;&gt;</b></a></td></tr></table></body></html>

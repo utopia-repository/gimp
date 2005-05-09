@@ -2,43 +2,117 @@
 
 
 
-gboolean    <a href="libgimp-gimpedit.html#gimp-edit-cut">gimp_edit_cut</a>                   (gint32 drawable_ID);
-gboolean    <a href="libgimp-gimpedit.html#gimp-edit-copy">gimp_edit_copy</a>                  (gint32 drawable_ID);
-gboolean    <a href="libgimp-gimpedit.html#gimp-edit-copy-visible">gimp_edit_copy_visible</a>          (gint32 image_ID);
-gint32      <a href="libgimp-gimpedit.html#gimp-edit-paste">gimp_edit_paste</a>                 (gint32 drawable_ID,
-                                             gboolean paste_into);
-gboolean    <a href="libgimp-gimpedit.html#gimp-edit-clear">gimp_edit_clear</a>                 (gint32 drawable_ID);
-gboolean    <a href="libgimp-gimpedit.html#gimp-edit-fill">gimp_edit_fill</a>                  (gint32 drawable_ID,
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpedit.html#gimp-edit-cut">gimp_edit_cut</a>                   (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpedit.html#gimp-edit-copy">gimp_edit_copy</a>                  (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpedit.html#gimp-edit-copy-visible">gimp_edit_copy_visible</a>          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);
+<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a>      <a href="libgimp-gimpedit.html#gimp-edit-paste">gimp_edit_paste</a>                 (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> paste_into);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpedit.html#gimp-edit-clear">gimp_edit_clear</a>                 (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpedit.html#gimp-edit-fill">gimp_edit_fill</a>                  (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpFillType">GimpFillType</a> fill_type);
-gboolean    <a href="libgimp-gimpedit.html#gimp-edit-bucket-fill">gimp_edit_bucket_fill</a>           (gint32 drawable_ID,
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpedit.html#gimp-edit-bucket-fill">gimp_edit_bucket_fill</a>           (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpBucketFillMode">GimpBucketFillMode</a> fill_mode,
                                              <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
-                                             gdouble opacity,
-                                             gdouble threshold,
-                                             gboolean sample_merged,
-                                             gdouble x,
-                                             gdouble y);
-gboolean    <a href="libgimp-gimpedit.html#gimp-edit-blend">gimp_edit_blend</a>                 (gint32 drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> opacity,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> threshold,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> sample_merged,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpedit.html#gimp-edit-blend">gimp_edit_blend</a>                 (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpBlendMode">GimpBlendMode</a> blend_mode,
                                              <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
                                              <a href="libgimp-gimpenums.html#GimpGradientType">GimpGradientType</a> gradient_type,
-                                             gdouble opacity,
-                                             gdouble offset,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> opacity,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> offset,
                                              <a href="libgimp-gimpenums.html#GimpRepeatMode">GimpRepeatMode</a> repeat,
-                                             gboolean reverse,
-                                             gboolean supersample,
-                                             gint max_depth,
-                                             gdouble threshold,
-                                             gboolean dither,
-                                             gdouble x1,
-                                             gdouble y1,
-                                             gdouble x2,
-                                             gdouble y2);
-gboolean    <a href="libgimp-gimpedit.html#gimp-edit-stroke">gimp_edit_stroke</a>                (gint32 drawable_ID);
-</pre></div><div class="refsect1" lang="en"><a name="id2600382"></a><h2>Description</h2><p>
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> reverse,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> supersample,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> max_depth,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> threshold,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> dither,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x1,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y1,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x2,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y2);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpedit.html#gimp-edit-stroke">gimp_edit_stroke</a>                (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID);
+</pre></div><div class="refsect1" lang="en"><a name="id2591336"></a><h2>Description</h2><p>
 Edit menu functions (cut, copy, paste, clear, etc.)
 
-</p></div><div class="refsect1" lang="en"><a name="id2601083"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2601088"></a><h3><a name="gimp-edit-cut"></a>gimp_edit_cut ()</h3><a class="indexterm" name="id2601096"></a><pre class="programlisting">gboolean    gimp_edit_cut                   (gint32 drawable_ID);</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2591347"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2591352"></a><h3><a name="gimp-edit-cut"></a>gimp_edit_cut ()</h3><a class="indexterm" name="id2591361"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_edit_cut                   (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID);</pre><p>
 Cut from the specified drawable.
 </p><p>
 If there is a selection in the image, then the area specified by the
@@ -50,7 +124,11 @@ internal GIMP edit buffer.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>drawable_ID</tt></i> :</span></td><td> The drawable to cut from.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE if the cut was successful, FALSE if the selection contained only transparent pixels.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2601154"></a><h3><a name="gimp-edit-copy"></a>gimp_edit_copy ()</h3><a class="indexterm" name="id2601162"></a><pre class="programlisting">gboolean    gimp_edit_copy                  (gint32 drawable_ID);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2591418"></a><h3><a name="gimp-edit-copy"></a>gimp_edit_copy ()</h3><a class="indexterm" name="id2591426"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_edit_copy                  (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID);</pre><p>
 Copy from the specified drawable.
 </p><p>
 If there is a selection in the image, then the area specified by the
@@ -62,7 +140,11 @@ edit buffer.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>drawable_ID</tt></i> :</span></td><td> The drawable to copy from.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE if the copy was successful, FALSE if the selection contained only transparent pixels.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2601220"></a><h3><a name="gimp-edit-copy-visible"></a>gimp_edit_copy_visible ()</h3><a class="indexterm" name="id2601228"></a><pre class="programlisting">gboolean    gimp_edit_copy_visible          (gint32 image_ID);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2606708"></a><h3><a name="gimp-edit-copy-visible"></a>gimp_edit_copy_visible ()</h3><a class="indexterm" name="id2606716"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_edit_copy_visible          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);</pre><p>
 Copy from the projection.
 </p><p>
 If there is a selection in the image, then the area specified by the
@@ -76,8 +158,14 @@ buffer.</p><p>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE if the copy was successful, FALSE if the selection contained only transparent pixels.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2601289"></a><h3><a name="gimp-edit-paste"></a>gimp_edit_paste ()</h3><a class="indexterm" name="id2601298"></a><pre class="programlisting">gint32      gimp_edit_paste                 (gint32 drawable_ID,
-                                             gboolean paste_into);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2606777"></a><h3><a name="gimp-edit-paste"></a>gimp_edit_paste ()</h3><a class="indexterm" name="id2606786"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a>      gimp_edit_paste                 (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> paste_into);</pre><p>
 Paste buffer to the specified drawable.
 </p><p>
 This procedure pastes a copy of the internal GIMP edit buffer to the
@@ -99,7 +187,11 @@ not needed.</p><p>
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>drawable_ID</tt></i> :</span></td><td> The drawable to paste to.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>paste_into</tt></i> :</span></td><td> Clear selection, or paste behind it?
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The new floating selection.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2544187"></a><h3><a name="gimp-edit-clear"></a>gimp_edit_clear ()</h3><a class="indexterm" name="id2529708"></a><pre class="programlisting">gboolean    gimp_edit_clear                 (gint32 drawable_ID);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2569718"></a><h3><a name="gimp-edit-clear"></a>gimp_edit_clear ()</h3><a class="indexterm" name="id2537790"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_edit_clear                 (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID);</pre><p>
 Clear selected area of drawable.
 </p><p>
 This procedure clears the specified drawable. If the drawable has an
@@ -110,7 +202,11 @@ a selection if there is a selection active.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>drawable_ID</tt></i> :</span></td><td> The drawable to clear from.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2596448"></a><h3><a name="gimp-edit-fill"></a>gimp_edit_fill ()</h3><a class="indexterm" name="id2596456"></a><pre class="programlisting">gboolean    gimp_edit_fill                  (gint32 drawable_ID,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2606862"></a><h3><a name="gimp-edit-fill"></a>gimp_edit_fill ()</h3><a class="indexterm" name="id2606870"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_edit_fill                  (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpFillType">GimpFillType</a> fill_type);</pre><p>
 Fill selected area of drawable.
 </p><p>
@@ -125,14 +221,28 @@ use <a href="libgimp-gimpdrawable.html#gimp-drawable-fill"><tt class="function">
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>drawable_ID</tt></i> :</span></td><td> The drawable to fill to.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>fill_type</tt></i> :</span></td><td> The type of fill.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2596531"></a><h3><a name="gimp-edit-bucket-fill"></a>gimp_edit_bucket_fill ()</h3><a class="indexterm" name="id2596538"></a><pre class="programlisting">gboolean    gimp_edit_bucket_fill           (gint32 drawable_ID,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2606945"></a><h3><a name="gimp-edit-bucket-fill"></a>gimp_edit_bucket_fill ()</h3><a class="indexterm" name="id2606952"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_edit_bucket_fill           (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpBucketFillMode">GimpBucketFillMode</a> fill_mode,
                                              <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
-                                             gdouble opacity,
-                                             gdouble threshold,
-                                             gboolean sample_merged,
-                                             gdouble x,
-                                             gdouble y);</pre><p>
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> opacity,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> threshold,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> sample_merged,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y);</pre><p>
 Fill the area specified either by the current selection if there is
 one, or by a seed fill starting at the specified coordinates.
 </p><p>
@@ -158,22 +268,48 @@ relative to the drawable's origin.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td> The x coordinate of this bucket fill's application. This parameter is only valid when there is no selection in the specified image.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>y</tt></i> :</span></td><td> The y coordinate of this bucket fill's application. This parameter is only valid when there is no selection in the specified image.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2596720"></a><h3><a name="gimp-edit-blend"></a>gimp_edit_blend ()</h3><a class="indexterm" name="id2596727"></a><pre class="programlisting">gboolean    gimp_edit_blend                 (gint32 drawable_ID,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2594478"></a><h3><a name="gimp-edit-blend"></a>gimp_edit_blend ()</h3><a class="indexterm" name="id2594486"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_edit_blend                 (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpBlendMode">GimpBlendMode</a> blend_mode,
                                              <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
                                              <a href="libgimp-gimpenums.html#GimpGradientType">GimpGradientType</a> gradient_type,
-                                             gdouble opacity,
-                                             gdouble offset,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> opacity,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> offset,
                                              <a href="libgimp-gimpenums.html#GimpRepeatMode">GimpRepeatMode</a> repeat,
-                                             gboolean reverse,
-                                             gboolean supersample,
-                                             gint max_depth,
-                                             gdouble threshold,
-                                             gboolean dither,
-                                             gdouble x1,
-                                             gdouble y1,
-                                             gdouble x2,
-                                             gdouble y2);</pre><p>
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> reverse,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> supersample,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> max_depth,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> threshold,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> dither,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x1,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y1,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x2,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y2);</pre><p>
 Blend between the starting and ending coordinates with the specified
 blend mode and gradient type.
 </p><p>
@@ -199,7 +335,11 @@ each gradient type.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>x2</tt></i> :</span></td><td> The x coordinate of this blend's ending point.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>y2</tt></i> :</span></td><td> The y coordinate of this blend's ending point.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2609633"></a><h3><a name="gimp-edit-stroke"></a>gimp_edit_stroke ()</h3><a class="indexterm" name="id2609641"></a><pre class="programlisting">gboolean    gimp_edit_stroke                (gint32 drawable_ID);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2607758"></a><h3><a name="gimp-edit-stroke"></a>gimp_edit_stroke ()</h3><a class="indexterm" name="id2607767"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_edit_stroke                (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID);</pre><p>
 Stroke the current selection
 </p><p>
 This procedure strokes the current selection, painting along the

@@ -2,66 +2,200 @@
 
 
 
-gboolean    <a href="libgimp-gimpcolor.html#gimp-brightness-contrast">gimp_brightness_contrast</a>        (gint32 drawable_ID,
-                                             gint brightness,
-                                             gint contrast);
-gboolean    <a href="libgimp-gimpcolor.html#gimp-levels">gimp_levels</a>                     (gint32 drawable_ID,
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpcolor.html#gimp-brightness-contrast">gimp_brightness_contrast</a>        (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> brightness,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> contrast);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpcolor.html#gimp-levels">gimp_levels</a>                     (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHistogramChannel">GimpHistogramChannel</a> channel,
-                                             gint low_input,
-                                             gint high_input,
-                                             gdouble gamma,
-                                             gint low_output,
-                                             gint high_output);
-gboolean    <a href="libgimp-gimpcolor.html#gimp-levels-auto">gimp_levels_auto</a>                (gint32 drawable_ID);
-gboolean    <a href="libgimp-gimpcolor.html#gimp-levels-stretch">gimp_levels_stretch</a>             (gint32 drawable_ID);
-gboolean    <a href="libgimp-gimpcolor.html#gimp-posterize">gimp_posterize</a>                  (gint32 drawable_ID,
-                                             gint levels);
-gboolean    <a href="libgimp-gimpcolor.html#gimp-desaturate">gimp_desaturate</a>                 (gint32 drawable_ID);
-gboolean    <a href="libgimp-gimpcolor.html#gimp-equalize">gimp_equalize</a>                   (gint32 drawable_ID,
-                                             gboolean mask_only);
-gboolean    <a href="libgimp-gimpcolor.html#gimp-invert">gimp_invert</a>                     (gint32 drawable_ID);
-gboolean    <a href="libgimp-gimpcolor.html#gimp-curves-spline">gimp_curves_spline</a>              (gint32 drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> low_input,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> high_input,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> gamma,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> low_output,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> high_output);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpcolor.html#gimp-levels-auto">gimp_levels_auto</a>                (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpcolor.html#gimp-levels-stretch">gimp_levels_stretch</a>             (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpcolor.html#gimp-posterize">gimp_posterize</a>                  (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> levels);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpcolor.html#gimp-desaturate">gimp_desaturate</a>                 (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpcolor.html#gimp-equalize">gimp_equalize</a>                   (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> mask_only);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpcolor.html#gimp-invert">gimp_invert</a>                     (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpcolor.html#gimp-curves-spline">gimp_curves_spline</a>              (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHistogramChannel">GimpHistogramChannel</a> channel,
-                                             gint num_points,
-                                             const guint8 *control_pts);
-gboolean    <a href="libgimp-gimpcolor.html#gimp-curves-explicit">gimp_curves_explicit</a>            (gint32 drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> num_points,
+                                             const <a
+href="../glib/glib-Basic-Types.html#guint8"
+>guint8</a> *control_pts);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpcolor.html#gimp-curves-explicit">gimp_curves_explicit</a>            (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHistogramChannel">GimpHistogramChannel</a> channel,
-                                             gint num_bytes,
-                                             const guint8 *curve);
-gboolean    <a href="libgimp-gimpcolor.html#gimp-color-balance">gimp_color_balance</a>              (gint32 drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> num_bytes,
+                                             const <a
+href="../glib/glib-Basic-Types.html#guint8"
+>guint8</a> *curve);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpcolor.html#gimp-color-balance">gimp_color_balance</a>              (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpTransferMode">GimpTransferMode</a> transfer_mode,
-                                             gboolean preserve_lum,
-                                             gdouble cyan_red,
-                                             gdouble magenta_green,
-                                             gdouble yellow_blue);
-gboolean    <a href="libgimp-gimpcolor.html#gimp-colorize">gimp_colorize</a>                   (gint32 drawable_ID,
-                                             gdouble hue,
-                                             gdouble saturation,
-                                             gdouble lightness);
-gboolean    <a href="libgimp-gimpcolor.html#gimp-histogram">gimp_histogram</a>                  (gint32 drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> preserve_lum,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> cyan_red,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> magenta_green,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> yellow_blue);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpcolor.html#gimp-colorize">gimp_colorize</a>                   (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> hue,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> saturation,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> lightness);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpcolor.html#gimp-histogram">gimp_histogram</a>                  (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHistogramChannel">GimpHistogramChannel</a> channel,
-                                             gint start_range,
-                                             gint end_range,
-                                             gdouble *mean,
-                                             gdouble *std_dev,
-                                             gdouble *median,
-                                             gdouble *pixels,
-                                             gdouble *count,
-                                             gdouble *percentile);
-gboolean    <a href="libgimp-gimpcolor.html#gimp-hue-saturation">gimp_hue_saturation</a>             (gint32 drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> start_range,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> end_range,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *mean,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *std_dev,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *median,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *pixels,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *count,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *percentile);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpcolor.html#gimp-hue-saturation">gimp_hue_saturation</a>             (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHueRange">GimpHueRange</a> hue_range,
-                                             gdouble hue_offset,
-                                             gdouble lightness,
-                                             gdouble saturation);
-gboolean    <a href="libgimp-gimpcolor.html#gimp-threshold">gimp_threshold</a>                  (gint32 drawable_ID,
-                                             gint low_threshold,
-                                             gint high_threshold);
-</pre></div><div class="refsect1" lang="en"><a name="id2594254"></a><h2>Description</h2><p>
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> hue_offset,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> lightness,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> saturation);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpcolor.html#gimp-threshold">gimp_threshold</a>                  (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> low_threshold,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> high_threshold);
+</pre></div><div class="refsect1" lang="en"><a name="id2592798"></a><h2>Description</h2><p>
 Functions for manipulating color, including curves and histograms.
 
-</p></div><div class="refsect1" lang="en"><a name="id2594264"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2594270"></a><h3><a name="gimp-brightness-contrast"></a>gimp_brightness_contrast ()</h3><a class="indexterm" name="id2594278"></a><pre class="programlisting">gboolean    gimp_brightness_contrast        (gint32 drawable_ID,
-                                             gint brightness,
-                                             gint contrast);</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2592809"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2592814"></a><h3><a name="gimp-brightness-contrast"></a>gimp_brightness_contrast ()</h3><a class="indexterm" name="id2592822"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_brightness_contrast        (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> brightness,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> contrast);</pre><p>
 Modify brightness/contrast in the specified drawable.
 </p><p>
 This procedures allows the brightness and contrast of the specified
@@ -72,13 +206,27 @@ are defined between -127 and 127.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>brightness</tt></i> :</span></td><td> Brightness adjustment.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>contrast</tt></i> :</span></td><td> Contrast adjustment.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2590855"></a><h3><a name="gimp-levels"></a>gimp_levels ()</h3><a class="indexterm" name="id2590864"></a><pre class="programlisting">gboolean    gimp_levels                     (gint32 drawable_ID,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2583150"></a><h3><a name="gimp-levels"></a>gimp_levels ()</h3><a class="indexterm" name="id2583158"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_levels                     (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHistogramChannel">GimpHistogramChannel</a> channel,
-                                             gint low_input,
-                                             gint high_input,
-                                             gdouble gamma,
-                                             gint low_output,
-                                             gint high_output);</pre><p>
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> low_input,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> high_input,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> gamma,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> low_output,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> high_output);</pre><p>
 Modifies intensity levels in the specified drawable.
 </p><p>
 This tool allows intensity levels in the specified drawable to be
@@ -102,12 +250,20 @@ grayscale images. It will not operate on indexed drawables.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>low_output</tt></i> :</span></td><td> Intensity of lowest output.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>high_output</tt></i> :</span></td><td> Intensity of highest output.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2590987"></a><h3><a name="gimp-levels-auto"></a>gimp_levels_auto ()</h3><a class="indexterm" name="id2590994"></a><pre class="programlisting">gboolean    gimp_levels_auto                (gint32 drawable_ID);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_levels_auto</tt> is deprecated and should not be used in newly-written code.</p></div><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2583251"></a><h3><a name="gimp-levels-auto"></a>gimp_levels_auto ()</h3><a class="indexterm" name="id2583258"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_levels_auto                (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_levels_auto</tt> is deprecated and should not be used in newly-written code.</p></div><p>
 This procedure is deprecated! Use <a href="libgimp-gimpcolor.html#gimp-levels-stretch"><tt class="function">gimp_levels_stretch()</tt></a> instead.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>drawable_ID</tt></i> :</span></td><td> The drawable.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2591052"></a><h3><a name="gimp-levels-stretch"></a>gimp_levels_stretch ()</h3><a class="indexterm" name="id2591059"></a><pre class="programlisting">gboolean    gimp_levels_stretch             (gint32 drawable_ID);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2583316"></a><h3><a name="gimp-levels-stretch"></a>gimp_levels_stretch ()</h3><a class="indexterm" name="id2583324"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_levels_stretch             (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID);</pre><p>
 Automatically modifies intensity levels in the specified drawable.
 </p><p>
 This procedure allows intensity levels in the specified drawable to
@@ -118,8 +274,14 @@ not operate on indexed drawables.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>drawable_ID</tt></i> :</span></td><td> The drawable.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2597728"></a><h3><a name="gimp-posterize"></a>gimp_posterize ()</h3><a class="indexterm" name="id2597736"></a><pre class="programlisting">gboolean    gimp_posterize                  (gint32 drawable_ID,
-                                             gint levels);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2583377"></a><h3><a name="gimp-posterize"></a>gimp_posterize ()</h3><a class="indexterm" name="id2595533"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_posterize                  (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> levels);</pre><p>
 Posterize the specified drawable.
 </p><p>
 This procedures reduces the number of shades allows in each
@@ -128,7 +290,11 @@ intensity channel to the specified 'levels' parameter.</p><p>
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>drawable_ID</tt></i> :</span></td><td> The drawable.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>levels</tt></i> :</span></td><td> Levels of posterization.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2597800"></a><h3><a name="gimp-desaturate"></a>gimp_desaturate ()</h3><a class="indexterm" name="id2597808"></a><pre class="programlisting">gboolean    gimp_desaturate                 (gint32 drawable_ID);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2595598"></a><h3><a name="gimp-desaturate"></a>gimp_desaturate ()</h3><a class="indexterm" name="id2595605"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_desaturate                 (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID);</pre><p>
 Desaturate the contents of the specified drawable.
 </p><p>
 This procedure desaturates the contents of the specified drawable.
@@ -136,8 +302,14 @@ This procedure only works on drawables of type RGB color.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>drawable_ID</tt></i> :</span></td><td> The drawable.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2597858"></a><h3><a name="gimp-equalize"></a>gimp_equalize ()</h3><a class="indexterm" name="id2597866"></a><pre class="programlisting">gboolean    gimp_equalize                   (gint32 drawable_ID,
-                                             gboolean mask_only);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2595656"></a><h3><a name="gimp-equalize"></a>gimp_equalize ()</h3><a class="indexterm" name="id2595663"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_equalize                   (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> mask_only);</pre><p>
 Equalize the contents of the specified drawable.
 </p><p>
 This procedure equalizes the contents of the specified drawable.
@@ -152,7 +324,11 @@ adjusted based on the histogram for the entire image.</p><p>
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>drawable_ID</tt></i> :</span></td><td> The drawable.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>mask_only</tt></i> :</span></td><td> Equalization option.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2597938"></a><h3><a name="gimp-invert"></a>gimp_invert ()</h3><a class="indexterm" name="id2597946"></a><pre class="programlisting">gboolean    gimp_invert                     (gint32 drawable_ID);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2595734"></a><h3><a name="gimp-invert"></a>gimp_invert ()</h3><a class="indexterm" name="id2595742"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_invert                     (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID);</pre><p>
 Invert the contents of the specified drawable.
 </p><p>
 This procedure inverts the contents of the specified drawable. Each
@@ -162,10 +338,18 @@ valid for this operation.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>drawable_ID</tt></i> :</span></td><td> The drawable.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2598001"></a><h3><a name="gimp-curves-spline"></a>gimp_curves_spline ()</h3><a class="indexterm" name="id2598010"></a><pre class="programlisting">gboolean    gimp_curves_spline              (gint32 drawable_ID,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2595797"></a><h3><a name="gimp-curves-spline"></a>gimp_curves_spline ()</h3><a class="indexterm" name="id2595805"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_curves_spline              (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHistogramChannel">GimpHistogramChannel</a> channel,
-                                             gint num_points,
-                                             const guint8 *control_pts);</pre><p>
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> num_points,
+                                             const <a
+href="../glib/glib-Basic-Types.html#guint8"
+>guint8</a> *control_pts);</pre><p>
 Modifies the intensity curve(s) for specified drawable.
 </p><p>
 Modifies the intensity mapping for one channel in the specified
@@ -181,10 +365,18 @@ to explicitly modify intensity levels.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>num_points</tt></i> :</span></td><td> The number of values in the control point array.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>control_pts</tt></i> :</span></td><td> The spline control points: { cp1.x, cp1.y, cp2.x, cp2.y, ... }.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2598121"></a><h3><a name="gimp-curves-explicit"></a>gimp_curves_explicit ()</h3><a class="indexterm" name="id2598129"></a><pre class="programlisting">gboolean    gimp_curves_explicit            (gint32 drawable_ID,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2595916"></a><h3><a name="gimp-curves-explicit"></a>gimp_curves_explicit ()</h3><a class="indexterm" name="id2595925"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_curves_explicit            (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHistogramChannel">GimpHistogramChannel</a> channel,
-                                             gint num_bytes,
-                                             const guint8 *curve);</pre><p>
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> num_bytes,
+                                             const <a
+href="../glib/glib-Basic-Types.html#guint8"
+>guint8</a> *curve);</pre><p>
 Modifies the intensity curve(s) for specified drawable.
 </p><p>
 Modifies the intensity mapping for one channel in the specified
@@ -200,12 +392,24 @@ Catmull Rom splines.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>num_bytes</tt></i> :</span></td><td> The number of bytes in the new curve (always 256).
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>curve</tt></i> :</span></td><td> The explicit curve.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2598239"></a><h3><a name="gimp-color-balance"></a>gimp_color_balance ()</h3><a class="indexterm" name="id2598247"></a><pre class="programlisting">gboolean    gimp_color_balance              (gint32 drawable_ID,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2596034"></a><h3><a name="gimp-color-balance"></a>gimp_color_balance ()</h3><a class="indexterm" name="id2596043"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_color_balance              (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpTransferMode">GimpTransferMode</a> transfer_mode,
-                                             gboolean preserve_lum,
-                                             gdouble cyan_red,
-                                             gdouble magenta_green,
-                                             gdouble yellow_blue);</pre><p>
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> preserve_lum,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> cyan_red,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> magenta_green,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> yellow_blue);</pre><p>
 Modify the color balance of the specified drawable.
 </p><p>
 Modify the color balance of the specified drawable. There are three
@@ -224,10 +428,20 @@ the luminosity of each pixel remains fixed.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>magenta_green</tt></i> :</span></td><td> Magenta-Green color balance.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>yellow_blue</tt></i> :</span></td><td> Yellow-Blue color balance.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2598391"></a><h3><a name="gimp-colorize"></a>gimp_colorize ()</h3><a class="indexterm" name="id2598400"></a><pre class="programlisting">gboolean    gimp_colorize                   (gint32 drawable_ID,
-                                             gdouble hue,
-                                             gdouble saturation,
-                                             gdouble lightness);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2596187"></a><h3><a name="gimp-colorize"></a>gimp_colorize ()</h3><a class="indexterm" name="id2596195"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_colorize                   (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> hue,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> saturation,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> lightness);</pre><p>
 Render the drawable as a grayscale image seen through a colored
 glass.
 </p><p>
@@ -242,16 +456,36 @@ grayscale or indexed drawables.</p><p>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2598509"></a><h3><a name="gimp-histogram"></a>gimp_histogram ()</h3><a class="indexterm" name="id2598517"></a><pre class="programlisting">gboolean    gimp_histogram                  (gint32 drawable_ID,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2596304"></a><h3><a name="gimp-histogram"></a>gimp_histogram ()</h3><a class="indexterm" name="id2596312"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_histogram                  (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHistogramChannel">GimpHistogramChannel</a> channel,
-                                             gint start_range,
-                                             gint end_range,
-                                             gdouble *mean,
-                                             gdouble *std_dev,
-                                             gdouble *median,
-                                             gdouble *pixels,
-                                             gdouble *count,
-                                             gdouble *percentile);</pre><p>
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> start_range,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> end_range,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *mean,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *std_dev,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *median,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *pixels,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *count,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *percentile);</pre><p>
 Returns information on the intensity histogram for the specified
 drawable.
 </p><p>
@@ -280,11 +514,21 @@ pixels with transparent alpha values will not be counted.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>count</tt></i> :</span></td><td> Alpha-weighted pixel count for range.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>percentile</tt></i> :</span></td><td> Percentile that range falls under.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2598736"></a><h3><a name="gimp-hue-saturation"></a>gimp_hue_saturation ()</h3><a class="indexterm" name="id2598744"></a><pre class="programlisting">gboolean    gimp_hue_saturation             (gint32 drawable_ID,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2596531"></a><h3><a name="gimp-hue-saturation"></a>gimp_hue_saturation ()</h3><a class="indexterm" name="id2596540"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_hue_saturation             (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHueRange">GimpHueRange</a> hue_range,
-                                             gdouble hue_offset,
-                                             gdouble lightness,
-                                             gdouble saturation);</pre><p>
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> hue_offset,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> lightness,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> saturation);</pre><p>
 Modify hue, lightness, and saturation in the specified drawable.
 </p><p>
 This procedures allows the hue, lightness, and saturation in the
@@ -297,9 +541,17 @@ provides the capability to limit range of affected hues.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>lightness</tt></i> :</span></td><td> lightness modification.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>saturation</tt></i> :</span></td><td> saturation modification.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2598866"></a><h3><a name="gimp-threshold"></a>gimp_threshold ()</h3><a class="indexterm" name="id2598874"></a><pre class="programlisting">gboolean    gimp_threshold                  (gint32 drawable_ID,
-                                             gint low_threshold,
-                                             gint high_threshold);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2596661"></a><h3><a name="gimp-threshold"></a>gimp_threshold ()</h3><a class="indexterm" name="id2596670"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_threshold                  (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> low_threshold,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> high_threshold);</pre><p>
 Threshold the specified drawable.
 </p><p>
 This procedures generates a threshold map of the specified drawable.

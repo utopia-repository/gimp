@@ -152,7 +152,7 @@ It does not emit the <literal>offsets_changed</literal> signal.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-offset-area-set-pixbuf"/>gimp_offset_area_set_pixbuf ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_offset_area_set_pixbuf</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_offset_area_set_pixbuf     (<link linkend="GimpOffsetArea">GimpOffsetArea</link> *offset_area,
+<indexterm role="GIMP"><primary>gimp_offset_area_set_pixbuf</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_offset_area_set_pixbuf     (<link linkend="GimpOffsetArea">GimpOffsetArea</link> *offset_area,
                                              <link linkend="GdkPixbuf">GdkPixbuf</link> *pixbuf);</programlisting>
 <para>
 Sets the pixbuf which represents the original image/drawable which

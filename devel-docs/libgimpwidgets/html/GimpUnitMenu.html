@@ -37,7 +37,7 @@ void        <a href="GimpUnitMenu.html#gimp-unit-menu-set-pixel-digits">gimp_uni
 href="../glib/glib-Basic-Types.html#gint"
 >gint</a> digits);
 
-</pre></div><div class="refsect1" lang="en"><a name="id2589020"></a><h2>Object Hierarchy</h2><pre class="synopsis">
+</pre></div><div class="refsect1" lang="en"><a name="id2593980"></a><h2>Object Hierarchy</h2><pre class="synopsis">
 
   <a
 href="../gobject/gobject-The-Base-Object-Type.html#GObject"
@@ -61,16 +61,16 @@ href="../gtk/GtkButton.html"
 href="../gtk/GtkOptionMenu.html"
 >GtkOptionMenu</a>
                                        +----GimpUnitMenu
-</pre></div><div class="refsect1" lang="en"><a name="id2589067"></a><h2>Implemented Interfaces</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2594026"></a><h2>Implemented Interfaces</h2><p>
 GimpUnitMenu implements
- AtkImplementorIface.</p></div><div class="refsect1" lang="en"><a name="id2589082"></a><h2>Signal Prototypes</h2><pre class="synopsis">
+ AtkImplementorIface.</p></div><div class="refsect1" lang="en"><a name="id2594041"></a><h2>Signal Prototypes</h2><pre class="synopsis">
 
 "<a href="GimpUnitMenu.html#GimpUnitMenu-unit-changed">unit-changed</a>"
             void        user_function      (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *arg0,
                                             <a
 href="../glib/glib-Basic-Types.html#gpointer"
 >gpointer</a> user_data);
-</pre></div><div class="refsect1" lang="en"><a name="id2589113"></a><h2>Description</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2594073"></a><h2>Description</h2><p>
 This widget provides a <a
 href="../gtk/GtkOptionMenu.html"
 ><span class="type">GtkOptionMenu</span></a> which contains a list of <a
@@ -86,9 +86,9 @@ pop up a dialog for selecting user-defined units.
 </p><p>
 Whenever the user selects a unit from the menu or the dialog, the
 "unit_changed" signal will be emitted.
-</p></div><div class="refsect1" lang="en"><a name="id2592523"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2592528"></a><h3><a name="GimpUnitMenu-struct"></a>GimpUnitMenu</h3><a class="indexterm" name="id2592536"></a><pre class="programlisting">typedef struct _GimpUnitMenu GimpUnitMenu;</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2593780"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2593785"></a><h3><a name="GimpUnitMenu-struct"></a>GimpUnitMenu</h3><a class="indexterm" name="id2593794"></a><pre class="programlisting">typedef struct _GimpUnitMenu GimpUnitMenu;</pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2592546"></a><h3><a name="gimp-unit-menu-new"></a>gimp_unit_menu_new ()</h3><a class="indexterm" name="id2592554"></a><pre class="programlisting"><a
+</p></div><hr><div class="refsect2" lang="en"><a name="id2593803"></a><h3><a name="gimp-unit-menu-new"></a>gimp_unit_menu_new ()</h3><a class="indexterm" name="id2593812"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>*  gimp_unit_menu_new              (const <a
 href="../glib/glib-Basic-Types.html#gchar"
@@ -121,7 +121,7 @@ The <i class="parameter"><tt>format</tt></i> string supports the following perce
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>show_custom</tt></i> :</span></td><td>  <tt class="literal">TRUE</tt> if the unit menu should contain a "More..." item for
                opening the user-defined-unit selection dialog.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A pointer to the new <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a> widget.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2595741"></a><h3><a name="gimp-unit-menu-set-unit"></a>gimp_unit_menu_set_unit ()</h3><a class="indexterm" name="id2595749"></a><pre class="programlisting">void        gimp_unit_menu_set_unit         (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *menu,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2595718"></a><h3><a name="gimp-unit-menu-set-unit"></a>gimp_unit_menu_set_unit ()</h3><a class="indexterm" name="id2595726"></a><pre class="programlisting">void        gimp_unit_menu_set_unit         (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *menu,
                                              <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a> unit);</pre><p>
@@ -131,7 +131,7 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>menu</tt></i> :</span></td><td>  The unit menu you want to set the unit for.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>unit</tt></i> :</span></td><td> The new unit.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2595817"></a><h3><a name="gimp-unit-menu-get-unit"></a>gimp_unit_menu_get_unit ()</h3><a class="indexterm" name="id2593447"></a><pre class="programlisting"><a
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2595794"></a><h3><a name="gimp-unit-menu-get-unit"></a>gimp_unit_menu_get_unit ()</h3><a class="indexterm" name="id2595802"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a>    gimp_unit_menu_get_unit         (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *menu);</pre><p>
 Returns the <a
@@ -140,7 +140,7 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>menu</tt></i> :</span></td><td> The unit menu you want to know the unit of.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The unit the user has selected.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593508"></a><h3><a name="gimp-unit-menu-get-pixel-digits"></a>gimp_unit_menu_get_pixel_digits ()</h3><a class="indexterm" name="id2593517"></a><pre class="programlisting"><a
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593494"></a><h3><a name="gimp-unit-menu-get-pixel-digits"></a>gimp_unit_menu_get_pixel_digits ()</h3><a class="indexterm" name="id2593503"></a><pre class="programlisting"><a
 href="../glib/glib-Basic-Types.html#gint"
 >gint</a>        gimp_unit_menu_get_pixel_digits (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *menu);</pre><p>
 Retrieve the number of digits for a pixel size as set by
@@ -148,7 +148,7 @@ Retrieve the number of digits for a pixel size as set by
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>menu</tt></i> :</span></td><td> a <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the configured number of digits for a pixel size
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593580"></a><h3><a name="gimp-unit-menu-set-pixel-digits"></a>gimp_unit_menu_set_pixel_digits ()</h3><a class="indexterm" name="id2593591"></a><pre class="programlisting">void        gimp_unit_menu_set_pixel_digits (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *menu,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593565"></a><h3><a name="gimp-unit-menu-set-pixel-digits"></a>gimp_unit_menu_set_pixel_digits ()</h3><a class="indexterm" name="id2593576"></a><pre class="programlisting">void        gimp_unit_menu_set_pixel_digits (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *menu,
                                              <a
 href="../glib/glib-Basic-Types.html#gint"
 >gint</a> digits);</pre><p>
@@ -164,7 +164,7 @@ here. You should do this after attaching your spinbuttons.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>menu</tt></i> :</span></td><td> a <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>digits</tt></i> :</span></td><td> the number of digits to display for a pixel size
-</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2593672"></a><h2>Signals</h2><div class="refsect2" lang="en"><a name="id2593677"></a><h3><a name="GimpUnitMenu-unit-changed"></a>The "unit-changed" signal</h3><pre class="programlisting">void        user_function                  (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *arg0,
+</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2593657"></a><h2>Signals</h2><div class="refsect2" lang="en"><a name="id2593662"></a><h3><a name="GimpUnitMenu-unit-changed"></a>The "unit-changed" signal</h3><pre class="programlisting">void        user_function                  (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *arg0,
                                             <a
 href="../glib/glib-Basic-Types.html#gpointer"
 >gpointer</a> user_data);</pre><p>
@@ -173,7 +173,7 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 ><span class="type">GimpUnit</span></a> from
 the <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a>.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>user_data</tt></i> :</span></td><td>user data set when the signal handler was connected.</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2598912"></a><h2>See Also</h2><p>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>user_data</tt></i> :</span></td><td>user data set when the signal handler was connected.</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2598894"></a><h2>See Also</h2><p>
 <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 ><span class="type">GimpUnit</span></a>

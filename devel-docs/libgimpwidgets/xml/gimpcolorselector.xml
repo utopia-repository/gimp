@@ -20,8 +20,8 @@
 
 
             <link linkend="GimpColorSelector-struct">GimpColorSelector</link>;
-#define     <link linkend="GIMP-COLOR-SELECTOR-SIZE--CAPS">GIMP_COLOR_SELECTOR_SIZE</link>
-#define     <link linkend="GIMP-COLOR-SELECTOR-BAR-SIZE--CAPS">GIMP_COLOR_SELECTOR_BAR_SIZE</link>
+#define     <link linkend="GIMP-COLOR-SELECTOR-SIZE:CAPS">GIMP_COLOR_SELECTOR_SIZE</link>
+#define     <link linkend="GIMP-COLOR-SELECTOR-BAR-SIZE:CAPS">GIMP_COLOR_SELECTOR_BAR_SIZE</link>
 enum        <link linkend="GimpColorSelectorChannel">GimpColorSelectorChannel</link>;
 <link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-color-selector-new">gimp_color_selector_new</link>         (<link linkend="GType">GType</link> selector_type,
                                              const <link linkend="GimpRGB">GimpRGB</link> *rgb,
@@ -113,14 +113,14 @@ selector modules.
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-COLOR-SELECTOR-SIZE--CAPS"/>GIMP_COLOR_SELECTOR_SIZE</title>
+<title><anchor id="GIMP-COLOR-SELECTOR-SIZE:CAPS"/>GIMP_COLOR_SELECTOR_SIZE</title>
 <indexterm><primary>GIMP_COLOR_SELECTOR_SIZE</primary></indexterm><programlisting>#define GIMP_COLOR_SELECTOR_SIZE      150
 </programlisting>
 <para>
 The suggested size for a color area in a <link linkend="GimpColorSelector"><type>GimpColorSelector</type></link> implementation.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-COLOR-SELECTOR-BAR-SIZE--CAPS"/>GIMP_COLOR_SELECTOR_BAR_SIZE</title>
+<title><anchor id="GIMP-COLOR-SELECTOR-BAR-SIZE:CAPS"/>GIMP_COLOR_SELECTOR_BAR_SIZE</title>
 <indexterm><primary>GIMP_COLOR_SELECTOR_BAR_SIZE</primary></indexterm><programlisting>#define GIMP_COLOR_SELECTOR_BAR_SIZE  15
 </programlisting>
 <para>

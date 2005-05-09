@@ -79,7 +79,7 @@ A widget providing a preview of a <link linkend="GimpDrawable"><type>GimpDrawabl
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-preview-new"/>gimp_drawable_preview_new ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_preview_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_drawable_preview_new       (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_preview_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_drawable_preview_new       (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
                                              <link linkend="gboolean">gboolean</link> *toggle);</programlisting>
 <para>
 Creates a new <link linkend="GimpDrawablePreview"><type>GimpDrawablePreview</type></link> widget for <parameter>drawable</parameter>. If
@@ -104,7 +104,7 @@ data. For convenience you can pass a pointer to the <link linkend="gboolean"><ty
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-preview-get-drawable"/>gimp_drawable_preview_get_drawable ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_preview_get_drawable</primary></indexterm><programlisting><link linkend="GimpDrawable">GimpDrawable</link>* gimp_drawable_preview_get_drawable
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_preview_get_drawable</primary></indexterm><programlisting><link linkend="GimpDrawable">GimpDrawable</link>* gimp_drawable_preview_get_drawable
                                             (<link linkend="GimpDrawablePreview">GimpDrawablePreview</link> *preview);</programlisting>
 <para>
 </para>
@@ -122,7 +122,7 @@ data. For convenience you can pass a pointer to the <link linkend="gboolean"><ty
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-preview-draw-region"/>gimp_drawable_preview_draw_region ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_preview_draw_region</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_drawable_preview_draw_region
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_preview_draw_region</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_drawable_preview_draw_region
                                             (<link linkend="GimpDrawablePreview">GimpDrawablePreview</link> *preview,
                                              const <link linkend="GimpPixelRgn">GimpPixelRgn</link> *region);</programlisting>
 <para>

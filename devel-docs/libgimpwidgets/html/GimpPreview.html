@@ -51,7 +51,7 @@ void        <a href="GimpPreview.html#gimp-preview-set-default-cursor">gimp_prev
 href="../gdk/gdk-Cursors.html#GdkCursor"
 >GdkCursor</a> *cursor);
 
-</pre></div><div class="refsect1" lang="en"><a name="id2592409"></a><h2>Object Hierarchy</h2><pre class="synopsis">
+</pre></div><div class="refsect1" lang="en"><a name="id2587173"></a><h2>Object Hierarchy</h2><pre class="synopsis">
 
   <a
 href="../gobject/gobject-The-Base-Object-Type.html#GObject"
@@ -72,30 +72,30 @@ href="../gtk/GtkBox.html"
 href="../gtk/GtkVBox.html"
 >GtkVBox</a>
                                  +----GimpPreview
-</pre></div><div class="refsect1" lang="en"><a name="id2592451"></a><h2>Implemented Interfaces</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2587214"></a><h2>Implemented Interfaces</h2><p>
 GimpPreview implements
- AtkImplementorIface.</p></div><div class="refsect1" lang="en"><a name="id2592465"></a><h2>Properties</h2><pre class="synopsis">
+ AtkImplementorIface.</p></div><div class="refsect1" lang="en"><a name="id2587229"></a><h2>Properties</h2><pre class="synopsis">
 
   "<a href="GimpPreview.html#GimpPreview--update">update</a>"               <a
 href="../glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>              : Read / Write / Construct
-</pre></div><div class="refsect1" lang="en"><a name="id2593196"></a><h2>Style Properties</h2><pre class="synopsis">
+</pre></div><div class="refsect1" lang="en"><a name="id2591758"></a><h2>Style Properties</h2><pre class="synopsis">
 
   "<a href="GimpPreview.html#GimpPreview--size">size</a>"                 <a
 href="../glib/glib-Basic-Types.html#gint"
 >gint</a>                  : Read
-</pre></div><div class="refsect1" lang="en"><a name="id2593216"></a><h2>Signal Prototypes</h2><pre class="synopsis">
+</pre></div><div class="refsect1" lang="en"><a name="id2591778"></a><h2>Signal Prototypes</h2><pre class="synopsis">
 
 "<a href="GimpPreview.html#GimpPreview-invalidated">invalidated</a>"
             void        user_function      (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *gimppreview,
                                             <a
 href="../glib/glib-Basic-Types.html#gpointer"
 >gpointer</a> user_data);
-</pre></div><div class="refsect1" lang="en"><a name="id2593248"></a><h2>Description</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2591809"></a><h2>Description</h2><p>
 A widget providing a <a href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> plus framework to update the preview.
-</p></div><div class="refsect1" lang="en"><a name="id2593263"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2593269"></a><h3><a name="GimpPreview-struct"></a>GimpPreview</h3><a class="indexterm" name="id2593277"></a><pre class="programlisting">typedef struct _GimpPreview GimpPreview;</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2591825"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2591830"></a><h3><a name="GimpPreview-struct"></a>GimpPreview</h3><a class="indexterm" name="id2591839"></a><pre class="programlisting">typedef struct _GimpPreview GimpPreview;</pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2593287"></a><h3><a name="gimp-preview-get-update"></a>gimp_preview_get_update ()</h3><a class="indexterm" name="id2593295"></a><pre class="programlisting"><a
+</p></div><hr><div class="refsect2" lang="en"><a name="id2591848"></a><h3><a name="gimp-preview-get-update"></a>gimp_preview_get_update ()</h3><a class="indexterm" name="id2591857"></a><pre class="programlisting"><a
 href="../glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>    gimp_preview_get_update         (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview);</pre><p>
 </p><p>
@@ -104,7 +104,7 @@ href="../glib/glib-Basic-Types.html#gboolean"
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the state of the "Preview" check button.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2593352"></a><h3><a name="gimp-preview-set-update"></a>gimp_preview_set_update ()</h3><a class="indexterm" name="id2593360"></a><pre class="programlisting">void        gimp_preview_set_update         (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2591914"></a><h3><a name="gimp-preview-set-update"></a>gimp_preview_set_update ()</h3><a class="indexterm" name="id2591922"></a><pre class="programlisting">void        gimp_preview_set_update         (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview,
                                              <a
 href="../glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> update);</pre><p>
@@ -114,7 +114,7 @@ Sets the state of the "Preview" check button.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>update</tt></i> :</span></td><td> <tt class="literal">TRUE</tt> if the preview should invalidate itself when being
          scrolled or when <a href="GimpPreview.html#gimp-preview-invalidate"><tt class="function">gimp_preview_invalidate()</tt></a> is being called
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2593437"></a><h3><a name="gimp-preview-set-bounds"></a>gimp_preview_set_bounds ()</h3><a class="indexterm" name="id2591922"></a><pre class="programlisting">void        gimp_preview_set_bounds         (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2591998"></a><h3><a name="gimp-preview-set-bounds"></a>gimp_preview_set_bounds ()</h3><a class="indexterm" name="id2592905"></a><pre class="programlisting">void        gimp_preview_set_bounds         (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview,
                                              <a
 href="../glib/glib-Basic-Types.html#gint"
 >gint</a> xmin,
@@ -137,7 +137,7 @@ maximum size of the <a href="GimpPreviewArea.html" title="GimpPreviewArea"><span
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>xmax</tt></i> :</span></td><td>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>ymax</tt></i> :</span></td><td>
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2592049"></a><h3><a name="gimp-preview-get-size"></a>gimp_preview_get_size ()</h3><a class="indexterm" name="id2592057"></a><pre class="programlisting">void        gimp_preview_get_size           (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2593032"></a><h3><a name="gimp-preview-get-size"></a>gimp_preview_get_size ()</h3><a class="indexterm" name="id2593040"></a><pre class="programlisting">void        gimp_preview_get_size           (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview,
                                              <a
 href="../glib/glib-Basic-Types.html#gint"
 >gint</a> *width,
@@ -150,7 +150,7 @@ href="../glib/glib-Basic-Types.html#gint"
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>width</tt></i> :</span></td><td>   return location for the preview area width
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>height</tt></i> :</span></td><td>  return location for the preview area height
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2592141"></a><h3><a name="gimp-preview-get-position"></a>gimp_preview_get_position ()</h3><a class="indexterm" name="id2592150"></a><pre class="programlisting">void        gimp_preview_get_position       (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2593124"></a><h3><a name="gimp-preview-get-position"></a>gimp_preview_get_position ()</h3><a class="indexterm" name="id2593132"></a><pre class="programlisting">void        gimp_preview_get_position       (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview,
                                              <a
 href="../glib/glib-Basic-Types.html#gint"
 >gint</a> *x,
@@ -163,7 +163,7 @@ href="../glib/glib-Basic-Types.html#gint"
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td>       return location for the horizontal offset
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>y</tt></i> :</span></td><td>       return location for the vertical offset
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2597595"></a><h3><a name="gimp-preview-draw"></a>gimp_preview_draw ()</h3><a class="indexterm" name="id2597604"></a><pre class="programlisting">void        gimp_preview_draw               (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2597593"></a><h3><a name="gimp-preview-draw"></a>gimp_preview_draw ()</h3><a class="indexterm" name="id2597601"></a><pre class="programlisting">void        gimp_preview_draw               (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview);</pre><p>
 Calls the GimpPreview::draw method. GimpPreview itself doesn't
 implement a default draw method so the behaviour is determined by
 the derived class implementing this method.
@@ -175,7 +175,7 @@ original, unmodified drawable to the <i class="parameter"><tt>preview</tt></i>.<
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>preview</tt></i> :</span></td><td> a <a href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2597675"></a><h3><a name="gimp-preview-draw-buffer"></a>gimp_preview_draw_buffer ()</h3><a class="indexterm" name="id2597683"></a><pre class="programlisting">void        gimp_preview_draw_buffer        (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2597672"></a><h3><a name="gimp-preview-draw-buffer"></a>gimp_preview_draw_buffer ()</h3><a class="indexterm" name="id2597681"></a><pre class="programlisting">void        gimp_preview_draw_buffer        (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview,
                                              const <a
 href="../glib/glib-Basic-Types.html#guchar"
 >guchar</a> *buffer,
@@ -190,7 +190,7 @@ derived class implementing this method.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>buffer</tt></i> :</span></td><td>    a pixel buffer the size of the preview
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>rowstride</tt></i> :</span></td><td> the <i class="parameter"><tt>buffer</tt></i>'s rowstride
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2597772"></a><h3><a name="gimp-preview-invalidate"></a>gimp_preview_invalidate ()</h3><a class="indexterm" name="id2597781"></a><pre class="programlisting">void        gimp_preview_invalidate         (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2597770"></a><h3><a name="gimp-preview-invalidate"></a>gimp_preview_invalidate ()</h3><a class="indexterm" name="id2597778"></a><pre class="programlisting">void        gimp_preview_invalidate         (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview);</pre><p>
 This function starts or renews a short low-priority timeout. When
 the timeout expires, the GimpPreview::invalidated signal is emitted
 which will usually cause the <i class="parameter"><tt>preview</tt></i> to be updated.
@@ -203,7 +203,7 @@ itself.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>preview</tt></i> :</span></td><td> a <a href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2597848"></a><h3><a name="gimp-preview-set-default-cursor"></a>gimp_preview_set_default_cursor ()</h3><a class="indexterm" name="id2597856"></a><pre class="programlisting">void        gimp_preview_set_default_cursor (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2597845"></a><h3><a name="gimp-preview-set-default-cursor"></a>gimp_preview_set_default_cursor ()</h3><a class="indexterm" name="id2597853"></a><pre class="programlisting">void        gimp_preview_set_default_cursor (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *preview,
                                              <a
 href="../gdk/gdk-Cursors.html#GdkCursor"
 >GdkCursor</a> *cursor);</pre><p>
@@ -216,11 +216,11 @@ be overriden by a <tt class="literal">GDK_FLEUR</tt> if the preview has scrollba
 href="../gdk/gdk-Cursors.html#GdkCursor"
 ><span class="type">GdkCursor</span></a> or <tt class="literal">NULL</tt>
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div></div><div class="refsect1" lang="en"><a name="id2597940"></a><h2>Properties</h2><div class="refsect2" lang="en"><a name="id2597946"></a><h3><a name="GimpPreview--update"></a>The "<tt class="literal">update</tt>" property</h3><pre class="programlisting">  "update"               <a
+</p></div></div><div class="refsect1" lang="en"><a name="id2597938"></a><h2>Properties</h2><div class="refsect2" lang="en"><a name="id2597943"></a><h3><a name="GimpPreview--update"></a>The "<tt class="literal">update</tt>" property</h3><pre class="programlisting">  "update"               <a
 href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>              : Read / Write / Construct</pre><p></p><p>Default value: TRUE</p></div></div><div class="refsect1" lang="en"><a name="id2597972"></a><h2>Style Properties</h2><div class="refsect2" lang="en"><a name="id2597977"></a><h3><a name="GimpPreview--size"></a>The "<tt class="literal">size</tt>" style property</h3><pre class="programlisting">  "size"                 <a
+>gboolean</a>              : Read / Write / Construct</pre><p></p><p>Default value: TRUE</p></div></div><div class="refsect1" lang="en"><a name="id2597969"></a><h2>Style Properties</h2><div class="refsect2" lang="en"><a name="id2597975"></a><h3><a name="GimpPreview--size"></a>The "<tt class="literal">size</tt>" style property</h3><pre class="programlisting">  "size"                 <a
 href="../glib/glib-Basic-Types.html#gint"
->gint</a>                  : Read</pre><p></p><p>Allowed values: [1,1024]</p><p>Default value: 150</p></div></div><div class="refsect1" lang="en"><a name="id2598006"></a><h2>Signals</h2><div class="refsect2" lang="en"><a name="id2598011"></a><h3><a name="GimpPreview-invalidated"></a>The "invalidated" signal</h3><pre class="programlisting">void        user_function                  (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *gimppreview,
+>gint</a>                  : Read</pre><p></p><p>Allowed values: [1,1024]</p><p>Default value: 150</p></div></div><div class="refsect1" lang="en"><a name="id2598003"></a><h2>Signals</h2><div class="refsect2" lang="en"><a name="id2598008"></a><h3><a name="GimpPreview-invalidated"></a>The "invalidated" signal</h3><pre class="programlisting">void        user_function                  (<a href="GimpPreview.html" title="GimpPreview">GimpPreview</a> *gimppreview,
                                             <a
 href="../glib/glib-Basic-Types.html#gpointer"
 >gpointer</a> user_data);</pre><p>

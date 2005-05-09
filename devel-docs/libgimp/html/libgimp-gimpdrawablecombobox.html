@@ -2,20 +2,48 @@
 
 
 
-gboolean    (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">*GimpDrawableConstraintFunc</a>)   (gint32 image_id,
-                                             gint32 drawable_id,
-                                             gpointer data);
-GtkWidget*  <a href="libgimp-gimpdrawablecombobox.html#gimp-drawable-combo-box-new">gimp_drawable_combo_box_new</a>     (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
-                                             gpointer data);
-GtkWidget*  <a href="libgimp-gimpdrawablecombobox.html#gimp-channel-combo-box-new">gimp_channel_combo_box_new</a>      (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
-                                             gpointer data);
-GtkWidget*  <a href="libgimp-gimpdrawablecombobox.html#gimp-layer-combo-box-new">gimp_layer_combo_box_new</a>        (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
-                                             gpointer data);
-</pre></div><div class="refsect1" lang="en"><a name="id2666128"></a><h2>Description</h2><p>
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">*GimpDrawableConstraintFunc</a>)   (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_id,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_id,
+                                             <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="libgimp-gimpdrawablecombobox.html#gimp-drawable-combo-box-new">gimp_drawable_combo_box_new</a>     (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+                                             <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="libgimp-gimpdrawablecombobox.html#gimp-channel-combo-box-new">gimp_channel_combo_box_new</a>      (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+                                             <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="libgimp-gimpdrawablecombobox.html#gimp-layer-combo-box-new">gimp_layer_combo_box_new</a>        (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+                                             <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);
+</pre></div><div class="refsect1" lang="en"><a name="id2649344"></a><h2>Description</h2><p>
 A widget providing a popup menu of drawables.
-</p></div><div class="refsect1" lang="en"><a name="id2666138"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2666144"></a><h3><a name="GimpDrawableConstraintFunc"></a>GimpDrawableConstraintFunc ()</h3><a class="indexterm" name="id2666152"></a><pre class="programlisting">gboolean    (*GimpDrawableConstraintFunc)   (gint32 image_id,
-                                             gint32 drawable_id,
-                                             gpointer data);</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2649355"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2649360"></a><h3><a name="GimpDrawableConstraintFunc"></a>GimpDrawableConstraintFunc ()</h3><a class="indexterm" name="id2649368"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    (*GimpDrawableConstraintFunc)   (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_id,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_id,
+                                             <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);</pre><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>image_id</tt></i> :</span></td><td>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>drawable_id</tt></i> :</span></td><td>
@@ -23,8 +51,12 @@ A widget providing a popup menu of drawables.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2666229"></a><h3><a name="gimp-drawable-combo-box-new"></a>gimp_drawable_combo_box_new ()</h3><a class="indexterm" name="id2666238"></a><pre class="programlisting">GtkWidget*  gimp_drawable_combo_box_new     (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
-                                             gpointer data);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2649446"></a><h3><a name="gimp-drawable-combo-box-new"></a>gimp_drawable_combo_box_new ()</h3><a class="indexterm" name="id2649454"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_drawable_combo_box_new     (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+                                             <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);</pre><p>
 Creates a new <a
 href="../libgimpwidgets/GimpIntComboBox.html"
 ><span class="type">GimpIntComboBox</span></a> filled with all currently opened
@@ -50,8 +82,12 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 ><span class="type">GimpIntComboBox</span></a>.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2670409"></a><h3><a name="gimp-channel-combo-box-new"></a>gimp_channel_combo_box_new ()</h3><a class="indexterm" name="id2670417"></a><pre class="programlisting">GtkWidget*  gimp_channel_combo_box_new      (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
-                                             gpointer data);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2661634"></a><h3><a name="gimp-channel-combo-box-new"></a>gimp_channel_combo_box_new ()</h3><a class="indexterm" name="id2661642"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_channel_combo_box_new      (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+                                             <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);</pre><p>
 Creates a new <a
 href="../libgimpwidgets/GimpIntComboBox.html"
 ><span class="type">GimpIntComboBox</span></a> filled with all currently opened
@@ -64,8 +100,12 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 ><span class="type">GimpIntComboBox</span></a>.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2670517"></a><h3><a name="gimp-layer-combo-box-new"></a>gimp_layer_combo_box_new ()</h3><a class="indexterm" name="id2670526"></a><pre class="programlisting">GtkWidget*  gimp_layer_combo_box_new        (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
-                                             gpointer data);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2661742"></a><h3><a name="gimp-layer-combo-box-new"></a>gimp_layer_combo_box_new ()</h3><a class="indexterm" name="id2661750"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_layer_combo_box_new        (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+                                             <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);</pre><p>
 Creates a new <a
 href="../libgimpwidgets/GimpIntComboBox.html"
 ><span class="type">GimpIntComboBox</span></a> filled with all currently opened

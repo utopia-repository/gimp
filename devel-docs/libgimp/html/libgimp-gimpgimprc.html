@@ -2,18 +2,44 @@
 
 
 
-gchar*      <a href="libgimp-gimpgimprc.html#gimp-gimprc-query">gimp_gimprc_query</a>               (const gchar *token);
-gboolean    <a href="libgimp-gimpgimprc.html#gimp-gimprc-set">gimp_gimprc_set</a>                 (const gchar *token,
-                                             const gchar *value);
-gchar*      <a href="libgimp-gimpgimprc.html#gimp-get-default-comment">gimp_get_default_comment</a>        (void);
-gchar*      <a href="libgimp-gimpgimprc.html#gimp-get-module-load-inhibit">gimp_get_module_load_inhibit</a>    (void);
-gboolean    <a href="libgimp-gimpgimprc.html#gimp-get-monitor-resolution">gimp_get_monitor_resolution</a>     (gdouble *xres,
-                                             gdouble *yres);
-gchar*      <a href="libgimp-gimpgimprc.html#gimp-get-theme-dir">gimp_get_theme_dir</a>              (void);
-</pre></div><div class="refsect1" lang="en"><a name="id2528106"></a><h2>Description</h2><p>
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*      <a href="libgimp-gimpgimprc.html#gimp-gimprc-query">gimp_gimprc_query</a>               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *token);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpgimprc.html#gimp-gimprc-set">gimp_gimprc_set</a>                 (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *token,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *value);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*      <a href="libgimp-gimpgimprc.html#gimp-get-default-comment">gimp_get_default_comment</a>        (void);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*      <a href="libgimp-gimpgimprc.html#gimp-get-module-load-inhibit">gimp_get_module_load_inhibit</a>    (void);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpgimprc.html#gimp-get-monitor-resolution">gimp_get_monitor_resolution</a>     (<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *xres,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *yres);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*      <a href="libgimp-gimpgimprc.html#gimp-get-theme-dir">gimp_get_theme_dir</a>              (void);
+</pre></div><div class="refsect1" lang="en"><a name="id2528704"></a><h2>Description</h2><p>
 Interactions with settings from .gimprc.
 
-</p></div><div class="refsect1" lang="en"><a name="id2528116"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2528121"></a><h3><a name="gimp-gimprc-query"></a>gimp_gimprc_query ()</h3><a class="indexterm" name="id2528130"></a><pre class="programlisting">gchar*      gimp_gimprc_query               (const gchar *token);</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2528714"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2528719"></a><h3><a name="gimp-gimprc-query"></a>gimp_gimprc_query ()</h3><a class="indexterm" name="id2528728"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*      gimp_gimprc_query               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *token);</pre><p>
 Queries the gimprc file parser for information on a specified token.
 </p><p>
 This procedure is used to locate additional information contained in
@@ -28,8 +54,14 @@ to be issued on gimprc parsing and will not be queryable.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>token</tt></i> :</span></td><td> The token to query for.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The value associated with the queried token.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2531459"></a><h3><a name="gimp-gimprc-set"></a>gimp_gimprc_set ()</h3><a class="indexterm" name="id2536404"></a><pre class="programlisting">gboolean    gimp_gimprc_set                 (const gchar *token,
-                                             const gchar *value);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2536997"></a><h3><a name="gimp-gimprc-set"></a>gimp_gimprc_set ()</h3><a class="indexterm" name="id2569873"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_gimprc_set                 (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *token,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *value);</pre><p>
 Sets a gimprc token to a value and saves it in the gimprc.
 </p><p>
 This procedure is used to add or change additional information in
@@ -41,20 +73,30 @@ will accept _only_ string values in UTF-8 encoding.</p><p>
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>token</tt></i> :</span></td><td> The token to add or modify.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td> The value to set the token to.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2545948"></a><h3><a name="gimp-get-default-comment"></a>gimp_get_default_comment ()</h3><a class="indexterm" name="id2545955"></a><pre class="programlisting">gchar*      gimp_get_default_comment        (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2534292"></a><h3><a name="gimp-get-default-comment"></a>gimp_get_default_comment ()</h3><a class="indexterm" name="id2534299"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*      gimp_get_default_comment        (void);</pre><p>
 Get the default image comment as specified in the Preferences.
 </p><p>
 Returns a copy of the default image comment.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> Default Image Comment.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2545988"></a><h3><a name="gimp-get-module-load-inhibit"></a>gimp_get_module_load_inhibit ()</h3><a class="indexterm" name="id2545996"></a><pre class="programlisting">gchar*      gimp_get_module_load_inhibit    (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2534333"></a><h3><a name="gimp-get-module-load-inhibit"></a>gimp_get_module_load_inhibit ()</h3><a class="indexterm" name="id2534340"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*      gimp_get_module_load_inhibit    (void);</pre><p>
 Get the list of modules which should not be loaded.
 </p><p>
 Returns a copy of the list of modules which should not be loaded.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The list of modules.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2546030"></a><h3><a name="gimp-get-monitor-resolution"></a>gimp_get_monitor_resolution ()</h3><a class="indexterm" name="id2546038"></a><pre class="programlisting">gboolean    gimp_get_monitor_resolution     (gdouble *xres,
-                                             gdouble *yres);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2534374"></a><h3><a name="gimp-get-monitor-resolution"></a>gimp_get_monitor_resolution ()</h3><a class="indexterm" name="id2534382"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_get_monitor_resolution     (<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *xres,
+                                             <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *yres);</pre><p>
 Get the monitor resolution as specified in the Preferences.
 </p><p>
 Returns the resolution of the monitor in pixels/inch. This value is
@@ -65,7 +107,9 @@ reasonable.</p><p>
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>xres</tt></i> :</span></td><td> X resolution.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>yres</tt></i> :</span></td><td> Y resolution.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2577158"></a><h3><a name="gimp-get-theme-dir"></a>gimp_get_theme_dir ()</h3><a class="indexterm" name="id2577165"></a><pre class="programlisting">gchar*      gimp_get_theme_dir              (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2583895"></a><h3><a name="gimp-get-theme-dir"></a>gimp_get_theme_dir ()</h3><a class="indexterm" name="id2583903"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*      gimp_get_theme_dir              (void);</pre><p>
 Get the directory of the current GUI theme.
 </p><p>
 Returns a copy of the current GUI theme dir.</p><p>

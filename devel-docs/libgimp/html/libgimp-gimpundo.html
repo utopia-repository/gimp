@@ -2,17 +2,49 @@
 
 
 
-gboolean    <a href="libgimp-gimpundo.html#gimp-image-undo-group-start">gimp_image_undo_group_start</a>     (gint32 image_ID);
-gboolean    <a href="libgimp-gimpundo.html#gimp-image-undo-group-end">gimp_image_undo_group_end</a>       (gint32 image_ID);
-gboolean    <a href="libgimp-gimpundo.html#gimp-image-undo-is-enabled">gimp_image_undo_is_enabled</a>      (gint32 image_ID);
-gboolean    <a href="libgimp-gimpundo.html#gimp-image-undo-disable">gimp_image_undo_disable</a>         (gint32 image_ID);
-gboolean    <a href="libgimp-gimpundo.html#gimp-image-undo-enable">gimp_image_undo_enable</a>          (gint32 image_ID);
-gboolean    <a href="libgimp-gimpundo.html#gimp-image-undo-freeze">gimp_image_undo_freeze</a>          (gint32 image_ID);
-gboolean    <a href="libgimp-gimpundo.html#gimp-image-undo-thaw">gimp_image_undo_thaw</a>            (gint32 image_ID);
-</pre></div><div class="refsect1" lang="en"><a name="id2634706"></a><h2>Description</h2><p>
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpundo.html#gimp-image-undo-group-start">gimp_image_undo_group_start</a>     (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpundo.html#gimp-image-undo-group-end">gimp_image_undo_group_end</a>       (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpundo.html#gimp-image-undo-is-enabled">gimp_image_undo_is_enabled</a>      (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpundo.html#gimp-image-undo-disable">gimp_image_undo_disable</a>         (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpundo.html#gimp-image-undo-enable">gimp_image_undo_enable</a>          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpundo.html#gimp-image-undo-freeze">gimp_image_undo_freeze</a>          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpundo.html#gimp-image-undo-thaw">gimp_image_undo_thaw</a>            (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);
+</pre></div><div class="refsect1" lang="en"><a name="id2635539"></a><h2>Description</h2><p>
 Control of undo/redo.
 
-</p></div><div class="refsect1" lang="en"><a name="id2634716"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2634721"></a><h3><a name="gimp-image-undo-group-start"></a>gimp_image_undo_group_start ()</h3><a class="indexterm" name="id2634730"></a><pre class="programlisting">gboolean    gimp_image_undo_group_start     (gint32 image_ID);</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2635549"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2635554"></a><h3><a name="gimp-image-undo-group-start"></a>gimp_image_undo_group_start ()</h3><a class="indexterm" name="id2635562"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_image_undo_group_start     (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);</pre><p>
 Starts a group undo.
 </p><p>
 This function is used to start a group undo--necessary for logically
@@ -22,7 +54,11 @@ call.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>image_ID</tt></i> :</span></td><td> The ID of the image in which to open an undo group.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2642433"></a><h3><a name="gimp-image-undo-group-end"></a>gimp_image_undo_group_end ()</h3><a class="indexterm" name="id2642441"></a><pre class="programlisting">gboolean    gimp_image_undo_group_end       (gint32 image_ID);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2633221"></a><h3><a name="gimp-image-undo-group-end"></a>gimp_image_undo_group_end ()</h3><a class="indexterm" name="id2633230"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_image_undo_group_end       (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);</pre><p>
 Finish a group undo.
 </p><p>
 This function must be called once for each
@@ -30,7 +66,11 @@ This function must be called once for each
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>image_ID</tt></i> :</span></td><td> The ID of the image in which to close an undo group.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2642494"></a><h3><a name="gimp-image-undo-is-enabled"></a>gimp_image_undo_is_enabled ()</h3><a class="indexterm" name="id2642502"></a><pre class="programlisting">gboolean    gimp_image_undo_is_enabled      (gint32 image_ID);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2633282"></a><h3><a name="gimp-image-undo-is-enabled"></a>gimp_image_undo_is_enabled ()</h3><a class="indexterm" name="id2633291"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_image_undo_is_enabled      (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);</pre><p>
 Check if the image's undo stack is enabled.
 </p><p>
 This procedure checks if the image's undo stack is currently enabled
@@ -40,7 +80,11 @@ each other and want to check if their caller has already used
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>image_ID</tt></i> :</span></td><td> The image.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> True if undo is enabled for this image.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2639002"></a><h3><a name="gimp-image-undo-disable"></a>gimp_image_undo_disable ()</h3><a class="indexterm" name="id2639010"></a><pre class="programlisting">gboolean    gimp_image_undo_disable         (gint32 image_ID);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2635245"></a><h3><a name="gimp-image-undo-disable"></a>gimp_image_undo_disable ()</h3><a class="indexterm" name="id2635253"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_image_undo_disable         (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);</pre><p>
 Disable the image's undo stack.
 </p><p>
 This procedure disables the image's undo stack, allowing subsequent
@@ -51,7 +95,11 @@ be time and memory intensive.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>image_ID</tt></i> :</span></td><td> The image.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> True if the image undo has been disabled.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2639066"></a><h3><a name="gimp-image-undo-enable"></a>gimp_image_undo_enable ()</h3><a class="indexterm" name="id2639075"></a><pre class="programlisting">gboolean    gimp_image_undo_enable          (gint32 image_ID);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2635308"></a><h3><a name="gimp-image-undo-enable"></a>gimp_image_undo_enable ()</h3><a class="indexterm" name="id2635316"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_image_undo_enable          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);</pre><p>
 Enable the image's undo stack.
 </p><p>
 This procedure enables the image's undo stack, allowing subsequent
@@ -61,7 +109,11 @@ image undo stack.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>image_ID</tt></i> :</span></td><td> The image.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> True if the image undo has been enabled.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2639130"></a><h3><a name="gimp-image-undo-freeze"></a>gimp_image_undo_freeze ()</h3><a class="indexterm" name="id2639138"></a><pre class="programlisting">gboolean    gimp_image_undo_freeze          (gint32 image_ID);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2635372"></a><h3><a name="gimp-image-undo-freeze"></a>gimp_image_undo_freeze ()</h3><a class="indexterm" name="id2628911"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_image_undo_freeze          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);</pre><p>
 Freeze the image's undo stack.
 </p><p>
 This procedure freezes the image's undo stack, allowing subsequent
@@ -77,7 +129,11 @@ else 'undo' behaviour is undefined.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>image_ID</tt></i> :</span></td><td> The image.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> True if the image undo has been frozen.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2544552"></a><h3><a name="gimp-image-undo-thaw"></a>gimp_image_undo_thaw ()</h3><a class="indexterm" name="id2548397"></a><pre class="programlisting">gboolean    gimp_image_undo_thaw            (gint32 image_ID);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2569909"></a><h3><a name="gimp-image-undo-thaw"></a>gimp_image_undo_thaw ()</h3><a class="indexterm" name="id2620484"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_image_undo_thaw            (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);</pre><p>
 Thaw the image's undo stack.
 </p><p>
 This procedure thaws the image's undo stack, allowing subsequent

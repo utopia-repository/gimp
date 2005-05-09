@@ -102,7 +102,8 @@ static gint   save_image (const gchar      *filename,
                           gint32            image_ID,
                           gint32            drawable_ID);
 
-static void   set_color_table  (gint32, L_SUNFILEHEADER *, const guchar *);
+static void set_color_table (gint32, L_SUNFILEHEADER *, unsigned char *);
+
 static gint32 create_new_image (const gchar   *filename,
                                 guint          width,
                                 guint          height,
@@ -401,11 +402,6 @@ load_image (const gchar *filename)
       return (-1);
     }
 
-  if ((sunhdr.l_ras_maplength < 0) || (sunhdr.l_ras_maplength > (256 * 3)))
-    {
-      g_error ("Map lengths greater than 256 entries are unsupported by GIMP.");
-    }
-
   /* Is there a RGB colourmap ? */
   if ((sunhdr.l_ras_maptype == 1) && (sunhdr.l_ras_maplength > 0))
     {
@@ -435,38 +431,6 @@ load_image (const gchar *filename)
       g_message (_("Type of colormap not supported"));
       fseek (ifp, (sizeof (L_SUNFILEHEADER)/sizeof (L_CARD32))
 	     *4 + sunhdr.l_ras_maplength, SEEK_SET);
-    }
-
-  if (sunhdr.l_ras_width <= 0)
-    {
-      g_message (_("'%s':\nNo image width specified"),
-                 gimp_filename_to_utf8 (filename));
-      fclose (ifp);
-      return (-1);
-    }
-
-  if (sunhdr.l_ras_width > GIMP_MAX_IMAGE_SIZE)
-    {
-      g_message (_("'%s':\nImage width is larger than GIMP can handle"),
-                 gimp_filename_to_utf8 (filename));
-      fclose (ifp);
-      return (-1);
-    }
-
-  if (sunhdr.l_ras_height <= 0)
-    {
-      g_message (_("'%s':\nNo image height specified"),
-                 gimp_filename_to_utf8 (filename));
-      fclose (ifp);
-      return (-1);
-    }
-
-  if (sunhdr.l_ras_height > GIMP_MAX_IMAGE_SIZE)
-    {
-      g_message (_("'%s':\nImage height is larger than GIMP can handle"),
-                 gimp_filename_to_utf8 (filename));
-      fclose (ifp);
-      return (-1);
     }
 
   temp = g_strdup_printf (_("Opening '%s'..."),
@@ -901,20 +865,19 @@ write_sun_cols (FILE            *ofp,
 static void
 set_color_table (gint32           image_ID,
 		 L_SUNFILEHEADER *sunhdr,
-		 const guchar    *suncolmap)
+		 guchar          *suncolmap)
 {
-  guchar ColorMap[256 * 3];
-  gint   ncols, j;
+  int ncols, j;
+  guchar ColorMap[256*3];
 
   ncols = sunhdr->l_ras_maplength / 3;
-  if (ncols <= 0)
-    return;
+  if (ncols <= 0) return;
 
-  for (j = 0; j < MIN (ncols, 256); j++)
+  for (j = 0; j < ncols; j++)
     {
-      ColorMap[j * 3 + 0] = suncolmap[j];
-      ColorMap[j * 3 + 1] = suncolmap[j + ncols];
-      ColorMap[j * 3 + 2] = suncolmap[j + 2 * ncols];
+      ColorMap[j*3]   = suncolmap[j];
+      ColorMap[j*3+1] = suncolmap[j+ncols];
+      ColorMap[j*3+2] = suncolmap[j+2*ncols];
     }
 
 #ifdef DEBUG
@@ -923,7 +886,6 @@ set_color_table (gint32           image_ID,
     printf ("%3d: 0x%02x 0x%02x 0x%02x\n", j,
 	    ColorMap[j*3], ColorMap[j*3+1], ColorMap[j*3+2]);
 #endif
-
   gimp_image_set_colormap (image_ID, ColorMap, ncols);
 }
 

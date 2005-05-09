@@ -63,7 +63,7 @@ A widget providing a popup menu of images.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-image-combo-box-new"/>gimp_image_combo_box_new ()</title>
-<indexterm role="GIMP"><primary>gimp_image_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_image_combo_box_new        (<link linkend="GimpImageConstraintFunc">GimpImageConstraintFunc</link> constraint,
+<indexterm role="GIMP 2.2"><primary>gimp_image_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_image_combo_box_new        (<link linkend="GimpImageConstraintFunc">GimpImageConstraintFunc</link> constraint,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 Creates a new <link linkend="GimpIntComboBox"><type>GimpIntComboBox</type></link> filled with all currently opened

@@ -46,11 +46,11 @@
                                              <link linkend="gint">gint</link> num_channels,
                                              const <link linkend="guint8">guint8</link> *pixel);
 <link linkend="GimpTile">GimpTile</link>*   <link linkend="gimp-drawable-get-tile">gimp_drawable_get_tile</link>          (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
-                                             <link linkend="gint">gint</link> shadow,
+                                             <link linkend="gboolean">gboolean</link> shadow,
                                              <link linkend="gint">gint</link> row,
                                              <link linkend="gint">gint</link> col);
 <link linkend="GimpTile">GimpTile</link>*   <link linkend="gimp-drawable-get-tile2">gimp_drawable_get_tile2</link>         (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
-                                             <link linkend="gint">gint</link> shadow,
+                                             <link linkend="gboolean">gboolean</link> shadow,
                                              <link linkend="gint">gint</link> x,
                                              <link linkend="gint">gint</link> y);
 <link linkend="guchar">guchar</link>*     <link linkend="gimp-drawable-get-thumbnail-data">gimp_drawable_get_thumbnail_data</link>
@@ -475,7 +475,7 @@ just created yourself.</para>
 <refsect2>
 <title><anchor id="gimp-drawable-get-tile"/>gimp_drawable_get_tile ()</title>
 <indexterm><primary>gimp_drawable_get_tile</primary></indexterm><programlisting><link linkend="GimpTile">GimpTile</link>*   gimp_drawable_get_tile          (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
-                                             <link linkend="gint">gint</link> shadow,
+                                             <link linkend="gboolean">gboolean</link> shadow,
                                              <link linkend="gint">gint</link> row,
                                              <link linkend="gint">gint</link> col);</programlisting>
 <para>
@@ -501,7 +501,7 @@ just created yourself.</para>
 <refsect2>
 <title><anchor id="gimp-drawable-get-tile2"/>gimp_drawable_get_tile2 ()</title>
 <indexterm><primary>gimp_drawable_get_tile2</primary></indexterm><programlisting><link linkend="GimpTile">GimpTile</link>*   gimp_drawable_get_tile2         (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
-                                             <link linkend="gint">gint</link> shadow,
+                                             <link linkend="gboolean">gboolean</link> shadow,
                                              <link linkend="gint">gint</link> x,
                                              <link linkend="gint">gint</link> y);</programlisting>
 <para>
@@ -750,7 +750,7 @@ return value which is more useful in most cases.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-mask-intersect"/>gimp_drawable_mask_intersect ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_mask_intersect</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_drawable_mask_intersect    (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_mask_intersect</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_drawable_mask_intersect    (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gint">gint</link> *x,
                                              <link linkend="gint">gint</link> *y,
                                              <link linkend="gint">gint</link> *width,

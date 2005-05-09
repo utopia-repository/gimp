@@ -1,3 +1,147 @@
+2005-05-08  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.2.7 release.
+
+2005-05-08  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/config/gimpbaseconfig.c: limit the tile-cache-size to
+	G_MAXULONG or GIMP_MAX_MEMSIZE, whatever is smaller. Fixes
+	bug #303371.
+
+2005-05-07  Manish Singh  <yosh@gimp.org>
+
+	* tools/pdbgen/pdb/image.pdb: Fix a typo reported in bug #303379.
+
+	* app/pdb/image_cmds.c
+	* libgimp/gimpimage_pdb.c: regenerated.
+
+2005-05-06  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/display/gimpdisplayshell-scale.c
+	(gimp_display_shell_scale_by_values): abort early if the values are
+	all setup already. Fixes bug #164281.
+
+2005-05-06  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/composite/gimp-composite-sse2.c
+	(gimp_composite_lighten_rgba8_rgba8_rgba8_sse2): applied a patch
+	from Joao S. O. Bueno Calligaris that changes the SSE2 code to
+	load the proper register. Fixes bug #164061.
+
+2005-04-29  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/widgets/gimpmessagebox.c (gimp_message_box_init): unset
+	"can-focus" on the message labels. Fixes bug #302400.
+
+2005-04-28  Manish Singh  <yosh@gimp.org>
+
+	* plug-ins/pygimp/plug-ins/clothify.py: don't reset the passed
+	parameters to default values. Spotted by Joao S. O. Bueno Calligaris.
+
+2005-04-27  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* tools/pdbgen/pdb/image.pdb: plugged a small memleak.
+
+	* app/pdb/image_cmds.c: regenerated.
+
+2005-04-26  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* plug-ins/Lighting/lighting_shade.c: fix typo messing
+	up transparent backgrounds, backported from HEAD where
+	it fixed bug #300122, this change should fix bug #302075.
+
+2005-04-25  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/file/gimprecentlist.c (gimp_recent_list_add_item): close the
+	file descriptor if we fail to obtain the lock (bug #151767).
+
+2005-04-25  Manish Singh  <yosh@gimp.org>
+
+	* plug-in/common/tiff.c: Only store compression types we can actually
+	handle in the save options parasite. Fixes bug #301557.
+
+2005-04-23  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* libgimp/gimpdrawablepreview.c (gimp_drawable_preview_draw_thumb):
+	respect the selection (fixes bug #301523).
+
+2005-04-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* libgimpwidgets/gimpintstore.c: removed the "row_deleted" handler
+	which used to take care of reinserting the "Empty" item when the
+	last row gets deleted. This doesn't work any longer with GTK+ 2.6
+	and I see no way to make it work again. Fixes bug #301524.
+
+2005-04-21  Manish Singh  <yosh@gimp.org>
+
+	* plug-ins/common/postscript.c: pass -dUseCropBox when loading PDF
+	files, to match Acrobat Reader's behavior in honoring CropBox over
+	MediaBox. Fixes bug #301432.
+
+2005-04-20  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/mail.c (create_headers): set charset to UTF-8.
+
+2005-04-20  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/xcf/xcf-load.c (xcf_load_layer): initialize text_layer_flags
+	with 0 so it doesn't contain random garbage if the text layer
+	flags in the XCF have default values (are not saved at all). Fixes
+	bug #301028. Initialize other stuff too for the sake of sanity.
+
+2005-04-18  Manish Singh  <yosh@gimp.org>
+
+	* plug-ins/common/newsprint.c: Redo comment for spot_PSsquare
+	and spot_PSdiamonds, since the code was not a derived work in
+	the copyright sense. It is a C implementation of the same
+	algorithm.
+
+2005-04-18  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/core/gimpimage.c (gimp_image_real_colormap_changed):
+	invalidate layer previews when the colormap changes. Fixes
+	bug #301033.
+
+2005-04-14  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* libgimp/gimpdrawable.[ch] (gimp_drawable_get_tile)
+	(gimp_drawable_get_tile2): cleanup gint/gboolean confusion (spotted
+	by Maurits Rijk).
+
+2005-04-13  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/app_procs.c: register handler for the "GimpPaint" log domain.
+
+2005-04-10  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.2.7, interface_age 7.
+
 2005-04-10  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.2.6 release.

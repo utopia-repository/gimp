@@ -90,7 +90,7 @@ A widget providing a popup menu of integer values (e.g. enums).
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-int-combo-box-new"/>gimp_int_combo_box_new ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_int_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_int_combo_box_new          (const <link linkend="gchar">gchar</link> *first_label,
+<indexterm role="GIMP"><primary>gimp_int_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_int_combo_box_new          (const <link linkend="gchar">gchar</link> *first_label,
                                              <link linkend="gint">gint</link> first_value,
                                              ...);</programlisting>
 <para>
@@ -116,7 +116,7 @@ terminated list of label/value pairs.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-int-combo-box-new-valist"/>gimp_int_combo_box_new_valist ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_int_combo_box_new_valist</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_int_combo_box_new_valist   (const <link linkend="gchar">gchar</link> *first_label,
+<indexterm role="GIMP"><primary>gimp_int_combo_box_new_valist</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_int_combo_box_new_valist   (const <link linkend="gchar">gchar</link> *first_label,
                                              <link linkend="gint">gint</link> first_value,
                                              <link linkend="va-list">va_list</link> values);</programlisting>
 <para>
@@ -141,7 +141,7 @@ label/value pairs. Probably only useful for language bindings.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-int-combo-box-new-array"/>gimp_int_combo_box_new_array ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_int_combo_box_new_array</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_int_combo_box_new_array    (<link linkend="gint">gint</link> n_values,
+<indexterm role="GIMP"><primary>gimp_int_combo_box_new_array</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_int_combo_box_new_array    (<link linkend="gint">gint</link> n_values,
                                              const <link linkend="gchar">gchar</link> *labels[]);</programlisting>
 <para>
 A variant of <link linkend="gimp-int-combo-box-new"><function>gimp_int_combo_box_new()</function></link> that takes an array of labels.
@@ -162,7 +162,7 @@ The array indices are used as values.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-int-combo-box-prepend"/>gimp_int_combo_box_prepend ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_int_combo_box_prepend</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_int_combo_box_prepend      (<link linkend="GimpIntComboBox">GimpIntComboBox</link> *combo_box,
+<indexterm role="GIMP"><primary>gimp_int_combo_box_prepend</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_int_combo_box_prepend      (<link linkend="GimpIntComboBox">GimpIntComboBox</link> *combo_box,
                                              ...);</programlisting>
 <para>
 This function provides a convenient way to prepend items to a
@@ -184,7 +184,7 @@ The column number must be taken from the enum <link linkend="GimpIntStoreColumns
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-int-combo-box-append"/>gimp_int_combo_box_append ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_int_combo_box_append</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_int_combo_box_append       (<link linkend="GimpIntComboBox">GimpIntComboBox</link> *combo_box,
+<indexterm role="GIMP"><primary>gimp_int_combo_box_append</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_int_combo_box_append       (<link linkend="GimpIntComboBox">GimpIntComboBox</link> *combo_box,
                                              ...);</programlisting>
 <para>
 This function provides a convenient way to append items to a
@@ -206,7 +206,7 @@ The column number must be taken from the enum <link linkend="GimpIntStoreColumns
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-int-combo-box-set-active"/>gimp_int_combo_box_set_active ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_int_combo_box_set_active</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_int_combo_box_set_active   (<link linkend="GimpIntComboBox">GimpIntComboBox</link> *combo_box,
+<indexterm role="GIMP"><primary>gimp_int_combo_box_set_active</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_int_combo_box_set_active   (<link linkend="GimpIntComboBox">GimpIntComboBox</link> *combo_box,
                                              <link linkend="gint">gint</link> value);</programlisting>
 <para>
 Looks up the item that belongs to the given <parameter>value</parameter> and makes it the
@@ -228,7 +228,7 @@ selected item in the <parameter>combo_box</parameter>.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-int-combo-box-get-active"/>gimp_int_combo_box_get_active ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_int_combo_box_get_active</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_int_combo_box_get_active   (<link linkend="GimpIntComboBox">GimpIntComboBox</link> *combo_box,
+<indexterm role="GIMP"><primary>gimp_int_combo_box_get_active</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_int_combo_box_get_active   (<link linkend="GimpIntComboBox">GimpIntComboBox</link> *combo_box,
                                              <link linkend="gint">gint</link> *value);</programlisting>
 <para>
 Retrieves the value of the selected (active) item in the <parameter>combo_box</parameter>.</para>
@@ -249,7 +249,7 @@ Retrieves the value of the selected (active) item in the <parameter>combo_box</p
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-int-combo-box-connect"/>gimp_int_combo_box_connect ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_int_combo_box_connect</primary></indexterm><programlisting><link linkend="gulong">gulong</link>      gimp_int_combo_box_connect      (<link linkend="GimpIntComboBox">GimpIntComboBox</link> *combo_box,
+<indexterm role="GIMP"><primary>gimp_int_combo_box_connect</primary></indexterm><programlisting><link linkend="gulong">gulong</link>      gimp_int_combo_box_connect      (<link linkend="GimpIntComboBox">GimpIntComboBox</link> *combo_box,
                                              <link linkend="gint">gint</link> value,
                                              <link linkend="GCallback">GCallback</link> callback,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>

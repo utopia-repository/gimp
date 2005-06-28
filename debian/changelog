@@ -1,3 +1,17 @@
+gimp (2.2.8-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Ari Pollak <ari@debian.org>  Tue, 28 Jun 2005 01:13:13 +0000
+
+gimp (2.2.7-2) unstable; urgency=low
+
+  * Update package descriptions to remove outdated references to GIMP 2.0.
+    (Closes: #308972)
+  * Fix small typo in gimprc manpage (Closes: #310018)
+
+ -- Ari Pollak <ari@debian.org>  Fri, 13 May 2005 12:18:07 -0400
+
 gimp (2.2.7-1) unstable; urgency=low
 
   * New upstream release

@@ -1,20 +1,14 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimpexport</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="prev" href="libgimp-gimpui.html" title="gimpui"><link rel="next" href="GimpAspectPreview.html" title="GimpAspectPreview"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimp-gimpui.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th><td><a accesskey="n" href="GimpAspectPreview.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimp-gimpexport"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimpexport</span></h2><p>gimpexport &#8212; Export an image before it is saved.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimpexport</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="prev" href="libgimp-gimpui.html" title="gimpui"><link rel="next" href="GimpAspectPreview.html" title="GimpAspectPreview"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimp-gimpui.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th><td><a accesskey="n" href="GimpAspectPreview.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimp-gimpexport"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimpexport</span></h2><p>gimpexport &#8212; Export an image before it is saved.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
 enum        <a href="libgimp-gimpexport.html#GimpExportCapabilities">GimpExportCapabilities</a>;
 enum        <a href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a>;
-<a href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a> <a href="libgimp-gimpexport.html#gimp-export-image">gimp_export_image</a>          (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> *image_ID,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> *drawable_ID,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *format_name,
+<a href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a> <a href="libgimp-gimpexport.html#gimp-export-image">gimp_export_image</a>          (gint32 *image_ID,
+                                             gint32 *drawable_ID,
+                                             const gchar *format_name,
                                              <a href="libgimp-gimpexport.html#GimpExportCapabilities">GimpExportCapabilities</a> capabilities);
-</pre></div><div class="refsect1" lang="en"><a name="id2658641"></a><h2>Description</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2661783"></a><h2>Description</h2><p>
 This function should be called by all save_plugins unless they are
 able to save all image formats the GIMP knows about. It takes care
 of asking the user if she wishes to export the image to a format the
@@ -27,7 +21,7 @@ The capabilities of the save_plugin are specified by combining
 
 Make sure you have initialized GTK+ before you call this function
 as it will most probably have to open a dialog. 
-</p></div><div class="refsect1" lang="en"><a name="id2658667"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2658672"></a><h3><a name="GimpExportCapabilities"></a>enum GimpExportCapabilities</h3><a class="indexterm" name="id2544021"></a><pre class="programlisting">typedef enum
+</p></div><div class="refsect1" lang="en"><a name="id2661809"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2661814"></a><h3><a name="GimpExportCapabilities"></a>enum GimpExportCapabilities</h3><a class="indexterm" name="id2584719"></a><pre class="programlisting">typedef enum
 {
   GIMP_EXPORT_CAN_HANDLE_RGB                 = 1 &lt;&lt; 0,
   GIMP_EXPORT_CAN_HANDLE_GRAY                = 1 &lt;&lt; 1,
@@ -41,7 +35,7 @@ as it will most probably have to open a dialog.
 } GimpExportCapabilities;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2601136"></a><h3><a name="GimpExportReturn"></a>enum GimpExportReturn</h3><a class="indexterm" name="id2654316"></a><pre class="programlisting">typedef enum
+</p></div><hr><div class="refsect2" lang="en"><a name="id2556074"></a><h3><a name="GimpExportReturn"></a>enum GimpExportReturn</h3><a class="indexterm" name="id2471632"></a><pre class="programlisting">typedef enum
 {
   GIMP_EXPORT_CANCEL,
   GIMP_EXPORT_IGNORE,
@@ -49,15 +43,9 @@ as it will most probably have to open a dialog.
 } GimpExportReturn;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2632995"></a><h3><a name="gimp-export-image"></a>gimp_export_image ()</h3><a class="indexterm" name="id2550564"></a><pre class="programlisting"><a href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a> gimp_export_image          (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> *image_ID,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> *drawable_ID,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *format_name,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2606340"></a><h3><a name="gimp-export-image"></a>gimp_export_image ()</h3><a class="indexterm" name="id2549199"></a><pre class="programlisting"><a href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a> gimp_export_image          (gint32 *image_ID,
+                                             gint32 *drawable_ID,
+                                             const gchar *format_name,
                                              <a href="libgimp-gimpexport.html#GimpExportCapabilities">GimpExportCapabilities</a> capabilities);</pre><p>
 Takes an image and a drawable to be saved together with a
 description of the capabilities of the image_format. If the
@@ -69,7 +57,7 @@ If the user chooses to export the image, a copy is created.
 This copy is then converted, the image_ID and drawable_ID
 are changed to point to the new image and the procedure returns
 GIMP_EXPORT_EXPORT. The save_plugin has to take care of deleting the
-created image using <a href="libgimp-gimpimage.html#gimp-image-delete"><tt class="function">gimp_image_delete()</tt></a> when it has saved it.
+created image using <a href="libgimp-gimpimage.html#gimp-image-delete"><code class="function">gimp_image_delete()</code></a> when it has saved it.
 </p><p>
 If the user chooses to Ignore the export problem, the image_ID
 and drawable_ID is not altered, GIMP_EXPORT_IGNORE is returned and
@@ -77,9 +65,9 @@ the save_plugin should try to save the original image. If the
 user chooses Cancel, GIMP_EXPORT_CANCEL is returned and the
 save_plugin should quit itself with status <span class="type">GIMP_PDB_CANCEL</span>.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>image_ID</tt></i> :</span></td><td> Pointer to the image_ID.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>drawable_ID</tt></i> :</span></td><td> Pointer to the drawable_ID.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>format_name</tt></i> :</span></td><td> The (short) name of the image_format (e.g. JPEG or GIF).
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>capabilities</tt></i> :</span></td><td> What can the image_format do?
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></td><td> Pointer to the image_ID.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></td><td> Pointer to the drawable_ID.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>format_name</code></em> :</span></td><td> The (short) name of the image_format (e.g. JPEG or GIF).
+</td></tr><tr><td><span class="term"><em class="parameter"><code>capabilities</code></em> :</span></td><td> What can the image_format do?
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> An enum of <a href="libgimp-gimpexport.html#GimpExportReturn"><span class="type">GimpExportReturn</span></a> describing the user_action.
 </td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimp-gimpui.html"><b>&lt;&lt; gimpui</b></a></td><td align="right"><a accesskey="n" href="GimpAspectPreview.html"><b>GimpAspectPreview &gt;&gt;</b></a></td></tr></table></body></html>

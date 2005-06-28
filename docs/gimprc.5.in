@@ -6,7 +6,7 @@ gimprc \- gimp configuration file
 .SH DESCRIPTION
 The
 .B gimprc
-file is a configuation file read by the GIMP when it starts up.  There
+file is a configuration file read by the GIMP when it starts up.  There
 are two of these: one system-wide one stored in
 @gimpsysconfdir@/gimprc and a per-user \fB$HOME\fP/@gimpdir@/gimprc
 which may override system settings.
@@ -52,13 +52,6 @@ back in. Be aware that the swap file can easily get very large if the GIMP is
 used with large images. Also, things can get horribly slow if the swap file is
 created on a directory that is mounted over NFS.  For these reasons, it may be
 desirable to put your swap file in "/tmp".  This is a single folder.
-
-.TP
-(stingy-memory-use no)
-
-There is always a tradeoff between memory usage and speed.  In most cases, the
-GIMP opts for speed over memory.  However, if memory is a big issue, try to
-enable this setting.  Possible values are yes and no.
 
 .TP
 (num-processors 1)

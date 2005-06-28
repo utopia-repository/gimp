@@ -158,7 +158,7 @@ to call this procedure from a plug-in.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-progress-install"/>gimp_progress_install ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_progress_install</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_progress_install          (<link linkend="GimpProgressStartCallback">GimpProgressStartCallback</link> start_callback,
+<indexterm role="GIMP"><primary>gimp_progress_install</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_progress_install          (<link linkend="GimpProgressStartCallback">GimpProgressStartCallback</link> start_callback,
                                              <link linkend="GimpProgressEndCallback">GimpProgressEndCallback</link> end_callback,
                                              <link linkend="GimpProgressTextCallback">GimpProgressTextCallback</link> text_callback,
                                              <link linkend="GimpProgressValueCallback">GimpProgressValueCallback</link> value_callback,
@@ -190,7 +190,7 @@ to call this procedure from a plug-in.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-progress-uninstall"/>gimp_progress_uninstall ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_progress_uninstall</primary></indexterm><programlisting><link linkend="gpointer">gpointer</link>    gimp_progress_uninstall         (const <link linkend="gchar">gchar</link> *progress_callback);</programlisting>
+<indexterm role="GIMP"><primary>gimp_progress_uninstall</primary></indexterm><programlisting><link linkend="gpointer">gpointer</link>    gimp_progress_uninstall         (const <link linkend="gchar">gchar</link> *progress_callback);</programlisting>
 <para>
 Uninstalls a temporary progress procedure that was installed using
 <link linkend="gimp-progress-install"><function>gimp_progress_install()</function></link>.</para>
@@ -207,7 +207,7 @@ Uninstalls a temporary progress procedure that was installed using
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-progress-cancel"/>gimp_progress_cancel ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_progress_cancel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_progress_cancel            (const <link linkend="gchar">gchar</link> *progress_callback);</programlisting>
+<indexterm role="GIMP"><primary>gimp_progress_cancel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_progress_cancel            (const <link linkend="gchar">gchar</link> *progress_callback);</programlisting>
 <para>
 Cancels a running progress.
 </para>

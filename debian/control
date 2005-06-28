@@ -11,12 +11,12 @@ Section: libs
 Depends: ${shlibs:Depends}
 Replaces: libgimp1.3, gimp1.3-data, gimp-data (<< 2.0.0-6)
 Conflicts: libgimp1.3, gimp1.3-data, gimp-data (<< 2.0.0-6)
-Description: Libraries necessary to run the GIMP
- This package includes the developers' release of the libgimp and
- libgimpui libraries, necessary to run The GIMP.
+Description: Libraries necessary to Run the GIMP
+ This package includes the libgimp libraries, which are
+ necessary to run The GIMP.
  .
  It has been split off from the main gimp package in order to 
- facilitate easy development for packages that use libgimp and libgimpui,
+ facilitate easy development for packages that use libgimp,
  like SANE, the Scanner Access package for GIMP, as well as any other
  third-party plugins.
 
@@ -36,7 +36,7 @@ Section: graphics
 Conflicts: gimp (<< 2.0.2-6)
 Replaces: gimp (<< 2.0.2-6)
 Depends: python-gtk2 (>= 1.99.12), ${shlibs:Depends}, ${python:Depends}
-Description: Python support and plugins for The GIMP, stable version 2.0
+Description: Python support and plugins for The GIMP
  This package includes the Python modules necessary to write Python-based
  plugins for The GIMP. It includes several plugins with various useful
  features.
@@ -45,7 +45,7 @@ Package: gimp-svg
 Architecture: any
 Section: graphics
 Depends: gimp (= ${Source-Version}), ${shlibs:Depends}
-Description: SVG plugin for The GIMP, stable version 2.0
+Description: SVG (Scalable Vector Graphics) plugin for The GIMP
  This package includes the plugin necessary for opening SVG (Scalable
  Vector Graphics) files in The GIMP.
 
@@ -73,7 +73,7 @@ Conflicts: gimp1.2 (<< 1.2.5-1), gimp1.3-data, gimp (<< 2.0.2-4)
 Replaces: gimp1.2 (<< 1.2.5-1), gimp1.3-data, gimp (<< 2.0.2-4)
 Description: Data files for The GIMP
  This package contains architecture-independent supporting data files
- for use with The GIMP
+ for use with The GIMP.
 
 Package: libgimp2.0-dev
 Architecture: any
@@ -83,17 +83,17 @@ Conflicts: libgimp1.2-dev (<< 1.2.5-4), libgimp1.3-dev
 Replaces: libgimp1.2-dev (<< 1.2.5-4), libgimp1.3-dev
 Description: Headers and other files for compiling plugins for The GIMP
  This package contains the header files for the GNU Image Manipulation
- Program, along with the static versions of libgimp and libgimpui.
+ Program, along with the static versions of libgimp.
  It also includes the gimptool-2.0 utility.
  .
  Install this package if you wish to compile your own plugins,
- or if you wish to develop packages that use libgimp or libgimpui. 
+ or if you wish to develop packages that use libgimp. 
 
 Package: libgimp2.0-doc
 Architecture: all
 Section: doc
 Depends: lynx | www-browser
-Description: Documentation for the GIMP library, stable version 2.0
+Description: Developers' Documentation for the GIMP library
  This package contains the HTML documentation for the GIMP library in
  /usr/share/gtk-doc/html/ .
 

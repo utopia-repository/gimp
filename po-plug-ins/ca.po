@@ -10997,7 +10997,7 @@ msgstr "_Laberint..."
 msgid "Drawing Maze..."
 msgstr "S'està dibuixant el laberint..."
 
-#  $Id: ca.po,v 1.59.2.6 2005/04/10 00:15:58 neo Exp $
+#  $Id: ca.po,v 1.59.2.7 2005/05/08 21:45:22 neo Exp $
 #: ../plug-ins/maze/maze.h:2
 msgid "Maze"
 msgstr "Laberint"

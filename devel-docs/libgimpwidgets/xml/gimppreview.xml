@@ -114,7 +114,7 @@ A widget providing a <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-preview-get-update"/>gimp_preview_get_update ()</title>
-<indexterm role="GIMP"><primary>gimp_preview_get_update</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_preview_get_update         (<link linkend="GimpPreview">GimpPreview</link> *preview);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_preview_get_update</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_preview_get_update         (<link linkend="GimpPreview">GimpPreview</link> *preview);</programlisting>
 <para>
 </para>
 <para>
@@ -130,7 +130,7 @@ A widget providing a <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-preview-set-update"/>gimp_preview_set_update ()</title>
-<indexterm role="GIMP"><primary>gimp_preview_set_update</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_set_update         (<link linkend="GimpPreview">GimpPreview</link> *preview,
+<indexterm role="GIMP 2.2"><primary>gimp_preview_set_update</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_set_update         (<link linkend="GimpPreview">GimpPreview</link> *preview,
                                              <link linkend="gboolean">gboolean</link> update);</programlisting>
 <para>
 Sets the state of the "Preview" check button.</para>
@@ -148,7 +148,7 @@ Sets the state of the "Preview" check button.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-preview-set-bounds"/>gimp_preview_set_bounds ()</title>
-<indexterm role="GIMP"><primary>gimp_preview_set_bounds</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_set_bounds         (<link linkend="GimpPreview">GimpPreview</link> *preview,
+<indexterm role="GIMP 2.2"><primary>gimp_preview_set_bounds</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_set_bounds         (<link linkend="GimpPreview">GimpPreview</link> *preview,
                                              <link linkend="gint">gint</link> xmin,
                                              <link linkend="gint">gint</link> ymin,
                                              <link linkend="gint">gint</link> xmax,
@@ -179,7 +179,7 @@ maximum size of the <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-preview-get-size"/>gimp_preview_get_size ()</title>
-<indexterm role="GIMP"><primary>gimp_preview_get_size</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_get_size           (<link linkend="GimpPreview">GimpPreview</link> *preview,
+<indexterm role="GIMP 2.2"><primary>gimp_preview_get_size</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_get_size           (<link linkend="GimpPreview">GimpPreview</link> *preview,
                                              <link linkend="gint">gint</link> *width,
                                              <link linkend="gint">gint</link> *height);</programlisting>
 <para>
@@ -200,7 +200,7 @@ maximum size of the <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-preview-get-position"/>gimp_preview_get_position ()</title>
-<indexterm role="GIMP"><primary>gimp_preview_get_position</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_get_position       (<link linkend="GimpPreview">GimpPreview</link> *preview,
+<indexterm role="GIMP 2.2"><primary>gimp_preview_get_position</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_get_position       (<link linkend="GimpPreview">GimpPreview</link> *preview,
                                              <link linkend="gint">gint</link> *x,
                                              <link linkend="gint">gint</link> *y);</programlisting>
 <para>
@@ -221,7 +221,7 @@ maximum size of the <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-preview-draw"/>gimp_preview_draw ()</title>
-<indexterm role="GIMP"><primary>gimp_preview_draw</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_draw               (<link linkend="GimpPreview">GimpPreview</link> *preview);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_preview_draw</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_draw               (<link linkend="GimpPreview">GimpPreview</link> *preview);</programlisting>
 <para>
 Calls the GimpPreview::draw method. GimpPreview itself doesn't
 implement a default draw method so the behaviour is determined by
@@ -240,7 +240,7 @@ original, unmodified drawable to the <parameter>preview</parameter>.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-preview-draw-buffer"/>gimp_preview_draw_buffer ()</title>
-<indexterm role="GIMP"><primary>gimp_preview_draw_buffer</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_draw_buffer        (<link linkend="GimpPreview">GimpPreview</link> *preview,
+<indexterm role="GIMP 2.2"><primary>gimp_preview_draw_buffer</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_draw_buffer        (<link linkend="GimpPreview">GimpPreview</link> *preview,
                                              const <link linkend="guchar">guchar</link> *buffer,
                                              <link linkend="gint">gint</link> rowstride);</programlisting>
 <para>
@@ -263,7 +263,7 @@ derived class implementing this method.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-preview-invalidate"/>gimp_preview_invalidate ()</title>
-<indexterm role="GIMP"><primary>gimp_preview_invalidate</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_invalidate         (<link linkend="GimpPreview">GimpPreview</link> *preview);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_preview_invalidate</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_invalidate         (<link linkend="GimpPreview">GimpPreview</link> *preview);</programlisting>
 <para>
 This function starts or renews a short low-priority timeout. When
 the timeout expires, the GimpPreview::invalidated signal is emitted
@@ -286,7 +286,7 @@ itself.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-preview-set-default-cursor"/>gimp_preview_set_default_cursor ()</title>
-<indexterm role="GIMP"><primary>gimp_preview_set_default_cursor</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_set_default_cursor (<link linkend="GimpPreview">GimpPreview</link> *preview,
+<indexterm role="GIMP 2.2"><primary>gimp_preview_set_default_cursor</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_set_default_cursor (<link linkend="GimpPreview">GimpPreview</link> *preview,
                                              <link linkend="GdkCursor">GdkCursor</link> *cursor);</programlisting>
 <para>
 Sets the default mouse cursor for the preview.  Note that this will

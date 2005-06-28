@@ -64,7 +64,7 @@ Functions operating on a single brush.
 <title>Details</title>
 <refsect2>
 <title><anchor id="gimp-brush-new"/>gimp_brush_new ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_brush_new</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_brush_new                  (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm role="GIMP"><primary>gimp_brush_new</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_brush_new                  (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Creates a new brush
 </para>
@@ -83,7 +83,7 @@ This procedure creates a new, uninitialized brush</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-brush-duplicate"/>gimp_brush_duplicate ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_brush_duplicate</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_brush_duplicate            (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm role="GIMP"><primary>gimp_brush_duplicate</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_brush_duplicate            (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Duplicates a brush
 </para>
@@ -102,7 +102,7 @@ This procedure creates an identical brush by a different name</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-brush-rename"/>gimp_brush_rename ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_brush_rename</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_brush_rename               (const <link linkend="gchar">gchar</link> *name,
+<indexterm role="GIMP"><primary>gimp_brush_rename</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_brush_rename               (const <link linkend="gchar">gchar</link> *name,
                                              const <link linkend="gchar">gchar</link> *new_name);</programlisting>
 <para>
 Rename a brush
@@ -125,7 +125,7 @@ This procedure renames a brush</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-brush-delete"/>gimp_brush_delete ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_brush_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brush_delete               (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm role="GIMP"><primary>gimp_brush_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brush_delete               (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Deletes a brush
 </para>
@@ -144,7 +144,7 @@ This procedure deletes a brush</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-brush-get-info"/>gimp_brush_get_info ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_brush_get_info</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brush_get_info             (const <link linkend="gchar">gchar</link> *name,
+<indexterm role="GIMP"><primary>gimp_brush_get_info</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brush_get_info             (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> *width,
                                              <link linkend="gint">gint</link> *height,
                                              <link linkend="gint">gint</link> *mask_bpp,
@@ -180,7 +180,7 @@ includes the brush name, and the brush extents (width and height).</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-brush-get-pixels"/>gimp_brush_get_pixels ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_brush_get_pixels</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brush_get_pixels           (const <link linkend="gchar">gchar</link> *name,
+<indexterm role="GIMP"><primary>gimp_brush_get_pixels</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brush_get_pixels           (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> *width,
                                              <link linkend="gint">gint</link> *height,
                                              <link linkend="gint">gint</link> *mask_bpp,
@@ -232,7 +232,7 @@ includes the brush extents (width and height) and its pixels data.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-brush-get-spacing"/>gimp_brush_get_spacing ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_brush_get_spacing</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brush_get_spacing          (const <link linkend="gchar">gchar</link> *name,
+<indexterm role="GIMP"><primary>gimp_brush_get_spacing</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brush_get_spacing          (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> *spacing);</programlisting>
 <para>
 Get the brush spacing.
@@ -257,7 +257,7 @@ percentage of the maximum of the width and height of the mask.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-brush-set-spacing"/>gimp_brush_set_spacing ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_brush_set_spacing</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brush_set_spacing          (const <link linkend="gchar">gchar</link> *name,
+<indexterm role="GIMP"><primary>gimp_brush_set_spacing</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brush_set_spacing          (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> spacing);</programlisting>
 <para>
 Set the brush spacing.

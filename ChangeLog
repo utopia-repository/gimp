@@ -1,3 +1,196 @@
+2005-06-27  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.2.8 release.
+
+2005-06-27  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/config/gimpconfig-dump.c: don't dump properties that have
+	the GIMP_PARAM_IGNORE flag set.
+
+2005-06-24  Manish Singh  <yosh@gimp.org>
+
+	* libgimpcolor/gimpcolor.def: add gimp_rgba_parse_css
+
+2005-06-24  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/pdb/procedural_db.c (procedural_db_execute): if we end up
+	without any return values, assume an execution error instead of
+	crashing (bug #308904).
+
+2005-06-23  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/grid.c: draw the intersection on top of the grid.
+	Fixes bug #308754.
+
+2005-06-23  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/shift.c: shift whole rows/columns, instead of
+	tiles. Fixes bug #308748.
+
+2005-06-21  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/newsprint.c: remove "optimization" that interacts
+	badly with preview; fixes bug #161573.
+	
+2005-06-21  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/retinex.c:  initialize memory before using.
+	Fixes bug #157915.
+
+2005-06-15  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/core/gimpimagefile.c (gimp_imagefile_load_thumb): 
+	* app/widgets/gimpthumbbox.c (gimp_thumb_box_auto_thumbnail):
+	don't display a preview and don't attempt to create one if the
+	image file does not exist any longer (bug #307672).
+
+2005-06-15  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/actions/dockable-actions.c (dockable_actions_update): set the
+	"Detach Tab" action insensitive if the dockable is alone in its dock.
+
+2005-06-09  Sven Neumann  <sven@gimp.org>
+
+	* app/config/gimpbaseconfig.c: ignore the user setting for
+	"stingy-memory-use" and use the default value which is FALSE.
+	Fixes bug #306617 for the stable branch.
+
+2005-06-06  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/gfig/gfig.c (gfig_load_from_parasite): only create the
+	temporary file if there is a parasite to load.
+
+2005-06-04  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/widgets/gimpwidgets-utils.c (gimp_text_buffer_load):
+	validate the iter after appending to the text buffer.
+
+2005-06-04  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+	
+	* app/tools/gimpmagnifytool.c (gimp_magnify_tool_button_release):
+	fix calculation of zoom offsets in the case that dot-for-dot mode
+	is not enabled (bug #306476).
+
+2005-06-04  Michael Schumacher  <schumaml@cvs.gnome.org>
+
+	* plug-ins/common/webbrowser.c: use GetDesktopWindow() and SW_SHOW
+	as suggested in bug #171200. Applied to both branches.
+
+2005-06-04  Michael Schumacher  <schumaml@cvs.gnome.org>
+
+	* plug-ins/helpbrowser/dialog.c: added #ifdef G_OS_WIN32 because
+	O_BINARY isn't available on other platforms
+
+2005-06-03  Michael Schumacher  <schumaml@cvs.gnome.org>
+
+	* plug-ins/helpbrowser/dialog.c: added a O_BINARY to make sure
+	that images are loaded correctly
+
+2005-05-31  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+	
+	* app/widgets/gimpenumwidgets.c
+	(gimp_enum_stock_box_set_child_padding): don't leak the return
+	value of gtk_container_get_children (bug #305994, spotted by Ted
+	Kremenek).
+
+2005-05-26  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/display/gimpdisplayshell.c (gimp_display_shell_set_highlight):
+	destroy the regions allocated here.
+
+2005-05-25  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* libgimpwidgets/gimpoffsetarea.c (gimp_offset_area_expose_event):
+	correctly handle very small target sizes.
+
+2005-05-23  Michael Schumacher  <schumaml@cvs.gnome.org>
+
+	* plug-ins/helpbrowser/Makefile.am: added the missing -mwindows
+	for OS_WIN32
+
+2005-05-23  Tor Lillqvist  <tml@novell.com>
+
+	* gimptool-win32.c.in (get_prefix): Don't crash if gimp.exe isn't
+	found in PATH either.
+
+2005-05-14  Tor Lillqvist  <tml@novell.com>
+
+	* gimp-zip.in: Add the .pc files.
+
+2005-05-13  Tor Lillqvist  <tml@novell.com>
+
+	* configure.in: Don't bother looking for fd_set on Win32, we won't
+	find it in sys/types.h or (the nonexistent) sys/select.h
+	anyway. (It's in winsock2.h.)
+
+	* plug-ins/script-fu/script-fu-server.c: Give it a chance to work
+	on Win32 by covering for the differences between the WinSock and
+	Unix socket APIs. Use recv() and send() instead of read() and
+	write() on sockets. On Win32, use closesocket() for sockets
+	instead of close(). Don't use perror() or look at errno after
+	socket API errors on Win32. No EINTR failure mode with WinSock 2.
+	(print_socket_api_error): New function. On Unix, just call
+	perror(). On Win32, call WSAGetLastError() and produce an
+	appropriate error message on stderr.
+
+	* plug-ins/script-fu/Makefile.am (WINSOCK_LIBS): Link with the
+	winsock2 library, as we compile with the winsock2 header.
+
+2005-05-13  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/plug_in.pdb (plug_ins_query): don't
+	crash on invalid regular expressions.
+
+	* app/pdb/plug_in_cmds.c: regenerated.
+
+2005-05-13  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD branch:
+
+	* tools/pdbgen/pdb/procedural_db.pdb (procedural_db_query): don't
+	crash on invalid regular expressions.
+
+	* app/pdb/procedural_db_cmds.c: regenerated.
+
+2005-05-13  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/bmp/bmpwrite.c (WriteBMP): added missing brackets.
+	Fixes bug #303972.
+
+2005-05-08  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.2.8, interface_age 8.
+
 2005-05-08  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.2.7 release.

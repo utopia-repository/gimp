@@ -1,19 +1,13 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimppalettemenu</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="prev" href="libgimp-gimpgradientmenu.html" title="gimpgradientmenu"><link rel="next" href="libgimp-gimppatternmenu.html" title="gimppatternmenu"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimp-gimpgradientmenu.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th><td><a accesskey="n" href="libgimp-gimppatternmenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimp-gimppalettemenu"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimppalettemenu</span></h2><p>gimppalettemenu &#8212; A widget for selecting palettes.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimppalettemenu</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="prev" href="libgimp-gimpgradientmenu.html" title="gimpgradientmenu"><link rel="next" href="libgimp-gimppatternmenu.html" title="gimppatternmenu"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimp-gimpgradientmenu.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th><td><a accesskey="n" href="libgimp-gimppatternmenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimp-gimppalettemenu"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimppalettemenu</span></h2><p>gimppalettemenu &#8212; A widget for selecting palettes.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
 <a
 href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimp-gimppalettemenu.html#gimp-palette-select-widget-new">gimp_palette_select_widget_new</a>  (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *palette_name,
+>GtkWidget</a>*  <a href="libgimp-gimppalettemenu.html#gimp-palette-select-widget-new">gimp_palette_select_widget_new</a>  (const gchar *title,
+                                             const gchar *palette_name,
                                              <a href="libgimp-gimppaletteselect.html#GimpRunPaletteCallback">GimpRunPaletteCallback</a> callback,
-                                             <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
+                                             gpointer data);
 void        <a href="libgimp-gimppalettemenu.html#gimp-palette-select-widget-close">gimp_palette_select_widget_close</a>
                                             (<a
 href="../gtk/GtkWidget.html"
@@ -21,58 +15,48 @@ href="../gtk/GtkWidget.html"
 void        <a href="libgimp-gimppalettemenu.html#gimp-palette-select-widget-set">gimp_palette_select_widget_set</a>  (<a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a> *widget,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *palette_name);
-</pre></div><div class="refsect1" lang="en"><a name="id2659316"></a><h2>Description</h2><p>
+                                             const gchar *palette_name);
+</pre></div><div class="refsect1" lang="en"><a name="id2667722"></a><h2>Description</h2><p>
 A widget for selecting palettes.
-</p></div><div class="refsect1" lang="en"><a name="id2659325"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2659330"></a><h3><a name="gimp-palette-select-widget-new"></a>gimp_palette_select_widget_new ()</h3><a class="indexterm" name="id2659339"></a><pre class="programlisting"><a
+</p></div><div class="refsect1" lang="en"><a name="id2667731"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2667737"></a><h3><a name="gimp-palette-select-widget-new"></a>gimp_palette_select_widget_new ()</h3><a class="indexterm" name="id2667745"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_palette_select_widget_new  (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *palette_name,
+>GtkWidget</a>*  gimp_palette_select_widget_new  (const gchar *title,
+                                             const gchar *palette_name,
                                              <a href="libgimp-gimppaletteselect.html#GimpRunPaletteCallback">GimpRunPaletteCallback</a> callback,
-                                             <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre><p>
+                                             gpointer data);</pre><p>
 Creates a new <a
 href="../gtk/GtkWidget.html"
 ><span class="type">GtkWidget</span></a> that completely controls the selection of
 a palette.  This widget is suitable for placement in a table in a
 plug-in dialog.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>title</tt></i> :</span></td><td>        Title of the dialog to use or <tt class="literal">NULL</tt> means to use the default
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>title</code></em> :</span></td><td>        Title of the dialog to use or <code class="literal">NULL</code> means to use the default
                title.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>palette_name</tt></i> :</span></td><td> Initial palette name.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>callback</tt></i> :</span></td><td>     A function to call when the selected palette changes.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>         A pointer to arbitary data to be used in the call to <i class="parameter"><tt>callback</tt></i>.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>palette_name</code></em> :</span></td><td> Initial palette name.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>callback</code></em> :</span></td><td>     A function to call when the selected palette changes.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>data</code></em> :</span></td><td>         A pointer to arbitary data to be used in the call to <em class="parameter"><code>callback</code></em>.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A <a
 href="../gtk/GtkWidget.html"
 ><span class="type">GtkWidget</span></a> that you can use in your UI.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2665863"></a><h3><a name="gimp-palette-select-widget-close"></a>gimp_palette_select_widget_close ()</h3><a class="indexterm" name="id2665872"></a><pre class="programlisting">void        gimp_palette_select_widget_close
+</p></div><hr><div class="refsect2" lang="en"><a name="id2666282"></a><h3><a name="gimp-palette-select-widget-close"></a>gimp_palette_select_widget_close ()</h3><a class="indexterm" name="id2666290"></a><pre class="programlisting">void        gimp_palette_select_widget_close
                                             (<a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a> *widget);</pre><p>
-Closes the popup window associated with <i class="parameter"><tt>widget</tt></i>.</p><p>
+Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>widget</tt></i> :</span></td><td> A palette select widget.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>widget</code></em> :</span></td><td> A palette select widget.
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2665918"></a><h3><a name="gimp-palette-select-widget-set"></a>gimp_palette_select_widget_set ()</h3><a class="indexterm" name="id2665926"></a><pre class="programlisting">void        gimp_palette_select_widget_set  (<a
+</p></div><hr><div class="refsect2" lang="en"><a name="id2666336"></a><h3><a name="gimp-palette-select-widget-set"></a>gimp_palette_select_widget_set ()</h3><a class="indexterm" name="id2666344"></a><pre class="programlisting">void        gimp_palette_select_widget_set  (<a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a> *widget,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *palette_name);</pre><p>
+                                             const gchar *palette_name);</pre><p>
 Sets the current palette for the palette select widget.  Calls the
 callback function if one was supplied in the call to
-<a href="libgimp-gimppalettemenu.html#gimp-palette-select-widget-new"><tt class="function">gimp_palette_select_widget_new()</tt></a>.</p><p>
+<a href="libgimp-gimppalettemenu.html#gimp-palette-select-widget-new"><code class="function">gimp_palette_select_widget_new()</code></a>.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>widget</tt></i> :</span></td><td>       A palette select widget.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>palette_name</tt></i> :</span></td><td> Palette name to set; <tt class="literal">NULL</tt> means no change.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>widget</code></em> :</span></td><td>       A palette select widget.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>palette_name</code></em> :</span></td><td> Palette name to set; <code class="literal">NULL</code> means no change.
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
 </p></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimp-gimpgradientmenu.html"><b>&lt;&lt; gimpgradientmenu</b></a></td><td align="right"><a accesskey="n" href="libgimp-gimppatternmenu.html"><b>gimppatternmenu &gt;&gt;</b></a></td></tr></table></body></html>

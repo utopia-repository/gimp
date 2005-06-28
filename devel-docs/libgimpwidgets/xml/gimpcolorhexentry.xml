@@ -82,7 +82,7 @@ Widget for entering a color's hex triplet.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-color-hex-entry-new"/>gimp_color_hex_entry_new ()</title>
-<indexterm role="GIMP"><primary>gimp_color_hex_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_color_hex_entry_new        (void);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_color_hex_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_color_hex_entry_new        (void);</programlisting>
 <para>
 </para>
 <para>
@@ -95,7 +95,7 @@ Widget for entering a color's hex triplet.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-color-hex-entry-set-color"/>gimp_color_hex_entry_set_color ()</title>
-<indexterm role="GIMP"><primary>gimp_color_hex_entry_set_color</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_hex_entry_set_color  (<link linkend="GimpColorHexEntry">GimpColorHexEntry</link> *entry,
+<indexterm role="GIMP 2.2"><primary>gimp_color_hex_entry_set_color</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_hex_entry_set_color  (<link linkend="GimpColorHexEntry">GimpColorHexEntry</link> *entry,
                                              const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <para>
 Sets the color displayed by a <link linkend="GimpColorHexEntry"><type>GimpColorHexEntry</type></link>. If the new color
@@ -114,7 +114,7 @@ signal is emitted.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-color-hex-entry-get-color"/>gimp_color_hex_entry_get_color ()</title>
-<indexterm role="GIMP"><primary>gimp_color_hex_entry_get_color</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_hex_entry_get_color  (<link linkend="GimpColorHexEntry">GimpColorHexEntry</link> *entry,
+<indexterm role="GIMP 2.2"><primary>gimp_color_hex_entry_get_color</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_hex_entry_get_color  (<link linkend="GimpColorHexEntry">GimpColorHexEntry</link> *entry,
                                              <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <para>
 Retrieves the color value displayed by a <link linkend="GimpColorHexEntry"><type>GimpColorHexEntry</type></link>.</para>

@@ -1,3 +1,9 @@
+gimp (2.2.8-4) unstable; urgency=low
+
+  * Really change build-dependencies this time.
+
+ -- Ari Pollak <ari@debian.org>  Tue, 12 Jul 2005 01:22:23 -0400
+
 gimp (2.2.8-3) unstable; urgency=low
 
   * Add "-mmmx -msse" to CFLAGS on i386 to allow compilation of

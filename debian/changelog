@@ -1,3 +1,15 @@
+gimp (2.2.8-3) unstable; urgency=low
+
+  * Add "-mmmx -msse" to CFLAGS on i386 to allow compilation of
+    MMX/SSE-optimized composite code. Fix suggested by GNOME bugzilla #308412.
+  * Apply patch from upstream to app/composite/gimp-composite-generic.c
+    to fix some signedness warnings
+  * Change build-depends on aalib1-dev to libaa1-dev
+  * Don't build-depend on libasound2-dev on kfreebsd-i386 & hurd-i386
+    (Closes: #316745, #307925)
+
+ -- Ari Pollak <ari@debian.org>  Mon, 11 Jul 2005 23:00:43 -0400
+
 gimp (2.2.8-2) unstable; urgency=low
 
   * Remove unnecessary build-dep on slang 

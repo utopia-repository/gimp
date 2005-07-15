@@ -30,12 +30,6 @@ ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 	INSTALL_PROGRAM += -s
 endif
 
-# This was added in 2.2.8-3, and can be removed whenever configure gets fixed
-# to add these flags automatically
-ifeq ("$(shell dpkg-architecture -qDEB_BUILD_ARCH)","i386")
-	CFLAGS += -mmmx -msse
-endif
-
 major=2.0
 
 ## Read version numbers from the changelog (for upstream dev versions)

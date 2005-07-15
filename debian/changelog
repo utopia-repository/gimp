@@ -1,3 +1,11 @@
+gimp (2.2.8-5) unstable; urgency=low
+
+  * Instead of adding MMX and SSE flags, apply patch from GNOME bugzilla
+    #303796 to fix building on gcc 4.0 the correct way.
+    (Closes: #318345, #318226)
+
+ -- Ari Pollak <ari@debian.org>  Thu, 14 Jul 2005 20:01:04 -0400
+
 gimp (2.2.8-4) unstable; urgency=low
 
   * Really change build-dependencies this time.

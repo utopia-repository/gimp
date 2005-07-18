@@ -3,7 +3,7 @@ Priority: optional
 Section: graphics
 Maintainer: Ari Pollak <ari@debian.org>
 Standards-Version: 3.6.1
-Build-Depends: debhelper (>= 4.2.21), gettext, intltool, libaa1-dev, libgtk2.0-dev (>= 2.4.4-1), libgtkhtml2-dev (>= 2.0.0), libgimpprint1-dev (>= 4.2.6), libjpeg62-dev, libmpeg-dev, libart-2.0-dev, libpng-dev, xlibs-dev, zlib1g-dev, libtiff4-dev, python-dev, python-gtk2-dev, libexif-dev (>= 0.6.9), libmng-dev, librsvg2-dev (>= 2.7.2-2), libfontconfig1-dev (>= 2.2.0), libwmf-dev (>= 0.2.8-1.1), sharutils, sed (>= 3.95), libasound2-dev (>= 1.0.0) [!kfreebsd-i386 !hurd-i386]
+Build-Depends: debhelper (>= 4.2.21), gettext, intltool, libaa1-dev, libgtk2.0-dev (>= 2.4.4-1), libgtkhtml2-dev (>= 2.0.0), libjpeg62-dev, libmpeg-dev, libart-2.0-dev, libpng-dev, xlibs-dev, zlib1g-dev, libtiff4-dev, python-dev, python-gtk2-dev, libexif-dev (>= 0.6.9), libmng-dev, librsvg2-dev (>= 2.7.2-2), libfontconfig1-dev (>= 2.2.0), libwmf-dev (>= 0.2.8-1.1), sharutils, sed (>= 3.95), libasound2-dev (>= 1.0.0) [!kfreebsd-i386 !hurd-i386]
 
 Package: libgimp2.0
 Architecture: any
@@ -69,8 +69,8 @@ Description: The GNU Image Manipulation Program
 Package: gimp-data
 Architecture: all
 Section: graphics
-Conflicts: gimp1.2 (<< 1.2.5-1), gimp1.3-data, gimp (<< 2.0.2-4)
-Replaces: gimp1.2 (<< 1.2.5-1), gimp1.3-data, gimp (<< 2.0.2-4)
+Conflicts: gimp1.3-data, gimp (<< 2.0.2-4)
+Replaces: gimp1.3-data, gimp (<< 2.0.2-4)
 Description: Data files for The GIMP
  This package contains architecture-independent supporting data files
  for use with The GIMP.
@@ -79,8 +79,8 @@ Package: libgimp2.0-dev
 Architecture: any
 Section: libdevel
 Depends: libgimp2.0 (= ${Source-Version}), libgtk2.0-dev (>= 2.4.4-1)
-Conflicts: libgimp1.2-dev (<< 1.2.5-4), libgimp1.3-dev
-Replaces: libgimp1.2-dev (<< 1.2.5-4), libgimp1.3-dev
+Conflicts: libgimp1.3-dev
+Replaces: libgimp1.3-dev
 Description: Headers and other files for compiling plugins for The GIMP
  This package contains the header files for the GNU Image Manipulation
  Program, along with the static versions of libgimp.
@@ -96,12 +96,3 @@ Depends: lynx | www-browser
 Description: Developers' Documentation for the GIMP library
  This package contains the HTML documentation for the GIMP library in
  /usr/share/gtk-doc/html/ .
-
-Package: gimp1.2
-Architecture: all
-Section: graphics
-Depends: gimp (>= 1.2.5-1)
-Description: Transitional dummy package for upgrading The GIMP
- The gimp1.2 package has been renamed to 'gimp'.  To make upgrades easy,
- this package simply depends on the proper version of 'gimp' to get the
- new packages automatically.

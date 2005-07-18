@@ -1,3 +1,14 @@
+gimp (2.2.8-6) unstable; urgency=low
+
+  * Removed libgimpprint1-dev from build-deps, added --disable-print
+    to configure options, and added Recommends: gimp-print (Closes: #318819)
+    SIDE EFFECT: gimp-print is now a separate package. Install it if
+    you would like printing support in GIMP.
+  * Removed gimp1.2 dummy package and associated Conflicts/Replaces
+    now that sarge is released, since it is no longer needed.
+
+ -- Ari Pollak <ari@debian.org>  Mon, 18 Jul 2005 13:09:37 -0400
+
 gimp (2.2.8-5) unstable; urgency=low
 
   * Instead of adding MMX and SSE flags, apply patch from GNOME bugzilla

@@ -47,7 +47,7 @@ config.status:
 	CFLAGS="$(CFLAGS)" ./configure --sysconfdir=/etc \
 	--prefix=/usr --enable-python --mandir=\$${prefix}/share/man \
 	--host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) \
-	--enable-default-binary
+	--enable-default-binary --disable-print
 
 build: configure build-stamp
 build-stamp:

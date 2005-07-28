@@ -1,3 +1,9 @@
+gimp (2.2.8-7) unstable; urgency=low
+
+  * Bump minimum version for libexif-dev in build-depends
+
+ -- Ari Pollak <ari@debian.org>  Thu, 28 Jul 2005 11:30:25 -0400
+
 gimp (2.2.8-6) unstable; urgency=low
 
   * Removed libgimpprint1-dev from build-deps, added --disable-print

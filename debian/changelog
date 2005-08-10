@@ -1,3 +1,10 @@
+gimp (2.2.8-8) unstable; urgency=low
+
+  * Er, somehow gimp-print got removed from the Recommends in the last
+    revision, so re-add it. (Closes: #322480)
+
+ -- Ari Pollak <ari@debian.org>  Wed, 10 Aug 2005 18:01:08 -0400
+
 gimp (2.2.8-7) unstable; urgency=low
 
   * Bump minimum version for libexif-dev in build-depends

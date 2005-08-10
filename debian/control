@@ -56,7 +56,7 @@ Depends: wget, gimp-data (= ${Source-Version}), ${shlibs:Depends}
 Conflicts: gimp1.2 (<< 1.2.5-1), gimp1.3, gimp-nonfree, gimp-data (<< 2.0.2-4)
 Replaces: gimp1.2 (<< 1.2.5-1), gimp1.3, gimp-nonfree, gimp-data (<< 2.0.2-4)
 Provides: gimp2.0, gimp-nonfree
-Recommends: gimp-svg
+Recommends: gimp-svg, gimp-print
 Suggests: gimp-help-en | gimp-help, gimp-python, libgimp-perl, gimp-data-extras, libasound2 (>= 1.0.0)
 Description: The GNU Image Manipulation Program
  The GIMP lets you draw, paint, edit images, and much more! GIMP

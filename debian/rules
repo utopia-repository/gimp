@@ -44,7 +44,7 @@ config.status:
 	dh_testdir
 
  	# Add here commands to compile the pacckage.
-	CFLAGS="$(CFLAGS)" ./configure --sysconfdir=/etc \
+	CC=gcc-3.3 CFLAGS="$(CFLAGS)" ./configure --sysconfdir=/etc \
 	--prefix=/usr --enable-python --mandir=\$${prefix}/share/man \
 	--host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) \
 	--enable-default-binary --disable-print

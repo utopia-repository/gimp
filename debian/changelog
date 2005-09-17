@@ -1,3 +1,11 @@
+gimp (2.2.8-10) unstable; urgency=low
+
+  * Add letter spacing option to text tool, taken from upstream
+    development tree (Closes: #326261)
+  * Apply patch to German translation (Closes: #314091)
+
+ -- Ari Pollak <ari@debian.org>  Sat, 17 Sep 2005 15:22:13 -0400
+
 gimp (2.2.8-9) unstable; urgency=low
 
   * Build with gcc-3.3 until bug #322565 on gcc-4.0 is fixed (Closes: #326423)

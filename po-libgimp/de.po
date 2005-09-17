@@ -402,7 +402,7 @@ msgstr "_Schwarz"
 
 #: ../libgimpwidgets/gimpcolorbutton.c:111
 msgid "_White"
-msgstr "_Weiss"
+msgstr "_Weiß"
 
 #: ../libgimpwidgets/gimpcolorscales.c:133
 msgid "Scales"

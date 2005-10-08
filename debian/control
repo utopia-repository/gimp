@@ -78,7 +78,7 @@ Description: Data files for The GIMP
 Package: libgimp2.0-dev
 Architecture: any
 Section: libdevel
-Depends: libgimp2.0 (= ${Source-Version}), libgtk2.0-dev (>= 2.4.4-1)
+Depends: libgimp2.0 (= ${Source-Version}), libgtk2.0-dev (>= 2.4.4-1), gcc-3.3
 Conflicts: libgimp1.3-dev
 Replaces: libgimp1.3-dev
 Description: Headers and other files for compiling plugins for The GIMP

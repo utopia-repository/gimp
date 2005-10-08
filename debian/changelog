@@ -1,3 +1,10 @@
+gimp (2.2.8-11) unstable; urgency=low
+
+  * Make libgimp2.0-dev depend on gcc-3.3 because gimptool uses the same
+    compiler that gimp was compiled with. (Closes: #332681)
+
+ -- Ari Pollak <ari@debian.org>  Fri,  7 Oct 2005 21:07:06 -0400
+
 gimp (2.2.8-10) unstable; urgency=low
 
   * Add letter spacing option to text tool, taken from upstream

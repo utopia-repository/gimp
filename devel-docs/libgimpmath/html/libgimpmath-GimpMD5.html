@@ -1,56 +1,99 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpMD5</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Math Library Reference Manual"><link rel="up" href="libgimpmath.html" title="Part I. GIMP Math Library"><link rel="prev" href="libgimpmath-GimpVector.html" title="GimpVector"><meta name="generator" content="GTK-Doc V1.2 (XML mode)"><style type="text/css">
-        .synopsis, .classsynopsis {
-            background: #eeeeee;
-            border: solid 1px #aaaaaa;
-            padding: 0.5em;
-        }
-        .programlisting {
-            background: #eeeeff;
-            border: solid 1px #aaaaff;
-            padding: 0.5em;
-        }
-        .variablelist {
-            padding: 4px;
-            margin-left: 3em;
-        }
-        .navigation {
-            background: #ffeeee;
-            border: solid 1px #ffaaaa;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-        }
-        .navigation a {
-            color: #770000;
-        }
-        .navigation a:visited {
-            color: #550000;
-        }
-        .navigation .title {
-            font-size: 200%;
-        }
-      </style></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpmath-GimpVector.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpmath.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Math Library Reference Manual</th></tr></table><div class="refentry" lang="en"><a name="libgimpmath-GimpMD5"></a><div class="titlepage"></div><div class="refnamediv"><h2><span class="refentrytitle">GimpMD5</span></h2><p>GimpMD5 &#8212; the MD5 message-digest algorithm</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>GimpMD5</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Math Library Reference Manual">
+<link rel="up" href="libgimpmath.html" title="Part&#160;I.&#160;GIMP Math Library">
+<link rel="prev" href="libgimpmath-GimpVector.html" title="GimpVector">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libgimpmath.html" title="Part&#160;I.&#160;GIMP Math Library">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="libgimpmath-GimpVector.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpmath.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Math Library Reference Manual</th>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="libgimpmath-GimpMD5"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">GimpMD5</span></h2>
+<p>GimpMD5 &#8212; the MD5 message-digest algorithm</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
 
 
 
 void        <a href="libgimpmath-GimpMD5.html#gimp-md5-get-digest">gimp_md5_get_digest</a>             (const gchar *buffer,
                                              gint buffer_size,
                                              guchar digest[16]);
-</pre></div><div class="refsect1" lang="en"><a name="id2560520"></a><h2>Description</h2><p>
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2532299"></a><h2>Description</h2>
+<p>
 
-</p></div><div class="refsect1" lang="en"><a name="id2538628"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2538633"></a><h3><a name="gimp-md5-get-digest"></a>gimp_md5_get_digest ()</h3><a class="indexterm" name="id2534564"></a><pre class="programlisting">void        gimp_md5_get_digest             (const gchar *buffer,
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2541001"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2549865"></a><h3>
+<a name="gimp-md5-get-digest"></a>gimp_md5_get_digest ()</h3>
+<a class="indexterm" name="id2549875"></a><pre class="programlisting">void        gimp_md5_get_digest             (const gchar *buffer,
                                              gint buffer_size,
-                                             guchar digest[16]);</pre><p>
+                                             guchar digest[16]);</pre>
+<p>
 Get the md5 hash of a buffer. The result is put in the 16 bytes
-buffer <i class="parameter"><tt>digest</tt></i>.
-</p><p>
+buffer <em class="parameter"><code>digest</code></em>.
+</p>
+<p>
 The MD5 algorithm takes as input a message of arbitrary length and
 produces as output a 128-bit "fingerprint" or "message digest" of
 the input.  It is conjectured that it is computationally infeasible
 to produce two messages having the same message digest, or to
 produce any message having a given prespecified target message
-digest. For more information see RFC 1321.</p><p>
+digest. For more information see RFC 1321.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buffer</tt></i> :</span></td><td> byte buffer
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>buffer_size</tt></i> :</span></td><td> buffer size (in bytes) or -1 if <i class="parameter"><tt>buffer</tt></i> is nul-terminated.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>digest</tt></i> :</span></td><td> 16 bytes buffer receiving the hash code.
-</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpmath-GimpVector.html"><b>&lt;&lt; GimpVector</b></a></td><td align="right"></td></tr></table></body></html>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>buffer</code></em>&#160;:</span></td>
+<td> byte buffer
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>buffer_size</code></em>&#160;:</span></td>
+<td> buffer size (in bytes) or -1 if <em class="parameter"><code>buffer</code></em> is nul-terminated.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>digest</code></em>&#160;:</span></td>
+<td> 16 bytes buffer receiving the hash code.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimpmath-GimpVector.html"><b>&lt;&lt;&#160;GimpVector</b></a></td>
+<td align="right"></td>
+</tr></table>
+</body>
+</html>

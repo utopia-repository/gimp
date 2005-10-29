@@ -11,7 +11,7 @@
     </sub>
   </chapters>
   <functions>
-    <function name="struct GimpRGB" link="libgimpcolor-GimpRGB.html#GimpRGB"/>
+    <function name="GimpRGB" link="libgimpcolor-GimpRGB.html#GimpRGB"/>
     <function name="enum GimpRGBCompositeMode" link="libgimpcolor-GimpRGB.html#GimpRGBCompositeMode"/>
     <function name="gimp_rgb_set ()" link="libgimpcolor-GimpRGB.html#gimp-rgb-set"/>
     <function name="gimp_rgb_set_alpha ()" link="libgimpcolor-GimpRGB.html#gimp-rgb-set-alpha"/>
@@ -40,24 +40,24 @@
     <function name="gimp_rgba_subtract ()" link="libgimpcolor-GimpRGB.html#gimp-rgba-subtract"/>
     <function name="gimp_rgba_multiply ()" link="libgimpcolor-GimpRGB.html#gimp-rgba-multiply"/>
     <function name="gimp_rgba_distance ()" link="libgimpcolor-GimpRGB.html#gimp-rgba-distance"/>
-    <function name="GIMP_RGB_INTENSITY()" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-CAPS"/>
-    <function name="GIMP_RGB_INTENSITY_RED" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-RED-CAPS"/>
-    <function name="GIMP_RGB_INTENSITY_GREEN" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-GREEN-CAPS"/>
-    <function name="GIMP_RGB_INTENSITY_BLUE" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-BLUE-CAPS"/>
-    <function name="GIMP_TYPE_RGB" link="libgimpcolor-GimpRGB.html#GIMP-TYPE-RGB-CAPS"/>
-    <function name="GIMP_VALUE_HOLDS_RGB()" link="libgimpcolor-GimpRGB.html#GIMP-VALUE-HOLDS-RGB-CAPS"/>
-    <function name="struct GimpHSV" link="libgimpcolor-GimpHSV.html#GimpHSV"/>
+    <function name="GIMP_RGB_INTENSITY()" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY:CAPS"/>
+    <function name="GIMP_RGB_INTENSITY_RED" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-RED:CAPS"/>
+    <function name="GIMP_RGB_INTENSITY_GREEN" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-GREEN:CAPS"/>
+    <function name="GIMP_RGB_INTENSITY_BLUE" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-BLUE:CAPS"/>
+    <function name="GIMP_TYPE_RGB" link="libgimpcolor-GimpRGB.html#GIMP-TYPE-RGB:CAPS"/>
+    <function name="GIMP_VALUE_HOLDS_RGB()" link="libgimpcolor-GimpRGB.html#GIMP-VALUE-HOLDS-RGB:CAPS"/>
+    <function name="GimpHSV" link="libgimpcolor-GimpHSV.html#GimpHSV"/>
     <function name="gimp_hsv_set ()" link="libgimpcolor-GimpHSV.html#gimp-hsv-set"/>
     <function name="gimp_hsv_clamp ()" link="libgimpcolor-GimpHSV.html#gimp-hsv-clamp"/>
     <function name="gimp_hsva_set ()" link="libgimpcolor-GimpHSV.html#gimp-hsva-set"/>
-    <function name="struct GimpCMYK" link="libgimpcolor-GimpCMYK.html#GimpCMYK"/>
+    <function name="GimpCMYK" link="libgimpcolor-GimpCMYK.html#GimpCMYK"/>
     <function name="gimp_cmyk_set ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyk-set"/>
     <function name="gimp_cmyk_set_uchar ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyk-set-uchar"/>
     <function name="gimp_cmyk_get_uchar ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyk-get-uchar"/>
     <function name="gimp_cmyka_set ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyka-set"/>
     <function name="gimp_cmyka_set_uchar ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyka-set-uchar"/>
     <function name="gimp_cmyka_get_uchar ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyka-get-uchar"/>
-    <function name="struct GimpHSL" link="libgimpcolor-GimpColorSpace.html#GimpHSL"/>
+    <function name="GimpHSL" link="libgimpcolor-GimpColorSpace.html#GimpHSL"/>
     <function name="gimp_rgb_to_hsv ()" link="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsv"/>
     <function name="gimp_rgb_to_hsl ()" link="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsl"/>
     <function name="gimp_rgb_to_cmyk ()" link="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-cmyk"/>

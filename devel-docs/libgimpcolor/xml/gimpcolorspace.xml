@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpHSL">GimpHSL</link>;
+            <link linkend="GimpHSL">GimpHSL</link>;
 <link linkend="void">void</link>        <link linkend="gimp-rgb-to-hsv">gimp_rgb_to_hsv</link>                 (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
                                              <link linkend="GimpHSV">GimpHSV</link> *hsv);
 <link linkend="void">void</link>        <link linkend="gimp-rgb-to-hsl">gimp_rgb_to_hsl</link>                 (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
@@ -96,11 +96,10 @@ different color spaces.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpHSL"/>struct GimpHSL</title>
-<indexterm><primary>GimpHSL</primary></indexterm><programlisting>struct GimpHSL {
-
+<title><anchor id="GimpHSL"/>GimpHSL</title>
+<indexterm><primary>GimpHSL</primary></indexterm><programlisting>typedef struct {
   gdouble h, s, l, a;
-};
+} GimpHSL;
 </programlisting>
 <para>
 
@@ -421,7 +420,7 @@ L = (max(R, G, B) + min (R, G, B)) / 2</para>
 <varlistentry><term><parameter>blue</parameter>&nbsp;:</term>
 <listitem><simpara> Blue channel
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> Luminance vaue corresponding to the input RGB value
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Luminance vaue corresponding to the input RGB value
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

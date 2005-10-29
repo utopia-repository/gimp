@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpCMYK">GimpCMYK</link>;
+            <link linkend="GimpCMYK">GimpCMYK</link>;
 <link linkend="void">void</link>        <link linkend="gimp-cmyk-set">gimp_cmyk_set</link>                   (<link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
                                              <link linkend="gdouble">gdouble</link> cyan,
                                              <link linkend="gdouble">gdouble</link> magenta,
@@ -74,11 +74,10 @@ Definitions and Functions relating to CMYK colors.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpCMYK"/>struct GimpCMYK</title>
-<indexterm><primary>GimpCMYK</primary></indexterm><programlisting>struct GimpCMYK {
-
+<title><anchor id="GimpCMYK"/>GimpCMYK</title>
+<indexterm><primary>GimpCMYK</primary></indexterm><programlisting>typedef struct {
   gdouble c, m, y, k, a;
-};
+} GimpCMYK;
 </programlisting>
 <para>
 

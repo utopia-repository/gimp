@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GIMP 2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-18 02:39+0200\n"
-"PO-Revision-Date: 2005-06-21 19:47+0200\n"
+"POT-Creation-Date: 2005-09-20 15:49+0200\n"
+"PO-Revision-Date: 2005-09-20 15:48+0200\n"
 "Last-Translator: Hendrik Richter <hendi@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -4889,7 +4889,7 @@ msgstr "Zauberstab"
 msgid "Select by Color"
 msgstr "Nach Farbe auswählen"
 
-#: ../app/core/gimpdata.c:314
+#: ../app/core/gimpdata.c:320
 #, c-format
 msgid "Could not delete '%s': %s"
 msgstr "»%s« konnte nicht gelöscht werden: %s"
@@ -6996,7 +6996,7 @@ msgstr "GIMP beenden"
 
 #: ../app/dialogs/quit-dialog.c:126
 msgid "If you quit GIMP now, these changes will be lost."
-msgstr "Wenn Sie GIMP jetzt beenden, gehen folgende Änderungenverlorgen:"
+msgstr "Wenn Sie GIMP jetzt beenden, gehen diese Änderungen verloren."
 
 #: ../app/dialogs/quit-dialog.c:164
 msgid "There is one image with unsaved changes:"
@@ -8042,7 +8042,7 @@ msgstr ""
 "PDB-Aufruffehler:\n"
 "Prozedur '%s' nicht gefunden"
 
-#: ../app/pdb/procedural_db.c:275 ../app/pdb/procedural_db.c:387
+#: ../app/pdb/procedural_db.c:275 ../app/pdb/procedural_db.c:392
 #, c-format
 msgid ""
 "PDB calling error for procedure '%s':\n"
@@ -8071,12 +8071,12 @@ msgstr "Vorläufige Prozedur"
 msgid "Free Select"
 msgstr "Freie Auswahl"
 
-#: ../app/plug-in/plug-in.c:544 ../app/plug-in/plug-in.c:574
+#: ../app/plug-in/plug-in.c:551 ../app/plug-in/plug-in.c:581
 #, c-format
 msgid "Terminating plug-in: '%s'\n"
 msgstr "Plugin wird abgebrochen: »%s«\n"
 
-#: ../app/plug-in/plug-in.c:730
+#: ../app/plug-in/plug-in.c:737
 #, c-format
 msgid ""
 "Plug-In crashed: \"%s\"\n"
@@ -9544,7 +9544,7 @@ msgstr ""
 
 #: ../app/tools/gimpvectoroptions.c:196
 msgid "Create selection from path"
-msgstr "Pfad aus Auswahl"
+msgstr "Auswahl aus Pfad erzeugen"
 
 #: ../app/tools/gimpvectoroptions.c:207
 msgid "Stroke path"

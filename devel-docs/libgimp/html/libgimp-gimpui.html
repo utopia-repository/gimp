@@ -1,33 +1,106 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimpui</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="prev" href="libgimpui-hierarchy.html" title="Object Hierarchy"><link rel="next" href="libgimp-gimpexport.html" title="gimpexport"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpui-hierarchy.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th><td><a accesskey="n" href="libgimp-gimpexport.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimp-gimpui"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimpui</span></h2><p>gimpui &#8212; Common user interface functions. This header includes all other GIMP User
-Interface Library headers.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>gimpui</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="prev" href="libgimpui-hierarchy.html" title="Object Hierarchy">
+<link rel="next" href="libgimp-gimpexport.html" title="gimpexport">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
+<link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
+<link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
+<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="chapter" href="libgimp-data.html" title="Data Objects">
+<link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
+<link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="libgimpui-hierarchy.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Library Reference Manual</th>
+<td><a accesskey="n" href="libgimp-gimpexport.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="libgimp-gimpui"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">gimpui</span></h2>
+<p>gimpui &#8212; Common user interface functions. This header includes all other GIMP User
+Interface Library headers.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
 
 
 
 void        <a href="libgimp-gimpui.html#gimp-ui-init">gimp_ui_init</a>                    (const gchar *prog_name,
                                              gboolean preview);
-</pre></div><div class="refsect1" lang="en"><a name="id2535569"></a><h2>Description</h2><p>
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2538537"></a><h2>Description</h2>
+<p>
 Common user interface functions. This header includes all other GIMP User
 Interface Library headers.
 
-</p></div><div class="refsect1" lang="en"><a name="id2624546"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2624551"></a><h3><a name="gimp-ui-init"></a>gimp_ui_init ()</h3><a class="indexterm" name="id2652480"></a><pre class="programlisting">void        gimp_ui_init                    (const gchar *prog_name,
-                                             gboolean preview);</pre><p>
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2542712"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2637167"></a><h3>
+<a name="gimp-ui-init"></a>gimp_ui_init ()</h3>
+<a class="indexterm" name="id2637175"></a><pre class="programlisting">void        gimp_ui_init                    (const gchar *prog_name,
+                                             gboolean preview);</pre>
+<p>
 This function initializes GTK+ with <a
 href="../gtk/gtk-General.html#gtk-init"
 ><code class="function">gtk_init()</code></a> and initializes GDK's
 image rendering subsystem (GdkRGB) to follow the GIMP main program's
 colormap allocation/installation policy.
-</p><p>
+</p>
+<p>
 The GIMP's colormap policy can be determinded by the user with the
-gimprc variables <em class="parameter"><code>min_colors</code></em> and <em class="parameter"><code>install_cmap</code></em>.</p><p>
+gimprc variables <em class="parameter"><code>min_colors</code></em> and <em class="parameter"><code>install_cmap</code></em>.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>prog_name</code></em> :</span></td><td> The name of the plug-in which will be passed as argv[0] to
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>prog_name</code></em>&#160;:</span></td>
+<td> The name of the plug-in which will be passed as argv[0] to
             <a
 href="../gtk/gtk-General.html#gtk-init"
 ><code class="function">gtk_init()</code></a>. It's a convention to use the name of the
             executable and _not_ the PDB procedure name or something.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>preview</code></em> :</span></td><td>   This parameter is unused and exists for historical
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>preview</code></em>&#160;:</span></td>
+<td>   This parameter is unused and exists for historical
             reasons only.
-</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2651139"></a><h2>See Also</h2><p>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2638281"></a><h2>See Also</h2>
+<p>
 <a
 href="../gtk/gtk-General.html#gtk-init"
 ><code class="function">gtk_init()</code></a>, <a
@@ -50,4 +123,12 @@ href="../gtk/GtkWidget.html#gtk-widget-set-default-colormap"
 <a
 href="../gtk/GtkPreview.html#gtk-preview-set-gamma"
 ><code class="function">gtk_preview_set_gamma()</code></a>.
-</p></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpui-hierarchy.html"><b>&lt;&lt; Object Hierarchy</b></a></td><td align="right"><a accesskey="n" href="libgimp-gimpexport.html"><b>gimpexport &gt;&gt;</b></a></td></tr></table></body></html>
+</p>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimpui-hierarchy.html"><b>&lt;&lt;&#160;Object Hierarchy</b></a></td>
+<td align="right"><a accesskey="n" href="libgimp-gimpexport.html"><b>gimpexport&#160;&gt;&gt;</b></a></td>
+</tr></table>
+</body>
+</html>

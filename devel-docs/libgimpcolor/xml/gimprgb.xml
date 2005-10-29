@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpRGB">GimpRGB</link>;
+            <link linkend="GimpRGB">GimpRGB</link>;
 enum        <link linkend="GimpRGBCompositeMode">GimpRGBCompositeMode</link>;
 <link linkend="void">void</link>        <link linkend="gimp-rgb-set">gimp_rgb_set</link>                    (<link linkend="GimpRGB">GimpRGB</link> *rgb,
                                              <link linkend="gdouble">gdouble</link> red,
@@ -90,12 +90,12 @@ enum        <link linkend="GimpRGBCompositeMode">GimpRGBCompositeMode</link>;
                                              <link linkend="gdouble">gdouble</link> factor);
 <link linkend="gdouble">gdouble</link>     <link linkend="gimp-rgba-distance">gimp_rgba_distance</link>              (const <link linkend="GimpRGB">GimpRGB</link> *rgba1,
                                              const <link linkend="GimpRGB">GimpRGB</link> *rgba2);
-#define     <link linkend="GIMP-RGB-INTENSITY-CAPS">GIMP_RGB_INTENSITY</link>              (r,g,b)
-#define     <link linkend="GIMP-RGB-INTENSITY-RED-CAPS">GIMP_RGB_INTENSITY_RED</link>
-#define     <link linkend="GIMP-RGB-INTENSITY-GREEN-CAPS">GIMP_RGB_INTENSITY_GREEN</link>
-#define     <link linkend="GIMP-RGB-INTENSITY-BLUE-CAPS">GIMP_RGB_INTENSITY_BLUE</link>
-#define     <link linkend="GIMP-TYPE-RGB-CAPS">GIMP_TYPE_RGB</link>
-#define     <link linkend="GIMP-VALUE-HOLDS-RGB-CAPS">GIMP_VALUE_HOLDS_RGB</link>            (value)
+#define     <link linkend="GIMP-RGB-INTENSITY:CAPS">GIMP_RGB_INTENSITY</link>              (r,g,b)
+#define     <link linkend="GIMP-RGB-INTENSITY-RED:CAPS">GIMP_RGB_INTENSITY_RED</link>
+#define     <link linkend="GIMP-RGB-INTENSITY-GREEN:CAPS">GIMP_RGB_INTENSITY_GREEN</link>
+#define     <link linkend="GIMP-RGB-INTENSITY-BLUE:CAPS">GIMP_RGB_INTENSITY_BLUE</link>
+#define     <link linkend="GIMP-TYPE-RGB:CAPS">GIMP_TYPE_RGB</link>
+#define     <link linkend="GIMP-VALUE-HOLDS-RGB:CAPS">GIMP_VALUE_HOLDS_RGB</link>            (value)
 
 </synopsis>
 </refsynopsisdiv>
@@ -118,11 +118,10 @@ Definitions and Functions relating to RGB colors.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpRGB"/>struct GimpRGB</title>
-<indexterm><primary>GimpRGB</primary></indexterm><programlisting>struct GimpRGB {
-
+<title><anchor id="GimpRGB"/>GimpRGB</title>
+<indexterm><primary>GimpRGB</primary></indexterm><programlisting>typedef struct {
   gdouble r, g, b, a;
-};
+} GimpRGB;
 </programlisting>
 <para>
 
@@ -233,7 +232,7 @@ Sets the red, green and blue components of <parameter>rgb</parameter> from 8bit 
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-parse-name"/>gimp_rgb_parse_name ()</title>
-<indexterm><primary>gimp_rgb_parse_name</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_rgb_parse_name             (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+<indexterm role="GIMP 2.2"><primary>gimp_rgb_parse_name</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_rgb_parse_name             (<link linkend="GimpRGB">GimpRGB</link> *rgb,
                                              const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> len);</programlisting>
 <para>
@@ -257,7 +256,7 @@ This funcion does not touch the alpha component of <parameter>rgb</parameter>.</
 <varlistentry><term><parameter>len</parameter>&nbsp;:</term>
 <listitem><simpara>  the length of <parameter>name</parameter>, in bytes. or -1 if <parameter>name</parameter> is nul-terminated
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> <literal>TRUE</literal> if <parameter>name</parameter> was parsed successfully and <parameter>rgb</parameter> has been
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if <parameter>name</parameter> was parsed successfully and <parameter>rgb</parameter> has been
               set, <literal>FALSE</literal> otherwise
 
 </simpara></listitem></varlistentry>
@@ -265,7 +264,7 @@ This funcion does not touch the alpha component of <parameter>rgb</parameter>.</
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-parse-hex"/>gimp_rgb_parse_hex ()</title>
-<indexterm><primary>gimp_rgb_parse_hex</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_rgb_parse_hex              (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+<indexterm role="GIMP 2.2"><primary>gimp_rgb_parse_hex</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_rgb_parse_hex              (<link linkend="GimpRGB">GimpRGB</link> *rgb,
                                              const <link linkend="gchar">gchar</link> *hex,
                                              <link linkend="gint">gint</link> len);</programlisting>
 <para>
@@ -286,7 +285,7 @@ This funcion does not touch the alpha component of <parameter>rgb</parameter>.</
 <varlistentry><term><parameter>len</parameter>&nbsp;:</term>
 <listitem><simpara> the length of <parameter>hex</parameter>, in bytes. or -1 if <parameter>hex</parameter> is nul-terminated
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> <literal>TRUE</literal> if <parameter>hex</parameter> was parsed successfully and <parameter>rgb</parameter> has been
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if <parameter>hex</parameter> was parsed successfully and <parameter>rgb</parameter> has been
               set, <literal>FALSE</literal> otherwise
 
 </simpara></listitem></varlistentry>
@@ -294,7 +293,7 @@ This funcion does not touch the alpha component of <parameter>rgb</parameter>.</
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-parse-css"/>gimp_rgb_parse_css ()</title>
-<indexterm><primary>gimp_rgb_parse_css</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_rgb_parse_css              (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+<indexterm role="GIMP 2.2"><primary>gimp_rgb_parse_css</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_rgb_parse_css              (<link linkend="GimpRGB">GimpRGB</link> *rgb,
                                              const <link linkend="gchar">gchar</link> *css,
                                              <link linkend="gint">gint</link> len);</programlisting>
 <para>
@@ -319,7 +318,7 @@ This funcion does not touch the alpha component of <parameter>rgb</parameter>.</
 <varlistentry><term><parameter>len</parameter>&nbsp;:</term>
 <listitem><simpara> the length of <parameter>hex</parameter>, in bytes. or -1 if <parameter>hex</parameter> is nul-terminated
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> <literal>TRUE</literal> if <parameter>css</parameter> was parsed successfully and <parameter>rgb</parameter> has been
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if <parameter>css</parameter> was parsed successfully and <parameter>rgb</parameter> has been
               set, <literal>FALSE</literal> otherwise
 
 </simpara></listitem></varlistentry>
@@ -327,7 +326,7 @@ This funcion does not touch the alpha component of <parameter>rgb</parameter>.</
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-list-names"/>gimp_rgb_list_names ()</title>
-<indexterm><primary>gimp_rgb_list_names</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_rgb_list_names             (const <link linkend="gchar">gchar</link> ***names,
+<indexterm role="GIMP 2.2"><primary>gimp_rgb_list_names</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_rgb_list_names             (const <link linkend="gchar">gchar</link> ***names,
                                              <link linkend="GimpRGB">GimpRGB</link> **colors);</programlisting>
 <para>
 Allows to retrieve the list of <ulink
@@ -347,7 +346,7 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 <varlistentry><term><parameter>colors</parameter>&nbsp;:</term>
 <listitem><simpara> return location for an array of GimpRGB structs
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the number of named colors
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the number of named colors
               (i.e. the length of the returned arrays)
 
 </simpara></listitem></varlistentry>
@@ -414,7 +413,7 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 <varlistentry><term><parameter>rgb2</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
@@ -428,7 +427,7 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 <varlistentry><term><parameter>rgb</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
@@ -442,7 +441,7 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 <varlistentry><term><parameter>rgb</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
@@ -484,7 +483,7 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 <varlistentry><term><parameter>rgb</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
@@ -498,7 +497,7 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 <varlistentry><term><parameter>rgb</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
@@ -612,7 +611,7 @@ values (0 to 255).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgba-parse-css"/>gimp_rgba_parse_css ()</title>
-<indexterm><primary>gimp_rgba_parse_css</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_rgba_parse_css             (<link linkend="GimpRGB">GimpRGB</link> *rgba,
+<indexterm role="GIMP 2.2"><primary>gimp_rgba_parse_css</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_rgba_parse_css             (<link linkend="GimpRGB">GimpRGB</link> *rgba,
                                              const <link linkend="gchar">gchar</link> *css,
                                              <link linkend="gint">gint</link> len);</programlisting>
 <para>
@@ -635,7 +634,7 @@ they leave the alpha channel unspecified.</para>
 <varlistentry><term><parameter>len</parameter>&nbsp;:</term>
 <listitem><simpara> the length of <parameter>hex</parameter>, in bytes. or -1 if <parameter>hex</parameter> is nul-terminated
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> <literal>TRUE</literal> if <parameter>css</parameter> was parsed successfully and <parameter>rgb</parameter> has been
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if <parameter>css</parameter> was parsed successfully and <parameter>rgb</parameter> has been
               set, <literal>FALSE</literal> otherwise
 
 </simpara></listitem></varlistentry>
@@ -702,13 +701,13 @@ they leave the alpha channel unspecified.</para>
 <varlistentry><term><parameter>rgba2</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-RGB-INTENSITY-CAPS"/>GIMP_RGB_INTENSITY()</title>
+<title><anchor id="GIMP-RGB-INTENSITY:CAPS"/>GIMP_RGB_INTENSITY()</title>
 <indexterm><primary>GIMP_RGB_INTENSITY</primary></indexterm><programlisting>#define     GIMP_RGB_INTENSITY(r,g,b)</programlisting>
 <para>
 This macro calculates the intensity of an RGB value based on
@@ -727,35 +726,35 @@ coefficients taken from the NTSC analog television standard.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-RGB-INTENSITY-RED-CAPS"/>GIMP_RGB_INTENSITY_RED</title>
+<title><anchor id="GIMP-RGB-INTENSITY-RED:CAPS"/>GIMP_RGB_INTENSITY_RED</title>
 <indexterm><primary>GIMP_RGB_INTENSITY_RED</primary></indexterm><programlisting>#define GIMP_RGB_INTENSITY_RED    0.30
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-RGB-INTENSITY-GREEN-CAPS"/>GIMP_RGB_INTENSITY_GREEN</title>
+<title><anchor id="GIMP-RGB-INTENSITY-GREEN:CAPS"/>GIMP_RGB_INTENSITY_GREEN</title>
 <indexterm><primary>GIMP_RGB_INTENSITY_GREEN</primary></indexterm><programlisting>#define GIMP_RGB_INTENSITY_GREEN  0.59
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-RGB-INTENSITY-BLUE-CAPS"/>GIMP_RGB_INTENSITY_BLUE</title>
+<title><anchor id="GIMP-RGB-INTENSITY-BLUE:CAPS"/>GIMP_RGB_INTENSITY_BLUE</title>
 <indexterm><primary>GIMP_RGB_INTENSITY_BLUE</primary></indexterm><programlisting>#define GIMP_RGB_INTENSITY_BLUE   0.11
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-TYPE-RGB-CAPS"/>GIMP_TYPE_RGB</title>
+<title><anchor id="GIMP-TYPE-RGB:CAPS"/>GIMP_TYPE_RGB</title>
 <indexterm><primary>GIMP_TYPE_RGB</primary></indexterm><programlisting>#define GIMP_TYPE_RGB               (gimp_rgb_get_type ())
 </programlisting>
 <para>
-<link linkend="GIMP-TYPE-RGB-CAPS"><type>GIMP_TYPE_RGB</type></link> is a <link linkend="GType"><type>GType</type></link> derived from <link linkend="G-TYPE-BOXED-CAPS"><type>G_TYPE_BOXED</type></link>.
+<link linkend="GIMP-TYPE-RGB:CAPS"><type>GIMP_TYPE_RGB</type></link> is a <link linkend="GType"><type>GType</type></link> derived from <link linkend="G-TYPE-BOXED:CAPS"><type>G_TYPE_BOXED</type></link>.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-VALUE-HOLDS-RGB-CAPS"/>GIMP_VALUE_HOLDS_RGB()</title>
+<title><anchor id="GIMP-VALUE-HOLDS-RGB:CAPS"/>GIMP_VALUE_HOLDS_RGB()</title>
 <indexterm><primary>GIMP_VALUE_HOLDS_RGB</primary></indexterm><programlisting>#define GIMP_VALUE_HOLDS_RGB(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_RGB))
 </programlisting>
 <para>

@@ -1,53 +1,74 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpPathEditor</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="prev" href="GimpOffsetArea.html" title="GimpOffsetArea"><link rel="next" href="GimpPickButton.html" title="GimpPickButton"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy"><link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView"><link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters"><link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors"><link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers"><link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities"><link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="GimpOffsetArea.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Widgets Library Reference Manual</th><td><a accesskey="n" href="GimpPickButton.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="GimpPathEditor"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">GimpPathEditor</span></h2><p>GimpPathEditor &#8212; Widget for editing a file search path.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>GimpPathEditor</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
+<link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
+<link rel="prev" href="GimpOffsetArea.html" title="GimpOffsetArea">
+<link rel="next" href="GimpPickButton.html" title="GimpPickButton">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
+<link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
+<link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
+<link rel="part" href="libgimpwidgets-colordisplay.html" title="Part&#160;II.&#160;GIMP Display Filters">
+<link rel="part" href="libgimpwidgets-colorselector.html" title="Part&#160;III.&#160;GIMP Color Selectors">
+<link rel="part" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
+<link rel="part" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
+<link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="GimpOffsetArea.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
+<td><a accesskey="n" href="GimpPickButton.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="GimpPathEditor"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">GimpPathEditor</span></h2>
+<p>GimpPathEditor &#8212; Widget for editing a file search path.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
 
 
 
             <a href="GimpPathEditor.html#GimpPathEditor-struct">GimpPathEditor</a>;
 <a
 href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="GimpPathEditor.html#gimp-path-editor-new">gimp_path_editor_new</a>            (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *filesel_title,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *path);
-<a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*      <a href="GimpPathEditor.html#gimp-path-editor-get-path">gimp_path_editor_get_path</a>       (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor);
+>GtkWidget</a>*  <a href="GimpPathEditor.html#gimp-path-editor-new">gimp_path_editor_new</a>            (const gchar *filesel_title,
+                                             const gchar *path);
+gchar*      <a href="GimpPathEditor.html#gimp-path-editor-get-path">gimp_path_editor_get_path</a>       (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor);
 void        <a href="GimpPathEditor.html#gimp-path-editor-set-path">gimp_path_editor_set_path</a>       (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *path);
-<a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*      <a href="GimpPathEditor.html#gimp-path-editor-get-writable-path">gimp_path_editor_get_writable_path</a>
+                                             const gchar *path);
+gchar*      <a href="GimpPathEditor.html#gimp-path-editor-get-writable-path">gimp_path_editor_get_writable_path</a>
                                             (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor);
 void        <a href="GimpPathEditor.html#gimp-path-editor-set-writable-path">gimp_path_editor_set_writable_path</a>
                                             (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *path);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="GimpPathEditor.html#gimp-path-editor-get-dir-writable">gimp_path_editor_get_dir_writable</a>
+                                             const gchar *path);
+gboolean    <a href="GimpPathEditor.html#gimp-path-editor-get-dir-writable">gimp_path_editor_get_dir_writable</a>
                                             (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *directory);
+                                             const gchar *directory);
 void        <a href="GimpPathEditor.html#gimp-path-editor-set-dir-writable">gimp_path_editor_set_dir_writable</a>
                                             (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *directory,
-                                             <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> writable);
+                                             const gchar *directory,
+                                             gboolean writable);
 
-</pre></div><div class="refsect1" lang="en"><a name="id2592324"></a><h2>Object Hierarchy</h2><pre class="synopsis">
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2566476"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
 
-  <a
-href="../gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
+  GObject
    +----<a
 href="../gtk/GtkObject.html"
 >GtkObject</a>
@@ -64,137 +85,352 @@ href="../gtk/GtkBox.html"
 href="../gtk/GtkVBox.html"
 >GtkVBox</a>
                                  +----GimpPathEditor
-</pre></div><div class="refsect1" lang="en"><a name="id2592851"></a><h2>Implemented Interfaces</h2><p>
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2566747"></a><h2>Implemented Interfaces</h2>
+<p>
 GimpPathEditor implements
- AtkImplementorIface.</p></div><div class="refsect1" lang="en"><a name="id2592866"></a><h2>Signal Prototypes</h2><pre class="synopsis">
+ AtkImplementorIface.</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2566764"></a><h2>Signal Prototypes</h2>
+<pre class="synopsis">
 
 "<a href="GimpPathEditor.html#GimpPathEditor-path-changed">path-changed</a>"
             void        user_function      (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *arg0,
-                                            <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> user_data);
+                                            gpointer user_data);
 "<a href="GimpPathEditor.html#GimpPathEditor-writable-changed">writable-changed</a>"
             void        user_function      (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *arg0,
-                                            <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> user_data);
-</pre></div><div class="refsect1" lang="en"><a name="id2592921"></a><h2>Description</h2><p>
+                                            gpointer user_data);
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2566829"></a><h2>Description</h2>
+<p>
 This widget is used to edit file search paths.
-</p><p>
+</p>
+<p>
 It shows a list of all directories which are in the search path. You
 can click a directory to select it. The widget provides a
 <a href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a> to change the currently selected directory.
-</p><p>
+</p>
+<p>
 There are buttons to add or delete directories as well as "up" and "down"
 buttons to change the order in which the directories will be searched.
-</p><p>
+</p>
+<p>
 Whenever the user adds, deletes, changes or reorders a directory of
 the search path, the "path_changed" signal will be emitted.
-</p></div><div class="refsect1" lang="en"><a name="id2595535"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2595540"></a><h3><a name="GimpPathEditor-struct"></a>GimpPathEditor</h3><a class="indexterm" name="id2595549"></a><pre class="programlisting">typedef struct _GimpPathEditor GimpPathEditor;</pre><p>
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2555045"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2555052"></a><h3>
+<a name="GimpPathEditor-struct"></a>GimpPathEditor</h3>
+<a class="indexterm" name="id2555061"></a><pre class="programlisting">typedef struct _GimpPathEditor GimpPathEditor;</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2595559"></a><h3><a name="gimp-path-editor-new"></a>gimp_path_editor_new ()</h3><a class="indexterm" name="id2595568"></a><pre class="programlisting"><a
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2555077"></a><h3>
+<a name="gimp-path-editor-new"></a>gimp_path_editor_new ()</h3>
+<a class="indexterm" name="id2555086"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_path_editor_new            (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *filesel_title,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *path);</pre><p>
+>GtkWidget</a>*  gimp_path_editor_new            (const gchar *filesel_title,
+                                             const gchar *path);</pre>
+<p>
 Creates a new <a href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a> widget.
-</p><p>
+</p>
+<p>
 The elements of the initial search path must be separated with the
-<span class="type">G_SEARCHPATH_SEPARATOR</span> character.</p><p>
+<span class="type">G_SEARCHPATH_SEPARATOR</span> character.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>filesel_title</code></em> :</span></td><td> The title of the <a
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>filesel_title</code></em>&#160;:</span></td>
+<td> The title of the <a
 href="../gtk/GtkFileSelection.html"
 ><span class="type">GtkFileSelection</span></a> dialog which can be
                 popped up by the attached <span class="type">GimpFileSelection</span>.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>path</code></em> :</span></td><td>          The initial search path.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A pointer to the new <a href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a> widget.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2595668"></a><h3><a name="gimp-path-editor-get-path"></a>gimp_path_editor_get_path ()</h3><a class="indexterm" name="id2595678"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*      gimp_path_editor_get_path       (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor);</pre><p>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>path</code></em>&#160;:</span></td>
+<td>          The initial search path.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> A pointer to the new <a href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a> widget.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2555209"></a><h3>
+<a name="gimp-path-editor-get-path"></a>gimp_path_editor_get_path ()</h3>
+<a class="indexterm" name="id2555218"></a><pre class="programlisting">gchar*      gimp_path_editor_get_path       (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor);</pre>
+<p>
 The elements of the returned search path string are separated with the
 <span class="type">G_SEARCHPATH_SEPARATOR</span> character.
-</p><p>
-Note that you have to <a
-href="../glib/glib-Memory-Allocation.html#g-free"
-><code class="function">g_free()</code></a> the returned string.</p><p>
+</p>
+<p>
+Note that you have to <code class="function">g_free()</code> the returned string.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>editor</code></em> :</span></td><td> The path editor you want to get the search path from.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The search path the user has selected in the path editor.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2595743"></a><h3><a name="gimp-path-editor-set-path"></a>gimp_path_editor_set_path ()</h3><a class="indexterm" name="id2595752"></a><pre class="programlisting">void        gimp_path_editor_set_path       (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *path);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>editor</code></em>&#160;:</span></td>
+<td> The path editor you want to get the search path from.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The search path the user has selected in the path editor.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2565179"></a><h3>
+<a name="gimp-path-editor-set-path"></a>gimp_path_editor_set_path ()</h3>
+<a class="indexterm" name="id2565188"></a><pre class="programlisting">void        gimp_path_editor_set_path       (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor,
+                                             const gchar *path);</pre>
+<p>
 The elements of the initial search path must be separated with the
-<span class="type">G_SEARCHPATH_SEPARATOR</span> character.</p><p>
+<span class="type">G_SEARCHPATH_SEPARATOR</span> character.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>editor</code></em> :</span></td><td> The path editor you want to set the search path from.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>path</code></em> :</span></td><td>   The new path to set.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593270"></a><h3><a name="gimp-path-editor-get-writable-path"></a>gimp_path_editor_get_writable_path ()</h3><a class="indexterm" name="id2593281"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*      gimp_path_editor_get_writable_path
-                                            (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>editor</code></em>&#160;:</span></td>
+<td> The path editor you want to set the search path from.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>path</code></em>&#160;:</span></td>
+<td>   The new path to set.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2565266"></a><h3>
+<a name="gimp-path-editor-get-writable-path"></a>gimp_path_editor_get_writable_path ()</h3>
+<a class="indexterm" name="id2565277"></a><pre class="programlisting">gchar*      gimp_path_editor_get_writable_path
+                                            (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>editor</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>editor</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593326"></a><h3><a name="gimp-path-editor-set-writable-path"></a>gimp_path_editor_set_writable_path ()</h3><a class="indexterm" name="id2593337"></a><pre class="programlisting">void        gimp_path_editor_set_writable_path
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2565334"></a><h3>
+<a name="gimp-path-editor-set-writable-path"></a>gimp_path_editor_set_writable_path ()</h3>
+<a class="indexterm" name="id2565346"></a><pre class="programlisting">void        gimp_path_editor_set_writable_path
                                             (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *path);</pre><p>
+                                             const gchar *path);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>editor</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>path</code></em> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>editor</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>path</code></em>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593389"></a><h3><a name="gimp-path-editor-get-dir-writable"></a>gimp_path_editor_get_dir_writable ()</h3><a class="indexterm" name="id2593401"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_path_editor_get_dir_writable
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2565413"></a><h3>
+<a name="gimp-path-editor-get-dir-writable"></a>gimp_path_editor_get_dir_writable ()</h3>
+<a class="indexterm" name="id2565425"></a><pre class="programlisting">gboolean    gimp_path_editor_get_dir_writable
                                             (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *directory);</pre><p>
+                                             const gchar *directory);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>editor</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>directory</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>editor</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>directory</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593463"></a><h3><a name="gimp-path-editor-set-dir-writable"></a>gimp_path_editor_set_dir_writable ()</h3><a class="indexterm" name="id2593475"></a><pre class="programlisting">void        gimp_path_editor_set_dir_writable
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2570413"></a><h3>
+<a name="gimp-path-editor-set-dir-writable"></a>gimp_path_editor_set_dir_writable ()</h3>
+<a class="indexterm" name="id2570424"></a><pre class="programlisting">void        gimp_path_editor_set_dir_writable
                                             (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *directory,
-                                             <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> writable);</pre><p>
+                                             const gchar *directory,
+                                             gboolean writable);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>editor</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>directory</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>writable</code></em> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>editor</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>directory</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>writable</code></em>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2597094"></a><h2>Signals</h2><div class="refsect2" lang="en"><a name="id2597099"></a><h3><a name="GimpPathEditor-path-changed"></a>The "path-changed" signal</h3><pre class="programlisting">void        user_function                  (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *arg0,
-                                            <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> user_data);</pre><p>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2570507"></a><h2>Signals</h2>
+<div class="refsect2" lang="en">
+<a name="id2570513"></a><h3>
+<a name="GimpPathEditor-path-changed"></a>The "path-changed" signal</h3>
+<pre class="programlisting">void        user_function                  (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *arg0,
+                                            gpointer user_data);</pre>
+<p>
 This signal is emitted whenever the user adds, deletes, modifies
-or reorders an element of the search path.</p><p>
+or reorders an element of the search path.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>user data set when the signal handler was connected.</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2597149"></a><h3><a name="GimpPathEditor-writable-changed"></a>The "writable-changed" signal</h3><pre class="programlisting">void        user_function                  (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *arg0,
-                                            <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> user_data);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>user data set when the signal handler was connected.</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2570573"></a><h3>
+<a name="GimpPathEditor-writable-changed"></a>The "writable-changed" signal</h3>
+<pre class="programlisting">void        user_function                  (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *arg0,
+                                            gpointer user_data);</pre>
+<p>
 This signal is emitted whenever the "writable" column of a directory
 is changed, either by the user clicking on it or by calling
-<a href="GimpPathEditor.html#gimp-path-editor-set-dir-writable"><code class="function">gimp_path_editor_set_dir_writable()</code></a>.</p><p>
+<a href="GimpPathEditor.html#gimp-path-editor-set-dir-writable"><code class="function">gimp_path_editor_set_dir_writable()</code></a>.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>user data set when the signal handler was connected.</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2597212"></a><h2>See Also</h2><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>user data set when the signal handler was connected.</td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2570648"></a><h2>See Also</h2>
+<p>
 <a href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a>
-</p><p>
+</p>
+<p>
 <span class="type">G_SEARCHPATH_SEPARATOR</span>
-</p></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="GimpOffsetArea.html"><b>&lt;&lt; GimpOffsetArea</b></a></td><td align="right"><a accesskey="n" href="GimpPickButton.html"><b>GimpPickButton &gt;&gt;</b></a></td></tr></table></body></html>
+</p>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="GimpOffsetArea.html"><b>&lt;&lt;&#160;GimpOffsetArea</b></a></td>
+<td align="right"><a accesskey="n" href="GimpPickButton.html"><b>GimpPickButton&#160;&gt;&gt;</b></a></td>
+</tr></table>
+</body>
+</html>

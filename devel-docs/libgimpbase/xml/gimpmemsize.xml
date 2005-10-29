@@ -48,7 +48,7 @@ Functions to (de)serialize a given memory size.
 <title>Details</title>
 <refsect2>
 <title><anchor id="gimp-memsize-serialize"/>gimp_memsize_serialize ()</title>
-<indexterm role="GIMP"><primary>gimp_memsize_serialize</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_memsize_serialize          (<link linkend="guint64">guint64</link> memsize);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_memsize_serialize</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_memsize_serialize          (<link linkend="guint64">guint64</link> memsize);</programlisting>
 <para>
 Creates a string representation of a given memory size. This string
 can be parsed by <link linkend="gimp-memsize-deserialize"><function>gimp_memsize_deserialize()</function></link> and can thus be used in
@@ -67,7 +67,7 @@ nice human-readable string please use <link linkend="gimp-memsize-to-string"><fu
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-memsize-deserialize"/>gimp_memsize_deserialize ()</title>
-<indexterm role="GIMP"><primary>gimp_memsize_deserialize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_memsize_deserialize        (const <link linkend="gchar">gchar</link> *string,
+<indexterm role="GIMP 2.2"><primary>gimp_memsize_deserialize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_memsize_deserialize        (const <link linkend="gchar">gchar</link> *string,
                                              <link linkend="guint64">guint64</link> *memsize);</programlisting>
 <para>
 Parses a string representation of a memory size as returned by

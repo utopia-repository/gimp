@@ -71,7 +71,7 @@ calls to itself.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-progress-bar-new"/>gimp_progress_bar_new ()</title>
-<indexterm role="GIMP"><primary>gimp_progress_bar_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_progress_bar_new           (void);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_progress_bar_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_progress_bar_new           (void);</programlisting>
 <para>
 Creates a new <link linkend="GimpProgressBar"><type>GimpProgressBar</type></link> widget.</para>
 <para>

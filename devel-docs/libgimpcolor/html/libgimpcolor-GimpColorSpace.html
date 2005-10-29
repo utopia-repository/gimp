@@ -1,38 +1,40 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpColorSpace</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Color Library Reference Manual"><link rel="up" href="libgimpcolor.html" title="Part I. GIMP Color Library"><link rel="prev" href="libgimpcolor-GimpCMYK.html" title="GimpCMYK"><link rel="next" href="libgimpcolor-GimpAdaptiveSupersample.html" title="GimpAdaptiveSupersample"><meta name="generator" content="GTK-Doc V1.2 (XML mode)"><style type="text/css">
-        .synopsis, .classsynopsis {
-            background: #eeeeee;
-            border: solid 1px #aaaaaa;
-            padding: 0.5em;
-        }
-        .programlisting {
-            background: #eeeeff;
-            border: solid 1px #aaaaff;
-            padding: 0.5em;
-        }
-        .variablelist {
-            padding: 4px;
-            margin-left: 3em;
-        }
-        .navigation {
-            background: #ffeeee;
-            border: solid 1px #ffaaaa;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-        }
-        .navigation a {
-            color: #770000;
-        }
-        .navigation a:visited {
-            color: #550000;
-        }
-        .navigation .title {
-            font-size: 200%;
-        }
-      </style></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpcolor-GimpCMYK.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpcolor.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Color Library Reference Manual</th><td><a accesskey="n" href="libgimpcolor-GimpAdaptiveSupersample.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimpcolor-GimpColorSpace"></a><div class="titlepage"></div><div class="refnamediv"><h2><span class="refentrytitle">GimpColorSpace</span></h2><p>GimpColorSpace &#8212; Utility functions which convert colors between different color models.</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>GimpColorSpace</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Color Library Reference Manual">
+<link rel="up" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
+<link rel="prev" href="libgimpcolor-GimpCMYK.html" title="GimpCMYK">
+<link rel="next" href="libgimpcolor-GimpAdaptiveSupersample.html" title="GimpAdaptiveSupersample">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="libgimpcolor-GimpCMYK.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpcolor.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Color Library Reference Manual</th>
+<td><a accesskey="n" href="libgimpcolor-GimpAdaptiveSupersample.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="libgimpcolor-GimpColorSpace"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">GimpColorSpace</span></h2>
+<p>GimpColorSpace &#8212; Utility functions which convert colors between different color models.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
 
 
 
-struct      <a href="libgimpcolor-GimpColorSpace.html#GimpHSL">GimpHSL</a>;
+            <a href="libgimpcolor-GimpColorSpace.html#GimpHSL">GimpHSL</a>;
 void        <a href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsv">gimp_rgb_to_hsv</a>                 (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                              <a href="libgimpcolor-GimpHSV.html#GimpHSV">GimpHSV</a> *hsv);
 void        <a href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsl">gimp_rgb_to_hsl</a>                 (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
@@ -85,197 +87,708 @@ void        <a href="libgimpcolor-GimpColorSpace.html#gimp-hsv-to-rgb4">gimp_hsv
                                              gdouble hue,
                                              gdouble saturation,
                                              gdouble value);
-</pre></div><div class="refsect1" lang="en"><a name="id2582423"></a><h2>Description</h2><p>
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2515582"></a><h2>Description</h2>
+<p>
 When programming pixel data manipulation functions you will often use
 algorithms operating on a color model different from the one GIMP
 uses.  This file provides utility functions to convert colors between
 different color spaces.
-</p></div><div class="refsect1" lang="en"><a name="id2582436"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2582442"></a><h3><a name="GimpHSL"></a>struct GimpHSL</h3><a class="indexterm" name="id2582450"></a><pre class="programlisting">struct GimpHSL {
-
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2515597"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2515603"></a><h3>
+<a name="GimpHSL"></a>GimpHSL</h3>
+<a class="indexterm" name="id2515613"></a><pre class="programlisting">typedef struct {
   gdouble h, s, l, a;
-};
-</pre><p>
+} GimpHSL;
+</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2582460"></a><h3><a name="gimp-rgb-to-hsv"></a>gimp_rgb_to_hsv ()</h3><a class="indexterm" name="id2582468"></a><pre class="programlisting">void        gimp_rgb_to_hsv                 (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                             <a href="libgimpcolor-GimpHSV.html#GimpHSV">GimpHSV</a> *hsv);</pre><p>
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2515634"></a><h3>
+<a name="gimp-rgb-to-hsv"></a>gimp_rgb_to_hsv ()</h3>
+<a class="indexterm" name="id2515645"></a><pre class="programlisting">void        gimp_rgb_to_hsv                 (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+                                             <a href="libgimpcolor-GimpHSV.html#GimpHSV">GimpHSV</a> *hsv);</pre>
+<p>
 Does a conversion from RGB to HSV (Hue, Saturation,
-Value) colorspace.</p><p>
+Value) colorspace.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>rgb</tt></i> :</span></td><td> A color value in the RGB colorspace
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>hsv</tt></i> :</span></td><td> The value converted to the HSV colorspace
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2579497"></a><h3><a name="gimp-rgb-to-hsl"></a>gimp_rgb_to_hsl ()</h3><a class="indexterm" name="id2579505"></a><pre class="programlisting">void        gimp_rgb_to_hsl                 (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                             <a href="libgimpcolor-GimpColorSpace.html#GimpHSL">GimpHSL</a> *hsl);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td> A color value in the RGB colorspace
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>hsv</code></em>&#160;:</span></td>
+<td> The value converted to the HSV colorspace
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2515716"></a><h3>
+<a name="gimp-rgb-to-hsl"></a>gimp_rgb_to_hsl ()</h3>
+<a class="indexterm" name="id2515726"></a><pre class="programlisting">void        gimp_rgb_to_hsl                 (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+                                             <a href="libgimpcolor-GimpColorSpace.html#GimpHSL">GimpHSL</a> *hsl);</pre>
+<p>
 Convert an RGB color value to a HSL (Hue, Saturation, Lightness)
-color value.</p><p>
+color value.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>rgb</tt></i> :</span></td><td> A color value in the RGB colorspace
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>hsl</tt></i> :</span></td><td> The value converted to HSL
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2579562"></a><h3><a name="gimp-rgb-to-cmyk"></a>gimp_rgb_to_cmyk ()</h3><a class="indexterm" name="id2579570"></a><pre class="programlisting">void        gimp_rgb_to_cmyk                (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td> A color value in the RGB colorspace
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>hsl</code></em>&#160;:</span></td>
+<td> The value converted to HSL
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2515798"></a><h3>
+<a name="gimp-rgb-to-cmyk"></a>gimp_rgb_to_cmyk ()</h3>
+<a class="indexterm" name="id2515808"></a><pre class="programlisting">void        gimp_rgb_to_cmyk                (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                              gdouble pullout,
-                                             <a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk);</pre><p>
+                                             <a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk);</pre>
+<p>
 Does a naive conversion from RGB to CMYK colorspace. A simple
 formula that doesn't take any color-profiles into account is used.
-The amount of black pullout how can be controlled via the <i class="parameter"><tt>pullout</tt></i>
-parameter. A <i class="parameter"><tt>pullout</tt></i> value of 0 makes this a conversion to CMY.
-A value of 1 causes the maximum amount of black to be pulled out.</p><p>
+The amount of black pullout how can be controlled via the <em class="parameter"><code>pullout</code></em>
+parameter. A <em class="parameter"><code>pullout</code></em> value of 0 makes this a conversion to CMY.
+A value of 1 causes the maximum amount of black to be pulled out.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>rgb</tt></i> :</span></td><td> A value in the RGB colorspace
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>pullout</tt></i> :</span></td><td> A scaling value (0-1) indicating how much black should be
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td> A value in the RGB colorspace
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>pullout</code></em>&#160;:</span></td>
+<td> A scaling value (0-1) indicating how much black should be
           pulled out
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>cmyk</tt></i> :</span></td><td> The input value naively converted to the CMYK colorspace
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2579656"></a><h3><a name="gimp-hsv-to-rgb"></a>gimp_hsv_to_rgb ()</h3><a class="indexterm" name="id2579664"></a><pre class="programlisting">void        gimp_hsv_to_rgb                 (const <a href="libgimpcolor-GimpHSV.html#GimpHSV">GimpHSV</a> *hsv,
-                                             <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre><p>
-Converts a color value from HSV to RGB colorspace</p><p>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>cmyk</code></em>&#160;:</span></td>
+<td> The input value naively converted to the CMYK colorspace
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2564470"></a><h3>
+<a name="gimp-hsv-to-rgb"></a>gimp_hsv_to_rgb ()</h3>
+<a class="indexterm" name="id2564479"></a><pre class="programlisting">void        gimp_hsv_to_rgb                 (const <a href="libgimpcolor-GimpHSV.html#GimpHSV">GimpHSV</a> *hsv,
+                                             <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<p>
+Converts a color value from HSV to RGB colorspace</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>hsv</tt></i> :</span></td><td> A color value in the HSV colorspace
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>rgb</tt></i> :</span></td><td> The returned RGB value.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2579720"></a><h3><a name="gimp-hsl-to-rgb"></a>gimp_hsl_to_rgb ()</h3><a class="indexterm" name="id2579728"></a><pre class="programlisting">void        gimp_hsl_to_rgb                 (const <a href="libgimpcolor-GimpColorSpace.html#GimpHSL">GimpHSL</a> *hsl,
-                                             <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre><p>
-Convert a HSL color value to an RGB color value.</p><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>hsv</code></em>&#160;:</span></td>
+<td> A color value in the HSV colorspace
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td> The returned RGB value.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2564542"></a><h3>
+<a name="gimp-hsl-to-rgb"></a>gimp_hsl_to_rgb ()</h3>
+<a class="indexterm" name="id2564551"></a><pre class="programlisting">void        gimp_hsl_to_rgb                 (const <a href="libgimpcolor-GimpColorSpace.html#GimpHSL">GimpHSL</a> *hsl,
+                                             <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<p>
+Convert a HSL color value to an RGB color value.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>hsl</tt></i> :</span></td><td> A color value in the HSL colorspace
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>rgb</tt></i> :</span></td><td> The value converted to a value in the RGB colorspace
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587458"></a><h3><a name="gimp-cmyk-to-rgb"></a>gimp_cmyk_to_rgb ()</h3><a class="indexterm" name="id2587467"></a><pre class="programlisting">void        gimp_cmyk_to_rgb                (const <a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk,
-                                             <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>hsl</code></em>&#160;:</span></td>
+<td> A color value in the HSL colorspace
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td> The value converted to a value in the RGB colorspace
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2564616"></a><h3>
+<a name="gimp-cmyk-to-rgb"></a>gimp_cmyk_to_rgb ()</h3>
+<a class="indexterm" name="id2564625"></a><pre class="programlisting">void        gimp_cmyk_to_rgb                (const <a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk,
+                                             <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<p>
 Does a simple transformation from the CMYK colorspace to the RGB
-colorspace, without taking color profiles into account.</p><p>
+colorspace, without taking color profiles into account.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>cmyk</tt></i> :</span></td><td> A color value in the CMYK colorspace
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>rgb</tt></i> :</span></td><td> The value converted to the RGB colorspace
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587525"></a><h3><a name="gimp-rgb-to-hwb"></a>gimp_rgb_to_hwb ()</h3><a class="indexterm" name="id2587534"></a><pre class="programlisting">void        gimp_rgb_to_hwb                 (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>cmyk</code></em>&#160;:</span></td>
+<td> A color value in the CMYK colorspace
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td> The value converted to the RGB colorspace
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2564699"></a><h3>
+<a name="gimp-rgb-to-hwb"></a>gimp_rgb_to_hwb ()</h3>
+<a class="indexterm" name="id2564709"></a><pre class="programlisting">void        gimp_rgb_to_hwb                 (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                              gdouble *hue,
                                              gdouble *whiteness,
-                                             gdouble *blackness);</pre><p>
+                                             gdouble *blackness);</pre>
+<p>
 Theoretically, hue 0 (pure red) is identical to hue 6 in these transforms.
 Pure red always maps to 6 in this implementation. Therefore UNDEFINED can
 be defined as 0 in situations where only unsigned numbers are desired.
-</p><p>
+</p>
+<p>
 RGB are each on [0, 1]. Whiteness and Blackness are returned in the
 range [0, 1] and H is returned in the range [0, 6]. If W == 1 - B, H is
-undefined.</p><p>
+undefined.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>rgb</tt></i> :</span></td><td> A color value in the RGB colorspace
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>hue</tt></i> :</span></td><td> The hue value of the above color, in the range 0 to 6
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>whiteness</tt></i> :</span></td><td> The whiteness value of the above color, in the range 0 to 1
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>blackness</tt></i> :</span></td><td> The blackness value of the above color, in the range 0 to 1
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587636"></a><h3><a name="gimp-hwb-to-rgb"></a>gimp_hwb_to_rgb ()</h3><a class="indexterm" name="id2587645"></a><pre class="programlisting">void        gimp_hwb_to_rgb                 (gdouble hue,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td> A color value in the RGB colorspace
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>hue</code></em>&#160;:</span></td>
+<td> The hue value of the above color, in the range 0 to 6
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>whiteness</code></em>&#160;:</span></td>
+<td> The whiteness value of the above color, in the range 0 to 1
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>blackness</code></em>&#160;:</span></td>
+<td> The blackness value of the above color, in the range 0 to 1
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2564834"></a><h3>
+<a name="gimp-hwb-to-rgb"></a>gimp_hwb_to_rgb ()</h3>
+<a class="indexterm" name="id2564844"></a><pre class="programlisting">void        gimp_hwb_to_rgb                 (gdouble hue,
                                              gdouble whiteness,
                                              gdouble blackness,
-                                             <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre><p>
+                                             <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<p>
 H is defined in the range [0, 6] or UNDEFINED, B and W are both in the
-range [0, 1]. The returned RGB values are all in the range [0, 1].</p><p>
+range [0, 1]. The returned RGB values are all in the range [0, 1].</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>hue</tt></i> :</span></td><td> A hue value, in the range 0 to 6
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>whiteness</tt></i> :</span></td><td> A whiteness value, in the range 0 to 1
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>blackness</tt></i> :</span></td><td> A blackness value, in the range 0 to 1
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>rgb</tt></i> :</span></td><td> The above color converted to the RGB colorspace
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2548612"></a><h3><a name="gimp-rgb-to-hsv-int"></a>gimp_rgb_to_hsv_int ()</h3><a class="indexterm" name="id2546367"></a><pre class="programlisting">void        gimp_rgb_to_hsv_int             (gint *red,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>hue</code></em>&#160;:</span></td>
+<td> A hue value, in the range 0 to 6
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>whiteness</code></em>&#160;:</span></td>
+<td> A whiteness value, in the range 0 to 1
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>blackness</code></em>&#160;:</span></td>
+<td> A blackness value, in the range 0 to 1
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td> The above color converted to the RGB colorspace
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2564961"></a><h3>
+<a name="gimp-rgb-to-hsv-int"></a>gimp_rgb_to_hsv_int ()</h3>
+<a class="indexterm" name="id2564971"></a><pre class="programlisting">void        gimp_rgb_to_hsv_int             (gint *red,
                                              gint *green,
-                                             gint *blue);</pre><p>
+                                             gint *blue);</pre>
+<p>
 The arguments are pointers to int representing channel values in
 the RGB colorspace, and the values pointed to are all in the range
 [0, 255].
-</p><p>
+</p>
+<p>
 The function changes the arguments to point to the HSV value
 corresponding, with the returned values in the following
-ranges: H [0, 360], S [0, 255], V [0, 255].</p><p>
+ranges: H [0, 360], S [0, 255], V [0, 255].</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>red</tt></i> :</span></td><td> The red channel value, returns the Hue channel
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>green</tt></i> :</span></td><td> The green channel value, returns the Saturation channel
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>blue</tt></i> :</span></td><td> The blue channel value, returns the Value channel
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587786"></a><h3><a name="gimp-hsv-to-rgb-int"></a>gimp_hsv_to_rgb_int ()</h3><a class="indexterm" name="id2587794"></a><pre class="programlisting">void        gimp_hsv_to_rgb_int             (gint *hue,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></td>
+<td> The red channel value, returns the Hue channel
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></td>
+<td> The green channel value, returns the Saturation channel
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></td>
+<td> The blue channel value, returns the Value channel
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2565073"></a><h3>
+<a name="gimp-hsv-to-rgb-int"></a>gimp_hsv_to_rgb_int ()</h3>
+<a class="indexterm" name="id2565083"></a><pre class="programlisting">void        gimp_hsv_to_rgb_int             (gint *hue,
                                              gint *saturation,
-                                             gint *value);</pre><p>
+                                             gint *value);</pre>
+<p>
 The arguments are pointers to int, with the values pointed to in the
 following ranges:  H [0, 360], S [0, 255], V [0, 255].
-</p><p>
+</p>
+<p>
 The function changes the arguments to point to the RGB value
-corresponding, with the returned values all in the range [0, 255].</p><p>
+corresponding, with the returned values all in the range [0, 255].</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>hue</tt></i> :</span></td><td> The hue channel, returns the red channel
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>saturation</tt></i> :</span></td><td> The saturation channel, returns the green channel
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td> The value channel, returns the blue channel
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587868"></a><h3><a name="gimp-rgb-to-hsl-int"></a>gimp_rgb_to_hsl_int ()</h3><a class="indexterm" name="id2587875"></a><pre class="programlisting">void        gimp_rgb_to_hsl_int             (gint *red,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>hue</code></em>&#160;:</span></td>
+<td> The hue channel, returns the red channel
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>saturation</code></em>&#160;:</span></td>
+<td> The saturation channel, returns the green channel
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td> The value channel, returns the blue channel
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2565184"></a><h3>
+<a name="gimp-rgb-to-hsl-int"></a>gimp_rgb_to_hsl_int ()</h3>
+<a class="indexterm" name="id2565194"></a><pre class="programlisting">void        gimp_rgb_to_hsl_int             (gint *red,
                                              gint *green,
-                                             gint *blue);</pre><p>
+                                             gint *blue);</pre>
+<p>
 The arguments are pointers to int representing channel values in the
 RGB colorspace, and the values pointed to are all in the range [0, 255].
-</p><p>
+</p>
+<p>
 The function changes the arguments to point to the corresponding HLS
 value with the values pointed to in the following ranges:  H [0, 360],
-L [0, 255], S [0, 255].</p><p>
+L [0, 255], S [0, 255].</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>red</tt></i> :</span></td><td> Red channel, returns Hue channel
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>green</tt></i> :</span></td><td> Green channel, returns Lightness channel
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>blue</tt></i> :</span></td><td> Blue channel, returns Saturation channel
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587950"></a><h3><a name="gimp-rgb-to-cmyk-int"></a>gimp_rgb_to_cmyk_int ()</h3><a class="indexterm" name="id2587958"></a><pre class="programlisting">void        gimp_rgb_to_cmyk_int            (gint *red,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></td>
+<td> Red channel, returns Hue channel
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></td>
+<td> Green channel, returns Lightness channel
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></td>
+<td> Blue channel, returns Saturation channel
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2565295"></a><h3>
+<a name="gimp-rgb-to-cmyk-int"></a>gimp_rgb_to_cmyk_int ()</h3>
+<a class="indexterm" name="id2565304"></a><pre class="programlisting">void        gimp_rgb_to_cmyk_int            (gint *red,
                                              gint *green,
                                              gint *blue,
-                                             gint *pullout);</pre><p>
+                                             gint *pullout);</pre>
+<p>
 Does a naive conversion from RGB to CMYK colorspace. A simple
 formula that doesn't take any color-profiles into account is used.
-The amount of black pullout how can be controlled via the <i class="parameter"><tt>pullout</tt></i>
-parameter. A <i class="parameter"><tt>pullout</tt></i> value of 0 makes this a conversion to CMY.
-A value of 100 causes the maximum amount of black to be pulled out.</p><p>
+The amount of black pullout how can be controlled via the <em class="parameter"><code>pullout</code></em>
+parameter. A <em class="parameter"><code>pullout</code></em> value of 0 makes this a conversion to CMY.
+A value of 100 causes the maximum amount of black to be pulled out.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>red</tt></i> :</span></td><td>     the red channel; returns the cyan value (0-255)
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>green</tt></i> :</span></td><td>   the green channel; returns the magenta value (0-255)
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>blue</tt></i> :</span></td><td>    the blue channel; returns the yellow value (0-255)
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>pullout</tt></i> :</span></td><td> the percentage of black to pull out (0-100); returns
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></td>
+<td>     the red channel; returns the cyan value (0-255)
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></td>
+<td>   the green channel; returns the magenta value (0-255)
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></td>
+<td>    the blue channel; returns the yellow value (0-255)
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>pullout</code></em>&#160;:</span></td>
+<td> the percentage of black to pull out (0-100); returns
           the black value (0-255)
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588063"></a><h3><a name="gimp-cmyk-to-rgb-int"></a>gimp_cmyk_to_rgb_int ()</h3><a class="indexterm" name="id2588071"></a><pre class="programlisting">void        gimp_cmyk_to_rgb_int            (gint *cyan,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2565437"></a><h3>
+<a name="gimp-cmyk-to-rgb-int"></a>gimp_cmyk_to_rgb_int ()</h3>
+<a class="indexterm" name="id2565446"></a><pre class="programlisting">void        gimp_cmyk_to_rgb_int            (gint *cyan,
                                              gint *magenta,
                                              gint *yellow,
-                                             gint *black);</pre><p>
+                                             gint *black);</pre>
+<p>
 Does a naive conversion from CMYK to RGB colorspace. A simple
-formula that doesn't take any color-profiles into account is used.</p><p>
+formula that doesn't take any color-profiles into account is used.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>cyan</tt></i> :</span></td><td>    the cyan channel; returns the red value (0-255)
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>magenta</tt></i> :</span></td><td> the magenta channel; returns the green value (0-255)
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>yellow</tt></i> :</span></td><td>  the yellow channel; returns the blue value (0-255)
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>black</tt></i> :</span></td><td>   the black channel (0-255); doesn't change
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588165"></a><h3><a name="gimp-rgb-to-l-int"></a>gimp_rgb_to_l_int ()</h3><a class="indexterm" name="id2588174"></a><pre class="programlisting">gint        gimp_rgb_to_l_int               (gint red,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>cyan</code></em>&#160;:</span></td>
+<td>    the cyan channel; returns the red value (0-255)
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>magenta</code></em>&#160;:</span></td>
+<td> the magenta channel; returns the green value (0-255)
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>yellow</code></em>&#160;:</span></td>
+<td>  the yellow channel; returns the blue value (0-255)
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>black</code></em>&#160;:</span></td>
+<td>   the black channel (0-255); doesn't change
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2565564"></a><h3>
+<a name="gimp-rgb-to-l-int"></a>gimp_rgb_to_l_int ()</h3>
+<a class="indexterm" name="id2565574"></a><pre class="programlisting">gint        gimp_rgb_to_l_int               (gint red,
                                              gint green,
-                                             gint blue);</pre><p>
+                                             gint blue);</pre>
+<p>
 Calculates the lightness value of an RGB triplet with the formula
-L = (max(R, G, B) + min (R, G, B)) / 2</p><p>
+L = (max(R, G, B) + min (R, G, B)) / 2</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>red</tt></i> :</span></td><td> Red channel
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>green</tt></i> :</span></td><td> Green channel
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>blue</tt></i> :</span></td><td> Blue channel
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> Luminance vaue corresponding to the input RGB value
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588257"></a><h3><a name="gimp-hsl-to-rgb-int"></a>gimp_hsl_to_rgb_int ()</h3><a class="indexterm" name="id2588265"></a><pre class="programlisting">void        gimp_hsl_to_rgb_int             (gint *hue,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></td>
+<td> Red channel
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></td>
+<td> Green channel
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></td>
+<td> Blue channel
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> Luminance vaue corresponding to the input RGB value
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2565679"></a><h3>
+<a name="gimp-hsl-to-rgb-int"></a>gimp_hsl_to_rgb_int ()</h3>
+<a class="indexterm" name="id2565689"></a><pre class="programlisting">void        gimp_hsl_to_rgb_int             (gint *hue,
                                              gint *saturation,
-                                             gint *lightness);</pre><p>
+                                             gint *lightness);</pre>
+<p>
 The arguments are pointers to int, with the values pointed to in the
 following ranges:  H [0, 360], L [0, 255], S [0, 255].
-</p><p>
+</p>
+<p>
 The function changes the arguments to point to the RGB value
-corresponding, with the returned values all in the range [0, 255].</p><p>
+corresponding, with the returned values all in the range [0, 255].</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>hue</tt></i> :</span></td><td> Hue channel, returns Red channel
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>saturation</tt></i> :</span></td><td> Saturation channel, returns Green channel
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>lightness</tt></i> :</span></td><td> Lightness channel, returns Blue channel
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588344"></a><h3><a name="gimp-rgb-to-hsv4"></a>gimp_rgb_to_hsv4 ()</h3><a class="indexterm" name="id2588352"></a><pre class="programlisting">void        gimp_rgb_to_hsv4                (guchar *rgb,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>hue</code></em>&#160;:</span></td>
+<td> Hue channel, returns Red channel
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>saturation</code></em>&#160;:</span></td>
+<td> Saturation channel, returns Green channel
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>lightness</code></em>&#160;:</span></td>
+<td> Lightness channel, returns Blue channel
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2565789"></a><h3>
+<a name="gimp-rgb-to-hsv4"></a>gimp_rgb_to_hsv4 ()</h3>
+<a class="indexterm" name="id2565800"></a><pre class="programlisting">void        gimp_rgb_to_hsv4                (guchar *rgb,
                                              gdouble *hue,
                                              gdouble *saturation,
-                                             gdouble *value);</pre><p>
-</p><p>
+                                             gdouble *value);</pre>
+<p>
+</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>rgb</tt></i> :</span></td><td>        RGB triplet, rgb[0] is red channel, rgb[1] is green,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td>        RGB triplet, rgb[0] is red channel, rgb[1] is green,
              rgb[2] is blue (0..255)
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>hue</tt></i> :</span></td><td>        Pointer to hue channel (0..1)
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>saturation</tt></i> :</span></td><td> Pointer to saturation channel (0..1)
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>      Pointer to value channel (0..1)
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588442"></a><h3><a name="gimp-hsv-to-rgb4"></a>gimp_hsv_to_rgb4 ()</h3><a class="indexterm" name="id2588450"></a><pre class="programlisting">void        gimp_hsv_to_rgb4                (guchar *rgb,
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>hue</code></em>&#160;:</span></td>
+<td>        Pointer to hue channel (0..1)
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>saturation</code></em>&#160;:</span></td>
+<td> Pointer to saturation channel (0..1)
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td>      Pointer to value channel (0..1)
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2565915"></a><h3>
+<a name="gimp-hsv-to-rgb4"></a>gimp_hsv_to_rgb4 ()</h3>
+<a class="indexterm" name="id2565926"></a><pre class="programlisting">void        gimp_hsv_to_rgb4                (guchar *rgb,
                                              gdouble hue,
                                              gdouble saturation,
-                                             gdouble value);</pre><p>
-</p><p>
+                                             gdouble value);</pre>
+<p>
+</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>rgb</tt></i> :</span></td><td>        RGB triplet, rgb[0] is red channel, rgb[1] is green,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td>        RGB triplet, rgb[0] is red channel, rgb[1] is green,
              rgb[2] is blue (0..255)
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>hue</tt></i> :</span></td><td>        Hue channel (0..1)
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>saturation</tt></i> :</span></td><td> Saturation channel (0..1)
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>      Value channel (0..1)
-</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpcolor-GimpCMYK.html"><b>&lt;&lt; GimpCMYK</b></a></td><td align="right"><a accesskey="n" href="libgimpcolor-GimpAdaptiveSupersample.html"><b>GimpAdaptiveSupersample &gt;&gt;</b></a></td></tr></table></body></html>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>hue</code></em>&#160;:</span></td>
+<td>        Hue channel (0..1)
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>saturation</code></em>&#160;:</span></td>
+<td> Saturation channel (0..1)
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td>      Value channel (0..1)
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimpcolor-GimpCMYK.html"><b>&lt;&lt;&#160;GimpCMYK</b></a></td>
+<td align="right"><a accesskey="n" href="libgimpcolor-GimpAdaptiveSupersample.html"><b>GimpAdaptiveSupersample&#160;&gt;&gt;</b></a></td>
+</tr></table>
+</body>
+</html>

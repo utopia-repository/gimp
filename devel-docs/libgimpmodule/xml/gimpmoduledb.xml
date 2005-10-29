@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpModuleDB-struct">GimpModuleDB</link>;
+            <link linkend="GimpModuleDB-struct">GimpModuleDB</link>;
 <link linkend="GimpModuleDB">GimpModuleDB</link>* <link linkend="gimp-module-db-new">gimp_module_db_new</link>            (<link linkend="gboolean">gboolean</link> verbose);
 <link linkend="void">void</link>        <link linkend="gimp-module-db-set-load-inhibit">gimp_module_db_set_load_inhibit</link> (<link linkend="GimpModuleDB">GimpModuleDB</link> *db,
                                              const <link linkend="gchar">gchar</link> *load_inhibit);
@@ -76,8 +76,8 @@ Keeps a list of <link linkend="GimpModule"><type>GimpModule</type></link>'s foun
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpModuleDB-struct"/>struct GimpModuleDB</title>
-<indexterm><primary>GimpModuleDB</primary></indexterm><programlisting>struct GimpModuleDB;</programlisting>
+<title><anchor id="GimpModuleDB-struct"/>GimpModuleDB</title>
+<indexterm><primary>GimpModuleDB</primary></indexterm><programlisting>typedef struct _GimpModuleDB GimpModuleDB;</programlisting>
 <para>
 The <link linkend="GimpModuleDB"><type>GimpModuleDB</type></link> struct contains no public members.
 </para></refsect2>
@@ -93,7 +93,7 @@ passed to the created <link linkend="GimpModule"><type>GimpModule</type></link> 
 <varlistentry><term><parameter>verbose</parameter>&nbsp;:</term>
 <listitem><simpara> Pass <literal>TRUE</literal> to enable debugging output.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The new <link linkend="GimpModuleDB"><type>GimpModuleDB</type></link> instance.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The new <link linkend="GimpModuleDB"><type>GimpModuleDB</type></link> instance.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -110,7 +110,7 @@ by <parameter>db</parameter> (using <link linkend="gimp-module-set-load-inhibit"
 <listitem><simpara>           A <link linkend="GimpModuleDB"><type>GimpModuleDB</type></link>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>load_inhibit</parameter>&nbsp;:</term>
-<listitem><simpara> A <link linkend="G-SEARCHPATH-SEPARATOR-CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> delimited list of module
+<listitem><simpara> A <link linkend="G-SEARCHPATH-SEPARATOR:CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> delimited list of module
                filenames to exclude from auto-loading.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -119,7 +119,7 @@ by <parameter>db</parameter> (using <link linkend="gimp-module-set-load-inhibit"
 <indexterm><primary>gimp_module_db_get_load_inhibit</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_module_db_get_load_inhibit
                                             (<link linkend="GimpModuleDB">GimpModuleDB</link> *db);</programlisting>
 <para>
-Return the <link linkend="G-SEARCHPATH-SEPARATOR-CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> selimited list of module filenames
+Return the <link linkend="G-SEARCHPATH-SEPARATOR:CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> selimited list of module filenames
 which are excluded from auto-loading.</para>
 <para>
 
@@ -127,7 +127,7 @@ which are excluded from auto-loading.</para>
 <varlistentry><term><parameter>db</parameter>&nbsp;:</term>
 <listitem><simpara> A <link linkend="GimpModuleDB"><type>GimpModuleDB</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the <parameter>db</parameter>'s <parameter>load_inhibit</parameter> string.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the <parameter>db</parameter>'s <parameter>load_inhibit</parameter> string.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -145,7 +145,7 @@ instance for every loadable module contained in the directories.</para>
 <listitem><simpara>          A <link linkend="GimpModuleDB"><type>GimpModuleDB</type></link>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>module_path</parameter>&nbsp;:</term>
-<listitem><simpara> A <link linkend="G-SEARCHPATH-SEPARATOR-CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> delimited list of directories
+<listitem><simpara> A <link linkend="G-SEARCHPATH-SEPARATOR:CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> delimited list of directories
               to load modules from.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -168,7 +168,7 @@ instances which actually implement types.</para>
 <listitem><simpara>          A <link linkend="GimpModuleDB"><type>GimpModuleDB</type></link>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>module_path</parameter>&nbsp;:</term>
-<listitem><simpara> A <link linkend="G-SEARCHPATH-SEPARATOR-CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> delimited list of directories
+<listitem><simpara> A <link linkend="G-SEARCHPATH-SEPARATOR:CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> delimited list of directories
               to load modules from.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>

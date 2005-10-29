@@ -1,34 +1,34 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpBilinear</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Color Library Reference Manual"><link rel="up" href="libgimpcolor.html" title="Part I. GIMP Color Library"><link rel="prev" href="libgimpcolor-GimpAdaptiveSupersample.html" title="GimpAdaptiveSupersample"><meta name="generator" content="GTK-Doc V1.2 (XML mode)"><style type="text/css">
-        .synopsis, .classsynopsis {
-            background: #eeeeee;
-            border: solid 1px #aaaaaa;
-            padding: 0.5em;
-        }
-        .programlisting {
-            background: #eeeeff;
-            border: solid 1px #aaaaff;
-            padding: 0.5em;
-        }
-        .variablelist {
-            padding: 4px;
-            margin-left: 3em;
-        }
-        .navigation {
-            background: #ffeeee;
-            border: solid 1px #ffaaaa;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-        }
-        .navigation a {
-            color: #770000;
-        }
-        .navigation a:visited {
-            color: #550000;
-        }
-        .navigation .title {
-            font-size: 200%;
-        }
-      </style></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpcolor-GimpAdaptiveSupersample.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpcolor.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Color Library Reference Manual</th></tr></table><div class="refentry" lang="en"><a name="libgimpcolor-GimpBilinear"></a><div class="titlepage"></div><div class="refnamediv"><h2><span class="refentrytitle">GimpBilinear</span></h2><p>GimpBilinear &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>GimpBilinear</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Color Library Reference Manual">
+<link rel="up" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
+<link rel="prev" href="libgimpcolor-GimpAdaptiveSupersample.html" title="GimpAdaptiveSupersample">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="libgimpcolor-GimpAdaptiveSupersample.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpcolor.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Color Library Reference Manual</th>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="libgimpcolor-GimpBilinear"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">GimpBilinear</span></h2>
+<p>GimpBilinear &#8212; </p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
 
 
 
@@ -56,88 +56,339 @@ void        <a href="libgimpcolor-GimpBilinear.html#gimp-bilinear-pixels-8">gimp
                                              guint bpp,
                                              gboolean has_alpha,
                                              guchar **values);
-</pre></div><div class="refsect1" lang="en"><a name="id2581683"></a><h2>Description</h2><p>
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2558477"></a><h2>Description</h2>
+<p>
 
-</p></div><div class="refsect1" lang="en"><a name="id2581692"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2581698"></a><h3><a name="gimp-bilinear"></a>gimp_bilinear ()</h3><a class="indexterm" name="id2581706"></a><pre class="programlisting">gdouble     gimp_bilinear                   (gdouble x,
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2558488"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2558494"></a><h3>
+<a name="gimp-bilinear"></a>gimp_bilinear ()</h3>
+<a class="indexterm" name="id2558504"></a><pre class="programlisting">gdouble     gimp_bilinear                   (gdouble x,
                                              gdouble y,
-                                             gdouble *values);</pre><p>
+                                             gdouble *values);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>y</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>values</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>values</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2528511"></a><h3><a name="gimp-bilinear-8"></a>gimp_bilinear_8 ()</h3><a class="indexterm" name="id2528519"></a><pre class="programlisting">guchar      gimp_bilinear_8                 (gdouble x,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2516771"></a><h3>
+<a name="gimp-bilinear-8"></a>gimp_bilinear_8 ()</h3>
+<a class="indexterm" name="id2516781"></a><pre class="programlisting">guchar      gimp_bilinear_8                 (gdouble x,
                                              gdouble y,
-                                             guchar *values);</pre><p>
+                                             guchar *values);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>y</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>values</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>values</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2528596"></a><h3><a name="gimp-bilinear-16"></a>gimp_bilinear_16 ()</h3><a class="indexterm" name="id2528604"></a><pre class="programlisting">guint16     gimp_bilinear_16                (gdouble x,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2516879"></a><h3>
+<a name="gimp-bilinear-16"></a>gimp_bilinear_16 ()</h3>
+<a class="indexterm" name="id2516889"></a><pre class="programlisting">guint16     gimp_bilinear_16                (gdouble x,
                                              gdouble y,
-                                             guint16 *values);</pre><p>
+                                             guint16 *values);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>y</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>values</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>values</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2528681"></a><h3><a name="gimp-bilinear-32"></a>gimp_bilinear_32 ()</h3><a class="indexterm" name="id2528690"></a><pre class="programlisting">guint32     gimp_bilinear_32                (gdouble x,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2516987"></a><h3>
+<a name="gimp-bilinear-32"></a>gimp_bilinear_32 ()</h3>
+<a class="indexterm" name="id2516997"></a><pre class="programlisting">guint32     gimp_bilinear_32                (gdouble x,
                                              gdouble y,
-                                             guint32 *values);</pre><p>
+                                             guint32 *values);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>y</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>values</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>values</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2542481"></a><h3><a name="gimp-bilinear-rgb"></a>gimp_bilinear_rgb ()</h3><a class="indexterm" name="id2542489"></a><pre class="programlisting"><a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a>     gimp_bilinear_rgb               (gdouble x,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2523020"></a><h3>
+<a name="gimp-bilinear-rgb"></a>gimp_bilinear_rgb ()</h3>
+<a class="indexterm" name="id2523030"></a><pre class="programlisting"><a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a>     gimp_bilinear_rgb               (gdouble x,
                                              gdouble y,
-                                             <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *values);</pre><p>
+                                             <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *values);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>y</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>values</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>values</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2542566"></a><h3><a name="gimp-bilinear-rgba"></a>gimp_bilinear_rgba ()</h3><a class="indexterm" name="id2542575"></a><pre class="programlisting"><a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a>     gimp_bilinear_rgba              (gdouble x,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2523128"></a><h3>
+<a name="gimp-bilinear-rgba"></a>gimp_bilinear_rgba ()</h3>
+<a class="indexterm" name="id2523138"></a><pre class="programlisting"><a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a>     gimp_bilinear_rgba              (gdouble x,
                                              gdouble y,
-                                             <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *values);</pre><p>
+                                             <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *values);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>y</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>values</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>values</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2542652"></a><h3><a name="gimp-bilinear-pixels-8"></a>gimp_bilinear_pixels_8 ()</h3><a class="indexterm" name="id2542661"></a><pre class="programlisting">void        gimp_bilinear_pixels_8          (guchar *dest,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2566595"></a><h3>
+<a name="gimp-bilinear-pixels-8"></a>gimp_bilinear_pixels_8 ()</h3>
+<a class="indexterm" name="id2566603"></a><pre class="programlisting">void        gimp_bilinear_pixels_8          (guchar *dest,
                                              gdouble x,
                                              gdouble y,
                                              guint bpp,
                                              gboolean has_alpha,
-                                             guchar **values);</pre><p>
+                                             guchar **values);</pre>
+<p>
 Computes bilinear interpolation of four pixels.
-</p><p>
-When <i class="parameter"><tt>has_alpha</tt></i> is <tt class="literal">FALSE</tt>, it's identical to <a href="libgimpcolor-GimpBilinear.html#gimp-bilinear-8"><tt class="function">gimp_bilinear_8()</tt></a> on
-each channel separately.  When <i class="parameter"><tt>has_alpha</tt></i> is <tt class="literal">TRUE</tt>, it handles
+</p>
+<p>
+When <em class="parameter"><code>has_alpha</code></em> is <code class="literal">FALSE</code>, it's identical to <a href="libgimpcolor-GimpBilinear.html#gimp-bilinear-8"><code class="function">gimp_bilinear_8()</code></a> on
+each channel separately.  When <em class="parameter"><code>has_alpha</code></em> is <code class="literal">TRUE</code>, it handles
 alpha channel correctly.
-</p><p>
-The pixels in <i class="parameter"><tt>values</tt></i> correspond to corner x, y coordinates in the
-following order: [0,0], [1,0], [0,1], [1,1].</p><p>
+</p>
+<p>
+The pixels in <em class="parameter"><code>values</code></em> correspond to corner x, y coordinates in the
+following order: [0,0], [1,0], [0,1], [1,1].</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>dest</tt></i> :</span></td><td> Pixel, where interpolation result is to be stored.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td> x-coordinate (0.0 to 1.0).
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>y</tt></i> :</span></td><td> y-coordinate (0.0 to 1.0).
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>bpp</tt></i> :</span></td><td> Bytes per pixel.  <i class="parameter"><tt>dest</tt></i> and each <i class="parameter"><tt>values</tt></i> item is an array of
-   <i class="parameter"><tt>bpp</tt></i> bytes.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>has_alpha</tt></i> :</span></td><td> <tt class="literal">TRUE</tt> if the last channel is an alpha channel.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>values</tt></i> :</span></td><td> Array of four pointers to pixels.
-</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpcolor-GimpAdaptiveSupersample.html"><b>&lt;&lt; GimpAdaptiveSupersample</b></a></td><td align="right"></td></tr></table></body></html>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td> Pixel, where interpolation result is to be stored.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td> x-coordinate (0.0 to 1.0).
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td> y-coordinate (0.0 to 1.0).
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
+<td> Bytes per pixel.  <em class="parameter"><code>dest</code></em> and each <em class="parameter"><code>values</code></em> item is an array of
+   <em class="parameter"><code>bpp</code></em> bytes.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>has_alpha</code></em>&#160;:</span></td>
+<td> <code class="literal">TRUE</code> if the last channel is an alpha channel.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>values</code></em>&#160;:</span></td>
+<td> Array of four pointers to pixels.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimpcolor-GimpAdaptiveSupersample.html"><b>&lt;&lt;&#160;GimpAdaptiveSupersample</b></a></td>
+<td align="right"></td>
+</tr></table>
+</body>
+</html>

@@ -1,7 +1,86 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GIMP Base Library Reference Manual</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1"><link rel="start" href="index.html" title="GIMP Base Library Reference Manual"><link rel="next" href="libgimpbase.html" title="Part I. GIMP Base Library"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpbase.html" title="Part I. GIMP Base Library"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="book" lang="en"><div class="titlepage"><div><div><table class="navigation" width="100%" cellpadding="2" cellspacing="0"><tr><th valign="middle"><p class="title">GIMP Base Library Reference Manual</p></th></tr></table></div><div><p class="releaseinfo">
-      for GIMP 2.2.4
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>GIMP Base Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Base Library Reference Manual">
+<link rel="next" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="book" lang="en">
+<div class="titlepage">
+<div>
+<div><table class="navigation" width="100%" cellpadding="2" cellspacing="0"><tr><th valign="middle"><p class="title">GIMP Base Library Reference Manual</p></th></tr></table></div>
+<div><p class="releaseinfo">
+      for GIMP 2.2.9
 
-    </p></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="part"><a href="libgimpbase.html">I. GIMP Base Library</a></span></dt><dd><dl><dt><span class="refentrytitle"><a href="libgimpbase-gimpbaseenums.html">gimpbaseenums</a></span><span class="refpurpose"> - Basic GIMP enumeration data types.</span></dt><dt><span class="refentrytitle"><a href="libgimpbase-gimpbasetypes.html">gimpbasetypes</a></span><span class="refpurpose"> - Translation between gettext translation domain identifier and GType.</span></dt><dt><span class="refentrytitle"><a href="libgimpbase-gimpversion.html">gimpversion</a></span><span class="refpurpose"> - Macros and constants useful for determining GIMP's version number and
-capabilities.</span></dt><dt><span class="refentrytitle"><a href="libgimpbase-gimplimits.html">gimplimits</a></span><span class="refpurpose"> - Boundaries of some GIMP data types and some global constants.</span></dt><dt><span class="refentrytitle"><a href="libgimpbase-gimpchecks.html">gimpchecks</a></span><span class="refpurpose"> - Constants and functions related to rendering checkerboards.</span></dt><dt><span class="refentrytitle"><a href="libgimpbase-gimpdatafiles.html">gimpdatafiles</a></span><span class="refpurpose"> - Functions to handle GIMP data files.</span></dt><dt><span class="refentrytitle"><a href="libgimpbase-gimpenv.html">gimpenv</a></span><span class="refpurpose"> - Functions to access the GIMP environment.</span></dt><dt><span class="refentrytitle"><a href="libgimpbase-gimpmemsize.html">gimpmemsize</a></span><span class="refpurpose"> - Functions to (de)serialize a given memory size.</span></dt><dt><span class="refentrytitle"><a href="libgimpbase-gimpparasite.html">gimpparasite</a></span><span class="refpurpose"> - Arbitrary pieces of data which can be attached to various GIMP objects.</span></dt><dt><span class="refentrytitle"><a href="libgimpbase-gimpparasiteio.html">gimpparasiteio</a></span><span class="refpurpose"> - Utility functions to (de)serialize certain C structures to/from GimpParasite's.</span></dt><dt><span class="refentrytitle"><a href="libgimpbase-gimpsignal.html">gimpsignal</a></span><span class="refpurpose"> - Portable signal handling.</span></dt><dt><span class="refentrytitle"><a href="libgimpbase-gimpunit.html">gimpunit</a></span><span class="refpurpose"> - Provides a collection of predefined units and functions for creating
-user-defined units.</span></dt><dt><span class="refentrytitle"><a href="libgimpbase-gimputils.html">gimputils</a></span><span class="refpurpose"> - Utilities of general interest</span></dt><dt><span class="refentrytitle"><a href="libgimpbase-gimpprotocol.html">gimpprotocol</a></span><span class="refpurpose"> - The communication protocol between GIMP and it's plug-ins.</span></dt><dt><span class="refentrytitle"><a href="libgimpbase-gimpwire.html">gimpwire</a></span><span class="refpurpose"> - The lowlevel I/O protocol used for communication between GIMP and
-it's plug-ins.</span></dt></dl></dd></dl></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"></td><td align="right"><a accesskey="n" href="libgimpbase.html"><b>Part I. GIMP Base Library &gt;&gt;</b></a></td></tr></table></body></html>
+    </p></div>
+</div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="part"><a href="libgimpbase.html">I. GIMP Base Library</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="libgimpbase-gimpbaseenums.html">gimpbaseenums</a></span><span class="refpurpose"> - Basic GIMP enumeration data types.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libgimpbase-gimpbasetypes.html">gimpbasetypes</a></span><span class="refpurpose"> - Translation between gettext translation domain identifier and GType.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libgimpbase-gimpversion.html">gimpversion</a></span><span class="refpurpose"> - Macros and constants useful for determining GIMP's version number and
+capabilities.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libgimpbase-gimplimits.html">gimplimits</a></span><span class="refpurpose"> - Boundaries of some GIMP data types and some global constants.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libgimpbase-gimpchecks.html">gimpchecks</a></span><span class="refpurpose"> - Constants and functions related to rendering checkerboards.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libgimpbase-gimpdatafiles.html">gimpdatafiles</a></span><span class="refpurpose"> - Functions to handle GIMP data files.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libgimpbase-gimpenv.html">gimpenv</a></span><span class="refpurpose"> - Functions to access the GIMP environment.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libgimpbase-gimpmemsize.html">gimpmemsize</a></span><span class="refpurpose"> - Functions to (de)serialize a given memory size.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libgimpbase-gimpparasite.html">gimpparasite</a></span><span class="refpurpose"> - Arbitrary pieces of data which can be attached to various GIMP objects.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libgimpbase-gimpparasiteio.html">gimpparasiteio</a></span><span class="refpurpose"> - Utility functions to (de)serialize certain C structures to/from GimpParasite's.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libgimpbase-gimpsignal.html">gimpsignal</a></span><span class="refpurpose"> - Portable signal handling.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libgimpbase-gimpunit.html">gimpunit</a></span><span class="refpurpose"> - Provides a collection of predefined units and functions for creating
+user-defined units.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libgimpbase-gimputils.html">gimputils</a></span><span class="refpurpose"> - Utilities of general interest</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libgimpbase-gimpprotocol.html">gimpprotocol</a></span><span class="refpurpose"> - The communication protocol between GIMP and it's plug-ins.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libgimpbase-gimpwire.html">gimpwire</a></span><span class="refpurpose"> - The lowlevel I/O protocol used for communication between GIMP and
+it's plug-ins.</span>
+</dt>
+</dl></dd>
+</dl>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"></td>
+<td align="right"><a accesskey="n" href="libgimpbase.html"><b>Part&#160;I.&#160;GIMP Base Library&#160;&gt;&gt;</b></a></td>
+</tr></table>
+</body>
+</html>

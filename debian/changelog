@@ -1,3 +1,9 @@
+gimp (2.2.9-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Ari Pollak <ari@debian.org>  Sat, 29 Oct 2005 00:59:33 +0000
+
 gimp (2.2.8-11) unstable; urgency=low
 
   * Make libgimp2.0-dev depend on gcc-3.3 because gimptool uses the same

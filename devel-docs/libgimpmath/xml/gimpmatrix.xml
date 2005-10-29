@@ -19,9 +19,9 @@
 
 
 
-struct      <link linkend="GimpMatrix2">GimpMatrix2</link>;
-struct      <link linkend="GimpMatrix3">GimpMatrix3</link>;
-struct      <link linkend="GimpMatrix4">GimpMatrix4</link>;
+            <link linkend="GimpMatrix2">GimpMatrix2</link>;
+            <link linkend="GimpMatrix3">GimpMatrix3</link>;
+            <link linkend="GimpMatrix4">GimpMatrix4</link>;
 <link linkend="void">void</link>        <link linkend="gimp-matrix2-identity">gimp_matrix2_identity</link>           (<link linkend="GimpMatrix2">GimpMatrix2</link> *matrix);
 <link linkend="void">void</link>        <link linkend="gimp-matrix2-mult">gimp_matrix2_mult</link>               (const <link linkend="GimpMatrix2">GimpMatrix2</link> *matrix1,
                                              <link linkend="GimpMatrix2">GimpMatrix2</link> *matrix2);
@@ -86,31 +86,28 @@ basic matrix manipulations and tests.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpMatrix2"/>struct GimpMatrix2</title>
-<indexterm><primary>GimpMatrix2</primary></indexterm><programlisting>struct GimpMatrix2 {
-
+<title><anchor id="GimpMatrix2"/>GimpMatrix2</title>
+<indexterm><primary>GimpMatrix2</primary></indexterm><programlisting>typedef struct {
   gdouble coeff[2][2];
-};
+} GimpMatrix2;
 </programlisting>
 <para>
 A two by two matrix.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpMatrix3"/>struct GimpMatrix3</title>
-<indexterm><primary>GimpMatrix3</primary></indexterm><programlisting>struct GimpMatrix3 {
-
+<title><anchor id="GimpMatrix3"/>GimpMatrix3</title>
+<indexterm><primary>GimpMatrix3</primary></indexterm><programlisting>typedef struct {
   gdouble coeff[3][3];
-};
+} GimpMatrix3;
 </programlisting>
 <para>
 A three by three matrix.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpMatrix4"/>struct GimpMatrix4</title>
-<indexterm><primary>GimpMatrix4</primary></indexterm><programlisting>struct GimpMatrix4 {
-
+<title><anchor id="GimpMatrix4"/>GimpMatrix4</title>
+<indexterm><primary>GimpMatrix4</primary></indexterm><programlisting>typedef struct {
   gdouble coeff[4][4];
-};
+} GimpMatrix4;
 </programlisting>
 <para>
 A four by four matrix.
@@ -341,7 +338,7 @@ Calculates the determinant of the given matrix.</para>
 <varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
 <listitem><simpara> The input matrix.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The determinant.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The determinant.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -367,7 +364,7 @@ Checks if the given matrix is diagonal.</para>
 <varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
 <listitem><simpara> The matrix that is to be tested.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> TRUE if the matrix is diagonal.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the matrix is diagonal.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -381,7 +378,7 @@ Checks if the given matrix is the identity matrix.</para>
 <varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
 <listitem><simpara> The matrix that is to be tested.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> TRUE if the matrix is the identity matrix.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the matrix is the identity matrix.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -396,7 +393,7 @@ a transformation.</para>
 <varlistentry><term><parameter>matrix</parameter>&nbsp;:</term>
 <listitem><simpara> The matrix that is to be tested.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> TRUE if all entries of the upper left 2x2 matrix are either
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if all entries of the upper left 2x2 matrix are either
 0 or 1
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>

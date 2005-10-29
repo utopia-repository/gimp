@@ -1,40 +1,42 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpMatrix</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Math Library Reference Manual"><link rel="up" href="libgimpmath.html" title="Part I. GIMP Math Library"><link rel="prev" href="libgimpmath-GimpMath.html" title="GimpMath"><link rel="next" href="libgimpmath-GimpVector.html" title="GimpVector"><meta name="generator" content="GTK-Doc V1.2 (XML mode)"><style type="text/css">
-        .synopsis, .classsynopsis {
-            background: #eeeeee;
-            border: solid 1px #aaaaaa;
-            padding: 0.5em;
-        }
-        .programlisting {
-            background: #eeeeff;
-            border: solid 1px #aaaaff;
-            padding: 0.5em;
-        }
-        .variablelist {
-            padding: 4px;
-            margin-left: 3em;
-        }
-        .navigation {
-            background: #ffeeee;
-            border: solid 1px #ffaaaa;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-        }
-        .navigation a {
-            color: #770000;
-        }
-        .navigation a:visited {
-            color: #550000;
-        }
-        .navigation .title {
-            font-size: 200%;
-        }
-      </style></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpmath-GimpMath.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpmath.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Math Library Reference Manual</th><td><a accesskey="n" href="libgimpmath-GimpVector.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimpmath-GimpMatrix"></a><div class="titlepage"></div><div class="refnamediv"><h2><span class="refentrytitle">GimpMatrix</span></h2><p>GimpMatrix &#8212; Utilities to set up and manipulate 3x3 transformation matrices.</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>GimpMatrix</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Math Library Reference Manual">
+<link rel="up" href="libgimpmath.html" title="Part&#160;I.&#160;GIMP Math Library">
+<link rel="prev" href="libgimpmath-GimpMath.html" title="GimpMath">
+<link rel="next" href="libgimpmath-GimpVector.html" title="GimpVector">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libgimpmath.html" title="Part&#160;I.&#160;GIMP Math Library">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="libgimpmath-GimpMath.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpmath.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Math Library Reference Manual</th>
+<td><a accesskey="n" href="libgimpmath-GimpVector.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="libgimpmath-GimpMatrix"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">GimpMatrix</span></h2>
+<p>GimpMatrix &#8212; Utilities to set up and manipulate 3x3 transformation matrices.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
 
 
 
-struct      <a href="libgimpmath-GimpMatrix.html#GimpMatrix2">GimpMatrix2</a>;
-struct      <a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a>;
-struct      <a href="libgimpmath-GimpMatrix.html#GimpMatrix4">GimpMatrix4</a>;
+            <a href="libgimpmath-GimpMatrix.html#GimpMatrix2">GimpMatrix2</a>;
+            <a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a>;
+            <a href="libgimpmath-GimpMatrix.html#GimpMatrix4">GimpMatrix4</a>;
 void        <a href="libgimpmath-GimpMatrix.html#gimp-matrix2-identity">gimp_matrix2_identity</a>           (<a href="libgimpmath-GimpMatrix.html#GimpMatrix2">GimpMatrix2</a> *matrix);
 void        <a href="libgimpmath-GimpMatrix.html#gimp-matrix2-mult">gimp_matrix2_mult</a>               (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix2">GimpMatrix2</a> *matrix1,
                                              <a href="libgimpmath-GimpMatrix.html#GimpMatrix2">GimpMatrix2</a> *matrix2);
@@ -74,158 +76,627 @@ void        <a href="libgimpmath-GimpMatrix.html#gimp-matrix4-to-deg">gimp_matri
                                              gdouble *a,
                                              gdouble *b,
                                              gdouble *c);
-</pre></div><div class="refsect1" lang="en"><a name="id2555210"></a><h2>Description</h2><p>
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2528821"></a><h2>Description</h2>
+<p>
 When doing image manipulation you will often need 3x3 transformation
 matrices that define translation, rotation, scaling, shearing and 
 arbitrary perspective transformations using a 3x3 matrix. Here you'll 
 find a set of utility functions to set up those matrices and to perform 
 basic matrix manipulations and tests.
-</p></div><div class="refsect1" lang="en"><a name="id2555225"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2555230"></a><h3><a name="GimpMatrix2"></a>struct GimpMatrix2</h3><a class="indexterm" name="id2555239"></a><pre class="programlisting">struct GimpMatrix2 {
-
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2528838"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2528844"></a><h3>
+<a name="GimpMatrix2"></a>GimpMatrix2</h3>
+<a class="indexterm" name="id2528854"></a><pre class="programlisting">typedef struct {
   gdouble coeff[2][2];
-};
-</pre><p>
+} GimpMatrix2;
+</pre>
+<p>
 A two by two matrix.
-</p></div><hr><div class="refsect2" lang="en"><a name="id2555249"></a><h3><a name="GimpMatrix3"></a>struct GimpMatrix3</h3><a class="indexterm" name="id2555258"></a><pre class="programlisting">struct GimpMatrix3 {
-
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2528870"></a><h3>
+<a name="GimpMatrix3"></a>GimpMatrix3</h3>
+<a class="indexterm" name="id2528880"></a><pre class="programlisting">typedef struct {
   gdouble coeff[3][3];
-};
-</pre><p>
+} GimpMatrix3;
+</pre>
+<p>
 A three by three matrix.
-</p></div><hr><div class="refsect2" lang="en"><a name="id2555268"></a><h3><a name="GimpMatrix4"></a>struct GimpMatrix4</h3><a class="indexterm" name="id2555277"></a><pre class="programlisting">struct GimpMatrix4 {
-
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2528896"></a><h3>
+<a name="GimpMatrix4"></a>GimpMatrix4</h3>
+<a class="indexterm" name="id2528905"></a><pre class="programlisting">typedef struct {
   gdouble coeff[4][4];
-};
-</pre><p>
+} GimpMatrix4;
+</pre>
+<p>
 A four by four matrix.
-</p></div><hr><div class="refsect2" lang="en"><a name="id2555287"></a><h3><a name="gimp-matrix2-identity"></a>gimp_matrix2_identity ()</h3><a class="indexterm" name="id2555296"></a><pre class="programlisting">void        gimp_matrix2_identity           (<a href="libgimpmath-GimpMatrix.html#GimpMatrix2">GimpMatrix2</a> *matrix);</pre><p>
-Sets the matrix to the identity matrix.</p><p>
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2528922"></a><h3>
+<a name="gimp-matrix2-identity"></a>gimp_matrix2_identity ()</h3>
+<a class="indexterm" name="id2528930"></a><pre class="programlisting">void        gimp_matrix2_identity           (<a href="libgimpmath-GimpMatrix.html#GimpMatrix2">GimpMatrix2</a> *matrix);</pre>
+<p>
+Sets the matrix to the identity matrix.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix</tt></i> :</span></td><td> A matrix.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2555332"></a><h3><a name="gimp-matrix2-mult"></a>gimp_matrix2_mult ()</h3><a class="indexterm" name="id2555341"></a><pre class="programlisting">void        gimp_matrix2_mult               (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix2">GimpMatrix2</a> *matrix1,
-                                             <a href="libgimpmath-GimpMatrix.html#GimpMatrix2">GimpMatrix2</a> *matrix2);</pre><p>
-Multiplies two matrices and puts the result into the second one.</p><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></td>
+<td> A matrix.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2474142"></a><h3>
+<a name="gimp-matrix2-mult"></a>gimp_matrix2_mult ()</h3>
+<a class="indexterm" name="id2474151"></a><pre class="programlisting">void        gimp_matrix2_mult               (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix2">GimpMatrix2</a> *matrix1,
+                                             <a href="libgimpmath-GimpMatrix.html#GimpMatrix2">GimpMatrix2</a> *matrix2);</pre>
+<p>
+Multiplies two matrices and puts the result into the second one.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix1</tt></i> :</span></td><td> The first input matrix.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>matrix2</tt></i> :</span></td><td> The second input matrix which will be overwritten by the result.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2534292"></a><h3><a name="gimp-matrix3-identity"></a>gimp_matrix3_identity ()</h3><a class="indexterm" name="id2534301"></a><pre class="programlisting">void        gimp_matrix3_identity           (<a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix);</pre><p>
-Sets the matrix to the identity matrix.</p><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix1</code></em>&#160;:</span></td>
+<td> The first input matrix.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix2</code></em>&#160;:</span></td>
+<td> The second input matrix which will be overwritten by the result.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2474223"></a><h3>
+<a name="gimp-matrix3-identity"></a>gimp_matrix3_identity ()</h3>
+<a class="indexterm" name="id2474232"></a><pre class="programlisting">void        gimp_matrix3_identity           (<a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix);</pre>
+<p>
+Sets the matrix to the identity matrix.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix</tt></i> :</span></td><td> A matrix.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2534338"></a><h3><a name="gimp-matrix3-mult"></a>gimp_matrix3_mult ()</h3><a class="indexterm" name="id2534346"></a><pre class="programlisting">void        gimp_matrix3_mult               (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix1,
-                                             <a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix2);</pre><p>
-Multiplies two matrices and puts the result into the second one.</p><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></td>
+<td> A matrix.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2474280"></a><h3>
+<a name="gimp-matrix3-mult"></a>gimp_matrix3_mult ()</h3>
+<a class="indexterm" name="id2474291"></a><pre class="programlisting">void        gimp_matrix3_mult               (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix1,
+                                             <a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix2);</pre>
+<p>
+Multiplies two matrices and puts the result into the second one.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix1</tt></i> :</span></td><td> The first input matrix.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>matrix2</tt></i> :</span></td><td> The second input matrix which will be overwritten by the result.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2534403"></a><h3><a name="gimp-matrix3-translate"></a>gimp_matrix3_translate ()</h3><a class="indexterm" name="id2534412"></a><pre class="programlisting">void        gimp_matrix3_translate          (<a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix1</code></em>&#160;:</span></td>
+<td> The first input matrix.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix2</code></em>&#160;:</span></td>
+<td> The second input matrix which will be overwritten by the result.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2474363"></a><h3>
+<a name="gimp-matrix3-translate"></a>gimp_matrix3_translate ()</h3>
+<a class="indexterm" name="id2474372"></a><pre class="programlisting">void        gimp_matrix3_translate          (<a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix,
                                              gdouble x,
-                                             gdouble y);</pre><p>
-Translates the matrix by x and y.</p><p>
+                                             gdouble y);</pre>
+<p>
+Translates the matrix by x and y.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix</tt></i> :</span></td><td> The matrix that is to be translated.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td> Translation in X direction.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>y</tt></i> :</span></td><td> Translation in Y direction.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2534484"></a><h3><a name="gimp-matrix3-scale"></a>gimp_matrix3_scale ()</h3><a class="indexterm" name="id2534492"></a><pre class="programlisting">void        gimp_matrix3_scale              (<a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></td>
+<td> The matrix that is to be translated.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td> Translation in X direction.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td> Translation in Y direction.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2558440"></a><h3>
+<a name="gimp-matrix3-scale"></a>gimp_matrix3_scale ()</h3>
+<a class="indexterm" name="id2558449"></a><pre class="programlisting">void        gimp_matrix3_scale              (<a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix,
                                              gdouble x,
-                                             gdouble y);</pre><p>
-Scales the matrix by x and y</p><p>
+                                             gdouble y);</pre>
+<p>
+Scales the matrix by x and y</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix</tt></i> :</span></td><td> The matrix that is to be scaled.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td> X scale factor.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>y</tt></i> :</span></td><td> Y scale factor.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2581258"></a><h3><a name="gimp-matrix3-rotate"></a>gimp_matrix3_rotate ()</h3><a class="indexterm" name="id2581266"></a><pre class="programlisting">void        gimp_matrix3_rotate             (<a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix,
-                                             gdouble theta);</pre><p>
-Rotates the matrix by theta degrees.</p><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></td>
+<td> The matrix that is to be scaled.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td> X scale factor.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td> Y scale factor.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2558532"></a><h3>
+<a name="gimp-matrix3-rotate"></a>gimp_matrix3_rotate ()</h3>
+<a class="indexterm" name="id2558542"></a><pre class="programlisting">void        gimp_matrix3_rotate             (<a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix,
+                                             gdouble theta);</pre>
+<p>
+Rotates the matrix by theta degrees.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix</tt></i> :</span></td><td> The matrix that is to be rotated.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>theta</tt></i> :</span></td><td> The angle of rotation (in radians).
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2581322"></a><h3><a name="gimp-matrix3-xshear"></a>gimp_matrix3_xshear ()</h3><a class="indexterm" name="id2581331"></a><pre class="programlisting">void        gimp_matrix3_xshear             (<a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix,
-                                             gdouble amount);</pre><p>
-Shears the matrix in the X direction.</p><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></td>
+<td> The matrix that is to be rotated.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>theta</code></em>&#160;:</span></td>
+<td> The angle of rotation (in radians).
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2558614"></a><h3>
+<a name="gimp-matrix3-xshear"></a>gimp_matrix3_xshear ()</h3>
+<a class="indexterm" name="id2558624"></a><pre class="programlisting">void        gimp_matrix3_xshear             (<a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix,
+                                             gdouble amount);</pre>
+<p>
+Shears the matrix in the X direction.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix</tt></i> :</span></td><td> The matrix that is to be sheared.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>amount</tt></i> :</span></td><td> X shear amount.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2581386"></a><h3><a name="gimp-matrix3-yshear"></a>gimp_matrix3_yshear ()</h3><a class="indexterm" name="id2581395"></a><pre class="programlisting">void        gimp_matrix3_yshear             (<a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix,
-                                             gdouble amount);</pre><p>
-Shears the matrix in the Y direction.</p><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></td>
+<td> The matrix that is to be sheared.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>amount</code></em>&#160;:</span></td>
+<td> X shear amount.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2558695"></a><h3>
+<a name="gimp-matrix3-yshear"></a>gimp_matrix3_yshear ()</h3>
+<a class="indexterm" name="id2558706"></a><pre class="programlisting">void        gimp_matrix3_yshear             (<a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix,
+                                             gdouble amount);</pre>
+<p>
+Shears the matrix in the Y direction.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix</tt></i> :</span></td><td> The matrix that is to be sheared.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>amount</tt></i> :</span></td><td> Y shear amount.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2581451"></a><h3><a name="gimp-matrix3-affine"></a>gimp_matrix3_affine ()</h3><a class="indexterm" name="id2581459"></a><pre class="programlisting">void        gimp_matrix3_affine             (<a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></td>
+<td> The matrix that is to be sheared.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>amount</code></em>&#160;:</span></td>
+<td> Y shear amount.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2558777"></a><h3>
+<a name="gimp-matrix3-affine"></a>gimp_matrix3_affine ()</h3>
+<a class="indexterm" name="id2558787"></a><pre class="programlisting">void        gimp_matrix3_affine             (<a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix,
                                              gdouble a,
                                              gdouble b,
                                              gdouble c,
                                              gdouble d,
                                              gdouble e,
-                                             gdouble f);</pre><p>
-Applies the affine transformation given by six values to <i class="parameter"><tt>matrix</tt></i>.
+                                             gdouble f);</pre>
+<p>
+Applies the affine transformation given by six values to <em class="parameter"><code>matrix</code></em>.
 The six values form define an affine transformation matrix as
 illustrated below:
-</p><p>
+</p>
+<p>
  ( a c e )
  ( b d f )
- ( 0 0 1 )</p><p>
+ ( 0 0 1 )</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix</tt></i> :</span></td><td> The input matrix.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>a</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>b</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>c</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>d</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>e</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>f</tt></i> :</span></td><td>
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2581608"></a><h3><a name="gimp-matrix3-transform-point"></a>gimp_matrix3_transform_point ()</h3><a class="indexterm" name="id2581619"></a><pre class="programlisting">void        gimp_matrix3_transform_point    (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></td>
+<td> The input matrix.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>a</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>b</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>c</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>d</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>e</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>f</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2558974"></a><h3>
+<a name="gimp-matrix3-transform-point"></a>gimp_matrix3_transform_point ()</h3>
+<a class="indexterm" name="id2558985"></a><pre class="programlisting">void        gimp_matrix3_transform_point    (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix,
                                              gdouble x,
                                              gdouble y,
                                              gdouble *newx,
-                                             gdouble *newy);</pre><p>
-Transforms a point in 2D as specified by the transformation matrix.</p><p>
+                                             gdouble *newy);</pre>
+<p>
+Transforms a point in 2D as specified by the transformation matrix.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix</tt></i> :</span></td><td> The transformation matrix.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td> The source X coordinate.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>y</tt></i> :</span></td><td> The source Y coordinate.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>newx</tt></i> :</span></td><td> The transformed X coordinate.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>newy</tt></i> :</span></td><td> The transformed Y coordinate.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2581728"></a><h3><a name="gimp-matrix3-determinant"></a>gimp_matrix3_determinant ()</h3><a class="indexterm" name="id2581736"></a><pre class="programlisting">gdouble     gimp_matrix3_determinant        (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix);</pre><p>
-Calculates the determinant of the given matrix.</p><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></td>
+<td> The transformation matrix.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td> The source X coordinate.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td> The source Y coordinate.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>newx</code></em>&#160;:</span></td>
+<td> The transformed X coordinate.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>newy</code></em>&#160;:</span></td>
+<td> The transformed Y coordinate.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2559121"></a><h3>
+<a name="gimp-matrix3-determinant"></a>gimp_matrix3_determinant ()</h3>
+<a class="indexterm" name="id2559130"></a><pre class="programlisting">gdouble     gimp_matrix3_determinant        (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix);</pre>
+<p>
+Calculates the determinant of the given matrix.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix</tt></i> :</span></td><td> The input matrix.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The determinant.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2581785"></a><h3><a name="gimp-matrix3-invert"></a>gimp_matrix3_invert ()</h3><a class="indexterm" name="id2581793"></a><pre class="programlisting">void        gimp_matrix3_invert             (<a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix);</pre><p>
-Inverts the given matrix.</p><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></td>
+<td> The input matrix.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The determinant.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2559191"></a><h3>
+<a name="gimp-matrix3-invert"></a>gimp_matrix3_invert ()</h3>
+<a class="indexterm" name="id2559201"></a><pre class="programlisting">void        gimp_matrix3_invert             (<a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix);</pre>
+<p>
+Inverts the given matrix.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix</tt></i> :</span></td><td> The matrix that is to be inverted.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2581832"></a><h3><a name="gimp-matrix3-is-diagonal"></a>gimp_matrix3_is_diagonal ()</h3><a class="indexterm" name="id2581840"></a><pre class="programlisting">gboolean    gimp_matrix3_is_diagonal        (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix);</pre><p>
-Checks if the given matrix is diagonal.</p><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></td>
+<td> The matrix that is to be inverted.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2559250"></a><h3>
+<a name="gimp-matrix3-is-diagonal"></a>gimp_matrix3_is_diagonal ()</h3>
+<a class="indexterm" name="id2559259"></a><pre class="programlisting">gboolean    gimp_matrix3_is_diagonal        (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix);</pre>
+<p>
+Checks if the given matrix is diagonal.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix</tt></i> :</span></td><td> The matrix that is to be tested.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE if the matrix is diagonal.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2581890"></a><h3><a name="gimp-matrix3-is-identity"></a>gimp_matrix3_is_identity ()</h3><a class="indexterm" name="id2581898"></a><pre class="programlisting">gboolean    gimp_matrix3_is_identity        (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix);</pre><p>
-Checks if the given matrix is the identity matrix.</p><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></td>
+<td> The matrix that is to be tested.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE if the matrix is diagonal.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2559320"></a><h3>
+<a name="gimp-matrix3-is-identity"></a>gimp_matrix3_is_identity ()</h3>
+<a class="indexterm" name="id2559329"></a><pre class="programlisting">gboolean    gimp_matrix3_is_identity        (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix);</pre>
+<p>
+Checks if the given matrix is the identity matrix.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix</tt></i> :</span></td><td> The matrix that is to be tested.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE if the matrix is the identity matrix.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2581948"></a><h3><a name="gimp-matrix3-is-simple"></a>gimp_matrix3_is_simple ()</h3><a class="indexterm" name="id2581956"></a><pre class="programlisting">gboolean    gimp_matrix3_is_simple          (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></td>
+<td> The matrix that is to be tested.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE if the matrix is the identity matrix.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2526968"></a><h3>
+<a name="gimp-matrix3-is-simple"></a>gimp_matrix3_is_simple ()</h3>
+<a class="indexterm" name="id2526842"></a><pre class="programlisting">gboolean    gimp_matrix3_is_simple          (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix3">GimpMatrix3</a> *matrix);</pre>
+<p>
 Checks if we'll need to interpolate when applying this matrix as
-a transformation.</p><p>
+a transformation.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix</tt></i> :</span></td><td> The matrix that is to be tested.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE if all entries of the upper left 2x2 matrix are either
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></td>
+<td> The matrix that is to be tested.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE if all entries of the upper left 2x2 matrix are either
 0 or 1
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2582007"></a><h3><a name="gimp-matrix4-to-deg"></a>gimp_matrix4_to_deg ()</h3><a class="indexterm" name="id2582015"></a><pre class="programlisting">void        gimp_matrix4_to_deg             (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix4">GimpMatrix4</a> *matrix,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2559438"></a><h3>
+<a name="gimp-matrix4-to-deg"></a>gimp_matrix4_to_deg ()</h3>
+<a class="indexterm" name="id2559446"></a><pre class="programlisting">void        gimp_matrix4_to_deg             (const <a href="libgimpmath-GimpMatrix.html#GimpMatrix4">GimpMatrix4</a> *matrix,
                                              gdouble *a,
                                              gdouble *b,
-                                             gdouble *c);</pre><p>
-</p><p>
+                                             gdouble *c);</pre>
+<p>
+</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matrix</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>a</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>b</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>c</tt></i> :</span></td><td>
-</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2582105"></a><h2>See Also</h2><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>a</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>b</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>c</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2559548"></a><h2>See Also</h2>
+<p>
 <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>
-</p><p>
+</p>
+<p>
 <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>
-</p><p>
+</p>
+<p>
 <a href="libgimpmath-GimpVector.html#GimpVector4"><span class="type">GimpVector4</span></a>
-</p></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpmath-GimpMath.html"><b>&lt;&lt; GimpMath</b></a></td><td align="right"><a accesskey="n" href="libgimpmath-GimpVector.html"><b>GimpVector &gt;&gt;</b></a></td></tr></table></body></html>
+</p>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimpmath-GimpMath.html"><b>&lt;&lt;&#160;GimpMath</b></a></td>
+<td align="right"><a accesskey="n" href="libgimpmath-GimpVector.html"><b>GimpVector&#160;&gt;&gt;</b></a></td>
+</tr></table>
+</body>
+</html>

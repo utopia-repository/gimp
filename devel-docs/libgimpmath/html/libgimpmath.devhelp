@@ -9,16 +9,16 @@
     </sub>
   </chapters>
   <functions>
-    <function name="RINT()" link="libgimpmath-GimpMath.html#RINT-CAPS"/>
-    <function name="ROUND()" link="libgimpmath-GimpMath.html#ROUND-CAPS"/>
-    <function name="SQR()" link="libgimpmath-GimpMath.html#SQR-CAPS"/>
-    <function name="MAX255()" link="libgimpmath-GimpMath.html#MAX255-CAPS"/>
-    <function name="CLAMP0255()" link="libgimpmath-GimpMath.html#CLAMP0255-CAPS"/>
+    <function name="RINT()" link="libgimpmath-GimpMath.html#RINT:CAPS"/>
+    <function name="ROUND()" link="libgimpmath-GimpMath.html#ROUND:CAPS"/>
+    <function name="SQR()" link="libgimpmath-GimpMath.html#SQR:CAPS"/>
+    <function name="MAX255()" link="libgimpmath-GimpMath.html#MAX255:CAPS"/>
+    <function name="CLAMP0255()" link="libgimpmath-GimpMath.html#CLAMP0255:CAPS"/>
     <function name="gimp_deg_to_rad()" link="libgimpmath-GimpMath.html#gimp-deg-to-rad"/>
     <function name="gimp_rad_to_deg()" link="libgimpmath-GimpMath.html#gimp-rad-to-deg"/>
-    <function name="struct GimpMatrix2" link="libgimpmath-GimpMatrix.html#GimpMatrix2"/>
-    <function name="struct GimpMatrix3" link="libgimpmath-GimpMatrix.html#GimpMatrix3"/>
-    <function name="struct GimpMatrix4" link="libgimpmath-GimpMatrix.html#GimpMatrix4"/>
+    <function name="GimpMatrix2" link="libgimpmath-GimpMatrix.html#GimpMatrix2"/>
+    <function name="GimpMatrix3" link="libgimpmath-GimpMatrix.html#GimpMatrix3"/>
+    <function name="GimpMatrix4" link="libgimpmath-GimpMatrix.html#GimpMatrix4"/>
     <function name="gimp_matrix2_identity ()" link="libgimpmath-GimpMatrix.html#gimp-matrix2-identity"/>
     <function name="gimp_matrix2_mult ()" link="libgimpmath-GimpMatrix.html#gimp-matrix2-mult"/>
     <function name="gimp_matrix3_identity ()" link="libgimpmath-GimpMatrix.html#gimp-matrix3-identity"/>
@@ -36,9 +36,9 @@
     <function name="gimp_matrix3_is_identity ()" link="libgimpmath-GimpMatrix.html#gimp-matrix3-is-identity"/>
     <function name="gimp_matrix3_is_simple ()" link="libgimpmath-GimpMatrix.html#gimp-matrix3-is-simple"/>
     <function name="gimp_matrix4_to_deg ()" link="libgimpmath-GimpMatrix.html#gimp-matrix4-to-deg"/>
-    <function name="struct GimpVector2" link="libgimpmath-GimpVector.html#GimpVector2"/>
-    <function name="struct GimpVector3" link="libgimpmath-GimpVector.html#GimpVector3"/>
-    <function name="struct GimpVector4" link="libgimpmath-GimpVector.html#GimpVector4"/>
+    <function name="GimpVector2" link="libgimpmath-GimpVector.html#GimpVector2"/>
+    <function name="GimpVector3" link="libgimpmath-GimpVector.html#GimpVector3"/>
+    <function name="GimpVector4" link="libgimpmath-GimpVector.html#GimpVector4"/>
     <function name="gimp_vector2_new ()" link="libgimpmath-GimpVector.html#gimp-vector2-new"/>
     <function name="gimp_vector2_set ()" link="libgimpmath-GimpVector.html#gimp-vector2-set"/>
     <function name="gimp_vector2_length ()" link="libgimpmath-GimpVector.html#gimp-vector2-length"/>

@@ -1,25 +1,62 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpPixmap</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="prev" href="GimpPickButton.html" title="GimpPickButton"><link rel="next" href="GimpPreviewArea.html" title="GimpPreviewArea"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy"><link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView"><link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters"><link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors"><link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers"><link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities"><link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="GimpPickButton.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Widgets Library Reference Manual</th><td><a accesskey="n" href="GimpPreviewArea.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="GimpPixmap"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">GimpPixmap</span></h2><p>GimpPixmap &#8212; Widget which creates a <a
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>GimpPixmap</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
+<link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
+<link rel="prev" href="GimpPickButton.html" title="GimpPickButton">
+<link rel="next" href="GimpPreviewArea.html" title="GimpPreviewArea">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
+<link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
+<link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
+<link rel="part" href="libgimpwidgets-colordisplay.html" title="Part&#160;II.&#160;GIMP Display Filters">
+<link rel="part" href="libgimpwidgets-colorselector.html" title="Part&#160;III.&#160;GIMP Color Selectors">
+<link rel="part" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
+<link rel="part" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
+<link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="GimpPickButton.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
+<td><a accesskey="n" href="GimpPreviewArea.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="GimpPixmap"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">GimpPixmap</span></h2>
+<p>GimpPixmap &#8212; Widget which creates a <a
 href="../gtk/GtkPixmap.html"
-><span class="type">GtkPixmap</span></a> from XPM data.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+><span class="type">GtkPixmap</span></a> from XPM data.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
 
 
 
             <a href="GimpPixmap.html#GimpPixmap-struct">GimpPixmap</a>;
 <a
 href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="GimpPixmap.html#gimp-pixmap-new">gimp_pixmap_new</a>                 (<a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> **xpm_data);
+>GtkWidget</a>*  <a href="GimpPixmap.html#gimp-pixmap-new">gimp_pixmap_new</a>                 (gchar **xpm_data);
 void        <a href="GimpPixmap.html#gimp-pixmap-set">gimp_pixmap_set</a>                 (<a href="GimpPixmap.html" title="GimpPixmap">GimpPixmap</a> *pixmap,
-                                             <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> **xpm_data);
+                                             gchar **xpm_data);
 
-</pre></div><div class="refsect1" lang="en"><a name="id2593694"></a><h2>Object Hierarchy</h2><pre class="synopsis">
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2517864"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
 
-  <a
-href="../gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
+  GObject
    +----<a
 href="../gtk/GtkObject.html"
 >GtkObject</a>
@@ -33,46 +70,132 @@ href="../gtk/GtkMisc.html"
 href="../gtk/GtkImage.html"
 >GtkImage</a>
                            +----GimpPixmap
-</pre></div><div class="refsect1" lang="en"><a name="id2593730"></a><h2>Implemented Interfaces</h2><p>
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2517908"></a><h2>Implemented Interfaces</h2>
+<p>
 GimpPixmap implements
- AtkImplementorIface.</p></div><div class="refsect1" lang="en"><a name="id2593745"></a><h2>Description</h2><p>
+ AtkImplementorIface.</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2517925"></a><h2>Description</h2>
+<p>
 Widget which creates a <a
 href="../gtk/GtkPixmap.html"
 ><span class="type">GtkPixmap</span></a> from XPM data.
-</p><p>
+</p>
+<p>
 Use this widget instead of <a
 href="../gtk/GtkPixmap.html"
 ><span class="type">GtkPixmap</span></a> if you don't want to worry about
 the parent container's "realized" state.
-</p><p>
+</p>
+<p>
 Note that the drawback of the easy interface is that the actual <a
 href="../gdk/gdk-Bitmaps-and-Pixmaps.html#GdkPixmap"
 ><span class="type">GdkPixmap</span></a>
 and it's mask have to be constructed every time you call <a href="GimpPixmap.html#gimp-pixmap-new"><code class="function">gimp_pixmap_new()</code></a>
 and cannot be cached in memory without doing bad hacks.
-</p></div><div class="refsect1" lang="en"><a name="id2593790"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2593795"></a><h3><a name="GimpPixmap-struct"></a>GimpPixmap</h3><a class="indexterm" name="id2593804"></a><pre class="programlisting">typedef struct _GimpPixmap GimpPixmap;</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><code class="literal">GimpPixmap</code> is deprecated and should not be used in newly-written code.</p></div><p>
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2517976"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2517982"></a><h3>
+<a name="GimpPixmap-struct"></a>GimpPixmap</h3>
+<a class="indexterm" name="id2560643"></a><pre class="programlisting">typedef struct _GimpPixmap GimpPixmap;</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">GimpPixmap</code> is deprecated and should not be used in newly-written code.</p>
+</div>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2579138"></a><h3><a name="gimp-pixmap-new"></a>gimp_pixmap_new ()</h3><a class="indexterm" name="id2579147"></a><pre class="programlisting"><a
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2560670"></a><h3>
+<a name="gimp-pixmap-new"></a>gimp_pixmap_new ()</h3>
+<a class="indexterm" name="id2560680"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_pixmap_new                 (<a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> **xpm_data);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><code class="literal">gimp_pixmap_new</code> is deprecated and should not be used in newly-written code.</p></div><p>
-Creates a new <a href="GimpPixmap.html" title="GimpPixmap"><span class="type">GimpPixmap</span></a> widget.</p><p>
+>GtkWidget</a>*  gimp_pixmap_new                 (gchar **xpm_data);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_pixmap_new</code> is deprecated and should not be used in newly-written code.</p>
+</div>
+<p>
+Creates a new <a href="GimpPixmap.html" title="GimpPixmap"><span class="type">GimpPixmap</span></a> widget.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>xpm_data</code></em> :</span></td><td> A pointer to a XPM data structure as found in XPM files.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A pointer to the new <a href="GimpPixmap.html" title="GimpPixmap"><span class="type">GimpPixmap</span></a> widget.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2579216"></a><h3><a name="gimp-pixmap-set"></a>gimp_pixmap_set ()</h3><a class="indexterm" name="id2579225"></a><pre class="programlisting">void        gimp_pixmap_set                 (<a href="GimpPixmap.html" title="GimpPixmap">GimpPixmap</a> *pixmap,
-                                             <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> **xpm_data);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><code class="literal">gimp_pixmap_set</code> is deprecated and should not be used in newly-written code.</p></div><p>
-Sets a new image for an existing <a href="GimpPixmap.html" title="GimpPixmap"><span class="type">GimpPixmap</span></a> widget.</p><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>xpm_data</code></em>&#160;:</span></td>
+<td> A pointer to a XPM data structure as found in XPM files.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> A pointer to the new <a href="GimpPixmap.html" title="GimpPixmap"><span class="type">GimpPixmap</span></a> widget.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2560768"></a><h3>
+<a name="gimp-pixmap-set"></a>gimp_pixmap_set ()</h3>
+<a class="indexterm" name="id2560778"></a><pre class="programlisting">void        gimp_pixmap_set                 (<a href="GimpPixmap.html" title="GimpPixmap">GimpPixmap</a> *pixmap,
+                                             gchar **xpm_data);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_pixmap_set</code> is deprecated and should not be used in newly-written code.</p>
+</div>
+<p>
+Sets a new image for an existing <a href="GimpPixmap.html" title="GimpPixmap"><span class="type">GimpPixmap</span></a> widget.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>pixmap</code></em> :</span></td><td> The pixmap widget you want to set the new xpm_data for.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>xpm_data</code></em> :</span></td><td> A pointer to a XPM data structure as found in XPM files.
-</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2596646"></a><h2>See Also</h2><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>pixmap</code></em>&#160;:</span></td>
+<td> The pixmap widget you want to set the new xpm_data for.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>xpm_data</code></em>&#160;:</span></td>
+<td> A pointer to a XPM data structure as found in XPM files.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2570753"></a><h2>See Also</h2>
+<p>
 <a href="libgimpwidgets-GimpWidgets.html#gimp-pixmap-button-new"><code class="function">gimp_pixmap_button_new()</code></a>
-</p><p>
+</p>
+<p>
 <a
 href="../gtk/GtkPixmap.html"
 ><span class="type">GtkPixmap</span></a>
-</p></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="GimpPickButton.html"><b>&lt;&lt; GimpPickButton</b></a></td><td align="right"><a accesskey="n" href="GimpPreviewArea.html"><b>GimpPreviewArea &gt;&gt;</b></a></td></tr></table></body></html>
+</p>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="GimpPickButton.html"><b>&lt;&lt;&#160;GimpPickButton</b></a></td>
+<td align="right"><a accesskey="n" href="GimpPreviewArea.html"><b>GimpPreviewArea&#160;&gt;&gt;</b></a></td>
+</tr></table>
+</body>
+</html>

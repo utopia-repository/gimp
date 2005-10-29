@@ -1,34 +1,36 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpAdaptiveSupersample</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Color Library Reference Manual"><link rel="up" href="libgimpcolor.html" title="Part I. GIMP Color Library"><link rel="prev" href="libgimpcolor-GimpColorSpace.html" title="GimpColorSpace"><link rel="next" href="libgimpcolor-GimpBilinear.html" title="GimpBilinear"><meta name="generator" content="GTK-Doc V1.2 (XML mode)"><style type="text/css">
-        .synopsis, .classsynopsis {
-            background: #eeeeee;
-            border: solid 1px #aaaaaa;
-            padding: 0.5em;
-        }
-        .programlisting {
-            background: #eeeeff;
-            border: solid 1px #aaaaff;
-            padding: 0.5em;
-        }
-        .variablelist {
-            padding: 4px;
-            margin-left: 3em;
-        }
-        .navigation {
-            background: #ffeeee;
-            border: solid 1px #ffaaaa;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-        }
-        .navigation a {
-            color: #770000;
-        }
-        .navigation a:visited {
-            color: #550000;
-        }
-        .navigation .title {
-            font-size: 200%;
-        }
-      </style></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpcolor-GimpColorSpace.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpcolor.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Color Library Reference Manual</th><td><a accesskey="n" href="libgimpcolor-GimpBilinear.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimpcolor-GimpAdaptiveSupersample"></a><div class="titlepage"></div><div class="refnamediv"><h2><span class="refentrytitle">GimpAdaptiveSupersample</span></h2><p>GimpAdaptiveSupersample &#8212; Functions to perform adaptive supersampling on an area.</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>GimpAdaptiveSupersample</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Color Library Reference Manual">
+<link rel="up" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
+<link rel="prev" href="libgimpcolor-GimpColorSpace.html" title="GimpColorSpace">
+<link rel="next" href="libgimpcolor-GimpBilinear.html" title="GimpBilinear">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="libgimpcolor-GimpColorSpace.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpcolor.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Color Library Reference Manual</th>
+<td><a accesskey="n" href="libgimpcolor-GimpBilinear.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="libgimpcolor-GimpAdaptiveSupersample"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">GimpAdaptiveSupersample</span></h2>
+<p>GimpAdaptiveSupersample &#8212; Functions to perform adaptive supersampling on an area.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
 
 
 
@@ -56,42 +58,149 @@ gulong      <a href="libgimpcolor-GimpAdaptiveSupersample.html#gimp-adaptive-sup
                                              gpointer put_pixel_data,
                                              <a href="libgimpcolor-GimpAdaptiveSupersample.html#GimpProgressFunc">GimpProgressFunc</a> progress_func,
                                              gpointer progress_data);
-</pre></div><div class="refsect1" lang="en"><a name="id2578968"></a><h2>Description</h2><p>
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2546278"></a><h2>Description</h2>
+<p>
 Functions to perform adaptive supersampling on an area.
-</p></div><div class="refsect1" lang="en"><a name="id2578979"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2578984"></a><h3><a name="GimpProgressFunc"></a>GimpProgressFunc ()</h3><a class="indexterm" name="id2578992"></a><pre class="programlisting">void        (*GimpProgressFunc)             (gint min,
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2546290"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2546296"></a><h3>
+<a name="GimpProgressFunc"></a>GimpProgressFunc ()</h3>
+<a class="indexterm" name="id2546307"></a><pre class="programlisting">void        (*GimpProgressFunc)             (gint min,
                                              gint max,
                                              gint current,
-                                             gpointer data);</pre><p>
+                                             gpointer data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>min</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>max</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>current</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>current</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2579077"></a><h3><a name="GimpPutPixelFunc"></a>GimpPutPixelFunc ()</h3><a class="indexterm" name="id2529798"></a><pre class="programlisting">void        (*GimpPutPixelFunc)             (gint x,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2526836"></a><h3>
+<a name="GimpPutPixelFunc"></a>GimpPutPixelFunc ()</h3>
+<a class="indexterm" name="id2526846"></a><pre class="programlisting">void        (*GimpPutPixelFunc)             (gint x,
                                              gint y,
                                              <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color,
-                                             gpointer data);</pre><p>
+                                             gpointer data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>y</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>color</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2529882"></a><h3><a name="GimpRenderFunc"></a>GimpRenderFunc ()</h3><a class="indexterm" name="id2529891"></a><pre class="programlisting">void        (*GimpRenderFunc)               (gdouble x,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2526954"></a><h3>
+<a name="GimpRenderFunc"></a>GimpRenderFunc ()</h3>
+<a class="indexterm" name="id2526964"></a><pre class="programlisting">void        (*GimpRenderFunc)               (gdouble x,
                                              gdouble y,
                                              <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color,
-                                             gpointer data);</pre><p>
+                                             gpointer data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>y</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>color</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2529975"></a><h3><a name="gimp-adaptive-supersample-area"></a>gimp_adaptive_supersample_area ()</h3><a class="indexterm" name="id2529983"></a><pre class="programlisting">gulong      gimp_adaptive_supersample_area  (gint x1,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2527072"></a><h3>
+<a name="gimp-adaptive-supersample-area"></a>gimp_adaptive_supersample_area ()</h3>
+<a class="indexterm" name="id2527081"></a><pre class="programlisting">gulong      gimp_adaptive_supersample_area  (gint x1,
                                              gint y1,
                                              gint x2,
                                              gint y2,
@@ -102,21 +211,101 @@ Functions to perform adaptive supersampling on an area.
                                              <a href="libgimpcolor-GimpAdaptiveSupersample.html#GimpPutPixelFunc">GimpPutPixelFunc</a> put_pixel_func,
                                              gpointer put_pixel_data,
                                              <a href="libgimpcolor-GimpAdaptiveSupersample.html#GimpProgressFunc">GimpProgressFunc</a> progress_func,
-                                             gpointer progress_data);</pre><p>
+                                             gpointer progress_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>x1</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>y1</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>x2</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>y2</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>max_depth</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>threshold</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>render_func</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>render_data</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>put_pixel_func</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>put_pixel_data</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>progress_func</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>progress_data</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>x2</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>y2</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>max_depth</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>render_func</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>render_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>put_pixel_func</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>put_pixel_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>progress_func</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>progress_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpcolor-GimpColorSpace.html"><b>&lt;&lt; GimpColorSpace</b></a></td><td align="right"><a accesskey="n" href="libgimpcolor-GimpBilinear.html"><b>GimpBilinear &gt;&gt;</b></a></td></tr></table></body></html>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimpcolor-GimpColorSpace.html"><b>&lt;&lt;&#160;GimpColorSpace</b></a></td>
+<td align="right"><a accesskey="n" href="libgimpcolor-GimpBilinear.html"><b>GimpBilinear&#160;&gt;&gt;</b></a></td>
+</tr></table>
+</body>
+</html>

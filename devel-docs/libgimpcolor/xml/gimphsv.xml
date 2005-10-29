@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpHSV">GimpHSV</link>;
+            <link linkend="GimpHSV">GimpHSV</link>;
 <link linkend="void">void</link>        <link linkend="gimp-hsv-set">gimp_hsv_set</link>                    (<link linkend="GimpHSV">GimpHSV</link> *hsv,
                                              <link linkend="gdouble">gdouble</link> hue,
                                              <link linkend="gdouble">gdouble</link> saturation,
@@ -51,11 +51,10 @@ Definitions and Functions relating to HSV colors.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpHSV"/>struct GimpHSV</title>
-<indexterm><primary>GimpHSV</primary></indexterm><programlisting>struct GimpHSV {
-
+<title><anchor id="GimpHSV"/>GimpHSV</title>
+<indexterm><primary>GimpHSV</primary></indexterm><programlisting>typedef struct {
   gdouble h, s, v, a;
-};
+} GimpHSV;
 </programlisting>
 <para>
 

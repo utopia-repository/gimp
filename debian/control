@@ -3,7 +3,7 @@ Priority: optional
 Section: graphics
 Maintainer: Ari Pollak <ari@debian.org>
 Standards-Version: 3.6.1
-Build-Depends: debhelper (>= 4.2.21), gettext, intltool, libaa1-dev, libgtk2.0-dev (>= 2.4.4-1), libgtkhtml2-dev (>= 2.0.0), libjpeg62-dev, libmpeg-dev, libart-2.0-dev, libpng-dev, xlibs-dev, zlib1g-dev, libtiff4-dev, python-dev, python-gtk2-dev, libexif-dev (>= 0.6.12), libmng-dev, librsvg2-dev (>= 2.7.2-2), libfontconfig1-dev (>= 2.2.0), libwmf-dev (>= 0.2.8-1.1), sharutils, sed (>= 3.95), libasound2-dev (>= 1.0.0) [!kfreebsd-i386 !hurd-i386], gcc-3.3
+Build-Depends: debhelper (>= 5), binutils (>= 2.12.90.0.9), gettext, intltool, libaa1-dev, libgtk2.0-dev (>= 2.4.4-1), libgtkhtml2-dev (>= 2.0.0), libjpeg62-dev, libmpeg-dev, libart-2.0-dev, libpng-dev, xlibs-dev, zlib1g-dev, libtiff4-dev, python-dev, python-gtk2-dev, libexif-dev (>= 0.6.12), libmng-dev, librsvg2-dev (>= 2.7.2-2), libfontconfig1-dev (>= 2.2.0), libwmf-dev (>= 0.2.8-1.1), sharutils, sed (>= 3.95), libasound2-dev (>= 1.0.0) [!kfreebsd-i386 !hurd-i386], gcc-3.3
 
 Package: libgimp2.0
 Architecture: any
@@ -96,3 +96,13 @@ Depends: lynx | www-browser
 Description: Developers' Documentation for the GIMP library
  This package contains the HTML documentation for the GIMP library in
  /usr/share/gtk-doc/html/ .
+
+Package: gimp-dbg
+Architecture: any
+Section: graphics
+Depends: gimp (= ${Source-Version}) | libgimp2.0 (= ${Source-Version}), ${shlibs:Depends}
+Description: Debugging symbols for The GIMP
+  This package includes the debugging symbols useful for debugging
+  The GIMP and its libraries, contained in the gimp and libgimp2.0 packages.
+  The debugging symbols are used for execution tracing and core dump
+  analysis.

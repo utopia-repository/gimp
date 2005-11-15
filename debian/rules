@@ -158,7 +158,7 @@ binary-arch: build install
 	dh_installchangelogs -a ChangeLog
 	dh_desktop
 	dh_link -a
-	dh_strip -a --dbg-package=gimp
+	dh_strip -a --dbg-package=gimp-dbg
 	dh_compress -a
 	dh_fixperms -a
 #	dh_perl

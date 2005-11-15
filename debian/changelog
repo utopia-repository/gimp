@@ -1,3 +1,10 @@
+gimp (2.2.9-3) unstable; urgency=low
+
+  * Oops, I made a typo in debian/rules so the gimp-dbg package didn't
+    contain anything.
+
+ -- Ari Pollak <ari@debian.org>  Tue, 15 Nov 2005 14:22:50 -0500
+
 gimp (2.2.9-2) unstable; urgency=low
 
   * Use debhelper v5

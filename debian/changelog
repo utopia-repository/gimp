@@ -1,3 +1,12 @@
+gimp (2.2.9-4) unstable; urgency=low
+
+  * I found out from Manish Singh that gcc 3.3 generates incredibly
+    bloated debugging symbols. So I've switched to building 
+    gimp with gcc 4.0 on all arches except arm (which FTBFSs with gcc-4.0),
+    which now builds with gcc 3.4.
+
+ -- Ari Pollak <ari@debian.org>  Sat, 19 Nov 2005 17:26:51 -0500
+
 gimp (2.2.9-3) unstable; urgency=low
 
   * Oops, I made a typo in debian/rules so the gimp-dbg package didn't

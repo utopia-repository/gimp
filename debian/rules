@@ -26,9 +26,15 @@ ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 else
 	CFLAGS += -O2
 endif
-ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
-	INSTALL_PROGRAM += -s
+
+ifeq ("arm",$(shell dpkg-architecture -qDEB_BUILD_ARCH_CPU))
+	CC = gcc-3.4
+else
+	CC = gcc
 endif
+#ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+#	INSTALL_PROGRAM += -s
+#endif
 
 major=2.0
 
@@ -44,7 +50,7 @@ config.status:
 	dh_testdir
 
  	# Add here commands to compile the pacckage.
-	CC=gcc-3.3 CFLAGS="$(CFLAGS)" ./configure --sysconfdir=/etc \
+	CC=$(CC) CFLAGS="$(CFLAGS)" ./configure --sysconfdir=/etc \
 	--prefix=/usr --enable-python --mandir=\$${prefix}/share/man \
 	--host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) \
 	--enable-default-binary --disable-print

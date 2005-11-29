@@ -1,3 +1,10 @@
+gimp (2.2.9-5) unstable; urgency=low
+
+  * Get rid of gcc-3.3 dependency in libgimp2.0-dev, I'm not sure
+    why it was there in the first place.
+
+ -- Ari Pollak <ari@debian.org>  Tue, 29 Nov 2005 15:39:45 -0500
+
 gimp (2.2.9-4) unstable; urgency=low
 
   * I found out from Manish Singh that gcc 3.3 generates incredibly

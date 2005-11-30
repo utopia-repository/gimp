@@ -1,3 +1,12 @@
+gimp (2.2.9-6) unstable; urgency=low
+
+  * Add explicit build-dependency on libfreetype6-dev since gimp
+    uses symbols from that library (Closes: #341459)
+  * Fix downloading of images in gimp when "verbose=off" is present
+    in wgetrc (Closes: #341221)
+
+ -- Ari Pollak <ari@debian.org>  Wed, 30 Nov 2005 13:17:16 -0500
+
 gimp (2.2.9-5) unstable; urgency=low
 
   * Get rid of gcc-3.3 dependency in libgimp2.0-dev, I'm not sure

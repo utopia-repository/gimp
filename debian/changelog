@@ -1,3 +1,12 @@
+gimp (2.2.9-7) unstable; urgency=low
+
+  * Remove unnecessary build-dependency on libmpeg-dev
+  * Remove unnecessary build-dependency on sharutils
+  * Remove dependency on xlibs-dev, replace with appropriate -dev
+    packages
+
+ -- Ari Pollak <ari@debian.org>  Mon,  5 Dec 2005 10:52:36 -0500
+
 gimp (2.2.9-6) unstable; urgency=low
 
   * Add explicit build-dependency on libfreetype6-dev since gimp

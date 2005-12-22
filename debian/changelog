@@ -1,3 +1,15 @@
+gimp (2.2.9-8) unstable; urgency=low
+
+  * gimptool-2.0.in:
+    - Define PKG_CONFIG at the beginning of the gimptool script
+      so the GTK/Glib cflags & libs are checked at runtime instead
+      of gimp package compile-time. This was breaking gimp plugins
+      built with gimptool with GTK+ 2.8 installed, since 
+      extra library/include dependencies on Cairo were added.
+      An upstream bug has been filed about this (GNOME #324761).
+
+ -- Ari Pollak <ari@debian.org>  Wed, 21 Dec 2005 20:21:58 -0500
+
 gimp (2.2.9-7) unstable; urgency=low
 
   * Remove unnecessary build-dependency on libmpeg-dev

@@ -4,26 +4,26 @@ if [ -z "${PKG_CONFIG}" ]; then
 	PKG_CONFIG=/usr/bin/pkg-config
 fi
 
-prefix=@prefix@
-exec_prefix=@exec_prefix@
+prefix=/usr
+exec_prefix=${prefix}
 exec_prefix_set=no
 
-bindir=@bindir@
-sbindir=@sbindir@
-libexecdir=@libexecdir@
-datadir=@datadir@
-sysconfdir=@sysconfdir@
-sharedstatedir=@sharedstatedir@
-localstatedir=@localstatedir@
-libdir=@libdir@
-infodir=@infodir@
-mandir=@mandir@
-includedir=@includedir@
+bindir=${exec_prefix}/bin
+sbindir=${exec_prefix}/sbin
+libexecdir=${exec_prefix}/libexec
+datadir=${prefix}/share
+sysconfdir=/etc
+sharedstatedir=${prefix}/com
+localstatedir=${prefix}/var
+libdir=${exec_prefix}/lib
+infodir=${prefix}/info
+mandir=${prefix}/share/man
+includedir=${prefix}/include
 
-gimpplugindir=@gimpplugindir@
-gimpdatadir=@gimpdatadir@
+gimpplugindir=${exec_prefix}/lib/gimp/2.0
+gimpdatadir=${prefix}/share/gimp/2.0
 
-rt_libs=@RT_LIBS@
+rt_libs=
 
 usage()
 {
@@ -96,10 +96,10 @@ if test $# -eq 0; then
 fi
 
 if test x${PKG_CONFIG+set} != xset ; then
-  gtk_cflags='@GTK_CFLAGS@'
-  gtk_libs='@GTK_LIBS@'
-  glib_cflags='@GLIB_CFLAGS@'
-  glib_libs='@GLIB_LIBS@'
+  gtk_cflags='-DXTHREADS -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/X11R6/include -I/usr/include/atk-1.0 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  '
+  gtk_libs='-lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangoxft-1.0 -lpangox-1.0 -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  '
+  glib_cflags='-I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  '
+  glib_libs='-lgobject-2.0 -lglib-2.0  '
 else
   gtk_cflags=`$PKG_CONFIG --cflags gtk+-2.0`
   gtk_libs=`$PKG_CONFIG --libs gtk+-2.0`
@@ -108,7 +108,7 @@ else
 fi
 
 if test x${INSTALL+set} != xset ; then
-  INSTALL='@INSTALL@'
+  INSTALL='/usr/bin/install -c'
   if test "$INSTALL" = "./install-sh -c"; then
     mydirname=`echo $0 | sed -e 's#\(.*\)/[^/].*$#\1#'`
     INSTALL="$mydirname/gimpinstall"
@@ -116,19 +116,19 @@ if test x${INSTALL+set} != xset ; then
 fi
 
 if test x${CC+set} != xset ; then
-  cc='@CC@'
+  cc='gcc'
 else
   cc="$CC"
 fi
 
 if test x${CFLAGS+set} != xset ; then
-  cflags='@CFLAGS@'
+  cflags='-Wall -g -O2'
 else
   cflags="$CFLAGS"
 fi
 
 if test x${LDFLAGS+set} != xset ; then
-  ldflags='@LDFLAGS@'
+  ldflags=''
 else
   ldflags="$LDFLAGS"
 fi
@@ -147,7 +147,7 @@ while test $# -gt 0; do
 
   case $1 in
     --version)
-      echo @GIMP_MAJOR_VERSION@.@GIMP_MINOR_VERSION@.@GIMP_MICRO_VERSION@
+      echo 2.2.9
       exit 0
       ;;
     --help)
@@ -189,14 +189,14 @@ while test $# -gt 0; do
         --cflags-noui)
           my_gtk_cflags=$glib_cflags ;;
       esac
-      includes=-I@includedir@/gimp-@GIMP_API_VERSION@
+      includes=-I${prefix}/include/gimp-2.0
       echo $includes $my_gtk_cflags
       ;;
     --libs | --libs-nogimpui)
       my_gtk_libs=
-      libdirs=-L@libdir@
+      libdirs=-L${exec_prefix}/lib
       for i in $gtk_libs ; do
-        if test $i != -L@libdir@ ; then
+        if test $i != -L${exec_prefix}/lib ; then
           if test -z "$my_gtk_libs" ; then
             my_gtk_libs="$i"
           else
@@ -206,13 +206,13 @@ while test $# -gt 0; do
       done
       case $1 in
         --libs)
-          echo $libdirs -lgimpui-@GIMP_API_VERSION@ -lgimpwidgets-@GIMP_API_VERSION@ -lgimp-@GIMP_API_VERSION@ -lgimpcolor-@GIMP_API_VERSION@ -lgimpmath-@GIMP_API_VERSION@ -lgimpbase-@GIMP_API_VERSION@ $my_gtk_libs $rt_libs ;;
+          echo $libdirs -lgimpui-2.0 -lgimpwidgets-2.0 -lgimp-2.0 -lgimpcolor-2.0 -lgimpmath-2.0 -lgimpbase-2.0 $my_gtk_libs $rt_libs ;;
         --libs-nogimpui)
-          echo $libdirs -lgimp-@GIMP_API_VERSION@ -lgimpcolor-@GIMP_API_VERSION@ -lgimpmath-@GIMP_API_VERSION@ -lgimpbase-@GIMP_API_VERSION@ $my_gtk_libs $rt_libs ;;
+          echo $libdirs -lgimp-2.0 -lgimpcolor-2.0 -lgimpmath-2.0 -lgimpbase-2.0 $my_gtk_libs $rt_libs ;;
       esac
       ;;
     --libs-noui)
-      echo -L@libdir@ -lgimp-@GIMP_API_VERSION@ -lgimpcolor-@GIMP_API_VERSION@ -lgimpmath-@GIMP_API_VERSION@ -lgimpbase-@GIMP_API_VERSION@ $glib_libs $rt_libs
+      echo -L${exec_prefix}/lib -lgimp-2.0 -lgimpcolor-2.0 -lgimpmath-2.0 -lgimpbase-2.0 $glib_libs $rt_libs
       ;;
     --install-bin | --install-admin-bin \
     | --install-bin-strip | --install-admin-bin-strip \
@@ -221,27 +221,27 @@ while test $# -gt 0; do
     | --uninstall-script | --uninstall-admin-script )
       case $1 in
         --*install-bin)
-          install_cmd="@INSTALL_PROGRAM@"
-          install_dir="$HOME/@gimpdir@/plug-ins"
+          install_cmd="${INSTALL}"
+          install_dir="$HOME/.gimp-2.2/plug-ins"
           ;;
         --install-bin-strip)
-          install_cmd="@INSTALL_PROGRAM@ -s"
-          install_dir="$HOME/@gimpdir@/plug-ins"
+          install_cmd="${INSTALL} -s"
+          install_dir="$HOME/.gimp-2.2/plug-ins"
           ;;
         --*install-admin-bin)
-          install_cmd="@INSTALL_PROGRAM@"
+          install_cmd="${INSTALL}"
           install_dir="$gimpplugindir/plug-ins"
           ;;
         --install-admin-bin-strip)
-          install_cmd="@INSTALL_PROGRAM@ -s"
+          install_cmd="${INSTALL} -s"
           install_dir="$gimpplugindir/plug-ins"
           ;;
         --*install-script)
-          install_cmd="@INSTALL_DATA@"
-          install_dir="$HOME/@gimpdir@/scripts"
+          install_cmd="${INSTALL} -m 644"
+          install_dir="$HOME/.gimp-2.2/scripts"
           ;;
         --*install-admin-script)
-          install_cmd="@INSTALL_DATA@"
+          install_cmd="${INSTALL} -m 644"
           install_dir="$gimpdatadir/scripts"
           ;;
       esac
@@ -267,7 +267,7 @@ while test $# -gt 0; do
           shift
           if test "x$1" != "x"; then
             if test -r "$1"; then
-              cmd="@INSTALL_PROGRAM@ -d $DESTDIR$install_dir"
+              cmd="${INSTALL} -d $DESTDIR$install_dir"
               test $quiet = "yes" || echo $cmd
               test $donothing = "yes" || $cmd
               dest=`echo $1 | sed -e 's#.*/\([^/].*\)$#\1#'`
@@ -300,7 +300,7 @@ while test $# -gt 0; do
         --build | --build-noui | --build-nogimpui)
           install_dir=. ;;
         --install | --install-noui | --install-nogimpui)
-          install_dir="$HOME/@gimpdir@/plug-ins" ;;
+          install_dir="$HOME/.gimp-2.2/plug-ins" ;;
         --install-admin | --install-admin-noui | --install-admin-nogimpui)
           install_dir="$gimpplugindir/plug-ins" ;;
       esac
@@ -320,7 +320,7 @@ while test $# -gt 0; do
       if test "x$1" != "x"; then
         if test -r "$1"; then
           if test "$install_dir" != "."; then
-            cmd="@INSTALL_PROGRAM@ -d $DESTDIR$install_dir"
+            cmd="${INSTALL} -d $DESTDIR$install_dir"
             test $quiet = "yes" || echo $cmd
             test $donothing = "yes" || $cmd
           fi

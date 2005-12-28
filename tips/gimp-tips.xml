@@ -77,6 +77,7 @@
 
   <tip level="beginner">
     <thetip>You can get context-sensitive help for most of the GIMP's features by pressing the F1 key at any time. This also works inside the menus.</thetip>
+    <thetip xml:lang="bg">Можете да получите контекстночувствителна помощ за повечето възможности на GIMP като натиснете F1. Работи и в менюта.</thetip>
     <thetip xml:lang="ca">Podeu obtenir ajuda contextual per a la majoria de les característiques del GIMP en prémer la tecla F1 en qualsevol moment. Això també funciona dins els menús.</thetip>
     <thetip xml:lang="cs">Kontextově citlivou nápovědu o většině vlastností programu GIMP můžete kdykoli získat stisknutím klávesy F1. Funguje to i v menu.</thetip>
     <thetip xml:lang="da">Du kan få kontekstsensitiv hjælp til de fleste af Gimp'ens faciliteter ved at trykke på F1-tasten på hvilket som helst tidspunkt. Det virker også inden i menuer.</thetip>
@@ -146,6 +147,7 @@
   </tip>
   <tip level="beginner">
     <thetip>You can perform many layer operations by right-clicking on the text label of a layer in the Layers dialog.</thetip>
+    <thetip xml:lang="bg">Можете да направите много неща със слоеве като натиснете текстовия етикет на слоя в прозореца със слоевете.</thetip>
     <thetip xml:lang="ca">Podeu realitzar moltes operacions de capa si cliqueu amb el botó dret en l'etiqueta de text d'una capa en el diàleg capes.</thetip>
     <thetip xml:lang="cs">Mnoho operací s vrstvami můžete provést kliknutím pravým tlačítkem na textovou jmenovku vrstvy v dialogu Vrstvy.</thetip>
     <thetip xml:lang="da">Du kan udføre mange lagoperationer ved at højreklikke på tekstetiketten til et lag i lagvinduet.</thetip>
@@ -239,6 +241,7 @@
   </tip>
   <tip level="beginner">
     <thetip>Most plug-ins work on the current layer of the current image. In some cases, you will have to merge all layers (Image-&gt;Flatten Image) if you want the plug-in to work on the whole image.</thetip>
+    <thetip xml:lang="bg">Повечето филтри работят на активния слой от активното изображение. В някой случаи се налага да слеете всички слоеве (Изображение-&gt;Изравняване на изображението) ако искате филтъра да работи върху цялото изображение.</thetip>
     <thetip xml:lang="ca">La majoria de connectors funcionen en la capa actual de la imatge actual. En alguns casos tindreu que fusionar totes les capes (Imatge-&gt;Aplana la imatge) si voleu que el connector funcioni en la imatge sencera.</thetip>
     <thetip xml:lang="cs">Většina zásuvných modulů pracuje na aktuální vrstvě aktuálního obrázku. Chcete-li, aby zásuvný modul pracoval na celém obrázku, budete v některých případech muset sloučit všechny vrstvy (Obrázek-&gt;Zploštit obrázek).</thetip>
     <thetip xml:lang="da">De fleste udvidelsesmoduler arbejder på det aktive lag eller det aktive billede. I nogle tilfælde bliver du nødt til at slå alle lagene sammen (Billede-&gt;Fladgør billede) hvis du vil have modulet til at virke på hele billedet.</thetip>
@@ -271,6 +274,7 @@
   </tip>
   <tip level="beginner">
     <thetip>Not all effects can be applied to all kinds of images. This is indicated by a grayed-out menu-entry. You may need to change the image mode to RGB (Image-&gt;Mode-&gt;RGB), add an alpha-channel (Layer-&gt;Transparency-&gt;Add Alpha Channel) or flatten it (Image-&gt;Flatten Image).</thetip>
+    <thetip xml:lang="bg">Не всички филтри работят върху всички типове изображения. Ако да ден филтър не работи в този случай, името му се оцветява в сиво. Може да се наложи да промените типа на изображението в RGB (Изображение&gt;Тип&gt;RGB); да добавите канал за прозрачност (Слой-&gt;Прозрачност-&gt;Добавяне на канал за прозрачност) или да слеете слоевете (Изображение-&gt;Изравняване на изображението).</thetip>
     <thetip xml:lang="ca">No tots els efectes es poden aplicar a tots els tipus d'imatges. Així s'indica amb un menú en relleu. Potser us caldrà canviar el mode imatge a RGB (Imatge-&gt;Mode-&gt;RGB), afegir un canal alfa (Capes-&gt; Transparència-&gt; Afegeix canal alfa) o aplanar-la (Imatge-&gt;Aplana imatge).</thetip>
     <thetip xml:lang="cs">Některé efekty nemohou být provedeny na všech druzích obrázků. To je indikováno zešedlou položkou menu. Možná budete muset změnit režim obrázku na RGB (Obrázek-&gt;Režim-&gt;RGB), přidat alfa kanál (Vrstva-&gt;Průhlednost-&gt;Přidat alfa kanál), nebo jej zploštit (Obrázek-&gt;Zploštit obrázek).</thetip>
     <thetip xml:lang="da">Ikke alle effekter kan bruges på alle typer billeder. Dette bliver indikeret ved et gråtonet menupunkt. Du får måske bruge for at ændre billedtilstanden til RGB (Billede-&gt;Tilstand-&gt;RGB), tilføje en alfakanal (Lag-&gt;Gennemsigtighed&gt;Tilføj alfakanal) eller fladgøre det (Billede-&gt;Fladgør billede).</thetip>
@@ -282,7 +286,7 @@
     <thetip xml:lang="fr">Tous les effets ne peuvent pas être appliqués sur tous les types d'images. Ceci est signalé par une entrée de menu grisée. Vous pourriez donc avoir besoin de changer le mode de l'image en RVB (Image-&gt;Mode-&gt;RVB), ajouter un canal alpha (Calque-&gt; Transparence-&gt;Ajouter un canal alpha) ou l'aplatir (Image-&gt;Aplatir l'image).</thetip>
     <thetip xml:lang="hu">A kép típusától függően elképzelhető, hogy nem minden effektus alkalmazható arra. Ha nem alkalmazható, azt a megfelelő menübejegyzés szürkítése (inaktív állapota) jelzi. Ilyenkor szükség lehet a kép módjának RGB-re való módosítására ("Kép-&gt;Mód-&gt;RGB" menüpont), alfa-csatorna felvételére ("Réteg-&gt;Átlátszóság-&gt;Alfa-csatorna hozzáadása" menüpont) vagy a kép lapítására ("Kép-&gt;Egy réteggé lapítás" menüpont).</thetip>
     <thetip xml:lang="it">Non tutti gli effetti possono essere applicati ad ogni tipo di immagine. In caso di impossibilità la corrispondente voce del menù sarà grigia. Per risolvere il problema, puoi cambiare la modalità immagine in RGB (Immagine-&gt;Modalità-&gt;RGB), aggiungere un canale alfa (Livelli-&gt;Trasparenze-&gt;Aggiungi canale alfa) o appiattirla (Immagine-&gt;Appiattisci immagine).</thetip>
-    <thetip xml:lang="ja">全部のプラグインが全ての種類の画像に使えるわけじゃないんだ。作業中の画像に対して使えないやつは、メニューが灰色になって選択できなくなってるはずだよ。そんな時には RGB 形式にしたり (画像-&gt;モード-&gt;RGB)、アルファチャンネルを加えたり (レイヤー-&gt;透明-&gt;アルファチャンネルの追加)、画像を統合してみたり (画像-&gt;画像の統合) するといいかもしれないね。</thetip>
+    <thetip xml:lang="ja">全部のプラグインが全ての種類の画像に使えるわけじゃないんだ。作業中の画像に対して使えないやつは、メニューが灰色になって選択できなくなってるはずだよ。そんな時には RGB 形式にしたり (画像-&gt;モード-&gt;RGB)、アルファチャンネルを加えたり (レイヤー-&gt;透明部分-&gt;アルファチャンネルを追加する)、画像を統合してみたり (画像-&gt;画像の統合) するといいかもしれないね。</thetip>
     <thetip xml:lang="ko">모든 효과가 모든 종류의 이미지에 적용되지는 않습니다. 이런 경우에는 메뉴 항목이 회색으로 표시됩니다. 이미지의 모드를 RGB로 바꾸거나(이미지-&gt;모드-&gt;RGB), 알파 채널을 더하거나(레이어-&gt;투명도-&gt;알파 채널 더하기), 배경으로 합쳐야(이미지-&gt;배경으로 합치기) 할 수도 있습니다.</thetip>
     <thetip xml:lang="lt">Yra efektų, kurių negalima taikyti visoms paveikslėlių rūšims. Neteisingai taikydami efektą, gausite klaidos pranešimą. Turėsite pakeisti paveikslėlį į RGB režimą (Paveikslėlis-&gt;Režimas-&gt;RGB) ir pridėti Alfa kanalą (Sluoksniai-&gt;Permatomumas-&gt;Pridėti Alfa kanalą) arba sujungti paveikslėlio sluoksnius (Paveikslėlis-&gt;Sujungti sluoksnius).</thetip>
     <thetip xml:lang="nb">Ikke alle effekter kan gjøre på alle typer bilder. Dette vises med et utgrået menyinnslag. Du kan trenge å endre bildet til RGB (Bilde-&gt;Modus-&gt;RGB), legge til en alfakanal (Lag-&gt;Gjennomsiktighet-&gt;Legg til alfakanal) eller flate det ut (Bilde-&gt;Flat ut bilde).</thetip>
@@ -337,6 +341,7 @@
   </tip>
   <tip level="intermediate">
     <thetip>When using a drawing tool (Paintbrush, Airbrush, or Pencil), <tt>Shift</tt>-click will draw a straight line from your last drawing point to your current cursor position. If you also press <tt>Ctrl</tt>, the line will be constrained to 15 degree angles.</thetip>
+    <thetip xml:lang="bg">Когато използвате инструмент за рисуване (Четка, Спрей или Молив), можете да натиснете със задържан <tt>Shift</tt> за да нарисувате права линия от последната точка на рисуване до новата позиция на показалеца. Ако също така задържите <tt>Ctrl</tt> линията ще бъде ограничена до ъгли от 15 градуса.</thetip>
     <thetip xml:lang="ca">Quan utilitzeu una eina de dibuix (pincell, vaporitzador o llapis), <tt>majúscules</tt>-clic dibuixarà una línia recta des del darrer punt dibuixat fins la posició actual del cursor. Si, a més, premeu <tt>Ctrl</tt>, forçareu la línia en angles de 15 graus.</thetip>
     <thetip xml:lang="cs">Při použití kreslicího nástroje (Štětec, Vzdušný štětec nebo Tužka), kliknutí se <tt>Shift</tt> nakreslí rovnou čáru z vašeho předchozího bodu kreslení na aktuální pozici kurzoru. Stisknete-li také <tt>Ctrl</tt>, bude čára omezena na násobky 15 stupňů.</thetip>
     <thetip xml:lang="da">Ved brug af et tegneværktøj (malerpensel, sprøjtepensel eller blyant) vil et klik med skiftetasten holdt nede tegne en ret linje fra det sidste tegnepunkt til den nuværende markørposition. Hvis du også trykker på <tt>Ctrl</tt>, tvinges linjen til at følge 15 graders vinkler.</thetip>
@@ -373,6 +378,7 @@
   </tip>
   <tip level="intermediate">
     <thetip>You can use the middle mouse button to pan around the image, if it's larger than its display window.</thetip>
+    <thetip xml:lang="bg">Можете да използвате средния бутон на мишката за да се движите по изображението, ако то не се събира в прозореца.</thetip>
     <thetip xml:lang="ca">Podeu utilitzar el botó central del ratolí per enquadrar la imatge, si aquesta és més gran que la finesta on es veu.</thetip>
     <thetip xml:lang="cs">Je-li obrázek větší než okno, ve kterém se zobrazuje, můžete se v obrázku posunovat pomocí prostředního tlačítka myši.</thetip>
     <thetip xml:lang="da">Du kan bruge den midterste museknap til at flytte rundt i billedet hvis det er større end dets fremvisningsvindue.</thetip>
@@ -407,6 +413,7 @@
   </tip>
   <tip level="intermediate">
     <thetip>Click and drag on a ruler to place a guide on an image. All dragged selections will snap to the guides. You can remove guides by dragging them off the image with the Move tool.</thetip>
+    <thetip xml:lang="bg">Щракване върху рулер и влачене ще създаде водач върху изображението. Всички влачени селекции ще се прилепват към водачите. Можете да премахвате водачите, като ги влачите извън изображението с инструмента за преместване.</thetip>
     <thetip xml:lang="ca">Cliqueu i arrossegueu en un regle per col·locar una guia en una imatge. Totes les seleccions arrossegades es fixaran a les guies. Podeu treure les guies arrossegant-les fora de la imatge amb l'eina mou.</thetip>
     <thetip xml:lang="cs">Kliknutím a tažením na pravítku umístíte na obrázek vodítko. Všechny tažené výběry se budou chytat na vodítka. Vodítka můžete odstranit jejich přetažením mimo obrázek nástrojem Přesun.</thetip>
     <thetip xml:lang="da">Klik og træk på en lineal for at placere en hjælpelinje i billedet. Alle markeringer som bliver flyttet, vil så følge hjælpelinjerne. Du kan fjerne linjerne igen ved at trække dem af billedet med flytteværktøjet.</thetip>
@@ -433,6 +440,7 @@
   </tip>
   <tip level="intermediate">
     <thetip>You can drag a layer from the Layers dialog and drop it onto the toolbox. This will create a new image containing only that layer.</thetip>
+    <thetip xml:lang="bg">Мажете да влачите слой от прозореца със слоеве и да го пуснете върху кутията с инструменти. Това ще създаде ново изображение, съдържащо само този слой.</thetip>
     <thetip xml:lang="ca">Podeu arrossegar una capa des del diàleg de capes i deixar-la dins la caixa d'eines. Això crearà una nova imatge amb només aquesta capa.</thetip>
     <thetip xml:lang="cs">Vrstvu můžete táhnout z dialogu Vrstvy a pustit ji na panel nástrojů. Tím vytvoříte nový obrázek obsahující jen tuto vrstvu.</thetip>
     <thetip xml:lang="da">Du kan trække et lag fra lagvinduet og slippe det i værktøjskassen. Dette opretter et nyt billede som kun indeholder det lag.</thetip>
@@ -467,6 +475,7 @@
   </tip>
   <tip level="intermediate">
     <thetip>A floating selection must be anchored to a new layer or to the last active layer before doing other operations on the image. Click on the &quot;New Layer&quot; or the &quot;Anchor Layer&quot; button in the Layers dialog, or use the menus to do the same.</thetip>
+    <thetip xml:lang="bg">Плаващата селекция трябва да бъде прикрепена към нов слой или последният активен такъв преди да се прави друго с изображението. Може да се използва щракване върху бутоните „Нов слой“ или „Фиксиране на плаващ слой“; в прозореца със слоевете или менютата.</thetip>
     <thetip xml:lang="ca">Cal ancorar una selecció flotant en una nova capa o a l'última capa activa abans de fer altres operacions en la imatge. Cliqueu els botons &quot;Nova capa&quot; o &quot;Ancora la capa&quot; en el diàleg capes, o utilitzeu els menús per fer el mateix.</thetip>
     <thetip xml:lang="cs">Plovoucí výběr musí být před prováděním jiných operací na obrázku ukotven k nové vrstvě nebo k poslední aktivní vrstvě. Klikněte na tlačítko &quot;Nová vrstva&quot; nebo &quot;Ukotvit vrstvu&quot; v dialogu Vrstvy, nebo to proveďte pomocí menu.</thetip>
     <thetip xml:lang="da">En flydende markering skal forankres til et nyt lag eller det sidste aktive lag før der kan foretages andre operationer på billedet. Klik på &quot;Nyt lag&quot;- eller &quot;Forankr lag&quot;-knappen i lagvinduet eller brug menuerne til at gøre det samme.</thetip>
@@ -526,6 +535,7 @@
   </tip>
   <tip level="intermediate">
     <thetip>Pressing and holding the <tt>Shift</tt> key before making a selection allows you to add to the current selection instead of replacing it. Using <tt>Ctrl</tt> before making a selection subtracts from the current one.</thetip>
+    <thetip xml:lang="bg">Натискането и задържането на клавиш <tt>Shift</tt> преди селектиране ви позволява да добавите нова селекция, вместо да подмените старата. Използването на <tt>Ctrl</tt> преди селектиране изважда селектираното от старата селекция.</thetip>
     <thetip xml:lang="ca">Premeu i manteniu la tecla <tt>majúscules</tt> abans de fer una selecció i us permetrà afegir la selecció actual en comptes de reemplaçar-la. Utilitzeu <tt>Ctrl</tt> abans de fer una selecció per sostreure-la de l'actual.</thetip>
     <thetip xml:lang="cs">Stisknutí a držení klávesy <tt>Shift</tt> před provedením výběru vám umožňuje přidávat k aktuálnímu výběru místo jeho nahrazení. Použití <tt>Ctrl</tt> před provedením výběru odebírá od aktuálního.</thetip>
     <thetip xml:lang="da">Hvis du holder skifte-tasten nede før du markerer noget, kan du tilføje til den aktuelle markering i stedet for at erstatte den. Hvis <tt>Ctrl</tt> holdes ned før noget markeres, trækkes der fra markeringen.</thetip>
@@ -560,6 +570,7 @@
   </tip>
   <tip level="intermediate">
     <thetip>You can press or release the <tt>Shift</tt> and <tt>Ctrl</tt> keys while you are making a selection in order to constrain it to a square or a circle, or to have it centered on its starting point.</thetip>
+    <thetip xml:lang="bg">Можете да натискате и освобождавате клавишите <tt>Shift</tt> и <tt>Ctrl</tt> докато създавате селекция, за да я ограничите до квадрат или кръг или да я направите центрирана спрямо началната точка.</thetip>
     <thetip xml:lang="ca">Podeu prémer o deixar les tecles <tt>majúscules</tt> i <tt>Ctrl</tt> mentre feu una selecció per forçar un quadrat o cercle exacte, o tenir-la centrada en el seu punt mig.</thetip>
     <thetip xml:lang="cs">Při provádění výběru můžete stisknout nebo pustit klávesy <tt>Shift</tt> a <tt>Ctrl</tt>, abyste výběr omezili na dokonalý čtverec nebo kružnici, nebo abyste jej vycentrovali podle jeho počátečního bodu.</thetip>
     <thetip xml:lang="da">Du kan holde skifte- eller <tt>Ctrl</tt>-tasterne ned mens du foretager en markering før at begrænse den til en perfekt cirkel eller et kvadrat, eller til at få den centreret ved startpunktet.</thetip>
@@ -586,6 +597,7 @@
   </tip>
   <tip level="intermediate">
     <thetip>You can adjust or move a selection by using <tt>Alt</tt>-drag. If this makes the window move, your window manager uses the <tt>Alt</tt> key already. Try pressing <tt>Shift</tt> at the same time.</thetip>
+    <thetip xml:lang="bg">Можете да прецизирате или преместите селекция със <tt>Alt</tt> и влачене. Ако така се мести целият прозорец, мениджъра на прозорци вече използва клавиша<tt>Alt</tt>. Опитайте да задържите <tt>Shift</tt> едновременно.</thetip>
     <thetip xml:lang="ca">Podeu ajustar i remplaçar una selecció utilitzant <tt>Alt</tt>-arrossega. Si això fa que es mogui la finestra, el vostre gestor de finestres ja utilitza la tecla <tt>Alt</tt>. Proveu de prémer <tt>majúscules</tt> al mateix temps.</thetip>
     <thetip xml:lang="cs">Výběr můžete upravit a nahradit pomocí tažení s <tt>Alt</tt>. Pokud to hýbe oknem, klávesu <tt>Alt</tt> již používá váš manažer oken. Zkuste zároveň stisknout <tt>Shift</tt>.</thetip>
     <thetip xml:lang="da">Du kan justere og genplacere en markering ved at bruge <tt>Alt</tt>-træk. Hvis dette får vinduet til at flytte sig, bruger din vindueshåndtering allerede <tt>Alt</tt>-tasten. Prøv at trykke på skiftetasten på samme tid.</thetip>
@@ -597,7 +609,7 @@
     <thetip xml:lang="fr">Vous pouvez ajuster ou replacer une sélection en utilisant <tt>Alt</tt> glissé. Si cette action provoque un déplacement de la fenêtre c'est que votre gestionnaire utilise déjà la touche <tt>Alt</tt>. Essayer alors d'appuyer sur <tt>Maj</tt> en même temps.</thetip>
     <thetip xml:lang="hu">Kijelölés átalakítása és áthelyezése az <tt>Alt</tt> billentyű nyomva tartásával végzett húzással lehetséges. Ha ez a kombináció az ablakot mozdítja el, akkor az ablakkezelő már használja ezt a kombinációt; ebben az esetben nyomja le a <tt>Shift</tt> billentyűt is a kijelölés kezeléséhez.</thetip>
     <thetip xml:lang="it">Puoi muovere una selezione premendo <tt>Alt</tt> mentre trascini la selezione. Se si dovesse muovere la finestra, vuol dire che il tuo window manager usa già il tasto <tt>Alt</tt>. Prova a premere allo stesso tempo anche il tasto <tt>Maiusc</tt> o <tt>Ctrl</tt>.</thetip>
-    <thetip xml:lang="ja"><tt>Alt</tt> を押しながらドラッグすると選択領域の調節や移動ができるよ。もしウィンドウが動いてしまうのであれば、君の使っているウィンドウマネージャーがすでに <tt>Alt</tt> を使ってるんだ。そういうときは <tt>Shift</tt> も押しながら試してみてね。</thetip>
+    <thetip xml:lang="ja"><tt>Alt</tt> を押しながらドラッグすると選択領域の調節や移動ができるよ。もしウィンドウが動いてしまうのであれば、君の使っているウィンドウマネージャがすでに <tt>Alt</tt> を使ってるんだ。そういうときは <tt>Shift</tt> も押しながら試してみてね。</thetip>
     <thetip xml:lang="ko"><tt>Alt</tt>-드래그를 사용해서 선택을 조절하거나 이동할 수 있습니다. 이렇게 했더니 창이 움직인다면, 사용 중인 창 관리자가 <tt>Alt</tt>를 사용하고 있는 겁니다. 그럴 땐 <tt>Shift</tt>키도 같이 눌러 주세요.</thetip>
     <thetip xml:lang="lt">Galite pakoreguoti pažymėjimą, spausdami <tt>Alt</tt> ir kairįjį pelės klavišą. Jei tai priverčia judėti langą, reiškia, kad <tt>Alt</tt> klavišas jau naudojamas. Pabandykite paspausti ir <tt>Shift</tt> tuo pačiu metu, kai spaudžiate <tt>Alt</tt>.</thetip>
     <thetip xml:lang="nb">Du kan justere og endre posisjon for et utvalg ved å bruke <tt>Alt</tt>-dra. Hvis dette gjør at vinduet flyttes, bruker vindushåndtereren din <tt>Alt</tt>-knappen allerede. Prøv da å holde <tt>Shift</tt> nede samtidig for å unngå dette.</thetip>
@@ -612,6 +624,7 @@
   </tip>
   <tip level="intermediate">
     <thetip>You can draw simple squares or circles using Edit-&gt;Stroke Selection. It strokes the edge of your current selection. More complex shapes can be drawn using the Path tool or with Filters-&gt;Render-&gt;Gfig.</thetip>
+    <thetip xml:lang="bg">Можете да очертаете съществуваща селекция с Редактиране-&gt;Очертаване на селекцията. По-сложни форми могат да бъдат нарисувани с инструмента за Пътеки или Флилтри-&gt;Генериране-&gt;Gfig.</thetip>
     <thetip xml:lang="ca">Podeu dibuixar quadrats o cercles senzills utilitzant Edita-&gt;Traça selecció. Traçareu el perfil de la selecció actual. Es poden dibuixar més formes complexes utilitzant l'eina camí o amb  Filtres-&gt;Composa-&gt;Gfig.</thetip>
     <thetip xml:lang="cs">Použití Úpravy-&gt;Vykreslit výběr vám umožňuje kreslit jednoduché čtverce nebo kružnice. Složitější tvary můžete kreslit pomocí nástroje Cesty nebo pomocí Filtry-&gt;Vyobrazení-&gt;Gfig.</thetip>
     <thetip xml:lang="da">Du kan tegne simple firkanter eller cirkler med Rediger-&gt;Bestryg markering. Det bestryger kanten af den aktuelle markering. Mere komplekse figurer kan tegnes med baneværktøjet eller med Filtre-&gt;Generér-&gt;Figurer.</thetip>
@@ -623,7 +636,7 @@
     <thetip xml:lang="fr">Vous pouvez dessiner de simples carrés ou cercles en utilisant Édition-&gt;Tracer la sélection. Il trace les contours de votre sélection courante. Des figures géométriques plus complexes sont réalisables avec l'outil chemin ou avec Filtres-&gt;Rendu-&gt;Figures géométriques.</thetip>
     <thetip xml:lang="hu">Egyszerű négyzeteket és köröket rajzolhat a "Szerkesztés-&gt;Kijelölés körberajzolása" menüponttal. Ez a funkció megrajzolja az aktuális kijelölés határvonalait. A bonyolultabb alakzatok elkészíthetők az útvonaleszközzel vagy a Szűrők-&gt;Megjelenítés-&gt;GFig menüponttal.</thetip>
     <thetip xml:lang="it">Usando Modifica-&gt;Disegna selezione potrai disegnare semplici quadrati o cerchi tracciando la selezione corrente con il pennello attivo. Forme più complesse possono essere disegnate con Filtri-&gt;Render-&gt;Gfig.</thetip>
-    <thetip xml:lang="ja">編集 -&gt; ストローク描画 を使って現在有効なブラシで選択領域の縁に沿って描くことができるんだ。正方形や正円を書きたい時には便利だね。もっと複雑な図形を描きたい時にはパスツールや フィルタ -&gt; 描写 -&gt; Gfig だね。</thetip>
+    <thetip xml:lang="ja">編集 -&gt; ストローク描画 を使って現在有効なブラシで選択領域の縁に沿って描くことができるんだ。正方形や正円を書きたい時には便利だね。もっと複雑な図形を描きたい時にはパスツールや フィルタ -&gt; 下塗り -&gt; Gfig だね。</thetip>
     <thetip xml:lang="ko">편집-&gt;선택 따라그리기를 사용하면 단순한 사격형이나 원을 그릴 수 있습니다. 현재 선택의 모서리를 따라 그립니다. 더 복잡한 도형은 경로 도구나 필터-&gt;렌더-&gt;Gfig를 사용해서 그릴 수 있습니다.</thetip>
     <thetip xml:lang="lt">Naudodami Keisti-&gt;Apvesti galite nupiešti paprastus kvadratus ir apskritimus. Šiuo veiksmu apvesite pažymėtą plotą aktyviu teptuku. Sudėtingesnes kreives nupiešite naudodami Kontūrų įrankį arba Filtrai-&gt;Perteikimas-&gt;Gfig.</thetip>
     <thetip xml:lang="nb">Du kan tegne enkle firkanter eller sirkler med Edit-&gt;Strøkutvalg. Det vil tegne kantene på utvalget ditt. Mer komplekse former kan også bli tegnet ved å bruke Baneverktøyet eller med Filter-&gt;Render-&gt;Gfig.</thetip>
@@ -644,6 +657,7 @@
   </tip>
   <tip level="intermediate">
     <thetip>If you stroke a path (Edit-&gt;Stroke Path), the paint tools can be used with their current settings. You can use the Paintbrush in gradient mode or even the Eraser or the Smudge tool.</thetip>
+    <thetip xml:lang="bg">Ако очертаете пътека (Редактиране-&gt;Очертаване на пътеката), инструментите за рисуване ще се използват с текущите си настройки. Можете да използвате рисуването в режим на преливка или дори инструментите за триене и замазване.</thetip>
     <thetip xml:lang="ca">Si traceu un camí (Edita-&gt;Traça selecció), l'eina pintura es podrà utilitzar amb els seus paràmetres actuals. Podeu utilitzar el mode pinzell en mode degradat o fins i tot la goma d'esborrar o l'eina taca.</thetip>
     <thetip xml:lang="cs">Při vykreslení cesty (Úpravy-&gt;Vykreslit cestu) mohou být použity kreslicí nástroje s jejich aktuálním nastavením. Můžete použít Štětec v režimu přechodu nebo dokonce nástroje Guma nebo Šmouha.</thetip>
     <thetip xml:lang="da">Hvis du bestryger en bane (Redigér-&gt;Bestryg bane), kan tegneværktøjerne bruges med deres aktuelle indstillinger. Du kan bruge malerpenslen i farveovergangstilstand, eller endda viskelæderet eller udtværingsværktøjet.</thetip>
@@ -675,6 +689,7 @@
   </tip>
   <tip level="intermediate">
     <thetip>You can create and edit complex selections using the Path tool. The Paths dialog allows you to work on multiple paths and to convert them to selections.</thetip>
+    <thetip xml:lang="bg">Можете да създавате и променяте комплексни селекции с инструмента за пътеки. Дилалогът на пътеките ви позволява да работите по няколко пътеки и да ги превърнете в селекции.</thetip>
     <thetip xml:lang="ca">Podeu crear i editar seleccions complexes utilitzant l'eina camí. El diàleg de camins us permet treballar en múltiples camins i convertir-los a seleccions.</thetip>
     <thetip xml:lang="cs">Pomocí nástroje Cesty můžete vytvářet a upravovat složité výběry. Dialog Cesty vám umožňuje pracovat na více cestách a konvertovat je na výběry.</thetip>
     <thetip xml:lang="da">Du kan oprette og redigere komplekse markeringer med baneværktøjet. Banevinduet lader dig arbejde på flere baner og så konvertere dem til markeringer.</thetip>
@@ -707,6 +722,7 @@
   </tip>
   <tip level="intermediate">
     <thetip>You can use the paint tools to change the selection. Click on the &quot;Quick Mask&quot; button at the bottom left of an image window. Change your selection by painting in the image and click on the button again to convert it back to a normal selection.</thetip>
+    <thetip xml:lang="bg">Можете да използвате инструментите за рисуване за да промените селекцията. Натиснете бутона „Превключване на бързата маска“ в долният ляв ъгъл под изображението. Променяте селекцията с рисуване и натискате бутона отново за да се върнете в режим на селекция.</thetip>
     <thetip xml:lang="ca">Podeu utilitzar les eines de pintura per canviar la selecció. Cliqueu al botó &quot;Màscara ràpida&quot; al fons esquerre d'una finestra d'imatge. Canvieu la vostra selecció pintant en la imatge i cliqueu en el botó de nou per a tornar-la a convertir en una selecció normal.</thetip>
     <thetip xml:lang="cs">Výběr můžete změnit pomocí kreslicích nástrojů. Klikněte na tlačítko &quot;Rychlá maska&quot; ve spodním levém rohu okna obrázku. Změňte svůj výběr kreslením v obrázku a dalším kliknutím na toto tlačítko jej převeďte zpět na normální výběr.</thetip>
     <thetip xml:lang="da">Du kan bruge tegneværktøjerne til at ændre det markerede. Klik på hurtigmaskeknappen for neden til venstre i et billedvindue. Ændr det markerede ved at tegne i billedet og klikke på knappen igen for at konvertere det tilbage til en normal markering.</thetip>
@@ -732,6 +748,7 @@
   </tip>
   <tip level="intermediate">
     <thetip>You can save a selection to a channel (Select-&gt;Save to Channel) and then modify this channel with any paint tools. Using the buttons in the Channels dialog, you can toggle the visibility of this new channel or convert it to a selection.</thetip>
+    <thetip xml:lang="bg">Можете да запазвате селекция като канал (Избиране -&gt; Запазване като канал) и да редактирате канала със инструментите за рисуване.Чрез използване на бутоните в прозореца за канали, можете да промените видимостта на новия канал или да го превърнете в селекция.</thetip>
     <thetip xml:lang="ca">Podeu desar una selecció a canal (Selecciona-&gt;Desa a canal) i després modificar aquest canal amb qualsevol eina de pintura. Utilitzeu els botons en el diàleg de canals: podreu commutar la visibilitat d'aquest nou canal o convertir-lo a selecció.</thetip>
     <thetip xml:lang="cs">Výběr můžete uložit do kanálu (Výběr-&gt;Uložit do kanálu) a pak tento kanál upravit libovolnými nástroji kreslení. Pomocí tlačítek v dialogu Kanály můžete přepnout viditelnost tohoto nového kanálu nebo jej převést na výběr.</thetip>
     <thetip xml:lang="da">Du kan gemme en markering som en kanel (Markering-&gt;Gem som kanal) og så ændre denne kanal med maleværktøjerne. Ved hjælp af knapperne i kanalvinduet kan du slå synligheden af denne nye kanal til eller fra eller konvertere den til en markering.</thetip>
@@ -771,6 +788,7 @@
 
   <tip level="advanced">
     <thetip>After you enabled &quot;Dynamic Keyboard Shortcuts&quot; in the Preferences dialog, you can reassign shortcut keys. Do so by bringing up the menu, selecting a menu item, and pressing the desired key combination. If &quot;Save Keyboard Shortcuts&quot; is enabled, the key bindings are saved when you exit GIMP.</thetip>
+    <thetip xml:lang="bg">Ако се включи „Използване на динамични бързи клавиши“ в настройките, могат да се задават нови бързи клавиши. Това се прави като се активира менюто, избира се действие и се натиска желаната клавишна комбинация. Ако „Запазване на бързите клавиши при излизане“ е включено, те ще бъдат запазвани при излизане от GIMP.</thetip>
     <thetip xml:lang="ca">Després d'activar &quot;Dreceres de teclat dinàmiques&quot; en el diàleg preferències podeu reassignar tecles de dreceres. Fareu això si, dins dels menú, seleccioneu un element, i premeu la combinació de tecles desitjada. Si &quot;Desa dreceres de teclat&quot; està activat, la tecla escollida es desarà quan sortiu del GIMP.</thetip>
     <thetip xml:lang="cs">Po povolení &quot;Dynamické klávesové zkratky&quot; v dialogu Předvolby můžete měnit klávesové zkratky. Provedete to otevřením menu, vybráním položky menu a stisknutím nové klávesové zkratky. Pokud je povoleno &quot;Uložit klávesové zkratky&quot;, jsou zkratky uloženy, když GIMP ukončíte.</thetip>
     <thetip xml:lang="da">Hvis du aktiverer &quot;Dynamiske tastegenvejerne&quot; under indstillingerne, kan du omdefinere genvejstaster i menuerne. Bring en menu frem, peg på et menupunkt og tryk den ønskede tastekombination. Genvejen bliver gemt når du afslutter Gimp'en hvis rne&quot;Gem tastegenveje&quot; er aktiveret.</thetip>
@@ -796,6 +814,7 @@
   </tip>
   <tip level="advanced">
     <thetip>If your screen is too cluttered, you can press <tt>Tab</tt> multiple times in an image window to hide or show the toolbox and other dialogs.</thetip>
+    <thetip xml:lang="bg">Ако екранът ви е претупан, можете да натиснете <tt>Tab</tt> няколко пъти с избран прозорец на изображението за да скриете или покажете кутията с инструменти и останалите прозорци.</thetip>
     <thetip xml:lang="ca">Si la vostra pantalla està massa desordenada, podeu prémer <tt>Tab</tt> moltes vegades en una finestra d'imatge per amagar o mostrar la caixa d'eines o altres diàlegs.</thetip>
     <thetip xml:lang="cs">Je-li vaše obrazovka přeplněná, můžete v okně obrázku několikanásobným stisknutím <tt>Tab</tt> skrýt nebo zobrazit panel nástrojů a jiné dialogy.</thetip>
     <thetip xml:lang="da">Hvis din skærm er for tæt pakket med vinduer kan du trykke på tabulator flere gange i et billedvindue for at skjule eller vise værktøjskassen eller andre vinduer.</thetip>
@@ -831,6 +850,7 @@
   </tip>
   <tip level="advanced">
     <thetip>You can adjust the selection range for fuzzy select by clicking and dragging left and right.</thetip>
+    <thetip xml:lang="bg">Можете да настроите обхвата на меката селекция като натиснете и я влачите наляво и надясно.</thetip>
     <thetip xml:lang="ca">Podeu ajustar el rang de selecció per a selecció difosa clicant i arrossegant a dreta i esquerra.</thetip>
     <thetip xml:lang="cs">Rozsah výběru pro přibližný výběr můžete upravit kliknutím a tažením doleva a doprava.</thetip>
     <thetip xml:lang="da">Du kan tilpasse markeringsintervallet for udflydende markering ved at klikke og trække til højre eller venstre.</thetip>
@@ -865,6 +885,7 @@
   </tip>
   <tip level="advanced">
     <thetip><tt>Shift</tt>-click on the eye icon in the Layers dialog to hide all layers but that one. <tt>Shift</tt>-click again to show all layers.</thetip>
+    <thetip xml:lang="bg"><tt>Shift</tt>-щракване върху иконката с око в прозореца със слоевете ще скрие всички слоеве освен този. <tt>Shift</tt>-отново ще ги визуализира пак.</thetip>
     <thetip xml:lang="ca">Premeu <tt>majúscules</tt>-clic en l'icona ull del diàleg de capes per amagar totes les capes menys una. Premeu <tt>majúscules</tt>-clic de nou per mostrar-les totes.</thetip>
     <thetip xml:lang="cs">Kliknutím se <tt>Shift</tt> na ikonu oka v dialogu Vrstvy skryjete všechny vrstvy kromě této. Opětovným kliknutím se <tt>Shift</tt> zobrazíte všechny vrstvy.</thetip>
     <thetip xml:lang="da">Hold skiftetasten nede og klik på øjeikonet i "Lag"-vinduet for at skjule alle lag pånær dette. Et klik igen viser alle lag.</thetip>
@@ -899,6 +920,7 @@
   </tip>
   <tip level="advanced">
     <thetip><tt>Ctrl</tt>-click on the layer mask's preview in the Layers dialog toggles the effect of the layer mask.</thetip>
+    <thetip xml:lang="bg"><tt>Ctrl</tt>-щракване върху предварителния прегледа на маската на слоя в прозореца със слоевете превключва ефекта на маската.</thetip>
     <thetip xml:lang="ca">Premeu <tt>Ctrl</tt>-clic en la previsualització de la màscara de capa en el diàleg de capes, per commutar l'efecte de la màscara de capa.</thetip>
     <thetip xml:lang="cs">Kliknutí s <tt>Ctrl</tt> na náhled masky vrstvy v dialogu Vrstvy přepíná efekt masky vrstvy.</thetip>
     <thetip xml:lang="da">Hold <tt>Ctrl</tt> nede og klik på lagmaskens miniature i "Lag"-vinduet for at slå effekten af lagmasken til og fra.</thetip>
@@ -933,6 +955,7 @@
   </tip>
   <tip level="advanced">
     <thetip><tt>Alt</tt>-click on the layer mask's preview in the Layers dialog toggles viewing the mask directly.</thetip>
+    <thetip xml:lang="bg"><tt>Alt</tt>-щракване върху предварителния прегледа на маската на слоя в прозореца със слоевете превключва директно видимостта на маската.</thetip>
     <thetip xml:lang="ca">Premeu <tt>Alt</tt>-clic en la previsualització de la màscara de capa en el diàleg de capes, per commutar la visualització de la màscara directament .</thetip>
     <thetip xml:lang="cs">Kliknutí s <tt>Alt</tt> na náhled masky vrstvy v dialogu Vrstvy přepíná, jestli se maska zobrazuje přímo.</thetip>
     <thetip xml:lang="da">Hold <tt>Alt</tt> nede og klik på lagmaskens miniature i "Lag"-vinduet for at vise masken direkte.</thetip>
@@ -967,6 +990,7 @@
   </tip>
   <tip level="advanced">
     <thetip>You can use <tt>Alt</tt>-<tt>Tab</tt> to cycle through all layers in an image (if your window manager doesn't trap those keys...).</thetip>
+    <thetip xml:lang="bg">Можете да използвате <tt>Alt</tt>-<tt>Tab</tt> за да преминавате в различните слоеве на изображението (ако мениджъра на прозорци не е конфигуриран да използва тази комбинация за друго...).</thetip>
     <thetip xml:lang="ca">Podeu utilitzar <tt>Alt</tt>-<tt>Tab</tt> per encerclar totes les capes en una imatge (si el vostre gestor de finestres no bloqueja aquestes tecles...).</thetip>
     <thetip xml:lang="cs">Pomocí <tt>Alt</tt>-<tt>Tab</tt> můžete procházet všemi vrstvami obrázku (pokud tyto klávesy neodchytí váš manažer oken...).</thetip>
     <thetip xml:lang="da">Du kan bruge <tt>Alt</tt> + tabulator til at gå gennem alle lagene i et billede (hvis din vindueshåndtering ikke bruger den kombination...).</thetip>
@@ -1001,6 +1025,7 @@
   </tip>
   <tip level="advanced">
     <thetip><tt>Ctrl</tt>-click with the Bucket Fill tool to have it use the background color instead of the foreground color.</thetip>
+    <thetip xml:lang="bg"><tt>Ctrl</tt>-щракване върху инструмента за запълване ще активира цвета на фона, вместо цвета за рисуване.</thetip>
     <thetip xml:lang="ca">Premeu <tt>Ctrl</tt>-clic amb l'eina omple cubell per utilitzar el color de fons en comptes del color de primer pla.</thetip>
     <thetip xml:lang="cs">Při kliknutí s <tt>Ctrl</tt> bude nástroj Plechovka používat barvu pozadí místo barvy popředí.</thetip>
     <thetip xml:lang="da">Hold <tt>Ctrl</tt>-tasten nede og klik med spandudfyldningsværktøjet for at få det til at bruge baggrundsfarven i stedet for forgrundsfarven.</thetip>
@@ -1035,6 +1060,7 @@
   </tip>
   <tip level="advanced">
     <thetip><tt>Ctrl</tt>-drag with the Rotate tool will constrain the rotation to 15 degree angles.</thetip>
+    <thetip xml:lang="bg"><tt>Ctrl</tt>-влачене си инструмента за завъртане ще ограничи въртенето на стъпки с ъгъл по 15 градуса.</thetip>
     <thetip xml:lang="ca">Premeu <tt>Ctrl</tt>-i arrossegueu amb l'eina gira per forçar l'angle de gir en 15 graus.</thetip>
     <thetip xml:lang="cs">Tažení s <tt>Ctrl</tt> s nástrojem Rotovat omezí rotaci na násobky 15 stupňů.</thetip>
     <thetip xml:lang="da"><tt>Ctrl</tt>-træk med roteringsværktøjet vil begrænse rotationen til 15 graders vinkler.</thetip>
@@ -1067,6 +1093,7 @@
   </tip>
   <tip level="advanced">
     <thetip>To create a circle-shaped selection, hold <tt>Shift</tt> while doing an ellipse select. To place a circle precisely, drag horizontal and vertical guides tangent to the circle you want to select, place your cursor at the intersection of the guides, and the resulting selection will just touch the guides.</thetip>
+    <thetip xml:lang="bg">За създаване на кръгова селекция, задръжте <tt>Shift</tt> по време на елипсовидно избиране. За да позиционирате кръг прецизно, можете да влачите хоризонталните и вертикални водачи до кръга, който искате да изберете, поставите показалеца в пресечната точка на водачите и получената селекция ще се напасне по водачите.</thetip>
     <thetip xml:lang="ca">Per crear un cercle exacte, manteniu premuda <tt>majúscules</tt> mentre s'està fent una selecció d'el·lipse. Per col·locar un cercle amb precisió, arrossegueu les guies horitzontals i verticals tangents al cercle que vulgueu seleccionar, situar el cursor a la intersecció de les guies, i la selecció resultant tot just tocarà les guies.</thetip>
     <thetip xml:lang="cs">Dokonalou kružnici vytvoříte držením <tt>Shift</tt> při provádění výběru elipsy. Pro přesné umístění kružnice táhněte vodorovné a svislé vodítko jako tečny ke kružnici, kterou chcete vybrat, umístěte kurzor na průsečík vodítek a výsledný výběr se bude vodítek přesně dotýkat.</thetip>
     <thetip xml:lang="da">For at lave en perfekt cirkel skal du holde skifte-tasten nede mens du foretager en ellipsemarkering. Cirklen kan placeres præcist hvis du trækker vandrette og lodrette hjælpelinjer så de tangerer cirklen du ønsker at markere, og placerer markøren ved skæringspunktet mellem linjerne. Så vil den resulterende markering lige præcis røre hjælpelinjerne.</thetip>
@@ -1093,6 +1120,7 @@
   </tip>
   <tip level="advanced">
     <thetip>If some of your scanned photos do not look colorful enough, you can easily improve their tonal range with the &quot;Auto&quot; button in the Levels tool (Layer-&gt;Colors-&gt;Levels). If there are any color casts, you can correct them with the Curves tool (Layer-&gt;Colors-&gt;Curves).</thetip>
+    <thetip xml:lang="bg">Ако някои от сканираните изображения не изглеждат достатъчно цветни, можете лесно подобрите тоналността им с бутона „Автоматично“ на инструмента за нива (Слой-&gt;Цветове-&gt;Нива). Ако все още не ви харесва, можете да го коригирате със инструмента за криви (Слой-&gt;Цветове-&gt;Криви).</thetip>
     <thetip xml:lang="ca">Si algunes de les fotos escanejades no tenen prou color, podeu millorar fàcilment el seu to amb el botó &quot;Automàtic&quot; en l'eina nivells (Capes-&gt;Colors-&gt;Nivells). Si hi ha algun color buit, el podeu corregir amb l'eina corbes (Capes-&gt;Colors-&gt;Corbes).</thetip>
     <thetip xml:lang="cs">Jestliže některé vaše naskenované fotky nevypadají dost barevně, můžete jejich rozsah tónů snadno vylepšit tlačítkem &quot;Automaticky&quot; v nástroji Úrovně (Vrstva-&gt;Barvy-&gt;Úrovně). Případné barevné stíny můžete opravit nástrojem Křivky (Vrstva-&gt;Barvy-&gt;Křivky).</thetip>
     <thetip xml:lang="da">Hvis nogle af din indskannede fotografier ikke ser farverige nok ud, kan du let forbedre deres farvetoneinterval med &quot;Auto&quot;-knappen i niveauværktøjet (Lag-&gt;Farver-&gt;Niveauer). Hvis der er farveudblødninger, kan du rette dem med kurveværktøjet (Lag-&gt;Farver-&gt;Kurver).</thetip>

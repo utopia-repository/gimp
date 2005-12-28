@@ -1,3 +1,14 @@
+gimp (2.2.10-1) unstable; urgency=low
+
+  * New upstream release
+  * Add debian/watch file
+  * Add explicit depends on pkg-config to libgimp2.0-dev, since
+    we're now calling that directly from gimptool.
+  * Revert MMX/SSE patch from Red Hat since the issue should have
+    been fixed upstream in 2.2.9.
+
+ -- Ari Pollak <ari@debian.org>  Wed, 28 Dec 2005 13:13:42 -0500
+
 gimp (2.2.9-8) unstable; urgency=low
 
   * gimptool-2.0.in:

@@ -31,7 +31,7 @@
  * @filename: The name of the file to load.
  * @raw_filename: The name as entered by the user.
  *
- * Loads a file by invoking the right load handler.
+ * Loads an image file by invoking the right load handler.
  *
  * This procedure invokes the correct file load handler using magic if
  * possible, and falling back on the file's extension and/or prefix if
@@ -52,7 +52,7 @@ gimp_file_load (GimpRunMode  run_mode,
   gint nreturn_vals;
   gint32 image_ID = -1;
 
-  return_vals = gimp_run_procedure ("gimp_file_load",
+  return_vals = gimp_run_procedure ("gimp-file-load",
 				    &nreturn_vals,
 				    GIMP_PDB_INT32, run_mode,
 				    GIMP_PDB_STRING, filename,
@@ -65,6 +65,45 @@ gimp_file_load (GimpRunMode  run_mode,
   gimp_destroy_params (return_vals, nreturn_vals);
 
   return image_ID;
+}
+
+/**
+ * gimp_file_load_layer:
+ * @run_mode: The run mode.
+ * @image_ID: Destination image.
+ * @filename: The name of the file to load.
+ *
+ * Loads an image file as a layer into an already opened image.
+ *
+ * This procedure behaves like the file-load procedure but opens the
+ * specified image as a layer into an already opened image.
+ *
+ * Returns: The layer created when loading the image file.
+ *
+ * Since: GIMP 2.4
+ */
+gint32
+gimp_file_load_layer (GimpRunMode  run_mode,
+		      gint32       image_ID,
+		      const gchar *filename)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gint32 layer_ID = -1;
+
+  return_vals = gimp_run_procedure ("gimp-file-load-layer",
+				    &nreturn_vals,
+				    GIMP_PDB_INT32, run_mode,
+				    GIMP_PDB_IMAGE, image_ID,
+				    GIMP_PDB_STRING, filename,
+				    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    layer_ID = return_vals[1].data.d_layer;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return layer_ID;
 }
 
 /**
@@ -97,7 +136,7 @@ gimp_file_save (GimpRunMode  run_mode,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_file_save",
+  return_vals = gimp_run_procedure ("gimp-file-save",
 				    &nreturn_vals,
 				    GIMP_PDB_INT32, run_mode,
 				    GIMP_PDB_IMAGE, image_ID,
@@ -131,7 +170,7 @@ gimp_temp_name (const gchar *extension)
   gint nreturn_vals;
   gchar *name = NULL;
 
-  return_vals = gimp_run_procedure ("gimp_temp_name",
+  return_vals = gimp_run_procedure ("gimp-temp-name",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, extension,
 				    GIMP_PDB_END);
@@ -168,7 +207,7 @@ gimp_register_magic_load_handler (const gchar *procedure_name,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_register_magic_load_handler",
+  return_vals = gimp_run_procedure ("gimp-register-magic-load-handler",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, procedure_name,
 				    GIMP_PDB_STRING, extensions,
@@ -205,7 +244,7 @@ gimp_register_load_handler (const gchar *procedure_name,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_register_load_handler",
+  return_vals = gimp_run_procedure ("gimp-register-load-handler",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, procedure_name,
 				    GIMP_PDB_STRING, extensions,
@@ -241,7 +280,7 @@ gimp_register_save_handler (const gchar *procedure_name,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_register_save_handler",
+  return_vals = gimp_run_procedure ("gimp-register-save-handler",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, procedure_name,
 				    GIMP_PDB_STRING, extensions,
@@ -278,7 +317,7 @@ gimp_register_file_handler_mime (const gchar *procedure_name,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_register_file_handler_mime",
+  return_vals = gimp_run_procedure ("gimp-register-file-handler-mime",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, procedure_name,
 				    GIMP_PDB_STRING, mime_type,
@@ -317,7 +356,7 @@ gimp_register_thumbnail_loader (const gchar *load_proc,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_register_thumbnail_loader",
+  return_vals = gimp_run_procedure ("gimp-register-thumbnail-loader",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, load_proc,
 				    GIMP_PDB_STRING, thumb_proc,

@@ -29,6 +29,7 @@
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
@@ -43,9 +44,6 @@
 #include "core/gimpundo.h"
 #include "core/gimpundostack.h"
 
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-utils.h"
-
 #include "text/gimptext.h"
 #include "text/gimptext-vectors.h"
 #include "text/gimptextlayer.h"
@@ -55,6 +53,8 @@
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimptexteditor.h"
 #include "widgets/gimpviewabledialog.h"
+
+#include "vectors/gimpvectors-warp.h"
 
 #include "display/gimpdisplay.h"
 
@@ -71,8 +71,6 @@
 
 /*  local function prototypes  */
 
-static void      gimp_text_tool_class_init     (GimpTextToolClass *klass);
-static void      gimp_text_tool_init           (GimpTextTool      *tool);
 static GObject * gimp_text_tool_constructor    (GType              type,
                                                 guint              n_params,
                                                 GObjectConstructParam *params);
@@ -108,6 +106,8 @@ static gboolean  gimp_text_tool_idle_apply     (GimpTextTool      *text_tool);
 static void      gimp_text_tool_apply          (GimpTextTool      *text_tool);
 
 static void      gimp_text_tool_create_vectors (GimpTextTool      *text_tool);
+static void      gimp_text_tool_create_vectors_warped
+                                               (GimpTextTool      *text_tool);
 static void      gimp_text_tool_create_layer   (GimpTextTool      *text_tool,
                                                 GimpText          *text);
 
@@ -125,12 +125,10 @@ static gboolean  gimp_text_tool_set_drawable   (GimpTextTool      *text_tool,
                                                 gboolean           confirm);
 
 
-/*  local variables  */
+G_DEFINE_TYPE (GimpTextTool, gimp_text_tool, GIMP_TYPE_TOOL);
 
-static GimpToolClass *parent_class = NULL;
+#define parent_class gimp_text_tool_parent_class
 
-
-/*  public functions  */
 
 void
 gimp_text_tool_register (GimpToolRegisterCallback  callback,
@@ -149,44 +147,11 @@ gimp_text_tool_register (GimpToolRegisterCallback  callback,
                 data);
 }
 
-GType
-gimp_text_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpTextToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_text_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpTextTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_text_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_TOOL,
-                                          "GimpTextTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
-
-
-/*  private functions  */
-
 static void
 gimp_text_tool_class_init (GimpTextToolClass *klass)
 {
   GObjectClass  *object_class = G_OBJECT_CLASS (klass);
   GimpToolClass *tool_class   = GIMP_TOOL_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->constructor = gimp_text_tool_constructor;
   object_class->dispose     = gimp_text_tool_dispose;
@@ -212,7 +177,10 @@ gimp_text_tool_init (GimpTextTool *text_tool)
   text_tool->image   = NULL;
 
   gimp_tool_control_set_scroll_lock (tool->control, TRUE);
-  gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_TEXT);
+  gimp_tool_control_set_tool_cursor (tool->control,
+                                     GIMP_TOOL_CURSOR_TEXT);
+  gimp_tool_control_set_action_object_1 (tool->control,
+                                         "context/context-font-select-set");
 }
 
 static GObject *
@@ -360,9 +328,11 @@ gimp_text_tool_connect (GimpTextTool  *text_tool,
     {
       GimpTextOptions *options;
       GtkWidget       *button;
+      GtkWidget       *button2;
 
       options = GIMP_TEXT_OPTIONS (tool->tool_info->tool_options);
-      button = g_object_get_data (G_OBJECT (options), "gimp-text-to-vectors");
+      button  = g_object_get_data (G_OBJECT (options), "gimp-text-to-vectors");
+      button2 = g_object_get_data (G_OBJECT (options), "gimp-text-to-vectors-warped");
 
       if (text_tool->text)
         {
@@ -381,6 +351,14 @@ gimp_text_tool_connect (GimpTextTool  *text_tool,
                                                     text_tool);
             }
 
+          if (button2)
+            {
+              gtk_widget_set_sensitive (button2, FALSE);
+              g_signal_handlers_disconnect_by_func (button2,
+                                                    gimp_text_tool_create_vectors_warped,
+                                                    text_tool);
+            }
+
           g_object_unref (text_tool->text);
           text_tool->text = NULL;
 
@@ -393,8 +371,7 @@ gimp_text_tool_connect (GimpTextTool  *text_tool,
 
       if (text)
         {
-          gimp_config_sync (GIMP_CONFIG (text),
-                            GIMP_CONFIG (text_tool->proxy), 0);
+          gimp_config_sync (G_OBJECT (text), G_OBJECT (text_tool->proxy), 0);
 
           text_tool->text = g_object_ref (text);
 
@@ -408,6 +385,14 @@ gimp_text_tool_connect (GimpTextTool  *text_tool,
                                         G_CALLBACK (gimp_text_tool_create_vectors),
                                         text_tool);
               gtk_widget_set_sensitive (button, TRUE);
+            }
+
+          if (button2)
+            {
+              g_signal_connect_swapped (button2, "clicked",
+                                        G_CALLBACK (gimp_text_tool_create_vectors_warped),
+                                        text_tool);
+              gtk_widget_set_sensitive (button2, TRUE);
             }
 
           if (text_tool->editor)
@@ -659,6 +644,34 @@ gimp_text_tool_create_vectors (GimpTextTool *text_tool)
 }
 
 static void
+gimp_text_tool_create_vectors_warped (GimpTextTool *text_tool)
+{
+  GimpVectors   *vectors0;
+  GimpVectors   *vectors;
+  GimpText      *text      = text_tool->text;
+  gdouble        box_height;
+
+  if (! text || ! text_tool->image || ! text_tool->layer)
+    return;
+
+  box_height = gimp_item_height (GIMP_ITEM (text_tool->layer));
+
+  vectors0 = gimp_image_get_active_vectors (text_tool->image);
+  if (! vectors0)
+    return;
+
+  vectors = gimp_text_vectors_new (text_tool->image, text_tool->text);
+
+  gimp_vectors_warp_vectors (vectors0, vectors, 0.5 * box_height);
+
+  gimp_image_add_vectors (text_tool->image, vectors, -1);
+  gimp_image_set_active_vectors (text_tool->image, vectors);
+  gimp_item_set_visible (GIMP_ITEM (vectors), TRUE, FALSE);
+
+  gimp_image_flush (text_tool->image);
+}
+
+static void
 gimp_text_tool_create_layer (GimpTextTool *text_tool,
                              GimpText     *text)
 {
@@ -754,7 +767,7 @@ gimp_text_tool_editor (GimpTextTool *text_tool)
     gimp_text_editor_set_text (GIMP_TEXT_EDITOR (text_tool->editor),
                                text_tool->text->text, -1);
 
-  g_signal_connect_object (text_tool->editor, "text_changed",
+  g_signal_connect_object (text_tool->editor, "text-changed",
                            G_CALLBACK (gimp_text_tool_text_changed),
                            text_tool, 0);
 
@@ -858,10 +871,18 @@ gimp_text_tool_confirm_dialog (GimpTextTool *text_tool)
                                      tool->gdisp->shell,
                                      gimp_standard_help_func,
                                      tool->tool_info->help_id,
+
                                      GTK_STOCK_NEW,    RESPONSE_NEW,
                                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                     GIMP_STOCK_EDIT,  GTK_RESPONSE_OK,
+                                     GTK_STOCK_EDIT,   GTK_RESPONSE_OK,
+
                                      NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           RESPONSE_NEW,
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
 
@@ -930,7 +951,7 @@ gimp_text_tool_set_image (GimpTextTool *text_tool,
       g_object_add_weak_pointer (G_OBJECT (text_tool->image),
                                  (gpointer *) &text_tool->image);
 
-      g_signal_connect_object (text_tool->image, "active_layer_changed",
+      g_signal_connect_object (text_tool->image, "active-layer-changed",
                                G_CALLBACK (gimp_text_tool_layer_changed),
                                text_tool, 0);
 

@@ -81,7 +81,4 @@
 		    SF-IMAGE    "Image"         0
 		    SF-DRAWABLE "Drawable"      0
 		    SF-STRING   _"Pattern name" "My Pattern"
-		    SF-STRING   _"Filename"     "mypattern")
-
-(script-fu-menu-register "script-fu-selection-to-pattern"
-			 _"<Image>/Script-Fu/Selection")
+		    SF-STRING   _"File name"    "mypattern")

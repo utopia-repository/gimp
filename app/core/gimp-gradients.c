@@ -27,8 +27,6 @@
 
 #include "core-types.h"
 
-#include "config/gimpbaseconfig.h"
-
 #include "gimp.h"
 #include "gimpcontainer.h"
 #include "gimpcontext.h"
@@ -38,10 +36,10 @@
 #include "gimp-intl.h"
 
 
-#define FG_BG_RGB_KEY      "gimp-fg-bg-rgb-gradient"
-#define FG_BG_HSV_CCW_KEY  "gimp-fg-bg-hsv-ccw-gradient"
-#define FG_BG_HSV_CW_KEY   "gimp-fg-bg-hsv-cw-gradient"
-#define FG_TRANSPARENT_KEY "gimp-fg-transparent-gradient"
+#define FG_BG_RGB_KEY      "gimp-gradient-fg-bg-rgb"
+#define FG_BG_HSV_CCW_KEY  "gimp-gradient-fg-bg-hsv-ccw"
+#define FG_BG_HSV_CW_KEY   "gimp-gradient-fg-bg-hsv-cw"
+#define FG_TRANSPARENT_KEY "gimp-gradient-fg-transparent"
 
 
 /*  local function prototypes  */
@@ -90,10 +88,10 @@ gimp_gradients_init (Gimp *gimp)
                  gradient->segments->left_color.b,
                  0.0);
 
-  g_signal_connect (gimp->user_context, "foreground_changed",
+  g_signal_connect (gimp->user_context, "foreground-changed",
                     G_CALLBACK (gimp_gradients_foreground_changed),
                     gimp);
-  g_signal_connect (gimp->user_context, "background_changed",
+  g_signal_connect (gimp->user_context, "background-changed",
                     G_CALLBACK (gimp_gradients_background_changed),
                     gimp);
 }
@@ -106,13 +104,9 @@ gimp_gradients_add_gradient (Gimp        *gimp,
                              const gchar *name,
                              const gchar *id)
 {
-  GimpBaseConfig *base_config;
-  GimpGradient   *gradient;
+  GimpGradient *gradient;
 
-  base_config = GIMP_BASE_CONFIG (gimp->config);
-
-  gradient = GIMP_GRADIENT (gimp_gradient_new (name,
-                                               base_config->stingy_memory_use));
+  gradient = GIMP_GRADIENT (gimp_gradient_new (name));
 
   gimp_data_make_internal (GIMP_DATA (gradient));
 

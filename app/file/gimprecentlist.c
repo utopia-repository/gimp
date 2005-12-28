@@ -30,14 +30,17 @@
 #include <string.h>
 #include <errno.h>
 #include <time.h>
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 
 #include <glib-object.h>
+#include <glib/gstdio.h>
 
 #ifndef G_OS_WIN32  /* This code doesn't compile on win32 and the use of
                      * the freedesktop standard doesn't make much sense
@@ -536,11 +539,11 @@ gimp_recent_list_add_item (GimpRecentItem *item)
 
   filename = g_build_filename (home, GIMP_RECENT_LIST_FILE_NAME, NULL);
 
-  fd = open (filename, O_RDWR);
+  fd = g_open (filename, O_RDWR, 0);
 
   if (fd < 0)
     {
-      fd = creat (filename, S_IRUSR | S_IWUSR);
+      fd = g_creat (filename, S_IRUSR | S_IWUSR);
       created = TRUE;
     }
 

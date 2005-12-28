@@ -26,14 +26,13 @@
 #include "libgimpcolor/gimpcolor.h"
 #include "libgimpmath/gimpmath.h"
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
 
 #include "base/temp-buf.h"
 #include "base/tile-manager.h"
 
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-utils.h"
 #include "config/gimpcoreconfig.h"
 
 #include "gimp.h"
@@ -45,8 +44,9 @@
 #include "gimpimage-colorhash.h"
 #include "gimpimage-colormap.h"
 #include "gimpimage-guides.h"
+#include "gimpimage-sample-points.h"
 #include "gimpimage-preview.h"
-#include "gimpimage-qmask.h"
+#include "gimpimage-quick-mask.h"
 #include "gimpimage-undo.h"
 #include "gimpimage-undo-push.h"
 #include "gimplayer.h"
@@ -55,6 +55,7 @@
 #include "gimplist.h"
 #include "gimpmarshal.h"
 #include "gimpparasitelist.h"
+#include "gimppickable.h"
 #include "gimpprojection.h"
 #include "gimpselection.h"
 #include "gimptemplate.h"
@@ -87,12 +88,15 @@ enum
   MASK_CHANGED,
   RESOLUTION_CHANGED,
   UNIT_CHANGED,
-  QMASK_CHANGED,
+  QUICK_MASK_CHANGED,
   SELECTION_CONTROL,
   CLEAN,
   DIRTY,
   UPDATE,
   UPDATE_GUIDE,
+  UPDATE_SAMPLE_POINT,
+  SAMPLE_POINT_ADDED,
+  SAMPLE_POINT_REMOVED,
   COLORMAP_CHANGED,
   UNDO_EVENT,
   FLUSH,
@@ -112,9 +116,6 @@ enum
 
 /*  local function prototypes  */
 
-static void     gimp_image_class_init            (GimpImageClass *klass);
-static void     gimp_image_init                  (GimpImage      *gimage);
-
 static GObject *gimp_image_constructor           (GType           type,
                                                   guint           n_params,
                                                   GObjectConstructParam *params);
@@ -133,6 +134,9 @@ static void     gimp_image_name_changed          (GimpObject     *object);
 static gint64   gimp_image_get_memsize           (GimpObject     *object,
                                                   gint64         *gui_size);
 
+static gboolean gimp_image_get_size              (GimpViewable   *viewable,
+                                                  gint           *width,
+                                                  gint           *height);
 static void     gimp_image_invalidate_preview    (GimpViewable   *viewable);
 static void     gimp_image_size_changed          (GimpViewable   *viewable);
 static gchar  * gimp_image_get_description       (GimpViewable   *viewable,
@@ -191,41 +195,13 @@ static gint valid_combinations[][MAX_CHANNELS + 1] =
   { -1, -1, COMBINE_INDEXED_A_INDEXED_A, -1, -1 },
 };
 
+
+G_DEFINE_TYPE (GimpImage, gimp_image, GIMP_TYPE_VIEWABLE);
+
+#define parent_class gimp_image_parent_class
+
 static guint gimp_image_signals[LAST_SIGNAL] = { 0 };
 
-static GimpViewableClass *parent_class = NULL;
-
-
-GType
-gimp_image_get_type (void)
-{
-  static GType image_type = 0;
-
-  if (! image_type)
-    {
-      static const GTypeInfo image_info =
-      {
-        sizeof (GimpImageClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_image_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpImage),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_image_init,
-      };
-
-      image_type = g_type_register_static (GIMP_TYPE_VIEWABLE,
-                                           "GimpImage",
-                                           &image_info, 0);
-    }
-
-  return image_type;
-}
-
-
-/*  private functions  */
 
 static void
 gimp_image_class_init (GimpImageClass *klass)
@@ -234,10 +210,8 @@ gimp_image_class_init (GimpImageClass *klass)
   GimpObjectClass   *gimp_object_class = GIMP_OBJECT_CLASS (klass);
   GimpViewableClass *viewable_class    = GIMP_VIEWABLE_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
-
   gimp_image_signals[MODE_CHANGED] =
-    g_signal_new ("mode_changed",
+    g_signal_new ("mode-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, mode_changed),
@@ -246,7 +220,7 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_TYPE_NONE, 0);
 
   gimp_image_signals[ALPHA_CHANGED] =
-    g_signal_new ("alpha_changed",
+    g_signal_new ("alpha-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, alpha_changed),
@@ -255,7 +229,7 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_TYPE_NONE, 0);
 
   gimp_image_signals[FLOATING_SELECTION_CHANGED] =
-    g_signal_new ("floating_selection_changed",
+    g_signal_new ("floating-selection-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, floating_selection_changed),
@@ -264,7 +238,7 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_TYPE_NONE, 0);
 
   gimp_image_signals[ACTIVE_LAYER_CHANGED] =
-    g_signal_new ("active_layer_changed",
+    g_signal_new ("active-layer-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, active_layer_changed),
@@ -273,7 +247,7 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_TYPE_NONE, 0);
 
   gimp_image_signals[ACTIVE_CHANNEL_CHANGED] =
-    g_signal_new ("active_channel_changed",
+    g_signal_new ("active-channel-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, active_channel_changed),
@@ -282,7 +256,7 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_TYPE_NONE, 0);
 
   gimp_image_signals[ACTIVE_VECTORS_CHANGED] =
-    g_signal_new ("active_vectors_changed",
+    g_signal_new ("active-vectors-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, active_vectors_changed),
@@ -291,7 +265,7 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_TYPE_NONE, 0);
 
   gimp_image_signals[COMPONENT_VISIBILITY_CHANGED] =
-    g_signal_new ("component_visibility_changed",
+    g_signal_new ("component-visibility-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, component_visibility_changed),
@@ -301,7 +275,7 @@ gimp_image_class_init (GimpImageClass *klass)
                   GIMP_TYPE_CHANNEL_TYPE);
 
   gimp_image_signals[COMPONENT_ACTIVE_CHANGED] =
-    g_signal_new ("component_active_changed",
+    g_signal_new ("component-active-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, component_active_changed),
@@ -311,7 +285,7 @@ gimp_image_class_init (GimpImageClass *klass)
                   GIMP_TYPE_CHANNEL_TYPE);
 
   gimp_image_signals[MASK_CHANGED] =
-    g_signal_new ("mask_changed",
+    g_signal_new ("mask-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, mask_changed),
@@ -320,7 +294,7 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_TYPE_NONE, 0);
 
   gimp_image_signals[RESOLUTION_CHANGED] =
-    g_signal_new ("resolution_changed",
+    g_signal_new ("resolution-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, resolution_changed),
@@ -329,7 +303,7 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_TYPE_NONE, 0);
 
   gimp_image_signals[UNIT_CHANGED] =
-    g_signal_new ("unit_changed",
+    g_signal_new ("unit-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, unit_changed),
@@ -337,17 +311,17 @@ gimp_image_class_init (GimpImageClass *klass)
                   gimp_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
-  gimp_image_signals[QMASK_CHANGED] =
-    g_signal_new ("qmask_changed",
+  gimp_image_signals[QUICK_MASK_CHANGED] =
+    g_signal_new ("quick-mask-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (GimpImageClass, qmask_changed),
+                  G_STRUCT_OFFSET (GimpImageClass, quick_mask_changed),
                   NULL, NULL,
                   gimp_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
   gimp_image_signals[SELECTION_CONTROL] =
-    g_signal_new ("selection_control",
+    g_signal_new ("selection-control",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, selection_control),
@@ -390,7 +364,7 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_TYPE_INT);
 
   gimp_image_signals[UPDATE_GUIDE] =
-    g_signal_new ("update_guide",
+    g_signal_new ("update-guide",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, update_guide),
@@ -399,8 +373,38 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_TYPE_NONE, 1,
                   G_TYPE_POINTER);
 
+  gimp_image_signals[UPDATE_SAMPLE_POINT] =
+    g_signal_new ("update-sample-point",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpImageClass, update_sample_point),
+                  NULL, NULL,
+                  gimp_marshal_VOID__POINTER,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_POINTER);
+
+  gimp_image_signals[SAMPLE_POINT_ADDED] =
+    g_signal_new ("sample-point-added",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpImageClass, sample_point_added),
+                  NULL, NULL,
+                  gimp_marshal_VOID__POINTER,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_POINTER);
+
+  gimp_image_signals[SAMPLE_POINT_REMOVED] =
+    g_signal_new ("sample-point-removed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpImageClass, sample_point_removed),
+                  NULL, NULL,
+                  gimp_marshal_VOID__POINTER,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_POINTER);
+
   gimp_image_signals[COLORMAP_CHANGED] =
-    g_signal_new ("colormap_changed",
+    g_signal_new ("colormap-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, colormap_changed),
@@ -410,7 +414,7 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_TYPE_INT);
 
   gimp_image_signals[UNDO_EVENT] =
-    g_signal_new ("undo_event",
+    g_signal_new ("undo-event",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, undo_event),
@@ -439,6 +443,7 @@ gimp_image_class_init (GimpImageClass *klass)
   gimp_object_class->get_memsize      = gimp_image_get_memsize;
 
   viewable_class->default_stock_id    = "gimp-image";
+  viewable_class->get_size            = gimp_image_get_size;
   viewable_class->invalidate_preview  = gimp_image_invalidate_preview;
   viewable_class->size_changed        = gimp_image_size_changed;
   viewable_class->get_preview_size    = gimp_image_get_preview_size;
@@ -461,6 +466,9 @@ gimp_image_class_init (GimpImageClass *klass)
   klass->dirty                        = NULL;
   klass->update                       = NULL;
   klass->update_guide                 = NULL;
+  klass->update_sample_point          = NULL;
+  klass->sample_point_added           = NULL;
+  klass->sample_point_removed         = NULL;
   klass->colormap_changed             = gimp_image_real_colormap_changed;
   klass->undo_event                   = NULL;
   klass->flush                        = gimp_image_real_flush;
@@ -531,8 +539,8 @@ gimp_image_init (GimpImage *gimage)
   gimage->projection            = gimp_projection_new (gimage);
 
   gimage->guides                = NULL;
-
   gimage->grid                  = NULL;
+  gimage->sample_points         = NULL;
 
   gimage->layers                = gimp_list_new (GIMP_TYPE_LAYER,   TRUE);
   gimage->channels              = gimp_list_new (GIMP_TYPE_CHANNEL, TRUE);
@@ -544,11 +552,11 @@ gimp_image_init (GimpImage *gimage)
                                 G_CALLBACK (gimp_image_drawable_update),
                                 gimage);
   gimage->layer_visible_handler =
-    gimp_container_add_handler (gimage->layers, "visibility_changed",
+    gimp_container_add_handler (gimage->layers, "visibility-changed",
                                 G_CALLBACK (gimp_image_drawable_visibility),
                                 gimage);
   gimage->layer_alpha_handler =
-    gimp_container_add_handler (gimage->layers, "alpha_changed",
+    gimp_container_add_handler (gimage->layers, "alpha-changed",
                                 G_CALLBACK (gimp_image_layer_alpha_changed),
                                 gimage);
 
@@ -557,15 +565,15 @@ gimp_image_init (GimpImage *gimage)
                                 G_CALLBACK (gimp_image_drawable_update),
                                 gimage);
   gimage->channel_visible_handler =
-    gimp_container_add_handler (gimage->channels, "visibility_changed",
+    gimp_container_add_handler (gimage->channels, "visibility-changed",
                                 G_CALLBACK (gimp_image_drawable_visibility),
                                 gimage);
   gimage->channel_name_changed_handler =
-    gimp_container_add_handler (gimage->channels, "name_changed",
+    gimp_container_add_handler (gimage->channels, "name-changed",
                                 G_CALLBACK (gimp_image_channel_name_changed),
                                 gimage);
   gimage->channel_color_changed_handler =
-    gimp_container_add_handler (gimage->channels, "color_changed",
+    gimp_container_add_handler (gimage->channels, "color-changed",
                                 G_CALLBACK (gimp_image_channel_color_changed),
                                 gimage);
 
@@ -598,9 +606,9 @@ gimp_image_init (GimpImage *gimage)
       gimage->active[i]  = TRUE;
     }
 
-  gimage->qmask_state           = FALSE;
-  gimage->qmask_inverted        = FALSE;
-  gimp_rgba_set (&gimage->qmask_color, 1.0, 0.0, 0.0, 0.5);
+  gimage->quick_mask_state      = FALSE;
+  gimage->quick_mask_inverted   = FALSE;
+  gimp_rgba_set (&gimage->quick_mask_color, 1.0, 0.0, 0.0, 0.5);
 
   gimage->undo_stack            = gimp_undo_stack_new (gimage);
   gimage->redo_stack            = gimp_undo_stack_new (gimage);
@@ -859,6 +867,14 @@ gimp_image_finalize (GObject *object)
       gimage->grid = NULL;
     }
 
+  if (gimage->sample_points)
+    {
+      g_list_foreach (gimage->sample_points,
+                      (GFunc) gimp_image_sample_point_unref, NULL);
+      g_list_free (gimage->sample_points);
+      gimage->sample_points = NULL;
+    }
+
   if (gimage->undo_stack)
     {
       g_object_unref (gimage->undo_stack);
@@ -915,9 +931,11 @@ gimp_image_get_memsize (GimpObject *object,
                                         gui_size);
 
   memsize += gimp_g_list_get_memsize (gimage->guides, sizeof (GimpGuide));
-
   if (gimage->grid)
     memsize += gimp_object_get_memsize (GIMP_OBJECT (gimage->grid), gui_size);
+
+  memsize += gimp_g_list_get_memsize (gimage->sample_points,
+                                      sizeof (GimpSamplePoint));
 
   memsize += gimp_object_get_memsize (GIMP_OBJECT (gimage->layers),
                                       gui_size);
@@ -945,6 +963,19 @@ gimp_image_get_memsize (GimpObject *object,
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
+}
+
+static gboolean
+gimp_image_get_size (GimpViewable *viewable,
+                     gint         *width,
+                     gint         *height)
+{
+  GimpImage *image = GIMP_IMAGE (viewable);
+
+  *width  = image->width;
+  *height = image->height;
+
+  return TRUE;
 }
 
 static void
@@ -1005,10 +1036,10 @@ gimp_image_get_description (GimpViewable  *viewable,
 
   uri = gimp_image_get_uri (GIMP_IMAGE (gimage));
 
-  basename = file_utils_uri_to_utf8_basename (uri);
+  basename = file_utils_uri_display_basename (uri);
 
   if (tooltip)
-    *tooltip = file_utils_uri_to_utf8_filename (uri);
+    *tooltip = file_utils_uri_display_name (uri);
 
   retval = g_strdup_printf ("%s-%d", basename, gimp_image_get_ID (gimage));
 
@@ -1140,10 +1171,10 @@ gimp_image_channel_add (GimpContainer *container,
   if (gimp_item_get_visible (item))
     gimp_image_drawable_visibility (item, gimage);
 
-  if (! strcmp (GIMP_IMAGE_QMASK_NAME,
+  if (! strcmp (GIMP_IMAGE_QUICK_MASK_NAME,
                 gimp_object_get_name (GIMP_OBJECT (channel))))
     {
-      gimp_image_set_qmask_state (gimage, TRUE);
+      gimp_image_set_quick_mask_state (gimage, TRUE);
     }
 }
 
@@ -1157,10 +1188,10 @@ gimp_image_channel_remove (GimpContainer *container,
   if (gimp_item_get_visible (item))
     gimp_image_drawable_visibility (item, gimage);
 
-  if (! strcmp (GIMP_IMAGE_QMASK_NAME,
+  if (! strcmp (GIMP_IMAGE_QUICK_MASK_NAME,
                 gimp_object_get_name (GIMP_OBJECT (channel))))
     {
-      gimp_image_set_qmask_state (gimage, FALSE);
+      gimp_image_set_quick_mask_state (gimage, FALSE);
     }
 }
 
@@ -1168,15 +1199,15 @@ static void
 gimp_image_channel_name_changed (GimpChannel *channel,
                                  GimpImage   *gimage)
 {
-  if (! strcmp (GIMP_IMAGE_QMASK_NAME,
+  if (! strcmp (GIMP_IMAGE_QUICK_MASK_NAME,
                 gimp_object_get_name (GIMP_OBJECT (channel))))
     {
-      gimp_image_set_qmask_state (gimage, TRUE);
+      gimp_image_set_quick_mask_state (gimage, TRUE);
     }
-  else if (gimp_image_get_qmask_state (gimage) &&
-           ! gimp_image_get_qmask (gimage))
+  else if (gimp_image_get_quick_mask_state (gimage) &&
+           ! gimp_image_get_quick_mask (gimage))
     {
-      gimp_image_set_qmask_state (gimage, FALSE);
+      gimp_image_set_quick_mask_state (gimage, FALSE);
     }
 }
 
@@ -1184,10 +1215,10 @@ static void
 gimp_image_channel_color_changed (GimpChannel *channel,
                                   GimpImage   *gimage)
 {
-  if (! strcmp (GIMP_IMAGE_QMASK_NAME,
+  if (! strcmp (GIMP_IMAGE_QUICK_MASK_NAME,
                 gimp_object_get_name (GIMP_OBJECT (channel))))
     {
-      gimage->qmask_color = channel->color;
+      gimage->quick_mask_color = channel->color;
     }
 }
 
@@ -1453,7 +1484,7 @@ gimp_image_is_empty (const GimpImage *gimage)
 {
   g_return_val_if_fail (GIMP_IS_IMAGE (gimage), TRUE);
 
-  return (gimp_container_num_children (gimage->layers) == 0);
+  return gimp_container_is_empty (gimage->layers);
 }
 
 GimpLayer *
@@ -1635,6 +1666,39 @@ gimp_image_update_guide (GimpImage *gimage,
 }
 
 void
+gimp_image_update_sample_point (GimpImage       *gimage,
+                                GimpSamplePoint *sample_point)
+{
+  g_return_if_fail (GIMP_IS_IMAGE (gimage));
+  g_return_if_fail (sample_point != NULL);
+
+  g_signal_emit (gimage, gimp_image_signals[UPDATE_SAMPLE_POINT], 0,
+                 sample_point);
+}
+
+void
+gimp_image_sample_point_added (GimpImage       *gimage,
+                               GimpSamplePoint *sample_point)
+{
+  g_return_if_fail (GIMP_IS_IMAGE (gimage));
+  g_return_if_fail (sample_point != NULL);
+
+  g_signal_emit (gimage, gimp_image_signals[SAMPLE_POINT_ADDED], 0,
+                 sample_point);
+}
+
+void
+gimp_image_sample_point_removed (GimpImage       *gimage,
+                                 GimpSamplePoint *sample_point)
+{
+  g_return_if_fail (GIMP_IS_IMAGE (gimage));
+  g_return_if_fail (sample_point != NULL);
+
+  g_signal_emit (gimage, gimp_image_signals[SAMPLE_POINT_REMOVED], 0,
+                 sample_point);
+}
+
+void
 gimp_image_colormap_changed (GimpImage *gimage,
                              gint       color_index)
 {
@@ -1655,11 +1719,11 @@ gimp_image_selection_control (GimpImage            *gimage,
 }
 
 void
-gimp_image_qmask_changed (GimpImage *gimage)
+gimp_image_quick_mask_changed (GimpImage *gimage)
 {
   g_return_if_fail (GIMP_IS_IMAGE (gimage));
 
-  g_signal_emit (gimage, gimp_image_signals[QMASK_CHANGED], 0);
+  g_signal_emit (gimage, gimp_image_signals[QUICK_MASK_CHANGED], 0);
 }
 
 
@@ -1967,7 +2031,7 @@ gimp_image_transform_color (const GimpImage    *dest_gimage,
         case GIMP_GRAY_IMAGE:
         case GIMP_GRAYA_IMAGE:
           /*  NTSC conversion  */
-          *dest = GIMP_RGB_INTENSITY (src[RED_PIX],
+          *dest = GIMP_RGB_LUMINANCE (src[RED_PIX],
                                       src[GREEN_PIX],
                                       src[BLUE_PIX]) + 0.5;
           break;
@@ -2832,12 +2896,6 @@ gimp_image_raise_layer (GimpImage *gimage,
       return FALSE;
     }
 
-  if (! gimp_drawable_has_alpha (GIMP_DRAWABLE (layer)))
-    {
-      g_message (_("Cannot raise a layer without alpha."));
-      return FALSE;
-    }
-
   return gimp_image_position_layer (gimage, layer, index - 1,
                                     TRUE, _("Raise Layer"));
 }
@@ -2882,12 +2940,6 @@ gimp_image_raise_layer_to_top (GimpImage *gimage,
       return FALSE;
     }
 
-  if (! gimp_drawable_has_alpha (GIMP_DRAWABLE (layer)))
-    {
-      g_message (_("Cannot raise a layer without alpha."));
-      return FALSE;
-    }
-
   return gimp_image_position_layer (gimage, layer, 0,
                                     TRUE, _("Raise Layer to Top"));
 }
@@ -2924,14 +2976,13 @@ gimp_image_position_layer (GimpImage   *gimage,
                            gboolean     push_undo,
                            const gchar *undo_desc)
 {
-  gint index;
-  gint num_layers;
+  gint  index;
+  gint  num_layers;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (gimage), FALSE);
   g_return_val_if_fail (GIMP_IS_LAYER (layer), FALSE);
 
-  index = gimp_container_get_child_index (gimage->layers,
-                                          GIMP_OBJECT (layer));
+  index = gimp_container_get_child_index (gimage->layers, GIMP_OBJECT (layer));
   if (index < 0)
     return FALSE;
 
@@ -2941,23 +2992,6 @@ gimp_image_position_layer (GimpImage   *gimage,
 
   if (new_index == index)
     return TRUE;
-
-  /* check if we want to move it below a bottom layer without alpha */
-  if (new_index == num_layers - 1)
-    {
-      GimpLayer *tmp;
-
-      tmp = (GimpLayer *) gimp_container_get_child_by_index (gimage->layers,
-                                                             num_layers - 1);
-
-      if (new_index == num_layers - 1 &&
-          ! gimp_drawable_has_alpha (GIMP_DRAWABLE (tmp)))
-        {
-          g_message (_("Layer '%s' has no alpha. Layer was placed above it."),
-                     GIMP_OBJECT (tmp)->name);
-          new_index--;
-        }
-    }
 
   if (push_undo)
     gimp_image_undo_push_layer_reposition (gimage, undo_desc, layer);
@@ -3499,9 +3533,15 @@ gimp_image_pick_correlate_layer (const GimpImage *gimage,
        list = g_list_next (list))
     {
       GimpLayer *layer = list->data;
+      gint       off_x, off_y;
 
-      if (gimp_layer_pick_correlate (layer, x, y))
-        return layer;
+      gimp_item_offsets (GIMP_ITEM (layer), &off_x, &off_y);
+
+      if (gimp_pickable_get_opacity_at (GIMP_PICKABLE (layer),
+                                        x - off_x, y - off_y) > 63)
+        {
+          return layer;
+        }
     }
 
   return NULL;

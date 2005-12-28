@@ -27,8 +27,8 @@
 #include "core/gimpimage.h"
 #include "core/gimpitem.h"
 
-#include "widgets/gimpenumcombobox.h"
 #include "widgets/gimphelp-ids.h"
+#include "widgets/gimpmessagebox.h"
 #include "widgets/gimpsizebox.h"
 #include "widgets/gimpviewabledialog.h"
 
@@ -122,6 +122,12 @@ scale_dialog_new (GimpViewable          *viewable,
 
                                      NULL);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           RESPONSE_RESET,
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
 
   private = g_new0 (ScaleDialog, 1);
@@ -179,6 +185,8 @@ scale_dialog_new (GimpViewable          *viewable,
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
+  gtk_size_group_add_widget (GIMP_SIZE_BOX (private->box)->size_group, label);
+
   private->combo = gimp_enum_combo_box_new (GIMP_TYPE_INTERPOLATION_TYPE);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), private->combo);
   gtk_box_pack_start (GTK_BOX (hbox), private->combo, TRUE, TRUE, 0);
@@ -189,16 +197,17 @@ scale_dialog_new (GimpViewable          *viewable,
 
   if (gimp_image_base_type (image) == GIMP_INDEXED)
     {
-      label = gtk_label_new (_("Indexed color layers are always scaled "
-                               "without interpolation. The chosen "
-                               "interpolation type will affect channels "
-                               "and masks only."));
+      GtkWidget *box = gimp_message_box_new (GIMP_STOCK_INFO);
 
-      gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-      gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-      gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-      gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-      gtk_widget_show (label);
+      gimp_message_box_set_text (GIMP_MESSAGE_BOX (box),
+                                 _("Indexed color layers are always scaled "
+                                   "without interpolation. The chosen "
+                                   "interpolation type will affect channels "
+                                   "and masks only."));
+
+      gtk_container_set_border_width (GTK_CONTAINER (box), 0);
+      gtk_box_pack_start (GTK_BOX (vbox), box, FALSE, FALSE, 0);
+      gtk_widget_show (box);
     }
 
   return dialog;

@@ -55,11 +55,18 @@ static GimpActionEntry image_actions[] =
     N_("Image Menu"), NULL, NULL, NULL,
     GIMP_HELP_IMAGE_WINDOW },
 
-  { "extensions-menu",      NULL, N_("_Xtns")      },
-  { "image-menu",           NULL, N_("_Image")     },
-  { "image-mode-menu",      NULL, N_("_Mode")      },
-  { "image-transform-menu", NULL, N_("_Transform") },
-  { "image-guides-menu",    NULL, N_("_Guides")    },
+  { "extensions-menu",        NULL, N_("_Xtns")       },
+
+  { "image-menu",             NULL, N_("_Image")      },
+  { "image-mode-menu",        NULL, N_("_Mode") },
+  { "image-transform-menu",   NULL, N_("_Transform")  },
+  { "image-guides-menu",      NULL, N_("_Guides")     },
+
+  { "colors-menu",            NULL, N_("_Colors")     },
+  { "colors-info-menu",       NULL, N_("I_nfo")       },
+  { "colors-auto-menu",       NULL, N_("_Auto")       },
+  { "colors-map-menu",        NULL, N_("Ma_p")        },
+  { "colors-components-menu", NULL, N_("_Components") },
 
   { "image-new", GTK_STOCK_NEW,
     N_("_New..."), "<control>N", NULL,
@@ -114,7 +121,12 @@ static GimpActionEntry image_actions[] =
   { "image-configure-grid", GIMP_STOCK_GRID,
     N_("Configure G_rid..."), NULL, NULL,
     G_CALLBACK (image_configure_grid_cmd_callback),
-    GIMP_HELP_IMAGE_GRID }
+    GIMP_HELP_IMAGE_GRID },
+
+  { "image-properties", GTK_STOCK_PROPERTIES,
+    N_("Image Properties"), NULL, NULL,
+    G_CALLBACK (image_properties_cmd_callback),
+    GIMP_HELP_IMAGE_PROPERTIES }
 };
 
 static GimpEnumActionEntry image_convert_actions[] =
@@ -180,12 +192,6 @@ image_actions_setup (GimpActionGroup *group)
   action = gtk_action_group_get_action (GTK_ACTION_GROUP (group),
                                         "image-new-from-image");
   gtk_action_set_accel_path (action, "<Actions>/image/image-new");
-
-#ifdef __GNUC__
-#warning FIXME: remove accel_path hack
-#endif
-  g_object_set_data (G_OBJECT (action), "gimp-accel-path",
-                     "<Actions>/image/image-new");
 
   gimp_action_group_add_enum_actions (group,
                                       image_convert_actions,
@@ -254,6 +260,7 @@ image_actions_update (GimpActionGroup *group,
   SET_SENSITIVE ("image-merge-layers",     gimage && !fs && !aux && lp);
   SET_SENSITIVE ("image-flatten",          gimage && !fs && !aux && lp);
   SET_SENSITIVE ("image-configure-grid",   gimage);
+  SET_SENSITIVE ("image-properties",       gimage);
 
 #undef SET_SENSITIVE
 }

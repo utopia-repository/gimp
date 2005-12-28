@@ -45,13 +45,13 @@ static GimpActionEntry documents_actions[] =
   { "documents-open", GTK_STOCK_OPEN,
     N_("_Open Image"), "",
     N_("Open the selected entry"),
-    G_CALLBACK (documents_open_document_cmd_callback),
+    G_CALLBACK (documents_open_cmd_callback),
     GIMP_HELP_DOCUMENT_OPEN },
 
   { "documents-raise-or-open", GTK_STOCK_OPEN,
     N_("_Raise or Open Image"), "",
     N_("Raise window if already open"),
-    G_CALLBACK (documents_raise_or_open_document_cmd_callback),
+    G_CALLBACK (documents_raise_or_open_cmd_callback),
     GIMP_HELP_DOCUMENT_OPEN },
 
   { "documents-file-open-dialog", GTK_STOCK_OPEN,
@@ -60,11 +60,23 @@ static GimpActionEntry documents_actions[] =
     G_CALLBACK (documents_file_open_dialog_cmd_callback),
     GIMP_HELP_DOCUMENT_OPEN },
 
+  { "documents-copy-location", GTK_STOCK_COPY,
+    N_("Copy Image _Location"), "",
+    N_("Copy image location to clipboard"),
+    G_CALLBACK (documents_copy_location_cmd_callback),
+    GIMP_HELP_DOCUMENT_COPY_LOCATION },
+
   { "documents-remove", GTK_STOCK_REMOVE,
     N_("Remove _Entry"), "",
     N_("Remove the selected entry"),
-    G_CALLBACK (documents_remove_document_cmd_callback),
+    G_CALLBACK (documents_remove_cmd_callback),
     GIMP_HELP_DOCUMENT_REMOVE },
+
+  { "documents-clear", GTK_STOCK_CLEAR,
+    N_("_Clear History"), "",
+    N_("Clear the entire document history"),
+    G_CALLBACK (documents_clear_cmd_callback),
+    GIMP_HELP_DOCUMENT_CLEAR },
 
   { "documents-recreate-preview", GTK_STOCK_REFRESH,
     N_("Recreate _Preview"), "",
@@ -81,7 +93,7 @@ static GimpActionEntry documents_actions[] =
   { "documents-remove-dangling", GTK_STOCK_REFRESH,
     N_("Remove Dangling E_ntries"), "",
     N_("Remove dangling entries"),
-    G_CALLBACK (documents_delete_dangling_documents_cmd_callback),
+    G_CALLBACK (documents_remove_dangling_cmd_callback),
     GIMP_HELP_DOCUMENT_REFRESH }
 };
 
@@ -112,7 +124,9 @@ documents_actions_update (GimpActionGroup *group,
   SET_SENSITIVE ("documents-open",             imagefile);
   SET_SENSITIVE ("documents-raise-or-open",    imagefile);
   SET_SENSITIVE ("documents-file-open-dialog", TRUE);
+  SET_SENSITIVE ("documents-copy-location",    imagefile);
   SET_SENSITIVE ("documents-remove",           imagefile);
+  SET_SENSITIVE ("documents-clear",            TRUE);
   SET_SENSITIVE ("documents-recreate-preview", imagefile);
   SET_SENSITIVE ("documents-reload-previews",  imagefile);
   SET_SENSITIVE ("documents-remove-dangling",  imagefile);

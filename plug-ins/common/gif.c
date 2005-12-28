@@ -275,14 +275,18 @@
 #include "config.h"
 
 #include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define SAVE_PROC      "file-gif-save"
+#define PLUG_IN_BINARY "gif"
 
 
 /* Define only one of these to determine which kind of gif's you would like.
@@ -312,11 +316,13 @@ enum
 
 typedef struct
 {
-  gint interlace;
-  gint save_comment;
-  gint loop;
-  gint default_delay;
-  gint default_dispose;
+  gint     interlace;
+  gint     save_comment;
+  gint     loop;
+  gint     default_delay;
+  gint     default_dispose;
+  gboolean always_use_default_delay;
+  gboolean always_use_default_dispose;
 } GIFSaveVals;
 
 
@@ -365,7 +371,9 @@ static GIFSaveVals gsvals =
   TRUE,    /* save comment                         */
   TRUE,    /* loop infinitely                      */
   100,     /* default_delay between frames (100ms) */
-  0        /* default_dispose = "don't care"       */
+  0,       /* default_dispose = "don't care"       */
+  FALSE,   /* don't always use default_delay       */
+  FALSE    /* don't always use default_dispose     */
 };
 
 
@@ -376,18 +384,18 @@ query (void)
 {
   static GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",        "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",        "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",           "Image to save" },
     { GIMP_PDB_DRAWABLE, "drawable",        "Drawable to save" },
     { GIMP_PDB_STRING,   "filename",        "The name of the file to save the image in" },
-    { GIMP_PDB_STRING,   "raw_filename",    "The name entered" },
+    { GIMP_PDB_STRING,   "raw-filename",    "The name entered" },
     { GIMP_PDB_INT32,    "interlace",       "Try to save as interlaced" },
     { GIMP_PDB_INT32,    "loop",            "(animated gif) loop infinitely" },
-    { GIMP_PDB_INT32,    "default_delay",   "(animated gif) Default delay between framese in milliseconds" },
-    { GIMP_PDB_INT32,    "default_dispose", "(animated gif) Default disposal type (0=`don't care`, 1=combine, 2=replace)" }
+    { GIMP_PDB_INT32,    "default-delay",   "(animated gif) Default delay between framese in milliseconds" },
+    { GIMP_PDB_INT32,    "default-dispose", "(animated gif) Default disposal type (0=`don't care`, 1=combine, 2=replace)" }
   };
 
-  gimp_install_procedure ("file_gif_save",
+  gimp_install_procedure (SAVE_PROC,
                           "saves files in Compuserve GIF file format",
                           "Save a file in Compuserve GIF format, with "
 			  "possible animation, transparency, and comment.  "
@@ -405,8 +413,8 @@ query (void)
                           G_N_ELEMENTS (save_args), 0,
                           save_args, NULL);
 
-  gimp_register_file_handler_mime ("file_gif_save", "image/gif");
-  gimp_register_save_handler ("file_gif_save", "gif", "");
+  gimp_register_file_handler_mime (SAVE_PROC, "image/gif");
+  gimp_register_save_handler (SAVE_PROC, "gif", "");
 }
 
 static void
@@ -432,7 +440,7 @@ run (const gchar      *name,
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 
-  if (strcmp (name, "file_gif_save") == 0)
+  if (strcmp (name, SAVE_PROC) == 0)
     {
       image_ID    = orig_image_ID = param[1].data.d_int32;
       drawable_ID = param[2].data.d_int32;
@@ -442,7 +450,7 @@ run (const gchar      *name,
 	{
 	case GIMP_RUN_INTERACTIVE:
 	case GIMP_RUN_WITH_LAST_VALS:
-          gimp_ui_init ("gif", FALSE);
+          gimp_ui_init (PLUG_IN_BINARY, FALSE);
 	  export = gimp_export_image (&image_ID, &drawable_ID, "GIF",
 				      (GIMP_EXPORT_CAN_HANDLE_INDEXED |
 				       GIMP_EXPORT_CAN_HANDLE_GRAY |
@@ -466,7 +474,7 @@ run (const gchar      *name,
 	    {
 	    case GIMP_RUN_INTERACTIVE:
 	      /*  Possibly retrieve data  */
-	      gimp_get_data ("file_gif_save", &gsvals);
+	      gimp_get_data (SAVE_PROC, &gsvals);
 
 	      /*  First acquire information with a dialog  */
 	      if (! save_dialog (image_ID))
@@ -491,7 +499,7 @@ run (const gchar      *name,
 
 	    case GIMP_RUN_WITH_LAST_VALS:
 	      /*  Possibly retrieve data  */
-	      gimp_get_data ("file_gif_save", &gsvals);
+	      gimp_get_data (SAVE_PROC, &gsvals);
 	      break;
 
 	    default:
@@ -506,8 +514,7 @@ run (const gchar      *name,
 			      orig_image_ID))
 		{
 		  /*  Store psvals data  */
-		  gimp_set_data ("file_gif_save",
-                                 &gsvals, sizeof (GIFSaveVals));
+		  gimp_set_data (SAVE_PROC, &gsvals, sizeof (GIFSaveVals));
 		}
 	      else
 		{
@@ -862,7 +869,6 @@ save_image (const gchar *filename,
   guint rows, cols;
   gint BitsPerPixel, liberalBPP=0, useBPP=0;
   gint colors;
-  gchar *temp_buf;
   gint i;
   gint transparent;
   gint offset_x, offset_y;
@@ -988,7 +994,7 @@ save_image (const gchar *filename,
 
 
   /* open the destination file for writing */
-  outfile = fopen (filename, "wb");
+  outfile = g_fopen (filename, "wb");
   if (!outfile)
     {
       g_message (_("Could not open '%s' for writing: %s"),
@@ -998,10 +1004,8 @@ save_image (const gchar *filename,
 
 
   /* init the progress meter */
-  temp_buf = g_strdup_printf (_("Saving '%s'..."),
-                              gimp_filename_to_utf8 (filename));
-  gimp_progress_init (temp_buf);
-  g_free (temp_buf);
+  gimp_progress_init_printf (_("Saving '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
 
   /* write the GIFheader */
@@ -1122,7 +1126,7 @@ save_image (const gchar *filename,
 
       if (is_gif89)
 	{
-	  if (i > 0)
+	  if (i > 0 && !gsvals.always_use_default_dispose)
 	    {
 	      layer_name = gimp_drawable_get_name (layers[i - 1]);
 	      Disposal = parse_disposal_tag (layer_name);
@@ -1135,7 +1139,7 @@ save_image (const gchar *filename,
 	  Delay89 = parse_ms_tag (layer_name);
 	  g_free (layer_name);
 
-	  if (Delay89 < 0)
+	  if (Delay89 < 0 || gsvals.always_use_default_delay)
 	    Delay89 = (gsvals.default_delay + 5) / 10;
 	  else
 	    Delay89 = (Delay89 + 5) / 10;
@@ -1186,25 +1190,33 @@ save_image (const gchar *filename,
 static gboolean
 badbounds_dialog (void)
 {
-  GtkWidget *dlg;
+  GtkWidget *dialog;
   GtkWidget *label;
   GtkWidget *vbox;
   gboolean   crop;
 
-  dlg = gimp_dialog_new (_("GIF Warning"), "gif_warning",
-                         NULL, 0,
-			 gimp_standard_help_func, "file-gif-save",
+  dialog = gimp_dialog_new (_("GIF Warning"), "gif_warning",
+                            NULL, 0,
+                            gimp_standard_help_func, "file-gif-save",
 
-			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			 GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
-			 NULL);
+                            NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   /*  the warning message  */
 
   vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), vbox, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
   label= gtk_label_new (_("The image which you are trying to save as a GIF\n"
@@ -1216,11 +1228,11 @@ badbounds_dialog (void)
   gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, TRUE, 0);
   gtk_widget_show (label);
 
-  gtk_widget_show (dlg);
+  gtk_widget_show (dialog);
 
-  crop = (gimp_dialog_run (GIMP_DIALOG (dlg)) == GTK_RESPONSE_OK);
+  crop = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
 
-  gtk_widget_destroy (dlg);
+  gtk_widget_destroy (dialog);
 
   return crop;
 }
@@ -1229,7 +1241,7 @@ badbounds_dialog (void)
 static gint
 save_dialog (gint32 image_ID)
 {
-  GtkWidget     *dlg;
+  GtkWidget     *dialog;
   GtkWidget     *main_vbox;
   GtkWidget     *toggle;
   GtkWidget     *label;
@@ -1251,18 +1263,25 @@ save_dialog (gint32 image_ID)
 
   gimp_image_get_layers (image_ID, &nlayers);
 
-  dlg = gimp_dialog_new (_("Save as GIF"), "gif",
-                         NULL, 0,
-			 gimp_standard_help_func, "file-gif-save",
+  dialog = gimp_dialog_new (_("Save as GIF"), PLUG_IN_BINARY,
+                            NULL, 0,
+                            gimp_standard_help_func, SAVE_PROC,
 
-			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			 GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
 
-			 NULL);
+                            NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dlg)->vbox), main_vbox);
+  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
   gtk_widget_show (main_vbox);
 
   /*  regular gif parameter settings  */
@@ -1272,7 +1291,7 @@ save_dialog (gint32 image_ID)
   vbox = gtk_vbox_new (FALSE, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
 
-  toggle = gtk_check_button_new_with_mnemonic (_("_Interlace"));
+  toggle = gtk_check_button_new_with_mnemonic (_("I_nterlace"));
   gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), gsvals.interlace);
   gtk_widget_show (toggle);
@@ -1364,7 +1383,7 @@ save_dialog (gint32 image_ID)
   hbox = gtk_hbox_new (FALSE, 6);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
-  label = gtk_label_new (_("_Delay between frames where unspecified:"));
+  label = gtk_label_new_with_mnemonic (_("_Delay between frames where unspecified:"));
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
@@ -1373,7 +1392,9 @@ save_dialog (gint32 image_ID)
   gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (adj, "value_changed",
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), spinbutton);
+
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &gsvals.default_delay);
 
@@ -1387,7 +1408,7 @@ save_dialog (gint32 image_ID)
   hbox = gtk_hbox_new (FALSE, 6);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
-  label = gtk_label_new (_("Frame disposal where unspecified: "));
+  label = gtk_label_new_with_mnemonic (_("_Frame disposal where unspecified:"));
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
@@ -1401,12 +1422,35 @@ save_dialog (gint32 image_ID)
   gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (combo),
                                  gsvals.default_dispose);
 
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), combo);
+
   g_signal_connect (combo, "changed",
                     G_CALLBACK (gimp_int_combo_box_get_active),
                     &gsvals.default_dispose);
 
   gtk_box_pack_start (GTK_BOX (hbox), combo, FALSE, FALSE, 0);
   gtk_widget_show (combo);
+
+  /* The "Always use default values" toggles */
+  toggle = gtk_check_button_new_with_mnemonic (_("_Use delay entered above for all frames"));
+  gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
+                                gsvals.always_use_default_delay);
+  gtk_widget_show (toggle);
+
+  g_signal_connect (G_OBJECT (toggle), "toggled",
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &gsvals.always_use_default_delay);
+
+  toggle = gtk_check_button_new_with_mnemonic (_("U_se disposal entered above for all frames"));
+  gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
+                                gsvals.always_use_default_dispose);
+  gtk_widget_show (toggle);
+
+  g_signal_connect (G_OBJECT (toggle), "toggled",
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &gsvals.always_use_default_dispose);
 
   gtk_widget_show (hbox);
   gtk_widget_show (vbox);
@@ -1418,11 +1462,11 @@ save_dialog (gint32 image_ID)
     gtk_widget_set_sensitive (frame, FALSE);
 
   gtk_widget_show (frame);
-  gtk_widget_show (dlg);
+  gtk_widget_show (dialog);
 
-  run = (gimp_dialog_run (GIMP_DIALOG (dlg)) == GTK_RESPONSE_OK);
+  run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
 
-  gtk_widget_destroy (dlg);
+  gtk_widget_destroy (dialog);
 
   return run;
 }

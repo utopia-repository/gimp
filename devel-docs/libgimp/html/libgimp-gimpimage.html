@@ -1,14 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpimage</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
 <link rel="prev" href="libgimp-gimpguides.html" title="gimpguides">
 <link rel="next" href="libgimp-gimplayer.html" title="gimplayer">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -18,27 +17,24 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
+<link rel="index" href="ix01.html" title="Index">
+<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimpguides.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimplayer.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2557507" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2643524" class="shortcut">Description</a></nobr></td></tr>
-</table>
+</tr></table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpimage"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2557507"></a><span class="refentrytitle">gimpimage</span>
-</h2>
+<h2><span class="refentrytitle">gimpimage</span></h2>
 <p>gimpimage &#8212; Operations on complete images.</p>
 </td>
 <td valign="top" align="right"></td>
@@ -49,166 +45,181 @@
 
 
 
-gint*               <a href="libgimp-gimpimage.html#gimp-image-list">gimp_image_list</a>                     (gint *num_images);
-gint32              <a href="libgimp-gimpimage.html#gimp-image-new">gimp_image_new</a>                      (gint width,
-                                                         gint height,
-                                                         <a
+gint*       <a href="libgimp-gimpimage.html#gimp-image-list">gimp_image_list</a>                 (gint *num_images);
+gint32      <a href="libgimp-gimpimage.html#gimp-image-new">gimp_image_new</a>                  (gint width,
+                                             gint height,
+                                             <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageBaseType"
 >GimpImageBaseType</a> type);
-gint32              <a href="libgimp-gimpimage.html#gimp-image-duplicate">gimp_image_duplicate</a>                (gint32 image_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-delete">gimp_image_delete</a>                   (gint32 image_ID);
+gint32      <a href="libgimp-gimpimage.html#gimp-image-duplicate">gimp_image_duplicate</a>            (gint32 image_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-delete">gimp_image_delete</a>               (gint32 image_ID);
 <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageBaseType"
->GimpImageBaseType</a>   <a href="libgimp-gimpimage.html#gimp-image-base-type">gimp_image_base_type</a>                (gint32 image_ID);
-gint                <a href="libgimp-gimpimage.html#gimp-image-width">gimp_image_width</a>                    (gint32 image_ID);
-gint                <a href="libgimp-gimpimage.html#gimp-image-height">gimp_image_height</a>                   (gint32 image_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-free-shadow">gimp_image_free_shadow</a>              (gint32 image_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-flip">gimp_image_flip</a>                     (gint32 image_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-rotate">gimp_image_rotate</a>                   (gint32 image_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpRotationType">GimpRotationType</a> rotate_type);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-resize">gimp_image_resize</a>                   (gint32 image_ID,
-                                                         gint new_width,
-                                                         gint new_height,
-                                                         gint offx,
-                                                         gint offy);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-resize-to-layers">gimp_image_resize_to_layers</a>         (gint32 image_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-scale">gimp_image_scale</a>                    (gint32 image_ID,
-                                                         gint new_width,
-                                                         gint new_height);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-crop">gimp_image_crop</a>                     (gint32 image_ID,
-                                                         gint new_width,
-                                                         gint new_height,
-                                                         gint offx,
-                                                         gint offy);
-gint*               <a href="libgimp-gimpimage.html#gimp-image-get-layers">gimp_image_get_layers</a>               (gint32 image_ID,
-                                                         gint *num_layers);
-gint*               <a href="libgimp-gimpimage.html#gimp-image-get-channels">gimp_image_get_channels</a>             (gint32 image_ID,
-                                                         gint *num_channels);
-gint32              <a href="libgimp-gimpimage.html#gimp-image-get-active-drawable">gimp_image_get_active_drawable</a>      (gint32 image_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-unset-active-channel">gimp_image_unset_active_channel</a>     (gint32 image_ID);
-gint32              <a href="libgimp-gimpimage.html#gimp-image-get-floating-sel">gimp_image_get_floating_sel</a>         (gint32 image_ID);
-gint32              <a href="libgimp-gimpimage.html#gimp-image-floating-sel-attached-to">gimp_image_floating_sel_attached_to</a> (gint32 image_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-pick-color">gimp_image_pick_color</a>               (gint32 image_ID,
-                                                         gint32 drawable_ID,
-                                                         gdouble x,
-                                                         gdouble y,
-                                                         gboolean sample_merged,
-                                                         gboolean sample_average,
-                                                         gdouble average_radius,
-                                                         <a
+>GimpImageBaseType</a> <a href="libgimp-gimpimage.html#gimp-image-base-type">gimp_image_base_type</a>      (gint32 image_ID);
+gint        <a href="libgimp-gimpimage.html#gimp-image-width">gimp_image_width</a>                (gint32 image_ID);
+gint        <a href="libgimp-gimpimage.html#gimp-image-height">gimp_image_height</a>               (gint32 image_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-free-shadow">gimp_image_free_shadow</a>          (gint32 image_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-flip">gimp_image_flip</a>                 (gint32 image_ID,
+                                             <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-rotate">gimp_image_rotate</a>               (gint32 image_ID,
+                                             <a href="libgimp-gimpenums.html#GimpRotationType">GimpRotationType</a> rotate_type);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-resize">gimp_image_resize</a>               (gint32 image_ID,
+                                             gint new_width,
+                                             gint new_height,
+                                             gint offx,
+                                             gint offy);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-resize-to-layers">gimp_image_resize_to_layers</a>     (gint32 image_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-scale">gimp_image_scale</a>                (gint32 image_ID,
+                                             gint new_width,
+                                             gint new_height);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-crop">gimp_image_crop</a>                 (gint32 image_ID,
+                                             gint new_width,
+                                             gint new_height,
+                                             gint offx,
+                                             gint offy);
+gint*       <a href="libgimp-gimpimage.html#gimp-image-get-layers">gimp_image_get_layers</a>           (gint32 image_ID,
+                                             gint *num_layers);
+gint*       <a href="libgimp-gimpimage.html#gimp-image-get-channels">gimp_image_get_channels</a>         (gint32 image_ID,
+                                             gint *num_channels);
+gint32      <a href="libgimp-gimpimage.html#gimp-image-get-active-drawable">gimp_image_get_active_drawable</a>  (gint32 image_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-unset-active-channel">gimp_image_unset_active_channel</a> (gint32 image_ID);
+gint32      <a href="libgimp-gimpimage.html#gimp-image-get-floating-sel">gimp_image_get_floating_sel</a>     (gint32 image_ID);
+gint32      <a href="libgimp-gimpimage.html#gimp-image-floating-sel-attached-to">gimp_image_floating_sel_attached_to</a>
+                                            (gint32 image_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-pick-color">gimp_image_pick_color</a>           (gint32 image_ID,
+                                             gint32 drawable_ID,
+                                             gdouble x,
+                                             gdouble y,
+                                             gboolean sample_merged,
+                                             gboolean sample_average,
+                                             gdouble average_radius,
+                                             <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
-gint32              <a href="libgimp-gimpimage.html#gimp-image-pick-correlate-layer">gimp_image_pick_correlate_layer</a>     (gint32 image_ID,
-                                                         gint x,
-                                                         gint y);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-add-layer">gimp_image_add_layer</a>                (gint32 image_ID,
-                                                         gint32 layer_ID,
-                                                         gint position);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-remove-layer">gimp_image_remove_layer</a>             (gint32 image_ID,
-                                                         gint32 layer_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-raise-layer">gimp_image_raise_layer</a>              (gint32 image_ID,
-                                                         gint32 layer_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-lower-layer">gimp_image_lower_layer</a>              (gint32 image_ID,
-                                                         gint32 layer_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-raise-layer-to-top">gimp_image_raise_layer_to_top</a>       (gint32 image_ID,
-                                                         gint32 layer_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-lower-layer-to-bottom">gimp_image_lower_layer_to_bottom</a>    (gint32 image_ID,
-                                                         gint32 layer_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-add-channel">gimp_image_add_channel</a>              (gint32 image_ID,
-                                                         gint32 channel_ID,
-                                                         gint position);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-remove-channel">gimp_image_remove_channel</a>           (gint32 image_ID,
-                                                         gint32 channel_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-raise-channel">gimp_image_raise_channel</a>            (gint32 image_ID,
-                                                         gint32 channel_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-lower-channel">gimp_image_lower_channel</a>            (gint32 image_ID,
-                                                         gint32 layer_ID);
-gint32              <a href="libgimp-gimpimage.html#gimp-image-flatten">gimp_image_flatten</a>                  (gint32 image_ID);
-gint32              <a href="libgimp-gimpimage.html#gimp-image-merge-visible-layers">gimp_image_merge_visible_layers</a>     (gint32 image_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpMergeType">GimpMergeType</a> merge_type);
-gint32              <a href="libgimp-gimpimage.html#gimp-image-merge-down">gimp_image_merge_down</a>               (gint32 image_ID,
-                                                         gint32 merge_layer_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpMergeType">GimpMergeType</a> merge_type);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-clean-all">gimp_image_clean_all</a>                (gint32 image_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-is-dirty">gimp_image_is_dirty</a>                 (gint32 image_ID);
-gint32              <a href="libgimp-gimpimage.html#gimp-image-get-active-layer">gimp_image_get_active_layer</a>         (gint32 image_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-set-active-layer">gimp_image_set_active_layer</a>         (gint32 image_ID,
-                                                         gint32 active_layer_ID);
-gint32              <a href="libgimp-gimpimage.html#gimp-image-get-active-channel">gimp_image_get_active_channel</a>       (gint32 image_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-set-active-channel">gimp_image_set_active_channel</a>       (gint32 image_ID,
-                                                         gint32 active_channel_ID);
-gint32              <a href="libgimp-gimpimage.html#gimp-image-get-selection">gimp_image_get_selection</a>            (gint32 image_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-get-component-active">gimp_image_get_component_active</a>     (gint32 image_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpChannelType">GimpChannelType</a> component);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-set-component-active">gimp_image_set_component_active</a>     (gint32 image_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpChannelType">GimpChannelType</a> component,
-                                                         gboolean active);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-get-component-visible">gimp_image_get_component_visible</a>    (gint32 image_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpChannelType">GimpChannelType</a> component);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-set-component-visible">gimp_image_set_component_visible</a>    (gint32 image_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpChannelType">GimpChannelType</a> component,
-                                                         gboolean visible);
-gchar*              <a href="libgimp-gimpimage.html#gimp-image-get-filename">gimp_image_get_filename</a>             (gint32 image_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-set-filename">gimp_image_set_filename</a>             (gint32 image_ID,
-                                                         const gchar *filename);
-gchar*              <a href="libgimp-gimpimage.html#gimp-image-get-name">gimp_image_get_name</a>                 (gint32 image_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-get-resolution">gimp_image_get_resolution</a>           (gint32 image_ID,
-                                                         gdouble *xresolution,
-                                                         gdouble *yresolution);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-set-resolution">gimp_image_set_resolution</a>           (gint32 image_ID,
-                                                         gdouble xresolution,
-                                                         gdouble yresolution);
+gint32      <a href="libgimp-gimpimage.html#gimp-image-pick-correlate-layer">gimp_image_pick_correlate_layer</a> (gint32 image_ID,
+                                             gint x,
+                                             gint y);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-add-layer">gimp_image_add_layer</a>            (gint32 image_ID,
+                                             gint32 layer_ID,
+                                             gint position);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-remove-layer">gimp_image_remove_layer</a>         (gint32 image_ID,
+                                             gint32 layer_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-raise-layer">gimp_image_raise_layer</a>          (gint32 image_ID,
+                                             gint32 layer_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-lower-layer">gimp_image_lower_layer</a>          (gint32 image_ID,
+                                             gint32 layer_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-raise-layer-to-top">gimp_image_raise_layer_to_top</a>   (gint32 image_ID,
+                                             gint32 layer_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-lower-layer-to-bottom">gimp_image_lower_layer_to_bottom</a>
+                                            (gint32 image_ID,
+                                             gint32 layer_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-add-channel">gimp_image_add_channel</a>          (gint32 image_ID,
+                                             gint32 channel_ID,
+                                             gint position);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-remove-channel">gimp_image_remove_channel</a>       (gint32 image_ID,
+                                             gint32 channel_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-raise-channel">gimp_image_raise_channel</a>        (gint32 image_ID,
+                                             gint32 channel_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-lower-channel">gimp_image_lower_channel</a>        (gint32 image_ID,
+                                             gint32 layer_ID);
+gint32      <a href="libgimp-gimpimage.html#gimp-image-flatten">gimp_image_flatten</a>              (gint32 image_ID);
+gint32      <a href="libgimp-gimpimage.html#gimp-image-merge-visible-layers">gimp_image_merge_visible_layers</a> (gint32 image_ID,
+                                             <a href="libgimp-gimpenums.html#GimpMergeType">GimpMergeType</a> merge_type);
+gint32      <a href="libgimp-gimpimage.html#gimp-image-merge-down">gimp_image_merge_down</a>           (gint32 image_ID,
+                                             gint32 merge_layer_ID,
+                                             <a href="libgimp-gimpenums.html#GimpMergeType">GimpMergeType</a> merge_type);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-clean-all">gimp_image_clean_all</a>            (gint32 image_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-is-dirty">gimp_image_is_dirty</a>             (gint32 image_ID);
+gint32      <a href="libgimp-gimpimage.html#gimp-image-get-active-layer">gimp_image_get_active_layer</a>     (gint32 image_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-set-active-layer">gimp_image_set_active_layer</a>     (gint32 image_ID,
+                                             gint32 active_layer_ID);
+gint32      <a href="libgimp-gimpimage.html#gimp-image-get-active-channel">gimp_image_get_active_channel</a>   (gint32 image_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-set-active-channel">gimp_image_set_active_channel</a>   (gint32 image_ID,
+                                             gint32 active_channel_ID);
+gint32      <a href="libgimp-gimpimage.html#gimp-image-get-selection">gimp_image_get_selection</a>        (gint32 image_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-get-component-active">gimp_image_get_component_active</a> (gint32 image_ID,
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelType"
+>GimpChannelType</a> component);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-set-component-active">gimp_image_set_component_active</a> (gint32 image_ID,
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelType"
+>GimpChannelType</a> component,
+                                             gboolean active);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-get-component-visible">gimp_image_get_component_visible</a>
+                                            (gint32 image_ID,
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelType"
+>GimpChannelType</a> component);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-set-component-visible">gimp_image_set_component_visible</a>
+                                            (gint32 image_ID,
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelType"
+>GimpChannelType</a> component,
+                                             gboolean visible);
+gchar*      <a href="libgimp-gimpimage.html#gimp-image-get-filename">gimp_image_get_filename</a>         (gint32 image_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-set-filename">gimp_image_set_filename</a>         (gint32 image_ID,
+                                             const gchar *filename);
+gchar*      <a href="libgimp-gimpimage.html#gimp-image-get-name">gimp_image_get_name</a>             (gint32 image_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-get-resolution">gimp_image_get_resolution</a>       (gint32 image_ID,
+                                             gdouble *xresolution,
+                                             gdouble *yresolution);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-set-resolution">gimp_image_set_resolution</a>       (gint32 image_ID,
+                                             gdouble xresolution,
+                                             gdouble yresolution);
 <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
->GimpUnit</a>            <a href="libgimp-gimpimage.html#gimp-image-get-unit">gimp_image_get_unit</a>                 (gint32 image_ID);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-set-unit">gimp_image_set_unit</a>                 (gint32 image_ID,
-                                                         <a
+>GimpUnit</a>    <a href="libgimp-gimpimage.html#gimp-image-get-unit">gimp_image_get_unit</a>             (gint32 image_ID);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-set-unit">gimp_image_set_unit</a>             (gint32 image_ID,
+                                             <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a> unit);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-set-tattoo-state">gimp_image_set_tattoo_state</a>         (gint32 image_ID,
-                                                         gint tattoo_state);
-gint                <a href="libgimp-gimpimage.html#gimp-image-get-tattoo-state">gimp_image_get_tattoo_state</a>         (gint32 image_ID);
-gint32              <a href="libgimp-gimpimage.html#gimp-image-get-layer-by-tattoo">gimp_image_get_layer_by_tattoo</a>      (gint32 image_ID,
-                                                         gint tattoo);
-gint32              <a href="libgimp-gimpimage.html#gimp-image-get-channel-by-tattoo">gimp_image_get_channel_by_tattoo</a>    (gint32 image_ID,
-                                                         gint tattoo);
-guchar*             <a href="libgimp-gimpimage.html#gimp-image-get-cmap">gimp_image_get_cmap</a>                 (gint32 image_ID,
-                                                         gint *num_colors);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-set-cmap">gimp_image_set_cmap</a>                 (gint32 image_ID,
-                                                         const guchar *cmap,
-                                                         gint num_colors);
-guchar*             <a href="libgimp-gimpimage.html#gimp-image-get-colormap">gimp_image_get_colormap</a>             (gint32 image_ID,
-                                                         gint *num_colors);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-set-colormap">gimp_image_set_colormap</a>             (gint32 image_ID,
-                                                         const guchar *colormap,
-                                                         gint num_colors);
-guchar*             <a href="libgimp-gimpimage.html#gimp-image-get-thumbnail-data">gimp_image_get_thumbnail_data</a>       (gint32 image_ID,
-                                                         gint *width,
-                                                         gint *height,
-                                                         gint *bpp);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-set-tattoo-state">gimp_image_set_tattoo_state</a>     (gint32 image_ID,
+                                             gint tattoo_state);
+gint        <a href="libgimp-gimpimage.html#gimp-image-get-tattoo-state">gimp_image_get_tattoo_state</a>     (gint32 image_ID);
+gint32      <a href="libgimp-gimpimage.html#gimp-image-get-layer-by-tattoo">gimp_image_get_layer_by_tattoo</a>  (gint32 image_ID,
+                                             gint tattoo);
+gint32      <a href="libgimp-gimpimage.html#gimp-image-get-channel-by-tattoo">gimp_image_get_channel_by_tattoo</a>
+                                            (gint32 image_ID,
+                                             gint tattoo);
+guchar*     <a href="libgimp-gimpimage.html#gimp-image-get-cmap">gimp_image_get_cmap</a>             (gint32 image_ID,
+                                             gint *num_colors);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-set-cmap">gimp_image_set_cmap</a>             (gint32 image_ID,
+                                             const guchar *cmap,
+                                             gint num_colors);
+guchar*     <a href="libgimp-gimpimage.html#gimp-image-get-colormap">gimp_image_get_colormap</a>         (gint32 image_ID,
+                                             gint *num_colors);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-set-colormap">gimp_image_set_colormap</a>         (gint32 image_ID,
+                                             const guchar *colormap,
+                                             gint num_colors);
+gint*       <a href="libgimp-gimpimage.html#gimp-image-get-vectors">gimp_image_get_vectors</a>          (gint32 image_ID,
+                                             gint *num_vectors);
+guchar*     <a href="libgimp-gimpimage.html#gimp-image-get-thumbnail-data">gimp_image_get_thumbnail_data</a>   (gint32 image_ID,
+                                             gint *width,
+                                             gint *height,
+                                             gint *bpp);
 <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
->GimpParasite</a>*       <a href="libgimp-gimpimage.html#gimp-image-parasite-find">gimp_image_parasite_find</a>            (gint32 image_ID,
-                                                         const gchar *name);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-parasite-list">gimp_image_parasite_list</a>            (gint32 image_ID,
-                                                         gint *num_parasites,
-                                                         gchar ***parasites);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-parasite-attach">gimp_image_parasite_attach</a>          (gint32 image_ID,
-                                                         <a
+>GimpParasite</a>* <a href="libgimp-gimpimage.html#gimp-image-parasite-find">gimp_image_parasite_find</a>      (gint32 image_ID,
+                                             const gchar *name);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-parasite-list">gimp_image_parasite_list</a>        (gint32 image_ID,
+                                             gint *num_parasites,
+                                             gchar ***parasites);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-parasite-attach">gimp_image_parasite_attach</a>      (gint32 image_ID,
+                                             <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 >GimpParasite</a> *parasite);
-gboolean            <a href="libgimp-gimpimage.html#gimp-image-parasite-detach">gimp_image_parasite_detach</a>          (gint32 image_ID,
-                                                         const gchar *name);
-void                <a href="libgimp-gimpimage.html#gimp-image-attach-new-parasite">gimp_image_attach_new_parasite</a>      (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gint flags,
-                                                         gint size,
-                                                         gconstpointer data);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-parasite-detach">gimp_image_parasite_detach</a>      (gint32 image_ID,
+                                             const gchar *name);
+gboolean    <a href="libgimp-gimpimage.html#gimp-image-attach-new-parasite">gimp_image_attach_new_parasite</a>  (gint32 image_ID,
+                                             const gchar *name,
+                                             gint flags,
+                                             gint size,
+                                             gconstpointer data);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2643524"></a><h2>Description</h2>
+<a name="id2605658"></a><h2>Description</h2>
 <p>
 Operations on complete images: creation, resizing/rescaling,
 and operations involving multiple layers.
@@ -216,11 +227,11 @@ and operations involving multiple layers.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2643542"></a><h2>Details</h2>
+<a name="id2605669"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2643552"></a><h3>
+<a name="id2605675"></a><h3>
 <a name="gimp-image-list"></a>gimp_image_list ()</h3>
-<a class="indexterm" name="id2643565"></a><pre class="programlisting">gint*               gimp_image_list                     (gint *num_images);</pre>
+<a class="indexterm" name="id2605683"></a><pre class="programlisting">gint*       gimp_image_list                 (gint *num_images);</pre>
 <p>
 Returns the list of images currently open.
 </p>
@@ -234,12 +245,14 @@ GIMP.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_images</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>num_images</code></em>&#160;:</span></td>
 <td> The number of images currently open.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The list of images currently open.
 </td>
 </tr>
@@ -248,11 +261,11 @@ GIMP.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2643630"></a><h3>
+<a name="id2605744"></a><h3>
 <a name="gimp-image-new"></a>gimp_image_new ()</h3>
-<a class="indexterm" name="id2643643"></a><pre class="programlisting">gint32              gimp_image_new                      (gint width,
-                                                         gint height,
-                                                         <a
+<a class="indexterm" name="id2605752"></a><pre class="programlisting">gint32      gimp_image_new                  (gint width,
+                                             gint height,
+                                             <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageBaseType"
 >GimpImageBaseType</a> type);</pre>
 <p>
@@ -272,22 +285,26 @@ as an argument will fail. Layers can be created using the
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td> The width of the image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td> The height of the image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>type</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>type</code></em>&#160;:</span></td>
 <td> The type of image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The ID of the newly created image.
 </td>
 </tr>
@@ -296,9 +313,9 @@ as an argument will fail. Layers can be created using the
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2643755"></a><h3>
+<a name="id2605854"></a><h3>
 <a name="gimp-image-duplicate"></a>gimp_image_duplicate ()</h3>
-<a class="indexterm" name="id2643766"></a><pre class="programlisting">gint32              gimp_image_duplicate                (gint32 image_ID);</pre>
+<a class="indexterm" name="id2605863"></a><pre class="programlisting">gint32      gimp_image_duplicate            (gint32 image_ID);</pre>
 <p>
 Duplicate the specified image
 </p>
@@ -312,12 +329,14 @@ channels, and image information.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The new, duplicated image.
 </td>
 </tr>
@@ -326,9 +345,9 @@ channels, and image information.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2643833"></a><h3>
+<a name="id2605922"></a><h3>
 <a name="gimp-image-delete"></a>gimp_image_delete ()</h3>
-<a class="indexterm" name="id2643845"></a><pre class="programlisting">gboolean            gimp_image_delete                   (gint32 image_ID);</pre>
+<a class="indexterm" name="id2605931"></a><pre class="programlisting">gboolean    gimp_image_delete               (gint32 image_ID);</pre>
 <p>
 Delete the specified image.
 </p>
@@ -346,12 +365,14 @@ the image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -360,11 +381,11 @@ the image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2643915"></a><h3>
+<a name="id2605994"></a><h3>
 <a name="gimp-image-base-type"></a>gimp_image_base_type ()</h3>
-<a class="indexterm" name="id2643926"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2606002"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageBaseType"
->GimpImageBaseType</a>   gimp_image_base_type                (gint32 image_ID);</pre>
+>GimpImageBaseType</a> gimp_image_base_type      (gint32 image_ID);</pre>
 <p>
 Get the base type of the image.
 </p>
@@ -378,12 +399,14 @@ must be of this subtype, but can have an optional alpha channel.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The image's base type.
 </td>
 </tr>
@@ -392,9 +415,9 @@ must be of this subtype, but can have an optional alpha channel.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2643992"></a><h3>
+<a name="id2606062"></a><h3>
 <a name="gimp-image-width"></a>gimp_image_width ()</h3>
-<a class="indexterm" name="id2644004"></a><pre class="programlisting">gint                gimp_image_width                    (gint32 image_ID);</pre>
+<a class="indexterm" name="id2606070"></a><pre class="programlisting">gint        gimp_image_width                (gint32 image_ID);</pre>
 <p>
 Return the width of the image
 </p>
@@ -408,12 +431,14 @@ of any of the layers in this image. This is the \"canvas\" width.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The image's width.
 </td>
 </tr>
@@ -422,9 +447,9 @@ of any of the layers in this image. This is the \"canvas\" width.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644071"></a><h3>
+<a name="id2606130"></a><h3>
 <a name="gimp-image-height"></a>gimp_image_height ()</h3>
-<a class="indexterm" name="id2644083"></a><pre class="programlisting">gint                gimp_image_height                   (gint32 image_ID);</pre>
+<a class="indexterm" name="id2606138"></a><pre class="programlisting">gint        gimp_image_height               (gint32 image_ID);</pre>
 <p>
 Return the height of the image
 </p>
@@ -438,12 +463,14 @@ of any of the layers in this image. This is the \"canvas\" height.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The image's height.
 </td>
 </tr>
@@ -452,9 +479,9 @@ of any of the layers in this image. This is the \"canvas\" height.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644149"></a><h3>
+<a name="id2606198"></a><h3>
 <a name="gimp-image-free-shadow"></a>gimp_image_free_shadow ()</h3>
-<a class="indexterm" name="id2644161"></a><pre class="programlisting">gboolean            gimp_image_free_shadow              (gint32 image_ID);</pre>
+<a class="indexterm" name="id2606206"></a><pre class="programlisting">gboolean    gimp_image_free_shadow          (gint32 image_ID);</pre>
 <p>
 Free the specified image's shadow data (if it exists).
 </p>
@@ -469,12 +496,14 @@ to 'gimp_image_delete'.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -483,10 +512,10 @@ to 'gimp_image_delete'.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644228"></a><h3>
+<a name="id2606267"></a><h3>
 <a name="gimp-image-flip"></a>gimp_image_flip ()</h3>
-<a class="indexterm" name="id2644240"></a><pre class="programlisting">gboolean            gimp_image_flip                     (gint32 image_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type);</pre>
+<a class="indexterm" name="id2606275"></a><pre class="programlisting">gboolean    gimp_image_flip                 (gint32 image_ID,
+                                             <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type);</pre>
 <p>
 Flips the image horizontally or vertically.
 </p>
@@ -499,17 +528,20 @@ This procedure flips (mirrors) the image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>flip_type</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>flip_type</code></em>&#160;:</span></td>
 <td> Type of flip.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -518,10 +550,10 @@ This procedure flips (mirrors) the image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644328"></a><h3>
+<a name="id2606352"></a><h3>
 <a name="gimp-image-rotate"></a>gimp_image_rotate ()</h3>
-<a class="indexterm" name="id2644340"></a><pre class="programlisting">gboolean            gimp_image_rotate                   (gint32 image_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpRotationType">GimpRotationType</a> rotate_type);</pre>
+<a class="indexterm" name="id2606361"></a><pre class="programlisting">gboolean    gimp_image_rotate               (gint32 image_ID,
+                                             <a href="libgimp-gimpenums.html#GimpRotationType">GimpRotationType</a> rotate_type);</pre>
 <p>
 Rotates the image by the specified degrees.
 </p>
@@ -534,17 +566,20 @@ This procedure rotates the image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>rotate_type</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>rotate_type</code></em>&#160;:</span></td>
 <td> Angle of rotation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -553,13 +588,13 @@ This procedure rotates the image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644427"></a><h3>
+<a name="id2606438"></a><h3>
 <a name="gimp-image-resize"></a>gimp_image_resize ()</h3>
-<a class="indexterm" name="id2644439"></a><pre class="programlisting">gboolean            gimp_image_resize                   (gint32 image_ID,
-                                                         gint new_width,
-                                                         gint new_height,
-                                                         gint offx,
-                                                         gint offy);</pre>
+<a class="indexterm" name="id2606446"></a><pre class="programlisting">gboolean    gimp_image_resize               (gint32 image_ID,
+                                             gint new_width,
+                                             gint new_height,
+                                             gint offx,
+                                             gint offy);</pre>
 <p>
 Resize the image to the specified extents.
 </p>
@@ -579,32 +614,38 @@ according to the specified offsets.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>new_width</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>new_width</code></em>&#160;:</span></td>
 <td> New image width.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>new_height</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>new_height</code></em>&#160;:</span></td>
 <td> New image height.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>offx</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>offx</code></em>&#160;:</span></td>
 <td> x offset between upper left corner of old and new images: (new - old).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>offy</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>offy</code></em>&#160;:</span></td>
 <td> y offset between upper left corner of old and new images: (new - old).
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -613,9 +654,9 @@ according to the specified offsets.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644570"></a><h3>
+<a name="id2606590"></a><h3>
 <a name="gimp-image-resize-to-layers"></a>gimp_image_resize_to_layers ()</h3>
-<a class="indexterm" name="id2644583"></a><pre class="programlisting">gboolean            gimp_image_resize_to_layers         (gint32 image_ID);</pre>
+<a class="indexterm" name="id2606599"></a><pre class="programlisting">gboolean    gimp_image_resize_to_layers     (gint32 image_ID);</pre>
 <p>
 Resize the image to fit all layers.
 </p>
@@ -631,28 +672,30 @@ image are repositioned to the new image area.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
+<p>Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644651"></a><h3>
+<a name="id2606665"></a><h3>
 <a name="gimp-image-scale"></a>gimp_image_scale ()</h3>
-<a class="indexterm" name="id2644662"></a><pre class="programlisting">gboolean            gimp_image_scale                    (gint32 image_ID,
-                                                         gint new_width,
-                                                         gint new_height);</pre>
+<a class="indexterm" name="id2606673"></a><pre class="programlisting">gboolean    gimp_image_scale                (gint32 image_ID,
+                                             gint new_width,
+                                             gint new_height);</pre>
 <p>
 Scale the image to the specified extents.
 </p>
@@ -672,22 +715,26 @@ specified offsets.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>new_width</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>new_width</code></em>&#160;:</span></td>
 <td> New image width.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>new_height</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>new_height</code></em>&#160;:</span></td>
 <td> New image height.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -696,13 +743,13 @@ specified offsets.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644766"></a><h3>
+<a name="id2606777"></a><h3>
 <a name="gimp-image-crop"></a>gimp_image_crop ()</h3>
-<a class="indexterm" name="id2644776"></a><pre class="programlisting">gboolean            gimp_image_crop                     (gint32 image_ID,
-                                                         gint new_width,
-                                                         gint new_height,
-                                                         gint offx,
-                                                         gint offy);</pre>
+<a class="indexterm" name="id2606785"></a><pre class="programlisting">gboolean    gimp_image_crop                 (gint32 image_ID,
+                                             gint new_width,
+                                             gint new_height,
+                                             gint offx,
+                                             gint offy);</pre>
 <p>
 Crop the image to the specified extents.
 </p>
@@ -720,32 +767,38 @@ range, an error is returned.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>new_width</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>new_width</code></em>&#160;:</span></td>
 <td> New image width: (0 &lt; new_width &lt;= width).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>new_height</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>new_height</code></em>&#160;:</span></td>
 <td> New image height: (0 &lt; new_height &lt;= height).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>offx</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>offx</code></em>&#160;:</span></td>
 <td> x offset: (0 &lt;= offx &lt;= (width - new_width)).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>offy</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>offy</code></em>&#160;:</span></td>
 <td> y offset: (0 &lt;= offy &lt;= (height - new_height)).
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -754,10 +807,10 @@ range, an error is returned.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644920"></a><h3>
+<a name="id2606928"></a><h3>
 <a name="gimp-image-get-layers"></a>gimp_image_get_layers ()</h3>
-<a class="indexterm" name="id2644931"></a><pre class="programlisting">gint*               gimp_image_get_layers               (gint32 image_ID,
-                                                         gint *num_layers);</pre>
+<a class="indexterm" name="id2606937"></a><pre class="programlisting">gint*       gimp_image_get_layers           (gint32 image_ID,
+                                             gint *num_layers);</pre>
 <p>
 Returns the list of layers contained in the specified image.
 </p>
@@ -771,17 +824,20 @@ image. The order of layers is from topmost to bottommost.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_layers</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>num_layers</code></em>&#160;:</span></td>
 <td> The number of layers contained in the image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The list of layers contained in the image.
 </td>
 </tr>
@@ -790,10 +846,10 @@ image. The order of layers is from topmost to bottommost.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645012"></a><h3>
+<a name="id2607018"></a><h3>
 <a name="gimp-image-get-channels"></a>gimp_image_get_channels ()</h3>
-<a class="indexterm" name="id2645022"></a><pre class="programlisting">gint*               gimp_image_get_channels             (gint32 image_ID,
-                                                         gint *num_channels);</pre>
+<a class="indexterm" name="id2607026"></a><pre class="programlisting">gint*       gimp_image_get_channels         (gint32 image_ID,
+                                             gint *num_channels);</pre>
 <p>
 Returns the list of channels contained in the specified image.
 </p>
@@ -808,17 +864,20 @@ masks. The order is from topmost to bottommost.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_channels</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>num_channels</code></em>&#160;:</span></td>
 <td> The number of channels contained in the image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The list of channels contained in the image.
 </td>
 </tr>
@@ -827,9 +886,9 @@ masks. The order is from topmost to bottommost.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645104"></a><h3>
+<a name="id2607108"></a><h3>
 <a name="gimp-image-get-active-drawable"></a>gimp_image_get_active_drawable ()</h3>
-<a class="indexterm" name="id2645117"></a><pre class="programlisting">gint32              gimp_image_get_active_drawable      (gint32 image_ID);</pre>
+<a class="indexterm" name="id2607118"></a><pre class="programlisting">gint32      gimp_image_get_active_drawable  (gint32 image_ID);</pre>
 <p>
 Get the image's active drawable
 </p>
@@ -847,12 +906,14 @@ is the active drawable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The active drawable.
 </td>
 </tr>
@@ -861,9 +922,9 @@ is the active drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645181"></a><h3>
+<a name="id2607182"></a><h3>
 <a name="gimp-image-unset-active-channel"></a>gimp_image_unset_active_channel ()</h3>
-<a class="indexterm" name="id2645193"></a><pre class="programlisting">gboolean            gimp_image_unset_active_channel     (gint32 image_ID);</pre>
+<a class="indexterm" name="id2607192"></a><pre class="programlisting">gboolean    gimp_image_unset_active_channel (gint32 image_ID);</pre>
 <p>
 Unsets the active channel in the specified image.
 </p>
@@ -879,12 +940,14 @@ existing active channel.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -893,9 +956,9 @@ existing active channel.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645255"></a><h3>
+<a name="id2607254"></a><h3>
 <a name="gimp-image-get-floating-sel"></a>gimp_image_get_floating_sel ()</h3>
-<a class="indexterm" name="id2645266"></a><pre class="programlisting">gint32              gimp_image_get_floating_sel         (gint32 image_ID);</pre>
+<a class="indexterm" name="id2607263"></a><pre class="programlisting">gint32      gimp_image_get_floating_sel     (gint32 image_ID);</pre>
 <p>
 Return the floating selection of the image.
 </p>
@@ -909,12 +972,14 @@ If it doesn't exist, -1 is returned as the layer ID.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The image's floating selection.
 </td>
 </tr>
@@ -923,9 +988,10 @@ If it doesn't exist, -1 is returned as the layer ID.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645327"></a><h3>
+<a name="id2607324"></a><h3>
 <a name="gimp-image-floating-sel-attached-to"></a>gimp_image_floating_sel_attached_to ()</h3>
-<a class="indexterm" name="id2645340"></a><pre class="programlisting">gint32              gimp_image_floating_sel_attached_to (gint32 image_ID);</pre>
+<a class="indexterm" name="id2607336"></a><pre class="programlisting">gint32      gimp_image_floating_sel_attached_to
+                                            (gint32 image_ID);</pre>
 <p>
 Return the drawable the floating selection is attached to.
 </p>
@@ -940,12 +1006,14 @@ the drawable ID.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The drawable the floating selection is attached to.
 </td>
 </tr>
@@ -954,16 +1022,16 @@ the drawable ID.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645402"></a><h3>
+<a name="id2607405"></a><h3>
 <a name="gimp-image-pick-color"></a>gimp_image_pick_color ()</h3>
-<a class="indexterm" name="id2645412"></a><pre class="programlisting">gboolean            gimp_image_pick_color               (gint32 image_ID,
-                                                         gint32 drawable_ID,
-                                                         gdouble x,
-                                                         gdouble y,
-                                                         gboolean sample_merged,
-                                                         gboolean sample_average,
-                                                         gdouble average_radius,
-                                                         <a
+<a class="indexterm" name="id2607416"></a><pre class="programlisting">gboolean    gimp_image_pick_color           (gint32 image_ID,
+                                             gint32 drawable_ID,
+                                             gdouble x,
+                                             gdouble y,
+                                             gboolean sample_merged,
+                                             gboolean sample_average,
+                                             gdouble average_radius,
+                                             <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
 <p>
@@ -989,47 +1057,56 @@ finding the image it belongs to.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The drawable to pick from.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td> x coordinate of upper-left corner of rectangle.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td> y coordinate of upper-left corner of rectangle.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
 <td> Use the composite image, not the drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>sample_average</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>sample_average</code></em>&#160;:</span></td>
 <td> Average the color of all the pixels in a specified radius.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>average_radius</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>average_radius</code></em>&#160;:</span></td>
 <td> The radius of pixels to average.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
 <td> The return color.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1038,11 +1115,11 @@ finding the image it belongs to.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645622"></a><h3>
+<a name="id2607646"></a><h3>
 <a name="gimp-image-pick-correlate-layer"></a>gimp_image_pick_correlate_layer ()</h3>
-<a class="indexterm" name="id2645634"></a><pre class="programlisting">gint32              gimp_image_pick_correlate_layer     (gint32 image_ID,
-                                                         gint x,
-                                                         gint y);</pre>
+<a class="indexterm" name="id2607657"></a><pre class="programlisting">gint32      gimp_image_pick_correlate_layer (gint32 image_ID,
+                                             gint x,
+                                             gint y);</pre>
 <p>
 Find the layer visible at the specified coordinates.
 </p>
@@ -1059,22 +1136,26 @@ layer is found.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td> The x coordinate for the pick.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td> The y coordinate for the pick.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The layer found at the specified coordinates.
 </td>
 </tr>
@@ -1083,11 +1164,11 @@ layer is found.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645738"></a><h3>
+<a name="id2607770"></a><h3>
 <a name="gimp-image-add-layer"></a>gimp_image_add_layer ()</h3>
-<a class="indexterm" name="id2645748"></a><pre class="programlisting">gboolean            gimp_image_add_layer                (gint32 image_ID,
-                                                         gint32 layer_ID,
-                                                         gint position);</pre>
+<a class="indexterm" name="id2607782"></a><pre class="programlisting">gboolean    gimp_image_add_layer            (gint32 image_ID,
+                                             gint32 layer_ID,
+                                             gint position);</pre>
 <p>
 Add the specified layer to the image.
 </p>
@@ -1104,22 +1185,26 @@ must be compatible with the image base type.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
 <td> The layer.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>position</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>position</code></em>&#160;:</span></td>
 <td> The layer position.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1128,10 +1213,10 @@ must be compatible with the image base type.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645850"></a><h3>
+<a name="id2607894"></a><h3>
 <a name="gimp-image-remove-layer"></a>gimp_image_remove_layer ()</h3>
-<a class="indexterm" name="id2645860"></a><pre class="programlisting">gboolean            gimp_image_remove_layer             (gint32 image_ID,
-                                                         gint32 layer_ID);</pre>
+<a class="indexterm" name="id2607906"></a><pre class="programlisting">gboolean    gimp_image_remove_layer         (gint32 image_ID,
+                                             gint32 layer_ID);</pre>
 <p>
 Remove the specified layer from the image.
 </p>
@@ -1148,17 +1233,20 @@ layer.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
 <td> The layer.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1167,10 +1255,10 @@ layer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645941"></a><h3>
+<a name="id2607997"></a><h3>
 <a name="gimp-image-raise-layer"></a>gimp_image_raise_layer ()</h3>
-<a class="indexterm" name="id2645952"></a><pre class="programlisting">gboolean            gimp_image_raise_layer              (gint32 image_ID,
-                                                         gint32 layer_ID);</pre>
+<a class="indexterm" name="id2608008"></a><pre class="programlisting">gboolean    gimp_image_raise_layer          (gint32 image_ID,
+                                             gint32 layer_ID);</pre>
 <p>
 Raise the specified layer in the image's layer stack
 </p>
@@ -1185,17 +1273,20 @@ it, or the layer has no alpha channel.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
 <td> The layer to raise.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1204,10 +1295,10 @@ it, or the layer has no alpha channel.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646032"></a><h3>
+<a name="id2608098"></a><h3>
 <a name="gimp-image-lower-layer"></a>gimp_image_lower_layer ()</h3>
-<a class="indexterm" name="id2646042"></a><pre class="programlisting">gboolean            gimp_image_lower_layer              (gint32 image_ID,
-                                                         gint32 layer_ID);</pre>
+<a class="indexterm" name="id2608109"></a><pre class="programlisting">gboolean    gimp_image_lower_layer          (gint32 image_ID,
+                                             gint32 layer_ID);</pre>
 <p>
 Lower the specified layer in the image's layer stack
 </p>
@@ -1222,17 +1313,20 @@ it, or the layer has no alpha channel.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
 <td> The layer to lower.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1241,10 +1335,10 @@ it, or the layer has no alpha channel.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646122"></a><h3>
+<a name="id2608199"></a><h3>
 <a name="gimp-image-raise-layer-to-top"></a>gimp_image_raise_layer_to_top ()</h3>
-<a class="indexterm" name="id2646135"></a><pre class="programlisting">gboolean            gimp_image_raise_layer_to_top       (gint32 image_ID,
-                                                         gint32 layer_ID);</pre>
+<a class="indexterm" name="id2608211"></a><pre class="programlisting">gboolean    gimp_image_raise_layer_to_top   (gint32 image_ID,
+                                             gint32 layer_ID);</pre>
 <p>
 Raise the specified layer in the image's layer stack to top of stack
 </p>
@@ -1259,17 +1353,20 @@ it, or the layer has no alpha channel.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
 <td> The layer to raise to top.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1278,10 +1375,11 @@ it, or the layer has no alpha channel.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646216"></a><h3>
+<a name="id2608300"></a><h3>
 <a name="gimp-image-lower-layer-to-bottom"></a>gimp_image_lower_layer_to_bottom ()</h3>
-<a class="indexterm" name="id2646228"></a><pre class="programlisting">gboolean            gimp_image_lower_layer_to_bottom    (gint32 image_ID,
-                                                         gint32 layer_ID);</pre>
+<a class="indexterm" name="id2608312"></a><pre class="programlisting">gboolean    gimp_image_lower_layer_to_bottom
+                                            (gint32 image_ID,
+                                             gint32 layer_ID);</pre>
 <p>
 Lower the specified layer in the image's layer stack to bottom of
 stack
@@ -1297,17 +1395,20 @@ it, or the layer has no alpha channel.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
 <td> The layer to lower to bottom.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1316,11 +1417,11 @@ it, or the layer has no alpha channel.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646310"></a><h3>
+<a name="id2608403"></a><h3>
 <a name="gimp-image-add-channel"></a>gimp_image_add_channel ()</h3>
-<a class="indexterm" name="id2646320"></a><pre class="programlisting">gboolean            gimp_image_add_channel              (gint32 image_ID,
-                                                         gint32 channel_ID,
-                                                         gint position);</pre>
+<a class="indexterm" name="id2608414"></a><pre class="programlisting">gboolean    gimp_image_add_channel          (gint32 image_ID,
+                                             gint32 channel_ID,
+                                             gint position);</pre>
 <p>
 Add the specified channel to the image.
 </p>
@@ -1335,22 +1436,26 @@ the top of the channel stack.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></td>
 <td> The channel.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>position</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>position</code></em>&#160;:</span></td>
 <td> The channel position.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1359,10 +1464,10 @@ the top of the channel stack.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646419"></a><h3>
+<a name="id2608525"></a><h3>
 <a name="gimp-image-remove-channel"></a>gimp_image_remove_channel ()</h3>
-<a class="indexterm" name="id2646430"></a><pre class="programlisting">gboolean            gimp_image_remove_channel           (gint32 image_ID,
-                                                         gint32 channel_ID);</pre>
+<a class="indexterm" name="id2608537"></a><pre class="programlisting">gboolean    gimp_image_remove_channel       (gint32 image_ID,
+                                             gint32 channel_ID);</pre>
 <p>
 Remove the specified channel from the image.
 </p>
@@ -1376,17 +1481,20 @@ channel doesn't exist, an error is returned.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></td>
 <td> The channel.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1395,10 +1503,10 @@ channel doesn't exist, an error is returned.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646509"></a><h3>
+<a name="id2608624"></a><h3>
 <a name="gimp-image-raise-channel"></a>gimp_image_raise_channel ()</h3>
-<a class="indexterm" name="id2646520"></a><pre class="programlisting">gboolean            gimp_image_raise_channel            (gint32 image_ID,
-                                                         gint32 channel_ID);</pre>
+<a class="indexterm" name="id2608636"></a><pre class="programlisting">gboolean    gimp_image_raise_channel        (gint32 image_ID,
+                                             gint32 channel_ID);</pre>
 <p>
 Raise the specified channel in the image's channel stack
 </p>
@@ -1413,17 +1521,20 @@ above it.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></td>
 <td> The channel to raise.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1432,10 +1543,10 @@ above it.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646599"></a><h3>
+<a name="id2608725"></a><h3>
 <a name="gimp-image-lower-channel"></a>gimp_image_lower_channel ()</h3>
-<a class="indexterm" name="id2646609"></a><pre class="programlisting">gboolean            gimp_image_lower_channel            (gint32 image_ID,
-                                                         gint32 layer_ID);</pre>
+<a class="indexterm" name="id2608737"></a><pre class="programlisting">gboolean    gimp_image_lower_channel        (gint32 image_ID,
+                                             gint32 layer_ID);</pre>
 <p>
 Lower the specified layer in the image's layer stack
 </p>
@@ -1450,17 +1561,20 @@ it, or the layer has no alpha channel.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
 <td> The layer to lower.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1469,9 +1583,9 @@ it, or the layer has no alpha channel.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646689"></a><h3>
+<a name="id2608826"></a><h3>
 <a name="gimp-image-flatten"></a>gimp_image_flatten ()</h3>
-<a class="indexterm" name="id2646700"></a><pre class="programlisting">gint32              gimp_image_flatten                  (gint32 image_ID);</pre>
+<a class="indexterm" name="id2608838"></a><pre class="programlisting">gint32      gimp_image_flatten              (gint32 image_ID);</pre>
 <p>
 Flatten all visible layers into a single layer. Discard all
 invisible layers.
@@ -1487,12 +1601,14 @@ discarded, and the resulting image is stripped of its alpha channel.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The resulting layer.
 </td>
 </tr>
@@ -1501,10 +1617,10 @@ discarded, and the resulting image is stripped of its alpha channel.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646761"></a><h3>
+<a name="id2608906"></a><h3>
 <a name="gimp-image-merge-visible-layers"></a>gimp_image_merge_visible_layers ()</h3>
-<a class="indexterm" name="id2646774"></a><pre class="programlisting">gint32              gimp_image_merge_visible_layers     (gint32 image_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpMergeType">GimpMergeType</a> merge_type);</pre>
+<a class="indexterm" name="id2608918"></a><pre class="programlisting">gint32      gimp_image_merge_visible_layers (gint32 image_ID,
+                                             <a href="libgimp-gimpenums.html#GimpMergeType">GimpMergeType</a> merge_type);</pre>
 <p>
 Merge the visible image layers into one.
 </p>
@@ -1522,17 +1638,20 @@ final layer to the size of the bottommost layer.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>merge_type</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>merge_type</code></em>&#160;:</span></td>
 <td> The type of merge.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The resulting layer.
 </td>
 </tr>
@@ -1541,11 +1660,11 @@ final layer to the size of the bottommost layer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646859"></a><h3>
+<a name="id2609011"></a><h3>
 <a name="gimp-image-merge-down"></a>gimp_image_merge_down ()</h3>
-<a class="indexterm" name="id2646873"></a><pre class="programlisting">gint32              gimp_image_merge_down               (gint32 image_ID,
-                                                         gint32 merge_layer_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpMergeType">GimpMergeType</a> merge_type);</pre>
+<a class="indexterm" name="id2609023"></a><pre class="programlisting">gint32      gimp_image_merge_down           (gint32 image_ID,
+                                             gint32 merge_layer_ID,
+                                             <a href="libgimp-gimpenums.html#GimpMergeType">GimpMergeType</a> merge_type);</pre>
 <p>
 Merge the layer passed and the first visible layer below.
 </p>
@@ -1564,22 +1683,26 @@ bottommost layer.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>merge_layer_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>merge_layer_ID</code></em>&#160;:</span></td>
 <td> The layer to merge down from.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>merge_type</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>merge_type</code></em>&#160;:</span></td>
 <td> The type of merge.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The resulting layer.
 </td>
 </tr>
@@ -1588,9 +1711,9 @@ bottommost layer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646989"></a><h3>
+<a name="id2609138"></a><h3>
 <a name="gimp-image-clean-all"></a>gimp_image_clean_all ()</h3>
-<a class="indexterm" name="id2647003"></a><pre class="programlisting">gboolean            gimp_image_clean_all                (gint32 image_ID);</pre>
+<a class="indexterm" name="id2609150"></a><pre class="programlisting">gboolean    gimp_image_clean_all            (gint32 image_ID);</pre>
 <p>
 Set the image dirty count to 0.
 </p>
@@ -1599,7 +1722,8 @@ This procedure sets the specified image's dirty count to 0, allowing
 operations to occur without having a 'dirtied' image. This is
 especially useful for creating and loading images which should not
 initially be considered dirty, even though layers must be created,
-filled, and installed in the image.</p>
+filled, and installed in the image. Note that save plug-ins must NOT
+call this function themselves after saving the image.</p>
 <p>
 
 </p>
@@ -1607,12 +1731,14 @@ filled, and installed in the image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1621,15 +1747,17 @@ filled, and installed in the image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647072"></a><h3>
+<a name="id2609221"></a><h3>
 <a name="gimp-image-is-dirty"></a>gimp_image_is_dirty ()</h3>
-<a class="indexterm" name="id2647086"></a><pre class="programlisting">gboolean            gimp_image_is_dirty                 (gint32 image_ID);</pre>
+<a class="indexterm" name="id2609232"></a><pre class="programlisting">gboolean    gimp_image_is_dirty             (gint32 image_ID);</pre>
 <p>
 Checks if the image has unsaved changes.
 </p>
 <p>
 This procedure checks the specified image's dirty count to see if it
-needs to be saved.</p>
+needs to be saved. Note that saving the image does not automatically
+set the dirty count to 0, you need to call gimp-image-clean-all
+after calling a save procedure to make the image clean.</p>
 <p>
 
 </p>
@@ -1637,12 +1765,14 @@ needs to be saved.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> True if the image has unsaved changes.
 </td>
 </tr>
@@ -1651,9 +1781,9 @@ needs to be saved.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647152"></a><h3>
+<a name="id2609301"></a><h3>
 <a name="gimp-image-get-active-layer"></a>gimp_image_get_active_layer ()</h3>
-<a class="indexterm" name="id2647167"></a><pre class="programlisting">gint32              gimp_image_get_active_layer         (gint32 image_ID);</pre>
+<a class="indexterm" name="id2609313"></a><pre class="programlisting">gint32      gimp_image_get_active_layer     (gint32 image_ID);</pre>
 <p>
 Returns the specified image's active layer.
 </p>
@@ -1668,12 +1798,14 @@ mask is active, then this will return the associated layer.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The active layer.
 </td>
 </tr>
@@ -1682,10 +1814,10 @@ mask is active, then this will return the associated layer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647235"></a><h3>
+<a name="id2609381"></a><h3>
 <a name="gimp-image-set-active-layer"></a>gimp_image_set_active_layer ()</h3>
-<a class="indexterm" name="id2647249"></a><pre class="programlisting">gboolean            gimp_image_set_active_layer         (gint32 image_ID,
-                                                         gint32 active_layer_ID);</pre>
+<a class="indexterm" name="id2609393"></a><pre class="programlisting">gboolean    gimp_image_set_active_layer     (gint32 image_ID,
+                                             gint32 active_layer_ID);</pre>
 <p>
 Sets the specified image's active layer.
 </p>
@@ -1701,17 +1833,20 @@ procedure will return an execution error.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>active_layer_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>active_layer_ID</code></em>&#160;:</span></td>
 <td> The new image active layer.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1720,9 +1855,9 @@ procedure will return an execution error.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647340"></a><h3>
+<a name="id2609483"></a><h3>
 <a name="gimp-image-get-active-channel"></a>gimp_image_get_active_channel ()</h3>
-<a class="indexterm" name="id2647353"></a><pre class="programlisting">gint32              gimp_image_get_active_channel       (gint32 image_ID);</pre>
+<a class="indexterm" name="id2609495"></a><pre class="programlisting">gint32      gimp_image_get_active_channel   (gint32 image_ID);</pre>
 <p>
 Returns the specified image's active channel.
 </p>
@@ -1736,12 +1871,14 @@ otherwise, -1.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The active channel.
 </td>
 </tr>
@@ -1750,10 +1887,10 @@ otherwise, -1.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647420"></a><h3>
+<a name="id2609561"></a><h3>
 <a name="gimp-image-set-active-channel"></a>gimp_image_set_active_channel ()</h3>
-<a class="indexterm" name="id2647434"></a><pre class="programlisting">gboolean            gimp_image_set_active_channel       (gint32 image_ID,
-                                                         gint32 active_channel_ID);</pre>
+<a class="indexterm" name="id2609573"></a><pre class="programlisting">gboolean    gimp_image_set_active_channel   (gint32 image_ID,
+                                             gint32 active_channel_ID);</pre>
 <p>
 Sets the specified image's active channel.
 </p>
@@ -1769,17 +1906,20 @@ this procedure will return an execution error.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>active_channel_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>active_channel_ID</code></em>&#160;:</span></td>
 <td> The new image active channel.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1788,9 +1928,9 @@ this procedure will return an execution error.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647526"></a><h3>
+<a name="id2609664"></a><h3>
 <a name="gimp-image-get-selection"></a>gimp_image_get_selection ()</h3>
-<a class="indexterm" name="id2647539"></a><pre class="programlisting">gint32              gimp_image_get_selection            (gint32 image_ID);</pre>
+<a class="indexterm" name="id2609675"></a><pre class="programlisting">gint32      gimp_image_get_selection        (gint32 image_ID);</pre>
 <p>
 Returns the specified image's selection.
 </p>
@@ -1804,12 +1944,14 @@ represented as a channel internally.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The selection channel.
 </td>
 </tr>
@@ -1818,10 +1960,12 @@ represented as a channel internally.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647606"></a><h3>
+<a name="id2609742"></a><h3>
 <a name="gimp-image-get-component-active"></a>gimp_image_get_component_active ()</h3>
-<a class="indexterm" name="id2647620"></a><pre class="programlisting">gboolean            gimp_image_get_component_active     (gint32 image_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpChannelType">GimpChannelType</a> component);</pre>
+<a class="indexterm" name="id2609753"></a><pre class="programlisting">gboolean    gimp_image_get_component_active (gint32 image_ID,
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelType"
+>GimpChannelType</a> component);</pre>
 <p>
 Returns if the specified image's image component is active.
 </p>
@@ -1837,17 +1981,20 @@ component is not valid for the image type, an error is returned.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>component</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>component</code></em>&#160;:</span></td>
 <td> The image component.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> Component is active.
 </td>
 </tr>
@@ -1856,11 +2003,13 @@ component is not valid for the image type, an error is returned.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647712"></a><h3>
+<a name="id2609845"></a><h3>
 <a name="gimp-image-set-component-active"></a>gimp_image_set_component_active ()</h3>
-<a class="indexterm" name="id2647725"></a><pre class="programlisting">gboolean            gimp_image_set_component_active     (gint32 image_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpChannelType">GimpChannelType</a> component,
-                                                         gboolean active);</pre>
+<a class="indexterm" name="id2609856"></a><pre class="programlisting">gboolean    gimp_image_set_component_active (gint32 image_ID,
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelType"
+>GimpChannelType</a> component,
+                                             gboolean active);</pre>
 <p>
 Sets if the specified image's image component is active.
 </p>
@@ -1876,22 +2025,26 @@ component is not valid for the image type, an error is returned.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>component</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>component</code></em>&#160;:</span></td>
 <td> The image component.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>active</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>active</code></em>&#160;:</span></td>
 <td> Component is active.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1900,10 +2053,13 @@ component is not valid for the image type, an error is returned.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647838"></a><h3>
+<a name="id2609969"></a><h3>
 <a name="gimp-image-get-component-visible"></a>gimp_image_get_component_visible ()</h3>
-<a class="indexterm" name="id2647852"></a><pre class="programlisting">gboolean            gimp_image_get_component_visible    (gint32 image_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpChannelType">GimpChannelType</a> component);</pre>
+<a class="indexterm" name="id2609981"></a><pre class="programlisting">gboolean    gimp_image_get_component_visible
+                                            (gint32 image_ID,
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelType"
+>GimpChannelType</a> component);</pre>
 <p>
 Returns if the specified image's image component is visible.
 </p>
@@ -1920,17 +2076,20 @@ returned.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>component</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>component</code></em>&#160;:</span></td>
 <td> The image component.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> Component is visible.
 </td>
 </tr>
@@ -1939,11 +2098,14 @@ returned.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647944"></a><h3>
+<a name="id2610073"></a><h3>
 <a name="gimp-image-set-component-visible"></a>gimp_image_set_component_visible ()</h3>
-<a class="indexterm" name="id2647958"></a><pre class="programlisting">gboolean            gimp_image_set_component_visible    (gint32 image_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpChannelType">GimpChannelType</a> component,
-                                                         gboolean visible);</pre>
+<a class="indexterm" name="id2610085"></a><pre class="programlisting">gboolean    gimp_image_set_component_visible
+                                            (gint32 image_ID,
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelType"
+>GimpChannelType</a> component,
+                                             gboolean visible);</pre>
 <p>
 Sets if the specified image's image component is visible.
 </p>
@@ -1959,22 +2121,26 @@ component is not valid for the image type, an error is returned.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>component</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>component</code></em>&#160;:</span></td>
 <td> The image component.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>visible</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>visible</code></em>&#160;:</span></td>
 <td> Component is visible.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1983,9 +2149,9 @@ component is not valid for the image type, an error is returned.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648072"></a><h3>
+<a name="id2610198"></a><h3>
 <a name="gimp-image-get-filename"></a>gimp_image_get_filename ()</h3>
-<a class="indexterm" name="id2648086"></a><pre class="programlisting">gchar*              gimp_image_get_filename             (gint32 image_ID);</pre>
+<a class="indexterm" name="id2610210"></a><pre class="programlisting">gchar*      gimp_image_get_filename         (gint32 image_ID);</pre>
 <p>
 Returns the specified image's filename.
 </p>
@@ -2000,12 +2166,14 @@ or has since been saved. Otherwise, this function returns <code class="literal">
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The filename.
 </td>
 </tr>
@@ -2014,10 +2182,10 @@ or has since been saved. Otherwise, this function returns <code class="literal">
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648163"></a><h3>
+<a name="id2610284"></a><h3>
 <a name="gimp-image-set-filename"></a>gimp_image_set_filename ()</h3>
-<a class="indexterm" name="id2648177"></a><pre class="programlisting">gboolean            gimp_image_set_filename             (gint32 image_ID,
-                                                         const gchar *filename);</pre>
+<a class="indexterm" name="id2610296"></a><pre class="programlisting">gboolean    gimp_image_set_filename         (gint32 image_ID,
+                                             const gchar *filename);</pre>
 <p>
 Sets the specified image's filename.
 </p>
@@ -2031,17 +2199,20 @@ should be in the filesystem encoding.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
 <td> The new image filename.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2050,9 +2221,9 @@ should be in the filesystem encoding.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648265"></a><h3>
+<a name="id2610384"></a><h3>
 <a name="gimp-image-get-name"></a>gimp_image_get_name ()</h3>
-<a class="indexterm" name="id2648279"></a><pre class="programlisting">gchar*              gimp_image_get_name                 (gint32 image_ID);</pre>
+<a class="indexterm" name="id2610396"></a><pre class="programlisting">gchar*      gimp_image_get_name             (gint32 image_ID);</pre>
 <p>
 Returns the specified image's name.
 </p>
@@ -2065,12 +2236,14 @@ This procedure returns the specified image's name.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The name.
 </td>
 </tr>
@@ -2079,11 +2252,11 @@ This procedure returns the specified image's name.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648345"></a><h3>
+<a name="id2610460"></a><h3>
 <a name="gimp-image-get-resolution"></a>gimp_image_get_resolution ()</h3>
-<a class="indexterm" name="id2648359"></a><pre class="programlisting">gboolean            gimp_image_get_resolution           (gint32 image_ID,
-                                                         gdouble *xresolution,
-                                                         gdouble *yresolution);</pre>
+<a class="indexterm" name="id2610473"></a><pre class="programlisting">gboolean    gimp_image_get_resolution       (gint32 image_ID,
+                                             gdouble *xresolution,
+                                             gdouble *yresolution);</pre>
 <p>
 Returns the specified image's resolution.
 </p>
@@ -2097,22 +2270,26 @@ inch. This value is independent of any of the layers in this image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>xresolution</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>xresolution</code></em>&#160;:</span></td>
 <td> The resolutionin the x-axis, in dots per inch.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>yresolution</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>yresolution</code></em>&#160;:</span></td>
 <td> The resolutionin the y-axis, in dots per inch.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2121,11 +2298,11 @@ inch. This value is independent of any of the layers in this image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648470"></a><h3>
+<a name="id2610583"></a><h3>
 <a name="gimp-image-set-resolution"></a>gimp_image_set_resolution ()</h3>
-<a class="indexterm" name="id2648484"></a><pre class="programlisting">gboolean            gimp_image_set_resolution           (gint32 image_ID,
-                                                         gdouble xresolution,
-                                                         gdouble yresolution);</pre>
+<a class="indexterm" name="id2610595"></a><pre class="programlisting">gboolean    gimp_image_set_resolution       (gint32 image_ID,
+                                             gdouble xresolution,
+                                             gdouble yresolution);</pre>
 <p>
 Sets the specified image's resolution.
 </p>
@@ -2140,22 +2317,26 @@ No scaling or resizing is performed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>xresolution</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>xresolution</code></em>&#160;:</span></td>
 <td> The new image resolution in the x-axis, in dots per inch.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>yresolution</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>yresolution</code></em>&#160;:</span></td>
 <td> The new image resolution in the y-axis, in dots per inch.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2164,11 +2345,11 @@ No scaling or resizing is performed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648596"></a><h3>
+<a name="id2610706"></a><h3>
 <a name="gimp-image-get-unit"></a>gimp_image_get_unit ()</h3>
-<a class="indexterm" name="id2648610"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2610718"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
->GimpUnit</a>            gimp_image_get_unit                 (gint32 image_ID);</pre>
+>GimpUnit</a>    gimp_image_get_unit             (gint32 image_ID);</pre>
 <p>
 Returns the specified image's unit.
 </p>
@@ -2184,12 +2365,14 @@ description of the unit system.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The unit.
 </td>
 </tr>
@@ -2198,10 +2381,10 @@ description of the unit system.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648678"></a><h3>
+<a name="id2610786"></a><h3>
 <a name="gimp-image-set-unit"></a>gimp_image_set_unit ()</h3>
-<a class="indexterm" name="id2648692"></a><pre class="programlisting">gboolean            gimp_image_set_unit                 (gint32 image_ID,
-                                                         <a
+<a class="indexterm" name="id2610798"></a><pre class="programlisting">gboolean    gimp_image_set_unit             (gint32 image_ID,
+                                             <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a> unit);</pre>
 <p>
@@ -2219,17 +2402,20 @@ the valid range of unit IDs and a description of the unit system.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>unit</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>unit</code></em>&#160;:</span></td>
 <td> The new image unit.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2238,10 +2424,10 @@ the valid range of unit IDs and a description of the unit system.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648782"></a><h3>
+<a name="id2610887"></a><h3>
 <a name="gimp-image-set-tattoo-state"></a>gimp_image_set_tattoo_state ()</h3>
-<a class="indexterm" name="id2648796"></a><pre class="programlisting">gboolean            gimp_image_set_tattoo_state         (gint32 image_ID,
-                                                         gint tattoo_state);</pre>
+<a class="indexterm" name="id2610899"></a><pre class="programlisting">gboolean    gimp_image_set_tattoo_state     (gint32 image_ID,
+                                             gint tattoo_state);</pre>
 <p>
 Set the tattoo state associated with the image.
 </p>
@@ -2265,17 +2451,20 @@ that all is OK.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>tattoo_state</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>tattoo_state</code></em>&#160;:</span></td>
 <td> The new image tattoo_state.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2284,9 +2473,9 @@ that all is OK.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648895"></a><h3>
+<a name="id2610998"></a><h3>
 <a name="gimp-image-get-tattoo-state"></a>gimp_image_get_tattoo_state ()</h3>
-<a class="indexterm" name="id2648910"></a><pre class="programlisting">gint                gimp_image_get_tattoo_state         (gint32 image_ID);</pre>
+<a class="indexterm" name="id2611010"></a><pre class="programlisting">gint        gimp_image_get_tattoo_state     (gint32 image_ID);</pre>
 <p>
 Returns the tattoo state associated with the image.
 </p>
@@ -2301,12 +2490,14 @@ Using this function at other times will produce unexpected results.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The tattoo_state.
 </td>
 </tr>
@@ -2315,10 +2506,10 @@ Using this function at other times will produce unexpected results.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648978"></a><h3>
+<a name="id2611078"></a><h3>
 <a name="gimp-image-get-layer-by-tattoo"></a>gimp_image_get_layer_by_tattoo ()</h3>
-<a class="indexterm" name="id2648992"></a><pre class="programlisting">gint32              gimp_image_get_layer_by_tattoo      (gint32 image_ID,
-                                                         gint tattoo);</pre>
+<a class="indexterm" name="id2611089"></a><pre class="programlisting">gint32      gimp_image_get_layer_by_tattoo  (gint32 image_ID,
+                                             gint tattoo);</pre>
 <p>
 Find a layer with a given tattoo in an image.
 </p>
@@ -2332,17 +2523,20 @@ specified image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>tattoo</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>tattoo</code></em>&#160;:</span></td>
 <td> The tattoo of the layer to find.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The layer with the specified tattoo.
 </td>
 </tr>
@@ -2351,10 +2545,11 @@ specified image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649080"></a><h3>
+<a name="id2611177"></a><h3>
 <a name="gimp-image-get-channel-by-tattoo"></a>gimp_image_get_channel_by_tattoo ()</h3>
-<a class="indexterm" name="id2649094"></a><pre class="programlisting">gint32              gimp_image_get_channel_by_tattoo    (gint32 image_ID,
-                                                         gint tattoo);</pre>
+<a class="indexterm" name="id2611189"></a><pre class="programlisting">gint32      gimp_image_get_channel_by_tattoo
+                                            (gint32 image_ID,
+                                             gint tattoo);</pre>
 <p>
 Find a channel with a given tattoo in an image.
 </p>
@@ -2368,17 +2563,20 @@ specified image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>tattoo</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>tattoo</code></em>&#160;:</span></td>
 <td> The tattoo of the channel to find.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The channel with the specified tattoo.
 </td>
 </tr>
@@ -2387,10 +2585,10 @@ specified image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649183"></a><h3>
+<a name="id2611279"></a><h3>
 <a name="gimp-image-get-cmap"></a>gimp_image_get_cmap ()</h3>
-<a class="indexterm" name="id2649200"></a><pre class="programlisting">guchar*             gimp_image_get_cmap                 (gint32 image_ID,
-                                                         gint *num_colors);</pre>
+<a class="indexterm" name="id2611290"></a><pre class="programlisting">guchar*     gimp_image_get_cmap             (gint32 image_ID,
+                                             gint *num_colors);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_image_get_cmap</code> is deprecated and should not be used in newly-written code.</p>
@@ -2404,17 +2602,20 @@ This procedure is deprecated! Use <a href="libgimp-gimpimage.html#gimp-image-get
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td>   The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_colors</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>num_colors</code></em>&#160;:</span></td>
 <td> Number of colors in the colormap array.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The image's colormap.
 </td>
 </tr>
@@ -2423,11 +2624,11 @@ This procedure is deprecated! Use <a href="libgimp-gimpimage.html#gimp-image-get
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649305"></a><h3>
+<a name="id2611395"></a><h3>
 <a name="gimp-image-set-cmap"></a>gimp_image_set_cmap ()</h3>
-<a class="indexterm" name="id2649321"></a><pre class="programlisting">gboolean            gimp_image_set_cmap                 (gint32 image_ID,
-                                                         const guchar *cmap,
-                                                         gint num_colors);</pre>
+<a class="indexterm" name="id2611407"></a><pre class="programlisting">gboolean    gimp_image_set_cmap             (gint32 image_ID,
+                                             const guchar *cmap,
+                                             gint num_colors);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_image_set_cmap</code> is deprecated and should not be used in newly-written code.</p>
@@ -2441,22 +2642,26 @@ This procedure is deprecated! Use <a href="libgimp-gimpimage.html#gimp-image-set
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td>   The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>cmap</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>cmap</code></em>&#160;:</span></td>
 <td>       The new colormap values.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_colors</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>num_colors</code></em>&#160;:</span></td>
 <td> Number of colors in the colormap array.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2465,10 +2670,10 @@ This procedure is deprecated! Use <a href="libgimp-gimpimage.html#gimp-image-set
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649448"></a><h3>
+<a name="id2611534"></a><h3>
 <a name="gimp-image-get-colormap"></a>gimp_image_get_colormap ()</h3>
-<a class="indexterm" name="id2649462"></a><pre class="programlisting">guchar*             gimp_image_get_colormap             (gint32 image_ID,
-                                                         gint *num_colors);</pre>
+<a class="indexterm" name="id2611545"></a><pre class="programlisting">guchar*     gimp_image_get_colormap         (gint32 image_ID,
+                                             gint *num_colors);</pre>
 <p>
 Returns the image's colormap
 </p>
@@ -2483,17 +2688,20 @@ is not of base type INDEXED, this pointer will be NULL.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td>   The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_colors</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>num_colors</code></em>&#160;:</span></td>
 <td> Number of colors in the colormap array.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The image's colormap.
 </td>
 </tr>
@@ -2502,11 +2710,11 @@ is not of base type INDEXED, this pointer will be NULL.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649552"></a><h3>
+<a name="id2611634"></a><h3>
 <a name="gimp-image-set-colormap"></a>gimp_image_set_colormap ()</h3>
-<a class="indexterm" name="id2649566"></a><pre class="programlisting">gboolean            gimp_image_set_colormap             (gint32 image_ID,
-                                                         const guchar *colormap,
-                                                         gint num_colors);</pre>
+<a class="indexterm" name="id2611646"></a><pre class="programlisting">gboolean    gimp_image_set_colormap         (gint32 image_ID,
+                                             const guchar *colormap,
+                                             gint num_colors);</pre>
 <p>
 Sets the entries in the image's colormap.
 </p>
@@ -2522,22 +2730,26 @@ in the \"cmap\" array.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td>   The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>colormap</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>colormap</code></em>&#160;:</span></td>
 <td>   The new colormap values.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_colors</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>num_colors</code></em>&#160;:</span></td>
 <td> Number of colors in the colormap array.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2546,12 +2758,16 @@ in the \"cmap\" array.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649678"></a><h3>
-<a name="gimp-image-get-thumbnail-data"></a>gimp_image_get_thumbnail_data ()</h3>
-<a class="indexterm" name="id2649692"></a><pre class="programlisting">guchar*             gimp_image_get_thumbnail_data       (gint32 image_ID,
-                                                         gint *width,
-                                                         gint *height,
-                                                         gint *bpp);</pre>
+<a name="id2611758"></a><h3>
+<a name="gimp-image-get-vectors"></a>gimp_image_get_vectors ()</h3>
+<a class="indexterm" name="id2611770"></a><pre class="programlisting">gint*       gimp_image_get_vectors          (gint32 image_ID,
+                                             gint *num_vectors);</pre>
+<p>
+Returns the list of vectors contained in the specified image.
+</p>
+<p>
+This procedure returns the list of vectors contained in the
+specified image.</p>
 <p>
 
 </p>
@@ -2559,27 +2775,70 @@ in the \"cmap\" array.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td> The image.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>num_vectors</code></em>&#160;:</span></td>
+<td> The number of vectors contained in the image.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The list of vectors contained in the image.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2611863"></a><h3>
+<a name="gimp-image-get-thumbnail-data"></a>gimp_image_get_thumbnail_data ()</h3>
+<a class="indexterm" name="id2611875"></a><pre class="programlisting">guchar*     gimp_image_get_thumbnail_data   (gint32 image_ID,
+                                             gint *width,
+                                             gint *height,
+                                             gint *bpp);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -2590,12 +2849,12 @@ in the \"cmap\" array.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649813"></a><h3>
+<a name="id2611995"></a><h3>
 <a name="gimp-image-parasite-find"></a>gimp_image_parasite_find ()</h3>
-<a class="indexterm" name="id2649827"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2612007"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
->GimpParasite</a>*       gimp_image_parasite_find            (gint32 image_ID,
-                                                         const gchar *name);</pre>
+>GimpParasite</a>* gimp_image_parasite_find      (gint32 image_ID,
+                                             const gchar *name);</pre>
 <p>
 Finds the named parasite in an image
 </p>
@@ -2609,17 +2868,20 @@ an image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The name of the parasite to find.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The found parasite.
 </td>
 </tr>
@@ -2628,11 +2890,11 @@ an image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649915"></a><h3>
+<a name="id2612095"></a><h3>
 <a name="gimp-image-parasite-list"></a>gimp_image_parasite_list ()</h3>
-<a class="indexterm" name="id2649929"></a><pre class="programlisting">gboolean            gimp_image_parasite_list            (gint32 image_ID,
-                                                         gint *num_parasites,
-                                                         gchar ***parasites);</pre>
+<a class="indexterm" name="id2612106"></a><pre class="programlisting">gboolean    gimp_image_parasite_list        (gint32 image_ID,
+                                             gint *num_parasites,
+                                             gchar ***parasites);</pre>
 <p>
 List all parasites.
 </p>
@@ -2645,22 +2907,26 @@ Returns a list of all currently attached parasites.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_parasites</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>num_parasites</code></em>&#160;:</span></td>
 <td> The number of attached parasites.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>parasites</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>parasites</code></em>&#160;:</span></td>
 <td> The names of currently attached parasites.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2669,10 +2935,10 @@ Returns a list of all currently attached parasites.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2650039"></a><h3>
+<a name="id2612216"></a><h3>
 <a name="gimp-image-parasite-attach"></a>gimp_image_parasite_attach ()</h3>
-<a class="indexterm" name="id2650053"></a><pre class="programlisting">gboolean            gimp_image_parasite_attach          (gint32 image_ID,
-                                                         <a
+<a class="indexterm" name="id2612228"></a><pre class="programlisting">gboolean    gimp_image_parasite_attach      (gint32 image_ID,
+                                             <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 >GimpParasite</a> *parasite);</pre>
 <p>
@@ -2688,17 +2954,20 @@ values.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>parasite</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>parasite</code></em>&#160;:</span></td>
 <td> The parasite to attach to an image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2707,10 +2976,10 @@ values.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2650141"></a><h3>
+<a name="id2612315"></a><h3>
 <a name="gimp-image-parasite-detach"></a>gimp_image_parasite_detach ()</h3>
-<a class="indexterm" name="id2650155"></a><pre class="programlisting">gboolean            gimp_image_parasite_detach          (gint32 image_ID,
-                                                         const gchar *name);</pre>
+<a class="indexterm" name="id2612327"></a><pre class="programlisting">gboolean    gimp_image_parasite_detach      (gint32 image_ID,
+                                             const gchar *name);</pre>
 <p>
 Removes a parasite from an image.
 </p>
@@ -2724,17 +2993,20 @@ values.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The name of the parasite to detach from an image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2743,19 +3015,16 @@ values.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2650243"></a><h3>
+<a name="id2612415"></a><h3>
 <a name="gimp-image-attach-new-parasite"></a>gimp_image_attach_new_parasite ()</h3>
-<a class="indexterm" name="id2650257"></a><pre class="programlisting">void                gimp_image_attach_new_parasite      (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gint flags,
-                                                         gint size,
-                                                         gconstpointer data);</pre>
+<a class="indexterm" name="id2612427"></a><pre class="programlisting">gboolean    gimp_image_attach_new_parasite  (gint32 image_ID,
+                                             const gchar *name,
+                                             gint flags,
+                                             gint size,
+                                             gconstpointer data);</pre>
 <p>
 Convenience function that creates a parasite and attaches it
-to the GIMP.
-</p>
-<p>
-See Also: <a href="libgimp-gimpimage.html#gimp-image-parasite-attach"><code class="function">gimp_image_parasite_attach()</code></a></p>
+to the GIMP.</p>
 <p>
 
 </p>
@@ -2763,36 +3032,50 @@ See Also: <a href="libgimp-gimpimage.html#gimp-image-parasite-attach"><code clas
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> the ID of the image to attach the <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 ><span class="type">GimpParasite</span></a> to.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> the name of the <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 ><span class="type">GimpParasite</span></a> to create and attach.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td> the flags set on the <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 ><span class="type">GimpParasite</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>size</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>size</code></em>&#160;:</span></td>
 <td> the size of the parasite data in bytes.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td> a pointer to the data attached with the <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 ><span class="type">GimpParasite</span></a>.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on successful creation and attachment of
+the new parasite.
+
+See Also: <a href="libgimp-gimpimage.html#gimp-image-parasite-attach"><code class="function">gimp_image_parasite_attach()</code></a>
 </td>
 </tr>
 </tbody>
@@ -2800,5 +3083,9 @@ href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 </div>
 </div>
 </div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimp-gimpguides.html"><b>&lt;&lt;&#160;gimpguides</b></a></td>
+<td align="right"><a accesskey="n" href="libgimp-gimplayer.html"><b>gimplayer&#160;&gt;&gt;</b></a></td>
+</tr></table>
 </body>
 </html>

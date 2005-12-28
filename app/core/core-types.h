@@ -113,6 +113,7 @@ typedef struct _GimpEnvironTable    GimpEnvironTable;
 /* typedef struct _GimpGrid         GimpGrid; in config-types.h */
 typedef struct _GimpImagefile       GimpImagefile;
 typedef struct _GimpImageMap        GimpImageMap;
+typedef struct _GimpInterpreterDB   GimpInterpreterDB;
 typedef struct _GimpParasiteList    GimpParasiteList;
 typedef struct _GimpPdbProgress     GimpPdbProgress;
 typedef struct _GimpProjection      GimpProjection;
@@ -132,6 +133,7 @@ typedef struct _GimpArea            GimpArea;
 typedef struct _GimpCoords          GimpCoords;
 typedef struct _GimpGradientSegment GimpGradientSegment;
 typedef struct _GimpGuide           GimpGuide;
+typedef struct _GimpSamplePoint     GimpSamplePoint;
 typedef         guint32             GimpTattoo;
 typedef struct _GimpPaletteEntry    GimpPaletteEntry;
 typedef struct _GimpPlugInDebug     GimpPlugInDebug;

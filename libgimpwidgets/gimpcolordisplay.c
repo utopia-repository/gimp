@@ -22,9 +22,13 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "gimpwidgetstypes.h"
 
@@ -44,56 +48,28 @@ enum
 };
 
 
-static void   gimp_color_display_class_init   (GimpColorDisplayClass *klass);
-static void   gimp_color_display_set_property (GObject           *object,
-                                               guint              property_id,
-                                               const GValue      *value,
-                                               GParamSpec        *pspec);
-static void   gimp_color_display_get_property (GObject           *object,
-                                               guint              property_id,
-                                               GValue            *value,
-                                               GParamSpec        *pspec);
+static void   gimp_color_display_set_property (GObject      *object,
+                                               guint         property_id,
+                                               const GValue *value,
+                                               GParamSpec   *pspec);
+static void   gimp_color_display_get_property (GObject      *object,
+                                               guint         property_id,
+                                               GValue       *value,
+                                               GParamSpec   *pspec);
 
 
-static GObjectClass *parent_class = NULL;
+G_DEFINE_TYPE_WITH_CODE (GimpColorDisplay, gimp_color_display, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG, NULL));
 
-static guint  display_signals[LAST_SIGNAL] = { 0 };
+#define parent_class gimp_color_display_parent_class
 
+static guint display_signals[LAST_SIGNAL] = { 0 };
 
-GType
-gimp_color_display_get_type (void)
-{
-  static GType display_type = 0;
-
-  if (! display_type)
-    {
-      static const GTypeInfo display_info =
-      {
-        sizeof (GimpColorDisplayClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) gimp_color_display_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (GimpColorDisplay),
-	0,              /* n_preallocs    */
-	NULL            /* instance_init  */
-      };
-
-      display_type = g_type_register_static (G_TYPE_OBJECT,
-                                             "GimpColorDisplay",
-                                             &display_info, 0);
-    }
-
-  return display_type;
-}
 
 static void
 gimp_color_display_class_init (GimpColorDisplayClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->set_property = gimp_color_display_set_property;
   object_class->get_property = gimp_color_display_get_property;
@@ -123,6 +99,11 @@ gimp_color_display_class_init (GimpColorDisplayClass *klass)
   klass->configure       = NULL;
   klass->configure_reset = NULL;
   klass->changed         = NULL;
+}
+
+static void
+gimp_color_display_init (GimpColorDisplay *display)
+{
 }
 
 static void
@@ -181,6 +162,8 @@ gimp_color_display_clone (GimpColorDisplay *display)
 {
   g_return_val_if_fail (GIMP_IS_COLOR_DISPLAY (display), NULL);
 
+  /*  implementing the clone method is deprecated
+   */
   if (GIMP_COLOR_DISPLAY_GET_CLASS (display)->clone)
     {
       GimpColorDisplay *clone = NULL;
@@ -193,7 +176,7 @@ gimp_color_display_clone (GimpColorDisplay *display)
       return clone;
     }
 
-  return NULL;
+  return GIMP_COLOR_DISPLAY (gimp_config_duplicate (GIMP_CONFIG (display)));
 }
 
 void
@@ -219,19 +202,44 @@ gimp_color_display_load_state (GimpColorDisplay *display,
   g_return_if_fail (GIMP_IS_COLOR_DISPLAY (display));
   g_return_if_fail (state != NULL);
 
+  /*  implementing the load_state method is deprecated
+   */
   if (GIMP_COLOR_DISPLAY_GET_CLASS (display)->load_state)
-    GIMP_COLOR_DISPLAY_GET_CLASS (display)->load_state (display, state);
+    {
+      GIMP_COLOR_DISPLAY_GET_CLASS (display)->load_state (display, state);
+    }
+  else
+    {
+      gimp_config_deserialize_string (GIMP_CONFIG (display),
+                                      gimp_parasite_data (state),
+                                      gimp_parasite_data_size (state),
+                                      NULL, NULL);
+    }
 }
 
 GimpParasite *
 gimp_color_display_save_state (GimpColorDisplay *display)
 {
+  GimpParasite *parasite;
+  gchar        *str;
+
   g_return_val_if_fail (GIMP_IS_COLOR_DISPLAY (display), NULL);
 
+  /*  implementing the save_state method is deprecated
+   */
   if (GIMP_COLOR_DISPLAY_GET_CLASS (display)->save_state)
-    return GIMP_COLOR_DISPLAY_GET_CLASS (display)->save_state (display);
+    {
+      return GIMP_COLOR_DISPLAY_GET_CLASS (display)->save_state (display);
+    }
 
-  return NULL;
+  str = gimp_config_serialize_to_string (GIMP_CONFIG (display), NULL);
+
+  parasite = gimp_parasite_new ("Display/Proof",
+                                GIMP_PARASITE_PERSISTENT,
+                                strlen (str) + 1, str);
+  g_free (str);
+
+  return parasite;
 }
 
 GtkWidget *
@@ -250,8 +258,16 @@ gimp_color_display_configure_reset (GimpColorDisplay *display)
 {
   g_return_if_fail (GIMP_IS_COLOR_DISPLAY (display));
 
+  /*  implementing the configure_reset method is deprecated
+   */
   if (GIMP_COLOR_DISPLAY_GET_CLASS (display)->configure_reset)
-    GIMP_COLOR_DISPLAY_GET_CLASS (display)->configure_reset (display);
+    {
+      GIMP_COLOR_DISPLAY_GET_CLASS (display)->configure_reset (display);
+    }
+  else
+    {
+      gimp_config_reset (GIMP_CONFIG (display));
+    }
 }
 
 void

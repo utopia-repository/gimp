@@ -25,13 +25,11 @@
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmodule/gimpmodule.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
 
-#include "config/gimpconfig-path.h"
-#include "config/gimpconfigwriter.h"
 #include "config/gimpcoreconfig.h"
-#include "config/gimpscanner.h"
 
 #include "gimp.h"
 #include "gimp-modules.h"
@@ -77,6 +75,10 @@ gimp_modules_load (Gimp *gimp)
     return;
 
   filename = gimp_personal_rc_file ("modulerc");
+
+  if (gimp->be_verbose)
+    g_print ("Parsing '%s'\n", gimp_filename_to_utf8 (filename));
+
   scanner = gimp_scanner_new_file (filename, NULL);
   g_free (filename);
 
@@ -189,6 +191,10 @@ gimp_modules_unload (Gimp *gimp)
         p = "";
 
       filename = gimp_personal_rc_file ("modulerc");
+
+      if (gimp->be_verbose)
+        g_print ("Writing '%s'\n", gimp_filename_to_utf8 (filename));
+
       writer = gimp_config_writer_new_file (filename, TRUE,
                                             "GIMP modulerc", &error);
       g_free (filename);

@@ -3,6 +3,7 @@
     brush
     brush_select
     brushes
+    buffer
     channel
     color
     context
@@ -19,6 +20,7 @@
     gradient
     gradient_select
     gradients
+    grid
     guides
     help
     image
@@ -43,4 +45,5 @@
     transform_tools
     undo
     unit
+    vectors
 );

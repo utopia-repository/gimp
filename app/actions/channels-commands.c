@@ -85,11 +85,12 @@ channels_edit_attributes_cmd_callback (GtkAction *action,
                                         gimp_object_get_name (GIMP_OBJECT (channel)),
                                         _("Channel Attributes"),
                                         "gimp-channel-edit",
-                                        GIMP_STOCK_EDIT,
+                                        GTK_STOCK_EDIT,
                                         _("Edit Channel Attributes"),
                                         GIMP_HELP_CHANNEL_EDIT,
                                         _("Edit Channel Color"),
-                                        _("Fill Opacity:"));
+                                        _("_Fill opacity:"),
+					FALSE);
 
   g_signal_connect (options->dialog, "response",
                     G_CALLBACK (channels_edit_channel_response),
@@ -121,7 +122,8 @@ channels_new_cmd_callback (GtkAction *action,
                                         _("New Channel Options"),
                                         GIMP_HELP_CHANNEL_NEW,
                                         _("New Channel Color"),
-                                        _("Fill Opacity:"));
+                                        _("_Fill opacity:"),
+					TRUE);
 
   g_signal_connect (options->dialog, "response",
                     G_CALLBACK (channels_new_channel_response),
@@ -230,13 +232,10 @@ channels_duplicate_cmd_callback (GtkAction *action,
 
   if (GIMP_IS_COMPONENT_EDITOR (data))
     {
-      GimpRGB          color;
       GimpChannelType  component;
       const gchar     *desc;
       gchar           *name;
       return_if_no_image (gimage, data);
-
-      gimp_rgba_set (&color, 0, 0, 0, 0.5);
 
       component = GIMP_COMPONENT_EDITOR (data)->clicked_component;
 
@@ -246,7 +245,7 @@ channels_duplicate_cmd_callback (GtkAction *action,
       name = g_strdup_printf (_("%s Channel Copy"), desc);
 
       new_channel = gimp_channel_new_from_component (gimage, component,
-                                                     name, &color);
+                                                     name, NULL);
 
       /*  copied components are invisible by default so subsequent copies
        *  of components don't affect each other
@@ -336,15 +335,30 @@ channels_new_channel_response (GtkWidget            *widget,
       gimp_color_button_get_color (GIMP_COLOR_BUTTON (options->color_panel),
                                    &channel_color);
 
-      new_channel = gimp_channel_new (options->gimage,
-                                      options->gimage->width,
-                                      options->gimage->height,
-                                      channel_name,
-                                      &channel_color);
+      if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (options->save_sel_checkbutton)))
+	{
+	  GimpChannel *selection = gimp_image_get_mask (options->gimage);
 
-      gimp_drawable_fill_by_type (GIMP_DRAWABLE (new_channel),
-                                  options->context,
-                                  GIMP_TRANSPARENT_FILL);
+	  new_channel =
+            GIMP_CHANNEL (gimp_item_duplicate (GIMP_ITEM (selection),
+                                               GIMP_TYPE_CHANNEL,
+                                               FALSE));
+
+	  gimp_object_set_name (GIMP_OBJECT (new_channel), channel_name);
+          gimp_channel_set_color (new_channel, &channel_color, FALSE);
+	}
+      else
+        {
+          new_channel = gimp_channel_new (options->gimage,
+                                          options->gimage->width,
+                                          options->gimage->height,
+                                          channel_name,
+                                          &channel_color);
+
+          gimp_drawable_fill_by_type (GIMP_DRAWABLE (new_channel),
+                                      options->context,
+                                      GIMP_TRANSPARENT_FILL);
+        }
 
       gimp_image_add_channel (options->gimage, new_channel, -1);
       gimp_image_flush (options->gimage);

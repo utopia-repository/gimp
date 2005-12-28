@@ -38,18 +38,15 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
 
-#define PLUG_IN_NAME  "plug_in_small_tiles"
+#define PLUG_IN_PROC   "plug-in-small-tiles"
+#define PLUG_IN_BINARY "tileit"
 
 /***** Magic numbers *****/
 
@@ -209,13 +206,13 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",        "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",           "Input image (unused)"         },
-    { GIMP_PDB_DRAWABLE, "drawable",        "Input drawable"               },
-    { GIMP_PDB_INT32,    "number_of_tiles", "Number of tiles to make"      }
+    { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",     "Input image (unused)"         },
+    { GIMP_PDB_DRAWABLE, "drawable",  "Input drawable"               },
+    { GIMP_PDB_INT32,    "num-tiles", "Number of tiles to make"      }
   };
 
-  gimp_install_procedure (PLUG_IN_NAME,
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Tiles image into smaller versions of the orginal",
                           "More here later",
                           "Andy Thomas",
@@ -227,7 +224,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register (PLUG_IN_NAME, "<Image>/Filters/Map");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Map");
 }
 
 static void
@@ -260,8 +257,12 @@ run (const gchar      *name,
 
   has_alpha = gimp_drawable_has_alpha (tileitdrawable->drawable_id);
 
-  gimp_drawable_mask_bounds (drawable->drawable_id,
-                             &sel_x1, &sel_y1, &sel_x2, &sel_y2);
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &sel_x1, &sel_y1, &sel_x2, &sel_y2))
+    {
+      g_message (_("Region selected for filter is empty."));
+      return;
+    }
 
   sel_width  = sel_x2 - sel_x1;
   sel_height = sel_y2 - sel_y1;
@@ -285,7 +286,7 @@ run (const gchar      *name,
   switch (run_mode)
     {
     case GIMP_RUN_INTERACTIVE:
-      gimp_get_data (PLUG_IN_NAME, &itvals);
+      gimp_get_data (PLUG_IN_PROC, &itvals);
       if (! tileit_dialog ())
         {
           gimp_drawable_detach (drawable);
@@ -305,7 +306,7 @@ run (const gchar      *name,
       break;
 
     case GIMP_RUN_WITH_LAST_VALS:
-      gimp_get_data (PLUG_IN_NAME, &itvals);
+      gimp_get_data (PLUG_IN_PROC, &itvals);
       break;
 
     default:
@@ -317,7 +318,7 @@ run (const gchar      *name,
     {
       /* Set the tile cache size */
 
-      gimp_progress_init (_("Tiling..."));
+      gimp_progress_init (_("Tiling"));
 
       do_tiles ();
 
@@ -325,7 +326,7 @@ run (const gchar      *name,
         gimp_displays_flush ();
 
       if (run_mode == GIMP_RUN_INTERACTIVE)
-        gimp_set_data (PLUG_IN_NAME, &itvals, sizeof (TileItVals));
+        gimp_set_data (PLUG_IN_PROC, &itvals, sizeof (TileItVals));
     }
   else
     {
@@ -356,18 +357,25 @@ tileit_dialog (void)
   GSList    *orientation_group = NULL;
   gboolean   run;
 
-  gimp_ui_init ("tileit", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
   cache_preview (); /* Get the preview image */
 
-  dlg = gimp_dialog_new (_("TileIt"), "tileit",
+  dlg = gimp_dialog_new (_("Small Tiles"), PLUG_IN_BINARY,
                          NULL, 0,
-                         gimp_standard_help_func, "plug-in-small-tiles",
+                         gimp_standard_help_func, PLUG_IN_PROC,
 
                          GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                          GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                          NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dlg),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dlg));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -394,7 +402,7 @@ tileit_dialog (void)
   gtk_container_add (GTK_CONTAINER (frame), tint.preview);
   gtk_widget_show (tint.preview);
 
-  g_signal_connect_after (tint.preview, "expose_event",
+  g_signal_connect_after (tint.preview, "expose-event",
                           G_CALLBACK (tileit_preview_expose),
                           NULL);
   g_signal_connect (tint.preview, "event",
@@ -500,7 +508,7 @@ tileit_dialog (void)
                     GTK_FILL | GTK_SHRINK, GTK_FILL, 0, 0);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (tileit_exp_update_f),
                     &exp_call);
 
@@ -524,7 +532,7 @@ tileit_dialog (void)
                     GTK_FILL | GTK_EXPAND, GTK_FILL, 0, 0);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (tileit_exp_update_f),
                     &exp_call);
 
@@ -565,7 +573,7 @@ tileit_dialog (void)
                                 opacity, 0, 100, 1, 10, 0,
                                 TRUE, 0, 0,
                                 NULL, NULL);
-  g_signal_connect (scale, "value_changed",
+  g_signal_connect (scale, "value-changed",
                     G_CALLBACK (tileit_scale_update),
                     &opacity);
 
@@ -586,7 +594,7 @@ tileit_dialog (void)
                                 itvals.numtiles, 2, MAX_SEGS, 1, 1, 0,
                                 TRUE, 0, 0,
                                 NULL, NULL);
-  g_signal_connect (scale, "value_changed",
+  g_signal_connect (scale, "value-changed",
                     G_CALLBACK (tileit_scale_update),
                     &itvals.numtiles);
 

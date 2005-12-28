@@ -46,13 +46,16 @@
 
 #include "dialogs/dialogs.h"
 
+#include "brush-editor-actions.h"
 #include "brushes-actions.h"
 #include "buffers-actions.h"
 #include "channels-actions.h"
 #include "colormap-editor-actions.h"
 #include "context-actions.h"
+#include "cursor-info-actions.h"
 #include "debug-actions.h"
 #include "dialogs-actions.h"
+#include "dock-actions.h"
 #include "dockable-actions.h"
 #include "documents-actions.h"
 #include "drawable-actions.h"
@@ -70,7 +73,8 @@
 #include "palettes-actions.h"
 #include "patterns-actions.h"
 #include "plug-in-actions.h"
-#include "qmask-actions.h"
+#include "quick-mask-actions.h"
+#include "sample-point-editor-actions.h"
 #include "select-actions.h"
 #include "templates-actions.h"
 #include "text-editor-actions.h"
@@ -91,6 +95,9 @@ GimpActionFactory *global_action_factory = NULL;
 
 static GimpActionFactoryEntry action_groups[] =
 {
+  { "brush-editor", N_("Brush Editor"), GIMP_STOCK_BRUSH,
+    brush_editor_actions_setup,
+    brush_editor_actions_update },
   { "brushes", N_("Brushes"), GIMP_STOCK_BRUSH,
     brushes_actions_setup,
     brushes_actions_update },
@@ -106,12 +113,18 @@ static GimpActionFactoryEntry action_groups[] =
   { "context", N_("Context"), NULL,
     context_actions_setup,
     context_actions_update },
+  { "cursor-info", N_("Cursor Info"), NULL,
+    cursor_info_actions_setup,
+    cursor_info_actions_update },
   { "debug", N_("Debug"), NULL,
     debug_actions_setup,
     debug_actions_update },
   { "dialogs", N_("Dialogs"), NULL,
     dialogs_actions_setup,
     dialogs_actions_update },
+  { "dock", N_("Dock"), NULL,
+    dock_actions_setup,
+    dock_actions_update },
   { "dockable", N_("Dockable"), NULL,
     dockable_actions_setup,
     dockable_actions_update },
@@ -121,13 +134,13 @@ static GimpActionFactoryEntry action_groups[] =
   { "drawable", N_("Drawable"), GIMP_STOCK_LAYER,
     drawable_actions_setup,
     drawable_actions_update },
-  { "edit", N_("Edit"), GIMP_STOCK_EDIT,
+  { "edit", N_("Edit"), GTK_STOCK_EDIT,
     edit_actions_setup,
     edit_actions_update },
   { "error-console", N_("Error Console"), GIMP_STOCK_WARNING,
     error_console_actions_setup,
     error_console_actions_update },
-  { "file", N_("File"), GTK_STOCK_OPEN,
+  { "file", N_("File"), GTK_STOCK_FILE,
     file_actions_setup,
     file_actions_update },
   { "fonts", N_("Fonts"), GIMP_STOCK_FONT,
@@ -163,16 +176,19 @@ static GimpActionFactoryEntry action_groups[] =
   { "plug-in", N_("Plug-Ins"), GIMP_STOCK_PLUGIN,
     plug_in_actions_setup,
     plug_in_actions_update },
-  { "qmask", N_("Quick Mask"), GIMP_STOCK_QMASK_ON,
-    qmask_actions_setup,
-    qmask_actions_update },
+  { "quick-mask", N_("Quick Mask"), GIMP_STOCK_QUICK_MASK_ON,
+    quick_mask_actions_setup,
+    quick_mask_actions_update },
+  { "sample-point-editor", N_("Sample Points"), GIMP_STOCK_SAMPLE_POINT,
+    sample_point_editor_actions_setup,
+    sample_point_editor_actions_update },
   { "select", N_("Select"), GIMP_STOCK_SELECTION,
     select_actions_setup,
     select_actions_update },
   { "templates", N_("Templates"), GIMP_STOCK_TEMPLATE,
     templates_actions_setup,
     templates_actions_update },
-  { "text-editor", N_("Text Editor"), GIMP_STOCK_EDIT,
+  { "text-editor", N_("Text Editor"), GTK_STOCK_EDIT,
     text_editor_actions_setup,
     text_editor_actions_update },
   { "tool-options", N_("Tool Options"), GIMP_STOCK_TOOL_OPTIONS,
@@ -242,6 +258,10 @@ action_data_get_gimp (gpointer data)
     context = ((GimpDock *) data)->context;
   else if (GIMP_IS_ITEM_TREE_VIEW (data))
     context = ((GimpItemTreeView *) data)->context;
+  else if (GIMP_IS_CONTAINER_VIEW (data))
+    context = gimp_container_view_get_context ((GimpContainerView *) data);
+  else if (GIMP_IS_CONTAINER_EDITOR (data))
+    context = gimp_container_view_get_context (((GimpContainerEditor *) data)->view);
   else if (GIMP_IS_IMAGE_EDITOR (data))
     context = ((GimpImageEditor *) data)->context;
   else if (GIMP_IS_NAVIGATION_EDITOR (data))
@@ -332,17 +352,22 @@ action_data_get_display (gpointer data)
 GtkWidget *
 action_data_get_widget (gpointer data)
 {
+  GimpDisplay *display = NULL;
+
   if (! data)
     return NULL;
 
   if (GIMP_IS_DISPLAY (data))
-    return ((GimpDisplay *) data)->shell;
+    display = data;
   else if (GIMP_IS_GIMP (data))
-    return dialogs_get_toolbox ();
+    display = gimp_context_get_display (gimp_get_user_context (data));
   else if (GTK_IS_WIDGET (data))
     return data;
 
-  return NULL;
+  if (display)
+    return display->shell;
+
+  return dialogs_get_toolbox ();
 }
 
 gdouble
@@ -381,7 +406,7 @@ action_select_value (GimpActionSelectType  select_type,
       break;
 
     default:
-      if (value >= 0)
+      if ((gint) select_type >= 0)
         value = (gdouble) select_type * (max - min) / 1000.0 + min;
       else
         g_return_val_if_reached (value);
@@ -402,6 +427,36 @@ action_select_value (GimpActionSelectType  select_type,
     }
 
   return value;
+}
+
+void
+action_select_property (GimpActionSelectType  select_type,
+                        GObject              *object,
+                        const gchar          *property_name,
+                        gdouble               inc,
+                        gdouble               skip_inc,
+                        gboolean              wrap)
+{
+  GParamSpec *pspec;
+  gdouble     value;
+
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (property_name != NULL);
+
+  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (object),
+                                        property_name);
+
+  g_return_if_fail (G_IS_PARAM_SPEC_DOUBLE (pspec));
+
+  g_object_get (object, property_name, &value, NULL);
+
+  value = action_select_value (select_type,
+                               value,
+                               G_PARAM_SPEC_DOUBLE (pspec)->minimum,
+                               G_PARAM_SPEC_DOUBLE (pspec)->maximum,
+                               inc, skip_inc, wrap);
+
+  g_object_set (object, property_name, value, NULL);
 }
 
 GimpObject *
@@ -450,7 +505,10 @@ action_select_object (GimpActionSelectType  select_type,
       break;
 
     default:
-      g_return_val_if_reached (current);
+      if ((gint) select_type >= 0)
+        select_index = (gint) select_type;
+      else
+        g_return_val_if_reached (current);
       break;
     }
 

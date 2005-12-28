@@ -1,12 +1,10 @@
 ## Process this file with automake to produce Makefile.in
 
 STOCK_IMAGES = \
-	stock-arrow.png		\
 	stock-circle.png	\
 	stock-coord.png		\
 	stock-dimension.png	\
 	stock-java.png		\
-	stock-link.png		\
 	stock-map-info.png	\
 	stock-polygon.png	\
 	stock-rectangle.png	\
@@ -27,4 +25,4 @@ stock-icons.list: $(STOCK_IMAGES) Makefile.am
 	  done )
 
 $(srcdir)/imap-stock-pixbufs.h: stock-icons.list
-	gdk-pixbuf-csource --raw --build-list `cat stock-icons.list` > $(@F)
+	$(GDK_PIXBUF_CSOURCE) --raw --build-list `cat stock-icons.list` > $(@F)

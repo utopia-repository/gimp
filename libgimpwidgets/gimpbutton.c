@@ -36,68 +36,33 @@ enum
 };
 
 
-static void       gimp_button_class_init     (GimpButtonClass  *klass);
-static void       gimp_button_init           (GimpButton       *button);
+static gboolean   gimp_button_button_press   (GtkWidget      *widget,
+                                              GdkEventButton *event);
+static gboolean   gimp_button_button_release (GtkWidget      *widget,
+                                              GdkEventButton *event);
 
-static gboolean   gimp_button_button_press   (GtkWidget        *widget,
-					      GdkEventButton   *event);
-static gboolean   gimp_button_button_release (GtkWidget        *widget,
-					      GdkEventButton   *event);
 
+G_DEFINE_TYPE (GimpButton, gimp_button, GTK_TYPE_BUTTON);
+
+#define parent_class gimp_button_parent_class
 
 static guint button_signals[LAST_SIGNAL] = { 0 };
 
-static GtkButtonClass *parent_class = NULL;
-
-
-GType
-gimp_button_get_type (void)
-{
-  static GType button_type = 0;
-
-  if (! button_type)
-    {
-      static const GTypeInfo button_info =
-      {
-        sizeof (GimpButtonClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_button_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpButton),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_button_init,
-      };
-
-      button_type = g_type_register_static (GTK_TYPE_BUTTON,
-					    "GimpButton",
-					    &button_info, 0);
-    }
-
-  return button_type;
-}
 
 static void
 gimp_button_class_init (GimpButtonClass *klass)
 {
-  GObjectClass   *object_class;
-  GtkWidgetClass *widget_class;
-
-  object_class = G_OBJECT_CLASS (klass);
-  widget_class = GTK_WIDGET_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   button_signals[EXTENDED_CLICKED] =
-    g_signal_new ("extended_clicked",
-		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (GimpButtonClass, extended_clicked),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__FLAGS,
-		  G_TYPE_NONE, 1,
-		  GDK_TYPE_MODIFIER_TYPE);
+    g_signal_new ("extended-clicked",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpButtonClass, extended_clicked),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__FLAGS,
+                  G_TYPE_NONE, 1,
+                  GDK_TYPE_MODIFIER_TYPE);
 
   widget_class->button_press_event   = gimp_button_button_press;
   widget_class->button_release_event = gimp_button_button_release;
@@ -119,11 +84,7 @@ gimp_button_init (GimpButton *button)
 GtkWidget *
 gimp_button_new (void)
 {
-  GimpButton *button;
-
-  button = g_object_new (GIMP_TYPE_BUTTON, NULL);
-
-  return GTK_WIDGET (button);
+  return g_object_new (GIMP_TYPE_BUTTON, NULL);
 }
 
 /**
@@ -144,14 +105,9 @@ gimp_button_extended_clicked (GimpButton      *button,
 
 static gboolean
 gimp_button_button_press (GtkWidget      *widget,
-			  GdkEventButton *bevent)
+                          GdkEventButton *bevent)
 {
-  GimpButton *button;
-
-  g_return_val_if_fail (GIMP_IS_BUTTON (widget), FALSE);
-  g_return_val_if_fail (bevent != NULL, FALSE);
-
-  button = GIMP_BUTTON (widget);
+  GimpButton *button = GIMP_BUTTON (widget);
 
   if (bevent->button == 1)
     {
@@ -170,32 +126,27 @@ gimp_button_button_press (GtkWidget      *widget,
 
 static gboolean
 gimp_button_button_release (GtkWidget      *widget,
-			    GdkEventButton *bevent)
+                            GdkEventButton *bevent)
 {
-  GtkButton *button;
+  GtkButton *button           = GTK_BUTTON (widget);
   gboolean   extended_clicked = FALSE;
-
-  g_return_val_if_fail (GIMP_IS_BUTTON (widget), FALSE);
-  g_return_val_if_fail (bevent != NULL, FALSE);
-
-  button = GTK_BUTTON (widget);
 
   if (bevent->button == 1)
     {
       if (button->in_button &&
-	  (GIMP_BUTTON (button)->press_state &
-	   (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)))
-	{
-	  gimp_button_extended_clicked (GIMP_BUTTON (button),
+          (GIMP_BUTTON (button)->press_state &
+           (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)))
+        {
+          gimp_button_extended_clicked (GIMP_BUTTON (button),
                                         GIMP_BUTTON (button)->press_state);
 
-	  extended_clicked  = TRUE;
+          extended_clicked = TRUE;
 
-	  /* HACK: don't let GtkButton emit "clicked" by telling it that
-	   * the mouse pointer is outside the widget
-	   */
-	  button->in_button = FALSE;
-	}
+          /* HACK: don't let GtkButton emit "clicked" by telling it that
+           * the mouse pointer is outside the widget
+           */
+          button->in_button = FALSE;
+        }
     }
 
   if (GTK_WIDGET_CLASS (parent_class)->button_release_event)

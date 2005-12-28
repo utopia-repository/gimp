@@ -30,7 +30,6 @@
 #include "core/gimp.h"
 
 #include "widgets/gimphelp-ids.h"
-#include "widgets/gimppropwidgets.h"
 
 #include "tips-dialog.h"
 #include "tips-parser.h"
@@ -132,7 +131,7 @@ tips_dialog_create (Gimp *gimp)
   gtk_window_set_position (GTK_WINDOW (tips_dialog), GTK_WIN_POS_CENTER);
   gtk_window_set_resizable (GTK_WINDOW (tips_dialog), TRUE);
 
-  g_signal_connect (tips_dialog, "delete_event",
+  g_signal_connect (tips_dialog, "delete-event",
                     G_CALLBACK (gtk_widget_destroy),
                     NULL);
 
@@ -216,7 +215,7 @@ tips_dialog_create (Gimp *gimp)
   gtk_box_pack_end (GTK_BOX (hbox), bbox, FALSE, FALSE, 0);
   gtk_widget_show (bbox);
 
-  button = tips_button_new (_("_Previous tip"), TRUE);
+  button = tips_button_new (_("_Previous Tip"), TRUE);
   gtk_widget_set_sensitive (button, (tips_count > 1));
   gtk_container_add (GTK_CONTAINER (bbox), button);
   gtk_widget_show (button);
@@ -225,7 +224,7 @@ tips_dialog_create (Gimp *gimp)
 		    G_CALLBACK (tips_show_previous),
 		    NULL);
 
-  button = tips_button_new (_("_Next tip"), FALSE);
+  button = tips_button_new (_("_Next Tip"), FALSE);
   gtk_widget_set_sensitive (button, (tips_count > 1));
   gtk_container_add (GTK_CONTAINER (bbox), button);
   gtk_widget_show (button);

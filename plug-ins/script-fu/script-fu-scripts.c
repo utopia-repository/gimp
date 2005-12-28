@@ -18,13 +18,9 @@
 
 #include "config.h"
 
-#include <glib.h>    /* Include early for obscure Win32 build reasons */
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-#include <sys/types.h>
 
-#include <gtk/gtk.h>
+#include <glib.h>
 
 #ifdef G_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -155,6 +151,8 @@ script_fu_add_script (LISP a)
 {
   GimpParamDef *args;
   SFScript     *script;
+  GType         enum_type;
+  GEnumValue   *enum_value;
   gchar        *val;
   gint          i;
   guchar        r, g, b;
@@ -162,7 +160,6 @@ script_fu_add_script (LISP a)
   LISP          adj_list;
   LISP          brush_list;
   LISP          option_list;
-  gchar        *s;
 
   /*  Check the length of a  */
   if (nlength (a) < 7)
@@ -175,14 +172,6 @@ script_fu_add_script (LISP a)
   val = get_c_string (car (a));
   script->script_name = g_strdup (val);
   a = cdr (a);
-
-  /* transform the function name into a name containing "_" for each "-".
-   * this does not hurt anybody, yet improves the life of many... ;)
-   */
-  script->pdb_name = g_strdup (val);
-  for (s = script->pdb_name; *s; s++)
-    if (*s == '-')
-      *s = '_';
 
   /*  Find the script menu_path  */
   val = get_c_string (car (a));
@@ -521,7 +510,7 @@ script_fu_add_script (LISP a)
 		  script->arg_defaults[i].sfa_gradient =
 		    g_strdup (get_c_string (car (a)));
 		  script->arg_values[i].sfa_gradient =
-		    g_strdup (script->arg_defaults[i].sfa_pattern);
+		    g_strdup (script->arg_defaults[i].sfa_gradient);
 
 		  args[i + 1].type        = GIMP_PDB_STRING;
 		  args[i + 1].name        = "gradient";
@@ -540,11 +529,51 @@ script_fu_add_script (LISP a)
 			g_slist_append (script->arg_defaults[i].sfa_option.list,
 					g_strdup (get_c_string (car (option_list))));
 		    }
+
 		  script->arg_defaults[i].sfa_option.history = 0;
 		  script->arg_values[i].sfa_option.history = 0;
 
 		  args[i + 1].type        = GIMP_PDB_INT32;
 		  args[i + 1].name        = "option";
+		  args[i + 1].description = script->arg_labels[i];
+		  break;
+
+		case SF_ENUM:
+		  if (!TYPEP (car (a),  tc_cons))
+		    return my_err ("script-fu-register: enum defaults must be a list", NIL);
+
+                  option_list = car (a);
+                  if (!TYPEP (car (option_list), tc_string))
+		    return my_err ("script-fu-register: first element in enum defaults must be a type-name", NIL);
+
+                  val = get_c_string (car (option_list));
+                  if (g_str_has_prefix (val, "Gimp"))
+                    val = g_strdup (val);
+                  else
+                    val = g_strconcat ("Gimp", val, NULL);
+
+                  enum_type = g_type_from_name (val);
+                  if (! G_TYPE_IS_ENUM (enum_type))
+                    {
+                      g_free (val);
+                      return my_err ("script-fu-register: first element in enum defaults must be the name of a registered type", NIL);
+                    }
+
+                  script->arg_defaults[i].sfa_enum.type_name = val;
+
+                  option_list = cdr (option_list);
+                  if (!TYPEP (car (option_list), tc_string))
+		    return my_err ("script-fu-register: second element in enum defaults must be a string", NIL);
+
+                  enum_value =
+                    g_enum_get_value_by_nick (g_type_class_peek (enum_type),
+                                              get_c_string (car (option_list)));
+                  if (enum_value)
+                    script->arg_defaults[i].sfa_enum.history =
+                      script->arg_values[i].sfa_enum.history = enum_value->value;
+
+		  args[i + 1].type        = GIMP_PDB_INT32;
+		  args[i + 1].name        = "enum";
 		  args[i + 1].description = script->arg_labels[i];
 		  break;
 
@@ -577,10 +606,9 @@ script_fu_add_script (LISP a)
 LISP
 script_fu_add_menu (LISP a)
 {
-  SFScript *script;
-  SFMenu   *menu;
-  gchar    *val;
-  gchar    *s;
+  SFScript    *script;
+  SFMenu      *menu;
+  const gchar *name;
 
   /*  Check the length of a  */
   if (nlength (a) != 2)
@@ -588,15 +616,10 @@ script_fu_add_menu (LISP a)
                    NIL);
 
   /*  Find the script PDB entry name  */
-  val = g_strdup (get_c_string (car (a)));
-  for (s = val; *s; s++)
-    if (*s == '-')
-      *s = '_';
+  name = get_c_string (car (a));
   a = cdr (a);
 
-  script = script_fu_find_script (val);
-
-  g_free (val);
+  script = script_fu_find_script (name);
 
   if (! script)
     return my_err ("Nonexisting procedure name in script-fu-menu-register",
@@ -608,8 +631,7 @@ script_fu_add_menu (LISP a)
   menu->script = script;
 
   /*  Find the script menu path  */
-  val = get_c_string (car (a));
-  menu->menu_path = g_strdup (val);
+  menu->menu_path = g_strdup (get_c_string (car (a)));
 
   script_menu_list = g_list_prepend (script_menu_list, menu);
 
@@ -672,7 +694,7 @@ script_fu_install_script (gpointer  foo,
       if (strncmp (script->menu_path, "<None>", 6) != 0)
         menu_path = script->menu_path;
 
-      gimp_install_temp_proc (script->pdb_name,
+      gimp_install_temp_proc (script->script_name,
                               script->help,
                               "",
                               script->author,
@@ -699,7 +721,7 @@ static void
 script_fu_install_menu (SFMenu   *menu,
                         gpointer  foo)
 {
-  gimp_plugin_menu_register (menu->script->pdb_name, menu->menu_path);
+  gimp_plugin_menu_register (menu->script->script_name, menu->menu_path);
 
   g_free (menu->menu_path);
   g_free (menu);
@@ -854,8 +876,9 @@ script_fu_script_proc (const gchar      *name,
                       break;
 
                     case SF_OPTION:
+                    case SF_ENUM:
                       g_string_append_printf (s, "%d", param->data.d_int32);
-                          break;
+                      break;
 
                     default:
                       break;
@@ -898,7 +921,7 @@ script_fu_lookup_script (gpointer      *foo,
     {
       SFScript *script = list->data;
 
-      if (strcmp (script->pdb_name, *name) == 0)
+      if (strcmp (script->script_name, *name) == 0)
         {
           /* store the script in the name pointer and stop the traversal */
           *name = script;
@@ -910,15 +933,15 @@ script_fu_lookup_script (gpointer      *foo,
 }
 
 static SFScript *
-script_fu_find_script (const gchar *pdb_name)
+script_fu_find_script (const gchar *script_name)
 {
-  gconstpointer script = pdb_name;
+  gconstpointer script = script_name;
 
   g_tree_foreach (script_tree,
                   (GTraverseFunc) script_fu_lookup_script,
                   &script);
 
-  if (script == pdb_name)
+  if (script == script_name)
     return NULL;
 
   return (SFScript *) script;
@@ -929,90 +952,93 @@ script_fu_free_script (SFScript *script)
 {
   gint i;
 
+  g_return_if_fail (script != NULL);
+
   /*  Uninstall the temporary procedure for this script  */
-  gimp_uninstall_temp_proc (script->pdb_name);
+  gimp_uninstall_temp_proc (script->script_name);
 
-  if (script)
+  g_free (script->script_name);
+  g_free (script->menu_path);
+  g_free (script->help);
+  g_free (script->author);
+  g_free (script->copyright);
+  g_free (script->date);
+  g_free (script->img_types);
+
+  for (i = 0; i < script->num_args; i++)
     {
-      g_free (script->script_name);
-      g_free (script->menu_path);
-      g_free (script->help);
-      g_free (script->author);
-      g_free (script->copyright);
-      g_free (script->date);
-      g_free (script->img_types);
+      g_free (script->arg_labels[i]);
+      switch (script->arg_types[i])
+        {
+        case SF_IMAGE:
+        case SF_DRAWABLE:
+        case SF_LAYER:
+        case SF_CHANNEL:
+        case SF_COLOR:
+          break;
 
-      for (i = 0; i < script->num_args; i++)
-	{
-	  g_free (script->arg_labels[i]);
-	  switch (script->arg_types[i])
-	    {
-	    case SF_IMAGE:
-	    case SF_DRAWABLE:
-	    case SF_LAYER:
-	    case SF_CHANNEL:
-	    case SF_COLOR:
-	      break;
+        case SF_VALUE:
+        case SF_STRING:
+        case SF_TEXT:
+          g_free (script->arg_defaults[i].sfa_value);
+          g_free (script->arg_values[i].sfa_value);
+          break;
 
-	    case SF_VALUE:
-	    case SF_STRING:
-            case SF_TEXT:
-	      g_free (script->arg_defaults[i].sfa_value);
-	      g_free (script->arg_values[i].sfa_value);
-	      break;
+        case SF_ADJUSTMENT:
+          break;
 
-	    case SF_ADJUSTMENT:
-	      break;
+        case SF_FILENAME:
+        case SF_DIRNAME:
+          g_free (script->arg_defaults[i].sfa_file.filename);
+          g_free (script->arg_values[i].sfa_file.filename);
+          break;
 
-	    case SF_FILENAME:
-	    case SF_DIRNAME:
-	      g_free (script->arg_defaults[i].sfa_file.filename);
-	      g_free (script->arg_values[i].sfa_file.filename);
-	      break;
+        case SF_FONT:
+          g_free (script->arg_defaults[i].sfa_font);
+          g_free (script->arg_values[i].sfa_font);
+          break;
 
-	    case SF_FONT:
-	      g_free (script->arg_defaults[i].sfa_font);
-	      g_free (script->arg_values[i].sfa_font);
-	      break;
+        case SF_PALETTE:
+          g_free (script->arg_defaults[i].sfa_palette);
+          g_free (script->arg_values[i].sfa_palette);
+          break;
 
-	    case SF_PALETTE:
-	      g_free (script->arg_defaults[i].sfa_palette);
-	      g_free (script->arg_values[i].sfa_palette);
-	      break;
+        case SF_PATTERN:
+          g_free (script->arg_defaults[i].sfa_pattern);
+          g_free (script->arg_values[i].sfa_pattern);
+          break;
 
-	    case SF_PATTERN:
-	      g_free (script->arg_defaults[i].sfa_pattern);
-	      g_free (script->arg_values[i].sfa_pattern);
-	      break;
+        case SF_GRADIENT:
+          g_free (script->arg_defaults[i].sfa_gradient);
+          g_free (script->arg_values[i].sfa_gradient);
+          break;
 
-	    case SF_GRADIENT:
-	      g_free (script->arg_defaults[i].sfa_gradient);
-	      g_free (script->arg_values[i].sfa_gradient);
-	      break;
+        case SF_BRUSH:
+          g_free (script->arg_defaults[i].sfa_brush.name);
+          g_free (script->arg_values[i].sfa_brush.name);
+          break;
 
-	    case SF_BRUSH:
-	      g_free (script->arg_defaults[i].sfa_brush.name);
-	      g_free (script->arg_values[i].sfa_brush.name);
-	      break;
+        case SF_OPTION:
+          g_slist_foreach (script->arg_defaults[i].sfa_option.list,
+                           (GFunc) g_free, NULL);
+          g_slist_free (script->arg_defaults[i].sfa_option.list);
+          break;
 
-	    case SF_OPTION:
-	      g_slist_foreach (script->arg_defaults[i].sfa_option.list,
-			       (GFunc) g_free, NULL);
-              g_slist_free (script->arg_defaults[i].sfa_option.list);
-	      break;
+        case SF_ENUM:
+          g_free (script->arg_defaults[i].sfa_enum.type_name);
+          break;
 
-	    default:
-	      break;
-	    }
-	}
-
-      g_free (script->arg_labels);
-      g_free (script->arg_defaults);
-      g_free (script->arg_types);
-      g_free (script->arg_values);
-
-      g_free (script);
+        default:
+          break;
+        }
     }
+
+  g_free (script->arg_labels);
+  g_free (script->arg_defaults);
+  g_free (script->arg_types);
+  g_free (script->arg_values);
+
+  g_free (script);
 }
 
 static gint

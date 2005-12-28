@@ -27,9 +27,9 @@
 #include "libgimp/stdplugins-intl.h"
 
 
-#define PLUG_IN_NAME    "plug_in_colorify"
+#define PLUG_IN_PROC    "plug-in-colorify"
+#define PLUG_IN_BINARY  "colorify"
 #define PLUG_IN_VERSION "1.1"
-#define HELP_ID         "plug-in-colorify"
 
 #define COLOR_SIZE 30
 
@@ -49,13 +49,11 @@ static void      predefined_color_callback (GtkWidget    *widget,
 typedef struct
 {
   GimpRGB  color;
-  gboolean preview;
 } ColorifyVals;
 
 static ColorifyVals cvals =
 {
-  { 1.0, 1.0, 1.0, 1.0 },
-  TRUE
+  { 1.0, 1.0, 1.0, 1.0 }
 };
 
 static GimpRGB button_color[] =
@@ -94,13 +92,13 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",    "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
-    { GIMP_PDB_COLOR,    "color",    "Color to apply"}
+    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",    "Input image"                  },
+    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"               },
+    { GIMP_PDB_COLOR,    "color",    "Color to apply"               }
   };
 
-  gimp_install_procedure (PLUG_IN_NAME,
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Similar to the \"Color\" mode for layers.",
                           "Makes an average of the RGB channels and uses it "
                           "to set the color",
@@ -113,7 +111,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register (PLUG_IN_NAME, "<Image>/Filters/Colors");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Colors/Modify");
 }
 
 static void
@@ -144,7 +142,7 @@ run (const gchar      *name,
   switch (run_mode)
     {
     case GIMP_RUN_INTERACTIVE:
-      gimp_get_data (PLUG_IN_NAME, &cvals);
+      gimp_get_data (PLUG_IN_PROC, &cvals);
       if (!colorify_dialog (drawable))
         return;
       break;
@@ -159,7 +157,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /*  Possibly retrieve data  */
-      gimp_get_data (PLUG_IN_NAME, &cvals);
+      gimp_get_data (PLUG_IN_PROC, &cvals);
       break;
 
     default:
@@ -168,12 +166,12 @@ run (const gchar      *name,
 
   if (status == GIMP_PDB_SUCCESS)
     {
-      gimp_progress_init (_("Colorifying..."));
+      gimp_progress_init (_("Colorifying"));
 
       colorify (drawable, NULL);
 
       if (run_mode == GIMP_RUN_INTERACTIVE)
-        gimp_set_data (PLUG_IN_NAME, &cvals, sizeof (ColorifyVals));
+        gimp_set_data (PLUG_IN_PROC, &cvals, sizeof (ColorifyVals));
 
       if (run_mode != GIMP_RUN_NONINTERACTIVE)
         gimp_displays_flush ();
@@ -212,9 +210,9 @@ colorify (GimpDrawable *drawable,
 
   for (i = 0; i < 256; i ++)
     {
-      lum_red_lookup[i]     = i * GIMP_RGB_INTENSITY_RED;
-      lum_green_lookup[i]   = i * GIMP_RGB_INTENSITY_GREEN;
-      lum_blue_lookup[i]    = i * GIMP_RGB_INTENSITY_BLUE;
+      lum_red_lookup[i]     = i * GIMP_RGB_LUMINANCE_RED;
+      lum_green_lookup[i]   = i * GIMP_RGB_LUMINANCE_GREEN;
+      lum_blue_lookup[i]    = i * GIMP_RGB_LUMINANCE_BLUE;
       final_red_lookup[i]   = i * cvals.color.r;
       final_green_lookup[i] = i * cvals.color.g;
       final_blue_lookup[i]  = i * cvals.color.b;
@@ -225,9 +223,8 @@ colorify (GimpDrawable *drawable,
       gint    width, height, bytes;
       guchar *src;
 
-      gimp_preview_get_size (preview, &width, &height);
-      src = gimp_drawable_get_thumbnail_data (drawable->drawable_id,
-                                              &width, &height, &bytes);
+      src = gimp_zoom_preview_get_source (GIMP_ZOOM_PREVIEW (preview),
+                                        &width, &height, &bytes);
       for (i = 0; i < width * height; i++)
         colorify_func (src + i * bytes, src + i * bytes, bytes, NULL);
 
@@ -253,23 +250,30 @@ colorify_dialog (GimpDrawable *drawable)
   gint       i;
   gboolean   run;
 
-  gimp_ui_init ("colorify", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Colorify"), "colorify",
+  dialog = gimp_dialog_new (_("Colorify"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, HELP_ID,
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
+
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_aspect_preview_new (drawable, &cvals.preview);
+  preview = gimp_zoom_preview_new (drawable);
   gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
   g_signal_connect_swapped (preview, "invalidated",
@@ -282,7 +286,7 @@ colorify_dialog (GimpDrawable *drawable)
   gtk_box_pack_start (GTK_BOX (main_vbox), table, FALSE, FALSE, 0);
   gtk_widget_show (table);
 
-  label = gtk_label_new (_("Custom Color:"));
+  label = gtk_label_new (_("Custom color:"));
   gtk_table_attach (GTK_TABLE (table), label, 4, 6, 0, 1,
                     GTK_FILL, GTK_FILL, 0, 0);
   gtk_widget_show (label);
@@ -291,10 +295,10 @@ colorify_dialog (GimpDrawable *drawable)
                                                COLOR_SIZE, COLOR_SIZE,
                                                &cvals.color,
                                                GIMP_COLOR_AREA_FLAT);
-  g_signal_connect (custom_color_button, "color_changed",
+  g_signal_connect (custom_color_button, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),
                     &cvals.color);
-  g_signal_connect_swapped (custom_color_button, "color_changed",
+  g_signal_connect_swapped (custom_color_button, "color-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 

@@ -27,6 +27,7 @@
 #include "gimpimage.h"
 #include "gimpimage-guides.h"
 #include "gimpimage-resize.h"
+#include "gimpimage-sample-points.h"
 #include "gimpimage-undo.h"
 #include "gimpimage-undo-push.h"
 #include "gimplayer.h"
@@ -45,9 +46,26 @@ gimp_image_resize (GimpImage    *gimage,
                    gint          offset_y,
                    GimpProgress *progress)
 {
+  gimp_image_resize_with_layers (gimage, context,
+                                 new_width, new_height, offset_x, offset_y,
+                                 GIMP_IMAGE_RESIZE_LAYERS_NONE,
+                                 progress);
+}
+
+void
+gimp_image_resize_with_layers (GimpImage             *gimage,
+                               GimpContext           *context,
+                               gint                   new_width,
+                               gint                   new_height,
+                               gint                   offset_x,
+                               gint                   offset_y,
+                               GimpImageResizeLayers  resize_layers,
+                               GimpProgress          *progress)
+{
   GList   *list;
   gdouble  progress_max;
   gdouble  progress_current = 1.0;
+  gint     old_width, old_height;
 
   g_return_if_fail (GIMP_IS_IMAGE (gimage));
   g_return_if_fail (GIMP_IS_CONTEXT (context));
@@ -65,6 +83,9 @@ gimp_image_resize (GimpImage    *gimage,
 
   gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_IMAGE_RESIZE,
                                _("Resize Image"));
+
+  old_width  = gimage->width;
+  old_height = gimage->height;
 
   /*  Push the image size to the stack  */
   gimp_image_undo_push_image_size (gimage, NULL);
@@ -116,8 +137,44 @@ gimp_image_resize (GimpImage    *gimage,
        list = g_list_next (list))
     {
       GimpItem *item = list->data;
+      gint      old_offset_x;
+      gint      old_offset_y;
+      gboolean  resize;
+
+      gimp_item_offsets (item, &old_offset_x, &old_offset_y);
 
       gimp_item_translate (item, offset_x, offset_y, TRUE);
+
+      switch (resize_layers)
+        {
+        case GIMP_IMAGE_RESIZE_LAYERS_MATCHING:
+          resize = (old_offset_x            == 0          &&
+                    old_offset_y            == 0          &&
+                    gimp_item_width (item)  == old_width  &&
+                    gimp_item_height (item) == old_height);
+          break;
+
+        case GIMP_IMAGE_RESIZE_LAYERS_VISIBLE:
+          resize = gimp_item_get_visible (item);
+          break;
+
+        case GIMP_IMAGE_RESIZE_LAYERS_LINKED:
+          resize = gimp_item_get_linked (item);
+          break;
+
+        case GIMP_IMAGE_RESIZE_LAYERS_ALL:
+          resize = TRUE;
+          break;
+
+        default:
+          resize = FALSE;
+          break;
+        }
+
+      if (resize)
+        gimp_item_resize (item, context,
+                          new_width, new_height,
+                          offset_x + old_offset_x, offset_y + old_offset_y);
 
       if (progress)
         gimp_progress_set_value (progress, progress_current++ / progress_max);
@@ -157,6 +214,32 @@ gimp_image_resize (GimpImage    *gimage,
         gimp_image_move_guide (gimage, guide, new_position, TRUE);
     }
 
+  /*  Reposition or remove sample points  */
+  list = gimage->sample_points;
+  while (list)
+    {
+      GimpSamplePoint *sample_point        = list->data;
+      gboolean         remove_sample_point = FALSE;
+      gint             new_x               = sample_point->x;
+      gint             new_y               = sample_point->y;
+
+      list = g_list_next (list);
+
+      new_y += offset_y;
+      if ((sample_point->y < 0) || (sample_point->y > new_height))
+        remove_sample_point = TRUE;
+
+      new_x += offset_x;
+      if ((sample_point->x < 0) || (sample_point->x > new_width))
+        remove_sample_point = TRUE;
+
+      if (remove_sample_point)
+        gimp_image_remove_sample_point (gimage, sample_point, TRUE);
+      else if (new_x != sample_point->x || new_y != sample_point->y)
+        gimp_image_move_sample_point (gimage, sample_point,
+                                      new_x, new_y, TRUE);
+    }
+
   gimp_image_undo_group_end (gimage);
 
   gimp_viewable_size_changed (GIMP_VIEWABLE (gimage));
@@ -173,7 +256,7 @@ gimp_image_resize_to_layers (GimpImage    *gimage,
   gint   min_x, max_x, min_y, max_y;
   GList *list = GIMP_LIST (gimage->layers)->list;
   GimpItem *item;
-  
+
   if (!list)
     return;
 

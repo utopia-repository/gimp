@@ -33,63 +33,37 @@
 #include "gimpbuffer.h"
 
 
-static void      gimp_buffer_class_init       (GimpBufferClass *klass);
-static void      gimp_buffer_init             (GimpBuffer      *buffer);
+static void      gimp_buffer_finalize         (GObject       *object);
 
-static void      gimp_buffer_finalize         (GObject         *object);
+static gint64    gimp_buffer_get_memsize      (GimpObject    *object,
+                                               gint64        *gui_size);
 
-static gint64    gimp_buffer_get_memsize      (GimpObject      *object,
-                                               gint64          *gui_size);
-
-static void      gimp_buffer_get_preview_size (GimpViewable    *viewable,
-                                               gint             size,
-                                               gboolean         is_popup,
-                                               gboolean         dot_for_dot,
-                                               gint            *popup_width,
-                                               gint            *popup_height);
-static gboolean  gimp_buffer_get_popup_size   (GimpViewable    *viewable,
-                                               gint             width,
-                                               gint             height,
-                                               gboolean         dot_for_dot,
-                                               gint            *popup_width,
-                                               gint            *popup_height);
-static TempBuf * gimp_buffer_get_new_preview  (GimpViewable    *viewable,
-                                               gint             width,
-                                               gint             height);
-static gchar   * gimp_buffer_get_description  (GimpViewable    *viewable,
-                                               gchar          **tooltip);
-
-
-static GimpViewableClass *parent_class = NULL;
+static gboolean  gimp_buffer_get_size         (GimpViewable  *viewable,
+                                               gint          *width,
+                                               gint          *height);
+static void      gimp_buffer_get_preview_size (GimpViewable  *viewable,
+                                               gint           size,
+                                               gboolean       is_popup,
+                                               gboolean       dot_for_dot,
+                                               gint          *popup_width,
+                                               gint          *popup_height);
+static gboolean  gimp_buffer_get_popup_size   (GimpViewable  *viewable,
+                                               gint           width,
+                                               gint           height,
+                                               gboolean       dot_for_dot,
+                                               gint          *popup_width,
+                                               gint          *popup_height);
+static TempBuf * gimp_buffer_get_new_preview  (GimpViewable  *viewable,
+                                               gint           width,
+                                               gint           height);
+static gchar   * gimp_buffer_get_description  (GimpViewable  *viewable,
+                                               gchar        **tooltip);
 
 
-GType
-gimp_buffer_get_type (void)
-{
-  static GType buffer_type = 0;
+G_DEFINE_TYPE (GimpBuffer, gimp_buffer, GIMP_TYPE_VIEWABLE);
 
-  if (! buffer_type)
-    {
-      static const GTypeInfo buffer_info =
-      {
-        sizeof (GimpBufferClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) gimp_buffer_class_init,
-	NULL,		/* class_finalize */
-	NULL,		/* class_data     */
-	sizeof (GimpBuffer),
-	0,              /* n_preallocs    */
-	(GInstanceInitFunc) gimp_buffer_init,
-      };
+#define parent_class gimp_buffer_parent_class
 
-      buffer_type = g_type_register_static (GIMP_TYPE_VIEWABLE,
-					    "GimpBuffer",
-					    &buffer_info, 0);
-  }
-
-  return buffer_type;
-}
 
 static void
 gimp_buffer_class_init (GimpBufferClass *klass)
@@ -98,13 +72,12 @@ gimp_buffer_class_init (GimpBufferClass *klass)
   GimpObjectClass   *gimp_object_class = GIMP_OBJECT_CLASS (klass);
   GimpViewableClass *viewable_class    = GIMP_VIEWABLE_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
-
   object_class->finalize           = gimp_buffer_finalize;
 
   gimp_object_class->get_memsize   = gimp_buffer_get_memsize;
 
   viewable_class->default_stock_id = "gtk-paste";
+  viewable_class->get_size         = gimp_buffer_get_size;
   viewable_class->get_preview_size = gimp_buffer_get_preview_size;
   viewable_class->get_popup_size   = gimp_buffer_get_popup_size;
   viewable_class->get_new_preview  = gimp_buffer_get_new_preview;
@@ -135,10 +108,8 @@ static gint64
 gimp_buffer_get_memsize (GimpObject *object,
                          gint64     *gui_size)
 {
-  GimpBuffer *buffer;
+  GimpBuffer *buffer  = GIMP_BUFFER (object);
   gint64      memsize = 0;
-
-  buffer = GIMP_BUFFER (object);
 
   if (buffer->tiles)
     memsize += tile_manager_get_memsize (buffer->tiles, FALSE);
@@ -147,13 +118,26 @@ gimp_buffer_get_memsize (GimpObject *object,
                                                                   gui_size);
 }
 
+static gboolean
+gimp_buffer_get_size (GimpViewable *viewable,
+                      gint         *width,
+                      gint         *height)
+{
+  GimpBuffer *buffer = GIMP_BUFFER (viewable);
+
+  *width  = gimp_buffer_get_width (buffer);
+  *height = gimp_buffer_get_height (buffer);
+
+  return TRUE;
+}
+
 static void
 gimp_buffer_get_preview_size (GimpViewable *viewable,
-			      gint          size,
+                              gint          size,
                               gboolean      is_popup,
                               gboolean      dot_for_dot,
-			      gint         *width,
-			      gint         *height)
+                              gint         *width,
+                              gint         *height)
 {
   GimpBuffer *buffer = GIMP_BUFFER (viewable);
 
@@ -210,8 +194,8 @@ gimp_buffer_get_popup_size (GimpViewable *viewable,
 
 static TempBuf *
 gimp_buffer_get_new_preview (GimpViewable *viewable,
-			     gint          width,
-			     gint          height)
+                             gint          width,
+                             gint          height)
 {
   GimpBuffer  *buffer = GIMP_BUFFER (viewable);
   TempBuf     *temp_buf;
@@ -227,23 +211,18 @@ gimp_buffer_get_new_preview (GimpViewable *viewable,
   bytes = tile_manager_bpp (buffer->tiles);
 
   pixel_region_init (&srcPR, buffer->tiles,
-		     0, 0,
-		     buffer_width,
-		     buffer_height,
-		     FALSE);
+                     0, 0,
+                     buffer_width,
+                     buffer_height,
+                     FALSE);
 
   if (buffer_height > height || buffer_width > width)
     temp_buf = temp_buf_new (width, height, bytes, 0, 0, NULL);
   else
     temp_buf = temp_buf_new (buffer_width, buffer_height, bytes, 0, 0, NULL);
 
-  destPR.bytes     = temp_buf->bytes;
-  destPR.x         = 0;
-  destPR.y         = 0;
-  destPR.w         = temp_buf->width;
-  destPR.h         = temp_buf->height;
-  destPR.rowstride = temp_buf->width * destPR.bytes;
-  destPR.data      = temp_buf_data (temp_buf);
+  pixel_region_init_temp_buf (&destPR, temp_buf,
+                              0, 0, temp_buf->width, temp_buf->height);
 
   if (buffer_height > height || buffer_width > width)
     {
@@ -272,9 +251,6 @@ gimp_buffer_get_description (GimpViewable  *viewable,
 {
   GimpBuffer *buffer = GIMP_BUFFER (viewable);
 
-  if (tooltip)
-    *tooltip = NULL;
-
   return g_strdup_printf ("%s (%d x %d)",
                           GIMP_OBJECT (buffer)->name,
                           gimp_buffer_get_width (buffer),
@@ -283,12 +259,11 @@ gimp_buffer_get_description (GimpViewable  *viewable,
 
 GimpBuffer *
 gimp_buffer_new (TileManager *tiles,
-		 const gchar *name,
+                 const gchar *name,
                  gboolean     copy_pixels)
 {
-  GimpBuffer  *buffer;
-  PixelRegion  srcPR, destPR;
-  gint         width, height;
+  GimpBuffer *buffer;
+  gint        width, height;
 
   g_return_val_if_fail (tiles != NULL, NULL);
   g_return_val_if_fail (name != NULL, NULL);
@@ -302,6 +277,8 @@ gimp_buffer_new (TileManager *tiles,
 
   if (copy_pixels)
     {
+      PixelRegion srcPR, destPR;
+
       buffer->tiles = tile_manager_new (width, height,
                                         tile_manager_bpp (tiles));
 
@@ -315,6 +292,41 @@ gimp_buffer_new (TileManager *tiles,
     }
 
   return buffer;
+}
+
+GimpBuffer *
+gimp_buffer_new_from_pixbuf (GdkPixbuf   *pixbuf,
+                             const gchar *name)
+{
+  TileManager *tiles;
+  guchar      *pixels;
+  PixelRegion  destPR;
+  gint         width;
+  gint         height;
+  gint         rowstride;
+  gint         channels;
+  gint         y;
+
+  g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
+  g_return_val_if_fail (name != NULL, NULL);
+
+  width     = gdk_pixbuf_get_width (pixbuf);
+  height    = gdk_pixbuf_get_height (pixbuf);
+  rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+  channels  = gdk_pixbuf_get_n_channels (pixbuf);
+
+  tiles = tile_manager_new (width, height, channels);
+
+  pixel_region_init (&destPR, tiles, 0, 0, width, height, TRUE);
+
+  for (y = 0, pixels = gdk_pixbuf_get_pixels (pixbuf);
+       y < height;
+       y++, pixels += rowstride)
+    {
+      pixel_region_set_row (&destPR, 0, y, width, pixels);
+   }
+
+  return gimp_buffer_new (tiles, name, FALSE);
 }
 
 gint
@@ -331,4 +343,28 @@ gimp_buffer_get_height (const GimpBuffer *buffer)
   g_return_val_if_fail (GIMP_IS_BUFFER (buffer), 0);
 
   return tile_manager_height (buffer->tiles);
+}
+
+gint
+gimp_buffer_get_bytes (const GimpBuffer *buffer)
+{
+  g_return_val_if_fail (GIMP_IS_BUFFER (buffer), 0);
+
+  return tile_manager_bpp (buffer->tiles);
+}
+
+GimpImageType
+gimp_buffer_get_image_type (const GimpBuffer *buffer)
+{
+  g_return_val_if_fail (GIMP_IS_BUFFER (buffer), 0);
+
+  switch (tile_manager_bpp (buffer->tiles))
+    {
+    case 1: return GIMP_GRAY_IMAGE;
+    case 2: return GIMP_GRAYA_IMAGE;
+    case 3: return GIMP_RGB_IMAGE;
+    case 4: return GIMP_RGBA_IMAGE;
+    }
+
+  return 0;
 }

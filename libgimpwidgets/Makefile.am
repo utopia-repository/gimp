@@ -2,6 +2,7 @@
 
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 
 if PLATFORM_WIN32
 no_undefined = -no-undefined
@@ -49,7 +50,7 @@ libgimpwidgetsincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimpwidgets
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"LibGimpWidgets\"			\
-	@GIMP_THREAD_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
 	-I$(top_srcdir)	\
@@ -61,7 +62,10 @@ lib_LTLIBRARIES = libgimpwidgets-2.0.la
 libgimpwidgets_2_0_la_sources = \
 	gimpwidgets.c		\
 	gimpwidgets.h		\
+	gimpwidgetsenums.h	\
 	gimpwidgetstypes.h	\
+	gimpbrowser.c		\
+	gimpbrowser.h		\
 	gimpbutton.c		\
 	gimpbutton.h		\
 	gimpcellrenderercolor.c	\
@@ -78,6 +82,8 @@ libgimpwidgets_2_0_la_sources = \
 	gimpcolordisplay.h	\
 	gimpcolordisplaystack.c	\
 	gimpcolordisplaystack.h	\
+	gimpenumwidgets.c	\
+	gimpenumwidgets.h	\
 	gimpcolorhexentry.c	\
 	gimpcolorhexentry.h	\
 	gimpcolornotebook.c	\
@@ -96,6 +102,12 @@ libgimpwidgets_2_0_la_sources = \
 	gimpcontroller.h	\
 	gimpdialog.c		\
 	gimpdialog.h		\
+	gimpenumstore.c		\
+	gimpenumstore.h		\
+	gimpenumcombobox.c	\
+	gimpenumcombobox.h	\
+	gimpenumlabel.c		\
+	gimpenumlabel.h		\
 	gimpfileentry.c		\
 	gimpfileentry.h		\
 	gimpframe.c		\
@@ -112,6 +124,8 @@ libgimpwidgets_2_0_la_sources = \
 	gimpoldwidgets.h	\
 	gimpoffsetarea.c	\
 	gimpoffsetarea.h	\
+	gimppageselector.c	\
+	gimppageselector.h	\
 	gimppatheditor.c	\
 	gimppatheditor.h	\
 	gimppickbutton.c	\
@@ -122,8 +136,12 @@ libgimpwidgets_2_0_la_sources = \
 	gimppreview.h		\
 	gimppreviewarea.c	\
 	gimppreviewarea.h	\
+	gimppropwidgets.c	\
+	gimppropwidgets.h	\
 	gimpquerybox.c		\
 	gimpquerybox.h		\
+	gimpresolutionentry.c   \
+	gimpresolutionentry.h   \
 	gimpscrolledpreview.c	\
 	gimpscrolledpreview.h	\
 	gimpsizeentry.c		\
@@ -132,10 +150,13 @@ libgimpwidgets_2_0_la_sources = \
 	gimpstock.h		\
 	gimpunitmenu.c		\
 	gimpunitmenu.h		\
+	gimpzoommodel.c		\
+	gimpzoommodel.h		\
 	gimpwidgets-private.c	\
 	gimpwidgets-private.h
 
 libgimpwidgets_2_0_la_built_sources = \
+	gimpwidgetsenums.c	\
 	gimpwidgetsmarshal.c	\
 	gimpwidgetsmarshal.h
 
@@ -152,7 +173,9 @@ libgimpwidgets_2_0_la_SOURCES = 		\
 
 libgimpwidgetsinclude_HEADERS = \
 	gimpwidgets.h		\
+	gimpwidgetsenums.h	\
 	gimpwidgetstypes.h	\
+	gimpbrowser.h		\
 	gimpbutton.h		\
 	gimpcellrenderercolor.h	\
 	gimpcellrenderertoggle.h\
@@ -170,6 +193,10 @@ libgimpwidgetsinclude_HEADERS = \
 	gimpcolorselection.h	\
 	gimpcontroller.h	\
 	gimpdialog.h		\
+	gimpenumcombobox.h	\
+	gimpenumlabel.h		\
+	gimpenumstore.h		\
+	gimpenumwidgets.h	\
 	gimpfileentry.h		\
 	gimpframe.h		\
 	gimphelpui.h		\
@@ -178,16 +205,20 @@ libgimpwidgetsinclude_HEADERS = \
 	gimpmemsizeentry.h	\
 	gimpoldwidgets.h	\
 	gimpoffsetarea.h	\
+	gimppageselector.h	\
 	gimppatheditor.h	\
 	gimppickbutton.h	\
 	gimppixmap.h		\
 	gimppreview.h		\
 	gimppreviewarea.h	\
+	gimppropwidgets.h	\
 	gimpquerybox.h		\
+	gimpresolutionentry.h   \
 	gimpscrolledpreview.h	\
 	gimpsizeentry.h		\
 	gimpstock.h		\
-	gimpunitmenu.h
+	gimpunitmenu.h		\
+	gimpzoommodel.h
 
 libgimpwidgets_2_0_la_LDFLAGS = \
 	-version-info $(LT_VERSION_INFO)	\
@@ -195,8 +226,9 @@ libgimpwidgets_2_0_la_LDFLAGS = \
 	$(libgimpwidgets_export_symbols)
 
 libgimpwidgets_2_0_la_LIBADD = \
-	$(libgimpbase)	\
 	$(libgimpcolor) \
+	$(libgimpconfig) \
+	$(libgimpbase)	\
 	$(GTK_LIBS) 	\
 	$(libm)
 
@@ -206,19 +238,33 @@ libgimpwidgets_2_0_la_DEPENDENCIES = $(gimpwidgets_def)
 # rules to generate built sources
 #
 # setup autogeneration dependancies
-gen_sources = xgen-gwmh xgen-gwmc
+gen_sources = xgen-wec xgen-wmh xgen-wmc
 CLEANFILES = $(gen_sources)
 
+$(srcdir)/gimpwidgetsenums.c: $(srcdir)/gimpwidgetsenums.h $(GIMP_MKENUMS)
+	$(GIMP_MKENUMS) \
+		--fhead "#include \"config.h\"\n#include <glib-object.h>\n#include \"libgimpbase/gimpbase.h\"\n#include \"gimpwidgetsenums.h\"\n#include \"libgimp/libgimp-intl.h\"" \
+		--fprod "\n/* enumerations from \"@filename@\" */" \
+		--vhead "GType\n@enum_name@_get_type (void)\n{\n  static const G@Type@Value values[] =\n  {" \
+		--vprod "    { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
+		--vtail "    { 0, NULL, NULL }\n  };\n" \
+		--dhead "  static const Gimp@Type@Desc descs[] =\n  {" \
+		--dprod "    { @VALUENAME@, @valuedesc@, @valuehelp@ }," \
+		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (! type)\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE \"-libgimp\");\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
+		$(srcdir)/gimpwidgetsenums.h > xgen-wec \
+	&& cp xgen-wec $(@F) \
+	&& rm -f xgen-wec
+
 $(srcdir)/gimpwidgetsmarshal.h: $(srcdir)/gimpwidgetsmarshal.list
-	$(GLIB_GENMARSHAL) --prefix=_gimp_widgets_marshal $(srcdir)/gimpwidgetsmarshal.list --header >> xgen-gwmh \
-	&& (cmp -s xgen-gwmh $(@F) || cp xgen-gwmh $(@F)) \
-	&& rm -f xgen-gwmh xgen-gwmh~
+	$(GLIB_GENMARSHAL) --prefix=_gimp_widgets_marshal $(srcdir)/gimpwidgetsmarshal.list --header >> xgen-wmh \
+	&& (cmp -s xgen-wmh $(@F) || cp xgen-wmh $(@F)) \
+	&& rm -f xgen-wmh xgen-wmh~
 
 $(srcdir)/gimpwidgetsmarshal.c: $(srcdir)/gimpwidgetsmarshal.h
-	echo "#include \"gimpwidgetsmarshal.h\"" >> xgen-gwmc \
-	&& $(GLIB_GENMARSHAL) --prefix=_gimp_widgets_marshal $(srcdir)/gimpwidgetsmarshal.list --body >> xgen-gwmc \
-	&& cp xgen-gwmc $(@F) \
-	&& rm -f xgen-gwmc xgen-gwmc~
+	echo "#include \"gimpwidgetsmarshal.h\"" >> xgen-wmc \
+	&& $(GLIB_GENMARSHAL) --prefix=_gimp_widgets_marshal $(srcdir)/gimpwidgetsmarshal.list --body >> xgen-wmc \
+	&& cp xgen-wmc $(@F) \
+	&& rm -f xgen-wmc xgen-wmc~
 
 
 #

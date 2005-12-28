@@ -18,6 +18,8 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -26,9 +28,9 @@
 
 #include "core/gimpimage.h"
 #include "core/gimpunit.h"
-#include "core/gimpmarshal.h"
 #include "core/gimpprogress.h"
 
+#include "widgets/gimpuimanager.h"
 #include "widgets/gimpunitstore.h"
 #include "widgets/gimpunitcombobox.h"
 
@@ -55,9 +57,7 @@ struct _GimpStatusbarMsg
 #define CURSOR_LEN 256
 
 
-static void     gimp_statusbar_class_init     (GimpStatusbarClass *klass);
-static void     gimp_statusbar_init           (GimpStatusbar      *statusbar);
-static void     gimp_statusbar_progress_iface_init (GimpProgressInterface *progress_iface);
+static void     gimp_statusbar_progress_iface_init (GimpProgressInterface *iface);
 
 static void     gimp_statusbar_destroy            (GtkObject         *object);
 
@@ -72,6 +72,7 @@ static void     gimp_statusbar_progress_set_text  (GimpProgress      *progress,
 static void     gimp_statusbar_progress_set_value (GimpProgress      *progress,
                                                    gdouble            percentage);
 static gdouble  gimp_statusbar_progress_get_value (GimpProgress      *progress);
+static void     gimp_statusbar_progress_pulse     (GimpProgress      *progress);
 static void     gimp_statusbar_progress_canceled  (GtkWidget         *button,
                                                    GimpStatusbar     *statusbar);
 
@@ -86,46 +87,12 @@ static guint    gimp_statusbar_get_context_id     (GimpStatusbar     *statusbar,
                                                    const gchar       *context);
 
 
-static GtkHBoxClass *parent_class = NULL;
+G_DEFINE_TYPE_WITH_CODE (GimpStatusbar, gimp_statusbar, GTK_TYPE_HBOX,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_PROGRESS,
+                                                gimp_statusbar_progress_iface_init));
 
+#define parent_class gimp_statusbar_parent_class
 
-GType
-gimp_statusbar_get_type (void)
-{
-  static GType statusbar_type = 0;
-
-  if (! statusbar_type)
-    {
-      static const GTypeInfo statusbar_info =
-      {
-        sizeof (GimpStatusbarClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_statusbar_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpStatusbar),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_statusbar_init,
-      };
-
-      static const GInterfaceInfo progress_iface_info =
-      {
-        (GInterfaceInitFunc) gimp_statusbar_progress_iface_init,
-        NULL,           /* iface_finalize */
-        NULL            /* iface_data     */
-      };
-
-      statusbar_type = g_type_register_static (GTK_TYPE_HBOX,
-                                               "GimpStatusbar",
-                                               &statusbar_info, 0);
-
-      g_type_add_interface_static (statusbar_type, GIMP_TYPE_PROGRESS,
-                                   &progress_iface_info);
-    }
-
-  return statusbar_type;
-}
 
 static void
 gimp_statusbar_class_init (GimpStatusbarClass *klass)
@@ -133,12 +100,10 @@ gimp_statusbar_class_init (GimpStatusbarClass *klass)
   GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
-
   object_class->destroy = gimp_statusbar_destroy;
 
   gtk_widget_class_install_style_property (widget_class,
-                                           g_param_spec_enum ("shadow_type",
+                                           g_param_spec_enum ("shadow-type",
                                            _("Shadow type"),
                                            _("Style of bevel around the statusbar text"),
                                            GTK_TYPE_SHADOW_TYPE,
@@ -154,7 +119,6 @@ gimp_statusbar_init (GimpStatusbar *statusbar)
   GtkWidget     *frame;
   GimpUnitStore *store;
   GtkShadowType  shadow_type;
-  gboolean       has_focus_on_click;
 
   box->spacing     = 2;
   box->homogeneous = FALSE;
@@ -189,13 +153,8 @@ gimp_statusbar_init (GimpStatusbar *statusbar)
   statusbar->unit_combo = gimp_unit_combo_box_new_with_model (store);
   g_object_unref (store);
 
-  has_focus_on_click =
-    g_object_class_find_property (G_OBJECT_GET_CLASS (statusbar->unit_combo),
-                                  "focus-on-click") != NULL;
-
   GTK_WIDGET_UNSET_FLAGS (statusbar->unit_combo, GTK_CAN_FOCUS);
-  if (has_focus_on_click)
-    g_object_set (statusbar->unit_combo, "focus-on-click", FALSE, NULL);
+  g_object_set (statusbar->unit_combo, "focus-on-click", FALSE, NULL);
   gtk_container_add (GTK_CONTAINER (hbox), statusbar->unit_combo);
   gtk_widget_show (statusbar->unit_combo);
 
@@ -210,8 +169,7 @@ gimp_statusbar_init (GimpStatusbar *statusbar)
 
   statusbar->scale_combo = gimp_scale_combo_box_new ();
   GTK_WIDGET_UNSET_FLAGS (statusbar->scale_combo, GTK_CAN_FOCUS);
-  if (has_focus_on_click)
-    g_object_set (statusbar->scale_combo, "focus-on-click", FALSE, NULL);
+  g_object_set (statusbar->scale_combo, "focus-on-click", FALSE, NULL);
   gtk_container_add (GTK_CONTAINER (frame), statusbar->scale_combo);
   gtk_widget_show (statusbar->scale_combo);
 
@@ -220,6 +178,8 @@ gimp_statusbar_init (GimpStatusbar *statusbar)
                     statusbar);
 
   statusbar->progressbar = gtk_progress_bar_new ();
+  gtk_progress_bar_set_ellipsize (GTK_PROGRESS_BAR (statusbar->progressbar),
+                                  PANGO_ELLIPSIZE_END);
   gtk_box_pack_start (box, statusbar->progressbar, TRUE, TRUE, 0);
   gtk_widget_show (statusbar->progressbar);
 
@@ -254,14 +214,15 @@ gimp_statusbar_init (GimpStatusbar *statusbar)
 }
 
 static void
-gimp_statusbar_progress_iface_init (GimpProgressInterface *progress_iface)
+gimp_statusbar_progress_iface_init (GimpProgressInterface *iface)
 {
-  progress_iface->start     = gimp_statusbar_progress_start;
-  progress_iface->end       = gimp_statusbar_progress_end;
-  progress_iface->is_active = gimp_statusbar_progress_is_active;
-  progress_iface->set_text  = gimp_statusbar_progress_set_text;
-  progress_iface->set_value = gimp_statusbar_progress_set_value;
-  progress_iface->get_value = gimp_statusbar_progress_get_value;
+  iface->start     = gimp_statusbar_progress_start;
+  iface->end       = gimp_statusbar_progress_end;
+  iface->is_active = gimp_statusbar_progress_is_active;
+  iface->set_text  = gimp_statusbar_progress_set_text;
+  iface->set_value = gimp_statusbar_progress_set_value;
+  iface->get_value = gimp_statusbar_progress_get_value;
+  iface->pulse     = gimp_statusbar_progress_pulse;
 }
 
 static void
@@ -391,6 +352,22 @@ gimp_statusbar_progress_get_value (GimpProgress *progress)
 }
 
 static void
+gimp_statusbar_progress_pulse (GimpProgress *progress)
+{
+  GimpStatusbar *statusbar = GIMP_STATUSBAR (progress);
+
+  if (statusbar->progress_active)
+    {
+      GtkWidget *bar = statusbar->progressbar;
+
+      gtk_progress_bar_pulse (GTK_PROGRESS_BAR (bar));
+
+      if (GTK_WIDGET_DRAWABLE (bar))
+        gdk_window_process_updates (bar->window, TRUE);
+    }
+}
+
+static void
 gimp_statusbar_progress_canceled (GtkWidget     *button,
                                   GimpStatusbar *statusbar)
 {
@@ -418,12 +395,23 @@ GtkWidget *
 gimp_statusbar_new (GimpDisplayShell *shell)
 {
   GimpStatusbar *statusbar;
+  GtkAction     *action;
 
   g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), NULL);
 
   statusbar = g_object_new (GIMP_TYPE_STATUSBAR, NULL);
 
   statusbar->shell = shell;
+
+  action = gimp_ui_manager_find_action (shell->menubar_manager,
+                                        "view", "view-zoom-other");
+
+  if (action)
+    {
+      GimpScaleComboBox *combo = GIMP_SCALE_COMBO_BOX (statusbar->scale_combo);
+
+      gimp_scale_combo_box_add_action (combo, action, _("Other..."));
+    }
 
   g_signal_connect_object (shell, "scaled",
                            G_CALLBACK (gimp_statusbar_shell_scaled),
@@ -445,6 +433,12 @@ gimp_statusbar_push (GimpStatusbar *statusbar,
   g_return_if_fail (message != NULL);
 
   context_id = gimp_statusbar_get_context_id (statusbar, context);
+
+  /*  do nothing if this message is at the top of the queue already  */
+  msg = statusbar->messages ? statusbar->messages->data : NULL;
+  if (msg &&
+      msg->context_id == context_id && strcmp (msg->text, message) == 0)
+    return;
 
   for (list = statusbar->messages; list; list = g_slist_next (list))
     {
@@ -714,7 +708,7 @@ gimp_statusbar_shell_scaled (GimpDisplayShell *shell,
   g_signal_handlers_block_by_func (statusbar->scale_combo,
                                    gimp_statusbar_scale_changed, statusbar);
   gimp_scale_combo_box_set_scale (GIMP_SCALE_COMBO_BOX (statusbar->scale_combo),
-                                  shell->scale);
+                                  gimp_zoom_model_get_factor (shell->zoom));
   g_signal_handlers_unblock_by_func (statusbar->scale_combo,
                                      gimp_statusbar_scale_changed, statusbar);
 

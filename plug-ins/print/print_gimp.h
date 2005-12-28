@@ -1,5 +1,5 @@
 /*
- * "$Id: print_gimp.h 11249 2003-11-01 20:21:26Z yosh $"
+ * "$Id: print_gimp.h,v 1.10 2003/11/01 20:21:22 yosh Exp $"
  *
  *   Print plug-in for the GIMP.
  *

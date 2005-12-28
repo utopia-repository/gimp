@@ -28,6 +28,7 @@
 
 #include "core-types.h"
 
+#include "base/pixel-processor.h"
 #include "base/pixel-region.h"
 #include "base/tile.h"
 #include "base/tile-manager.h"
@@ -57,6 +58,7 @@ typedef struct
   gdouble           dist;
   gdouble           vec[2];
   GimpRepeatMode    repeat;
+  GRand            *seed;
 } RenderBlendData;
 
 typedef struct
@@ -65,7 +67,6 @@ typedef struct
   guchar      *row_data;
   gint         bytes;
   gint         width;
-  gboolean     dither;
   GRand       *dither_rand;
 } PutPixelData;
 
@@ -120,14 +121,14 @@ static void     gradient_precalc_shapeburst (GimpImage        *gimage,
                                              gdouble           dist,
                                              GimpProgress     *progress);
 
-static void     gradient_render_pixel       (gdouble       x,
-                                             gdouble       y,
-                                             GimpRGB      *color,
-                                             gpointer      render_data);
-static void     gradient_put_pixel          (gint          x,
-                                             gint          y,
-                                             GimpRGB      *color,
-					     gpointer      put_pixel_data);
+static void     gradient_render_pixel       (gdouble           x,
+                                             gdouble           y,
+                                             GimpRGB          *color,
+                                             gpointer          render_data);
+static void     gradient_put_pixel          (gint              x,
+                                             gint              y,
+                                             GimpRGB          *color,
+					     gpointer          put_pixel_data);
 
 static void     gradient_fill_region        (GimpImage        *gimage,
                                              GimpDrawable     *drawable,
@@ -150,8 +151,17 @@ static void     gradient_fill_region        (GimpImage        *gimage,
                                              gdouble           ey,
                                              GimpProgress     *progress);
 
+static void     gradient_fill_single_region_rgb         (RenderBlendData *rbd,
+                                                         PixelRegion     *PR);
+static void     gradient_fill_single_region_rgb_dither  (RenderBlendData *rbd,
+                                                         PixelRegion     *PR);
+static void     gradient_fill_single_region_gray        (RenderBlendData *rbd,
+                                                         PixelRegion     *PR);
+static void     gradient_fill_single_region_gray_dither (RenderBlendData *rbd,
+                                                         PixelRegion     *PR);
 
-/*  variables for the shapeburst algs  */
+
+/*  variables for the shapeburst algorithms  */
 
 static PixelRegion distR =
 {
@@ -212,9 +222,7 @@ gimp_drawable_blend (GimpDrawable         *drawable,
 
   /*  Always create an alpha temp buf (for generality) */
   if (! gimp_drawable_has_alpha (drawable))
-    {
-      bytes += 1;
-    }
+    bytes += 1;
 
   buf_tiles = tile_manager_new (width, height, bytes);
   pixel_region_init (&bufPR, buf_tiles, 0, 0, width, height, TRUE);
@@ -255,16 +263,16 @@ gradient_calc_conical_sym_factor (gdouble  dist,
 				  gdouble  x,
 				  gdouble  y)
 {
-  gdouble vec[2];
-  gdouble r;
-  gdouble rat;
-
   if (dist == 0.0)
     {
-      rat = 0.0;
+      return 0.0;
     }
   else if ((x != 0) || (y != 0))
     {
+      gdouble vec[2];
+      gdouble r;
+      gdouble rat;
+
       /* Calculate offset from the start in pixels */
 
       r = sqrt (x * x + y * y);
@@ -285,14 +293,12 @@ gradient_calc_conical_sym_factor (gdouble  dist,
       rat = acos (rat) / G_PI;
       rat = pow (rat, (offset / 10.0) + 1.0);
 
-      rat = CLAMP (rat, 0.0, 1.0);
+      return CLAMP (rat, 0.0, 1.0);
     }
   else
     {
-      rat = 0.5;
+      return 0.5;
     }
-
-  return rat;
 }
 
 static gdouble
@@ -302,38 +308,34 @@ gradient_calc_conical_asym_factor (gdouble  dist,
 				   gdouble  x,
 				   gdouble  y)
 {
-  gdouble ang0, ang1;
-  gdouble ang;
-  gdouble rat;
-
   if (dist == 0.0)
     {
-      rat = 0.0;
+      return 0.0;
+    }
+  else if (x != 0 || y != 0)
+    {
+      gdouble ang0, ang1;
+      gdouble ang;
+      gdouble rat;
+
+      ang0 = atan2 (axis[0], axis[1]) + G_PI;
+
+      ang1 = atan2 (x, y) + G_PI;
+
+      ang = ang1 - ang0;
+
+      if (ang < 0.0)
+        ang += (2.0 * G_PI);
+
+      rat = ang / (2.0 * G_PI);
+      rat = pow (rat, (offset / 10.0) + 1.0);
+
+      return CLAMP (rat, 0.0, 1.0);
     }
   else
     {
-      if ((x != 0) || (y != 0))
-	{
-	  ang0 = atan2 (axis[0], axis[1]) + G_PI;
-	  ang1 = atan2 (x, y) + G_PI;
-
-	  ang = ang1 - ang0;
-
-	  if (ang < 0.0)
-	    ang += (2.0 * G_PI);
-
-	  rat = ang / (2.0 * G_PI);
-	  rat = pow (rat, (offset / 10.0) + 1.0);
-
-	  rat = CLAMP (rat, 0.0, 1.0);
-	}
-      else
-	{
-	  rat = 0.5; /* We are on middle point */
-	}
+      return 0.5; /* We are on middle point */
     }
-
-  return rat;
 }
 
 static gdouble
@@ -342,15 +344,15 @@ gradient_calc_square_factor (gdouble dist,
 			     gdouble x,
 			     gdouble y)
 {
-  gdouble r;
-  gdouble rat;
-
   if (dist == 0.0)
     {
-      rat = 0.0;
+      return 0.0;
     }
   else
     {
+      gdouble r;
+      gdouble rat;
+
       /* Calculate offset from start as a value in [0, 1] */
 
       offset = offset / 100.0;
@@ -359,14 +361,12 @@ gradient_calc_square_factor (gdouble dist,
       rat = r / dist;
 
       if (rat < offset)
-	rat = 0.0;
+	return 0.0;
       else if (offset == 1.0)
-	rat = (rat >= 1.0) ? 1.0 : 0.0;
+	return (rat >= 1.0) ? 1.0 : 0.0;
       else
-	rat = (rat - offset) / (1.0 - offset);
+	return (rat - offset) / (1.0 - offset);
     }
-
-  return rat;
 }
 
 static gdouble
@@ -375,15 +375,15 @@ gradient_calc_radial_factor (gdouble dist,
 			     gdouble x,
 			     gdouble y)
 {
-  gdouble r;
-  gdouble rat;
-
   if (dist == 0.0)
     {
-      rat = 0.0;
+      return 0.0;
     }
   else
     {
+      gdouble r;
+      gdouble rat;
+
       /* Calculate radial offset from start as a value in [0, 1] */
 
       offset = offset / 100.0;
@@ -392,14 +392,12 @@ gradient_calc_radial_factor (gdouble dist,
       rat = r / dist;
 
       if (rat < offset)
-	rat = 0.0;
+	return 0.0;
       else if (offset == 1.0)
-	rat = (rat >= 1.0) ? 1.0 : 0.0;
+	return (rat >= 1.0) ? 1.0 : 0.0;
       else
-	rat = (rat - offset) / (1.0 - offset);
+	return (rat - offset) / (1.0 - offset);
     }
-
-  return rat;
 }
 
 static gdouble
@@ -409,31 +407,29 @@ gradient_calc_linear_factor (gdouble  dist,
 			     gdouble  x,
 			     gdouble  y)
 {
-  gdouble r;
-  gdouble rat;
-
   if (dist == 0.0)
     {
-      rat = 0.0;
+      return 0.0;
     }
   else
     {
+      gdouble r;
+      gdouble rat;
+
       offset = offset / 100.0;
 
       r   = vec[0] * x + vec[1] * y;
       rat = r / dist;
 
       if (rat >= 0.0 && rat < offset)
-	rat = 0.0;
+	return 0.0;
       else if (offset == 1.0)
-	rat = (rat >= 1.0) ? 1.0 : 0.0;
+	return (rat >= 1.0) ? 1.0 : 0.0;
       else if (rat < 0.0)
-	rat = rat / (1.0 - offset);
+	return rat / (1.0 - offset);
       else
-	rat = (rat - offset) / (1.0 - offset);
+	return (rat - offset) / (1.0 - offset);
     }
-
-  return rat;
 }
 
 static gdouble
@@ -443,15 +439,15 @@ gradient_calc_bilinear_factor (gdouble  dist,
 			       gdouble  x,
 			       gdouble  y)
 {
-  gdouble r;
-  gdouble rat;
-
   if (dist == 0.0)
     {
-      rat = 0.0;
+      return 0.0;
     }
   else
     {
+      gdouble r;
+      gdouble rat;
+
       /* Calculate linear offset from the start line outward */
 
       offset = offset / 100.0;
@@ -460,14 +456,12 @@ gradient_calc_bilinear_factor (gdouble  dist,
       rat = r / dist;
 
       if (fabs (rat) < offset)
-	rat = 0.0;
+	return 0.0;
       else if (offset == 1.0)
-	rat = (rat == 1.0) ? 1.0 : 0.0;
+	return (rat == 1.0) ? 1.0 : 0.0;
       else
-	rat = (fabs (rat) - offset) / (1.0 - offset);
+	return (fabs (rat) - offset) / (1.0 - offset);
     }
-
-  return rat;
 }
 
 static gdouble
@@ -478,54 +472,52 @@ gradient_calc_spiral_factor (gdouble   dist,
 			     gdouble   y,
 			     gboolean  clockwise)
 {
-  gdouble ang0, ang1;
-  gdouble ang, r;
-  gdouble rat;
-
   if (dist == 0.0)
     {
-      rat = 0.0;
+      return 0.0;
+    }
+  else if (x != 0.0 || y != 0.0)
+    {
+      gdouble ang0, ang1;
+      gdouble ang;
+      double  r;
+
+      ang0 = atan2 (axis[0], axis[1]) + G_PI;
+      ang1 = atan2 (x, y) + G_PI;
+
+      if (clockwise)
+        ang = ang1 - ang0;
+      else
+        ang = ang0 - ang1;
+
+      if (ang < 0.0)
+        ang += (2.0 * G_PI);
+
+      r = sqrt (SQR (x) + SQR (y)) / dist;
+
+      return fmod (ang / (2.0 * G_PI) + r + offset, 1.0);
     }
   else
     {
-      if (x != 0.0 || y != 0.0)
-	{
-	  ang0 = atan2 (axis[0], axis[1]) + G_PI;
-	  ang1 = atan2 (x, y) + G_PI;
-
-	  if (clockwise)
-	    ang = ang1 - ang0;
-	  else
-	    ang = ang0 - ang1;
-
-	  if (ang < 0.0)
-	    ang += (2.0 * G_PI);
-
-	  r = sqrt (x * x + y * y) / dist;
-	  rat = ang / (2.0 * G_PI) + r + offset;
-	  rat = fmod (rat, 1.0);
-	}
-      else
-	rat = 0.5 ; /* We are on the middle point */
+      return 0.5 ; /* We are on the middle point */
     }
-
-  return rat;
 }
 
 static gdouble
 gradient_calc_shapeburst_angular_factor (gdouble x,
 					 gdouble y)
 {
-  gint    ix, iy;
   Tile   *tile;
   gfloat  value;
+  gint    ix = CLAMP (x, 0.0, distR.w - 0.7);
+  gint    iy = CLAMP (y, 0.0, distR.h - 0.7);
 
-  ix = (gint) CLAMP (x, 0.0, distR.w - 0.7);
-  iy = (gint) CLAMP (y, 0.0, distR.h - 0.7);
   tile = tile_manager_get_tile (distR.tiles, ix, iy, TRUE, FALSE);
+
   value = 1.0 - *((gfloat *) tile_data_pointer (tile,
                                                 ix % TILE_WIDTH,
                                                 iy % TILE_HEIGHT));
+
   tile_release (tile, FALSE);
 
   return value;
@@ -536,17 +528,18 @@ static gdouble
 gradient_calc_shapeburst_spherical_factor (gdouble x,
 					   gdouble y)
 {
-  gint    ix, iy;
   Tile   *tile;
   gfloat  value;
+  gint    ix = CLAMP (x, 0.0, distR.w - 0.7);
+  gint    iy = CLAMP (y, 0.0, distR.h - 0.7);
 
-  ix = (gint) CLAMP (x, 0.0, distR.w - 0.7);
-  iy = (gint) CLAMP (y, 0.0, distR.h - 0.7);
   tile = tile_manager_get_tile (distR.tiles, ix, iy, TRUE, FALSE);
+
   value = *((gfloat *) tile_data_pointer (tile,
                                           ix % TILE_WIDTH,
                                           iy % TILE_HEIGHT));
   value = 1.0 - sin (0.5 * G_PI * value);
+
   tile_release (tile, FALSE);
 
   return value;
@@ -557,17 +550,18 @@ static gdouble
 gradient_calc_shapeburst_dimpled_factor (gdouble x,
 					 gdouble y)
 {
-  gint    ix, iy;
   Tile   *tile;
   gfloat  value;
+  gint    ix = CLAMP (x, 0.0, distR.w - 0.7);
+  gint    iy = CLAMP (y, 0.0, distR.h - 0.7);
 
-  ix = (gint) CLAMP (x, 0.0, distR.w - 0.7);
-  iy = (gint) CLAMP (y, 0.0, distR.h - 0.7);
   tile = tile_manager_get_tile (distR.tiles, ix, iy, TRUE, FALSE);
+
   value = *((gfloat *) tile_data_pointer (tile,
                                           ix % TILE_WIDTH,
                                           iy % TILE_HEIGHT));
   value = cos (0.5 * G_PI * value);
+
   tile_release (tile, FALSE);
 
   return value;
@@ -613,7 +607,6 @@ gradient_precalc_shapeburst (GimpImage    *gimage,
       /*  copy the mask to the temp mask  */
       copy_region (&maskR, &tempR);
     }
-  /*  otherwise...  */
   else
     {
       /*  If the intended drawable has an alpha channel, use that  */
@@ -664,8 +657,8 @@ gradient_precalc_shapeburst (GimpImage    *gimage,
 
 
 static void
-gradient_render_pixel (double    x,
-		       double    y,
+gradient_render_pixel (gdouble   x,
+		       gdouble   y,
 		       GimpRGB  *color,
 		       gpointer  render_data)
 {
@@ -677,17 +670,20 @@ gradient_render_pixel (double    x,
   switch (rbd->gradient_type)
     {
     case GIMP_GRADIENT_LINEAR:
-      factor = gradient_calc_linear_factor (rbd->dist, rbd->vec, rbd->offset,
+      factor = gradient_calc_linear_factor (rbd->dist,
+                                            rbd->vec, rbd->offset,
 					    x - rbd->sx, y - rbd->sy);
       break;
 
     case GIMP_GRADIENT_BILINEAR:
-      factor = gradient_calc_bilinear_factor (rbd->dist, rbd->vec, rbd->offset,
+      factor = gradient_calc_bilinear_factor (rbd->dist,
+                                              rbd->vec, rbd->offset,
 					      x - rbd->sx, y - rbd->sy);
       break;
 
     case GIMP_GRADIENT_RADIAL:
-      factor = gradient_calc_radial_factor (rbd->dist, rbd->offset,
+      factor = gradient_calc_radial_factor (rbd->dist,
+                                            rbd->offset,
 					    x - rbd->sx, y - rbd->sy);
       break;
 
@@ -697,12 +693,14 @@ gradient_render_pixel (double    x,
       break;
 
     case GIMP_GRADIENT_CONICAL_SYMMETRIC:
-      factor = gradient_calc_conical_sym_factor (rbd->dist, rbd->vec, rbd->offset,
+      factor = gradient_calc_conical_sym_factor (rbd->dist,
+                                                 rbd->vec, rbd->offset,
 						 x - rbd->sx, y - rbd->sy);
       break;
 
     case GIMP_GRADIENT_CONICAL_ASYMMETRIC:
-      factor = gradient_calc_conical_asym_factor (rbd->dist, rbd->vec, rbd->offset,
+      factor = gradient_calc_conical_asym_factor (rbd->dist,
+                                                  rbd->vec, rbd->offset,
 						  x - rbd->sx, y - rbd->sy);
       break;
 
@@ -719,13 +717,15 @@ gradient_render_pixel (double    x,
       break;
 
     case GIMP_GRADIENT_SPIRAL_CLOCKWISE:
-      factor = gradient_calc_spiral_factor (rbd->dist, rbd->vec, rbd->offset,
-					    x - rbd->sx, y - rbd->sy,TRUE);
+      factor = gradient_calc_spiral_factor (rbd->dist,
+                                            rbd->vec, rbd->offset,
+					    x - rbd->sx, y - rbd->sy, TRUE);
       break;
 
     case GIMP_GRADIENT_SPIRAL_ANTICLOCKWISE:
-      factor = gradient_calc_spiral_factor (rbd->dist, rbd->vec, rbd->offset,
-					    x - rbd->sx, y - rbd->sy,FALSE);
+      factor = gradient_calc_spiral_factor (rbd->dist,
+                                            rbd->vec, rbd->offset,
+					    x - rbd->sx, y - rbd->sy, FALSE);
       break;
 
     default:
@@ -765,7 +765,8 @@ gradient_render_pixel (double    x,
 
   if (rbd->blend_mode == GIMP_CUSTOM_MODE)
     {
-      gimp_gradient_get_color_at (rbd->gradient, factor, rbd->reverse, color);
+      gimp_gradient_get_color_at (rbd->gradient, NULL,
+                                  factor, rbd->reverse, color);
     }
   else
     {
@@ -794,91 +795,45 @@ gradient_put_pixel (gint      x,
 		    GimpRGB  *color,
 		    gpointer  put_pixel_data)
 {
-  PutPixelData  *ppd = put_pixel_data;
-  guchar        *data;
-
-  /* Paint */
-
-  data = ppd->row_data + ppd->bytes * x;
+  PutPixelData  *ppd  = put_pixel_data;
+  guchar        *dest = ppd->row_data + ppd->bytes * x;
 
   if (ppd->bytes >= 3)
     {
-      if (ppd->dither)
+      if (ppd->dither_rand)
         {
-	  gdouble dither_prob;
-          gdouble ftmp;
-          gint    itmp;
+          gint i = g_rand_int (ppd->dither_rand);
 
-          ftmp = color->r * 255.0;
-          itmp = ftmp;
-          dither_prob = ftmp - itmp;
-
-          if (g_rand_double (ppd->dither_rand) < dither_prob)
-            color->r += (1.0 / 255.0);
-
-          ftmp = color->g * 255.0;
-          itmp = ftmp;
-          dither_prob = ftmp - itmp;
-
-          if (g_rand_double (ppd->dither_rand) < dither_prob)
-            color->g += (1.0 / 255.0);
-
-          ftmp = color->b * 255.0;
-          itmp = ftmp;
-          dither_prob = ftmp - itmp;
-
-          if (g_rand_double (ppd->dither_rand) < dither_prob)
-            color->b += (1.0 / 255.0);
-
-          ftmp = color->a * 255.0;
-          itmp = ftmp;
-          dither_prob = ftmp - itmp;
-
-          if (g_rand_double (ppd->dither_rand) < dither_prob)
-            color->a += (1.0 / 255.0);
-
-          if (color->r > 1.0) color->r = 1.0;
-          if (color->g > 1.0) color->g = 1.0;
-          if (color->b > 1.0) color->b = 1.0;
-          if (color->a > 1.0) color->a = 1.0;
+          *dest++ = color->r * 255.0 + (gdouble) (i & 0xff) / 256.0; i >>= 8;
+          *dest++ = color->g * 255.0 + (gdouble) (i & 0xff) / 256.0; i >>= 8;
+          *dest++ = color->b * 255.0 + (gdouble) (i & 0xff) / 256.0; i >>= 8;
+          *dest++ = color->a * 255.0 + (gdouble) (i & 0xff) / 256.0;
         }
-
-      *data++ = color->r * 255.0;
-      *data++ = color->g * 255.0;
-      *data++ = color->b * 255.0;
-      *data++ = color->a * 255.0;
+      else
+        {
+          *dest++ = ROUND (color->r * 255.0);
+          *dest++ = ROUND (color->g * 255.0);
+          *dest++ = ROUND (color->b * 255.0);
+          *dest++ = ROUND (color->a * 255.0);
+        }
     }
   else
     {
       /* Convert to grayscale */
-      gdouble gray = gimp_rgb_intensity (color);
+      gdouble gray = gimp_rgb_luminance (color);
 
-      if (ppd->dither)
+      if (ppd->dither_rand)
         {
-	  gdouble dither_prob;
-          gdouble ftmp;
-          gint    itmp;
+          gint i = g_rand_int (ppd->dither_rand);
 
-          ftmp = gray * 255.0;
-          itmp = ftmp;
-          dither_prob = ftmp - itmp;
-
-          if (g_rand_double (ppd->dither_rand) < dither_prob)
-            gray += (1.0 / 255.0);
-
-          ftmp = color->a * 255.0;
-          itmp = ftmp;
-          dither_prob = ftmp - itmp;
-
-          if (g_rand_double (ppd->dither_rand) < dither_prob)
-            color->a += (1.0 / 255.0);
-
-          if (gray > 1.0)     gray     = 1.0;
-          if (color->a > 1.0) color->a = 1.0;
+          *dest++ = gray     * 255.0 + (gdouble) (i & 0xff) / 256.0; i >>= 8;
+          *dest++ = color->a * 255.0 + (gdouble) (i & 0xff) / 256.0;
         }
-
-      *data++ = gray * 255.0;
-      *data++ = color->a * 255.0;
+      else
+        {
+          *dest++ = ROUND (gray     * 255.0);
+          *dest++ = ROUND (color->a * 255.0);
+        }
     }
 
   /* Paint whole row if we are on the rightmost pixel */
@@ -910,12 +865,6 @@ gradient_fill_region (GimpImage        *gimage,
 		      GimpProgress     *progress)
 {
   RenderBlendData  rbd;
-  gint             x, y;
-  gint             endx, endy;
-  gpointer         pr;
-  guchar          *data;
-  GimpRGB          color;
-  GRand           *dither_rand = NULL;
 
   rbd.gradient = gimp_context_get_gradient (context);
   rbd.reverse  = reverse;
@@ -1006,9 +955,6 @@ gradient_fill_region (GimpImage        *gimage,
   rbd.gradient_type = gradient_type;
   rbd.repeat        = repeat;
 
-  if (dither)
-    dither_rand = g_rand_new ();
-
   /* Render the gradient! */
 
   if (supersample)
@@ -1019,8 +965,7 @@ gradient_fill_region (GimpImage        *gimage,
       ppd.row_data    = g_malloc (width * PR->bytes);
       ppd.bytes       = PR->bytes;
       ppd.width       = width;
-      ppd.dither      = dither;
-      ppd.dither_rand = dither_rand;
+      ppd.dither_rand = g_rand_new ();
 
       gimp_adaptive_supersample_area (0, 0, (width - 1), (height - 1),
 				      max_depth, threshold,
@@ -1030,120 +975,138 @@ gradient_fill_region (GimpImage        *gimage,
                                       gimp_progress_update_and_flush : NULL,
                                       progress);
 
+      g_rand_free (ppd.dither_rand);
       g_free (ppd.row_data);
     }
   else
     {
-      gint max_progress  = PR->w * PR->h;
-      gint curr_progress = 0;
+      PixelProcessorFunc          func;
+      PixelProcessorProgressFunc  progress_func = NULL;
 
-      for (pr = pixel_regions_register (1, PR);
-	   pr != NULL;
-	   pr = pixel_regions_process (pr))
-	{
-	  data = PR->data;
-	  endx = PR->x + PR->w;
-	  endy = PR->y + PR->h;
+      if (dither)
+        {
+          rbd.seed = g_rand_new ();
 
-	  for (y = PR->y; y < endy; y++)
-            {
-              for (x = PR->x; x < endx; x++)
-                {
-                  gradient_render_pixel (x, y, &color, &rbd);
-
-                  if (PR->bytes >= 3)
-                    {
-                      if (dither)
-                        {
-			  gdouble dither_prob;
-                          gdouble ftmp;
-                          gint    itmp;
-
-                          ftmp = color.r * 255.0;
-                          itmp = ftmp;
-                          dither_prob = ftmp - itmp;
-
-                          if (g_rand_double (dither_rand) < dither_prob)
-                            color.r += (1.0 / 255.0);
-
-                          ftmp = color.g * 255.0;
-                          itmp = ftmp;
-                          dither_prob = ftmp - itmp;
-
-                          if (g_rand_double (dither_rand) < dither_prob)
-                            color.g += (1.0 / 255.0);
-
-                          ftmp = color.b * 255.0;
-                          itmp = ftmp;
-                          dither_prob = ftmp - itmp;
-
-                          if (g_rand_double (dither_rand) < dither_prob)
-                            color.b += (1.0 / 255.0);
-
-                          ftmp = color.a * 255.0;
-                          itmp = ftmp;
-                          dither_prob = ftmp - itmp;
-
-                          if (g_rand_double (dither_rand) < dither_prob)
-                            color.a += (1.0 / 255.0);
-
-                          if (color.r > 1.0) color.r = 1.0;
-                          if (color.g > 1.0) color.g = 1.0;
-                          if (color.b > 1.0) color.b = 1.0;
-                          if (color.a > 1.0) color.a = 1.0;
-                        }
-
-                      *data++ = color.r * 255.0;
-                      *data++ = color.g * 255.0;
-                      *data++ = color.b * 255.0;
-                      *data++ = color.a * 255.0;
-                    }
-                  else
-                    {
-                      /* Convert to grayscale */
-                      gdouble gray = gimp_rgb_intensity (&color);
-
-		      if (dither)
-                        {
-			  gdouble dither_prob;
-                          gdouble ftmp;
-                          gint    itmp;
-
-                          ftmp = gray * 255.0;
-                          itmp = ftmp;
-                          dither_prob = ftmp - itmp;
-
-                          if (g_rand_double (dither_rand) < dither_prob)
-                            gray += (1.0 / 255.0);
-
-                          ftmp = color.a * 255.0;
-                          itmp = ftmp;
-                          dither_prob = ftmp - itmp;
-
-                          if (g_rand_double (dither_rand) < dither_prob)
-                            color.a += (1.0 / 255.0);
-
-                          if (gray > 1.0)    gray    = 1.0;
-                          if (color.a > 1.0) color.a = 1.0;
-                        }
-
-                      *data++ = gray * 255.0;
-                      *data++ = color.a * 255.0;
-                    }
-                }
-            }
-
-          if (progress)
-            {
-              curr_progress += PR->w * PR->h;
-
-              gimp_progress_set_value (progress,
-                                       (gdouble) curr_progress /
-                                       (gdouble) max_progress);
-            }
+          if (PR->bytes >= 3)
+            func = (PixelProcessorFunc) gradient_fill_single_region_rgb_dither;
+          else
+            func = (PixelProcessorFunc) gradient_fill_single_region_gray_dither;
         }
-    }
+      else
+        {
+          if (PR->bytes >= 3)
+            func = (PixelProcessorFunc) gradient_fill_single_region_rgb;
+          else
+            func = (PixelProcessorFunc) gradient_fill_single_region_gray;
+        }
 
-  if (dither)
-    g_rand_free (dither_rand);
+      if (progress)
+        progress_func = (PixelProcessorProgressFunc) gimp_progress_set_value;
+
+      pixel_regions_process_parallel_progress (func, &rbd,
+                                               progress_func, progress,
+                                               1, PR);
+
+      if (dither)
+        g_rand_free (rbd.seed);
+    }
+}
+
+static void
+gradient_fill_single_region_rgb (RenderBlendData *rbd,
+                                 PixelRegion     *PR)
+{
+  guchar *dest = PR->data;
+  gint    endx = PR->x + PR->w;
+  gint    endy = PR->y + PR->h;
+  gint    x, y;
+
+  for (y = PR->y; y < endy; y++)
+    for (x = PR->x; x < endx; x++)
+      {
+        GimpRGB  color;
+
+        gradient_render_pixel (x, y, &color, rbd);
+
+        *dest++ = ROUND (color.r * 255.0);
+        *dest++ = ROUND (color.g * 255.0);
+        *dest++ = ROUND (color.b * 255.0);
+        *dest++ = ROUND (color.a * 255.0);
+      }
+}
+
+static void
+gradient_fill_single_region_rgb_dither (RenderBlendData *rbd,
+                                        PixelRegion     *PR)
+{
+  GRand  *dither_rand = g_rand_new_with_seed (g_rand_int (rbd->seed));
+  guchar *dest        = PR->data;
+  gint    endx        = PR->x + PR->w;
+  gint    endy        = PR->y + PR->h;
+  gint    x, y;
+
+  for (y = PR->y; y < endy; y++)
+    for (x = PR->x; x < endx; x++)
+      {
+        GimpRGB  color;
+        gint     i = g_rand_int (dither_rand);
+
+        gradient_render_pixel (x, y, &color, rbd);
+
+        *dest++ = color.r * 255.0 + (gdouble) (i & 0xff) / 256.0; i >>= 8;
+        *dest++ = color.g * 255.0 + (gdouble) (i & 0xff) / 256.0; i >>= 8;
+        *dest++ = color.b * 255.0 + (gdouble) (i & 0xff) / 256.0; i >>= 8;
+        *dest++ = color.a * 255.0 + (gdouble) (i & 0xff) / 256.0;
+      }
+
+  g_rand_free (dither_rand);
+}
+
+static void
+gradient_fill_single_region_gray (RenderBlendData *rbd,
+                                  PixelRegion     *PR)
+{
+  guchar *dest = PR->data;
+  gint    endx = PR->x + PR->w;
+  gint    endy = PR->y + PR->h;
+  gint    x, y;
+
+  for (y = PR->y; y < endy; y++)
+    for (x = PR->x; x < endx; x++)
+      {
+        GimpRGB  color;
+
+        gradient_render_pixel (x, y, &color, rbd);
+
+        *dest++ = gimp_rgb_luminance_uchar (&color);
+        *dest++ = ROUND (color.a * 255.0);
+      }
+}
+
+static void
+gradient_fill_single_region_gray_dither (RenderBlendData *rbd,
+                                         PixelRegion     *PR)
+{
+  GRand  *dither_rand = g_rand_new_with_seed (g_rand_int (rbd->seed));
+  guchar *dest        = PR->data;
+  gint    endx        = PR->x + PR->w;
+  gint    endy        = PR->y + PR->h;
+  gint    x, y;
+
+  for (y = PR->y; y < endy; y++)
+    for (x = PR->x; x < endx; x++)
+      {
+        GimpRGB  color;
+        gdouble  gray;
+        gint     i = g_rand_int (dither_rand);
+
+        gradient_render_pixel (x, y, &color, rbd);
+
+        gray = gimp_rgb_luminance (&color);
+
+        *dest++ = gray    * 255.0 + (gdouble) (i & 0xff) / 256.0; i >>= 8;
+        *dest++ = color.a * 255.0 + (gdouble) (i & 0xff) / 256.0;
+      }
+
+  g_rand_free (dither_rand);
 }

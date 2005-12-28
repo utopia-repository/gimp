@@ -23,7 +23,8 @@
 #define __CONFIG_TYPES_H__
 
 
-typedef struct _GimpConfig           GimpConfig; /* dummy typedef */
+#include "libgimpconfig/gimpconfigtypes.h"
+
 
 typedef struct _GimpBaseConfig       GimpBaseConfig;
 typedef struct _GimpCoreConfig       GimpCoreConfig;
@@ -32,7 +33,6 @@ typedef struct _GimpGuiConfig        GimpGuiConfig;
 typedef struct _GimpPluginConfig     GimpPluginConfig;
 typedef struct _GimpRc               GimpRc;
 
-typedef struct _GimpConfigWriter     GimpConfigWriter;
 typedef struct _GimpXmlParser        GimpXmlParser;
 
 /* should be in display/display-types.h */

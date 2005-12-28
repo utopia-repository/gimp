@@ -22,10 +22,7 @@
 
 #include "config.h"
 
-#include <stdlib.h>
 #include <string.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -33,14 +30,16 @@
 #include "libgimp/stdplugins-intl.h"
 
 
-#define SCALE_WIDTH    125
-#define BLACK            0
-#define BG               1
-#define SUPERSAMPLE      4
-#define MAX_POINTS       4
-#define MIN_ANGLE   -36000
-#define MAX_ANGLE    36000
-#define RANDOMNESS       5
+#define PLUG_IN_PROC   "plug-in-cubism"
+#define PLUG_IN_BINARY "cubism"
+#define SCALE_WIDTH       125
+#define BLACK               0
+#define BG                  1
+#define SUPERSAMPLE         4
+#define MAX_POINTS          4
+#define MIN_ANGLE      -36000
+#define MAX_ANGLE       36000
+#define RANDOMNESS          5
 
 typedef struct
 {
@@ -139,16 +138,17 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE, "image", "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
-    { GIMP_PDB_FLOAT, "tile_size", "Average diameter of each tile (in pixels)" },
-    { GIMP_PDB_FLOAT, "tile_saturation", "Expand tiles by this amount" },
-    { GIMP_PDB_INT32, "bg_color", "Background color: { BLACK (0), BG (1) }" }
+    { GIMP_PDB_INT32,    "run-mode",        "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",           "Input image" },
+    { GIMP_PDB_DRAWABLE, "drawable",        "Input drawable" },
+    { GIMP_PDB_FLOAT,    "tile-size",       "Average diameter of each tile (in pixels)" },
+    { GIMP_PDB_FLOAT,    "tile-saturation", "Expand tiles by this amount" },
+    { GIMP_PDB_INT32,    "bg-color",        "Background color: { BLACK (0), BG (1) }" }
   };
 
-  gimp_install_procedure ("plug_in_cubism",
-                          "Convert the input drawable into a collection of rotated squares",
+  gimp_install_procedure (PLUG_IN_PROC,
+                          "Convert the input drawable into a collection "
+                          "of rotated squares",
                           "Help not yet written for this plug-in",
                           "Spencer Kimball & Tracy Scott",
                           "Spencer Kimball & Tracy Scott",
@@ -159,7 +159,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_cubism", "<Image>/Filters/Artistic");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Artistic");
 }
 
 static void
@@ -195,7 +195,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_cubism", &cvals);
+      gimp_get_data (PLUG_IN_PROC, &cvals);
 
       /*  First acquire information with a dialog  */
       if (! cubism_dialog (drawable))
@@ -219,7 +219,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_cubism", &cvals);
+      gimp_get_data (PLUG_IN_PROC, &cvals);
       break;
 
     default:
@@ -240,7 +240,7 @@ run (const gchar      *name,
 
       /*  Store mvals data  */
       if (run_mode == GIMP_RUN_INTERACTIVE)
-        gimp_set_data ("plug_in_cubism", &cvals, sizeof (CubismVals));
+        gimp_set_data (PLUG_IN_PROC, &cvals, sizeof (CubismVals));
     }
   else if (status == GIMP_PDB_SUCCESS)
     {
@@ -264,16 +264,23 @@ cubism_dialog (GimpDrawable *drawable)
   GtkObject *scale_data;
   gboolean   run;
 
-  gimp_ui_init ("cubism", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Cubism"), "cubism",
+  dialog = gimp_dialog_new (_("Cubism"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-cubism",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -299,10 +306,10 @@ cubism_dialog (GimpDrawable *drawable)
                                      cvals.tile_size, 0.0, 100.0, 1.0, 10.0, 1,
                                      TRUE, 0, 0,
                                      NULL, NULL);
-  g_signal_connect (scale_data, "value_changed",
+  g_signal_connect (scale_data, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &cvals.tile_size);
-  g_signal_connect_swapped (scale_data, "value_changed",
+  g_signal_connect_swapped (scale_data, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -312,10 +319,10 @@ cubism_dialog (GimpDrawable *drawable)
                           cvals.tile_saturation, 0.0, 10.0, 0.1, 1, 1,
                           TRUE, 0, 0,
                           NULL, NULL);
-  g_signal_connect (scale_data, "value_changed",
+  g_signal_connect (scale_data, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &cvals.tile_saturation);
-  g_signal_connect_swapped (scale_data, "value_changed",
+  g_signal_connect_swapped (scale_data, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -409,7 +416,7 @@ cubism (GimpDrawable *drawable,
     }
   else
     {
-      gimp_progress_init (_("Cubistic Transformation..."));
+      gimp_progress_init (_("Cubistic transformation"));
       gimp_pixel_rgn_init (&src_rgn, drawable,
                            x1, y1, (x2 - x1), (y2 - y1), TRUE, TRUE);
 
@@ -525,8 +532,10 @@ fill_poly_color (Polygon      *poly,
                  guchar       *dest)
 {
   GimpPixelRgn  src_rgn;
-  gdouble       dmin_x, dmin_y;
-  gdouble       dmax_x, dmax_y;
+  gdouble       dmin_x = 0.0;
+  gdouble       dmin_y = 0.0;
+  gdouble       dmax_x = 0.0;
+  gdouble       dmax_y = 0.0;
   gint          xs, ys;
   gint          xe, ye;
   gint          min_x, min_y;
@@ -557,12 +566,16 @@ fill_poly_color (Polygon      *poly,
   dist = sqrt (SQR (ex - sx) + SQR (ey - sy));
   if (dist > 0.0)
     {
-      one_over_dist = 1/dist;
+      one_over_dist = 1.0 / dist;
       vec[0] = (ex - sx) * one_over_dist;
       vec[1] = (ey - sy) * one_over_dist;
     }
   else
-    one_over_dist = 0.0;
+    {
+      one_over_dist = 0.0;
+      vec[0] = 0.0;
+      vec[1] = 0.0;
+    }
 
   if (preview)
     {

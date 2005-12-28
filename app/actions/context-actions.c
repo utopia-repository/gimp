@@ -264,6 +264,198 @@ static GimpEnumActionEntry context_background_blue_actions[] =
     NULL }
 };
 
+static GimpEnumActionEntry context_foreground_hue_actions[] =
+{
+  { "context-foreground-hue-set", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Hue Set", NULL, NULL,
+    GIMP_ACTION_SELECT_SET, TRUE,
+    NULL },
+  { "context-foreground-hue-minimum", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Hue Minimum", NULL, NULL,
+    GIMP_ACTION_SELECT_FIRST, FALSE,
+    NULL },
+  { "context-foreground-hue-maximum", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Hue Maximum", NULL, NULL,
+    GIMP_ACTION_SELECT_LAST, FALSE,
+    NULL },
+  { "context-foreground-hue-decrease", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Hue Decrease", NULL, NULL,
+    GIMP_ACTION_SELECT_PREVIOUS, FALSE,
+    NULL },
+  { "context-foreground-hue-increase", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Hue Increase", NULL, NULL,
+    GIMP_ACTION_SELECT_NEXT, FALSE,
+    NULL },
+  { "context-foreground-hue-decrease-skip", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Hue Decrease 10%", NULL, NULL,
+    GIMP_ACTION_SELECT_SKIP_PREVIOUS, FALSE,
+    NULL },
+  { "context-foreground-hue-increase-skip", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Hue Increase 10%", NULL, NULL,
+    GIMP_ACTION_SELECT_SKIP_NEXT, FALSE,
+    NULL }
+};
+
+static GimpEnumActionEntry context_foreground_saturation_actions[] =
+{
+  { "context-foreground-saturation-set", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Saturation Set", NULL, NULL,
+    GIMP_ACTION_SELECT_SET, TRUE,
+    NULL },
+  { "context-foreground-saturation-minimum", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Saturation Minimum", NULL, NULL,
+    GIMP_ACTION_SELECT_FIRST, FALSE,
+    NULL },
+  { "context-foreground-saturation-maximum", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Saturation Maximum", NULL, NULL,
+    GIMP_ACTION_SELECT_LAST, FALSE,
+    NULL },
+  { "context-foreground-saturation-decrease", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Saturation Decrease", NULL, NULL,
+    GIMP_ACTION_SELECT_PREVIOUS, FALSE,
+    NULL },
+  { "context-foreground-saturation-increase", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Saturation Increase", NULL, NULL,
+    GIMP_ACTION_SELECT_NEXT, FALSE,
+    NULL },
+  { "context-foreground-saturation-decrease-skip", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Saturation Decrease 10%", NULL, NULL,
+    GIMP_ACTION_SELECT_SKIP_PREVIOUS, FALSE,
+    NULL },
+  { "context-foreground-saturation-increase-skip", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Saturation Increase 10%", NULL, NULL,
+    GIMP_ACTION_SELECT_SKIP_NEXT, FALSE,
+    NULL }
+};
+
+static GimpEnumActionEntry context_foreground_value_actions[] =
+{
+  { "context-foreground-value-set", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Value Set", NULL, NULL,
+    GIMP_ACTION_SELECT_SET, TRUE,
+    NULL },
+  { "context-foreground-value-minimum", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Value Minimum", NULL, NULL,
+    GIMP_ACTION_SELECT_FIRST, FALSE,
+    NULL },
+  { "context-foreground-value-maximum", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Value Maximum", NULL, NULL,
+    GIMP_ACTION_SELECT_LAST, FALSE,
+    NULL },
+  { "context-foreground-value-decrease", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Value Decrease", NULL, NULL,
+    GIMP_ACTION_SELECT_PREVIOUS, FALSE,
+    NULL },
+  { "context-foreground-value-increase", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Value Increase", NULL, NULL,
+    GIMP_ACTION_SELECT_NEXT, FALSE,
+    NULL },
+  { "context-foreground-value-decrease-skip", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Value Decrease 10%", NULL, NULL,
+    GIMP_ACTION_SELECT_SKIP_PREVIOUS, FALSE,
+    NULL },
+  { "context-foreground-value-increase-skip", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Foreground Value Increase 10%", NULL, NULL,
+    GIMP_ACTION_SELECT_SKIP_NEXT, FALSE,
+    NULL }
+};
+
+static GimpEnumActionEntry context_background_hue_actions[] =
+{
+  { "context-background-hue-set", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Hue Set", NULL, NULL,
+    GIMP_ACTION_SELECT_SET, TRUE,
+    NULL },
+  { "context-background-hue-minimum", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Hue Minimum", NULL, NULL,
+    GIMP_ACTION_SELECT_FIRST, FALSE,
+    NULL },
+  { "context-background-hue-maximum", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Hue Maximum", NULL, NULL,
+    GIMP_ACTION_SELECT_LAST, FALSE,
+    NULL },
+  { "context-background-hue-decrease", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Hue Decrease", NULL, NULL,
+    GIMP_ACTION_SELECT_PREVIOUS, FALSE,
+    NULL },
+  { "context-background-hue-increase", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Hue Increase", NULL, NULL,
+    GIMP_ACTION_SELECT_NEXT, FALSE,
+    NULL },
+  { "context-background-hue-decrease-skip", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Hue Decrease 10%", NULL, NULL,
+    GIMP_ACTION_SELECT_SKIP_PREVIOUS, FALSE,
+    NULL },
+  { "context-background-hue-increase-skip", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Hue Increase 10%", NULL, NULL,
+    GIMP_ACTION_SELECT_SKIP_NEXT, FALSE,
+    NULL }
+};
+
+static GimpEnumActionEntry context_background_saturation_actions[] =
+{
+  { "context-background-saturation-set", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Saturation Set", NULL, NULL,
+    GIMP_ACTION_SELECT_SET, TRUE,
+    NULL },
+  { "context-background-saturation-minimum", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Saturation Minimum", NULL, NULL,
+    GIMP_ACTION_SELECT_FIRST, FALSE,
+    NULL },
+  { "context-background-saturation-maximum", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Saturation Maximum", NULL, NULL,
+    GIMP_ACTION_SELECT_LAST, FALSE,
+    NULL },
+  { "context-background-saturation-decrease", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Saturation Decrease", NULL, NULL,
+    GIMP_ACTION_SELECT_PREVIOUS, FALSE,
+    NULL },
+  { "context-background-saturation-increase", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Saturation Increase", NULL, NULL,
+    GIMP_ACTION_SELECT_NEXT, FALSE,
+    NULL },
+  { "context-background-saturation-decrease-skip", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Saturation Decrease 10%", NULL, NULL,
+    GIMP_ACTION_SELECT_SKIP_PREVIOUS, FALSE,
+    NULL },
+  { "context-background-saturation-increase-skip", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Saturation Increase 10%", NULL, NULL,
+    GIMP_ACTION_SELECT_SKIP_NEXT, FALSE,
+    NULL }
+};
+
+static GimpEnumActionEntry context_background_value_actions[] =
+{
+  { "context-background-value-set", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Value Set", NULL, NULL,
+    GIMP_ACTION_SELECT_SET, TRUE,
+    NULL },
+  { "context-background-value-minimum", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Value Minimum", NULL, NULL,
+    GIMP_ACTION_SELECT_FIRST, FALSE,
+    NULL },
+  { "context-background-value-maximum", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Value Maximum", NULL, NULL,
+    GIMP_ACTION_SELECT_LAST, FALSE,
+    NULL },
+  { "context-background-value-decrease", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Value Decrease", NULL, NULL,
+    GIMP_ACTION_SELECT_PREVIOUS, FALSE,
+    NULL },
+  { "context-background-value-increase", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Value Increase", NULL, NULL,
+    GIMP_ACTION_SELECT_NEXT, FALSE,
+    NULL },
+  { "context-background-value-decrease-skip", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Value Decrease 10%", NULL, NULL,
+    GIMP_ACTION_SELECT_SKIP_PREVIOUS, FALSE,
+    NULL },
+  { "context-background-value-increase-skip", GIMP_STOCK_TOOL_HUE_SATURATION,
+    "Background Value Increase 10%", NULL, NULL,
+    GIMP_ACTION_SELECT_SKIP_NEXT, FALSE,
+    NULL }
+};
+
 static GimpEnumActionEntry context_opacity_actions[] =
 {
   { "context-opacity-set", GIMP_STOCK_TRANSPARENCY,
@@ -318,6 +510,10 @@ static GimpEnumActionEntry context_paint_mode_actions[] =
 
 static GimpEnumActionEntry context_tool_select_actions[] =
 {
+  { "context-tool-select-set", GIMP_STOCK_TOOLS,
+    "Select Tool by Index", NULL, NULL,
+    GIMP_ACTION_SELECT_SET, TRUE,
+    NULL },
   { "context-tool-select-first", GIMP_STOCK_TOOLS,
     "First Tool", NULL, NULL,
     GIMP_ACTION_SELECT_FIRST, FALSE,
@@ -338,6 +534,10 @@ static GimpEnumActionEntry context_tool_select_actions[] =
 
 static GimpEnumActionEntry context_brush_select_actions[] =
 {
+  { "context-brush-select-set", GIMP_STOCK_BRUSH,
+    "Select Brush by Index", NULL, NULL,
+    GIMP_ACTION_SELECT_SET, TRUE,
+    NULL },
   { "context-brush-select-first", GIMP_STOCK_BRUSH,
     "First Brush", NULL, NULL,
     GIMP_ACTION_SELECT_FIRST, FALSE,
@@ -358,6 +558,10 @@ static GimpEnumActionEntry context_brush_select_actions[] =
 
 static GimpEnumActionEntry context_pattern_select_actions[] =
 {
+  { "context-pattern-select-set", GIMP_STOCK_PATTERN,
+    "Select Pattern by Index", NULL, NULL,
+    GIMP_ACTION_SELECT_SET, TRUE,
+    NULL },
   { "context-pattern-select-first", GIMP_STOCK_PATTERN,
     "First Pattern", NULL, NULL,
     GIMP_ACTION_SELECT_FIRST, FALSE,
@@ -378,6 +582,10 @@ static GimpEnumActionEntry context_pattern_select_actions[] =
 
 static GimpEnumActionEntry context_palette_select_actions[] =
 {
+  { "context-palette-select-set", GIMP_STOCK_PALETTE,
+    "Select Palette by Index", NULL, NULL,
+    GIMP_ACTION_SELECT_SET, TRUE,
+    NULL },
   { "context-palette-select-first", GIMP_STOCK_PALETTE,
     "First Palette", NULL, NULL,
     GIMP_ACTION_SELECT_FIRST, FALSE,
@@ -398,6 +606,10 @@ static GimpEnumActionEntry context_palette_select_actions[] =
 
 static GimpEnumActionEntry context_gradient_select_actions[] =
 {
+  { "context-gradient-select-set", GIMP_STOCK_GRADIENT,
+    "Select Gradient by Index", NULL, NULL,
+    GIMP_ACTION_SELECT_SET, TRUE,
+    NULL },
   { "context-gradient-select-first", GIMP_STOCK_GRADIENT,
     "First Gradient", NULL, NULL,
     GIMP_ACTION_SELECT_FIRST, FALSE,
@@ -418,6 +630,10 @@ static GimpEnumActionEntry context_gradient_select_actions[] =
 
 static GimpEnumActionEntry context_font_select_actions[] =
 {
+  { "context-font-select-set", GIMP_STOCK_FONT,
+    "Select Font by Index", NULL, NULL,
+    GIMP_ACTION_SELECT_SET, TRUE,
+    NULL },
   { "context-font-select-first", GIMP_STOCK_FONT,
     "First Font", NULL, NULL,
     GIMP_ACTION_SELECT_FIRST, FALSE,
@@ -467,19 +683,19 @@ static GimpEnumActionEntry context_brush_radius_actions[] =
     GIMP_ACTION_SELECT_LAST, FALSE,
     NULL },
   { "context-brush-radius-decrease", GIMP_STOCK_BRUSH,
-    "Decrease Radius", NULL, NULL,
+    "Decrease Radius", "bracketleft", NULL,
     GIMP_ACTION_SELECT_PREVIOUS, FALSE,
     NULL },
   { "context-brush-radius-increase", GIMP_STOCK_BRUSH,
-    "Increase Radius", NULL, NULL,
+    "Increase Radius", "bracketright", NULL,
     GIMP_ACTION_SELECT_NEXT, FALSE,
     NULL },
   { "context-brush-radius-decrease-skip", GIMP_STOCK_BRUSH,
-    "Decrease Radius More", NULL, NULL,
+    "Decrease Radius More", "<shift>bracketleft", NULL,
     GIMP_ACTION_SELECT_SKIP_PREVIOUS, FALSE,
     NULL },
   { "context-brush-radius-increase-skip", GIMP_STOCK_BRUSH,
-    "Increase Radius More", NULL, NULL,
+    "Increase Radius More", "<shift>bracketright", NULL,
     GIMP_ACTION_SELECT_SKIP_NEXT, FALSE,
     NULL },
 };
@@ -634,6 +850,19 @@ context_actions_setup (GimpActionGroup *group)
                                       G_CALLBACK (context_foreground_blue_cmd_callback));
 
   gimp_action_group_add_enum_actions (group,
+                                      context_foreground_hue_actions,
+                                      G_N_ELEMENTS (context_foreground_hue_actions),
+                                      G_CALLBACK (context_foreground_hue_cmd_callback));
+  gimp_action_group_add_enum_actions (group,
+                                      context_foreground_saturation_actions,
+                                      G_N_ELEMENTS (context_foreground_saturation_actions),
+                                      G_CALLBACK (context_foreground_saturation_cmd_callback));
+  gimp_action_group_add_enum_actions (group,
+                                      context_foreground_value_actions,
+                                      G_N_ELEMENTS (context_foreground_value_actions),
+                                      G_CALLBACK (context_foreground_value_cmd_callback));
+
+  gimp_action_group_add_enum_actions (group,
                                       context_background_red_actions,
                                       G_N_ELEMENTS (context_background_red_actions),
                                       G_CALLBACK (context_background_red_cmd_callback));
@@ -645,6 +874,19 @@ context_actions_setup (GimpActionGroup *group)
                                       context_background_blue_actions,
                                       G_N_ELEMENTS (context_background_blue_actions),
                                       G_CALLBACK (context_background_blue_cmd_callback));
+
+  gimp_action_group_add_enum_actions (group,
+                                      context_background_hue_actions,
+                                      G_N_ELEMENTS (context_background_hue_actions),
+                                      G_CALLBACK (context_background_hue_cmd_callback));
+  gimp_action_group_add_enum_actions (group,
+                                      context_background_saturation_actions,
+                                      G_N_ELEMENTS (context_background_saturation_actions),
+                                      G_CALLBACK (context_background_saturation_cmd_callback));
+  gimp_action_group_add_enum_actions (group,
+                                      context_background_value_actions,
+                                      G_N_ELEMENTS (context_background_value_actions),
+                                      G_CALLBACK (context_background_value_cmd_callback));
 
   gimp_action_group_add_enum_actions (group,
                                       context_opacity_actions,

@@ -23,13 +23,14 @@
 
 #include <errno.h>
 #include <fcntl.h>
-#include <stdio.h>
 #include <string.h>
-#include <sys/stat.h>
 #include <sys/types.h>
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+
+#include <glib/gstdio.h>
 
 #include <glib.h>
 
@@ -38,6 +39,14 @@
 #endif
 
 #include <gtk/gtk.h>
+
+#ifdef GDK_WINDOWING_WIN32
+#include <gdk/gdkwin32.h>
+#endif
+
+#ifdef GDK_WINDOWING_X11
+#include <gdk/gdkx.h>
+#endif
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
@@ -196,46 +205,36 @@ gimp_button_menu_position (GtkWidget       *button,
 void
 gimp_table_attach_stock (GtkTable    *table,
                          gint         row,
-			 const gchar *label_text,
-			 gdouble      yalign,
+			 const gchar *stock_id,
                          GtkWidget   *widget,
 			 gint         colspan,
-                         const gchar *stock_id)
+                         gboolean     left_align)
 {
   GtkWidget *image;
-  GtkWidget *label;
 
   g_return_if_fail (GTK_IS_TABLE (table));
-  g_return_if_fail (label_text != NULL);
-
-  label = gtk_label_new_with_mnemonic (label_text);
-
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, yalign);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  gtk_table_attach (table, label, 0, 1, row, row + 1,
-		    GTK_FILL, GTK_FILL, 0, 0);
-  gtk_widget_show (label);
-
-  if (widget)
-    {
-      g_return_if_fail (GTK_IS_WIDGET (widget));
-
-      gtk_table_attach (table, widget, 1, 1 + colspan, row, row + 1,
-			GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-      gtk_widget_show (widget);
-
-      gtk_label_set_mnemonic_widget (GTK_LABEL (label), widget);
-    }
+  g_return_if_fail (stock_id != NULL);
+  g_return_if_fail (GTK_IS_WIDGET (widget));
 
   image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
+  gtk_misc_set_alignment (GTK_MISC (image), 1.0, 0.5);
+  gtk_table_attach (table, image, 0, 1, row, row + 1,
+		    GTK_FILL, GTK_FILL, 0, 0);
+  gtk_widget_show (image);
 
-  if (image)
+  if (left_align)
     {
-      gtk_misc_set_alignment (GTK_MISC (image), 0.0, 0.5);
-      gtk_table_attach (table, image, 1 + colspan, 2 + colspan, row, row + 1,
-			GTK_SHRINK | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-      gtk_widget_show (image);
+      GtkWidget *hbox = gtk_hbox_new (FALSE, 0);
+
+      gtk_box_pack_start (GTK_BOX (hbox), widget, FALSE, FALSE, 0);
+      gtk_widget_show (widget);
+
+      widget = hbox;
     }
+
+  gtk_table_attach (table, widget, 1, 1 + colspan, row, row + 1,
+                    GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+  gtk_widget_show (widget);
 }
 
 void
@@ -331,7 +330,6 @@ gimp_get_icon_size (GtkWidget   *widget,
   gint          max_width;
   gint          max_height;
   GtkIconSize   icon_size = GTK_ICON_SIZE_MENU;
-  GdkScreen    *screen;
   GtkSettings  *settings;
 
   g_return_val_if_fail (GTK_IS_WIDGET (widget), icon_size);
@@ -344,8 +342,7 @@ gimp_get_icon_size (GtkWidget   *widget,
   if (! icon_set)
     return GTK_ICON_SIZE_INVALID;
 
-  screen = gtk_widget_get_screen (widget);
-  settings = gtk_settings_get_for_screen (screen);
+  settings = gtk_widget_get_settings (widget);
 
   if (! gtk_icon_size_lookup_for_settings (settings, max_size,
                                            &max_width, &max_height))
@@ -384,12 +381,6 @@ gimp_get_icon_size (GtkWidget   *widget,
   return icon_size;
 }
 
-
-/*  The format string which is used to display modifier names
- *  <Shift>, <Ctrl> and <Alt>
- */
-#define GIMP_MOD_NAME_FORMAT_STRING N_("<%s>")
-
 const gchar *
 gimp_get_mod_name_shift (void)
 {
@@ -400,8 +391,7 @@ gimp_get_mod_name_shift (void)
       GtkAccelLabelClass *accel_label_class;
 
       accel_label_class = g_type_class_ref (GTK_TYPE_ACCEL_LABEL);
-      mod_name_shift = g_strdup_printf (gettext (GIMP_MOD_NAME_FORMAT_STRING),
-                                        accel_label_class->mod_name_shift);
+      mod_name_shift = g_strdup (accel_label_class->mod_name_shift);
       g_type_class_unref (accel_label_class);
     }
 
@@ -418,8 +408,7 @@ gimp_get_mod_name_control (void)
       GtkAccelLabelClass *accel_label_class;
 
       accel_label_class = g_type_class_ref (GTK_TYPE_ACCEL_LABEL);
-      mod_name_control = g_strdup_printf (gettext (GIMP_MOD_NAME_FORMAT_STRING),
-                                          accel_label_class->mod_name_control);
+      mod_name_control = g_strdup (accel_label_class->mod_name_control);
       g_type_class_unref (accel_label_class);
     }
 
@@ -436,8 +425,7 @@ gimp_get_mod_name_alt (void)
       GtkAccelLabelClass *accel_label_class;
 
       accel_label_class = g_type_class_ref (GTK_TYPE_ACCEL_LABEL);
-      mod_name_alt = g_strdup_printf (gettext (GIMP_MOD_NAME_FORMAT_STRING),
-                                      accel_label_class->mod_name_alt);
+      mod_name_alt = g_strdup (accel_label_class->mod_name_alt);
       g_type_class_unref (accel_label_class);
     }
 
@@ -717,6 +705,40 @@ gimp_window_set_hint (GtkWindow      *window,
     }
 }
 
+/**
+ * gimp_window_get_native:
+ * @window: a #GtkWindow
+ *
+ * This function is used to pass a window handle to plug-ins so that
+ * they can set their dialog windows transient to the parent window.
+ *
+ * Return value: a native window handle of the window's #GdkWindow or 0
+ *               if the window isn't realized yet
+ */
+GdkNativeWindow
+gimp_window_get_native (GtkWindow *window)
+{
+  g_return_val_if_fail (GTK_IS_WINDOW (window), 0);
+
+#ifdef GDK_NATIVE_WINDOW_POINTER
+#ifdef __GNUC__
+#warning gimp_window_get_native() unimplementable for the target windowing system
+#endif
+#endif
+
+#ifdef GDK_WINDOWING_WIN32
+  if (window && GTK_WIDGET_REALIZED (window))
+    return (GdkNativeWindow)GDK_WINDOW_HWND (GTK_WIDGET (window)->window);
+#endif
+
+#ifdef GDK_WINDOWING_X11
+  if (window && GTK_WIDGET_REALIZED (window))
+    return GDK_WINDOW_XID (GTK_WIDGET (window)->window);
+#endif
+
+  return (GdkNativeWindow)0;
+}
+
 void
 gimp_dialog_set_sensitive (GtkDialog *dialog,
                            gboolean   sensitive)
@@ -759,7 +781,7 @@ gimp_text_buffer_load (GtkTextBuffer  *buffer,
   g_return_val_if_fail (filename != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  file = fopen (filename, "r");
+  file = g_fopen (filename, "r");
 
   if (! file)
     {
@@ -814,7 +836,7 @@ gimp_text_buffer_save (GtkTextBuffer  *buffer,
   g_return_val_if_fail (filename != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  fd = open (filename, O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
+  fd = g_open (filename, O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
 
   if (fd == -1)
     {
@@ -872,3 +894,133 @@ gimp_toggle_button_set_visible (GtkToggleButton *toggle,
     gtk_widget_hide (widget);
 }
 
+#ifdef __GNUC__
+#warning FIXME: remove this function as soon as we depend on GTK >= 2.8
+#endif
+GClosure *
+gimp_action_get_accel_closure (GtkAction *action)
+{
+  GtkWidget *menu_item;
+  GClosure  *closure = NULL;
+
+  g_return_val_if_fail (GTK_IS_ACTION (action), NULL);
+
+  menu_item = gtk_action_create_menu_item (action);
+
+  if (GTK_IS_MENU_ITEM (menu_item) &&
+      GTK_IS_ACCEL_LABEL (GTK_BIN (menu_item)->child))
+    {
+      GtkWidget *accel_label = GTK_BIN (menu_item)->child;
+
+      g_object_get (accel_label, "accel-closure", &closure, NULL);
+    }
+
+  if (menu_item)
+    gtk_object_sink (GTK_OBJECT (menu_item));
+
+  if (closure)
+    g_closure_unref (closure);
+
+  return closure;
+}
+
+static gboolean
+gimp_widget_accel_find_func (GtkAccelKey *key,
+                             GClosure    *closure,
+                             gpointer     data)
+{
+  return (GClosure *) data == closure;
+}
+
+static void
+gimp_widget_accel_changed (GtkAccelGroup   *accel_group,
+                           guint            unused1,
+                           GdkModifierType  unused2,
+                           GClosure        *accel_closure,
+                           GtkWidget       *widget)
+{
+  GClosure *widget_closure;
+
+  widget_closure = g_object_get_data (G_OBJECT (widget), "gimp-accel-closure");
+
+  if (accel_closure == widget_closure)
+    {
+      GtkAction   *action;
+      GtkAccelKey *accel_key;
+      gchar       *orig_tooltip;
+      gchar       *tooltip;
+      const gchar *help_id;
+
+      action = g_object_get_data (G_OBJECT (widget), "gimp-accel-action");
+
+      g_object_get (action, "tooltip", &orig_tooltip, NULL);
+      help_id = g_object_get_qdata (G_OBJECT (action), GIMP_HELP_ID);
+
+      accel_key = gtk_accel_group_find (accel_group,
+                                        gimp_widget_accel_find_func,
+                                        accel_closure);
+
+      if (accel_key            &&
+          accel_key->accel_key &&
+          accel_key->accel_flags & GTK_ACCEL_VISIBLE)
+        {
+          gchar *tmp = gimp_get_accel_string (accel_key->accel_key,
+                                              accel_key->accel_mods);
+
+          tooltip = g_strconcat (orig_tooltip, "     ", tmp, NULL);
+
+          g_free (tmp);
+        }
+      else
+        {
+          tooltip = g_strdup (orig_tooltip);
+        }
+
+      gimp_help_set_help_data (widget, tooltip, help_id);
+
+      g_free (tooltip);
+      g_free (orig_tooltip);
+    }
+}
+
+void
+gimp_widget_set_accel_help (GtkWidget *widget,
+                            GtkAction *action)
+{
+  GClosure *accel_closure = NULL;
+
+  accel_closure = gimp_action_get_accel_closure (action);
+
+  if (accel_closure)
+    {
+      GtkAccelGroup *accel_group;
+
+      g_object_set_data (G_OBJECT (widget), "gimp-accel-closure",
+                         accel_closure);
+      g_object_set_data (G_OBJECT (widget), "gimp-accel-action",
+                         action);
+
+      accel_group = gtk_accel_group_from_accel_closure (accel_closure);
+
+      g_signal_connect_object (accel_group, "accel-changed",
+                               G_CALLBACK (gimp_widget_accel_changed),
+                               widget, 0);
+
+      gimp_widget_accel_changed (accel_group,
+                                 0, 0,
+                                 accel_closure,
+                                 widget);
+    }
+  else
+    {
+      gchar *tooltip;
+      gchar *help_id;
+
+      g_object_get (action, "tooltip", &tooltip, NULL);
+      help_id = g_object_get_qdata (G_OBJECT (action), GIMP_HELP_ID);
+
+      gimp_help_set_help_data (widget, tooltip, help_id);
+
+      g_free (tooltip);
+    }
+}

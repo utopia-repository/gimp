@@ -162,31 +162,46 @@ static GtkWidget *msg_label;
 gboolean
 maze_dialog (void)
 {
-  GtkWidget *dialog;
-  GtkWidget *vbox;
-  GtkWidget *table;
-  GtkWidget *tilecheck;
-  GtkWidget *entry;
-  GtkWidget *hbox;
-  GtkWidget *frame;
-  gboolean   run;
-  gint       trow = 0;
+  GtkWidget    *dialog;
+  GtkWidget    *vbox;
+  GtkWidget    *vbox2;
+  GtkWidget    *table;
+  GtkWidget    *table2;
+  GtkWidget    *tilecheck;
+  GtkWidget    *entry;
+  GtkWidget    *hbox;
+  GtkWidget    *frame;
+  GtkSizeGroup *group;
+  gboolean      run;
+  gint          trow = 0;
 
-  gimp_ui_init ("maze", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_(MAZE_TITLE), "maze",
-                         NULL, 0,
-			 gimp_standard_help_func, "plug-in-maze",
+  dialog = gimp_dialog_new (_(MAZE_TITLE), PLUG_IN_BINARY,
+                            NULL, 0,
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
-			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			 GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
-			 NULL);
+                            NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
                       vbox, FALSE, FALSE, 0);
+
+  /* The maze size frame */
+  frame = gimp_frame_new (_("Maze Size"));
+  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
+  gtk_widget_show (frame);
 
 #ifdef SHOW_PRNG_PRIVATES
   table = gtk_table_new (8, 3, FALSE);
@@ -195,8 +210,10 @@ maze_dialog (void)
 #endif
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
-  gtk_box_pack_start (GTK_BOX (vbox), table, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_widget_show (table);
+
+  group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
   /* entscale == Entry and Scale pair function found in pixelize.c */
   entry = entscale_int_new (table, 0, trow, _("Width (pixels):"),
@@ -260,23 +277,28 @@ maze_dialog (void)
                     &mvals.offset);
 #endif
 
-  /* Tileable checkbox */
-  tilecheck = gtk_check_button_new_with_label (_("Tileable"));
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (tilecheck), mvals.tile);
-  gimp_table_attach_aligned (GTK_TABLE (table), 0, trow,
-			     NULL, 0.0, 0.5,
-			     tilecheck, 1, FALSE);
-  trow++;
-  g_signal_connect (tilecheck, "clicked",
-                    G_CALLBACK (gimp_toggle_button_update),
-                    &mvals.tile);
+  g_object_unref (group);
+
+  /* The maze algorithm frame */
+  frame = gimp_frame_new (_("Algorithm"));
+  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
+  gtk_widget_show (frame);
+
+  vbox2 = gtk_vbox_new (FALSE, 6);
+  gtk_container_add (GTK_CONTAINER (frame), vbox2);
+  gtk_widget_show (vbox2);
 
   /* Seed input box */
+  table2 = gtk_table_new (3, 3, FALSE);
+  gtk_table_set_col_spacings (GTK_TABLE (table2), 6);
+  gtk_table_set_row_spacings (GTK_TABLE (table2), 6);
+  gtk_box_pack_start (GTK_BOX (vbox2), table2, FALSE, FALSE, 0);
+  gtk_widget_show (table2);
+
   hbox = gimp_random_seed_new (&mvals.seed, &mvals.random_seed);
-  gimp_table_attach_aligned (GTK_TABLE (table), 0, trow,
+  gimp_table_attach_aligned (GTK_TABLE (table2), 0, 0,
 			     _("Seed:"), 0.0, 0.5,
 			     hbox, 1, TRUE);
-  trow++;
 
   /* Algorithm Choice */
   frame =
@@ -289,7 +311,16 @@ maze_dialog (void)
 
                               NULL);
 
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2), frame, FALSE, FALSE, 0);
+
+  /* Tileable checkbox */
+  tilecheck = gtk_check_button_new_with_label (_("Tileable"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (tilecheck), mvals.tile);
+  g_signal_connect (tilecheck, "clicked",
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &mvals.tile);
+
+  gtk_box_pack_start (GTK_BOX (vbox2), tilecheck, FALSE, FALSE, 0);
 
   msg_label = gtk_label_new (NULL);
   gimp_label_set_attributes (GTK_LABEL (msg_label),
@@ -616,7 +647,7 @@ entscale_int_new (GtkWidget *table,
   /*
     If the first arg of gtk_adjustment_new() isn't between min and
     max, it is automatically corrected by gtk later with
-    "value_changed" signal. I don't like this, since I want to leave
+    "value-changed" signal. I don't like this, since I want to leave
     *intvar untouched when `constraint' is false.
     The lines below might look oppositely, but this is OK.
    */
@@ -648,7 +679,7 @@ entscale_int_new (GtkWidget *table,
   g_signal_connect (entry, "changed",
                     G_CALLBACK (entscale_int_entry_update),
                     intvar);
-  g_signal_connect (adjustment, "value_changed",
+  g_signal_connect (adjustment, "value-changed",
                     G_CALLBACK (entscale_int_scale_update),
                     intvar);
   g_signal_connect (entry, "destroy",

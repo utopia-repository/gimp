@@ -106,7 +106,7 @@
 		    SF-COLOR      _"Background color"     '(255 255 255))
 
 (script-fu-menu-register "script-fu-frosty-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 (define (script-fu-frosty-logo text
 			       size
@@ -116,7 +116,6 @@
 	 (border (/ size 5))
 	 (text-layer (car (gimp-text-fontname img -1 0 0 text (* border 2) TRUE size PIXELS font))))
     (gimp-image-undo-disable img)
-    (gimp-drawable-set-name text-layer text)
     (apply-frosty-logo-effect img text-layer size bg-color)
     (gimp-image-undo-enable img)
     (gimp-display-new img)))
@@ -134,4 +133,4 @@
 		    SF-COLOR      _"Background color"   '(255 255 255))
 
 (script-fu-menu-register "script-fu-frosty-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

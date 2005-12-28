@@ -1,7 +1,5 @@
 ## Process this file with automake to produce Makefile.in
 
-AUTOMAKE_OPTIONS = 1.6
-
 # The name of the module.
 DOC_MODULE = libgimpbase
 
@@ -31,6 +29,9 @@ CFILE_GLOB = $(DOC_SOURCE_DIR)/*.c
 IGNORE_HFILES = \
 	gimpbase.h		\
 	gimpbase-private.h	\
+	gimpprotocol.h		\
+	gimpreloc.h		\
+	gimpwire.h		\
 	gimpwin32-io.h
 
 # Images to copy into HTML directory

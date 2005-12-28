@@ -17,8 +17,13 @@
     <chapter id="libgimpwidgets-hierarchy">
       <title>Object Hierarchy</title>
       <xi:include href="xml/tree_index.sgml" />
-    </chapter>    
+    </chapter>
+    <chapter id="libgimpwidgets-gallery">
+      <title>Widget Gallery</title>
+      <xi:include href="visual-index.xml" />
+    </chapter>
 
+    <xi:include href="xml/gimpbrowser.xml" />
     <xi:include href="xml/gimpbutton.xml" />
     <xi:include href="xml/gimpchainbutton.xml" />
     <xi:include href="xml/gimpcolorarea.xml" />
@@ -27,17 +32,22 @@
     <xi:include href="xml/gimpcolorscale.xml" />
     <xi:include href="xml/gimpcolorselection.xml" />
     <xi:include href="xml/gimpdialog.xml" />
+    <xi:include href="xml/gimpenumstore.xml" />
+    <xi:include href="xml/gimpenumcombobox.xml" />
+    <xi:include href="xml/gimpenumlabel.xml" />
     <xi:include href="xml/gimpfileentry.xml" />
     <xi:include href="xml/gimpframe.xml" />
     <xi:include href="xml/gimpintcombobox.xml" />
     <xi:include href="xml/gimpintstore.xml" />
     <xi:include href="xml/gimpmemsizeentry.xml" />
     <xi:include href="xml/gimpoffsetarea.xml" />
+    <xi:include href="xml/gimppageselector.xml" />
     <xi:include href="xml/gimppatheditor.xml" />
     <xi:include href="xml/gimppickbutton.xml" />
     <xi:include href="xml/gimppixmap.xml" />
     <xi:include href="xml/gimppreviewarea.xml" />
     <xi:include href="xml/gimppreview.xml" />
+    <xi:include href="xml/gimppropwidgets.xml" />
     <xi:include href="xml/gimpscrolledpreview.xml" />
     <xi:include href="xml/gimpunitmenu.xml" />
   </part>
@@ -76,6 +86,7 @@
     <xi:include href="xml/gimpquerybox.xml" />
     <xi:include href="xml/gimpsizeentry.xml" />
     <xi:include href="xml/gimpstock.xml" />
+    <xi:include href="xml/gimpenumwidgets.xml" />
     <xi:include href="xml/gimpwidgets.xml" />
   </part>
 
@@ -83,5 +94,18 @@
     <title>Deprecated API</title>
     <xi:include href="xml/gimpoldwidgets.xml" />
   </part>
+
+  <index>
+    <title>Index</title>
+  </index>
+  <index role="GIMP 2.2">
+    <title>Index of new symbols in GIMP 2.2</title>
+  </index>
+  <index role="GIMP 2.4">
+    <title>Index of new symbols in GIMP 2.4</title>
+  </index>
+  <index role="deprecated">
+    <title>Index of deprecated symbols</title>
+  </index>
 
 </book>

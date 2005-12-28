@@ -52,6 +52,7 @@
 #include "dialogs/grid-dialog.h"
 #include "dialogs/image-merge-layers-dialog.h"
 #include "dialogs/image-new-dialog.h"
+#include "dialogs/image-properties-dialog.h"
 #include "dialogs/image-scale-dialog.h"
 #include "dialogs/print-size-dialog.h"
 #include "dialogs/resize-dialog.h"
@@ -77,8 +78,10 @@ static void   image_resize_callback        (GtkWidget              *dialog,
                                             GimpViewable           *viewable,
                                             gint                    width,
                                             gint                    height,
+                                            GimpUnit                unit,
                                             gint                    offset_x,
                                             gint                    offset_y,
+                                            GimpImageResizeLayers   resize_layers,
                                             gpointer                data);
 static void   image_print_size_callback    (GtkWidget              *dialog,
                                             GimpImage              *image,
@@ -175,11 +178,12 @@ image_resize_cmd_callback (GtkAction *action,
 			   gpointer   data)
 {
   ImageResizeOptions *options;
-  GimpImage          *gimage;
+  GimpImage          *image;
   GtkWidget          *widget;
   GimpDisplay        *gdisp;
   GtkWidget          *dialog;
-  return_if_no_image (gimage, data);
+  GimpUnit            unit;
+  return_if_no_image (image, data);
   return_if_no_widget (widget, data);
   return_if_no_display (gdisp, data);
 
@@ -188,11 +192,16 @@ image_resize_cmd_callback (GtkAction *action,
   options->gdisp   = gdisp;
   options->context = action_data_get_context (data);
 
-  dialog = resize_dialog_new (GIMP_VIEWABLE (gimage),
+  unit = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (image),
+                                             "scale-dialog-unit"));
+  if (! unit)
+    unit = GIMP_DISPLAY_SHELL (gdisp->shell)->unit;
+
+  dialog = resize_dialog_new (GIMP_VIEWABLE (image),
                               _("Set Image Canvas Size"), "gimp-image-resize",
                               widget,
                               gimp_standard_help_func, GIMP_HELP_IMAGE_RESIZE,
-                              GIMP_DISPLAY_SHELL (gdisp->shell)->unit,
+                              unit,
                               image_resize_callback,
                               options);
 
@@ -216,7 +225,7 @@ image_resize_to_layers_cmd_callback (GtkAction *action,
   return_if_no_display (gdisp, data);
 
   progress = gimp_progress_start (GIMP_PROGRESS (gdisp),
-                                  _("Resizing..."), FALSE);
+                                  _("Resizing"), FALSE);
 
   gimp_image_resize_to_layers (gdisp->gimage,
                                action_data_get_context (data),
@@ -286,7 +295,7 @@ image_flip_cmd_callback (GtkAction *action,
   return_if_no_display (gdisp, data);
 
   progress = gimp_progress_start (GIMP_PROGRESS (gdisp),
-                                  _("Flipping..."), FALSE);
+                                  _("Flipping"), FALSE);
 
   gimp_image_flip (gdisp->gimage, action_data_get_context (data),
                    (GimpOrientationType) value, progress);
@@ -307,7 +316,7 @@ image_rotate_cmd_callback (GtkAction *action,
   return_if_no_display (gdisp, data);
 
   progress = gimp_progress_start (GIMP_PROGRESS (gdisp),
-                                  _("Rotating..."), FALSE);
+                                  _("Rotating"), FALSE);
 
   gimp_image_rotate (gdisp->gimage, action_data_get_context (data),
                      (GimpRotationType) value, progress);
@@ -353,7 +362,8 @@ image_duplicate_cmd_callback (GtkAction *action,
 
   gimp_create_display (new_gimage->gimp,
                        new_gimage,
-                       shell->unit, shell->scale);
+                       shell->unit,
+                       gimp_zoom_model_get_factor (shell->zoom));
 
   g_object_unref (new_gimage);
 }
@@ -419,17 +429,42 @@ image_configure_grid_cmd_callback (GtkAction *action,
   gtk_window_present (GTK_WINDOW (shell->grid_dialog));
 }
 
+void
+image_properties_cmd_callback (GtkAction *action,
+                               gpointer   data)
+{
+  GimpDisplay      *gdisp;
+  GimpDisplayShell *shell;
+  GimpImage        *gimage;
+  GtkWidget        *dialog;
+  return_if_no_display (gdisp, data);
+
+  shell  = GIMP_DISPLAY_SHELL (gdisp->shell);
+  gimage = gdisp->gimage;
+
+  dialog = image_properties_dialog_new (gdisp->gimage, gdisp->shell);
+
+  gtk_window_set_transient_for (GTK_WINDOW (dialog),
+                                GTK_WINDOW (gdisp->shell));
+  gtk_window_set_destroy_with_parent (GTK_WINDOW (dialog),
+                                      TRUE);
+
+  gtk_window_present (GTK_WINDOW (dialog));
+}
+
 
 /*  private functions  */
 
 static void
-image_resize_callback (GtkWidget    *dialog,
-                       GimpViewable *viewable,
-                       gint          width,
-                       gint          height,
-                       gint          offset_x,
-                       gint          offset_y,
-                       gpointer      data)
+image_resize_callback (GtkWidget             *dialog,
+                       GimpViewable          *viewable,
+                       gint                   width,
+                       gint                   height,
+                       GimpUnit               unit,
+                       gint                   offset_x,
+                       gint                   offset_y,
+                       GimpImageResizeLayers  resize_layers,
+                       gpointer               data)
 {
   ImageResizeOptions *options = data;
 
@@ -442,16 +477,21 @@ image_resize_callback (GtkWidget    *dialog,
 
       gtk_widget_destroy (dialog);
 
+      /* remember the last used unit */
+      g_object_set_data (G_OBJECT (image),
+                         "scale-dialog-unit", GINT_TO_POINTER (unit));
+
       if (width == image->width && height == image->height)
         return;
 
       progress = gimp_progress_start (GIMP_PROGRESS (gdisp),
-                                      _("Resizing..."), FALSE);
+                                      _("Resizing"), FALSE);
 
-      gimp_image_resize (image,
-                         context,
-                         width, height, offset_x, offset_y,
-                         progress);
+      gimp_image_resize_with_layers (image,
+                                     context,
+                                     width, height, offset_x, offset_y,
+                                     resize_layers,
+                                     progress);
 
       if (progress)
         gimp_progress_end (progress);
@@ -518,7 +558,7 @@ image_scale_callback (ImageScaleDialog  *dialog)
           GimpProgress *progress;
 
           progress = gimp_progress_start (GIMP_PROGRESS (dialog->gdisp),
-                                          _("Scaling..."), FALSE);
+                                          _("Scaling"), FALSE);
 
           gimp_image_scale (image,
                             dialog->width,

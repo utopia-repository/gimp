@@ -19,10 +19,12 @@
 #include "config.h"
 
 #include <errno.h>
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
+#include <glib/gstdio.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -40,8 +42,10 @@
 #include "widgets/gimpactionfactory.h"
 #include "widgets/gimpmenufactory.h"
 
+#include "dockable-menu.h"
 #include "image-menu.h"
 #include "menus.h"
+#include "plug-in-menus.h"
 #include "tool-options-menu.h"
 #include "toolbox-menu.h"
 
@@ -86,8 +90,6 @@ menus_init (Gimp              *gimp,
   gimp_menu_factory_manager_register (global_menu_factory, "<Image>",
                                       "file",
                                       "context",
-                                      "debug",
-                                      "help",
                                       "edit",
                                       "select",
                                       "view",
@@ -99,16 +101,35 @@ menus_init (Gimp              *gimp,
                                       "tools",
                                       "dialogs",
                                       "plug-in",
-                                      "qmask",
+                                      "quick-mask",
                                       NULL,
-                                      "/toolbox-menubar",
-                                      "toolbox-menu.xml", toolbox_menu_setup,
                                       "/image-menubar",
                                       "image-menu.xml", image_menu_setup,
                                       "/dummy-menubar",
                                       "image-menu.xml", image_menu_setup,
-                                      "/qmask-popup",
-                                      "qmask-menu.xml", NULL,
+                                      "/quick-mask-popup",
+                                      "quick-mask-menu.xml", NULL,
+                                      NULL);
+
+  gimp_menu_factory_manager_register (global_menu_factory, "<Toolbox>",
+                                      "file",
+                                      "context",
+                                      "debug",
+                                      "help",
+                                      "edit",
+                                      "select",
+                                      "image",
+                                      "drawable",
+                                      "layers",
+                                      "channels",
+                                      "vectors",
+                                      "tools",
+                                      "dialogs",
+                                      "plug-in",
+                                      "quick-mask",
+                                      NULL,
+                                      "/toolbox-menubar",
+                                      "toolbox-menu.xml", toolbox_menu_setup,
                                       NULL);
 
   gimp_menu_factory_manager_register (global_menu_factory, "<Dock>",
@@ -124,7 +145,8 @@ menus_init (Gimp              *gimp,
                                       "tools",
                                       "dialogs",
                                       "plug-in",
-                                      "qmask",
+                                      "quick-mask",
+                                      "dock",
                                       NULL,
                                       NULL);
 
@@ -151,51 +173,58 @@ menus_init (Gimp              *gimp,
 
   gimp_menu_factory_manager_register (global_menu_factory, "<Dockable>",
                                       "dockable",
+                                      "dock",
                                       NULL,
                                       "/dockable-popup",
-                                      "dockable-menu.xml", NULL,
+                                      "dockable-menu.xml", dockable_menu_setup,
                                       NULL);
 
   gimp_menu_factory_manager_register (global_menu_factory, "<Brushes>",
                                       "brushes",
+                                      "plug-in",
                                       NULL,
                                       "/brushes-popup",
-                                      "brushes-menu.xml", NULL,
+                                      "brushes-menu.xml", plug_in_menus_setup,
                                       NULL);
 
   gimp_menu_factory_manager_register (global_menu_factory, "<Patterns>",
                                       "patterns",
+                                      "plug-in",
                                       NULL,
                                       "/patterns-popup",
-                                      "patterns-menu.xml", NULL,
+                                      "patterns-menu.xml", plug_in_menus_setup,
                                       NULL);
 
   gimp_menu_factory_manager_register (global_menu_factory, "<Gradients>",
                                       "gradients",
+                                      "plug-in",
                                       NULL,
                                       "/gradients-popup",
-                                      "gradients-menu.xml", NULL,
+                                      "gradients-menu.xml", plug_in_menus_setup,
                                       NULL);
 
   gimp_menu_factory_manager_register (global_menu_factory, "<Palettes>",
                                       "palettes",
+                                      "plug-in",
                                       NULL,
                                       "/palettes-popup",
-                                      "palettes-menu.xml", NULL,
+                                      "palettes-menu.xml", plug_in_menus_setup,
                                       NULL);
 
   gimp_menu_factory_manager_register (global_menu_factory, "<Fonts>",
                                       "fonts",
+                                      "plug-in",
                                       NULL,
                                       "/fonts-popup",
-                                      "fonts-menu.xml", NULL,
+                                      "fonts-menu.xml", plug_in_menus_setup,
                                       NULL);
 
   gimp_menu_factory_manager_register (global_menu_factory, "<Buffers>",
                                       "buffers",
+                                      "plug-in",
                                       NULL,
                                       "/buffers-popup",
-                                      "buffers-menu.xml", NULL,
+                                      "buffers-menu.xml", plug_in_menus_setup,
                                       NULL);
 
   gimp_menu_factory_manager_register (global_menu_factory, "<Documents>",
@@ -224,6 +253,13 @@ menus_init (Gimp              *gimp,
                                       NULL,
                                       "/tools-popup",
                                       "tools-menu.xml", NULL,
+                                      NULL);
+
+  gimp_menu_factory_manager_register (global_menu_factory, "<BrushEditor>",
+                                      "brush-editor",
+                                      NULL,
+                                      "/brush-editor-popup",
+                                      "brush-editor-menu.xml", NULL,
                                       NULL);
 
   gimp_menu_factory_manager_register (global_menu_factory, "<GradientEditor>",
@@ -263,6 +299,8 @@ menus_init (Gimp              *gimp,
   gimp_menu_factory_manager_register (global_menu_factory, "<UndoEditor>",
                                       "edit",
                                       NULL,
+                                      "/undo-editor-popup",
+                                      "undo-editor-menu.xml", NULL,
                                       NULL);
 
   gimp_menu_factory_manager_register (global_menu_factory, "<ErrorConsole>",
@@ -285,6 +323,22 @@ menus_init (Gimp              *gimp,
                                       NULL,
                                       "/text-editor-toolbar",
                                       "text-editor-toolbar.xml",
+                                      NULL,
+                                      NULL);
+
+  gimp_menu_factory_manager_register (global_menu_factory, "<CursorInfo>",
+                                      "cursor-info",
+                                      NULL,
+                                      "/cursor-info-popup",
+                                      "cursor-info-menu.xml",
+                                      NULL,
+                                      NULL);
+
+  gimp_menu_factory_manager_register (global_menu_factory, "<SamplePointEditor>",
+                                      "sample-point-editor",
+                                      NULL,
+                                      "/sample-point-editor-popup",
+                                      "sample-point-editor-menu.xml",
                                       NULL,
                                       NULL);
 }
@@ -312,6 +366,10 @@ menus_restore (Gimp *gimp)
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
   filename = gimp_personal_rc_file ("menurc");
+
+  if (gimp->be_verbose)
+    g_print ("Parsing '%s'\n", gimp_filename_to_utf8 (filename));
+
   gtk_accel_map_load (filename);
   g_free (filename);
 }
@@ -328,6 +386,10 @@ menus_save (Gimp     *gimp,
     return;
 
   filename = gimp_personal_rc_file ("menurc");
+
+  if (gimp->be_verbose)
+    g_print ("Writing '%s'\n", gimp_filename_to_utf8 (filename));
+
   gtk_accel_map_save (filename);
   g_free (filename);
 
@@ -346,7 +408,7 @@ menus_clear (Gimp    *gimp,
 
   filename = gimp_personal_rc_file ("menurc");
 
-  if (unlink (filename) != 0 && errno != ENOENT)
+  if (g_unlink (filename) != 0 && errno != ENOENT)
     {
       g_set_error (error, 0, 0, _("Deleting \"%s\" failed: %s"),
                    gimp_filename_to_utf8 (filename), g_strerror (errno));

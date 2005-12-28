@@ -17,11 +17,25 @@
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
+sub bill_misc {
+    $author = 'Bill Skaggs <weskaggs@primate.ucdavis.edu';
+    $copyright = 'Bill Skaggs';
+    $date = '2004';
+    $since = '2.4';
+}
+
 sub mitch_misc {
     $author = 'Michael Natterer <mitch@gimp.org>';
     $copyright = 'Michael Natterer';
     $date = '2004';
     $since = '2.2';
+}
+
+sub neo_misc {
+    $author = 'Sven Neumann <sven@gimp.org>';
+    $copyright = 'Sven Neumann';
+    $date = '2005';
+    $since = '2.4';
 }
 
 sub palette_arg () {{
@@ -71,6 +85,39 @@ sub palette_new {
     data = gimp_data_factory_data_new (gimp->palette_factory, name);
 
   success = (data != NULL);
+}
+CODE
+    );
+}
+
+sub palette_is_editable {
+    $blurb = "Tests if palette can be edited";
+    $help  = "Returns True if you have permission to change the palette";
+
+    &bill_misc;
+
+    @inargs = (
+        &palette_arg
+    );
+
+    @outargs = (
+	{ name => 'editable', type => 'boolean',
+	  desc => "True if the palette can be edited",
+	  alias => 'GIMP_DATA (palette)->writable',
+          no_declare => 1 }
+    );
+
+    %invoke = (
+	vars => [ 'GimpPalette *palette = NULL' ],
+        code => <<'CODE'
+{
+  palette = (GimpPalette *)
+    gimp_container_get_child_by_name (gimp->palette_factory->container, name);
+
+  if (palette)
+    success = TRUE;
+  else
+    success = FALSE;
 }
 CODE
     );
@@ -221,6 +268,70 @@ CODE
     );
 }
 
+sub palette_get_columns {
+    $blurb = "Retrieves the number of columns to use to display this palette";
+    $help = <<'HELP';
+This procedures retrieves the prefered number of columns to use when the
+palette is being displayed.
+HELP
+
+    &neo_misc;
+
+    @inargs = (
+	&palette_arg
+    );
+
+    @outargs = (
+        { name => 'num_columns', type => 'int32', no_declare => '0',
+          alias => 'palette->n_columns',
+          desc => "The number of columns used to display this palette" }
+    );
+
+    %invoke = (
+	vars => [ 'GimpPalette *palette = NULL' ],
+	code => <<'CODE'
+{
+  palette = (GimpPalette *)
+    gimp_container_get_child_by_name (gimp->palette_factory->container, name);
+
+  success = (palette != NULL);
+}
+CODE
+    );
+}
+
+sub palette_set_columns {
+    $blurb = "Sets the number of columns to use when displaying the palette";
+    $help = <<'HELP';
+This procedures allows to control how many colors are shown per row when the
+palette is being displayed. This value can only be changed if the palette
+is writable. The maximum allowed value is 64.
+HELP
+
+    &neo_misc;
+
+    @inargs = (
+        &palette_arg,
+        { name => 'columns', type => '0 <= int32 <= 64',
+          desc => "The new number of columns" }
+    );
+
+    %invoke = (
+	vars => [ 'GimpPalette *palette = NULL' ],
+	code => <<'CODE'
+{
+  palette = (GimpPalette *)
+    gimp_container_get_child_by_name (gimp->palette_factory->container, name);
+
+  if (palette && GIMP_DATA (palette)->writable)
+    gimp_palette_set_columns (palette, columns);
+  else
+    success = FALSE;
+}
+CODE
+    );
+}
+
 sub palette_add_entry {
     $blurb = 'Adds a palette entry to the specified palette.';
 
@@ -254,7 +365,7 @@ HELP
     gimp_container_get_child_by_name (gimp->palette_factory->container, name);
 
   if (palette && GIMP_DATA (palette)->writable)
-    entry = gimp_palette_add_entry (palette, entry_name, &color);
+    entry = gimp_palette_add_entry (palette, -1, entry_name, &color);
   else
     success = FALSE;
 }
@@ -493,7 +604,9 @@ CODE
               "core/gimpdatafactory.h" "core/gimppalette.h");
 
 @procs = qw(palette_new palette_duplicate palette_rename palette_delete
-            palette_get_info palette_add_entry palette_delete_entry
+            palette_is_editable palette_get_info
+            palette_get_columns palette_set_columns
+            palette_add_entry palette_delete_entry
             palette_entry_get_color palette_entry_set_color
             palette_entry_get_name palette_entry_set_name);
 %exports = (app => [@procs], lib => [@procs]);

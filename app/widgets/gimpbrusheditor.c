@@ -34,7 +34,6 @@
 #include "core/gimpcontext.h"
 
 #include "gimpbrusheditor.h"
-#include "gimpenumwidgets.h"
 #include "gimpview.h"
 
 #include "gimp-intl.h"
@@ -46,66 +45,37 @@
 
 /*  local function prototypes  */
 
-static void   gimp_brush_editor_class_init   (GimpBrushEditorClass *klass);
-static void   gimp_brush_editor_init         (GimpBrushEditor      *editor);
+static void   gimp_brush_editor_set_data     (GimpDataEditor     *editor,
+                                              GimpData           *data);
 
-static void   gimp_brush_editor_set_data     (GimpDataEditor       *editor,
-                                              GimpData             *data);
-
-static void   gimp_brush_editor_update_brush (GtkAdjustment        *adjustment,
-                                              GimpBrushEditor      *editor);
-static void   gimp_brush_editor_update_brush_shape (GtkWidget      *widget,
-                                              GimpBrushEditor      *editor);
-static void   gimp_brush_editor_notify_brush (GimpBrushGenerated   *brush,
-                                              GParamSpec           *pspec,
-                                              GimpBrushEditor      *editor);
+static void   gimp_brush_editor_update_brush (GtkAdjustment      *adjustment,
+                                              GimpBrushEditor    *editor);
+static void   gimp_brush_editor_update_shape (GtkWidget          *widget,
+                                              GimpBrushEditor    *editor);
+static void   gimp_brush_editor_notify_brush (GimpBrushGenerated *brush,
+                                              GParamSpec         *pspec,
+                                              GimpBrushEditor    *editor);
 
 
-static GimpDataEditorClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpBrushEditor, gimp_brush_editor, GIMP_TYPE_DATA_EDITOR);
 
+#define parent_class gimp_brush_editor_parent_class
 
-GType
-gimp_brush_editor_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpBrushEditorClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_brush_editor_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpBrushEditor),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_brush_editor_init,
-      };
-
-      type = g_type_register_static (GIMP_TYPE_DATA_EDITOR,
-                                     "GimpBrushEditor",
-                                     &info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_brush_editor_class_init (GimpBrushEditorClass *klass)
 {
   GimpDataEditorClass *editor_class = GIMP_DATA_EDITOR_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
-
   editor_class->set_data = gimp_brush_editor_set_data;
+  editor_class->title    = _("Brush Editor");
 }
 
 static void
 gimp_brush_editor_init (GimpBrushEditor *editor)
 {
-  GtkWidget *frame, *box;
+  GtkWidget *frame;
+  GtkWidget *box;
   gint       row = 0;
 
   frame = gtk_frame_new (NULL);
@@ -137,7 +107,7 @@ gimp_brush_editor_init (GimpBrushEditor *editor)
   box = gimp_enum_stock_box_new (GIMP_TYPE_BRUSH_GENERATED_SHAPE,
                                  "gimp-shape",
                                  GTK_ICON_SIZE_MENU,
-                                 G_CALLBACK (gimp_brush_editor_update_brush_shape),
+                                 G_CALLBACK (gimp_brush_editor_update_shape),
                                  editor,
                                  &editor->shape_group);
   gimp_table_attach_aligned (GTK_TABLE (editor->options_table),
@@ -157,7 +127,7 @@ gimp_brush_editor_init (GimpBrushEditor *editor)
 
   gimp_scale_entry_set_logarithmic (GTK_OBJECT (editor->radius_data), TRUE);
 
-  g_signal_connect (editor->radius_data, "value_changed",
+  g_signal_connect (editor->radius_data, "value-changed",
                     G_CALLBACK (gimp_brush_editor_update_brush),
                     editor);
 
@@ -170,7 +140,7 @@ gimp_brush_editor_init (GimpBrushEditor *editor)
                                           TRUE, 0.0, 0.0,
                                           NULL, NULL));
 
-  g_signal_connect (editor->spikes_data, "value_changed",
+  g_signal_connect (editor->spikes_data, "value-changed",
                     G_CALLBACK (gimp_brush_editor_update_brush),
                     editor);
 
@@ -183,7 +153,7 @@ gimp_brush_editor_init (GimpBrushEditor *editor)
                                           TRUE, 0.0, 0.0,
                                           NULL, NULL));
 
-  g_signal_connect (editor->hardness_data, "value_changed",
+  g_signal_connect (editor->hardness_data, "value-changed",
                     G_CALLBACK (gimp_brush_editor_update_brush),
                     editor);
 
@@ -196,7 +166,7 @@ gimp_brush_editor_init (GimpBrushEditor *editor)
                                           TRUE, 0.0, 0.0,
                                           NULL, NULL));
 
-  g_signal_connect (editor->aspect_ratio_data,"value_changed",
+  g_signal_connect (editor->aspect_ratio_data,"value-changed",
                     G_CALLBACK (gimp_brush_editor_update_brush),
                     editor);
 
@@ -209,7 +179,7 @@ gimp_brush_editor_init (GimpBrushEditor *editor)
                                           TRUE, 0.0, 0.0,
                                           NULL, NULL));
 
-  g_signal_connect (editor->angle_data, "value_changed",
+  g_signal_connect (editor->angle_data, "value-changed",
                     G_CALLBACK (gimp_brush_editor_update_brush),
                     editor);
 
@@ -223,7 +193,7 @@ gimp_brush_editor_init (GimpBrushEditor *editor)
                                           _("Percentage of width of brush"),
                                           NULL));
 
-  g_signal_connect (editor->spacing_data, "value_changed",
+  g_signal_connect (editor->spacing_data, "value-changed",
                     G_CALLBACK (gimp_brush_editor_update_brush),
                     editor);
 }
@@ -232,16 +202,14 @@ static void
 gimp_brush_editor_set_data (GimpDataEditor *editor,
                             GimpData       *data)
 {
-  GimpBrushEditor         *brush_editor;
-  GimpBrushGeneratedShape  shape = GIMP_BRUSH_GENERATED_CIRCLE;
-  gdouble                  radius   = 0.0;
-  gint                     spikes   = 2;
-  gdouble                  hardness = 0.0;
-  gdouble                  ratio    = 0.0;
-  gdouble                  angle    = 0.0;
-  gdouble                  spacing  = 0.0;
-
-  brush_editor = GIMP_BRUSH_EDITOR (editor);
+  GimpBrushEditor         *brush_editor = GIMP_BRUSH_EDITOR (editor);
+  GimpBrushGeneratedShape  shape        = GIMP_BRUSH_GENERATED_CIRCLE;
+  gdouble                  radius       = 0.0;
+  gint                     spikes       = 2;
+  gdouble                  hardness     = 0.0;
+  gdouble                  ratio        = 0.0;
+  gdouble                  angle        = 0.0;
+  gdouble                  spacing      = 0.0;
 
   if (editor->data)
     g_signal_handlers_disconnect_by_func (editor->data,
@@ -288,7 +256,8 @@ gimp_brush_editor_set_data (GimpDataEditor *editor,
 /*  public functions  */
 
 GtkWidget *
-gimp_brush_editor_new (Gimp *gimp)
+gimp_brush_editor_new (Gimp            *gimp,
+                       GimpMenuFactory *menu_factory)
 {
   GimpBrush *brush;
 
@@ -297,8 +266,11 @@ gimp_brush_editor_new (Gimp *gimp)
   brush = gimp_context_get_brush (gimp_get_user_context (gimp));
 
   return g_object_new (GIMP_TYPE_BRUSH_EDITOR,
-                       "data-factory", gimp->brush_factory,
-                       "data",         brush,
+                       "menu-factory",    menu_factory,
+                       "menu-identifier", "<BrushEditor>",
+                       "ui-path",         "/brush-editor-popup",
+                       "data-factory",    gimp->brush_factory,
+                       "data",            brush,
                        NULL);
 }
 
@@ -360,10 +332,9 @@ gimp_brush_editor_update_brush (GtkAdjustment   *adjustment,
 }
 
 static void
-gimp_brush_editor_update_brush_shape (GtkWidget       *widget,
-                                      GimpBrushEditor *editor)
+gimp_brush_editor_update_shape (GtkWidget       *widget,
+                                GimpBrushEditor *editor)
 {
-  GimpBrushGeneratedShape shape;
   GimpBrushGenerated *brush;
 
   if (! GIMP_IS_BRUSH_GENERATED (GIMP_DATA_EDITOR (editor)->data))
@@ -371,12 +342,16 @@ gimp_brush_editor_update_brush_shape (GtkWidget       *widget,
 
   brush = GIMP_BRUSH_GENERATED (GIMP_DATA_EDITOR (editor)->data);
 
-  shape = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget),
-                                              "gimp-item-data"));
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
+    {
+      GimpBrushGeneratedShape shape;
 
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)) &&
-      gimp_brush_generated_get_shape (brush) != shape)
-    gimp_brush_generated_set_shape (brush, shape);
+      shape = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget),
+                                                  "gimp-item-data"));
+
+      if (gimp_brush_generated_get_shape (brush) != shape)
+        gimp_brush_generated_set_shape (brush, shape);
+    }
 }
 
 static void
@@ -390,14 +365,14 @@ gimp_brush_editor_notify_brush (GimpBrushGenerated   *brush,
   if (! strcmp (pspec->name, "shape"))
     {
       g_signal_handlers_block_by_func (editor->shape_group,
-                                       G_CALLBACK (gimp_brush_editor_update_brush_shape),
+                                       gimp_brush_editor_update_shape,
                                        editor);
 
       gimp_int_radio_group_set_active (GTK_RADIO_BUTTON (editor->shape_group),
                                        brush->shape);
 
       g_signal_handlers_unblock_by_func (editor->shape_group,
-                                         G_CALLBACK (gimp_brush_editor_update_brush_shape),
+                                         gimp_brush_editor_update_shape,
                                          editor);
 
       adj   = editor->radius_data;

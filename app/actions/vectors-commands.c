@@ -48,6 +48,7 @@
 #include "vectors/gimpvectors-import.h"
 
 #include "widgets/gimpaction.h"
+#include "widgets/gimpclipboard.h"
 #include "widgets/gimphelp-ids.h"
 
 #include "display/gimpdisplay.h"
@@ -139,7 +140,7 @@ vectors_edit_attributes_cmd_callback (GtkAction *action,
                                         gimp_object_get_name (GIMP_OBJECT (vectors)),
                                         _("Path Attributes"),
                                         "gimp-vectors-edit",
-                                        GIMP_STOCK_EDIT,
+                                        GTK_STOCK_EDIT,
                                         _("Edit Path Attributes"),
                                         GIMP_HELP_PATH_EDIT);
 
@@ -315,10 +316,10 @@ vectors_selection_to_vectors_cmd_callback (GtkAction *action,
 
   if (value)
     proc_rec = procedural_db_lookup (gimage->gimp,
-                                     "plug_in_sel2path_advanced");
+                                     "plug-in-sel2path-advanced");
   else
     proc_rec = procedural_db_lookup (gimage->gimp,
-                                     "plug_in_sel2path");
+                                     "plug-in-sel2path");
 
   if (! proc_rec)
     {
@@ -339,7 +340,7 @@ vectors_selection_to_vectors_cmd_callback (GtkAction *action,
   args[2].value.pdb_int = -1;  /*  unused  */
 
   plug_in_run (gimage->gimp, action_data_get_context (data),
-               gdisp ? GIMP_PROGRESS (gdisp) : NULL,
+               GIMP_PROGRESS (gdisp),
                proc_rec, args, 3, FALSE, TRUE,
 	       gdisp ? gimp_display_get_ID (gdisp) : 0);
 
@@ -415,11 +416,16 @@ vectors_copy_cmd_callback (GtkAction *action,
 {
   GimpImage   *gimage;
   GimpVectors *vectors;
+  gchar       *svg;
   return_if_no_vectors (gimage, vectors, data);
 
-#ifdef __GNUC__
-#warning FIXME: need vectors clipboard
-#endif
+  svg = gimp_vectors_export_string (gimage, vectors);
+
+  if (svg)
+    {
+      gimp_clipboard_set_svg (gimage->gimp, svg);
+      g_free (svg);
+    }
 }
 
 void
@@ -427,32 +433,29 @@ vectors_paste_cmd_callback (GtkAction *action,
                             gpointer   data)
 {
   GimpImage *gimage;
+  gchar     *svg;
+  gsize      svg_size;
   return_if_no_image (gimage, data);
 
-#ifdef __GNUC__
-#warning FIXME: need vectors clipboard
-#endif
-}
+  svg = gimp_clipboard_get_svg (gimage->gimp, &svg_size);
 
-void
-vectors_import_cmd_callback (GtkAction *action,
-                             gpointer   data)
-{
-  VectorsImportDialog *dialog;
-  GimpImage           *gimage;
-  GtkWidget           *widget;
-  return_if_no_image (gimage, data);
-  return_if_no_widget (widget, data);
+  if (svg)
+    {
+      GError *error = NULL;
 
-  dialog = vectors_import_dialog_new (gimage, widget,
-                                      vectors_import_merge,
-                                      vectors_import_scale);
+      if (! gimp_vectors_import_buffer (gimage, svg, svg_size,
+                                        TRUE, TRUE, -1, &error))
+        {
+          g_message (error->message);
+          g_clear_error (&error);
+        }
+      else
+        {
+          gimp_image_flush (gimage);
+        }
 
-  g_signal_connect (dialog->dialog, "response",
-                    G_CALLBACK (vectors_import_response),
-                    dialog);
-
-  gtk_widget_show (dialog->dialog);
+      g_free (svg);
+    }
 }
 
 void
@@ -471,6 +474,27 @@ vectors_export_cmd_callback (GtkAction *action,
 
   g_signal_connect (dialog->dialog, "response",
                     G_CALLBACK (vectors_export_response),
+                    dialog);
+
+  gtk_widget_show (dialog->dialog);
+}
+
+void
+vectors_import_cmd_callback (GtkAction *action,
+                             gpointer   data)
+{
+  VectorsImportDialog *dialog;
+  GimpImage           *gimage;
+  GtkWidget           *widget;
+  return_if_no_image (gimage, data);
+  return_if_no_widget (widget, data);
+
+  dialog = vectors_import_dialog_new (gimage, widget,
+                                      vectors_import_merge,
+                                      vectors_import_scale);
+
+  g_signal_connect (dialog->dialog, "response",
+                    G_CALLBACK (vectors_import_response),
                     dialog);
 
   gtk_widget_show (dialog->dialog);

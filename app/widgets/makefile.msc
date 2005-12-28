@@ -36,6 +36,7 @@ OBJECTS = \
 	gimpbrushselect.obj \
 	gimpbufferview.obj \
 	gimpcellrendereraccel.obj \
+	gimpcellrendererdashes.obj \
 	gimpcellrendererviewable.obj \
 	gimpchanneltreeview.obj \
 	gimpclipboard.obj \
@@ -60,9 +61,11 @@ OBJECTS = \
 	gimpcontrollereditor.obj \
 	gimpcontrollerinfo.obj \
 	gimpcontrollerkeyboard.obj \
+	gimpcontrollerlist.obj \
 	gimpcontrollerwheel.obj \
 	gimpcontrollers.obj \
 	gimpcursor.obj \
+	gimpcursorview.obj \
 	gimpdasheditor.obj \
 	gimpdataeditor.obj \
 	gimpdatafactoryview.obj \
@@ -71,20 +74,20 @@ OBJECTS = \
 	gimpdevicestatus.obj \
 	gimpdialogfactory.obj \
 	gimpdnd.obj \
+	gimpdnd-xds.obj \
 	gimpdock.obj \
 	gimpdockable.obj \
 	gimpdockbook.obj \
 	gimpdocked.obj \
+	gimpdockseparator.obj \
 	gimpdocumentview.obj \
 	gimpdrawabletreeview.obj \
 	gimpeditor.obj \
 	gimpenumaction.obj \
-	gimpenumcombobox.obj \
-	gimpenumstore.obj \
-	gimpenumwidgets.obj \
 	gimperrorconsole.obj \
 	gimperrordialog.obj \
 	gimpfgbgeditor.obj \
+	gimpfgbgview.obj \
 	gimpfiledialog.obj \
 	gimpfileprocview.obj \
 	gimpfontview.obj \
@@ -98,22 +101,28 @@ OBJECTS = \
 	gimphistogramview.obj \
 	gimpimagedock.obj \
 	gimpimageeditor.obj \
+	gimpimagepropview.obj \
 	gimpimageview.obj \
 	gimpitemtreeview.obj \
 	gimplayertreeview.obj \
+	gimpmenudock.obj \
 	gimpmenufactory.obj \
 	gimpmessagebox.obj \
 	gimpmessagedialog.obj \
 	gimpnavigationview.obj \
 	gimppaletteeditor.obj \
 	gimppaletteselect.obj \
+	gimppaletteview.obj \
 	gimppatternfactoryview.obj \
 	gimppatternselect.obj \
 	gimppdbdialog.obj \
+	gimppixbuf.obj \
 	gimppluginaction.obj \
 	gimpprogressbox.obj \
 	gimpprogressdialog.obj \
 	gimppropwidgets.obj \
+	gimprender.obj \
+	gimpsamplepointeditor.obj \
 	gimpselectiondata.obj \
 	gimpselectioneditor.obj \
 	gimpsessioninfo.obj \
@@ -149,6 +158,7 @@ OBJECTS = \
 	gimpviewrendererbuffer.obj \
  	gimpviewrendererdrawable.obj \
  	gimpviewrenderergradient.obj \
+	gimpviewrendererpalette.obj \
 	gimpviewrendererimage.obj \
 	gimpviewrendererimagefile.obj \
 	gimpviewrendererlayer.obj \

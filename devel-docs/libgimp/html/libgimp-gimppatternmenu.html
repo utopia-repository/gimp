@@ -1,13 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimppatternmenu</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimppalettemenu.html" title="gimppalettemenu">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<link rel="next" href="GimpProcBrowserDialog.html" title="GimpProcBrowserDialog">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -17,27 +17,24 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
+<link rel="index" href="ix01.html" title="Index">
+<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimppalettemenu.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
-<td>&#160;</td>
-</tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2584244" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2694812" class="shortcut">Description</a></nobr></td></tr>
-</table>
+<td><a accesskey="n" href="GimpProcBrowserDialog.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppatternmenu"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2584244"></a><span class="refentrytitle">gimppatternmenu</span>
-</h2>
+<h2><span class="refentrytitle">gimppatternmenu</span></h2>
 <p>gimppatternmenu &#8212; A widget for selecting patterns.</p>
 </td>
 <td valign="top" align="right"></td>
@@ -48,32 +45,43 @@
 
 
 
-GtkWidget*          <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-new">gimp_pattern_select_widget_new</a>      (const gchar *title,
-                                                         const gchar *pattern_name,
-                                                         <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
-                                                         gpointer data);
-void                <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-close">gimp_pattern_select_widget_close</a>    (GtkWidget *widget);
-void                <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-set">gimp_pattern_select_widget_set</a>      (GtkWidget *widget,
-                                                         const gchar *pattern_name);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-new">gimp_pattern_select_widget_new</a>  (const gchar *title,
+                                             const gchar *pattern_name,
+                                             <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
+                                             gpointer data);
+void        <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-close">gimp_pattern_select_widget_close</a>
+                                            (<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *widget);
+void        <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-set">gimp_pattern_select_widget_set</a>  (<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *widget,
+                                             const gchar *pattern_name);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2694812"></a><h2>Description</h2>
+<a name="id2613701"></a><h2>Description</h2>
 <p>
 A widget for selecting patterns.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2694828"></a><h2>Details</h2>
+<a name="id2655665"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2694838"></a><h3>
+<a name="id2655671"></a><h3>
 <a name="gimp-pattern-select-widget-new"></a>gimp_pattern_select_widget_new ()</h3>
-<a class="indexterm" name="id2694849"></a><pre class="programlisting">GtkWidget*          gimp_pattern_select_widget_new      (const gchar *title,
-                                                         const gchar *pattern_name,
-                                                         <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
-                                                         gpointer data);</pre>
+<a class="indexterm" name="id2655679"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_pattern_select_widget_new  (const gchar *title,
+                                             const gchar *pattern_name,
+                                             <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
+                                             gpointer data);</pre>
 <p>
-Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
+Creates a new <a
+href="../gtk/GtkWidget.html"
+><span class="type">GtkWidget</span></a> that completely controls the selection of
 a pattern. This widget is suitable for placement in a table in a
 plug-in dialog.</p>
 <p>
@@ -83,28 +91,35 @@ plug-in dialog.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
 <td>        Title of the dialog to use or <code class="literal">NULL</code> to use the default title.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>pattern_name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>pattern_name</code></em>&#160;:</span></td>
 <td> Initial pattern name or <code class="literal">NULL</code> to use current selection.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
 <td>     A function to call when the selected pattern changes.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>         A pointer to arbitary data to be used in the call to <em class="parameter"><code>callback</code></em>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A <span class="type">GtkWidget</span> that you can use in your UI.
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> A <a
+href="../gtk/GtkWidget.html"
+><span class="type">GtkWidget</span></a> that you can use in your UI.
 </td>
 </tr>
 </tbody>
@@ -112,9 +127,12 @@ plug-in dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2695013"></a><h3>
+<a name="id2659615"></a><h3>
 <a name="gimp-pattern-select-widget-close"></a>gimp_pattern_select_widget_close ()</h3>
-<a class="indexterm" name="id2691035"></a><pre class="programlisting">void                gimp_pattern_select_widget_close    (GtkWidget *widget);</pre>
+<a class="indexterm" name="id2659624"></a><pre class="programlisting">void        gimp_pattern_select_widget_close
+                                            (<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *widget);</pre>
 <p>
 Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p>
 <p>
@@ -123,7 +141,8 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
 <td> A pattern select widget.
 </td>
 </tr></tbody>
@@ -131,10 +150,12 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691090"></a><h3>
+<a name="id2659679"></a><h3>
 <a name="gimp-pattern-select-widget-set"></a>gimp_pattern_select_widget_set ()</h3>
-<a class="indexterm" name="id2691101"></a><pre class="programlisting">void                gimp_pattern_select_widget_set      (GtkWidget *widget,
-                                                         const gchar *pattern_name);</pre>
+<a class="indexterm" name="id2659688"></a><pre class="programlisting">void        gimp_pattern_select_widget_set  (<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *widget,
+                                             const gchar *pattern_name);</pre>
 <p>
 Sets the current pattern for the pattern select widget.  Calls the
 callback function if one was supplied in the call to
@@ -146,12 +167,14 @@ callback function if one was supplied in the call to
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
 <td>       A pattern select widget.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>pattern_name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>pattern_name</code></em>&#160;:</span></td>
 <td> Pattern name to set. NULL means no change.
 </td>
 </tr>
@@ -160,5 +183,9 @@ callback function if one was supplied in the call to
 </div>
 </div>
 </div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimp-gimppalettemenu.html"><b>&lt;&lt;&#160;gimppalettemenu</b></a></td>
+<td align="right"><a accesskey="n" href="GimpProcBrowserDialog.html"><b>GimpProcBrowserDialog&#160;&gt;&gt;</b></a></td>
+</tr></table>
 </body>
 </html>

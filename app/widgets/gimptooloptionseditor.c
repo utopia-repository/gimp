@@ -37,9 +37,9 @@
 #include "gimpdocked.h"
 #include "gimphelp-ids.h"
 #include "gimpmenufactory.h"
+#include "gimppropwidgets.h"
 #include "gimpview.h"
 #include "gimpviewrenderer.h"
-#include "gimppropwidgets.h"
 #include "gimptooloptionseditor.h"
 #include "gimpuimanager.h"
 #include "gimpwidgets-utils.h"
@@ -47,9 +47,7 @@
 #include "gimp-intl.h"
 
 
-static void   gimp_tool_options_editor_class_init        (GimpToolOptionsEditorClass *klass);
-static void   gimp_tool_options_editor_init              (GimpToolOptionsEditor      *editor);
-static void   gimp_tool_options_editor_docked_iface_init (GimpDockedInterface        *docked_iface);
+static void   gimp_tool_options_editor_docked_iface_init (GimpDockedInterface *iface);
 
 static GObject * gimp_tool_options_editor_constructor  (GType                  type,
                                                         guint                  n_params,
@@ -69,6 +67,8 @@ static void   gimp_tool_options_editor_restore_clicked (GtkWidget             *w
 static void   gimp_tool_options_editor_delete_clicked  (GtkWidget             *widget,
                                                         GimpToolOptionsEditor *editor);
 static void   gimp_tool_options_editor_drop_tool       (GtkWidget             *widget,
+                                                        gint                   x,
+                                                        gint                   y,
                                                         GimpViewable          *viewable,
                                                         gpointer               data);
 
@@ -81,53 +81,19 @@ static void   gimp_tool_options_editor_presets_changed (GimpContainer         *c
                                                         GimpToolOptionsEditor *editor);
 
 
-static GimpEditorClass *parent_class = NULL;
+G_DEFINE_TYPE_WITH_CODE (GimpToolOptionsEditor, gimp_tool_options_editor,
+                         GIMP_TYPE_EDITOR,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_DOCKED,
+                                                gimp_tool_options_editor_docked_iface_init));
 
+#define parent_class gimp_tool_options_editor_parent_class
 
-GType
-gimp_tool_options_editor_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo editor_info =
-      {
-        sizeof (GimpToolOptionsEditorClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_tool_options_editor_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_tool */
-        sizeof (GimpToolOptionsEditor),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_tool_options_editor_init,
-      };
-      static const GInterfaceInfo docked_iface_info =
-      {
-        (GInterfaceInitFunc) gimp_tool_options_editor_docked_iface_init,
-        NULL,           /* iface_finalize */
-        NULL            /* iface_data     */
-      };
-
-      type = g_type_register_static (GIMP_TYPE_EDITOR,
-                                     "GimpToolOptionsEditor",
-                                     &editor_info, 0);
-
-      g_type_add_interface_static (type, GIMP_TYPE_DOCKED,
-                                   &docked_iface_info);
-    }
-
-  return type;
-}
 
 static void
 gimp_tool_options_editor_class_init (GimpToolOptionsEditorClass *klass)
 {
   GObjectClass   *object_class     = G_OBJECT_CLASS (klass);
   GtkObjectClass *gtk_object_class = GTK_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->constructor = gimp_tool_options_editor_constructor;
 
@@ -246,14 +212,12 @@ gimp_tool_options_editor_get_preview (GimpDocked   *docked,
                                       GimpContext  *context,
                                       GtkIconSize   size)
 {
-  GdkScreen *screen;
-  GtkWidget *view;
-  gint       width;
-  gint       height;
+  GtkSettings *settings = gtk_widget_get_settings (GTK_WIDGET (docked));
+  GtkWidget   *view;
+  gint         width;
+  gint         height;
 
-  screen = gtk_widget_get_screen (GTK_WIDGET (docked));
-  gtk_icon_size_lookup_for_settings (gtk_settings_get_for_screen (screen),
-                                     size, &width, &height);
+  gtk_icon_size_lookup_for_settings (settings, size, &width, &height);
 
   view = gimp_prop_preview_new (G_OBJECT (context), "tool", height);
   GIMP_VIEW (view)->renderer->size = -1;
@@ -300,7 +264,7 @@ gimp_tool_options_editor_new (Gimp            *gimp,
 
   user_context = gimp_get_user_context (gimp);
 
-  g_signal_connect_object (user_context, "tool_changed",
+  g_signal_connect_object (user_context, "tool-changed",
                            G_CALLBACK (gimp_tool_options_editor_tool_changed),
                            editor,
                            0);
@@ -331,7 +295,8 @@ gimp_tool_options_editor_menu_popup (GimpToolOptionsEditor *editor,
 {
   GimpEditor *gimp_editor = GIMP_EDITOR (editor);
 
-  gimp_ui_manager_ui_get (gimp_editor->ui_manager, gimp_editor->ui_path);
+  gtk_ui_manager_get_widget (GTK_UI_MANAGER (gimp_editor->ui_manager),
+                             gimp_editor->ui_path);
   gimp_ui_manager_update (gimp_editor->ui_manager, gimp_editor->popup_data);
 
   gimp_ui_manager_ui_popup (gimp_editor->ui_manager, path,
@@ -380,6 +345,8 @@ gimp_tool_options_editor_delete_clicked (GtkWidget             *widget,
 
 static void
 gimp_tool_options_editor_drop_tool (GtkWidget    *widget,
+                                    gint          x,
+                                    gint          y,
                                     GimpViewable *viewable,
                                     gpointer      data)
 {

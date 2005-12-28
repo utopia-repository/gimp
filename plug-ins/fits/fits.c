@@ -32,16 +32,12 @@
  *                        (moved it from load to save)
  */
 
-static char ident[] = "@(#) GIMP FITS file-plugin v1.06  21-Nov-99";
-
 #include "config.h"
 
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
-#include <gtk/gtk.h>
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -49,6 +45,11 @@ static char ident[] = "@(#) GIMP FITS file-plugin v1.06  21-Nov-99";
 #include "fitsrw.h"
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define LOAD_PROC      "file-fits-load"
+#define SAVE_PROC      "file-fits-save"
+#define PLUG_IN_BINARY "fits"
 
 
 /* Load info */
@@ -75,7 +76,9 @@ static gint   save_image (const gchar  *filename,
                           gint32        drawable_ID);
 
 static FITS_HDU_LIST *create_fits_header (FITS_FILE *ofp,
-					  guint width, guint height, guint bpp);
+					  guint width,
+                                          guint height,
+                                          guint bpp);
 static gint save_index  (FITS_FILE *ofp,
 			 gint32 image_ID,
 			 gint32 drawable_ID);
@@ -132,9 +135,9 @@ query (void)
 {
   static GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to load" },
-    { GIMP_PDB_STRING,   "raw_filename", "The name of the file to load" },
+    { GIMP_PDB_STRING,   "raw-filename", "The name of the file to load" },
   };
   static GimpParamDef load_return_vals[] =
   {
@@ -143,16 +146,17 @@ query (void)
 
   static GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
-    { GIMP_PDB_STRING,   "raw_filename", "The name of the file to save the image in" },
+    { GIMP_PDB_STRING,   "raw-filename", "The name of the file to save the image in" },
   };
 
-  gimp_install_procedure ("file_fits_load",
+  gimp_install_procedure (LOAD_PROC,
                           "load file of the FITS file format",
-                          "load file of the FITS file format (Flexible Image Transport System)",
+                          "load file of the FITS file format "
+                          "(Flexible Image Transport System)",
                           "Peter Kirchgessner",
                           "Peter Kirchgessner (peter@kirchgessner.net)",
                           "1997",
@@ -163,15 +167,16 @@ query (void)
                           G_N_ELEMENTS (load_return_vals),
                           load_args, load_return_vals);
 
-  gimp_register_file_handler_mime ("file_fits_load", "image/x-fits");
-  gimp_register_magic_load_handler ("file_fits_load",
+  gimp_register_file_handler_mime (LOAD_PROC, "image/x-fits");
+  gimp_register_magic_load_handler (LOAD_PROC,
 				    "fit,fits",
 				    "",
                                     "0,string,SIMPLE");
 
-  gimp_install_procedure ("file_fits_save",
+  gimp_install_procedure (SAVE_PROC,
                           "save file in the FITS file format",
-                          "FITS saving handles all image types except those with alpha channels.",
+                          "FITS saving handles all image types except "
+                          "those with alpha channels.",
                           "Peter Kirchgessner",
                           "Peter Kirchgessner (peter@kirchgessner.net)",
                           "1997",
@@ -181,8 +186,8 @@ query (void)
                           G_N_ELEMENTS (save_args), 0,
                           save_args, NULL);
 
-  gimp_register_file_handler_mime ("file_fits_save", "image/x-fits");
-  gimp_register_save_handler ("file_fits_save", "fit,fits", "");
+  gimp_register_file_handler_mime (SAVE_PROC, "image/x-fits");
+  gimp_register_save_handler (SAVE_PROC, "fit,fits", "");
 }
 
 
@@ -209,13 +214,13 @@ run (const gchar      *name,
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 
-  if (strcmp (name, "file_fits_load") == 0)
+  if (strcmp (name, LOAD_PROC) == 0)
     {
       switch (run_mode)
 	{
         case GIMP_RUN_INTERACTIVE:
           /*  Possibly retrieve data  */
-          gimp_get_data ("file_fits_load", &plvals);
+          gimp_get_data (LOAD_PROC, &plvals);
 
           if (!load_dialog ())
 	    status = GIMP_PDB_CANCEL;
@@ -228,7 +233,7 @@ run (const gchar      *name,
 
         case GIMP_RUN_WITH_LAST_VALS:
           /* Possibly retrieve data */
-          gimp_get_data ("file_fits_load", &plvals);
+          gimp_get_data (LOAD_PROC, &plvals);
           break;
 
         default:
@@ -256,10 +261,10 @@ run (const gchar      *name,
 
 	  /*  Store plvals data  */
 	  if (status == GIMP_PDB_SUCCESS)
-	    gimp_set_data ("file_fits_load", &plvals, sizeof (FITSLoadVals));
+	    gimp_set_data (LOAD_PROC, &plvals, sizeof (FITSLoadVals));
 	}
     }
-  else if (strcmp (name, "file_fits_save") == 0)
+  else if (strcmp (name, SAVE_PROC) == 0)
     {
       image_ID = param[1].data.d_int32;
       drawable_ID = param[2].data.d_int32;
@@ -269,7 +274,7 @@ run (const gchar      *name,
 	{
 	case GIMP_RUN_INTERACTIVE:
 	case GIMP_RUN_WITH_LAST_VALS:
-	  gimp_ui_init ("fits", FALSE);
+	  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 	  export = gimp_export_image (&image_ID, &drawable_ID, "FITS",
 				      (GIMP_EXPORT_CAN_HANDLE_RGB |
 				       GIMP_EXPORT_CAN_HANDLE_GRAY |
@@ -331,7 +336,7 @@ load_image (const gchar *filename)
   FITS_FILE *ifp;
   FITS_HDU_LIST *hdu;
 
-  fp = fopen (filename, "rb");
+  fp = g_fopen (filename, "rb");
   if (!fp)
     {
       g_message (_("Could not open '%s' for reading: %s"),
@@ -420,7 +425,6 @@ save_image (const gchar *filename,
   FITS_FILE* ofp;
   GimpImageType drawable_type;
   gint retval;
-  char *temp = ident; /* Just to satisfy lint/gcc */
 
   drawable_type = gimp_drawable_type (drawable_ID);
 
@@ -452,10 +456,8 @@ save_image (const gchar *filename,
       return (FALSE);
     }
 
-  temp = g_strdup_printf (_("Saving '%s'..."),
-                          gimp_filename_to_utf8 (filename));
-  gimp_progress_init (temp);
-  g_free (temp);
+  gimp_progress_init_printf (_("Saving '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   if ((drawable_type == GIMP_INDEXED_IMAGE) ||
       (drawable_type == GIMP_INDEXEDA_IMAGE))
@@ -964,16 +966,21 @@ load_dialog (void)
   GtkWidget *frame;
   gboolean   run;
 
-  gimp_ui_init ("fits", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Load FITS File"), "fits",
+  dialog = gimp_dialog_new (_("Load FITS File"), PLUG_IN_BINARY,
                             NULL, 0,
-			    gimp_standard_help_func, "file-fits-load",
+			    gimp_standard_help_func, LOAD_PROC,
 
 			    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			    GTK_STOCK_OK,     GTK_RESPONSE_OK,
+			    GTK_STOCK_OPEN,   GTK_RESPONSE_OK,
 
 			    NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
@@ -981,7 +988,7 @@ load_dialog (void)
 		      TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
-  frame = gimp_int_radio_group_new (TRUE, _("BLANK/NaN Pixel Replacement"),
+  frame = gimp_int_radio_group_new (TRUE, _("Replacement for undefined pixels"),
 				    G_CALLBACK (gimp_radio_button_update),
 				    &plvals.replace, plvals.replace,
 

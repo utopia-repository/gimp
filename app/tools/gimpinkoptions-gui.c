@@ -29,7 +29,6 @@
 #include "paint/gimpinkoptions.h"
 
 #include "widgets/gimpblobeditor.h"
-#include "widgets/gimppropwidgets.h"
 
 #include "gimpinkoptions-gui.h"
 #include "gimppaintoptions-gui.h"
@@ -176,7 +175,7 @@ gimp_ink_options_gui (GimpToolOptions *tool_options)
 static GtkWidget *
 blob_image_new (GimpInkBlobType blob_type)
 {
-  const guchar *stock_id = NULL;
+  const gchar *stock_id = NULL;
 
   switch (blob_type)
     {

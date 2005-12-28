@@ -10,14 +10,12 @@
 			     position)
   (let* ((width (car (gimp-image-width image)))
 	 (height (car (gimp-image-height image))))
-    (gimp-image-undo-group-start image)
 
     (if (= direction 0) 
 	;; check position is inside the image boundaries
-	(if (<= position height) (gimp-image-add-hguide image position))
-	(if (<= position width) (gimp-image-add-vguide image position)))
+	(if (< position height) (gimp-image-add-hguide image position))
+	(if (< position width) (gimp-image-add-vguide image position)))
 
-    (gimp-image-undo-group-end image)
     (gimp-displays-flush)))
     
 (script-fu-register "script-fu-guide-new" 

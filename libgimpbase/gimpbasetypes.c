@@ -27,8 +27,8 @@
 #include "gimpbasetypes.h"
 
 
-static GQuark  gimp_translation_domain_quark (void) G_GNUC_CONST;
-static GQuark  gimp_value_descriptions_quark (void) G_GNUC_CONST;
+static GQuark        gimp_translation_domain_quark (void) G_GNUC_CONST;
+static GQuark        gimp_value_descriptions_quark (void) G_GNUC_CONST;
 
 
 /**

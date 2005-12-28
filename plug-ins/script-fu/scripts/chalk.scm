@@ -39,7 +39,7 @@
     (gimp-edit-fill bg-layer BACKGROUND-FILL)
 
     ; the actual effect
-    (gimp-layer-set-preserve-trans logo-layer FALSE)
+    (gimp-layer-set-lock-alpha logo-layer FALSE)
     (plug-in-gauss-rle 1 img logo-layer 2.0 1 1)
     (plug-in-spread 1 img logo-layer 5.0 5.0)
     (plug-in-ripple 1 img logo-layer 27 2 0 0 0 TRUE TRUE)
@@ -77,7 +77,7 @@
                     SF-COLOR    _"Background color" '(0 0 0))
 
 (script-fu-menu-register "script-fu-chalk-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-chalk-logo text
@@ -92,9 +92,8 @@
     (gimp-context-push)
 
     (gimp-image-undo-disable img)
-    (gimp-drawable-set-name text-layer text)
     (gimp-context-set-foreground chalk-color)
-    (gimp-layer-set-preserve-trans text-layer TRUE)
+    (gimp-layer-set-lock-alpha text-layer TRUE)
     (gimp-edit-fill text-layer FOREGROUND-FILL)
     (apply-chalk-logo-effect img text-layer bg-color)
     (gimp-image-undo-enable img)
@@ -116,4 +115,4 @@
                     SF-COLOR      _"Chalk color"        '(255 255 255))
 
 (script-fu-menu-register "script-fu-chalk-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

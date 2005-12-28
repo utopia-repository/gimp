@@ -22,14 +22,17 @@
 #include <string.h>
 #include <locale.h>
 
+#ifdef HAVE__NL_MEASUREMENT_MEASUREMENT
+#include <langinfo.h>
+#endif
+
 #include <glib-object.h>
 #include <gobject/gvaluecollector.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
 
 #include "core-types.h"
-
-#include "config/gimpconfig-types.h"
 
 #include "gimp-utils.h"
 
@@ -196,6 +199,25 @@ gimp_get_default_language (const gchar *category)
   return lang;
 }
 
+GimpUnit
+gimp_get_default_unit (void)
+{
+#ifdef HAVE__NL_MEASUREMENT_MEASUREMENT
+  const gchar *measurement = nl_langinfo (_NL_MEASUREMENT_MEASUREMENT);
+
+  switch (*((guchar *) measurement))
+    {
+    case 1: /* metric   */
+      return GIMP_UNIT_MM;
+
+    case 2: /* imperial */
+      return GIMP_UNIT_INCH;
+    }
+#endif
+
+  return GIMP_UNIT_INCH;
+}
+
 gboolean
 gimp_boolean_handled_accum (GSignalInvocationHint *ihint,
                             GValue                *return_accu,
@@ -303,27 +325,4 @@ gimp_parameters_free (GParameter *params,
 
       g_free (params);
     }
-}
-
-const gchar *
-gimp_check_glib_version (guint required_major,
-                         guint required_minor,
-                         guint required_micro)
-{
-#ifdef __GNUC__
-#warning FIXME: remove this function as soon as we depend on GLib 2.6.0
-#endif
-
-  gint glib_effective_micro = 100 * glib_minor_version + glib_micro_version;
-  gint required_effective_micro = 100 * required_minor + required_micro;
-
-  if (required_major > glib_major_version)
-    return "GLib version too old (major mismatch)";
-  if (required_major < glib_major_version)
-    return "GLib version too new (major mismatch)";
-  if (required_effective_micro < glib_effective_micro - glib_binary_age)
-    return "GLib version too new (micro mismatch)";
-  if (required_effective_micro > glib_effective_micro)
-    return "GLib version too old (micro mismatch)";
-  return NULL;
 }

@@ -63,8 +63,7 @@ typedef struct
   gint showgrid;
   gint showcaps;
 
-  glong preview_zoom_factor;
-
+  gdouble zoom;
   gdouble alpha,beta,gamma;
   gdouble maxdepth;
   gdouble pixeltreshold;
@@ -74,7 +73,7 @@ typedef struct
 
   gint32 boxmap_id[6];
   gint32 cylindermap_id[2];
-  
+
 } MapObjectValues;
 
 /* Externally visible variables */

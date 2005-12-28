@@ -27,6 +27,7 @@
 #include <libgimp/gimpbrush_pdb.h>
 #include <libgimp/gimpbrushes_pdb.h>
 #include <libgimp/gimpbrushselect_pdb.h>
+#include <libgimp/gimpbuffer_pdb.h>
 #include <libgimp/gimpchannel_pdb.h>
 #include <libgimp/gimpcolor_pdb.h>
 #include <libgimp/gimpcontext_pdb.h>
@@ -43,6 +44,7 @@
 #include <libgimp/gimpgradient_pdb.h>
 #include <libgimp/gimpgradients_pdb.h>
 #include <libgimp/gimpgradientselect_pdb.h>
+#include <libgimp/gimpgrid_pdb.h>
 #include <libgimp/gimpguides_pdb.h>
 #include <libgimp/gimphelp_pdb.h>
 #include <libgimp/gimpimage_pdb.h>
@@ -67,5 +69,6 @@
 #include <libgimp/gimptransformtools_pdb.h>
 #include <libgimp/gimpundo_pdb.h>
 #include <libgimp/gimpunit_pdb.h>
+#include <libgimp/gimpvectors_pdb.h>
 
 #endif /* __GIMP_PDB_H__ */

@@ -24,17 +24,15 @@
 
 #include "config.h"
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <errno.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
-#include <string.h>
-
-#include <gtk/gtk.h>
+#include <glib.h>
 
 #ifdef G_OS_WIN32
 #include <libgimpbase/gimpwin32-io.h>
@@ -57,6 +55,7 @@
 #include "gfig-line.h"
 #include "gfig-poly.h"
 #include "gfig-preview.h"
+#include "gfig-rectangle.h"
 #include "gfig-spiral.h"
 #include "gfig-star.h"
 #include "gfig-stock.h"
@@ -79,14 +78,8 @@
 #define GRID_HIGHTLIGHT  1
 #define GRID_RESTORE     2
 
-#define PAINT_LAYERS_MENU 1
 #define PAINT_BGS_MENU    2
 #define PAINT_TYPE_MENU   3
-
-#define SELECT_TYPE_MENU      1
-#define SELECT_ARCTYPE_MENU   2
-#define SELECT_TYPE_MENU_FILL 3
-#define SELECT_TYPE_MENU_WHEN 4
 
 #define OBJ_SELECT_GT 1
 #define OBJ_SELECT_LT 2
@@ -101,7 +94,12 @@ SelectItVals selvals =
     FALSE,                /* drawgrid                      */
     FALSE,                /* snap2grid                     */
     FALSE,                /* lockongrid                    */
-    TRUE                  /* show control points           */
+    TRUE,                 /* show control points           */
+    0.0,                  /* grid_radius_min               */
+    10.0,                 /* grid_radius_interval          */
+    0.0,	          /* grid_rotation                 */
+    5.0,                  /* grid_granularity              */
+    120                   /* grid_sectors_desired          */
   },
   FALSE,                  /* show image                    */
   MIN_UNDO + (MAX_UNDO - MIN_UNDO)/2,  /* Max level of undos */
@@ -134,6 +132,8 @@ selection_option selopt =
 typedef struct
 {
   GtkAdjustment *gridspacing;
+  GtkAdjustment *grid_sectors_desired;
+  GtkAdjustment *grid_radius_interval;
   GtkWidget     *gridtypemenu;
   GtkWidget     *drawgrid;
   GtkWidget     *snap2grid;
@@ -160,8 +160,7 @@ static void       gfig_save_action_callback  (GtkAction *action,
 static void       gfig_list_load_all         (const gchar *path);
 static void       gfig_list_free_all         (void);
 static void       create_notebook_pages      (GtkWidget *notebook);
-static void       select_combo_callback      (GtkWidget *widget,
-                                              gpointer   data);
+static void       select_filltype_callback   (GtkWidget *widget);
 static void       gfig_grid_action_callback  (GtkAction *action,
                                               gpointer   data);
 static void       gfig_prefs_action_callback (GtkAction *action,
@@ -221,8 +220,9 @@ gfig_dialog (void)
   GtkWidget    *hbox;
   GtkUIManager *ui_manager;
   GtkWidget    *empty_label;
+  gchar        *path;
 
-  gimp_ui_init ("gfig", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
   img_width  = gimp_drawable_width (gfig_context->drawable_id);
   img_height = gimp_drawable_height (gfig_context->drawable_id);
@@ -252,7 +252,8 @@ gfig_dialog (void)
     }
   else
     {
-      newlayer = gimp_layer_new (gfig_context->image_id, "GFig", img_width, img_height,
+      newlayer = gimp_layer_new (gfig_context->image_id, "GFig",
+                                 img_width, img_height,
                                  GIMP_RGBA_IMAGE, 100., GIMP_NORMAL_MODE);
       gimp_drawable_fill (newlayer, GIMP_TRANSPARENT_FILL);
       gimp_image_add_layer (gfig_context->image_id, newlayer, -1);
@@ -264,20 +265,18 @@ gfig_dialog (void)
 
   gfig_stock_init ();
 
-  gfig_path = gimp_gimprc_query ("gfig-path");
+  path = gimp_gimprc_query ("gfig-path");
 
-  if (! gfig_path)
+  if (path)
     {
-      gchar *gimprc = gimp_personal_rc_file ("gimprc");
-      gchar *full_path;
-      gchar *esc_path;
-
-      full_path =
-        g_strconcat ("${gimp_dir}", G_DIR_SEPARATOR_S, "gfig",
-                     G_SEARCHPATH_SEPARATOR_S,
-                     "${gimp_data_dir}", G_DIR_SEPARATOR_S, "gfig",
-                     NULL);
-      esc_path = g_strescape (full_path, NULL);
+      gfig_path = g_filename_from_utf8 (path, -1, NULL, NULL, NULL);
+      g_free (path);
+    }
+  else
+    {
+      gchar *gimprc    = gimp_personal_rc_file ("gimprc");
+      gchar *full_path = gimp_config_build_data_path ("gfig");
+      gchar *esc_path  = g_strescape (full_path, NULL);
       g_free (full_path);
 
       g_message (_("No %s in gimprc:\n"
@@ -292,14 +291,19 @@ gfig_dialog (void)
     }
 
   /* Start building the dialog up */
-  top_level_dlg = gimp_dialog_new (_("Gfig"), "gfig",
+  top_level_dlg = gimp_dialog_new (_("Gfig"), PLUG_IN_BINARY,
                                    NULL, 0,
-                                   gimp_standard_help_func, HELP_ID,
+                                   gimp_standard_help_func, PLUG_IN_PROC,
 
                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                    GTK_STOCK_CLOSE,  GTK_RESPONSE_OK,
 
                                    NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (top_level_dlg),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   g_signal_connect (top_level_dlg, "response",
                     G_CALLBACK (gfig_response),
@@ -338,7 +342,7 @@ gfig_dialog (void)
   gtk_widget_show (right_vbox);
 
   /* Tool options notebook */
-  frame = gimp_frame_new ( _("Tool options"));
+  frame = gimp_frame_new ( _("Tool Options"));
   gtk_box_pack_start (GTK_BOX (right_vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
@@ -375,7 +379,7 @@ gfig_dialog (void)
                     vbox);
 
   /* foreground color button in Stroke frame*/
-  gfig_context->fg_color = g_new (GimpRGB, 1);
+  gfig_context->fg_color = g_new0 (GimpRGB, 1);
   gfig_context->fg_color_button = gimp_color_button_new ("Foreground",
                                                     SEL_BUTTON_WIDTH,
                                                     SEL_BUTTON_HEIGHT,
@@ -416,15 +420,17 @@ gfig_dialog (void)
 
   /* fill style combo box in Style frame  */
   gfig_context->fillstyle_combo = combo
-    = gimp_int_combo_box_new (_("No fill"),       FILL_NONE,
-                              _("Color fill"),    FILL_COLOR,
-                              _("Pattern fill"),  FILL_PATTERN,
-                              _("Gradient fill"), FILL_GRADIENT,
+    = gimp_int_combo_box_new (_("No fill"),             FILL_NONE,
+                              _("Color fill"),          FILL_COLOR,
+                              _("Pattern fill"),        FILL_PATTERN,
+                              _("Shape gradient"),      FILL_GRADIENT,
+                              _("Vertical gradient"),   FILL_VERTICAL,
+                              _("Horizontal gradient"), FILL_HORIZONTAL,
                               NULL);
   gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (combo), 0);
   g_signal_connect (combo, "changed",
-                    G_CALLBACK (select_combo_callback),
-                    GINT_TO_POINTER (SELECT_TYPE_MENU_FILL));
+                    G_CALLBACK (select_filltype_callback),
+                    NULL);
   gtk_box_pack_start (GTK_BOX (vbox), combo, FALSE, FALSE, 0);
   gtk_widget_show (combo);
 
@@ -441,7 +447,7 @@ gfig_dialog (void)
                             empty_label, NULL);
 
   /* A page for the fill color button */
-  gfig_context->bg_color = g_new (GimpRGB, 1);
+  gfig_context->bg_color = g_new0 (GimpRGB, 1);
   gfig_context->bg_color_button = gimp_color_button_new ("Background",
                                            SEL_BUTTON_WIDTH, SEL_BUTTON_HEIGHT,
                                            gfig_context->bg_color,
@@ -636,7 +642,7 @@ gfig_load_action_callback (GtkAction *action,
       gchar *dir;
 
       dialog =
-        gtk_file_chooser_dialog_new (_("Load Gfig object collection"),
+        gtk_file_chooser_dialog_new (_("Load Gfig Object Collection"),
                                      GTK_WINDOW (data),
                                      GTK_FILE_CHOOSER_ACTION_OPEN,
 
@@ -644,6 +650,11 @@ gfig_load_action_callback (GtkAction *action,
                                      GTK_STOCK_OPEN,   GTK_RESPONSE_OK,
 
                                      NULL);
+
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
 
       gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
@@ -688,6 +699,13 @@ gfig_save_action_callback (GtkAction *action,
                                      GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
 
                                      NULL);
+
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
+
+      gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
       g_object_add_weak_pointer (G_OBJECT (dialog), (gpointer) &dialog);
 
@@ -810,7 +828,6 @@ gfig_list_load_all (const gchar *path)
   gfig_context->current_obj = NULL;
   gfig_list_free_all ();
 
-
   if (! gfig_list)
     {
       GFigObj *gfig;
@@ -904,6 +921,9 @@ create_ui_manager (GtkWidget *window)
     { "line", GFIG_STOCK_LINE,
       NULL, "L", N_("Create line"), LINE },
 
+    { "rectangle", GFIG_STOCK_RECTANGLE,
+      NULL, "R", N_("Create rectangle"), RECTANGLE },
+
     { "circle", GFIG_STOCK_CIRCLE,
       NULL, "C", N_("Create circle"), CIRCLE },
 
@@ -987,6 +1007,7 @@ create_ui_manager (GtkWidget *window)
                                      "<ui>"
                                      "  <toolbar name=\"gfig-toolbar\">"
                                      "    <toolitem action=\"line\" />"
+                                     "    <toolitem action=\"rectangle\" />"
                                      "    <toolitem action=\"circle\" />"
                                      "    <toolitem action=\"ellipse\" />"
                                      "    <toolitem action=\"arc\" />"
@@ -1029,6 +1050,7 @@ static void
 create_notebook_pages (GtkWidget *notebook)
 {
   tool_option_no_option (notebook);   /* Line          */
+  tool_option_no_option (notebook);   /* Rectangle     */
   tool_option_no_option (notebook);   /* Circle        */
   tool_option_no_option (notebook);   /* Ellipse       */
   tool_option_no_option (notebook);   /* Arc           */
@@ -1160,33 +1182,15 @@ lower_selected_obj (GtkWidget *widget,
 
 
 static void
-select_combo_callback (GtkWidget *widget,
-                       gpointer   data)
+select_filltype_callback (GtkWidget *widget)
 {
-  gint mtype = GPOINTER_TO_INT (data);
   gint value;
 
   gimp_int_combo_box_get_active (GIMP_INT_COMBO_BOX (widget), &value);
-  gtk_notebook_set_current_page (GTK_NOTEBOOK (fill_type_notebook), value);
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (fill_type_notebook),
+                                 MIN (value, FILL_GRADIENT));
 
-  switch (mtype)
-    {
-    case SELECT_TYPE_MENU:
-      selopt.type = (SelectionType) value;
-      break;
-
-    case SELECT_ARCTYPE_MENU:
-      selopt.as_pie = (ArcType) value;
-      break;
-
-    case SELECT_TYPE_MENU_FILL:
-      gfig_context_get_current_style ()->fill_type = (FillType) value;
-      break;
-
-    default:
-      g_return_if_reached ();
-      break;
-    }
+  gfig_context_get_current_style ()->fill_type = (FillType) value;
 
   gfig_paint_callback ();
 }
@@ -1278,7 +1282,7 @@ gfig_prefs_action_callback (GtkAction *widget,
                                         MIN_UNDO, MAX_UNDO, 1, 2, 0,
                                         TRUE, 0, 0,
                                         NULL, NULL);
-      g_signal_connect (size_data, "value_changed",
+      g_signal_connect (size_data, "value-changed",
                         G_CALLBACK (gimp_int_adjustment_update),
                         &selvals.maxundo);
 
@@ -1321,10 +1325,10 @@ gfig_prefs_action_callback (GtkAction *widget,
       gtk_scale_set_value_pos (GTK_SCALE (scale), GTK_POS_TOP);
       gtk_range_set_update_policy (GTK_RANGE (scale), GTK_UPDATE_DELAYED);
 
-      g_signal_connect (scale_data, "value_changed",
+      g_signal_connect (scale_data, "value-changed",
                         G_CALLBACK (gimp_double_adjustment_update),
                         &selopt.feather_radius);
-      g_signal_connect (scale_data, "value_changed",
+      g_signal_connect (scale_data, "value-changed",
                         G_CALLBACK (gfig_paint_callback),
                         NULL);
       gimp_table_attach_aligned (GTK_TABLE (table), 0, 2,
@@ -1351,6 +1355,8 @@ gfig_grid_action_callback (GtkAction *action,
       GtkWidget *table;
       GtkWidget *combo;
       GtkObject *size_data;
+      GtkObject *sectors_data;
+      GtkObject *radius_data;
 
       dialog = gimp_dialog_new (_("Grid"), "gfig-grid",
                                 GTK_WIDGET (data), 0, NULL, NULL,
@@ -1388,16 +1394,55 @@ gfig_grid_action_callback (GtkAction *action,
                                         MIN_GRID, MAX_GRID, 1, 10, 0,
                                         TRUE, 0, 0,
                                         NULL, NULL);
-      g_signal_connect (size_data, "value_changed",
+      g_signal_connect (size_data, "value-changed",
                         G_CALLBACK (gimp_int_adjustment_update),
                         &selvals.opts.gridspacing);
-      g_signal_connect (size_data, "value_changed",
+      g_signal_connect (size_data, "value-changed",
                         G_CALLBACK (draw_grid_clear),
                         NULL);
 
       gfig_opt_widget.gridspacing = GTK_ADJUSTMENT (size_data);
       g_object_add_weak_pointer (G_OBJECT (gfig_opt_widget.gridspacing),
                                  (gpointer) &gfig_opt_widget.gridspacing);
+
+      sectors_data = gimp_scale_entry_new (GTK_TABLE (table), 0, 3,
+                                        _("Polar grid sectors desired:"), 1, 5,
+                                        selvals.opts.grid_sectors_desired,
+                                        5, 360, 5, 1, 0,
+                                        TRUE, 0, 0,
+                                        NULL, NULL);
+      g_signal_connect (sectors_data, "value_changed",
+                        G_CALLBACK (gimp_int_adjustment_update),
+                        &selvals.opts.grid_sectors_desired);
+      g_signal_connect (sectors_data, "value_changed",
+                        G_CALLBACK (draw_grid_clear),
+                        NULL);
+
+      gfig_opt_widget.grid_sectors_desired = GTK_ADJUSTMENT (sectors_data);
+      g_object_add_weak_pointer (G_OBJECT (gfig_opt_widget.grid_sectors_desired),
+                                 (gpointer) &gfig_opt_widget.grid_sectors_desired);
+
+
+      gfig_opt_widget.gridspacing = GTK_ADJUSTMENT (size_data);
+      g_object_add_weak_pointer (G_OBJECT (gfig_opt_widget.gridspacing),
+                                 (gpointer) &gfig_opt_widget.gridspacing);
+
+      radius_data = gimp_scale_entry_new (GTK_TABLE (table), 0, 4,
+                                        _("Polar grid radius interval:"), 1, 5,
+                                        selvals.opts.grid_radius_interval,
+                                        5, 50, 5, 1, 0,
+                                        TRUE, 0, 0,
+                                        NULL, NULL);
+      g_signal_connect (radius_data, "value_changed",
+                        G_CALLBACK (gimp_double_adjustment_update),
+                        &selvals.opts.grid_radius_interval);
+      g_signal_connect (radius_data, "value_changed",
+                        G_CALLBACK (draw_grid_clear),
+                        NULL);
+
+      gfig_opt_widget.grid_radius_interval = GTK_ADJUSTMENT (radius_data);
+      g_object_add_weak_pointer (G_OBJECT (gfig_opt_widget.grid_radius_interval),
+                                 (gpointer) &gfig_opt_widget.grid_radius_interval);
 
       combo = gimp_int_combo_box_new (_("Rectangle"), RECT_GRID,
                                       _("Polar"),     POLAR_GRID,
@@ -1451,6 +1496,14 @@ options_update (GFigObj *old_obj)
     {
       old_obj->opts.gridspacing = selvals.opts.gridspacing;
     }
+  if (selvals.opts.grid_sectors_desired != old_obj->opts.grid_sectors_desired)
+    {
+      old_obj->opts.grid_sectors_desired = selvals.opts.grid_sectors_desired;
+    }
+  if (selvals.opts.grid_radius_interval != old_obj->opts.grid_radius_interval)
+    {
+      old_obj->opts.grid_radius_interval = selvals.opts.grid_radius_interval;
+    }
   if (selvals.opts.gridtype != old_obj->opts.gridtype)
     {
       old_obj->opts.gridtype = selvals.opts.gridtype;
@@ -1478,6 +1531,18 @@ options_update (GFigObj *old_obj)
       if (gfig_opt_widget.gridspacing)
         gtk_adjustment_set_value (gfig_opt_widget.gridspacing,
                                   gfig_context->current_obj->opts.gridspacing);
+    }
+  if (selvals.opts.grid_sectors_desired != gfig_context->current_obj->opts.grid_sectors_desired)
+    {
+      if (gfig_opt_widget.grid_sectors_desired)
+        gtk_adjustment_set_value (gfig_opt_widget.grid_sectors_desired,
+                                  gfig_context->current_obj->opts.grid_sectors_desired);
+    }
+  if (selvals.opts.grid_radius_interval != gfig_context->current_obj->opts.grid_radius_interval)
+    {
+      if (gfig_opt_widget.grid_radius_interval)
+        gtk_adjustment_set_value (gfig_opt_widget.grid_radius_interval,
+                                  gfig_context->current_obj->opts.grid_radius_interval);
     }
   if (selvals.opts.gridtype != gfig_context->current_obj->opts.gridtype)
     {
@@ -1639,7 +1704,7 @@ num_sides_widget (gchar *d_title,
                                     *num_sides, adj_min, adj_max, 1, 10, 0,
                                     TRUE, 0, 0,
                                     NULL, NULL);
-  g_signal_connect (size_data, "value_changed",
+  g_signal_connect (size_data, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     num_sides);
 
@@ -1806,9 +1871,9 @@ load_file_chooser_response (GtkFileChooser *chooser,
 }
 
 void
-paint_layer_fill (void)
+paint_layer_fill (gdouble x1, gdouble y1, gdouble x2, gdouble y2)
 {
-  GimpBucketFillMode fill_mode;
+  GimpBucketFillMode fill_mode = FILL_NONE;
   Style *current_style;
 
   current_style = gfig_context_get_current_style ();
@@ -1842,7 +1907,37 @@ paint_layer_fill (void)
                        0.0, 0.0,          /* (x1, y1) - ignored */
                        0.0, 0.0);         /* (x2, y2) - ignored */
       return;
-    default:
+    case FILL_VERTICAL:
+      gimp_edit_blend (gfig_context->drawable_id,
+                       GIMP_CUSTOM_MODE,
+                       GIMP_NORMAL_MODE,
+                       GIMP_GRADIENT_LINEAR,
+                       100.0,
+                       0.0,
+                       GIMP_REPEAT_NONE,
+                       FALSE,
+                       FALSE,
+                       0,
+                       0.0,
+                       FALSE,
+                       x1, y1,
+                       x1, y2);
+      return;
+    case FILL_HORIZONTAL:
+      gimp_edit_blend (gfig_context->drawable_id,
+                       GIMP_CUSTOM_MODE,
+                       GIMP_NORMAL_MODE,
+                       GIMP_GRADIENT_LINEAR,
+                       100.0,
+                       0.0,
+                       GIMP_REPEAT_NONE,
+                       FALSE,
+                       FALSE,
+                       0,
+                       0.0,
+                       FALSE,
+                       x1, y1,
+                       x2, y1);
       return;
     }
 
@@ -1953,6 +2048,7 @@ toggle_obj_type (GtkRadioAction *action,
   switch (selvals.otype)
     {
     case LINE:
+    case RECTANGLE:
     case CIRCLE:
     case ELLIPSE:
     case ARC:

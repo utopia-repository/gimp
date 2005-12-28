@@ -24,15 +24,9 @@
 
 #include "config.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-
-#include <gtk/gtk.h>
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
@@ -46,6 +40,7 @@
 #include "gfig-ellipse.h"
 #include "gfig-line.h"
 #include "gfig-poly.h"
+#include "gfig-rectangle.h"
 #include "gfig-spiral.h"
 #include "gfig-star.h"
 
@@ -141,6 +136,7 @@ d_load_object (gchar *desc,
               if (sscanf (buf, "%d", &new_obj->type_data) != 1)
                 {
                   g_message ("Error while loading object (no type data)");
+                  g_free (new_obj);
                   return NULL;
                 }
 
@@ -148,6 +144,7 @@ d_load_object (gchar *desc,
               if (strcmp ("</EXTRA>", buf))
                 {
                   g_message ("Syntax error while loading object");
+                  g_free (new_obj);
                   return NULL;
                 }
               /* Go around and read the last line */
@@ -204,6 +201,7 @@ gfig_init_object_classes (void)
 {
   d_arc_object_class_init ();
   d_line_object_class_init ();
+  d_rectangle_object_class_init ();
   d_circle_object_class_init ();
   d_ellipse_object_class_init ();
   d_poly_object_class_init ();
@@ -492,6 +490,7 @@ object_operation (GdkPoint *to_pnt,
       switch (operation_obj->type)
         {
         case LINE:
+        case RECTANGLE:
         case CIRCLE:
         case ELLIPSE:
         case POLY:
@@ -511,6 +510,7 @@ object_operation (GdkPoint *to_pnt,
       switch (operation_obj->type)
         {
         case LINE:
+        case RECTANGLE:
         case CIRCLE:
         case ELLIPSE:
         case POLY:
@@ -791,6 +791,10 @@ object_start (GdkPoint *pnt,
         draw_sqr (pnt, TRUE);
       d_line_start (pnt, shift_down);
       break;
+    case RECTANGLE:
+      draw_sqr (pnt, TRUE);
+      d_rectangle_start (pnt, shift_down);
+      break;
     case CIRCLE:
       draw_sqr (pnt, TRUE);
       d_circle_start (pnt, shift_down);
@@ -845,6 +849,10 @@ object_end (GdkPoint *pnt,
     {
     case LINE:
       d_line_end (pnt, shift_down);
+      draw_sqr (pnt, TRUE);
+      break;
+    case RECTANGLE:
+      d_rectangle_end (pnt, shift_down);
       draw_sqr (pnt, TRUE);
       break;
     case CIRCLE:
@@ -935,10 +943,6 @@ get_line (gchar *buf,
   /* The last newline is a pain */
   if (slen > 0)
     buf[slen - 1] = '\0';
-
-  /* Check and remove an '\r' too from Windows */
-  if ((slen > 1) && (buf[slen - 2] == '\r'))
-    buf[slen - 2] = '\0';
 
   if (ferror (from))
     {
@@ -1084,3 +1088,4 @@ d_pnt_add_line (GfigObject *obj,
         }
     }
 }
+

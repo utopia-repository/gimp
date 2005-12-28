@@ -1,23 +1,46 @@
 /*
  * pat plug-in version 1.01
  * Loads/saves version 1 GIMP .pat files, by Tim Newsome <drz@frody.bloke.com>
- * Some bits stolen from the .99.7 source tree.
- * Updated to fix various outstanding problems, brief help -- Nick Lamb
- * njl195@zepler.org.uk, April 2000
+ *
+ * The GIMP -- an image manipulation program
+ * Copyright (C) 1995 Spencer Kimball and Peter Mattis
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
 #include "config.h"
 
+#include <string.h>
 #include <errno.h>
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
+#include <glib/gstdio.h>
+#ifdef G_OS_WIN32
+#include <libgimpbase/gimpwin32-io.h>
+#endif
+
+#ifndef _O_BINARY
+#define _O_BINARY 0
+#endif
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -27,13 +50,9 @@
 #include "libgimp/stdplugins-intl.h"
 
 
-#ifdef G_OS_WIN32
-#include <io.h>
-#endif
-
-#ifndef _O_BINARY
-#define _O_BINARY 0
-#endif
+#define LOAD_PROC      "file-pat-load"
+#define SAVE_PROC      "file-pat-save"
+#define PLUG_IN_BINARY "pat"
 
 
 /*  local function prototypes  */
@@ -75,9 +94,9 @@ query (void)
 {
   static GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_STRING, "filename", "The name of the file to load" },
-    { GIMP_PDB_STRING, "raw_filename", "The name of the file to load" }
+    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
+    { GIMP_PDB_STRING, "raw-filename", "The name of the file to load" }
   };
   static GimpParamDef load_return_vals[] =
   {
@@ -86,15 +105,15 @@ query (void)
 
   static GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image", "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Drawable to save" },
-    { GIMP_PDB_STRING,   "filename", "The name of the file to save the image in" },
-    { GIMP_PDB_STRING,   "raw_filename", "The name of the file to save the image in" },
-    { GIMP_PDB_STRING,   "description", "Short description of the pattern" },
+    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive"     },
+    { GIMP_PDB_IMAGE,    "image",        "Input image"                      },
+    { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save"                 },
+    { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
+    { GIMP_PDB_STRING,   "raw-filename", "The name of the file to save the image in" },
+    { GIMP_PDB_STRING,   "description",  "Short description of the pattern" }
   };
 
-  gimp_install_procedure ("file_pat_load",
+  gimp_install_procedure (LOAD_PROC,
                           "Loads Gimp's .PAT pattern files",
                           "The images in the pattern dialog can be loaded "
 			  "directly with this plug-in",
@@ -108,15 +127,16 @@ query (void)
                           G_N_ELEMENTS (load_return_vals),
                           load_args, load_return_vals);
 
-  gimp_plugin_icon_register ("file_pat_load",
-                             GIMP_ICON_TYPE_STOCK_ID, GIMP_STOCK_PATTERN);
-  gimp_register_file_handler_mime ("file_pat_load", "image/x-gimp-pat");
-  gimp_register_magic_load_handler ("file_pat_load",
+  gimp_plugin_icon_register (LOAD_PROC,
+                             GIMP_ICON_TYPE_STOCK_ID,
+                             (const guchar *) GIMP_STOCK_PATTERN);
+  gimp_register_file_handler_mime (LOAD_PROC, "image/x-gimp-pat");
+  gimp_register_magic_load_handler (LOAD_PROC,
 				    "pat",
 				    "",
 				    "20,string,GPAT");
 
-  gimp_install_procedure ("file_pat_save",
+  gimp_install_procedure (SAVE_PROC,
                           "Saves Gimp pattern file (.PAT)",
                           "New Gimp patterns can be created by saving them "
 			  "in the appropriate place with this plug-in.",
@@ -129,10 +149,11 @@ query (void)
                           G_N_ELEMENTS (save_args), 0,
                           save_args, NULL);
 
-  gimp_plugin_icon_register ("file_pat_save",
-                             GIMP_ICON_TYPE_STOCK_ID, GIMP_STOCK_PATTERN);
-  gimp_register_file_handler_mime ("file_pat_save", "image/x-gimp-pat");
-  gimp_register_save_handler ("file_pat_save", "pat", "");
+  gimp_plugin_icon_register (SAVE_PROC,
+                             GIMP_ICON_TYPE_STOCK_ID,
+                             (const guchar *) GIMP_STOCK_PATTERN);
+  gimp_register_file_handler_mime (SAVE_PROC, "image/x-gimp-pat");
+  gimp_register_save_handler (SAVE_PROC, "pat", "");
 }
 
 static void
@@ -159,7 +180,7 @@ run (const gchar      *name,
 
   INIT_I18N ();
 
-  if (strcmp (name, "file_pat_load") == 0)
+  if (strcmp (name, LOAD_PROC) == 0)
     {
       image_ID = load_image (param[1].data.d_string);
 
@@ -174,7 +195,7 @@ run (const gchar      *name,
 	  status = GIMP_PDB_EXECUTION_ERROR;
 	}
     }
-  else if (strcmp (name, "file_pat_save") == 0)
+  else if (strcmp (name, SAVE_PROC) == 0)
     {
       GimpParasite *parasite;
       gint32        orig_image_ID;
@@ -188,7 +209,7 @@ run (const gchar      *name,
 	{
 	case GIMP_RUN_INTERACTIVE:
 	case GIMP_RUN_WITH_LAST_VALS:
-	  gimp_ui_init ("pat", FALSE);
+	  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 	  export = gimp_export_image (&image_ID, &drawable_ID, "PAT",
 				      GIMP_EXPORT_CAN_HANDLE_GRAY |
 				      GIMP_EXPORT_CAN_HANDLE_RGB |
@@ -200,7 +221,7 @@ run (const gchar      *name,
 	    }
 
 	  /*  Possibly retrieve data  */
-	  gimp_get_data ("file_pat_save", description);
+	  gimp_get_data (SAVE_PROC, description);
 	  break;
 
 	default:
@@ -246,7 +267,7 @@ run (const gchar      *name,
 	{
 	  if (save_image (param[3].data.d_string, image_ID, drawable_ID))
 	    {
-	      gimp_set_data ("file_pat_save", description, sizeof (description));
+	      gimp_set_data (SAVE_PROC, description, sizeof (description));
 	    }
 	  else
 	    {
@@ -280,10 +301,10 @@ run (const gchar      *name,
 static gint32
 load_image (const gchar *filename)
 {
-  gchar            *temp;
   gint              fd;
   PatternHeader     ph;
   gchar            *name;
+  gchar            *temp;
   guchar           *buffer;
   gint32            image_ID;
   gint32            layer_ID;
@@ -293,7 +314,7 @@ load_image (const gchar *filename)
   GimpImageBaseType base_type;
   GimpImageType     image_type;
 
-  fd = open (filename, O_RDONLY | _O_BINARY);
+  fd = g_open (filename, O_RDONLY | _O_BINARY, 0);
 
   if (fd == -1)
     {
@@ -302,10 +323,8 @@ load_image (const gchar *filename)
       return -1;
     }
 
-  temp = g_strdup_printf (_("Opening '%s'..."),
-                          gimp_filename_to_utf8 (filename));
-  gimp_progress_init (temp);
-  g_free (temp);
+  gimp_progress_init_printf (_("Opening '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   if (read (fd, &ph, sizeof (PatternHeader)) != sizeof (PatternHeader))
     {
@@ -424,9 +443,8 @@ save_image (const gchar *filename,
   GimpDrawable *drawable;
   gint          line;
   GimpPixelRgn  pixel_rgn;
-  gchar        *temp;
 
-  fd = open (filename, O_CREAT | O_TRUNC | O_WRONLY | _O_BINARY, 0644);
+  fd = g_open (filename, O_CREAT | O_TRUNC | O_WRONLY | _O_BINARY, 0644);
 
   if (fd == -1)
     {
@@ -435,10 +453,8 @@ save_image (const gchar *filename,
       return FALSE;
     }
 
-  temp = g_strdup_printf (_("Saving '%s'..."),
-                          gimp_filename_to_utf8 (filename));
-  gimp_progress_init (temp);
-  g_free (temp);
+  gimp_progress_init_printf (_("Saving '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   drawable = gimp_drawable_get (drawable_ID);
   gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, drawable->width,
@@ -493,25 +509,32 @@ save_image (const gchar *filename,
 static gboolean
 save_dialog (void)
 {
-  GtkWidget *dlg;
+  GtkWidget *dialog;
   GtkWidget *table;
   GtkWidget *entry;
   gboolean   run;
 
-  dlg = gimp_dialog_new (_("Save as Pattern"), "pat",
-                         NULL, 0,
-			 gimp_standard_help_func, "file-pat-save",
+  dialog = gimp_dialog_new (_("Save as Pattern"), PLUG_IN_BINARY,
+                            NULL, 0,
+                            gimp_standard_help_func, SAVE_PROC,
 
-			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			 GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
 
-			 NULL);
+                            NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   /* The main table */
   table = gtk_table_new (1, 2, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), table, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), table, TRUE, TRUE, 0);
   gtk_widget_show (table);
 
   entry = gtk_entry_new ();
@@ -526,11 +549,11 @@ save_dialog (void)
                     G_CALLBACK (entry_callback),
                     description);
 
-  gtk_widget_show (dlg);
+  gtk_widget_show (dialog);
 
-  run = (gimp_dialog_run (GIMP_DIALOG (dlg)) == GTK_RESPONSE_OK);
+  run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
 
-  gtk_widget_destroy (dlg);
+  gtk_widget_destroy (dialog);
 
   return run;
 }

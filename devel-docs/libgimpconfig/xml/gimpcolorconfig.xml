@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<refentry id="GimpColorConfig">
+<refmeta>
+<refentrytitle>GimpColorConfig</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBGIMPCONFIG Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>GimpColorConfig</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+
+<synopsis>
+
+
+
+            <link linkend="GimpColorConfig-struct">GimpColorConfig</link>;
+enum        <link linkend="GimpColorManagementMode">GimpColorManagementMode</link>;
+enum        <link linkend="GimpColorRenderingIntent">GimpColorRenderingIntent</link>;
+enum        <link linkend="GimpColorFileOpenBehaviour">GimpColorFileOpenBehaviour</link>;
+
+</synopsis>
+</refsynopsisdiv>
+
+<refsect1>
+<title>Object Hierarchy</title>
+<synopsis>
+
+  <link linkend="GObject">GObject</link>
+   +----GimpColorConfig
+</synopsis>
+
+</refsect1>
+
+
+
+<refsect1>
+<title>Implemented Interfaces</title>
+<para>
+GimpColorConfig implements
+ <link linkend="GimpConfigInterface">GimpConfigInterface</link>.</para>
+
+</refsect1>
+
+
+<refsect1>
+<title>Properties</title>
+<synopsis>
+
+  &quot;<link linkend="GimpColorConfig--cmyk-profile">cmyk-profile</link>&quot;         <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct
+  &quot;<link linkend="GimpColorConfig--display-module">display-module</link>&quot;       <link linkend="gchararray">gchararray</link>            : Read / Write / Construct
+  &quot;<link linkend="GimpColorConfig--display-profile">display-profile</link>&quot;      <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct
+  &quot;<link linkend="GimpColorConfig--display-profile-from-gdk">display-profile-from-gdk</link>&quot; <link linkend="gboolean">gboolean</link>              : Read / Write / Construct
+  &quot;<link linkend="GimpColorConfig--display-rendering-intent">display-rendering-intent</link>&quot; <link linkend="GimpColorRenderingIntent">GimpColorRenderingIntent</link>  : Read / Write / Construct
+  &quot;<link linkend="GimpColorConfig--mode">mode</link>&quot;                 <link linkend="GimpColorManagementMode">GimpColorManagementMode</link>  : Read / Write / Construct
+  &quot;<link linkend="GimpColorConfig--printer-profile">printer-profile</link>&quot;      <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct
+  &quot;<link linkend="GimpColorConfig--rgb-profile">rgb-profile</link>&quot;          <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct
+  &quot;<link linkend="GimpColorConfig--simulation-rendering-intent">simulation-rendering-intent</link>&quot; <link linkend="GimpColorRenderingIntent">GimpColorRenderingIntent</link>  : Read / Write / Construct
+</synopsis>
+</refsect1>
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="GimpColorConfig-struct"/>GimpColorConfig</title>
+<indexterm><primary>GimpColorConfig</primary></indexterm><programlisting>typedef struct _GimpColorConfig GimpColorConfig;</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpColorManagementMode"/>enum GimpColorManagementMode</title>
+<indexterm><primary>GimpColorManagementMode</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_COLOR_MANAGEMENT_OFF,       /*&lt; desc="No color management"   &gt;*/
+  GIMP_COLOR_MANAGEMENT_DISPLAY,   /*&lt; desc="Color managed display" &gt;*/
+  GIMP_COLOR_MANAGEMENT_SOFTPROOF  /*&lt; desc="Print simulation"      &gt;*/
+} GimpColorManagementMode;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpColorRenderingIntent"/>enum GimpColorRenderingIntent</title>
+<indexterm><primary>GimpColorRenderingIntent</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,            /*&lt; desc="Perceptual"            &gt;*/
+  GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC, /*&lt; desc="Relative colorimetric" &gt;*/
+  GIMP_COLOR_RENDERING_INTENT_SATURATION,            /*&lt; desc="Saturation"            &gt;*/
+  GIMP_COLOR_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC  /*&lt; desc="Absolute colorimetric" &gt;*/
+} GimpColorRenderingIntent;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpColorFileOpenBehaviour"/>enum GimpColorFileOpenBehaviour</title>
+<indexterm><primary>GimpColorFileOpenBehaviour</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_COLOR_FILE_OPEN_ASK,         /*&lt; desc="Ask"                       &gt;*/
+  GIMP_COLOR_FILE_OPEN_LEAVE,       /*&lt; desc="Use embedded profile"      &gt;*/
+  GIMP_COLOR_FILE_OPEN_CONVERT_RGB  /*&lt; desc="Convert to RGB workspace"  &gt;*/
+} GimpColorFileOpenBehaviour;
+</programlisting>
+<para>
+
+</para></refsect2>
+
+</refsect1>
+<refsect1>
+<title>Properties</title>
+<refsect2><title><anchor id="GimpColorConfig--cmyk-profile"/>The &quot;<literal>cmyk-profile</literal>&quot; property</title>
+<programlisting>  &quot;cmyk-profile&quot;         <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct</programlisting>
+<para>The CMYK color profile used to convert between RGB and CMYK.</para><para>Default value: NULL</para>
+</refsect2>
+<refsect2><title><anchor id="GimpColorConfig--display-module"/>The &quot;<literal>display-module</literal>&quot; property</title>
+<programlisting>  &quot;display-module&quot;       <link linkend="gchararray">gchararray</link>            : Read / Write / Construct</programlisting>
+<para></para><para>Default value: "CdisplayLcms"</para>
+</refsect2>
+<refsect2><title><anchor id="GimpColorConfig--display-profile"/>The &quot;<literal>display-profile</literal>&quot; property</title>
+<programlisting>  &quot;display-profile&quot;      <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct</programlisting>
+<para>The color profile of your (primary) monitor.</para><para>Default value: NULL</para>
+</refsect2>
+<refsect2><title><anchor id="GimpColorConfig--display-profile-from-gdk"/>The &quot;<literal>display-profile-from-gdk</literal>&quot; property</title>
+<programlisting>  &quot;display-profile-from-gdk&quot; <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<para>When enabled, the GIMP will try to use the display color profile from the windowing system. The configured monitor profile is then only used as a fallback.</para><para>Default value: TRUE</para>
+</refsect2>
+<refsect2><title><anchor id="GimpColorConfig--display-rendering-intent"/>The &quot;<literal>display-rendering-intent</literal>&quot; property</title>
+<programlisting>  &quot;display-rendering-intent&quot; <link linkend="GimpColorRenderingIntent">GimpColorRenderingIntent</link>  : Read / Write / Construct</programlisting>
+<para>Sets how colors are mapped for your display.</para><para>Default value: GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL</para>
+</refsect2>
+<refsect2><title><anchor id="GimpColorConfig--mode"/>The &quot;<literal>mode</literal>&quot; property</title>
+<programlisting>  &quot;mode&quot;                 <link linkend="GimpColorManagementMode">GimpColorManagementMode</link>  : Read / Write / Construct</programlisting>
+<para>Mode of operation for color management.</para><para>Default value: GIMP_COLOR_MANAGEMENT_DISPLAY</para>
+</refsect2>
+<refsect2><title><anchor id="GimpColorConfig--printer-profile"/>The &quot;<literal>printer-profile</literal>&quot; property</title>
+<programlisting>  &quot;printer-profile&quot;      <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct</programlisting>
+<para>The color profile used for simulating a printed version (softproof).</para><para>Default value: NULL</para>
+</refsect2>
+<refsect2><title><anchor id="GimpColorConfig--rgb-profile"/>The &quot;<literal>rgb-profile</literal>&quot; property</title>
+<programlisting>  &quot;rgb-profile&quot;          <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct</programlisting>
+<para>The default RGB workspace color profile.</para><para>Default value: NULL</para>
+</refsect2>
+<refsect2><title><anchor id="GimpColorConfig--simulation-rendering-intent"/>The &quot;<literal>simulation-rendering-intent</literal>&quot; property</title>
+<programlisting>  &quot;simulation-rendering-intent&quot; <link linkend="GimpColorRenderingIntent">GimpColorRenderingIntent</link>  : Read / Write / Construct</programlisting>
+<para>Sets how colors are converted from workspace to the print simulation device.</para><para>Default value: GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL</para>
+</refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

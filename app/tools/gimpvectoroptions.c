@@ -23,16 +23,14 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
 
-#include "config/gimpconfig-params.h"
-
 #include "core/gimptoolinfo.h"
 
 #include "widgets/gimphelp-ids.h"
-#include "widgets/gimppropwidgets.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "gimpvectoroptions.h"
@@ -49,55 +47,23 @@ enum
 };
 
 
-static void   gimp_vector_options_class_init (GimpVectorOptionsClass *options_class);
-
-static void   gimp_vector_options_set_property (GObject         *object,
-                                                guint            property_id,
-                                                const GValue    *value,
-                                                GParamSpec      *pspec);
-static void   gimp_vector_options_get_property (GObject         *object,
-                                                guint            property_id,
-                                                GValue          *value,
-                                                GParamSpec      *pspec);
+static void   gimp_vector_options_set_property (GObject      *object,
+                                                guint         property_id,
+                                                const GValue *value,
+                                                GParamSpec   *pspec);
+static void   gimp_vector_options_get_property (GObject      *object,
+                                                guint         property_id,
+                                                GValue       *value,
+                                                GParamSpec   *pspec);
 
 
-static GimpToolOptionsClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpVectorOptions, gimp_vector_options, GIMP_TYPE_TOOL_OPTIONS);
 
-
-GType
-gimp_vector_options_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpVectorOptionsClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) gimp_vector_options_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (GimpVectorOptions),
-	0,              /* n_preallocs    */
-	(GInstanceInitFunc) NULL
-      };
-
-      type = g_type_register_static (GIMP_TYPE_TOOL_OPTIONS,
-                                     "GimpVectorOptions",
-                                     &info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_vector_options_class_init (GimpVectorOptionsClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->set_property = gimp_vector_options_set_property;
   object_class->get_property = gimp_vector_options_get_property;
@@ -113,6 +79,11 @@ gimp_vector_options_class_init (GimpVectorOptionsClass *klass)
                                     N_("Restrict editing to polygons"),
                                     FALSE,
                                     0);
+}
+
+static void
+gimp_vector_options_init (GimpVectorOptions *options)
+{
 }
 
 static void
@@ -193,7 +164,7 @@ gimp_vector_options_gui (GimpToolOptions *tool_options)
                                               GDK_CONTROL_MASK));
 
   button = gimp_button_new ();
-  gtk_button_set_label (GTK_BUTTON (button), _("Create selection from path"));
+  gtk_button_set_label (GTK_BUTTON (button), _("Create Selection from Path"));
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_set_sensitive (button, FALSE);
   gimp_help_set_help_data (button, str, GIMP_HELP_PATH_SELECTION_REPLACE);
@@ -204,7 +175,7 @@ gimp_vector_options_gui (GimpToolOptions *tool_options)
   g_object_set_data (G_OBJECT (tool_options),
                      "gimp-vectors-to-selection", button);
 
-  button = gtk_button_new_with_label (_("Stroke path"));
+  button = gtk_button_new_with_label (_("Stroke Path"));
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_set_sensitive (button, FALSE);
   gimp_help_set_help_data (button, NULL, GIMP_HELP_PATH_STROKE);

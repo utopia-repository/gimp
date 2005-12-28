@@ -25,14 +25,13 @@
 
 #include <gtk/gtk.h>
 
-#include "libgimpcolor/gimpcolor.h"
+#include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
 
 #include "core/gimpcontainer.h"
-#include "core/gimpdrawable-bucket-fill.h"
 #include "core/gimplayer.h"
 #include "core/gimplayermask.h"
 #include "core/gimplayer-floating-sel.h"
@@ -40,7 +39,6 @@
 #include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
 #include "core/gimpitemundo.h"
-#include "core/gimppattern.h"
 
 #include "text/gimptextlayer.h"
 
@@ -60,10 +58,7 @@
 #include "gimp-intl.h"
 
 
-static void   gimp_layer_tree_view_class_init (GimpLayerTreeViewClass *klass);
-static void   gimp_layer_tree_view_init       (GimpLayerTreeView      *view);
-
-static void   gimp_layer_tree_view_view_iface_init (GimpContainerViewInterface *view_iface);
+static void   gimp_layer_tree_view_view_iface_init (GimpContainerViewInterface *iface);
 
 static GObject * gimp_layer_tree_view_constructor (GType                type,
                                                    guint                n_params,
@@ -91,16 +86,21 @@ static gboolean gimp_layer_tree_view_drop_possible(GimpContainerTreeView *view,
                                                    GtkTreeViewDropPosition  drop_pos,
                                                    GtkTreeViewDropPosition *return_drop_pos,
                                                    GdkDragAction       *return_drag_action);
-static void    gimp_layer_tree_view_drop_viewable (GimpContainerTreeView *view,
-                                                   GimpViewable        *src_viewable,
-                                                   GimpViewable        *dest_viewable,
-                                                   GtkTreeViewDropPosition  drop_pos);
 static void    gimp_layer_tree_view_drop_color    (GimpContainerTreeView *view,
                                                    const GimpRGB       *color,
                                                    GimpViewable        *dest_viewable,
                                                    GtkTreeViewDropPosition  drop_pos);
 static void    gimp_layer_tree_view_drop_uri_list (GimpContainerTreeView *view,
                                                    GList               *uri_list,
+                                                   GimpViewable        *dest_viewable,
+                                                   GtkTreeViewDropPosition  drop_pos);
+static void   gimp_layer_tree_view_drop_component (GimpContainerTreeView *tree_view,
+                                                   GimpImage           *gimage,
+                                                   GimpChannelType      component,
+                                                   GimpViewable        *dest_viewable,
+                                                   GtkTreeViewDropPosition  drop_pos);
+static void   gimp_layer_tree_view_drop_pixbuf    (GimpContainerTreeView *tree_view,
+                                                   GdkPixbuf           *pixbuf,
                                                    GimpViewable        *dest_viewable,
                                                    GtkTreeViewDropPosition  drop_pos);
 
@@ -115,11 +115,11 @@ static void   gimp_layer_tree_view_floating_selection_changed
 static void   gimp_layer_tree_view_paint_mode_menu_callback
                                                   (GtkWidget           *widget,
                                                    GimpLayerTreeView   *view);
-static void   gimp_layer_tree_view_preserve_button_toggled
-                                                  (GtkWidget           *widget,
-                                                   GimpLayerTreeView   *view);
 static void   gimp_layer_tree_view_opacity_scale_changed
                                                   (GtkAdjustment       *adj,
+                                                   GimpLayerTreeView   *view);
+static void   gimp_layer_tree_view_lock_alpha_button_toggled
+                                                  (GtkWidget           *widget,
                                                    GimpLayerTreeView   *view);
 
 static void   gimp_layer_tree_view_layer_signal_handler
@@ -158,47 +158,15 @@ static void   gimp_layer_tree_view_alpha_changed  (GimpLayer           *layer,
                                                    GimpLayerTreeView   *view);
 
 
-static GimpDrawableTreeViewClass  *parent_class      = NULL;
+G_DEFINE_TYPE_WITH_CODE (GimpLayerTreeView, gimp_layer_tree_view,
+                         GIMP_TYPE_DRAWABLE_TREE_VIEW,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONTAINER_VIEW,
+                                                gimp_layer_tree_view_view_iface_init));
+
+#define parent_class gimp_layer_tree_view_parent_class
+
 static GimpContainerViewInterface *parent_view_iface = NULL;
 
-
-GType
-gimp_layer_tree_view_get_type (void)
-{
-  static GType view_type = 0;
-
-  if (! view_type)
-    {
-      static const GTypeInfo view_info =
-      {
-        sizeof (GimpLayerTreeViewClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_layer_tree_view_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpLayerTreeView),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_layer_tree_view_init,
-      };
-
-      static const GInterfaceInfo view_iface_info =
-      {
-        (GInterfaceInitFunc) gimp_layer_tree_view_view_iface_init,
-        NULL,           /* iface_finalize */
-        NULL            /* iface_data     */
-      };
-
-      view_type = g_type_register_static (GIMP_TYPE_DRAWABLE_TREE_VIEW,
-                                          "GimpLayerTreeView",
-                                          &view_info, 0);
-
-      g_type_add_interface_static (view_type, GIMP_TYPE_CONTAINER_VIEW,
-                                   &view_iface_info);
-    }
-
-  return view_type;
-}
 
 static void
 gimp_layer_tree_view_class_init (GimpLayerTreeViewClass *klass)
@@ -213,8 +181,6 @@ gimp_layer_tree_view_class_init (GimpLayerTreeViewClass *klass)
   tree_view_class = GIMP_CONTAINER_TREE_VIEW_CLASS (klass);
   item_view_class = GIMP_ITEM_TREE_VIEW_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
-
   object_class->constructor = gimp_layer_tree_view_constructor;
   object_class->finalize    = gimp_layer_tree_view_finalize;
 
@@ -222,9 +188,10 @@ gimp_layer_tree_view_class_init (GimpLayerTreeViewClass *klass)
   widget_class->style_set   = gimp_layer_tree_view_style_set;
 
   tree_view_class->drop_possible   = gimp_layer_tree_view_drop_possible;
-  tree_view_class->drop_viewable   = gimp_layer_tree_view_drop_viewable;
   tree_view_class->drop_color      = gimp_layer_tree_view_drop_color;
   tree_view_class->drop_uri_list   = gimp_layer_tree_view_drop_uri_list;
+  tree_view_class->drop_component  = gimp_layer_tree_view_drop_component;
+  tree_view_class->drop_pixbuf     = gimp_layer_tree_view_drop_pixbuf;
 
   item_view_class->item_type       = GIMP_TYPE_LAYER;
   item_view_class->signal_name     = "active-layer-changed";
@@ -257,7 +224,6 @@ gimp_layer_tree_view_init (GimpLayerTreeView *view)
 {
   GimpContainerTreeView *tree_view = GIMP_CONTAINER_TREE_VIEW (view);
   GtkWidget             *hbox;
-  GtkWidget             *toggle;
   GtkWidget             *image;
   GtkIconSize            icon_size;
   PangoAttribute        *attr;
@@ -279,51 +245,26 @@ gimp_layer_tree_view_init (GimpLayerTreeView *view)
   tree_view->model_columns[tree_view->n_model_columns] = G_TYPE_BOOLEAN;
   tree_view->n_model_columns++;
 
-  view->options_box = gtk_table_new (2, 3, FALSE);
+  view->options_box = gtk_table_new (3, 3, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (view->options_box), 2);
   gtk_box_pack_start (GTK_BOX (view), view->options_box, FALSE, FALSE, 0);
   gtk_box_reorder_child (GTK_BOX (view), view->options_box, 0);
   gtk_widget_show (view->options_box);
 
-  hbox = gtk_hbox_new (FALSE, 6);
-
   /*  Paint mode menu  */
 
-  view->paint_mode_menu =
-    gimp_paint_mode_menu_new (G_CALLBACK (gimp_layer_tree_view_paint_mode_menu_callback),
-                              view,
-                              FALSE,
-                              GIMP_NORMAL_MODE);
-  gtk_box_pack_start (GTK_BOX (hbox), view->paint_mode_menu, TRUE, TRUE, 0);
-  gtk_widget_show (view->paint_mode_menu);
+  view->paint_mode_menu = gimp_paint_mode_menu_new (FALSE);
+  gimp_table_attach_aligned (GTK_TABLE (view->options_box), 0, 0,
+                             _("Mode:"), 0.0, 0.5,
+                             view->paint_mode_menu, 2, FALSE);
+
+  gimp_int_combo_box_connect (GIMP_INT_COMBO_BOX (view->paint_mode_menu),
+                              GIMP_NORMAL_MODE,
+                              G_CALLBACK (gimp_layer_tree_view_paint_mode_menu_callback),
+                              view);
 
   gimp_help_set_help_data (view->paint_mode_menu, NULL,
                            GIMP_HELP_LAYER_DIALOG_PAINT_MODE_MENU);
-
-  /*  Preserve transparency toggle  */
-
-  view->preserve_trans_toggle = toggle = gtk_check_button_new ();
-  gtk_box_pack_end (GTK_BOX (hbox), toggle, FALSE, FALSE, 0);
-  gtk_widget_show (toggle);
-
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_layer_tree_view_preserve_button_toggled),
-                    view);
-
-  gimp_help_set_help_data (toggle, _("Keep transparency"),
-                           GIMP_HELP_LAYER_DIALOG_KEEP_TRANS_BUTTON);
-
-  gtk_widget_style_get (GTK_WIDGET (view),
-                        "button_icon_size", &icon_size,
-                        NULL);
-
-  image = gtk_image_new_from_stock (GIMP_STOCK_TRANSPARENCY, icon_size);
-  gtk_container_add (GTK_CONTAINER (toggle), image);
-  gtk_widget_show (image);
-
-  gimp_table_attach_aligned (GTK_TABLE (view->options_box), 0, 0,
-                             _("Mode:"), 0.0, 0.5,
-                             hbox, 2, FALSE);
 
   /*  Opacity scale  */
 
@@ -335,9 +276,36 @@ gimp_layer_tree_view_init (GimpLayerTreeView *view)
                                           NULL,
                                           GIMP_HELP_LAYER_DIALOG_OPACITY_SCALE));
 
-  g_signal_connect (view->opacity_adjustment, "value_changed",
+  g_signal_connect (view->opacity_adjustment, "value-changed",
                     G_CALLBACK (gimp_layer_tree_view_opacity_scale_changed),
                     view);
+
+  /*  Lock alpha toggle  */
+
+  hbox = gtk_hbox_new (FALSE, 6);
+
+  view->lock_alpha_toggle = gtk_check_button_new ();
+  gtk_box_pack_start (GTK_BOX (hbox), view->lock_alpha_toggle, FALSE, FALSE, 0);
+  gtk_widget_show (view->lock_alpha_toggle);
+
+  g_signal_connect (view->lock_alpha_toggle, "toggled",
+                    G_CALLBACK (gimp_layer_tree_view_lock_alpha_button_toggled),
+                    view);
+
+  gimp_help_set_help_data (view->lock_alpha_toggle, _("Lock alpha channel"),
+                           GIMP_HELP_LAYER_DIALOG_LOCK_ALPHA_BUTTON);
+
+  gtk_widget_style_get (GTK_WIDGET (view),
+                        "button-icon-size", &icon_size,
+                        NULL);
+
+  image = gtk_image_new_from_stock (GIMP_STOCK_TRANSPARENCY, icon_size);
+  gtk_container_add (GTK_CONTAINER (view->lock_alpha_toggle), image);
+  gtk_widget_show (image);
+
+  gimp_table_attach_aligned (GTK_TABLE (view->options_box), 0, 2,
+                             _("Lock:"), 0.0, 0.5,
+                             hbox, 2, FALSE);
 
   gtk_widget_set_sensitive (view->options_box, FALSE);
 
@@ -353,21 +321,21 @@ gimp_layer_tree_view_init (GimpLayerTreeView *view)
   attr->end_index   = -1;
   pango_attr_list_insert (view->bold_attrs, attr);
 
-  view->mode_changed_handler_id           = 0;
-  view->opacity_changed_handler_id        = 0;
-  view->preserve_trans_changed_handler_id = 0;
-  view->mask_changed_handler_id           = 0;
+  view->mode_changed_handler_id       = 0;
+  view->opacity_changed_handler_id    = 0;
+  view->lock_alpha_changed_handler_id = 0;
+  view->mask_changed_handler_id       = 0;
 }
 
 static void
-gimp_layer_tree_view_view_iface_init (GimpContainerViewInterface *view_iface)
+gimp_layer_tree_view_view_iface_init (GimpContainerViewInterface *iface)
 {
-  parent_view_iface = g_type_interface_peek_parent (view_iface);
+  parent_view_iface = g_type_interface_peek_parent (iface);
 
-  view_iface->set_container    = gimp_layer_tree_view_set_container;
-  view_iface->insert_item      = gimp_layer_tree_view_insert_item;
-  view_iface->select_item      = gimp_layer_tree_view_select_item;
-  view_iface->set_preview_size = gimp_layer_tree_view_set_preview_size;
+  iface->set_container    = gimp_layer_tree_view_set_container;
+  iface->insert_item      = gimp_layer_tree_view_insert_item;
+  iface->select_item      = gimp_layer_tree_view_select_item;
+  iface->set_preview_size = gimp_layer_tree_view_set_preview_size;
 }
 
 static GObject *
@@ -377,6 +345,7 @@ gimp_layer_tree_view_constructor (GType                  type,
 {
   GimpContainerTreeView *tree_view;
   GimpLayerTreeView     *layer_view;
+  GtkWidget             *button;
   GObject               *object;
 
   object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
@@ -406,25 +375,27 @@ gimp_layer_tree_view_constructor (GType                  type,
                     G_CALLBACK (gimp_layer_tree_view_mask_clicked),
                     layer_view);
 
-  gimp_dnd_uri_list_dest_add (GTK_WIDGET (tree_view->view),
-                              NULL, tree_view);
-  gimp_dnd_color_dest_add (GTK_WIDGET (tree_view->view),
-                           NULL, tree_view);
-  gimp_dnd_viewable_dest_add (GTK_WIDGET (tree_view->view), GIMP_TYPE_PATTERN,
-                              NULL, tree_view);
+  gimp_dnd_uri_list_dest_add  (GTK_WIDGET (tree_view->view),
+                               NULL, tree_view);
+  gimp_dnd_component_dest_add (GTK_WIDGET (tree_view->view),
+                               NULL, tree_view);
+  gimp_dnd_viewable_dest_add  (GTK_WIDGET (tree_view->view), GIMP_TYPE_CHANNEL,
+                               NULL, tree_view);
+  gimp_dnd_viewable_dest_add  (GTK_WIDGET (tree_view->view), GIMP_TYPE_LAYER_MASK,
+                               NULL, tree_view);
+  gimp_dnd_pixbuf_dest_add    (GTK_WIDGET (tree_view->view),
+                               NULL, tree_view);
 
   /*  hide basically useless edit button  */
   gtk_widget_hide (GIMP_ITEM_TREE_VIEW (layer_view)->edit_button);
 
-  layer_view->anchor_button =
-    gimp_editor_add_action_button (GIMP_EDITOR (layer_view), "layers",
-                                   "layers-anchor", NULL);
+  button = gimp_editor_add_action_button (GIMP_EDITOR (layer_view), "layers",
+                                          "layers-anchor", NULL);
   gimp_container_view_enable_dnd (GIMP_CONTAINER_VIEW (layer_view),
-                                  GTK_BUTTON (layer_view->anchor_button),
+                                  GTK_BUTTON (button),
                                   GIMP_TYPE_LAYER);
   gtk_box_reorder_child (GTK_BOX (GIMP_EDITOR (layer_view)->button_box),
-                         layer_view->anchor_button, 5);
-
+                         button, 5);
 
   return object;
 }
@@ -486,8 +457,8 @@ gimp_layer_tree_view_style_set (GtkWidget *widget,
   gint               button_spacing;
 
   gtk_widget_style_get (widget,
-                        "content_spacing", &content_spacing,
-                        "button_spacing",  &button_spacing,
+                        "content-spacing", &content_spacing,
+                        "button-spacing",  &button_spacing,
                         NULL);
 
   gtk_table_set_col_spacings (GTK_TABLE (layer_view->options_box),
@@ -518,7 +489,7 @@ gimp_layer_tree_view_set_container (GimpContainerView *view,
       gimp_container_remove_handler (old_container,
                                      layer_view->opacity_changed_handler_id);
       gimp_container_remove_handler (old_container,
-                                     layer_view->preserve_trans_changed_handler_id);
+                                     layer_view->lock_alpha_changed_handler_id);
       gimp_container_remove_handler (old_container,
                                      layer_view->mask_changed_handler_id);
       gimp_container_remove_handler (old_container,
@@ -530,23 +501,23 @@ gimp_layer_tree_view_set_container (GimpContainerView *view,
   if (container)
     {
       layer_view->mode_changed_handler_id =
-        gimp_container_add_handler (container, "mode_changed",
+        gimp_container_add_handler (container, "mode-changed",
                                     G_CALLBACK (gimp_layer_tree_view_layer_signal_handler),
                                     view);
       layer_view->opacity_changed_handler_id =
-        gimp_container_add_handler (container, "opacity_changed",
+        gimp_container_add_handler (container, "opacity-changed",
                                     G_CALLBACK (gimp_layer_tree_view_layer_signal_handler),
                                     view);
-      layer_view->preserve_trans_changed_handler_id =
-        gimp_container_add_handler (container, "preserve_trans_changed",
+      layer_view->lock_alpha_changed_handler_id =
+        gimp_container_add_handler (container, "lock-alpha-changed",
                                     G_CALLBACK (gimp_layer_tree_view_layer_signal_handler),
                                     view);
       layer_view->mask_changed_handler_id =
-        gimp_container_add_handler (container, "mask_changed",
+        gimp_container_add_handler (container, "mask-changed",
                                     G_CALLBACK (gimp_layer_tree_view_mask_changed),
                                     view);
       layer_view->alpha_changed_handler_id =
-        gimp_container_add_handler (container, "alpha_changed",
+        gimp_container_add_handler (container, "alpha-changed",
                                     G_CALLBACK (gimp_layer_tree_view_alpha_changed),
                                     view);
     }
@@ -612,28 +583,33 @@ static void
 gimp_layer_tree_view_set_preview_size (GimpContainerView *view)
 {
   GimpContainerTreeView *tree_view  = GIMP_CONTAINER_TREE_VIEW (view);
-  GimpLayerTreeView     *layer_view = GIMP_LAYER_TREE_VIEW (view);
-  GtkTreeIter            iter;
-  gboolean               iter_valid;
-  gint                   preview_size;
-  gint                   border_width;
 
-  preview_size = gimp_container_view_get_preview_size (view, &border_width);
-
-  for (iter_valid = gtk_tree_model_get_iter_first (tree_view->model, &iter);
-       iter_valid;
-       iter_valid = gtk_tree_model_iter_next (tree_view->model, &iter))
+  if (tree_view->model)
     {
-      GimpViewRenderer *renderer;
+      GimpLayerTreeView *layer_view = GIMP_LAYER_TREE_VIEW (view);
+      GtkTreeIter        iter;
+      gboolean           iter_valid;
+      gint               preview_size;
+      gint               border_width;
 
-      gtk_tree_model_get (tree_view->model, &iter,
-                          layer_view->model_column_mask, &renderer,
-                          -1);
+      preview_size = gimp_container_view_get_preview_size (view, &border_width);
 
-      if (renderer)
+      for (iter_valid = gtk_tree_model_get_iter_first (tree_view->model, &iter);
+           iter_valid;
+           iter_valid = gtk_tree_model_iter_next (tree_view->model, &iter))
         {
-          gimp_view_renderer_set_size (renderer, preview_size, border_width);
-          g_object_unref (renderer);
+          GimpViewRenderer *renderer;
+
+          gtk_tree_model_get (tree_view->model, &iter,
+                              layer_view->model_column_mask, &renderer,
+                              -1);
+
+          if (renderer)
+            {
+              gimp_view_renderer_set_size (renderer,
+                                           preview_size, border_width);
+              g_object_unref (renderer);
+            }
         }
     }
 
@@ -652,79 +628,29 @@ gimp_layer_tree_view_drop_possible (GimpContainerTreeView   *tree_view,
                                     GtkTreeViewDropPosition *return_drop_pos,
                                     GdkDragAction           *return_drag_action)
 {
+  /* If we are dropping a new layer, check if the destionation image
+   * has a floating selection.
+   */
   if  (src_type == GIMP_DND_TYPE_URI_LIST     ||
        src_type == GIMP_DND_TYPE_TEXT_PLAIN   ||
        src_type == GIMP_DND_TYPE_NETSCAPE_URL ||
-       GIMP_IS_LAYER (src_viewable))
+       src_type == GIMP_DND_TYPE_COMPONENT    ||
+       src_type == GIMP_DND_TYPE_PIXBUF       ||
+       GIMP_IS_DRAWABLE (src_viewable))
     {
-      GimpLayer *dest_layer = GIMP_LAYER (dest_viewable);
-      GimpImage *dest_image = gimp_item_get_image (GIMP_ITEM (dest_layer));
+      GimpImage *dest_image = GIMP_ITEM_TREE_VIEW (tree_view)->gimage;
 
       if (gimp_image_floating_sel (dest_image))
         return FALSE;
-
-      if (! gimp_drawable_has_alpha (GIMP_DRAWABLE (dest_layer)) &&
-          drop_pos == GTK_TREE_VIEW_DROP_AFTER)
-        return FALSE;
-
-      if (GIMP_IS_LAYER (src_viewable))
-        {
-          GimpLayer *src_layer  = GIMP_LAYER (src_viewable);
-          GimpImage *src_image  = gimp_item_get_image (GIMP_ITEM (src_layer));
-
-          if (src_image == dest_image &&
-              ! gimp_drawable_has_alpha (GIMP_DRAWABLE (src_layer)))
-            return FALSE;
-        }
     }
 
-  if (GIMP_CONTAINER_TREE_VIEW_CLASS (parent_class)->drop_possible (tree_view,
-                                                                    src_type,
-                                                                    src_viewable,
-                                                                    dest_viewable,
-                                                                    drop_pos,
-                                                                    return_drop_pos,
-                                                                    return_drag_action))
-    {
-      if (return_drop_pos &&
-          (src_type == GIMP_DND_TYPE_COLOR ||
-           src_type == GIMP_DND_TYPE_PATTERN))
-        {
-          if (drop_pos == GTK_TREE_VIEW_DROP_BEFORE)
-            *return_drop_pos = GTK_TREE_VIEW_DROP_INTO_OR_BEFORE;
-          else
-            *return_drop_pos = GTK_TREE_VIEW_DROP_INTO_OR_AFTER;
-        }
-
-      return TRUE;
-    }
-
-  return FALSE;
-}
-
-static void
-gimp_layer_tree_view_drop_viewable (GimpContainerTreeView   *view,
-                                    GimpViewable            *src_viewable,
-                                    GimpViewable            *dest_viewable,
-                                    GtkTreeViewDropPosition  drop_pos)
-{
-  if (GIMP_IS_PATTERN (src_viewable))
-    {
-      gimp_drawable_bucket_fill_full (GIMP_DRAWABLE (dest_viewable),
-                                      GIMP_PATTERN_BUCKET_FILL,
-                                      GIMP_NORMAL_MODE, GIMP_OPACITY_OPAQUE,
-                                      FALSE,             /* no seed fill */
-                                      FALSE, 0.0, FALSE, /* fill params  */
-                                      0.0, 0.0,          /* ignored      */
-                                      NULL, GIMP_PATTERN (src_viewable));
-      gimp_image_flush (GIMP_ITEM_TREE_VIEW (view)->gimage);
-      return;
-    }
-
-  GIMP_CONTAINER_TREE_VIEW_CLASS (parent_class)->drop_viewable (view,
-                                                                src_viewable,
-                                                                dest_viewable,
-                                                                drop_pos);
+  return GIMP_CONTAINER_TREE_VIEW_CLASS (parent_class)->drop_possible (tree_view,
+                                                                       src_type,
+                                                                       src_viewable,
+                                                                       dest_viewable,
+                                                                       drop_pos,
+                                                                       return_drop_pos,
+                                                                       return_drag_action);
 }
 
 static void
@@ -738,19 +664,13 @@ gimp_layer_tree_view_drop_color (GimpContainerTreeView   *view,
       gimp_text_layer_set (GIMP_TEXT_LAYER (dest_viewable), NULL,
                            "color", color,
                            NULL);
-    }
-  else
-    {
-      gimp_drawable_bucket_fill_full (GIMP_DRAWABLE (dest_viewable),
-                                      GIMP_FG_BUCKET_FILL,
-                                      GIMP_NORMAL_MODE, GIMP_OPACITY_OPAQUE,
-                                      FALSE,             /* no seed fill */
-                                      FALSE, 0.0, FALSE, /* fill params  */
-                                      0.0, 0.0,          /* ignored      */
-                                      color, NULL);
+      gimp_image_flush (GIMP_ITEM_TREE_VIEW (view)->gimage);
+      return;
     }
 
-  gimp_image_flush (GIMP_ITEM_TREE_VIEW (view)->gimage);
+  GIMP_CONTAINER_TREE_VIEW_CLASS (parent_class)->drop_color (view, color,
+                                                             dest_viewable,
+                                                             drop_pos);
 }
 
 static void
@@ -761,13 +681,16 @@ gimp_layer_tree_view_drop_uri_list (GimpContainerTreeView   *view,
 {
   GimpItemTreeView *item_view = GIMP_ITEM_TREE_VIEW (view);
   GimpImage        *gimage    = item_view->gimage;
+  gint              index     = -1;
   GList            *list;
-  gint              index;
 
-  index = gimp_image_get_layer_index (gimage, GIMP_LAYER (dest_viewable));
+  if (dest_viewable)
+    {
+      index = gimp_image_get_layer_index (gimage, GIMP_LAYER (dest_viewable));
 
-  if (drop_pos == GTK_TREE_VIEW_DROP_AFTER)
-    index++;
+      if (drop_pos == GTK_TREE_VIEW_DROP_AFTER)
+        index++;
+    }
 
   for (list = uri_list; list; list = g_list_next (list))
     {
@@ -777,7 +700,8 @@ gimp_layer_tree_view_drop_uri_list (GimpContainerTreeView   *view,
       GError            *error = NULL;
 
       new_layer = file_open_layer (gimage->gimp, item_view->context, NULL,
-                                   gimage, uri, &status, &error);
+                                   gimage, uri, GIMP_RUN_INTERACTIVE,
+                                   &status, &error);
 
       if (new_layer)
         {
@@ -799,7 +723,7 @@ gimp_layer_tree_view_drop_uri_list (GimpContainerTreeView   *view,
         }
       else if (status != GIMP_PDB_CANCEL)
         {
-          gchar *filename = file_utils_uri_to_utf8_filename (uri);
+          gchar *filename = file_utils_uri_display_name (uri);
 
           g_message (_("Opening '%s' failed:\n\n%s"),
                      filename, error->message);
@@ -810,6 +734,75 @@ gimp_layer_tree_view_drop_uri_list (GimpContainerTreeView   *view,
     }
 
   gimp_image_flush (gimage);
+}
+
+static void
+gimp_layer_tree_view_drop_component (GimpContainerTreeView   *tree_view,
+                                     GimpImage               *src_image,
+                                     GimpChannelType          component,
+                                     GimpViewable            *dest_viewable,
+                                     GtkTreeViewDropPosition  drop_pos)
+{
+  GimpItemTreeView *item_view = GIMP_ITEM_TREE_VIEW (tree_view);
+  GimpChannel      *channel;
+  GimpItem         *new_item;
+  gint              index     = -1;
+  const gchar      *desc;
+  gchar            *name;
+
+  if (dest_viewable)
+    {
+      index = gimp_image_get_layer_index (item_view->gimage,
+                                          GIMP_LAYER (dest_viewable));
+
+      if (drop_pos == GTK_TREE_VIEW_DROP_AFTER)
+        index++;
+    }
+
+  channel = gimp_channel_new_from_component (src_image, component, NULL, NULL);
+
+  new_item = gimp_item_convert (GIMP_ITEM (channel), item_view->gimage,
+                                GIMP_TYPE_LAYER, TRUE);
+
+  g_object_unref (channel);
+
+  gimp_enum_get_value (GIMP_TYPE_CHANNEL_TYPE, component,
+                       NULL, NULL, &desc, NULL);
+  name = g_strdup_printf (_("%s Channel Copy"), desc);
+  gimp_object_set_name (GIMP_OBJECT (new_item), name);
+  g_free (name);
+
+  gimp_image_add_layer (item_view->gimage, GIMP_LAYER (new_item), index);
+  gimp_image_flush (item_view->gimage);
+}
+
+static void
+gimp_layer_tree_view_drop_pixbuf (GimpContainerTreeView   *tree_view,
+                                  GdkPixbuf               *pixbuf,
+                                  GimpViewable            *dest_viewable,
+                                  GtkTreeViewDropPosition  drop_pos)
+{
+  GimpItemTreeView *item_view = GIMP_ITEM_TREE_VIEW (tree_view);
+  GimpImage        *image     = item_view->gimage;
+  GimpLayer        *new_layer;
+  gint              index     = -1;
+
+  if (dest_viewable)
+    {
+      index = gimp_image_get_layer_index (image, GIMP_LAYER (dest_viewable));
+
+      if (drop_pos == GTK_TREE_VIEW_DROP_AFTER)
+        index++;
+    }
+
+  new_layer =
+    gimp_layer_new_from_pixbuf (pixbuf, image,
+                                gimp_image_base_type_with_alpha (image),
+                                _("Dropped Buffer"),
+                                GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
+
+  gimp_image_add_layer (image, new_layer, index);
+  gimp_image_flush (image);
 }
 
 
@@ -828,7 +821,7 @@ gimp_layer_tree_view_set_image (GimpItemTreeView *view,
 
   if (view->gimage)
     g_signal_connect (view->gimage,
-                      "floating_selection_changed",
+                      "floating-selection-changed",
                       G_CALLBACK (gimp_layer_tree_view_floating_selection_changed),
                       view);
 }
@@ -888,23 +881,20 @@ gimp_layer_tree_view_floating_selection_changed (GimpImage         *gimage,
         {
           GimpDrawable *drawable = list->data;
 
-          if (gimp_drawable_has_alpha (drawable))
-            {
-              iter = gimp_container_view_lookup (view,
-                                                 (GimpViewable *) drawable);
+          iter = gimp_container_view_lookup (view, (GimpViewable *) drawable);
 
-              if (iter)
-                gtk_list_store_set (GTK_LIST_STORE (tree_view->model), iter,
-                                    tree_view->model_column_name_attributes,
-                                    NULL,
-                                    -1);
-            }
+          if (iter)
+            gtk_list_store_set (GTK_LIST_STORE (tree_view->model), iter,
+                                tree_view->model_column_name_attributes,
+                                gimp_drawable_has_alpha (drawable) ?
+                                NULL : layer_view->bold_attrs,
+                                -1);
         }
     }
 }
 
 
-/*  Paint Mode, Opacity and Preserve trans. callbacks  */
+/*  Paint Mode, Opacity and Lock alpha callbacks  */
 
 #define BLOCK() \
         g_signal_handlers_block_by_func (layer, \
@@ -920,20 +910,21 @@ gimp_layer_tree_view_paint_mode_menu_callback (GtkWidget         *widget,
                                                GimpLayerTreeView *view)
 {
   GimpImage *gimage;
-  GimpLayer *layer;
+  GimpLayer *layer = NULL;
 
   gimage = GIMP_ITEM_TREE_VIEW (view)->gimage;
 
-  layer = (GimpLayer *)
-    GIMP_ITEM_TREE_VIEW_GET_CLASS (view)->get_active_item (gimage);
+  if (gimage)
+    layer = (GimpLayer *)
+      GIMP_ITEM_TREE_VIEW_GET_CLASS (view)->get_active_item (gimage);
 
   if (layer)
     {
-      GimpLayerModeEffects mode =
-        GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget),
-                                            "gimp-item-data"));
+      gint mode;
 
-      if (gimp_layer_get_mode (layer) != mode)
+      if (gimp_int_combo_box_get_active (GIMP_INT_COMBO_BOX (widget),
+                                         &mode) &&
+          gimp_layer_get_mode (layer) != (GimpLayerModeEffects) mode)
         {
           GimpUndo *undo;
           gboolean  push_undo = TRUE;
@@ -946,20 +937,20 @@ gimp_layer_tree_view_paint_mode_menu_callback (GtkWidget         *widget,
             push_undo = FALSE;
 
           BLOCK();
-          gimp_layer_set_mode (layer, mode, push_undo);
+          gimp_layer_set_mode (layer, (GimpLayerModeEffects) mode, push_undo);
           UNBLOCK();
 
           gimp_image_flush (gimage);
 
-          if (!push_undo)
+          if (! push_undo)
             gimp_undo_refresh_preview (undo);
         }
     }
 }
 
 static void
-gimp_layer_tree_view_preserve_button_toggled (GtkWidget         *widget,
-                                              GimpLayerTreeView *view)
+gimp_layer_tree_view_lock_alpha_button_toggled (GtkWidget         *widget,
+                                                GimpLayerTreeView *view)
 {
   GimpImage *gimage;
   GimpLayer *layer;
@@ -971,24 +962,24 @@ gimp_layer_tree_view_preserve_button_toggled (GtkWidget         *widget,
 
   if (layer)
     {
-      gboolean preserve_trans;
+      gboolean lock_alpha;
 
-      preserve_trans = GTK_TOGGLE_BUTTON (widget)->active;
+      lock_alpha = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
 
-      if (gimp_layer_get_preserve_trans (layer) != preserve_trans)
+      if (gimp_layer_get_lock_alpha (layer) != lock_alpha)
         {
           GimpUndo *undo;
           gboolean  push_undo = TRUE;
 
           /*  compress opacity undos  */
           undo = gimp_image_undo_can_compress (gimage, GIMP_TYPE_ITEM_UNDO,
-                                               GIMP_UNDO_LAYER_PRESERVE_TRANS);
+                                               GIMP_UNDO_LAYER_LOCK_ALPHA);
 
           if (undo && GIMP_ITEM_UNDO (undo)->item == GIMP_ITEM (layer))
             push_undo = FALSE;
 
           BLOCK();
-          gimp_layer_set_preserve_trans (layer, preserve_trans, push_undo);
+          gimp_layer_set_lock_alpha (layer, lock_alpha, push_undo);
           UNBLOCK();
 
           gimp_image_flush (gimage);
@@ -1030,7 +1021,7 @@ gimp_layer_tree_view_opacity_scale_changed (GtkAdjustment     *adjustment,
 
           gimp_image_flush (gimage);
 
-          if (!push_undo)
+          if (! push_undo)
             gimp_undo_refresh_preview (undo);
         }
     }
@@ -1065,20 +1056,26 @@ static void
 gimp_layer_tree_view_update_options (GimpLayerTreeView *view,
                                      GimpLayer         *layer)
 {
-  gimp_paint_mode_menu_set_history (GTK_OPTION_MENU (view->paint_mode_menu),
-                                    layer->mode);
+  BLOCK (view->paint_mode_menu,
+         gimp_layer_tree_view_paint_mode_menu_callback);
 
-  if (layer->preserve_trans !=
-      GTK_TOGGLE_BUTTON (view->preserve_trans_toggle)->active)
+  gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (view->paint_mode_menu),
+                                 layer->mode);
+
+  UNBLOCK (view->paint_mode_menu,
+           gimp_layer_tree_view_paint_mode_menu_callback);
+
+  if (layer->lock_alpha !=
+      gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (view->lock_alpha_toggle)))
     {
-      BLOCK (view->preserve_trans_toggle,
-             gimp_layer_tree_view_preserve_button_toggled);
+      BLOCK (view->lock_alpha_toggle,
+             gimp_layer_tree_view_lock_alpha_button_toggled);
 
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (view->preserve_trans_toggle),
-                                    layer->preserve_trans);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (view->lock_alpha_toggle),
+                                    layer->lock_alpha);
 
-      UNBLOCK (view->preserve_trans_toggle,
-               gimp_layer_tree_view_preserve_button_toggled);
+      UNBLOCK (view->lock_alpha_toggle,
+               gimp_layer_tree_view_lock_alpha_button_toggled);
     }
 
   if (layer->opacity * 100.0 != view->opacity_adjustment->value)
@@ -1159,9 +1156,9 @@ gimp_layer_tree_view_mask_update (GimpLayerTreeView *layer_view,
       closure = g_cclosure_new (G_CALLBACK (gimp_layer_tree_view_mask_callback),
                                 layer_view, NULL);
       g_object_watch_closure (G_OBJECT (renderer), closure);
-      g_signal_connect_closure (mask, "apply_changed", closure, FALSE);
-      g_signal_connect_closure (mask, "edit_changed",  closure, FALSE);
-      g_signal_connect_closure (mask, "show_changed",  closure, FALSE);
+      g_signal_connect_closure (mask, "apply-changed", closure, FALSE);
+      g_signal_connect_closure (mask, "edit-changed",  closure, FALSE);
+      g_signal_connect_closure (mask, "show-changed",  closure, FALSE);
     }
 
   gtk_list_store_set (GTK_LIST_STORE (tree_view->model), iter,

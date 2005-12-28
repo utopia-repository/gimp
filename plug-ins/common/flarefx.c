@@ -47,20 +47,20 @@
 
 #include <string.h>
 
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
 
 
+#define PLUG_IN_PROC   "plug-in-flarefx"
+#define PLUG_IN_BINARY "flarefx"
+
 /* --- Typedefs --- */
 typedef struct
 {
   gint     posx;
   gint     posy;
-  gboolean preview;
 } FlareValues;
 
 typedef struct REFLECT
@@ -157,8 +157,7 @@ GimpPlugInInfo PLUG_IN_INFO =
 
 static FlareValues fvals =
 {
-  128, 128,   /* posx, posy */
-  TRUE        /* preview    */
+  128, 128   /* posx, posy */
 };
 
 static gfloat     scolor, sglow, sinner, souter; /* size     */
@@ -178,14 +177,14 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",    "Input image (unused)"         },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"               },
-    { GIMP_PDB_INT32,    "posx",     "X-position"                   },
-    { GIMP_PDB_INT32,    "posy",     "Y-position"                   }
+    { GIMP_PDB_INT32,    "pos-x",    "X-position"                   },
+    { GIMP_PDB_INT32,    "pos-y",    "Y-position"                   }
   };
 
-  gimp_install_procedure ("plug_in_flarefx",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Add lens flare effects",
                           "Adds a lens flare effects.  Makes your image look "
                           "like it was snapped with a cheap camera with a lot "
@@ -199,8 +198,8 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_flarefx",
-                             "<Image>/Filters/Light Effects");
+  gimp_plugin_menu_register (PLUG_IN_PROC,
+                             "<Image>/Filters/Light and Shadow/Light");
 }
 
 static void
@@ -232,7 +231,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_flarefx", &fvals);
+      gimp_get_data (PLUG_IN_PROC, &fvals);
 
       /*  First acquire information with a dialog  */
       if (! flare_dialog (drawable))
@@ -255,7 +254,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_flarefx", &fvals);
+      gimp_get_data (PLUG_IN_PROC, &fvals);
       break;
 
     default:
@@ -268,7 +267,7 @@ run (const gchar      *name,
       if (gimp_drawable_is_rgb (drawable->drawable_id) ||
           gimp_drawable_is_gray (drawable->drawable_id))
         {
-          gimp_progress_init (_("Render Flare..."));
+          gimp_progress_init (_("Render flare"));
           gimp_tile_cache_ntiles (2 *
                                   (drawable->width / gimp_tile_width () + 1));
 
@@ -279,7 +278,7 @@ run (const gchar      *name,
 
           /*  Store data  */
           if (run_mode == GIMP_RUN_INTERACTIVE)
-            gimp_set_data ("plug_in_flarefx", &fvals, sizeof (FlareValues));
+            gimp_set_data (PLUG_IN_PROC, &fvals, sizeof (FlareValues));
         }
       else
         {
@@ -303,23 +302,30 @@ flare_dialog (GimpDrawable *drawable)
   GtkWidget   *frame;
   gboolean     run;
 
-  gimp_ui_init ("flarefx", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("FlareFX"), "flarefx",
+  dialog = gimp_dialog_new (_("FlareFX"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-flarefx",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
+
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_aspect_preview_new (drawable, &fvals.preview);
+  preview = gimp_zoom_preview_new (drawable);
   gtk_widget_add_events (GIMP_PREVIEW (preview)->area,
                          GDK_POINTER_MOTION_MASK);
   gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
@@ -361,9 +367,8 @@ FlareFX (GimpDrawable *drawable,
   bytes  = drawable->bpp;
   if (preview)
     {
-      gimp_preview_get_size (preview, &width, &height);
-      src = gimp_drawable_get_thumbnail_data (drawable->drawable_id,
-                                              &width, &height, &bytes);
+      src = gimp_zoom_preview_get_source (GIMP_ZOOM_PREVIEW (preview),
+                                          &width, &height, &bytes);
 
       xs = (gdouble)fvals.posx * width  / drawable->width;
       ys = (gdouble)fvals.posy * height / drawable->height;
@@ -767,10 +772,10 @@ flare_center_create (GimpDrawable *drawable,
   gtk_container_add (GTK_CONTAINER (frame), center->coords);
   gtk_widget_show (center->coords);
 
-  g_signal_connect (center->coords, "value_changed",
+  g_signal_connect (center->coords, "value-changed",
                     G_CALLBACK (flare_center_coords_update),
                     center);
-  g_signal_connect (center->coords, "refval_changed",
+  g_signal_connect (center->coords, "refval-changed",
                     G_CALLBACK (flare_center_coords_update),
                     center);
 
@@ -790,7 +795,7 @@ flare_center_create (GimpDrawable *drawable,
   g_signal_connect (preview->area, "realize",
                     G_CALLBACK (flare_center_preview_realize),
                     center);
-  g_signal_connect_after (preview->area, "expose_event",
+  g_signal_connect_after (preview->area, "expose-event",
                           G_CALLBACK (flare_center_preview_expose),
                           center);
   g_signal_connect (preview->area, "event",

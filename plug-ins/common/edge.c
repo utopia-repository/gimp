@@ -50,12 +50,6 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
@@ -63,11 +57,13 @@
 
 
 #ifdef RCSID
-static gchar rcsid[] = "$Id: edge.c 16327 2005-01-23 12:42:58Z neo $";
+static gchar rcsid[] = "$Id: edge.c,v 1.72 2005/12/06 11:53:01 neo Exp $";
 #endif
 
 /* Some useful macros */
 
+#define PLUG_IN_PROC    "plug-in-edge"
+#define PLUG_IN_BINARY  "edge"
 #define TILE_CACHE_SIZE 48
 
 enum
@@ -103,13 +99,14 @@ static void       edge                (GimpDrawable     *drawable);
 static gboolean   edge_dialog         (GimpDrawable     *drawable);
 static void       edge_preview_update (GimpPreview      *preview);
 
-static gint edge_detect  (const guchar *data);
-static gint prewitt      (const guchar *data);
-static gint gradient     (const guchar *data);
-static gint roberts      (const guchar *data);
-static gint differential (const guchar *data);
-static gint laplace      (const guchar *data);
-static gint sobel        (const guchar *data);
+static gint       edge_detect         (const guchar     *data);
+static gint       prewitt             (const guchar     *data);
+static gint       gradient            (const guchar     *data);
+static gint       roberts             (const guchar     *data);
+static gint       differential        (const guchar     *data);
+static gint       laplace             (const guchar     *data);
+static gint       sobel               (const guchar     *data);
+
 
 /***** Local vars *****/
 
@@ -138,12 +135,12 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE, "image", "Input image (unused)" },
+    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",    "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
-    { GIMP_PDB_FLOAT, "amount", "Edge detection amount" },
-    { GIMP_PDB_INT32, "wrapmode", "Edge detection behavior: { WRAP (0), SMEAR (1), BLACK (2) }" },
-    { GIMP_PDB_INT32, "edgemode", "Edge detection algorithm: { SOBEL (0), PREWITT (1), GRADIENT (2), ROBERTS (3),  DIFFERENTIAL (4), LAPLACE (5) }" }
+    { GIMP_PDB_FLOAT,    "amount",   "Edge detection amount" },
+    { GIMP_PDB_INT32,    "wrapmode", "Edge detection behavior: { WRAP (0), SMEAR (1), BLACK (2) }" },
+    { GIMP_PDB_INT32,    "edgemode", "Edge detection algorithm: { SOBEL (0), PREWITT (1), GRADIENT (2), ROBERTS (3),  DIFFERENTIAL (4), LAPLACE (5) }" }
   };
 
   const gchar *help_string =
@@ -153,7 +150,7 @@ query (void)
     "transform applied to the pixels, SOBEL was the method used in older "
     "versions.";
 
-  gimp_install_procedure ("plug_in_edge",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Perform edge detection on the contents of the specified drawable",
                           help_string,
                           "Peter Mattis & (ported to 1.0 by) Eiichi Takamori",
@@ -165,7 +162,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_edge", "<Image>/Filters/Edge-Detect");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Edge-Detect");
 }
 
 static void
@@ -197,7 +194,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_edge", &evals);
+      gimp_get_data (PLUG_IN_PROC, &evals);
 
       /*  First acquire information with a dialog  */
       if (! edge_dialog (drawable))
@@ -220,7 +217,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_edge", &evals);
+      gimp_get_data (PLUG_IN_PROC, &evals);
       break;
 
     default:
@@ -231,7 +228,7 @@ run (const gchar      *name,
   if (gimp_drawable_is_rgb (drawable->drawable_id) ||
       gimp_drawable_is_gray (drawable->drawable_id))
     {
-      gimp_progress_init (_("Edge Detection..."));
+      gimp_progress_init (_("Edge detection"));
 
       /*  set the tile cache size  */
       gimp_tile_cache_ntiles (TILE_CACHE_SIZE);
@@ -244,7 +241,7 @@ run (const gchar      *name,
 
       /*  Store data  */
       if (run_mode == GIMP_RUN_INTERACTIVE)
-        gimp_set_data ("plug_in_edge", &evals, sizeof (EdgeVals));
+        gimp_set_data (PLUG_IN_PROC, &evals, sizeof (EdgeVals));
     }
   else
     {
@@ -444,37 +441,35 @@ edge_detect (const guchar *data)
 static gint
 sobel (const guchar *data)
 {
-  gint    v_kernel[9] = {-1,  0,  1,
-                         -2,  0,  2,
-                         -1,  0,  1};
-  gint    h_kernel[9] = {-1, -2, -1,
-                          0,  0,  0,
-                          1,  2,  1};
+  const gint v_kernel[9] = { -1,  0,  1,
+                             -2,  0,  2,
+                             -1,  0,  1 };
+  const gint h_kernel[9] = { -1, -2, -1,
+                              0,  0,  0,
+                              1,  2,  1 };
 
   gint i;
-  gint    v_grad, h_grad;
+  gint v_grad, h_grad;
 
-  v_grad = 0;
-  h_grad = 0;
-
-  for (i = 0; i < 9; i++)
+  for (i = 0, v_grad = 0, h_grad = 0; i < 9; i++)
     {
       v_grad += v_kernel[i] * data[i];
       h_grad += h_kernel[i] * data[i];
     }
+
   return sqrt (v_grad * v_grad * evals.amount +
                h_grad * h_grad * evals.amount);
 }
 
 /*
  * Edge detector via template matting
- *   -- Prewitt
+ *   -- Prewitt Compass
  */
 static gint
 prewitt (const guchar *data)
 {
-  gint    k, max;
-  gint    m[8];
+  gint k, max;
+  gint m[8];
 
   m[0] =   data [0] +   data [1] + data [2]
          + data [3] - 2*data [4] + data [5]
@@ -501,8 +496,7 @@ prewitt (const guchar *data)
          - data [3] - 2*data [4] + data [5]
          - data [6] -   data [7] + data [8];
 
-  max = 0;
-  for (k = 0; k < 8; k++)
+  for (k = 0, max = 0; k < 8; k++)
     if (max < m[k])
       max = m[k];
 
@@ -515,20 +509,17 @@ prewitt (const guchar *data)
 static gint
 gradient (const guchar *data)
 {
-  gint    v_kernel[9] = { 0,  0,  0,
-                          0,  4, -4,
-                          0,  0,  0};
-  gint    h_kernel[9] = { 0,  0,  0,
-                          0, -4,  0,
-                          0,  4,  0};
+  const gint v_kernel[9] = { 0,  0,  0,
+                             0,  4, -4,
+                             0,  0,  0 };
+  const gint h_kernel[9] = { 0,  0,  0,
+                             0, -4,  0,
+                             0,  4,  0 };
 
   gint i;
-  gint    v_grad, h_grad;
+  gint v_grad, h_grad;
 
-  v_grad = 0;
-  h_grad = 0;
-
-  for (i = 0; i < 9; i++)
+  for (i = 0, v_grad = 0, h_grad = 0; i < 9; i++)
     {
       v_grad += v_kernel[i] * data[i];
       h_grad += h_kernel[i] * data[i];
@@ -544,20 +535,16 @@ gradient (const guchar *data)
 static gint
 roberts (const guchar *data)
 {
-  gint    v_kernel[9] = {0,  0,  0,
-                         0,  4,  0,
-                         0,  0, -4};
-  gint    h_kernel[9] = {0,  0,  0,
-                         0,  0,  4,
-                         0, -4,  0};
-
+  const gint v_kernel[9] = { 0,  0,  0,
+                             0,  4,  0,
+                             0,  0, -4 };
+  const gint h_kernel[9] = { 0,  0,  0,
+                             0,  0,  4,
+                             0, -4,  0 };
   gint i;
-  gint    v_grad, h_grad;
+  gint v_grad, h_grad;
 
-  v_grad = 0;
-  h_grad = 0;
-
-  for (i = 0; i < 9; i++)
+  for (i = 0, v_grad = 0, h_grad = 0; i < 9; i++)
     {
       v_grad += v_kernel[i] * data[i];
       h_grad += h_kernel[i] * data[i];
@@ -573,21 +560,16 @@ roberts (const guchar *data)
 static gint
 differential (const guchar *data)
 {
-  gint    v_kernel[9] = { 0,  0,  0,
-                          0,  2, -2,
-                          0,  2, -2};
-  gint    h_kernel[9] = { 0,  0,  0,
-                          0, -2, -2,
-                          0,  2,  2};
-
-
+  const gint v_kernel[9] = { 0,  0,  0,
+                             0,  2, -2,
+                             0,  2, -2 };
+  const gint h_kernel[9] = { 0,  0,  0,
+                             0, -2, -2,
+                             0,  2,  2 };
   gint i;
-  gint    v_grad, h_grad;
+  gint v_grad, h_grad;
 
-  v_grad = 0;
-  h_grad = 0;
-
-  for (i = 0; i < 9; i++)
+  for (i = 0, v_grad = 0, h_grad = 0; i < 9; i++)
     {
       v_grad += v_kernel[i] * data[i];
       h_grad += h_kernel[i] * data[i];
@@ -603,19 +585,14 @@ differential (const guchar *data)
 static gint
 laplace (const guchar *data)
 {
-  gint    kernel[9] = { 1,  1,  1,
-                        1, -8,  1,
-                        1,  1,  1};
-
+  const gint kernel[9] = { 1,  1,  1,
+                           1, -8,  1,
+                           1,  1,  1 };
   gint i;
   gint grad;
 
-  grad = 0;
-
-  for (i = 0; i < 9; i++)
-    {
-      grad += kernel[i] * data[i];
-    }
+  for (i = 0, grad = 0; i < 9; i++)
+    grad += kernel[i] * data[i];
 
   return grad * evals.amount;
 }
@@ -643,16 +620,23 @@ edge_dialog (GimpDrawable *drawable)
   gboolean use_smear = (evals.wrapmode == GIMP_PIXEL_FETCHER_EDGE_SMEAR);
   gboolean use_black = (evals.wrapmode == GIMP_PIXEL_FETCHER_EDGE_BLACK);
 
-  gimp_ui_init ("edge", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Edge Detection"), "edge",
+  dialog = gimp_dialog_new (_("Edge Detection"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-edge",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -672,12 +656,12 @@ edge_dialog (GimpDrawable *drawable)
   gtk_box_pack_start (GTK_BOX (main_vbox), table, FALSE, FALSE, 0);
   gtk_widget_show (table);
 
-  combo = gimp_int_combo_box_new (_("Sobel"),        SOBEL,
-                                  _("Prewitt"),      PREWITT,
-                                  _("Gradient"),     GRADIENT,
-                                  _("Roberts"),      ROBERTS,
-                                  _("Differential"), DIFFERENTIAL,
-                                  _("Laplace"),      LAPLACE,
+  combo = gimp_int_combo_box_new (_("Sobel"),           SOBEL,
+                                  _("Prewitt compass"), PREWITT,
+                                  _("Gradient"),        GRADIENT,
+                                  _("Roberts"),         ROBERTS,
+                                  _("Differential"),    DIFFERENTIAL,
+                                  _("Laplace"),         LAPLACE,
                                   NULL);
 
   gimp_int_combo_box_connect (GIMP_INT_COMBO_BOX (combo),
@@ -699,10 +683,10 @@ edge_dialog (GimpDrawable *drawable)
                                      FALSE, 1.0, G_MAXFLOAT,
                                      NULL, NULL);
 
-  g_signal_connect (scale_data, "value_changed",
+  g_signal_connect (scale_data, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &evals.amount);
-  g_signal_connect_swapped (scale_data, "value_changed",
+  g_signal_connect_swapped (scale_data, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 

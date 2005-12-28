@@ -17,14 +17,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-#include "config.h"
 
-#include <gtk/gtk.h>
+#include "config.h"
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define PLUG_IN_PROC   "plug-in-borderaverage"
+#define PLUG_IN_BINARY "borderaverage"
 
 
 /* Declare local functions.
@@ -81,18 +84,18 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",        "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",        "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",           "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable",        "Input drawable" },
     { GIMP_PDB_INT32,    "thickness",       "Border size to take in count" },
-    { GIMP_PDB_INT32,    "bucket_exponent", "Bits for bucket size (default=4: 16 Levels)" },
+    { GIMP_PDB_INT32,    "bucket-exponent", "Bits for bucket size (default=4: 16 Levels)" },
   };
   static GimpParamDef return_vals[] =
   {
-    { GIMP_PDB_COLOR,     "borderaverage",   "The average color of the specified border" },
+    { GIMP_PDB_COLOR,    "borderaverage",   "Sends the average color of the specified border to the Toolbox foreground." },
   };
 
-  gimp_install_procedure ("plug_in_borderaverage",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Borderaverage",
                           "",
                           "Philipp Klaus",
@@ -105,7 +108,7 @@ query (void)
                           G_N_ELEMENTS (return_vals),
                           args, return_vals);
 
-  gimp_plugin_menu_register ("plug_in_borderaverage", "<Image>/Filters/Colors");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Colors/Info");
 }
 
 static void
@@ -133,7 +136,7 @@ run (const gchar      *name,
   switch (run_mode)
     {
     case GIMP_RUN_INTERACTIVE:
-      gimp_get_data ("plug_in_borderaverage", &borderaverage_data);
+      gimp_get_data (PLUG_IN_PROC, &borderaverage_data);
       borderaverage_thickness       = borderaverage_data.thickness;
       borderaverage_bucket_exponent = borderaverage_data.bucket_exponent;
       if (! borderaverage_dialog (image_ID, drawable))
@@ -151,7 +154,7 @@ run (const gchar      *name,
       break;
 
     case GIMP_RUN_WITH_LAST_VALS:
-      gimp_get_data ("plug_in_borderaverage", &borderaverage_data);
+      gimp_get_data (PLUG_IN_PROC, &borderaverage_data);
       borderaverage_thickness       = borderaverage_data.thickness;
       borderaverage_bucket_exponent = borderaverage_data.bucket_exponent;
       break;
@@ -165,7 +168,7 @@ run (const gchar      *name,
       /*  Make sure that the drawable is RGB color  */
       if (gimp_drawable_is_rgb (drawable->drawable_id))
         {
-          gimp_progress_init ( _("Border Average..."));
+          gimp_progress_init ( _("Border Average"));
           borderaverage (drawable, &result_color);
 
           if (run_mode != GIMP_RUN_NONINTERACTIVE)
@@ -176,7 +179,7 @@ run (const gchar      *name,
             {
               borderaverage_data.thickness       = borderaverage_thickness;
               borderaverage_data.bucket_exponent = borderaverage_bucket_exponent;
-              gimp_set_data ("plug_in_borderaverage",
+              gimp_set_data (PLUG_IN_PROC,
                              &borderaverage_data, sizeof (borderaverage_data));
             }
         }
@@ -186,12 +189,12 @@ run (const gchar      *name,
         }
     }
   *nreturn_vals = 3;
-  *return_vals = values;
+  *return_vals  = values;
 
-  values[0].type = GIMP_PDB_STATUS;
+  values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = status;
 
-  values[1].type = GIMP_PDB_COLOR;
+  values[1].type         = GIMP_PDB_COLOR;
   values[1].data.d_color = result_color;
 
   gimp_drawable_detach (drawable);
@@ -343,16 +346,23 @@ borderaverage_dialog (gint32        image_ID,
   const gchar *labels[] =
     { "1", "2", "4", "8", "16", "32", "64", "128", "256" };
 
-  gimp_ui_init ("borderaverage", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Borderaverage"), "borderaverage",
+  dialog = gimp_dialog_new (_("Borderaverage"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-borderaverage",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -397,7 +407,7 @@ borderaverage_dialog (gint32        image_ID,
   gtk_table_set_col_spacing (GTK_TABLE (size_entry), 2, 12);
   gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (size_entry), 0,
                               (gdouble) borderaverage_thickness);
-  g_signal_connect (size_entry, "value_changed",
+  g_signal_connect (size_entry, "value-changed",
                     G_CALLBACK (thickness_callback),
                     NULL);
   gtk_widget_show (size_entry);

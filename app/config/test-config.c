@@ -27,13 +27,12 @@
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "core/core-types.h"
 #include "core/gimpgrid.h"
 
-#include "gimpconfig.h"
-#include "gimpconfig-serialize.h"
-#include "gimpconfig-utils.h"
+#include "gimprc-unknown.h"
 
 
 static void  notify_callback      (GObject     *object,
@@ -77,7 +76,7 @@ main (int   argc,
   g_print (" done.\n");
 
   g_print (" Adding the unknown token (foobar \"hadjaha\") ...");
-  gimp_config_add_unknown_token (grid, "foobar", "hadjaha");
+  gimp_rc_add_unknown_token (grid, "foobar", "hadjaha");
   g_print (" done.\n");
 
   g_print (" Serializing %s to '%s' ...",
@@ -104,7 +103,7 @@ main (int   argc,
       return EXIT_FAILURE;
     }
   header = " Unknown string tokens:\n";
-  gimp_config_foreach_unknown_token (grid, output_unknown_token, &header);
+  gimp_rc_foreach_unknown_token (grid, output_unknown_token, &header);
   g_print (" done.\n\n");
 
   g_print (" Changing a property ...");
@@ -122,7 +121,9 @@ main (int   argc,
   g_object_set (grid2, "xspacing", 20.0, NULL);
 
   g_print (" Creating a diff between the two ...");
-  for (list = gimp_config_diff (grid, grid2, 0); list; list = list->next)
+  for (list = gimp_config_diff (G_OBJECT (grid), G_OBJECT (grid2), 0);
+       list;
+       list = list->next)
     {
       GParamSpec *pspec = list->data;
 
@@ -159,7 +160,7 @@ main (int   argc,
     }
   else
     {
-      GList *diff = gimp_config_diff (grid, grid2, 0);
+      GList *diff = gimp_config_diff (G_OBJECT (grid), G_OBJECT (grid2), 0);
 
       if (diff)
         {

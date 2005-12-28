@@ -1,0 +1,249 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>GimpEnumComboBox</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
+<link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
+<link rel="prev" href="GimpEnumStore.html" title="GimpEnumStore">
+<link rel="next" href="GimpEnumLabel.html" title="GimpEnumLabel">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
+<link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
+<link rel="chapter" href="libgimpwidgets-gallery.html" title="Widget Gallery">
+<link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
+<link rel="part" href="libgimpwidgets-colordisplay.html" title="Part&#160;II.&#160;GIMP Display Filters">
+<link rel="part" href="libgimpwidgets-colorselector.html" title="Part&#160;III.&#160;GIMP Color Selectors">
+<link rel="part" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
+<link rel="part" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
+<link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
+<link rel="index" href="ix01.html" title="Index">
+<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="GimpEnumStore.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
+<td><a accesskey="n" href="GimpEnumLabel.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="GimpEnumComboBox"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">GimpEnumComboBox</span></h2>
+<p>GimpEnumComboBox &#8212; </p>
+</td>
+<td valign="top" align="right"><img src="gimp-enum-combo-box.png"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
+
+
+
+            <a href="GimpEnumComboBox.html#GimpEnumComboBox-struct">GimpEnumComboBox</a>;
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="GimpEnumComboBox.html#gimp-enum-combo-box-new">gimp_enum_combo_box_new</a>         (GType enum_type);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="GimpEnumComboBox.html#gimp-enum-combo-box-new-with-model">gimp_enum_combo_box_new_with_model</a>
+                                            (<a href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a> *enum_store);
+void        <a href="GimpEnumComboBox.html#gimp-enum-combo-box-set-stock-prefix">gimp_enum_combo_box_set_stock_prefix</a>
+                                            (<a href="GimpEnumComboBox.html" title="GimpEnumComboBox">GimpEnumComboBox</a> *combo_box,
+                                             const gchar *stock_prefix);
+
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2558849"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+
+  GObject
+   +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+         +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+               +----<a
+href="../gtk/GtkContainer.html"
+>GtkContainer</a>
+                     +----<a
+href="../gtk/GtkBin.html"
+>GtkBin</a>
+                           +----<a
+href="../gtk/GtkComboBox.html"
+>GtkComboBox</a>
+                                 +----<a href="GimpIntComboBox.html" title="GimpIntComboBox">GimpIntComboBox</a>
+                                       +----GimpEnumComboBox
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2558905"></a><h2>Implemented Interfaces</h2>
+<p>
+GimpEnumComboBox implements
+ AtkImplementorIface,  <a
+href="../gtk/GtkCellEditable.html"
+>GtkCellEditable</a> and  <a
+href="../gtk/GtkCellLayout.html"
+>GtkCellLayout</a>.</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2558935"></a><h2>Properties</h2>
+<pre class="synopsis">
+
+  "<a href="GimpEnumComboBox.html#GimpEnumComboBox--model">model</a>"                <a href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a>         : Read / Write
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2558960"></a><h2>Description</h2>
+<p>
+
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2554940"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2554946"></a><h3>
+<a name="GimpEnumComboBox-struct"></a>GimpEnumComboBox</h3>
+<a class="indexterm" name="id2554956"></a><pre class="programlisting">typedef struct _GimpEnumComboBox GimpEnumComboBox;</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2554972"></a><h3>
+<a name="gimp-enum-combo-box-new"></a>gimp_enum_combo_box_new ()</h3>
+<a class="indexterm" name="id2554981"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_enum_combo_box_new         (GType enum_type);</pre>
+<p>
+Creates a <a
+href="../gtk/GtkComboBox.html"
+><span class="type">GtkComboBox</span></a> readily filled with all enum values from a
+given <em class="parameter"><code>enum_type</code></em>. The enum needs to be registered to the type
+system. It should also have <code class="literal">GimpEnumDesc</code> descriptions registered
+that contain translatable value names. This is the case for the
+enums used in the GIMP PDB functions.
+</p>
+<p>
+This is just a convenience function. If you need more control over
+the enum values that appear in the combo_box, you can create your
+own <a href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a> and use <a href="GimpEnumComboBox.html#gimp-enum-combo-box-new-with-model"><code class="function">gimp_enum_combo_box_new_with_model()</code></a>.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>enum_type</code></em>&#160;:</span></td>
+<td> the <span class="type">GType</span> of an enum.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> a new <a href="GimpEnumComboBox.html" title="GimpEnumComboBox"><span class="type">GimpEnumComboBox</span></a>.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2519162"></a><h3>
+<a name="gimp-enum-combo-box-new-with-model"></a>gimp_enum_combo_box_new_with_model ()</h3>
+<a class="indexterm" name="id2519171"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_enum_combo_box_new_with_model
+                                            (<a href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a> *enum_store);</pre>
+<p>
+Creates a <a
+href="../gtk/GtkComboBox.html"
+><span class="type">GtkComboBox</span></a> for the given <em class="parameter"><code>enum_store</code></em>.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>enum_store</code></em>&#160;:</span></td>
+<td> a <a href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a> to use as the model
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> a new <a href="GimpEnumComboBox.html" title="GimpEnumComboBox"><span class="type">GimpEnumComboBox</span></a>.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2519264"></a><h3>
+<a name="gimp-enum-combo-box-set-stock-prefix"></a>gimp_enum_combo_box_set_stock_prefix ()</h3>
+<a class="indexterm" name="id2519275"></a><pre class="programlisting">void        gimp_enum_combo_box_set_stock_prefix
+                                            (<a href="GimpEnumComboBox.html" title="GimpEnumComboBox">GimpEnumComboBox</a> *combo_box,
+                                             const gchar *stock_prefix);</pre>
+<p>
+Attempts to create stock icons for all items in the <em class="parameter"><code>combo_box</code></em>. See
+<code class="function">gimp_enum_store_set_icons()</code> to find out what to use as <em class="parameter"><code>stock_prefix</code></em>.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>combo_box</code></em>&#160;:</span></td>
+<td>    a <a href="GimpEnumComboBox.html" title="GimpEnumComboBox"><span class="type">GimpEnumComboBox</span></a>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>stock_prefix</code></em>&#160;:</span></td>
+<td> a prefix to create icon stock ID from enum values
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2563279"></a><h2>Properties</h2>
+<div class="refsect2" lang="en">
+<a name="id2563286"></a><h3>
+<a name="GimpEnumComboBox--model"></a>The "<code class="literal">model</code>" property</h3>
+<pre class="programlisting">  "model"                <a href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a>         : Read / Write</pre>
+<p></p>
+</div>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="GimpEnumStore.html"><b>&lt;&lt;&#160;GimpEnumStore</b></a></td>
+<td align="right"><a accesskey="n" href="GimpEnumLabel.html"><b>GimpEnumLabel&#160;&gt;&gt;</b></a></td>
+</tr></table>
+</body>
+</html>

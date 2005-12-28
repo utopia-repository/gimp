@@ -66,6 +66,7 @@
 #include "core/gimpchannel.h"
 #include "core/gimpchannel-select.h"
 #include "core/gimpimage.h"
+#include "core/gimppickable.h"
 #include "core/gimpprojection.h"
 #include "core/gimpscanconvert.h"
 #include "core/gimptoolinfo.h"
@@ -121,9 +122,6 @@ struct _ICurve
 
 
 /*  local function prototypes  */
-
-static void   gimp_iscissors_tool_class_init (GimpIscissorsToolClass *klass);
-static void   gimp_iscissors_tool_init       (GimpIscissorsTool      *iscissors);
 
 static void   gimp_iscissors_tool_finalize       (GObject           *object);
 
@@ -201,6 +199,12 @@ static GPtrArray   * plot_pixels               (GimpIscissorsTool *iscissors,
 						gint               ye);
 
 
+G_DEFINE_TYPE (GimpIscissorsTool, gimp_iscissors_tool,
+               GIMP_TYPE_SELECTION_TOOL);
+
+#define parent_class gimp_iscissors_tool_parent_class
+
+
 /*  static variables  */
 
 /*  where to move on a given link direction  */
@@ -262,9 +266,6 @@ static gboolean  initialized = FALSE;
 static Tile     *cur_tile = NULL;
 
 
-static GimpSelectionToolClass *parent_class = NULL;
-
-
 void
 gimp_iscissors_tool_register (GimpToolRegisterCallback  callback,
                               gpointer                  data)
@@ -283,42 +284,12 @@ gimp_iscissors_tool_register (GimpToolRegisterCallback  callback,
                 data);
 }
 
-GType
-gimp_iscissors_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpIscissorsToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_iscissors_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpIscissorsTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_iscissors_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_SELECTION_TOOL,
-                                          "GimpIscissorsTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
-
 static void
 gimp_iscissors_tool_class_init (GimpIscissorsToolClass *klass)
 {
   GObjectClass      *object_class    = G_OBJECT_CLASS (klass);
   GimpToolClass     *tool_class      = GIMP_TOOL_CLASS (klass);
   GimpDrawToolClass *draw_tool_class = GIMP_DRAW_TOOL_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize     = gimp_iscissors_tool_finalize;
 
@@ -465,7 +436,7 @@ gimp_iscissors_tool_button_press (GimpTool        *tool,
       break;
 
     default:
-      /*  Check if the mouse click occured on a vertex or the curve itself  */
+      /*  Check if the mouse click occurred on a vertex or the curve itself  */
       if (clicked_on_vertex (tool))
 	{
 	  iscissors->nx    = iscissors->x;
@@ -477,9 +448,9 @@ gimp_iscissors_tool_button_press (GimpTool        *tool,
 	}
       /*  If the iscissors is connected, check if the click was inside  */
       else if (iscissors->connected && iscissors->mask &&
-	       gimp_channel_value (iscissors->mask,
-                                   iscissors->x,
-                                   iscissors->y))
+	       gimp_pickable_get_opacity_at (GIMP_PICKABLE (iscissors->mask),
+                                             iscissors->x,
+                                             iscissors->y))
 	{
 	  /*  Undraw the curve  */
 	  gimp_tool_control_halt (tool->control);
@@ -977,7 +948,8 @@ gimp_iscissors_tool_oper_update (GimpTool        *tool,
     }
   else if (iscissors->connected && iscissors->mask)
     {
-      if (gimp_channel_value (iscissors->mask, coords->x, coords->y))
+      if (gimp_pickable_get_opacity_at (GIMP_PICKABLE (iscissors->mask),
+                                        coords->x, coords->y))
         {
           iscissors->op = ISCISSORS_OP_SELECT;
         }
@@ -1736,9 +1708,6 @@ gradmap_tile_validate (TileManager *tm,
   dw = tile_ewidth (tile);
   dh = tile_eheight (tile);
 
-  gimp_projection_finish_draw (gimage->projection);
-  gimp_projection_flush_now (gimage->projection);
-
   /* get corresponding tile in the gimage */
   srctile = tile_manager_get_tile (gimp_projection_get_tiles (gimage->projection),
 				   x, y, TRUE, FALSE);
@@ -1748,11 +1717,11 @@ gradmap_tile_validate (TileManager *tm,
   sw = tile_ewidth (srctile);
   sh = tile_eheight (srctile);
 
-  srcPR.w         = MIN (dw, sw);
-  srcPR.h         = MIN (dh, sh);
-  srcPR.bytes     = gimp_projection_get_bytes (gimage->projection);
-  srcPR.data      = tile_data_pointer (srctile, 0, 0);
-  srcPR.rowstride = srcPR.w * srcPR.bytes;
+  pixel_region_init_data (&srcPR, tile_data_pointer (srctile, 0, 0),
+                          gimp_projection_get_bytes (gimage->projection),
+                          gimp_projection_get_bytes (gimage->projection) *
+                          MIN (dw, sw),
+                          0, 0, MIN (dw, sw), MIN (dh, sh));
 
   /* XXX tile edges? */
 

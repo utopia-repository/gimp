@@ -16,6 +16,8 @@ libappbase_a_SOURCES = \
 	color-balance.h		\
 	colorize.c		\
 	colorize.h		\
+	cpercep.c		\
+	cpercep.h		\
 	curves.c		\
 	curves.h		\
 	cpu-accel.c		\
@@ -36,6 +38,8 @@ libappbase_a_SOURCES = \
 	pixel-region.h		\
 	pixel-surround.c	\
 	pixel-surround.h	\
+	siox.c			\
+	siox.h			\
 	temp-buf.c		\
 	temp-buf.h		\
 	threshold.c		\
@@ -55,16 +59,18 @@ libappbase_a_SOURCES = \
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-Base\"	\
-	@GIMP_THREAD_FLAGS@ 		\
-	@GIMP_MP_FLAGS@
+	@GTHREAD_CFLAGS@
 
 AM_CCASFLAGS = \
 	-I$(top_builddir)	\
-	-I$(top_srcdir) 	\
+	-I$(top_srcdir)		\
+	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app
 
 INCLUDES = \
+	-I$(top_builddir)	\
 	-I$(top_srcdir)		\
+	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
 	$(GLIB_CFLAGS)		\
 	-I$(includedir)

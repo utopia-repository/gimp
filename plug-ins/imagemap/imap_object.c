@@ -3,7 +3,7 @@
  *
  * Generates clickable image maps.
  *
- * Copyright (C) 1998-2003 Maurits Rijk  lpeek.mrijk@consunet.nl
+ * Copyright (C) 1998-2005 Maurits Rijk  m.rijk@chello.nl
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -375,23 +375,6 @@ object_emit_update_signal(Object_t *obj)
    object_list_callback_call(&obj->list->update_cb, obj);
 }
 
-GdkPixmap* 
-object_get_icon(Object_t *obj, GtkWidget *widget, GdkBitmap **mask)
-{
-#ifdef _NOT_READY_YET_
-  /* This won't work: can't get a pixmap from a stock icon */
-   if (!obj->class->icon) {
-      GtkWidget *image = gtk_image_new_from_stock(
-	 obj->class->get_stock_icon_name(), GTK_ICON_SIZE_MENU);
-      gtk_image_get_pixmap(GTK_IMAGE(image), &obj->class->icon,
-			   &obj->class->mask);
-   }
-   *mask = obj->class->mask;
-
-#endif
-   return obj->class->icon;
-}
-
 void
 do_object_locked_dialog(void)
 {
@@ -481,9 +464,9 @@ object_on_button_press(GtkWidget *widget, GdkEventButton *event, gpointer data)
 	 factory = ((ObjectFactory_t*(*)(guint)) data)(event->state);
 	 obj = object_factory_create_object(factory, x, y);
 	 
-	 gdk_gc_set_function(preferences->normal_gc, GDK_XOR);
+	 gdk_gc_set_function(preferences->normal_gc, GDK_EQUIV);
 
-	 g_signal_connect(widget, "motion_notify_event",
+	 g_signal_connect(widget, "motion-notify-event",
                           G_CALLBACK(button_motion), factory);
       }
    }

@@ -29,6 +29,7 @@ G_BEGIN_DECLS
 
 
 #define GIMP_DEVICE_INFO_CONTEXT_MASK (GIMP_CONTEXT_TOOL_MASK       | \
+                                       GIMP_CONTEXT_PAINT_INFO_MASK | \
                                        GIMP_CONTEXT_FOREGROUND_MASK | \
                                        GIMP_CONTEXT_BACKGROUND_MASK | \
 			               GIMP_CONTEXT_BRUSH_MASK      | \
@@ -51,6 +52,7 @@ struct _GimpDeviceInfo
   GimpContext    parent_instance;
 
   GdkDevice     *device;
+  GdkDisplay    *display;
 
   /*  either "device" or the options below are set  */
 
@@ -75,7 +77,8 @@ GimpDeviceInfo * gimp_device_info_new               (Gimp           *gimp,
                                                      const gchar    *name);
 
 GimpDeviceInfo * gimp_device_info_set_from_device   (GimpDeviceInfo *device_info,
-                                                     GdkDevice      *device);
+                                                     GdkDevice      *device,
+                                                     GdkDisplay     *display);
 void             gimp_device_info_changed           (GimpDeviceInfo *device_info);
 
 GimpDeviceInfo * gimp_device_info_get_by_device     (GdkDevice      *device);

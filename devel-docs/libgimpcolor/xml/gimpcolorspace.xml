@@ -4,77 +4,74 @@
 
 <refentry id="libgimpcolor-GimpColorSpace">
 <refmeta>
-<refentrytitle role="top_of_page">GimpColorSpace</refentrytitle>
+<refentrytitle>GimpColorSpace</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCOLOR Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpColorSpace</refname>
-<refpurpose>Utility functions which convert colors between different color models.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>GimpColorSpace</refname><refpurpose>Utility functions which convert colors between different color models.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-                    <link linkend="GimpHSL">GimpHSL</link>;
-<link linkend="void">void</link>                <link linkend="gimp-rgb-to-hsv">gimp_rgb_to_hsv</link>                     (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                                         <link linkend="GimpHSV">GimpHSV</link> *hsv);
-<link linkend="void">void</link>                <link linkend="gimp-rgb-to-hsl">gimp_rgb_to_hsl</link>                     (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                                         <link linkend="GimpHSL">GimpHSL</link> *hsl);
-<link linkend="void">void</link>                <link linkend="gimp-rgb-to-cmyk">gimp_rgb_to_cmyk</link>                    (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                                         <link linkend="gdouble">gdouble</link> pullout,
-                                                         <link linkend="GimpCMYK">GimpCMYK</link> *cmyk);
-<link linkend="void">void</link>                <link linkend="gimp-hsv-to-rgb">gimp_hsv_to_rgb</link>                     (const <link linkend="GimpHSV">GimpHSV</link> *hsv,
-                                                         <link linkend="GimpRGB">GimpRGB</link> *rgb);
-<link linkend="void">void</link>                <link linkend="gimp-hsl-to-rgb">gimp_hsl_to_rgb</link>                     (const <link linkend="GimpHSL">GimpHSL</link> *hsl,
-                                                         <link linkend="GimpRGB">GimpRGB</link> *rgb);
-<link linkend="void">void</link>                <link linkend="gimp-cmyk-to-rgb">gimp_cmyk_to_rgb</link>                    (const <link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
-                                                         <link linkend="GimpRGB">GimpRGB</link> *rgb);
-<link linkend="void">void</link>                <link linkend="gimp-rgb-to-hwb">gimp_rgb_to_hwb</link>                     (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                                         <link linkend="gdouble">gdouble</link> *hue,
-                                                         <link linkend="gdouble">gdouble</link> *whiteness,
-                                                         <link linkend="gdouble">gdouble</link> *blackness);
-<link linkend="void">void</link>                <link linkend="gimp-hwb-to-rgb">gimp_hwb_to_rgb</link>                     (<link linkend="gdouble">gdouble</link> hue,
-                                                         <link linkend="gdouble">gdouble</link> whiteness,
-                                                         <link linkend="gdouble">gdouble</link> blackness,
-                                                         <link linkend="GimpRGB">GimpRGB</link> *rgb);
-<link linkend="void">void</link>                <link linkend="gimp-rgb-to-hsv-int">gimp_rgb_to_hsv_int</link>                 (<link linkend="gint">gint</link> *red,
-                                                         <link linkend="gint">gint</link> *green,
-                                                         <link linkend="gint">gint</link> *blue);
-<link linkend="void">void</link>                <link linkend="gimp-hsv-to-rgb-int">gimp_hsv_to_rgb_int</link>                 (<link linkend="gint">gint</link> *hue,
-                                                         <link linkend="gint">gint</link> *saturation,
-                                                         <link linkend="gint">gint</link> *value);
-<link linkend="void">void</link>                <link linkend="gimp-rgb-to-hsl-int">gimp_rgb_to_hsl_int</link>                 (<link linkend="gint">gint</link> *red,
-                                                         <link linkend="gint">gint</link> *green,
-                                                         <link linkend="gint">gint</link> *blue);
-<link linkend="void">void</link>                <link linkend="gimp-rgb-to-cmyk-int">gimp_rgb_to_cmyk_int</link>                (<link linkend="gint">gint</link> *red,
-                                                         <link linkend="gint">gint</link> *green,
-                                                         <link linkend="gint">gint</link> *blue,
-                                                         <link linkend="gint">gint</link> *pullout);
-<link linkend="void">void</link>                <link linkend="gimp-cmyk-to-rgb-int">gimp_cmyk_to_rgb_int</link>                (<link linkend="gint">gint</link> *cyan,
-                                                         <link linkend="gint">gint</link> *magenta,
-                                                         <link linkend="gint">gint</link> *yellow,
-                                                         <link linkend="gint">gint</link> *black);
-<link linkend="gint">gint</link>                <link linkend="gimp-rgb-to-l-int">gimp_rgb_to_l_int</link>                   (<link linkend="gint">gint</link> red,
-                                                         <link linkend="gint">gint</link> green,
-                                                         <link linkend="gint">gint</link> blue);
-<link linkend="void">void</link>                <link linkend="gimp-hsl-to-rgb-int">gimp_hsl_to_rgb_int</link>                 (<link linkend="gint">gint</link> *hue,
-                                                         <link linkend="gint">gint</link> *saturation,
-                                                         <link linkend="gint">gint</link> *lightness);
-<link linkend="void">void</link>                <link linkend="gimp-rgb-to-hsv4">gimp_rgb_to_hsv4</link>                    (<link linkend="guchar">guchar</link> *rgb,
-                                                         <link linkend="gdouble">gdouble</link> *hue,
-                                                         <link linkend="gdouble">gdouble</link> *saturation,
-                                                         <link linkend="gdouble">gdouble</link> *value);
-<link linkend="void">void</link>                <link linkend="gimp-hsv-to-rgb4">gimp_hsv_to_rgb4</link>                    (<link linkend="guchar">guchar</link> *rgb,
-                                                         <link linkend="gdouble">gdouble</link> hue,
-                                                         <link linkend="gdouble">gdouble</link> saturation,
-                                                         <link linkend="gdouble">gdouble</link> value);
+            <link linkend="GimpHSL">GimpHSL</link>;
+<link linkend="void">void</link>        <link linkend="gimp-rgb-to-hsv">gimp_rgb_to_hsv</link>                 (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                             <link linkend="GimpHSV">GimpHSV</link> *hsv);
+<link linkend="void">void</link>        <link linkend="gimp-rgb-to-hsl">gimp_rgb_to_hsl</link>                 (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                             <link linkend="GimpHSL">GimpHSL</link> *hsl);
+<link linkend="void">void</link>        <link linkend="gimp-rgb-to-cmyk">gimp_rgb_to_cmyk</link>                (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                             <link linkend="gdouble">gdouble</link> pullout,
+                                             <link linkend="GimpCMYK">GimpCMYK</link> *cmyk);
+<link linkend="void">void</link>        <link linkend="gimp-hsv-to-rgb">gimp_hsv_to_rgb</link>                 (const <link linkend="GimpHSV">GimpHSV</link> *hsv,
+                                             <link linkend="GimpRGB">GimpRGB</link> *rgb);
+<link linkend="void">void</link>        <link linkend="gimp-hsl-to-rgb">gimp_hsl_to_rgb</link>                 (const <link linkend="GimpHSL">GimpHSL</link> *hsl,
+                                             <link linkend="GimpRGB">GimpRGB</link> *rgb);
+<link linkend="void">void</link>        <link linkend="gimp-cmyk-to-rgb">gimp_cmyk_to_rgb</link>                (const <link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
+                                             <link linkend="GimpRGB">GimpRGB</link> *rgb);
+<link linkend="void">void</link>        <link linkend="gimp-rgb-to-hwb">gimp_rgb_to_hwb</link>                 (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                             <link linkend="gdouble">gdouble</link> *hue,
+                                             <link linkend="gdouble">gdouble</link> *whiteness,
+                                             <link linkend="gdouble">gdouble</link> *blackness);
+<link linkend="void">void</link>        <link linkend="gimp-hwb-to-rgb">gimp_hwb_to_rgb</link>                 (<link linkend="gdouble">gdouble</link> hue,
+                                             <link linkend="gdouble">gdouble</link> whiteness,
+                                             <link linkend="gdouble">gdouble</link> blackness,
+                                             <link linkend="GimpRGB">GimpRGB</link> *rgb);
+<link linkend="void">void</link>        <link linkend="gimp-rgb-to-hsv-int">gimp_rgb_to_hsv_int</link>             (<link linkend="gint">gint</link> *red,
+                                             <link linkend="gint">gint</link> *green,
+                                             <link linkend="gint">gint</link> *blue);
+<link linkend="void">void</link>        <link linkend="gimp-hsv-to-rgb-int">gimp_hsv_to_rgb_int</link>             (<link linkend="gint">gint</link> *hue,
+                                             <link linkend="gint">gint</link> *saturation,
+                                             <link linkend="gint">gint</link> *value);
+<link linkend="void">void</link>        <link linkend="gimp-rgb-to-hsl-int">gimp_rgb_to_hsl_int</link>             (<link linkend="gint">gint</link> *red,
+                                             <link linkend="gint">gint</link> *green,
+                                             <link linkend="gint">gint</link> *blue);
+<link linkend="void">void</link>        <link linkend="gimp-rgb-to-cmyk-int">gimp_rgb_to_cmyk_int</link>            (<link linkend="gint">gint</link> *red,
+                                             <link linkend="gint">gint</link> *green,
+                                             <link linkend="gint">gint</link> *blue,
+                                             <link linkend="gint">gint</link> *pullout);
+<link linkend="void">void</link>        <link linkend="gimp-cmyk-to-rgb-int">gimp_cmyk_to_rgb_int</link>            (<link linkend="gint">gint</link> *cyan,
+                                             <link linkend="gint">gint</link> *magenta,
+                                             <link linkend="gint">gint</link> *yellow,
+                                             <link linkend="gint">gint</link> *black);
+<link linkend="gint">gint</link>        <link linkend="gimp-rgb-to-l-int">gimp_rgb_to_l_int</link>               (<link linkend="gint">gint</link> red,
+                                             <link linkend="gint">gint</link> green,
+                                             <link linkend="gint">gint</link> blue);
+<link linkend="void">void</link>        <link linkend="gimp-hsl-to-rgb-int">gimp_hsl_to_rgb_int</link>             (<link linkend="gint">gint</link> *hue,
+                                             <link linkend="gint">gint</link> *saturation,
+                                             <link linkend="gint">gint</link> *lightness);
+<link linkend="void">void</link>        <link linkend="gimp-rgb-to-hsv4">gimp_rgb_to_hsv4</link>                (<link linkend="guchar">guchar</link> *rgb,
+                                             <link linkend="gdouble">gdouble</link> *hue,
+                                             <link linkend="gdouble">gdouble</link> *saturation,
+                                             <link linkend="gdouble">gdouble</link> *value);
+<link linkend="void">void</link>        <link linkend="gimp-hsv-to-rgb4">gimp_hsv_to_rgb4</link>                (<link linkend="guchar">guchar</link> *rgb,
+                                             <link linkend="gdouble">gdouble</link> hue,
+                                             <link linkend="gdouble">gdouble</link> saturation,
+                                             <link linkend="gdouble">gdouble</link> value);
 </synopsis>
 </refsynopsisdiv>
 
@@ -86,8 +83,8 @@
 
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 When programming pixel data manipulation functions you will often use
 algorithms operating on a color model different from the one GIMP
@@ -96,10 +93,10 @@ different color spaces.
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="GimpHSL" role="struct"/>GimpHSL</title>
+<title><anchor id="GimpHSL"/>GimpHSL</title>
 <indexterm><primary>GimpHSL</primary></indexterm><programlisting>typedef struct {
   gdouble h, s, l, a;
 } GimpHSL;
@@ -108,9 +105,9 @@ different color spaces.
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgb-to-hsv" role="function"/>gimp_rgb_to_hsv ()</title>
-<indexterm><primary>gimp_rgb_to_hsv</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_to_hsv                     (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                                         <link linkend="GimpHSV">GimpHSV</link> *hsv);</programlisting>
+<title><anchor id="gimp-rgb-to-hsv"/>gimp_rgb_to_hsv ()</title>
+<indexterm><primary>gimp_rgb_to_hsv</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_to_hsv                 (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                             <link linkend="GimpHSV">GimpHSV</link> *hsv);</programlisting>
 <para>
 Does a conversion from RGB to HSV (Hue, Saturation,
 Value) colorspace.</para>
@@ -125,9 +122,9 @@ Value) colorspace.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgb-to-hsl" role="function"/>gimp_rgb_to_hsl ()</title>
-<indexterm><primary>gimp_rgb_to_hsl</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_to_hsl                     (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                                         <link linkend="GimpHSL">GimpHSL</link> *hsl);</programlisting>
+<title><anchor id="gimp-rgb-to-hsl"/>gimp_rgb_to_hsl ()</title>
+<indexterm><primary>gimp_rgb_to_hsl</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_to_hsl                 (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                             <link linkend="GimpHSL">GimpHSL</link> *hsl);</programlisting>
 <para>
 Convert an RGB color value to a HSL (Hue, Saturation, Lightness)
 color value.</para>
@@ -142,10 +139,10 @@ color value.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgb-to-cmyk" role="function"/>gimp_rgb_to_cmyk ()</title>
-<indexterm><primary>gimp_rgb_to_cmyk</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_to_cmyk                    (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                                         <link linkend="gdouble">gdouble</link> pullout,
-                                                         <link linkend="GimpCMYK">GimpCMYK</link> *cmyk);</programlisting>
+<title><anchor id="gimp-rgb-to-cmyk"/>gimp_rgb_to_cmyk ()</title>
+<indexterm><primary>gimp_rgb_to_cmyk</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_to_cmyk                (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                             <link linkend="gdouble">gdouble</link> pullout,
+                                             <link linkend="GimpCMYK">GimpCMYK</link> *cmyk);</programlisting>
 <para>
 Does a naive conversion from RGB to CMYK colorspace. A simple
 formula that doesn't take any color-profiles into account is used.
@@ -167,9 +164,9 @@ A value of 1 causes the maximum amount of black to be pulled out.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-hsv-to-rgb" role="function"/>gimp_hsv_to_rgb ()</title>
-<indexterm><primary>gimp_hsv_to_rgb</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_hsv_to_rgb                     (const <link linkend="GimpHSV">GimpHSV</link> *hsv,
-                                                         <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<title><anchor id="gimp-hsv-to-rgb"/>gimp_hsv_to_rgb ()</title>
+<indexterm><primary>gimp_hsv_to_rgb</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_hsv_to_rgb                 (const <link linkend="GimpHSV">GimpHSV</link> *hsv,
+                                             <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
 <para>
 Converts a color value from HSV to RGB colorspace</para>
 <para>
@@ -183,9 +180,9 @@ Converts a color value from HSV to RGB colorspace</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-hsl-to-rgb" role="function"/>gimp_hsl_to_rgb ()</title>
-<indexterm><primary>gimp_hsl_to_rgb</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_hsl_to_rgb                     (const <link linkend="GimpHSL">GimpHSL</link> *hsl,
-                                                         <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<title><anchor id="gimp-hsl-to-rgb"/>gimp_hsl_to_rgb ()</title>
+<indexterm><primary>gimp_hsl_to_rgb</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_hsl_to_rgb                 (const <link linkend="GimpHSL">GimpHSL</link> *hsl,
+                                             <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
 <para>
 Convert a HSL color value to an RGB color value.</para>
 <para>
@@ -199,9 +196,9 @@ Convert a HSL color value to an RGB color value.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-cmyk-to-rgb" role="function"/>gimp_cmyk_to_rgb ()</title>
-<indexterm><primary>gimp_cmyk_to_rgb</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyk_to_rgb                    (const <link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
-                                                         <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<title><anchor id="gimp-cmyk-to-rgb"/>gimp_cmyk_to_rgb ()</title>
+<indexterm><primary>gimp_cmyk_to_rgb</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_cmyk_to_rgb                (const <link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
+                                             <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
 <para>
 Does a simple transformation from the CMYK colorspace to the RGB
 colorspace, without taking color profiles into account.</para>
@@ -216,11 +213,11 @@ colorspace, without taking color profiles into account.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgb-to-hwb" role="function"/>gimp_rgb_to_hwb ()</title>
-<indexterm><primary>gimp_rgb_to_hwb</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_to_hwb                     (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                                         <link linkend="gdouble">gdouble</link> *hue,
-                                                         <link linkend="gdouble">gdouble</link> *whiteness,
-                                                         <link linkend="gdouble">gdouble</link> *blackness);</programlisting>
+<title><anchor id="gimp-rgb-to-hwb"/>gimp_rgb_to_hwb ()</title>
+<indexterm><primary>gimp_rgb_to_hwb</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_to_hwb                 (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                             <link linkend="gdouble">gdouble</link> *hue,
+                                             <link linkend="gdouble">gdouble</link> *whiteness,
+                                             <link linkend="gdouble">gdouble</link> *blackness);</programlisting>
 <para>
 Theoretically, hue 0 (pure red) is identical to hue 6 in these transforms.
 Pure red always maps to 6 in this implementation. Therefore UNDEFINED can
@@ -247,11 +244,11 @@ undefined.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-hwb-to-rgb" role="function"/>gimp_hwb_to_rgb ()</title>
-<indexterm><primary>gimp_hwb_to_rgb</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_hwb_to_rgb                     (<link linkend="gdouble">gdouble</link> hue,
-                                                         <link linkend="gdouble">gdouble</link> whiteness,
-                                                         <link linkend="gdouble">gdouble</link> blackness,
-                                                         <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<title><anchor id="gimp-hwb-to-rgb"/>gimp_hwb_to_rgb ()</title>
+<indexterm><primary>gimp_hwb_to_rgb</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_hwb_to_rgb                 (<link linkend="gdouble">gdouble</link> hue,
+                                             <link linkend="gdouble">gdouble</link> whiteness,
+                                             <link linkend="gdouble">gdouble</link> blackness,
+                                             <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
 <para>
 H is defined in the range [0, 6] or UNDEFINED, B and W are both in the
 range [0, 1]. The returned RGB values are all in the range [0, 1].</para>
@@ -272,10 +269,10 @@ range [0, 1]. The returned RGB values are all in the range [0, 1].</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgb-to-hsv-int" role="function"/>gimp_rgb_to_hsv_int ()</title>
-<indexterm><primary>gimp_rgb_to_hsv_int</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_to_hsv_int                 (<link linkend="gint">gint</link> *red,
-                                                         <link linkend="gint">gint</link> *green,
-                                                         <link linkend="gint">gint</link> *blue);</programlisting>
+<title><anchor id="gimp-rgb-to-hsv-int"/>gimp_rgb_to_hsv_int ()</title>
+<indexterm><primary>gimp_rgb_to_hsv_int</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_to_hsv_int             (<link linkend="gint">gint</link> *red,
+                                             <link linkend="gint">gint</link> *green,
+                                             <link linkend="gint">gint</link> *blue);</programlisting>
 <para>
 The arguments are pointers to int representing channel values in
 the RGB colorspace, and the values pointed to are all in the range
@@ -299,10 +296,10 @@ ranges: H [0, 360], S [0, 255], V [0, 255].</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-hsv-to-rgb-int" role="function"/>gimp_hsv_to_rgb_int ()</title>
-<indexterm><primary>gimp_hsv_to_rgb_int</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_hsv_to_rgb_int                 (<link linkend="gint">gint</link> *hue,
-                                                         <link linkend="gint">gint</link> *saturation,
-                                                         <link linkend="gint">gint</link> *value);</programlisting>
+<title><anchor id="gimp-hsv-to-rgb-int"/>gimp_hsv_to_rgb_int ()</title>
+<indexterm><primary>gimp_hsv_to_rgb_int</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_hsv_to_rgb_int             (<link linkend="gint">gint</link> *hue,
+                                             <link linkend="gint">gint</link> *saturation,
+                                             <link linkend="gint">gint</link> *value);</programlisting>
 <para>
 The arguments are pointers to int, with the values pointed to in the
 following ranges:  H [0, 360], S [0, 255], V [0, 255].
@@ -324,10 +321,10 @@ corresponding, with the returned values all in the range [0, 255].</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgb-to-hsl-int" role="function"/>gimp_rgb_to_hsl_int ()</title>
-<indexterm><primary>gimp_rgb_to_hsl_int</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_to_hsl_int                 (<link linkend="gint">gint</link> *red,
-                                                         <link linkend="gint">gint</link> *green,
-                                                         <link linkend="gint">gint</link> *blue);</programlisting>
+<title><anchor id="gimp-rgb-to-hsl-int"/>gimp_rgb_to_hsl_int ()</title>
+<indexterm><primary>gimp_rgb_to_hsl_int</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_to_hsl_int             (<link linkend="gint">gint</link> *red,
+                                             <link linkend="gint">gint</link> *green,
+                                             <link linkend="gint">gint</link> *blue);</programlisting>
 <para>
 The arguments are pointers to int representing channel values in the
 RGB colorspace, and the values pointed to are all in the range [0, 255].
@@ -350,11 +347,11 @@ L [0, 255], S [0, 255].</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgb-to-cmyk-int" role="function"/>gimp_rgb_to_cmyk_int ()</title>
-<indexterm><primary>gimp_rgb_to_cmyk_int</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_to_cmyk_int                (<link linkend="gint">gint</link> *red,
-                                                         <link linkend="gint">gint</link> *green,
-                                                         <link linkend="gint">gint</link> *blue,
-                                                         <link linkend="gint">gint</link> *pullout);</programlisting>
+<title><anchor id="gimp-rgb-to-cmyk-int"/>gimp_rgb_to_cmyk_int ()</title>
+<indexterm><primary>gimp_rgb_to_cmyk_int</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_to_cmyk_int            (<link linkend="gint">gint</link> *red,
+                                             <link linkend="gint">gint</link> *green,
+                                             <link linkend="gint">gint</link> *blue,
+                                             <link linkend="gint">gint</link> *pullout);</programlisting>
 <para>
 Does a naive conversion from RGB to CMYK colorspace. A simple
 formula that doesn't take any color-profiles into account is used.
@@ -379,11 +376,11 @@ A value of 100 causes the maximum amount of black to be pulled out.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-cmyk-to-rgb-int" role="function"/>gimp_cmyk_to_rgb_int ()</title>
-<indexterm><primary>gimp_cmyk_to_rgb_int</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyk_to_rgb_int                (<link linkend="gint">gint</link> *cyan,
-                                                         <link linkend="gint">gint</link> *magenta,
-                                                         <link linkend="gint">gint</link> *yellow,
-                                                         <link linkend="gint">gint</link> *black);</programlisting>
+<title><anchor id="gimp-cmyk-to-rgb-int"/>gimp_cmyk_to_rgb_int ()</title>
+<indexterm><primary>gimp_cmyk_to_rgb_int</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_cmyk_to_rgb_int            (<link linkend="gint">gint</link> *cyan,
+                                             <link linkend="gint">gint</link> *magenta,
+                                             <link linkend="gint">gint</link> *yellow,
+                                             <link linkend="gint">gint</link> *black);</programlisting>
 <para>
 Does a naive conversion from CMYK to RGB colorspace. A simple
 formula that doesn't take any color-profiles into account is used.</para>
@@ -404,10 +401,10 @@ formula that doesn't take any color-profiles into account is used.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgb-to-l-int" role="function"/>gimp_rgb_to_l_int ()</title>
-<indexterm><primary>gimp_rgb_to_l_int</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_rgb_to_l_int                   (<link linkend="gint">gint</link> red,
-                                                         <link linkend="gint">gint</link> green,
-                                                         <link linkend="gint">gint</link> blue);</programlisting>
+<title><anchor id="gimp-rgb-to-l-int"/>gimp_rgb_to_l_int ()</title>
+<indexterm><primary>gimp_rgb_to_l_int</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_rgb_to_l_int               (<link linkend="gint">gint</link> red,
+                                             <link linkend="gint">gint</link> green,
+                                             <link linkend="gint">gint</link> blue);</programlisting>
 <para>
 Calculates the lightness value of an RGB triplet with the formula
 L = (max(R, G, B) + min (R, G, B)) / 2</para>
@@ -427,10 +424,10 @@ L = (max(R, G, B) + min (R, G, B)) / 2</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-hsl-to-rgb-int" role="function"/>gimp_hsl_to_rgb_int ()</title>
-<indexterm><primary>gimp_hsl_to_rgb_int</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_hsl_to_rgb_int                 (<link linkend="gint">gint</link> *hue,
-                                                         <link linkend="gint">gint</link> *saturation,
-                                                         <link linkend="gint">gint</link> *lightness);</programlisting>
+<title><anchor id="gimp-hsl-to-rgb-int"/>gimp_hsl_to_rgb_int ()</title>
+<indexterm><primary>gimp_hsl_to_rgb_int</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_hsl_to_rgb_int             (<link linkend="gint">gint</link> *hue,
+                                             <link linkend="gint">gint</link> *saturation,
+                                             <link linkend="gint">gint</link> *lightness);</programlisting>
 <para>
 The arguments are pointers to int, with the values pointed to in the
 following ranges:  H [0, 360], L [0, 255], S [0, 255].
@@ -452,11 +449,11 @@ corresponding, with the returned values all in the range [0, 255].</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgb-to-hsv4" role="function"/>gimp_rgb_to_hsv4 ()</title>
-<indexterm><primary>gimp_rgb_to_hsv4</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_to_hsv4                    (<link linkend="guchar">guchar</link> *rgb,
-                                                         <link linkend="gdouble">gdouble</link> *hue,
-                                                         <link linkend="gdouble">gdouble</link> *saturation,
-                                                         <link linkend="gdouble">gdouble</link> *value);</programlisting>
+<title><anchor id="gimp-rgb-to-hsv4"/>gimp_rgb_to_hsv4 ()</title>
+<indexterm><primary>gimp_rgb_to_hsv4</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_to_hsv4                (<link linkend="guchar">guchar</link> *rgb,
+                                             <link linkend="gdouble">gdouble</link> *hue,
+                                             <link linkend="gdouble">gdouble</link> *saturation,
+                                             <link linkend="gdouble">gdouble</link> *value);</programlisting>
 <para>
 </para>
 <para>
@@ -477,11 +474,11 @@ corresponding, with the returned values all in the range [0, 255].</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-hsv-to-rgb4" role="function"/>gimp_hsv_to_rgb4 ()</title>
-<indexterm><primary>gimp_hsv_to_rgb4</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_hsv_to_rgb4                    (<link linkend="guchar">guchar</link> *rgb,
-                                                         <link linkend="gdouble">gdouble</link> hue,
-                                                         <link linkend="gdouble">gdouble</link> saturation,
-                                                         <link linkend="gdouble">gdouble</link> value);</programlisting>
+<title><anchor id="gimp-hsv-to-rgb4"/>gimp_hsv_to_rgb4 ()</title>
+<indexterm><primary>gimp_hsv_to_rgb4</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_hsv_to_rgb4                (<link linkend="guchar">guchar</link> *rgb,
+                                             <link linkend="gdouble">gdouble</link> hue,
+                                             <link linkend="gdouble">gdouble</link> saturation,
+                                             <link linkend="gdouble">gdouble</link> value);</programlisting>
 <para>
 </para>
 <para>

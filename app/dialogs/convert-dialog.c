@@ -34,9 +34,7 @@
 #include "core/gimppalette.h"
 #include "core/gimpprogress.h"
 
-#include "widgets/gimpenumwidgets.h"
 #include "widgets/gimphelp-ids.h"
-#include "widgets/gimpenumcombobox.h"
 #include "widgets/gimpviewablebox.h"
 #include "widgets/gimpviewabledialog.h"
 #include "widgets/gimpwidgets-utils.h"
@@ -75,7 +73,7 @@ static void        convert_dialog_palette_changed (GimpContext      *context,
 
 /*  defaults  */
 
-static GimpConvertDitherType   saved_dither_type  = GIMP_FS_DITHER;
+static GimpConvertDitherType   saved_dither_type  = GIMP_NO_DITHER;
 static gboolean                saved_alpha_dither = FALSE;
 static gboolean                saved_remove_dups  = TRUE;
 static gint                    saved_num_colors   = 256;
@@ -91,6 +89,7 @@ convert_dialog_new (GimpImage    *gimage,
                     GimpProgress *progress)
 {
   IndexedDialog *dialog;
+  GtkWidget     *button;
   GtkWidget     *main_vbox;
   GtkWidget     *vbox;
   GtkWidget     *hbox;
@@ -127,9 +126,19 @@ convert_dialog_new (GimpImage    *gimage,
                               GIMP_HELP_IMAGE_CONVERT_INDEXED,
 
                               GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                              GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                               NULL);
+
+  button = gtk_dialog_add_button (GTK_DIALOG (dialog->dialog),
+                                  _("C_onvert"), GTK_RESPONSE_OK);
+  gtk_button_set_image (GTK_BUTTON (button),
+                        gtk_image_new_from_stock (GIMP_STOCK_CONVERT_INDEXED,
+                                                  GTK_ICON_SIZE_BUTTON));
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog->dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   gtk_window_set_resizable (GTK_WINDOW (dialog->dialog), FALSE);
 
@@ -142,16 +151,6 @@ convert_dialog_new (GimpImage    *gimage,
 
   palette_box = convert_dialog_palette_box (dialog);
 
-  if (dialog->context)
-    g_object_weak_ref (G_OBJECT (dialog->dialog),
-                       (GWeakNotify) g_object_unref,
-                       dialog->context);
-
-  if (dialog->container)
-    g_object_weak_ref (G_OBJECT (dialog->dialog),
-                       (GWeakNotify) g_object_unref,
-                       dialog->container);
-
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog->dialog)->vbox),
@@ -161,11 +160,15 @@ convert_dialog_new (GimpImage    *gimage,
 
   /*  palette  */
 
-  frame = gimp_enum_radio_frame_new (GIMP_TYPE_CONVERT_PALETTE_TYPE,
-                                     gtk_label_new (_("Colormap")),
-                                     G_CALLBACK (gimp_radio_button_update),
-                                     &dialog->palette_type,
-                                     &toggle);
+  frame = gimp_enum_radio_frame_new_with_range (GIMP_TYPE_CONVERT_PALETTE_TYPE,
+                                                GIMP_MAKE_PALETTE,
+                                                palette_box ?
+                                                GIMP_CUSTOM_PALETTE : GIMP_MONO_PALETTE,
+                                                gtk_label_new (_("Colormap")),
+                                                G_CALLBACK (gimp_radio_button_update),
+                                                &dialog->palette_type,
+                                                &toggle);
+
   gimp_int_radio_group_set_active (GTK_RADIO_BUTTON (toggle),
                                    dialog->palette_type);
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
@@ -189,7 +192,7 @@ convert_dialog_new (GimpImage    *gimage,
   gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (adjustment, "value_changed",
+  g_signal_connect (adjustment, "value-changed",
 		    G_CALLBACK (gimp_int_adjustment_update),
 		    &dialog->num_colors);
 
@@ -271,7 +274,7 @@ convert_dialog_response (GtkWidget     *widget,
       GimpProgress *progress;
 
       progress = gimp_progress_start (dialog->progress,
-                                      _("Converting to indexed..."), FALSE);
+                                      _("Converting to indexed"), FALSE);
 
       /*  Convert the image to indexed color  */
       gimp_image_convert (dialog->gimage,
@@ -304,32 +307,37 @@ convert_dialog_response (GtkWidget     *widget,
 static GtkWidget *
 convert_dialog_palette_box (IndexedDialog *dialog)
 {
-  Gimp        *gimp;
+  Gimp        *gimp = dialog->gimage->gimp;
   GList       *list;
   GimpPalette *palette;
   GimpPalette *web_palette   = NULL;
   gboolean     default_found = FALSE;
-
-  gimp = dialog->gimage->gimp;
 
   /* We can't dither to > 256 colors */
   dialog->container = gimp_container_filter (gimp->palette_factory->container,
                                              convert_dialog_palette_filter,
                                              NULL);
 
-  if (! gimp_container_num_children (dialog->container))
+  if (gimp_container_is_empty (dialog->container))
     {
       g_object_unref (dialog->container);
+      dialog->container = NULL;
       return NULL;
     }
 
   dialog->context = gimp_context_new (gimp, "convert-dialog", NULL);
 
+  g_object_weak_ref (G_OBJECT (dialog->dialog),
+                     (GWeakNotify) g_object_unref, dialog->context);
+
+  g_object_weak_ref (G_OBJECT (dialog->dialog),
+                     (GWeakNotify) g_object_unref, dialog->container);
+
   for (list = GIMP_LIST (dialog->container)->list;
        list;
        list = g_list_next (list))
     {
-      palette = (GimpPalette *) list->data;
+      palette = list->data;
 
       /* Preferentially, the initial default is 'Web' if available */
       if (web_palette == NULL &&

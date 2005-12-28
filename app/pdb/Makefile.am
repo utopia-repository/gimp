@@ -7,12 +7,15 @@ libapppdb_a_SOURCES = \
 	pdb_glue.h			\
 	procedural_db.c			\
 	procedural_db.h			\
+	procedural-db-query.c		\
+	procedural-db-query.h		\
 	\
 	internal_procs.c		\
 	internal_procs.h		\
 	brush_cmds.c			\
 	brush_select_cmds.c		\
 	brushes_cmds.c			\
+	buffer_cmds.c			\
 	channel_cmds.c			\
 	color_cmds.c			\
 	context_cmds.c			\
@@ -29,6 +32,7 @@ libapppdb_a_SOURCES = \
 	gradient_cmds.c			\
 	gradient_select_cmds.c		\
 	gradients_cmds.c		\
+	grid_cmds.c			\
 	guides_cmds.c			\
 	help_cmds.c			\
 	image_cmds.c			\
@@ -52,15 +56,17 @@ libapppdb_a_SOURCES = \
 	text_tool_cmds.c		\
 	transform_tools_cmds.c		\
 	undo_cmds.c			\
-	unit_cmds.c
+	unit_cmds.c			\
+	vectors_cmds.c
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-PDB\"	\
-	@GIMP_THREAD_FLAGS@ 		\
-	@GIMP_MP_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
+	-I$(top_builddir)	\
 	-I$(top_srcdir)		\
+	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
 	$(GDK_PIXBUF_CFLAGS)	\
 	-I$(includedir)

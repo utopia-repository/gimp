@@ -22,12 +22,12 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include <libgimp/gimp.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define PLUG_IN_PROC "plug-in-vinvert"
 
 
 /* Declare local functions.
@@ -63,12 +63,12 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive"          },
     { GIMP_PDB_IMAGE,    "image",    "Input image (used for indexed images)" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" }
+    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"                        }
   };
 
-  gimp_install_procedure ("plug_in_vinvert",
+  gimp_install_procedure (PLUG_IN_PROC,
 			  "Invert the 'value' component of an indexed/RGB "
                           "image in HSV colorspace",
 			  "This function takes an indexed/RGB image and "
@@ -87,7 +87,7 @@ query (void)
 			  G_N_ELEMENTS (args), 0,
 			  args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_vinvert", "<Image>/Filters/Colors");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Colors/Invert");
 }
 
 static void
@@ -123,7 +123,7 @@ run (const gchar      *name,
 	  if (run_mode != GIMP_RUN_NONINTERACTIVE)
 	    {
 	      INIT_I18N();
-	      gimp_progress_init (_("Value Invert..."));
+	      gimp_progress_init (_("Value Invert"));
 	    }
 
 	  vinvert (drawable);

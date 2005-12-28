@@ -99,17 +99,17 @@ static ProcArg brushes_popup_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "brush_callback",
+    "brush-callback",
     "The callback PDB proc to call when brush selection is made"
   },
   {
     GIMP_PDB_STRING,
-    "popup_title",
+    "popup-title",
     "Title to give the brush popup window"
   },
   {
     GIMP_PDB_STRING,
-    "initial_brush",
+    "initial-brush",
     "The name of the brush to set as the first selected"
   },
   {
@@ -124,14 +124,15 @@ static ProcArg brushes_popup_inargs[] =
   },
   {
     GIMP_PDB_INT32,
-    "paint_mode",
+    "paint-mode",
     "The initial paint mode: { GIMP_NORMAL_MODE (0), GIMP_DISSOLVE_MODE (1), GIMP_BEHIND_MODE (2), GIMP_MULTIPLY_MODE (3), GIMP_SCREEN_MODE (4), GIMP_OVERLAY_MODE (5), GIMP_DIFFERENCE_MODE (6), GIMP_ADDITION_MODE (7), GIMP_SUBTRACT_MODE (8), GIMP_DARKEN_ONLY_MODE (9), GIMP_LIGHTEN_ONLY_MODE (10), GIMP_HUE_MODE (11), GIMP_SATURATION_MODE (12), GIMP_COLOR_MODE (13), GIMP_VALUE_MODE (14), GIMP_DIVIDE_MODE (15), GIMP_DODGE_MODE (16), GIMP_BURN_MODE (17), GIMP_HARDLIGHT_MODE (18), GIMP_SOFTLIGHT_MODE (19), GIMP_GRAIN_EXTRACT_MODE (20), GIMP_GRAIN_MERGE_MODE (21), GIMP_COLOR_ERASE_MODE (22) }"
   }
 };
 
 static ProcRecord brushes_popup_proc =
 {
-  "gimp_brushes_popup",
+  "gimp-brushes-popup",
+  "gimp-brushes-popup",
   "Invokes the Gimp brush selection.",
   "This procedure popups the brush selection dialog.",
   "Andy Thomas",
@@ -175,14 +176,15 @@ static ProcArg brushes_close_popup_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "brush_callback",
+    "brush-callback",
     "The name of the callback registered for this popup"
   }
 };
 
 static ProcRecord brushes_close_popup_proc =
 {
-  "gimp_brushes_close_popup",
+  "gimp-brushes-close-popup",
+  "gimp-brushes-close-popup",
   "Popdown the Gimp brush selection.",
   "This procedure closes an opened brush selection dialog.",
   "Andy Thomas",
@@ -250,12 +252,12 @@ static ProcArg brushes_set_popup_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "brush_callback",
+    "brush-callback",
     "The name of the callback registered for this popup"
   },
   {
     GIMP_PDB_STRING,
-    "brush_name",
+    "brush-name",
     "The name of the brush to set as selected"
   },
   {
@@ -270,14 +272,15 @@ static ProcArg brushes_set_popup_inargs[] =
   },
   {
     GIMP_PDB_INT32,
-    "paint_mode",
+    "paint-mode",
     "The initial paint mode: { GIMP_NORMAL_MODE (0), GIMP_DISSOLVE_MODE (1), GIMP_BEHIND_MODE (2), GIMP_MULTIPLY_MODE (3), GIMP_SCREEN_MODE (4), GIMP_OVERLAY_MODE (5), GIMP_DIFFERENCE_MODE (6), GIMP_ADDITION_MODE (7), GIMP_SUBTRACT_MODE (8), GIMP_DARKEN_ONLY_MODE (9), GIMP_LIGHTEN_ONLY_MODE (10), GIMP_HUE_MODE (11), GIMP_SATURATION_MODE (12), GIMP_COLOR_MODE (13), GIMP_VALUE_MODE (14), GIMP_DIVIDE_MODE (15), GIMP_DODGE_MODE (16), GIMP_BURN_MODE (17), GIMP_HARDLIGHT_MODE (18), GIMP_SOFTLIGHT_MODE (19), GIMP_GRAIN_EXTRACT_MODE (20), GIMP_GRAIN_MERGE_MODE (21), GIMP_COLOR_ERASE_MODE (22) }"
   }
 };
 
 static ProcRecord brushes_set_popup_proc =
 {
-  "gimp_brushes_set_popup",
+  "gimp-brushes-set-popup",
+  "gimp-brushes-set-popup",
   "Sets the current brush selection in a popup.",
   "Sets the current brush selection in a popup.",
   "Andy Thomas",

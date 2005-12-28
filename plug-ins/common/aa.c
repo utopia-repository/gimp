@@ -29,14 +29,18 @@
 #include "config.h"
 
 #include <string.h>
-#include <aalib.h>
 
-#include <gtk/gtk.h>
+#include <aalib.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define SAVE_PROC      "file-aa-save"
+#define PLUG_IN_BINARY "aa"
+
 
 /*
  * Declare some local functions.
@@ -76,15 +80,15 @@ query (void)
 {
   static GimpParamDef save_args[] =
   {
-    {GIMP_PDB_INT32,    "run_mode",     "Interactive, non-interactive"},
+    {GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive"},
     {GIMP_PDB_IMAGE,    "image",        "Input image"},
     {GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save"},
     {GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in"},
-    {GIMP_PDB_STRING,   "raw_filename", "The name entered"},
-    {GIMP_PDB_STRING,   "file_type",    "File type to use"}
+    {GIMP_PDB_STRING,   "raw-filename", "The name entered"},
+    {GIMP_PDB_STRING,   "file-type",    "File type to use"}
   };
 
-  gimp_install_procedure ("file_aa_save",
+  gimp_install_procedure (SAVE_PROC,
                           "Saves grayscale image in various text formats",
                           "This plug-in uses aalib to save grayscale image "
                           "as ascii art into a variety of text formats",
@@ -97,8 +101,8 @@ query (void)
                           G_N_ELEMENTS (save_args), 0,
                           save_args, NULL);
 
-  gimp_register_file_handler_mime ("file_aa_save", "text/plain");
-  gimp_register_save_handler ("file_aa_save", "txt,ansi,text", "");
+  gimp_register_file_handler_mime (SAVE_PROC, "text/plain");
+  gimp_register_save_handler (SAVE_PROC, "txt,ansi,text", "");
 }
 
 /**
@@ -155,7 +159,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
     case GIMP_RUN_WITH_LAST_VALS:
-      gimp_ui_init ("aa", FALSE);
+      gimp_ui_init (PLUG_IN_BINARY, FALSE);
       export = gimp_export_image (&image_ID, &drawable_ID, "AA",
                                   (GIMP_EXPORT_CAN_HANDLE_RGB  |
                                    GIMP_EXPORT_CAN_HANDLE_GRAY |
@@ -181,7 +185,7 @@ run (const gchar      *name,
       switch (run_mode)
         {
         case GIMP_RUN_INTERACTIVE:
-          gimp_get_data ("file_aa_save", &output_type);
+          gimp_get_data (SAVE_PROC, &output_type);
           output_type = aa_dialog (output_type);
           if (output_type < 0)
             status = GIMP_PDB_CANCEL;
@@ -202,7 +206,7 @@ run (const gchar      *name,
           break;
 
         case GIMP_RUN_WITH_LAST_VALS:
-          gimp_get_data ("file_aa_save", &output_type);
+          gimp_get_data (SAVE_PROC, &output_type);
           break;
 
         default:
@@ -214,7 +218,7 @@ run (const gchar      *name,
     {
       if (save_aa (drawable_ID, param[3].data.d_string, output_type))
         {
-          gimp_set_data ("file_aa_save", &output_type, sizeof (output_type));
+          gimp_set_data (SAVE_PROC, &output_type, sizeof (output_type));
         }
       else
         {
@@ -307,13 +311,13 @@ gimp2aa (gint32      drawable_ID,
         case 3:  /* RGB */
           for (x = 0, p = buffer; x < width; x++, p += 3)
             aa_putpixel (context, x, y,
-                         GIMP_RGB_INTENSITY (p[0], p[1], p[2]) + 0.5);
+                         GIMP_RGB_LUMINANCE (p[0], p[1], p[2]) + 0.5);
           break;
 
         case 4:  /* RGBA, blend over black */
           for (x = 0, p = buffer; x < width; x++, p += 4)
             aa_putpixel (context, x, y,
-                         ((guchar) (GIMP_RGB_INTENSITY (p[0], p[1], p[2]) + 0.5)
+                         ((guchar) (GIMP_RGB_LUMINANCE (p[0], p[1], p[2]) + 0.5)
                           * (p[3] + 1)) >> 8);
           break;
 
@@ -342,14 +346,21 @@ aa_dialog (gint selected)
   gint       i;
 
   /* Create the actual window. */
-  dialog = gimp_dialog_new (_("Save as Text"), "aa",
+  dialog = gimp_dialog_new (_("Save as Text"), PLUG_IN_BINARY,
                          NULL, 0,
-                         gimp_standard_help_func, "file-aa-save",
+                         gimp_standard_help_func, SAVE_PROC,
 
                          GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                         GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                         GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
 
                          NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   hbox = gtk_hbox_new (FALSE, 6);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
@@ -361,7 +372,7 @@ aa_dialog (gint selected)
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  combo = gimp_int_combo_box_new (NULL, 0);
+  combo = g_object_new (GIMP_TYPE_INT_COMBO_BOX, NULL);
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 0);
   gtk_widget_show (combo);
 

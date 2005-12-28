@@ -53,9 +53,6 @@ plug_in_progress_start (PlugIn      *plug_in,
 
   proc_frame = plug_in_get_proc_frame (plug_in);
 
-  if (! message)
-    message = plug_in->prog;
-
   if (! proc_frame->progress)
     {
       proc_frame->progress = gimp_new_progress (plug_in->gimp, display_ID);
@@ -78,35 +75,19 @@ plug_in_progress_start (PlugIn      *plug_in,
 
       if (gimp_progress_is_active (proc_frame->progress))
         {
-          gimp_progress_set_text (proc_frame->progress, message);
-          gimp_progress_set_value (proc_frame->progress, 0.0);
+          if (message)
+            gimp_progress_set_text (proc_frame->progress, message);
+
+          if (gimp_progress_get_value (proc_frame->progress) > 0.0)
+            gimp_progress_set_value (proc_frame->progress, 0.0);
         }
       else
         {
-          gimp_progress_start (proc_frame->progress, message, TRUE);
+          gimp_progress_start (proc_frame->progress,
+                               message ? message : "",
+                               TRUE);
         }
     }
-}
-
-void
-plug_in_progress_update (PlugIn  *plug_in,
-			 gdouble  percentage)
-{
-  PlugInProcFrame *proc_frame;
-
-  g_return_if_fail (plug_in != NULL);
-
-  proc_frame = plug_in_get_proc_frame (plug_in);
-
-  if (! proc_frame->progress                           ||
-      ! gimp_progress_is_active (proc_frame->progress) ||
-      ! proc_frame->progress_cancel_id)
-    {
-      plug_in_progress_start (plug_in, NULL, -1);
-    }
-
-  if (proc_frame->progress && gimp_progress_is_active (proc_frame->progress))
-    gimp_progress_set_value (proc_frame->progress, percentage);
 }
 
 void
@@ -137,6 +118,76 @@ plug_in_progress_end (PlugIn *plug_in)
           proc_frame->progress = NULL;
         }
     }
+}
+
+void
+plug_in_progress_set_text (PlugIn      *plug_in,
+                           const gchar *message)
+{
+  PlugInProcFrame *proc_frame;
+
+  g_return_if_fail (plug_in != NULL);
+
+  proc_frame = plug_in_get_proc_frame (plug_in);
+
+  if (proc_frame->progress)
+    gimp_progress_set_text (proc_frame->progress, message);
+}
+
+void
+plug_in_progress_set_value (PlugIn  *plug_in,
+                            gdouble  percentage)
+{
+  PlugInProcFrame *proc_frame;
+
+  g_return_if_fail (plug_in != NULL);
+
+  proc_frame = plug_in_get_proc_frame (plug_in);
+
+  if (! proc_frame->progress                           ||
+      ! gimp_progress_is_active (proc_frame->progress) ||
+      ! proc_frame->progress_cancel_id)
+    {
+      plug_in_progress_start (plug_in, NULL, -1);
+    }
+
+  if (proc_frame->progress && gimp_progress_is_active (proc_frame->progress))
+    gimp_progress_set_value (proc_frame->progress, percentage);
+}
+
+void
+plug_in_progress_pulse (PlugIn  *plug_in)
+{
+  PlugInProcFrame *proc_frame;
+
+  g_return_if_fail (plug_in != NULL);
+
+  proc_frame = plug_in_get_proc_frame (plug_in);
+
+  if (! proc_frame->progress                           ||
+      ! gimp_progress_is_active (proc_frame->progress) ||
+      ! proc_frame->progress_cancel_id)
+    {
+      plug_in_progress_start (plug_in, NULL, -1);
+    }
+
+  if (proc_frame->progress && gimp_progress_is_active (proc_frame->progress))
+    gimp_progress_pulse (proc_frame->progress);
+}
+
+guint32
+plug_in_progress_get_window (PlugIn *plug_in)
+{
+  PlugInProcFrame *proc_frame;
+
+  g_return_val_if_fail (plug_in != NULL, 0);
+
+  proc_frame = plug_in_get_proc_frame (plug_in);
+
+  if (proc_frame->progress)
+    return gimp_progress_get_window (proc_frame->progress);
+
+  return 0;
 }
 
 gboolean

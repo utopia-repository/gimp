@@ -1,6 +1,4 @@
 /*
- * "$Id: despeckle.c 16025 2004-12-23 23:19:43Z neo $"
- *
  *   Despeckle (adaptive median) filter for The GIMP -- an image manipulation
  *   program
  *
@@ -23,11 +21,7 @@
 
 #include "config.h"
 
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -35,24 +29,13 @@
 #include "libgimp/stdplugins-intl.h"
 
 
-typedef enum
-{
-  MEDIAN
-} FilterMethod;
-
-typedef struct
-{
-  gint          diameter;
-  FilterMethod  method;
-} FilterValues;
-
 /*
  * Constants...
  */
 
-#define PLUG_IN_NAME     "plug_in_despeckle"
+#define PLUG_IN_PROC     "plug-in-despeckle"
+#define PLUG_IN_BINARY   "despeckle"
 #define PLUG_IN_VERSION  "1.3.2 - 17 May 1998"
-#define HELP_ID          "plug-in-despeckle"
 #define SCALE_WIDTH      100
 #define ENTRY_WIDTH        3
 #define MAX_RADIUS        20
@@ -67,7 +50,7 @@ typedef struct
 #define update_toggle    (despeckle_vals[4])    /* Update the preview? */
 
 #define VALUE_SWAP(a,b)   { register  gdouble t = (a); (a) = (b); (b) = t; }
-#define POINTER_SWAP(a,b) { register  guchar* t = (a); (a) = (b); (b) = t; }
+#define POINTER_SWAP(a,b) { register  guchar *t = (a); (a) = (b); (b) = t; }
 
 
 
@@ -103,11 +86,11 @@ static void      preview_update            (GtkWidget     *preview);
 static gint      quick_median_select       (guchar       **p,
                                             guchar        *i,
                                             gint           n);
-static guchar    pixel_intensity           (const guchar  *p,
+static inline guchar  pixel_luminance      (const guchar  *p,
                                             gint           bpp);
-static void      pixel_copy                (guchar        *dest,
+static inline void    pixel_copy           (guchar        *dest,
                                             const guchar  *src,
-                                            gint           n);
+                                            gint           bpp);
 
 /*
  * Globals...
@@ -121,9 +104,8 @@ GimpPlugInInfo PLUG_IN_INFO =
   run    /* run   */
 };
 
-static GtkWidget      *preview;                 /* Preview widget */
-
-static GimpDrawable   *drawable = NULL;         /* Current image */
+static GtkWidget    *preview;                 /* Preview widget   */
+static GimpDrawable *drawable = NULL;         /* Current drawable */
 
 
 static gint despeckle_vals[7] =
@@ -133,12 +115,6 @@ static gint despeckle_vals[7] =
   7,                  /* Default value for the black level */
   248,                /* Default value for the white level */
   TRUE                /* Default value for the update toggle */
-};
-
-static FilterValues fvals =
-{
-  3.0,  /*  y diameter  */
-  MEDIAN
 };
 
 
@@ -162,11 +138,11 @@ query (void)
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
     { GIMP_PDB_INT32,    "radius",   "Filter box radius (default = 3)" },
     { GIMP_PDB_INT32,    "type",     "Filter type (0 = median, 1 = adaptive, 2 = recursive-median, 3 = recursive-adaptive)" },
-    { GIMP_PDB_INT32,    "black",    "Black level (-1 to 255)" },
-    { GIMP_PDB_INT32,    "white",    "White level (0 to 256)" }
+    { GIMP_PDB_INT32,    "black",    "Black level (0 to 255)" },
+    { GIMP_PDB_INT32,    "white",    "White level (0 to 255)" }
   };
 
-  gimp_install_procedure (PLUG_IN_NAME,
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Despeckle filter, typically used to \'despeckle\' "
                           "a photographic image.",
                           "This plug-in selectively performs a median or "
@@ -180,7 +156,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register (PLUG_IN_NAME, "<Image>/Filters/Enhance");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Enhance");
 }
 
 
@@ -233,7 +209,7 @@ run (const gchar      *name,
        * Possibly retrieve data...
        */
 
-      gimp_get_data (PLUG_IN_NAME, &despeckle_radius);
+      gimp_get_data (PLUG_IN_PROC, &despeckle_radius);
 
       /*
        * Get information from the dialog...
@@ -289,7 +265,7 @@ run (const gchar      *name,
        */
 
       INIT_I18N();
-      gimp_get_data (PLUG_IN_NAME, despeckle_vals);
+      gimp_get_data (PLUG_IN_PROC, despeckle_vals);
         break;
 
     default:
@@ -325,7 +301,7 @@ run (const gchar      *name,
            */
 
           if (run_mode == GIMP_RUN_INTERACTIVE)
-            gimp_set_data (PLUG_IN_NAME,
+            gimp_set_data (PLUG_IN_PROC,
                            despeckle_vals, sizeof (despeckle_vals));
         }
       else
@@ -406,23 +382,29 @@ despeckle_dialog (void)
   GtkWidget *dialog;
   GtkWidget *main_vbox;
   GtkWidget *vbox;
-  GtkWidget *hbox;
   GtkWidget *table;
   GtkWidget *frame;
   GtkWidget *button;
   GtkObject *adj;
   gboolean   run;
 
-  gimp_ui_init ("despeckle", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Despeckle"), "despeckle",
+  dialog = gimp_dialog_new (_("Despeckle"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, HELP_ID,
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -437,21 +419,9 @@ despeckle_dialog (void)
                     G_CALLBACK (preview_update),
                     NULL);
 
-  /*
-   * Filter type controls...
-   */
-
-  frame = gimp_frame_new (_("Type"));
+  frame = gimp_frame_new (_("Median"));
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
-
-
-   hbox = gtk_hbox_new (FALSE, 12);
-  gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
-  gtk_widget_show (hbox);
-  fvals.method = MEDIAN;
-  /*  parameter settings  */
-  frame = gimp_frame_new (_("Median"));
 
   vbox = gtk_vbox_new (FALSE, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
@@ -460,7 +430,7 @@ despeckle_dialog (void)
   button = gtk_check_button_new_with_mnemonic (_("_Adaptive"));
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
-                                (filter_type & FILTER_ADAPTIVE) ? TRUE : FALSE);
+                                filter_type & FILTER_ADAPTIVE);
   gtk_widget_show (button);
 
   g_signal_connect (button, "toggled",
@@ -470,15 +440,12 @@ despeckle_dialog (void)
   button = gtk_check_button_new_with_mnemonic (_("R_ecursive"));
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
-                                (filter_type & FILTER_RECURSIVE) ? TRUE : FALSE);
+                                filter_type & FILTER_RECURSIVE);
   gtk_widget_show (button);
 
   g_signal_connect (button, "toggled",
                     G_CALLBACK (dialog_recursive_callback),
                     NULL);
-
-  gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
-  gtk_widget_show (frame);
 
   table = gtk_table_new (4, 3, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
@@ -495,10 +462,10 @@ despeckle_dialog (void)
                               despeckle_radius, 1, MAX_RADIUS, 1, 5, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &despeckle_radius);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -508,13 +475,13 @@ despeckle_dialog (void)
 
   adj = gimp_scale_entry_new (GTK_TABLE (table), 0, 1,
                               _("_Black level:"), SCALE_WIDTH, ENTRY_WIDTH,
-                              black_level, -1, 255, 1, 8, 0,
+                              black_level, 0, 255, 1, 8, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &black_level);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -524,13 +491,13 @@ despeckle_dialog (void)
 
   adj = gimp_scale_entry_new (GTK_TABLE (table), 0, 2,
                               _("_White level:"), SCALE_WIDTH, ENTRY_WIDTH,
-                              white_level, 0, 256, 1, 8, 0,
+                              white_level, 0, 255, 1, 8, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &white_level);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -629,81 +596,78 @@ despeckle_median (guchar   *src,
                   gint      radius,
                   gboolean  preview)
 {
-  gint      pos1, pos2, med, x, y, jh,jv, box, hist0, hist255, diameter;
-  guchar  **buf;
-  guchar   *ibuf;
-  guchar   *pixel;
-  gdouble   prog, maxprog;
+  guchar **buf;
+  guchar  *ibuf;
+  guchar  *pixel;
+  guint    progress;
+  guint    max_progress;
+  gint     x, y;
+  gint     u, v;
+  gint     diameter;
+  gint     box;
 
-  if (!preview)
-    {
-      gimp_progress_init(_("Despeckle"));
-      gimp_progress_update (0.0);
-    }
-
-  maxprog  = width * height;
-  prog     = 0;
+  progress     = 0;
+  max_progress = width * height;
 
   diameter = (2 * radius) + 1;
   box      = SQR (diameter);
   buf      = g_new (guchar *, box);
   ibuf     = g_new (guchar, box);
 
-  for (x = 0; x < width; x++)
+  if (!preview)
+    gimp_progress_init(_("Despeckle"));
+
+  for (y = 0; y < height; y++)
     {
-      for (y = 0; y < height; y++)
+      gint off  = y * width * bpp;
+      gint ymin = MAX (0, y - radius);
+      gint ymax = MIN (height, y + radius);
+
+      for (x = 0; x < width; x++, off += bpp)
         {
-          hist0   = 0;
-          hist255 = 0;
-          if (x >= radius && y >= radius &&
-              x + radius < width && y + radius < height)
+          gint xmin    = MAX (0, x - radius);
+          gint xmax    = MIN (width, x + radius);
+          gint hist0   = 0;
+          gint hist255 = 0;
+          gint count   = 0;
+
+          for (v = ymin; v <= ymax; v++)
             {
-              /* Make sure Svm is ininialized to a sufficient large value */
-              med = -1;
+              gint off2 = v * width * bpp;
 
-              for (jh = x-radius; jh <= x+radius; jh++)
+              for (u = xmin, off2 += xmin * bpp; u <= xmax; u++, off2 += bpp)
                 {
-                  for (jv = y-radius, pos1 = 0; jv <= y+radius; jv++)
-                    {
-                      pos2 = (jh + (jv * width)) * bpp;
-                      if (src[pos2] > black_level && src[pos2] < white_level)
-                        {
-                          med++;
-                          buf[med]  = src + pos2;
-                          ibuf[med] = pixel_intensity (src + pos2, bpp);
-                        }
-                      else
-                        {
-                          if (src[pos2] > black_level)
-                            hist0++;
+                  guchar value = pixel_luminance (src + off2, bpp);
 
-                          if (src[pos2] >= white_level)
-                            hist255++;
-                        }
+                  if (value < black_level)
+                    {
+                      hist0++;
+                    }
+                  else if (value > white_level)
+                    {
+                      hist255++;
+                    }
+                  else
+                    {
+                      buf[count]  = src + off2;
+                      ibuf[count] = value;
+                      count++;
                     }
                 }
+            }
 
-              if (med < 1)
-                {
-                  pos1 = (x + ( y * width)) * bpp;
-                  pixel_copy (dst + pos1, src + pos1, bpp);
-                }
-              else
-                {
-                  pos1 = (x + (y * width)) * bpp;
-                  med  = quick_median_select (buf, ibuf, med + 1);
-                  pixel = buf[med];
-
-                  if (filter_type & FILTER_RECURSIVE)
-                    pixel_copy (src + pos1, pixel, bpp);
-
-                  pixel_copy (dst + pos1, pixel, bpp);
-                }
+          if (count < 2)
+            {
+              pixel_copy (dst + off, src + off, bpp);
             }
           else
             {
-              pos1 = (x + (y * width)) * bpp;
-              pixel_copy (dst + pos1, src + pos1, bpp);
+              pixel = buf[quick_median_select (buf, ibuf, count)];
+
+              if (filter_type & FILTER_RECURSIVE)
+                pixel_copy (src + off, pixel, bpp);
+
+              pixel_copy (dst + off, pixel, bpp);
             }
 
           /*
@@ -721,44 +685,44 @@ despeckle_median (guchar   *src,
                   radius--;
                 }
             }
+
         }
 
-      prog += height;
+      progress += width;
 
-      if (!preview && x % 5 == 0)
-        gimp_progress_update (prog / maxprog);
+      if (!preview && y % 20 == 0)
+        gimp_progress_update ((gdouble) progress / (gdouble) max_progress);
     }
 
   if (!preview)
     gimp_progress_update (1.0);
 
-  g_free (buf);
   g_free (ibuf);
+  g_free (buf);
 }
 
-/* * This Quickselect routine is based on the algorithm described in
-* "Numerical recipes in C", Second Edition,
-* Cambridge University Press, 1992, Section 8.5, ISBN 0-521-43108-5
-* This code by Nicolas Devillard - 1998. Public domain.
-*
-* modified to swap pointers: swap is done by comparing intensity value
-* for the pointer to RGB
-*/
+/*
+ * This Quickselect routine is based on the algorithm described in
+ * "Numerical recipes in C", Second Edition,
+ * Cambridge University Press, 1992, Section 8.5, ISBN 0-521-43108-5
+ * This code by Nicolas Devillard - 1998. Public domain.
+ *
+ * Modified to swap pointers: swap is done by comparing luminance
+ * value for the pointer to RGB.
+ */
 static gint
 quick_median_select (guchar **p,
                      guchar  *i,
                      gint     n)
 {
-  gint low, high ;
-  gint median;
-  gint middle, ll, hh;
+  gint low    = 0;
+  gint high   = n - 1;
+  gint median = (low + high) / 2;
 
-  low = 0 ;
-  high = n-1 ;
-  median = (low + high) / 2;
-
-  for (;;)
+  while (TRUE)
     {
+      gint middle, ll, hh;
+
       if (high <= low) /* One element only */
         return median;
 
@@ -767,8 +731,8 @@ quick_median_select (guchar **p,
           /* Two elements only */
           if (i[low] > i[high])
             {
-               VALUE_SWAP (i[low], i[high]) ;
-               POINTER_SWAP (p[low], p[high]) ;
+               VALUE_SWAP (i[low], i[high]);
+               POINTER_SWAP (p[low], p[high]);
             }
 
           return median;
@@ -779,31 +743,31 @@ quick_median_select (guchar **p,
 
       if (i[middle] > i[high])
         {
-           VALUE_SWAP (i[middle], i[high]) ;
-           POINTER_SWAP (p[middle], p[high]) ;
+           VALUE_SWAP (i[middle], i[high]);
+           POINTER_SWAP (p[middle], p[high]);
         }
 
       if (i[low] > i[high])
         {
-           VALUE_SWAP (i[low], i[high]) ;
-           POINTER_SWAP (p[low], p[high]) ;
+           VALUE_SWAP (i[low], i[high]);
+           POINTER_SWAP (p[low], p[high]);
         }
 
       if (i[middle] > i[low])
         {
-          VALUE_SWAP (i[middle], i[low]) ;
-          POINTER_SWAP (p[middle], p[low]) ;
+          VALUE_SWAP (i[middle], i[low]);
+          POINTER_SWAP (p[middle], p[low]);
         }
 
       /* Swap low item (now in position middle) into position (low+1) */
-      VALUE_SWAP (i[middle], i[low+1]) ;
-      POINTER_SWAP (p[middle], p[low+1])
+      VALUE_SWAP (i[middle], i[low+1]);
+      POINTER_SWAP (p[middle], p[low+1]);
 
       /* Nibble from each end towards middle, swapping items when stuck */
       ll = low + 1;
       hh = high;
 
-      for (;;)
+      while (TRUE)
         {
            do ll++;
            while (i[low] > i[ll]);
@@ -812,7 +776,7 @@ quick_median_select (guchar **p,
            while (i[hh]  > i[low]);
 
            if (hh < ll)
-              break;
+             break;
 
            VALUE_SWAP (i[ll], i[hh]);
            POINTER_SWAP (p[ll], p[hh]);
@@ -830,21 +794,30 @@ quick_median_select (guchar **p,
     }
 }
 
-static guchar
-pixel_intensity (const guchar *p,
-                 gint          n)
+static inline guchar
+pixel_luminance (const guchar *p,
+                 gint          bpp)
 {
-  if (n != 3)
-    return p[0];
+  switch (bpp)
+    {
+    case 1:
+    case 2:
+      return p[0];
 
-  return GIMP_RGB_INTENSITY (p[0], p[1], p[2]);
+    case 3:
+    case 4:
+      return GIMP_RGB_LUMINANCE (p[0], p[1], p[2]);
+
+    default:
+      return 0; /* should not be reached */
+    }
 }
 
-static void
+static inline void
 pixel_copy (guchar       *dest,
             const guchar *src,
-            gint          n)
+            gint          bpp)
 {
-  for (; n > 0; n--, dest++, src++)
+  for (; bpp > 0; bpp--, dest++, src++)
     *dest = *src;
 }

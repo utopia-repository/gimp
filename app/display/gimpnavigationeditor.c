@@ -55,10 +55,7 @@
 #define MAX_SCALE_BUF 20
 
 
-static void   gimp_navigation_editor_class_init (GimpNavigationEditorClass *klass);
-static void   gimp_navigation_editor_init       (GimpNavigationEditor      *editor);
-
-static void   gimp_navigation_editor_docked_iface_init (GimpDockedInterface *docked_iface);
+static void   gimp_navigation_editor_docked_iface_init (GimpDockedInterface *iface);
 static void   gimp_navigation_editor_set_context       (GimpDocked       *docked,
                                                         GimpContext      *context);
 
@@ -95,52 +92,18 @@ static void   gimp_navigation_editor_shell_reconnect   (GimpDisplayShell     *sh
 static void   gimp_navigation_editor_update_marker     (GimpNavigationEditor *editor);
 
 
-static GimpEditorClass *parent_class = NULL;
+G_DEFINE_TYPE_WITH_CODE (GimpNavigationEditor, gimp_navigation_editor,
+                         GIMP_TYPE_EDITOR,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_DOCKED,
+                                                gimp_navigation_editor_docked_iface_init));
 
+#define parent_class gimp_navigation_editor_parent_class
 
-GType
-gimp_navigation_editor_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo editor_info =
-      {
-        sizeof (GimpNavigationEditorClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_navigation_editor_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_navigation */
-        sizeof (GimpNavigationEditor),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_navigation_editor_init,
-      };
-      static const GInterfaceInfo docked_iface_info =
-      {
-        (GInterfaceInitFunc) gimp_navigation_editor_docked_iface_init,
-        NULL,           /* iface_finalize */
-        NULL            /* iface_data     */
-      };
-
-      type = g_type_register_static (GIMP_TYPE_EDITOR,
-                                     "GimpNavigationEditor",
-                                     &editor_info, 0);
-
-      g_type_add_interface_static (type, GIMP_TYPE_DOCKED,
-                                   &docked_iface_info);
-    }
-
-  return type;
-}
 
 static void
 gimp_navigation_editor_class_init (GimpNavigationEditorClass *klass)
 {
   GtkObjectClass *gtk_object_class = GTK_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   gtk_object_class->destroy = gimp_navigation_editor_destroy;
 }
@@ -163,7 +126,7 @@ gimp_navigation_editor_init (GimpNavigationEditor *editor)
   gtk_container_add (GTK_CONTAINER (frame), editor->view);
   gtk_widget_show (editor->view);
 
-  g_signal_connect (editor->view, "marker_changed",
+  g_signal_connect (editor->view, "marker-changed",
                     G_CALLBACK (gimp_navigation_editor_marker_changed),
                     editor);
   g_signal_connect (editor->view, "zoom",
@@ -177,9 +140,9 @@ gimp_navigation_editor_init (GimpNavigationEditor *editor)
 }
 
 static void
-gimp_navigation_editor_docked_iface_init (GimpDockedInterface *docked_iface)
+gimp_navigation_editor_docked_iface_init (GimpDockedInterface *iface)
 {
-  docked_iface->set_context = gimp_navigation_editor_set_context;
+  iface->set_context = gimp_navigation_editor_set_context;
 }
 
 static void
@@ -214,7 +177,7 @@ gimp_navigation_editor_set_context (GimpDocked  *docked,
 
   if (context)
     {
-      g_signal_connect (context, "display_changed",
+      g_signal_connect (context, "display-changed",
                         G_CALLBACK (gimp_navigation_editor_context_changed),
                         editor);
 
@@ -279,7 +242,7 @@ gimp_navigation_editor_popup (GimpDisplayShell *shell,
       gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (editor));
       gtk_widget_show (GTK_WIDGET (editor));
 
-      g_signal_connect (editor->view, "button_release_event",
+      g_signal_connect (editor->view, "button-release-event",
                         G_CALLBACK (gimp_navigation_editor_button_release),
                         shell);
     }
@@ -415,7 +378,7 @@ gimp_navigation_editor_new_private (GimpMenuFactory  *menu_factory,
       editor->zoom_adjustment =
         GTK_ADJUSTMENT (gtk_adjustment_new (0.0, -8.0, 8.0, 0.5, 1.0, 0.0));
 
-      g_signal_connect (editor->zoom_adjustment, "value_changed",
+      g_signal_connect (editor->zoom_adjustment, "value-changed",
                         G_CALLBACK (gimp_navigation_editor_zoom_adj_changed),
                         editor);
 
@@ -605,8 +568,7 @@ static void
 gimp_navigation_editor_zoom_adj_changed (GtkAdjustment        *adj,
                                          GimpNavigationEditor *editor)
 {
-  gimp_display_shell_scale (editor->shell, GIMP_ZOOM_TO,
-                            pow (2.0, adj->value));
+  gimp_display_shell_scale (editor->shell, GIMP_ZOOM_TO, pow (2.0, adj->value));
 }
 
 static void
@@ -615,21 +577,20 @@ gimp_navigation_editor_shell_scaled (GimpDisplayShell     *shell,
 {
   if (editor->zoom_label)
     {
-      gchar scale_str[MAX_SCALE_BUF];
+      gchar *str;
 
-      /* Update the zoom scale string */
-      g_snprintf (scale_str, sizeof (scale_str),
-                  shell->scale >= 0.15 ? "%.0f%%" : "%.2f%%",
-                  editor->shell->scale * 100);
-
-      gtk_label_set_text (GTK_LABEL (editor->zoom_label), scale_str);
+      g_object_get (shell->zoom,
+                    "percentage", &str,
+                    NULL);
+      gtk_label_set_text (GTK_LABEL (editor->zoom_label), str);
+      g_free (str);
     }
 
   if (editor->zoom_adjustment)
     {
       gdouble val;
 
-      val = log (CLAMP (editor->shell->scale, 1.0 / 256, 256.0) ) / G_LN2;
+      val = log (gimp_zoom_model_get_factor (shell->zoom)) / G_LN2;
 
       g_signal_handlers_block_by_func (editor->zoom_adjustment,
                                        gimp_navigation_editor_zoom_adj_changed,

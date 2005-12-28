@@ -60,7 +60,8 @@ channel_options_dialog_new (GimpImage     *gimage,
                             const gchar   *desc,
                             const gchar   *help_id,
                             const gchar   *color_label,
-                            const gchar   *opacity_label)
+                            const gchar   *opacity_label,
+			    gboolean       show_from_sel)
 {
   ChannelOptionsDialog *options;
   GimpViewable         *viewable;
@@ -115,6 +116,11 @@ channel_options_dialog_new (GimpImage     *gimage,
 		     (GWeakNotify) g_free,
 		     options);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (options->dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   hbox = gtk_hbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (options->dialog)->vbox), hbox);
@@ -135,20 +141,21 @@ channel_options_dialog_new (GimpImage     *gimage,
       options->name_entry = gtk_entry_new ();
       gtk_entry_set_activates_default (GTK_ENTRY (options->name_entry), TRUE);
       gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
-                                 _("Channel Name:"), 0.0, 0.5,
+                                 _("Channel _name:"), 0.0, 0.5,
                                  options->name_entry, 2, FALSE);
 
       gtk_entry_set_text (GTK_ENTRY (options->name_entry), channel_name);
     }
 
-  opacity_adj = gimp_scale_entry_new (GTK_TABLE (table), 0, channel_name ? 1 : 0,
+  opacity_adj = gimp_scale_entry_new (GTK_TABLE (table),
+                                      0, channel_name ? 1 : 0,
                                       opacity_label, 100, -1,
                                       channel_color->a * 100.0,
                                       0.0, 100.0, 1.0, 10.0, 1,
                                       TRUE, 0.0, 0.0,
                                       NULL, NULL);
 
-  g_signal_connect (opacity_adj, "value_changed",
+  g_signal_connect (opacity_adj, "value-changed",
 		    G_CALLBACK (channel_options_opacity_update),
 		    options->color_panel);
 
@@ -156,9 +163,19 @@ channel_options_dialog_new (GimpImage     *gimage,
 		      TRUE, TRUE, 0);
   gtk_widget_show (options->color_panel);
 
-  g_signal_connect (options->color_panel, "color_changed",
+  g_signal_connect (options->color_panel, "color-changed",
 		    G_CALLBACK (channel_options_color_changed),
 		    opacity_adj);
+
+  if (show_from_sel)
+    {
+      options->save_sel_checkbutton =
+        gtk_check_button_new_with_mnemonic (_("Initialize from _selection"));
+
+      gtk_box_pack_start (GTK_BOX (vbox), options->save_sel_checkbutton,
+		          FALSE, FALSE, 0);
+      gtk_widget_show (options->save_sel_checkbutton);
+    }
 
   return options;
 }

@@ -26,6 +26,9 @@ N_("Specifies how the area around the image should be drawn.")
 N_("Sets the canvas padding color used if the padding mode is set to " \
    "custom color.")
 
+#define COLOR_MANAGEMENT_BLURB \
+"Defines the color management behavior."
+
 #define CONFIRM_ON_CLOSE_BLURB \
 N_("Ask for confirmation before closing an image without saving.")
 
@@ -140,8 +143,6 @@ N_("When enabled, the selected pattern will be used for all tools.")
 #define FONT_PATH_BLURB \
 "Where to look for fonts."
 
-#define FONT_PATH_WRITABLE_BLURB ""
-
 #define HELP_BROWSER_BLURB \
 N_("Sets the browser used by the help system.")
 
@@ -156,9 +157,6 @@ N_("Sets the text to appear in image window status bars.")
 #define IMAGE_TITLE_FORMAT_BLURB \
 N_("Sets the text to appear in image window titles.")
 
-#define INFO_WINDOW_PER_DISPLAY_BLURB \
-N_("When enabled, the GIMP will use a different info window per image view.")
-
 #define INITIAL_ZOOM_TO_FIT_BLURB \
 N_("When enabled, this will ensure that the full image is visible after a " \
    "file is opened, otherwise it will be displayed with a scale of 1:1.")
@@ -169,6 +167,9 @@ N_("Install a private colormap; might be useful on 8-bit (256 colors) displays."
 #define INTERPOLATION_TYPE_BLURB \
 N_("Sets the level of interpolation used for scaling and other " \
    "transformations.")
+
+#define INTERPRETER_PATH_BLURB \
+"Sets the interpreter search path."
 
 #define LAST_OPENED_SIZE_BLURB \
 N_("How many recently opened image filenames to keep on the File menu.")
@@ -251,11 +252,11 @@ N_("Sets the preview size used for layers and channel previews in newly " \
    "created dialogs.")
 
 #define RESIZE_WINDOWS_ON_RESIZE_BLURB \
-N_("When enabled, the image window will automatically resize itself, " \
+N_("When enabled, the image window will automatically resize itself " \
    "whenever the physical image size changes.")
 
 #define RESIZE_WINDOWS_ON_ZOOM_BLURB \
-N_("When enabled, the image window will automatically resize itself, " \
+N_("When enabled, the image window will automatically resize itself " \
    "when zooming into and out of images.")
 
 #define RESTORE_SESSION_BLURB \
@@ -265,8 +266,14 @@ N_("Let GIMP try to restore your last saved session on each startup.")
 N_("Remember the current tool, pattern, color, and brush across GIMP " \
    "sessions.")
 
+#define SAVE_DOCUMENT_HISTORY_BLURB \
+N_("Add all opened and saved files to the document history on disk.")
+
 #define SAVE_SESSION_INFO_BLURB \
 N_("Save the positions and sizes of the main dialogs when the GIMP exits.")
+
+#define SAVE_TOOL_OPTIONS_BLURB \
+N_("Save the tool options when the GIMP exits.")
 
 #define SCRIPT_FU_PATH_BLURB \
 "This path will be searched for scripts when the Script-Fu plug-in is run."
@@ -316,28 +323,33 @@ N_("When enabled, the guides are visible by default. This can also be " \
 N_("When enabled, the grid is visible by default. This can also be toggled " \
    "with the \"View->Show Grid\" command.")
 
+#define SHOW_SAMPLE_POINTS_BLURB \
+N_("When enabled, the sample points are visible by default. This can also be " \
+   "toggled with the \"View->Show Sample Points\" command.")
+
 #define SHOW_TIPS_BLURB \
-N_("Enable to display a handy GIMP tip on startup.")
+N_("Enable displaying a handy GIMP tip on startup.")
 
 #define SHOW_TOOL_TIPS_BLURB \
-N_("Enable to display tooltips.")
-
-#define STINGY_MEMORY_USE_BLURB \
-N_("There is always a tradeoff between memory usage and speed.  In most " \
-   "cases, the GIMP opts for speed over memory.  However, if memory is a " \
-   "big issue, try to enable this setting.")
+N_("Enable tooltips display.")
 
 #define SWAP_PATH_BLURB \
-N_("Sets the swap file location. The gimp uses a tile based memory " \
-   "allocation scheme. The swap file is used to quickly and easily " \
-   "swap tiles out to disk and back in. Be aware that the swap file " \
-   "can easily get very large if the GIMP is used with large images. " \
+N_("Sets the swap file location. GIMP uses a tile based memory allocation " \
+   "scheme. The swap file is used to quickly and easily swap tiles out to " \
+   "disk and back in. Be aware that the swap file can easily get very large" \
+   "if GIMP is used with large images. " \
    "Also, things can get horribly slow if the swap file is created on " \
    "a directory that is mounted over NFS.  For these reasons, it may " \
    "be desirable to put your swap file in \"/tmp\".")
 
 #define TEAROFF_MENUS_BLURB \
 N_("When enabled, menus can be torn off.")
+
+#define TRANSIENT_DOCKS_BLURB \
+N_("When enabled, dock windows (the toolbox and palettes) are set to be " \
+   "transient to the active image window. Most window managers will " \
+   "keep the dock windows above the image window then, but it may also " \
+   "have other effects.")
 
 #define CAN_CHANGE_ACCELS_BLURB \
 N_("When enabled, you can change keyboard shortcuts for menu items " \
@@ -391,8 +403,8 @@ N_("Sets the manner in which transparency is displayed in images.")
 N_("Sets the size of the checkerboard used to display transparency.")
 
 #define TRUST_DIRTY_FLAG_BLURB \
-N_("When enabled, the GIMP will not save if the image is unchanged since " \
-   "opening it.")
+N_("When enabled, the GIMP will not save an image if it has not been changed " \
+   "since it was opened.")
 
 #define UNDO_LEVELS_BLURB \
 N_("Sets the minimal number of operations that can be undone. More undo " \

@@ -310,7 +310,7 @@ query (void)
                              PLUG_IN_AUTHOR,
                              PLUG_IN_COPYRIGHT,
                              PLUG_IN_VERSION,
-                             N_("TWAIN (Dump)..."),
+                             "TWAIN (Dump)...",
                              NULL,
                              GIMP_PLUGIN,
                              NUMBER_IN_ARGS,
@@ -319,6 +319,7 @@ query (void)
                              return_vals);
 
       gimp_plugin_menu_register (PLUG_IN_D_NAME, "<Toolbox>/File/Acquire");
+      gimp_plugin_menu_register (PLUG_IN_D_NAME, "<Image>/File/Acquire");
     }
   else if (twain_run_mode == RUN_READDUMP)
     {
@@ -329,7 +330,7 @@ query (void)
                              PLUG_IN_AUTHOR,
                              PLUG_IN_COPYRIGHT,
                              PLUG_IN_VERSION,
-                             N_("TWAIN (Read)..."),
+                             "TWAIN (Read)...",
                              NULL,
                              GIMP_PLUGIN,
                              NUMBER_IN_ARGS,
@@ -338,6 +339,7 @@ query (void)
                              return_vals);
 
       gimp_plugin_menu_register (PLUG_IN_R_NAME, "<Toolbox>/File/Acquire");
+      gimp_plugin_menu_register (PLUG_IN_R_NAME, "<Image>/File/Acquire");
     }
   else
 #endif /* _DEBUG */
@@ -349,7 +351,7 @@ query (void)
                              PLUG_IN_AUTHOR,
                              PLUG_IN_COPYRIGHT,
                              PLUG_IN_VERSION,
-                             N_("_TWAIN..."),
+                             N_("_Scanner/Camera..."),
                              NULL,
                              GIMP_PLUGIN,
                              NUMBER_IN_ARGS,
@@ -358,6 +360,7 @@ query (void)
                              return_vals);
 
       gimp_plugin_menu_register (PLUG_IN_NAME, "<Toolbox>/File/Acquire");
+      gimp_plugin_menu_register (PLUG_IN_NAME, "<Image>/File/Acquire");
     }
 }
 
@@ -486,7 +489,7 @@ void
 preTransferCallback(void *clientData)
 {
   /* Initialize our progress dialog */
-  gimp_progress_init(_("Transferring TWAIN data..."));
+  gimp_progress_init (_("Transferring data from scanner/camera"));
 }
 
 /*
@@ -559,13 +562,13 @@ beginTransferCallback(pTW_IMAGEINFO imageInfo, void *clientData)
   /* Create the GIMP image */
   theClientData->image_id = gimp_image_new(imageInfo->ImageWidth,
 					   imageInfo->ImageLength, imageType);
-  
+
   /* Set the actual resolution */
   gimp_image_set_resolution (theClientData->image_id,
                              FIX32ToFloat(imageInfo->XResolution),
                              FIX32ToFloat(imageInfo->YResolution));
   gimp_image_set_unit (theClientData->image_id, GIMP_UNIT_INCH);
-  
+
   /* Create a layer */
   theClientData->layer_id = gimp_layer_new(theClientData->image_id,
 					   _("Background"),

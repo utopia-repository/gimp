@@ -20,31 +20,15 @@
 #define __GIMP_DISPLAY_SHELL_RENDER_H__
 
 
-#define GIMP_DISPLAY_SHELL_RENDER_BUF_WIDTH  256
-#define GIMP_DISPLAY_SHELL_RENDER_BUF_HEIGHT 256
+void   gimp_display_shell_render_init (Gimp             *gimp);
+void   gimp_display_shell_render_exit (Gimp             *gimp);
 
-
-void   render_init (Gimp *gimp);
-void   render_exit (Gimp *gimp);
-
-void   gimp_display_shell_render (GimpDisplayShell *shell,
-                                  gint              x,
-                                  gint              y,
-                                  gint              w,
-                                  gint              h,
-                                  GdkRectangle     *highlight);
-
-/*
- *  Extern variables
- */
-extern guchar *render_check_buf;
-extern guchar *render_empty_buf;
-extern guchar *render_white_buf;
-extern guchar *render_temp_buf;
-
-extern guchar *render_blend_dark_check;
-extern guchar *render_blend_light_check;
-extern guchar *render_blend_white;
+void   gimp_display_shell_render      (GimpDisplayShell *shell,
+                                       gint              x,
+                                       gint              y,
+                                       gint              w,
+                                       gint              h,
+                                       GdkRectangle     *highlight);
 
 
 #endif  /*  __GIMP_DISPLAY_SHELL_RENDER_H__  */

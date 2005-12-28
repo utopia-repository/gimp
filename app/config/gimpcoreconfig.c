@@ -24,6 +24,7 @@
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "config-types.h"
 
@@ -31,34 +32,10 @@
 #include "core/gimpgrid.h"
 #include "core/gimptemplate.h"
 
-#include "gimpconfig.h"
-#include "gimpconfig-params.h"
-#include "gimpconfig-types.h"
-#include "gimpconfig-utils.h"
-
 #include "gimprc-blurbs.h"
 #include "gimpcoreconfig.h"
 
 #include "gimp-intl.h"
-
-
-static void  gimp_core_config_class_init   (GimpCoreConfigClass *klass);
-static void  gimp_core_config_init         (GimpCoreConfig      *config);
-static void  gimp_core_config_finalize            (GObject      *object);
-static void  gimp_core_config_set_property        (GObject      *object,
-                                                   guint         property_id,
-                                                   const GValue *value,
-                                                   GParamSpec   *pspec);
-static void  gimp_core_config_get_property        (GObject      *object,
-                                                   guint         property_id,
-                                                   GValue       *value,
-                                                   GParamSpec   *pspec);
-static void gimp_core_config_default_image_notify (GObject      *object,
-                                                   GParamSpec   *pspec,
-                                                   gpointer      data);
-static void gimp_core_config_default_grid_notify  (GObject      *object,
-                                                   GParamSpec   *pspec,
-                                                   gpointer      data);
 
 
 #define DEFAULT_BRUSH     "Circle (11)"
@@ -66,7 +43,8 @@ static void gimp_core_config_default_grid_notify  (GObject      *object,
 #define DEFAULT_PALETTE   "Default"
 #define DEFAULT_GRADIENT  "FG to BG (RGB)"
 #define DEFAULT_FONT      "Sans"
-#define DEFAULT_COMMENT   "Created with The GIMP"
+#define DEFAULT_COMMENT   "Created with GIMP"
+
 
 enum
 {
@@ -74,6 +52,7 @@ enum
   PROP_INTERPOLATION_TYPE,
   PROP_PLUG_IN_PATH,
   PROP_MODULE_PATH,
+  PROP_INTERPRETER_PATH,
   PROP_ENVIRON_PATH,
   PROP_BRUSH_PATH,
   PROP_BRUSH_PATH_WRITABLE,
@@ -106,48 +85,42 @@ enum
   PROP_THUMBNAIL_SIZE,
   PROP_THUMBNAIL_FILESIZE_LIMIT,
   PROP_INSTALL_COLORMAP,
-  PROP_MIN_COLORS
+  PROP_MIN_COLORS,
+  PROP_COLOR_MANAGEMENT,
+  PROP_SAVE_DOCUMENT_HISTORY
 };
 
-static GObjectClass *parent_class = NULL;
+
+static void  gimp_core_config_finalize               (GObject      *object);
+static void  gimp_core_config_set_property           (GObject      *object,
+                                                      guint         property_id,
+                                                      const GValue *value,
+                                                      GParamSpec   *pspec);
+static void  gimp_core_config_get_property           (GObject      *object,
+                                                      guint         property_id,
+                                                      GValue       *value,
+                                                      GParamSpec   *pspec);
+static void gimp_core_config_default_image_notify    (GObject      *object,
+                                                      GParamSpec   *pspec,
+                                                      gpointer      data);
+static void gimp_core_config_default_grid_notify     (GObject      *object,
+                                                      GParamSpec   *pspec,
+                                                      gpointer      data);
+static void gimp_core_config_color_management_notify (GObject      *object,
+                                                      GParamSpec   *pspec,
+                                                      gpointer      data);
 
 
-GType
-gimp_core_config_get_type (void)
-{
-  static GType config_type = 0;
+G_DEFINE_TYPE (GimpCoreConfig, gimp_core_config, GIMP_TYPE_BASE_CONFIG);
 
-  if (! config_type)
-    {
-      static const GTypeInfo config_info =
-      {
-        sizeof (GimpCoreConfigClass),
-	NULL,           /* base_init      */
-        NULL,           /* base_finalize  */
-	(GClassInitFunc) gimp_core_config_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (GimpCoreConfig),
-	0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_core_config_init
-      };
+#define parent_class gimp_core_config_parent_class
 
-      config_type = g_type_register_static (GIMP_TYPE_BASE_CONFIG,
-                                            "GimpCoreConfig",
-                                            &config_info, 0);
-    }
-
-  return config_type;
-}
 
 static void
 gimp_core_config_class_init (GimpCoreConfigClass *klass)
 {
-  GObjectClass *object_class;
-
-  parent_class = g_type_class_peek_parent (klass);
-
-  object_class = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  gchar        *path;
 
   object_class->finalize     = gimp_core_config_finalize;
   object_class->set_property = gimp_core_config_set_property;
@@ -159,76 +132,92 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                                  GIMP_TYPE_INTERPOLATION_TYPE,
                                  GIMP_INTERPOLATION_LINEAR,
                                  0);
+  path = gimp_config_build_plug_in_path ("plug-ins");
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_PLUG_IN_PATH,
                                  "plug-in-path", PLUG_IN_PATH_BLURB,
-				 GIMP_PARAM_PATH_DIR_LIST,
-                                 gimp_config_build_plug_in_path ("plug-ins"),
-                                 GIMP_PARAM_RESTART);
+				 GIMP_CONFIG_PATH_DIR_LIST, path,
+                                 GIMP_CONFIG_PARAM_RESTART);
+  g_free (path);
+  path = gimp_config_build_plug_in_path ("modules");
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_MODULE_PATH,
                                  "module-path", MODULE_PATH_BLURB,
-				 GIMP_PARAM_PATH_DIR_LIST,
-                                 gimp_config_build_plug_in_path ("modules"),
-                                 GIMP_PARAM_RESTART);
+				 GIMP_CONFIG_PATH_DIR_LIST, path,
+                                 GIMP_CONFIG_PARAM_RESTART);
+  g_free (path);
+  path = gimp_config_build_plug_in_path ("interpreters");
+  GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_INTERPRETER_PATH,
+                                 "interpreter-path", INTERPRETER_PATH_BLURB,
+				 GIMP_CONFIG_PATH_DIR_LIST, path,
+                                 GIMP_CONFIG_PARAM_RESTART);
+  g_free (path);
+  path = gimp_config_build_plug_in_path ("environ");
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_ENVIRON_PATH,
                                  "environ-path", ENVIRON_PATH_BLURB,
-				 GIMP_PARAM_PATH_DIR_LIST,
-                                 gimp_config_build_plug_in_path ("environ"),
-                                 GIMP_PARAM_RESTART);
+				 GIMP_CONFIG_PATH_DIR_LIST, path,
+                                 GIMP_CONFIG_PARAM_RESTART);
+  g_free (path);
+  path = gimp_config_build_data_path ("brushes");
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_BRUSH_PATH,
                                  "brush-path", BRUSH_PATH_BLURB,
-				 GIMP_PARAM_PATH_DIR_LIST,
-                                 gimp_config_build_data_path ("brushes"),
-                                 GIMP_PARAM_RESTART);
+				 GIMP_CONFIG_PATH_DIR_LIST, path,
+                                 GIMP_CONFIG_PARAM_RESTART);
+  g_free (path);
+  path = gimp_config_build_writable_path ("brushes");
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_BRUSH_PATH_WRITABLE,
                                  "brush-path-writable",
                                  BRUSH_PATH_WRITABLE_BLURB,
-				 GIMP_PARAM_PATH_DIR_LIST,
-                                 gimp_config_build_writable_path ("brushes"),
-                                 GIMP_PARAM_RESTART);
+				 GIMP_CONFIG_PATH_DIR_LIST, path,
+                                 GIMP_CONFIG_PARAM_RESTART);
+  g_free (path);
+  path = gimp_config_build_data_path ("patterns");
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_PATTERN_PATH,
                                  "pattern-path", PATTERN_PATH_BLURB,
-				 GIMP_PARAM_PATH_DIR_LIST,
-                                 gimp_config_build_data_path ("patterns"),
-                                 GIMP_PARAM_RESTART);
+				 GIMP_CONFIG_PATH_DIR_LIST, path,
+                                 GIMP_CONFIG_PARAM_RESTART);
+  g_free (path);
+  path = gimp_config_build_writable_path ("patterns");
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_PATTERN_PATH_WRITABLE,
                                  "pattern-path-writable",
                                  PATTERN_PATH_WRITABLE_BLURB,
-				 GIMP_PARAM_PATH_DIR_LIST,
-                                 gimp_config_build_writable_path ("patterns"),
-                                 GIMP_PARAM_RESTART);
+				 GIMP_CONFIG_PATH_DIR_LIST, path,
+                                 GIMP_CONFIG_PARAM_RESTART);
+  g_free (path);
+  path = gimp_config_build_data_path ("palettes");
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_PALETTE_PATH,
                                  "palette-path", PALETTE_PATH_BLURB,
-				 GIMP_PARAM_PATH_DIR_LIST,
-                                 gimp_config_build_data_path ("palettes"),
-                                 GIMP_PARAM_RESTART);
+                                 GIMP_CONFIG_PATH_DIR_LIST, path,
+                                 GIMP_CONFIG_PARAM_RESTART);
+  g_free (path);
+  path = gimp_config_build_writable_path ("palettes");
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_PALETTE_PATH_WRITABLE,
                                  "palette-path-writable",
                                  PALETTE_PATH_WRITABLE_BLURB,
-				 GIMP_PARAM_PATH_DIR_LIST,
-                                 gimp_config_build_writable_path ("palettes"),
-                                 GIMP_PARAM_RESTART);
+				 GIMP_CONFIG_PATH_DIR_LIST, path,
+                                 GIMP_CONFIG_PARAM_RESTART);
+  g_free (path);
+  path = gimp_config_build_data_path ("gradients");
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_GRADIENT_PATH,
                                  "gradient-path", GRADIENT_PATH_BLURB,
-				 GIMP_PARAM_PATH_DIR_LIST,
-                                 gimp_config_build_data_path ("gradients"),
-                                 GIMP_PARAM_RESTART);
+				 GIMP_CONFIG_PATH_DIR_LIST, path,
+                                 GIMP_CONFIG_PARAM_RESTART);
+  g_free (path);
+  path = gimp_config_build_writable_path ("gradients");
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_GRADIENT_PATH_WRITABLE,
                                  "gradient-path-writable",
                                  GRADIENT_PATH_WRITABLE_BLURB,
-				 GIMP_PARAM_PATH_DIR_LIST,
-                                 gimp_config_build_writable_path ("gradients"),
-                                 GIMP_PARAM_RESTART);
+				 GIMP_CONFIG_PATH_DIR_LIST, path,
+                                 GIMP_CONFIG_PARAM_RESTART);
+  g_free (path);
+  path = gimp_config_build_data_path ("fonts");
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_FONT_PATH,
                                  "font-path", FONT_PATH_BLURB,
-				 GIMP_PARAM_PATH_DIR_LIST,
-                                 gimp_config_build_data_path ("fonts"),
-                                 0);
+				 GIMP_CONFIG_PATH_DIR_LIST, path,
+                                 GIMP_CONFIG_PARAM_CONFIRM);
+  g_free (path);
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_FONT_PATH_WRITABLE,
-                                 "font-path-writable",
-                                 FONT_PATH_WRITABLE_BLURB,
-				 GIMP_PARAM_PATH_DIR_LIST,
-                                 gimp_config_build_writable_path ("fonts"),
-                                 GIMP_PARAM_RESTART);
+                                 "font-path-writable", NULL,
+				 GIMP_CONFIG_PATH_DIR_LIST, NULL,
+                                 GIMP_CONFIG_PARAM_IGNORE);
   GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_DEFAULT_BRUSH,
                                    "default-brush", DEFAULT_BRUSH_BLURB,
                                    DEFAULT_BRUSH,
@@ -272,30 +261,30 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
   GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_DEFAULT_IMAGE,
                                    "default-image", DEFAULT_IMAGE_BLURB,
                                    GIMP_TYPE_TEMPLATE,
-                                   GIMP_PARAM_AGGREGATE);
+                                   GIMP_CONFIG_PARAM_AGGREGATE);
   GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_DEFAULT_GRID,
                                    "default-grid", DEFAULT_GRID_BLURB,
                                    GIMP_TYPE_GRID,
-                                   GIMP_PARAM_AGGREGATE);
+                                   GIMP_CONFIG_PARAM_AGGREGATE);
   GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_UNDO_LEVELS,
                                 "undo-levels", UNDO_LEVELS_BLURB,
                                 0, G_MAXINT, 5,
-                                GIMP_PARAM_CONFIRM);
+                                GIMP_CONFIG_PARAM_CONFIRM);
   GIMP_CONFIG_INSTALL_PROP_MEMSIZE (object_class, PROP_UNDO_SIZE,
                                     "undo-size", UNDO_SIZE_BLURB,
                                     0, GIMP_MAX_MEMSIZE, 1 << 24, /* 16MB */
-                                    GIMP_PARAM_CONFIRM);
+                                    GIMP_CONFIG_PARAM_CONFIRM);
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_UNDO_PREVIEW_SIZE,
                                  "undo-preview-size", UNDO_PREVIEW_SIZE_BLURB,
                                  GIMP_TYPE_VIEW_SIZE,
                                  GIMP_VIEW_SIZE_LARGE,
-                                 GIMP_PARAM_RESTART);
+                                 GIMP_CONFIG_PARAM_RESTART);
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class,
                                  PROP_PLUGINRC_PATH,
                                  "pluginrc-path", PLUGINRC_PATH_BLURB,
-				 GIMP_PARAM_PATH_FILE,
+				 GIMP_CONFIG_PATH_FILE,
                                  "${gimp_dir}" G_DIR_SEPARATOR_S "pluginrc",
-                                 GIMP_PARAM_RESTART);
+                                 GIMP_CONFIG_PARAM_RESTART);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_LAYER_PREVIEWS,
                                     "layer-previews", LAYER_PREVIEWS_BLURB,
                                     TRUE,
@@ -318,11 +307,20 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_INSTALL_COLORMAP,
                                     "install-colormap", INSTALL_COLORMAP_BLURB,
                                     FALSE,
-                                    GIMP_PARAM_RESTART);
+                                    GIMP_CONFIG_PARAM_RESTART);
   GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_MIN_COLORS,
                                 "min-colors", MIN_COLORS_BLURB,
                                 27, 256, 144,
-                                GIMP_PARAM_RESTART);
+                                GIMP_CONFIG_PARAM_RESTART);
+  GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_COLOR_MANAGEMENT,
+                                   "color-management", COLOR_MANAGEMENT_BLURB,
+                                   GIMP_TYPE_COLOR_CONFIG,
+                                   GIMP_CONFIG_PARAM_AGGREGATE);
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAVE_DOCUMENT_HISTORY,
+		                    "save-document-history",
+                                    SAVE_DOCUMENT_HISTORY_BLURB,
+				    TRUE,
+				    0);
 }
 
 static void
@@ -339,6 +337,11 @@ gimp_core_config_init (GimpCoreConfig *config)
   g_signal_connect (config->default_grid, "notify",
                     G_CALLBACK (gimp_core_config_default_grid_notify),
                     config);
+
+  config->color_management = g_object_new (GIMP_TYPE_COLOR_CONFIG, NULL);
+  g_signal_connect (config->color_management, "notify",
+                    G_CALLBACK (gimp_core_config_color_management_notify),
+                    config);
 }
 
 static void
@@ -348,6 +351,7 @@ gimp_core_config_finalize (GObject *object)
 
   g_free (core_config->plug_in_path);
   g_free (core_config->module_path);
+  g_free (core_config->interpreter_path);
   g_free (core_config->environ_path);
   g_free (core_config->brush_path);
   g_free (core_config->brush_path_writable);
@@ -372,6 +376,9 @@ gimp_core_config_finalize (GObject *object)
   if (core_config->default_grid)
     g_object_unref (core_config->default_grid);
 
+  if (core_config->color_management)
+    g_object_unref (core_config->color_management);
+
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -395,6 +402,10 @@ gimp_core_config_set_property (GObject      *object,
     case PROP_MODULE_PATH:
       g_free (core_config->module_path);
       core_config->module_path = g_value_dup_string (value);
+      break;
+    case PROP_INTERPRETER_PATH:
+      g_free (core_config->interpreter_path);
+      core_config->interpreter_path = g_value_dup_string (value);
       break;
     case PROP_ENVIRON_PATH:
       g_free (core_config->environ_path);
@@ -477,13 +488,13 @@ gimp_core_config_set_property (GObject      *object,
       break;
     case PROP_DEFAULT_IMAGE:
       if (g_value_get_object (value))
-        gimp_config_sync (GIMP_CONFIG (g_value_get_object (value)),
-                          GIMP_CONFIG (core_config->default_image), 0);
+        gimp_config_sync (g_value_get_object (value) ,
+                          G_OBJECT (core_config->default_image), 0);
       break;
     case PROP_DEFAULT_GRID:
       if (g_value_get_object (value))
-        gimp_config_sync (GIMP_CONFIG (g_value_get_object (value)),
-                          GIMP_CONFIG (core_config->default_grid), 0);
+        gimp_config_sync (g_value_get_object (value),
+                          G_OBJECT (core_config->default_grid), 0);
       break;
     case PROP_UNDO_LEVELS:
       core_config->levels_of_undo = g_value_get_int (value);
@@ -516,6 +527,14 @@ gimp_core_config_set_property (GObject      *object,
     case PROP_MIN_COLORS:
       core_config->min_colors = g_value_get_int (value);
       break;
+    case PROP_COLOR_MANAGEMENT:
+      if (g_value_get_object (value))
+        gimp_config_sync (g_value_get_object (value),
+                          G_OBJECT (core_config->color_management), 0);
+      break;
+    case PROP_SAVE_DOCUMENT_HISTORY:
+      core_config->save_document_history = g_value_get_boolean (value);
+      break;
 
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -541,6 +560,9 @@ gimp_core_config_get_property (GObject    *object,
       break;
     case PROP_MODULE_PATH:
       g_value_set_string (value, core_config->module_path);
+      break;
+    case PROP_INTERPRETER_PATH:
+      g_value_set_string (value, core_config->interpreter_path);
       break;
     case PROP_ENVIRON_PATH:
       g_value_set_string (value, core_config->environ_path);
@@ -641,6 +663,12 @@ gimp_core_config_get_property (GObject    *object,
     case PROP_MIN_COLORS:
       g_value_set_int (value, core_config->min_colors);
       break;
+    case PROP_COLOR_MANAGEMENT:
+      g_value_set_object (value, core_config->color_management);
+      break;
+    case PROP_SAVE_DOCUMENT_HISTORY:
+      g_value_set_boolean (value, core_config->save_document_history);
+      break;
 
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -662,4 +690,12 @@ gimp_core_config_default_grid_notify (GObject    *object,
                                       gpointer    data)
 {
   g_object_notify (G_OBJECT (data), "default-grid");
+}
+
+static void
+gimp_core_config_color_management_notify (GObject    *object,
+                                          GParamSpec *pspec,
+                                          gpointer    data)
+{
+  g_object_notify (G_OBJECT (data), "color-management");
 }

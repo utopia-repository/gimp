@@ -51,29 +51,29 @@
     (gimp-edit-fill bg-layer BACKGROUND-FILL)
     (gimp-selection-none img)
 
-    (gimp-layer-set-preserve-trans white-layer TRUE)
+    (gimp-layer-set-lock-alpha white-layer TRUE)
     (gimp-context-set-background ol-color)
     (gimp-selection-all img)
     (gimp-edit-fill white-layer BACKGROUND-FILL)
-    (gimp-layer-set-preserve-trans white-layer FALSE)
+    (gimp-layer-set-lock-alpha white-layer FALSE)
     (plug-in-spread 1 img white-layer (* 3 ol-width) (* 3 ol-width))
     (plug-in-gauss-rle 1 img white-layer (* 2 ol-width) 1 1)
     (plug-in-threshold-alpha 1 img white-layer 0)
-    (gimp-layer-set-preserve-trans white-layer TRUE)
+    (gimp-layer-set-lock-alpha white-layer TRUE)
     (gimp-edit-fill white-layer BACKGROUND-FILL)
     (gimp-selection-none img)
 
     (gimp-context-set-background '(0 0 0))
-    (gimp-layer-set-preserve-trans black-layer TRUE)
+    (gimp-layer-set-lock-alpha black-layer TRUE)
     (gimp-selection-all img)
     (gimp-edit-fill black-layer BACKGROUND-FILL)
     (gimp-selection-none img)
-    (gimp-layer-set-preserve-trans black-layer FALSE)
+    (gimp-layer-set-lock-alpha black-layer FALSE)
     (plug-in-gauss-rle 1 img black-layer ol-width 1 1)
     (plug-in-threshold-alpha 1 img black-layer 0)
 
     (gimp-context-set-gradient gradient)
-    (gimp-layer-set-preserve-trans logo-layer TRUE)
+    (gimp-layer-set-lock-alpha logo-layer TRUE)
     (gimp-selection-all img)
 
     (gimp-edit-blend logo-layer CUSTOM-MODE NORMAL-MODE
@@ -83,7 +83,7 @@
 
     (plug-in-noisify 1 img logo-layer 0 0.20 0.20 0.20 0.20)
     (gimp-selection-none img)
-    (gimp-layer-set-preserve-trans logo-layer FALSE)
+    (gimp-layer-set-lock-alpha logo-layer FALSE)
     (gimp-brightness-contrast logo-layer 0 30)
     (plug-in-threshold-alpha 1 img logo-layer 60)
     (gimp-image-set-active-layer img logo-layer)
@@ -121,7 +121,7 @@
 		    SF-COLOR      _"Background color" '(255 255 255))
 
 (script-fu-menu-register "script-fu-comic-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-comic-logo text
@@ -137,7 +137,6 @@
 	 (text-layer (car (gimp-text-fontname
 			   img -1 0 0 text border TRUE size PIXELS font))))
     (gimp-image-undo-disable img)
-    (gimp-drawable-set-name text-layer text)
     (apply-comic-logo-effect img text-layer gradient gradient-reverse
 			     ol-width ol-color bg-color)
     (gimp-image-undo-enable img)
@@ -160,4 +159,4 @@
 		    SF-COLOR      _"Background color"   '(255 255 255))
 
 (script-fu-menu-register "script-fu-comic-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

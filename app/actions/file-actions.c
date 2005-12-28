@@ -54,6 +54,9 @@ static void   file_actions_last_opened_reorder (GimpContainer   *container,
                                                 GimpImagefile   *unused1,
                                                 gint             unused2,
                                                 GimpActionGroup *group);
+static void   file_actions_close_all_update    (GimpContainer   *container,
+                                                GimpObject      *unused,
+                                                GimpActionGroup *group);
 
 
 static GimpActionEntry file_actions[] =
@@ -88,7 +91,7 @@ static GimpActionEntry file_actions[] =
     GIMP_HELP_FILE_SAVE },
 
   { "file-save-as", GTK_STOCK_SAVE_AS,
-    N_("Save _as..."), "<control><shift>S", NULL,
+    N_("Save _As..."), "<control><shift>S", NULL,
     G_CALLBACK (file_save_as_cmd_callback),
     GIMP_HELP_FILE_SAVE_AS },
 
@@ -103,9 +106,14 @@ static GimpActionEntry file_actions[] =
     GIMP_HELP_FILE_SAVE_AS_TEMPLATE },
 
   { "file-revert", GTK_STOCK_REVERT_TO_SAVED,
-    N_("Re_vert..."), NULL, NULL,
+    N_("Re_vert"), NULL, NULL,
     G_CALLBACK (file_revert_cmd_callback),
     GIMP_HELP_FILE_REVERT },
+
+  { "file-close-all", GTK_STOCK_CLOSE,
+    N_("Close all"), "<shift><control>W", NULL,
+    G_CALLBACK (file_close_all_cmd_callback),
+    GIMP_HELP_FILE_CLOSE_ALL },
 
   { "file-quit", GTK_STOCK_QUIT,
     N_("_Quit"), "<control>Q", NULL,
@@ -129,12 +137,6 @@ file_actions_setup (GimpActionGroup *group)
   action = gtk_action_group_get_action (GTK_ACTION_GROUP (group),
                                         "file-open-from-image");
   gtk_action_set_accel_path (action, "<Actions>/file/file-open");
-
-#ifdef __GNUC__
-#warning FIXME: remove accel_path hack
-#endif
-  g_object_set_data (G_OBJECT (action), "gimp-accel-path",
-                     "<Actions>/file/file-open");
 
   n_entries = GIMP_GUI_CONFIG (group->gimp->config)->last_opened_size;
 
@@ -185,6 +187,15 @@ file_actions_setup (GimpActionGroup *group)
                            group, 0);
 
   file_actions_last_opened_update (group->gimp->documents, NULL, group);
+
+  g_signal_connect_object (group->gimp->displays, "add",
+                           G_CALLBACK (file_actions_close_all_update),
+                           group, 0);
+  g_signal_connect_object (group->gimp->displays, "remove",
+                           G_CALLBACK (file_actions_close_all_update),
+                           group, 0);
+
+  file_actions_close_all_update (group->gimp->displays, NULL, group);
 }
 
 void
@@ -245,8 +256,8 @@ file_actions_last_opened_update (GimpContainer   *container,
 
               uri = gimp_object_get_name (GIMP_OBJECT (imagefile));
 
-              filename = file_utils_uri_to_utf8_filename (uri);
-              basename = file_utils_uri_to_utf8_basename (uri);
+              filename = file_utils_uri_display_name (uri);
+              basename = file_utils_uri_display_basename (uri);
 
               escaped = gimp_escape_uline (basename);
 
@@ -282,4 +293,15 @@ file_actions_last_opened_reorder (GimpContainer   *container,
                                   GimpActionGroup *group)
 {
   file_actions_last_opened_update (container, unused1, group);
+}
+
+static void
+file_actions_close_all_update (GimpContainer   *container,
+                               GimpObject      *unused,
+                               GimpActionGroup *group)
+{
+  gint n_displays = gimp_container_num_children (container);
+
+  gimp_action_group_set_action_sensitive (group, "file-close-all",
+                                          n_displays > 0);
 }

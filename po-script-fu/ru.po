@@ -4,7 +4,7 @@
 # Copyright (C) 2000-2002,2003, 2004 Free Software Foundation, Inc.
 # Valek Filippov <frob@df.ru>, 2000-2002.
 # Anatoly A. Yakushin <jaa@altlinux.ru>, 2003, 2004.
-# Roxana Chernogolova <mavka@justos.org>, 2003, 2004, 2005.
+# Roxana Chernogolova <mavka@justos.org>, 2003-2005.
 # AnatolyA. Yakushin <jaa@altlinux.ru>, 2004.
 #
 msgid ""
@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: gimp.SCRIPTFU.ru\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-04-09 21:56+0200\n"
-"PO-Revision-Date: 2004-12-24 22:17+0300\n"
+"PO-Revision-Date: 2005-04-22 22:44+0400\n"
 "Last-Translator: Roxana Chernogolova <mavka@justos.org>\n"
 "Language-Team: russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -52,7 +52,7 @@ msgstr "Скрипт-Фу не может выполнять два скрипт
 #: ../plug-ins/script-fu/script-fu-interface.c:179
 #, c-format
 msgid "You are already running the \"%s\" script."
-msgstr "Выполняется скрипт \"%s\"."
+msgstr "Вы уже запустили скрипт \"%s\"."
 
 #. strip the first part of the menupath if it contains _("/Script-Fu/")
 #: ../plug-ins/script-fu/script-fu-interface.c:202
@@ -79,40 +79,40 @@ msgstr "%s:"
 
 #: ../plug-ins/script-fu/script-fu-interface.c:328
 msgid "Script-Fu Color Selection"
-msgstr "Скрипт-Фу: выбор цвета"
+msgstr "Скрипт-Фу: Выбор цвета"
 
 #: ../plug-ins/script-fu/script-fu-interface.c:431
 msgid "Script-Fu File Selection"
-msgstr "Скрипт-Фу: выбор файла"
+msgstr "Скрипт-Фу: Выбор файла"
 
 #: ../plug-ins/script-fu/script-fu-interface.c:435
 msgid "Script-Fu Folder Selection"
-msgstr "Скрипт-Фу: выбор каталога"
+msgstr "Скрипт-Фу: Выбор каталога"
 
 #: ../plug-ins/script-fu/script-fu-interface.c:447
 msgid "Script-Fu Font Selection"
-msgstr "Скрипт-Фу: выбор шрифта"
+msgstr "Скрипт-Фу: Выбор шрифта"
 
 #: ../plug-ins/script-fu/script-fu-interface.c:454
 msgid "Script-Fu Palette Selection"
-msgstr "Скрипт-Фу: выбор палитры"
+msgstr "Скрипт-Фу: Выбор выбор палитры"
 
 #: ../plug-ins/script-fu/script-fu-interface.c:462
 msgid "Script-fu Pattern Selection"
-msgstr "Скрипт-Фу: выбор шаблона"
+msgstr "Скрипт-Фу: Выбор шаблона"
 
 #: ../plug-ins/script-fu/script-fu-interface.c:469
 msgid "Script-Fu Gradient Selection"
-msgstr "Скрипт-Фу: градиент"
+msgstr "Скрипт-Фу: Выбор градиента"
 
 #: ../plug-ins/script-fu/script-fu-interface.c:477
 msgid "Script-Fu Brush Selection"
-msgstr "Скрипт-Фу: выбор кисти"
+msgstr "Скрипт-Фу: Выбор кисти"
 
 #. the script progress frame
 #: ../plug-ins/script-fu/script-fu-interface.c:533
 msgid "Script Progress"
-msgstr "Выполнение скрипта"
+msgstr "Аргументы скрипта"
 
 #: ../plug-ins/script-fu/script-fu-interface.c:541
 msgid "(none)"
@@ -150,7 +150,7 @@ msgstr ""
 
 #: ../plug-ins/script-fu/script-fu-server.c:642
 msgid "Script-Fu Server Options"
-msgstr "Скрипт-Фу: параметры сервера"
+msgstr "Скрипт-Фу: Параметры сервера"
 
 #: ../plug-ins/script-fu/script-fu-server.c:670
 msgid "Server Port:"
@@ -180,7 +180,7 @@ msgstr "Обновить скрипты"
 #: ../plug-ins/dbbrowser/gimpprocbrowser.c:128
 #: ../plug-ins/dbbrowser/gimpprocbrowser.c:142
 msgid "Procedure Browser"
-msgstr "Список процедур"
+msgstr "Просмотрщик процедур"
 
 #: ../plug-ins/dbbrowser/gimpprocbrowser.c:132
 #: ../plug-ins/dbbrowser/gimpprocbrowser.c:146
@@ -198,11 +198,11 @@ msgstr "Поиск:"
 
 #: ../plug-ins/dbbrowser/gimpprocbrowser.c:386
 msgid "Searching by name - please wait"
-msgstr "Поиск по имени - подождите пожалуйста"
+msgstr "Поиск по имени -- подождите пожалуйста"
 
 #: ../plug-ins/dbbrowser/gimpprocbrowser.c:410
 msgid "Searching by blurb - please wait"
-msgstr "Поиск по аннотации - подождите пожалуйста"
+msgstr "Поиск по аннотации -- подождите пожалуйста"
 
 #: ../plug-ins/dbbrowser/gimpprocbrowser.c:421
 msgid "Searching - please wait"
@@ -215,7 +215,7 @@ msgstr "1 процедура"
 #: ../plug-ins/dbbrowser/gimpprocbrowser.c:430
 #, c-format
 msgid "%d Procedures"
-msgstr "%d процедур"
+msgstr "%d процедур(ы)"
 
 #: ../plug-ins/dbbrowser/gimpprocbrowser.c:476
 msgid "No matches"
@@ -584,11 +584,11 @@ msgstr "Добавить рамку..."
 
 #: ../plug-ins/script-fu/scripts/addborder.scm.h:3
 msgid "Border X size"
-msgstr "Ширина планки X"
+msgstr "Ширина гризонт. планки"
 
 #: ../plug-ins/script-fu/scripts/addborder.scm.h:4
 msgid "Border Y size"
-msgstr "Ширина планки Y"
+msgstr "Ширина верт. планки"
 
 #: ../plug-ins/script-fu/scripts/addborder.scm.h:5
 msgid "Border color"
@@ -639,7 +639,7 @@ msgstr "Влево"
 #: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm.h:7
 #: ../plug-ins/script-fu/scripts/beveled-pattern-arrow.scm.h:4
 msgid "Orientation"
-msgstr "Направление"
+msgstr "Ориентация"
 
 #: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm.h:8
 #: ../plug-ins/script-fu/scripts/beveled-pattern-arrow.scm.h:6
@@ -655,7 +655,7 @@ msgstr "Размер"
 #: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm.h:10
 #: ../plug-ins/script-fu/scripts/beveled-pattern-arrow.scm.h:8
 msgid "Up"
-msgstr "Вверх"
+msgstr "Верх"
 
 #: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm.h:11
 #: ../plug-ins/script-fu/scripts/beveled-pattern-arrow.scm.h:9
@@ -745,11 +745,11 @@ msgstr "Ширина зазора"
 
 #: ../plug-ins/script-fu/scripts/basic1-logo.scm.h:8
 msgid "_Basic I..."
-msgstr "Основа I..."
+msgstr "Основной I..."
 
 #: ../plug-ins/script-fu/scripts/basic2-logo.scm.h:3
 msgid "B_asic II..."
-msgstr "Основа II..."
+msgstr "Основной II..."
 
 #: ../plug-ins/script-fu/scripts/beveled-button.scm.h:1
 #: ../plug-ins/script-fu/scripts/pupi-button.scm.h:1
@@ -831,7 +831,7 @@ msgstr "Переходные кадры"
 
 #: ../plug-ins/script-fu/scripts/blend-anim.scm.h:3
 msgid "Looped"
-msgstr "Цикл"
+msgstr "Циклическое"
 
 #: ../plug-ins/script-fu/scripts/blend-anim.scm.h:4
 msgid "Max. blur radius"
@@ -851,7 +851,7 @@ msgstr "Режим смешивания"
 
 #: ../plug-ins/script-fu/scripts/blended-logo.scm.h:6
 msgid "Custom Gradient"
-msgstr "Указанный градиент"
+msgstr "Другой градиент"
 
 #: ../plug-ins/script-fu/scripts/blended-logo.scm.h:8
 msgid "FG-BG-HSV"
@@ -956,7 +956,7 @@ msgstr "Цвет 3"
 #: ../plug-ins/script-fu/scripts/camo.scm.h:6
 #: ../plug-ins/script-fu/scripts/rendermap.scm.h:6
 msgid "Granularity"
-msgstr "Разбиение"
+msgstr "Крупность разбиения"
 
 #: ../plug-ins/script-fu/scripts/camo.scm.h:7
 #: ../plug-ins/script-fu/scripts/rendermap.scm.h:7
@@ -995,7 +995,7 @@ msgstr "Фоновое изображение"
 
 #: ../plug-ins/script-fu/scripts/carved-logo.scm.h:3
 msgid "Carve raised text"
-msgstr "Текст над фоном"
+msgstr "Вырезать поднятый текст"
 
 #: ../plug-ins/script-fu/scripts/carved-logo.scm.h:4
 msgid "Carved..."
@@ -1083,7 +1083,7 @@ msgstr "Баланс бликов"
 
 #: ../plug-ins/script-fu/scripts/chrome-logo.scm.h:5
 msgid "C_hrome..."
-msgstr "Хром..."
+msgstr "Хромировать..."
 
 #: ../plug-ins/script-fu/scripts/chrome-logo.scm.h:8
 msgid "Offsets (pixels * 2)"
@@ -1110,7 +1110,7 @@ msgstr "Сохранить выделение"
 
 #: ../plug-ins/script-fu/scripts/circuit.scm.h:4
 msgid "No background (only for separate layer)"
-msgstr "Без фона (для отдельного слоя)"
+msgstr "Без фона (только для отдельного слоя)"
 
 #: ../plug-ins/script-fu/scripts/circuit.scm.h:5
 msgid "Oilify mask size"
@@ -1120,7 +1120,7 @@ msgstr "Размер маски рисования маслом"
 #: ../plug-ins/script-fu/scripts/lava.scm.h:6
 #: ../plug-ins/script-fu/scripts/predator.scm.h:6
 msgid "Separate layer"
-msgstr "В отлельном слое"
+msgstr "Отделить слой"
 
 #: ../plug-ins/script-fu/scripts/circuit.scm.h:7
 msgid "_Circuit..."
@@ -1221,11 +1221,11 @@ msgstr "Зернистость (1 - низкая)"
 
 #: ../plug-ins/script-fu/scripts/distress-selection.scm.h:4
 msgid "Smooth horizontally"
-msgstr "Сгладить по горизонтали"
+msgstr "Сгладить горизонтально"
 
 #: ../plug-ins/script-fu/scripts/distress-selection.scm.h:5
 msgid "Smooth vertically"
-msgstr "Сгладить по вертикали"
+msgstr "Сгладить вертикально"
 
 #: ../plug-ins/script-fu/scripts/distress-selection.scm.h:6
 msgid "Spread"
@@ -1243,7 +1243,7 @@ msgstr "Исказить выделение..."
 #: ../plug-ins/script-fu/scripts/perspective-shadow.scm.h:1
 #: ../plug-ins/script-fu/scripts/xach-effect.scm.h:1
 msgid "<Image>/Script-Fu/Shadow"
-msgstr "<Image>/Скрипт-Фу/Тень"
+msgstr "<Image>/Скрипт-Фу/Тени"
 
 #: ../plug-ins/script-fu/scripts/drop-shadow.scm.h:2
 #: ../plug-ins/script-fu/scripts/perspective-shadow.scm.h:2
@@ -1346,7 +1346,7 @@ msgstr "Угасание от %"
 #: ../plug-ins/script-fu/scripts/fade-outline.scm.h:8
 #, no-c-format
 msgid "Fade to   %"
-msgstr "Угасание к %"
+msgstr "Угасание к   %"
 
 #: ../plug-ins/script-fu/scripts/fade-outline.scm.h:9
 msgid "Use growing selection"
@@ -1397,7 +1397,7 @@ msgstr "<Toolbox>/Расш./Скрипт-Фу/Утилиты"
 
 #: ../plug-ins/script-fu/scripts/font-map.scm.h:2
 msgid "Active colors"
-msgstr "Активные цвета"
+msgstr "Текущие цвета пер.плана и фона"
 
 #: ../plug-ins/script-fu/scripts/font-map.scm.h:3
 msgid "Black on white"
@@ -1409,7 +1409,7 @@ msgstr "Размер шрифта (точек)"
 
 #: ../plug-ins/script-fu/scripts/font-map.scm.h:5
 msgid "Use font _name as text"
-msgstr "Название шрифта в качестве текста"
+msgstr "Использовать название шрифта в качестве текста"
 
 #: ../plug-ins/script-fu/scripts/font-map.scm.h:6
 msgid "_Border (pixels)"
@@ -1445,7 +1445,7 @@ msgstr "Добавить тень"
 
 #: ../plug-ins/script-fu/scripts/fuzzyborder.scm.h:3
 msgid "Blur border"
-msgstr "Размыть рамку"
+msgstr "Размывать рамку"
 
 #: ../plug-ins/script-fu/scripts/fuzzyborder.scm.h:7
 msgid "Granularity (1 is Low)"
@@ -1509,7 +1509,7 @@ msgstr "Большой заголовок..."
 
 #: ../plug-ins/script-fu/scripts/gimp-headers.scm.h:15
 msgid "_Small Header..."
-msgstr "Малый заголовок..."
+msgstr "Маленький заголовок..."
 
 #: ../plug-ins/script-fu/scripts/gimp-labels.scm.h:13
 msgid "T_ube Sub-Button Label..."
@@ -1537,7 +1537,7 @@ msgstr "Градиент (Контур)"
 
 #: ../plug-ins/script-fu/scripts/glossy.scm.h:6
 msgid "Blend gradient (text)"
-msgstr "Градиент (Текст)"
+msgstr "Градиент (текст)"
 
 #: ../plug-ins/script-fu/scripts/glossy.scm.h:10
 msgid "Glo_ssy..."
@@ -1549,15 +1549,15 @@ msgstr "Перевернуть градиент контура"
 
 #: ../plug-ins/script-fu/scripts/glossy.scm.h:13
 msgid "Pattern (outline)"
-msgstr "Шаблон (Контур)"
+msgstr "Шаблон (контур)"
 
 #: ../plug-ins/script-fu/scripts/glossy.scm.h:14
 msgid "Pattern (overlay)"
-msgstr "Шаблон (Наложение)"
+msgstr "Шаблон (наложение)"
 
 #: ../plug-ins/script-fu/scripts/glossy.scm.h:15
 msgid "Pattern (text)"
-msgstr "Шаблон (Текст)"
+msgstr "Шаблон (текст)"
 
 #: ../plug-ins/script-fu/scripts/glossy.scm.h:16
 #: ../plug-ins/script-fu/scripts/sphere.scm.h:5
@@ -1570,11 +1570,11 @@ msgstr "Перевернуть градиент текста"
 
 #: ../plug-ins/script-fu/scripts/glossy.scm.h:21
 msgid "Use pattern for outline instead of gradient"
-msgstr "Шаблон вместо градиента для контура"
+msgstr "Использовать для контура шаблон вместо градиента"
 
 #: ../plug-ins/script-fu/scripts/glossy.scm.h:22
 msgid "Use pattern for text instead of gradient"
-msgstr "Шаблон вместо градиента для текста"
+msgstr "Использовать для текста шаблон вместо градиента"
 
 #: ../plug-ins/script-fu/scripts/glossy.scm.h:23
 msgid "Use pattern overlay"
@@ -1590,7 +1590,7 @@ msgstr "Горячее свечение..."
 
 #: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm.h:4
 msgid "Bevel height (Sharpness)"
-msgstr "Высота скоса (резкость)"
+msgstr "Высота скоса (Резкость)"
 
 #: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm.h:5
 msgid "Bevel height (sharpness)"
@@ -1604,11 +1604,11 @@ msgstr "Размер рамки (точек)"
 
 #: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm.h:10
 msgid "Gradient Beve_l..."
-msgstr "Впуклый градиент..."
+msgstr "Выпуклый градиент..."
 
 #: ../plug-ins/script-fu/scripts/gradient-example.scm.h:2
 msgid "Custom _Gradient..."
-msgstr "Отобразить градиент"
+msgstr "Отобразить градиент..."
 
 #: ../plug-ins/script-fu/scripts/grid-system.scm.h:2
 msgid "X divisions"
@@ -1642,7 +1642,7 @@ msgstr "Горизонталь"
 
 #: ../plug-ins/script-fu/scripts/guides-new-percent.scm.h:3
 msgid "New Guide (by _Percent)..."
-msgstr "Направляющая (в %)..."
+msgstr "Нправляющая (в %)..."
 
 #: ../plug-ins/script-fu/scripts/guides-new-percent.scm.h:5
 #, no-c-format
@@ -1673,7 +1673,7 @@ msgstr "Непрозрачность фона"
 
 #: ../plug-ins/script-fu/scripts/hsv-graph.scm.h:3
 msgid "Draw _HSV Graph..."
-msgstr "Построить график HSV..."
+msgstr "Построить HSV-график..."
 
 #: ../plug-ins/script-fu/scripts/hsv-graph.scm.h:4
 msgid "End X"
@@ -1826,7 +1826,7 @@ msgstr "Название"
 
 #: ../plug-ins/script-fu/scripts/mkbrush.scm.h:6
 msgid "Re_ctangular, Feathered..."
-msgstr "Размытй прямоугольник..."
+msgstr "Размытый прямоугольник..."
 
 #: ../plug-ins/script-fu/scripts/mkbrush.scm.h:7
 #: ../plug-ins/script-fu/scripts/select-to-brush.scm.h:4
@@ -1835,11 +1835,11 @@ msgstr "Интервал"
 
 #: ../plug-ins/script-fu/scripts/mkbrush.scm.h:9
 msgid "_Elliptical..."
-msgstr "Эллиптическая..."
+msgstr "Эллипс..."
 
 #: ../plug-ins/script-fu/scripts/mkbrush.scm.h:10
 msgid "_Rectangular..."
-msgstr "Прямоугольная..."
+msgstr "Прямоугольник..."
 
 #: ../plug-ins/script-fu/scripts/neon-logo.scm.h:4
 msgid "Create shadow"
@@ -1905,7 +1905,7 @@ msgstr "Нет"
 
 #: ../plug-ins/script-fu/scripts/perspective-shadow.scm.h:11
 msgid "Relative distance of horizon"
-msgstr "Отн. расстояние до горизонта"
+msgstr "Относительное расстояние до горизонта"
 
 #: ../plug-ins/script-fu/scripts/perspective-shadow.scm.h:12
 msgid "Relative length of shadow"
@@ -1921,7 +1921,7 @@ msgstr "Размер края"
 
 #: ../plug-ins/script-fu/scripts/predator.scm.h:4
 msgid "Pixel amount"
-msgstr "Кол-во точек растра"
+msgstr "Количество точек растра"
 
 #: ../plug-ins/script-fu/scripts/predator.scm.h:5
 msgid "Pixelize"
@@ -1937,7 +1937,7 @@ msgstr "Нижний цвет"
 
 #: ../plug-ins/script-fu/scripts/pupi-button.scm.h:6
 msgid "Lower color (active)"
-msgstr "Нижний цвет (Активный)"
+msgstr "Нижний цвет (активный)"
 
 #: ../plug-ins/script-fu/scripts/pupi-button.scm.h:7
 msgid "Not pressed"
@@ -1945,7 +1945,7 @@ msgstr "Не нажатая"
 
 #: ../plug-ins/script-fu/scripts/pupi-button.scm.h:8
 msgid "Not pressed (active)"
-msgstr "Не нажатая (активная)"
+msgstr "Не нажата (активная)"
 
 #: ../plug-ins/script-fu/scripts/pupi-button.scm.h:9
 msgid "Padding X"
@@ -1961,7 +1961,7 @@ msgstr "Отношение радиусов"
 
 #: ../plug-ins/script-fu/scripts/pupi-button.scm.h:15
 msgid "Text color (active)"
-msgstr "Цвет текста (для активн.)"
+msgstr "Цвет текста (активный)"
 
 #: ../plug-ins/script-fu/scripts/pupi-button.scm.h:16
 msgid "Upper color"
@@ -1969,7 +1969,7 @@ msgstr "Верхний цвет"
 
 #: ../plug-ins/script-fu/scripts/pupi-button.scm.h:17
 msgid "Upper color (active)"
-msgstr "Верхний цвет (для активн.)"
+msgstr "Верхний цвет (активный)"
 
 #: ../plug-ins/script-fu/scripts/pupi-button.scm.h:18
 msgid "_Round Button..."
@@ -1993,11 +1993,11 @@ msgstr "Плитка"
 
 #: ../plug-ins/script-fu/scripts/ripply-anim.scm.h:2
 msgid "Black"
-msgstr "Заполнять черным"
+msgstr "Зполнять черным"
 
 #: ../plug-ins/script-fu/scripts/ripply-anim.scm.h:3
 msgid "Edge behaviour"
-msgstr "Край:"
+msgstr "Край"
 
 #: ../plug-ins/script-fu/scripts/ripply-anim.scm.h:4
 #: ../plug-ins/script-fu/scripts/waves-anim.scm.h:4
@@ -2050,7 +2050,7 @@ msgstr "В кисть..."
 
 #: ../plug-ins/script-fu/scripts/select-to-image.scm.h:2
 msgid "To _Image"
-msgstr "В изображение"
+msgstr "в изображение"
 
 #: ../plug-ins/script-fu/scripts/select-to-pattern.scm.h:2
 msgid "Filename"
@@ -2058,7 +2058,7 @@ msgstr "Имя файла"
 
 #: ../plug-ins/script-fu/scripts/select-to-pattern.scm.h:3
 msgid "Pattern name"
-msgstr "Название шаблона"
+msgstr "Имя шаблона"
 
 #: ../plug-ins/script-fu/scripts/select-to-pattern.scm.h:4
 msgid "To _Pattern..."
@@ -2091,7 +2091,7 @@ msgstr "Слайд..."
 
 #: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm.h:10
 msgid "SOTA Chrome..."
-msgstr "SOTA Хром..."
+msgstr "SOTA хром..."
 
 #: ../plug-ins/script-fu/scripts/speed-text.scm.h:7
 msgid "Speed Text..."
@@ -2256,7 +2256,7 @@ msgstr "Тип"
 
 #: ../plug-ins/script-fu/scripts/spyrogimp.scm.h:33
 msgid "_Spyrogimp..."
-msgstr "СпироGimp..."
+msgstr "Спирограф..."
 
 #: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:4
 msgid "Burst color"
@@ -2392,7 +2392,7 @@ msgstr "Размывание кромки..."
 
 #: ../plug-ins/script-fu/scripts/title-header.scm.h:6
 msgid "Web Title Header..."
-msgstr "Загловок web-страницы..."
+msgstr "Заголовок web-страницы..."
 
 #: ../plug-ins/script-fu/scripts/truchet.scm.h:4
 msgid "Foreground color"
@@ -2416,7 +2416,7 @@ msgstr "Нерезкая маска..."
 
 #: ../plug-ins/script-fu/scripts/waves-anim.scm.h:2
 msgid "Amplitude"
-msgstr "Амплитуда"
+msgstr "Размах"
 
 #: ../plug-ins/script-fu/scripts/waves-anim.scm.h:3
 msgid "Invert direction"
@@ -2464,7 +2464,7 @@ msgstr "Плетение..."
 
 #: ../plug-ins/script-fu/scripts/web-browser.scm.h:1
 msgid "<Toolbox>/Help/The GIMP Online"
-msgstr "<Toolbox>/Справка/Gimp в интернете"
+msgstr "<Toolbox>/Справка/GIMP Online"
 
 #: ../plug-ins/script-fu/scripts/web-browser.scm.h:2
 msgid "Plug-in _Registry"
@@ -2472,7 +2472,7 @@ msgstr "Регистрация дополнений"
 
 #: ../plug-ins/script-fu/scripts/web-browser.scm.h:3
 msgid "_Developer Web Site"
-msgstr "Сайт разработки"
+msgstr "Сайт разработчиков"
 
 #: ../plug-ins/script-fu/scripts/web-browser.scm.h:4
 msgid "_Main Web Site"
@@ -2515,13 +2515,10 @@ msgid "_Xach-Effect..."
 msgstr "_Xach-Effect..."
 
 #~ msgid "Buffer amount (% height of text)"
-#~ msgstr "Отступ (% высоты текста)"
-
-#~ msgid "_ASCII to Image..."
-#~ msgstr "_ASCII в изображение..."
+#~ msgstr "Размер отступа (% высоты текста)"
 
 #~ msgid "_ASCII to Layer..."
-#~ msgstr "ASCII в слой..."
+#~ msgstr "<Image>/Скрипт-Фу/Утилиты/ASCII -> Слой изображения..."
 
 #~ msgid "<Toolbox>/Xtns/Script-Fu/_Refresh Scripts"
 #~ msgstr "<Toolbox>/Расш./Скрипт-Фу/Обновить сценарии"
@@ -3027,6 +3024,3 @@ msgstr "_Xach-Effect..."
 #~ "Выжигание: Необходимо всего два слоя!\n"
 #~ "        Слой текста переднего плана с прозрачностью\n"
 #~ "        и слой фона."
-
-#~ msgid "Copy _Visible"
-#~ msgstr "Копировать видимое"

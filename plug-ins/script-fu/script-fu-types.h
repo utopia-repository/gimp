@@ -55,6 +55,12 @@ typedef struct
   gint     history;
 } SFOption;
 
+typedef struct
+{
+  gchar   *type_name;
+  gint     history;
+} SFEnum;
+
 typedef union
 {
   gint32         sfa_image;
@@ -72,12 +78,12 @@ typedef union
   gchar         *sfa_pattern;
   SFBrush        sfa_brush;
   SFOption       sfa_option;
+  SFEnum         sfa_enum;
 } SFArgValue;
 
 typedef struct
 {
   gchar         *script_name;
-  gchar         *pdb_name;
   gchar         *menu_path;
   gchar         *help;
   gchar         *author;

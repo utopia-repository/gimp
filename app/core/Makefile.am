@@ -2,12 +2,12 @@
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-Core\"	\
-	-DGIMP_COMPILATION		\
-	@GIMP_THREAD_FLAGS@ 		\
-	@GIMP_MP_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
+	-I$(top_builddir)	\
 	-I$(top_srcdir)		\
+	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
 	$(GDK_PIXBUF_CFLAGS)	\
 	$(LIBART_CFLAGS)	\
@@ -18,10 +18,10 @@ noinst_LIBRARIES = libappcore.a
 libappcore_a_sources = \
 	core-enums.h			\
 	core-types.h			\
-	cpercep.c			\
-	cpercep.h			\
 	gimp.c				\
 	gimp.h				\
+	gimp-contexts.c			\
+	gimp-contexts.h			\
 	gimp-documents.c		\
 	gimp-documents.h		\
 	gimp-edit.c			\
@@ -47,6 +47,8 @@ libappcore_a_sources = \
 	gimpbrush.c			\
 	gimpbrush.h			\
 	gimpbrush-header.h		\
+	gimpbrush-load.c		\
+	gimpbrush-load.h		\
 	gimpbrushgenerated.c		\
 	gimpbrushgenerated.h		\
 	gimpbrushpipe.c			\
@@ -67,6 +69,8 @@ libappcore_a_sources = \
 	gimpcontext.h			\
 	gimpcoords.c			\
 	gimpcoords.h			\
+	gimpdashpattern.c		\
+	gimpdashpattern.h		\
 	gimpdata.c			\
 	gimpdata.h			\
 	gimpdatafactory.c		\
@@ -81,10 +85,14 @@ libappcore_a_sources = \
 	gimpdrawable-bucket-fill.h	\
 	gimpdrawable-combine.c		\
 	gimpdrawable-combine.h		\
+	gimpdrawable-convert.c		\
+	gimpdrawable-convert.h		\
 	gimpdrawable-desaturate.c	\
 	gimpdrawable-desaturate.h	\
 	gimpdrawable-equalize.c		\
 	gimpdrawable-equalize.h		\
+	gimpdrawable-foreground-extract.c\
+	gimpdrawable-foreground-extract.h\
 	gimpdrawable-histogram.c	\
 	gimpdrawable-histogram.h	\
 	gimpdrawable-invert.c		\
@@ -139,12 +147,14 @@ libappcore_a_sources = \
 	gimpimage-pick-color.h		\
 	gimpimage-preview.c		\
 	gimpimage-preview.h		\
-	gimpimage-qmask.c		\
-	gimpimage-qmask.h		\
+	gimpimage-quick-mask.c		\
+	gimpimage-quick-mask.h		\
 	gimpimage-resize.c		\
 	gimpimage-resize.h		\
 	gimpimage-rotate.c		\
 	gimpimage-rotate.h		\
+	gimpimage-sample-points.c	\
+	gimpimage-sample-points.h	\
 	gimpimage-scale.c		\
 	gimpimage-scale.h		\
 	gimpimage-snap.c		\
@@ -157,8 +167,12 @@ libappcore_a_sources = \
 	gimpimagefile.h			\
 	gimpimagemap.c			\
 	gimpimagemap.h			\
+	gimpinterpreterdb.c		\
+	gimpinterpreterdb.h		\
 	gimpitem.c			\
 	gimpitem.h			\
+	gimpitem-align.c		\
+	gimpitem-align.h		\
 	gimpitem-linked.c		\
 	gimpitem-linked.h		\
 	gimpitem-preview.c		\

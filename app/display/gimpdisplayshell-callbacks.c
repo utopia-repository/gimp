@@ -36,10 +36,12 @@
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-guides.h"
-#include "core/gimpimage-qmask.h"
+#include "core/gimpimage-sample-points.h"
+#include "core/gimpimage-quick-mask.h"
 #include "core/gimplayer.h"
 #include "core/gimptoolinfo.h"
 
+#include "tools/gimpcolortool.h"
 #include "tools/gimpmovetool.h"
 #include "tools/gimptoolcontrol.h"
 #include "tools/tool_manager.h"
@@ -59,7 +61,9 @@
 #include "gimpdisplayoptions.h"
 #include "gimpdisplayshell.h"
 #include "gimpdisplayshell-appearance.h"
+#include "gimpdisplayshell-autoscroll.h"
 #include "gimpdisplayshell-callbacks.h"
+#include "gimpdisplayshell-coords.h"
 #include "gimpdisplayshell-cursor.h"
 #include "gimpdisplayshell-draw.h"
 #include "gimpdisplayshell-layer-select.h"
@@ -79,34 +83,15 @@
 
 /*  local function prototypes  */
 
-static void     gimp_display_shell_vscrollbar_update (GtkAdjustment    *adjustment,
-                                                      GimpDisplayShell *shell);
-static void     gimp_display_shell_hscrollbar_update (GtkAdjustment    *adjustment,
-                                                      GimpDisplayShell *shell);
-
-static gboolean gimp_display_shell_get_event_coords  (GimpDisplayShell *shell,
-                                                      GdkEvent         *event,
-                                                      GdkDevice        *device,
-                                                      GimpCoords       *coords);
-static void     gimp_display_shell_get_device_coords (GimpDisplayShell *shell,
-                                                      GdkDevice        *device,
-                                                      GimpCoords       *coords);
-static void     gimp_display_shell_get_time_coords   (GimpDisplayShell *shell,
-                                                      GdkDevice        *device,
-                                                      GdkTimeCoord     *event,
-                                                      GimpCoords       *coords);
-static gboolean gimp_display_shell_get_event_state   (GimpDisplayShell *shell,
-                                                      GdkEvent         *event,
-                                                      GdkDevice        *device,
-                                                      GdkModifierType  *state);
-static void     gimp_display_shell_get_device_state  (GimpDisplayShell *shell,
-                                                      GdkDevice        *device,
-                                                      GdkModifierType  *state);
+static void       gimp_display_shell_vscrollbar_update (GtkAdjustment    *adjustment,
+                                                        GimpDisplayShell *shell);
+static void       gimp_display_shell_hscrollbar_update (GtkAdjustment    *adjustment,
+                                                        GimpDisplayShell *shell);
 
 static GdkModifierType
-                gimp_display_shell_key_to_state      (gint              key);
+                  gimp_display_shell_key_to_state      (gint              key);
 
-static GdkEvent * gimp_display_shell_compress_motion (GimpDisplayShell *shell);
+static GdkEvent * gimp_display_shell_compress_motion   (GimpDisplayShell *shell);
 
 
 /*  public functions  */
@@ -206,39 +191,44 @@ gimp_display_shell_events (GtkWidget        *widget,
 
     case GDK_WINDOW_STATE:
       {
-	GdkEventWindowState *sevent = (GdkEventWindowState *) event;
+        GdkEventWindowState *sevent = (GdkEventWindowState *) event;
         GimpDisplayOptions  *options;
         gboolean             fullscreen;
         GimpActionGroup     *group;
 
-	shell->window_state = sevent->new_window_state;
+        shell->window_state = sevent->new_window_state;
 
         if (! (sevent->changed_mask & GDK_WINDOW_STATE_FULLSCREEN))
           break;
 
         fullscreen = gimp_display_shell_get_fullscreen (shell);
 
+        gtk_widget_set_name (GTK_WIDGET (shell->menubar),
+                             fullscreen ? "gimp-menubar-fullscreen" : NULL);
+
         options = fullscreen ? shell->fullscreen_options : shell->options;
 
-        gimp_display_shell_set_show_menubar    (shell,
-                                                options->show_menubar);
-        gimp_display_shell_set_show_rulers     (shell,
-                                                options->show_rulers);
-        gimp_display_shell_set_show_scrollbars (shell,
-                                                options->show_scrollbars);
-        gimp_display_shell_set_show_statusbar  (shell,
-                                                options->show_statusbar);
-        gimp_display_shell_set_show_selection  (shell,
-                                                options->show_selection);
-        gimp_display_shell_set_show_layer      (shell,
-                                                options->show_layer_boundary);
-        gimp_display_shell_set_show_guides     (shell,
-                                                options->show_guides);
-        gimp_display_shell_set_show_grid       (shell,
-                                                options->show_grid);
-        gimp_display_shell_set_padding         (shell,
-                                                options->padding_mode,
-                                                &options->padding_color);
+        gimp_display_shell_set_show_menubar       (shell,
+                                                   options->show_menubar);
+        gimp_display_shell_set_show_rulers        (shell,
+                                                   options->show_rulers);
+        gimp_display_shell_set_show_scrollbars    (shell,
+                                                   options->show_scrollbars);
+        gimp_display_shell_set_show_statusbar     (shell,
+                                                   options->show_statusbar);
+        gimp_display_shell_set_show_selection     (shell,
+                                                   options->show_selection);
+        gimp_display_shell_set_show_layer         (shell,
+                                                   options->show_layer_boundary);
+        gimp_display_shell_set_show_guides        (shell,
+                                                   options->show_guides);
+        gimp_display_shell_set_show_grid          (shell,
+                                                   options->show_grid);
+        gimp_display_shell_set_show_sample_points (shell,
+                                                   options->show_sample_points);
+        gimp_display_shell_set_padding            (shell,
+                                                   options->padding_mode,
+                                                   &options->padding_color);
 
         group = gimp_ui_manager_get_action_group (shell->menubar_manager,
                                                   "view");
@@ -294,10 +284,10 @@ gimp_display_shell_canvas_realize (GtkWidget        *canvas,
   shell->disp_height = canvas->allocation.height;
 
   /*  set up the scrollbar observers  */
-  g_signal_connect (shell->hsbdata, "value_changed",
+  g_signal_connect (shell->hsbdata, "value-changed",
                     G_CALLBACK (gimp_display_shell_hscrollbar_update),
                     shell);
-  g_signal_connect (shell->vsbdata, "value_changed",
+  g_signal_connect (shell->vsbdata, "value-changed",
                     G_CALLBACK (gimp_display_shell_vscrollbar_update),
                     shell);
 
@@ -331,7 +321,7 @@ gimp_display_shell_canvas_size_allocate (GtkWidget        *widget,
           allocation->width  > 64 &&
           allocation->height > 64)
         {
-          gdouble scale = shell->scale;
+          gdouble scale = gimp_zoom_model_get_factor (shell->zoom);
           gint    offset_x;
           gint    offset_y;
 
@@ -346,7 +336,8 @@ gimp_display_shell_canvas_size_allocate (GtkWidget        *widget,
           offset_x = UNSCALEX (shell, shell->offset_x);
           offset_y = UNSCALEX (shell, shell->offset_y);
 
-          shell->scale    = scale;
+          gimp_zoom_model_zoom (shell->zoom, GIMP_ZOOM_TO, scale);
+
           shell->offset_x = SCALEX (shell, offset_x);
           shell->offset_y = SCALEY (shell, offset_y);
         }
@@ -422,11 +413,14 @@ gimp_display_shell_canvas_expose (GtkWidget        *widget,
   /* draw the transform tool preview */
   gimp_display_shell_preview_transform (shell);
 
+  /* draw the grid */
+  gimp_display_shell_draw_grid (shell, &eevent->area);
+
   /* draw the guides */
   gimp_display_shell_draw_guides (shell);
 
-  /* draw the grid */
-  gimp_display_shell_draw_grid (shell, &eevent->area);
+  /* draw the sample points */
+  gimp_display_shell_draw_sample_points (shell);
 
   /* and the cursor (if we have a software cursor) */
   gimp_display_shell_draw_cursor (shell);
@@ -454,25 +448,21 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                                        GdkEvent         *event,
                                        GimpDisplayShell *shell)
 {
-  GimpDisplay     *gdisp;
-  GimpImage       *gimage;
-  Gimp            *gimp;
-  GdkDisplay      *gdk_display;
-  GimpTool        *active_tool;
-  GimpCoords       display_coords;
-  GimpCoords       image_coords;
-  GdkModifierType  state;
-  guint32          time;
-  gboolean         return_val    = FALSE;
-  gboolean         update_cursor = FALSE;
+  GimpDisplay         *gdisp;
+  GimpImage           *gimage;
+  Gimp                *gimp;
+  GdkDisplay          *gdk_display;
+  GimpTool            *active_tool;
+  GimpCoords           display_coords;
+  GimpCoords           image_coords;
+  GdkModifierType      state;
+  guint32              time;
+  gboolean             return_val        = FALSE;
+  gboolean             update_cursor     = FALSE;
 
   static GimpToolInfo *space_shaded_tool = NULL;
 
-  if (! canvas->window)
-    {
-      g_warning ("%s: called unrealized", G_STRFUNC);
-      return FALSE;
-    }
+  g_return_val_if_fail (GTK_WIDGET_REALIZED (canvas), FALSE);
 
   /*  are we in destruction?  */
   if (! shell->gdisp || ! shell->gdisp->shell)
@@ -509,12 +499,12 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
 
   active_tool = tool_manager_get_active (gimp);
 
-  if (active_tool && gimp_tool_control_auto_snap_to (active_tool->control))
+  if (active_tool && gimp_tool_control_get_snap_to (active_tool->control))
     {
       gint x, y, width, height;
 
-      gimp_tool_control_snap_offsets (active_tool->control,
-                                      &x, &y, &width, &height);
+      gimp_tool_control_get_snap_offsets (active_tool->control,
+                                          &x, &y, &width, &height);
 
       if (gimp_display_shell_snap_coords (shell,
                                           &image_coords,
@@ -642,7 +632,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
             if (active_tool)
               {
                 if ((! gimp_image_is_empty (gimage) ||
-                     gimp_tool_control_handles_empty_image (active_tool->control)) &&
+                     gimp_tool_control_get_handle_empty_image (active_tool->control)) &&
                     (bevent->button == 1 ||
                      bevent->button == 2 ||
                      bevent->button == 3))
@@ -651,7 +641,8 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                                                        &image_coords, state,
                                                        gdisp);
                   }
-                else if (gimp_image_is_empty (gimage))
+                else if (gimp_image_is_empty (gimage) &&
+                         ! gimp_tool_control_get_handle_empty_image (active_tool->control))
                   {
                     gimp_display_shell_set_cursor (shell,
                                                    GIMP_CURSOR_BAD,
@@ -690,7 +681,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
 
             if (active_tool &&
                 (! GIMP_DISPLAY_CONFIG (gimp->config)->perfect_mouse ||
-                 (gimp_tool_control_motion_mode (active_tool->control) !=
+                 (gimp_tool_control_get_motion_mode (active_tool->control) !=
                   GIMP_MOTION_MODE_EXACT)))
               {
                 /*  don't request motion hins for XInput devices because
@@ -712,7 +703,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
 
             if (active_tool &&
                 (! gimp_image_is_empty (gimage) ||
-                 gimp_tool_control_handles_empty_image (active_tool->control)))
+                 gimp_tool_control_get_handle_empty_image (active_tool->control)))
               {
                 gboolean initialized = TRUE;
 
@@ -724,7 +715,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                   }
                 else if ((active_tool->drawable !=
                           gimp_image_active_drawable (gimage)) &&
-                         ! gimp_tool_control_preserve (active_tool->control))
+                         ! gimp_tool_control_get_preserve (active_tool->control))
                   {
                     /*  create a new one, deleting the current
                      */
@@ -775,6 +766,8 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
       {
         GdkEventButton *bevent = (GdkEventButton *) event;
 
+	gimp_display_shell_autoscroll_stop (shell);
+
         if (gimp->busy)
           return TRUE;
 
@@ -794,7 +787,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
 
             if (active_tool &&
                 (! gimp_image_is_empty (gimage) ||
-                 gimp_tool_control_handles_empty_image (active_tool->control)))
+                 gimp_tool_control_get_handle_empty_image (active_tool->control)))
               {
                 if (gimp_tool_control_is_active (active_tool->control))
                   {
@@ -877,16 +870,18 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
 
         direction = sevent->direction;
 
-        if (state & GDK_SHIFT_MASK)
+        if (state & GDK_CONTROL_MASK)
           {
             switch (direction)
               {
               case GDK_SCROLL_UP:
-                gimp_display_shell_scale (shell, GIMP_ZOOM_IN, 0.0);
+                gimp_display_shell_scale_to (shell, GIMP_ZOOM_IN, 0.0,
+                                             sevent->x, sevent->y);
                 break;
 
               case GDK_SCROLL_DOWN:
-                gimp_display_shell_scale (shell, GIMP_ZOOM_OUT, 0.0);
+                gimp_display_shell_scale_to (shell, GIMP_ZOOM_OUT, 0.0,
+                                             sevent->x, sevent->y);
                 break;
 
               default:
@@ -898,7 +893,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
             GtkAdjustment *adj = NULL;
             gdouble        value;
 
-            if (state & GDK_CONTROL_MASK)
+            if (state & GDK_SHIFT_MASK)
               switch (direction)
                 {
                 case GDK_SCROLL_UP:    direction = GDK_SCROLL_LEFT;  break;
@@ -937,12 +932,12 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
         active_tool = tool_manager_get_active (gimp);
 
         if (active_tool &&
-            gimp_tool_control_auto_snap_to (active_tool->control))
+            gimp_tool_control_get_snap_to (active_tool->control))
           {
             gint x, y, width, height;
 
-            gimp_tool_control_snap_offsets (active_tool->control,
-                                            &x, &y, &width, &height);
+            gimp_tool_control_get_snap_offsets (active_tool->control,
+                                                &x, &y, &width, &height);
 
             if (gimp_display_shell_snap_coords (shell,
                                                 &image_coords,
@@ -972,7 +967,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
         active_tool = tool_manager_get_active (gimp);
 
         if (active_tool &&
-            gimp_tool_control_motion_mode (active_tool->control) ==
+            gimp_tool_control_get_motion_mode (active_tool->control) ==
             GIMP_MOTION_MODE_COMPRESS)
           {
             compressed_motion = gimp_display_shell_compress_motion (shell);
@@ -994,12 +989,12 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                                                    &image_coords);
 
             if (active_tool &&
-                gimp_tool_control_auto_snap_to (active_tool->control))
+                gimp_tool_control_get_snap_to (active_tool->control))
               {
                 gint x, y, width, height;
 
-                gimp_tool_control_snap_offsets (active_tool->control,
-                                                &x, &y, &width, &height);
+                gimp_tool_control_get_snap_offsets (active_tool->control,
+                                                    &x, &y, &width, &height);
 
                 gimp_display_shell_snap_coords (shell,
                                                 &image_coords,
@@ -1031,7 +1026,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
             if (active_tool                                        &&
                 gimp_tool_control_is_active (active_tool->control) &&
                 (! gimp_image_is_empty (gimage) ||
-                 gimp_tool_control_handles_empty_image (active_tool->control)))
+                 gimp_tool_control_get_handle_empty_image (active_tool->control)))
               {
                 GdkTimeCoord **history_events;
                 gint           n_history_events;
@@ -1043,53 +1038,12 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                      mevent->y < 0                 ||
                      mevent->x > shell->disp_width ||
                      mevent->y > shell->disp_height) &&
-                    ! gimp_tool_control_scroll_lock (active_tool->control))
+                    ! gimp_tool_control_get_scroll_lock (active_tool->control))
                   {
-                    gint off_x = 0;
-                    gint off_y = 0;
-
-                    /*  The cases for scrolling  */
-                    if (mevent->x < 0)
-                      off_x = mevent->x;
-                    else if (mevent->x > shell->disp_width)
-                      off_x = mevent->x - shell->disp_width;
-
-                    if (mevent->y < 0)
-                      off_y = mevent->y;
-                    else if (mevent->y > shell->disp_height)
-                      off_y = mevent->y - shell->disp_height;
-
-                    if (gimp_display_shell_scroll (shell, off_x, off_y))
-                      {
-                        GimpCoords device_coords;
-
-                        gimp_display_shell_get_device_coords (shell,
-                                                              mevent->device,
-                                                              &device_coords);
-
-                        if (device_coords.x == mevent->x &&
-                            device_coords.y == mevent->y
-#ifdef G_OS_WIN32
-                            /* The Win32 backend for GDK just returns the
-                             * coordinates from the last motion/button event
-                             * for extended input devices, so if the event is
-                             * put back in the queue, this will keep scrolling
-                             * until the edge of the image is reached (bug
-                             * #167960) */
-                            && mevent->device == gdk_display_get_core_pointer (
-                              gdk_display_get_default ())
-#endif /* G_OS_WIN32 */
-                           )
-                           {
-                            /*  Put this event back on the queue
-                             *  so it keeps scrolling
-                             */
-                            gdk_event_put ((GdkEvent *) mevent);
-                          }
-                      }
+                    gimp_display_shell_autoscroll_start (shell, state, mevent);
                   }
 
-                if (gimp_tool_control_motion_mode (active_tool->control) ==
+                if (gimp_tool_control_get_motion_mode (active_tool->control) ==
                     GIMP_MOTION_MODE_EXACT &&
                     gdk_device_get_history (mevent->device, mevent->window,
                                             shell->last_motion_time,
@@ -1113,12 +1067,12 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                                                                &display_coords,
                                                                &image_coords);
 
-                        if (gimp_tool_control_auto_snap_to (active_tool->control))
+                        if (gimp_tool_control_get_snap_to (active_tool->control))
                           {
                             gint x, y, width, height;
 
-                            gimp_tool_control_snap_offsets (active_tool->control,
-                                                            &x, &y, &width, &height);
+                            gimp_tool_control_get_snap_offsets (active_tool->control,
+                                                                &x, &y, &width, &height);
 
                             gimp_display_shell_snap_coords (shell,
                                                             &image_coords,
@@ -1366,7 +1320,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
       if (active_tool)
         {
           if ((! gimp_image_is_empty (gimage) ||
-               gimp_tool_control_handles_empty_image (active_tool->control)) &&
+               gimp_tool_control_get_handle_empty_image (active_tool->control)) &&
               ! (state & (GDK_BUTTON1_MASK |
                           GDK_BUTTON2_MASK |
                           GDK_BUTTON3_MASK)))
@@ -1375,7 +1329,8 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                                                  &image_coords, state,
                                                  gdisp);
             }
-          else if (gimp_image_is_empty (gimage))
+          else if (gimp_image_is_empty (gimage) &&
+                   ! gimp_tool_control_get_handle_empty_image (active_tool->control))
             {
               gimp_display_shell_set_cursor (shell,
                                              GIMP_CURSOR_BAD,
@@ -1403,9 +1358,10 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
 }
 
 gboolean
-gimp_display_shell_hruler_button_press (GtkWidget        *widget,
-                                        GdkEventButton   *event,
-                                        GimpDisplayShell *shell)
+gimp_display_shell_ruler_button_press (GtkWidget        *widget,
+                                       GdkEventButton   *event,
+                                       GimpDisplayShell *shell,
+                                       gboolean          horizontal)
 {
   GimpDisplay *gdisp = shell->gdisp;
 
@@ -1414,37 +1370,58 @@ gimp_display_shell_hruler_button_press (GtkWidget        *widget,
 
   if (event->type == GDK_BUTTON_PRESS && event->button == 1)
     {
-      GimpToolInfo *tool_info;
+      GimpTool *active_tool;
+      gboolean  sample_point;
 
-      tool_info = (GimpToolInfo *)
-        gimp_container_get_child_by_name (gdisp->gimage->gimp->tool_info_list,
-                                          "gimp-move-tool");
+      active_tool  = tool_manager_get_active (gdisp->gimage->gimp);
+      sample_point = (event->state & GDK_CONTROL_MASK);
 
-      if (tool_info)
-	{
-          GimpTool *active_tool;
+      if (! ((sample_point   && GIMP_IS_COLOR_TOOL (active_tool)) ||
+             (! sample_point && GIMP_IS_MOVE_TOOL (active_tool))))
+        {
+          GimpToolInfo *tool_info;
 
-	  gimp_context_set_tool (gimp_get_user_context (gdisp->gimage->gimp),
-				 tool_info);
+          tool_info = (GimpToolInfo *)
+            gimp_container_get_child_by_name (gdisp->gimage->gimp->tool_info_list,
+                                              sample_point ?
+                                              "gimp-color-picker-tool" :
+                                              "gimp-move-tool");
 
-	  active_tool = tool_manager_get_active (gdisp->gimage->gimp);
+          if (tool_info)
+            gimp_context_set_tool (gimp_get_user_context (gdisp->gimage->gimp),
+                                   tool_info);
+        }
 
-	  if (active_tool)
-	    {
-              gdk_pointer_grab (shell->canvas->window, FALSE,
-                                GDK_POINTER_MOTION_HINT_MASK |
-                                GDK_BUTTON1_MOTION_MASK |
-                                GDK_BUTTON_RELEASE_MASK,
-                                NULL, NULL, event->time);
+      active_tool = tool_manager_get_active (gdisp->gimage->gimp);
 
-              gdk_keyboard_grab (shell->canvas->window, FALSE, event->time);
+      if (active_tool)
+        {
+          gdk_pointer_grab (shell->canvas->window, FALSE,
+                            GDK_POINTER_MOTION_HINT_MASK |
+                            GDK_BUTTON1_MOTION_MASK |
+                            GDK_BUTTON_RELEASE_MASK,
+                            NULL, NULL, event->time);
 
-	      gimp_move_tool_start_hguide (active_tool, gdisp);
-	    }
-	}
+          gdk_keyboard_grab (shell->canvas->window, FALSE, event->time);
+
+          if (sample_point)
+            gimp_color_tool_start_sample_point (active_tool, gdisp);
+          else if (horizontal)
+            gimp_move_tool_start_hguide (active_tool, gdisp);
+          else
+            gimp_move_tool_start_vguide (active_tool, gdisp);
+        }
     }
 
   return FALSE;
+}
+
+gboolean
+gimp_display_shell_hruler_button_press (GtkWidget        *widget,
+                                        GdkEventButton   *event,
+                                        GimpDisplayShell *shell)
+{
+  return gimp_display_shell_ruler_button_press (widget, event, shell, TRUE);
 }
 
 gboolean
@@ -1452,44 +1429,7 @@ gimp_display_shell_vruler_button_press (GtkWidget        *widget,
                                         GdkEventButton   *event,
                                         GimpDisplayShell *shell)
 {
-  GimpDisplay *gdisp = shell->gdisp;
-
-  if (gdisp->gimage->gimp->busy)
-    return TRUE;
-
-  if (event->type == GDK_BUTTON_PRESS && event->button == 1)
-    {
-      GimpToolInfo *tool_info;
-
-      tool_info = (GimpToolInfo *)
-        gimp_container_get_child_by_name (gdisp->gimage->gimp->tool_info_list,
-                                          "gimp-move-tool");
-
-      if (tool_info)
-	{
-          GimpTool *active_tool;
-
-	  gimp_context_set_tool (gimp_get_user_context (gdisp->gimage->gimp),
-				 tool_info);
-
-	  active_tool = tool_manager_get_active (gdisp->gimage->gimp);
-
-	  if (active_tool)
-	    {
-              gdk_pointer_grab (shell->canvas->window, FALSE,
-                                GDK_POINTER_MOTION_HINT_MASK |
-                                GDK_BUTTON1_MOTION_MASK |
-                                GDK_BUTTON_RELEASE_MASK,
-                                NULL, NULL, event->time);
-
-              gdk_keyboard_grab (shell->canvas->window, FALSE, event->time);
-
-	      gimp_move_tool_start_vguide (active_tool, gdisp);
-	    }
-	}
-    }
-
-  return FALSE;
+  return gimp_display_shell_ruler_button_press (widget, event, shell, FALSE);
 }
 
 gboolean
@@ -1514,13 +1454,13 @@ gimp_display_shell_origin_button_press (GtkWidget        *widget,
 }
 
 gboolean
-gimp_display_shell_qmask_button_press (GtkWidget        *widget,
-                                       GdkEventButton   *bevent,
-                                       GimpDisplayShell *shell)
+gimp_display_shell_quick_mask_button_press (GtkWidget        *widget,
+                                            GdkEventButton   *bevent,
+                                            GimpDisplayShell *shell)
 {
   if ((bevent->type == GDK_BUTTON_PRESS) && (bevent->button == 3))
     {
-      gimp_ui_manager_ui_popup (shell->menubar_manager, "/qmask-popup",
+      gimp_ui_manager_ui_popup (shell->menubar_manager, "/quick-mask-popup",
                                 GTK_WIDGET (shell),
                                 NULL, NULL, NULL, NULL);
 
@@ -1531,14 +1471,14 @@ gimp_display_shell_qmask_button_press (GtkWidget        *widget,
 }
 
 void
-gimp_display_shell_qmask_toggled (GtkWidget        *widget,
-                                  GimpDisplayShell *shell)
+gimp_display_shell_quick_mask_toggled (GtkWidget        *widget,
+                                       GimpDisplayShell *shell)
 {
   if (GTK_TOGGLE_BUTTON (widget)->active !=
-      gimp_image_get_qmask_state (shell->gdisp->gimage))
+      gimp_image_get_quick_mask_state (shell->gdisp->gimage))
     {
-      gimp_image_set_qmask_state (shell->gdisp->gimage,
-                                  GTK_TOGGLE_BUTTON (widget)->active);
+      gimp_image_set_quick_mask_state (shell->gdisp->gimage,
+                                       GTK_TOGGLE_BUTTON (widget)->active);
 
       gimp_image_flush (shell->gdisp->gimage);
     }
@@ -1574,156 +1514,6 @@ gimp_display_shell_hscrollbar_update (GtkAdjustment    *adjustment,
   gimp_display_shell_scroll (shell, (adjustment->value - shell->offset_x), 0);
 }
 
-static gboolean
-gimp_display_shell_get_event_coords (GimpDisplayShell *shell,
-                                     GdkEvent         *event,
-                                     GdkDevice        *device,
-                                     GimpCoords       *coords)
-{
-  if (gdk_event_get_axis (event, GDK_AXIS_X, &coords->x))
-    {
-      gdk_event_get_axis (event, GDK_AXIS_Y, &coords->y);
-
-      /*  CLAMP() the return value of each *_get_axis() call to be safe
-       *  against buggy XInput drivers. Provide default values if the
-       *  requested axis does not exist.
-       */
-
-      if (gdk_event_get_axis (event, GDK_AXIS_PRESSURE, &coords->pressure))
-        coords->pressure = CLAMP (coords->pressure, GIMP_COORDS_MIN_PRESSURE,
-                                  GIMP_COORDS_MAX_PRESSURE);
-      else
-        coords->pressure = GIMP_COORDS_DEFAULT_PRESSURE;
-
-      if (gdk_event_get_axis (event, GDK_AXIS_XTILT, &coords->xtilt))
-        coords->xtilt = CLAMP (coords->xtilt, GIMP_COORDS_MIN_TILT,
-                               GIMP_COORDS_MAX_TILT);
-      else
-        coords->xtilt = GIMP_COORDS_DEFAULT_TILT;
-
-      if (gdk_event_get_axis (event, GDK_AXIS_YTILT, &coords->ytilt))
-        coords->ytilt = CLAMP (coords->ytilt, GIMP_COORDS_MIN_TILT,
-                               GIMP_COORDS_MAX_TILT);
-      else
-        coords->ytilt = GIMP_COORDS_DEFAULT_TILT;
-
-      if (gdk_event_get_axis (event, GDK_AXIS_WHEEL, &coords->wheel))
-        coords->wheel = CLAMP (coords->wheel, GIMP_COORDS_MIN_WHEEL,
-                               GIMP_COORDS_MAX_WHEEL);
-      else
-        coords->wheel = GIMP_COORDS_DEFAULT_WHEEL;
-
-      return TRUE;
-    }
-
-  gimp_display_shell_get_device_coords (shell, device, coords);
-
-  return FALSE;
-}
-
-static void
-gimp_display_shell_get_device_coords (GimpDisplayShell *shell,
-                                      GdkDevice        *device,
-                                      GimpCoords       *coords)
-{
-  gdouble axes[GDK_AXIS_LAST];
-
-  gdk_device_get_state (device, shell->canvas->window, axes, NULL);
-
-  gdk_device_get_axis (device, axes, GDK_AXIS_X, &coords->x);
-  gdk_device_get_axis (device, axes, GDK_AXIS_Y, &coords->y);
-
-  /*  CLAMP() the return value of each *_get_axis() call to be safe
-   *  against buggy XInput drivers. Provide default values if the
-   *  requested axis does not exist.
-   */
-
-  if (gdk_device_get_axis (device, axes, GDK_AXIS_PRESSURE, &coords->pressure))
-    coords->pressure = CLAMP (coords->pressure, GIMP_COORDS_MIN_PRESSURE,
-                              GIMP_COORDS_MAX_PRESSURE);
-  else
-    coords->pressure = GIMP_COORDS_DEFAULT_PRESSURE;
-
-  if (gdk_device_get_axis (device, axes, GDK_AXIS_XTILT, &coords->xtilt))
-    coords->xtilt = CLAMP (coords->xtilt, GIMP_COORDS_MIN_TILT,
-                           GIMP_COORDS_MAX_TILT);
-  else
-    coords->xtilt = GIMP_COORDS_DEFAULT_TILT;
-
-  if (gdk_device_get_axis (device, axes, GDK_AXIS_YTILT, &coords->ytilt))
-    coords->ytilt = CLAMP (coords->ytilt, GIMP_COORDS_MIN_TILT,
-                           GIMP_COORDS_MAX_TILT);
-  else
-    coords->ytilt = GIMP_COORDS_DEFAULT_TILT;
-
-  if (gdk_device_get_axis (device, axes, GDK_AXIS_WHEEL, &coords->wheel))
-    coords->wheel = CLAMP (coords->wheel, GIMP_COORDS_MIN_WHEEL,
-                           GIMP_COORDS_MAX_WHEEL);
-  else
-    coords->wheel = GIMP_COORDS_DEFAULT_WHEEL;
-}
-
-static void
-gimp_display_shell_get_time_coords (GimpDisplayShell *shell,
-                                    GdkDevice        *device,
-                                    GdkTimeCoord     *event,
-                                    GimpCoords       *coords)
-{
-  gdk_device_get_axis (device, event->axes, GDK_AXIS_X, &coords->x);
-  gdk_device_get_axis (device, event->axes, GDK_AXIS_Y, &coords->y);
-
-  /*  CLAMP() the return value of each *_get_axis() call to be safe
-   *  against buggy XInput drivers. Provide default values if the
-   *  requested axis does not exist.
-   */
-
-  if (gdk_device_get_axis (device, event->axes, GDK_AXIS_PRESSURE, &coords->pressure))
-    coords->pressure = CLAMP (coords->pressure, GIMP_COORDS_MIN_PRESSURE,
-                              GIMP_COORDS_MAX_PRESSURE);
-  else
-    coords->pressure = GIMP_COORDS_DEFAULT_PRESSURE;
-
-  if (gdk_device_get_axis (device, event->axes, GDK_AXIS_XTILT, &coords->xtilt))
-    coords->xtilt = CLAMP (coords->xtilt, GIMP_COORDS_MIN_TILT,
-                           GIMP_COORDS_MAX_TILT);
-  else
-    coords->xtilt = GIMP_COORDS_DEFAULT_TILT;
-
-  if (gdk_device_get_axis (device, event->axes, GDK_AXIS_YTILT, &coords->ytilt))
-    coords->ytilt = CLAMP (coords->ytilt, GIMP_COORDS_MIN_TILT,
-                           GIMP_COORDS_MAX_TILT);
-  else
-    coords->ytilt = GIMP_COORDS_DEFAULT_TILT;
-
-  if (gdk_device_get_axis (device, event->axes, GDK_AXIS_WHEEL, &coords->wheel))
-    coords->wheel = CLAMP (coords->wheel, GIMP_COORDS_MIN_WHEEL,
-                           GIMP_COORDS_MAX_WHEEL);
-  else
-    coords->wheel = GIMP_COORDS_DEFAULT_WHEEL;
-}
-
-static gboolean
-gimp_display_shell_get_event_state (GimpDisplayShell *shell,
-                                    GdkEvent         *event,
-                                    GdkDevice        *device,
-                                    GdkModifierType  *state)
-{
-  if (gdk_event_get_state (event, state))
-    return TRUE;
-
-  gimp_display_shell_get_device_state (shell, device, state);
-
-  return FALSE;
-}
-
-static void
-gimp_display_shell_get_device_state (GimpDisplayShell *shell,
-                                     GdkDevice        *device,
-                                     GdkModifierType  *state)
-{
-  gdk_device_get_state (device, shell->canvas->window, NULL, state);
-}
-
 static GdkModifierType
 gimp_display_shell_key_to_state (gint key)
 {
@@ -1756,7 +1546,6 @@ gimp_display_shell_key_to_state (gint key)
 static GdkEvent *
 gimp_display_shell_compress_motion (GimpDisplayShell *shell)
 {
-  GdkEvent *event;
   GList    *requeued_events = NULL;
   GList    *list;
   GdkEvent *last_motion = NULL;
@@ -1766,24 +1555,24 @@ gimp_display_shell_compress_motion (GimpDisplayShell *shell)
    */
   while (gdk_events_pending ())
     {
-      event = gdk_event_get ();
+      GdkEvent *event = gdk_event_get ();
 
       if (!event)
-	{
-	  /* Do nothing */
-	}
+        {
+          /* Do nothing */
+        }
       else if ((gtk_get_event_widget (event) == shell->canvas) &&
-	       (event->any.type == GDK_MOTION_NOTIFY))
-	{
+               (event->any.type == GDK_MOTION_NOTIFY))
+        {
           if (last_motion)
             gdk_event_free (last_motion);
 
-	  last_motion = event;
-	}
+          last_motion = event;
+        }
       else
-	{
-	  requeued_events = g_list_prepend (requeued_events, event);
-	}
+        {
+          requeued_events = g_list_prepend (requeued_events, event);
+        }
     }
 
   /* Replay the remains of our private event list back into the
@@ -1793,8 +1582,10 @@ gimp_display_shell_compress_motion (GimpDisplayShell *shell)
 
   for (list = requeued_events; list; list = g_list_next (list))
     {
-      gdk_event_put ((GdkEvent *) list->data);
-      gdk_event_free ((GdkEvent *) list->data);
+      GdkEvent *event = list->data;
+
+      gdk_event_put (event);
+      gdk_event_free (event);
     }
 
   g_list_free (requeued_events);

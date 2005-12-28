@@ -22,7 +22,6 @@
 #include "config.h"
 
 #include <errno.h>
-#include <stdio.h>
 #include <string.h>
 
 #ifdef HAVE_UNISTD_H
@@ -30,6 +29,7 @@
 #endif
 
 #include <glib-object.h>
+#include <glib/gstdio.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -44,12 +44,6 @@
 
 #include "gimp-intl.h"
 
-/* Need this test somewhere, might as well do it here */
-#ifdef G_OS_WIN32
-#if GLIB_CHECK_VERSION (2,6,0)
-#error GIMP 2.2 for Win32 must be compiled against GLib 2.4 
-#endif
-#endif
 
 enum
 {
@@ -57,18 +51,39 @@ enum
   LAST_SIGNAL
 };
 
+enum
+{
+  PROP_0,
+  PROP_FILENAME,
+  PROP_WRITABLE,
+  PROP_DELETABLE,
+  PROP_MIME_TYPE
+};
 
-static void    gimp_data_class_init   (GimpDataClass *klass);
-static void    gimp_data_init         (GimpData      *data,
-                                       GimpDataClass *data_class);
 
-static void    gimp_data_finalize     (GObject       *object);
+static void      gimp_data_class_init   (GimpDataClass *klass);
+static void      gimp_data_init         (GimpData      *data,
+                                         GimpDataClass *data_class);
 
-static void    gimp_data_name_changed (GimpObject    *object);
-static gint64  gimp_data_get_memsize  (GimpObject    *object,
-                                       gint64        *gui_size);
+static GObject * gimp_data_constructor  (GType                  type,
+                                         guint                  n_params,
+                                         GObjectConstructParam *params);
 
-static void    gimp_data_real_dirty   (GimpData      *data);
+static void      gimp_data_finalize     (GObject       *object);
+static void      gimp_data_set_property (GObject       *object,
+                                         guint          property_id,
+                                         const GValue  *value,
+                                         GParamSpec    *pspec);
+static void      gimp_data_get_property (GObject       *object,
+                                         guint          property_id,
+                                         GValue        *value,
+                                         GParamSpec    *pspec);
+
+static void      gimp_data_name_changed (GimpObject    *object);
+static gint64    gimp_data_get_memsize  (GimpObject    *object,
+                                         gint64        *gui_size);
+
+static void      gimp_data_real_dirty   (GimpData      *data);
 
 
 static guint data_signals[LAST_SIGNAL] = { 0 };
@@ -121,7 +136,10 @@ gimp_data_class_init (GimpDataClass *klass)
                   gimp_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  object_class->constructor       = gimp_data_constructor;
   object_class->finalize          = gimp_data_finalize;
+  object_class->set_property      = gimp_data_set_property;
+  object_class->get_property      = gimp_data_get_property;
 
   gimp_object_class->name_changed = gimp_data_name_changed;
   gimp_object_class->get_memsize  = gimp_data_get_memsize;
@@ -130,6 +148,27 @@ gimp_data_class_init (GimpDataClass *klass)
   klass->save                     = NULL;
   klass->get_extension            = NULL;
   klass->duplicate                = NULL;
+
+  g_object_class_install_property (object_class, PROP_FILENAME,
+				   g_param_spec_string ("filename", NULL, NULL,
+							NULL,
+							G_PARAM_READWRITE));
+
+  g_object_class_install_property (object_class, PROP_WRITABLE,
+				   g_param_spec_boolean ("writable", NULL, NULL,
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
+
+  g_object_class_install_property (object_class, PROP_WRITABLE,
+				   g_param_spec_boolean ("deletable", NULL, NULL,
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
+
+  g_object_class_install_property (object_class, PROP_MIME_TYPE,
+				   g_param_spec_string ("mime-type", NULL, NULL,
+							NULL,
+							G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
@@ -137,17 +176,22 @@ gimp_data_init (GimpData      *data,
                 GimpDataClass *data_class)
 {
   data->filename     = NULL;
+  data->mime_type    = 0;
   data->writable     = TRUE;
   data->deletable    = TRUE;
   data->dirty        = TRUE;
   data->internal     = FALSE;
   data->freeze_count = 0;
+  data->mtime        = 0;
 
   /*  look at the passed class pointer, not at GIMP_DATA_GET_CLASS(data)
    *  here, because the latter is always GimpDataClass itself
    */
   if (! data_class->save)
     data->writable = FALSE;
+
+  /*  freeze the data object during construction  */
+  gimp_data_freeze (data);
 }
 
 static void
@@ -162,6 +206,90 @@ gimp_data_finalize (GObject *object)
     }
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
+}
+
+static void
+gimp_data_set_property (GObject      *object,
+                        guint         property_id,
+                        const GValue *value,
+                        GParamSpec   *pspec)
+{
+  GimpData *data = GIMP_DATA (object);
+
+  switch (property_id)
+    {
+    case PROP_FILENAME:
+      gimp_data_set_filename (data,
+                              g_value_get_string (value),
+                              data->writable,
+                              data->deletable);
+      break;
+
+    case PROP_WRITABLE:
+      data->writable = g_value_get_boolean (value);
+      break;
+
+    case PROP_DELETABLE:
+      data->deletable = g_value_get_boolean (value);
+      break;
+
+    case PROP_MIME_TYPE:
+      if (g_value_get_string (value))
+        data->mime_type = g_quark_from_string (g_value_get_string (value));
+      else
+        data->mime_type = 0;
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
+static void
+gimp_data_get_property (GObject    *object,
+                        guint       property_id,
+                        GValue     *value,
+                        GParamSpec *pspec)
+{
+  GimpData *data = GIMP_DATA (object);
+
+  switch (property_id)
+    {
+    case PROP_FILENAME:
+      g_value_set_string (value, data->filename);
+      break;
+
+    case PROP_WRITABLE:
+      g_value_set_boolean (value, data->writable);
+      break;
+
+    case PROP_DELETABLE:
+      g_value_set_boolean (value, data->deletable);
+      break;
+
+    case PROP_MIME_TYPE:
+      g_value_set_string (value, g_quark_to_string (data->mime_type));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
+static GObject *
+gimp_data_constructor (GType                  type,
+                       guint                  n_params,
+                       GObjectConstructParam *params)
+{
+  GObject *object;
+
+  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
+
+  gimp_data_thaw (GIMP_DATA (object));
+
+  return object;
 }
 
 static void
@@ -230,7 +358,14 @@ gimp_data_save (GimpData  *data,
     success = GIMP_DATA_GET_CLASS (data)->save (data, error);
 
   if (success)
-    data->dirty = FALSE;
+    {
+      struct stat filestat;
+
+      g_stat (data->filename, &filestat);
+
+      data->mtime = filestat.st_mtime;
+      data->dirty = FALSE;
+    }
 
   return success;
 }
@@ -314,7 +449,7 @@ gimp_data_delete_from_disk (GimpData  *data,
   if (data->internal)
     return TRUE;
 
-  if (unlink (data->filename) == -1)
+  if (g_unlink (data->filename) == -1)
     {
       g_set_error (error, GIMP_DATA_ERROR, GIMP_DATA_ERROR_DELETE,
                    _("Could not delete '%s': %s"),
@@ -376,10 +511,10 @@ gimp_data_set_filename (GimpData    *data,
     {
       gchar *dirname = g_path_get_dirname (filename);
 
-      if ((access (filename, F_OK) == 0 &&  /* check if the file exists    */
-           access (filename, W_OK) == 0) || /* and is writable             */
-          (access (filename, F_OK) != 0 &&  /* OR doesn't exist            */
-           access (dirname,  W_OK) == 0))   /* and we can write to its dir */
+      if ((g_access (filename, F_OK) == 0 &&  /* check if the file exists    */
+           g_access (filename, W_OK) == 0) || /* and is writable             */
+          (g_access (filename, F_OK) != 0 &&  /* OR doesn't exist            */
+           g_access (dirname,  W_OK) == 0))   /* and we can write to its dir */
         {
           data->writable  = writable  ? TRUE : FALSE;
           data->deletable = deletable ? TRUE : FALSE;
@@ -422,46 +557,6 @@ gimp_data_create_filename (GimpData    *data,
   if (data->internal)
     return;
 
-#ifdef G_OS_WIN32
-  {
-    const gchar *charset;
-
-    filename = g_strdup (gimp_object_get_name (GIMP_OBJECT (data)));
-
-    /* Map illegal characters to '-' while the name is still in UTF-8 */
-    for (i = 0; filename[i]; i++)
-      if (strchr ("<>:\"/\\|", filename[i]) ||
-	  g_ascii_iscntrl (filename[i]) ||
-	  g_ascii_isspace (filename[i]))
-	filename[i] = '-';
-
-    /* Map also trailing periods to '-' */
-    for (i = strlen (filename) - 1; i >= 0; i--)
-      if (filename[i] == '.')
-	filename[i] = '-';
-      else
-	break;
-
-    /* Next convert to the filename charset. Note that this branch of
-     * GIMP must be compiled against GLib 2.4 and we thus use system
-     * codepage for file names in the GLib API.
-     */
-    g_get_charset (&charset);
-    safename = g_convert_with_fallback (filename,
-					-1, charset, "UTF-8",
-					"-", NULL, NULL, &error);
-    if (! safename)
-      {
-	g_warning ("gimp_data_create_filename:\n"
-		   "g_convert_with_fallback() failed for '%s': %s",
-		   filename, error->message);
-	g_free (filename);
-	g_error_free (error);
-	return;
-      }
-    g_free (filename);
-  }
-#else
   safename = g_filename_from_utf8 (gimp_object_get_name (GIMP_OBJECT (data)),
                                    -1, NULL, NULL, &error);
   if (! safename)
@@ -479,7 +574,6 @@ gimp_data_create_filename (GimpData    *data,
   for (i = 0; safename[i]; i++)
     if (safename[i] == G_DIR_SEPARATOR || g_ascii_isspace (safename[i]))
       safename[i] = '-';
-#endif
 
   filename = g_strconcat (safename, gimp_data_get_extension (data), NULL);
 
@@ -508,11 +602,17 @@ gimp_data_create_filename (GimpData    *data,
   g_free (fullpath);
 }
 
+const gchar *
+gimp_data_get_mime_type (GimpData *data)
+{
+  g_return_val_if_fail (GIMP_IS_DATA (data), NULL);
+
+  return g_quark_to_string (data->mime_type);
+}
+
 /**
  * gimp_data_duplicate:
- * @data:              a #GimpData object
- * @stingy_memory_use: if %TRUE, use the disk rather than RAM
- *                     where possible.
+ * @data: a #GimpData object
  *
  * Creates a copy of @data, if possible.  Only the object data is
  * copied:  the newly created object is not automatically given an
@@ -521,13 +621,12 @@ gimp_data_create_filename (GimpData    *data,
  * Returns: the newly created copy, or %NULL if @data cannot be copied.
  **/
 GimpData *
-gimp_data_duplicate (GimpData *data,
-                     gboolean  stingy_memory_use)
+gimp_data_duplicate (GimpData *data)
 {
   g_return_val_if_fail (GIMP_IS_DATA (data), NULL);
 
   if (GIMP_DATA_GET_CLASS (data)->duplicate)
-    return GIMP_DATA_GET_CLASS (data)->duplicate (data, stingy_memory_use);
+    return GIMP_DATA_GET_CLASS (data)->duplicate (data);
 
   return NULL;
 }

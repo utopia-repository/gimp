@@ -32,7 +32,7 @@
 #include "libgimp/libgimp-intl.h"
 
 
-#define DEFAULT_SIZE     150
+#define DEFAULT_SIZE     200
 #define PREVIEW_TIMEOUT  200
 
 
@@ -47,6 +47,13 @@ enum
   PROP_0,
   PROP_UPDATE
 };
+
+typedef struct
+{
+  GtkWidget *controls;
+} GimpPreviewPrivate;
+
+#define GIMP_PREVIEW_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GIMP_TYPE_PREVIEW, GimpPreviewPrivate))
 
 
 static void      gimp_preview_class_init          (GimpPreviewClass *klass);
@@ -148,6 +155,8 @@ gimp_preview_class_init (GimpPreviewClass *klass)
   klass->draw_buffer              = NULL;
   klass->set_cursor               = gimp_preview_set_cursor;
 
+  g_type_class_add_private (object_class, sizeof (GimpPreviewPrivate));
+
   g_object_class_install_property (object_class,
                                    PROP_UPDATE,
                                    g_param_spec_boolean ("update",
@@ -167,8 +176,9 @@ gimp_preview_class_init (GimpPreviewClass *klass)
 static void
 gimp_preview_init (GimpPreview *preview)
 {
-  GtkWidget *frame;
-  gdouble    xalign = 0.0;
+  GimpPreviewPrivate *priv = GIMP_PREVIEW_GET_PRIVATE (preview);
+  GtkWidget          *frame;
+  gdouble             xalign = 0.0;
 
   gtk_box_set_homogeneous (GTK_BOX (preview), FALSE);
   gtk_box_set_spacing (GTK_BOX (preview), 6);
@@ -182,25 +192,26 @@ gimp_preview_init (GimpPreview *preview)
   gtk_widget_show (preview->frame);
 
   preview->table = gtk_table_new (3, 2, FALSE);
+  gtk_table_set_row_spacing (GTK_TABLE (preview->table), 1, 3);
   gtk_container_add (GTK_CONTAINER (preview->frame), preview->table);
   gtk_widget_show (preview->table);
 
-  preview->timeout_id     = 0;
+  preview->timeout_id = 0;
 
-  preview->xmin           = preview->ymin = 0;
-  preview->xmax           = preview->ymax = 1;
-  preview->width          = preview->xmax - preview->xmin;
-  preview->height         = preview->ymax - preview->ymin;
+  preview->xmin   = preview->ymin = 0;
+  preview->xmax   = preview->ymax = 1;
+  preview->width  = preview->xmax - preview->xmin;
+  preview->height = preview->ymax - preview->ymin;
 
-  preview->xoff           = 0;
-  preview->yoff           = 0;
+  preview->xoff   = 0;
+  preview->yoff   = 0;
 
   preview->default_cursor = NULL;
 
   /*  preview area  */
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-  gtk_table_attach (GTK_TABLE (preview->table), frame, 0,1, 0,1,
+  gtk_table_attach (GTK_TABLE (preview->table), frame, 0, 1, 0, 1,
                     GTK_FILL | GTK_EXPAND, GTK_FILL | GTK_EXPAND, 0, 0);
   gtk_widget_show (frame);
 
@@ -232,15 +243,20 @@ gimp_preview_init (GimpPreview *preview)
                     G_CALLBACK (gimp_preview_area_unrealize),
                     preview);
 
-  g_signal_connect (preview->area, "size_allocate",
+  g_signal_connect (preview->area, "size-allocate",
                     G_CALLBACK (gimp_preview_area_size_allocate),
                     preview);
+
+  priv->controls = gtk_hbox_new (FALSE, 6);
+  gtk_table_attach (GTK_TABLE (preview->table), priv->controls, 0, 2, 2, 3,
+                    GTK_FILL | GTK_EXPAND, GTK_FILL, 0, 0);
+  gtk_widget_show (priv->controls);
 
   /*  toggle button to (des)activate the instant preview  */
   preview->toggle = gtk_check_button_new_with_mnemonic (_("_Preview"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (preview->toggle),
                                 preview->update_preview);
-  gtk_box_pack_start (GTK_BOX (preview), preview->toggle, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (priv->controls), preview->toggle, TRUE, TRUE, 0);
   gtk_widget_show (preview->toggle);
 
   g_signal_connect (preview->toggle, "toggled",
@@ -571,10 +587,31 @@ gimp_preview_get_position (GimpPreview *preview,
   g_return_if_fail (GIMP_IS_PREVIEW (preview));
 
   if (x)
-    *x = preview->xoff + GIMP_PREVIEW (preview)->xmin;
+    *x = preview->xoff + preview->xmin;
 
   if (y)
-    *y = preview->yoff + GIMP_PREVIEW (preview)->ymin;
+    *y = preview->yoff + preview->ymin;
+}
+
+/**
+ * gimp_preview_get_area:
+ * @preview: a #GimpPreview widget
+ *
+ * In most cases, you shouldn't need to access the #GimpPreviewArea
+ * that is being used in the @preview. Sometimes however, you need to.
+ * For example if you want to receive mouse events from the area. In
+ * such cases, use gimp_preview_get_area().
+ *
+ * Return value: a pointer to the #GimpPreviewArea used in the @preview.
+ *
+ * Since: GIMP 2.4
+ **/
+GtkWidget *
+gimp_preview_get_area (GimpPreview  *preview)
+{
+  g_return_val_if_fail (GIMP_IS_PREVIEW (preview), NULL);
+
+  return preview->area;
 }
 
 /**
@@ -681,3 +718,22 @@ gimp_preview_set_default_cursor (GimpPreview *preview,
   preview->default_cursor = cursor;
 }
 
+/**
+ * gimp_preview_get_controls:
+ * @preview: a #GimpPreview widget
+ *
+ * Gives access to the #GtkHBox at the bottom of the preview that
+ * contains the update toggle. Derived widgets can use this function
+ * if they need to add controls to this area.
+ *
+ * Return value: the #GtkHBox at the bottom of the preview.
+ *
+ * Since: GIMP 2.4
+ **/
+GtkWidget *
+gimp_preview_get_controls (GimpPreview *preview)
+{
+  g_return_val_if_fail (GIMP_IS_PREVIEW (preview), NULL);
+
+  return GIMP_PREVIEW_GET_PRIVATE (preview)->controls;
+}

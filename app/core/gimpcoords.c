@@ -148,6 +148,30 @@ gimp_coords_length (const GimpCoords *a)
   return sqrt (gimp_coords_length_squared (a));
 }
 
+/*
+ * Distance via manhattan metric, an upper bound for the eucledian metric.
+ * used for e.g. bezier approximation
+ */
+
+gdouble
+gimp_coords_manhattan_dist (const GimpCoords *a,
+                            const GimpCoords *b)
+{
+  gdouble dist = 0;
+
+  dist += ABS (a->pressure - b->pressure);
+  dist += ABS (a->xtilt - b->xtilt);
+  dist += ABS (a->ytilt - b->ytilt);
+  dist += ABS (a->wheel - b->wheel);
+
+  dist *= INPUT_RESOLUTION;
+
+  dist += ABS (a->x - b->x);
+  dist += ABS (a->y - b->y);
+
+  return dist;
+}
+
 gboolean
 gimp_coords_equal (const GimpCoords *a,
                    const GimpCoords *b)

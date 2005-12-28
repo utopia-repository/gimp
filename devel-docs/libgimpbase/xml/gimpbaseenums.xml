@@ -4,34 +4,49 @@
 
 <refentry id="libgimpbase-gimpbaseenums">
 <refmeta>
-<refentrytitle role="top_of_page">gimpbaseenums</refentrytitle>
+<refentrytitle>gimpbaseenums</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpbaseenums</refname>
-<refpurpose>Basic GIMP enumeration data types.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>gimpbaseenums</refname><refpurpose>Basic GIMP enumeration data types.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-enum                <link linkend="GimpCheckSize">GimpCheckSize</link>;
-enum                <link linkend="GimpCheckType">GimpCheckType</link>;
-enum                <link linkend="GimpImageBaseType">GimpImageBaseType</link>;
-enum                <link linkend="GimpImageType">GimpImageType</link>;
-enum                <link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link>;
-enum                <link linkend="GimpPDBArgType">GimpPDBArgType</link>;
-enum                <link linkend="GimpPDBProcType">GimpPDBProcType</link>;
-enum                <link linkend="GimpPDBStatusType">GimpPDBStatusType</link>;
-enum                <link linkend="GimpProgressCommand">GimpProgressCommand</link>;
-enum                <link linkend="GimpStackTraceMode">GimpStackTraceMode</link>;
+enum        <link linkend="GimpAddMaskType">GimpAddMaskType</link>;
+enum        <link linkend="GimpBlendMode">GimpBlendMode</link>;
+enum        <link linkend="GimpBucketFillMode">GimpBucketFillMode</link>;
+enum        <link linkend="GimpChannelOps">GimpChannelOps</link>;
+enum        <link linkend="GimpChannelType">GimpChannelType</link>;
+enum        <link linkend="GimpCheckSize">GimpCheckSize</link>;
+enum        <link linkend="GimpCheckType">GimpCheckType</link>;
+enum        <link linkend="GimpCloneType">GimpCloneType</link>;
+enum        <link linkend="GimpDesaturateMode">GimpDesaturateMode</link>;
+enum        <link linkend="GimpDodgeBurnType">GimpDodgeBurnType</link>;
+enum        <link linkend="GimpForegroundExtractMode">GimpForegroundExtractMode</link>;
+enum        <link linkend="GimpGradientType">GimpGradientType</link>;
+enum        <link linkend="GimpGridStyle">GimpGridStyle</link>;
+enum        <link linkend="GimpIconType">GimpIconType</link>;
+enum        <link linkend="GimpImageBaseType">GimpImageBaseType</link>;
+enum        <link linkend="GimpImageType">GimpImageType</link>;
+enum        <link linkend="GimpInterpolationType">GimpInterpolationType</link>;
+enum        <link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link>;
+enum        <link linkend="GimpPaintApplicationMode">GimpPaintApplicationMode</link>;
+enum        <link linkend="GimpPDBArgType">GimpPDBArgType</link>;
+enum        <link linkend="GimpPDBProcType">GimpPDBProcType</link>;
+enum        <link linkend="GimpPDBStatusType">GimpPDBStatusType</link>;
+enum        <link linkend="GimpProgressCommand">GimpProgressCommand</link>;
+enum        <link linkend="GimpRepeatMode">GimpRepeatMode</link>;
+enum        <link linkend="GimpSizeType">GimpSizeType</link>;
+enum        <link linkend="GimpStackTraceMode">GimpStackTraceMode</link>;
+enum        <link linkend="GimpTransferMode">GimpTransferMode</link>;
+enum        <link linkend="GimpTransformDirection">GimpTransformDirection</link>;
 
 </synopsis>
 </refsynopsisdiv>
@@ -44,17 +59,85 @@ enum                <link linkend="GimpStackTraceMode">GimpStackTraceMode</link>
 
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 Basic GIMP enumeration data types.
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="GimpCheckSize" role="enum"/>enum GimpCheckSize</title>
+<title><anchor id="GimpAddMaskType"/>enum GimpAddMaskType</title>
+<indexterm><primary>GimpAddMaskType</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_ADD_WHITE_MASK,          /*&lt; desc="_White (full opacity)"           &gt;*/
+  GIMP_ADD_BLACK_MASK,          /*&lt; desc="_Black (full transparency)"      &gt;*/
+  GIMP_ADD_ALPHA_MASK,          /*&lt; desc="Layer's _alpha channel"          &gt;*/
+  GIMP_ADD_ALPHA_TRANSFER_MASK, /*&lt; desc="_Transfer layer's alpha channel" &gt;*/
+  GIMP_ADD_SELECTION_MASK,      /*&lt; desc="_Selection"                      &gt;*/
+  GIMP_ADD_COPY_MASK            /*&lt; desc="_Grayscale copy of layer"        &gt;*/
+} GimpAddMaskType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpBlendMode"/>enum GimpBlendMode</title>
+<indexterm><primary>GimpBlendMode</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_FG_BG_RGB_MODE,         /*&lt; desc="FG to BG (RGB)"    &gt;*/
+  GIMP_FG_BG_HSV_MODE,         /*&lt; desc="FG to BG (HSV)"    &gt;*/
+  GIMP_FG_TRANSPARENT_MODE,    /*&lt; desc="FG to transparent" &gt;*/
+  GIMP_CUSTOM_MODE             /*&lt; desc="Custom gradient"   &gt;*/
+} GimpBlendMode;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpBucketFillMode"/>enum GimpBucketFillMode</title>
+<indexterm><primary>GimpBucketFillMode</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_FG_BUCKET_FILL,      /*&lt; desc="FG color fill" &gt;*/
+  GIMP_BG_BUCKET_FILL,      /*&lt; desc="BG color fill" &gt;*/
+  GIMP_PATTERN_BUCKET_FILL  /*&lt; desc="Pattern fill"  &gt;*/
+} GimpBucketFillMode;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpChannelOps"/>enum GimpChannelOps</title>
+<indexterm><primary>GimpChannelOps</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_CHANNEL_OP_ADD,       /*&lt; desc="Add to the current selection"         &gt;*/
+  GIMP_CHANNEL_OP_SUBTRACT,  /*&lt; desc="Subtract from the current selection"  &gt;*/
+  GIMP_CHANNEL_OP_REPLACE,   /*&lt; desc="Replace the current selection"        &gt;*/
+  GIMP_CHANNEL_OP_INTERSECT  /*&lt; desc="Intersect with the current selection" &gt;*/
+} GimpChannelOps;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpChannelType"/>enum GimpChannelType</title>
+<indexterm><primary>GimpChannelType</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_RED_CHANNEL,      /*&lt; desc="Red"     &gt;*/
+  GIMP_GREEN_CHANNEL,    /*&lt; desc="Green"   &gt;*/
+  GIMP_BLUE_CHANNEL,     /*&lt; desc="Blue"    &gt;*/
+  GIMP_GRAY_CHANNEL,     /*&lt; desc="Gray"    &gt;*/
+  GIMP_INDEXED_CHANNEL,  /*&lt; desc="Indexed" &gt;*/
+  GIMP_ALPHA_CHANNEL     /*&lt; desc="Alpha"   &gt;*/
+} GimpChannelType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpCheckSize"/>enum GimpCheckSize</title>
 <indexterm><primary>GimpCheckSize</primary></indexterm><programlisting>typedef enum  /*&lt; pdb-skip &gt;*/
 {
   GIMP_CHECK_SIZE_SMALL_CHECKS  = 0,  /*&lt; desc="Small"  &gt;*/
@@ -66,22 +149,112 @@ Basic GIMP enumeration data types.
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpCheckType" role="enum"/>enum GimpCheckType</title>
+<title><anchor id="GimpCheckType"/>enum GimpCheckType</title>
 <indexterm><primary>GimpCheckType</primary></indexterm><programlisting>typedef enum  /*&lt; pdb-skip &gt;*/
 {
-  GIMP_CHECK_TYPE_LIGHT_CHECKS = 0,  /*&lt; desc="Light Checks"    &gt;*/
-  GIMP_CHECK_TYPE_GRAY_CHECKS  = 1,  /*&lt; desc="Mid-Tone Checks" &gt;*/
-  GIMP_CHECK_TYPE_DARK_CHECKS  = 2,  /*&lt; desc="Dark Checks"     &gt;*/
-  GIMP_CHECK_TYPE_WHITE_ONLY   = 3,  /*&lt; desc="White Only"      &gt;*/
-  GIMP_CHECK_TYPE_GRAY_ONLY    = 4,  /*&lt; desc="Gray Only"       &gt;*/
-  GIMP_CHECK_TYPE_BLACK_ONLY   = 5   /*&lt; desc="Black Only"      &gt;*/
+  GIMP_CHECK_TYPE_LIGHT_CHECKS = 0,  /*&lt; desc="Light checks"    &gt;*/
+  GIMP_CHECK_TYPE_GRAY_CHECKS  = 1,  /*&lt; desc="Mid-tone checks" &gt;*/
+  GIMP_CHECK_TYPE_DARK_CHECKS  = 2,  /*&lt; desc="Dark checks"     &gt;*/
+  GIMP_CHECK_TYPE_WHITE_ONLY   = 3,  /*&lt; desc="White only"      &gt;*/
+  GIMP_CHECK_TYPE_GRAY_ONLY    = 4,  /*&lt; desc="Gray only"       &gt;*/
+  GIMP_CHECK_TYPE_BLACK_ONLY   = 5   /*&lt; desc="Black only"      &gt;*/
 } GimpCheckType;
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpImageBaseType" role="enum"/>enum GimpImageBaseType</title>
+<title><anchor id="GimpCloneType"/>enum GimpCloneType</title>
+<indexterm><primary>GimpCloneType</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_IMAGE_CLONE,   /*&lt; desc="Image source"   &gt;*/
+  GIMP_PATTERN_CLONE  /*&lt; desc="Pattern source" &gt;*/
+} GimpCloneType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpDesaturateMode"/>enum GimpDesaturateMode</title>
+<indexterm><primary>GimpDesaturateMode</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_DESATURATE_LIGHTNESS,   /*&lt; desc="Lightness"  &gt;*/
+  GIMP_DESATURATE_LUMINOSITY,  /*&lt; desc="Luminosity" &gt;*/
+  GIMP_DESATURATE_AVERAGE      /*&lt; desc="Average"    &gt;*/
+} GimpDesaturateMode;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpDodgeBurnType"/>enum GimpDodgeBurnType</title>
+<indexterm><primary>GimpDodgeBurnType</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_DODGE,  /*&lt; desc="Dodge" &gt;*/
+  GIMP_BURN    /*&lt; desc="Burn"  &gt;*/
+} GimpDodgeBurnType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpForegroundExtractMode"/>enum GimpForegroundExtractMode</title>
+<indexterm><primary>GimpForegroundExtractMode</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_FOREGROUND_EXTRACT_SIOX
+} GimpForegroundExtractMode;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpGradientType"/>enum GimpGradientType</title>
+<indexterm><primary>GimpGradientType</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_GRADIENT_LINEAR,                /*&lt; desc="Linear"            &gt;*/
+  GIMP_GRADIENT_BILINEAR,              /*&lt; desc="Bi-linear"         &gt;*/
+  GIMP_GRADIENT_RADIAL,                /*&lt; desc="Radial"            &gt;*/
+  GIMP_GRADIENT_SQUARE,                /*&lt; desc="Square"            &gt;*/
+  GIMP_GRADIENT_CONICAL_SYMMETRIC,     /*&lt; desc="Conical (sym)"     &gt;*/
+  GIMP_GRADIENT_CONICAL_ASYMMETRIC,    /*&lt; desc="Conical (asym)"    &gt;*/
+  GIMP_GRADIENT_SHAPEBURST_ANGULAR,    /*&lt; desc="Shaped (angular)"  &gt;*/
+  GIMP_GRADIENT_SHAPEBURST_SPHERICAL,  /*&lt; desc="Shaped (spherical)"&gt;*/
+  GIMP_GRADIENT_SHAPEBURST_DIMPLED,    /*&lt; desc="Shaped (dimpled)"  &gt;*/
+  GIMP_GRADIENT_SPIRAL_CLOCKWISE,      /*&lt; desc="Spiral (cw)"       &gt;*/
+  GIMP_GRADIENT_SPIRAL_ANTICLOCKWISE   /*&lt; desc="Spiral (ccw)"      &gt;*/
+} GimpGradientType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpGridStyle"/>enum GimpGridStyle</title>
+<indexterm><primary>GimpGridStyle</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_GRID_DOTS,           /*&lt; desc="Intersections (dots)"       &gt;*/
+  GIMP_GRID_INTERSECTIONS,  /*&lt; desc="Intersections (crosshairs)" &gt;*/
+  GIMP_GRID_ON_OFF_DASH,    /*&lt; desc="Dashed"                     &gt;*/
+  GIMP_GRID_DOUBLE_DASH,    /*&lt; desc="Double dashed"              &gt;*/
+  GIMP_GRID_SOLID           /*&lt; desc="Solid"                      &gt;*/
+} GimpGridStyle;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpIconType"/>enum GimpIconType</title>
+<indexterm><primary>GimpIconType</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_ICON_TYPE_STOCK_ID,      /*&lt; desc="Stock ID"      &gt;*/
+  GIMP_ICON_TYPE_INLINE_PIXBUF, /*&lt; desc="Inline pixbuf" &gt;*/
+  GIMP_ICON_TYPE_IMAGE_FILE     /*&lt; desc="Image file"    &gt;*/
+} GimpIconType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpImageBaseType"/>enum GimpImageBaseType</title>
 <indexterm><primary>GimpImageBaseType</primary></indexterm><programlisting>typedef enum
 {
   GIMP_RGB,     /*&lt; desc="RGB color"     &gt;*/
@@ -93,7 +266,7 @@ Basic GIMP enumeration data types.
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpImageType" role="enum"/>enum GimpImageType</title>
+<title><anchor id="GimpImageType"/>enum GimpImageType</title>
 <indexterm><primary>GimpImageType</primary></indexterm><programlisting>typedef enum
 {
   GIMP_RGB_IMAGE,      /*&lt; desc="RGB"             &gt;*/
@@ -108,7 +281,20 @@ Basic GIMP enumeration data types.
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpMessageHandlerType" role="enum"/>enum GimpMessageHandlerType</title>
+<title><anchor id="GimpInterpolationType"/>enum GimpInterpolationType</title>
+<indexterm><primary>GimpInterpolationType</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_INTERPOLATION_NONE,   /*&lt; desc="None (Fastest)" &gt;*/
+  GIMP_INTERPOLATION_LINEAR, /*&lt; desc="Linear"         &gt;*/
+  GIMP_INTERPOLATION_CUBIC,  /*&lt; desc="Cubic"          &gt;*/
+  GIMP_INTERPOLATION_LANCZOS /*&lt; desc="Lanczos (Best)" &gt;*/
+} GimpInterpolationType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpMessageHandlerType"/>enum GimpMessageHandlerType</title>
 <indexterm><primary>GimpMessageHandlerType</primary></indexterm><programlisting>typedef enum
 {
   GIMP_MESSAGE_BOX,
@@ -120,7 +306,18 @@ Basic GIMP enumeration data types.
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpPDBArgType" role="enum"/>enum GimpPDBArgType</title>
+<title><anchor id="GimpPaintApplicationMode"/>enum GimpPaintApplicationMode</title>
+<indexterm><primary>GimpPaintApplicationMode</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_PAINT_CONSTANT,    /*&lt; desc="Constant"    &gt;*/
+  GIMP_PAINT_INCREMENTAL  /*&lt; desc="Incremental" &gt;*/
+} GimpPaintApplicationMode;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpPDBArgType"/>enum GimpPDBArgType</title>
 <indexterm><primary>GimpPDBArgType</primary></indexterm><programlisting>typedef enum
 {
   GIMP_PDB_INT32,
@@ -152,20 +349,20 @@ Basic GIMP enumeration data types.
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpPDBProcType" role="enum"/>enum GimpPDBProcType</title>
+<title><anchor id="GimpPDBProcType"/>enum GimpPDBProcType</title>
 <indexterm><primary>GimpPDBProcType</primary></indexterm><programlisting>typedef enum
 {
-  GIMP_INTERNAL,
-  GIMP_PLUGIN,
-  GIMP_EXTENSION,
-  GIMP_TEMPORARY
+  GIMP_INTERNAL,   /*&lt; desc="Internal GIMP procedure" &gt;*/
+  GIMP_PLUGIN,     /*&lt; desc="GIMP Plug-In" &gt;*/
+  GIMP_EXTENSION,  /*&lt; desc="GIMP Extension" &gt;*/
+  GIMP_TEMPORARY   /*&lt; desc="Temporary Procedure" &gt;*/
 } GimpPDBProcType;
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpPDBStatusType" role="enum"/>enum GimpPDBStatusType</title>
+<title><anchor id="GimpPDBStatusType"/>enum GimpPDBStatusType</title>
 <indexterm><primary>GimpPDBStatusType</primary></indexterm><programlisting>typedef enum
 {
   GIMP_PDB_EXECUTION_ERROR,
@@ -179,26 +376,74 @@ Basic GIMP enumeration data types.
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpProgressCommand" role="enum"/>enum GimpProgressCommand</title>
+<title><anchor id="GimpProgressCommand"/>enum GimpProgressCommand</title>
 <indexterm><primary>GimpProgressCommand</primary></indexterm><programlisting>typedef enum
 {
   GIMP_PROGRESS_COMMAND_START,
   GIMP_PROGRESS_COMMAND_END,
   GIMP_PROGRESS_COMMAND_SET_TEXT,
-  GIMP_PROGRESS_COMMAND_SET_VALUE
+  GIMP_PROGRESS_COMMAND_SET_VALUE,
+  GIMP_PROGRESS_COMMAND_PULSE,
+  GIMP_PROGRESS_COMMAND_GET_WINDOW
 } GimpProgressCommand;
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpStackTraceMode" role="enum"/>enum GimpStackTraceMode</title>
+<title><anchor id="GimpRepeatMode"/>enum GimpRepeatMode</title>
+<indexterm><primary>GimpRepeatMode</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_REPEAT_NONE,       /*&lt; desc="None"            &gt;*/
+  GIMP_REPEAT_SAWTOOTH,   /*&lt; desc="Sawtooth wave"   &gt;*/
+  GIMP_REPEAT_TRIANGULAR  /*&lt; desc="Triangular wave" &gt;*/
+} GimpRepeatMode;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpSizeType"/>enum GimpSizeType</title>
+<indexterm><primary>GimpSizeType</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_PIXELS,  /*&lt; desc="Pixels" &gt;*/
+  GIMP_POINTS   /*&lt; desc="Points" &gt;*/
+} GimpSizeType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpStackTraceMode"/>enum GimpStackTraceMode</title>
 <indexterm><primary>GimpStackTraceMode</primary></indexterm><programlisting>typedef enum
 {
   GIMP_STACK_TRACE_NEVER,
   GIMP_STACK_TRACE_QUERY,
   GIMP_STACK_TRACE_ALWAYS
 } GimpStackTraceMode;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpTransferMode"/>enum GimpTransferMode</title>
+<indexterm><primary>GimpTransferMode</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_SHADOWS,     /*&lt; desc="Shadows"    &gt;*/
+  GIMP_MIDTONES,    /*&lt; desc="Midtones"   &gt;*/
+  GIMP_HIGHLIGHTS   /*&lt; desc="Highlights" &gt;*/
+} GimpTransferMode;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpTransformDirection"/>enum GimpTransformDirection</title>
+<indexterm><primary>GimpTransformDirection</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_TRANSFORM_FORWARD,   /*&lt; desc="Forward" &gt;*/
+  GIMP_TRANSFORM_BACKWARD   /*&lt; desc="Backward" &gt;*/
+} GimpTransformDirection;
 </programlisting>
 <para>
 

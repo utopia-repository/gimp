@@ -17,6 +17,12 @@ A widget providing a popup menu of images.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### STRUCT GimpImageComboBox ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### USER_FUNCTION GimpImageConstraintFunc ##### -->
 <para>
 

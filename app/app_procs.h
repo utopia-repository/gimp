@@ -25,16 +25,14 @@
 #endif
 
 
-gboolean  app_libs_init (gboolean            *no_interface,
-                         gint                *gimp_argc,
-                         gchar             ***gimp_argv);
+void      app_libs_init (GOptionContext      *context,
+                         gboolean             no_interface);
 void      app_abort     (gboolean             no_interface,
                          const gchar         *abort_message) G_GNUC_NORETURN;
 void      app_exit      (gint                 status) G_GNUC_NORETURN;
 
 void      app_run       (const gchar         *full_prog_name,
-                         gint                 gimp_argc,
-                         gchar              **gimp_argv,
+                         const gchar        **filenames,
                          const gchar         *alternate_system_gimprc,
                          const gchar         *alternate_gimprc,
                          const gchar         *session_name,

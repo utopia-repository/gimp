@@ -4,42 +4,39 @@
 
 <refentry id="libgimp-gimppatternselect">
 <refmeta>
-<refentrytitle role="top_of_page">gimppatternselect</refentrytitle>
+<refentrytitle>gimppatternselect</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimppatternselect</refname>
-<refpurpose>Functions providing a pattern selection dialog.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>gimppatternselect</refname><refpurpose>Functions providing a pattern selection dialog.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-<link linkend="void">void</link>                (<link linkend="GimpRunPatternCallback">*GimpRunPatternCallback</link>)           (const <link linkend="gchar">gchar</link> *pattern_name,
-                                                         <link linkend="gint">gint</link> width,
-                                                         <link linkend="gint">gint</link> height,
-                                                         <link linkend="gint">gint</link> bpp,
-                                                         const <link linkend="guchar">guchar</link> *mask_data,
-                                                         <link linkend="gboolean">gboolean</link> dialog_closing,
-                                                         <link linkend="gpointer">gpointer</link> user_data);
-const <link linkend="gchar">gchar</link>*        <link linkend="gimp-pattern-select-new">gimp_pattern_select_new</link>             (const <link linkend="gchar">gchar</link> *title,
-                                                         const <link linkend="gchar">gchar</link> *pattern_name,
-                                                         <link linkend="GimpRunPatternCallback">GimpRunPatternCallback</link> callback,
-                                                         <link linkend="gpointer">gpointer</link> data);
-<link linkend="void">void</link>                <link linkend="gimp-pattern-select-destroy">gimp_pattern_select_destroy</link>         (const <link linkend="gchar">gchar</link> *pattern_callback);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-patterns-popup">gimp_patterns_popup</link>                 (const <link linkend="gchar">gchar</link> *pattern_callback,
-                                                         const <link linkend="gchar">gchar</link> *popup_title,
-                                                         const <link linkend="gchar">gchar</link> *initial_pattern);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-patterns-close-popup">gimp_patterns_close_popup</link>           (const <link linkend="gchar">gchar</link> *pattern_callback);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-patterns-set-popup">gimp_patterns_set_popup</link>             (const <link linkend="gchar">gchar</link> *pattern_callback,
-                                                         const <link linkend="gchar">gchar</link> *pattern_name);
+<link linkend="void">void</link>        (<link linkend="GimpRunPatternCallback">*GimpRunPatternCallback</link>)       (const <link linkend="gchar">gchar</link> *pattern_name,
+                                             <link linkend="gint">gint</link> width,
+                                             <link linkend="gint">gint</link> height,
+                                             <link linkend="gint">gint</link> bpp,
+                                             const <link linkend="guchar">guchar</link> *mask_data,
+                                             <link linkend="gboolean">gboolean</link> dialog_closing,
+                                             <link linkend="gpointer">gpointer</link> user_data);
+const <link linkend="gchar">gchar</link>* <link linkend="gimp-pattern-select-new">gimp_pattern_select_new</link>        (const <link linkend="gchar">gchar</link> *title,
+                                             const <link linkend="gchar">gchar</link> *pattern_name,
+                                             <link linkend="GimpRunPatternCallback">GimpRunPatternCallback</link> callback,
+                                             <link linkend="gpointer">gpointer</link> data);
+<link linkend="void">void</link>        <link linkend="gimp-pattern-select-destroy">gimp_pattern_select_destroy</link>     (const <link linkend="gchar">gchar</link> *pattern_callback);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-patterns-popup">gimp_patterns_popup</link>             (const <link linkend="gchar">gchar</link> *pattern_callback,
+                                             const <link linkend="gchar">gchar</link> *popup_title,
+                                             const <link linkend="gchar">gchar</link> *initial_pattern);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-patterns-close-popup">gimp_patterns_close_popup</link>       (const <link linkend="gchar">gchar</link> *pattern_callback);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-patterns-set-popup">gimp_patterns_set_popup</link>         (const <link linkend="gchar">gchar</link> *pattern_callback,
+                                             const <link linkend="gchar">gchar</link> *pattern_name);
 </synopsis>
 </refsynopsisdiv>
 
@@ -51,24 +48,24 @@ const <link linkend="gchar">gchar</link>*        <link linkend="gimp-pattern-sel
 
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 Functions providing a pattern selection dialog.
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="GimpRunPatternCallback" role="function"/>GimpRunPatternCallback ()</title>
-<indexterm><primary>GimpRunPatternCallback</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpRunPatternCallback)           (const <link linkend="gchar">gchar</link> *pattern_name,
-                                                         <link linkend="gint">gint</link> width,
-                                                         <link linkend="gint">gint</link> height,
-                                                         <link linkend="gint">gint</link> bpp,
-                                                         const <link linkend="guchar">guchar</link> *mask_data,
-                                                         <link linkend="gboolean">gboolean</link> dialog_closing,
-                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<title><anchor id="GimpRunPatternCallback"/>GimpRunPatternCallback ()</title>
+<indexterm><primary>GimpRunPatternCallback</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpRunPatternCallback)       (const <link linkend="gchar">gchar</link> *pattern_name,
+                                             <link linkend="gint">gint</link> width,
+                                             <link linkend="gint">gint</link> height,
+                                             <link linkend="gint">gint</link> bpp,
+                                             const <link linkend="guchar">guchar</link> *mask_data,
+                                             <link linkend="gboolean">gboolean</link> dialog_closing,
+                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -97,11 +94,11 @@ Functions providing a pattern selection dialog.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-pattern-select-new" role="function"/>gimp_pattern_select_new ()</title>
-<indexterm><primary>gimp_pattern_select_new</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_pattern_select_new             (const <link linkend="gchar">gchar</link> *title,
-                                                         const <link linkend="gchar">gchar</link> *pattern_name,
-                                                         <link linkend="GimpRunPatternCallback">GimpRunPatternCallback</link> callback,
-                                                         <link linkend="gpointer">gpointer</link> data);</programlisting>
+<title><anchor id="gimp-pattern-select-new"/>gimp_pattern_select_new ()</title>
+<indexterm><primary>gimp_pattern_select_new</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_pattern_select_new        (const <link linkend="gchar">gchar</link> *title,
+                                             const <link linkend="gchar">gchar</link> *pattern_name,
+                                             <link linkend="GimpRunPatternCallback">GimpRunPatternCallback</link> callback,
+                                             <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -123,8 +120,8 @@ Functions providing a pattern selection dialog.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-pattern-select-destroy" role="function"/>gimp_pattern_select_destroy ()</title>
-<indexterm><primary>gimp_pattern_select_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pattern_select_destroy         (const <link linkend="gchar">gchar</link> *pattern_callback);</programlisting>
+<title><anchor id="gimp-pattern-select-destroy"/>gimp_pattern_select_destroy ()</title>
+<indexterm><primary>gimp_pattern_select_destroy</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pattern_select_destroy     (const <link linkend="gchar">gchar</link> *pattern_callback);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -135,10 +132,10 @@ Functions providing a pattern selection dialog.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-patterns-popup" role="function"/>gimp_patterns_popup ()</title>
-<indexterm><primary>gimp_patterns_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_patterns_popup                 (const <link linkend="gchar">gchar</link> *pattern_callback,
-                                                         const <link linkend="gchar">gchar</link> *popup_title,
-                                                         const <link linkend="gchar">gchar</link> *initial_pattern);</programlisting>
+<title><anchor id="gimp-patterns-popup"/>gimp_patterns_popup ()</title>
+<indexterm><primary>gimp_patterns_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_patterns_popup             (const <link linkend="gchar">gchar</link> *pattern_callback,
+                                             const <link linkend="gchar">gchar</link> *popup_title,
+                                             const <link linkend="gchar">gchar</link> *initial_pattern);</programlisting>
 <para>
 Invokes the Gimp pattern selection.
 </para>
@@ -160,8 +157,8 @@ This procedure popups the pattern selection dialog.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-patterns-close-popup" role="function"/>gimp_patterns_close_popup ()</title>
-<indexterm><primary>gimp_patterns_close_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_patterns_close_popup           (const <link linkend="gchar">gchar</link> *pattern_callback);</programlisting>
+<title><anchor id="gimp-patterns-close-popup"/>gimp_patterns_close_popup ()</title>
+<indexterm><primary>gimp_patterns_close_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_patterns_close_popup       (const <link linkend="gchar">gchar</link> *pattern_callback);</programlisting>
 <para>
 Popdown the Gimp pattern selection.
 </para>
@@ -177,9 +174,9 @@ This procedure closes an opened pattern selection dialog.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-patterns-set-popup" role="function"/>gimp_patterns_set_popup ()</title>
-<indexterm><primary>gimp_patterns_set_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_patterns_set_popup             (const <link linkend="gchar">gchar</link> *pattern_callback,
-                                                         const <link linkend="gchar">gchar</link> *pattern_name);</programlisting>
+<title><anchor id="gimp-patterns-set-popup"/>gimp_patterns_set_popup ()</title>
+<indexterm><primary>gimp_patterns_set_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_patterns_set_popup         (const <link linkend="gchar">gchar</link> *pattern_callback,
+                                             const <link linkend="gchar">gchar</link> *pattern_name);</programlisting>
 <para>
 Sets the current pattern selection in a popup.
 </para>

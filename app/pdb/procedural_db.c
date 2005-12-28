@@ -50,6 +50,13 @@ struct _PDBData
 };
 
 
+/*  local function prototypes  */
+
+gchar * procedural_db_type_name (GimpPDBArgType type);
+
+
+/*  public functions  */
+
 void
 procedural_db_init (Gimp *gimp)
 {
@@ -92,8 +99,7 @@ procedural_db_free (Gimp *gimp)
 }
 
 void
-procedural_db_init_procs (Gimp               *gimp,
-                          GimpInitStatusFunc  status_callback)
+procedural_db_init_procs (Gimp *gimp)
 {
   static const struct
   {
@@ -102,68 +108,73 @@ procedural_db_init_procs (Gimp               *gimp,
   }
   compat_procs[] =
   {
-    { "gimp_blend",                      "gimp_edit_blend"                 },
-    { "gimp_brushes_set_brush",          "gimp_context_set_brush"          },
-    { "gimp_brushes_get_opacity",        "gimp_context_get_opacity"        },
-    { "gimp_brushes_set_opacity",        "gimp_context_set_opacity"        },
-    { "gimp_brushes_get_paint_mode",     "gimp_context_get_paint_mode"     },
-    { "gimp_brushes_set_paint_mode",     "gimp_context_set_paint_mode"     },
-    { "gimp_brushes_list",               "gimp_brushes_get_list"           },
-    { "gimp_bucket_fill",                "gimp_edit_bucket_fill"           },
-    { "gimp_channel_delete",             "gimp_drawable_delete"            },
-    { "gimp_channel_get_name",           "gimp_drawable_get_name"          },
-    { "gimp_channel_get_tattoo",         "gimp_drawable_get_tattoo"        },
-    { "gimp_channel_get_visible",        "gimp_drawable_get_visible"       },
-    { "gimp_channel_set_name",           "gimp_drawable_set_name"          },
-    { "gimp_channel_set_tattoo",         "gimp_drawable_set_tattoo"        },
-    { "gimp_channel_set_visible",        "gimp_drawable_set_visible"       },
-    { "gimp_color_picker",               "gimp_image_pick_color"           },
-    { "gimp_convert_grayscale",          "gimp_image_convert_grayscale"    },
-    { "gimp_convert_indexed",            "gimp_image_convert_indexed"      },
-    { "gimp_convert_rgb",                "gimp_image_convert_rgb"          },
-    { "gimp_crop",                       "gimp_image_crop"                 },
-    { "gimp_drawable_bytes",             "gimp_drawable_bpp"               },
-    { "gimp_drawable_image",             "gimp_drawable_get_image"         },
-    { "gimp_gradients_get_active",       "gimp_context_get_gradient"       },
-    { "gimp_gradients_set_active",       "gimp_context_set_gradient"       },
-    { "gimp_gradients_get_gradient",     "gimp_context_get_gradient"       },
-    { "gimp_gradients_set_gradient",     "gimp_context_set_gradient"       },
-    { "gimp_image_active_drawable",      "gimp_image_get_active_drawable"  },
-    { "gimp_image_floating_selection",   "gimp_image_get_floating_sel"     },
-    { "gimp_image_get_cmap",             "gimp_image_get_colormap"         },
-    { "gimp_image_set_cmap",             "gimp_image_set_colormap"         },
-    { "gimp_layer_delete",               "gimp_drawable_delete"            },
-    { "gimp_layer_get_linked",           "gimp_drawable_get_linked"        },
-    { "gimp_layer_get_name",             "gimp_drawable_get_name"          },
-    { "gimp_layer_get_tattoo",           "gimp_drawable_get_tattoo"        },
-    { "gimp_layer_get_visible",          "gimp_drawable_get_visible"       },
-    { "gimp_layer_mask",                 "gimp_layer_get_mask"             },
-    { "gimp_layer_set_linked",           "gimp_drawable_set_linked"        },
-    { "gimp_layer_set_name",             "gimp_drawable_set_name"          },
-    { "gimp_layer_set_tattoo",           "gimp_drawable_set_tattoo"        },
-    { "gimp_layer_set_visible",          "gimp_drawable_set_visible"       },
-    { "gimp_palette_get_foreground",     "gimp_context_get_foreground"     },
-    { "gimp_palette_get_background",     "gimp_context_get_background"     },
-    { "gimp_palette_set_foreground",     "gimp_context_set_foreground"     },
-    { "gimp_palette_set_background",     "gimp_context_set_background"     },
-    { "gimp_palette_set_default_colors", "gimp_context_set_default_colors" },
-    { "gimp_palette_swap_colors",        "gimp_context_swap_colors"        },
-    { "gimp_palette_refresh",            "gimp_palettes_refresh"           },
-    { "gimp_palettes_set_palette",       "gimp_context_set_palette"        },
-    { "gimp_patterns_list",              "gimp_patterns_get_list"          },
-    { "gimp_patterns_set_pattern",       "gimp_context_set_pattern"        },
-    { "gimp_selection_clear",            "gimp_selection_none"             },
-    { "gimp_temp_PDB_name",              "gimp_procedural_db_temp_name"    },
-    { "gimp_undo_push_group_start",      "gimp_image_undo_group_start"     },
-    { "gimp_undo_push_group_end",        "gimp_image_undo_group_end"       },
-    { "gimp_channel_ops_duplicate",      "gimp_image_duplicate"            },
-    { "gimp_channel_ops_offset",         "gimp_drawable_offset"            }
+    { "gimp-blend",                      "gimp-edit-blend"                 },
+    { "gimp-brushes-list",               "gimp-brushes-get-list"           },
+    { "gimp-bucket-fill",                "gimp-edit-bucket-fill"           },
+    { "gimp-channel-delete",             "gimp-drawable-delete"            },
+    { "gimp-channel-get-name",           "gimp-drawable-get-name"          },
+    { "gimp-channel-get-tattoo",         "gimp-drawable-get-tattoo"        },
+    { "gimp-channel-get-visible",        "gimp-drawable-get-visible"       },
+    { "gimp-channel-set-name",           "gimp-drawable-set-name"          },
+    { "gimp-channel-set-tattoo",         "gimp-drawable-set-tattoo"        },
+    { "gimp-channel-set-visible",        "gimp-drawable-set-visible"       },
+    { "gimp-color-picker",               "gimp-image-pick-color"           },
+    { "gimp-convert-grayscale",          "gimp-image-convert-grayscale"    },
+    { "gimp-convert-indexed",            "gimp-image-convert-indexed"      },
+    { "gimp-convert-rgb",                "gimp-image-convert-rgb"          },
+    { "gimp-crop",                       "gimp-image-crop"                 },
+    { "gimp-drawable-bytes",             "gimp-drawable-bpp"               },
+    { "gimp-drawable-image",             "gimp-drawable-get-image"         },
+    { "gimp-image-active-drawable",      "gimp-image-get-active-drawable"  },
+    { "gimp-image-floating-selection",   "gimp-image-get-floating-sel"     },
+    { "gimp-layer-delete",               "gimp-drawable-delete"            },
+    { "gimp-layer-get-linked",           "gimp-drawable-get-linked"        },
+    { "gimp-layer-get-name",             "gimp-drawable-get-name"          },
+    { "gimp-layer-get-tattoo",           "gimp-drawable-get-tattoo"        },
+    { "gimp-layer-get-visible",          "gimp-drawable-get-visible"       },
+    { "gimp-layer-mask",                 "gimp-layer-get-mask"             },
+    { "gimp-layer-set-linked",           "gimp-drawable-set-linked"        },
+    { "gimp-layer-set-name",             "gimp-drawable-set-name"          },
+    { "gimp-layer-set-tattoo",           "gimp-drawable-set-tattoo"        },
+    { "gimp-layer-set-visible",          "gimp-drawable-set-visible"       },
+    { "gimp-palette-refresh",            "gimp-palettes-refresh"           },
+    { "gimp-patterns-list",              "gimp-patterns-get-list"          },
+    { "gimp-temp-PDB-name",              "gimp-procedural-db-temp-name"    },
+    { "gimp-undo-push-group-end",        "gimp-image-undo-group-end"       },
+    { "gimp-undo-push-group-start",      "gimp-image-undo-group-start"     },
+
+    /*  deprecations since 2.0  */
+    { "gimp-brushes-get-opacity",        "gimp-context-get-opacity"        },
+    { "gimp-brushes-get-paint-mode",     "gimp-context-get-paint-mode"     },
+    { "gimp-brushes-set-brush",          "gimp-context-set-brush"          },
+    { "gimp-brushes-set-opacity",        "gimp-context-set-opacity"        },
+    { "gimp-brushes-set-paint-mode",     "gimp-context-set-paint-mode"     },
+    { "gimp-channel-ops-duplicate",      "gimp-image-duplicate"            },
+    { "gimp-channel-ops-offset",         "gimp-drawable-offset"            },
+    { "gimp-gradients-get-active",       "gimp-context-get-gradient"       },
+    { "gimp-gradients-get-gradient",     "gimp-context-get-gradient"       },
+    { "gimp-gradients-set-active",       "gimp-context-set-gradient"       },
+    { "gimp-gradients-set-gradient",     "gimp-context-set-gradient"       },
+    { "gimp-image-get-cmap",             "gimp-image-get-colormap"         },
+    { "gimp-image-set-cmap",             "gimp-image-set-colormap"         },
+    { "gimp-palette-get-background",     "gimp-context-get-background"     },
+    { "gimp-palette-get-foreground",     "gimp-context-get-foreground"     },
+    { "gimp-palette-set-background",     "gimp-context-set-background"     },
+    { "gimp-palette-set-default-colors", "gimp-context-set-default-colors" },
+    { "gimp-palette-set-foreground",     "gimp-context-set-foreground"     },
+    { "gimp-palette-swap-colors",        "gimp-context-swap-colors"        },
+    { "gimp-palettes-set-palette",       "gimp-context-set-palette"        },
+    { "gimp-patterns-set-pattern",       "gimp-context-set-pattern"        },
+    { "gimp-selection-clear",            "gimp-selection-none"             },
+
+    /*  deprecations since 2.2  */
+    { "gimp-layer-get-preserve-trans",   "gimp-drawable-get-lock-alpha"    },
+    { "gimp-layer-set-preserve-trans",   "gimp-drawable-set-lock-alpha"    }
   };
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (status_callback != NULL);
 
-  internal_procs_init (gimp, status_callback);
+  internal_procs_init (gimp);
 
   if (gimp->pdb_compat_mode != GIMP_PDB_COMPAT_OFF)
     {
@@ -186,11 +197,10 @@ procedural_db_register (Gimp       *gimp,
   g_return_if_fail (procedure != NULL);
 
   list = g_hash_table_lookup (gimp->procedural_ht, procedure->name);
-  list = g_list_prepend (list, (gpointer) procedure);
 
   g_hash_table_insert (gimp->procedural_ht,
-                       (gpointer) procedure->name,
-                       (gpointer) list);
+                       procedure->name,
+                       g_list_prepend (list, procedure));
 }
 
 void
@@ -227,7 +237,7 @@ procedural_db_lookup (Gimp        *gimp,
   list = g_hash_table_lookup (gimp->procedural_ht, name);
 
   if (list)
-    return (ProcRecord *) list->data;
+    return list->data;
   else
     return NULL;
 }
@@ -272,11 +282,18 @@ procedural_db_execute (Gimp         *gimp,
         {
           if (args[i].arg_type != procedure->args[i].arg_type)
             {
+              gchar *expected;
+              gchar *got;
+
+              expected = procedural_db_type_name (procedure->args[i].arg_type);
+              got      = procedural_db_type_name (args[i].arg_type);
+
               g_message (_("PDB calling error for procedure '%s':\n"
                            "Argument #%d type mismatch (expected %s, got %s)"),
-                         procedure->name, i + 1,
-                         pdb_type_name (procedure->args[i].arg_type),
-                         pdb_type_name (args[i].arg_type));
+                         procedure->name, i + 1, expected, got);
+
+              g_free (expected);
+              g_free (got);
 
               return_args = g_new (Argument, 1);
               return_args->arg_type      = GIMP_PDB_STATUS;
@@ -321,7 +338,8 @@ procedural_db_execute (Gimp         *gimp,
           return_args[0].value.pdb_int != GIMP_PDB_PASS_THROUGH &&
           procedure->num_values > 0)
         {
-          memset (&return_args[1], 0, sizeof (Argument) * procedure->num_values);
+          memset (&return_args[1],
+                  0, sizeof (Argument) * procedure->num_values);
         }
 
       if (return_args[0].value.pdb_int == GIMP_PDB_PASS_THROUGH)
@@ -389,12 +407,20 @@ procedural_db_run_proc (Gimp         *gimp,
 
       if (proc->args[i].arg_type != params[i].arg_type)
         {
-          g_message (_("PDB calling error for procedure '%s':\n"
-                       "Argument #%d type mismatch (expected %s, got %s)"),
-                     proc->name, i + 1,
-                     pdb_type_name (proc->args[i].arg_type),
-                     pdb_type_name (params[i].arg_type));
+          gchar *expected;
+          gchar *got;
+
+          expected = procedural_db_type_name (proc->args[i].arg_type);
+          got      = procedural_db_type_name (params[i].arg_type);
+
           g_free (params);
+
+         g_message (_("PDB calling error for procedure '%s':\n"
+                       "Argument #%d type mismatch (expected %s, got %s)"),
+                    proc->name, i + 1, expected, got);
+
+          g_free (expected);
+          g_free (got);
 
           *nreturn_vals = 0;
           return NULL;
@@ -544,7 +570,7 @@ procedural_db_destroy_args (Argument *args,
           break;
 
         case GIMP_PDB_PARASITE:
-          gimp_parasite_free ((GimpParasite *) (args[i].value.pdb_pointer));
+          gimp_parasite_free (args[i].value.pdb_pointer);
           break;
 
         case GIMP_PDB_STATUS:
@@ -597,7 +623,7 @@ procedural_db_set_data (Gimp         *gimp,
 
   for (list = gimp->procedural_db_data_list; list; list = g_list_next (list))
     {
-      pdb_data = (PDBData *) list->data;
+      pdb_data = list->data;
 
       if (! strcmp (pdb_data->identifier, identifier))
         break;
@@ -646,4 +672,21 @@ procedural_db_get_data (Gimp        *gimp,
     }
 
   return NULL;
+}
+
+
+/*  private functions  */
+
+gchar *
+procedural_db_type_name (GimpPDBArgType type)
+{
+  const gchar *name;
+
+  if (! gimp_enum_get_value (GIMP_TYPE_PDB_ARG_TYPE, type,
+                             &name, NULL, NULL, NULL))
+    {
+      return  g_strdup_printf ("(PDB type %d unknown)", type);
+    }
+
+  return g_strdup (name);
 }

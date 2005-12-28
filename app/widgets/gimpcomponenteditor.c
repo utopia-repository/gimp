@@ -2,7 +2,7 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimpcomponenteditor.c
- * Copyright (C) 2003 Michael Natterer <mitch@gimp.org>
+ * Copyright (C) 2003-2005 Michael Natterer <mitch@gimp.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@
 
 #include "gimpcellrendererviewable.h"
 #include "gimpcomponenteditor.h"
+#include "gimpdnd.h"
 #include "gimpmenufactory.h"
 #include "gimpviewrendererimage.h"
 #include "gimpwidgets-utils.h"
@@ -49,9 +50,6 @@ enum
   NUM_COLUMNS
 };
 
-
-static void gimp_component_editor_class_init (GimpComponentEditorClass *klass);
-static void gimp_component_editor_init       (GimpComponentEditor      *editor);
 
 static void gimp_component_editor_unrealize         (GtkWidget           *widget);
 
@@ -84,38 +82,16 @@ static void gimp_component_editor_visibility_changed(GimpImage           *gimage
 static void gimp_component_editor_active_changed    (GimpImage           *gimage,
                                                      GimpChannelType      channel,
                                                      GimpComponentEditor *editor);
+static GimpImage * gimp_component_editor_drag_component (GtkWidget       *widget,
+                                                         GimpChannelType *channel,
+                                                         gpointer         data);
 
 
-static GimpImageEditorClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpComponentEditor, gimp_component_editor,
+               GIMP_TYPE_IMAGE_EDITOR);
 
+#define parent_class gimp_component_editor_parent_class
 
-GType
-gimp_component_editor_get_type (void)
-{
-  static GType editor_type = 0;
-
-  if (! editor_type)
-    {
-      static const GTypeInfo editor_info =
-      {
-        sizeof (GimpComponentEditorClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_component_editor_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpComponentEditor),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_component_editor_init,
-      };
-
-      editor_type = g_type_register_static (GIMP_TYPE_IMAGE_EDITOR,
-                                            "GimpComponentEditor",
-                                            &editor_info, 0);
-    }
-
-  return editor_type;
-}
 
 static void
 gimp_component_editor_class_init (GimpComponentEditorClass *klass)
@@ -123,9 +99,7 @@ gimp_component_editor_class_init (GimpComponentEditorClass *klass)
   GtkWidgetClass       *widget_class       = GTK_WIDGET_CLASS (klass);
   GimpImageEditorClass *image_editor_class = GIMP_IMAGE_EDITOR_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
-
-  widget_class->unrealize = gimp_component_editor_unrealize;
+  widget_class->unrealize       = gimp_component_editor_unrealize;
 
   image_editor_class->set_image = gimp_component_editor_set_image;
 }
@@ -183,7 +157,7 @@ gimp_component_editor_init (GimpComponentEditor *editor)
   gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (editor->view));
   gtk_widget_show (GTK_WIDGET (editor->view));
 
-  g_signal_connect (editor->view, "button_press_event",
+  g_signal_connect (editor->view, "button-press-event",
                     G_CALLBACK (gimp_component_editor_button_press),
                     editor);
 
@@ -193,6 +167,10 @@ gimp_component_editor_init (GimpComponentEditor *editor)
   gtk_tree_selection_set_select_function (editor->selection,
                                           gimp_component_editor_select,
                                           editor, NULL);
+
+  gimp_dnd_component_source_add (GTK_WIDGET (editor->view),
+                                 gimp_component_editor_drag_component,
+                                 editor);
 }
 
 static void
@@ -251,16 +229,16 @@ gimp_component_editor_set_image (GimpImageEditor *editor,
     {
       gimp_component_editor_create_components (component_editor);
 
-      g_signal_connect (editor->gimage, "mode_changed",
+      g_signal_connect (editor->gimage, "mode-changed",
                         G_CALLBACK (gimp_component_editor_mode_changed),
                         component_editor);
-      g_signal_connect (editor->gimage, "alpha_changed",
+      g_signal_connect (editor->gimage, "alpha-changed",
                         G_CALLBACK (gimp_component_editor_alpha_changed),
                         component_editor);
-      g_signal_connect (editor->gimage, "component_visibility_changed",
+      g_signal_connect (editor->gimage, "component-visibility-changed",
                         G_CALLBACK (gimp_component_editor_visibility_changed),
                         component_editor);
-      g_signal_connect (editor->gimage, "component_active_changed",
+      g_signal_connect (editor->gimage, "component-active-changed",
                         G_CALLBACK (gimp_component_editor_active_changed),
                         component_editor);
     }
@@ -628,4 +606,23 @@ gimp_component_editor_active_changed (GimpImage           *gimage,
             gtk_tree_selection_unselect_iter (editor->selection, &iter);
         }
     }
+}
+
+static GimpImage *
+gimp_component_editor_drag_component (GtkWidget       *widget,
+                                      GimpChannelType *channel,
+                                      gpointer         data)
+{
+  GimpComponentEditor *editor = GIMP_COMPONENT_EDITOR (data);
+
+  if (GIMP_IMAGE_EDITOR (editor)->gimage &&
+      editor->clicked_component != -1)
+    {
+      if (channel)
+        *channel = editor->clicked_component;
+
+      return GIMP_IMAGE_EDITOR (editor)->gimage;
+    }
+
+  return NULL;
 }

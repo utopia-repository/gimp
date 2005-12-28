@@ -4,52 +4,48 @@
 
 <refentry id="GimpAspectPreview">
 <refmeta>
-<refentrytitle role="top_of_page">GimpAspectPreview</refentrytitle>
+<refentrytitle>GimpAspectPreview</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpAspectPreview</refname>
-<refpurpose>A widget providing a preview with fixed aspect ratio.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>GimpAspectPreview</refname><refpurpose>A widget providing a preview with fixed aspect ratio.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-                    <link linkend="GimpAspectPreview-struct">GimpAspectPreview</link>;
-<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-aspect-preview-new">gimp_aspect_preview_new</link>             (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
-                                                         <link linkend="gboolean">gboolean</link> *toggle);
+            <link linkend="GimpAspectPreview-struct">GimpAspectPreview</link>;
+<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-aspect-preview-new">gimp_aspect_preview_new</link>         (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
+                                             <link linkend="gboolean">gboolean</link> *toggle);
 
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
-<title role="object_hierarchy.title">Object Hierarchy</title>
+<refsect1>
+<title>Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
-         +----<link linkend="GtkObject">GtkObject</link>
-               +----<link linkend="GtkWidget">GtkWidget</link>
-                     +----<link linkend="GtkContainer">GtkContainer</link>
-                           +----<link linkend="GtkBox">GtkBox</link>
-                                 +----<link linkend="GtkVBox">GtkVBox</link>
-                                       +----<link linkend="GimpPreview">GimpPreview</link>
-                                             +----GimpAspectPreview
+   +----<link linkend="GtkObject">GtkObject</link>
+         +----<link linkend="GtkWidget">GtkWidget</link>
+               +----<link linkend="GtkContainer">GtkContainer</link>
+                     +----<link linkend="GtkBox">GtkBox</link>
+                           +----<link linkend="GtkVBox">GtkVBox</link>
+                                 +----<link linkend="GimpPreview">GimpPreview</link>
+                                       +----GimpAspectPreview
 </synopsis>
 
 </refsect1>
 
 
 
-<refsect1 role="impl_interfaces">
-<title role="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1>
+<title>Implemented Interfaces</title>
 <para>
 GimpAspectPreview implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -60,39 +56,44 @@ GimpAspectPreview implements
 
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 A widget providing a preview with fixed aspect ratio.
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="GimpAspectPreview-struct" role="struct"/>GimpAspectPreview</title>
+<title><anchor id="GimpAspectPreview-struct"/>GimpAspectPreview</title>
 <indexterm><primary>GimpAspectPreview</primary></indexterm><programlisting>typedef struct _GimpAspectPreview GimpAspectPreview;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-aspect-preview-new" role="function"/>gimp_aspect_preview_new ()</title>
-<indexterm><primary>gimp_aspect_preview_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_aspect_preview_new             (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
-                                                         <link linkend="gboolean">gboolean</link> *toggle);</programlisting>
+<title><anchor id="gimp-aspect-preview-new"/>gimp_aspect_preview_new ()</title>
+<indexterm role="GIMP 2.2"><primary>gimp_aspect_preview_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_aspect_preview_new         (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
+                                             <link linkend="gboolean">gboolean</link> *toggle);</programlisting>
+<para>
+Creates a new <link linkend="GimpAspectPreview"><type>GimpAspectPreview</type></link> widget for <parameter>drawable</parameter>. See also
+<link linkend="gimp-drawable-preview-new"><function>gimp_drawable_preview_new()</function></link>.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>drawable</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> a <link linkend="GimpDrawable"><type>GimpDrawable</type></link>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>toggle</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>   pointer to a <link linkend="gboolean"><type>gboolean</type></link> variable to sync with the "Preview"
+           check-button or <literal>NULL</literal>
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
-</variablelist></refsect2>
+</variablelist><para>Since  GIMP 2.2
+</para></refsect2>
 
 </refsect1>
 

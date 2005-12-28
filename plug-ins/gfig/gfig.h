@@ -40,6 +40,11 @@ typedef struct
   gboolean snap2grid;
   gboolean lockongrid;
   gboolean showcontrol;
+  gdouble grid_radius_min;          
+  gdouble grid_radius_interval;     
+  gdouble grid_rotation;          
+  gdouble grid_granularity;        
+  gint grid_sectors_desired;        
 } GfigOpts;
 
 typedef struct
@@ -62,7 +67,8 @@ void       object_end              (GdkPoint *pnt, gint shift_down);
 #define MAX_LOAD_LINE    256
 #define SQ_SIZE 8
 
-#define HELP_ID "plug-in-gfig"
+#define PLUG_IN_PROC   "plug-in-gfig"
+#define PLUG_IN_BINARY "gfig"
 
 extern gint       line_no;
 extern gint       preview_width, preview_height;
@@ -218,7 +224,10 @@ gboolean   gfig_save_as_parasite   (void);
 GFigObj   *gfig_load_from_parasite (void);
 GFigObj   *gfig_new                (void);
 void       gfig_save_callbk        (void);
-void       paint_layer_fill        (void);
+void       paint_layer_fill        (gdouble x1,
+                                    gdouble y1,
+                                    gdouble x2,
+                                    gdouble y2);
 
 
 

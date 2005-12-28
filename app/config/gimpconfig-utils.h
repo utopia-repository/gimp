@@ -19,37 +19,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIMP_CONFIG_UTILS_H__
-#define __GIMP_CONFIG_UTILS_H__
+#ifndef __APP_GIMP_CONFIG_UTILS_H__
+#define __APP_GIMP_CONFIG_UTILS_H__
 
 
-void       gimp_config_connect               (GObject      *a,
-                                              GObject      *b,
-                                              const gchar  *property_name);
-void       gimp_config_disconnect            (GObject      *a,
-                                              GObject      *b);
+void   gimp_config_connect    (GObject     *a,
+                               GObject     *b,
+                               const gchar *property_name);
+void   gimp_config_disconnect (GObject     *a,
+                               GObject     *b);
 
-GList    * gimp_config_diff                  (GimpConfig   *a,
-                                              GimpConfig   *b,
-                                              GParamFlags   flags);
-gboolean   gimp_config_sync                  (GimpConfig   *src,
-                                              GimpConfig   *dest,
-                                              GParamFlags   flags);
 
-void       gimp_config_reset_properties      (GimpConfig   *config);
-
-void       gimp_config_string_append_escaped (GString      *string,
-                                              const gchar  *val);
-
-gchar    * gimp_config_build_data_path       (const gchar  *name);
-gchar    * gimp_config_build_writable_path   (const gchar *name);
-gchar    * gimp_config_build_plug_in_path    (const gchar  *name);
-
-gboolean   gimp_config_file_copy             (const gchar  *source,
-                                              const gchar  *dest,
-                                              GError      **error);
-gboolean   gimp_config_file_backup_on_error  (const gchar  *filename,
-                                              const gchar  *name,
-                                              GError      **error);
-
-#endif  /* __GIMP_CONFIG_UTILS_H__ */
+#endif  /* __APP_GIMP_CONFIG_UTILS_H__ */

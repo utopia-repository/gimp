@@ -44,7 +44,23 @@ extern void _gimp_widgets_marshal_VOID__STRING_FLAGS (GClosure     *closure,
                                                       gpointer      invocation_hint,
                                                       gpointer      marshal_data);
 
-/* BOOLEAN:POINTER (./gimpwidgetsmarshal.list:32) */
+/* VOID:STRING,INT (./gimpwidgetsmarshal.list:31) */
+extern void _gimp_widgets_marshal_VOID__STRING_INT (GClosure     *closure,
+                                                    GValue       *return_value,
+                                                    guint         n_param_values,
+                                                    const GValue *param_values,
+                                                    gpointer      invocation_hint,
+                                                    gpointer      marshal_data);
+
+/* VOID:DOUBLE,DOUBLE (./gimpwidgetsmarshal.list:32) */
+extern void _gimp_widgets_marshal_VOID__DOUBLE_DOUBLE (GClosure     *closure,
+                                                       GValue       *return_value,
+                                                       guint         n_param_values,
+                                                       const GValue *param_values,
+                                                       gpointer      invocation_hint,
+                                                       gpointer      marshal_data);
+
+/* BOOLEAN:POINTER (./gimpwidgetsmarshal.list:34) */
 extern void _gimp_widgets_marshal_BOOLEAN__POINTER (GClosure     *closure,
                                                     GValue       *return_value,
                                                     guint         n_param_values,

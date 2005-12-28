@@ -11,10 +11,12 @@ menudata_built_files = $(menudata_in_files:.xml.in=.xml)
 
 menudata_DATA = \
 	$(menudata_built_files)		\
+	brush-editor-menu.xml		\
 	brushes-menu.xml		\
 	buffers-menu.xml		\
 	channels-menu.xml		\
 	colormap-editor-menu.xml	\
+	cursor-info-menu.xml		\
 	documents-menu.xml		\
 	error-console-menu.xml		\
 	fonts-menu.xml			\
@@ -25,12 +27,14 @@ menudata_DATA = \
 	palette-editor-menu.xml		\
 	palettes-menu.xml		\
 	patterns-menu.xml		\
-	qmask-menu.xml			\
+	quick-mask-menu.xml		\
+	sample-point-editor-menu.xml	\
 	selection-editor-menu.xml	\
 	templates-menu.xml		\
 	text-editor-toolbar.xml		\
 	tool-options-menu.xml		\
 	tools-menu.xml			\
+	undo-editor-menu.xml		\
 	vectors-menu.xml
 
 EXTRA_DIST = \
@@ -38,14 +42,19 @@ EXTRA_DIST = \
 	$(menudata_in_files)		\
 	dialogs-menuitems.xml		\
 	gtkuimanager.dtd		\
-	menus.xsl
+	menus.xsl			\
+	makefile.msc
 
 MAINTAINERCLEAN_FILES = $(menudata_built_files)
 
 
+if GIMP_UNSTABLE
+XSLTPARAMS = --stringparam debug-menu yes
+endif
+
 %.xml: %.xml.in menus.xsl dialogs-menuitems.xml
 if HAVE_XSLTPROC
-	$(XSLTPROC) --xinclude menus.xsl $< > $(@) || rm -f $(@)
+	$(XSLTPROC) --xinclude $(XSLTPARAMS) menus.xsl $< > $(@) || rm -f $(@)
 else
 	@echo "xsltproc is needed to build the menus XML files"; exit 1;
 endif

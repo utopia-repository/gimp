@@ -36,6 +36,7 @@
 #include "core/gimpimage.h"
 #include "core/gimpimage-merge.h"
 #include "core/gimpimage-undo.h"
+#include "core/gimpimage-undo-push.h"
 #include "core/gimpitemundo.h"
 #include "core/gimplayer.h"
 #include "core/gimplayer-floating-sel.h"
@@ -122,8 +123,10 @@ static void   layers_resize_layer_callback (GtkWidget             *dialog,
                                             GimpViewable          *viewable,
                                             gint                   width,
                                             gint                   height,
+                                            GimpUnit               unit,
                                             gint                   offset_x,
                                             gint                   offset_y,
+                                            GimpImageResizeLayers  unused,
                                             gpointer               data);
 
 static gint   layers_mode_index            (GimpLayerModeEffects   layer_mode);
@@ -195,7 +198,7 @@ layers_edit_attributes_cmd_callback (GtkAction *action,
                                      layer_fill_type,
                                      _("Layer Attributes"),
                                      "gimp-layer-edit",
-                                     GIMP_STOCK_EDIT,
+                                     GTK_STOCK_EDIT,
                                      _("Edit Layer Attributes"),
                                      GIMP_HELP_LAYER_EDIT);
 
@@ -457,22 +460,26 @@ layers_resize_cmd_callback (GtkAction *action,
 			    gpointer   data)
 {
   GimpDisplay *gdisp;
-  GimpImage   *gimage;
+  GimpImage   *image;
   GimpLayer   *layer;
   GtkWidget   *widget;
   GtkWidget   *dialog;
-  return_if_no_layer (gimage, layer, data);
+  GimpUnit     unit;
+  return_if_no_layer (image, layer, data);
   return_if_no_widget (widget, data);
 
   gdisp = GIMP_IS_DISPLAY (data) ? data : NULL;
+
+  unit = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (image),
+                                             "scale-dialog-unit"));
+  if (! unit)
+    unit = gdisp ? GIMP_DISPLAY_SHELL (gdisp->shell)->unit : GIMP_UNIT_PIXEL;
 
   dialog = resize_dialog_new (GIMP_VIEWABLE (layer),
                               _("Set Layer Boundary Size"), "gimp-layer-resize",
                               widget,
                               gimp_standard_help_func, GIMP_HELP_LAYER_RESIZE,
-                              (gdisp ?
-                               GIMP_DISPLAY_SHELL (gdisp->shell)->unit :
-                               GIMP_UNIT_PIXEL),
+                              unit,
                               layers_resize_layer_callback,
                               action_data_get_context (data));
 
@@ -495,24 +502,27 @@ void
 layers_scale_cmd_callback (GtkAction *action,
 			   gpointer   data)
 {
-  GimpImage   *gimage;
+  GimpImage   *image;
   GimpLayer   *layer;
   GtkWidget   *widget;
   GimpDisplay *gdisp;
   GtkWidget   *dialog;
   GimpUnit     unit;
-  return_if_no_layer (gimage, layer, data);
+  return_if_no_layer (image, layer, data);
   return_if_no_widget (widget, data);
 
   gdisp = action_data_get_display (data);
 
-  unit = gdisp ? GIMP_DISPLAY_SHELL (gdisp->shell)->unit : GIMP_UNIT_PIXEL;
+  unit = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (image),
+                                             "scale-dialog-unit"));
+  if (! unit)
+    unit = gdisp ? GIMP_DISPLAY_SHELL (gdisp->shell)->unit : GIMP_UNIT_PIXEL;
 
   dialog = scale_dialog_new (GIMP_VIEWABLE (layer),
                              _("Scale Layer"), "gimp-layer-scale",
                              widget,
                              gimp_standard_help_func, GIMP_HELP_LAYER_SCALE,
-                             unit, gimage->gimp->config->interpolation_type,
+                             unit, image->gimp->config->interpolation_type,
                              layers_scale_layer_callback,
                              gdisp);
 
@@ -631,7 +641,7 @@ layers_mask_show_cmd_callback (GtkAction *action,
 
       active = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
 
-      gimp_layer_mask_set_show (mask, active);
+      gimp_layer_mask_set_show (mask, active, TRUE);
       gimp_image_flush (gimage);
     }
 }
@@ -653,7 +663,7 @@ layers_mask_disable_cmd_callback (GtkAction *action,
 
       active = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
 
-      gimp_layer_mask_set_apply (mask, ! active);
+      gimp_layer_mask_set_apply (mask, ! active, TRUE);
       gimp_image_flush (gimage);
     }
 }
@@ -699,6 +709,21 @@ layers_alpha_add_cmd_callback (GtkAction *action,
   if (! gimp_drawable_has_alpha (GIMP_DRAWABLE (layer)))
     {
       gimp_layer_add_alpha (layer);
+      gimp_image_flush (gimage);
+    }
+}
+
+void
+layers_alpha_remove_cmd_callback (GtkAction *action,
+                                  gpointer   data)
+{
+  GimpImage *gimage;
+  GimpLayer *layer;
+  return_if_no_layer (gimage, layer, data);
+
+  if (gimp_drawable_has_alpha (GIMP_DRAWABLE (layer)))
+    {
+      gimp_layer_flatten (layer, action_data_get_context (data));
       gimp_image_flush (gimage);
     }
 }
@@ -777,28 +802,28 @@ layers_mode_cmd_callback (GtkAction *action,
 }
 
 void
-layers_preserve_trans_cmd_callback (GtkAction *action,
-                                    gpointer   data)
+layers_lock_alpha_cmd_callback (GtkAction *action,
+                                gpointer   data)
 {
   GimpImage *gimage;
   GimpLayer *layer;
-  gboolean   preserve;
+  gboolean   lock_alpha;
   return_if_no_layer (gimage, layer, data);
 
-  preserve = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
+  lock_alpha = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
 
-  if (preserve != gimp_layer_get_preserve_trans (layer))
+  if (lock_alpha != gimp_layer_get_lock_alpha (layer))
     {
       GimpUndo *undo;
       gboolean  push_undo = TRUE;
 
       undo = gimp_image_undo_can_compress (gimage, GIMP_TYPE_ITEM_UNDO,
-                                           GIMP_UNDO_LAYER_PRESERVE_TRANS);
+                                           GIMP_UNDO_LAYER_LOCK_ALPHA);
 
       if (undo && GIMP_ITEM_UNDO (undo)->item == GIMP_ITEM (layer))
         push_undo = FALSE;
 
-      gimp_layer_set_preserve_trans (layer, preserve, push_undo);
+      gimp_layer_set_lock_alpha (layer, lock_alpha, push_undo);
       gimp_image_flush (gimage);
     }
 }
@@ -943,6 +968,10 @@ layers_scale_layer_callback (GtkWidget             *dialog,
 
       gtk_widget_destroy (dialog);
 
+      /* remember the last used unit */
+      g_object_set_data (G_OBJECT (gimp_item_get_image (item)),
+                         "scale-dialog-unit", GINT_TO_POINTER (unit));
+
       if (width == gimp_item_width (item) && height == gimp_item_height (item))
         return;
 
@@ -956,7 +985,7 @@ layers_scale_layer_callback (GtkWidget             *dialog,
           progress = GIMP_PROGRESS (progress_dialog);
         }
 
-      progress = gimp_progress_start (progress, _("Scaling..."), FALSE);
+      progress = gimp_progress_start (progress, _("Scaling"), FALSE);
 
       gimp_item_scale_by_origin (item,
                                  width, height, interpolation,
@@ -977,13 +1006,15 @@ layers_scale_layer_callback (GtkWidget             *dialog,
 }
 
 static void
-layers_resize_layer_callback (GtkWidget    *dialog,
-                              GimpViewable *viewable,
-                              gint          width,
-                              gint          height,
-                              gint          offset_x,
-                              gint          offset_y,
-                              gpointer      data)
+layers_resize_layer_callback (GtkWidget             *dialog,
+                              GimpViewable          *viewable,
+                              gint                   width,
+                              gint                   height,
+                              GimpUnit               unit,
+                              gint                   offset_x,
+                              gint                   offset_y,
+                              GimpImageResizeLayers  unused,
+                              gpointer               data)
 {
   GimpContext *context = GIMP_CONTEXT (data);
 
@@ -992,6 +1023,10 @@ layers_resize_layer_callback (GtkWidget    *dialog,
       GimpItem *item = GIMP_ITEM (viewable);
 
       gtk_widget_destroy (dialog);
+
+      /* remember the last used unit */
+      g_object_set_data (G_OBJECT (gimp_item_get_image (item)),
+                         "scale-dialog-unit", GINT_TO_POINTER (unit));
 
       if (width == gimp_item_width (item) && height == gimp_item_height (item))
         return;

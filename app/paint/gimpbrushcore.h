@@ -70,6 +70,8 @@ struct _GimpBrushCore
   MaskBuf       *last_brush_mask;
   gboolean       cache_invalid;
 
+  gdouble        jitter;
+
   /*  don't use these...  */
   BoundSeg      *brush_bound_segs;
   gint           n_brush_bound_segs;

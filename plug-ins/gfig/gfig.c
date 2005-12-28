@@ -24,21 +24,18 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
 #include <errno.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
-#include <gtk/gtk.h>
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
-
-#include "libgimp/stdplugins-intl.h"
 
 #include "gfig.h"
 #include "gfig-style.h"
@@ -56,7 +53,8 @@
 #include "gfig-star.h"
 #include "gfig-stock.h"
 
-/***** Magic numbers *****/
+#include "libgimp/stdplugins-intl.h"
+
 
 #define GFIG_HEADER      "GFIG Version 0.2\n"
 
@@ -77,14 +75,12 @@ GimpPlugInInfo PLUG_IN_INFO =
 };
 
 
-
 gint line_no;
 
 gint obj_show_single   = -1; /* -1 all >= 0 object number */
 
 /* Structures etc for the objects */
 /* Points used to draw the object  */
-
 
 GfigObject *obj_creating; /* Object we are creating */
 GfigObject *tmp_line;     /* Needed when drawing lines */
@@ -117,7 +113,7 @@ query (void)
     { GIMP_PDB_INT32,    "dummy",    "dummy" }
   };
 
-  gimp_install_procedure ("plug_in_gfig",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Create Geometrical shapes with the Gimp",
                           "Draw Vector Graphics and paint them onto your images.  "
                           "Gfig allows you to draw many types of objects "
@@ -135,7 +131,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_gfig", "<Image>/Filters/Render");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Render");
 }
 
 static void
@@ -152,7 +148,7 @@ run (const gchar      *name,
   gint               pwidth, pheight;
   INIT_I18N ();
 
-  gfig_context = g_new (GFigContext, 1);
+  gfig_context = g_new0 (GFigContext, 1);
   gfig_context->show_background = TRUE;
   gfig_context->selected_obj = NULL;
 
@@ -218,7 +214,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
     case GIMP_RUN_WITH_LAST_VALS:
-      /*gimp_get_data ("plug_in_gfig", &selvals);*/
+      /*gimp_get_data (PLUG_IN_PROC, &selvals);*/
       if (! gfig_dialog ())
         {
           gimp_drawable_detach (gfig_drawable);
@@ -245,7 +241,7 @@ run (const gchar      *name,
   else
 #if 0
   if (run_mode == GIMP_RUN_INTERACTIVE)
-    gimp_set_data ("plug_in_gfig", &selvals, sizeof (SelectItVals));
+    gimp_set_data (PLUG_IN_PROC, &selvals, sizeof (SelectItVals));
   else
 #endif /* 0 */
     {
@@ -416,8 +412,8 @@ gfig_load (const gchar *filename,
   gint     chk_count;
   gint     load_count = 0;
   gdouble  version;
-  guchar   magic1[20];
-  guchar   magic2[20];
+  gchar    magic1[20];
+  gchar    magic2[20];
 
   g_assert (filename != NULL);
 
@@ -425,7 +421,7 @@ gfig_load (const gchar *filename,
   printf ("Loading %s (%s)\n", filename, name);
 #endif /* DEBUG */
 
-  fp = fopen (filename, "rb");
+  fp = g_fopen (filename, "r");
   if (!fp)
     {
       g_message (_("Could not open '%s' for reading: %s"),
@@ -716,14 +712,17 @@ gfig_save_as_parasite (void)
 
   string = gfig_save_as_string ();
 
-  parasite = gimp_parasite_new ("gfig", GIMP_PARASITE_PERSISTENT | GIMP_PARASITE_UNDOABLE,
+  parasite = gimp_parasite_new ("gfig",
+                                GIMP_PARASITE_PERSISTENT |
+                                GIMP_PARASITE_UNDOABLE,
                                 string->len, string->str);
 
   g_string_free (string, TRUE);
 
   if (!gimp_drawable_parasite_attach (gfig_context->drawable_id, parasite))
     {
-      g_message (_("Error trying to save figure as a parasite: can't attach parasite to drawable.\n"));
+      g_message (_("Error trying to save figure as a parasite: "
+                   "can't attach parasite to drawable."));
       gimp_parasite_free (parasite);
       return FALSE;
     }
@@ -746,7 +745,7 @@ gfig_load_from_parasite (void)
 
   fname = gimp_temp_name ("gfigtmp");
 
-  fp = fopen (fname, "wb");
+  fp = g_fopen (fname, "w");
   if (!fp)
     {
       g_message (_("Error trying to open temporary file '%s' "
@@ -765,7 +764,7 @@ gfig_load_from_parasite (void)
 
   gfig = gfig_load (fname, "(none)");
 
-  unlink (fname);
+  g_unlink (fname);
 
   g_free (fname);
 
@@ -781,7 +780,7 @@ gfig_save_callbk (void)
 
   savename = gfig_context->current_obj->filename;
 
-  fp = fopen (savename, "wb+");
+  fp = g_fopen (savename, "w+");
 
   if (!fp)
     {
@@ -795,12 +794,9 @@ gfig_save_callbk (void)
   fwrite (string->str, string->len, 1, fp);
 
   if (ferror (fp))
-    g_message ("Failed to write file\n");
+    g_message ("Failed to write file.");
   else
-    {
-      gfig_context->current_obj->obj_status &= ~(GFIG_MODIFIED | GFIG_READONLY);
-    }
+    gfig_context->current_obj->obj_status &= ~(GFIG_MODIFIED | GFIG_READONLY);
 
   fclose (fp);
-
 }

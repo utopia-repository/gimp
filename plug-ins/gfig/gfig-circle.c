@@ -25,12 +25,6 @@
 
 #include "config.h"
 
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
-
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
@@ -130,7 +124,10 @@ d_paint_circle (GfigObject *obj)
                        selopt.feather,
                        selopt.feather_radius);
 
-  paint_layer_fill ();
+  paint_layer_fill (center_pnt->pnt.x - radius,
+                    center_pnt->pnt.y - radius,
+                    center_pnt->pnt.x + radius,
+                    center_pnt->pnt.y + radius);
 
   if (obj->style.paint_type == PAINT_BRUSH_TYPE)
     gimp_edit_stroke (gfig_context->drawable_id);

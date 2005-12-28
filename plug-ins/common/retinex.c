@@ -20,14 +20,14 @@
 
 #include <string.h>
 
-#include <gtk/gtk.h>
-
 #include "libgimp/gimp.h"
 #include "libgimp/gimpui.h"
 
 #include "libgimp/stdplugins-intl.h"
 
 
+#define PLUG_IN_PROC        "plug-in-retinex"
+#define PLUG_IN_BINARY      "retinex"
 #define MAX_RETINEX_SCALES    8
 #define MIN_GAUSSIAN_SCALE   16
 #define MAX_GAUSSIAN_SCALE  250
@@ -41,7 +41,6 @@ typedef struct
   gint     nscales;
   gint     scales_mode;
   gfloat   cvar;
-  gboolean preview;
 } RetinexParams;
 
 typedef enum
@@ -126,8 +125,7 @@ static RetinexParams rvals =
   240,             /* Scale */
   3,               /* Scales */
   RETINEX_UNIFORM, /* Echelles reparties uniformement */
-  1.2,             /* A voir */
-  TRUE             /* default is to update the preview */
+  1.2              /* A voir */
 };
 
 static GimpPlugInInfo PLUG_IN_INFO =
@@ -145,16 +143,16 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",    "Interactive, non-interactive"        },
+    { GIMP_PDB_INT32,    "run-mode",    "Interactive, non-interactive"        },
     { GIMP_PDB_IMAGE,    "image",       "Input image (unused)"                },
     { GIMP_PDB_DRAWABLE, "drawable",    "Input drawable"                      },
     { GIMP_PDB_INT32,    "scale",       "Biggest scale value"                 },
     { GIMP_PDB_INT32,    "nscales",     "Number of scales"                    },
-    { GIMP_PDB_INT32,    "scales_mode", "Retinex distribution through scales" },
+    { GIMP_PDB_INT32,    "scales-mode", "Retinex distribution through scales" },
     { GIMP_PDB_FLOAT,    "cvar",        "Variance value"                      }
   };
 
-  gimp_install_procedure ("plug_in_retinex",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Retinex Image Enhancement Algorithm",
                           "The Retinex Image Enhancement Algorithm is an "
                           "automatic image enhancement method that enhances "
@@ -171,7 +169,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_retinex", "<Image>/Filters/Colors");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Colors/Modify");
 }
 
 static void
@@ -216,7 +214,8 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_retinex", &rvals);
+      gimp_get_data (PLUG_IN_PROC, &rvals);
+
       /*  First acquire information with a dialog  */
       if (! retinex_dialog (drawable))
         return;
@@ -238,7 +237,7 @@ run (const gchar      *name,
       break;
 
     case GIMP_RUN_WITH_LAST_VALS:
-      gimp_get_data ("plug_in_retinex", &rvals);
+      gimp_get_data (PLUG_IN_PROC, &rvals);
       break;
 
     default:
@@ -248,16 +247,16 @@ run (const gchar      *name,
   if ((status == GIMP_PDB_SUCCESS) &&
       (gimp_drawable_is_rgb (drawable->drawable_id)))
     {
-      gimp_progress_init (_("Retinex..."));
+      gimp_progress_init (_("Retinex"));
+
       retinex (drawable, NULL);
-      gimp_progress_init (_("Retinex (4/4): updated..."));
 
       if (run_mode != GIMP_RUN_NONINTERACTIVE)
         gimp_displays_flush ();
 
       /*  Store data  */
       if (run_mode == GIMP_RUN_INTERACTIVE)
-        gimp_set_data ("plug_in_retinex", &rvals, sizeof (RetinexParams));
+        gimp_set_data (PLUG_IN_PROC, &rvals, sizeof (RetinexParams));
     }
   else
     {
@@ -285,22 +284,30 @@ retinex_dialog (GimpDrawable *drawable)
   GtkWidget *frame;
   gboolean   run;
 
-  gimp_ui_init ("retinex", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Retinex Image Enhancement"), "retinex",
+  dialog = gimp_dialog_new (_("Retinex Image Enhancement"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-retinex",
+                            gimp_standard_help_func, PLUG_IN_PROC,
+
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_aspect_preview_new (drawable, &rvals.preview);
+  preview = gimp_zoom_preview_new (drawable);
   gtk_box_pack_start_defaults (GTK_BOX (main_vbox), preview);
   gtk_widget_show (preview);
 
@@ -348,10 +355,10 @@ retinex_dialog (GimpDrawable *drawable)
   scrollbar = GIMP_SCALE_ENTRY_SCALE (adj);
   gtk_range_set_update_policy (GTK_RANGE (scrollbar), GTK_UPDATE_DISCONTINUOUS);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &rvals.scale);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -363,10 +370,10 @@ retinex_dialog (GimpDrawable *drawable)
   scrollbar = GIMP_SCALE_ENTRY_SCALE (adj);
   gtk_range_set_update_policy (GTK_RANGE (scrollbar), GTK_UPDATE_DISCONTINUOUS);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &rvals.nscales);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -377,10 +384,10 @@ retinex_dialog (GimpDrawable *drawable)
   scrollbar = GIMP_SCALE_ENTRY_SCALE (adj);
   gtk_range_set_update_policy (GTK_RANGE (scrollbar), GTK_UPDATE_DISCONTINUOUS);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_float_adjustment_update),
                     &rvals.cvar);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -413,9 +420,8 @@ retinex (GimpDrawable *drawable,
    */
   if (preview)
     {
-      gimp_preview_get_size (preview, &width, &height);
-      src = gimp_drawable_get_thumbnail_data (drawable->drawable_id,
-                                              &width, &height, &bytes);
+      src = gimp_zoom_preview_get_source (GIMP_ZOOM_PREVIEW (preview),
+                                          &width, &height, &bytes);
     }
   else
     {
@@ -645,7 +651,7 @@ MSRCR (guchar *src, gint width, gint height, gint bytes, gboolean preview_mode)
 
   if (!preview_mode)
     {
-      gimp_progress_init (_("Retinex: Filtering..."));
+      gimp_progress_init (_("Retinex: filtering"));
       max_preview = 3 * rvals.nscales;
     }
 

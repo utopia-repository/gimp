@@ -30,10 +30,10 @@
 #include "core/gimpgradient.h"
 
 #include "widgets/gimpactiongroup.h"
-#include "widgets/gimpdataeditor.h"
 #include "widgets/gimpgradienteditor.h"
 #include "widgets/gimphelp-ids.h"
 
+#include "data-editor-commands.h"
 #include "gradient-editor-actions.h"
 #include "gradient-editor-commands.h"
 
@@ -115,6 +115,15 @@ static GimpActionEntry gradient_editor_actions[] =
     GIMP_HELP_GRADIENT_EDITOR_BLEND_OPACITY }
 };
 
+static GimpToggleActionEntry gradient_editor_toggle_actions[] =
+{
+  { "gradient-editor-edit-active", GIMP_STOCK_LINKED,
+    N_("Edit Active Gradient"), NULL, NULL,
+    G_CALLBACK (data_editor_edit_active_cmd_callback),
+    FALSE,
+    GIMP_HELP_GRADIENT_EDITOR_EDIT_ACTIVE }
+};
+
 
 #define LOAD_LEFT_FROM(num,magic) \
   { "gradient-editor-load-left-" num, NULL, \
@@ -141,34 +150,34 @@ static GimpEnumActionEntry gradient_editor_load_left_actions[] =
 {
   { "gradient-editor-load-left-left-neighbor", NULL,
     N_("_Left Neighbor's Right Endpoint"), NULL, NULL,
-    0, FALSE,
+    GRADIENT_EDITOR_COLOR_NEIGHBOR_ENDPOINT, FALSE,
     GIMP_HELP_GRADIENT_EDITOR_LEFT_LOAD },
 
   { "gradient-editor-load-left-right-endpoint", NULL,
     N_("_Right Endpoint"), NULL, NULL,
-    1, FALSE,
+    GRADIENT_EDITOR_COLOR_OTHER_ENDPOINT, FALSE,
     GIMP_HELP_GRADIENT_EDITOR_LEFT_LOAD },
 
   { "gradient-editor-load-left-fg", NULL,
     N_("_FG Color"), NULL, NULL,
-    2, FALSE,
+    GRADIENT_EDITOR_COLOR_FOREGROUND, FALSE,
     GIMP_HELP_GRADIENT_EDITOR_LEFT_LOAD },
 
   { "gradient-editor-load-left-bg", NULL,
     N_("_BG Color"), NULL, NULL,
-    3, FALSE,
+    GRADIENT_EDITOR_COLOR_BACKGROUND, FALSE,
     GIMP_HELP_GRADIENT_EDITOR_LEFT_LOAD },
 
-  LOAD_LEFT_FROM ("01", 4),
-  LOAD_LEFT_FROM ("02", 5),
-  LOAD_LEFT_FROM ("03", 6),
-  LOAD_LEFT_FROM ("04", 7),
-  LOAD_LEFT_FROM ("05", 8),
-  LOAD_LEFT_FROM ("06", 9),
-  LOAD_LEFT_FROM ("07", 10),
-  LOAD_LEFT_FROM ("08", 11),
-  LOAD_LEFT_FROM ("09", 12),
-  LOAD_LEFT_FROM ("10", 13)
+  LOAD_LEFT_FROM ("01", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 0),
+  LOAD_LEFT_FROM ("02", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 1),
+  LOAD_LEFT_FROM ("03", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 2),
+  LOAD_LEFT_FROM ("04", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 3),
+  LOAD_LEFT_FROM ("05", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 4),
+  LOAD_LEFT_FROM ("06", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 5),
+  LOAD_LEFT_FROM ("07", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 6),
+  LOAD_LEFT_FROM ("08", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 7),
+  LOAD_LEFT_FROM ("09", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 8),
+  LOAD_LEFT_FROM ("10", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 9)
 };
 
 static GimpEnumActionEntry gradient_editor_save_left_actions[] =
@@ -189,34 +198,34 @@ static GimpEnumActionEntry gradient_editor_load_right_actions[] =
 {
   { "gradient-editor-load-right-right-neighbor", NULL,
     N_("_Right Neighbor's Left Endpoint"), NULL, NULL,
-    0, FALSE,
+    GRADIENT_EDITOR_COLOR_NEIGHBOR_ENDPOINT, FALSE,
     GIMP_HELP_GRADIENT_EDITOR_RIGHT_LOAD },
 
   { "gradient-editor-load-right-left-endpoint", NULL,
     N_("_Left Endpoint"), NULL, NULL,
-    1, FALSE,
+    GRADIENT_EDITOR_COLOR_OTHER_ENDPOINT, FALSE,
     GIMP_HELP_GRADIENT_EDITOR_RIGHT_LOAD },
 
   { "gradient-editor-load-right-fg", NULL,
     N_("_FG Color"), NULL, NULL,
-    2, FALSE,
+    GRADIENT_EDITOR_COLOR_FOREGROUND, FALSE,
     GIMP_HELP_GRADIENT_EDITOR_RIGHT_LOAD },
 
   { "gradient-editor-load-right-bg", NULL,
     N_("_BG Color"), NULL, NULL,
-    3, FALSE,
+    GRADIENT_EDITOR_COLOR_BACKGROUND, FALSE,
     GIMP_HELP_GRADIENT_EDITOR_RIGHT_LOAD },
 
-  LOAD_RIGHT_FROM ("01", 4),
-  LOAD_RIGHT_FROM ("02", 5),
-  LOAD_RIGHT_FROM ("03", 6),
-  LOAD_RIGHT_FROM ("04", 7),
-  LOAD_RIGHT_FROM ("05", 8),
-  LOAD_RIGHT_FROM ("06", 9),
-  LOAD_RIGHT_FROM ("07", 10),
-  LOAD_RIGHT_FROM ("08", 11),
-  LOAD_RIGHT_FROM ("09", 12),
-  LOAD_RIGHT_FROM ("10", 13)
+  LOAD_RIGHT_FROM ("01", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 0),
+  LOAD_RIGHT_FROM ("02", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 1),
+  LOAD_RIGHT_FROM ("03", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 2),
+  LOAD_RIGHT_FROM ("04", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 3),
+  LOAD_RIGHT_FROM ("05", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 4),
+  LOAD_RIGHT_FROM ("06", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 5),
+  LOAD_RIGHT_FROM ("07", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 6),
+  LOAD_RIGHT_FROM ("08", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 7),
+  LOAD_RIGHT_FROM ("09", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 8),
+  LOAD_RIGHT_FROM ("10", GRADIENT_EDITOR_COLOR_FIRST_CUSTOM + 9)
 };
 
 static GimpEnumActionEntry gradient_editor_save_right_actions[] =
@@ -324,6 +333,10 @@ gradient_editor_actions_setup (GimpActionGroup *group)
                                  gradient_editor_actions,
                                  G_N_ELEMENTS (gradient_editor_actions));
 
+  gimp_action_group_add_toggle_actions (group,
+                                        gradient_editor_toggle_actions,
+                                        G_N_ELEMENTS (gradient_editor_toggle_actions));
+
   gimp_action_group_add_enum_actions (group,
                                       gradient_editor_load_left_actions,
                                       G_N_ELEMENTS (gradient_editor_load_left_actions),
@@ -348,12 +361,14 @@ gradient_editor_actions_setup (GimpActionGroup *group)
   gimp_action_group_add_radio_actions (group,
                                        gradient_editor_blending_actions,
                                        G_N_ELEMENTS (gradient_editor_blending_actions),
+                                       NULL,
                                        0,
                                        G_CALLBACK (gradient_editor_blending_func_cmd_callback));
 
   gimp_action_group_add_radio_actions (group,
                                        gradient_editor_coloring_actions,
                                        G_N_ELEMENTS (gradient_editor_coloring_actions),
+                                       NULL,
                                        0,
                                        G_CALLBACK (gradient_editor_coloring_type_cmd_callback));
 
@@ -380,6 +395,7 @@ gradient_editor_actions_update (GimpActionGroup *group,
   gboolean             coloring_equal = TRUE;
   gboolean             selection      = FALSE;
   gboolean             delete         = FALSE;
+  gboolean             edit_active    = FALSE;
 
   gradient = GIMP_GRADIENT (data_editor->data);
 
@@ -435,6 +451,8 @@ gradient_editor_actions_update (GimpActionGroup *group,
    */
   if (! GTK_WIDGET_SENSITIVE (editor))
     editable = FALSE;
+
+  edit_active = gimp_data_editor_get_edit_active (data_editor);
 
 #define SET_ACTIVE(action,condition) \
         gimp_action_group_set_action_active (group, action, (condition) != 0)
@@ -696,6 +714,8 @@ gradient_editor_actions_update (GimpActionGroup *group,
   SET_SENSITIVE ("gradient-editor-zoom-out", gradient);
   SET_SENSITIVE ("gradient-editor-zoom-in",  gradient);
   SET_SENSITIVE ("gradient-editor-zoom-all", gradient);
+
+  SET_ACTIVE ("gradient-editor-edit-active", edit_active);
 
 #undef SET_ACTIVE
 #undef SET_COLOR

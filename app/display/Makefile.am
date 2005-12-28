@@ -1,16 +1,5 @@
 ## Process this file with automake to produce Makefile.in
 
-AM_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"Gimp-Display\"	\
-	@GIMP_THREAD_FLAGS@ 		\
-	@GIMP_MP_FLAGS@
-
-INCLUDES = \
-	-I$(top_srcdir)		\
-	-I$(top_srcdir)/app	\
-	$(GTK_CFLAGS)		\
-	-I$(includedir)
-
 noinst_LIBRARIES = libappdisplay.a
 
 libappdisplay_a_sources = \
@@ -30,10 +19,14 @@ libappdisplay_a_sources = \
 	gimpdisplayshell.h			\
 	gimpdisplayshell-appearance.c		\
 	gimpdisplayshell-appearance.h		\
+	gimpdisplayshell-autoscroll.c		\
+	gimpdisplayshell-autoscroll.h		\
 	gimpdisplayshell-callbacks.c		\
 	gimpdisplayshell-callbacks.h		\
 	gimpdisplayshell-close.c		\
 	gimpdisplayshell-close.h		\
+	gimpdisplayshell-coords.c		\
+	gimpdisplayshell-coords.h		\
 	gimpdisplayshell-cursor.c		\
 	gimpdisplayshell-cursor.h		\
 	gimpdisplayshell-dnd.c			\
@@ -74,6 +67,18 @@ libappdisplay_a_built_sources = display-enums.c
 libappdisplay_a_SOURCES = \
 	$(libappdisplay_a_built_sources)	\
 	$(libappdisplay_a_sources)
+
+AM_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"Gimp-Display\"	\
+	@GTHREAD_CFLAGS@
+
+INCLUDES = \
+	-I$(top_builddir)	\
+	-I$(top_srcdir)		\
+	-I$(top_builddir)/app	\
+	-I$(top_srcdir)/app	\
+	$(GTK_CFLAGS)		\
+	-I$(includedir)
 
 EXTRA_DIST = makefile.msc
 

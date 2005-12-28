@@ -80,24 +80,25 @@ static ProcArg fonts_popup_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "font_callback",
+    "font-callback",
     "The callback PDB proc to call when font selection is made"
   },
   {
     GIMP_PDB_STRING,
-    "popup_title",
+    "popup-title",
     "Title to give the font popup window"
   },
   {
     GIMP_PDB_STRING,
-    "initial_font",
+    "initial-font",
     "The name of the font to set as the first selected"
   }
 };
 
 static ProcRecord fonts_popup_proc =
 {
-  "gimp_fonts_popup",
+  "gimp-fonts-popup",
+  "gimp-fonts-popup",
   "Invokes the Gimp font selection.",
   "This procedure popups the font selection dialog.",
   "Sven Neumann <sven@gimp.org>",
@@ -140,14 +141,15 @@ static ProcArg fonts_close_popup_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "font_callback",
+    "font-callback",
     "The name of the callback registered for this popup"
   }
 };
 
 static ProcRecord fonts_close_popup_proc =
 {
-  "gimp_fonts_close_popup",
+  "gimp-fonts-close-popup",
+  "gimp-fonts-close-popup",
   "Popdown the Gimp font selection.",
   "This procedure closes an opened font selection dialog.",
   "Sven Neumann <sven@gimp.org>",
@@ -196,19 +198,20 @@ static ProcArg fonts_set_popup_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "font_callback",
+    "font-callback",
     "The name of the callback registered for this popup"
   },
   {
     GIMP_PDB_STRING,
-    "font_name",
+    "font-name",
     "The name of the font to set as selected"
   }
 };
 
 static ProcRecord fonts_set_popup_proc =
 {
-  "gimp_fonts_set_popup",
+  "gimp-fonts-set-popup",
+  "gimp-fonts-set-popup",
   "Sets the current font selection in a popup.",
   "Sets the current font selection in a popup.",
   "Sven Neumann <sven@gimp.org>",

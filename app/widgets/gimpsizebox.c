@@ -24,13 +24,11 @@
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
 
-#include "config/gimpconfig-params.h"
-
-#include "gimppropwidgets.h"
 #include "gimpsizebox.h"
 
 #include "gimp-intl.h"
@@ -52,8 +50,8 @@ enum
 };
 
 
-#define GIMP_SIZE_BOX_GET_PRIVATE(obj) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GIMP_TYPE_SIZE_BOX, GimpSizeBoxPrivate))
+#define GIMP_SIZE_BOX_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
+                                        GIMP_TYPE_SIZE_BOX, GimpSizeBoxPrivate))
 
 typedef struct _GimpSizeBoxPrivate GimpSizeBoxPrivate;
 
@@ -67,13 +65,9 @@ struct _GimpSizeBoxPrivate
 };
 
 
-static void      gimp_size_box_class_init    (GimpSizeBoxClass      *klass);
-
 static GObject * gimp_size_box_constructor   (GType                  type,
                                               guint                  n_params,
                                               GObjectConstructParam *params);
-
-static void      gimp_size_box_init           (GimpSizeBox     *box);
 
 static void      gimp_size_box_set_property   (GObject         *object,
                                                guint            property_id,
@@ -84,51 +78,28 @@ static void      gimp_size_box_get_property   (GObject         *object,
                                                GValue          *value,
                                                GParamSpec      *pspec);
 
+static void      gimp_size_box_destroy        (GtkObject       *object);
+
 static void      gimp_size_box_update_size       (GimpSizeBox *box);
 static void      gimp_size_box_update_resolution (GimpSizeBox *box);
 
 
-static GtkVBoxClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpSizeBox, gimp_size_box, GTK_TYPE_VBOX);
 
+#define parent_class gimp_size_box_parent_class
 
-GType
-gimp_size_box_get_type (void)
-{
-  static GType box_type = 0;
-
-  if (! box_type)
-    {
-      static const GTypeInfo box_info =
-      {
-        sizeof (GimpSizeBoxClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_size_box_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpSizeBox),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_size_box_init
-      };
-
-      box_type = g_type_register_static (GTK_TYPE_VBOX,
-                                         "GimpSizeBox",
-                                         &box_info, 0);
-    }
-
-  return box_type;
-}
 
 static void
 gimp_size_box_class_init (GimpSizeBoxClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
+  GObjectClass   *object_class     = G_OBJECT_CLASS (klass);
+  GtkObjectClass *gtk_object_class = GTK_OBJECT_CLASS (klass);
 
   object_class->constructor  = gimp_size_box_constructor;
   object_class->set_property = gimp_size_box_set_property;
   object_class->get_property = gimp_size_box_get_property;
+
+  gtk_object_class->destroy  = gimp_size_box_destroy;
 
   g_type_class_add_private (object_class, sizeof (GimpSizeBoxPrivate));
 
@@ -192,6 +163,8 @@ static void
 gimp_size_box_init (GimpSizeBox *box)
 {
   gtk_box_set_spacing (GTK_BOX (box), 6);
+
+  box->size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 }
 
 static GObject *
@@ -201,11 +174,13 @@ gimp_size_box_constructor (GType                  type,
 {
   GObject            *object;
   GimpSizeBox        *box;
+  GimpSizeBoxPrivate *priv;
   GtkWidget          *vbox;
   GtkWidget          *entry;
   GtkWidget          *hbox;
   GtkWidget          *label;
-  GimpSizeBoxPrivate *priv;
+  GList              *children;
+  GList              *list;
 
   object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
 
@@ -249,6 +224,12 @@ gimp_size_box_constructor (GType                  type,
   gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 0);
   gtk_widget_show (entry);
 
+  children = gtk_container_get_children (GTK_CONTAINER (entry));
+  for (list = children; list; list = g_list_next (list))
+    if (GTK_IS_LABEL (list->data))
+      gtk_size_group_add_widget (box->size_group, list->data);
+  g_list_free (children);
+
   vbox = gtk_vbox_new (2, FALSE);
   gtk_table_attach_defaults (GTK_TABLE (entry), vbox, 1, 3, 2, 3);
   gtk_widget_show (vbox);
@@ -284,12 +265,18 @@ gimp_size_box_constructor (GType                  type,
       gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 0);
       gtk_widget_show (entry);
 
+      children = gtk_container_get_children (GTK_CONTAINER (entry));
+      for (list = children; list; list = g_list_next (list))
+        if (GTK_IS_LABEL (list->data))
+          gtk_size_group_add_widget (box->size_group, list->data);
+      g_list_free (children);
+
       gimp_prop_coordinates_connect (G_OBJECT (box),
                                      "xresolution", "yresolution",
                                      "resolution-unit",
                                      entry, NULL,
                                      1.0, 1.0);
-     }
+    }
   else
     {
       label = gtk_label_new (NULL);
@@ -421,15 +408,29 @@ gimp_size_box_get_property (GObject    *object,
 }
 
 static void
+gimp_size_box_destroy (GtkObject *object)
+{
+  GimpSizeBox *box = GIMP_SIZE_BOX (object);
+
+  if (box->size_group)
+    {
+      g_object_unref (box->size_group);
+      box->size_group = NULL;
+    }
+
+  GTK_OBJECT_CLASS (parent_class)->destroy (object);
+}
+
+static void
 gimp_size_box_update_size (GimpSizeBox *box)
 {
   GimpSizeBoxPrivate *priv = GIMP_SIZE_BOX_GET_PRIVATE (box);
 
   if (priv->pixel_label)
     {
-      gchar *text;
-
-      text = g_strdup_printf (_("%d x %d pixels"), box->width, box->height);
+      gchar *text = g_strdup_printf (ngettext ("%d x %d pixel",
+                                               "%d x %d pixels", box->height),
+                                     box->width, box->height);
       gtk_label_set_text (GTK_LABEL (priv->pixel_label), text);
       g_free (text);
     }

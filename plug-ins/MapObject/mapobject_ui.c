@@ -299,38 +299,15 @@ preview_callback (GtkWidget *widget,
   linetab[0].x1 = -1;
 }
 
-/*********************************************/
-/* Main window "-" (zoom in) button callback */
-/*********************************************/
-
 static void
-zoomout_callback (GtkWidget *widget,
-		  gpointer   data)
+zoomed_callback (GimpZoomModel *model)
 {
-  if (mapvals.preview_zoom_factor < 2)
-    {
-      mapvals.preview_zoom_factor++;
-      if (linetab[0].x1 != -1)
-        clear_wireframe ();
-      draw_preview_image (TRUE);
-    }
-}
+  mapvals.zoom = gimp_zoom_model_get_factor (model);
 
-/**********************************************/
-/* Main window "+" (zoom out) button callback */
-/**********************************************/
+  if (linetab[0].x1 != -1)
+    clear_wireframe ();
 
-static void
-zoomin_callback (GtkWidget *widget,
-		 gpointer   data)
-{
-  if (mapvals.preview_zoom_factor > 0)
-    {
-      mapvals.preview_zoom_factor--;
-      if (linetab[0].x1 != -1)
-        clear_wireframe ();
-      draw_preview_image (TRUE);
-    }
+  draw_preview_image (TRUE);
 }
 
 /**********************************************/
@@ -493,7 +470,7 @@ create_options_page (void)
 
   /* General options */
 
-  frame = gimp_frame_new (_("General options"));
+  frame = gimp_frame_new (_("General Options"));
   gtk_box_pack_start (GTK_BOX (page), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
@@ -604,7 +581,7 @@ create_options_page (void)
 			      1, TRUE, 0, 0,
 			      _("Antialiasing quality. Higher is better, "
 			       "but slower"), NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.maxdepth);
 
@@ -614,7 +591,7 @@ create_options_page (void)
 			     _("_Threshold:"), 0.0, 0.5,
 			     spinbutton, 1, TRUE);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.pixeltreshold);
 
@@ -684,7 +661,7 @@ create_light_page (void)
 			     _("Lightsource color:"), 0.0, 0.5,
 			     colorbutton, 1, FALSE);
 
-  g_signal_connect (colorbutton, "color_changed",
+  g_signal_connect (colorbutton, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),
                     &mapvals.lightsource.color);
 
@@ -710,7 +687,7 @@ create_light_page (void)
 			     _("X:"), 0.0, 0.5,
 			     spinbutton, 1, TRUE);
 
-  g_signal_connect (xadj, "value_changed",
+  g_signal_connect (xadj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.lightsource.position.x);
 
@@ -724,7 +701,7 @@ create_light_page (void)
 			     _("Y:"), 0.0, 0.5,
 			     spinbutton, 1, TRUE);
 
-  g_signal_connect (yadj, "value_changed",
+  g_signal_connect (yadj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.lightsource.position.y);
 
@@ -738,7 +715,7 @@ create_light_page (void)
 			     _("Z:"), 0.0, 0.5,
 			     spinbutton, 1, TRUE);
 
-  g_signal_connect (zadj, "value_changed",
+  g_signal_connect (zadj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.lightsource.position.z);
 
@@ -764,7 +741,7 @@ create_light_page (void)
 			     _("X:"), 0.0, 0.5,
 			     spinbutton, 1, TRUE);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.lightsource.direction.x);
 
@@ -777,7 +754,7 @@ create_light_page (void)
 			     _("Y:"), 0.0, 0.5,
 			     spinbutton, 1, TRUE);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.lightsource.direction.y);
 
@@ -790,7 +767,7 @@ create_light_page (void)
 			     _("Z:"), 0.0, 0.5,
 			     spinbutton, 1, TRUE);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.lightsource.direction.z);
 
@@ -851,7 +828,7 @@ create_material_page (void)
 		    GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.material.ambient_int);
 
@@ -880,7 +857,7 @@ create_material_page (void)
 		    GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.material.diffuse_int);
 
@@ -923,7 +900,7 @@ create_material_page (void)
 		    GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.material.diffuse_ref);
 
@@ -952,7 +929,7 @@ create_material_page (void)
 		    GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.material.specular_ref);
 
@@ -981,7 +958,7 @@ create_material_page (void)
 		    GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.material.highlight);
 
@@ -1037,7 +1014,7 @@ create_orientation_page (void)
   gtk_spin_button_configure (GIMP_SCALE_ENTRY_SPINBUTTON (adj),
 			     GIMP_SCALE_ENTRY_SPINBUTTON_ADJ (adj), 0.01, 5);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (double_adjustment_update),
                     &mapvals.position.x);
 
@@ -1050,7 +1027,7 @@ create_orientation_page (void)
   gtk_spin_button_configure (GIMP_SCALE_ENTRY_SPINBUTTON (adj),
 			     GIMP_SCALE_ENTRY_SPINBUTTON_ADJ (adj), 0.01, 5);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (double_adjustment_update),
                     &mapvals.position.y);
 
@@ -1063,7 +1040,7 @@ create_orientation_page (void)
   gtk_spin_button_configure (GIMP_SCALE_ENTRY_SPINBUTTON (adj),
 			     GIMP_SCALE_ENTRY_SPINBUTTON_ADJ (adj), 0.01, 5);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (double_adjustment_update),
                     &mapvals.position.z);
 
@@ -1084,7 +1061,7 @@ create_orientation_page (void)
 			      _("Rotation angle about X axis"), NULL);
   gtk_size_group_add_widget (group, GIMP_SCALE_ENTRY_SPINBUTTON (adj));
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (double_adjustment_update),
                     &mapvals.alpha);
 
@@ -1095,7 +1072,7 @@ create_orientation_page (void)
 			      _("Rotation angle about Y axis"), NULL);
   gtk_size_group_add_widget (group, GIMP_SCALE_ENTRY_SPINBUTTON (adj));
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (double_adjustment_update),
                     &mapvals.beta);
 
@@ -1106,7 +1083,7 @@ create_orientation_page (void)
 			      _("Rotation angle about Z axis"), NULL);
   gtk_size_group_add_widget (group, GIMP_SCALE_ENTRY_SPINBUTTON (adj));
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (double_adjustment_update),
                     &mapvals.gamma);
 
@@ -1182,7 +1159,7 @@ create_box_page (void)
   gtk_spin_button_configure (GIMP_SCALE_ENTRY_SPINBUTTON (adj),
 			     GIMP_SCALE_ENTRY_SPINBUTTON_ADJ (adj), 0.1, 2);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (double_adjustment_update),
                     &mapvals.scale.x);
 
@@ -1194,7 +1171,7 @@ create_box_page (void)
   gtk_spin_button_configure (GIMP_SCALE_ENTRY_SPINBUTTON (adj),
 			     GIMP_SCALE_ENTRY_SPINBUTTON_ADJ (adj), 0.1, 2);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (double_adjustment_update),
                     &mapvals.scale.y);
 
@@ -1206,7 +1183,7 @@ create_box_page (void)
   gtk_spin_button_configure (GIMP_SCALE_ENTRY_SPINBUTTON (adj),
 			     GIMP_SCALE_ENTRY_SPINBUTTON_ADJ (adj), 0.1, 2);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (double_adjustment_update),
                     &mapvals.scale.z);
 
@@ -1279,7 +1256,7 @@ create_cylinder_page (void)
   gtk_spin_button_configure (GIMP_SCALE_ENTRY_SPINBUTTON (adj),
 			     GIMP_SCALE_ENTRY_SPINBUTTON_ADJ (adj), 0.1, 2);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (double_adjustment_update),
                     &mapvals.cylinder_radius);
 
@@ -1293,7 +1270,7 @@ create_cylinder_page (void)
   gtk_spin_button_configure (GIMP_SCALE_ENTRY_SPINBUTTON (adj),
 			     GIMP_SCALE_ENTRY_SPINBUTTON_ADJ (adj), 0.1, 2);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (double_adjustment_update),
                     &mapvals.cylinder_length);
 
@@ -1356,14 +1333,14 @@ create_main_notebook (GtkWidget *container)
 gboolean
 main_dialog (GimpDrawable *drawable)
 {
-  GtkWidget *main_hbox;
-  GtkWidget *vbox;
-  GtkWidget *hbox;
-  GtkWidget *frame;
-  GtkWidget *button;
-  GtkWidget *image;
-  GtkWidget *toggle;
-  gboolean   run = FALSE;
+  GtkWidget     *main_hbox;
+  GtkWidget     *vbox;
+  GtkWidget     *hbox;
+  GtkWidget     *frame;
+  GtkWidget     *button;
+  GtkWidget     *toggle;
+  GimpZoomModel *model;
+  gboolean       run = FALSE;
 
   gimp_ui_init ("MapObject", FALSE);
 
@@ -1375,6 +1352,13 @@ main_dialog (GimpDrawable *drawable)
 			    GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
 			    NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (appwin),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (appwin));
 
   main_hbox = gtk_hbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_hbox), 12);
@@ -1424,33 +1408,21 @@ main_dialog (GimpDrawable *drawable)
 
   gimp_help_set_help_data (button, _("Recompute preview image"), NULL);
 
-  button = gtk_button_new ();
+  model = gimp_zoom_model_new ();
+  gimp_zoom_model_set_range (model, 0.25, 1.0);
+  gimp_zoom_model_zoom (model, GIMP_ZOOM_TO, mapvals.zoom);
+
+  button = gimp_zoom_button_new (model, GIMP_ZOOM_IN, GTK_ICON_SIZE_MENU);
   gtk_box_pack_end (GTK_BOX (hbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
-  image = gtk_image_new_from_stock (GTK_STOCK_ZOOM_OUT, GTK_ICON_SIZE_MENU);
-  gtk_container_add (GTK_CONTAINER (button), image);
-  gtk_widget_show (image);
-
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (zoomout_callback),
-                    NULL);
-
-  gimp_help_set_help_data (button, _("Zoom out (make image smaller)"), NULL);
-
-  button = gtk_button_new ();
+  button = gimp_zoom_button_new (model, GIMP_ZOOM_OUT, GTK_ICON_SIZE_MENU);
   gtk_box_pack_end (GTK_BOX (hbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
-  image = gtk_image_new_from_stock (GTK_STOCK_ZOOM_IN, GTK_ICON_SIZE_MENU);
-  gtk_container_add (GTK_CONTAINER (button), image);
-  gtk_widget_show (image);
-
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (zoomin_callback),
+  g_signal_connect (model, "zoomed",
+                    G_CALLBACK (zoomed_callback),
                     NULL);
-
-  gimp_help_set_help_data (button, _("Zoom in (make image bigger)"), NULL);
 
   toggle = gtk_check_button_new_with_mnemonic (_("Show preview _wireframe"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), mapvals.showgrid);
@@ -1460,8 +1432,6 @@ main_dialog (GimpDrawable *drawable)
   g_signal_connect (toggle, "toggled",
                     G_CALLBACK (togglegrid_update),
                     &mapvals.showgrid);
-
-  gimp_help_set_help_data (toggle, _("Show/hide preview wireframe"), NULL);
 
   create_main_notebook (main_hbox);
 

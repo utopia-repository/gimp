@@ -24,19 +24,15 @@
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
 
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-params.h"
-#include "config/gimpconfig-utils.h"
 #include "config/gimpcoreconfig.h"
 
-#include "core/gimp.h"
-#include "core/gimpcontainer.h"
-#include "core/gimpcontext.h"
-#include "core/gimptoolinfo.h"
-
+#include "gimp.h"
+#include "gimpcontainer.h"
+#include "gimpcontext.h"
 #include "gimppaintinfo.h"
 #include "gimpstrokedesc.h"
 #include "gimpstrokeoptions.h"
@@ -55,8 +51,6 @@ enum
 };
 
 
-static void      gimp_stroke_desc_class_init   (GimpStrokeDescClass *klass);
-
 static GObject * gimp_stroke_desc_constructor  (GType            type,
                                                 guint            n_params,
                                                 GObjectConstructParam *params);
@@ -71,52 +65,16 @@ static void      gimp_stroke_desc_get_property (GObject         *object,
                                                 GParamSpec      *pspec);
 
 
-static GimpObjectClass *parent_class = NULL;
+G_DEFINE_TYPE_WITH_CODE (GimpStrokeDesc, gimp_stroke_desc, GIMP_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG, NULL));
 
+#define parent_class gimp_stroke_desc_parent_class
 
-GType
-gimp_stroke_desc_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpStrokeDescClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) gimp_stroke_desc_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (GimpStrokeDesc),
-	0,              /* n_preallocs    */
-	NULL            /* instance_init  */
-      };
-      static const GInterfaceInfo config_iface_info =
-      {
-        NULL,           /* ifact_init     */
-        NULL,           /* iface_finalize */
-        NULL            /* iface_data     */
-      };
-
-      type = g_type_register_static (GIMP_TYPE_OBJECT,
-                                     "GimpStrokeDesc",
-                                     &info, 0);
-
-      g_type_add_interface_static (type, GIMP_TYPE_CONFIG,
-                                   &config_iface_info);
-    }
-
-  return type;
-}
 
 static void
 gimp_stroke_desc_class_init (GimpStrokeDescClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->constructor  = gimp_stroke_desc_constructor;
   object_class->finalize     = gimp_stroke_desc_finalize;
@@ -139,7 +97,7 @@ gimp_stroke_desc_class_init (GimpStrokeDescClass *klass)
   GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_STROKE_OPTIONS,
                                    "stroke-options", NULL,
                                    GIMP_TYPE_STROKE_OPTIONS,
-                                   GIMP_PARAM_AGGREGATE);
+                                   GIMP_CONFIG_PARAM_AGGREGATE);
   GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_PAINT_INFO,
                                    "paint-info", NULL,
                                    GIMP_TYPE_PAINT_INFO,
@@ -148,6 +106,11 @@ gimp_stroke_desc_class_init (GimpStrokeDescClass *klass)
                                    "paint-options", NULL,
                                    GIMP_TYPE_PAINT_OPTIONS,
                                    0);
+}
+
+static void
+gimp_stroke_desc_init (GimpStrokeDesc *desc)
+{
 }
 
 static GObject *
@@ -215,8 +178,8 @@ gimp_stroke_desc_set_property (GObject      *object,
       break;
     case PROP_STROKE_OPTIONS:
       if (g_value_get_object (value))
-        gimp_config_sync (GIMP_CONFIG (g_value_get_object (value)),
-                          GIMP_CONFIG (desc->stroke_options), 0);
+        gimp_config_sync (g_value_get_object (value),
+                          G_OBJECT (desc->stroke_options), 0);
       break;
     case PROP_PAINT_INFO:
       if (desc->paint_info)
@@ -282,15 +245,10 @@ gimp_stroke_desc_new (Gimp        *gimp,
 
   if (context)
     {
-      GimpToolInfo *tool_info = gimp_context_get_tool (context);
-
-      if (tool_info)
-        paint_info = tool_info->paint_info;
+      paint_info = gimp_context_get_paint_info (context);
 
       if (! paint_info)
-        paint_info = (GimpPaintInfo *)
-          gimp_container_get_child_by_name (gimp->paint_info_list,
-                                            "GimpPaintbrush");
+        paint_info = gimp_paint_info_get_standard (gimp);
     }
 
   desc = g_object_new (GIMP_TYPE_STROKE_DESC,
@@ -307,6 +265,34 @@ gimp_stroke_desc_new (Gimp        *gimp,
     gimp_context_set_parent (GIMP_CONTEXT (desc->stroke_options), context);
 
   return desc;
+}
+
+GimpStrokeDesc *
+gimp_stroke_desc_duplicate (GimpStrokeDesc *desc)
+{
+  GimpStrokeDesc    *new_desc;
+  GimpStrokeOptions *stroke_options = NULL;
+  GimpPaintInfo     *paint_info     = NULL;
+  GimpPaintOptions  *paint_options  = NULL;
+
+  new_desc = gimp_stroke_desc_new (desc->gimp,
+                                   GIMP_CONTEXT (desc->stroke_options));
+
+  new_desc->method = desc->method;
+
+  g_object_get (G_OBJECT (desc),
+                "stroke-options", stroke_options,
+                "paint-info", paint_info,
+                "paint-options", paint_options,
+                NULL);
+
+  g_object_set (G_OBJECT (new_desc),
+                "stroke-options", stroke_options,
+                "paint-info", paint_info,
+                "paint-options", paint_options,
+                NULL);
+
+  return new_desc;
 }
 
 void

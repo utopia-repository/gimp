@@ -33,7 +33,6 @@
 #include "core/gimpimagemap.h"
 
 #include "widgets/gimphelp-ids.h"
-#include "widgets/gimpenumwidgets.h"
 
 #include "display/gimpdisplay.h"
 
@@ -52,17 +51,14 @@
 
 /*  local function prototypes  */
 
-static void   gimp_color_balance_tool_class_init (GimpColorBalanceToolClass *klass);
-static void   gimp_color_balance_tool_init       (GimpColorBalanceTool      *cb_tool);
-
 static void     gimp_color_balance_tool_finalize   (GObject          *object);
 
 static gboolean gimp_color_balance_tool_initialize (GimpTool         *tool,
                                                     GimpDisplay      *gdisp);
 
-static void     gimp_color_balance_tool_map        (GimpImageMapTool *image_map_tool);
-static void     gimp_color_balance_tool_dialog     (GimpImageMapTool *image_map_tool);
-static void     gimp_color_balance_tool_reset      (GimpImageMapTool *image_map_tool);
+static void     gimp_color_balance_tool_map        (GimpImageMapTool *im_tool);
+static void     gimp_color_balance_tool_dialog     (GimpImageMapTool *im_tool);
+static void     gimp_color_balance_tool_reset      (GimpImageMapTool *im_tool);
 
 static void     color_balance_update               (GimpColorBalanceTool *cb_tool,
                                                     gint                  update);
@@ -80,10 +76,11 @@ static void     color_balance_yb_adjustment_update (GtkAdjustment        *adj,
                                                     GimpColorBalanceTool *cb_tool);
 
 
-static GimpImageMapToolClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpColorBalanceTool, gimp_color_balance_tool,
+               GIMP_TYPE_IMAGE_MAP_TOOL);
 
+#define parent_class gimp_color_balance_tool_parent_class
 
-/*  functions  */
 
 void
 gimp_color_balance_tool_register (GimpToolRegisterCallback  callback,
@@ -101,56 +98,22 @@ gimp_color_balance_tool_register (GimpToolRegisterCallback  callback,
                 data);
 }
 
-GType
-gimp_color_balance_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpColorBalanceToolClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) gimp_color_balance_tool_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (GimpColorBalanceTool),
-	0,              /* n_preallocs    */
-	(GInstanceInitFunc) gimp_color_balance_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_IMAGE_MAP_TOOL,
-					  "GimpColorBalanceTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
-
 static void
 gimp_color_balance_tool_class_init (GimpColorBalanceToolClass *klass)
 {
-  GObjectClass          *object_class;
-  GimpToolClass         *tool_class;
-  GimpImageMapToolClass *image_map_tool_class;
+  GObjectClass          *object_class  = G_OBJECT_CLASS (klass);
+  GimpToolClass         *tool_class    = GIMP_TOOL_CLASS (klass);
+  GimpImageMapToolClass *im_tool_class = GIMP_IMAGE_MAP_TOOL_CLASS (klass);
 
-  object_class         = G_OBJECT_CLASS (klass);
-  tool_class           = GIMP_TOOL_CLASS (klass);
-  image_map_tool_class = GIMP_IMAGE_MAP_TOOL_CLASS (klass);
+  object_class->finalize    = gimp_color_balance_tool_finalize;
 
-  parent_class = g_type_class_peek_parent (klass);
+  tool_class->initialize    = gimp_color_balance_tool_initialize;
 
-  object_class->finalize       = gimp_color_balance_tool_finalize;
+  im_tool_class->shell_desc = _("Adjust Color Balance");
 
-  tool_class->initialize       = gimp_color_balance_tool_initialize;
-
-  image_map_tool_class->shell_desc = _("Adjust Color Balance");
-
-  image_map_tool_class->map    = gimp_color_balance_tool_map;
-  image_map_tool_class->dialog = gimp_color_balance_tool_dialog;
-  image_map_tool_class->reset  = gimp_color_balance_tool_reset;
+  im_tool_class->map        = gimp_color_balance_tool_map;
+  im_tool_class->dialog     = gimp_color_balance_tool_dialog;
+  im_tool_class->reset      = gimp_color_balance_tool_reset;
 }
 
 static void
@@ -206,13 +169,13 @@ gimp_color_balance_tool_initialize (GimpTool    *tool,
 }
 
 static void
-gimp_color_balance_tool_map (GimpImageMapTool *image_map_tool)
+gimp_color_balance_tool_map (GimpImageMapTool *im_tool)
 {
-  GimpColorBalanceTool *cb_tool = GIMP_COLOR_BALANCE_TOOL (image_map_tool);
+  GimpColorBalanceTool *cb_tool = GIMP_COLOR_BALANCE_TOOL (im_tool);
 
   color_balance_create_lookup_tables (cb_tool->color_balance);
-  gimp_image_map_apply (image_map_tool->image_map,
-                        color_balance,
+  gimp_image_map_apply (im_tool->image_map,
+                        (GimpImageMapApplyFunc) color_balance,
                         cb_tool->color_balance);
 }
 
@@ -227,12 +190,10 @@ create_levels_scale (const gchar   *left,
                      GtkWidget     *table,
                      gint           col)
 {
-  GtkWidget     *label;
-  GtkWidget     *slider;
-  GtkWidget     *spinbutton;
-  GtkAdjustment *adj;
-
-  adj = GTK_ADJUSTMENT (gtk_adjustment_new (0, -100.0, 100.0, 1.0, 10.0, 0.0));
+  GtkWidget *label;
+  GtkWidget *slider;
+  GtkWidget *spinbutton;
+  GtkObject *adj;
 
   label = gtk_label_new (left);
   gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
@@ -240,9 +201,12 @@ create_levels_scale (const gchar   *left,
 		    GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
 
-  slider = gtk_hscale_new (adj);
+  spinbutton = gimp_spin_button_new (&adj,
+                                     0, -100.0, 100.0, 1.0, 10.0, 0.0, 1.0, 0);
+
+  slider = gtk_hscale_new (GTK_ADJUSTMENT (adj));
   gtk_scale_set_draw_value (GTK_SCALE (slider), FALSE);
-  gtk_range_set_update_policy (GTK_RANGE (slider), GTK_UPDATE_DELAYED);
+  gtk_range_set_update_policy (GTK_RANGE (slider), GTK_UPDATE_CONTINUOUS);
   gtk_widget_set_size_request (slider, 100, -1);
   gtk_table_attach_defaults (GTK_TABLE (table), slider, 1, 2, col, col + 1);
   gtk_widget_show (slider);
@@ -253,18 +217,17 @@ create_levels_scale (const gchar   *left,
 		    GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
 
-  spinbutton = gtk_spin_button_new (adj, 1.0, 0);
   gtk_table_attach (GTK_TABLE (table), spinbutton, 3, 4, col, col + 1,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (spinbutton);
 
-  return adj;
+  return GTK_ADJUSTMENT (adj);
 }
 
 static void
-gimp_color_balance_tool_dialog (GimpImageMapTool *image_map_tool)
+gimp_color_balance_tool_dialog (GimpImageMapTool *im_tool)
 {
-  GimpColorBalanceTool *cb_tool = GIMP_COLOR_BALANCE_TOOL (image_map_tool);
+  GimpColorBalanceTool *cb_tool = GIMP_COLOR_BALANCE_TOOL (im_tool);
   GtkWidget            *vbox;
   GtkWidget            *hbox;
   GtkWidget            *table;
@@ -273,17 +236,15 @@ gimp_color_balance_tool_dialog (GimpImageMapTool *image_map_tool)
   GtkWidget            *frame;
 
   frame = gimp_enum_radio_frame_new (GIMP_TYPE_TRANSFER_MODE,
-                                     gtk_label_new (_("Select Range to Modify")),
+                                     gtk_label_new (_("Select Range to Adjust")),
                                      G_CALLBACK (color_balance_range_callback),
                                      cb_tool,
                                      &toggle);
-  gtk_box_pack_start (GTK_BOX (image_map_tool->main_vbox), frame,
-                      FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (im_tool->main_vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  frame = gimp_frame_new (_("Modify Selected Range's Color Levels"));
-  gtk_box_pack_start (GTK_BOX (image_map_tool->main_vbox), frame,
-                      FALSE, FALSE, 0);
+  frame = gimp_frame_new (_("Adjust Color Levels"));
+  gtk_box_pack_start (GTK_BOX (im_tool->main_vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
   vbox = gtk_vbox_new (FALSE, 4);
@@ -300,21 +261,21 @@ gimp_color_balance_tool_dialog (GimpImageMapTool *image_map_tool)
   cb_tool->cyan_red_adj =
     create_levels_scale (_("Cyan"), _("Red"), table, 0);
 
-  g_signal_connect (cb_tool->cyan_red_adj, "value_changed",
+  g_signal_connect (cb_tool->cyan_red_adj, "value-changed",
                     G_CALLBACK (color_balance_cr_adjustment_update),
                     cb_tool);
 
   cb_tool->magenta_green_adj =
     create_levels_scale (_("Magenta"), _("Green"), table, 1);
 
-  g_signal_connect (cb_tool->magenta_green_adj, "value_changed",
+  g_signal_connect (cb_tool->magenta_green_adj, "value-changed",
                     G_CALLBACK (color_balance_mg_adjustment_update),
                     cb_tool);
 
   cb_tool->yellow_blue_adj =
     create_levels_scale (_("Yellow"), _("Blue"), table, 2);
 
-  g_signal_connect (cb_tool->yellow_blue_adj, "value_changed",
+  g_signal_connect (cb_tool->yellow_blue_adj, "value-changed",
                     G_CALLBACK (color_balance_yb_adjustment_update),
                     cb_tool);
 
@@ -322,7 +283,7 @@ gimp_color_balance_tool_dialog (GimpImageMapTool *image_map_tool)
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  button = gtk_button_new_with_mnemonic (_("R_eset range"));
+  button = gtk_button_new_with_mnemonic (_("R_eset Range"));
   gtk_box_pack_end (GTK_BOX (hbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
@@ -334,8 +295,8 @@ gimp_color_balance_tool_dialog (GimpImageMapTool *image_map_tool)
     gtk_check_button_new_with_mnemonic (_("Preserve _luminosity"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (cb_tool->preserve_toggle),
 				cb_tool->color_balance->preserve_luminosity);
-  gtk_box_pack_end (GTK_BOX (image_map_tool->main_vbox),
-                    cb_tool->preserve_toggle, FALSE, FALSE, 0);
+  gtk_box_pack_end (GTK_BOX (im_tool->main_vbox), cb_tool->preserve_toggle,
+                    FALSE, FALSE, 0);
   gtk_widget_show (cb_tool->preserve_toggle);
 
   g_signal_connect (cb_tool->preserve_toggle, "toggled",
@@ -348,9 +309,9 @@ gimp_color_balance_tool_dialog (GimpImageMapTool *image_map_tool)
 }
 
 static void
-gimp_color_balance_tool_reset (GimpImageMapTool *image_map_tool)
+gimp_color_balance_tool_reset (GimpImageMapTool *im_tool)
 {
-  GimpColorBalanceTool *cb_tool = GIMP_COLOR_BALANCE_TOOL (image_map_tool);
+  GimpColorBalanceTool *cb_tool = GIMP_COLOR_BALANCE_TOOL (im_tool);
 
   color_balance_init (cb_tool->color_balance);
   color_balance_update (cb_tool, ALL);

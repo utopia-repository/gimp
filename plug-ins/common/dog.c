@@ -29,12 +29,15 @@
 
 #include <string.h>
 
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define PLUG_IN_PROC   "plug-in-dog"
+#define PLUG_IN_BINARY "dog"
+
 
 typedef struct
 {
@@ -44,6 +47,7 @@ typedef struct
   gboolean invert;
   gboolean preview;
 } DoGValues;
+
 
 /* Declare local functions.
  */
@@ -118,16 +122,16 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE, "image", "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
-    { GIMP_PDB_FLOAT, "inner", "Radius of inner gaussian blur (in pixels, > 0.0)" },
-    { GIMP_PDB_FLOAT, "outer",   "Radius of outer gaussian blur (in pixels, > 0.0)" },
-    { GIMP_PDB_INT32, "normalize", "True, False" },
-    { GIMP_PDB_INT32, "invert", "True, False" }
+    { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",     "Input image" },
+    { GIMP_PDB_DRAWABLE, "drawable",  "Input drawable" },
+    { GIMP_PDB_FLOAT,    "inner",     "Radius of inner gaussian blur (in pixels, > 0.0)" },
+    { GIMP_PDB_FLOAT,    "outer",     "Radius of outer gaussian blur (in pixels, > 0.0)" },
+    { GIMP_PDB_INT32,    "normalize", "True, False" },
+    { GIMP_PDB_INT32,    "invert",    "True, False" }
   };
 
-  gimp_install_procedure ("plug_in_dog",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Edge detection using difference of Gaussians.",
                           "Applies two Gaussian blurs to the drawable, and "
                           "subtracts the results.  This is robust and widely "
@@ -136,13 +140,13 @@ query (void)
                           "Spencer Kimball, Peter Mattis, Sven Neumann, William Skaggs",
                           "Spencer Kimball, Peter Mattis, Sven Neumann, William Skaggs",
                           "1995-2004",
-                          N_("Difference of Gaussians..."),
+                          N_("_Difference of Gaussians..."),
                           "RGB*, GRAY*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_dog", "<Image>/Filters/Edge-Detect");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Edge-Detect");
 }
 
 static void
@@ -177,13 +181,13 @@ run (const gchar      *name,
                           (MAX (drawable->width, drawable->height) /
                            gimp_tile_width () + 1));
 
-  if (strcmp (name, "plug_in_dog") == 0)
+  if (strcmp (name, PLUG_IN_PROC) == 0)
     {
       switch (run_mode)
         {
         case GIMP_RUN_INTERACTIVE:
           /*  Possibly retrieve data  */
-          gimp_get_data ("plug_in_dog", &dogvals);
+          gimp_get_data (PLUG_IN_PROC, &dogvals);
 
           /*  First acquire information with a dialog  */
           if (! dog_dialog (image_ID, drawable))
@@ -208,7 +212,7 @@ run (const gchar      *name,
 
         case GIMP_RUN_WITH_LAST_VALS:
           /*  Possibly retrieve data  */
-          gimp_get_data ("plug_in_dog", &dogvals);
+          gimp_get_data (PLUG_IN_PROC, &dogvals);
           break;
 
         default:
@@ -235,10 +239,8 @@ run (const gchar      *name,
 
           /*  Store data  */
           if (run_mode == GIMP_RUN_INTERACTIVE)
-            {
-              gimp_set_data ("plug_in_dog",
-                             &dogvals, sizeof (DoGValues));
-            }
+            gimp_set_data (PLUG_IN_PROC, &dogvals, sizeof (DoGValues));
+
           if (run_mode != GIMP_RUN_NONINTERACTIVE)
             gimp_displays_flush ();
         }
@@ -269,16 +271,23 @@ dog_dialog (gint32        image_ID,
   gdouble    yres;
   gboolean   run;
 
-  gimp_ui_init ("dog", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("DoG Edge Detect"), "dog",
+  dialog = gimp_dialog_new (_("DoG Edge Detect"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-dog",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -292,7 +301,7 @@ dog_dialog (gint32        image_ID,
                     G_CALLBACK (preview_update_preview),
                     drawable);
 
-  frame = gimp_frame_new (_("Smoothing parameters"));
+  frame = gimp_frame_new (_("Smoothing Parameters"));
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
@@ -679,7 +688,7 @@ gauss_rle (GimpDrawable *drawable,
                        TRUE, TRUE);
 
   progress = 0.0;
-  max_progress  = 2 * width * height * radius;
+  max_progress  = 2 * width * height;
 
   /*  First the vertical pass  */
   radius = fabs (radius) + 1.0;
@@ -754,10 +763,10 @@ gauss_rle (GimpDrawable *drawable,
 
       if (show_progress)
         {
-          progress += height * radius;
+          progress += height;
 
-          if ((col % 5) == 0)
-            gimp_progress_update (0.5 * (pass + progress / max_progress));
+          if ((col % 20) == 0)
+            gimp_progress_update (0.5 * (pass + (progress / max_progress)));
         }
     }
 
@@ -823,10 +832,10 @@ gauss_rle (GimpDrawable *drawable,
 
       if (show_progress)
         {
-          progress += width * radius;
+          progress += width;
 
-          if ((row % 5) == 0)
-            gimp_progress_update (0.5 * (pass + progress / max_progress));
+          if ((row % 20) == 0)
+            gimp_progress_update (0.5 * (pass + (progress / max_progress)));
         }
     }
 

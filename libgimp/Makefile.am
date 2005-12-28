@@ -2,6 +2,7 @@
 
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpmodule = $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la
 libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 libgimp = ./libgimp-$(GIMP_API_VERSION).la
@@ -58,7 +59,7 @@ gimpincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimp
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"LibGimp\"	\
-	@GIMP_THREAD_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
 	-I$(top_srcdir)	\
@@ -71,6 +72,7 @@ PDB_WRAPPERS_C = \
 	gimpbrush_pdb.c			\
 	gimpbrushes_pdb.c		\
 	gimpbrushselect_pdb.c		\
+	gimpbuffer_pdb.c		\
 	gimpchannel_pdb.c		\
 	gimpcolor_pdb.c			\
 	gimpcontext_pdb.c		\
@@ -88,6 +90,7 @@ PDB_WRAPPERS_C = \
 	gimpgradients_pdb.c		\
 	gimpgradientselect_pdb.c	\
 	gimpguides_pdb.c		\
+	gimpgrid_pdb.c			\
 	gimphelp_pdb.c			\
 	gimpimage_pdb.c			\
 	gimplayer_pdb.c			\
@@ -110,13 +113,15 @@ PDB_WRAPPERS_C = \
 	gimptexttool_pdb.c		\
 	gimptransformtools_pdb.c	\
 	gimpundo_pdb.c			\
-	gimpunit_pdb.c
+	gimpunit_pdb.c			\
+	gimpvectors_pdb.c
 
 PDB_WRAPPERS_H = \
 	gimp_pdb.h			\
 	gimpbrush_pdb.h			\
 	gimpbrushes_pdb.h		\
 	gimpbrushselect_pdb.h		\
+	gimpbuffer_pdb.h		\
 	gimpchannel_pdb.h		\
 	gimpcolor_pdb.h			\
 	gimpcontext_pdb.h		\
@@ -133,6 +138,7 @@ PDB_WRAPPERS_H = \
 	gimpgradient_pdb.h		\
 	gimpgradients_pdb.h		\
 	gimpgradientselect_pdb.h	\
+	gimpgrid_pdb.h			\
 	gimpguides_pdb.h		\
 	gimphelp_pdb.h			\
 	gimpimage_pdb.h			\
@@ -156,7 +162,8 @@ PDB_WRAPPERS_H = \
 	gimptexttool_pdb.h		\
 	gimptransformtools_pdb.h	\
 	gimpundo_pdb.h			\
-	gimpunit_pdb.h
+	gimpunit_pdb.h			\
+	gimpvectors_pdb.h
 
 libgimp_2_0_la_sources = \
 	gimp.c			\
@@ -176,6 +183,8 @@ libgimp_2_0_la_sources = \
 	gimpdrawable.h		\
 	gimpfontselect.c	\
 	gimpfontselect.h	\
+	gimpgimprc.c		\
+	gimpgimprc.h		\
 	gimpgradients.c		\
 	gimpgradients.h		\
 	gimpgradientselect.c	\
@@ -220,47 +229,58 @@ libgimp_2_0_la_built_sources = \
 
 libgimp_2_0_la_extra_sources = gimpenums.c.tail
 
-EXTRA_DIST = \
-	COPYING				\
-	makefile.msc			\
-	gimp.def			\
-	gimpui.def			\
-	$(libgimp_2_0_la_extra_sources)
-
 libgimp_2_0_la_SOURCES = \
-	$(libgimp_2_0_la_sources)	\
-	$(libgimp_2_0_la_built_sources)
+	$(libgimp_2_0_la_built_sources)	\
+	$(libgimp_2_0_la_sources)
 
-libgimpui_2_0_la_SOURCES = \
+libgimpui_2_0_la_sources = \
 	gimpui.c		\
 	gimpui.h		\
 	gimpuitypes.h		\
-	gimpmenu.c		\
-	gimpmenu.h		\
 	gimpaspectpreview.c     \
 	gimpaspectpreview.h     \
 	gimpbrushmenu.c		\
 	gimpbrushmenu.h		\
+	gimpdrawablecombobox.c	\
+	gimpdrawablecombobox.h	\
 	gimpdrawablepreview.c	\
 	gimpdrawablepreview.h	\
+	gimpexport.c		\
+	gimpexport.h		\
 	gimpfontmenu.c		\
 	gimpfontmenu.h		\
+	gimpfontselectbutton.c	\
+	gimpfontselectbutton.h	\
 	gimpgradientmenu.c 	\
 	gimpgradientmenu.h 	\
+	gimpimagecombobox.c	\
+	gimpimagecombobox.h	\
+	gimpmenu.c		\
+	gimpmenu.h		\
 	gimppalettemenu.c	\
 	gimppalettemenu.h	\
 	gimppatternmenu.c	\
 	gimppatternmenu.h	\
-	gimpdrawablecombobox.c	\
-	gimpdrawablecombobox.h	\
-	gimpimagecombobox.c	\
-	gimpimagecombobox.h	\
 	gimppixbuf.c		\
 	gimppixbuf.h		\
+	gimpprocbrowserdialog.c	\
+	gimpprocbrowserdialog.h	\
+	gimpprocview.c		\
+	gimpprocview.h		\
 	gimpprogressbar.c	\
 	gimpprogressbar.h	\
-	gimpexport.c		\
-	gimpexport.h
+	gimpzoompreview.c	\
+	gimpzoompreview.h
+
+libgimpui_2_0_la_built_sources = \
+	gimpuimarshal.c			\
+	gimpuimarshal.h
+
+libgimpui_2_0_la_extra_sources = gimpuimarshal.list
+
+libgimpui_2_0_la_SOURCES = \
+	$(libgimpui_2_0_la_built_sources)	\
+	$(libgimpui_2_0_la_sources)
 
 gimpinclude_HEADERS = \
 	gimp.h			\
@@ -273,6 +293,7 @@ gimpinclude_HEADERS = \
 	gimpchannel.h		\
 	gimpdrawable.h		\
 	gimpfontselect.h	\
+	gimpgimprc.h		\
 	gimpgradients.h		\
 	gimpgradientselect.h	\
 	gimpimage.h		\
@@ -293,28 +314,32 @@ gimpinclude_HEADERS = \
 	\
 	gimpui.h		\
 	gimpuitypes.h		\
-	gimpmenu.h		\
 	gimpaspectpreview.h	\
 	gimpbrushmenu.h		\
+	gimpdrawablecombobox.h	\
 	gimpdrawablepreview.h   \
+	gimpexport.h		\
 	gimpfontmenu.h		\
+	gimpfontselectbutton.h	\
 	gimpgradientmenu.h	\
+	gimpimagecombobox.h	\
+	gimpmenu.h		\
 	gimppalettemenu.h	\
 	gimppatternmenu.h	\
 	gimppixbuf.h		\
+	gimpprocbrowserdialog.h	\
+	gimpprocview.h		\
 	gimpprogressbar.h	\
-	gimpdrawablecombobox.h	\
-	gimpimagecombobox.h	\
-	gimpexport.h
+	gimpzoompreview.h
 
 libgimp_2_0_la_LDFLAGS = \
 	-version-info $(LT_VERSION_INFO)	\
 	$(no_undefined)				\
 	$(libgimp_export_symbols)
 
-libgimp_2_0_la_LIBADD = $(libgimpcolor) $(libgimpbase) $(GLIB_LIBS) $(RT_LIBS)
+libgimp_2_0_la_LIBADD = $(libgimpconfig) $(libgimpcolor) $(libgimpbase) $(GLIB_LIBS) $(RT_LIBS)
 
-libgimp_2_0_la_DEPENDENCIES = $(gimp_def) $(libgimpcolor) $(libgimpbase)
+libgimp_2_0_la_DEPENDENCIES = $(gimp_def) $(libgimpconfig) $(libgimpcolor) $(libgimpbase)
 
 libgimpui_2_0_la_LDFLAGS = \
 	-version-info $(LT_VERSION_INFO)	\
@@ -326,6 +351,14 @@ libgimpui_2_0_la_LIBADD = $(libgimp) $(libgimpwidgets) $(libgimpcolor) \
 
 libgimpui_2_0_la_DEPENDENCIES = $(gimpui_def) $(libgimp) $(libgimpwidgets) $(libgimpbase)
 
+EXTRA_DIST = \
+	COPYING					\
+	makefile.msc				\
+	gimp.def				\
+	gimpui.def				\
+	$(libgimp_2_0_la_extra_sources)		\
+	$(libgimpui_2_0_la_extra_sources)
+
 install-data-local: install-ms-lib install-libtool-import-lib
 
 uninstall-local: uninstall-ms-lib uninstall-libtool-import-lib
@@ -334,7 +367,7 @@ uninstall-local: uninstall-ms-lib uninstall-libtool-import-lib
 # rules to generate built sources
 #
 # setup autogeneration dependencies
-gen_sources = xgen-cec
+gen_sources = xgen-cec xgen-umh xgen-umc
 CLEANFILES = $(gen_sources)
 
 $(srcdir)/gimpenums.c: $(srcdir)/gimpenums.h $(srcdir)/gimpenums.c.tail $(GIMP_MKENUMS)
@@ -351,3 +384,14 @@ $(srcdir)/gimpenums.c: $(srcdir)/gimpenums.h $(srcdir)/gimpenums.c.tail $(GIMP_M
 	&& cat $(srcdir)/gimpenums.c.tail >> xgen-cec \
 	&& cp xgen-cec $(@F) \
 	&& rm -f xgen-cec
+
+$(srcdir)/gimpuimarshal.h: $(srcdir)/gimpuimarshal.list
+	$(GLIB_GENMARSHAL) --prefix=_gimpui_marshal $(srcdir)/gimpuimarshal.list --header >> xgen-umh \
+	&& (cmp -s xgen-umh $(@F) || cp xgen-umh $(@F)) \
+	&& rm -f xgen-umh xgen-umh~
+
+$(srcdir)/gimpuimarshal.c: $(srcdir)/gimpuimarshal.h
+	echo "#include \"gimpuimarshal.h\"" >> xgen-umc \
+	&& $(GLIB_GENMARSHAL) --prefix=_gimpui_marshal $(srcdir)/gimpuimarshal.list --body >> xgen-umc \
+	&& cp xgen-umc $(@F) \
+	&& rm -f xgen-umc xgen-umc~

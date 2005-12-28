@@ -47,7 +47,7 @@ gimp_path_list (gint32  image_ID,
   gchar **path_list = NULL;
   gint i;
 
-  return_vals = gimp_run_procedure ("gimp_path_list",
+  return_vals = gimp_run_procedure ("gimp-path-list",
 				    &nreturn_vals,
 				    GIMP_PDB_IMAGE, image_ID,
 				    GIMP_PDB_END);
@@ -84,7 +84,7 @@ gimp_path_get_current (gint32 image_ID)
   gint nreturn_vals;
   gchar *name = NULL;
 
-  return_vals = gimp_run_procedure ("gimp_path_get_current",
+  return_vals = gimp_run_procedure ("gimp-path-get-current",
 				    &nreturn_vals,
 				    GIMP_PDB_IMAGE, image_ID,
 				    GIMP_PDB_END);
@@ -116,7 +116,7 @@ gimp_path_set_current (gint32       image_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_path_set_current",
+  return_vals = gimp_run_procedure ("gimp-path-set-current",
 				    &nreturn_vals,
 				    GIMP_PDB_IMAGE, image_ID,
 				    GIMP_PDB_STRING, name,
@@ -148,7 +148,7 @@ gimp_path_delete (gint32       image_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_path_delete",
+  return_vals = gimp_run_procedure ("gimp-path-delete",
 				    &nreturn_vals,
 				    GIMP_PDB_IMAGE, image_ID,
 				    GIMP_PDB_STRING, name,
@@ -186,7 +186,7 @@ gimp_path_get_points (gint32        image_ID,
   gint nreturn_vals;
   gint path_type = 0;
 
-  return_vals = gimp_run_procedure ("gimp_path_get_points",
+  return_vals = gimp_run_procedure ("gimp-path-get-points",
 				    &nreturn_vals,
 				    GIMP_PDB_IMAGE, image_ID,
 				    GIMP_PDB_STRING, name,
@@ -234,7 +234,7 @@ gimp_path_set_points (gint32         image_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_path_set_points",
+  return_vals = gimp_run_procedure ("gimp-path-set-points",
 				    &nreturn_vals,
 				    GIMP_PDB_IMAGE, image_ID,
 				    GIMP_PDB_STRING, name,
@@ -267,7 +267,7 @@ gimp_path_stroke_current (gint32 image_ID)
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_path_stroke_current",
+  return_vals = gimp_run_procedure ("gimp-path-stroke-current",
 				    &nreturn_vals,
 				    GIMP_PDB_IMAGE, image_ID,
 				    GIMP_PDB_END);
@@ -307,7 +307,7 @@ gimp_path_get_point_at_dist (gint32   image_ID,
   gint nreturn_vals;
   gint x_point = 0;
 
-  return_vals = gimp_run_procedure ("gimp_path_get_point_at_dist",
+  return_vals = gimp_run_procedure ("gimp-path-get-point-at-dist",
 				    &nreturn_vals,
 				    GIMP_PDB_IMAGE, image_ID,
 				    GIMP_PDB_FLOAT, distance,
@@ -347,7 +347,7 @@ gimp_path_get_tattoo (gint32       image_ID,
   gint nreturn_vals;
   gint tattoo = 0;
 
-  return_vals = gimp_run_procedure ("gimp_path_get_tattoo",
+  return_vals = gimp_run_procedure ("gimp-path-get-tattoo",
 				    &nreturn_vals,
 				    GIMP_PDB_IMAGE, image_ID,
 				    GIMP_PDB_STRING, name,
@@ -386,7 +386,7 @@ gimp_path_set_tattoo (gint32       image_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_path_set_tattoo",
+  return_vals = gimp_run_procedure ("gimp-path-set-tattoo",
 				    &nreturn_vals,
 				    GIMP_PDB_IMAGE, image_ID,
 				    GIMP_PDB_STRING, name,
@@ -423,7 +423,7 @@ gimp_get_path_by_tattoo (gint32 image_ID,
   gint nreturn_vals;
   gchar *name = NULL;
 
-  return_vals = gimp_run_procedure ("gimp_get_path_by_tattoo",
+  return_vals = gimp_run_procedure ("gimp-get-path-by-tattoo",
 				    &nreturn_vals,
 				    GIMP_PDB_IMAGE, image_ID,
 				    GIMP_PDB_INT32, tattoo,
@@ -448,35 +448,35 @@ gimp_get_path_by_tattoo (gint32 image_ID,
  * path. A path can be \"locked\" which means that the transformation
  * tool operations will also apply to the path.
  *
- * Returns: The lock status associated with the name path. 0 is returned if the path is not locked. 1 is returned if the path is locked.
+ * Returns: TRUE if the path is locked, FALSE otherwise.
  */
-gint
+gboolean
 gimp_path_get_locked (gint32       image_ID,
 		      const gchar *name)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
-  gint lockstatus = 0;
+  gboolean locked = FALSE;
 
-  return_vals = gimp_run_procedure ("gimp_path_get_locked",
+  return_vals = gimp_run_procedure ("gimp-path-get-locked",
 				    &nreturn_vals,
 				    GIMP_PDB_IMAGE, image_ID,
 				    GIMP_PDB_STRING, name,
 				    GIMP_PDB_END);
 
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
-    lockstatus = return_vals[1].data.d_int32;
+    locked = return_vals[1].data.d_int32;
 
   gimp_destroy_params (return_vals, nreturn_vals);
 
-  return lockstatus;
+  return locked;
 }
 
 /**
  * gimp_path_set_locked:
  * @image_ID: The image.
  * @name: the name of the path whose locked status should be set.
- * @lockstatus: The lock status associated with the name path. 0 if the path is not locked. 1 if the path is to be locked.
+ * @locked: Whether the path is locked.
  *
  * Set the locked status associated with the named path.
  *
@@ -489,17 +489,87 @@ gimp_path_get_locked (gint32       image_ID,
 gboolean
 gimp_path_set_locked (gint32       image_ID,
 		      const gchar *name,
-		      gint         lockstatus)
+		      gboolean     locked)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_path_set_locked",
+  return_vals = gimp_run_procedure ("gimp-path-set-locked",
 				    &nreturn_vals,
 				    GIMP_PDB_IMAGE, image_ID,
 				    GIMP_PDB_STRING, name,
-				    GIMP_PDB_INT32, lockstatus,
+				    GIMP_PDB_INT32, locked,
+				    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_path_get_visible:
+ * @image_ID: The image.
+ * @name: The name of the path whose visibility should be obtained.
+ *
+ * Get the visibility of the named path.
+ *
+ * This procedure returns the visibility of the specified path.
+ *
+ * Returns: TRUE if the path is visible, FALSE otherwise.
+ */
+gboolean
+gimp_path_get_visible (gint32       image_ID,
+		       const gchar *name)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean visible = FALSE;
+
+  return_vals = gimp_run_procedure ("gimp-path-get-visible",
+				    &nreturn_vals,
+				    GIMP_PDB_IMAGE, image_ID,
+				    GIMP_PDB_STRING, name,
+				    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    visible = return_vals[1].data.d_int32;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return visible;
+}
+
+/**
+ * gimp_path_set_visible:
+ * @image_ID: The image.
+ * @name: The name of the path whose visibility should be set.
+ * @visible: The new path visibility.
+ *
+ * Sets the visibility of the named path.
+ *
+ * This procedure sets the specified path's visibility.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: GIMP 2.4
+ */
+gboolean
+gimp_path_set_visible (gint32       image_ID,
+		       const gchar *name,
+		       gboolean     visible)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-path-set-visible",
+				    &nreturn_vals,
+				    GIMP_PDB_IMAGE, image_ID,
+				    GIMP_PDB_STRING, name,
+				    GIMP_PDB_INT32, visible,
 				    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
@@ -538,7 +608,7 @@ gimp_path_to_selection (gint32          image_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_path_to_selection",
+  return_vals = gimp_run_procedure ("gimp-path-to-selection",
 				    &nreturn_vals,
 				    GIMP_PDB_IMAGE, image_ID,
 				    GIMP_PDB_STRING, name,
@@ -565,9 +635,8 @@ gimp_path_to_selection (gint32          image_ID,
  *
  * Import paths from an SVG file.
  *
- * This procedure imports paths from an SVG file. This is a temporary
- * solution until the new vectors PDB API is in place. Don't rely on
- * this function being available in future GIMP releases.
+ * This procedure imports paths from an SVG file. SVG elements other
+ * than paths and basic shapes are ignored.
  *
  * Returns: TRUE on success.
  */
@@ -581,10 +650,55 @@ gimp_path_import (gint32       image_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_path_import",
+  return_vals = gimp_run_procedure ("gimp-path-import",
 				    &nreturn_vals,
 				    GIMP_PDB_IMAGE, image_ID,
 				    GIMP_PDB_STRING, filename,
+				    GIMP_PDB_INT32, merge,
+				    GIMP_PDB_INT32, scale,
+				    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_path_import_string:
+ * @image_ID: The image.
+ * @string: A string that must be a complete and valid SVG document.
+ * @length: Number of bytes in string or -1 if the string is NULL terminated.
+ * @merge: Merge paths into a single vectors object.
+ * @scale: Scale the SVG to image dimensions.
+ *
+ * Import paths from an SVG string.
+ *
+ * This procedure works like gimp_path_import() but takes a string
+ * rather than reading the SVG from a file. This allows you to write
+ * scripts that generate SVG and feed it to GIMP.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: GIMP 2.4
+ */
+gboolean
+gimp_path_import_string (gint32       image_ID,
+			 const gchar *string,
+			 gint         length,
+			 gboolean     merge,
+			 gboolean     scale)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-path-import-string",
+				    &nreturn_vals,
+				    GIMP_PDB_IMAGE, image_ID,
+				    GIMP_PDB_STRING, string,
+				    GIMP_PDB_INT32, length,
 				    GIMP_PDB_INT32, merge,
 				    GIMP_PDB_INT32, scale,
 				    GIMP_PDB_END);

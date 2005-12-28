@@ -2,6 +2,7 @@
 
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpmodule = $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la
 libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 
@@ -20,6 +21,7 @@ EXTRA_DIST = \
 	makefile.msc
 
 if HAVE_LCMS
+cdisplay_lcms_module = libcdisplay_lcms.la
 cdisplay_proof_module = libcdisplay_proof.la
 endif
 
@@ -34,14 +36,17 @@ lib_LTLIBRARIES = \
 	libcdisplay_colorblind.la	\
 	libcdisplay_gamma.la		\
 	libcdisplay_highcontrast.la	\
+	$(cdisplay_lcms_module)		\
 	$(cdisplay_proof_module)	\
 	libcontroller_midi.la		\
 	$(controller_linux_input_module)
 
 
-colorsel_libadd = $(libgimpcolor) $(libgimpmodule) $(libgimpwidgets) $(GTK_LIBS)
-cdisplay_libadd = $(libgimpbase) $(libgimpmodule) $(libgimpwidgets) $(GTK_LIBS)
-controller_libadd = $(libgimpmodule) $(libgimpwidgets) $(GTK_LIBS)
+modules_libadd = $(libgimpmodule) $(libgimpwidgets) $(GTK_LIBS)
+
+colorsel_libadd = $(libgimpcolor) $(modules_libadd)
+cdisplay_libadd = $(libgimpbase) $(libgimpconfig) $(modules_libadd)
+controller_libadd = $(modules_libadd)
 
 libcolorsel_cmyk_la_SOURCES = colorsel_cmyk.c
 libcolorsel_cmyk_la_LDFLAGS = -avoid-version -module $(no_undefined)
@@ -66,6 +71,10 @@ libcdisplay_gamma_la_LIBADD = $(cdisplay_libadd)
 libcdisplay_highcontrast_la_SOURCES = cdisplay_highcontrast.c
 libcdisplay_highcontrast_la_LDFLAGS = -avoid-version -module $(no_undefined)
 libcdisplay_highcontrast_la_LIBADD = $(cdisplay_libadd)
+
+libcdisplay_lcms_la_SOURCES = cdisplay_lcms.c
+libcdisplay_lcms_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libcdisplay_lcms_la_LIBADD = $(cdisplay_libadd) $(LCMS_LIBS)
 
 libcdisplay_proof_la_SOURCES = cdisplay_proof.c
 libcdisplay_proof_la_LDFLAGS = -avoid-version -module $(no_undefined)

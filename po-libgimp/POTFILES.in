@@ -3,22 +3,33 @@
 
 libgimp/gimpbrushmenu.c
 libgimp/gimpexport.c
-libgimp/gimpfontmenu.c
+libgimp/gimpfontselectbutton.c
 libgimp/gimpgradientmenu.c
 libgimp/gimpmenu.c
 libgimp/gimppalettemenu.c
 libgimp/gimppatternmenu.c
+libgimp/gimpprocbrowserdialog.c
+libgimp/gimpprocview.c
 libgimp/gimpunitcache.c
 
 libgimpbase/gimpbaseenums.c
 libgimpbase/gimpmemsize.c
 libgimpbase/gimputils.c
 
+libgimpconfig/gimpcolorconfig.c
+libgimpconfig/gimpcolorconfig-enums.c
+libgimpconfig/gimpconfig-deserialize.c
+libgimpconfig/gimpconfig-iface.c
+libgimpconfig/gimpconfig-path.c
+libgimpconfig/gimpconfigwriter.c
+libgimpconfig/gimpscanner.c
+
 libgimpmodule/gimpmodule.c
 
 libgimpthumb/gimpthumb-utils.c
 libgimpthumb/gimpthumbnail.c
 
+libgimpwidgets/gimpbrowser.c
 libgimpwidgets/gimpcolorbutton.c
 libgimpwidgets/gimpcolorscales.c
 libgimpwidgets/gimpcolorselect.c
@@ -30,14 +41,18 @@ libgimpwidgets/gimppatheditor.c
 libgimpwidgets/gimppickbutton.c
 libgimpwidgets/gimppreviewarea.c
 libgimpwidgets/gimppreview.c
+libgimpwidgets/gimppropwidgets.c
 libgimpwidgets/gimpquerybox.c
+libgimpwidgets/gimpresolutionentry.c
 libgimpwidgets/gimpstock.c
 libgimpwidgets/gimpunitmenu.c
 libgimpwidgets/gimpwidgets.c
+libgimpwidgets/gimpwidgetsenums.c
 
 modules/cdisplay_colorblind.c
 modules/cdisplay_gamma.c
 modules/cdisplay_highcontrast.c
+modules/cdisplay_lcms.c
 modules/cdisplay_proof.c
 modules/colorsel_cmyk.c
 modules/colorsel_triangle.c

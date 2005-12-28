@@ -22,12 +22,11 @@
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
 
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-params.h"
 #include "config/gimpconfig-utils.h"
 
 #include "core/gimp.h"
@@ -62,12 +61,10 @@ enum
   PROP_BASE_DIR,
   PROP_JUSTIFICATION,
   PROP_INDENTATION,
-  PROP_LINE_SPACING
+  PROP_LINE_SPACING,
+  PROP_LETTER_SPACING
 };
 
-
-static void  gimp_text_options_class_init (GimpTextOptionsClass *options_class);
-static void  gimp_text_options_init       (GimpTextOptions      *options);
 
 static void  gimp_text_options_set_property       (GObject      *object,
                                                    guint         property_id,
@@ -92,43 +89,13 @@ static void  gimp_text_options_notify_text_color  (GimpText     *text,
                                                    GimpContext  *context);
 
 
-static GimpToolOptionsClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpTextOptions, gimp_text_options, GIMP_TYPE_TOOL_OPTIONS);
 
-
-GType
-gimp_text_options_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpTextOptionsClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_text_options_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpTextOptions),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_text_options_init
-      };
-
-      type = g_type_register_static (GIMP_TYPE_TOOL_OPTIONS,
-                                     "GimpTextOptions",
-                                     &info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_text_options_class_init (GimpTextOptionsClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->set_property = gimp_text_options_set_property;
   object_class->get_property = gimp_text_options_get_property;
@@ -177,12 +144,17 @@ gimp_text_options_class_init (GimpTextOptionsClass *klass)
                                    "indent",
                                    N_("Indentation of the first line"),
                                    -8192.0, 8192.0, 0.0,
-                                   GIMP_PARAM_DEFAULTS);
+                                   GIMP_CONFIG_PARAM_DEFAULTS);
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_LINE_SPACING,
                                    "line-spacing",
-                                   N_("Modify line spacing"),
+                                   N_("Adjust line spacing"),
                                    -8192.0, 8192.0, 0.0,
-                                   GIMP_PARAM_DEFAULTS);
+                                   GIMP_CONFIG_PARAM_DEFAULTS);
+  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_LETTER_SPACING,
+                                   "letter-spacing",
+                                   N_("Adjust letter spacing"),
+                                   -8192.0, 8192.0, 0.0,
+                                   GIMP_CONFIG_PARAM_DEFAULTS);
 }
 
 static void
@@ -231,6 +203,9 @@ gimp_text_options_get_property (GObject    *object,
     case PROP_LINE_SPACING:
       g_value_set_double (value, options->line_spacing);
       break;
+    case PROP_LETTER_SPACING:
+      g_value_set_double (value, options->letter_spacing);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -277,6 +252,9 @@ gimp_text_options_set_property (GObject      *object,
       break;
     case PROP_LINE_SPACING:
       options->line_spacing = g_value_get_double (value);
+      break;
+    case PROP_LETTER_SPACING:
+      options->letter_spacing = g_value_get_double (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -365,7 +343,7 @@ gimp_text_options_connect_text (GimpTextOptions *options,
 
   gimp_context_get_foreground (context, &color);
 
-  gimp_config_sync (GIMP_CONFIG (options), GIMP_CONFIG (text), 0);
+  gimp_config_sync (G_OBJECT (options), G_OBJECT (text), 0);
 
   g_object_set (text,
                 "color", &color,
@@ -408,7 +386,7 @@ gimp_text_options_gui (GimpToolOptions *tool_options)
 
   g_object_set_data (G_OBJECT (tool_options), "tool-options-vbox", vbox);
 
-  table = gtk_table_new (9, 3, FALSE);
+  table = gtk_table_new (10, 3, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 2);
   gtk_table_set_row_spacings (GTK_TABLE (table), 2);
   gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 0);
@@ -465,17 +443,21 @@ gimp_text_options_gui (GimpToolOptions *tool_options)
 
   spinbutton = gimp_prop_spin_button_new (config, "indent", 1.0, 10.0, 1);
   gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), 5);
-  gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
-                             _("Indent:"), 0.0, 0.5,
-                             spinbutton, 1, FALSE);
+  gimp_table_attach_stock (GTK_TABLE (table), row++,
+                           GTK_STOCK_INDENT, spinbutton, 1, TRUE);
 
   spinbutton = gimp_prop_spin_button_new (config, "line-spacing", 1.0, 10.0, 1);
   gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), 5);
   gimp_table_attach_stock (GTK_TABLE (table), row++,
-                           _("Line\nspacing:"), 0.0,
-                           spinbutton, 1, GIMP_STOCK_LINE_SPACING);
+                           GIMP_STOCK_LINE_SPACING, spinbutton, 1, TRUE);
 
-  button = gtk_button_new_with_label (_("Create path from text"));
+  spinbutton = gimp_prop_spin_button_new (config,
+                                          "letter-spacing", 1.0, 10.0, 1);
+  gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), 5);
+  gimp_table_attach_stock (GTK_TABLE (table), row++,
+                           GIMP_STOCK_LETTER_SPACING, spinbutton, 1, TRUE);
+
+  button = gtk_button_new_with_label (_("Create Path from Text"));
   gtk_box_pack_end (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_set_sensitive (button, FALSE);
   gtk_widget_show (button);
@@ -483,12 +465,20 @@ gimp_text_options_gui (GimpToolOptions *tool_options)
   g_object_set_data (G_OBJECT (tool_options),
                      "gimp-text-to-vectors", button);
 
+  button = gtk_button_new_with_label (_("Text along Path"));
+  gtk_box_pack_end (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  gtk_widget_set_sensitive (button, FALSE);
+  gtk_widget_show (button);
+
+  g_object_set_data (G_OBJECT (tool_options),
+                     "gimp-text-to-vectors-warped", button);
+
   return vbox;
 }
 
 static void
-gimp_text_options_dir_changed (GimpTextEditor  *editor,
-                               GimpTextOptions *options)
+gimp_text_options_editor_dir_changed (GimpTextEditor  *editor,
+                                      GimpTextOptions *options)
 {
   g_object_set (options,
                 "base-direction", editor->base_dir,
@@ -496,9 +486,9 @@ gimp_text_options_dir_changed (GimpTextEditor  *editor,
 }
 
 static void
-gimp_text_options_notify_dir (GimpTextOptions *options,
-                              GParamSpec      *pspec,
-                              GimpTextEditor  *editor)
+gimp_text_options_editor_notify_dir (GimpTextOptions *options,
+                                     GParamSpec      *pspec,
+                                     GimpTextEditor  *editor)
 {
   GimpTextDirection  dir;
 
@@ -509,12 +499,25 @@ gimp_text_options_notify_dir (GimpTextOptions *options,
   gimp_text_editor_set_direction (editor, dir);
 }
 
+static void
+gimp_text_options_editor_notify_font (GimpTextOptions *options,
+                                      GParamSpec      *pspec,
+                                      GimpTextEditor  *editor)
+{
+  const gchar *font_name;
+
+  font_name = gimp_context_get_font_name (GIMP_CONTEXT (options));
+
+  gimp_text_editor_set_font_name (editor, font_name);
+}
+
 GtkWidget *
 gimp_text_options_editor_new (GimpTextOptions *options,
                               GimpMenuFactory *menu_factory,
                               const gchar     *title)
 {
-  GtkWidget *editor;
+  GtkWidget   *editor;
+  const gchar *font_name;
 
   g_return_val_if_fail (GIMP_IS_TEXT_OPTIONS (options), NULL);
   g_return_val_if_fail (GIMP_IS_MENU_FACTORY (menu_factory), NULL);
@@ -522,14 +525,21 @@ gimp_text_options_editor_new (GimpTextOptions *options,
 
   editor = gimp_text_editor_new (title, menu_factory);
 
+  font_name = gimp_context_get_font_name (GIMP_CONTEXT (options));
+
   gimp_text_editor_set_direction (GIMP_TEXT_EDITOR (editor),
                                   options->base_dir);
+  gimp_text_editor_set_font_name (GIMP_TEXT_EDITOR (editor),
+                                  font_name);
 
-  g_signal_connect_object (editor, "dir_changed",
-                           G_CALLBACK (gimp_text_options_dir_changed),
+  g_signal_connect_object (editor, "dir-changed",
+                           G_CALLBACK (gimp_text_options_editor_dir_changed),
                            options, 0);
   g_signal_connect_object (options, "notify::base-direction",
-                           G_CALLBACK (gimp_text_options_notify_dir),
+                           G_CALLBACK (gimp_text_options_editor_notify_dir),
+                           editor, 0);
+  g_signal_connect_object (options, "notify::font",
+                           G_CALLBACK (gimp_text_options_editor_notify_font),
                            editor, 0);
 
   return editor;

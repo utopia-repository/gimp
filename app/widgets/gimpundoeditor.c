@@ -48,8 +48,6 @@ enum
 };
 
 
-static void      gimp_undo_editor_class_init   (GimpUndoEditorClass   *klass);
-static void      gimp_undo_editor_init         (GimpUndoEditor        *undo_editor);
 static GObject * gimp_undo_editor_constructor    (GType              type,
                                                   guint              n_params,
                                                   GObjectConstructParam *params);
@@ -75,44 +73,16 @@ static void      gimp_undo_editor_select_item    (GimpContainerView *view,
                                                   GimpUndoEditor    *editor);
 
 
-static GimpImageEditorClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpUndoEditor, gimp_undo_editor, GIMP_TYPE_IMAGE_EDITOR);
 
+#define parent_class gimp_undo_editor_parent_class
 
-GType
-gimp_undo_editor_get_type (void)
-{
-  static GType editor_type = 0;
-
-  if (! editor_type)
-    {
-      static const GTypeInfo editor_info =
-      {
-        sizeof (GimpUndoEditorClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_undo_editor_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpUndoEditor),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_undo_editor_init,
-      };
-
-      editor_type = g_type_register_static (GIMP_TYPE_IMAGE_EDITOR,
-                                            "GimpUndoEditor",
-                                            &editor_info, 0);
-    }
-
-  return editor_type;
-}
 
 static void
 gimp_undo_editor_class_init (GimpUndoEditorClass *klass)
 {
   GObjectClass         *object_class       = G_OBJECT_CLASS (klass);
   GimpImageEditorClass *image_editor_class = GIMP_IMAGE_EDITOR_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->constructor     = gimp_undo_editor_constructor;
   object_class->set_property    = gimp_undo_editor_set_property;
@@ -153,7 +123,7 @@ gimp_undo_editor_constructor (GType                  type,
   gtk_container_add (GTK_CONTAINER (undo_editor), undo_editor->view);
   gtk_widget_show (undo_editor->view);
 
-  g_signal_connect (undo_editor->view, "select_item",
+  g_signal_connect (undo_editor->view, "select-item",
                     G_CALLBACK (gimp_undo_editor_select_item),
                     undo_editor);
 
@@ -213,7 +183,7 @@ gimp_undo_editor_set_image (GimpImageEditor *image_editor,
       if (gimp_image_undo_is_enabled (image_editor->gimage))
         gimp_undo_editor_fill (editor);
 
-      g_signal_connect (image_editor->gimage, "undo_event",
+      g_signal_connect (image_editor->gimage, "undo-event",
 			G_CALLBACK (gimp_undo_editor_undo_event),
 			editor);
     }
@@ -232,6 +202,7 @@ gimp_undo_editor_new (GimpCoreConfig  *config,
   return g_object_new (GIMP_TYPE_UNDO_EDITOR,
                        "menu-factory",    menu_factory,
                        "menu-identifier", "<UndoEditor>",
+                       "ui-path",         "/undo-editor-popup",
                        "preview-size",    config->undo_preview_size,
                        NULL);
 }

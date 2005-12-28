@@ -53,9 +53,6 @@
 #include "gimp-intl.h"
 
 
-static void   gimp_fuzzy_select_tool_class_init (GimpFuzzySelectToolClass *klass);
-static void   gimp_fuzzy_select_tool_init       (GimpFuzzySelectTool      *fuzzy_select);
-
 static void   gimp_fuzzy_select_tool_finalize       (GObject         *object);
 
 static void   gimp_fuzzy_select_tool_button_press   (GimpTool        *tool,
@@ -82,7 +79,10 @@ static GdkSegment *
                                                  gint                *num_segs);
 
 
-static GimpSelectionToolClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpFuzzySelectTool, gimp_fuzzy_select_tool,
+               GIMP_TYPE_SELECTION_TOOL);
+
+#define parent_class gimp_fuzzy_select_tool_parent_class
 
 
 void
@@ -102,42 +102,12 @@ gimp_fuzzy_select_tool_register (GimpToolRegisterCallback  callback,
                 data);
 }
 
-GType
-gimp_fuzzy_select_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpFuzzySelectToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_fuzzy_select_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpFuzzySelectTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_fuzzy_select_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_SELECTION_TOOL,
-                                          "GimpFuzzySelectTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
-
 static void
 gimp_fuzzy_select_tool_class_init (GimpFuzzySelectToolClass *klass)
 {
   GObjectClass      *object_class    = G_OBJECT_CLASS (klass);
   GimpToolClass     *tool_class      = GIMP_TOOL_CLASS (klass);
   GimpDrawToolClass *draw_tool_class = GIMP_DRAW_TOOL_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize     = gimp_fuzzy_select_tool_finalize;
 
@@ -213,6 +183,8 @@ gimp_fuzzy_select_tool_button_press (GimpTool        *tool,
   if (gimp_selection_tool_start_edit (GIMP_SELECTION_TOOL (fuzzy_sel), coords))
     return;
 
+  gimp_tool_push_status (tool, gdisp, _("Move the mouse to change threshold."));
+
   /*  calculate the region boundary  */
   fuzzy_sel->segs = gimp_fuzzy_select_tool_calculate (fuzzy_sel, gdisp,
                                                       &fuzzy_sel->num_segs);
@@ -230,7 +202,9 @@ gimp_fuzzy_select_tool_button_release (GimpTool        *tool,
   GimpFuzzySelectTool  *fuzzy_sel = GIMP_FUZZY_SELECT_TOOL (tool);
   GimpSelectionOptions *options;
 
-  options   = GIMP_SELECTION_OPTIONS (tool->tool_info->tool_options);
+  options = GIMP_SELECTION_OPTIONS (tool->tool_info->tool_options);
+
+  gimp_tool_pop_status (tool, gdisp);
 
   gimp_draw_tool_stop (GIMP_DRAW_TOOL (tool));
 
@@ -421,12 +395,12 @@ gimp_fuzzy_select_tool_calculate (GimpFuzzySelectTool *fuzzy_sel,
                      gimp_item_height (GIMP_ITEM (fuzzy_sel->fuzzy_mask)),
                      FALSE);
 
-  bsegs =
-    find_mask_boundary (&maskPR, num_segs, WithinBounds,
-                        0, 0,
-                        gimp_item_width  (GIMP_ITEM (fuzzy_sel->fuzzy_mask)),
-                        gimp_item_height (GIMP_ITEM (fuzzy_sel->fuzzy_mask)),
-                        HALF_WAY);
+  bsegs = boundary_find (&maskPR, BOUNDARY_WITHIN_BOUNDS,
+                         0, 0,
+                         gimp_item_width  (GIMP_ITEM (fuzzy_sel->fuzzy_mask)),
+                         gimp_item_height (GIMP_ITEM (fuzzy_sel->fuzzy_mask)),
+                         BOUNDARY_HALF_WAY,
+                         num_segs);
 
   segs = g_new (GdkSegment, *num_segs);
 

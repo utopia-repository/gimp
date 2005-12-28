@@ -35,6 +35,8 @@
 
 /* Some useful macros */
 
+#define PLUG_IN_PROC    "plug-in-cartoon"
+#define PLUG_IN_BINARY  "cartoon"
 #define TILE_CACHE_SIZE 48
 
 typedef struct
@@ -112,11 +114,11 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",    "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",    "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",       "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable",    "Input drawable" },
     { GIMP_PDB_FLOAT,    "mask_radius", "Cartoon mask radius (radius of pixel neighborhood)" },
-    { GIMP_PDB_FLOAT,    "pct_black",   "Percentage of darkened pixels to set to black (0.0 - 1.0)" }
+    { GIMP_PDB_FLOAT,    "pct-black",   "Percentage of darkened pixels to set to black (0.0 - 1.0)" }
   };
 
   gchar *help_string =
@@ -138,7 +140,7 @@ query (void)
     "black border lines smoother and the lines themselves thinner and less "
     "noticable; larger values achieve the opposite effect.";
 
-  gimp_install_procedure ("plug_in_cartoon",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Propagates dark values in an image to achieve cartoon rendering",
                           help_string,
                           "Spencer Kimball",
@@ -150,7 +152,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_cartoon", "<Image>/Filters/Artistic");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Artistic");
 }
 
 static void
@@ -185,7 +187,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_cartoon", &cvals);
+      gimp_get_data (PLUG_IN_PROC, &cvals);
 
       /*  First acquire information with a dialog  */
       if (! cartoon_dialog (drawable))
@@ -199,7 +201,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_cartoon", &cvals);
+      gimp_get_data (PLUG_IN_PROC, &cvals);
       break;
 
     default:
@@ -212,7 +214,7 @@ run (const gchar      *name,
       if (gimp_drawable_is_rgb (drawable->drawable_id) ||
           gimp_drawable_is_gray (drawable->drawable_id))
         {
-          gimp_progress_init ("Cartoon...");
+          gimp_progress_init ("Cartoon");
 
 
           cartoon (drawable, NULL);
@@ -222,7 +224,7 @@ run (const gchar      *name,
 
           /*  Store data  */
           if (run_mode == GIMP_RUN_INTERACTIVE)
-            gimp_set_data ("plug_in_cartoon", &cvals, sizeof (CartoonVals));
+            gimp_set_data (PLUG_IN_PROC, &cvals, sizeof (CartoonVals));
         }
       else
         {
@@ -286,7 +288,7 @@ cartoon (GimpDrawable *drawable,
   gdouble       std_dev1;
   gdouble       std_dev2;
   gdouble       ramp;
-  gchar        *preview_buffer = NULL;
+  guchar       *preview_buffer = NULL;
 
   if (preview)
     {
@@ -498,7 +500,8 @@ cartoon (GimpDrawable *drawable,
     }
   else
     {
-      gimp_pixel_rgn_init (&dest_rgn, drawable, x1, y1, width, height, TRUE, TRUE);
+      gimp_pixel_rgn_init (&dest_rgn, drawable,
+                           x1, y1, width, height, TRUE, TRUE);
       pr = gimp_pixel_rgns_register (2, &src_rgn, &dest_rgn);
     }
 
@@ -803,16 +806,23 @@ cartoon_dialog (GimpDrawable *drawable)
   GtkObject *scale_data;
   gboolean   run;
 
-  gimp_ui_init ("cartoon", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Cartoon"), "cartoon",
+  dialog = gimp_dialog_new (_("Cartoon"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-cartoon",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -840,10 +850,10 @@ cartoon_dialog (GimpDrawable *drawable)
                                      TRUE, 0, 0,
                                      NULL, NULL);
 
-  g_signal_connect (scale_data, "value_changed",
+  g_signal_connect (scale_data, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &cvals.mask_radius);
-  g_signal_connect_swapped (scale_data, "value_changed",
+  g_signal_connect_swapped (scale_data, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -854,10 +864,10 @@ cartoon_dialog (GimpDrawable *drawable)
                                      TRUE, 0, 0,
                                      NULL, NULL);
 
-  g_signal_connect (scale_data, "value_changed",
+  g_signal_connect (scale_data, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &cvals.pct_black);
-  g_signal_connect_swapped (scale_data, "value_changed",
+  g_signal_connect_swapped (scale_data, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 

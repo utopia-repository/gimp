@@ -13,15 +13,15 @@ extern gboolean gimp_composite_mmx_install (void);
 /*
  * Rummage through the compile-time environment to ensure this file
  * can actually be compiled like we expect it to.  If all is okay,
- * define the manifest constant COMPILE_IS_OKAY.
+ * define the manifest constant COMPILE_MMX_IS_OKAY.
  */
 #if !defined(__INTEL_COMPILER) || defined(USE_INTEL_COMPILER_ANYWAY)
 #if defined(USE_MMX)
 #if defined(ARCH_X86)
 #if __GNUC__ >= 3
-#if defined(ARCH_X86_64) || (!defined(PIC) && !defined(__PIC__))
+#if defined(ARCH_X86_64) || !defined(PIC)
 #define COMPILE_MMX_IS_OKAY (1)
-#endif /* defined(ARCH_X86_64) || (!defined(PIC) && !defined(__PIC__)) */
+#endif /* defined(ARCH_X86_64) || !defined(PIC) */
 #endif /* __GNUC__ >= 3 */
 #endif /* defined(ARCH_X86) */
 #endif /* defined(USE_MMX) */
@@ -33,6 +33,7 @@ extern gboolean gimp_composite_mmx_install (void);
  *
  */
 extern void gimp_composite_addition_rgba8_rgba8_rgba8_mmx (GimpCompositeContext *ctx);
+extern void gimp_composite_burn_rgba8_rgba8_rgba8_mmx (GimpCompositeContext *ctx);
 extern void gimp_composite_coloronly_rgba8_rgba8_rgba8_mmx (GimpCompositeContext *ctx);
 extern void gimp_composite_darken_rgba8_rgba8_rgba8_mmx (GimpCompositeContext *ctx);
 extern void gimp_composite_difference_rgba8_rgba8_rgba8_mmx (GimpCompositeContext *ctx);
@@ -54,6 +55,9 @@ extern void gimp_composite_softlight_rgba8_rgba8_rgba8_mmx (GimpCompositeContext
 extern void gimp_composite_subtract_rgba8_rgba8_rgba8_mmx (GimpCompositeContext *ctx);
 extern void gimp_composite_swap_rgba8_rgba8_rgba8_mmx (GimpCompositeContext *ctx);
 extern void gimp_composite_valueonly_rgba8_rgba8_rgba8_mmx (GimpCompositeContext *ctx);
+
 extern void gimp_composite_addition_va8_va8_va8_mmx (GimpCompositeContext *ctx);
+extern void gimp_composite_subtract_va8_va8_va8_mmx (GimpCompositeContext *ctx);
+/*extern void gimp_composite_multiply_va8_va8_va8_mmx (GimpCompositeContext *ctx);*/
 #endif /* COMPILE_IS_OKAY */
 #endif

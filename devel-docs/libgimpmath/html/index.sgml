@@ -23,10 +23,16 @@
 <ANCHOR id="gimp-matrix3-transform-point" href="libgimpmath/libgimpmath-GimpMatrix.html#gimp-matrix3-transform-point">
 <ANCHOR id="gimp-matrix3-determinant" href="libgimpmath/libgimpmath-GimpMatrix.html#gimp-matrix3-determinant">
 <ANCHOR id="gimp-matrix3-invert" href="libgimpmath/libgimpmath-GimpMatrix.html#gimp-matrix3-invert">
-<ANCHOR id="gimp-matrix3-is-diagonal" href="libgimpmath/libgimpmath-GimpMatrix.html#gimp-matrix3-is-diagonal">
 <ANCHOR id="gimp-matrix3-is-identity" href="libgimpmath/libgimpmath-GimpMatrix.html#gimp-matrix3-is-identity">
+<ANCHOR id="gimp-matrix3-is-diagonal" href="libgimpmath/libgimpmath-GimpMatrix.html#gimp-matrix3-is-diagonal">
+<ANCHOR id="gimp-matrix3-is-affine" href="libgimpmath/libgimpmath-GimpMatrix.html#gimp-matrix3-is-affine">
 <ANCHOR id="gimp-matrix3-is-simple" href="libgimpmath/libgimpmath-GimpMatrix.html#gimp-matrix3-is-simple">
 <ANCHOR id="gimp-matrix4-to-deg" href="libgimpmath/libgimpmath-GimpMatrix.html#gimp-matrix4-to-deg">
+<ANCHOR id="GIMP-TYPE-MATRIX2:CAPS" href="libgimpmath/libgimpmath-GimpMatrix.html#GIMP-TYPE-MATRIX2:CAPS">
+<ANCHOR id="GIMP-TYPE-PARAM-MATRIX2:CAPS" href="libgimpmath/libgimpmath-GimpMatrix.html#GIMP-TYPE-PARAM-MATRIX2:CAPS">
+<ANCHOR id="GIMP-IS-PARAM-SPEC-MATRIX2:CAPS" href="libgimpmath/libgimpmath-GimpMatrix.html#GIMP-IS-PARAM-SPEC-MATRIX2:CAPS">
+<ANCHOR id="gimp-param-spec-matrix2" href="libgimpmath/libgimpmath-GimpMatrix.html#gimp-param-spec-matrix2">
+<ANCHOR id="GIMP-VALUE-HOLDS-MATRIX2:CAPS" href="libgimpmath/libgimpmath-GimpMatrix.html#GIMP-VALUE-HOLDS-MATRIX2:CAPS">
 <ANCHOR id="libgimpmath-GimpVector" href="libgimpmath/libgimpmath-GimpVector.html">
 <ANCHOR id="GimpVector2" href="libgimpmath/libgimpmath-GimpVector.html#GimpVector2">
 <ANCHOR id="GimpVector3" href="libgimpmath/libgimpmath-GimpVector.html#GimpVector3">

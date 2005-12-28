@@ -14,6 +14,7 @@ CURSOR_IMAGES = \
 	modifier-control.png		\
 	modifier-foreground.png		\
 	modifier-intersect.png		\
+	modifier-join.png		\
 	modifier-minus.png		\
 	modifier-move.png		\
 	modifier-pattern.png		\
@@ -42,6 +43,9 @@ CURSOR_IMAGES = \
 	tool-move.png			\
 	tool-paintbrush.png		\
 	tool-paths.png			\
+	tool-paths-anchor.png		\
+	tool-paths-control.png		\
+	tool-paths-segment.png		\
 	tool-pencil.png			\
 	tool-perspective.png		\
 	tool-rect-select.png		\
@@ -92,6 +96,8 @@ EXTRA_DIST = \
 	xbm/modifier-background-mask.xbm	\
 	xbm/modifier-pattern.xbm		\
 	xbm/modifier-pattern-mask.xbm		\
+	xbm/modifier-join.xbm			\
+	xbm/modifier-join-mask.xbm		\
 	\
 	xbm/tool-rect-select.xbm		\
 	xbm/tool-rect-select-mask.xbm		\
@@ -101,6 +107,12 @@ EXTRA_DIST = \
 	xbm/tool-free-select-mask.xbm		\
 	xbm/tool-fuzzy-select.xbm		\
 	xbm/tool-fuzzy-select-mask.xbm		\
+	xbm/tool-paths-anchor.xbm		\
+	xbm/tool-paths-anchor-mask.xbm		\
+	xbm/tool-paths-control.xbm		\
+	xbm/tool-paths-control-mask.xbm		\
+	xbm/tool-paths-segment.xbm		\
+	xbm/tool-paths-segment-mask.xbm		\
 	xbm/tool-paths.xbm			\
 	xbm/tool-paths-mask.xbm			\
 	xbm/tool-iscissors.xbm			\

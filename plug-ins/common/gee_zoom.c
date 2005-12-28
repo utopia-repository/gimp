@@ -32,12 +32,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define PLUG_IN_PROC   "plug-in-the-old-egg"
+#define PLUG_IN_BINARY "gee_zoom"
 
 
 /* Declare local functions. */
@@ -110,24 +112,22 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Must be interactive (1)" },
+    { GIMP_PDB_INT32,    "run-mode", "Must be interactive (1)" },
     { GIMP_PDB_IMAGE,    "image",    "Input Image"             },
     { GIMP_PDB_DRAWABLE, "drawable", "Input Drawable"          }
   };
 
-  gimp_install_procedure ("plug_in_the_old_egg",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "A big hello from the GIMP team!",
                           "Hay-ulp",
                           "Adam D. Moss <adam@gimp.org>",
                           "Adam D. Moss <adam@gimp.org>",
                           "1998",
-                          N_("Gee-_Zoom"),
+                          N_("Gee Zoom"),
                           "RGB*, INDEXED*, GRAY*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
-
-  gimp_plugin_menu_register ("plug_in_the_old_egg", "<Image>/Filters/Toys");
 }
 
 static void
@@ -179,27 +179,29 @@ build_dialog (void)
   GtkWidget *dlg;
   GtkWidget *button;
   GtkWidget *frame;
+  gchar     *tmp;
 
-  gimp_ui_init ("gee_zoom", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dlg = gimp_dialog_new (_("GEE-ZOOM"), "gee_zoom",
+  dlg = gimp_dialog_new (_("Gee Zoom"), PLUG_IN_BINARY,
                          NULL, 0,
-                         gimp_standard_help_func, "plug-in-the-old-egg",
+                         gimp_standard_help_func, PLUG_IN_PROC,
                          NULL);
 
   button = gtk_dialog_add_button (GTK_DIALOG (dlg),
-                                  _("Thank you for choosing GIMP"),
+                                  _("Thank You for Choosing GIMP"),
                                   GTK_RESPONSE_OK);
 
   g_signal_connect (dlg, "response",
                     G_CALLBACK (window_response_callback),
                     NULL);
 
-  gimp_help_set_help_data (button,
-                           _("An obsolete creation of Adam D. Moss / "
-                             "adam@gimp.org / adam@foxbox.org / 1998-2000"),
-                           NULL);
 
+  tmp = g_strdup_printf (_("An obsolete creation by %s"),
+                         "Adam D. Moss / adam@gimp.org / adam@foxbox.org "
+                         "/ 1998-2000");
+  gimp_help_set_help_data (button, tmp, NULL);
+  g_free (tmp);
   /* The 'fun' half of the dialog */
 
   frame = gtk_frame_new (NULL);
@@ -217,7 +219,7 @@ build_dialog (void)
   gtk_widget_add_events (drawing_area,
                          GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
 
-  g_signal_connect (drawing_area, "button_release_event",
+  g_signal_connect (drawing_area, "button-release-event",
                     G_CALLBACK (toggle_feedbacktype),
                     NULL);
 

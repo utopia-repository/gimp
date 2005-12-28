@@ -43,9 +43,10 @@ enum
 #define DEFAULT_CHECK_SIZE  GIMP_CHECK_SIZE_MEDIUM_CHECKS
 #define DEFAULT_CHECK_TYPE  GIMP_CHECK_TYPE_GRAY_CHECKS
 
+#define CHECK_COLOR(area, row, col)        \
+  (((((area)->offset_y + (row)) & size) ^  \
+    (((area)->offset_x + (col)) & size)) ? dark : light)
 
-static void      gimp_preview_area_class_init       (GimpPreviewAreaClass *klass);
-static void      gimp_preview_area_init             (GimpPreviewArea *area);
 
 static void      gimp_preview_area_finalize         (GObject         *object);
 static void      gimp_preview_area_set_property     (GObject         *object,
@@ -70,49 +71,16 @@ static void      gimp_preview_area_queue_draw       (GimpPreviewArea *area,
 static gint      gimp_preview_area_image_type_bytes (GimpImageType    type);
 
 
-static GtkDrawingAreaClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpPreviewArea, gimp_preview_area, GTK_TYPE_DRAWING_AREA);
 
+#define parent_class gimp_preview_area_parent_class
 
-#define CHECK_COLOR(area, row, col)        \
-  (((((area)->offset_y + (row)) & size) ^  \
-    (((area)->offset_x + (col)) & size)) ? dark : light)
-
-
-GType
-gimp_preview_area_get_type (void)
-{
-  static GType view_type = 0;
-
-  if (! view_type)
-    {
-      static const GTypeInfo view_info =
-      {
-        sizeof (GimpPreviewAreaClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_preview_area_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpPreviewArea),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_preview_area_init,
-      };
-
-      view_type = g_type_register_static (GTK_TYPE_DRAWING_AREA,
-                                          "GimpPreviewArea",
-                                          &view_info, 0);
-    }
-
-  return view_type;
-}
 
 static void
 gimp_preview_area_class_init (GimpPreviewAreaClass *klass)
 {
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize      = gimp_preview_area_finalize;
   object_class->set_property  = gimp_preview_area_set_property;
@@ -333,6 +301,8 @@ gimp_preview_area_image_type_bytes (GimpImageType type)
 /**
  * gimp_preview_area_new:
  *
+ * Creates a new #GimpPreviewArea widget.
+ *
  * Return value: a new #GimpPreviewArea widget.
  *
  * Since GIMP 2.2
@@ -389,10 +359,10 @@ gimp_preview_area_draw (GimpPreviewArea *area,
 
   if (x < 0)
     {
-      gint bpp = gimp_preview_area_image_type_bytes (type);
+      gint  bpp = gimp_preview_area_image_type_bytes (type);
 
-      buf -= x * bpp;
-      width += x;
+      buf   -= x * bpp;
+      width -= x;
 
       x = 0;
     }
@@ -402,8 +372,8 @@ gimp_preview_area_draw (GimpPreviewArea *area,
 
   if (y < 0)
     {
-      buf -= y * rowstride;
-      height += y;
+      buf    -= y * rowstride;
+      height -= y;
 
       y = 0;
     }
@@ -665,11 +635,11 @@ gimp_preview_area_blend (GimpPreviewArea *area,
 
   if (x < 0)
     {
-      gint bpp = gimp_preview_area_image_type_bytes (type);
+      gint  bpp = gimp_preview_area_image_type_bytes (type);
 
-      buf1 -= x * bpp;
-      buf2 -= x * bpp;
-      width += x;
+      buf1  -= x * bpp;
+      buf2  -= x * bpp;
+      width -= x;
 
       x = 0;
     }
@@ -679,9 +649,9 @@ gimp_preview_area_blend (GimpPreviewArea *area,
 
   if (y < 0)
     {
-      buf1 -= y * rowstride1;
-      buf2 -= y * rowstride2;
-      height += y;
+      buf1   -= y * rowstride1;
+      buf2   -= y * rowstride2;
+      height -= y;
 
       y = 0;
     }
@@ -818,7 +788,7 @@ gimp_preview_area_blend (GimpPreviewArea *area,
 
           for (col = x; col < x + width; col++, s1 += 2, s2 += 2, d+= 3)
             {
-              guchar inter[2];
+              guchar inter[2] = { 0, };
 
               if (s1[1] == s2[1])
                 {
@@ -1032,12 +1002,12 @@ gimp_preview_area_mask (GimpPreviewArea *area,
 
   if (x < 0)
     {
-      gint bpp = gimp_preview_area_image_type_bytes (type);
+      gint  bpp = gimp_preview_area_image_type_bytes (type);
 
-      buf1 -= x * bpp;
-      buf2 -= x * bpp;
-      mask -= x;
-      width += x;
+      buf1  -= x * bpp;
+      buf2  -= x * bpp;
+      mask  -= x;
+      width -= x;
 
       x = 0;
     }
@@ -1047,10 +1017,10 @@ gimp_preview_area_mask (GimpPreviewArea *area,
 
   if (y < 0)
     {
-      buf1 -= y * rowstride1;
-      buf2 -= y * rowstride2;
-      mask -= y * rowstride_mask;
-      height += y;
+      buf1   -= y * rowstride1;
+      buf2   -= y * rowstride2;
+      mask   -= y * rowstride_mask;
+      height -= y;
 
       y = 0;
     }
@@ -1304,7 +1274,7 @@ gimp_preview_area_mask (GimpPreviewArea *area,
 
                 default:
                   {
-                    guchar inter[2];
+                    guchar inter[2] = { 0, };
 
                     if (s1[1] == s2[1])
                       {
@@ -1566,7 +1536,7 @@ gimp_preview_area_fill (GimpPreviewArea *area,
 
   if (x < 0)
     {
-      width += x;
+      width -= x;
       x = 0;
     }
 
@@ -1575,7 +1545,7 @@ gimp_preview_area_fill (GimpPreviewArea *area,
 
   if (y < 0)
     {
-      height += y;
+      height -= y;
       y = 0;
     }
 

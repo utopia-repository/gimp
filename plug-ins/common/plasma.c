@@ -39,7 +39,7 @@
  * Ported to GIMP Plug-in API 1.0
  *    by Eiichi Takamori <taka@ma1.seikyou.ne.jp>
  *
- * $Id: plasma.c 15401 2004-10-31 23:44:12Z simon $
+ * $Id: plasma.c,v 1.80 2005/09/30 08:15:59 mitch Exp $
  *
  * A few functions names and their order are changed :)
  * Plasma implementation almost hasn't been changed.
@@ -57,19 +57,18 @@
 
 #include "config.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
 
+
 /* Some useful macros */
 
+#define PLUG_IN_PROC     "plug-in-plasma"
+#define PLUG_IN_BINARY   "plasma"
 #define SCALE_WIDTH      48
 #define TILE_CACHE_SIZE  32
 
@@ -168,14 +167,14 @@ query (void)
 {
   static GimpParamDef args[]=
   {
-    { GIMP_PDB_INT32,    "run_mode",   "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",      "Input image (unused)"         },
     { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable"               },
     { GIMP_PDB_INT32,    "seed",       "Random seed"                  },
     { GIMP_PDB_FLOAT,    "turbulence", "Turbulence of plasma"         }
   };
 
-  gimp_install_procedure ("plug_in_plasma",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Create a plasma cloud like image on the "
                           "specified drawable",
                           "More help",
@@ -188,8 +187,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_plasma",
-                             "<Image>/Filters/Render/Clouds");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Render/Clouds");
 }
 
 static void
@@ -221,7 +219,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_plasma", &pvals);
+      gimp_get_data (PLUG_IN_PROC, &pvals);
 
       /*  First acquire information with a dialog  */
       if (! plasma_dialog (drawable))
@@ -249,7 +247,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_plasma", &pvals);
+      gimp_get_data (PLUG_IN_PROC, &pvals);
 
       if (pvals.random_seed)
         pvals.seed = g_random_int ();
@@ -265,7 +263,7 @@ run (const gchar      *name,
       if (gimp_drawable_is_rgb (drawable->drawable_id) ||
           gimp_drawable_is_gray (drawable->drawable_id))
         {
-          gimp_progress_init (_("Plasma..."));
+          gimp_progress_init (_("Plasma"));
           gimp_tile_cache_ntiles (TILE_CACHE_SIZE);
 
           plasma (drawable, FALSE);
@@ -276,7 +274,7 @@ run (const gchar      *name,
           /*  Store data  */
           if (run_mode == GIMP_RUN_INTERACTIVE ||
               (run_mode == GIMP_RUN_WITH_LAST_VALS))
-            gimp_set_data ("plug_in_plasma", &pvals, sizeof (PlasmaValues));
+            gimp_set_data (PLUG_IN_PROC, &pvals, sizeof (PlasmaValues));
         }
       else
         {
@@ -300,16 +298,23 @@ plasma_dialog (GimpDrawable *drawable)
   GtkObject *adj;
   gboolean   run;
 
-  gimp_ui_init ("plasma", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Plasma"), "plasma",
+  dialog = gimp_dialog_new (_("Plasma"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-plasma",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -337,7 +342,7 @@ plasma_dialog (GimpDrawable *drawable)
                                  GIMP_RANDOM_SEED_SPINBUTTON (seed));
 
   g_signal_connect_swapped (GIMP_RANDOM_SEED_SPINBUTTON_ADJ (seed),
-                            "value_changed",
+                            "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -347,10 +352,10 @@ plasma_dialog (GimpDrawable *drawable)
                               0.1, 7.0, 0.1, 1.0, 1,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &pvals.turbulence);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -685,6 +690,4 @@ do_plasma (GimpPixelFetcher *pft,
     {
       return TRUE;
     }
-
 }
-

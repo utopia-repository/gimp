@@ -31,6 +31,7 @@
 #include "core/gimpchannel.h"
 #include "core/gimpdrawable-bucket-fill.h"
 #include "core/gimpimage.h"
+#include "core/gimppickable.h"
 #include "core/gimptoolinfo.h"
 
 #include "widgets/gimphelp-ids.h"
@@ -44,36 +45,33 @@
 #include "gimp-intl.h"
 
 
-static GimpToolClass *parent_class = NULL;
-
-
 /*  local function prototypes  */
 
-static void   gimp_bucket_fill_tool_class_init (GimpBucketFillToolClass *klass);
-static void   gimp_bucket_fill_tool_init       (GimpBucketFillTool      *bucket_fill_tool);
-
-static void   gimp_bucket_fill_tool_button_press    (GimpTool        *tool,
-                                                     GimpCoords      *coords,
-                                                     guint32          time,
-						     GdkModifierType  state,
-						     GimpDisplay     *gdisp);
-static void   gimp_bucket_fill_tool_button_release  (GimpTool        *tool,
-                                                     GimpCoords      *coords,
-                                                     guint32          time,
-						     GdkModifierType  state,
-						     GimpDisplay     *gdisp);
-static void   gimp_bucket_fill_tool_modifier_key    (GimpTool        *tool,
-                                                     GdkModifierType  key,
-                                                     gboolean         press,
-						     GdkModifierType  state,
-						     GimpDisplay     *gdisp);
-static void   gimp_bucket_fill_tool_cursor_update   (GimpTool        *tool,
-                                                     GimpCoords      *coords,
-						     GdkModifierType  state,
-						     GimpDisplay     *gdisp);
+static void   gimp_bucket_fill_tool_button_press   (GimpTool        *tool,
+                                                    GimpCoords      *coords,
+                                                    guint32          time,
+                                                    GdkModifierType  state,
+                                                    GimpDisplay     *gdisp);
+static void   gimp_bucket_fill_tool_button_release (GimpTool        *tool,
+                                                    GimpCoords      *coords,
+                                                    guint32          time,
+                                                    GdkModifierType  state,
+                                                    GimpDisplay     *gdisp);
+static void   gimp_bucket_fill_tool_modifier_key   (GimpTool        *tool,
+                                                    GdkModifierType  key,
+                                                    gboolean         press,
+                                                    GdkModifierType  state,
+                                                    GimpDisplay     *gdisp);
+static void   gimp_bucket_fill_tool_cursor_update  (GimpTool        *tool,
+                                                    GimpCoords      *coords,
+                                                    GdkModifierType  state,
+                                                    GimpDisplay     *gdisp);
 
 
-/*  public functions  */
+G_DEFINE_TYPE (GimpBucketFillTool, gimp_bucket_fill_tool, GIMP_TYPE_TOOL);
+
+#define parent_class gimp_bucket_fill_tool_parent_class
+
 
 void
 gimp_bucket_fill_tool_register (GimpToolRegisterCallback  callback,
@@ -96,45 +94,10 @@ gimp_bucket_fill_tool_register (GimpToolRegisterCallback  callback,
                 data);
 }
 
-GType
-gimp_bucket_fill_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpBucketFillToolClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) gimp_bucket_fill_tool_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (GimpBucketFillTool),
-	0,              /* n_preallocs    */
-	(GInstanceInitFunc) gimp_bucket_fill_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_TOOL,
-					  "GimpBucketFillTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
-
-
-/*  private functions  */
-
 static void
 gimp_bucket_fill_tool_class_init (GimpBucketFillToolClass *klass)
 {
-  GimpToolClass *tool_class;
-
-  tool_class = GIMP_TOOL_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
+  GimpToolClass *tool_class = GIMP_TOOL_CLASS (klass);
 
   tool_class->button_press   = gimp_bucket_fill_tool_button_press;
   tool_class->button_release = gimp_bucket_fill_tool_button_release;
@@ -145,27 +108,28 @@ gimp_bucket_fill_tool_class_init (GimpBucketFillToolClass *klass)
 static void
 gimp_bucket_fill_tool_init (GimpBucketFillTool *bucket_fill_tool)
 {
-  GimpTool *tool;
+  GimpTool *tool = GIMP_TOOL (bucket_fill_tool);
 
-  tool = GIMP_TOOL (bucket_fill_tool);
-
-  gimp_tool_control_set_scroll_lock (tool->control, TRUE);
-  gimp_tool_control_set_tool_cursor (tool->control,
-				     GIMP_TOOL_CURSOR_BUCKET_FILL);
+  gimp_tool_control_set_scroll_lock     (tool->control, TRUE);
+  gimp_tool_control_set_tool_cursor     (tool->control,
+                                         GIMP_TOOL_CURSOR_BUCKET_FILL);
+  gimp_tool_control_set_action_value_1  (tool->control,
+                                         "context/context-opacity-set");
+  gimp_tool_control_set_action_object_1 (tool->control,
+                                         "context/context-pattern-select-set");
 }
 
 static void
 gimp_bucket_fill_tool_button_press (GimpTool        *tool,
                                     GimpCoords      *coords,
                                     guint32          time,
-				    GdkModifierType  state,
-				    GimpDisplay     *gdisp)
+                                    GdkModifierType  state,
+                                    GimpDisplay     *gdisp)
 {
-  GimpBucketFillTool    *bucket_tool;
+  GimpBucketFillTool    *bucket_tool = GIMP_BUCKET_FILL_TOOL (tool);
   GimpBucketFillOptions *options;
 
-  bucket_tool = GIMP_BUCKET_FILL_TOOL (tool);
-  options     = GIMP_BUCKET_FILL_OPTIONS (tool->tool_info->tool_options);
+  options = GIMP_BUCKET_FILL_OPTIONS (tool->tool_info->tool_options);
 
   bucket_tool->target_x = coords->x;
   bucket_tool->target_y = coords->y;
@@ -189,16 +153,15 @@ static void
 gimp_bucket_fill_tool_button_release (GimpTool        *tool,
                                       GimpCoords      *coords,
                                       guint32          time,
-				      GdkModifierType  state,
-				      GimpDisplay     *gdisp)
+                                      GdkModifierType  state,
+                                      GimpDisplay     *gdisp)
 {
-  GimpBucketFillTool    *bucket_tool;
+  GimpBucketFillTool    *bucket_tool = GIMP_BUCKET_FILL_TOOL (tool);
   GimpBucketFillOptions *options;
   GimpContext           *context;
 
-  bucket_tool = GIMP_BUCKET_FILL_TOOL (tool);
-  options     = GIMP_BUCKET_FILL_OPTIONS (tool->tool_info->tool_options);
-  context     = GIMP_CONTEXT (options);
+  options = GIMP_BUCKET_FILL_OPTIONS (tool->tool_info->tool_options);
+  context = GIMP_CONTEXT (options);
 
   /*  if the 3rd button isn't pressed, fill the selected region  */
   if (! (state & GDK_BUTTON3_MASK))
@@ -257,8 +220,8 @@ gimp_bucket_fill_tool_modifier_key (GimpTool        *tool,
 static void
 gimp_bucket_fill_tool_cursor_update (GimpTool        *tool,
                                      GimpCoords      *coords,
-				     GdkModifierType  state,
-				     GimpDisplay     *gdisp)
+                                     GdkModifierType  state,
+                                     GimpDisplay     *gdisp)
 {
   GimpBucketFillOptions *options;
   GimpCursorModifier     cmodifier = GIMP_CURSOR_MODIFIER_NONE;
@@ -273,7 +236,8 @@ gimp_bucket_fill_tool_cursor_update (GimpTool        *tool,
        *  if so, is cursor inside?
        */
       if (gimp_channel_is_empty (selection) ||
-          gimp_channel_value (selection, coords->x, coords->y))
+          gimp_pickable_get_opacity_at (GIMP_PICKABLE (selection),
+                                        coords->x, coords->y))
         {
           switch (options->fill_mode)
             {

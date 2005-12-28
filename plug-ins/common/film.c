@@ -22,21 +22,18 @@
  * This plug-in generates a film roll with several images
  */
 
-static char ident[] = "@(#) GIMP Film plug-in v1.04 1999-10-08";
-
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
 
+
+#define PLUG_IN_PROC        "plug-in-film"
+#define PLUG_IN_BINARY      "film"
 
 /* Maximum number of pictures per film */
 #define MAX_FILM_PICTURES   64
@@ -147,12 +144,13 @@ static GtkTreeModel * add_image_list      (gboolean        add_box_flag,
 					   gint32         *image_id,
 					   GtkWidget      *hbox);
 
-static gboolean    film_dialog               (gint32       image_ID);
-static void        film_reset_callback       (GtkWidget   *widget,
-                                              gpointer     data);
-static void        film_font_select_callback (const gchar *name,
-                                              gboolean     closing,
-                                              gpointer     data);
+static gboolean    film_dialog               (gint32                image_ID);
+static void        film_reset_callback       (GtkWidget            *widget,
+                                              gpointer              data);
+static void        film_font_select_callback (GimpFontSelectButton *button,
+                                              const gchar          *name,
+                                              gboolean              closing,
+                                              gpointer              data);
 
 
 GimpPlugInInfo PLUG_IN_INFO =
@@ -212,39 +210,39 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE, "image", "Input image (only used as default image in interactive mode)" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable (not used)" },
-    { GIMP_PDB_INT32, "film_height", "Height of film (0: fit to images)" },
-    { GIMP_PDB_COLOR, "film_color", "Color of the film" },
-    { GIMP_PDB_INT32, "number_start", "Start index for numbering" },
-    { GIMP_PDB_STRING, "number_font", "Font for drawing numbers" },
-    { GIMP_PDB_COLOR, "number_color", "Color for numbers" },
-    { GIMP_PDB_INT32, "at_top", "Flag for drawing numbers at top of film" },
-    { GIMP_PDB_INT32, "at_bottom", "Flag for drawing numbers at bottom of film" },
-    { GIMP_PDB_INT32, "num_images", "Number of images to be used for film" },
-    { GIMP_PDB_INT32ARRAY, "image_ids", "num_images image IDs to be used for film"}
+    { GIMP_PDB_INT32,      "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,      "image",        "Input image (only used as default image in interactive mode)" },
+    { GIMP_PDB_DRAWABLE,   "drawable",     "Input drawable (not used)" },
+    { GIMP_PDB_INT32,      "film-height",  "Height of film (0: fit to images)" },
+    { GIMP_PDB_COLOR,      "film-color",   "Color of the film" },
+    { GIMP_PDB_INT32,      "number-start", "Start index for numbering" },
+    { GIMP_PDB_STRING,     "number-font",  "Font for drawing numbers" },
+    { GIMP_PDB_COLOR,      "number-color", "Color for numbers" },
+    { GIMP_PDB_INT32,      "at-top",       "Flag for drawing numbers at top of film" },
+    { GIMP_PDB_INT32,      "at-bottom",    "Flag for drawing numbers at bottom of film" },
+    { GIMP_PDB_INT32,      "num-images",   "Number of images to be used for film" },
+    { GIMP_PDB_INT32ARRAY, "image-ids",    "num_images image IDs to be used for film"}
   };
 
   static GimpParamDef return_vals[] =
   {
-    { GIMP_PDB_IMAGE, "new_image", "Output image" }
+    { GIMP_PDB_IMAGE, "new-image", "Output image" }
   };
 
-  gimp_install_procedure ("plug_in_film",
+  gimp_install_procedure (PLUG_IN_PROC,
 			  "Compose several images to a roll film",
 			  "Compose several images to a roll film",
 			  "Peter Kirchgessner",
 			  "Peter Kirchgessner (peter@kirchgessner.net)",
 			  "1997",
-			  N_("_Film..."),
+			  N_("_Filmstrip..."),
 			  "INDEXED*, GRAY*, RGB*",
 			  GIMP_PLUGIN,
 			  G_N_ELEMENTS (args),
                           G_N_ELEMENTS (return_vals),
 			  args, return_vals);
 
-  gimp_plugin_menu_register ("plug_in_film", "<Image>/Filters/Combine");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Combine");
 }
 
 static void
@@ -275,7 +273,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_film", &filmvals);
+      gimp_get_data (PLUG_IN_PROC, &filmvals);
 
       /*  First acquire information with a dialog  */
       if (! film_dialog (param[1].data.d_int32))
@@ -310,7 +308,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_film", &filmvals);
+      gimp_get_data (PLUG_IN_PROC, &filmvals);
       break;
 
     default:
@@ -322,7 +320,7 @@ run (const gchar      *name,
 
   if (status == GIMP_PDB_SUCCESS)
     {
-      gimp_progress_init (_("Composing Images..."));
+      gimp_progress_init (_("Composing images"));
 
       image_ID = film ();
 
@@ -341,7 +339,7 @@ run (const gchar      *name,
 
       /*  Store data  */
       if (run_mode == GIMP_RUN_INTERACTIVE)
-        gimp_set_data ("plug_in_film", &filmvals, sizeof (FilmVals));
+        gimp_set_data (PLUG_IN_PROC, &filmvals, sizeof (FilmVals));
     }
 
   values[0].data.d_status = status;
@@ -686,7 +684,7 @@ scale_layer (gint32  src_layer,
 	     gint    dst_height)
 {
   gint tile_height, i, scan_lines, numpix;
-  guchar *src, *tmp = (guchar *) ident; /* Just to satisfy gcc */
+  guchar *src, *tmp;
   gint32 tmp_image, tmp_layer;
   GimpDrawable *tmp_drawable, *src_drawable, *dst_drawable;
   GimpPixelRgn tmp_pixel_rgn, src_pixel_rgn, dst_pixel_rgn;
@@ -1076,8 +1074,8 @@ add_image_list (gboolean   add_box_flag,
   gtk_widget_show (vbox);
 
   label = gtk_label_new (add_box_flag ?
-                         _("Available Images:") :
-                         _("On Film:"));
+                         _("Available images:") :
+                         _("On film:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
@@ -1156,7 +1154,7 @@ create_selection_tab (GtkWidget *notebook,
   GtkWidget    *spinbutton;
   GtkObject    *adj;
   GtkWidget    *button;
-  GtkWidget    *font_sel;
+  GtkWidget    *font_button;
   gint32       *image_id_list;
   gint          nimages, j;
 
@@ -1173,7 +1171,7 @@ create_selection_tab (GtkWidget *notebook,
   group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
   /* Film height/colour */
-  frame = gimp_frame_new (_("Film"));
+  frame = gimp_frame_new (_("Filmstrip"));
   gtk_box_pack_start (GTK_BOX (vbox2), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
@@ -1205,7 +1203,7 @@ create_selection_tab (GtkWidget *notebook,
   gtk_size_group_add_widget (group, label);
   g_object_unref (group);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &filmvals.film_height);
 
@@ -1227,7 +1225,7 @@ create_selection_tab (GtkWidget *notebook,
                                      button, 1, FALSE);
   gtk_size_group_add_widget (group, label);
 
-  g_signal_connect (button, "color_changed",
+  g_signal_connect (button, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),
                     &filmvals.film_color);
 
@@ -1254,18 +1252,17 @@ create_selection_tab (GtkWidget *notebook,
                                      spinbutton, 1, TRUE);
   gtk_size_group_add_widget (group, label);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &filmvals.number_start);
 
   /* Fontfamily for numbering */
-  font_sel = gimp_font_select_widget_new (NULL,
-                                          filmvals.number_font,
-                                          film_font_select_callback,
-                                          &filmvals);
+  font_button = gimp_font_select_button_new (NULL, filmvals.number_font);
+  g_signal_connect (font_button, "font-set",
+                    G_CALLBACK (film_font_select_callback), &filmvals);
   label = gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
                                      _("_Font:"), 0.0, 0.5,
-                                     font_sel, 1, FALSE);
+                                     font_button, 1, FALSE);
   gtk_size_group_add_widget (group, label);
 
   /* Numbering color */
@@ -1278,7 +1275,7 @@ create_selection_tab (GtkWidget *notebook,
                                      button, 1, FALSE);
   gtk_size_group_add_widget (group, label);
 
-  g_signal_connect (button, "color_changed",
+  g_signal_connect (button, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),
                     &filmvals.number_color);
 
@@ -1326,7 +1323,7 @@ create_advanced_tab (GtkWidget *notebook)
   GtkWidget *button;
   gint       row;
 
-  frame = gimp_frame_new (_("All Values are Fractions of the Film Height"));
+  frame = gimp_frame_new (_("All Values are Fractions of the Strip Height"));
   gtk_container_set_border_width (GTK_CONTAINER (frame), 12);
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook), frame,
                             gtk_label_new_with_mnemonic (_("Ad_vanced")));
@@ -1353,7 +1350,7 @@ create_advanced_tab (GtkWidget *notebook)
 			  0.0, 1.0, 0.001, 0.01, 3,
 			  TRUE, 0, 0,
 			  NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &filmvals.picture_height);
 
@@ -1364,7 +1361,7 @@ create_advanced_tab (GtkWidget *notebook)
 			  0.0, 1.0, 0.001, 0.01, 3,
 			  TRUE, 0, 0,
 			  NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &filmvals.picture_space);
 
@@ -1375,7 +1372,7 @@ create_advanced_tab (GtkWidget *notebook)
 			  0.0, 1.0, 0.001, 0.01, 3,
 			  TRUE, 0, 0,
 			  NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &filmvals.hole_offset);
 
@@ -1386,7 +1383,7 @@ create_advanced_tab (GtkWidget *notebook)
 			  0.0, 1.0, 0.001, 0.01, 3,
 			  TRUE, 0, 0,
 			  NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &filmvals.hole_width);
 
@@ -1397,7 +1394,7 @@ create_advanced_tab (GtkWidget *notebook)
 			  0.0, 1.0, 0.001, 0.01, 3,
 			  TRUE, 0, 0,
 			  NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &filmvals.hole_height);
 
@@ -1408,7 +1405,7 @@ create_advanced_tab (GtkWidget *notebook)
 			  0.0, 1.0, 0.001, 0.01, 3,
 			  TRUE, 0, 0,
 			  NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &filmvals.hole_space);
 
@@ -1419,7 +1416,7 @@ create_advanced_tab (GtkWidget *notebook)
 			  0.0, 1.0, 0.001, 0.01, 3,
 			  TRUE, 0, 0,
 			  NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &filmvals.number_height);
 
@@ -1444,16 +1441,23 @@ film_dialog (gint32 image_ID)
   GtkWidget *notebook;
   gboolean   run;
 
-  gimp_ui_init ("film", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dlg = gimp_dialog_new (_("Film"), "film",
+  dlg = gimp_dialog_new (_("Filmstrip"), PLUG_IN_BINARY,
                          NULL, 0,
-			 gimp_standard_help_func, "plug-in-film",
+			 gimp_standard_help_func, PLUG_IN_PROC,
 
 			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 			 GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
 			 NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dlg),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dlg));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -1514,9 +1518,10 @@ film_reset_callback (GtkWidget *widget,
 }
 
 static void
-film_font_select_callback (const gchar *name,
-                           gboolean     closing,
-                           gpointer     data)
+film_font_select_callback (GimpFontSelectButton *button,
+                           const gchar          *name,
+                           gboolean              closing,
+                           gpointer              data)
 {
   FilmVals *vals = (FilmVals *) data;
 

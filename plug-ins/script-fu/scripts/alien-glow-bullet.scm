@@ -57,7 +57,7 @@
     (gimp-image-add-layer img glow-layer -1)
     (gimp-image-add-layer img bullet-layer -1)
 
-    ; (gimp-layer-set-preserve-trans ruler-layer TRUE)
+    ; (gimp-layer-set-lock-alpha ruler-layer TRUE)
     (gimp-context-set-background bg-color)
     (gimp-edit-fill bg-layer BACKGROUND-FILL)
     (gimp-edit-clear glow-layer)
@@ -105,4 +105,4 @@
 		    SF-TOGGLE     _"Flatten image"    TRUE)
 
 (script-fu-menu-register "script-fu-alien-glow-bullet"
-			 _"<Toolbox>/Xtns/Script-Fu/Web Page Themes/Alien Glow")
+			 "<Toolbox>/Xtns/Web Page Themes/Alien Glow")

@@ -120,9 +120,9 @@
 		    SF-DRAWABLE    "Drawable to animate" 0
 		    SF-ADJUSTMENT _"Rippling strength"   '(3 0 256 1 10 1 0)
 		    SF-ADJUSTMENT _"Number of frames"    '(15 0 256 1 10 0 1)
-		    SF-OPTION     _"Edge behaviour"      '(_"Wrap"
+		    SF-OPTION     _"Edge behavior"       '(_"Wrap"
 							   _"Smear"
 							   _"Black"))
 
 (script-fu-menu-register "script-fu-ripply-anim"
-			 _"<Image>/Script-Fu/Animators")
+			 "<Image>/Filters/Animation/Animators")

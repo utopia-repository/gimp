@@ -3,7 +3,7 @@
  *
  * Generates clickable image maps.
  *
- * Copyright (C) 1998-2003 Maurits Rijk  lpeek.mrijk@consunet.nl
+ * Copyright (C) 1998-2005 Maurits Rijk  m.rijk@chello.nl
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,9 @@
 
 #include <stdarg.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
+
+#include <glib/gstdio.h>
 
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h> /* for keyboard values */
@@ -40,13 +41,11 @@
 #include "imap_default_dialog.h"
 #include "imap_edit_area_info.h"
 #include "imap_file.h"
-#include "imap_grid.h"
 #include "imap_main.h"
 #include "imap_menu.h"
 #include "imap_misc.h"
 #include "imap_object.h"
 #include "imap_polygon.h"
-#include "imap_popup.h"
 #include "imap_preview.h"
 #include "imap_rectangle.h"
 #include "imap_selection.h"
@@ -55,8 +54,6 @@
 #include "imap_statusbar.h"
 #include "imap_stock.h"
 #include "imap_string.h"
-#include "imap_toolbar.h"
-#include "imap_tools.h"
 
 #include "libgimp/stdplugins-intl.h"
 
@@ -82,7 +79,6 @@ static GtkWidget   *_dlg;
 static Preview_t   *_preview;
 static Selection_t *_selection;
 static StatusBar_t *_statusbar;
-static ToolBar_t   *_toolbar;
 static ObjectList_t *_shapes;
 static gint	    _zoom_factor = 1;
 static gboolean (*_button_press_func)(GtkWidget*, GdkEventButton*, gpointer);
@@ -124,7 +120,7 @@ static void query(void)
 			  "",
 			  "Maurits Rijk",
 			  "Maurits Rijk",
-			  "1998-2002",
+			  "1998-2005",
 			  N_("_ImageMap..."),
 			  "RGB*, GRAY*, INDEXED*",
 			  GIMP_PLUGIN,
@@ -284,7 +280,7 @@ zoom_in(void)
    return _zoom_factor;
 }
 
-static gint
+gint
 zoom_out(void)
 {
    if (_zoom_factor > 1) {
@@ -299,16 +295,9 @@ set_zoom(gint zoom_factor)
 {
    set_busy_cursor();
    _zoom_factor = zoom_factor;
-   toolbar_set_zoom_sensitivity(_toolbar, zoom_factor);
    preview_zoom(_preview, zoom_factor);
    statusbar_set_zoom(_statusbar, zoom_factor);
    remove_busy_cursor();
-}
-
-void
-main_toolbar_set_grid(gboolean active)
-{
-   toolbar_set_grid(_toolbar, active);
 }
 
 gint
@@ -390,6 +379,7 @@ redraw_preview(void)
       preview_redraw(_preview);
 }
 
+#ifdef _NOT_READY_YET
 static void
 set_preview_gray(void)
 {
@@ -403,6 +393,7 @@ set_preview_color(void)
    _map_info.show_gray = FALSE;
    set_zoom(_zoom_factor);
 }
+#endif
 
 const char*
 get_image_name(void)
@@ -416,7 +407,21 @@ get_filename(void)
    return _filename;
 }
 
-void
+static gboolean
+arrow_on_button_press(GtkWidget *widget, GdkEventButton *event, gpointer data)
+{
+   if (event->button == 1) {
+      if (event->type == GDK_2BUTTON_PRESS)
+	 edit_shape((gint) event->x, (gint) event->y);
+      else
+	 select_shape(widget, event);
+   } else {
+      do_popup_menu(event);
+   }
+   return FALSE;
+}
+
+static void
 set_arrow_func(void)
 {
    _button_press_func = arrow_on_button_press;
@@ -444,7 +449,7 @@ fuzzy_select_on_button_press (GtkWidget      *widget,
 	 GimpParam *return_vals;
 	 gint       nreturn_vals;
 
-	 return_vals = gimp_run_procedure ("plug_in_sel2path",
+	 return_vals = gimp_run_procedure ("plug-in-sel2path",
                                            &nreturn_vals,
                                            GIMP_PDB_INT32,    TRUE,
                                            GIMP_PDB_IMAGE,    image_ID,
@@ -522,21 +527,27 @@ set_object_func(gboolean (*func)(GtkWidget*, GdkEventButton*,
 }
 
 void
-set_rectangle_func(void)
+set_func(GtkRadioAction *action, GtkRadioAction *current,
+	 gpointer user_data)
 {
-   set_object_func(object_on_button_press, get_rectangle_factory);
-}
-
-void
-set_circle_func(void)
-{
-   set_object_func(object_on_button_press, get_circle_factory);
-}
-
-void
-set_polygon_func(void)
-{
-   set_object_func(object_on_button_press, get_polygon_factory);
+  gint value = gtk_radio_action_get_current_value (current);
+  switch (value)
+    {
+    case 0:
+      set_arrow_func();
+      break;
+    case 1:
+      set_object_func(object_on_button_press, get_rectangle_factory);
+      break;
+    case 2:
+      set_object_func(object_on_button_press, get_circle_factory);
+      break;
+    case 3:
+      set_object_func(object_on_button_press, get_polygon_factory);
+      break;
+    default:
+      break;
+    }
 }
 
 void
@@ -557,8 +568,8 @@ update_shape(Object_t *obj)
    object_list_update(_shapes, obj);
 }
 
-static void
-edit_selected_shape(void)
+void
+do_edit_selected_shape(void)
 {
    object_list_edit_selected(_shapes);
 }
@@ -581,8 +592,6 @@ set_all_sensitivities(void)
 {
    gint count = object_list_nr_selected(_shapes);
    menu_shapes_selected(count);
-   toolbar_shapes_selected(_toolbar, count);
-   tools_set_sensitive(count);
 }
 
 static void
@@ -688,28 +697,18 @@ edit_shape(gint x, gint y)
    }
 }
 
-static void
-toolbar_grid(void)
-{
-   gint grid = toggle_grid();
-   popup_check_grid(grid);
-   menu_check_grid(grid);
-}
-
-static void
-menu_zoom_in(void)
+void
+do_zoom_in(void)
 {
    gint factor = zoom_in();
    menu_set_zoom_sensitivity(factor);
-   popup_set_zoom_sensitivity(factor);
 }
 
-static void
-menu_zoom_out(void)
+void
+do_zoom_out(void)
 {
    gint factor = zoom_out();
    menu_set_zoom_sensitivity(factor);
-   popup_set_zoom_sensitivity(factor);
 }
 
 void
@@ -739,24 +738,28 @@ clear_map_info(void)
 static void
 do_data_changed_dialog(void (*continue_cb)(gpointer), gpointer param)
 {
-   static Alert_t *alert;
+   GtkWidget *dialog = gtk_message_dialog_new_with_markup
+     (NULL,
+      GTK_DIALOG_DESTROY_WITH_PARENT,
+      GTK_MESSAGE_QUESTION,
+      GTK_BUTTONS_YES_NO,
+      "<span weight=\"bold\" size=\"larger\">%s</span>\n\n%s",
+      _("Some data has been changed!"),
+      _("Do you really want to discard your changes?"));
 
-   if (!alert) {
-     alert = create_confirm_alert(GTK_STOCK_DIALOG_WARNING);
-     alert_set_text(alert, _("Some data has been changed!"),
-		    _("Do you really want to discard your changes?"));
-   }
-   default_dialog_set_ok_cb(alert->dialog, continue_cb, param);
-   default_dialog_show(alert->dialog);
+   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_YES)
+     continue_cb (param);
+
+   gtk_widget_destroy (dialog);
 }
 
 static void
 check_if_changed(void (*func)(gpointer), gpointer param)
 {
-   if (object_list_get_changed(_shapes))
-      do_data_changed_dialog(func, param);
+   if (object_list_get_changed (_shapes))
+     do_data_changed_dialog (func, param);
    else
-      func(param);
+     func (param);
 }
 
 static void
@@ -779,7 +782,7 @@ really_close(gpointer data)
    close_current();
 }
 
-static void
+void
 do_close(void)
 {
    check_if_changed(really_close, NULL);
@@ -793,12 +796,13 @@ really_quit(gpointer data)
    gtk_widget_destroy(_dlg);
 }
 
-static void
+void
 do_quit(void)
 {
    check_if_changed(really_quit, NULL);
 }
 
+#ifdef _NOT_READY_YET_
 static void
 do_undo(void)
 {
@@ -818,8 +822,9 @@ do_redo(void)
    selection_thaw(_selection);
    preview_thaw();
 }
+#endif
 
-static void
+void
 save(void)
 {
    if (_filename)
@@ -848,7 +853,7 @@ save_as_cern(gpointer param, OutputFunc_t output)
    write_cern_comment(param, output);
    output(param, "-:Please do not edit lines starting with \"#$\"\n");
    write_cern_comment(param, output);
-   output(param, "VERSION:2.0\n");
+   output(param, "VERSION:2.3\n");
    write_cern_comment(param, output);
    output(param, "TITLE:%s\n", _map_info.title);
    write_cern_comment(param, output);
@@ -884,7 +889,7 @@ save_as_csim(gpointer param, OutputFunc_t output)
    output(param, "<!-- #$-:GIMP Imagemap Plugin by Maurits Rijk -->\n");
    output(param,
 	  "<!-- #$-:Please do not edit lines starting with \"#$\" -->\n");
-   output(param, "<!-- #$VERSION:2.0 -->\n");
+   output(param, "<!-- #$VERSION:2.3 -->\n");
    output(param, "<!-- #$AUTHOR:%s -->\n", _map_info.author);
 
    description = g_strdup(_map_info.description);
@@ -908,7 +913,7 @@ save_as_ncsa(gpointer param, OutputFunc_t output)
    output(param, "#$-:Image Map file created by GIMP Imagemap Plugin\n");
    output(param, "#$-:GIMP Imagemap Plugin by Maurits Rijk\n");
    output(param, "#$-:Please do not edit lines starting with \"#$\"\n");
-   output(param, "#$VERSION:2.0\n");
+   output(param, "#$VERSION:2.3\n");
    output(param, "#$TITLE:%s\n", _map_info.title);
    output(param, "#$AUTHOR:%s\n", _map_info.author);
    output(param, "#$FORMAT:ncsa\n");
@@ -947,7 +952,7 @@ dump_output(gpointer param, OutputFunc_t output)
 void
 save_as(const gchar *filename)
 {
-   FILE *out = fopen(filename, "w");
+   FILE *out = g_fopen(filename, "w");
    if (out) {
       dump_output(out, save_to_file);
       fclose(out);
@@ -961,33 +966,26 @@ save_as(const gchar *filename)
 }
 
 static void
-resize_image_ok_cb(gpointer data)
-{
-   gint per_x = _image_width * 100 / _map_info.old_image_width;
-   gint per_y = _image_height * 100 / _map_info.old_image_height;
-   object_list_resize(_shapes, per_x, per_y);
-   preview_thaw();
-}
-
-static void
-resize_image_cancel_cb(gpointer data)
-{
-   preview_thaw();
-}
-
-static void
 do_image_size_changed_dialog(void)
 {
-   static Alert_t *alert;
+   GtkWidget *dialog = gtk_message_dialog_new_with_markup
+     (NULL,
+      GTK_DIALOG_DESTROY_WITH_PARENT,
+      GTK_MESSAGE_QUESTION,
+      GTK_BUTTONS_YES_NO,
+      "<span weight=\"bold\" size=\"larger\">%s</span>\n\n%s",
+      _("Image size has changed."),
+      _("Resize area's?"));
 
-   if (!alert) {
-     alert = create_confirm_alert(GTK_STOCK_DIALOG_WARNING);
-     alert_set_text(alert, _("Image size has changed."),
-		    _("Resize area's?"));
-   }
-   default_dialog_set_ok_cb(alert->dialog, resize_image_ok_cb, NULL);
-   default_dialog_set_cancel_cb(alert->dialog, resize_image_cancel_cb, NULL);
-   default_dialog_show(alert->dialog);
+   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_YES)
+     {
+       gint per_x = _image_width * 100 / _map_info.old_image_width;
+       gint per_y = _image_height * 100 / _map_info.old_image_height;
+       object_list_resize(_shapes, per_x, per_y);
+     }
+
+   preview_thaw();
+   gtk_widget_destroy (dialog);
 }
 
 static void
@@ -1033,11 +1031,13 @@ load(const gchar *filename)
    check_if_changed(really_load, (gpointer) tmp_filename);
 }
 
+#ifdef _NOT_READY_YET_
 static void
 toggle_area_list(void)
 {
    selection_toggle_visibility(_selection);
 }
+#endif
 
 static gboolean
 close_callback(GtkWidget *widget, gpointer data)
@@ -1093,10 +1093,7 @@ preview_leave(GtkWidget *widget, GdkEventCrossing *event)
 static gboolean
 button_press(GtkWidget* widget, GdkEventButton* event, gpointer data)
 {
-  if (_button_press_func)
-    return _button_press_func(widget, event, _button_press_param);
-
-  return FALSE;
+   return _button_press_func(widget, event, _button_press_param);
 }
 
 /* A few global vars for key movement */
@@ -1115,8 +1112,8 @@ move_selected_objects(gint dx, gint dy, gboolean fast)
    _dx += dx;
    _dy += dy;
 
-   gdk_gc_set_function(_preferences.normal_gc, GDK_XOR);
-   gdk_gc_set_function(_preferences.selected_gc, GDK_XOR);
+   gdk_gc_set_function(_preferences.normal_gc, GDK_EQUIV);
+   gdk_gc_set_function(_preferences.selected_gc, GDK_EQUIV);
    object_list_draw_selected(_shapes, _preview->preview->window);
    object_list_move_selected(_shapes, dx, dy);
    object_list_draw_selected(_shapes, _preview->preview->window);
@@ -1178,7 +1175,7 @@ key_press_cb(GtkWidget *widget, GdkEventKey *event)
       break;
    }
    if (handled)
-      g_signal_stop_emission_by_name(widget, "key_press_event");
+      g_signal_stop_emission_by_name(widget, "key-press-event");
 
    return handled;
 }
@@ -1210,113 +1207,98 @@ data_selected(Object_t *obj, gpointer data)
    set_all_sensitivities();
 }
 
-static Command_t*
-factory_file_open_dialog(void)
-{
-   return command_new(do_file_open_dialog);
-}
-
-static void
+void
 imap_help (void)
 {
   gimp_standard_help_func ("plug-in-imagemap", NULL);
 }
 
-static Command_t*
-factory_save(void)
+void 
+do_cut (void)
 {
-   return command_new(save);
+  command_execute (cut_command_new (_shapes));
 }
 
-static Command_t*
-factory_save_as(void)
+void 
+do_copy (void)
 {
-   return command_new(do_file_save_as_dialog);
+  command_execute (copy_command_new (_shapes));
 }
 
-static Command_t*
-factory_preferences_dialog(void)
+void 
+do_paste (void)
 {
-   return command_new(do_preferences_dialog);
+  command_execute (paste_command_new (_shapes));
 }
 
-static Command_t*
-factory_close(void)
+void
+do_select_all(void)
 {
-   return command_new(do_close);
+  command_execute (select_all_command_new (_shapes));
 }
 
-static Command_t*
-factory_quit(void)
+void
+do_deselect_all(void)
 {
-   return command_new(do_quit);
+  command_execute (unselect_all_command_new (_shapes, NULL));
 }
 
-
-static Command_t*
-factory_undo(void)
+void
+do_clear(void)
 {
-   return command_new(do_undo);
+  command_execute (clear_command_new(_shapes));
 }
 
-static Command_t*
-factory_redo(void)
+void
+do_move_up(void)
 {
-   return command_new(do_redo);
+  /* Fix me!
+   Command_t *command = object_up_command_new(_current_obj->list,
+					      _current_obj);
+   command_execute(command);
+  */
 }
 
-static Command_t*
-factory_cut(void)
+void
+do_move_down(void)
 {
-   return cut_command_new(_shapes);
+  /* Fix me!
+   Command_t *command = object_down_command_new(_current_obj->list,
+						_current_obj);
+   command_execute(command);
+  */
 }
 
-static Command_t*
-factory_copy(void)
+void
+do_move_to_front(void)
 {
-   return copy_command_new(_shapes);
+  command_execute(move_to_front_command_new(_shapes));
 }
 
-static Command_t*
-factory_paste(void)
+void
+do_send_to_back(void)
 {
-   return paste_command_new(_shapes);
+  command_execute(send_to_back_command_new(_shapes));
 }
 
-static Command_t*
-factory_select_all(void)
+void
+do_use_gimp_guides_dialog(void)
 {
-   return select_all_command_new(_shapes);
+  command_execute (gimp_guides_command_new (_shapes, _drawable));
 }
 
-static Command_t*
-factory_deselect_all(void)
+void
+do_create_guides_dialog(void)
 {
-   return unselect_all_command_new(_shapes, NULL);
+  command_execute (guides_command_new (_shapes));
 }
 
-static Command_t*
-factory_clear(void)
-{
-   return clear_command_new(_shapes);
-}
-
-static Command_t*
-factory_edit(void)
-{
-   return command_new(edit_selected_shape);
-}
+#ifdef _NOT_READY_YET_
 
 static Command_t*
 factory_toggle_area_list(void)
 {
    return command_new(toggle_area_list);
-}
-
-static Command_t*
-factory_source_dialog(void)
-{
-   return command_new(do_source_dialog);
 }
 
 static Command_t*
@@ -1331,83 +1313,8 @@ factory_preview_gray(void)
    return command_new(set_preview_gray);
 }
 
-static Command_t*
-factory_menu_zoom_in(void)
-{
-   return command_new(menu_zoom_in);
-}
 
-static Command_t*
-factory_menu_zoom_out(void)
-{
-   return command_new(menu_zoom_out);
-}
-
-static Command_t*
-factory_zoom_in(void)
-{
-  return command_new((void (*)(void)) zoom_in);
-}
-
-static Command_t*
-factory_zoom_out(void)
-{
-   return command_new((void (*)(void)) zoom_out);
-}
-
-static Command_t*
-factory_settings_dialog(void)
-{
-   return command_new(do_settings_dialog);
-}
-
-static Command_t*
-factory_move_to_front(void)
-{
-   return move_to_front_command_new(_shapes);
-}
-
-static Command_t*
-factory_send_to_back(void)
-{
-   return send_to_back_command_new(_shapes);
-}
-
-static Command_t*
-factory_toolbar_grid(void)
-{
-   return command_new(toolbar_grid);
-}
-
-static Command_t*
-factory_grid_settings_dialog(void)
-{
-   return command_new(do_grid_settings_dialog);
-}
-
-static Command_t*
-factory_create_guides_dialog(void)
-{
-   return guides_command_new(_shapes);
-}
-
-static Command_t*
-factory_use_gimp_guides_dialog(void)
-{
-   return gimp_guides_command_new(_shapes, _drawable);
-}
-
-static Command_t*
-factory_help(void)
-{
-   return command_new(imap_help);
-}
-
-static Command_t*
-factory_about_dialog(void)
-{
-   return command_new(do_about_dialog);
-}
+#endif
 
 static Command_t*
 factory_move_up(void)
@@ -1421,17 +1328,14 @@ factory_move_down(void)
    return move_down_command_new(_shapes);
 }
 
-
-
 static gint
 dialog(GimpDrawable *drawable)
 {
    GtkWidget 	*dlg;
    GtkWidget 	*hbox;
    GtkWidget 	*main_vbox;
-   Tools_t	*tools;
+   GtkWidget	*tools;
    Menu_t	*menu;
-   PopupMenu_t  *popup;
 
    gimp_ui_init ("imagemap", TRUE);
 
@@ -1444,9 +1348,9 @@ dialog(GimpDrawable *drawable)
    gimp_help_connect (dlg, gimp_standard_help_func, "plug-in-imagemap", NULL);
 
    gtk_window_set_position(GTK_WINDOW(dlg), GTK_WIN_POS_MOUSE);
-   g_signal_connect(dlg, "delete_event",
+   g_signal_connect(dlg, "delete-event",
 		    G_CALLBACK(close_callback), NULL);
-   g_signal_connect(dlg, "key_press_event",
+   g_signal_connect(dlg, "key-press-event",
 		    G_CALLBACK(key_press_cb), NULL);
    g_signal_connect(dlg, "key_release_event",
 		    G_CALLBACK(key_release_cb), NULL);
@@ -1463,59 +1367,9 @@ dialog(GimpDrawable *drawable)
 
    /* Create menu */
    menu = make_menu(main_vbox, dlg);
-   menu_set_open_command(menu, factory_file_open_dialog);
-   menu_set_save_command(menu, factory_save);
-   menu_set_save_as_command(menu, factory_save_as);
-   menu_set_preferences_command(menu, factory_preferences_dialog);
-   menu_set_close_command(menu, factory_close);
-   menu_set_quit_command(menu, factory_quit);
-   menu_set_undo_command(menu, factory_undo);
-   menu_set_redo_command(menu, factory_redo);
-   menu_set_cut_command(menu, factory_cut);
-   menu_set_copy_command(menu, factory_copy);
-   menu_set_paste_command(menu, factory_paste);
-   menu_set_select_all_command(menu, factory_select_all);
-   menu_set_deselect_all_command(menu, factory_deselect_all);
-   menu_set_clear_command(menu, factory_clear);
-   menu_set_edit_erea_info_command(menu, factory_edit);
-   menu_set_area_list_command(menu, factory_toggle_area_list);
-   menu_set_source_command(menu, factory_source_dialog);
-   menu_set_color_command(menu, factory_preview_color);
-   menu_set_gray_command(menu, factory_preview_gray);
-   menu_set_zoom_in_command(menu, factory_menu_zoom_in);
-   menu_set_zoom_out_command(menu, factory_menu_zoom_out);
-   menu_set_edit_map_info_command(menu, factory_settings_dialog);
-   menu_set_grid_settings_command(menu, factory_grid_settings_dialog);
-   menu_set_create_guides_command(menu, factory_create_guides_dialog);
-   menu_set_use_gimp_guides_command(menu, factory_use_gimp_guides_dialog);
-   menu_set_help_command(menu, factory_help);
-   menu_set_about_command(menu, factory_about_dialog);
-
-   /* Create popup */
-   popup = create_main_popup_menu();
-   popup_set_zoom_in_command(popup, factory_zoom_in);
-   popup_set_zoom_out_command(popup, factory_zoom_out);
-   popup_set_edit_map_info_command(popup, factory_settings_dialog);
-   popup_set_grid_settings_command(popup, factory_grid_settings_dialog);
-   popup_set_create_guides_command(popup, factory_create_guides_dialog);
-   popup_set_paste_command(popup, factory_paste);
 
    /* Create toolbar */
-   _toolbar = make_toolbar(main_vbox, dlg);
-   toolbar_set_open_command(_toolbar, factory_file_open_dialog);
-   toolbar_set_save_command(_toolbar, factory_save);
-   toolbar_set_preferences_command(_toolbar, factory_preferences_dialog);
-   toolbar_set_undo_command(_toolbar, factory_undo);
-   toolbar_set_redo_command(_toolbar, factory_redo);
-   toolbar_set_cut_command(_toolbar, factory_cut);
-   toolbar_set_copy_command(_toolbar, factory_copy);
-   toolbar_set_paste_command(_toolbar, factory_paste);
-   toolbar_set_zoom_in_command(_toolbar, factory_zoom_in);
-   toolbar_set_zoom_out_command(_toolbar, factory_zoom_out);
-   toolbar_set_edit_map_info_command(_toolbar, factory_settings_dialog);
-   toolbar_set_move_to_front_command(_toolbar, factory_move_to_front);
-   toolbar_set_send_to_back_command(_toolbar, factory_send_to_back);
-   toolbar_set_grid_command(_toolbar, factory_toolbar_grid);
+   make_toolbar(main_vbox, dlg);
 
    /*  Dialog area  */
    hbox = gtk_hbox_new(FALSE, 1);
@@ -1523,9 +1377,8 @@ dialog(GimpDrawable *drawable)
    gtk_widget_show(hbox);
 
    tools = make_tools(dlg);
-   selection_set_delete_command(tools, factory_clear);
-   selection_set_edit_command(tools, factory_edit);
-   gtk_box_pack_start(GTK_BOX(hbox), tools->container, FALSE, FALSE, 0);
+   // selection_set_edit_command(tools, factory_edit);
+   gtk_box_pack_start(GTK_BOX(hbox), tools, FALSE, FALSE, 0);
 
    _preview = make_preview(drawable);
    add_preview_motion_event(_preview, (GtkSignalFunc) preview_move);
@@ -1545,8 +1398,6 @@ dialog(GimpDrawable *drawable)
    _selection = make_selection(_shapes);
    selection_set_move_up_command(_selection, factory_move_up);
    selection_set_move_down_command(_selection, factory_move_down);
-   selection_set_delete_command(_selection, factory_clear);
-   selection_set_edit_command(_selection, factory_edit);
    gtk_box_pack_start(GTK_BOX(hbox), _selection->container, FALSE, FALSE, 0);
 
    _statusbar = make_statusbar(main_vbox, dlg);

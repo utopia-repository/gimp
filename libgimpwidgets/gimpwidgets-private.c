@@ -49,17 +49,16 @@ gimp_widgets_init (GimpHelpFunc          standard_help_func,
 {
   static gboolean  gimp_widgets_initialized = FALSE;
 
-  GdkPixbuf   *pixbuf;
-  GList       *icon_list = NULL;
-  gint         i;
-  GtkSettings *settings;
+  GdkPixbuf *pixbuf;
+  GList     *icon_list = NULL;
+  gint       i;
 
   const guint8 *inline_pixbufs[] =
   {
-    stock_wilber_16,
-    stock_wilber_32,
+    stock_wilber_64,
     stock_wilber_48,
-    stock_wilber_64
+    stock_wilber_32,
+    stock_wilber_16
   };
 
   g_return_if_fail (standard_help_func != NULL);
@@ -84,12 +83,6 @@ gimp_widgets_init (GimpHelpFunc          standard_help_func,
 
   g_list_foreach (icon_list, (GFunc) g_object_unref, NULL);
   g_list_free (icon_list);
-
-  /* Disable button order settings because our code doesn't honor it */
-  settings = gtk_settings_get_for_screen (gdk_screen_get_default ());
-  if (g_object_class_find_property (G_OBJECT_GET_CLASS (settings),
-                                    "gtk-alternative-button-order") != NULL)
-    g_object_set (settings, "gtk-alternative-button-order", FALSE, NULL);
 
   _gimp_help_init ();
 

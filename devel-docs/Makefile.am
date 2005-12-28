@@ -3,11 +3,13 @@
 SUBDIRS = \
 	libgimpbase	\
 	libgimpcolor	\
+	libgimpconfig	\
 	libgimpmath	\
 	libgimpmodule	\
 	libgimpthumb	\
 	libgimpwidgets	\
-	libgimp
+	libgimp		\
+	tools
 
 EXTRA_DIST = \
 	ChangeLog		\

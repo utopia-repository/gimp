@@ -129,6 +129,7 @@ struct _GimpImage
 
   GList             *guides;                /*  guides                       */
   GimpGrid          *grid;                  /*  grid                         */
+  GList             *sample_points;         /*  color sample points          */
 
   /*  Layer/Channel attributes  */
   GimpContainer     *layers;                /*  the list of layers           */
@@ -156,9 +157,9 @@ struct _GimpImage
   gboolean           visible[MAX_CHANNELS]; /*  visible channels             */
   gboolean           active[MAX_CHANNELS];  /*  active channels              */
 
-  gboolean           qmask_state;           /*  TRUE if qmask is on          */
-  gboolean           qmask_inverted;        /*  TRUE if qmask is inverted    */
-  GimpRGB            qmask_color;           /*  rgba triplet of the color    */
+  gboolean           quick_mask_state;      /*  TRUE if quick mask is on       */
+  gboolean           quick_mask_inverted;   /*  TRUE if quick mask is inverted */
+  GimpRGB            quick_mask_color;      /*  rgba triplet of the color      */
 
   /*  Undo apparatus  */
   GimpUndoStack     *undo_stack;            /*  stack for undo operations    */
@@ -192,7 +193,7 @@ struct _GimpImageClass
   void (* mask_changed)                 (GimpImage            *gimage);
   void (* resolution_changed)           (GimpImage            *gimage);
   void (* unit_changed)                 (GimpImage            *gimage);
-  void (* qmask_changed)                (GimpImage            *gimage);
+  void (* quick_mask_changed)           (GimpImage            *gimage);
   void (* selection_control)            (GimpImage            *gimage,
                                          GimpSelectionControl  control);
 
@@ -207,6 +208,12 @@ struct _GimpImageClass
 					 gint                  height);
   void (* update_guide)                 (GimpImage            *gimage,
                                          GimpGuide            *guide);
+  void (* update_sample_point)          (GimpImage            *gimage,
+                                         GimpSamplePoint      *sample_point);
+  void (* sample_point_added)           (GimpImage            *gimage,
+                                         GimpSamplePoint      *sample_point);
+  void (* sample_point_removed)         (GimpImage            *gimage,
+                                         GimpSamplePoint      *sample_point);
   void (* colormap_changed)             (GimpImage            *gimage,
 					 gint                  color_index);
   void (* undo_event)                   (GimpImage            *gimage,
@@ -294,11 +301,17 @@ void            gimp_image_update                (GimpImage          *gimage,
                                                   gint                height);
 void            gimp_image_update_guide          (GimpImage          *gimage,
                                                   GimpGuide          *guide);
+void            gimp_image_update_sample_point   (GimpImage          *gimage,
+                                                  GimpSamplePoint    *sample_point);
+void            gimp_image_sample_point_added    (GimpImage          *gimage,
+                                                  GimpSamplePoint    *sample_point);
+void            gimp_image_sample_point_removed  (GimpImage          *gimage,
+                                                  GimpSamplePoint    *sample_point);
 void		gimp_image_colormap_changed      (GimpImage          *gimage,
                                                   gint                col);
 void            gimp_image_selection_control     (GimpImage          *gimage,
                                                   GimpSelectionControl  control);
-void            gimp_image_qmask_changed         (GimpImage          *gimage);
+void            gimp_image_quick_mask_changed    (GimpImage          *gimage);
 
 
 /*  undo  */
@@ -381,7 +394,7 @@ gboolean        gimp_image_set_tattoo_state      (GimpImage          *gimage,
 GimpTattoo      gimp_image_get_tattoo_state      (GimpImage          *gimage);
 
 
-/*  layers / channels / vectors / old paths  */
+/*  layers / channels / vectors  */
 
 GimpContainer * gimp_image_get_layers            (const GimpImage    *gimage);
 GimpContainer * gimp_image_get_channels          (const GimpImage    *gimage);

@@ -1,0 +1,64 @@
+<!-- ##### SECTION Title ##### -->
+gimpvectors
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### FUNCTION gimp_vectors_get_strokes ##### -->
+<para>
+
+</para>
+
+@vectors_ID: 
+@num_strokes: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_vectors_stroke_interpolate ##### -->
+<para>
+
+</para>
+
+@vectors_ID: 
+@stroke_id: 
+@prescision: 
+@num_coords: 
+@coords: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_vectors_stroke_remove ##### -->
+<para>
+
+</para>
+
+@vectors_ID: 
+@stroke_id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_vectors_stroke_translate ##### -->
+<para>
+
+</para>
+
+@vectors_ID: 
+@stroke_id: 
+@offx: 
+@offy: 
+@Returns: 
+
+

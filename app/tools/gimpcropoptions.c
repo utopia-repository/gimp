@@ -20,15 +20,15 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
 
-#include "config/gimpconfig-params.h"
-
-#include "widgets/gimppropwidgets.h"
 #include "widgets/gimpwidgets-utils.h"
 
+#include "gimprectangleoptions.h"
 #include "gimpcropoptions.h"
 #include "gimptooloptions-gui.h"
 
@@ -38,14 +38,23 @@
 enum
 {
   PROP_0,
+  PROP_HIGHLIGHT,
+  PROP_FIXED_WIDTH,
+  PROP_WIDTH,
+  PROP_FIXED_HEIGHT,
+  PROP_HEIGHT,
+  PROP_FIXED_ASPECT,
+  PROP_ASPECT,
+  PROP_FIXED_CENTER,
+  PROP_CENTER_X,
+  PROP_CENTER_Y,
+  PROP_UNIT,
   PROP_LAYER_ONLY,
-  PROP_ALLOW_ENLARGE,
-  PROP_KEEP_ASPECT,
   PROP_CROP_MODE
 };
 
 
-static void   gimp_crop_options_class_init   (GimpCropOptionsClass *klass);
+static void   gimp_crop_options_rectangle_options_iface_init (GimpRectangleOptionsInterface *iface);
 
 static void   gimp_crop_options_set_property (GObject      *object,
                                               guint         property_id,
@@ -57,43 +66,16 @@ static void   gimp_crop_options_get_property (GObject      *object,
                                               GParamSpec   *pspec);
 
 
-static GimpToolOptionsClass *parent_class = NULL;
+G_DEFINE_TYPE_WITH_CODE (GimpCropOptions, gimp_crop_options,
+                         GIMP_TYPE_TOOL_OPTIONS,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_RECTANGLE_OPTIONS,
+                                                gimp_crop_options_rectangle_options_iface_init));
 
-
-GType
-gimp_crop_options_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpCropOptionsClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_crop_options_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpCropOptions),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) NULL
-      };
-
-      type = g_type_register_static (GIMP_TYPE_TOOL_OPTIONS,
-                                     "GimpCropOptions",
-                                     &info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_crop_options_class_init (GimpCropOptionsClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->set_property = gimp_crop_options_set_property;
   object_class->get_property = gimp_crop_options_get_property;
@@ -102,19 +84,23 @@ gimp_crop_options_class_init (GimpCropOptionsClass *klass)
                                     "layer-only", NULL,
                                     FALSE,
                                     0);
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_ALLOW_ENLARGE,
-                                    "allow-enlarge", NULL,
-                                    FALSE,
-                                    0);
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_KEEP_ASPECT,
-                                    "keep-aspect", NULL,
-                                    FALSE,
-                                    0);
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_CROP_MODE,
                                  "crop-mode", NULL,
                                  GIMP_TYPE_CROP_MODE,
                                  GIMP_CROP_MODE_CROP,
                                  0);
+
+  gimp_rectangle_options_install_properties (object_class);
+}
+
+static void
+gimp_crop_options_init (GimpCropOptions *options)
+{
+}
+
+static void
+gimp_crop_options_rectangle_options_iface_init (GimpRectangleOptionsInterface *iface)
+{
 }
 
 static void
@@ -127,14 +113,21 @@ gimp_crop_options_set_property (GObject      *object,
 
   switch (property_id)
     {
+    case GIMP_RECTANGLE_OPTIONS_PROP_HIGHLIGHT:
+    case GIMP_RECTANGLE_OPTIONS_PROP_FIXED_WIDTH:
+    case GIMP_RECTANGLE_OPTIONS_PROP_WIDTH:
+    case GIMP_RECTANGLE_OPTIONS_PROP_FIXED_HEIGHT:
+    case GIMP_RECTANGLE_OPTIONS_PROP_HEIGHT:
+    case GIMP_RECTANGLE_OPTIONS_PROP_FIXED_ASPECT:
+    case GIMP_RECTANGLE_OPTIONS_PROP_ASPECT:
+    case GIMP_RECTANGLE_OPTIONS_PROP_FIXED_CENTER:
+    case GIMP_RECTANGLE_OPTIONS_PROP_CENTER_X:
+    case GIMP_RECTANGLE_OPTIONS_PROP_CENTER_Y:
+    case GIMP_RECTANGLE_OPTIONS_PROP_UNIT:
+      gimp_rectangle_options_set_property (object, property_id, value, pspec);
+      break;
     case PROP_LAYER_ONLY:
       options->layer_only = g_value_get_boolean (value);
-      break;
-    case PROP_ALLOW_ENLARGE:
-      options->allow_enlarge = g_value_get_boolean (value);
-      break;
-    case PROP_KEEP_ASPECT:
-      options->keep_aspect = g_value_get_boolean (value);
       break;
     case PROP_CROP_MODE:
       options->crop_mode = g_value_get_enum (value);
@@ -155,14 +148,21 @@ gimp_crop_options_get_property (GObject    *object,
 
   switch (property_id)
     {
+    case GIMP_RECTANGLE_OPTIONS_PROP_HIGHLIGHT:
+    case GIMP_RECTANGLE_OPTIONS_PROP_FIXED_WIDTH:
+    case GIMP_RECTANGLE_OPTIONS_PROP_WIDTH:
+    case GIMP_RECTANGLE_OPTIONS_PROP_FIXED_HEIGHT:
+    case GIMP_RECTANGLE_OPTIONS_PROP_HEIGHT:
+    case GIMP_RECTANGLE_OPTIONS_PROP_FIXED_ASPECT:
+    case GIMP_RECTANGLE_OPTIONS_PROP_ASPECT:
+    case GIMP_RECTANGLE_OPTIONS_PROP_FIXED_CENTER:
+    case GIMP_RECTANGLE_OPTIONS_PROP_CENTER_X:
+    case GIMP_RECTANGLE_OPTIONS_PROP_CENTER_Y:
+    case GIMP_RECTANGLE_OPTIONS_PROP_UNIT:
+      gimp_rectangle_options_get_property (object, property_id, value, pspec);
+      break;
     case PROP_LAYER_ONLY:
       g_value_set_boolean (value, options->layer_only);
-      break;
-    case PROP_ALLOW_ENLARGE:
-      g_value_set_boolean (value, options->allow_enlarge);
-      break;
-    case PROP_KEEP_ASPECT:
-      g_value_set_boolean (value, options->keep_aspect);
       break;
     case PROP_CROP_MODE:
       g_value_set_enum (value, options->crop_mode);
@@ -178,6 +178,7 @@ gimp_crop_options_gui (GimpToolOptions *tool_options)
 {
   GObject   *config = G_OBJECT (tool_options);
   GtkWidget *vbox;
+  GtkWidget *vbox_rectangle;
   GtkWidget *frame;
   GtkWidget *button;
   gchar     *str;
@@ -185,7 +186,7 @@ gimp_crop_options_gui (GimpToolOptions *tool_options)
   vbox = gimp_tool_options_gui (tool_options);
 
   /*  tool toggle  */
-  str = g_strdup_printf (_("Tool Toggle  %s"),
+  str = g_strdup_printf (_("Tool Toggle  (%s)"),
                          gimp_get_mod_string (GDK_CONTROL_MASK));
 
   frame = gimp_prop_enum_radio_frame_new (config, "crop-mode",
@@ -201,24 +202,10 @@ gimp_crop_options_gui (GimpToolOptions *tool_options)
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
-  /*  enlarge toggle  */
-  str = g_strdup_printf (_("Allow enlarging  %s"),
-                         gimp_get_mod_string (GDK_MOD1_MASK));
-
-  button = gimp_prop_check_button_new (config, "allow-enlarge", str);
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
-  gtk_widget_show (button);
-
-  g_free (str);
-
-  /*  layer toggle  */
-  str = g_strdup_printf (_("Keep aspect ratio  %s"),
-                         gimp_get_mod_string (GDK_SHIFT_MASK));
-  button = gimp_prop_check_button_new (config, "keep-aspect", str);
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
-  gtk_widget_show (button);
-
-  g_free (str);
+  /*  rectangle options  */
+  vbox_rectangle = gimp_rectangle_options_gui (tool_options);
+  gtk_box_pack_start (GTK_BOX (vbox), vbox_rectangle, FALSE, FALSE, 0);
+  gtk_widget_show (vbox_rectangle);
 
   return vbox;
 }

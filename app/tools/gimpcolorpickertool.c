@@ -21,6 +21,7 @@
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
@@ -31,9 +32,12 @@
 #include "core/gimptoolinfo.h"
 
 #include "widgets/gimpcolorframe.h"
+#include "widgets/gimpcolormapeditor.h"
 #include "widgets/gimpdialogfactory.h"
+#include "widgets/gimpdockable.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimppaletteeditor.h"
+#include "widgets/gimpsessioninfo.h"
 #include "widgets/gimptooldialog.h"
 #include "widgets/gimpviewabledialog.h"
 
@@ -48,11 +52,9 @@
 
 /*  local function prototypes  */
 
-static void      gimp_color_picker_tool_class_init (GimpColorPickerToolClass *klass);
-static void      gimp_color_picker_tool_init       (GimpColorPickerTool      *tool);
-static GObject * gimp_color_picker_tool_constructor(GType              type,
-                                                    guint              n_params,
-                                                    GObjectConstructParam *params);
+static GObject * gimp_color_picker_tool_constructor  (GType            type,
+                                                      guint            n_params,
+                                                      GObjectConstructParam *params);
 static void      gimp_color_picker_tool_finalize     (GObject         *object);
 
 static void      gimp_color_picker_tool_control      (GimpTool        *tool,
@@ -84,7 +86,10 @@ static void   gimp_color_picker_tool_info_update (GimpColorPickerTool *picker_to
                                                   gint                 color_index);
 
 
-static GimpColorToolClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpColorPickerTool, gimp_color_picker_tool,
+               GIMP_TYPE_COLOR_TOOL);
+
+#define parent_class gimp_color_picker_tool_parent_class
 
 
 void
@@ -104,42 +109,12 @@ gimp_color_picker_tool_register (GimpToolRegisterCallback  callback,
                 data);
 }
 
-GtkType
-gimp_color_picker_tool_get_type (void)
-{
-  static GtkType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpColorPickerToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_color_picker_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpColorPickerTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_color_picker_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_COLOR_TOOL,
-                                          "GimpColorPickerTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
-
 static void
 gimp_color_picker_tool_class_init (GimpColorPickerToolClass *klass)
 {
   GObjectClass       *object_class     = G_OBJECT_CLASS (klass);
   GimpToolClass      *tool_class       = GIMP_TOOL_CLASS (klass);
   GimpColorToolClass *color_tool_class = GIMP_COLOR_TOOL_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->constructor = gimp_color_picker_tool_constructor;
   object_class->finalize    = gimp_color_picker_tool_finalize;
@@ -183,7 +158,8 @@ gimp_color_picker_tool_finalize (GObject *object)
   GimpColorPickerTool *picker_tool = GIMP_COLOR_PICKER_TOOL (object);
 
   if (picker_tool->dialog)
-    gimp_color_picker_tool_info_response (NULL, GTK_RESPONSE_CLOSE, picker_tool);
+    gimp_color_picker_tool_info_response (NULL, GTK_RESPONSE_CLOSE,
+                                          picker_tool);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -223,16 +199,13 @@ gimp_color_picker_tool_modifier_key (GimpTool        *tool,
 
   if (key == GDK_SHIFT_MASK)
     {
-      g_object_set (options, "add-to-palette", ! options->add_to_palette,
+      g_object_set (options, "use-info-window", ! options->use_info_window,
                     NULL);
     }
   else if (key == GDK_CONTROL_MASK)
     {
        switch (options->pick_mode)
         {
-        case GIMP_COLOR_PICK_MODE_NONE:
-          break;
-
         case GIMP_COLOR_PICK_MODE_FOREGROUND:
           g_object_set (options, "pick-mode", GIMP_COLOR_PICK_MODE_BACKGROUND,
                         NULL);
@@ -241,6 +214,9 @@ gimp_color_picker_tool_modifier_key (GimpTool        *tool,
         case GIMP_COLOR_PICK_MODE_BACKGROUND:
           g_object_set (options, "pick-mode", GIMP_COLOR_PICK_MODE_FOREGROUND,
                         NULL);
+          break;
+
+        default:
           break;
         }
 
@@ -258,6 +234,8 @@ gimp_color_picker_tool_oper_update (GimpTool        *tool,
   options = GIMP_COLOR_PICKER_OPTIONS (tool->tool_info->tool_options);
 
   GIMP_COLOR_TOOL (tool)->pick_mode = options->pick_mode;
+
+  GIMP_TOOL_CLASS (parent_class)->oper_update (tool, coords, state, gdisp);
 }
 
 static void
@@ -274,43 +252,36 @@ gimp_color_picker_tool_picked (GimpColorTool      *color_tool,
 
   options = GIMP_COLOR_PICKER_OPTIONS (color_tool->options);
 
-  if (! picker_tool->dialog)
+  if (options->use_info_window && ! picker_tool->dialog)
     gimp_color_picker_tool_info_create (picker_tool);
 
-  gimp_color_picker_tool_info_update (picker_tool, sample_type,
-                                      color, color_index);
+  if (picker_tool->dialog)
+    gimp_color_picker_tool_info_update (picker_tool, sample_type,
+                                        color, color_index);
 
   user_context = gimp_get_user_context (tool->gdisp->gimage->gimp);
 
-  if (options->add_to_palette)
+  if ((options->pick_mode == GIMP_COLOR_PICK_MODE_FOREGROUND ||
+       options->pick_mode == GIMP_COLOR_PICK_MODE_BACKGROUND) &&
+      GIMP_IMAGE_TYPE_IS_INDEXED (sample_type))
     {
       GimpDialogFactory *dialog_factory;
-      GdkScreen         *screen;
-      GtkWidget         *dockable;
-      GtkWidget         *palette_editor;
-      GimpData          *data;
+      GimpSessionInfo   *info;
 
       dialog_factory = gimp_dialog_factory_from_name ("dock");
-      screen         = gtk_widget_get_screen (tool->gdisp->shell);
+      info = gimp_dialog_factory_find_session_info (dialog_factory,
+                                                    "gimp-indexed-palette");
 
-      dockable = gimp_dialog_factory_dialog_raise (dialog_factory,
-                                                   screen,
-                                                   "gimp-palette-editor",
-                                                   -1);
-
-      palette_editor = gtk_bin_get_child (GTK_BIN (dockable));
-
-      data = gimp_data_editor_get_data (GIMP_DATA_EDITOR (palette_editor));
-
-      if (! data)
+      if (info && info->widget)
         {
-          data = GIMP_DATA (gimp_context_get_palette (user_context));
+          GtkWidget *colormap_editor;
 
-          gimp_data_editor_set_data (GIMP_DATA_EDITOR (palette_editor), data);
+          colormap_editor = gtk_bin_get_child (GTK_BIN (info->widget));
+
+          gtk_adjustment_set_value
+            (GIMP_COLORMAP_EDITOR (colormap_editor)->index_adjustment,
+             color_index);
         }
-
-      gimp_palette_editor_pick_color (GIMP_PALETTE_EDITOR (palette_editor),
-                                      color, pick_state);
     }
 
   switch (options->pick_mode)
@@ -324,6 +295,45 @@ gimp_color_picker_tool_picked (GimpColorTool      *color_tool,
 
     case GIMP_COLOR_PICK_MODE_BACKGROUND:
       gimp_context_set_background (user_context, color);
+      break;
+
+    case GIMP_COLOR_PICK_MODE_PALETTE:
+      {
+        GimpDialogFactory *dialog_factory;
+        GdkScreen         *screen;
+        GtkWidget         *dockable;
+
+        dialog_factory = gimp_dialog_factory_from_name ("dock");
+        screen = gtk_widget_get_screen (tool->gdisp->shell);
+        dockable = gimp_dialog_factory_dialog_raise (dialog_factory, screen,
+                                                     "gimp-palette-editor",
+                                                     -1);
+
+        if (dockable)
+          {
+            GtkWidget *palette_editor;
+            GimpData  *data;
+
+            /* don't blink like mad when updating */
+            if (pick_state == GIMP_COLOR_PICK_STATE_UPDATE)
+              gimp_dockable_blink_cancel (GIMP_DOCKABLE (dockable));
+
+            palette_editor = gtk_bin_get_child (GTK_BIN (dockable));
+
+            data = gimp_data_editor_get_data (GIMP_DATA_EDITOR (palette_editor));
+
+            if (! data)
+              {
+                data = GIMP_DATA (gimp_context_get_palette (user_context));
+
+                gimp_data_editor_set_data (GIMP_DATA_EDITOR (palette_editor),
+                                           data);
+              }
+
+            gimp_palette_editor_pick_color (GIMP_PALETTE_EDITOR (palette_editor),
+                                            color, pick_state);
+          }
+      }
       break;
     }
 }
@@ -411,7 +421,8 @@ gimp_color_picker_tool_info_update (GimpColorPickerTool *picker_tool,
                                     GimpRGB             *color,
                                     gint                 color_index)
 {
-  gimp_color_area_set_color (GIMP_COLOR_AREA (picker_tool->color_area), color);
+  gimp_color_area_set_color (GIMP_COLOR_AREA (picker_tool->color_area),
+                             color);
 
   gimp_color_frame_set_color (GIMP_COLOR_FRAME (picker_tool->color_frame1),
                               sample_type, color, color_index);

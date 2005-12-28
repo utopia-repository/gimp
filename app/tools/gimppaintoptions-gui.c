@@ -21,11 +21,10 @@
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
-
-#include "config/gimpconfig.h"
 
 #include "core/gimp.h"
 #include "core/gimptoolinfo.h"
@@ -65,7 +64,9 @@ static GtkWidget * gradient_options_gui (GimpGradientOptions *gradient,
                                          GimpPaintOptions    *paint_options,
                                          GType                tool_type,
                                          GtkWidget           *incremental_toggle);
-
+static GtkWidget * jitter_options_gui   (GimpJitterOptions   *jitter,
+                                         GimpPaintOptions    *paint_options,
+                                         GType                tool_type);
 
 /*  public functions  */
 
@@ -97,11 +98,6 @@ gimp_paint_options_gui (GimpToolOptions *tool_options)
 
   g_object_set_data (G_OBJECT (vbox), GIMP_PAINT_OPTIONS_TABLE_KEY, table);
 
-  /*  the opacity scale  */
-  gimp_prop_opacity_entry_new (config, "opacity",
-                               GTK_TABLE (table), 0, table_row++,
-                               _("Opacity:"));
-
   /*  the paint mode menu  */
   menu = gimp_prop_paint_mode_menu_new (config, "paint-mode", TRUE);
   label = gimp_table_attach_aligned (GTK_TABLE (table), 0, table_row++,
@@ -117,6 +113,12 @@ gimp_paint_options_gui (GimpToolOptions *tool_options)
       gtk_widget_set_sensitive (label, FALSE);
     }
 
+  /*  the opacity scale  */
+  gimp_prop_opacity_entry_new (config, "opacity",
+                               GTK_TABLE (table), 0, table_row++,
+                               _("Opacity:"));
+
+  /*  the brush  */
   if (tool_type != GIMP_TYPE_BUCKET_FILL_TOOL &&
       tool_type != GIMP_TYPE_BLEND_TOOL       &&
       tool_type != GIMP_TYPE_INK_TOOL)
@@ -127,6 +129,7 @@ gimp_paint_options_gui (GimpToolOptions *tool_options)
                                  button, 2, FALSE);
     }
 
+  /*  the gradient  */
   if (tool_type == GIMP_TYPE_BLEND_TOOL)
     {
       button = gimp_gradient_box_new (NULL, GIMP_CONTEXT (tool_options),
@@ -146,6 +149,14 @@ gimp_paint_options_gui (GimpToolOptions *tool_options)
 
   frame = fade_options_gui (options->fade_options,
                             options, tool_type);
+  if (frame)
+    {
+      gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+      gtk_widget_show (frame);
+    }
+
+  frame = jitter_options_gui (options->jitter_options,
+			      options, tool_type);
   if (frame)
     {
       gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
@@ -213,8 +224,9 @@ pressure_options_gui (GimpPressureOptions *pressure,
     {
       GtkWidget *inner_frame;
 
-      frame = gtk_expander_new (_("Pressure sensitivity"));
-      gtk_expander_set_expanded (GTK_EXPANDER (frame), FALSE);
+      frame = gimp_prop_expander_new (G_OBJECT (paint_options),
+                                      "pressure-expanded",
+                                      _("Pressure sensitivity"));
 
       inner_frame = gimp_frame_new ("<expander>");
       gtk_container_add (GTK_CONTAINER (frame), inner_frame);
@@ -264,13 +276,23 @@ pressure_options_gui (GimpPressureOptions *pressure,
     }
 
   /*  the size toggle  */
-  if (g_type_is_a (tool_type, GIMP_TYPE_PAINTBRUSH_TOOL) ||
-      tool_type == GIMP_TYPE_CLONE_TOOL                  ||
-      tool_type == GIMP_TYPE_CONVOLVE_TOOL               ||
-      tool_type == GIMP_TYPE_DODGE_BURN_TOOL             ||
-      tool_type == GIMP_TYPE_ERASER_TOOL)
+  if (tool_type == GIMP_TYPE_CLONE_TOOL      ||
+      tool_type == GIMP_TYPE_CONVOLVE_TOOL   ||
+      tool_type == GIMP_TYPE_DODGE_BURN_TOOL ||
+      tool_type == GIMP_TYPE_ERASER_TOOL     ||
+      tool_type == GIMP_TYPE_PAINTBRUSH_TOOL ||
+      tool_type == GIMP_TYPE_PENCIL_TOOL)
     {
       button = gimp_prop_check_button_new (config, "pressure-size",
+                                           _("Size"));
+      gtk_container_add (GTK_CONTAINER (wbox), button);
+      gtk_widget_show (button);
+    }
+
+  /* the inverse size toggle */
+  if (tool_type == GIMP_TYPE_AIRBRUSH_TOOL)
+    {
+      button = gimp_prop_check_button_new (config, "pressure-inverse-size",
                                            _("Size"));
       gtk_container_add (GTK_CONTAINER (wbox), button);
       gtk_widget_show (button);
@@ -295,10 +317,6 @@ fade_options_gui (GimpFadeOptions  *fade,
 {
   GObject   *config = G_OBJECT (paint_options);
   GtkWidget *frame  = NULL;
-  GtkWidget *table;
-  GtkWidget *spinbutton;
-  GtkWidget *button;
-  GtkWidget *menu;
 
   if (g_type_is_a (tool_type, GIMP_TYPE_PAINTBRUSH_TOOL) ||
       tool_type == GIMP_TYPE_CLONE_TOOL                  ||
@@ -307,6 +325,11 @@ fade_options_gui (GimpFadeOptions  *fade,
       tool_type == GIMP_TYPE_ERASER_TOOL                 ||
       tool_type == GIMP_TYPE_SMUDGE_TOOL)
     {
+      GtkWidget *table;
+      GtkWidget *spinbutton;
+      GtkWidget *button;
+      GtkWidget *menu;
+
       frame = gimp_frame_new (NULL);
 
       button = gimp_prop_check_button_new (config, "use-fade",
@@ -347,6 +370,52 @@ fade_options_gui (GimpFadeOptions  *fade,
 }
 
 static GtkWidget *
+jitter_options_gui (GimpJitterOptions  *jitter,
+		    GimpPaintOptions   *paint_options,
+		    GType               tool_type)
+{
+  GObject   *config = G_OBJECT (paint_options);
+  GtkWidget *frame  = NULL;
+
+  if (g_type_is_a (tool_type, GIMP_TYPE_PAINTBRUSH_TOOL) ||
+      tool_type == GIMP_TYPE_CLONE_TOOL                  ||
+      tool_type == GIMP_TYPE_CONVOLVE_TOOL               ||
+      tool_type == GIMP_TYPE_DODGE_BURN_TOOL             ||
+      tool_type == GIMP_TYPE_ERASER_TOOL                 ||
+      tool_type == GIMP_TYPE_SMUDGE_TOOL)
+    {
+      GtkWidget *table;
+      GtkWidget *button;
+
+      frame = gimp_frame_new (NULL);
+
+      button = gimp_prop_check_button_new (config, "use-jitter",
+                                           _("Apply Jitter"));
+
+      gtk_frame_set_label_widget (GTK_FRAME (frame), button);
+      gtk_widget_show (button);
+
+      table = gtk_table_new (1, 3, FALSE);
+      gtk_table_set_col_spacings (GTK_TABLE (table), 2);
+      gtk_container_add (GTK_CONTAINER (frame), table);
+      if (jitter->use_jitter)
+        gtk_widget_show (table);
+
+      g_signal_connect_object (button, "toggled",
+                               G_CALLBACK (gimp_toggle_button_set_visible),
+                               table, 0);
+
+      gimp_prop_scale_entry_new (config, "jitter-amount",
+                                 GTK_TABLE (table), 0, 0,
+                                 _("Amount:"),
+                                 0.01, 0.1, 2,
+                                 TRUE, 0.0, 2.0);
+    }
+
+  return frame;
+}
+
+static GtkWidget *
 gradient_options_gui (GimpGradientOptions *gradient,
                       GimpPaintOptions    *paint_options,
                       GType                tool_type,
@@ -354,14 +423,15 @@ gradient_options_gui (GimpGradientOptions *gradient,
 {
   GObject   *config = G_OBJECT (paint_options);
   GtkWidget *frame  = NULL;
-  GtkWidget *table;
-  GtkWidget *spinbutton;
-  GtkWidget *button;
-  GtkWidget *menu;
-  GtkWidget *combo;
 
   if (g_type_is_a (tool_type, GIMP_TYPE_PAINTBRUSH_TOOL))
     {
+      GtkWidget *table;
+      GtkWidget *spinbutton;
+      GtkWidget *button;
+      GtkWidget *menu;
+      GtkWidget *combo;
+
       frame = gimp_frame_new (NULL);
 
       button = gimp_prop_check_button_new (config, "use-gradient",

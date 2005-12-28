@@ -53,7 +53,6 @@ struct _GimpDockable
   PangoLayout  *title_layout;
   GdkWindow    *title_window;
   GtkWidget    *menu_button;
-  GtkWidget    *close_button;
 
   guint         blink_timeout_id;
   gint          blink_counter;
@@ -91,6 +90,7 @@ GimpUIManager * gimp_dockable_get_menu       (GimpDockable   *dockable,
 void            gimp_dockable_detach         (GimpDockable   *dockable);
 
 void            gimp_dockable_blink          (GimpDockable   *dockable);
+void            gimp_dockable_blink_cancel   (GimpDockable   *dockable);
 
 
 #endif /* __GIMP_DOCKABLE_H__ */

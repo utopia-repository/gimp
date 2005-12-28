@@ -20,15 +20,15 @@
 
 #include <errno.h>
 #include <stdarg.h>
-#include <stdio.h>
 
+#include <glib/gstdio.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "gui-types.h"
 
-#include "config/gimpconfig-path.h"
 #include "config/gimpguiconfig.h"
 
 #include "core/gimp.h"
@@ -231,7 +231,7 @@ themes_apply_theme (Gimp        *gimp,
     g_print (_("Writing '%s'\n"),
 	     gimp_filename_to_utf8 (themerc));
 
-  file = fopen (themerc, "w");
+  file = g_fopen (themerc, "w");
 
   if (! file)
     {

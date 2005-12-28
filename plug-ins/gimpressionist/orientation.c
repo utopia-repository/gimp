@@ -45,11 +45,11 @@ void orientation_restore (void)
 }
 
 static void
-create_orientmap_dialog_helper (void)
+create_orientmap_dialog_helper (GtkWidget *widget)
 {
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (orient_radio[7]), TRUE);
 
-  create_orientmap_dialog ();
+  create_orientmap_dialog (widget);
 }
 
 
@@ -91,7 +91,7 @@ create_orientationpage (GtkNotebook *notebook)
                           TRUE, 0, 0,
                           _("The number of directions (i.e. brushes) to use"),
                           NULL);
-  g_signal_connect (orient_num_adjust, "value_changed",
+  g_signal_connect (orient_num_adjust, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &pcvals.orient_num);
 
@@ -103,7 +103,7 @@ create_orientationpage (GtkNotebook *notebook)
                           TRUE, 0, 0,
                           _("The starting angle of the first brush to create"),
                           NULL);
-  g_signal_connect (orient_first_adjust, "value_changed",
+  g_signal_connect (orient_first_adjust, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &pcvals.orient_first);
 
@@ -115,7 +115,7 @@ create_orientationpage (GtkNotebook *notebook)
                           TRUE, 0, 0,
                           _("The angle span of the first brush to create"),
                           NULL);
-  g_signal_connect (orient_last_adjust, "value_changed",
+  g_signal_connect (orient_last_adjust, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &pcvals.orient_last);
 
@@ -177,7 +177,7 @@ create_orientationpage (GtkNotebook *notebook)
 
   orientation_restore ();
 
-  tmpw = gtk_button_new_from_stock (GIMP_STOCK_EDIT);
+  tmpw = gtk_button_new_from_stock (GTK_STOCK_EDIT);
   gtk_box_pack_start (GTK_BOX (box4), tmpw, FALSE, FALSE, 0);
   gtk_widget_show (tmpw);
   g_signal_connect (tmpw, "clicked",

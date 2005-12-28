@@ -47,14 +47,20 @@ static GimpActionEntry gradients_actions[] =
   { "gradients-new", GTK_STOCK_NEW,
     N_("_New Gradient"), "",
     N_("New gradient"),
-    G_CALLBACK (data_new_data_cmd_callback),
+    G_CALLBACK (data_new_cmd_callback),
     GIMP_HELP_GRADIENT_NEW },
 
   { "gradients-duplicate", GIMP_STOCK_DUPLICATE,
     N_("D_uplicate Gradient"), NULL,
     N_("Duplicate gradient"),
-    G_CALLBACK (data_duplicate_data_cmd_callback),
+    G_CALLBACK (data_duplicate_cmd_callback),
     GIMP_HELP_GRADIENT_DUPLICATE },
+
+  { "gradients-copy-location", GTK_STOCK_COPY,
+    N_("Copy Gradient _Location"), "",
+    N_("Copy gradient file location to clipboard"),
+    G_CALLBACK (data_copy_location_cmd_callback),
+    GIMP_HELP_GRADIENT_COPY_LOCATION },
 
   { "gradients-save-as-pov", GTK_STOCK_SAVE_AS,
     N_("Save as _POV-Ray..."), "",
@@ -63,21 +69,21 @@ static GimpActionEntry gradients_actions[] =
     GIMP_HELP_GRADIENT_SAVE_AS_POV },
 
   { "gradients-delete", GTK_STOCK_DELETE,
-    N_("_Delete Gradient..."), "",
+    N_("_Delete Gradient"), "",
     N_("Delete gradient"),
-    G_CALLBACK (data_delete_data_cmd_callback),
+    G_CALLBACK (data_delete_cmd_callback),
     GIMP_HELP_GRADIENT_DELETE },
 
   { "gradients-refresh", GTK_STOCK_REFRESH,
     N_("_Refresh Gradients"), "",
     N_("Refresh gradients"),
-    G_CALLBACK (data_refresh_data_cmd_callback),
+    G_CALLBACK (data_refresh_cmd_callback),
     GIMP_HELP_GRADIENT_REFRESH }
 };
 
 static GimpStringActionEntry gradients_edit_actions[] =
 {
-  { "gradients-edit", GIMP_STOCK_EDIT,
+  { "gradients-edit", GTK_STOCK_EDIT,
     N_("_Edit Gradient..."), NULL,
     N_("Edit gradient"),
     "gimp-gradient-editor",
@@ -95,7 +101,7 @@ gradients_actions_setup (GimpActionGroup *group)
   gimp_action_group_add_string_actions (group,
                                         gradients_edit_actions,
                                         G_N_ELEMENTS (gradients_edit_actions),
-                                        G_CALLBACK (data_edit_data_cmd_callback));
+                                        G_CALLBACK (data_edit_cmd_callback));
 }
 
 void
@@ -117,10 +123,11 @@ gradients_actions_update (GimpActionGroup *group,
 #define SET_SENSITIVE(action,condition) \
         gimp_action_group_set_action_sensitive (group, action, (condition) != 0)
 
-  SET_SENSITIVE ("gradients-edit",        gradient);
-  SET_SENSITIVE ("gradients-duplicate",   gradient);
-  SET_SENSITIVE ("gradients-save-as-pov", gradient);
-  SET_SENSITIVE ("gradients-delete",      gradient && data->deletable);
+  SET_SENSITIVE ("gradients-edit",          gradient);
+  SET_SENSITIVE ("gradients-duplicate",     gradient);
+  SET_SENSITIVE ("gradients-save-as-pov",   gradient);
+  SET_SENSITIVE ("gradients-copy-location", gradient && data->filename);
+  SET_SENSITIVE ("gradients-delete",        gradient && data->deletable);
 
 #undef SET_SENSITIVE
 }

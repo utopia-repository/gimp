@@ -27,6 +27,7 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
 #include "libgimpmath/gimpmath.h"
 
@@ -121,9 +122,6 @@ struct _ColorSelectFill
 };
 
 
-static void   gimp_color_select_class_init    (GimpColorSelectClass *klass);
-static void   gimp_color_select_init          (GimpColorSelect      *select);
-
 static void   gimp_color_select_unrealize       (GtkWidget          *widget);
 
 static void   gimp_color_select_togg_visible    (GimpColorSelector  *selector,
@@ -146,6 +144,8 @@ static void   gimp_color_select_update_pos      (GimpColorSelect    *select);
 
 #if 0
 static void   gimp_color_select_drop_color      (GtkWidget          *widget,
+                                                 gint                x,
+                                                 gint                y,
                                                  const GimpRGB      *color,
                                                  gpointer            data);
 #endif
@@ -193,9 +193,9 @@ static void   color_select_update_hue_value        (ColorSelectFill *csf);
 static void   color_select_update_saturation_value (ColorSelectFill *csf);
 
 
-/*  static variables  */
+G_DEFINE_TYPE (GimpColorSelect, gimp_color_select, GIMP_TYPE_COLOR_SELECTOR);
 
-static GimpColorSelectorClass *parent_class = NULL;
+#define parent_class gimp_color_select_parent_class
 
 static ColorSelectFillUpdateProc update_procs[] =
 {
@@ -215,41 +215,11 @@ static ColorSelectFillUpdateProc update_procs[] =
 };
 
 
-GType
-gimp_color_select_get_type (void)
-{
-  static GType select_type = 0;
-
-  if (! select_type)
-    {
-      static const GTypeInfo select_info =
-      {
-        sizeof (GimpColorSelectClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_color_select_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpColorSelect),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_color_select_init,
-      };
-
-      select_type = g_type_register_static (GIMP_TYPE_COLOR_SELECTOR,
-                                            "GimpColorSelect",
-                                            &select_info, 0);
-    }
-
-  return select_type;
-}
-
 static void
 gimp_color_select_class_init (GimpColorSelectClass *klass)
 {
   GtkWidgetClass         *widget_class   = GTK_WIDGET_CLASS (klass);
   GimpColorSelectorClass *selector_class = GIMP_COLOR_SELECTOR_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   widget_class->unrealize               = gimp_color_select_unrealize;
 
@@ -290,10 +260,10 @@ gimp_color_select_init (GimpColorSelect *select)
   gtk_container_add (GTK_CONTAINER (frame), select->xy_color);
   gtk_widget_show (select->xy_color);
 
-  g_signal_connect (select->xy_color, "size_allocate",
+  g_signal_connect (select->xy_color, "size-allocate",
                     G_CALLBACK (gimp_color_select_xy_size_allocate),
                     select);
-  g_signal_connect_after (select->xy_color, "expose_event",
+  g_signal_connect_after (select->xy_color, "expose-event",
                           G_CALLBACK (gimp_color_select_xy_expose),
                           select);
   g_signal_connect (select->xy_color, "event",
@@ -313,16 +283,15 @@ gimp_color_select_init (GimpColorSelect *select)
 
   select->z_color = gimp_preview_area_new ();
   gtk_widget_set_size_request (select->z_color,
-                               GIMP_COLOR_SELECTOR_BAR_SIZE,
-                               GIMP_COLOR_SELECTOR_SIZE);
+                               GIMP_COLOR_SELECTOR_BAR_SIZE, -1);
   gtk_widget_set_events (select->z_color, COLOR_AREA_EVENT_MASK);
   gtk_container_add (GTK_CONTAINER (frame), select->z_color);
   gtk_widget_show (select->z_color);
 
-  g_signal_connect (select->z_color, "size_allocate",
+  g_signal_connect (select->z_color, "size-allocate",
                     G_CALLBACK (gimp_color_select_z_size_allocate),
                     select);
-  g_signal_connect_after (select->z_color, "expose_event",
+  g_signal_connect_after (select->z_color, "expose-event",
                           G_CALLBACK (gimp_color_select_z_expose),
                           select);
   g_signal_connect (select->z_color, "event",
@@ -336,31 +305,22 @@ gimp_color_select_init (GimpColorSelect *select)
   /*  channel toggles  */
   {
     GimpColorSelectorChannel  channel;
+    GEnumClass               *enum_class;
     GSList                   *group = NULL;
 
-    static const gchar *labels[] =
-    {
-      N_("_H"), N_("_S"), N_("_V"), N_("_R"), N_("_G"), N_("_B")
-    };
-    static const gchar *tips[7] =
-    {
-      N_("Hue"),
-      N_("Saturation"),
-      N_("Value"),
-      N_("Red"),
-      N_("Green"),
-      N_("Blue"),
-      N_("Alpha")
-    };
+    enum_class = g_type_class_ref (GIMP_TYPE_COLOR_SELECTOR_CHANNEL);
 
     for (channel = GIMP_COLOR_SELECTOR_HUE;
          channel < GIMP_COLOR_SELECTOR_ALPHA;
          channel++)
       {
-        GtkWidget *button;
+        GimpEnumDesc *enum_desc;
+        GtkWidget    *button;
+
+        enum_desc = gimp_enum_get_desc (enum_class, channel);
 
         button = gtk_radio_button_new_with_mnemonic (group,
-                                                     gettext (labels[channel]));
+                                                     gettext (enum_desc->value_desc));
         group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
         gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (button), FALSE);
         gtk_box_pack_start (GTK_BOX (select->toggle_box), button,
@@ -373,12 +333,14 @@ gimp_color_select_init (GimpColorSelect *select)
         if (channel == GIMP_COLOR_SELECTOR_HUE)
           gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
 
-        gimp_help_set_help_data (button, gettext (tips[channel]), NULL);
+        gimp_help_set_help_data (button, gettext (enum_desc->value_help), NULL);
 
         g_signal_connect (button, "toggled",
                           G_CALLBACK (gimp_color_select_channel_toggled),
                           select);
       }
+
+    g_type_class_unref (enum_class);
   }
 }
 
@@ -632,6 +594,8 @@ gimp_color_select_update_pos (GimpColorSelect *select)
 #if 0
 static void
 gimp_color_select_drop_color (GtkWidget     *widget,
+                              gint           x,
+                              gint           y,
                               const GimpRGB *color,
                               gpointer       data)
 {

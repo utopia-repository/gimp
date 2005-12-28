@@ -4,29 +4,26 @@
 
 <refentry id="libgimpbase-gimplimits">
 <refmeta>
-<refentrytitle role="top_of_page">gimplimits</refentrytitle>
+<refentrytitle>gimplimits</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimplimits</refname>
-<refpurpose>Boundaries of some GIMP data types and some global constants.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>gimplimits</refname><refpurpose>Boundaries of some GIMP data types and some global constants.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-#define             <link linkend="GIMP-MIN-IMAGE-SIZE:CAPS">GIMP_MIN_IMAGE_SIZE</link>
-#define             <link linkend="GIMP-MAX-IMAGE-SIZE:CAPS">GIMP_MAX_IMAGE_SIZE</link>
-#define             <link linkend="GIMP-MIN-RESOLUTION:CAPS">GIMP_MIN_RESOLUTION</link>
-#define             <link linkend="GIMP-MAX-RESOLUTION:CAPS">GIMP_MAX_RESOLUTION</link>
-#define             <link linkend="GIMP-MAX-MEMSIZE:CAPS">GIMP_MAX_MEMSIZE</link>
+#define     <link linkend="GIMP-MIN-IMAGE-SIZE:CAPS">GIMP_MIN_IMAGE_SIZE</link>
+#define     <link linkend="GIMP-MAX-IMAGE-SIZE:CAPS">GIMP_MAX_IMAGE_SIZE</link>
+#define     <link linkend="GIMP-MIN-RESOLUTION:CAPS">GIMP_MIN_RESOLUTION</link>
+#define     <link linkend="GIMP-MAX-RESOLUTION:CAPS">GIMP_MAX_RESOLUTION</link>
+#define     <link linkend="GIMP-MAX-MEMSIZE:CAPS">GIMP_MAX_MEMSIZE</link>
 </synopsis>
 </refsynopsisdiv>
 
@@ -38,25 +35,25 @@
 
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 Boundaries of some GIMP data types and some global constants.
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="GIMP-MIN-IMAGE-SIZE:CAPS" role="macro"/>GIMP_MIN_IMAGE_SIZE</title>
+<title><anchor id="GIMP-MIN-IMAGE-SIZE:CAPS"/>GIMP_MIN_IMAGE_SIZE</title>
 <indexterm><primary>GIMP_MIN_IMAGE_SIZE</primary></indexterm><programlisting>#define GIMP_MIN_IMAGE_SIZE  1
 </programlisting>
 <para>
 The minimum width and height of a GIMP image in pixels.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-MAX-IMAGE-SIZE:CAPS" role="macro"/>GIMP_MAX_IMAGE_SIZE</title>
+<title><anchor id="GIMP-MAX-IMAGE-SIZE:CAPS"/>GIMP_MAX_IMAGE_SIZE</title>
 <indexterm><primary>GIMP_MAX_IMAGE_SIZE</primary></indexterm><programlisting>#define GIMP_MAX_IMAGE_SIZE  262144    /*  2^18  */
 </programlisting>
 <para>
@@ -65,7 +62,7 @@ somewhat arbitray value that can be used when an upper value for pixel
 sizes is needed; for example to give a spin button an upper limit.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-MIN-RESOLUTION:CAPS" role="macro"/>GIMP_MIN_RESOLUTION</title>
+<title><anchor id="GIMP-MIN-RESOLUTION:CAPS"/>GIMP_MIN_RESOLUTION</title>
 <indexterm><primary>GIMP_MIN_RESOLUTION</primary></indexterm><programlisting>#define GIMP_MIN_RESOLUTION  5e-3      /*  shouldn't display as 0.000  */
 </programlisting>
 <para>
@@ -75,7 +72,7 @@ resolution is needed. GIMP will not accept resolutions smaller than
 this value.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-MAX-RESOLUTION:CAPS" role="macro"/>GIMP_MAX_RESOLUTION</title>
+<title><anchor id="GIMP-MAX-RESOLUTION:CAPS"/>GIMP_MAX_RESOLUTION</title>
 <indexterm><primary>GIMP_MAX_RESOLUTION</primary></indexterm><programlisting>#define GIMP_MAX_RESOLUTION  65536.0
 </programlisting>
 <para>
@@ -85,12 +82,12 @@ resolution is needed. GIMP will not accept resolutions larger than
 this value.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-MAX-MEMSIZE:CAPS" role="macro"/>GIMP_MAX_MEMSIZE</title>
+<title><anchor id="GIMP-MAX-MEMSIZE:CAPS"/>GIMP_MAX_MEMSIZE</title>
 <indexterm><primary>GIMP_MAX_MEMSIZE</primary></indexterm><programlisting>#define GIMP_MAX_MEMSIZE     ((guint64) 1 &lt;&lt; 42) /*  4 terabyte;
 </programlisting>
 <para>
 A large but arbitrary value that can be used when an upper limit for a
-memory size (in bytes) is needed. It is smaller than <link linkend="G-MAXDOUBLE:CAPS"><literal>G_MAXDOUBLE</literal></link> since
+memory size (in bytes) is needed. It is smaller than <literal>G_MAXDOUBLE</literal> since
 the <link linkend="GimpMemsizeEntry"><type>GimpMemsizeEntry</type></link> doesn't handle larger values.
 </para></refsect2>
 

@@ -1,83 +1,374 @@
-2007-04-29  Christophe Merlet  <redfox@redfoxcenter.org>
+2005-12-22  Artur Flinta  <aflinta@cvs.gnome.org>
 
-	* oc.po: Added Occitan translation from
-	Yannig MARCHEGAY <yannig@marchegay.org>.
+	* pl.po: Updated Polish translation by GNOME PL Team.
 
-2007-04-26  Roozbeh Pournader  <roozbeh@farsiweb.info>
+2005-12-11  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
 
-	* fa.po: Add Persian translation by Meelad Zakaria and
-	  Farzad Ghanei.
+	* es.po: Updated Spanish translation.
 
-2006-11-18  Christophe Merlet  <redfox@redfoxcenter.org>
+2005-12-04  Marco Ciampa  <ciampix@libero.it>
 
-	* fr.po: Updated French translation.
+        * it.po: updated italian trasnslation.
 
-2006-11-12  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+2005-11-16  Sven Neumann  <sven@gimp.org>
 
-	* ca.po: Updated Catalan translation by
-	Joaquim Perez <noguer@gmail.com>.
+	* de.po: fixed wrong translation.
 
-2006-07-25  Christophe Merlet  <redfox@redfoxcenter.org>
+2005-11-12  Hendrik Brandt  <heb@gnome-de.org>
 
-	* fr.po: Updated French translation.
-
-2006-04-20  Inaki Larranaga  <dooteo@euskalgnu.org>
-
-	* eu.po: Updated Basque translation.
+	* de.po: Updated German translation.
 
 2005-11-12  Takeshi AIHANA <aihana@gnome.gr.jp>
 
 	* ja.po: Updated Japanese translation by
 		OKANO Takayoshi <kano@na.rim.or.jp>.
 
+2005-11-09  Simos Xenitellis  <simos@gnome.org>
+
+	* tt.po: Added Tatarish translation.
+
+2005-11-06  Marcel Telka  <marcel@telka.sk>
+
+	* sk.po: Updated Slovak translation.
+
+2005-11-04  Žygimantas Beručka  <zygis@gnome.org>
+
+	* lt.po: Updated Lithuanian translation.
+
+2005-11-03  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
 2005-10-30  Takeshi AIHANA <aihana@gnome.gr.jp>
 
 	* ja.po: Updated Japanese translation by
 		OKANO Takayoshi <kano@na.rim.or.jp>.
 
-2005-09-17  Takeshi AIHANA <aihana@gnome.gr.jp>
+2005-10-26  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+
+	* es.po: Updated Spanish translation.
+
+2005-10-22  Takeshi AIHANA <aihana@gnome.gr.jp>
 
 	* ja.po: Updated Japanese translation by
+		OKANO Takayoshi <kano@na.rim.or.jp>.
+
+2005-10-18  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: Updated italian translation.
+	
+2005-10-15  Funda Wang  <fundawang@linux.net.cn>
+
+	* zh_CN.po: Updated Simplified Chinese translation.
+
+2005-10-10  Marcel Telka  <marcel@telka.sk>
+
+	* sk.po: Updated Slovak translation.
+
+2005-10-06  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2005-10-06  Sven Neumann  <sven@gimp.org>
+
+	* de.po: updated.
+
+2005-10-03  Hendrik Brandt  <heb@gnome-de.org>
+
+	* de.po: Updated German translation.
+	
+2005-10-03  Marcel Telka  <marcel@telka.sk>
+
+	* sk.po: Updated Slovak translation.
+
+2005-09-30  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2005-09-28  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2005-09-28  Vincent van Adrighem  <adrighem@gnome.org>
+
+	* nl.po: Translation updated by Tino Meinen.
+
+2005-09-26  Ankit Patel  <ankit644@yahoo.com>
+
+	* gu.po: Updated Gujarati translation.
+
+2005-09-25  Marcel Telka  <marcel@telka.sk>
+
+	* sk.po: Updated Slovak translation.
+
+2005-09-17  Takeshi AIHANA <aihana@gnome.gr.jp>
+
+	 * ja.po: Updated Japanese translation by
 		kano@na.rim.or.jp.
+
+2005-09-16  Clytie Siddall <clytie@riverland.net.au>
+
+        * vi.po: Updated Vietnamese translation.
+
+2005-09-06  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2005-09-05  Ankit Patel  <ankit644@yahoo.com>
+
+        * gu.po: Added Gujarati Translation.
+
+2005-09-04  Priit Laes  <plaes@cvs.gnome.org>
+
+	* et.po: Translation updated by Olle Niit.
+
+2005-09-04  Clytie Siddall <clytie@riverland.net.au>
+
+        * vi.po: Updated Vietnamese translation.
+
+2005-09-01  Sven Neumann  <sven@gimp.org>
+
+	* de.po: updated german translation.
+
+2005-08-30  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2005-08-27  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2005-08-23  Marcel Telka  <marcel@telka.sk>
+
+	* sk.po: Updated Slovak translation.
+
+2005-08-13  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation.
 
 2005-08-11  Funda Wang  <fundawang@linux.net.cn>
 
 	* zh_CN.po: Updated Simplified Chinese translation.
 
-2005-08-07  Josep Puigdemont  <josep.puigdemont@gmail.com>
+2005-08-06  Miloslav Trmac  <mitr@volny.cz>
 
-	* ca.po: Updated Catalan translation by Quim Perez et al.
+	* cs.po: Updated Czech translation by Miloslav Trmač.
 
-2005-07-20  Sven Neumann  <sven@gimp.org>
+2005-08-04  Marcel Telka  <marcel@telka.sk>
 
-	* de.po: update and spelling fix.
+	* sk.po: Updated Slovak translation.
+
+2005-08-03  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2005-08-02  Michael Natterer  <mitch@gimp.org>
+
+	* POTFILES.in: added libgimp/gimpprocbrowserdialog.c and
+	libgimp/gimpprocview.c
+
+2005-07-24  Hendrik Richter  <hendi@gnome-de.org>
+
+	* de.po: Fixed German translation by
+	Jens Seidel <jensseidel@users.sf.net>.
+
+2005-07-21  Pawan Chitrakar  <pawan@nplinux.org>
+
+	* ne.po: Added Nepali Translation
+
+2005-07-20  Marcel Telka  <marcel@telka.sk>
+
+	* sk.po: Updated Slovak translation.
+
+2005-07-18  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2005-07-18  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by Quim Perez i Noguer, et al.
+
+2005-07-18  Sven Neumann  <sven@gimp.org>
+
+	* POTFILES.in: added libgimpwidgets/gimpresolutionentry.c.
+
+	* de.po: updated.
+
+2005-07-10  Miloslav Trmac  <mitr@volny.cz>
+
+	* cs.po: Updated Czech translation by Miloslav Trmač.
+
+2005-07-10  Hendrik Brandt  <heb@gnome-de.org>
+
+	* de.po: Updated German translation.
 
 2005-07-07  Abel Cheung  <maddog@linuxhall.org>
 
 	* zh_TW.po: Updated traditional Chinese translation from GNOME HK Team
 
-2005-04-27  Jakub Friedl  <jfriedl@suse.cz>
+2005-07-04  Vincent van Adrighem  <adrighem@gnome.org>
 
-	* cs.po: updated Czech translation, fixed some problems.
+	* nl.po: Translation updated by Tino Meinen.
 
-2005-04-25  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
+2005-07-03  Adam Weinberger  <adamw@gnome.org>
 
-	* ru.po: Updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	* en_CA.po: Updated Canadian English translation.
 
-2005-04-22  Changwoo Ryu  <cwryu@debian.org>
-
-	* ko.po: Updated Korean translation by Dongsu Jang.
-
-2005-03-22  Miloslav Trmac  <mitr@volny.cz>
-
-	* cs.po: Updated Czech translation by Miloslav Trmač.
-
-2005-03-20  Marcel Telka  <marcel@telka.sk>
+2005-06-30  Marcel Telka  <marcel@telka.sk>
 
 	* sk.po: Updated Slovak translation.
 
-2005-02-24  Maxim Dziumanenko <mvd@mylinux.com.ua>
+2005-06-28  Priit Laes  <plaes@cvs.gnome.org>
+
+	* et.po: Translation updated by Olle Niit.
+
+2005-06-16  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2005-06-26  Hendrik Brandt  <heb@gnome-de.org>
+
+	* de.po: Updated German translation.
+
+2005-06-25  Vincent van Adrighem  <adrighem@gnome.org>
+
+	* nl.po: Translation updated by Tino Meinen.
+
+2005-06-25  Marcel Telka  <marcel@telka.sk>
+
+	* sk.po: Updated Slovak translation.
+
+2005-06-22  Marcel Telka  <marcel@telka.sk>
+
+	* sk.po: Updated Slovak translation.
+
+2005-06-12  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2005-06-05  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2005-06-04  Manish Singh  <yosh@gimp.org>
+
+	* POTFILES.in: added libgimp/gimpfontselectbutton.c
+
+2005-06-05  Priit Laes  <plaes@cvs.gnome.org>
+
+	* et.po: Translation updated by Olle Niit.
+
+2005-05-24  Sven Neumann  <sven@gimp.org>
+
+	* de.po: updated german translation.
+
+2005-05-24  Priit Laes  <plaes@cvs.gnome.org>
+
+	* et.po: Translation updated by Olle Niit.
+
+2005-05-22  Michael Natterer  <mitch@gimp.org>
+
+	* POTFILES.in: added libgimpwidgets/gimpwidgetsenums.c
+
+2005-05-19  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2005-05-19  Michael Natterer  <mitch@gimp.org>
+
+	* POTFILES.in: added libgimpwidgets/gimpbrowser.c
+
+2005-05-17  Hendrik Brandt  <heb@gnome-de.org>
+
+	* de.po: Updated German translation.
+
+2005-05-15  Vincent van Adrighem  <adrighem@gnome.org>
+
+	* nl.po: Translation updated by Tino Meinen.
+
+2005-05-12  Priit Laes  <plaes@cvs.gnome.org>
+
+	* et.po: Translation added by Olle Niit.
+
+2005-05-12  Miloslav Trmac  <mitr@volny.cz>
+
+	* cs.po: Updated Czech translation by Miloslav Trmač.
+
+2005-05-04  Peteris Krisjanis <pecisk@gmail.com>
+
+	* lv.po: Updated Latvian translation from
+	Gatis Kalnins <gatis.kalnins@metatrons.org>
+
+2005-04-28  Leonid Kanter <leon@asplinux.ru>
+
+	* ru.po: Updated Russian translation from
+	         Roxana Chernogolova <mavka@justos.org>
+
+2005-04-24  Vincent van Adrighem  <adrighem@gnome.org>
+
+	* nl.po: Translation updated by Tino Meinen.
+
+2005-04-23  Vincent van Adrighem  <adrighem@gnome.org>
+
+	* nl.po: Translation updated by Tino Meinen.
+
+2005-04-22  Marco Ciampa  <ciampix@libero.it>
+
+        * it.po: Updated italian translation.
+
+2005-04-22  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2005-04-19  Gareth Owen  <gowen72@yahoo.com>
+
+	* en_GB.po: Updated British English translation
+
+2005-04-16  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2005-04-13  Adi Attar  <aattar@cvs.gnome.org>
+
+	* xh.po: Added Xhosa translation.
+
+2005-04-11  Vincent van Adrighem  <adrighem@gnome.org>
+
+	* nl.po: Translation updated by Tino Meinen.
+
+2005-04-09  Miloslav Trmac  <mitr@volny.cz>
+
+	* cs.po: Updated Czech translation by Miloslav Trmač.
+
+2005-04-09  Josep Puigdemont  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation.
+
+2005-04-06  Hendrik Brandt  <heb@gnome-de.org>
+
+	* de.po: Updated German translation.
+	
+2005-04-04  Marco Ciampa <ciampix@libero.it>
+
+	* it.po: Updated italian translation.
+
+2005-04-03  Ole Laursen  <olau@hardworking.dk>
+
+	* da.po: Updated Danish translation.
+
+2005-04-01  Steve Murphy  <murf@e-tools.com>
+
+	* rw.po: Added Kinyarwanda translations from compendium.
+
+2005-03-17  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2005-02-28 Marco Ciampa <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2005-02-23  Maxim Dziumanenko <mvd@mylinux.com.ua>
 
 	* uk.po: Updated Ukrainian translation
 
@@ -85,48 +376,72 @@
 
 	* en_CA.po: Updated Canadian English translation.
 
-2005-02-19  Takeshi AIHANA <aihana@gnome.gr.jp>
+2005-02-21  Takeshi AIHANA <aihana@jcom.home.ne.jp>
 
 	* ja.po: Updated Japanese translation by
 		Tadashi Jokagi <elf2000@users.sourceforge.net>.
 
-2005-02-18  Alexander Shopov  <ash@contact.bg>
+2005-02-13 Marco Ciampa <ciampix@libero.it>
 
-	* bg.po: Added Bulgarian translation by
-	Iassen Pramatarov <turin@fsa-bg.org>
+	* it.po: updated italian translation.
 
-2005-02-03  Artur Flinta  <aflinta@cvs.gnome.org>
+2005-02-09  Adam Weinberger  <adamw@gnome.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* en_CA.po: Updated Canadian English translation.
 
-2005-02-02  Žygimantas Beručka  <uid0@akl.lt>
+2005-02-08  Sven Neumann  <sven@gimp.org>
 
-	* lt.po: Updated Lithuanian translation by Giedrius Naudžiūnas.
+	* POTFILES.in: added new files for GimpColorConfig.
 
-2005-01-30  Artur Flinta  <aflinta@cvs.gnome.org>
+2005-02-06  Adam Weinberger  <adamw@gnome.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* en_CA.po: Updated Canadian English translation.
 
-2005-01-29  Artur Flinta  <aflinta@cvs.gnome.org>
+2005-02-05  Sven Neumann  <sven@gimp.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* POTFILES.in: added libgimpwidgets/gimppropwidgets.c.
+
+2005-02-04 Marco Ciampa <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2005-02-02  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2005-02-02  Sven Neumann  <sven@gimp.org>
+
+	* *.po: moved translations for messages that are used in code that
+	has been moved from app to libgimp*.
+
+2005-02-02  Sven Neumann  <sven@gimp.org>
+
+	* POTFILES.in: added libgimpconfig.
 
 2005-01-28  Jordi Mallach  <jordi@sindominio.net>
 
 	* ca.po: Updated Catalan translation by
-	Xavier Conde Rueda <xaviconde@softcatala.org>.
+	Xavier Conde Rueda <xaviconde@eresmas.com>.
 
-2005-01-25 Raymond Ostertag <r.ostertag@caramail.com>
+2005-01-25 Marco Ciampa <ciampix@libero.it>
 
-	* fr.po: Updated French translation
+	* it.po: updated italian translation.
 
-2005-01-25  Artur Flinta  <aflinta@cvs.gnome.org>
+2005-01-24  Adam Weinberger  <adamw@gnome.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* en_CA.po: Updated Canadian English translation.
 
-2005-01-18  Žygimantas Beručka  <uid0@akl.lt>
+2005-01-18  Alexander Shopov  <ash@contact.bg>
 
-	* lt.po: Updated Lithuanian translation by Giedrius Naudžiūnas.
+	* bg.po: Initial bg.po file
+
+2005-01-13  Sven Neumann  <sven@gimp.org>
+
+	* ru.po: fixed fatal error.
+
+2005-01-10  Vaelk Filippov  <frob@df.ru>
+
+	* ru.po: Updated russian translation by Anatoly (Doc) Yakushin.
 
 2004-12-20  Jarkko Ranta  <jjranta@cc.joensuu.fi>
 

@@ -105,7 +105,7 @@ static ProcArg flip_inargs[] =
   },
   {
     GIMP_PDB_INT32,
-    "flip_type",
+    "flip-type",
     "Type of flip: GIMP_ORIENTATION_HORIZONTAL (0) or GIMP_ORIENTATION_VERTICAL (1)"
   }
 };
@@ -121,13 +121,14 @@ static ProcArg flip_outargs[] =
 
 static ProcRecord flip_proc =
 {
-  "gimp_flip",
-  "This procedure is deprecated! Use 'gimp_drawable_transform_flip_simple' instead.",
-  "This procedure is deprecated! Use 'gimp_drawable_transform_flip_simple' instead.",
+  "gimp-flip",
+  "gimp-flip",
+  "This procedure is deprecated! Use 'gimp-drawable-transform-flip-simple' instead.",
+  "This procedure is deprecated! Use 'gimp-drawable-transform-flip-simple' instead.",
   "",
   "",
   "",
-  "gimp_drawable_transform_flip_simple",
+  "gimp-drawable-transform-flip-simple",
   GIMP_INTERNAL,
   2,
   flip_inargs,
@@ -181,26 +182,21 @@ perspective_invoker (Gimp         *gimp,
         {
           GimpMatrix3           matrix;
           GimpInterpolationType interpolation_type = GIMP_INTERPOLATION_NONE;
-          gint                  off_x, off_y;
-
-          gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
-
-          x += off_x;
-          y += off_y;
 
           /* Assemble the transformation matrix */
-          gimp_transform_matrix_perspective (x, y, width, height,
+          gimp_matrix3_identity (&matrix);
+          gimp_transform_matrix_perspective (&matrix,
+                                             x, y, width, height,
                                              trans_info[X0], trans_info[Y0],
                                              trans_info[X1], trans_info[Y1],
                                              trans_info[X2], trans_info[Y2],
-                                             trans_info[X3], trans_info[Y3],
-                                             &matrix);
+                                             trans_info[X3], trans_info[Y3]);
 
           if (interpolation)
             interpolation_type = gimp->config->interpolation_type;
 
           if (progress)
-            gimp_progress_start (progress, _("Perspective..."), FALSE);
+            gimp_progress_start (progress, _("Perspective"), FALSE);
 
           /* Perspective the selection */
           success = gimp_drawable_transform_affine (drawable, context,
@@ -287,13 +283,14 @@ static ProcArg perspective_outargs[] =
 
 static ProcRecord perspective_proc =
 {
-  "gimp_perspective",
-  "This procedure is deprecated! Use 'gimp_drawable_transform_perspective_default' instead.",
-  "This procedure is deprecated! Use 'gimp_drawable_transform_perspective_default' instead.",
+  "gimp-perspective",
+  "gimp-perspective",
+  "This procedure is deprecated! Use 'gimp-drawable-transform-perspective-default' instead.",
+  "This procedure is deprecated! Use 'gimp-drawable-transform-perspective-default' instead.",
   "",
   "",
   "",
-  "gimp_drawable_transform_perspective_default",
+  "gimp-drawable-transform-perspective-default",
   GIMP_INTERNAL,
   10,
   perspective_inargs,
@@ -333,22 +330,17 @@ rotate_invoker (Gimp         *gimp,
         {
           GimpMatrix3           matrix;
           GimpInterpolationType interpolation_type = GIMP_INTERPOLATION_NONE;
-          gint                  off_x, off_y;
-
-          gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
-
-          x += off_x;
-          y += off_y;
 
           /* Assemble the transformation matrix */
-          gimp_transform_matrix_rotate (x, y, width, height,
-                                        angle, &matrix);
+          gimp_matrix3_identity (&matrix);
+          gimp_transform_matrix_rotate_rect (&matrix,
+                                             x, y, width, height, angle);
 
           if (interpolation)
             interpolation_type = gimp->config->interpolation_type;
 
           if (progress)
-            gimp_progress_start (progress, _("Rotating..."), FALSE);
+            gimp_progress_start (progress, _("Rotating"), FALSE);
 
           /* Rotate the selection */
           success = gimp_drawable_transform_affine (drawable, context,
@@ -400,13 +392,14 @@ static ProcArg rotate_outargs[] =
 
 static ProcRecord rotate_proc =
 {
-  "gimp_rotate",
-  "This procedure is deprecated! Use 'gimp_drawable_transform_rotate_default' instead.",
-  "This procedure is deprecated! Use 'gimp_drawable_transform_rotate_default' instead.",
+  "gimp-rotate",
+  "gimp-rotate",
+  "This procedure is deprecated! Use 'gimp-drawable-transform-rotate-default' instead.",
+  "This procedure is deprecated! Use 'gimp-drawable-transform-rotate-default' instead.",
   "",
   "",
   "",
-  "gimp_drawable_transform_rotate_default",
+  "gimp-drawable-transform-rotate-default",
   GIMP_INTERNAL,
   3,
   rotate_inargs,
@@ -454,26 +447,21 @@ scale_invoker (Gimp         *gimp,
         {
           GimpMatrix3           matrix;
           GimpInterpolationType interpolation_type = GIMP_INTERPOLATION_NONE;
-          gint                  off_x, off_y;
-
-          gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
-
-          x += off_x;
-          y += off_y;
 
           /* Assemble the transformation matrix */
-          gimp_transform_matrix_scale (x, y, width, height,
+          gimp_matrix3_identity (&matrix);
+          gimp_transform_matrix_scale (&matrix,
+                                       x, y, width, height,
                                        trans_info[X0],
                                        trans_info[Y0],
                                        trans_info[X1] - trans_info[X0],
-                                       trans_info[Y1] - trans_info[Y0],
-                                       &matrix);
+                                       trans_info[Y1] - trans_info[Y0]);
 
           if (interpolation)
             interpolation_type = gimp->config->interpolation_type;
 
           if (progress)
-            gimp_progress_start (progress, _("Scaling..."), FALSE);
+            gimp_progress_start (progress, _("Scaling"), FALSE);
 
           /* Scale the selection */
           success = gimp_drawable_transform_affine (drawable, context,
@@ -540,13 +528,14 @@ static ProcArg scale_outargs[] =
 
 static ProcRecord scale_proc =
 {
-  "gimp_scale",
-  "This procedure is deprecated! Use 'gimp_drawable_transform_scale_default' instead.",
-  "This procedure is deprecated! Use 'gimp_drawable_transform_scale_default' instead.",
+  "gimp-scale",
+  "gimp-scale",
+  "This procedure is deprecated! Use 'gimp-drawable-transform-scale-default' instead.",
+  "This procedure is deprecated! Use 'gimp-drawable-transform-scale-default' instead.",
   "",
   "",
   "",
-  "gimp_drawable_transform_scale_default",
+  "gimp-drawable-transform-scale-default",
   GIMP_INTERNAL,
   6,
   scale_inargs,
@@ -591,23 +580,18 @@ shear_invoker (Gimp         *gimp,
         {
           GimpMatrix3           matrix;
           GimpInterpolationType interpolation_type = GIMP_INTERPOLATION_NONE;
-          gint                  off_x, off_y;
-
-          gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
-
-          x += off_x;
-          y += off_y;
 
           /* Assemble the transformation matrix */
-          gimp_transform_matrix_shear (x, y, width, height,
-                                       shear_type, magnitude,
-                                       &matrix);
+          gimp_matrix3_identity (&matrix);
+          gimp_transform_matrix_shear (&matrix,
+                                       x, y, width, height,
+                                       shear_type, magnitude);
 
           if (interpolation)
             interpolation_type = gimp->config->interpolation_type;
 
           if (progress)
-            gimp_progress_start (progress, _("Shearing..."), FALSE);
+            gimp_progress_start (progress, _("Shearing"), FALSE);
 
           /* Shear the selection */
           success = gimp_drawable_transform_affine (drawable, context,
@@ -643,7 +627,7 @@ static ProcArg shear_inargs[] =
   },
   {
     GIMP_PDB_INT32,
-    "shear_type",
+    "shear-type",
     "Type of shear: GIMP_ORIENTATION_HORIZONTAL (0) or GIMP_ORIENTATION_VERTICAL (1)"
   },
   {
@@ -664,13 +648,14 @@ static ProcArg shear_outargs[] =
 
 static ProcRecord shear_proc =
 {
-  "gimp_shear",
-  "This procedure is deprecated! Use 'gimp_drawable_transform_shear_default' instead.",
-  "This procedure is deprecated! Use 'gimp_drawable_transform_shear_default' instead.",
+  "gimp-shear",
+  "gimp-shear",
+  "This procedure is deprecated! Use 'gimp-drawable-transform-shear-default' instead.",
+  "This procedure is deprecated! Use 'gimp-drawable-transform-shear-default' instead.",
   "",
   "",
   "",
-  "gimp_drawable_transform_shear_default",
+  "gimp-drawable-transform-shear-default",
   GIMP_INTERNAL,
   4,
   shear_inargs,
@@ -740,7 +725,7 @@ transform_2d_invoker (Gimp         *gimp,
             interpolation_type = gimp->config->interpolation_type;
 
           if (progress)
-            gimp_progress_start (progress, _("2D Transform..."), FALSE);
+            gimp_progress_start (progress, _("2D Transform"), FALSE);
 
           /* Transform the selection */
           success = gimp_drawable_transform_affine (drawable, context,
@@ -775,22 +760,22 @@ static ProcArg transform_2d_inargs[] =
   },
   {
     GIMP_PDB_FLOAT,
-    "source_x",
+    "source-x",
     "X coordinate of the transformation center"
   },
   {
     GIMP_PDB_FLOAT,
-    "source_y",
+    "source-y",
     "Y coordinate of the transformation center"
   },
   {
     GIMP_PDB_FLOAT,
-    "scale_x",
+    "scale-x",
     "Amount to scale in x direction"
   },
   {
     GIMP_PDB_FLOAT,
-    "scale_y",
+    "scale-y",
     "Amount to scale in y direction"
   },
   {
@@ -800,12 +785,12 @@ static ProcArg transform_2d_inargs[] =
   },
   {
     GIMP_PDB_FLOAT,
-    "dest_x",
+    "dest-x",
     "X coordinate of where the centre goes"
   },
   {
     GIMP_PDB_FLOAT,
-    "dest_y",
+    "dest-y",
     "Y coordinate of where the centre goes"
   }
 };
@@ -821,13 +806,14 @@ static ProcArg transform_2d_outargs[] =
 
 static ProcRecord transform_2d_proc =
 {
-  "gimp_transform_2d",
-  "This procedure is deprecated! Use 'gimp_drawable_transform_2d_default' instead.",
-  "This procedure is deprecated! Use 'gimp_drawable_transform_2d_default' instead.",
+  "gimp-transform-2d",
+  "gimp-transform-2d",
+  "This procedure is deprecated! Use 'gimp-drawable-transform-2d-default' instead.",
+  "This procedure is deprecated! Use 'gimp-drawable-transform-2d-default' instead.",
   "",
   "",
   "",
-  "gimp_drawable_transform_2d_default",
+  "gimp-drawable-transform-2d-default",
   GIMP_INTERNAL,
   9,
   transform_2d_inargs,

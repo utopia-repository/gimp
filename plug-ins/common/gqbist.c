@@ -27,16 +27,11 @@
  *
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
-#include <gtk/gtk.h>
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -53,9 +48,9 @@
 #define NUM_REGISTERS    6
 #define PREVIEW_SIZE    64
 
-#define PLUG_IN_NAME    "plug_in_qbist"
+#define PLUG_IN_PROC    "plug-in-qbist"
+#define PLUG_IN_BINARY  "gqbist"
 #define PLUG_IN_VERSION "January 2001, 1.12"
-#define HELP_ID         "plug-in-qbist"
 
 /** types *******************************************************************/
 
@@ -395,14 +390,17 @@ query (void)
 {
   GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",    "Input image (unused)"         },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"               }
   };
 
-  gimp_install_procedure (PLUG_IN_NAME,
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Create images based on a random genetic formula",
-                          "This Plug-in is based on an article by Jörn Loviscach (appeared in c't 10/95, page 326). It generates modern art pictures from a random genetic formula.",
+                          "This Plug-in is based on an article by "
+                          "Jörn Loviscach (appeared in c't 10/95, page 326). "
+                          "It generates modern art pictures from a random "
+                          "genetic formula.",
                           "Jörn Loviscach, Jens Ch. Restemeier",
                           "Jörn Loviscach, Jens Ch. Restemeier",
                           PLUG_IN_VERSION,
@@ -412,7 +410,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register (PLUG_IN_NAME, "<Image>/Filters/Render/Pattern");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Render/Pattern");
 }
 
 static void
@@ -431,7 +429,7 @@ run (const gchar      *name,
   GimpPDBStatusType  status;
 
   *nreturn_vals = 1;
-  *return_vals = values;
+  *return_vals  = values;
 
   status = GIMP_PDB_SUCCESS;
 
@@ -468,13 +466,13 @@ run (const gchar      *name,
         {
         case GIMP_RUN_INTERACTIVE:
           /* Possibly retrieve data */
-          gimp_get_data (PLUG_IN_NAME, &qbist_info);
+          gimp_get_data (PLUG_IN_PROC, &qbist_info);
 
           /* Get information from the dialog */
           if (dialog_run ())
             {
               status = GIMP_PDB_SUCCESS;
-              gimp_set_data (PLUG_IN_NAME, &qbist_info, sizeof (QbistInfo));
+              gimp_set_data (PLUG_IN_PROC, &qbist_info, sizeof (QbistInfo));
             }
           else
             status = GIMP_PDB_EXECUTION_ERROR;
@@ -486,7 +484,7 @@ run (const gchar      *name,
 
         case GIMP_RUN_WITH_LAST_VALS:
           /* Possibly retrieve data */
-          gimp_get_data (PLUG_IN_NAME, &qbist_info);
+          gimp_get_data (PLUG_IN_PROC, &qbist_info);
           status = GIMP_PDB_SUCCESS;
           break;
 
@@ -507,7 +505,7 @@ run (const gchar      *name,
 
           optimize (&qbist_info.info);
 
-          gimp_progress_init (_("Qbist ..."));
+          gimp_progress_init (_("Qbist"));
 
           for (pr = gimp_pixel_rgns_register (1, &imagePR);
                pr != NULL;
@@ -620,7 +618,7 @@ load_data (gchar *name)
   FILE   *f;
   guint8  buf[288];
 
-  f = fopen (name, "rb");
+  f = g_fopen (name, "rb");
   if (f == NULL)
     {
       return FALSE;
@@ -655,7 +653,7 @@ save_data (gchar *name)
   FILE   *f;
   guint8  buf[288];
 
-  f = fopen (name, "wb");
+  f = g_fopen (name, "wb");
   if (f == NULL)
     {
       return FALSE;
@@ -690,7 +688,7 @@ dialog_load (GtkWidget *widget,
 
   parent = gtk_widget_get_toplevel (widget);
 
-  dialog = gtk_file_chooser_dialog_new (_("Load QBE file"),
+  dialog = gtk_file_chooser_dialog_new (_("Load QBE File"),
                                         GTK_WINDOW (parent),
                                         GTK_FILE_CHOOSER_ACTION_OPEN,
 
@@ -698,6 +696,11 @@ dialog_load (GtkWidget *widget,
                                         GTK_STOCK_OPEN,   GTK_RESPONSE_OK,
 
                                         NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
@@ -728,7 +731,7 @@ dialog_save (GtkWidget *widget,
 
   parent = gtk_widget_get_toplevel (widget);
 
-  dialog = gtk_file_chooser_dialog_new (_("Save (middle transform) as QBE file"),
+  dialog = gtk_file_chooser_dialog_new (_("Save (middle transform) as QBE File"),
                                         GTK_WINDOW (parent),
                                         GTK_FILE_CHOOSER_ACTION_SAVE,
 
@@ -736,6 +739,11 @@ dialog_save (GtkWidget *widget,
                                         GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
 
                                         NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
@@ -774,16 +782,23 @@ dialog_run (void)
   gint       i;
   gboolean   run;
 
-  gimp_ui_init ("gqbist", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("G-Qbist"), "gqbist",
+  dialog = gimp_dialog_new (_("G-Qbist"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, HELP_ID,
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
@@ -829,6 +844,7 @@ dialog_run (void)
                     NULL);
 
   bbox = gtk_hbutton_box_new ();
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (bbox), GTK_BUTTONBOX_START);
   gtk_box_pack_start (GTK_BOX (vbox), bbox, FALSE, FALSE, 0);
   gtk_widget_show (bbox);
 

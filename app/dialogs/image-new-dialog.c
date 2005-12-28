@@ -23,12 +23,11 @@
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "dialogs-types.h"
 
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-utils.h"
 #include "config/gimpguiconfig.h"
 
 #include "core/gimp.h"
@@ -84,6 +83,7 @@ image_new_dialog_new (Gimp *gimp)
   ImageNewDialog *dialog;
   GtkWidget      *main_vbox;
   GtkWidget      *table;
+  GimpSizeEntry  *entry;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
 
@@ -113,6 +113,12 @@ image_new_dialog_new (Gimp *gimp)
                     G_CALLBACK (image_new_response),
                     dialog);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog->dialog),
+                                           RESPONSE_RESET,
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog->dialog)->vbox),
@@ -124,13 +130,18 @@ image_new_dialog_new (Gimp *gimp)
   gtk_box_pack_start (GTK_BOX (main_vbox), table, FALSE, FALSE, 0);
   gtk_widget_show (table);
 
-  dialog->combo = gimp_container_combo_box_new (gimp->templates, NULL, 16, 0);
+  dialog->combo = g_object_new (GIMP_TYPE_CONTAINER_COMBO_BOX,
+                                "container",            gimp->templates,
+                                "preview-size",         16,
+                                "preview-border-width", 0,
+                                "focus-on-click",       FALSE,
+                                NULL);
 
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
                              _("_Template:"),  0.0, 0.5,
                              dialog->combo, 1, FALSE);
 
-  g_signal_connect (dialog->combo, "select_item",
+  g_signal_connect (dialog->combo, "select-item",
                     G_CALLBACK (image_new_template_select),
                     dialog);
 
@@ -138,6 +149,10 @@ image_new_dialog_new (Gimp *gimp)
   dialog->editor = gimp_template_editor_new (dialog->template, gimp, FALSE);
   gtk_box_pack_start (GTK_BOX (main_vbox), dialog->editor, FALSE, FALSE, 0);
   gtk_widget_show (dialog->editor);
+
+  entry = GIMP_SIZE_ENTRY (GIMP_TEMPLATE_EDITOR (dialog->editor)->size_se);
+  gimp_size_entry_set_activates_default (entry, TRUE);
+  gimp_size_entry_grab_focus (entry);
 
   return dialog->dialog;
 }
@@ -166,8 +181,7 @@ image_new_dialog_set (GtkWidget    *widget,
     {
       template = gimp_image_new_get_last_template (dialog->gimp, gimage);
 
-      gimp_config_sync (GIMP_CONFIG (template),
-                        GIMP_CONFIG (dialog->template), 0);
+      gimp_config_sync (G_OBJECT (template), G_OBJECT (dialog->template), 0);
 
       g_object_unref (template);
     }
@@ -184,8 +198,8 @@ image_new_response (GtkWidget      *widget,
   switch (response_id)
     {
     case RESPONSE_RESET:
-      gimp_config_sync (GIMP_CONFIG (dialog->gimp->config->default_image),
-                        GIMP_CONFIG (dialog->template), 0);
+      gimp_config_sync (G_OBJECT (dialog->gimp->config->default_image),
+                        G_OBJECT (dialog->template), 0);
       gimp_container_view_select_item (GIMP_CONTAINER_VIEW (dialog->combo),
                                        NULL);
       break;
@@ -218,7 +232,7 @@ image_new_template_select (GimpContainerView  *view,
   if (!template->comment || !strlen (template->comment))
     comment = g_strdup (dialog->template->comment);
 
-  gimp_config_sync (GIMP_CONFIG (template), GIMP_CONFIG (dialog->template), 0);
+  gimp_config_sync (G_OBJECT (template), G_OBJECT (dialog->template), 0);
 
   if (comment)
     {
@@ -273,6 +287,11 @@ image_new_confirm_dialog (ImageNewDialog *data)
 
                                       NULL);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (data->confirm_dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   g_signal_connect (dialog, "response",
                     G_CALLBACK (image_new_confirm_response),
                     data);
@@ -286,7 +305,7 @@ image_new_confirm_dialog (ImageNewDialog *data)
   config = GIMP_GUI_CONFIG (data->gimp->config);
   size = gimp_memsize_to_string (config->max_new_image_size);
   gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
-                              _("An image of the choosen size will use more "
+                              _("An image of the chosen size will use more "
                                 "memory than what is configured as "
                                 "\"Maximum Image Size\" in the Preferences "
                                 "dialog (currently %s)."), size);

@@ -21,12 +21,14 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
 
 #include "core/gimpchannel.h"
 #include "core/gimpimage.h"
+#include "core/gimppickable.h"
 #include "core/gimptoolinfo.h"
 
 #include "display/gimpdisplay.h"
@@ -36,10 +38,12 @@
 #include "gimpselectionoptions.h"
 #include "gimptoolcontrol.h"
 
+#include "gimp-intl.h"
 
-static void   gimp_selection_tool_class_init (GimpSelectionToolClass *klass);
-static void   gimp_selection_tool_init       (GimpSelectionTool      *sel_tool);
 
+static void   gimp_selection_tool_control       (GimpTool        *tool,
+                                                 GimpToolAction   action,
+                                                 GimpDisplay     *gdisp);
 static void   gimp_selection_tool_modifier_key  (GimpTool        *tool,
                                                  GdkModifierType  key,
                                                  gboolean         press,
@@ -55,44 +59,17 @@ static void   gimp_selection_tool_cursor_update (GimpTool        *tool,
                                                  GimpDisplay     *gdisp);
 
 
-static GimpDrawToolClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpSelectionTool, gimp_selection_tool, GIMP_TYPE_DRAW_TOOL);
 
+#define parent_class gimp_selection_tool_parent_class
 
-GType
-gimp_selection_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpSelectionToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_selection_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpSelectionTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_selection_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_DRAW_TOOL,
-                                          "GimpSelectionTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
 
 static void
 gimp_selection_tool_class_init (GimpSelectionToolClass *klass)
 {
   GimpToolClass *tool_class = GIMP_TOOL_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
-
+  tool_class->control       = gimp_selection_tool_control;
   tool_class->modifier_key  = gimp_selection_tool_modifier_key;
   tool_class->key_press     = gimp_edit_selection_tool_key_press;
   tool_class->oper_update   = gimp_selection_tool_oper_update;
@@ -104,6 +81,17 @@ gimp_selection_tool_init (GimpSelectionTool *selection_tool)
 {
   selection_tool->op       = SELECTION_REPLACE;
   selection_tool->saved_op = SELECTION_REPLACE;
+}
+
+static void
+gimp_selection_tool_control (GimpTool       *tool,
+                             GimpToolAction  action,
+                             GimpDisplay    *gdisp)
+{
+  if (action == HALT)
+    gimp_tool_pop_status (tool, gdisp);
+
+  GIMP_TOOL_CLASS (parent_class)->control (tool, action, gdisp);
 }
 
 static void
@@ -172,6 +160,7 @@ gimp_selection_tool_oper_update (GimpTool        *tool,
   GimpChannel          *selection;
   GimpLayer            *layer;
   GimpLayer            *floating_sel;
+  const gchar          *status            = NULL;
   gboolean              move_layer        = FALSE;
   gboolean              move_floating_sel = FALSE;
 
@@ -189,7 +178,8 @@ gimp_selection_tool_oper_update (GimpTool        *tool,
           if (layer == floating_sel)
             move_floating_sel = TRUE;
         }
-      else if (gimp_channel_value (selection, coords->x, coords->y))
+      else if (gimp_pickable_get_opacity_at (GIMP_PICKABLE (selection),
+                                             coords->x, coords->y))
         {
           move_layer = TRUE;
         }
@@ -228,6 +218,34 @@ gimp_selection_tool_oper_update (GimpTool        *tool,
     {
       selection_tool->op = options->operation;
     }
+
+  if (! gimp_enum_get_value (GIMP_TYPE_CHANNEL_OPS, selection_tool->op,
+                             NULL, NULL, &status, NULL))
+    {
+      switch (selection_tool->op)
+        {
+        case SELECTION_MOVE_MASK:
+          status = _("Move the selection mask");
+          break;
+
+        case SELECTION_MOVE:
+          status = _("Move the selected pixels");
+          break;
+
+        case SELECTION_MOVE_COPY:
+          status = _("Move a copy of the selected pixels");
+          break;
+
+        case SELECTION_ANCHOR:
+          status = _("Anchor the floating selection");
+          break;
+
+        default:
+          g_return_if_reached ();
+        }
+    }
+
+  gimp_tool_push_status (tool, gdisp, status);
 }
 
 static void
@@ -268,8 +286,7 @@ gimp_selection_tool_cursor_update (GimpTool        *tool,
       break;
     }
 
-  gimp_tool_set_cursor (tool, gdisp,
-                        GIMP_CURSOR_MOUSE, tool_cursor, cmodifier);
+  gimp_tool_set_cursor (tool, gdisp, GIMP_CURSOR_MOUSE, tool_cursor, cmodifier);
 }
 
 

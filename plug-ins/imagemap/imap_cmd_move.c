@@ -104,8 +104,8 @@ button_motion(GtkWidget *widget, GdkEventMotion *event, gpointer data)
    if (command->moved_first_time) {
       command->moved_first_time = FALSE;
       command->cursor = preview_set_cursor(command->preview, GDK_FLEUR);
-      gdk_gc_set_function(command->preferences->normal_gc, GDK_XOR);
-      gdk_gc_set_function(command->preferences->selected_gc, GDK_XOR);
+      gdk_gc_set_function(command->preferences->normal_gc, GDK_EQUIV);
+      gdk_gc_set_function(command->preferences->selected_gc, GDK_EQUIV);
       hide_url();
    }
 
@@ -162,9 +162,9 @@ move_command_execute(Command_t *parent)
    GtkWidget *widget = command->preview->preview;
 
    /*   preview_freeze(); */
-   g_signal_connect(widget, "button_release_event", 
+   g_signal_connect(widget, "button-release-event", 
                     G_CALLBACK (button_release), command);   
-   g_signal_connect(widget, "motion_notify_event", 
+   g_signal_connect(widget, "motion-notify-event", 
                     G_CALLBACK (button_motion), command);   
    return CMD_DESTRUCT;
 }

@@ -53,11 +53,9 @@
 #include <config.h>
 
 #include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
-#include <gtk/gtk.h>
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -65,6 +63,12 @@
 #include "fli.h"
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define LOAD_PROC      "file-fli-load"
+#define SAVE_PROC      "file-fli-save"
+#define INFO_PROC      "file-fli-info"
+#define PLUG_IN_BINARY "gfli"
 
 
 static void      query       (void);
@@ -149,7 +153,7 @@ query (void)
   /*
    * Load/save procedures
    */
-  gimp_install_procedure ("file_fli_load",
+  gimp_install_procedure (LOAD_PROC,
 			  "load FLI-movies",
 			  "This is an experimantal plug-in to handle FLI movies",
 			  "Jens Ch. Restemeier",
@@ -163,13 +167,13 @@ query (void)
 			  load_args,
                           load_return_vals);
 
-  gimp_register_file_handler_mime ("file_fli_load", "image/x-flic");
-  gimp_register_magic_load_handler ("file_fli_load",
+  gimp_register_file_handler_mime (LOAD_PROC, "image/x-flic");
+  gimp_register_magic_load_handler (LOAD_PROC,
 				    "fli,flc",
 				    "",
 				    "");
 
-  gimp_install_procedure ("file_fli_save",
+  gimp_install_procedure (SAVE_PROC,
 			  "save FLI-movies",
 			  "This is an experimantal plug-in to handle FLI movies",
 			  "Jens Ch. Restemeier",
@@ -181,15 +185,15 @@ query (void)
 			  G_N_ELEMENTS (save_args), 0,
 			  save_args, NULL);
 
-  gimp_register_file_handler_mime ("file_fli_save", "image/x-flic");
-  gimp_register_save_handler ("file_fli_save",
+  gimp_register_file_handler_mime (SAVE_PROC, "image/x-flic");
+  gimp_register_save_handler (SAVE_PROC,
 			      "fli,flc",
 			      "");
 
   /*
    * Utility functions:
    */
-  gimp_install_procedure ("file_fli_info",
+  gimp_install_procedure (INFO_PROC,
 			  "Get info about a Fli movie",
 			  "This is a experimantal plug-in to handle FLI movies",
 			  "Jens Ch. Restemeier",
@@ -231,7 +235,7 @@ run (const gchar      *name,
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 
-  if (strcmp (name, "file_fli_load") == 0)
+  if (strcmp (name, LOAD_PROC) == 0)
     {
       switch (run_mode)
 	{
@@ -305,7 +309,7 @@ run (const gchar      *name,
 	  break;
 	}
     }
-  else if (strcmp (name, "file_fli_save") == 0)
+  else if (strcmp (name, SAVE_PROC) == 0)
     {
       image_ID    = orig_image_ID = param[1].data.d_int32;
       drawable_ID = param[2].data.d_int32;
@@ -334,7 +338,7 @@ run (const gchar      *name,
 
 	case GIMP_RUN_INTERACTIVE:
 	case GIMP_RUN_WITH_LAST_VALS:
-	  gimp_ui_init ("gfli", FALSE);
+	  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 	  export = gimp_export_image (&image_ID, &drawable_ID, "FLI",
 				      GIMP_EXPORT_CAN_HANDLE_INDEXED |
                                       GIMP_EXPORT_CAN_HANDLE_GRAY    |
@@ -359,7 +363,7 @@ run (const gchar      *name,
       if (export == GIMP_EXPORT_EXPORT)
 	gimp_image_delete (image_ID);
     }
-  else if (strcmp (name, "file_fli_info") == 0)
+  else if (strcmp (name, INFO_PROC) == 0)
     {
       gint32 width, height, frames;
 
@@ -417,7 +421,7 @@ get_info (const gchar *filename,
 
   *width = 0; *height = 0; *frames = 0;
 
-  file = fopen (filename ,"rb");
+  file = g_fopen (filename ,"rb");
 
   if (!file)
     {
@@ -443,7 +447,6 @@ load_image (const gchar *filename,
 	    gint32       to_frame)
 {
   FILE *file;
-  gchar *name_buf;
   GimpDrawable *drawable;
   gint32 image_id, layer_ID;
 
@@ -454,7 +457,7 @@ load_image (const gchar *filename,
 
   gint cnt;
 
-  file = fopen (filename ,"rb");
+  file = g_fopen (filename ,"rb");
   if (!file)
     {
       g_message (_("Could not open '%s' for reading: %s"),
@@ -462,10 +465,8 @@ load_image (const gchar *filename,
       return -1;
     }
 
-  name_buf = g_strdup_printf (_("Opening '%s'..."),
-                               gimp_filename_to_utf8 (filename));
-  gimp_progress_init (name_buf);
-  g_free (name_buf);
+  gimp_progress_init_printf (_("Opening '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   fli_read_header (file, &fli_header);
   if (fli_header.magic == NO_HEADER)
@@ -524,7 +525,8 @@ load_image (const gchar *filename,
    */
   for (cnt = from_frame; cnt <= to_frame; cnt++)
     {
-      name_buf = g_strdup_printf (_("Frame (%i)"), cnt);
+      gchar *name_buf = g_strdup_printf (_("Frame (%i)"), cnt);
+
       layer_ID = gimp_layer_new (image_id, name_buf,
 				 fli_header.width, fli_header.height,
 				 GIMP_INDEXED_IMAGE, 100, GIMP_NORMAL_MODE);
@@ -581,7 +583,6 @@ save_image (const gchar *filename,
 	    gint32       to_frame)
 {
   FILE *file;
-  gchar *name_buf;
   GimpDrawable *drawable;
   gint32 *framelist;
   gint nframes;
@@ -642,7 +643,7 @@ save_image (const gchar *filename,
 	{
 	  cm[i*3+0] = cm[i*3+1] = cm[i*3+2] = i;
 	}
-      bg = GIMP_RGB_INTENSITY (red, green, blue) + 0.5;
+      bg = GIMP_RGB_LUMINANCE (red, green, blue) + 0.5;
       break;
 
     case GIMP_INDEXED:
@@ -679,10 +680,8 @@ save_image (const gchar *filename,
       return FALSE;
     }
 
-  name_buf = g_strdup_printf (_("Saving '%s'..."),
-                               gimp_filename_to_utf8 (filename));
-  gimp_progress_init (name_buf);
-  g_free (name_buf);
+  gimp_progress_init_printf (_("Saving '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   /*
    * First build the fli header.
@@ -709,7 +708,7 @@ save_image (const gchar *filename,
   fli_header.aspect_y = 1;  /* ... as GIMP supports it. */
   fli_header.oframe1  = fli_header.oframe2 = 0; /* will be fixed during the write */
 
-  file = fopen (filename ,"wb");
+  file = g_fopen (filename ,"wb");
   if (!file)
     {
       g_message (_("Could not open '%s' for writing: %s"),
@@ -806,16 +805,21 @@ load_dialog (const gchar *name)
   from_frame = 1;
   to_frame   = nframes;
 
-  gimp_ui_init ("gfli", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("GFLI 1.3 - Load framestack"), "gfli",
+  dialog = gimp_dialog_new (_("GFLI 1.3 - Load framestack"), PLUG_IN_BINARY,
                             NULL, 0,
-			    gimp_standard_help_func, "file-gfli-load",
+			    gimp_standard_help_func, LOAD_PROC,
 
 			    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			    GTK_STOCK_OK,     GTK_RESPONSE_OK,
+			    GTK_STOCK_OPEN,   GTK_RESPONSE_OK,
 
 			    NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   table = gtk_table_new (2, 2, FALSE);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
@@ -834,7 +838,7 @@ load_dialog (const gchar *name)
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
 			     _("From:"), 0.0, 0.5,
 			     spinbutton, 1, TRUE);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &from_frame);
 
@@ -843,7 +847,7 @@ load_dialog (const gchar *name)
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
 			     _("To:"), 0.0, 0.5,
 			     spinbutton, 1, TRUE);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &to_frame);
 
@@ -871,14 +875,21 @@ save_dialog (gint32 image_id)
   from_frame = 1;
   to_frame   = nframes;
 
-  dialog = gimp_dialog_new (_("GFLI 1.3 - Save framestack"), "gfli",
+  dialog = gimp_dialog_new (_("GFLI 1.3 - Save framestack"), PLUG_IN_BINARY,
                             NULL, 0,
-			    gimp_standard_help_func, "file-gfli-save",
+			    gimp_standard_help_func, SAVE_PROC,
 
 			    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			    GTK_STOCK_OK,     GTK_RESPONSE_OK,
+			    GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
 
 			    NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   table = gtk_table_new (2, 2, FALSE);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
@@ -897,7 +908,7 @@ save_dialog (gint32 image_id)
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
 			     _("From:"), 0.0, 0.5,
 			     spinbutton, 1, TRUE);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &from_frame);
 
@@ -906,7 +917,7 @@ save_dialog (gint32 image_id)
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
 			     _("To:"), 0.0, 0.5,
 			     spinbutton, 1, TRUE);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &to_frame);
 

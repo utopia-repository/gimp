@@ -50,7 +50,7 @@
     (gimp-image-undo-disable img)
     (gimp-image-resize img width height 0 0)
     (gimp-image-add-layer img bg-layer 1)
-    (gimp-layer-set-preserve-trans text-layer TRUE)
+    (gimp-layer-set-lock-alpha text-layer TRUE)
     (gimp-context-set-background text-color)
     (gimp-edit-fill text-layer BACKGROUND-FILL)
 
@@ -62,13 +62,13 @@
 	   (shadow-layer (car (gimp-layer-copy text-layer TRUE))))
 
       (gimp-image-add-layer img highlight-layer 1)
-      (gimp-layer-set-preserve-trans highlight-layer TRUE)
+      (gimp-layer-set-lock-alpha highlight-layer TRUE)
       
       (gimp-image-add-layer img side-layer 1)
-      (gimp-layer-set-preserve-trans side-layer TRUE)
+      (gimp-layer-set-lock-alpha side-layer TRUE)
       
       (gimp-image-add-layer img shadow-layer 1)
-      (gimp-layer-set-preserve-trans shadow-layer TRUE)
+      (gimp-layer-set-lock-alpha shadow-layer TRUE)
       
       (gimp-context-set-background high-color)
       (gimp-edit-fill highlight-layer BACKGROUND-FILL)
@@ -82,7 +82,7 @@
       (gimp-edit-fill shadow-layer BACKGROUND-FILL)
       (gimp-layer-translate shadow-layer 5 5)
       
-      (gimp-layer-set-preserve-trans shadow-layer FALSE)
+      (gimp-layer-set-lock-alpha shadow-layer FALSE)
       (plug-in-gauss-rle 1 img shadow-layer 5 TRUE TRUE)
       (gimp-layer-set-opacity shadow-layer 60)
       (gimp-image-lower-layer img shadow-layer)
@@ -151,7 +151,7 @@
 		    SF-ADJUSTMENT _"Number of colors"   '(15 2 255 1 10 0 1))
 
 (script-fu-menu-register "script-fu-big-header-gimp-org"
-			 _"<Toolbox>/Xtns/Script-Fu/Web Page Themes/Classic.Gimp.Org")
+			 "<Toolbox>/Xtns/Web Page Themes/Classic.Gimp.Org")
 
 (script-fu-register "script-fu-small-header-gimp-org"
 		    _"_Small Header..."
@@ -174,4 +174,4 @@
 		    SF-ADJUSTMENT _"Select-by-color threshold" '(1 1 256 1 10 0 1))
 
 (script-fu-menu-register "script-fu-small-header-gimp-org"
-			 _"<Toolbox>/Xtns/Script-Fu/Web Page Themes/Classic.Gimp.Org")
+			 "<Toolbox>/Xtns/Web Page Themes/Classic.Gimp.Org")

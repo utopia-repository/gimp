@@ -3,7 +3,7 @@
  *
  * Generates clickable image maps.
  *
- * Copyright (C) 1998-2004 Maurits Rijk  m.rijk@chello.nl
+ * Copyright (C) 1998-2005 Maurits Rijk  m.rijk@chello.nl
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,10 +33,8 @@
 #include "imap_grid.h"
 #include "imap_main.h"
 #include "imap_menu.h"
-#include "imap_popup.h"
 #include "imap_preview.h"
 #include "imap_table.h"
-#include "imap_toolbar.h"
 
 #include "libgimp/stdplugins-intl.h"
 
@@ -89,8 +87,6 @@ grid_settings_ok_cb(gpointer data)
 
    if (grid_snap != new_snap) {
       grid_snap = new_snap;
-      main_toolbar_set_grid(grid_snap);
-      popup_check_grid(grid_snap);
       menu_check_grid(grid_snap);
    }
    redraw_preview();
@@ -202,7 +198,7 @@ create_grid_settings_dialog(void)
    default_dialog_set_ok_cb(dialog, grid_settings_ok_cb, (gpointer) data);
    main_table = default_dialog_add_table(dialog, 4, 2);
 
-   data->snap = gtk_check_button_new_with_mnemonic(_("_Snap-To Grid Enabled"));
+   data->snap = gtk_check_button_new_with_mnemonic(_("_Snap-to grid enabled"));
    g_signal_connect(data->snap, "toggled",
                     G_CALLBACK (snap_toggled_cb), data);
    gtk_table_attach_defaults(GTK_TABLE(main_table), data->snap, 0, 1, 0, 1);
@@ -249,13 +245,13 @@ create_grid_settings_dialog(void)
 
    label = create_label_in_table(table, 0, 0, _("_Width"));
    data->width = create_spin_button_in_table(table, label, 0, 1, 15, 1, 100);
-   g_signal_connect(data->width, "value_changed",
+   g_signal_connect(data->width, "value-changed",
                     G_CALLBACK (width_changed_cb), (gpointer) data);
    create_label_in_table(table, 0, 3, _("pixels"));
 
    label = create_label_in_table(table, 1, 0, _("_Height"));
    data->height = create_spin_button_in_table(table, label, 1, 1, 15, 1, 100);
-   g_signal_connect(data->height, "value_changed",
+   g_signal_connect(data->height, "value-changed",
                     G_CALLBACK (height_changed_cb), (gpointer) data);
    create_label_in_table(table, 1, 3, _("pixels"));
 
@@ -276,12 +272,12 @@ create_grid_settings_dialog(void)
 
    label = create_label_in_table(table, 0, 2, _("pixels from l_eft"));
    data->left = create_spin_button_in_table(table, label, 0, 0, 0, 0, 100);
-   g_signal_connect(data->left, "value_changed",
+   g_signal_connect(data->left, "value-changed",
                     G_CALLBACK (left_changed_cb), (gpointer) data);
 
    label = create_label_in_table(table, 1, 2, _("pixels from _top"));
    data->top = create_spin_button_in_table(table, label, 1, 0, 0, 0, 100);
-   g_signal_connect(data->top, "value_changed",
+   g_signal_connect(data->top, "value-changed",
                     G_CALLBACK (top_changed_cb), (gpointer) data);
 
    chain_button = gimp_chain_button_new(GIMP_CHAIN_RIGHT);
@@ -374,12 +370,11 @@ draw_grid(GtkWidget *preview)
    }
 }
 
-gboolean
+void
 toggle_grid(void)
 {
    grid_snap = !grid_snap;
    redraw_preview();
-   return grid_snap;
 }
 
 static gint

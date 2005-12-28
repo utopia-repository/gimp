@@ -545,14 +545,20 @@ pdb_query(PyGimpPDB *self, PyObject *args)
     int num, i;
     char **names;
     PyObject *ret;
+
     if (!PyArg_ParseTuple(args, "|zzzzzzz:gimp.pdb.query", &n, &b, &h, &a,
 			  &c, &d, &t))
 	return NULL;
+
     gimp_procedural_db_query(n, b, h, a, c, d, t, &num, &names);
+
     ret = PyList_New(num);
+
     for (i = 0; i < num; i++)
 	PyList_SetItem(ret, i, PyString_FromString(names[i]));
+
     g_free(names);
+
     return ret;
 }
 
@@ -570,8 +576,10 @@ pygimp_pdb_new(void)
     PyGimpPDB *self;
 	
     self = PyObject_NEW(PyGimpPDB, &PyGimpPDB_Type);
+
     if (self == NULL)
 	return NULL;
+
     return (PyObject *)self;
 }
 
@@ -599,11 +607,14 @@ pdb_subscript(PyGimpPDB *self, PyObject *key)
 	PyErr_SetString(PyExc_TypeError, "Subscript must be a string");
 	return NULL;
     }
+
     r = (PyObject *)pygimp_pdb_function_new_from_proc_db(PyString_AsString(key));
+
     if (r == NULL) {
 	PyErr_Clear();
 	PyErr_SetObject(PyExc_KeyError, key);
     }
+
     return r;
 }
 
@@ -621,9 +632,12 @@ pdb_getattro(PyGimpPDB *self, PyObject *attr)
     PyObject *ret;
 
     ret = PyObject_GenericGetAttr((PyObject *)self, attr);
+
     if (ret)
 	return ret;
+
     PyErr_Clear();
+
     return pygimp_pdb_function_new_from_proc_db(PyString_AsString(attr));
 }
 
@@ -700,6 +714,7 @@ static void
 pf_dealloc(PyGimpPDBFunction *self)
 {
     g_free(self->name);
+
     Py_DECREF(self->proc_name);
     Py_DECREF(self->proc_blurb);
     Py_DECREF(self->proc_help);
@@ -709,8 +724,10 @@ pf_dealloc(PyGimpPDBFunction *self)
     Py_DECREF(self->proc_type);
     Py_DECREF(self->py_params);
     Py_DECREF(self->py_return_vals);
+
     gimp_destroy_paramdefs(self->params, self->nparams);
     gimp_destroy_paramdefs(self->return_vals, self->nreturn_vals);
+
     PyObject_DEL(self);
 }
 
@@ -748,28 +765,38 @@ pf_call(PyGimpPDBFunction *self, PyObject *args, PyObject *kwargs)
 #if PG_DEBUG > 0
     fprintf(stderr, "--- %s --- ", PyString_AsString(self->proc_name));
 #endif
-    if (self->nparams > 0 && !strcmp(self->params[0].name, "run_mode")) {
-	params = pygimp_param_from_tuple(args, self->params+1, self->nparams-1);
+
+    if (self->nparams > 0 && !strcmp(self->params[0].name, "run-mode")) {
+	params = pygimp_param_from_tuple(args, self->params + 1,
+					 self->nparams - 1);
+
 	if (params == NULL)
 	    return NULL;
+
 	params[0].type = self->params[0].type;
 	params[0].data.d_int32 = GIMP_RUN_NONINTERACTIVE;
+
 #if PG_DEBUG > 1
 	pygimp_param_print(self->nparams, params);
 #endif
+
 	ret = gimp_run_procedure2(self->name, &nret, self->nparams,
 				  params);
     } else {
 	params = pygimp_param_from_tuple(args, self->params, self->nparams);
+
 	if (params == NULL)
 	    return NULL;
+
 #if PG_DEBUG > 1
 	pygimp_param_print(self->nparams, params+1);
 #endif
-	ret = gimp_run_procedure2(self->name, &nret, self->nparams,
-				  params+1);
+
+	ret = gimp_run_procedure2(self->name, &nret, self->nparams, params + 1);
     }
+
     gimp_destroy_params(params, self->nparams);
+    
     if (!ret) {
 	PyErr_SetString(pygimp_error, "no status returned");
 #if PG_DEBUG >= 1
@@ -777,6 +804,7 @@ pf_call(PyGimpPDBFunction *self, PyObject *args, PyObject *kwargs)
 #endif
 	return NULL;
     }
+
     switch(ret[0].data.d_status) {
     case GIMP_PDB_EXECUTION_ERROR:
 #if PG_DEBUG > 0
@@ -786,6 +814,7 @@ pf_call(PyGimpPDBFunction *self, PyObject *args, PyObject *kwargs)
 	PyErr_SetString(PyExc_RuntimeError, "execution error");
 	return NULL;
 	break;
+
     case GIMP_PDB_CALLING_ERROR:
 #if PG_DEBUG > 0
 	fprintf(stderr, "calling error\n");
@@ -794,18 +823,20 @@ pf_call(PyGimpPDBFunction *self, PyObject *args, PyObject *kwargs)
 	PyErr_SetString(PyExc_TypeError, "invalid arguments");
 	return NULL;
 	break;
+
     case GIMP_PDB_SUCCESS:
 #if PG_DEBUG > 0
 	fprintf(stderr, "success\n");
 #endif
 	t = pygimp_param_to_tuple(nret-1, ret+1);
 	gimp_destroy_params(ret, nret);
+
 	if (t == NULL) {
-	    PyErr_SetString(pygimp_error,
-			    "couldn't make return value");
+	    PyErr_SetString(pygimp_error, "could not make return value");
 	    return NULL;
 	}
 	break;
+
     default:
 #if PG_DEBUG > 0
 	fprintf(stderr, "unknown - %i (type %i)\n",
@@ -815,18 +846,21 @@ pf_call(PyGimpPDBFunction *self, PyObject *args, PyObject *kwargs)
 	return NULL;
 	break;
     }
+
     if (PyTuple_Size(t) == 1) {
 	r = PyTuple_GetItem(t, 0);
 	Py_INCREF(r);
 	Py_DECREF(t);
 	return r;
     }
+
     if (PyTuple_Size(t) == 0) {
 	r = Py_None;
 	Py_INCREF(r);
 	Py_DECREF(t);
 	return r;
     }
+
     return t;
 }
 
@@ -885,6 +919,7 @@ pygimp_pdb_function_new(const char *name, const char *blurb, const char *help,
     int i;
 
     self = PyObject_NEW(PyGimpPDBFunction, &PyGimpPDBFunction_Type);
+
     if (self == NULL)
 	return NULL;
 
@@ -916,5 +951,6 @@ pygimp_pdb_function_new(const char *name, const char *blurb, const char *help,
 				      return_vals[i].type,
 				      return_vals[i].name,
 				      return_vals[i].description));
+
     return (PyObject *)self;
 }

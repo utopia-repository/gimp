@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<refentry id="libgimp-gimpvectors">
+<refmeta>
+<refentrytitle>gimpvectors</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBGIMP Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>gimpvectors</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+
+<synopsis>
+
+
+
+<link linkend="gint">gint</link>*       <link linkend="gimp-vectors-get-strokes">gimp_vectors_get_strokes</link>        (<link linkend="gint32">gint32</link> vectors_ID,
+                                             <link linkend="gint">gint</link> *num_strokes);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-vectors-stroke-interpolate">gimp_vectors_stroke_interpolate</link> (<link linkend="gint32">gint32</link> vectors_ID,
+                                             <link linkend="gint">gint</link> stroke_id,
+                                             <link linkend="gdouble">gdouble</link> prescision,
+                                             <link linkend="gint">gint</link> *num_coords,
+                                             <link linkend="gdouble">gdouble</link> **coords);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-vectors-stroke-remove">gimp_vectors_stroke_remove</link>      (<link linkend="gint32">gint32</link> vectors_ID,
+                                             <link linkend="gint">gint</link> stroke_id);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-vectors-stroke-translate">gimp_vectors_stroke_translate</link>   (<link linkend="gint32">gint32</link> vectors_ID,
+                                             <link linkend="gint">gint</link> stroke_id,
+                                             <link linkend="gint">gint</link> offx,
+                                             <link linkend="gint">gint</link> offy);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="gimp-vectors-get-strokes"/>gimp_vectors_get_strokes ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_vectors_get_strokes</primary></indexterm><programlisting><link linkend="gint">gint</link>*       gimp_vectors_get_strokes        (<link linkend="gint32">gint32</link> vectors_ID,
+                                             <link linkend="gint">gint</link> *num_strokes);</programlisting>
+<para>
+List the strokes associated with the passed path.
+</para>
+<para>
+Returns an Array with the stroke-IDs associated with the passed
+path.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>vectors_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The vectors object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>num_strokes</parameter>&nbsp;:</term>
+<listitem><simpara> The number of strokes returned.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> List of the strokes belonging to the path.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-vectors-stroke-interpolate"/>gimp_vectors_stroke_interpolate ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_vectors_stroke_interpolate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_vectors_stroke_interpolate (<link linkend="gint32">gint32</link> vectors_ID,
+                                             <link linkend="gint">gint</link> stroke_id,
+                                             <link linkend="gdouble">gdouble</link> prescision,
+                                             <link linkend="gint">gint</link> *num_coords,
+                                             <link linkend="gdouble">gdouble</link> **coords);</programlisting>
+<para>
+returns polygonal approximation of the stroke.
+</para>
+<para>
+returns polygonal approximation of the stroke.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>vectors_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The vectors object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>stroke_id</parameter>&nbsp;:</term>
+<listitem><simpara> The stroke ID.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>prescision</parameter>&nbsp;:</term>
+<listitem><simpara> The prescision used for the approximation.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>num_coords</parameter>&nbsp;:</term>
+<listitem><simpara> The number of floats returned.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>coords</parameter>&nbsp;:</term>
+<listitem><simpara> List of the coords along the path (x0, y0, x1, y1, ...).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> List of the strokes belonging to the path.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-vectors-stroke-remove"/>gimp_vectors_stroke_remove ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_vectors_stroke_remove</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_vectors_stroke_remove      (<link linkend="gint32">gint32</link> vectors_ID,
+                                             <link linkend="gint">gint</link> stroke_id);</programlisting>
+<para>
+return coordinates along the given stroke.
+</para>
+<para>
+Returns a lot of coordinates along the passed stroke.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>vectors_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The vectors object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>stroke_id</parameter>&nbsp;:</term>
+<listitem><simpara> The stroke ID.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-vectors-stroke-translate"/>gimp_vectors_stroke_translate ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_vectors_stroke_translate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_vectors_stroke_translate   (<link linkend="gint32">gint32</link> vectors_ID,
+                                             <link linkend="gint">gint</link> stroke_id,
+                                             <link linkend="gint">gint</link> offx,
+                                             <link linkend="gint">gint</link> offy);</programlisting>
+<para>
+translate the given stroke.
+</para>
+<para>
+Translate the given stroke.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>vectors_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The vectors object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>stroke_id</parameter>&nbsp;:</term>
+<listitem><simpara> The stroke ID.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>offx</parameter>&nbsp;:</term>
+<listitem><simpara> Offset in x direction.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>offy</parameter>&nbsp;:</term>
+<listitem><simpara> Offset in y direction.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

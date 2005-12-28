@@ -1,20 +1,20 @@
 # Hungarian translation of gimp.
-# Copyright (C) 1998, 2000, 2001, 2003, 2004, 2005 Free Software Foundation, Inc.
+# Copyright (C) 1998, 2000, 2001, 2003, 2004 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gimp package.
 # Balazs Nagy <julian7@kva.hu>, 1998.
 # Andras Timar <timar@gnome.hu>, 2000, 2001, 2003.
 # Gabor Suveg <gabor@suveg.hu>, 2001.
 # Emese Kovacs <emese@gnome.hu>, 2001.
-# Laszlo Dvornik <dvornik@gnome.hu>, 2004, 2005.
+# Laszlo Dvornik <dvornik@gnome.hu>, 2004.
 # Arpad Biro <biro_arpad@yahoo.com>, 2004.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gimp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-22 17:32+0100\n"
-"PO-Revision-Date: 2005-01-13 14:02+0100\n"
-"Last-Translator: Laszlo Dvornik <dvornik@gnome.hu>\n"
+"POT-Creation-Date: 2004-12-28 16:58+0100\n"
+"PO-Revision-Date: 2004-12-06 11:59+0100\n"
+"Last-Translator: Arpad Biro <biro_arpad@yahoo.com>\n"
 "Language-Team: Hungarian <gnome@gnome.hu>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -281,8 +281,8 @@ msgstr "Dokkolható"
 msgid "Document History"
 msgstr "Dokumentumok előzménye"
 
-#: app/actions/actions.c:120 app/core/core-enums.c:1041
-#: app/core/core-enums.c:1071
+#: app/actions/actions.c:120 app/core/core-enums.c:1040
+#: app/core/core-enums.c:1070
 msgid "Drawable"
 msgstr "Rajzfelület"
 
@@ -508,7 +508,7 @@ msgstr "Csatorna kétszerezése"
 msgid "_Delete Channel"
 msgstr "Csatorna _törlése"
 
-#: app/actions/channels-actions.c:73 app/core/core-enums.c:1089
+#: app/actions/channels-actions.c:73 app/core/core-enums.c:1088
 msgid "Delete channel"
 msgstr "Csatorna törlése"
 
@@ -1044,7 +1044,7 @@ msgstr "Elavult bejegyzések el_távolítása"
 msgid "Remove dangling entries"
 msgstr "Elavult bejegyzések eltávolítása"
 
-#: app/actions/documents-commands.c:251 app/actions/file-commands.c:170
+#: app/actions/documents-commands.c:251 app/actions/file-commands.c:163
 #: app/dialogs/file-open-dialog.c:198 app/dialogs/file-open-dialog.c:249
 #: app/dialogs/file-open-location-dialog.c:193
 #: app/display/gimpdisplayshell-dnd.c:334 app/widgets/gimplayertreeview.c:804
@@ -1168,8 +1168,9 @@ msgstr "_Másolás"
 
 #. GIMP_STOCK_COPY_VISIBLE,
 #: app/actions/edit-actions.c:93
+#, fuzzy
 msgid "Copy _Visible"
-msgstr "_Látható másolása"
+msgstr "_Látható"
 
 #: app/actions/edit-actions.c:98
 msgid "_Paste"
@@ -1346,7 +1347,7 @@ msgstr "_Visszaállítás..."
 msgid "_Quit"
 msgstr "Ki_lépés"
 
-#: app/actions/file-commands.c:215 app/dialogs/file-save-dialog.c:281
+#: app/actions/file-commands.c:208 app/dialogs/file-save-dialog.c:249
 #, c-format
 msgid ""
 "Saving '%s' failed:\n"
@@ -1357,36 +1358,36 @@ msgstr ""
 "\n"
 "%s"
 
-#: app/actions/file-commands.c:238 app/dialogs/file-save-dialog.c:78
+#: app/actions/file-commands.c:231 app/dialogs/file-save-dialog.c:77
 msgid "Save Image"
 msgstr "Kép mentése"
 
-#: app/actions/file-commands.c:254
+#: app/actions/file-commands.c:247
 msgid "Save a Copy of the Image"
 msgstr "A kép egy másolatának mentése"
 
-#: app/actions/file-commands.c:265
+#: app/actions/file-commands.c:258
 msgid "Create New Template"
 msgstr "Új sablon létrehozása"
 
-#: app/actions/file-commands.c:269
+#: app/actions/file-commands.c:262
 msgid "Enter a name for this template"
 msgstr "Adjon meg egy nevet ehhez a sablonhoz."
 
-#: app/actions/file-commands.c:291
+#: app/actions/file-commands.c:284
 msgid "Revert failed. No file name associated with this image."
 msgstr "Visszaállítás sikertelen. Nem kapcsolható fájlnév a képhez."
 
-#: app/actions/file-commands.c:303
+#: app/actions/file-commands.c:296
 msgid "Revert Image"
 msgstr "Kép visszaállítása"
 
-#: app/actions/file-commands.c:324
+#: app/actions/file-commands.c:317
 #, c-format
 msgid "Revert '%s' to '%s'?"
 msgstr "Visszaállítja ezt: \"%s\" erre: \"%s\"?"
 
-#: app/actions/file-commands.c:330
+#: app/actions/file-commands.c:323
 msgid ""
 "By reverting the image to the state saved on disk, you will lose all "
 "changes, including all undo information."
@@ -1394,19 +1395,19 @@ msgstr ""
 "A képnek a lemezen tárolt állapotra való visszaállítása esetén minden "
 "változtatás elvész - beleértve a visszavonási információkat is."
 
-#: app/actions/file-commands.c:380
+#: app/actions/file-commands.c:372
 msgid "Open Image as Layer"
 msgstr "Kép megnyitása rétegként"
 
-#: app/actions/file-commands.c:385 app/dialogs/file-open-dialog.c:74
+#: app/actions/file-commands.c:377 app/dialogs/file-open-dialog.c:74
 msgid "Open Image"
 msgstr "Kép megnyitása"
 
-#: app/actions/file-commands.c:451
+#: app/actions/file-commands.c:444
 msgid "(Unnamed Template)"
 msgstr "(Névtelen sablon)"
 
-#: app/actions/file-commands.c:500
+#: app/actions/file-commands.c:493
 #, c-format
 msgid ""
 "Reverting to '%s' failed:\n"
@@ -2000,7 +2001,7 @@ msgstr "Réteg kétszerezése"
 msgid "_Delete Layer"
 msgstr "Réteg _törlése"
 
-#: app/actions/layers-actions.c:93 app/core/core-enums.c:1079
+#: app/actions/layers-actions.c:93 app/core/core-enums.c:1078
 msgid "Delete layer"
 msgstr "Réteg törlése"
 
@@ -2170,7 +2171,7 @@ msgstr "Réteg kivágása"
 msgid "Layer Mask to Selection"
 msgstr "Rétegmaszk kijelöléssé alakítása"
 
-#: app/actions/layers-commands.c:904 app/core/gimplayer.c:1065
+#: app/actions/layers-commands.c:904 app/core/gimplayer.c:1066
 #: app/dialogs/layer-add-mask-dialog.c:62
 msgid "Add Layer Mask"
 msgstr "Rétegmaszk hozzáadása"
@@ -2420,29 +2421,29 @@ msgstr "Játé_kok"
 msgid "Reset all Filters..."
 msgstr "Összes szűrő visszaállítása..."
 
-#: app/actions/plug-in-actions.c:93 app/actions/plug-in-actions.c:363
+#: app/actions/plug-in-actions.c:93 app/actions/plug-in-actions.c:358
 msgid "Repeat Last"
 msgstr "Utolsó művelet megismétlése"
 
-#: app/actions/plug-in-actions.c:98 app/actions/plug-in-actions.c:365
+#: app/actions/plug-in-actions.c:98 app/actions/plug-in-actions.c:360
 msgid "Re-Show Last"
 msgstr "Utolsó művelet újramegjelenítése"
 
-#: app/actions/plug-in-actions.c:349
+#: app/actions/plug-in-actions.c:344
 #, c-format
 msgid "Re_peat \"%s\""
 msgstr "\"%s\" is_métlése"
 
-#: app/actions/plug-in-actions.c:350
+#: app/actions/plug-in-actions.c:345
 #, c-format
 msgid "R_e-show \"%s\""
 msgstr "\"%s\" újrameg_jelenítése"
 
-#: app/actions/plug-in-commands.c:193
+#: app/actions/plug-in-commands.c:196
 msgid "Reset all Filters"
 msgstr "Összes szűrő visszaállítása"
 
-#: app/actions/plug-in-commands.c:207
+#: app/actions/plug-in-commands.c:210
 msgid "Do you really want to reset all filters to default values?"
 msgstr ""
 "Valóban vissza kívánja állítani az összes szűrőt az alapértelmezett "
@@ -3012,7 +3013,7 @@ msgid "Path to Selection"
 msgstr "Útvonal kijelöléssé alakítása"
 
 #: app/actions/vectors-commands.c:370 app/tools/gimpvectortool.c:1923
-#: app/vectors/gimpvectors.c:237
+#: app/vectors/gimpvectors.c:239
 msgid "Stroke Path"
 msgstr "Útvonal körberajzolása"
 
@@ -4307,252 +4308,247 @@ msgstr "Előre (hagyományos)"
 msgid "Backward (corrective)"
 msgstr "Vissza (korrektív)"
 
-#: app/core/core-enums.c:1029
+#: app/core/core-enums.c:1028
 msgid "<<invalid>>"
 msgstr "<<érvénytelen>>"
 
-#: app/core/core-enums.c:1030
+#: app/core/core-enums.c:1029
 msgid "Scale image"
 msgstr "Kép átméretezése"
 
-#: app/core/core-enums.c:1031
+#: app/core/core-enums.c:1030
 msgid "Resize image"
 msgstr "Képméret módosítása"
 
-#: app/core/core-enums.c:1032
+#: app/core/core-enums.c:1031
 msgid "Flip image"
 msgstr "Kép tükrözése"
 
-#: app/core/core-enums.c:1033
+#: app/core/core-enums.c:1032
 msgid "Rotate image"
 msgstr "Kép forgatása"
 
-#: app/core/core-enums.c:1034
+#: app/core/core-enums.c:1033
 msgid "Crop image"
 msgstr "Kép kivágása"
 
-#: app/core/core-enums.c:1035
+#: app/core/core-enums.c:1034
 msgid "Convert image"
 msgstr "Kép konvertálása"
 
-#: app/core/core-enums.c:1036
+#: app/core/core-enums.c:1035
 msgid "Merge layers"
 msgstr "Rétegek összefésülése"
 
-#: app/core/core-enums.c:1037
+#: app/core/core-enums.c:1036
 msgid "Merge vectors"
 msgstr "Vektorok összefésülése"
 
-#: app/core/core-enums.c:1038 app/core/gimpchannel.c:383
+#: app/core/core-enums.c:1037 app/core/gimpchannel.c:383
 msgid "Quick Mask"
 msgstr "Gyorsmaszk"
 
-#: app/core/core-enums.c:1039 app/core/core-enums.c:1068
+#: app/core/core-enums.c:1038 app/core/core-enums.c:1067
 #: app/core/gimpimage-grid.c:59 app/dialogs/grid-dialog.c:144
 #: app/tools/tools-enums.c:175
 msgid "Grid"
 msgstr "Rács"
 
-#: app/core/core-enums.c:1040 app/core/core-enums.c:1069
+#: app/core/core-enums.c:1039 app/core/core-enums.c:1068
 msgid "Guide"
 msgstr "Segédvonal"
 
-#: app/core/core-enums.c:1042 app/core/core-enums.c:1072
+#: app/core/core-enums.c:1041 app/core/core-enums.c:1071
 msgid "Drawable mod"
 msgstr "Rajzfelület-módosítás"
 
-#: app/core/core-enums.c:1043 app/core/core-enums.c:1073
+#: app/core/core-enums.c:1042 app/core/core-enums.c:1072
 msgid "Selection mask"
 msgstr "Kijelölési maszk"
 
-#: app/core/core-enums.c:1044 app/core/core-enums.c:1076
+#: app/core/core-enums.c:1043 app/core/core-enums.c:1075
 msgid "Item visibility"
 msgstr "Elem láthatósága"
 
-#: app/core/core-enums.c:1045
+#: app/core/core-enums.c:1044
 msgid "Linked item"
 msgstr "Láncolt elem"
 
-#: app/core/core-enums.c:1046
+#: app/core/core-enums.c:1045
 msgid "Item properties"
 msgstr "Elem tulajdonságai"
 
-#: app/core/core-enums.c:1047 app/core/core-enums.c:1075
+#: app/core/core-enums.c:1046 app/core/core-enums.c:1074
 msgid "Move item"
 msgstr "Elem áthelyezése"
 
-#: app/core/core-enums.c:1048
+#: app/core/core-enums.c:1047
 msgid "Scale item"
 msgstr "Elem átméretezése"
 
-#: app/core/core-enums.c:1049
+#: app/core/core-enums.c:1048
 msgid "Resize item"
 msgstr "Elem méretének módosítása"
 
-#: app/core/core-enums.c:1050 app/core/core-enums.c:1080
+#: app/core/core-enums.c:1049 app/core/core-enums.c:1079
 msgid "Add layer mask"
 msgstr "Rétegmaszk hozzáadása"
 
-#: app/core/core-enums.c:1051
+#: app/core/core-enums.c:1050
 msgid "Apply layer mask"
 msgstr "Rétegmaszk alkalmazása"
 
-#: app/core/core-enums.c:1052
+#: app/core/core-enums.c:1051
 msgid "Floating selection to layer"
 msgstr "Lebegő kijelölést réteggé"
 
-#: app/core/core-enums.c:1053
+#: app/core/core-enums.c:1052
 msgid "Float selection"
 msgstr "Lebegő kijelölés"
 
-#: app/core/core-enums.c:1054
+#: app/core/core-enums.c:1053
 msgid "Anchor floating selection"
 msgstr "Lebegő kijelölés rögzítése"
 
-#: app/core/core-enums.c:1055
+#: app/core/core-enums.c:1054
 msgid "Remove floating selection"
 msgstr "Lebegő kijelölés eltávolítása"
 
-#: app/core/core-enums.c:1056 app/core/gimp-edit.c:267
+#: app/core/core-enums.c:1055 app/core/gimp-edit.c:267
 msgid "Paste"
 msgstr "Beillesztés"
 
-#: app/core/core-enums.c:1057 app/core/gimp-edit.c:418
+#: app/core/core-enums.c:1056 app/core/gimp-edit.c:418
 msgid "Cut"
 msgstr "Kivágás"
 
-#: app/core/core-enums.c:1058 app/core/core-enums.c:1086
+#: app/core/core-enums.c:1057 app/core/core-enums.c:1085
 #: app/tools/gimptexttool.c:142 app/widgets/widgets-enums.c:263
 msgid "Text"
 msgstr "Szöveg"
 
-#: app/core/core-enums.c:1059 app/core/core-enums.c:1099
+#: app/core/core-enums.c:1058 app/core/core-enums.c:1098
 #: app/core/gimpdrawable-transform.c:867
 msgid "Transform"
 msgstr "Átalakítás"
 
-#: app/core/core-enums.c:1060 app/core/core-enums.c:1100
-#: app/paint/gimppaintcore.c:345
+#: app/core/core-enums.c:1059 app/core/core-enums.c:1099
+#: app/paint/gimppaintcore.c:344
 msgid "Paint"
 msgstr "Festés"
 
-#: app/core/core-enums.c:1061 app/core/core-enums.c:1102
+#: app/core/core-enums.c:1060 app/core/core-enums.c:1100
 msgid "Attach parasite"
 msgstr "Élősködő hozzáadása"
 
-#: app/core/core-enums.c:1062 app/core/core-enums.c:1103
+#: app/core/core-enums.c:1061 app/core/core-enums.c:1101
 msgid "Remove parasite"
 msgstr "Élősködő eltávolítása"
 
-#: app/core/core-enums.c:1063
+#: app/core/core-enums.c:1062
 msgid "Import paths"
 msgstr "Útvonalak importálása"
 
-#: app/core/core-enums.c:1064 app/pdb/drawable_cmds.c:1693
+#: app/core/core-enums.c:1063 app/pdb/drawable_cmds.c:1693
 msgid "Plug-In"
 msgstr "Bővítmény"
 
-#: app/core/core-enums.c:1065
+#: app/core/core-enums.c:1064
 msgid "Image type"
 msgstr "Képtípus"
 
-#: app/core/core-enums.c:1066
+#: app/core/core-enums.c:1065
 msgid "Image size"
 msgstr "Képméret"
 
-#: app/core/core-enums.c:1067
+#: app/core/core-enums.c:1066
 msgid "Resolution change"
 msgstr "Felbontás módosítása"
 
-#: app/core/core-enums.c:1070
+#: app/core/core-enums.c:1069
 msgid "Change indexed palette"
 msgstr "Indexelt paletta módosítása"
 
-#: app/core/core-enums.c:1074
+#: app/core/core-enums.c:1073
 msgid "Rename item"
 msgstr "Elem átnevezése"
 
-#: app/core/core-enums.c:1077
+#: app/core/core-enums.c:1076
 msgid "Set item linked"
 msgstr "Elem láncolttá tétele"
 
-#: app/core/core-enums.c:1078
+#: app/core/core-enums.c:1077
 msgid "New layer"
 msgstr "Új réteg"
 
-#: app/core/core-enums.c:1081
+#: app/core/core-enums.c:1080
 msgid "Delete layer mask"
 msgstr "Rétegmaszk törlése"
 
-#: app/core/core-enums.c:1082
+#: app/core/core-enums.c:1081
 msgid "Reposition layer"
 msgstr "Réteg átpozicionálása"
 
-#: app/core/core-enums.c:1083
+#: app/core/core-enums.c:1082
 msgid "Set layer mode"
 msgstr "Rétegmód beállítása"
 
-#: app/core/core-enums.c:1084
+#: app/core/core-enums.c:1083
 msgid "Set layer opacity"
 msgstr "Réteg átlátszatlanságának beállítása"
 
-#: app/core/core-enums.c:1085
+#: app/core/core-enums.c:1084
 msgid "Set preserve trans"
 msgstr "Átlátszóság megtartásának beállítása"
 
-#: app/core/core-enums.c:1087
+#: app/core/core-enums.c:1086
 msgid "Text modified"
 msgstr "Szöveg módosítva"
 
-#: app/core/core-enums.c:1088
+#: app/core/core-enums.c:1087
 msgid "New channel"
 msgstr "Új csatorna"
 
-#: app/core/core-enums.c:1090
+#: app/core/core-enums.c:1089
 msgid "Reposition channel"
 msgstr "Csatorna átpozicionálása"
 
-#: app/core/core-enums.c:1091
+#: app/core/core-enums.c:1090
 msgid "Channel color"
 msgstr "Csatornaszín"
 
-#: app/core/core-enums.c:1092
+#: app/core/core-enums.c:1091
 msgid "New vectors"
 msgstr "Új vektorok"
 
-#: app/core/core-enums.c:1093
+#: app/core/core-enums.c:1092
 msgid "Delete vectors"
 msgstr "Vektorok törlése"
 
-#: app/core/core-enums.c:1094
+#: app/core/core-enums.c:1093
 msgid "Vectors mod"
 msgstr "Vektor-módosítás"
 
-#: app/core/core-enums.c:1095
+#: app/core/core-enums.c:1094
 msgid "Reposition vectors"
 msgstr "Vektorok átpozicionálása"
 
 # floating selection
-#: app/core/core-enums.c:1096
+#: app/core/core-enums.c:1095
 msgid "FS to layer"
 msgstr "LK-t rétegre"
 
 # floating selection
-#: app/core/core-enums.c:1097
+#: app/core/core-enums.c:1096
 msgid "FS rigor"
 msgstr "Merev LK"
 
 # floating selection
-#: app/core/core-enums.c:1098
+#: app/core/core-enums.c:1097
 msgid "FS relax"
 msgstr "Rugalmas LK"
 
-#: app/core/core-enums.c:1101 app/paint/gimpink.c:102
-#: app/tools/gimpinktool.c:62
-msgid "Ink"
-msgstr "Tus"
-
-#: app/core/core-enums.c:1104
+#: app/core/core-enums.c:1102
 msgid "EEK: can't undo"
 msgstr "EEK: nem lehet visszavonni"
 
@@ -4634,19 +4630,21 @@ msgid "Could not read %d bytes from '%s': %s"
 msgstr "Nem lehet %d bájtot beolvasni a(z) \"%s\" fájlból: %s"
 
 #: app/core/gimpbrush.c:554
-#, c-format
+#, fuzzy, c-format
 msgid "Fatal parse error in brush file '%s': Width = 0."
-msgstr "Végzetes feldolgozási hiba a(z) \"%s\" ecsetfájlban: szélesség = 0."
+msgstr ""
+"Végzetes feldolgozási hiba a(z) \"%s\" ecsetfájlban: ismeretlen \"%d\" "
+"mélység."
 
 #: app/core/gimpbrush.c:563
-#, c-format
+#, fuzzy, c-format
 msgid "Fatal parse error in brush file '%s': Height = 0."
-msgstr "Végzetes feldolgozási hiba a(z) \"%s\" ecsetfájlban: magasság = 0."
+msgstr "Végzetes feldolgozási hiba a(z) \"%s\" ecsetfájlban: a fájl sérült."
 
 #: app/core/gimpbrush.c:572
-#, c-format
+#, fuzzy, c-format
 msgid "Fatal parse error in brush file '%s': Bytes = 0."
-msgstr "Végzetes feldolgozási hiba a(z) \"%s\" ecsetfájlban: bájt = 0."
+msgstr "Végzetes feldolgozási hiba a(z) \"%s\" ecsetfájlban: a fájl sérült."
 
 #: app/core/gimpbrush.c:596
 #, c-format
@@ -4676,7 +4674,7 @@ msgid "Invalid UTF-8 string in brush file '%s'."
 msgstr "Érvénytelen UTF-8 karakterlánc a(z) \"%s\" ecsetfájlban."
 
 #: app/core/gimpbrush.c:640 app/core/gimpcontext.c:1299
-#: app/core/gimpitem.c:475 app/core/gimppattern.c:400
+#: app/core/gimpitem.c:480 app/core/gimppattern.c:400
 #: app/dialogs/template-options-dialog.c:80 app/tools/gimpvectortool.c:339
 msgid "Unnamed"
 msgstr "Névtelen"
@@ -4852,11 +4850,11 @@ msgstr ""
 "%s"
 
 #: app/core/gimpdatafactory.c:411 app/core/gimpdatafactory.c:414
-#: app/core/gimpitem.c:272 app/core/gimpitem.c:275
+#: app/core/gimpitem.c:275 app/core/gimpitem.c:278
 msgid "copy"
 msgstr "másolás"
 
-#: app/core/gimpdatafactory.c:423 app/core/gimpitem.c:284
+#: app/core/gimpdatafactory.c:423 app/core/gimpitem.c:287
 #, c-format
 msgid "%s copy"
 msgstr "%s másolata"
@@ -5283,8 +5281,8 @@ msgstr "Nem lehet létrehozni előnézeti képet"
 
 #. pixel size
 #: app/core/gimpimagefile.c:624 app/dialogs/info-window.c:552
-#: app/widgets/gimpsizebox.c:432 app/widgets/gimptemplateeditor.c:637
-#: app/widgets/gimptemplateeditor.c:675
+#: app/widgets/gimpsizebox.c:429 app/widgets/gimptemplateeditor.c:637
+#: app/widgets/gimptemplateeditor.c:673
 #, c-format
 msgid "%d x %d pixels"
 msgstr "%d x %d képpont"
@@ -5303,15 +5301,15 @@ msgstr "%d réteg"
 msgid "Could not open thumbnail '%s': %s"
 msgstr "Nem lehet megnyitni a(z) \"%s\" bélyegképet: %s"
 
-#: app/core/gimpitem.c:1091
+#: app/core/gimpitem.c:1103
 msgid "Attach Parasite"
 msgstr "Élősködő hozzáadása"
 
-#: app/core/gimpitem.c:1101
+#: app/core/gimpitem.c:1113
 msgid "Attach Parasite to Item"
 msgstr "Élősködő hozzáadása az elemhez"
 
-#: app/core/gimpitem.c:1140 app/core/gimpitem.c:1147
+#: app/core/gimpitem.c:1152 app/core/gimpitem.c:1159
 msgid "Remove Parasite from Item"
 msgstr "Élősködő eltávolítása az elemből"
 
@@ -5363,7 +5361,7 @@ msgstr "Réteg tükrözése"
 msgid "Rotate Layer"
 msgstr "Réteg forgatása"
 
-#: app/core/gimplayer.c:339 app/core/gimplayer.c:1109
+#: app/core/gimplayer.c:339 app/core/gimplayer.c:1110
 #: app/core/gimplayermask.c:236
 #, c-format
 msgid "%s mask"
@@ -5378,43 +5376,43 @@ msgstr ""
 "Lebegő kijelölés\n"
 "(%s)"
 
-#: app/core/gimplayer.c:1035
+#: app/core/gimplayer.c:1036
 msgid "Cannot add layer mask to layer which is not part of an image."
 msgstr ""
 "Nem lehet rétegmaszkot hozzáadni olyan réteghez, amely nem része egy képnek."
 
-#: app/core/gimplayer.c:1042
+#: app/core/gimplayer.c:1043
 msgid "Unable to add a layer mask since the layer already has one."
 msgstr "Nem lehet rétegmaszkot hozzáadni, mert már van egy rétegmaszk."
 
-#: app/core/gimplayer.c:1049
+#: app/core/gimplayer.c:1050
 msgid "Cannot add layer mask to a layer with no alpha channel."
 msgstr ""
 "Nem lehet rétegmaszkot hozzáadni olyan réteghez, amelynek nincs alfa-"
 "csatornája."
 
-#: app/core/gimplayer.c:1059
+#: app/core/gimplayer.c:1060
 msgid "Cannot add layer mask of different dimensions than specified layer."
 msgstr ""
 "Nem lehet a megadott rétegtől eltérő dimenziójú rétegmaszkot hozzáadni."
 
-#: app/core/gimplayer.c:1163
+#: app/core/gimplayer.c:1164
 msgid "Transfer Alpha to Mask"
 msgstr "Alfa átvitele a maszkra"
 
-#: app/core/gimplayer.c:1323
+#: app/core/gimplayer.c:1324
 msgid "Apply Layer Mask"
 msgstr "Rétegmaszk alkalmazása"
 
-#: app/core/gimplayer.c:1324
+#: app/core/gimplayer.c:1325
 msgid "Delete Layer Mask"
 msgstr "Rétegmaszk törlése"
 
-#: app/core/gimplayer.c:1425
+#: app/core/gimplayer.c:1426
 msgid "Add Alpha Channel"
 msgstr "Alfa-csatorna hozzáadása"
 
-#: app/core/gimplayer.c:1447
+#: app/core/gimplayer.c:1448
 msgid "Layer to Image Size"
 msgstr "Réteg kép-méretűvé alakítása"
 
@@ -5779,20 +5777,20 @@ msgstr "Hely megnyitása"
 msgid "Enter location (URI):"
 msgstr "Adja meg a helyet (URI):"
 
-#: app/dialogs/file-save-dialog.c:184
+#: app/dialogs/file-save-dialog.c:160
 msgid "File exists"
 msgstr "A fájl már létezik"
 
-#: app/dialogs/file-save-dialog.c:189
+#: app/dialogs/file-save-dialog.c:165
 msgid "_Replace"
 msgstr "_Felülírás"
 
-#: app/dialogs/file-save-dialog.c:199
+#: app/dialogs/file-save-dialog.c:175
 #, c-format
 msgid "A file named '%s' already exists."
 msgstr "Már létezik \"%s\" nevű fájl."
 
-#: app/dialogs/file-save-dialog.c:204
+#: app/dialogs/file-save-dialog.c:180
 msgid "Do you want to replace it with the image you are saving?"
 msgstr "Szeretné felülírni azt a most menteni kívánt képpel?"
 
@@ -5883,7 +5881,7 @@ msgid "Is this what you want to do?"
 msgstr "Ezt szeretné tenni?"
 
 #. General
-#: app/dialogs/info-dialog.c:377 app/dialogs/preferences-dialog.c:1543
+#: app/dialogs/info-dialog.c:363 app/dialogs/preferences-dialog.c:1543
 #: app/dialogs/preferences-dialog.c:1697
 #: app/widgets/gimpcontrollereditor.c:197
 msgid "General"
@@ -6255,12 +6253,11 @@ msgid "Configure Keyboard Shortcuts"
 msgstr "Gyorsbillentyűk beállítása"
 
 #: app/dialogs/preferences-dialog.c:551
+#, fuzzy
 msgid ""
 "To edit a shortcut key, click on the corresponding row and type a new "
 "accelerator, or press backspace to clear."
-msgstr ""
-"Gyorsbillentyű szerkesztéséhez kattintson a megfelelő sorra és nyomja le az "
-"új gyorsbillentyűt, vagy nyomja meg a Backspace billentyűt a törléshez."
+msgstr "Adjon meg egy új gyorsbillentyűt, vagy nyomjon Backspace-t a törléshez"
 
 #: app/dialogs/preferences-dialog.c:595
 msgid ""
@@ -6883,28 +6880,28 @@ msgid "Print Size"
 msgstr "Nyomtatási méret"
 
 #. the image size labels
-#: app/dialogs/print-size-dialog.c:155 app/widgets/gimpsizebox.c:223
+#: app/dialogs/print-size-dialog.c:155 app/widgets/gimpsizebox.c:222
 #: app/widgets/gimptemplateeditor.c:236
 msgid "_Width:"
 msgstr "Szé_lesség:"
 
-#: app/dialogs/print-size-dialog.c:162 app/widgets/gimpsizebox.c:227
+#: app/dialogs/print-size-dialog.c:162 app/widgets/gimpsizebox.c:225
 #: app/widgets/gimptemplateeditor.c:243
 msgid "H_eight:"
 msgstr "Ma_gasság:"
 
 #. the resolution labels
-#: app/dialogs/print-size-dialog.c:210 app/widgets/gimpsizebox.c:276
+#: app/dialogs/print-size-dialog.c:210 app/widgets/gimpsizebox.c:273
 #: app/widgets/gimptemplateeditor.c:363
 msgid "_X resolution:"
 msgstr "_X-felbontás:"
 
-#: app/dialogs/print-size-dialog.c:217 app/widgets/gimpsizebox.c:279
+#: app/dialogs/print-size-dialog.c:217 app/widgets/gimpsizebox.c:276
 #: app/widgets/gimptemplateeditor.c:370
 msgid "_Y resolution:"
 msgstr "_Y-felbontás:"
 
-#: app/dialogs/print-size-dialog.c:228 app/widgets/gimpsizebox.c:272
+#: app/dialogs/print-size-dialog.c:228 app/widgets/gimpsizebox.c:269
 #: app/widgets/gimptemplateeditor.c:383
 #, c-format
 msgid "pixels/%a"
@@ -6928,8 +6925,9 @@ msgid "There are %d images with unsaved changes:"
 msgstr "A következő %d kép nem mentett módosítást tartalmaz:"
 
 #: app/dialogs/quit-dialog.c:183
+#, fuzzy
 msgid "_Discard Changes"
-msgstr "_Változtatások eldobása"
+msgstr "Csatorna _felemelése"
 
 #: app/dialogs/resize-dialog.c:115
 msgid "Canvas Size"
@@ -7691,6 +7689,10 @@ msgstr "Fakítás vagy sötétítés"
 msgid "Eraser"
 msgstr "Radír"
 
+#: app/paint/gimpink.c:101 app/tools/gimpinktool.c:62
+msgid "Ink"
+msgstr "Tus"
+
 #: app/paint/gimppaintbrush.c:65 app/tools/gimppaintbrushtool.c:51
 msgid "Paintbrush"
 msgstr "Ecset"
@@ -7827,7 +7829,7 @@ msgstr "Ecset"
 msgid "Brush UI"
 msgstr "Ecsetek felhasználói felülete"
 
-#: app/pdb/internal_procs.c:98 app/tools/gimppaintoptions-gui.c:283
+#: app/pdb/internal_procs.c:98 app/tools/gimppaintoptions-gui.c:284
 #: app/widgets/gimpwidgets-constructors.c:75
 #: app/widgets/gimpwidgets-constructors.c:108
 msgid "Color"
@@ -8236,7 +8238,7 @@ msgstr "Eltolás:"
 msgid "Shape:"
 msgstr "Forma:"
 
-#: app/tools/gimpblendoptions.c:261 app/tools/gimppaintoptions-gui.c:417
+#: app/tools/gimpblendoptions.c:261 app/tools/gimppaintoptions-gui.c:418
 msgid "Repeat:"
 msgstr "Ismétlés:"
 
@@ -9010,7 +9012,7 @@ msgstr "Mód:"
 msgid "Brush:"
 msgstr "Ecset:"
 
-#: app/tools/gimppaintoptions-gui.c:135 app/tools/gimppaintoptions-gui.c:394
+#: app/tools/gimppaintoptions-gui.c:135 app/tools/gimppaintoptions-gui.c:395
 msgid "Gradient:"
 msgstr "Színátmenet:"
 
@@ -9022,31 +9024,31 @@ msgstr "Éles szélű"
 msgid "Pressure sensitivity"
 msgstr "Nyomásérzékenység"
 
-#: app/tools/gimppaintoptions-gui.c:236
+#: app/tools/gimppaintoptions-gui.c:237
 msgid "Opacity"
 msgstr "Átlátszatlanság"
 
-#: app/tools/gimppaintoptions-gui.c:250
+#: app/tools/gimppaintoptions-gui.c:251
 msgid "Hardness"
 msgstr "Keménység"
 
-#: app/tools/gimppaintoptions-gui.c:261
+#: app/tools/gimppaintoptions-gui.c:262
 msgid "Rate"
 msgstr "Mérték"
 
-#: app/tools/gimppaintoptions-gui.c:274
+#: app/tools/gimppaintoptions-gui.c:275
 msgid "Size"
 msgstr "Méret"
 
-#: app/tools/gimppaintoptions-gui.c:313
+#: app/tools/gimppaintoptions-gui.c:314
 msgid "Fade out"
 msgstr "Elhalványulás"
 
-#: app/tools/gimppaintoptions-gui.c:333 app/tools/gimppaintoptions-gui.c:403
+#: app/tools/gimppaintoptions-gui.c:334 app/tools/gimppaintoptions-gui.c:404
 msgid "Length:"
 msgstr "Hossz:"
 
-#: app/tools/gimppaintoptions-gui.c:367
+#: app/tools/gimppaintoptions-gui.c:368
 msgid "Use color from gradient"
 msgstr "Színátmenet színének használata"
 
@@ -9143,8 +9145,9 @@ msgid "Center X:"
 msgstr "Középpont X:"
 
 #: app/tools/gimprotatetool.c:190
+#, fuzzy
 msgid "Center Y:"
-msgstr "Középpont Y:"
+msgstr "Középpont X:"
 
 #: app/tools/gimpscaletool.c:91
 msgid "Scale"
@@ -9572,39 +9575,39 @@ msgstr "Rögzítések törlése"
 msgid "There is no active layer or channel to stroke to"
 msgstr "Nincs aktív réteg vagy csatorna, amely rajzolható lenne."
 
-#: app/vectors/gimpvectors.c:229
+#: app/vectors/gimpvectors.c:231
 msgid "Path"
 msgstr "Útvonal"
 
-#: app/vectors/gimpvectors.c:230
+#: app/vectors/gimpvectors.c:232
 msgid "Rename Path"
 msgstr "Útvonal átnevezése"
 
-#: app/vectors/gimpvectors.c:231 app/vectors/gimpvectors.c:356
+#: app/vectors/gimpvectors.c:233 app/vectors/gimpvectors.c:373
 msgid "Move Path"
 msgstr "Útvonal áthelyezése"
 
-#: app/vectors/gimpvectors.c:232
+#: app/vectors/gimpvectors.c:234
 msgid "Scale Path"
 msgstr "Útvonal átméretezése"
 
-#: app/vectors/gimpvectors.c:233
+#: app/vectors/gimpvectors.c:235
 msgid "Resize Path"
 msgstr "Útvonal méretének módosítása"
 
-#: app/vectors/gimpvectors.c:234 app/vectors/gimpvectors.c:447
+#: app/vectors/gimpvectors.c:236 app/vectors/gimpvectors.c:464
 msgid "Flip Path"
 msgstr "Útvonal tükrözése"
 
-#: app/vectors/gimpvectors.c:235 app/vectors/gimpvectors.c:491
+#: app/vectors/gimpvectors.c:237 app/vectors/gimpvectors.c:508
 msgid "Rotate Path"
 msgstr "Útvonal forgatása"
 
-#: app/vectors/gimpvectors.c:236 app/vectors/gimpvectors.c:522
+#: app/vectors/gimpvectors.c:238 app/vectors/gimpvectors.c:539
 msgid "Transform Path"
 msgstr "Útvonal átalakítása"
 
-#: app/vectors/gimpvectors.c:551
+#: app/vectors/gimpvectors.c:568
 msgid "Cannot stroke empty path."
 msgstr "Üres útvonal nem rajzolható körbe."
 
@@ -9635,49 +9638,49 @@ msgstr "Nem sikerült útvonalakat importálni ebből: \"%s\": %s"
 msgid "RGBA (%0.3f, %0.3f, %0.3f, %0.3f)"
 msgstr "RGBA (%0.3f, %0.3f, %0.3f, %0.3f)"
 
-#: app/widgets/gimpactionview.c:354 app/widgets/gimpcontrollereditor.c:374
+#: app/widgets/gimpactionview.c:292 app/widgets/gimpcontrollereditor.c:374
 msgid "Action"
 msgstr "Művelet"
 
-#: app/widgets/gimpactionview.c:383
+#: app/widgets/gimpactionview.c:317
 msgid "Shortcut"
 msgstr "Gyorsbillentyű"
 
-#: app/widgets/gimpactionview.c:405
+#: app/widgets/gimpactionview.c:339
 msgid "Name"
 msgstr "Név"
 
-#: app/widgets/gimpactionview.c:545 app/widgets/gimpactionview.c:738
+#: app/widgets/gimpactionview.c:479 app/widgets/gimpactionview.c:672
 msgid "Changing shortcut failed."
 msgstr "A gyorsbillentyű módosítása nem sikerült."
 
-#: app/widgets/gimpactionview.c:585
+#: app/widgets/gimpactionview.c:519
 msgid "Conflicting Shortcuts"
 msgstr "Ütköző gyorsbillentyűk"
 
-#: app/widgets/gimpactionview.c:591
+#: app/widgets/gimpactionview.c:525
 msgid "_Reassign shortcut"
 msgstr "Gyorsbillentyű hozzárendelésének mó_dosítása"
 
-#: app/widgets/gimpactionview.c:602
+#: app/widgets/gimpactionview.c:536
 #, c-format
 msgid "Shortcut \"%s\" is already taken by \"%s\" from the \"%s\" group."
 msgstr ""
 "A(z) \"%s\" gyorsbillentyű már hozzá van rendelve ehhez: \"%s\" (\"%s\" "
 "csoport)."
 
-#: app/widgets/gimpactionview.c:606
+#: app/widgets/gimpactionview.c:540
 #, c-format
 msgid "Reassigning the shortcut will cause it to be removed from \"%s\"."
 msgstr ""
 "A gyorsbillentyű hozzárendelésének módosítása esetén el lesz távolítva "
 "innen: \"%s\"."
 
-#: app/widgets/gimpactionview.c:673
+#: app/widgets/gimpactionview.c:607
 msgid "Removing shortcut failed."
 msgstr "Nem sikerült eltávolítani a gyorsbillentyűt."
 
-#: app/widgets/gimpactionview.c:678
+#: app/widgets/gimpactionview.c:612
 msgid "Invalid shortcut."
 msgstr "Érvénytelen gyorsbillentyű."
 
@@ -10158,12 +10161,14 @@ msgid "Background: %d, %d, %d"
 msgstr "Háttér: %d, %d, %d"
 
 #: app/widgets/gimpdock.c:348 app/widgets/gimpdock.c:359
+#, fuzzy
 msgid "Close all tabs?"
-msgstr "Bezárja az összes lapot?"
+msgstr "Lap _bezárása"
 
 #: app/widgets/gimpdock.c:354
+#, fuzzy
 msgid "Close all Tabs"
-msgstr "Összes lap bezárása"
+msgstr "Lap _bezárása"
 
 #: app/widgets/gimpdock.c:361
 #, c-format
@@ -10171,14 +10176,12 @@ msgid ""
 "This window has %d tabs open. Closing the window will also close all its "
 "tabs."
 msgstr ""
-"Ez az ablak %d megnyitott lappal rendelkezik. Az ablak bezárásával az összes "
-"lap is be fog záródni."
 
 #: app/widgets/gimpdock.c:474
 msgid "You can drop dockable dialogs here."
 msgstr "Dokkolható párbeszédablakokat ejthet ide."
 
-#: app/widgets/gimpdockable.c:210
+#: app/widgets/gimpdockable.c:209
 msgid "Close this Tab"
 msgstr "Lap bezárása"
 
@@ -10203,11 +10206,11 @@ msgstr "Automatikusan meghatározva"
 msgid "By Extension"
 msgstr "Kiterjesztés szerint"
 
-#: app/widgets/gimpfiledialog.c:469
+#: app/widgets/gimpfiledialog.c:496
 msgid "All Files"
 msgstr "Az összes fájl"
 
-#: app/widgets/gimpfiledialog.c:608
+#: app/widgets/gimpfiledialog.c:635
 #, c-format
 msgid "Select File _Type (%s)"
 msgstr "Fájltípus ki_választása (%s)"
@@ -10454,12 +10457,12 @@ msgstr ""
 msgid "Invalid UTF-8"
 msgstr "Érvénytelen UTF-8"
 
-#: app/widgets/gimpsizebox.c:456
+#: app/widgets/gimpsizebox.c:451
 #, c-format
 msgid "%d x %d dpi"
 msgstr "%d x %d dpi"
 
-#: app/widgets/gimpsizebox.c:458
+#: app/widgets/gimpsizebox.c:455
 #, c-format
 msgid "%d dpi"
 msgstr "%d dpi"
@@ -10525,12 +10528,12 @@ msgstr "_Név:"
 msgid "_Icon:"
 msgstr "_Ikon:"
 
-#: app/widgets/gimptemplateeditor.c:699
+#: app/widgets/gimptemplateeditor.c:694
 #, c-format
 msgid "%d x %d dpi, %s"
 msgstr "%d x %d dpi, %s"
 
-#: app/widgets/gimptemplateeditor.c:701
+#: app/widgets/gimptemplateeditor.c:698
 #, c-format
 msgid "%d dpi, %s"
 msgstr "%d dpi, %s"
@@ -10901,3 +10904,12 @@ msgstr "Képek vagy fotók létrehozása és szerkesztése"
 #: data/misc/gimp.desktop.in.in.h:2
 msgid "Image Editor"
 msgstr "Képszerkesztő"
+
+#~ msgid "Keep aspect ratio"
+#~ msgstr "Méretarány megtartása"
+
+#~ msgid "Y:"
+#~ msgstr "Y:"
+
+#~ msgid "Transformations do not work on layers that contain layer masks."
+#~ msgstr "Az átalakítások nem működnek rétegmaszkot tartalmazó rétegeken."

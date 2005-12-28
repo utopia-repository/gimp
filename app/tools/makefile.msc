@@ -27,7 +27,8 @@ PKG_LINK = \
 
 OBJECTS = \
 	gimpairbrushtool.obj \
-#	gimpbezierselecttool.obj \
+	gimpaligntool.obj \
+	gimpalignoptions.obj \
 	gimpblendoptions.obj \
 	gimpblendtool.obj \
 	gimpbrightnesscontrasttool.obj \
@@ -52,6 +53,8 @@ OBJECTS = \
 	gimperasertool.obj \
 	gimpflipoptions.obj \
 	gimpfliptool.obj \
+	gimpforegroundselectoptions.obj \
+	gimpforegroundselecttool.obj \
 	gimpfreeselecttool.obj \
 	gimpfuzzyselecttool.obj \
 	gimphistogramoptions.obj \
@@ -68,12 +71,16 @@ OBJECTS = \
 	gimpmeasuretool.obj \
 	gimpmoveoptions.obj \
 	gimpmovetool.obj \
+	gimpnewrectselectoptions.obj \
+	gimpnewrectselecttool.obj \
 	gimppaintbrushtool.obj \
 	gimppaintoptions-gui.obj \
 	gimppainttool.obj \
 	gimppenciltool.obj \
 	gimpperspectivetool.obj \
 	gimpposterizetool.obj \
+	gimprectangleoptions.obj \
+	gimprectangletool.obj \
 	gimprectselecttool.obj \
 	gimprotatetool.obj \
 	gimpscaletool.obj \

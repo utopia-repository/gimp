@@ -44,7 +44,12 @@ DIST_COMMON = $(libgimpwidgetsinclude_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.in
+	$(top_srcdir)/m4macros/detectcflags.m4 \
+	$(top_srcdir)/m4macros/pythondev.m4 \
+	$(top_srcdir)/m4macros/gimpprint.m4 \
+	$(top_srcdir)/m4macros/alsa.m4 \
+	$(top_srcdir)/m4macros/gtk-doc.m4 \
+	$(top_srcdir)/m4macros/binreloc.m4 $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -60,28 +65,32 @@ am__installdirs = "$(DESTDIR)$(libdir)" \
 	"$(DESTDIR)$(libgimpwidgetsincludedir)"
 libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
-am__DEPENDENCIES_1 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_2 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_3 =
-am__objects_1 = gimpwidgetsmarshal.lo
-am__objects_2 = gimpwidgets.lo gimpbutton.lo gimpcellrenderercolor.lo \
-	gimpcellrenderertoggle.lo gimpchainbutton.lo gimpcolorarea.lo \
-	gimpcolorbutton.lo gimpcolordisplay.lo \
-	gimpcolordisplaystack.lo gimpcolorhexentry.lo \
-	gimpcolornotebook.lo gimpcolorscale.lo gimpcolorscales.lo \
-	gimpcolorselector.lo gimpcolorselect.lo gimpcolorselection.lo \
-	gimpcontroller.lo gimpdialog.lo gimpfileentry.lo gimpframe.lo \
-	gimphelpui.lo gimpintcombobox.lo gimpintstore.lo \
-	gimpmemsizeentry.lo gimpoldwidgets.lo gimpoffsetarea.lo \
+am__DEPENDENCIES_1 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_2 = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_3 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_4 =
+am__objects_1 = gimpwidgetsenums.lo gimpwidgetsmarshal.lo
+am__objects_2 = gimpwidgets.lo gimpbrowser.lo gimpbutton.lo \
+	gimpcellrenderercolor.lo gimpcellrenderertoggle.lo \
+	gimpchainbutton.lo gimpcolorarea.lo gimpcolorbutton.lo \
+	gimpcolordisplay.lo gimpcolordisplaystack.lo \
+	gimpenumwidgets.lo gimpcolorhexentry.lo gimpcolornotebook.lo \
+	gimpcolorscale.lo gimpcolorscales.lo gimpcolorselector.lo \
+	gimpcolorselect.lo gimpcolorselection.lo gimpcontroller.lo \
+	gimpdialog.lo gimpenumstore.lo gimpenumcombobox.lo \
+	gimpenumlabel.lo gimpfileentry.lo gimpframe.lo gimphelpui.lo \
+	gimpintcombobox.lo gimpintstore.lo gimpmemsizeentry.lo \
+	gimpoldwidgets.lo gimpoffsetarea.lo gimppageselector.lo \
 	gimppatheditor.lo gimppickbutton.lo gimppixmap.lo \
-	gimppreview.lo gimppreviewarea.lo gimpquerybox.lo \
-	gimpscrolledpreview.lo gimpsizeentry.lo gimpstock.lo \
-	gimpunitmenu.lo gimpwidgets-private.lo
+	gimppreview.lo gimppreviewarea.lo gimppropwidgets.lo \
+	gimpquerybox.lo gimpresolutionentry.lo gimpscrolledpreview.lo \
+	gimpsizeentry.lo gimpstock.lo gimpunitmenu.lo gimpzoommodel.lo \
+	gimpwidgets-private.lo
 am_libgimpwidgets_2_0_la_OBJECTS = $(am__objects_1) $(am__objects_2)
 libgimpwidgets_2_0_la_OBJECTS = $(am_libgimpwidgets_2_0_la_OBJECTS)
 am_test_preview_area_OBJECTS = test-preview-area.$(OBJEXT)
 test_preview_area_OBJECTS = $(am_test_preview_area_OBJECTS)
-am__DEPENDENCIES_4 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la \
+am__DEPENDENCIES_5 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la \
 	$(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -107,9 +116,9 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 AA = @AA@
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
-ALL_LINGUAS = @ALL_LINGUAS@
 ALSA_CFLAGS = @ALSA_CFLAGS@
 ALSA_LIBS = @ALSA_LIBS@
+ALTIVEC_EXTRA_CFLAGS = @ALTIVEC_EXTRA_CFLAGS@
 AMDEP_FALSE = @AMDEP_FALSE@
 AMDEP_TRUE = @AMDEP_TRUE@
 AMTAR = @AMTAR@
@@ -119,6 +128,8 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
+BINRELOC_LIBS = @BINRELOC_LIBS@
 BUILD_HELPBROWSER_FALSE = @BUILD_HELPBROWSER_FALSE@
 BUILD_HELPBROWSER_TRUE = @BUILD_HELPBROWSER_TRUE@
 BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
@@ -150,6 +161,7 @@ DESKTOP_DATADIR = @DESKTOP_DATADIR@
 DESKTOP_DATADIR_FALSE = @DESKTOP_DATADIR_FALSE@
 DESKTOP_DATADIR_TRUE = @DESKTOP_DATADIR_TRUE@
 DLLTOOL = @DLLTOOL@
+DOC_SHOOTER = @DOC_SHOOTER@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -184,7 +196,6 @@ GIMP_API_VERSION = @GIMP_API_VERSION@
 GIMP_APP_VERSION = @GIMP_APP_VERSION@
 GIMP_BINARY_AGE = @GIMP_BINARY_AGE@
 GIMP_DATA_VERSION = @GIMP_DATA_VERSION@
-GIMP_DESKTOP_ICON = @GIMP_DESKTOP_ICON@
 GIMP_FULL_NAME = @GIMP_FULL_NAME@
 GIMP_INTERFACE_AGE = @GIMP_INTERFACE_AGE@
 GIMP_MAJOR_VERSION = @GIMP_MAJOR_VERSION@
@@ -192,18 +203,16 @@ GIMP_MICRO_VERSION = @GIMP_MICRO_VERSION@
 GIMP_MINOR_VERSION = @GIMP_MINOR_VERSION@
 GIMP_MKENUMS = @GIMP_MKENUMS@
 GIMP_MODULES = @GIMP_MODULES@
-GIMP_MP_FLAGS = @GIMP_MP_FLAGS@
-GIMP_MP_LIBS = @GIMP_MP_LIBS@
 GIMP_PKGCONFIG_VERSION = @GIMP_PKGCONFIG_VERSION@
 GIMP_PLUGINS = @GIMP_PLUGINS@
 GIMP_PLUGIN_VERSION = @GIMP_PLUGIN_VERSION@
 GIMP_REAL_VERSION = @GIMP_REAL_VERSION@
 GIMP_REMOTE = @GIMP_REMOTE@
 GIMP_SYSCONF_VERSION = @GIMP_SYSCONF_VERSION@
-GIMP_THREAD_FLAGS = @GIMP_THREAD_FLAGS@
-GIMP_THREAD_LIBS = @GIMP_THREAD_LIBS@
 GIMP_TOOL_VERSION = @GIMP_TOOL_VERSION@
 GIMP_UNSTABLE = @GIMP_UNSTABLE@
+GIMP_UNSTABLE_FALSE = @GIMP_UNSTABLE_FALSE@
+GIMP_UNSTABLE_TRUE = @GIMP_UNSTABLE_TRUE@
 GIMP_USER_VERSION = @GIMP_USER_VERSION@
 GIMP_VERSION = @GIMP_VERSION@
 GLIB_CFLAGS = @GLIB_CFLAGS@
@@ -215,8 +224,12 @@ GMODULE_CFLAGS = @GMODULE_CFLAGS@
 GMODULE_LIBS = @GMODULE_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
+GNOMEPRINT = @GNOMEPRINT@
+GNOMEPRINT_CFLAGS = @GNOMEPRINT_CFLAGS@
+GNOMEPRINT_LIBS = @GNOMEPRINT_LIBS@
 GOBJECT_QUERY = @GOBJECT_QUERY@
-GREP = @GREP@
+GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
+GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
 GTKHTML2_CFLAGS = @GTKHTML2_CFLAGS@
 GTKHTML2_LIBS = @GTKHTML2_LIBS@
@@ -230,6 +243,10 @@ HAVE_FINITE = @HAVE_FINITE@
 HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_GLIBC_REGEX_FALSE = @HAVE_GLIBC_REGEX_FALSE@
 HAVE_GLIBC_REGEX_TRUE = @HAVE_GLIBC_REGEX_TRUE@
+HAVE_GNOMEPRINT_FALSE = @HAVE_GNOMEPRINT_FALSE@
+HAVE_GNOMEPRINT_TRUE = @HAVE_GNOMEPRINT_TRUE@
+HAVE_GNOMEVFS_FALSE = @HAVE_GNOMEVFS_FALSE@
+HAVE_GNOMEVFS_TRUE = @HAVE_GNOMEVFS_TRUE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_LCMS_FALSE = @HAVE_LCMS_FALSE@
 HAVE_LCMS_TRUE = @HAVE_LCMS_TRUE@
@@ -266,7 +283,6 @@ INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
 INTLTOOL_SERVER_RULE = @INTLTOOL_SERVER_RULE@
-INTLTOOL_SERVICE_RULE = @INTLTOOL_SERVICE_RULE@
 INTLTOOL_SHEET_RULE = @INTLTOOL_SHEET_RULE@
 INTLTOOL_SOUNDLIST_RULE = @INTLTOOL_SOUNDLIST_RULE@
 INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
@@ -282,10 +298,12 @@ LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
+LIBGNOMEPRINT = @LIBGNOMEPRINT@
 LIBJPEG = @LIBJPEG@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
+LIBPOPPLER = @LIBPOPPLER@
 LIBS = @LIBS@
 LIBSCREENSHOT = @LIBSCREENSHOT@
 LIBSVG = @LIBSVG@
@@ -308,7 +326,6 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MMX_EXTRA_CFLAGS = @MMX_EXTRA_CFLAGS@
 MNG = @MNG@
 MSGFMT = @MSGFMT@
-MSGFMT_OPTS = @MSGFMT_OPTS@
 MS_LIB_AVAILABLE_FALSE = @MS_LIB_AVAILABLE_FALSE@
 MS_LIB_AVAILABLE_TRUE = @MS_LIB_AVAILABLE_TRUE@
 OBJDUMP = @OBJDUMP@
@@ -334,15 +351,22 @@ PLATFORM_WIN32_FALSE = @PLATFORM_WIN32_FALSE@
 PLATFORM_WIN32_TRUE = @PLATFORM_WIN32_TRUE@
 PNG = @PNG@
 POFILES = @POFILES@
+POPPLER = @POPPLER@
+POPPLER_CFLAGS = @POPPLER_CFLAGS@
+POPPLER_LIBS = @POPPLER_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
 PRINT_CFLAGS = @PRINT_CFLAGS@
 PRINT_LIBS = @PRINT_LIBS@
 PSP = @PSP@
+PYBIN_PATH = @PYBIN_PATH@
 PYGIMP_EXTRA_CFLAGS = @PYGIMP_EXTRA_CFLAGS@
 PYGTK_CFLAGS = @PYGTK_CFLAGS@
+PYGTK_CODEGEN = @PYGTK_CODEGEN@
+PYGTK_DEFSDIR = @PYGTK_DEFSDIR@
 PYGTK_LIBS = @PYGTK_LIBS@
+PYLINK_LIBS = @PYLINK_LIBS@
 PYTHON = @PYTHON@
 PYTHON_EXEC_PREFIX = @PYTHON_EXEC_PREFIX@
 PYTHON_INCLUDES = @PYTHON_INCLUDES@
@@ -366,10 +390,10 @@ SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
-URL = @URL@
+URI_CFLAGS = @URI_CFLAGS@
+URI_LIBS = @URI_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
-WINCLIPBOARD = @WINCLIPBOARD@
 WINDRES = @WINDRES@
 WINPRINT = @WINPRINT@
 WITH_PDBGEN_FALSE = @WITH_PDBGEN_FALSE@
@@ -379,7 +403,6 @@ WMF_CFLAGS = @WMF_CFLAGS@
 WMF_CONFIG = @WMF_CONFIG@
 WMF_REQUIRED_VERSION = @WMF_REQUIRED_VERSION@
 XGETTEXT = @XGETTEXT@
-XMKMF = @XMKMF@
 XMLLINT = @XMLLINT@
 XPM = @XPM@
 XSLTPROC = @XSLTPROC@
@@ -387,9 +410,17 @@ X_CFLAGS = @X_CFLAGS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+ac_ct_AR = @ac_ct_AR@
+ac_ct_AS = @ac_ct_AS@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
+ac_ct_DLLTOOL = @ac_ct_DLLTOOL@
 ac_ct_F77 = @ac_ct_F77@
+ac_ct_OBJDUMP = @ac_ct_OBJDUMP@
+ac_ct_RANLIB = @ac_ct_RANLIB@
+ac_ct_STRIP = @ac_ct_STRIP@
+ac_ct_WINDRES = @ac_ct_WINDRES@
+ac_pt_PKG_CONFIG = @ac_pt_PKG_CONFIG@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
 am__fastdepCXX_FALSE = @am__fastdepCXX_FALSE@
@@ -406,12 +437,10 @@ build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
-datarootdir = @datarootdir@
-docdir = @docdir@
-dvidir = @dvidir@
 exec_prefix = @exec_prefix@
 gimpdatadir = @gimpdatadir@
 gimpdir = @gimpdir@
+gimplocaledir = @gimplocaledir@
 gimpplugindir = @gimpplugindir@
 gimpsysconfdir = @gimpsysconfdir@
 host = @host@
@@ -419,24 +448,20 @@ host_alias = @host_alias@
 host_cpu = @host_cpu@
 host_os = @host_os@
 host_vendor = @host_vendor@
-htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = @libexecdir@
-localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
 oldincludedir = @oldincludedir@
-pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
 pkgpythondir = @pkgpythondir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
-psdir = @psdir@
 pyexecdir = @pyexecdir@
 pythondir = @pythondir@
 sbindir = @sbindir@
@@ -445,6 +470,7 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 @PLATFORM_WIN32_TRUE@no_undefined = -no-undefined
 @PLATFORM_WIN32_FALSE@libm = -lm
 @OS_WIN32_TRUE@gimpwidgets_def = gimpwidgets.def
@@ -453,7 +479,7 @@ libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpwidgetsincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimpwidgets
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"LibGimpWidgets\"			\
-	@GIMP_THREAD_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
 	-I$(top_srcdir)	\
@@ -464,7 +490,10 @@ lib_LTLIBRARIES = libgimpwidgets-2.0.la
 libgimpwidgets_2_0_la_sources = \
 	gimpwidgets.c		\
 	gimpwidgets.h		\
+	gimpwidgetsenums.h	\
 	gimpwidgetstypes.h	\
+	gimpbrowser.c		\
+	gimpbrowser.h		\
 	gimpbutton.c		\
 	gimpbutton.h		\
 	gimpcellrenderercolor.c	\
@@ -481,6 +510,8 @@ libgimpwidgets_2_0_la_sources = \
 	gimpcolordisplay.h	\
 	gimpcolordisplaystack.c	\
 	gimpcolordisplaystack.h	\
+	gimpenumwidgets.c	\
+	gimpenumwidgets.h	\
 	gimpcolorhexentry.c	\
 	gimpcolorhexentry.h	\
 	gimpcolornotebook.c	\
@@ -499,6 +530,12 @@ libgimpwidgets_2_0_la_sources = \
 	gimpcontroller.h	\
 	gimpdialog.c		\
 	gimpdialog.h		\
+	gimpenumstore.c		\
+	gimpenumstore.h		\
+	gimpenumcombobox.c	\
+	gimpenumcombobox.h	\
+	gimpenumlabel.c		\
+	gimpenumlabel.h		\
 	gimpfileentry.c		\
 	gimpfileentry.h		\
 	gimpframe.c		\
@@ -515,6 +552,8 @@ libgimpwidgets_2_0_la_sources = \
 	gimpoldwidgets.h	\
 	gimpoffsetarea.c	\
 	gimpoffsetarea.h	\
+	gimppageselector.c	\
+	gimppageselector.h	\
 	gimppatheditor.c	\
 	gimppatheditor.h	\
 	gimppickbutton.c	\
@@ -525,8 +564,12 @@ libgimpwidgets_2_0_la_sources = \
 	gimppreview.h		\
 	gimppreviewarea.c	\
 	gimppreviewarea.h	\
+	gimppropwidgets.c	\
+	gimppropwidgets.h	\
 	gimpquerybox.c		\
 	gimpquerybox.h		\
+	gimpresolutionentry.c   \
+	gimpresolutionentry.h   \
 	gimpscrolledpreview.c	\
 	gimpscrolledpreview.h	\
 	gimpsizeentry.c		\
@@ -535,10 +578,13 @@ libgimpwidgets_2_0_la_sources = \
 	gimpstock.h		\
 	gimpunitmenu.c		\
 	gimpunitmenu.h		\
+	gimpzoommodel.c		\
+	gimpzoommodel.h		\
 	gimpwidgets-private.c	\
 	gimpwidgets-private.h
 
 libgimpwidgets_2_0_la_built_sources = \
+	gimpwidgetsenums.c	\
 	gimpwidgetsmarshal.c	\
 	gimpwidgetsmarshal.h
 
@@ -554,7 +600,9 @@ libgimpwidgets_2_0_la_SOURCES = \
 
 libgimpwidgetsinclude_HEADERS = \
 	gimpwidgets.h		\
+	gimpwidgetsenums.h	\
 	gimpwidgetstypes.h	\
+	gimpbrowser.h		\
 	gimpbutton.h		\
 	gimpcellrenderercolor.h	\
 	gimpcellrenderertoggle.h\
@@ -572,6 +620,10 @@ libgimpwidgetsinclude_HEADERS = \
 	gimpcolorselection.h	\
 	gimpcontroller.h	\
 	gimpdialog.h		\
+	gimpenumcombobox.h	\
+	gimpenumlabel.h		\
+	gimpenumstore.h		\
+	gimpenumwidgets.h	\
 	gimpfileentry.h		\
 	gimpframe.h		\
 	gimphelpui.h		\
@@ -580,16 +632,20 @@ libgimpwidgetsinclude_HEADERS = \
 	gimpmemsizeentry.h	\
 	gimpoldwidgets.h	\
 	gimpoffsetarea.h	\
+	gimppageselector.h	\
 	gimppatheditor.h	\
 	gimppickbutton.h	\
 	gimppixmap.h		\
 	gimppreview.h		\
 	gimppreviewarea.h	\
+	gimppropwidgets.h	\
 	gimpquerybox.h		\
+	gimpresolutionentry.h   \
 	gimpscrolledpreview.h	\
 	gimpsizeentry.h		\
 	gimpstock.h		\
-	gimpunitmenu.h
+	gimpunitmenu.h		\
+	gimpzoommodel.h
 
 libgimpwidgets_2_0_la_LDFLAGS = \
 	-version-info $(LT_VERSION_INFO)	\
@@ -597,8 +653,9 @@ libgimpwidgets_2_0_la_LDFLAGS = \
 	$(libgimpwidgets_export_symbols)
 
 libgimpwidgets_2_0_la_LIBADD = \
-	$(libgimpbase)	\
 	$(libgimpcolor) \
+	$(libgimpconfig) \
+	$(libgimpbase)	\
 	$(GTK_LIBS) 	\
 	$(libm)
 
@@ -608,7 +665,7 @@ libgimpwidgets_2_0_la_DEPENDENCIES = $(gimpwidgets_def)
 # rules to generate built sources
 #
 # setup autogeneration dependancies
-gen_sources = xgen-gwmh xgen-gwmc
+gen_sources = xgen-wec xgen-wmh xgen-wmc
 CLEANFILES = $(gen_sources)
 test_preview_area_SOURCES = test-preview-area.c 
 test_preview_area_DEPENDENCIES = \
@@ -691,6 +748,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrowser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbutton.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcellrenderercolor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcellrenderertoggle.Plo@am__quote@
@@ -708,6 +766,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcolorselector.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontroller.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdialog.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpenumcombobox.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpenumlabel.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpenumstore.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpenumwidgets.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfileentry.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpframe.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphelpui.Plo@am__quote@
@@ -716,19 +778,24 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmemsizeentry.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpoffsetarea.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpoldwidgets.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppageselector.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppatheditor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppickbutton.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppixmap.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppreview.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppreviewarea.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropwidgets.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpquerybox.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpresolutionentry.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpscrolledpreview.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsizeentry.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpstock.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpunitmenu.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpwidgets-private.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpwidgets.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpwidgetsenums.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpwidgetsmarshal.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpzoommodel.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-preview-area.Po@am__quote@
 
 .c.o:
@@ -977,16 +1044,30 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 @MS_LIB_AVAILABLE_FALSE@install-ms-lib:
 @MS_LIB_AVAILABLE_FALSE@uninstall-ms-lib:
 
+$(srcdir)/gimpwidgetsenums.c: $(srcdir)/gimpwidgetsenums.h $(GIMP_MKENUMS)
+	$(GIMP_MKENUMS) \
+		--fhead "#include \"config.h\"\n#include <glib-object.h>\n#include \"libgimpbase/gimpbase.h\"\n#include \"gimpwidgetsenums.h\"\n#include \"libgimp/libgimp-intl.h\"" \
+		--fprod "\n/* enumerations from \"@filename@\" */" \
+		--vhead "GType\n@enum_name@_get_type (void)\n{\n  static const G@Type@Value values[] =\n  {" \
+		--vprod "    { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
+		--vtail "    { 0, NULL, NULL }\n  };\n" \
+		--dhead "  static const Gimp@Type@Desc descs[] =\n  {" \
+		--dprod "    { @VALUENAME@, @valuedesc@, @valuehelp@ }," \
+		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (! type)\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE \"-libgimp\");\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
+		$(srcdir)/gimpwidgetsenums.h > xgen-wec \
+	&& cp xgen-wec $(@F) \
+	&& rm -f xgen-wec
+
 $(srcdir)/gimpwidgetsmarshal.h: $(srcdir)/gimpwidgetsmarshal.list
-	$(GLIB_GENMARSHAL) --prefix=_gimp_widgets_marshal $(srcdir)/gimpwidgetsmarshal.list --header >> xgen-gwmh \
-	&& (cmp -s xgen-gwmh $(@F) || cp xgen-gwmh $(@F)) \
-	&& rm -f xgen-gwmh xgen-gwmh~
+	$(GLIB_GENMARSHAL) --prefix=_gimp_widgets_marshal $(srcdir)/gimpwidgetsmarshal.list --header >> xgen-wmh \
+	&& (cmp -s xgen-wmh $(@F) || cp xgen-wmh $(@F)) \
+	&& rm -f xgen-wmh xgen-wmh~
 
 $(srcdir)/gimpwidgetsmarshal.c: $(srcdir)/gimpwidgetsmarshal.h
-	echo "#include \"gimpwidgetsmarshal.h\"" >> xgen-gwmc \
-	&& $(GLIB_GENMARSHAL) --prefix=_gimp_widgets_marshal $(srcdir)/gimpwidgetsmarshal.list --body >> xgen-gwmc \
-	&& cp xgen-gwmc $(@F) \
-	&& rm -f xgen-gwmc xgen-gwmc~
+	echo "#include \"gimpwidgetsmarshal.h\"" >> xgen-wmc \
+	&& $(GLIB_GENMARSHAL) --prefix=_gimp_widgets_marshal $(srcdir)/gimpwidgetsmarshal.list --body >> xgen-wmc \
+	&& cp xgen-wmc $(@F) \
+	&& rm -f xgen-wmc xgen-wmc~
 
 install-data-local: install-ms-lib install-libtool-import-lib
 

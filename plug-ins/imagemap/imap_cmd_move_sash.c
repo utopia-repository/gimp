@@ -86,8 +86,8 @@ sash_move(GtkWidget *widget, GdkEventMotion *event, gpointer data)
    Object_t *obj = command->obj;
    gint x, y, dx, dy;
 
-   x = get_real_coord((gint) event->x);
-   y = get_real_coord((gint) event->y);
+   x = (gint) event->x;
+   y = (gint) event->y;
 
    if (x < 0)
       x = 0;
@@ -98,6 +98,9 @@ sash_move(GtkWidget *widget, GdkEventMotion *event, gpointer data)
       y = 0;
    if (y > command->image_height)
       y = command->image_height;
+
+   x = get_real_coord(x);
+   y = get_real_coord(y);
 
    dx = x - command->x;
    dy = y - command->y;
@@ -135,11 +138,11 @@ move_sash_command_execute(Command_t *parent)
 
    hide_url();
    preview_freeze();
-   g_signal_connect(command->widget, "button_release_event",
+   g_signal_connect(command->widget, "button-release-event",
                     G_CALLBACK (sash_end), command);   
-   g_signal_connect(command->widget, "motion_notify_event", 
+   g_signal_connect(command->widget, "motion-notify-event", 
                     G_CALLBACK (sash_move), command);   
-   gdk_gc_set_function(get_preferences()->selected_gc, GDK_XOR);
+   gdk_gc_set_function(get_preferences()->selected_gc, GDK_EQUIV);
 
    return CMD_APPEND;
 }

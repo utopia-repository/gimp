@@ -4,7 +4,7 @@ SUBDIRS = images
 
 scriptdatadir = $(gimpdatadir)/scripts
 
-scriptdata_DATA = \
+scripts = \
 	3d-outline.scm			\
 	3dTruchet.scm			\
 	add-bevel.scm			\
@@ -62,7 +62,6 @@ scriptdata_DATA = \
 	guides-remove-all.scm		\
 	hsv-graph.scm			\
 	i26-gunya2.scm			\
-	image-structure.scm		\
 	land.scm			\
 	lava.scm			\
 	line-nova.scm			\
@@ -70,6 +69,8 @@ scriptdata_DATA = \
 	mkbrush.scm			\
 	neon-logo.scm			\
 	news-text.scm			\
+	paste-as-brush.scm		\
+	paste-as-pattern.scm		\
 	perspective-shadow.scm		\
 	predator.scm			\
 	pupi-button.scm			\
@@ -103,6 +104,15 @@ scriptdata_DATA = \
 	web-browser.scm			\
 	xach-effect.scm
 
-EXTRA_DIST = \
-	$(scriptdata_DATA)		\
+test_scripts = \
 	test-sphere.scm
+
+
+if GIMP_UNSTABLE
+scriptdata_DATA = $(scripts) $(test_scripts)
+else
+scriptdata_DATA = $(scripts)
+endif
+
+
+EXTRA_DIST = $(scripts) $(test_scripts)

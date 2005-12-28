@@ -36,18 +36,14 @@
 #include "plug-in/plug-in-params.h"
 #include "plug-in/plug-in-proc-def.h"
 #include "plug-in/plug-in.h"
+#include "plug-in/plug-ins-query.h"
 #include "plug-in/plug-ins.h"
-
-#ifdef HAVE_GLIBC_REGEX
-#include <regex.h>
-#else
-#include "regexrepl/regex.h"
-#endif
 
 static ProcRecord plugins_query_proc;
 static ProcRecord plugin_domain_register_proc;
 static ProcRecord plugin_help_register_proc;
 static ProcRecord plugin_menu_register_proc;
+static ProcRecord plugin_menu_branch_register_proc;
 static ProcRecord plugin_icon_register_proc;
 
 void
@@ -57,14 +53,8 @@ register_plug_in_procs (Gimp *gimp)
   procedural_db_register (gimp, &plugin_domain_register_proc);
   procedural_db_register (gimp, &plugin_help_register_proc);
   procedural_db_register (gimp, &plugin_menu_register_proc);
+  procedural_db_register (gimp, &plugin_menu_branch_register_proc);
   procedural_db_register (gimp, &plugin_icon_register_proc);
-}
-
-static int
-match_strings (regex_t *preg,
-               gchar   *a)
-{
-  return regexec (preg, a, 0, NULL, 0);
 }
 
 static Argument *
@@ -76,101 +66,22 @@ plugins_query_invoker (Gimp         *gimp,
   Argument *return_args;
   gchar *search_str;
   gint32 num_plugins = 0;
-  gchar **menu_strs = NULL;
-  gchar **accel_strs = NULL;
-  gchar **prog_strs = NULL;
-  gchar **types_strs = NULL;
-  gint32 *time_ints = NULL;
-  gchar **realname_strs = NULL;
-  GSList *list;
-  GSList *matched = NULL;
-  gint i = 0;
-  regex_t sregex;
+  gchar **menu_strs;
+  gchar **accel_strs;
+  gchar **prog_strs;
+  gchar **types_strs;
+  gint32 *time_ints;
+  gchar **realname_strs;
 
   search_str = (gchar *) args[0].value.pdb_pointer;
 
-  if (search_str && ! strlen (search_str))
-    search_str = NULL;
-
-  if (! (search_str && regcomp (&sregex, search_str, REG_ICASE)))
-    {
-      /* count number of plugin entries, then allocate arrays of correct size
-       * where we can store the strings.
-       */
-
-      for (list = gimp->plug_in_proc_defs; list; list = g_slist_next (list))
-        {
-          PlugInProcDef *proc_def = list->data;
-
-          if (proc_def->prog && proc_def->menu_paths)
-                {
-              gchar *name;
-
-              if (proc_def->menu_label)
-                {
-                  name = proc_def->menu_label;
-                }
-              else
-                {
-                  name = strrchr (proc_def->menu_paths->data, '/');
-
-                  if (name)
-                    name = name + 1;
-                  else
-                    name = proc_def->menu_paths->data;
-                }
-
-              name = gimp_strip_uline (name);
-
-              if (! search_str || ! match_strings (&sregex, name))
-                {
-                  num_plugins++;
-                  matched = g_slist_prepend (matched, proc_def);
-                }
-
-              g_free (name);
-            }
-        }
-
-      menu_strs     = g_new (gchar *, num_plugins);
-      accel_strs    = g_new (gchar *, num_plugins);
-      prog_strs     = g_new (gchar *, num_plugins);
-      types_strs    = g_new (gchar *, num_plugins);
-      realname_strs = g_new (gchar *, num_plugins);
-      time_ints     = g_new (gint   , num_plugins);
-
-      matched = g_slist_reverse (matched);
-
-      for (list = matched; list; list = g_slist_next (list))
-        {
-          PlugInProcDef *proc_def = list->data;
-          ProcRecord    *proc_rec = &proc_def->db_info;
-          gchar         *name;
-
-          if (proc_def->menu_label)
-            name = g_strdup_printf ("%s/%s",
-                                    (gchar *) proc_def->menu_paths->data,
-                                    proc_def->menu_label);
-          else
-            name = g_strdup (proc_def->menu_paths->data);
-
-          menu_strs[i]     = gimp_strip_uline (name);
-          accel_strs[i]    = NULL;
-          prog_strs[i]     = g_strdup (proc_def->prog);
-          types_strs[i]    = g_strdup (proc_def->image_types);
-          realname_strs[i] = g_strdup (proc_rec->name);
-          time_ints[i]     = proc_def->mtime;
-
-          g_free (name);
-
-          i++;
-        }
-
-      g_slist_free (matched);
-
-      if (search_str)
-        regfree (&sregex);
-   }
+  num_plugins = plug_ins_query (gimp, search_str,
+                                &menu_strs,
+                                &accel_strs,
+                                &prog_strs,
+                                &types_strs,
+                                &realname_strs,
+                                &time_ints);
 
   return_args = procedural_db_return_args (&plugins_query_proc, TRUE);
 
@@ -194,7 +105,7 @@ static ProcArg plugins_query_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "search_string",
+    "search-string",
     "If not an empty string then use this as a search pattern"
   }
 };
@@ -203,69 +114,70 @@ static ProcArg plugins_query_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "num_plugins",
+    "num-plugins",
     "The number of plugins"
   },
   {
     GIMP_PDB_STRINGARRAY,
-    "menu_path",
+    "menu-path",
     "The menu path of the plugin"
   },
   {
     GIMP_PDB_INT32,
-    "num_plugins",
+    "num-plugins",
     "The number of plugins"
   },
   {
     GIMP_PDB_STRINGARRAY,
-    "plugin_accelerator",
+    "plugin-accelerator",
     "String representing keyboard accelerator (could be empty string)"
   },
   {
     GIMP_PDB_INT32,
-    "num_plugins",
+    "num-plugins",
     "The number of plugins"
   },
   {
     GIMP_PDB_STRINGARRAY,
-    "plugin_location",
+    "plugin-location",
     "Location of the plugin program"
   },
   {
     GIMP_PDB_INT32,
-    "num_plugins",
+    "num-plugins",
     "The number of plugins"
   },
   {
     GIMP_PDB_STRINGARRAY,
-    "plugin_image_type",
+    "plugin-image-type",
     "Type of image that this plugin will work on"
   },
   {
     GIMP_PDB_INT32,
-    "num_plugins",
+    "num-plugins",
     "The number of plugins"
   },
   {
     GIMP_PDB_INT32ARRAY,
-    "plugin_install_time",
+    "plugin-install-time",
     "Time that the plugin was installed"
   },
   {
     GIMP_PDB_INT32,
-    "num_plugins",
+    "num-plugins",
     "The number of plugins"
   },
   {
     GIMP_PDB_STRINGARRAY,
-    "plugin_real_name",
+    "plugin-real-name",
     "The internal name of the plugin"
   }
 };
 
 static ProcRecord plugins_query_proc =
 {
-  "gimp_plugins_query",
+  "gimp-plugins-query",
+  "gimp-plugins-query",
   "Queries the plugin database for its contents.",
   "This procedure queries the contents of the plugin database.",
   "Andy Thomas",
@@ -316,19 +228,20 @@ static ProcArg plugin_domain_register_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "domain_name",
+    "domain-name",
     "The name of the textdomain (must be unique)"
   },
   {
     GIMP_PDB_STRING,
-    "domain_path",
+    "domain-path",
     "The absolute path to the compiled message catalog (may be NULL)"
   }
 };
 
 static ProcRecord plugin_domain_register_proc =
 {
-  "gimp_plugin_domain_register",
+  "gimp-plugin-domain-register",
+  "gimp-plugin-domain-register",
   "Registers a textdomain for localisation.",
   "This procedure adds a textdomain to the list of domains Gimp searches for strings when translating its menu entries. There is no need to call this function for plug-ins that have their strings included in the gimp-std-plugins domain as that is used by default. If the compiled message catalog is not in the standard location, you may specify an absolute path to another location. This procedure can only be called in the query function of a plug-in and it has to be called before any procedure is installed.",
   "Sven Neumann",
@@ -381,19 +294,20 @@ static ProcArg plugin_help_register_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "domain_name",
+    "domain-name",
     "The XML namespace of the plug-in's help pages"
   },
   {
     GIMP_PDB_STRING,
-    "domain_uri",
+    "domain-uri",
     "The root URI of the plug-in's help pages"
   }
 };
 
 static ProcRecord plugin_help_register_proc =
 {
-  "gimp_plugin_help_register",
+  "gimp-plugin-help-register",
+  "gimp-plugin-help-register",
   "Register a help path for a plug-in.",
   "This procedure changes the help rootdir for the plug-in which calls it. All subsequent calls of gimp_help from this plug-in will be interpreted relative to this rootdir.",
   "Michael Natterer <mitch@gimp.org>",
@@ -431,39 +345,17 @@ plugin_menu_register_invoker (Gimp         *gimp,
       if (gimp->current_plug_in)
         {
           PlugInProcDef *proc_def = NULL;
-          GSList        *list;
+          gchar         *canonical;
+
+          canonical = gimp_canonicalize_identifier (procedure_name);
 
           if (gimp->current_plug_in->plug_in_def)
-            {
-              for (list = gimp->current_plug_in->plug_in_def->proc_defs;
-                   list;
-                   list = g_slist_next (list))
-                {
-                  PlugInProcDef *pd = list->data;
-
-                  if (! strcmp (procedure_name, pd->db_info.name))
-                    {
-                      proc_def = pd;
-                      break;
-                    }
-                }
-            }
+            proc_def = plug_in_proc_def_find (gimp->current_plug_in->plug_in_def->proc_defs,
+                                              canonical);
 
           if (! proc_def)
-            {
-              for (list = gimp->current_plug_in->temp_proc_defs;
-                   list;
-                   list = g_slist_next (list))
-                {
-                  PlugInProcDef *pd = list->data;
-
-                  if (! strcmp (procedure_name, pd->db_info.name))
-                    {
-                      proc_def = pd;
-                      break;
-                    }
-                }
-            }
+            proc_def = plug_in_proc_def_find (gimp->current_plug_in->temp_proc_defs,
+                                              canonical);
 
           if (proc_def)
             {
@@ -473,7 +365,7 @@ plugin_menu_register_invoker (Gimp         *gimp,
 
                   if (! plug_in_proc_args_check (gimp->current_plug_in->name,
                                                  gimp->current_plug_in->prog,
-                                                 procedure_name,
+                                                 canonical,
                                                  menu_path,
                                                  proc_def->db_info.args,
                                                  proc_def->db_info.num_args,
@@ -513,7 +405,7 @@ plugin_menu_register_invoker (Gimp         *gimp,
                           if (! gimp->no_interface &&
                               proc_def->db_info.proc_type == GIMP_TEMPORARY)
                             {
-                              gimp_menus_create_entry (gimp, proc_def, menu_path);
+                              gimp_menus_create_item (gimp, proc_def, menu_path);
                             }
                         }
                     }
@@ -529,13 +421,15 @@ plugin_menu_register_invoker (Gimp         *gimp,
                              "label to gimp_install_procedure().",
                              gimp_filename_to_utf8 (gimp->current_plug_in->name),
                              gimp_filename_to_utf8 (gimp->current_plug_in->prog),
-                             menu_path, procedure_name);
+                             menu_path, canonical);
 
                   success = FALSE;
                 }
             }
           else
             success = FALSE;
+
+          g_free (canonical);
         }
       else
         success = FALSE;
@@ -548,19 +442,20 @@ static ProcArg plugin_menu_register_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "procedure_name",
+    "procedure-name",
     "The procedure for which to install the menu path"
   },
   {
     GIMP_PDB_STRING,
-    "menu_path",
+    "menu-path",
     "The procedure's additional menu path"
   }
 };
 
 static ProcRecord plugin_menu_register_proc =
 {
-  "gimp_plugin_menu_register",
+  "gimp-plugin-menu-register",
+  "gimp-plugin-menu-register",
   "Register an additional menu path for a plug-in procedure.",
   "This procedure installs an additional menu entry for the given procedure.",
   "Michael Natterer <mitch@gimp.org>",
@@ -573,6 +468,78 @@ static ProcRecord plugin_menu_register_proc =
   0,
   NULL,
   { { plugin_menu_register_invoker } }
+};
+
+static Argument *
+plugin_menu_branch_register_invoker (Gimp         *gimp,
+                                     GimpContext  *context,
+                                     GimpProgress *progress,
+                                     Argument     *args)
+{
+  gboolean success = TRUE;
+  gchar *menu_path;
+  gchar *menu_name;
+
+  menu_path = (gchar *) args[0].value.pdb_pointer;
+  if (menu_path == NULL || !g_utf8_validate (menu_path, -1, NULL))
+    success = FALSE;
+
+  menu_name = (gchar *) args[1].value.pdb_pointer;
+  if (menu_name == NULL || !g_utf8_validate (menu_name, -1, NULL))
+    success = FALSE;
+
+  if (success)
+    {
+      if (gimp->current_plug_in)
+        {
+          plug_ins_menu_branch_add (gimp, gimp->current_plug_in->prog,
+                                    menu_path, menu_name);
+
+          if (! gimp->no_interface)
+            {
+              gimp_menus_create_branch (gimp, gimp->current_plug_in->prog,
+                                        menu_path, menu_name);
+            }
+          else
+            success = FALSE;
+        }
+      else
+        success = FALSE;
+    }
+
+  return procedural_db_return_args (&plugin_menu_branch_register_proc, success);
+}
+
+static ProcArg plugin_menu_branch_register_inargs[] =
+{
+  {
+    GIMP_PDB_STRING,
+    "menu-path",
+    "The sub-menu's menu path"
+  },
+  {
+    GIMP_PDB_STRING,
+    "menu-name",
+    "The name of the sub-menu"
+  }
+};
+
+static ProcRecord plugin_menu_branch_register_proc =
+{
+  "gimp-plugin-menu-branch-register",
+  "gimp-plugin-menu-branch-register",
+  "Register a sub-menu.",
+  "This procedure installs an sub-menu which does not belong to any procedure.",
+  "Michael Natterer <mitch@gimp.org>",
+  "Michael Natterer <mitch@gimp.org>",
+  "2005",
+  NULL,
+  GIMP_INTERNAL,
+  2,
+  plugin_menu_branch_register_inargs,
+  0,
+  NULL,
+  { { plugin_menu_branch_register_invoker } }
 };
 
 static Argument *
@@ -605,45 +572,20 @@ plugin_icon_register_invoker (Gimp         *gimp,
     {
       if (gimp->current_plug_in && gimp->current_plug_in->query)
         {
-          GSList *list;
+          PlugInProcDef *proc_def;
+          gchar         *canonical;
 
-          for (list = gimp->current_plug_in->plug_in_def->proc_defs;
-               list;
-               list = g_slist_next (list))
-            {
-              PlugInProcDef *proc_def = list->data;
+          canonical = gimp_canonicalize_identifier (procedure_name);
 
-              if (! strcmp (procedure_name, proc_def->db_info.name))
-                {
-                  if (proc_def->icon_data)
-                    {
-                      g_free (proc_def->icon_data);
-                      proc_def->icon_data_length = -1;
-                      proc_def->icon_data        = NULL;
-                    }
+          proc_def = plug_in_proc_def_find (gimp->current_plug_in->plug_in_def->proc_defs,
+                                            canonical);
 
-                  proc_def->icon_type = icon_type;
+          g_free (canonical);
 
-                  switch (proc_def->icon_type)
-                    {
-                    case GIMP_ICON_TYPE_STOCK_ID:
-                    case GIMP_ICON_TYPE_IMAGE_FILE:
-                      proc_def->icon_data_length = -1;
-                      proc_def->icon_data        = g_strdup (icon_data);
-                      break;
-
-                    case GIMP_ICON_TYPE_INLINE_PIXBUF:
-                      proc_def->icon_data_length = icon_data_length;
-                      proc_def->icon_data        = g_memdup (icon_data,
-                                                             icon_data_length);
-                      break;
-                    }
-
-                  break;
-                }
-            }
-
-          if (! list)
+          if (proc_def)
+            plug_in_proc_def_set_icon (proc_def, icon_type,
+                                       icon_data, icon_data_length);
+          else
             success = FALSE;
         }
       else
@@ -657,29 +599,30 @@ static ProcArg plugin_icon_register_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "procedure_name",
+    "procedure-name",
     "The procedure for which to install the icon"
   },
   {
     GIMP_PDB_INT32,
-    "icon_type",
+    "icon-type",
     "The type of the icon"
   },
   {
     GIMP_PDB_INT32,
-    "icon_data_length",
+    "icon-data-length",
     "The length of 'icon_data': 0 < icon_data_length"
   },
   {
     GIMP_PDB_INT8ARRAY,
-    "icon_data",
+    "icon-data",
     "The procedure's icon. The format depends on the 'icon_type' parameter"
   }
 };
 
 static ProcRecord plugin_icon_register_proc =
 {
-  "gimp_plugin_icon_register",
+  "gimp-plugin-icon-register",
+  "gimp-plugin-icon-register",
   "Register an icon for a plug-in procedure.",
   "This procedure installs an icon for the given procedure.",
   "Michael Natterer <mitch@gimp.org>",

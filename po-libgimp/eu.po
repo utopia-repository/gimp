@@ -1,26 +1,23 @@
-# translation of eu3.po to Basque
 # translation of eu.po to Basque
 # translation of gimp-libgimp.HEAD.po to basque
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 # Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>, 2004.
-# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2004, 2006.
-# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2006.
+# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2004.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-20 16:17+0000\n"
-"PO-Revision-Date: 2006-04-20 16:25+0000\n"
-"Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
+"POT-Creation-Date: 2005-02-02 19:53+0100\n"
+"PO-Revision-Date: 2004-04-06 17:16+0200\n"
+"Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.10.2\n"
-"Plural-Forms: Plural-Forms: Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"\n"
+"X-Generator: KBabel 1.0.2\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #: ../libgimp/gimpbrushmenu.c:129
 msgid "Brush Selection"
@@ -43,7 +40,8 @@ msgstr "Batu ikusgai dauden geruzak"
 #: ../libgimp/gimpexport.c:224
 #, c-format
 msgid "%s can't handle layer offsets, size or opacity"
-msgstr "%s(e)k ezin ditu geruzen desplazamenduak, tamaina edo opakutasuna kudeatu"
+msgstr ""
+"%s(e)k ezin ditu geruzen desplazamenduak, tamaina edo opakutasuna kudeatu"
 
 #: ../libgimp/gimpexport.c:233 ../libgimp/gimpexport.c:242
 #, c-format
@@ -76,12 +74,12 @@ msgstr "Aplikatu geruza-maskarak"
 #: ../libgimp/gimpexport.c:278
 #, c-format
 msgid "%s can only handle RGB images"
-msgstr "%s(e)k GBU irudiak bakarrik kudea ditzake"
+msgstr "%s(e)k RGB irudiak bakarrik kudea ditzake"
 
 #: ../libgimp/gimpexport.c:279 ../libgimp/gimpexport.c:317
 #: ../libgimp/gimpexport.c:326
 msgid "Convert to RGB"
-msgstr "Bihurtu GBU"
+msgstr "Bihurtu RGB"
 
 #: ../libgimp/gimpexport.c:287
 #, c-format
@@ -123,12 +121,12 @@ msgstr ""
 #: ../libgimp/gimpexport.c:316
 #, c-format
 msgid "%s can only handle RGB or grayscale images"
-msgstr "%s(e)k GBU edo gris-eskalako irudiak bakarrik kudea ditzake"
+msgstr "%s(e)k RGB edo gris-eskalako irudiak bakarrik kudea ditzake"
 
 #: ../libgimp/gimpexport.c:325
 #, c-format
 msgid "%s can only handle RGB or indexed images"
-msgstr "%s(e)k GBU edo indexatutako irudiak bakarrik kudea ditzake"
+msgstr "%s(e)k RGB edo indexatutako irudiak bakarrik kudea ditzake"
 
 #: ../libgimp/gimpexport.c:335
 #, c-format
@@ -205,13 +203,14 @@ msgstr "Letra-tipoaren hautapena"
 msgid "Gradient Selection"
 msgstr "Gradientearen hautapena"
 
-#: ../libgimp/gimpmenu.c:406 ../libgimpwidgets/gimpintstore.c:167
+#: ../libgimp/gimpmenu.c:406 ../libgimpwidgets/gimpintstore.c:181
 msgid "(Empty)"
-msgstr "(Hutsa)"
+msgstr ""
 
 #: ../libgimp/gimppalettemenu.c:91
+#, fuzzy
 msgid "Palette Selection"
-msgstr "Paletaren hautapena"
+msgstr "Ereduaren hautapena"
 
 #: ../libgimp/gimppatternmenu.c:113
 msgid "Pattern Selection"
@@ -221,73 +220,324 @@ msgstr "Ereduaren hautapena"
 msgid "percent"
 msgstr "ehunekoa"
 
-#: ../libgimpbase/gimpbaseenums.c:23
-msgid "Small"
-msgstr "Txikia"
+#: ../libgimpbase/gimpbaseenums.c:26
+#, fuzzy
+msgid "_White (full opacity)"
+msgstr "_Zuria (opakutasun osoa)"
 
-#: ../libgimpbase/gimpbaseenums.c:24
-msgid "Medium"
-msgstr "Tartekoa"
+#: ../libgimpbase/gimpbaseenums.c:27
+#, fuzzy
+msgid "_Black (full transparency)"
+msgstr "_Beltza (gardentasun osoa)"
 
-#: ../libgimpbase/gimpbaseenums.c:25
-msgid "Large"
-msgstr "Handia"
+#: ../libgimpbase/gimpbaseenums.c:28
+#, fuzzy
+msgid "Layer's _alpha channel"
+msgstr "Geruzaren _alfa kanala"
 
-#: ../libgimpbase/gimpbaseenums.c:57
-msgid "Light Checks"
-msgstr "Koadrikula argiak"
+#: ../libgimpbase/gimpbaseenums.c:29
+#, fuzzy
+msgid "_Transfer layer's alpha channel"
+msgstr "_Transeritu geruzaren alfa kanala"
 
-#: ../libgimpbase/gimpbaseenums.c:58
-msgid "Mid-Tone Checks"
-msgstr "Tarteko tonodun koadrikulak"
+#: ../libgimpbase/gimpbaseenums.c:30
+msgid "_Selection"
+msgstr "_Hautapena"
 
-#: ../libgimpbase/gimpbaseenums.c:59
-msgid "Dark Checks"
-msgstr "Koadrikula ilunak"
-
-#: ../libgimpbase/gimpbaseenums.c:60
-msgid "White Only"
-msgstr "Zuria soilik"
+#: ../libgimpbase/gimpbaseenums.c:31
+#, fuzzy
+msgid "_Grayscale copy of layer"
+msgstr "_Geruzaren gris-eskalako kopia"
 
 #: ../libgimpbase/gimpbaseenums.c:61
-msgid "Gray Only"
-msgstr "Grisa soilik"
+msgid "FG to BG (RGB)"
+msgstr "Aurreko planoa atzeko planora (RGB)"
 
 #: ../libgimpbase/gimpbaseenums.c:62
-msgid "Black Only"
-msgstr "Beltza soilik"
+msgid "FG to BG (HSV)"
+msgstr "Aurreko planoa atzeko planora (HSV)"
 
-#: ../libgimpbase/gimpbaseenums.c:91
-msgid "RGB color"
-msgstr "GBU kolorea"
+#: ../libgimpbase/gimpbaseenums.c:63
+#, fuzzy
+msgid "FG to transparent"
+msgstr "Aurreko planoa gardenera"
 
-#: ../libgimpbase/gimpbaseenums.c:92 ../libgimpbase/gimpbaseenums.c:127
-msgid "Grayscale"
-msgstr "Gris-eskala"
+#: ../libgimpbase/gimpbaseenums.c:64
+#, fuzzy
+msgid "Custom gradient"
+msgstr "Gradiente pertsonalizatua"
 
 #: ../libgimpbase/gimpbaseenums.c:93
-msgid "Indexed color"
-msgstr "Kolore indexatua"
+#, fuzzy
+msgid "FG color fill"
+msgstr "Aurreko planoaren koloreko betegarria "
+
+#: ../libgimpbase/gimpbaseenums.c:94
+#, fuzzy
+msgid "BG color fill"
+msgstr "Atzeko planoaren koloreko betegarria "
+
+#: ../libgimpbase/gimpbaseenums.c:95
+#, fuzzy
+msgid "Pattern fill"
+msgstr "Ereduaren betegarria"
 
 #: ../libgimpbase/gimpbaseenums.c:125
-msgid "RGB"
-msgstr "GBU"
+msgid "Add to the current selection"
+msgstr "Gehitu uneko hautapenari"
 
 #: ../libgimpbase/gimpbaseenums.c:126
-msgid "RGB-alpha"
-msgstr "GBU alfa"
+msgid "Subtract from the current selection"
+msgstr "Kendu uneko hautapenetik"
+
+#: ../libgimpbase/gimpbaseenums.c:127
+msgid "Replace the current selection"
+msgstr "Ordeztu uneko hautapena"
 
 #: ../libgimpbase/gimpbaseenums.c:128
-msgid "Grayscale-alpha"
-msgstr "Gris-eskala alfa"
+msgid "Intersect with the current selection"
+msgstr "Gurutzatu uneko hautapenarekin"
 
-#: ../libgimpbase/gimpbaseenums.c:129
+#: ../libgimpbase/gimpbaseenums.c:160 ../libgimpwidgets/gimpcolorscales.c:168
+#: ../libgimpwidgets/gimpcolorselect.c:352
+msgid "Red"
+msgstr "Gorria"
+
+#: ../libgimpbase/gimpbaseenums.c:161 ../libgimpwidgets/gimpcolorscales.c:169
+#: ../libgimpwidgets/gimpcolorselect.c:353
+msgid "Green"
+msgstr "Berdea"
+
+#: ../libgimpbase/gimpbaseenums.c:162 ../libgimpwidgets/gimpcolorscales.c:170
+#: ../libgimpwidgets/gimpcolorselect.c:354
+msgid "Blue"
+msgstr "Urdina"
+
+#: ../libgimpbase/gimpbaseenums.c:163
+msgid "Gray"
+msgstr "Grisa"
+
+#: ../libgimpbase/gimpbaseenums.c:164 ../libgimpbase/gimpbaseenums.c:436
 msgid "Indexed"
 msgstr "Indexatua"
 
-#: ../libgimpbase/gimpbaseenums.c:130
+#: ../libgimpbase/gimpbaseenums.c:165 ../libgimpwidgets/gimpcolorscales.c:171
+#: ../libgimpwidgets/gimpcolorselect.c:355
+msgid "Alpha"
+msgstr "Alfa"
+
+#: ../libgimpbase/gimpbaseenums.c:194
+msgid "Small"
+msgstr "Txikia"
+
+#: ../libgimpbase/gimpbaseenums.c:195
+msgid "Medium"
+msgstr "Tartekoa"
+
+#: ../libgimpbase/gimpbaseenums.c:196
+msgid "Large"
+msgstr "Handia"
+
+#: ../libgimpbase/gimpbaseenums.c:228
+msgid "Light Checks"
+msgstr "Lauki argiak"
+
+#: ../libgimpbase/gimpbaseenums.c:229
+msgid "Mid-Tone Checks"
+msgstr "Tarteko tonuko laukiak"
+
+#: ../libgimpbase/gimpbaseenums.c:230
+msgid "Dark Checks"
+msgstr "Lauki ilunak"
+
+#: ../libgimpbase/gimpbaseenums.c:231
+msgid "White Only"
+msgstr "Zuria bakarrik"
+
+#: ../libgimpbase/gimpbaseenums.c:232
+msgid "Gray Only"
+msgstr "Grisa bakarrik"
+
+#: ../libgimpbase/gimpbaseenums.c:233
+msgid "Black Only"
+msgstr "Beltza bakarrik"
+
+#: ../libgimpbase/gimpbaseenums.c:261
+#, fuzzy
+msgid "Image source"
+msgstr "Irudi-iturburua"
+
+#: ../libgimpbase/gimpbaseenums.c:262
+#, fuzzy
+msgid "Pattern source"
+msgstr "Eredu-iturburua"
+
+#: ../libgimpbase/gimpbaseenums.c:290
+msgid "Dodge"
+msgstr "Zuritu"
+
+#: ../libgimpbase/gimpbaseenums.c:291
+msgid "Burn"
+msgstr "Belztu"
+
+#: ../libgimpbase/gimpbaseenums.c:328 ../libgimpbase/gimpbaseenums.c:468
+msgid "Linear"
+msgstr "Lineala"
+
+#: ../libgimpbase/gimpbaseenums.c:329
+#, fuzzy
+msgid "Bi-linear"
+msgstr "Bilineala"
+
+#: ../libgimpbase/gimpbaseenums.c:330
+msgid "Radial"
+msgstr "Erradiala"
+
+#: ../libgimpbase/gimpbaseenums.c:331
+msgid "Square"
+msgstr "Karratua"
+
+#: ../libgimpbase/gimpbaseenums.c:332
+#, fuzzy
+msgid "Conical (sym)"
+msgstr "Konikoa (simetrikoa)"
+
+#: ../libgimpbase/gimpbaseenums.c:333
+#, fuzzy
+msgid "Conical (asym)"
+msgstr "Konikoa (asimetrikoa)"
+
+#: ../libgimpbase/gimpbaseenums.c:334
+#, fuzzy
+msgid "Shaped (angular)"
+msgstr "Formaren araberakoa (angularra)"
+
+#: ../libgimpbase/gimpbaseenums.c:335
+#, fuzzy
+msgid "Shaped (spherical)"
+msgstr "Formaren araberakoa (esferikoa)"
+
+#: ../libgimpbase/gimpbaseenums.c:336
+#, fuzzy
+msgid "Shaped (dimpled)"
+msgstr "Formaren araberakoa (zulotxoduna)"
+
+#: ../libgimpbase/gimpbaseenums.c:337
+#, fuzzy
+msgid "Spiral (cw)"
+msgstr "Espirala (erlojuaren noranzkoan)"
+
+#: ../libgimpbase/gimpbaseenums.c:338
+#, fuzzy
+msgid "Spiral (ccw)"
+msgstr "Espirala (erlojuaren noranzkoan)"
+
+#: ../libgimpbase/gimpbaseenums.c:367
+msgid "Stock ID"
+msgstr ""
+
+#: ../libgimpbase/gimpbaseenums.c:368
+msgid "Inline pixbuf"
+msgstr ""
+
+#: ../libgimpbase/gimpbaseenums.c:369
+#, fuzzy
+msgid "Image file"
+msgstr "Irudiaren tamaina"
+
+#: ../libgimpbase/gimpbaseenums.c:398
+msgid "RGB color"
+msgstr ""
+
+#: ../libgimpbase/gimpbaseenums.c:399 ../libgimpbase/gimpbaseenums.c:434
+msgid "Grayscale"
+msgstr "Gris-eskala"
+
+#: ../libgimpbase/gimpbaseenums.c:400
+msgid "Indexed color"
+msgstr ""
+
+#: ../libgimpbase/gimpbaseenums.c:432
+msgid "RGB"
+msgstr "RGB"
+
+#: ../libgimpbase/gimpbaseenums.c:433
+msgid "RGB-alpha"
+msgstr ""
+
+#: ../libgimpbase/gimpbaseenums.c:435
+msgid "Grayscale-alpha"
+msgstr ""
+
+#: ../libgimpbase/gimpbaseenums.c:437
 msgid "Indexed-alpha"
-msgstr "Indexatua alfa"
+msgstr ""
+
+#: ../libgimpbase/gimpbaseenums.c:467
+msgid "None (Fastest)"
+msgstr "Bat ere ez (azkarrena)"
+
+#: ../libgimpbase/gimpbaseenums.c:469
+msgid "Cubic"
+msgstr ""
+
+#: ../libgimpbase/gimpbaseenums.c:470
+#, fuzzy
+msgid "Lanczos (Best)"
+msgstr "Kubikoa (onena)"
+
+#: ../libgimpbase/gimpbaseenums.c:498
+msgid "Constant"
+msgstr "Konstantea"
+
+#: ../libgimpbase/gimpbaseenums.c:499
+msgid "Incremental"
+msgstr "Inkrementala"
+
+#: ../libgimpbase/gimpbaseenums.c:528
+msgid "None"
+msgstr "Bat ere ez"
+
+#: ../libgimpbase/gimpbaseenums.c:529
+#, fuzzy
+msgid "Sawtooth wave"
+msgstr "Uhin horzduna"
+
+#: ../libgimpbase/gimpbaseenums.c:530
+#, fuzzy
+msgid "Triangular wave"
+msgstr "Uhin triangeluarra"
+
+#: ../libgimpbase/gimpbaseenums.c:558
+msgid "Pixels"
+msgstr "Pixelak"
+
+#: ../libgimpbase/gimpbaseenums.c:559
+#, fuzzy
+msgid "Points"
+msgstr "puntu"
+
+#: ../libgimpbase/gimpbaseenums.c:588
+msgid "Shadows"
+msgstr "Itzalak"
+
+#: ../libgimpbase/gimpbaseenums.c:589
+msgid "Midtones"
+msgstr "Tarteko tonuak"
+
+#: ../libgimpbase/gimpbaseenums.c:590
+msgid "Highlights"
+msgstr "Argi-ukituak"
+
+#: ../libgimpbase/gimpbaseenums.c:618
+#, fuzzy
+msgid "Forward (traditional)"
+msgstr "Aurrerantz (tradizionala)"
+
+#: ../libgimpbase/gimpbaseenums.c:619
+#, fuzzy
+msgid "Backward (corrective)"
+msgstr "Atzerantz (zentzagarria)"
 
 #: ../libgimpbase/gimpmemsize.c:177
 #, c-format
@@ -343,6 +593,96 @@ msgstr "%d GB"
 msgid "(invalid UTF-8 string)"
 msgstr "(UTF-8 kate baliogabea)"
 
+#: ../libgimpconfig/gimpconfig-deserialize.c:95
+#, c-format
+msgid "value for token %s is not a valid UTF-8 string"
+msgstr "%s tokenarentzako balioa ez da baliozko UTF-8 katea"
+
+#. please don't translate 'yes' and 'no'
+#: ../libgimpconfig/gimpconfig-deserialize.c:423
+#, c-format
+msgid "expected 'yes' or 'no' for boolean token %s, got '%s'"
+msgstr ""
+"'yes' edo 'no' espero zen %s token boolearrarentzat, baina '%s' jaso da"
+
+#: ../libgimpconfig/gimpconfig-deserialize.c:497
+#, c-format
+msgid "invalid value '%s' for token %s"
+msgstr "baliogabeko '%s' balioa %s tokenarentzat"
+
+#: ../libgimpconfig/gimpconfig-deserialize.c:512
+#, c-format
+msgid "invalid value '%ld' for token %s"
+msgstr "Baliogabeko '%ld' balioa %s tokenarentzat"
+
+#: ../libgimpconfig/gimpconfig-deserialize.c:581
+#, c-format
+msgid "while parsing token '%s': %s"
+msgstr "'%s' tokena analizatzen zen bitartean: %s"
+
+#: ../libgimpconfig/gimpconfig-iface.c:454
+#: ../libgimpconfig/gimpconfig-iface.c:467 ../libgimpconfig/gimpscanner.c:513
+#: ../libgimpconfig/gimpscanner.c:594
+msgid "fatal parse error"
+msgstr "analisi-errore larria"
+
+#: ../libgimpconfig/gimpconfig-path.c:349
+#, c-format
+msgid "Cannot expand ${%s}"
+msgstr "Ezin da ${%s} zabaldu"
+
+#: ../libgimpconfig/gimpconfigwriter.c:134
+#, c-format
+msgid "Could not create temporary file for '%s': %s"
+msgstr "Ezin izan da '%s'(r)entzat aldi baterako fitxategia sortu: %s "
+
+#: ../libgimpconfig/gimpconfigwriter.c:147
+#, c-format
+msgid "Could not open '%s' for writing: %s"
+msgstr "Ezin izan da '%s' ireki idazteko: %s"
+
+#: ../libgimpconfig/gimpconfigwriter.c:666
+#, c-format
+msgid ""
+"Error writing to temporary file for '%s': %s\n"
+"The original file has not been touched."
+msgstr ""
+"Errorea '%s'(r)en aldi baterako fitxategian idaztean: %s\n"
+"Jatorrizko fitxategia ez da ukitu."
+
+#: ../libgimpconfig/gimpconfigwriter.c:674
+#, c-format
+msgid ""
+"Error writing to temporary file for '%s': %s\n"
+"No file has been created."
+msgstr ""
+"Errorea '%s'(r)en aldi baterako fitxategian idaztean: %s\n"
+"Ez da fitxategirik sortu."
+
+#: ../libgimpconfig/gimpconfigwriter.c:685
+#, c-format
+msgid "Error writing to '%s': %s"
+msgstr "Errorea '%s' fitxategian idaztean: %s"
+
+#: ../libgimpconfig/gimpconfigwriter.c:703
+#, c-format
+msgid "Could not create '%s': %s"
+msgstr "Ezin izan da %s' sortu: %s"
+
+#: ../libgimpconfig/gimpscanner.c:100
+#, c-format
+msgid "Could not open '%s' for reading: %s"
+msgstr "Ezin izan da '%s' ireki irakurtzeko: %s"
+
+#: ../libgimpconfig/gimpscanner.c:270
+msgid "invalid UTF-8 string"
+msgstr "UTF-8 kate baliogabea"
+
+#: ../libgimpconfig/gimpscanner.c:621
+#, c-format
+msgid "Error while parsing '%s' in line %d: %s"
+msgstr "Errorea %2$d lerroan '%1$s' analizatzean : %3$s"
+
 #: ../libgimpmodule/gimpmodule.c:177
 #, c-format
 msgid "Loading module: '%s'\n"
@@ -376,72 +716,67 @@ msgstr "Ezin izan da kargatu"
 msgid "Not loaded"
 msgstr "Ez da kargatu"
 
-#: ../libgimpthumb/gimpthumb-utils.c:125
-#, c-format
-msgid ""
-"Cannot determine a valid home directory.\n"
-"Thumbnails will be stored in the folder for temporary files (%s) instead."
-msgstr ""
-"Ezin da baliozko etxeko direktorioa zehaztu.\n"
-"Koadro txikiak aldi baterako fitxategian (%s) gordeko dira."
-
-#: ../libgimpthumb/gimpthumb-utils.c:249 ../libgimpthumb/gimpthumb-utils.c:317
+#: ../libgimpthumb/gimpthumb-utils.c:227 ../libgimpthumb/gimpthumb-utils.c:295
 #, c-format
 msgid "Failed to create thumbnail folder '%s'."
 msgstr "Huts egin du koadro txikien '%s' karpeta sortzean."
 
 #: ../libgimpthumb/gimpthumbnail.c:919
-#, c-format
+#, fuzzy, c-format
 msgid "Could not create thumbnail for %s: %s"
-msgstr "Ezin izan da '%s'(r)en koadro txikia sortu: %s"
+msgstr "Huts egin du koadro txikien '%s' karpeta sortzean."
 
 #: ../libgimpwidgets/gimpcolorbutton.c:99
+#, fuzzy
 msgid "_Foreground Color"
-msgstr "_Aurreko planoaren kolorea"
+msgstr "/_Aurreko planoaren kolorea"
 
 #: ../libgimpwidgets/gimpcolorbutton.c:103
+#, fuzzy
 msgid "_Background Color"
-msgstr "_Atzeko planoaren kolorea"
+msgstr "/_Atzeko planoaren kolorea"
 
 #: ../libgimpwidgets/gimpcolorbutton.c:107
+#, fuzzy
 msgid "Blac_k"
-msgstr "_Beltza"
+msgstr "/_Beltza"
 
 #: ../libgimpwidgets/gimpcolorbutton.c:111
+#, fuzzy
 msgid "_White"
-msgstr "_Zuria"
+msgstr "/_Zuria"
 
 #: ../libgimpwidgets/gimpcolorscales.c:133
 msgid "Scales"
 msgstr "Eskalak"
 
 #: ../libgimpwidgets/gimpcolorscales.c:155
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_H"
 msgstr "_H"
 
 #: ../libgimpwidgets/gimpcolorscales.c:156
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_S"
 msgstr "_S"
 
 #: ../libgimpwidgets/gimpcolorscales.c:157
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_V"
 msgstr "_V"
 
 #: ../libgimpwidgets/gimpcolorscales.c:158
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_R"
 msgstr "_R"
 
 #: ../libgimpwidgets/gimpcolorscales.c:159
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_G"
 msgstr "_G"
 
 #: ../libgimpwidgets/gimpcolorscales.c:160
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_B"
 msgstr "_B"
 
@@ -450,48 +785,28 @@ msgid "_A"
 msgstr "_A"
 
 #: ../libgimpwidgets/gimpcolorscales.c:165
-#: ../libgimpwidgets/gimpcolorselect.c:347
+#: ../libgimpwidgets/gimpcolorselect.c:349
 msgid "Hue"
 msgstr "�bardura"
 
 #: ../libgimpwidgets/gimpcolorscales.c:166
-#: ../libgimpwidgets/gimpcolorselect.c:348 ../modules/cdisplay_proof.c:49
-#: ../modules/cdisplay_proof.c:444
+#: ../libgimpwidgets/gimpcolorselect.c:350 ../modules/cdisplay_proof.c:59
 msgid "Saturation"
 msgstr "Saturazioa"
 
 #: ../libgimpwidgets/gimpcolorscales.c:167
-#: ../libgimpwidgets/gimpcolorselect.c:349
+#: ../libgimpwidgets/gimpcolorselect.c:351
 msgid "Value"
 msgstr "Balioa"
 
-#: ../libgimpwidgets/gimpcolorscales.c:168
-#: ../libgimpwidgets/gimpcolorselect.c:350
-msgid "Red"
-msgstr "Gorria"
-
-#: ../libgimpwidgets/gimpcolorscales.c:169
-#: ../libgimpwidgets/gimpcolorselect.c:351
-msgid "Green"
-msgstr "Berdea"
-
-#: ../libgimpwidgets/gimpcolorscales.c:170
-#: ../libgimpwidgets/gimpcolorselect.c:352
-msgid "Blue"
-msgstr "Urdina"
-
-#: ../libgimpwidgets/gimpcolorscales.c:171
-#: ../libgimpwidgets/gimpcolorselect.c:353
-msgid "Alpha"
-msgstr "Alfa"
-
 #: ../libgimpwidgets/gimpcolorscales.c:243
+#, fuzzy
 msgid "Hexadecimal color notation as used in HTML and CSS"
-msgstr "Kolore hamaseitarraren notazioa HTMLn eta CCSn bezala"
+msgstr "Kolore hamaseitarraren notazioa HTMLn bezala"
 
 #: ../libgimpwidgets/gimpcolorscales.c:248
 msgid "HTML _Notation:"
-msgstr "HTML _notazioa:"
+msgstr ""
 
 #: ../libgimpwidgets/gimpcolorselection.c:203
 msgid "Current:"
@@ -510,14 +825,17 @@ msgid "Select File"
 msgstr "Hautatu fitxategia"
 
 #: ../libgimpwidgets/gimpmemsizeentry.c:232
+#, fuzzy
 msgid "Kilobytes"
 msgstr "KiloByte"
 
 #: ../libgimpwidgets/gimpmemsizeentry.c:233
+#, fuzzy
 msgid "Megabytes"
 msgstr "MegaByte"
 
 #: ../libgimpwidgets/gimpmemsizeentry.c:234
+#, fuzzy
 msgid "Gigabytes"
 msgstr "GigaByte"
 
@@ -539,11 +857,11 @@ msgstr ""
 
 #: ../libgimpwidgets/gimppreviewarea.c:126
 msgid "Check Size"
-msgstr "Egiaztatu tamaina"
+msgstr ""
 
 #: ../libgimpwidgets/gimppreviewarea.c:133
 msgid "Check Style"
-msgstr "Egiaztatu estiloa"
+msgstr ""
 
 #. toggle button to (des)activate the instant preview
 #: ../libgimpwidgets/gimppreview.c:240
@@ -588,7 +906,7 @@ msgstr "Ikusgai"
 
 #: ../libgimpwidgets/gimpstock.c:154 ../libgimpwidgets/gimpstock.c:158
 msgid "_Stroke"
-msgstr "_Trazua"
+msgstr ""
 
 #: ../libgimpwidgets/gimpstock.c:170
 msgid "L_etter Spacing"
@@ -658,27 +976,29 @@ msgstr "Hasi ausazko zenbaki-sortzailea sortutako ausazko zenbaki batekin"
 msgid "_Randomize"
 msgstr "_Ausaz nahastu"
 
-#: ../modules/cdisplay_colorblind.c:57 ../modules/cdisplay_colorblind.c:545
-msgid "Protanopia (insensitivity to red)"
+#: ../modules/cdisplay_colorblind.c:68
+#, fuzzy
+msgid "Protanopia (insensitivity to red"
 msgstr "Protanopia (gorriarekiko sentikortasunik ez)"
 
-#: ../modules/cdisplay_colorblind.c:59 ../modules/cdisplay_colorblind.c:547
+#: ../modules/cdisplay_colorblind.c:70
 msgid "Deuteranopia (insensitivity to green)"
 msgstr "Deuteranopia (berdearekiko sentikortasunik ez)"
 
-#: ../modules/cdisplay_colorblind.c:61 ../modules/cdisplay_colorblind.c:549
+#: ../modules/cdisplay_colorblind.c:72
 msgid "Tritanopia (insensitivity to blue)"
 msgstr "Tritanopia (urdinarekiko sentikortasunik ez)"
 
-#: ../modules/cdisplay_colorblind.c:153
+#: ../modules/cdisplay_colorblind.c:163
 msgid "Color deficit simulation filter (Brettel-Vienot-Mollon algorithm)"
-msgstr "Kolorearen defizita simulatzeko iragazkia (Brettel-Vienot-Mollon algoritmoa)"
+msgstr ""
+"Kolorearen defizita simulatzeko iragazkia (Brettel-Vienot-Mollon algoritmoa)"
 
-#: ../modules/cdisplay_colorblind.c:242
+#: ../modules/cdisplay_colorblind.c:256
 msgid "Color Deficient Vision"
 msgstr "Kolore-ikusmen urria"
 
-#: ../modules/cdisplay_colorblind.c:540
+#: ../modules/cdisplay_colorblind.c:554
 msgid "Color _Deficiency Type:"
 msgstr "Kolorearen _urritasun-mota:"
 
@@ -706,39 +1026,39 @@ msgstr "Kontrastea"
 msgid "Contrast C_ycles:"
 msgstr "Kontraste-_zikloak:"
 
-#: ../modules/cdisplay_proof.c:45 ../modules/cdisplay_proof.c:440
+#: ../modules/cdisplay_proof.c:57
 msgid "Perceptual"
 msgstr "Pertzeptiboa"
 
-#: ../modules/cdisplay_proof.c:47 ../modules/cdisplay_proof.c:442
+#: ../modules/cdisplay_proof.c:58
 msgid "Relative Colorimetric"
 msgstr "Kolore erlatiboaren metrika"
 
-#: ../modules/cdisplay_proof.c:51 ../modules/cdisplay_proof.c:446
+#: ../modules/cdisplay_proof.c:60
 msgid "Absolute Colorimetric"
 msgstr "Kolore absolutuaren metrika"
 
-#: ../modules/cdisplay_proof.c:138
+#: ../modules/cdisplay_proof.c:147
 msgid "Color proof filter using ICC color profile"
 msgstr "Kolore seguruaren iragazkia, ICC kolore-profilan erabilia"
 
-#: ../modules/cdisplay_proof.c:238
+#: ../modules/cdisplay_proof.c:251
 msgid "Color Proof"
 msgstr "Kolore segurua"
 
-#: ../modules/cdisplay_proof.c:457
+#: ../modules/cdisplay_proof.c:462
 msgid "_Intent:"
 msgstr "_Helburua:"
 
-#: ../modules/cdisplay_proof.c:460
+#: ../modules/cdisplay_proof.c:465
 msgid "Choose an ICC Color Profile"
 msgstr "Aukeratu ICC kolore-profil bat"
 
-#: ../modules/cdisplay_proof.c:463
+#: ../modules/cdisplay_proof.c:468
 msgid "_Profile:"
 msgstr "_Profila:"
 
-#: ../modules/cdisplay_proof.c:471
+#: ../modules/cdisplay_proof.c:476
 msgid "_Black Point Compensation"
 msgstr "Puntu -beltzaren konpentsazioa"
 
@@ -783,12 +1103,13 @@ msgid "Black"
 msgstr "Beltza"
 
 #: ../modules/colorsel_cmyk.c:191
+#, fuzzy
 msgid "Black _Pullout:"
-msgstr "Beltz-ge_higarria:"
+msgstr "Beltza (%):"
 
 #: ../modules/colorsel_cmyk.c:208
 msgid "The percentage of black to pull out of the colored inks."
-msgstr "Beltzaren ehunekoa koloredun tintetatik ateratzeko."
+msgstr ""
 
 #: ../modules/colorsel_triangle.c:104
 msgid "Painter-style triangle color selector"
@@ -809,4 +1130,3 @@ msgstr "Akuarela"
 #: ../modules/colorsel_water.c:220
 msgid "Pressure"
 msgstr "Presioa"
-

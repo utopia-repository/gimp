@@ -20,17 +20,16 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
 
-#include "config/gimpconfig-params.h"
 #include "config/gimpdisplayconfig.h"
 
 #include "core/gimp.h"
 #include "core/gimptoolinfo.h"
 
-#include "widgets/gimppropwidgets.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "gimpmagnifyoptions.h"
@@ -48,8 +47,6 @@ enum
 };
 
 
-static void   gimp_magnify_options_class_init (GimpMagnifyOptionsClass *klass);
-
 static void   gimp_magnify_options_set_property (GObject         *object,
                                                  guint            property_id,
                                                  const GValue    *value,
@@ -62,44 +59,17 @@ static void   gimp_magnify_options_get_property (GObject         *object,
 static void   gimp_magnify_options_reset        (GimpToolOptions *tool_options);
 
 
-static GimpToolOptionsClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpMagnifyOptions, gimp_magnify_options,
+               GIMP_TYPE_TOOL_OPTIONS);
 
+#define parent_class gimp_magnify_options_parent_class
 
-GType
-gimp_magnify_options_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpMagnifyOptionsClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_magnify_options_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpMagnifyOptions),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) NULL
-      };
-
-      type = g_type_register_static (GIMP_TYPE_TOOL_OPTIONS,
-                                     "GimpMagnifyOptions",
-                                     &info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_magnify_options_class_init (GimpMagnifyOptionsClass *klass)
 {
   GObjectClass         *object_class  = G_OBJECT_CLASS (klass);
   GimpToolOptionsClass *options_class = GIMP_TOOL_OPTIONS_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->set_property = gimp_magnify_options_set_property;
   object_class->get_property = gimp_magnify_options_get_property;
@@ -117,8 +87,13 @@ gimp_magnify_options_class_init (GimpMagnifyOptionsClass *klass)
                                  0);
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_THRESHOLD,
                                    "threshold", NULL,
-                                   1.0, 15.0, 5.0,
+                                   1.0, 15.0, 8.0,
                                    0);
+}
+
+static void
+gimp_magnify_options_init (GimpMagnifyOptions *options)
+{
 }
 
 static void
@@ -192,7 +167,6 @@ gimp_magnify_options_gui (GimpToolOptions *tool_options)
   GObject   *config = G_OBJECT (tool_options);
   GtkWidget *vbox;
   GtkWidget *frame;
-  GtkWidget *table;
   GtkWidget *button;
   gchar     *str;
 
@@ -205,7 +179,7 @@ gimp_magnify_options_gui (GimpToolOptions *tool_options)
   gtk_widget_show (button);
 
   /*  tool toggle  */
-  str = g_strdup_printf (_("Tool Toggle  %s"),
+  str = g_strdup_printf (_("Tool Toggle  (%s)"),
                          gimp_get_mod_string (GDK_CONTROL_MASK));
 
   frame = gimp_prop_enum_radio_frame_new (config, "zoom-type",
@@ -214,18 +188,6 @@ gimp_magnify_options_gui (GimpToolOptions *tool_options)
   gtk_widget_show (frame);
 
   g_free (str);
-
-  /*  window threshold */
-  table = gtk_table_new (1, 3, FALSE);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 2);
-  gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 0);
-  gtk_widget_show (table);
-
-  gimp_prop_scale_entry_new (config, "threshold",
-                             GTK_TABLE (table), 0, 0,
-                             _("Threshold:"),
-                             1.0, 3.0, 1,
-                             FALSE, 0.0, 0.0);
 
   return vbox;
 }

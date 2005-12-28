@@ -42,12 +42,15 @@
 
 #include <string.h>
 
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define PLUG_IN_PROC   "plug-in-glasstile"
+#define PLUG_IN_BINARY "glasstile"
+
 
 /* --- Typedefs --- */
 typedef struct
@@ -112,14 +115,14 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",    "Input image (unused)"         },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"               },
     { GIMP_PDB_INT32,    "tilex",    "Tile width (10 - 50)"         },
     { GIMP_PDB_INT32,    "tiley",    "Tile height (10 - 50)"        }
   };
 
-  gimp_install_procedure ("plug_in_glasstile",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Divide the image into square glassblocks",
                           "Divide the image into square glassblocks in "
                           "which the image is refracted.",
@@ -132,8 +135,8 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_glasstile",
-                             "<Image>/Filters/Glass Effects");
+  gimp_plugin_menu_register (PLUG_IN_PROC,
+                             "<Image>/Filters/Light and Shadow/Glass");
 }
 
 static void
@@ -166,7 +169,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_glasstile", &gtvals);
+      gimp_get_data (PLUG_IN_PROC, &gtvals);
 
       /*  First acquire information with a dialog  */
       if (! glasstile_dialog (drawable))
@@ -193,7 +196,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_glasstile", &gtvals);
+      gimp_get_data (PLUG_IN_PROC, &gtvals);
       break;
 
     default:
@@ -206,7 +209,7 @@ run (const gchar      *name,
       if (gimp_drawable_is_rgb (drawable->drawable_id) ||
           gimp_drawable_is_gray (drawable->drawable_id))
         {
-          gimp_progress_init (_("Glass Tile..."));
+          gimp_progress_init (_("Glass Tile"));
 
           glasstile (drawable, NULL);
 
@@ -215,8 +218,7 @@ run (const gchar      *name,
           /*  Store data  */
           if (run_mode == GIMP_RUN_INTERACTIVE)
             {
-              gimp_set_data ("plug_in_glasstile", &gtvals,
-                             sizeof (GlassValues));
+              gimp_set_data (PLUG_IN_PROC, &gtvals, sizeof (GlassValues));
             }
         }
       else
@@ -245,16 +247,23 @@ glasstile_dialog (GimpDrawable *drawable)
   gv->gval = &gtvals;
   gtvals.constrain = TRUE;
 
-  gimp_ui_init ("glasstile", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Glass Tile"), "glasstile",
+  dialog = gimp_dialog_new (_("Glass Tile"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-glasstile",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -283,10 +292,10 @@ glasstile_dialog (GimpDrawable *drawable)
                                    TRUE, 0, 0,
                                    NULL, NULL);
 
-  g_signal_connect (gv->xadj, "value_changed",
+  g_signal_connect (gv->xadj, "value-changed",
                     G_CALLBACK (glasstile_size_changed),
                     gv);
-  g_signal_connect_swapped (gv->xadj, "value_changed",
+  g_signal_connect_swapped (gv->xadj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -297,10 +306,10 @@ glasstile_dialog (GimpDrawable *drawable)
                                    TRUE, 0, 0,
                                    NULL, NULL);
 
-  g_signal_connect (gv->yadj, "value_changed",
+  g_signal_connect (gv->yadj, "value-changed",
                     G_CALLBACK (glasstile_size_changed),
                     gv);
-  g_signal_connect_swapped (gv->yadj, "value_changed",
+  g_signal_connect_swapped (gv->yadj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 

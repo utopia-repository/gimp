@@ -24,12 +24,9 @@
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "config-types.h"
-
-#include "gimpconfig-params.h"
-#include "gimpconfig-types.h"
-#include "gimpconfig-utils.h"
 
 #include "gimprc-blurbs.h"
 #include "gimpguiconfig.h"
@@ -37,26 +34,16 @@
 #include "gimp-intl.h"
 
 
-#define DEFAULT_GIMP_HELP_BROWSER  GIMP_HELP_BROWSER_WEB_BROWSER
-#define DEFAULT_THEME              "Default"
+#define   DEFAULT_THEME        "Default"
 
 #ifdef G_OS_WIN32
-#  define DEFAULT_WEB_BROWSER      "not used on Windows"
+#  define DEFAULT_GIMP_HELP_BROWSER GIMP_HELP_BROWSER_WEB_BROWSER
+#  define DEFAULT_WEB_BROWSER  "not used on Windows"
 #else
-#  define DEFAULT_WEB_BROWSER      "mozilla %s"
+#  define DEFAULT_GIMP_HELP_BROWSER GIMP_HELP_BROWSER_GIMP
+#  define DEFAULT_WEB_BROWSER  "mozilla-firefox %s"
 #endif
 
-
-static void  gimp_gui_config_class_init   (GimpGuiConfigClass *klass);
-static void  gimp_gui_config_finalize     (GObject            *object);
-static void  gimp_gui_config_set_property (GObject            *object,
-                                           guint               property_id,
-                                           const GValue       *value,
-                                           GParamSpec         *pspec);
-static void  gimp_gui_config_get_property (GObject            *object,
-                                           guint               property_id,
-                                           GValue             *value,
-                                           GParamSpec         *pspec);
 
 enum
 {
@@ -68,6 +55,7 @@ enum
   PROP_SAVE_DEVICE_STATUS,
   PROP_SAVE_SESSION_INFO,
   PROP_RESTORE_SESSION,
+  PROP_SAVE_TOOL_OPTIONS,
   PROP_SHOW_TIPS,
   PROP_SHOW_TOOL_TIPS,
   PROP_TEAROFF_MENUS,
@@ -89,48 +77,32 @@ enum
   PROP_WEB_BROWSER,
   PROP_TOOLBOX_WINDOW_HINT,
   PROP_DOCK_WINDOW_HINT,
+  PROP_TRANSIENT_DOCKS,
   PROP_CURSOR_FORMAT
 };
 
-static GObjectClass *parent_class = NULL;
+
+static void   gimp_gui_config_finalize     (GObject      *object);
+static void   gimp_gui_config_set_property (GObject      *object,
+                                            guint         property_id,
+                                            const GValue *value,
+                                            GParamSpec   *pspec);
+static void   gimp_gui_config_get_property (GObject      *object,
+                                            guint         property_id,
+                                            GValue       *value,
+                                            GParamSpec   *pspec);
 
 
-GType
-gimp_gui_config_get_type (void)
-{
-  static GType config_type = 0;
+G_DEFINE_TYPE (GimpGuiConfig, gimp_gui_config, GIMP_TYPE_DISPLAY_CONFIG);
 
-  if (! config_type)
-    {
-      static const GTypeInfo config_info =
-      {
-        sizeof (GimpGuiConfigClass),
-	NULL,           /* base_init      */
-        NULL,           /* base_finalize  */
-	(GClassInitFunc) gimp_gui_config_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (GimpGuiConfig),
-	0,              /* n_preallocs    */
-	NULL            /* instance_init  */
-      };
+#define parent_class gimp_gui_config_parent_class
 
-      config_type = g_type_register_static (GIMP_TYPE_DISPLAY_CONFIG,
-                                            "GimpGuiConfig",
-                                            &config_info, 0);
-    }
-
-  return config_type;
-}
 
 static void
 gimp_gui_config_class_init (GimpGuiConfigClass *klass)
 {
-  GObjectClass *object_class;
-
-  parent_class = g_type_class_peek_parent (klass);
-
-  object_class = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  gchar        *path;
 
   object_class->finalize     = gimp_gui_config_finalize;
   object_class->set_property = gimp_gui_config_set_property;
@@ -147,9 +119,9 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
                                     0);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_INFO_WINDOW_PER_DISPLAY,
                                     "info-window-per-display",
-                                    INFO_WINDOW_PER_DISPLAY_BLURB,
+                                    NULL,
                                     FALSE,
-                                    GIMP_PARAM_RESTART);
+                                    GIMP_CONFIG_PARAM_IGNORE);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_TRUST_DIRTY_FLAG,
                                     "trust-dirty-flag",
                                     TRUST_DIRTY_FLAG_BLURB,
@@ -168,6 +140,11 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_RESTORE_SESSION,
                                     "restore-session", RESTORE_SESSION_BLURB,
                                     TRUE,
+                                    0);
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAVE_TOOL_OPTIONS,
+                                    "save-tool-options",
+                                    SAVE_TOOL_OPTIONS_BLURB,
+                                    FALSE,
                                     0);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SHOW_TIPS,
                                     "show-tips", SHOW_TIPS_BLURB,
@@ -196,11 +173,11 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_MENU_MNEMONICS,
                                     "menu-mnemonics", MENU_MNEMONICS_BLURB,
                                     TRUE,
-                                    GIMP_PARAM_RESTART);
+                                    GIMP_CONFIG_PARAM_RESTART);
   GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_LAST_OPENED_SIZE,
                                 "last-opened-size", LAST_OPENED_SIZE_BLURB,
                                 0, 1024, 10,
-                                GIMP_PARAM_RESTART);
+                                GIMP_CONFIG_PARAM_RESTART);
   GIMP_CONFIG_INSTALL_PROP_MEMSIZE (object_class, PROP_MAX_NEW_IMAGE_SIZE,
                                     "max-new-image-size",
                                     MAX_NEW_IMAGE_SIZE_BLURB,
@@ -221,11 +198,12 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
                                     TOOLBOX_IMAGE_AREA_BLURB,
                                     FALSE,
                                     0);
+  path = gimp_config_build_data_path ("themes");
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_THEME_PATH,
                                  "theme-path", THEME_PATH_BLURB,
-				 GIMP_PARAM_PATH_DIR_LIST,
-                                 gimp_config_build_data_path ("themes"),
-                                 GIMP_PARAM_RESTART);
+				 GIMP_CONFIG_PATH_DIR_LIST, path,
+                                 GIMP_CONFIG_PARAM_RESTART);
+  g_free (path);
   GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_THEME,
                                    "theme", THEME_BLURB,
                                    DEFAULT_THEME,
@@ -249,7 +227,7 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
                                  0);
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_WEB_BROWSER,
                                  "web-browser", WEB_BROWSER_BLURB,
-                                 GIMP_PARAM_PATH_FILE,
+                                 GIMP_CONFIG_PATH_FILE,
                                  DEFAULT_WEB_BROWSER,
                                  0);
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_TOOLBOX_WINDOW_HINT,
@@ -257,18 +235,27 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
                                  TOOLBOX_WINDOW_HINT_BLURB,
                                  GIMP_TYPE_WINDOW_HINT,
                                  GIMP_WINDOW_HINT_NORMAL,
-                                 GIMP_PARAM_RESTART);
+                                 GIMP_CONFIG_PARAM_RESTART);
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_DOCK_WINDOW_HINT,
                                  "dock-window-hint",
                                  DOCK_WINDOW_HINT_BLURB,
                                  GIMP_TYPE_WINDOW_HINT,
                                  GIMP_WINDOW_HINT_NORMAL,
-                                 GIMP_PARAM_RESTART);
+                                 GIMP_CONFIG_PARAM_RESTART);
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_TRANSIENT_DOCKS,
+                                    "transient-docks", TRANSIENT_DOCKS_BLURB,
+                                    FALSE,
+                                    0);
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_CURSOR_FORMAT,
                                  "cursor-format", CURSOR_FORMAT_BLURB,
                                  GIMP_TYPE_CURSOR_FORMAT,
                                  GIMP_CURSOR_FORMAT_PIXBUF,
                                  0);
+}
+
+static void
+gimp_gui_config_init (GimpGuiConfig *config)
+{
 }
 
 static void
@@ -314,6 +301,9 @@ gimp_gui_config_set_property (GObject      *object,
       break;
     case PROP_RESTORE_SESSION:
       gui_config->restore_session = g_value_get_boolean (value);
+      break;
+    case PROP_SAVE_TOOL_OPTIONS:
+      gui_config->save_tool_options = g_value_get_boolean (value);
       break;
     case PROP_SHOW_TIPS:
       gui_config->show_tips = g_value_get_boolean (value);
@@ -382,6 +372,9 @@ gimp_gui_config_set_property (GObject      *object,
     case PROP_DOCK_WINDOW_HINT:
       gui_config->dock_window_hint = g_value_get_enum (value);
       break;
+    case PROP_TRANSIENT_DOCKS:
+      gui_config->transient_docks = g_value_get_boolean (value);
+      break;
     case PROP_CURSOR_FORMAT:
       gui_config->cursor_format = g_value_get_enum (value);
       break;
@@ -422,6 +415,9 @@ gimp_gui_config_get_property (GObject    *object,
       break;
     case PROP_RESTORE_SESSION:
       g_value_set_boolean (value, gui_config->restore_session);
+      break;
+    case PROP_SAVE_TOOL_OPTIONS:
+      g_value_set_boolean (value, gui_config->save_tool_options);
       break;
     case PROP_SHOW_TIPS:
       g_value_set_boolean (value, gui_config->show_tips);
@@ -485,6 +481,9 @@ gimp_gui_config_get_property (GObject    *object,
       break;
     case PROP_DOCK_WINDOW_HINT:
       g_value_set_enum (value, gui_config->dock_window_hint);
+      break;
+    case PROP_TRANSIENT_DOCKS:
+      g_value_set_boolean (value, gui_config->transient_docks);
       break;
     case PROP_CURSOR_FORMAT:
       g_value_set_enum (value, gui_config->cursor_format);

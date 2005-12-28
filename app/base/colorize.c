@@ -42,9 +42,9 @@ colorize_init (Colorize *colorize)
 
   for (i = 0; i < 256; i ++)
     {
-      colorize->lum_red_lookup[i]   = i * GIMP_RGB_INTENSITY_RED;
-      colorize->lum_green_lookup[i] = i * GIMP_RGB_INTENSITY_GREEN;
-      colorize->lum_blue_lookup[i]  = i * GIMP_RGB_INTENSITY_BLUE;
+      colorize->lum_red_lookup[i]   = i * GIMP_RGB_LUMINANCE_RED;
+      colorize->lum_green_lookup[i] = i * GIMP_RGB_LUMINANCE_GREEN;
+      colorize->lum_blue_lookup[i]  = i * GIMP_RGB_LUMINANCE_BLUE;
     }
 }
 
@@ -74,15 +74,15 @@ colorize_calculate (Colorize *colorize)
 }
 
 void
-colorize (PixelRegion *srcPR,
-          PixelRegion *destPR,
-          Colorize    *colorize)
+colorize (Colorize    *colorize,
+          PixelRegion *srcPR,
+          PixelRegion *destPR)
 {
-  guchar   *src, *s;
-  guchar   *dest, *d;
-  gboolean  alpha;
-  gint      w, h;
-  gint      lum;
+  const guchar *src, *s;
+  guchar       *dest, *d;
+  gboolean      alpha;
+  gint          w, h;
+  gint          lum;
 
   /*  Set the transfer arrays  (for speed)  */
   h     = srcPR->h;

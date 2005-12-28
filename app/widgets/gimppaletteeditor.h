@@ -37,29 +37,20 @@ struct _GimpPaletteEditor
 {
   GimpDataEditor    parent_instance;
 
-  GtkWidget        *color_area;
+  GtkWidget        *view;
   GtkWidget        *scrolled_window;
 
   GtkWidget        *color_name;
   GtkAdjustment    *columns_data;
 
-  GtkWidget        *edit_button;
-  GtkWidget        *new_button;
-  GtkWidget        *delete_button;
-  GtkWidget        *zoom_out_button;
-  GtkWidget        *zoom_in_button;
-  GtkWidget        *zoom_all_button;
-
   GtkWidget        *color_dialog;
 
   GimpPaletteEntry *color;
-  GimpPaletteEntry *dnd_color;
 
   gfloat            zoom_factor;  /* range from 0.1 to 4.0 */
   gint              col_width;
   gint              last_width;
   gint              columns;
-  gboolean          columns_valid;
 };
 
 struct _GimpPaletteEditorClass

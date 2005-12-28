@@ -66,15 +66,16 @@
 #include "config.h"
 
 #include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
-#include <gtk/gtk.h>
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define LOAD_PROC "file-gif-load"
 
 
 /* uncomment the line below for a little debugging info */
@@ -125,16 +126,16 @@ query (void)
 {
   static GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_STRING, "filename", "The name of the file to load" },
-    { GIMP_PDB_STRING, "raw_filename", "The name entered" }
+    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
+    { GIMP_PDB_STRING, "raw-filename", "The name entered"             }
   };
   static GimpParamDef load_return_vals[] =
   {
     { GIMP_PDB_IMAGE, "image", "Output image" }
   };
 
-  gimp_install_procedure ("file_gif_load",
+  gimp_install_procedure (LOAD_PROC,
                           "loads files of Compuserve GIF file format",
                           "FIXME: write help for gif_load",
                           "Spencer Kimball, Peter Mattis, Adam Moss, David Koblas",
@@ -147,8 +148,8 @@ query (void)
                           G_N_ELEMENTS (load_return_vals),
                           load_args, load_return_vals);
 
-  gimp_register_file_handler_mime ("file_gif_load", "image/gif");
-  gimp_register_magic_load_handler ("file_gif_load",
+  gimp_register_file_handler_mime (LOAD_PROC, "image/gif");
+  gimp_register_magic_load_handler (LOAD_PROC,
 				    "gif",
 				    "",
 				    "0,string,GIF8");
@@ -172,10 +173,11 @@ run (const gchar      *name,
 
   *nreturn_vals = 1;
   *return_vals  = values;
+
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 
-  if (strcmp (name, "file_gif_load") == 0)
+  if (strcmp (name, LOAD_PROC) == 0)
     {
       image_ID = load_image (param[1].data.d_string);
 
@@ -278,19 +280,18 @@ static gint32 ReadImage (FILE *, const gchar *,
 static gint32
 load_image (const gchar *filename)
 {
-  FILE *fd;
-  char * name_buf;
-  unsigned char buf[16];
-  unsigned char c;
-  CMap localColorMap;
-  int grayScale;
-  int useGlobalColormap;
-  int bitPixel;
-  int imageCount = 0;
-  char version[4];
-  gint32 image_ID = -1;
+  FILE   *fd;
+  guchar  buf[16];
+  guchar  c;
+  CMap    localColorMap;
+  gint    grayScale;
+  gint    useGlobalColormap;
+  gint    bitPixel;
+  gint    imageCount = 0;
+  gchar   version[4];
+  gint32  image_ID = -1;
 
-  fd = fopen (filename, "rb");
+  fd = g_fopen (filename, "rb");
   if (!fd)
     {
       g_message (_("Could not open '%s' for reading: %s"),
@@ -298,10 +299,8 @@ load_image (const gchar *filename)
       return -1;
     }
 
-  name_buf = g_strdup_printf (_("Opening '%s'..."),
-                              gimp_filename_to_utf8 (filename));
-  gimp_progress_init (name_buf);
-  g_free (name_buf);
+  gimp_progress_init_printf (_("Opening '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   if (!ReadOK (fd, buf, 6))
     {
@@ -408,6 +407,7 @@ load_image (const gchar *filename)
 	      g_message ("Error reading local colormap");
 	      return image_ID; /* will be -1 if failed on first image! */
 	    }
+
 	  image_ID = ReadImage (fd, filename, LM_to_uint (buf[4], buf[5]),
 				LM_to_uint (buf[6], buf[7]),
 				localColorMap, bitPixel,
@@ -416,8 +416,7 @@ load_image (const gchar *filename)
 				(guint) LM_to_uint (buf[0], buf[1]),
 				(guint) LM_to_uint (buf[2], buf[3]),
 				GifScreen.Width,
-				GifScreen.Height
-				);
+				GifScreen.Height);
 	}
       else
 	{
@@ -429,8 +428,7 @@ load_image (const gchar *filename)
 				(guint) LM_to_uint (buf[0], buf[1]),
 				(guint) LM_to_uint (buf[2], buf[3]),
 				GifScreen.Width,
-				GifScreen.Height
-				);
+				GifScreen.Height);
 	}
 
 #ifdef FACEHUGGERS
@@ -453,9 +451,9 @@ ReadColorMap (FILE *fd,
 	      CMap  buffer,
 	      int  *format)
 {
-  int i;
-  unsigned char rgb[3];
-  int flag;
+  guchar rgb[3];
+  gint   flag;
+  gint   i;
 
   flag = TRUE;
 
@@ -483,7 +481,7 @@ static int
 DoExtension (FILE *fd,
 	     int   label)
 {
-  static guchar buf[256];
+  static gchar  buf[256];
   gchar        *str;
 
   switch (label)
@@ -532,7 +530,7 @@ DoExtension (FILE *fd,
 
 	  comment_parasite = gimp_parasite_new ("gimp-comment",
                                                 GIMP_PARASITE_PERSISTENT,
-                                                strlen(buf) + 1, buf);
+                                                strlen (buf) + 1, buf);
 #else
 	  if (showComment)
 	    g_print ("GIF: gif comment: %s\n", buf);
@@ -805,7 +803,7 @@ ReadImage (FILE        *fd,
 	   guint        screenwidth,
 	   guint        screenheight)
 {
-  static gint32 image_ID;
+  static gint32 image_ID   = -1;
   static gint frame_number = 1;
 
   gint32 layer_ID;
@@ -822,7 +820,12 @@ ReadImage (FILE        *fd,
   gboolean alpha_frame = FALSE;
   static int previous_disposal;
 
-
+  /* Guard against bogus frame size */
+  if (len < 1 || height < 1)
+    {
+      g_message ("Bogus frame dimensions");
+      return -1;
+    }
 
   /*
    **  Initialize the Compression routines
@@ -863,7 +866,8 @@ ReadImage (FILE        *fd,
       if (Gif89.delayTime < 0)
 	framename = g_strdup (_("Background"));
       else
-	framename = g_strdup_printf (_("Background (%d%s)"), 10*Gif89.delayTime, "ms");
+	framename = g_strdup_printf (_("Background (%d%s)"),
+                                     10 * Gif89.delayTime, "ms");
 
       previous_disposal = Gif89.disposal;
 
@@ -913,7 +917,8 @@ ReadImage (FILE        *fd,
       if (Gif89.delayTime < 0)
 	framename = g_strdup_printf (_("Frame %d"), frame_number);
       else
-	framename = g_strdup_printf (_("Frame %d (%d%s)"), frame_number, 10*Gif89.delayTime, "ms");
+	framename = g_strdup_printf (_("Frame %d (%d%s)"),
+                                     frame_number, 10 * Gif89.delayTime, "ms");
 
       switch (previous_disposal)
 	{
@@ -956,7 +961,8 @@ ReadImage (FILE        *fd,
 
       layer_ID = gimp_layer_new (image_ID, framename,
 				 len, height,
-				 promote_to_rgb ? GIMP_RGBA_IMAGE : GIMP_INDEXEDA_IMAGE,
+				 promote_to_rgb ?
+                                 GIMP_RGBA_IMAGE : GIMP_INDEXEDA_IMAGE,
 				 100, GIMP_NORMAL_MODE);
       alpha_frame = TRUE;
       g_free (framename);
@@ -1070,6 +1076,7 @@ ReadImage (FILE        *fd,
           if ((cur_progress % 16) == 0)
             gimp_progress_update ((double) cur_progress / (double) max_progress);
 	}
+
       if (ypos >= height)
 	break;
     }
@@ -1078,8 +1085,10 @@ fini:
   if (LZWReadByte (fd, FALSE, c) >= 0)
     g_print ("GIF: too much input data, ignoring extra...\n");
 
-  gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, drawable->width, drawable->height, TRUE, FALSE);
-  gimp_pixel_rgn_set_rect (&pixel_rgn, dest, 0, 0, drawable->width, drawable->height);
+  gimp_pixel_rgn_init (&pixel_rgn, drawable,
+                       0, 0, drawable->width, drawable->height, TRUE, FALSE);
+  gimp_pixel_rgn_set_rect (&pixel_rgn, dest,
+                           0, 0, drawable->width, drawable->height);
 
   g_free (dest);
 

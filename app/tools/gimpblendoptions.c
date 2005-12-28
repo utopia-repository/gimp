@@ -20,18 +20,15 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
-
-#include "config/gimpconfig-params.h"
 
 #include "core/gimp.h"
 #include "core/gimpdatafactory.h"
 #include "core/gimptoolinfo.h"
 
-#include "widgets/gimpenumcombobox.h"
-#include "widgets/gimppropwidgets.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "gimpblendoptions.h"
@@ -53,8 +50,6 @@ enum
 };
 
 
-static void   gimp_blend_options_class_init      (GimpBlendOptionsClass *klass);
-
 static void   gimp_blend_options_set_property    (GObject          *object,
                                                   guint             property_id,
                                                   const GValue     *value,
@@ -69,43 +64,13 @@ static void   blend_options_gradient_type_notify (GimpBlendOptions *options,
                                                   GtkWidget        *repeat_combo);
 
 
-static GimpPaintOptionsClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpBlendOptions, gimp_blend_options, GIMP_TYPE_PAINT_OPTIONS);
 
-
-GType
-gimp_blend_options_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpBlendOptionsClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_blend_options_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpBlendOptions),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) NULL
-      };
-
-      type = g_type_register_static (GIMP_TYPE_PAINT_OPTIONS,
-                                     "GimpBlendOptions",
-                                     &info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_blend_options_class_init (GimpBlendOptionsClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->set_property = gimp_blend_options_set_property;
   object_class->get_property = gimp_blend_options_get_property;
@@ -142,6 +107,11 @@ gimp_blend_options_class_init (GimpBlendOptionsClass *klass)
                                     "dither", NULL,
                                     TRUE,
                                     0);
+}
+
+static void
+gimp_blend_options_init (GimpBlendOptions *options)
+{
 }
 
 static void
@@ -294,7 +264,7 @@ gimp_blend_options_gui (GimpToolOptions *tool_options)
   /*  max depth scale  */
   gimp_prop_scale_entry_new (config, "supersample-depth",
                              GTK_TABLE (table), 0, 0,
-                             _("Max Depth:"),
+                             _("Max depth:"),
                              1.0, 1.0, 0,
                              FALSE, 0.0, 0.0);
 

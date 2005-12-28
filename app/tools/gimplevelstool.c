@@ -34,8 +34,6 @@
 #include "base/gimplut.h"
 #include "base/levels.h"
 
-#include "config/gimpbaseconfig.h"
-
 #include "core/gimp.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpdrawable-histogram.h"
@@ -44,12 +42,8 @@
 #include "core/gimptoolinfo.h"
 
 #include "widgets/gimpcolorbar.h"
-#include "widgets/gimpenumcombobox.h"
-#include "widgets/gimpenumstore.h"
-#include "widgets/gimpenumwidgets.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimphistogramview.h"
-#include "widgets/gimppropwidgets.h"
 
 #include "display/gimpdisplay.h"
 
@@ -83,9 +77,7 @@
 
 /*  local function prototypes  */
 
-static void     gimp_levels_tool_class_init  (GimpLevelsToolClass *klass);
-static void     gimp_levels_tool_init        (GimpLevelsTool      *tool);
-static void     gimp_levels_tool_finalize    (GObject             *object);
+static void     gimp_levels_tool_finalize       (GObject          *object);
 
 static gboolean gimp_levels_tool_initialize     (GimpTool         *tool,
                                                  GimpDisplay      *gdisp);
@@ -110,9 +102,10 @@ static void     levels_channel_callback              (GtkWidget      *widget,
                                                       GimpLevelsTool *tool);
 static void     levels_channel_reset_callback        (GtkWidget      *widget,
                                                       GimpLevelsTool *tool);
-static gboolean levels_menu_visible_func             (GtkTreeModel   *model,
-                                                      GtkTreeIter    *iter,
+
+static gboolean levels_menu_sensitivity              (gint            value,
                                                       gpointer        data);
+
 static void     levels_stretch_callback              (GtkWidget      *widget,
                                                       GimpLevelsTool *tool);
 static void     levels_low_input_adjustment_update   (GtkAdjustment  *adjustment,
@@ -143,10 +136,10 @@ static gboolean levels_output_area_expose            (GtkWidget      *widget,
                                                       GimpLevelsTool *tool);
 
 
-static GimpImageMapToolClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpLevelsTool, gimp_levels_tool, GIMP_TYPE_IMAGE_MAP_TOOL);
 
+#define parent_class gimp_levels_tool_parent_class
 
-/*  public functions  */
 
 void
 gimp_levels_tool_register (GimpToolRegisterCallback  callback,
@@ -165,71 +158,32 @@ gimp_levels_tool_register (GimpToolRegisterCallback  callback,
                 data);
 }
 
-GType
-gimp_levels_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpLevelsToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_levels_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpLevelsTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_levels_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_IMAGE_MAP_TOOL,
-                                          "GimpLevelsTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
-
-
-/*  private functions  */
-
 static void
 gimp_levels_tool_class_init (GimpLevelsToolClass *klass)
 {
-  GObjectClass          *object_class;
-  GimpToolClass         *tool_class;
-  GimpColorToolClass    *color_tool_class;
-  GimpImageMapToolClass *image_map_tool_class;
+  GObjectClass          *object_class     = G_OBJECT_CLASS (klass);
+  GimpToolClass         *tool_class       = GIMP_TOOL_CLASS (klass);
+  GimpColorToolClass    *color_tool_class = GIMP_COLOR_TOOL_CLASS (klass);
+  GimpImageMapToolClass *im_tool_class    = GIMP_IMAGE_MAP_TOOL_CLASS (klass);
 
-  object_class         = G_OBJECT_CLASS (klass);
-  tool_class           = GIMP_TOOL_CLASS (klass);
-  color_tool_class     = GIMP_COLOR_TOOL_CLASS (klass);
-  image_map_tool_class = GIMP_IMAGE_MAP_TOOL_CLASS (klass);
+  object_class->finalize           = gimp_levels_tool_finalize;
 
-  parent_class = g_type_class_peek_parent (klass);
+  tool_class->initialize           = gimp_levels_tool_initialize;
 
-  object_class->finalize   = gimp_levels_tool_finalize;
+  color_tool_class->picked         = gimp_levels_tool_color_picked;
 
-  tool_class->initialize   = gimp_levels_tool_initialize;
+  im_tool_class->shell_desc        = _("Adjust Color Levels");
+  im_tool_class->settings_name     = "levels";
+  im_tool_class->load_dialog_title = _("Load Levels");
+  im_tool_class->load_button_tip   = _("Load levels settings from file");
+  im_tool_class->save_dialog_title = _("Save Levels");
+  im_tool_class->save_button_tip   = _("Save levels settings to file");
 
-  color_tool_class->picked = gimp_levels_tool_color_picked;
-
-  image_map_tool_class->shell_desc        = _("Adjust Color Levels");
-  image_map_tool_class->settings_name     = "levels";
-  image_map_tool_class->load_dialog_title = _("Load Levels");
-  image_map_tool_class->load_button_tip   = _("Load levels settings from file");
-  image_map_tool_class->save_dialog_title = _("Save Levels");
-  image_map_tool_class->save_button_tip   = _("Save levels settings to file");
-
-  image_map_tool_class->map               = gimp_levels_tool_map;
-  image_map_tool_class->dialog            = gimp_levels_tool_dialog;
-  image_map_tool_class->reset             = gimp_levels_tool_reset;
-
-  image_map_tool_class->settings_load     = gimp_levels_tool_settings_load;
-  image_map_tool_class->settings_save     = gimp_levels_tool_settings_save;
+  im_tool_class->map               = gimp_levels_tool_map;
+  im_tool_class->dialog            = gimp_levels_tool_dialog;
+  im_tool_class->reset             = gimp_levels_tool_reset;
+  im_tool_class->settings_load     = gimp_levels_tool_settings_load;
+  im_tool_class->settings_save     = gimp_levels_tool_settings_save;
 }
 
 static void
@@ -287,11 +241,7 @@ gimp_levels_tool_initialize (GimpTool    *tool,
     }
 
   if (! l_tool->hist)
-    {
-      Gimp *gimp = tool->tool_info->gimp;
-
-      l_tool->hist = gimp_histogram_new (GIMP_BASE_CONFIG (gimp->config));
-    }
+    l_tool->hist = gimp_histogram_new ();
 
   levels_init (l_tool->levels);
 
@@ -305,8 +255,8 @@ gimp_levels_tool_initialize (GimpTool    *tool,
 
   GIMP_TOOL_CLASS (parent_class)->initialize (tool, gdisp);
 
-  gimp_enum_combo_box_set_visible (GIMP_ENUM_COMBO_BOX (l_tool->channel_menu),
-                                   levels_menu_visible_func, l_tool);
+  gimp_int_combo_box_set_sensitivity (GIMP_INT_COMBO_BOX (l_tool->channel_menu),
+                                      levels_menu_sensitivity, l_tool, NULL);
 
   gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (l_tool->channel_menu),
                                  l_tool->channel);
@@ -330,7 +280,7 @@ gimp_levels_tool_map (GimpImageMapTool *image_map_tool)
   GimpLevelsTool *tool = GIMP_LEVELS_TOOL (image_map_tool);
 
   gimp_image_map_apply (image_map_tool->image_map,
-                        (GimpImageMapApplyFunc) gimp_lut_process_2,
+                        (GimpImageMapApplyFunc) gimp_lut_process,
                         tool->lut);
 }
 
@@ -345,7 +295,6 @@ gimp_levels_tool_color_picker_new (GimpLevelsTool *tool,
                                    guint           value)
 {
   GtkWidget   *button;
-  GtkWidget   *image;
   const gchar *stock_id;
   const gchar *help;
 
@@ -368,13 +317,10 @@ gimp_levels_tool_color_picker_new (GimpLevelsTool *tool,
     }
 
   button = g_object_new (GTK_TYPE_TOGGLE_BUTTON,
+                         "label",          stock_id,
+                         "use-stock",      TRUE,
                          "draw-indicator", FALSE,
                          NULL);
-
-  image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
-  gtk_misc_set_padding (GTK_MISC (image), 2, 2);
-  gtk_container_add (GTK_CONTAINER (button), image);
-  gtk_widget_show (image);
 
   gimp_help_set_help_data (button, help, NULL);
 
@@ -392,6 +338,7 @@ gimp_levels_tool_dialog (GimpImageMapTool *image_map_tool)
 {
   GimpLevelsTool  *tool = GIMP_LEVELS_TOOL (image_map_tool);
   GimpToolOptions *tool_options;
+  GtkListStore    *store;
   GtkWidget       *vbox;
   GtkWidget       *vbox2;
   GtkWidget       *vbox3;
@@ -416,11 +363,16 @@ gimp_levels_tool_dialog (GimpImageMapTool *image_map_tool)
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  label = gtk_label_new (_("Channel:"));
+  label = gtk_label_new_with_mnemonic (_("Cha_nnel:"));
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  menu = gimp_enum_combo_box_new (GIMP_TYPE_HISTOGRAM_CHANNEL);
+  store = gimp_enum_store_new_with_range (GIMP_TYPE_HISTOGRAM_CHANNEL,
+                                          GIMP_HISTOGRAM_VALUE,
+                                          GIMP_HISTOGRAM_ALPHA);
+  menu = gimp_enum_combo_box_new_with_model (GIMP_ENUM_STORE (store));
+  g_object_unref (store);
+
   g_signal_connect (menu, "changed",
                     G_CALLBACK (levels_channel_callback),
                     tool);
@@ -431,7 +383,9 @@ gimp_levels_tool_dialog (GimpImageMapTool *image_map_tool)
 
   tool->channel_menu = menu;
 
-  button = gtk_button_new_with_mnemonic (_("R_eset channel"));
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), menu);
+
+  button = gtk_button_new_with_mnemonic (_("R_eset Channel"));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
@@ -483,7 +437,7 @@ gimp_levels_tool_dialog (GimpImageMapTool *image_map_tool)
   g_signal_connect (tool->input_area, "event",
                     G_CALLBACK (levels_input_area_event),
                     tool);
-  g_signal_connect_after (tool->input_area, "expose_event",
+  g_signal_connect_after (tool->input_area, "expose-event",
                           G_CALLBACK (levels_input_area_expose),
                           tool);
 
@@ -521,29 +475,23 @@ gimp_levels_tool_dialog (GimpImageMapTool *image_map_tool)
   gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
-  data = gtk_adjustment_new (0, 0, 255, 1, 10, 10);
-  tool->low_input = GTK_ADJUSTMENT (data);
-
-  spinbutton = gtk_spin_button_new (tool->low_input, 0.5, 0);
-  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
+  spinbutton = gimp_spin_button_new (&data, 0, 0, 255, 1, 10, 10, 0.5, 0);
   gtk_box_pack_start (GTK_BOX (hbox2), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (tool->low_input, "value_changed",
+  tool->low_input = GTK_ADJUSTMENT (data);
+  g_signal_connect (tool->low_input, "value-changed",
                     G_CALLBACK (levels_low_input_adjustment_update),
                     tool);
 
   /*  input gamma spin  */
-  data = gtk_adjustment_new (1, 0.1, 10, 0.1, 1, 1);
-  tool->gamma = GTK_ADJUSTMENT (data);
-
-  spinbutton = gtk_spin_button_new (tool->gamma, 0.5, 2);
-  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
+  spinbutton = gimp_spin_button_new (&data, 1, 0.1, 10, 0.01, 0.1, 1, 0.5, 2);
   gtk_box_pack_start (GTK_BOX (hbox), spinbutton, TRUE, FALSE, 0);
   gimp_help_set_help_data (spinbutton, _("Gamma"), NULL);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (tool->gamma, "value_changed",
+  tool->gamma = GTK_ADJUSTMENT (data);
+  g_signal_connect (tool->gamma, "value-changed",
                     G_CALLBACK (levels_gamma_adjustment_update),
                     tool);
 
@@ -556,18 +504,14 @@ gimp_levels_tool_dialog (GimpImageMapTool *image_map_tool)
   gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
-  data = gtk_adjustment_new (255, 0, 255, 1, 10, 10);
-  tool->high_input = GTK_ADJUSTMENT (data);
-
-  spinbutton = gtk_spin_button_new (tool->high_input, 0.5, 0);
-  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
+  spinbutton = gimp_spin_button_new (&data, 255, 0, 255, 1, 10, 10, 0.5, 0);
   gtk_box_pack_start (GTK_BOX (hbox2), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (tool->high_input, "value_changed",
+  tool->high_input = GTK_ADJUSTMENT (data);
+  g_signal_connect (tool->high_input, "value-changed",
                     G_CALLBACK (levels_high_input_adjustment_update),
                     tool);
-
 
   /*  Output levels frame  */
   frame = gimp_frame_new (_("Output Levels"));
@@ -593,7 +537,7 @@ gimp_levels_tool_dialog (GimpImageMapTool *image_map_tool)
   g_signal_connect (tool->output_area, "event",
                     G_CALLBACK (levels_output_area_event),
                     tool);
-  g_signal_connect_after (tool->output_area, "expose_event",
+  g_signal_connect_after (tool->output_area, "expose-event",
                           G_CALLBACK (levels_output_area_expose),
                           tool);
 
@@ -615,28 +559,22 @@ gimp_levels_tool_dialog (GimpImageMapTool *image_map_tool)
   gtk_widget_show (hbox);
 
   /*  low output spin  */
-  data = gtk_adjustment_new (0, 0, 255, 1, 10, 10);
-  tool->low_output = GTK_ADJUSTMENT (data);
-
-  spinbutton = gtk_spin_button_new (tool->low_output, 0.5, 0);
-  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
+  spinbutton = gimp_spin_button_new (&data, 0, 0, 255, 1, 10, 10, 0.5, 0);
   gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (tool->low_output, "value_changed",
+  tool->low_output = GTK_ADJUSTMENT (data);
+  g_signal_connect (tool->low_output, "value-changed",
                     G_CALLBACK (levels_low_output_adjustment_update),
                     tool);
 
   /*  high output spin  */
-  data = gtk_adjustment_new (255, 0, 255, 1, 10, 10);
-  tool->high_output = GTK_ADJUSTMENT (data);
-
-  spinbutton = gtk_spin_button_new (tool->high_output, 0.5, 0);
-  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
+  spinbutton = gimp_spin_button_new (&data, 255, 0, 255, 1, 10, 10, 0.5, 0);
   gtk_box_pack_end (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (tool->high_output, "value_changed",
+  tool->high_output = GTK_ADJUSTMENT (data);
+  g_signal_connect (tool->high_output, "value-changed",
                     G_CALLBACK (levels_high_output_adjustment_update),
                     tool);
 
@@ -929,16 +867,11 @@ levels_channel_reset_callback (GtkWidget      *widget,
 }
 
 static gboolean
-levels_menu_visible_func (GtkTreeModel *model,
-                          GtkTreeIter  *iter,
-                          gpointer      data)
+levels_menu_sensitivity (gint      value,
+                         gpointer  data)
 {
-  GimpLevelsTool       *tool = GIMP_LEVELS_TOOL (data);
-  GimpHistogramChannel  channel;
-
-  gtk_tree_model_get (model, iter,
-                      GIMP_INT_STORE_VALUE, &channel,
-                      -1);
+  GimpLevelsTool       *tool    = GIMP_LEVELS_TOOL (data);
+  GimpHistogramChannel  channel = value;
 
   switch (channel)
     {

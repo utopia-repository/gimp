@@ -35,16 +35,17 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define PLUG_IN_PROC   "plug-in-jigsaw"
+#define PLUG_IN_BINARY "jigsaw"
+
 
 typedef enum
 {
@@ -191,8 +192,6 @@ static void check_config           (gint width, gint height);
 
 
 
-#define PLUG_IN_NAME    "jigsaw"
-
 #define XFACTOR2 0.0833
 #define XFACTOR3 0.2083
 #define XFACTOR4 0.2500
@@ -299,7 +298,6 @@ struct config_tag
   style_t  style;
   gint     blend_lines;
   gdouble  blend_amount;
-  gboolean preview;
 };
 
 
@@ -311,8 +309,7 @@ static config_t config =
   5,
   BEZIER_1,
   3,
-  0.5,
-  TRUE
+  0.5
 };
 
 struct globals_tag
@@ -345,17 +342,17 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, Non-interactive, Last-Vals" },
-    { GIMP_PDB_IMAGE, "image", "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
-    { GIMP_PDB_INT32, "x", "Number of tiles across > 0" },
-    { GIMP_PDB_INT32, "y", "Number of tiles down > 0" },
-    { GIMP_PDB_INT32, "style", "The style/shape of the jigsaw puzzle, 0 or 1" },
-    { GIMP_PDB_INT32, "blend_lines", "Number of lines for shading bevels >= 0" },
-    { GIMP_PDB_FLOAT, "blend_amount", "The power of the light highlights 0 =< 5" }
+    { GIMP_PDB_INT32,    "run-mode",     "Interactive, Non-interactive, Last-Vals" },
+    { GIMP_PDB_IMAGE,    "image",        "Input image" },
+    { GIMP_PDB_DRAWABLE, "drawable",     "Input drawable" },
+    { GIMP_PDB_INT32,    "x",            "Number of tiles across > 0" },
+    { GIMP_PDB_INT32,    "y",            "Number of tiles down > 0" },
+    { GIMP_PDB_INT32,    "style",        "The style/shape of the jigsaw puzzle, 0 or 1" },
+    { GIMP_PDB_INT32,    "blend-lines",  "Number of lines for shading bevels >= 0" },
+    { GIMP_PDB_FLOAT,    "blend-amount", "The power of the light highlights 0 =< 5" }
   };
 
-  gimp_install_procedure ("plug_in_jigsaw",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Renders a jigsaw puzzle look",
                           "Jigsaw puzzle look",
                           "Nigel Wetten",
@@ -367,8 +364,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_jigsaw",
-                             "<Image>/Filters/Render/Pattern");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Render/Pattern");
 }
 
 static void
@@ -409,21 +405,21 @@ run (const gchar      *name,
       break;
 
     case GIMP_RUN_INTERACTIVE:
-      gimp_get_data("plug_in_jigsaw", &config);
+      gimp_get_data (PLUG_IN_PROC, &config);
       if (! jigsaw_dialog (drawable))
         {
           status = GIMP_PDB_CANCEL;
           break;
         }
-      gimp_progress_init (_("Assembling Jigsaw..."));
+      gimp_progress_init (_("Assembling jigsaw"));
 
       jigsaw (drawable, NULL);
-      gimp_set_data ("plug_in_jigsaw", &config, sizeof(config_t));
+      gimp_set_data (PLUG_IN_PROC, &config, sizeof(config_t));
       gimp_displays_flush ();
       break;
 
     case GIMP_RUN_WITH_LAST_VALS:
-      gimp_get_data("plug_in_jigsaw", &config);
+      gimp_get_data (PLUG_IN_PROC, &config);
       jigsaw (drawable, NULL);
       gimp_displays_flush ();
     }  /* switch */
@@ -449,9 +445,8 @@ jigsaw (GimpDrawable *drawable,
 
   if (preview)
     {
-      gimp_preview_get_size (preview, &width, &height);
-      src = gimp_drawable_get_thumbnail_data (drawable->drawable_id,
-                                              &width, &height, &bytes);
+      src = gimp_zoom_preview_get_source (GIMP_ZOOM_PREVIEW (preview),
+                                          &width, &height, &bytes);
     }
   else
     {
@@ -607,7 +602,7 @@ draw_jigsaw (guchar   *buffer,
   else
     {
       printf("draw_jigsaw: bad style\n");
-      exit(1);
+      gimp_quit ();
     }
 
   g_free (globals.gridx);
@@ -2418,23 +2413,30 @@ jigsaw_dialog (GimpDrawable *drawable)
   GtkObject    *adj;
   gboolean      run;
 
-  gimp_ui_init ("jigsaw", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Jigsaw"), "jigsaw",
+  dialog = gimp_dialog_new (_("Jigsaw"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-jigsaw",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
+
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_aspect_preview_new (drawable, &config.preview);
+  preview = gimp_zoom_preview_new (drawable);
   gtk_box_pack_start_defaults (GTK_BOX (main_vbox), preview);
   gtk_widget_show (preview);
   g_signal_connect_swapped (preview, "invalidated",
@@ -2461,10 +2463,10 @@ jigsaw_dialog (GimpDrawable *drawable)
   gtk_size_group_add_widget (group, GIMP_SCALE_ENTRY_LABEL (adj));
   g_object_unref (group);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &config.x);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -2477,10 +2479,10 @@ jigsaw_dialog (GimpDrawable *drawable)
 
   gtk_size_group_add_widget (group, GIMP_SCALE_ENTRY_LABEL (adj));
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &config.y);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -2505,10 +2507,10 @@ jigsaw_dialog (GimpDrawable *drawable)
 
   gtk_size_group_add_widget (group, GIMP_SCALE_ENTRY_LABEL (adj));
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &config.blend_lines);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -2523,10 +2525,10 @@ jigsaw_dialog (GimpDrawable *drawable)
 
   gtk_size_group_add_widget (group, GIMP_SCALE_ENTRY_LABEL (adj));
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &config.blend_amount);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -2564,4 +2566,3 @@ jigsaw_dialog (GimpDrawable *drawable)
 
   return run;
 }
-

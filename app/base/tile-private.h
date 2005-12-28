@@ -19,15 +19,7 @@
 #ifndef __TILE_PRIVATE_H__
 #define __TILE_PRIVATE_H__
 
-#include "config.h"
-
-#ifdef USE_PTHREADS
-#include <pthread.h>
-#endif
-
 #include <sys/types.h>
-
-#include <glib.h>
 
 
 typedef struct _TileLink TileLink;
@@ -65,6 +57,7 @@ struct _Tile
 		         *  (but not larger) than TILE_WIDTH and TILE_HEIGHT.
 		         *  this is to handle edge tiles of a drawable.
 		         */
+  gint    size;         /* size of the tile data (ewidth * eheight * bpp) */
 
   TileRowHint *rowhint; /* An array of hints for rendering purposes */
 
@@ -87,28 +80,19 @@ struct _Tile
   Tile     *prev;       /* List pointers for the tile cache lists */
   gpointer  listhead;   /* Pointer to the head of the list this tile is on */
 
-#ifdef USE_PTHREADS
-  pthread_mutex_t mutex;
+#ifdef ENABLE_THREADED_TILE_SWAPPER
+  GMutex   *mutex;
 #endif
 };
 
 
-#ifdef USE_PTHREADS
-#define TILE_MUTEX_LOCK(tile)   pthread_mutex_lock(&((tile)->mutex))
-#define TILE_MUTEX_UNLOCK(tile) pthread_mutex_unlock(&((tile)->mutex))
+#ifdef ENABLE_THREADED_TILE_SWAPPER
+#define TILE_MUTEX_LOCK(tile)   g_mutex_lock((tile)->mutex)
+#define TILE_MUTEX_UNLOCK(tile) g_mutex_unlock((tile)->mutex)
 #else
 #define TILE_MUTEX_LOCK(tile)   /* nothing */
 #define TILE_MUTEX_UNLOCK(tile) /* nothing */
 #endif
-
-
-/*  an inlined version of tile_size()  */
-static inline gint
-tile_size_inline (Tile *tile)
-{
-  return tile->ewidth * tile->eheight * tile->bpp;
-}
-
 
 
 #endif /* __TILE_PRIVATE_H__ */

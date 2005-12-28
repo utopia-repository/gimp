@@ -4,57 +4,65 @@
 
 <refentry id="libgimp-gimpedit">
 <refmeta>
-<refentrytitle role="top_of_page">gimpedit</refentrytitle>
+<refentrytitle>gimpedit</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpedit</refname>
-<refpurpose>Edit menu functions (cut, copy, paste, clear, etc.)</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>gimpedit</refname><refpurpose>Edit menu functions (cut, copy, paste, clear, etc.)</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-edit-cut">gimp_edit_cut</link>                       (<link linkend="gint32">gint32</link> drawable_ID);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-edit-copy">gimp_edit_copy</link>                      (<link linkend="gint32">gint32</link> drawable_ID);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-edit-copy-visible">gimp_edit_copy_visible</link>              (<link linkend="gint32">gint32</link> image_ID);
-<link linkend="gint32">gint32</link>              <link linkend="gimp-edit-paste">gimp_edit_paste</link>                     (<link linkend="gint32">gint32</link> drawable_ID,
-                                                         <link linkend="gboolean">gboolean</link> paste_into);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-edit-clear">gimp_edit_clear</link>                     (<link linkend="gint32">gint32</link> drawable_ID);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-edit-fill">gimp_edit_fill</link>                      (<link linkend="gint32">gint32</link> drawable_ID,
-                                                         <link linkend="GimpFillType">GimpFillType</link> fill_type);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-edit-bucket-fill">gimp_edit_bucket_fill</link>               (<link linkend="gint32">gint32</link> drawable_ID,
-                                                         <link linkend="GimpBucketFillMode">GimpBucketFillMode</link> fill_mode,
-                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
-                                                         <link linkend="gdouble">gdouble</link> opacity,
-                                                         <link linkend="gdouble">gdouble</link> threshold,
-                                                         <link linkend="gboolean">gboolean</link> sample_merged,
-                                                         <link linkend="gdouble">gdouble</link> x,
-                                                         <link linkend="gdouble">gdouble</link> y);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-edit-blend">gimp_edit_blend</link>                     (<link linkend="gint32">gint32</link> drawable_ID,
-                                                         <link linkend="GimpBlendMode">GimpBlendMode</link> blend_mode,
-                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
-                                                         <link linkend="GimpGradientType">GimpGradientType</link> gradient_type,
-                                                         <link linkend="gdouble">gdouble</link> opacity,
-                                                         <link linkend="gdouble">gdouble</link> offset,
-                                                         <link linkend="GimpRepeatMode">GimpRepeatMode</link> repeat,
-                                                         <link linkend="gboolean">gboolean</link> reverse,
-                                                         <link linkend="gboolean">gboolean</link> supersample,
-                                                         <link linkend="gint">gint</link> max_depth,
-                                                         <link linkend="gdouble">gdouble</link> threshold,
-                                                         <link linkend="gboolean">gboolean</link> dither,
-                                                         <link linkend="gdouble">gdouble</link> x1,
-                                                         <link linkend="gdouble">gdouble</link> y1,
-                                                         <link linkend="gdouble">gdouble</link> x2,
-                                                         <link linkend="gdouble">gdouble</link> y2);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-edit-stroke">gimp_edit_stroke</link>                    (<link linkend="gint32">gint32</link> drawable_ID);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-edit-cut">gimp_edit_cut</link>                   (<link linkend="gint32">gint32</link> drawable_ID);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-edit-copy">gimp_edit_copy</link>                  (<link linkend="gint32">gint32</link> drawable_ID);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-edit-copy-visible">gimp_edit_copy_visible</link>          (<link linkend="gint32">gint32</link> image_ID);
+<link linkend="gint32">gint32</link>      <link linkend="gimp-edit-paste">gimp_edit_paste</link>                 (<link linkend="gint32">gint32</link> drawable_ID,
+                                             <link linkend="gboolean">gboolean</link> paste_into);
+<link linkend="gint32">gint32</link>      <link linkend="gimp-edit-paste-as-new">gimp_edit_paste_as_new</link>          (void);
+<link linkend="gchar">gchar</link>*      <link linkend="gimp-edit-named-cut">gimp_edit_named_cut</link>             (<link linkend="gint32">gint32</link> drawable_ID,
+                                             const <link linkend="gchar">gchar</link> *buffer_name);
+<link linkend="gchar">gchar</link>*      <link linkend="gimp-edit-named-copy">gimp_edit_named_copy</link>            (<link linkend="gint32">gint32</link> drawable_ID,
+                                             const <link linkend="gchar">gchar</link> *buffer_name);
+<link linkend="gchar">gchar</link>*      <link linkend="gimp-edit-named-copy-visible">gimp_edit_named_copy_visible</link>    (<link linkend="gint32">gint32</link> image_ID,
+                                             const <link linkend="gchar">gchar</link> *buffer_name);
+<link linkend="gint32">gint32</link>      <link linkend="gimp-edit-named-paste">gimp_edit_named_paste</link>           (<link linkend="gint32">gint32</link> drawable_ID,
+                                             const <link linkend="gchar">gchar</link> *buffer_name,
+                                             <link linkend="gboolean">gboolean</link> paste_into);
+<link linkend="gint32">gint32</link>      <link linkend="gimp-edit-named-paste-as-new">gimp_edit_named_paste_as_new</link>    (const <link linkend="gchar">gchar</link> *buffer_name);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-edit-clear">gimp_edit_clear</link>                 (<link linkend="gint32">gint32</link> drawable_ID);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-edit-fill">gimp_edit_fill</link>                  (<link linkend="gint32">gint32</link> drawable_ID,
+                                             <link linkend="GimpFillType">GimpFillType</link> fill_type);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-edit-bucket-fill">gimp_edit_bucket_fill</link>           (<link linkend="gint32">gint32</link> drawable_ID,
+                                             <link linkend="GimpBucketFillMode">GimpBucketFillMode</link> fill_mode,
+                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
+                                             <link linkend="gdouble">gdouble</link> opacity,
+                                             <link linkend="gdouble">gdouble</link> threshold,
+                                             <link linkend="gboolean">gboolean</link> sample_merged,
+                                             <link linkend="gdouble">gdouble</link> x,
+                                             <link linkend="gdouble">gdouble</link> y);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-edit-blend">gimp_edit_blend</link>                 (<link linkend="gint32">gint32</link> drawable_ID,
+                                             <link linkend="GimpBlendMode">GimpBlendMode</link> blend_mode,
+                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
+                                             <link linkend="GimpGradientType">GimpGradientType</link> gradient_type,
+                                             <link linkend="gdouble">gdouble</link> opacity,
+                                             <link linkend="gdouble">gdouble</link> offset,
+                                             <link linkend="GimpRepeatMode">GimpRepeatMode</link> repeat,
+                                             <link linkend="gboolean">gboolean</link> reverse,
+                                             <link linkend="gboolean">gboolean</link> supersample,
+                                             <link linkend="gint">gint</link> max_depth,
+                                             <link linkend="gdouble">gdouble</link> threshold,
+                                             <link linkend="gboolean">gboolean</link> dither,
+                                             <link linkend="gdouble">gdouble</link> x1,
+                                             <link linkend="gdouble">gdouble</link> y1,
+                                             <link linkend="gdouble">gdouble</link> x2,
+                                             <link linkend="gdouble">gdouble</link> y2);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-edit-stroke">gimp_edit_stroke</link>                (<link linkend="gint32">gint32</link> drawable_ID);
 </synopsis>
 </refsynopsisdiv>
 
@@ -66,19 +74,19 @@
 
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 Edit menu functions (cut, copy, paste, clear, etc.)
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="gimp-edit-cut" role="function"/>gimp_edit_cut ()</title>
-<indexterm><primary>gimp_edit_cut</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_edit_cut                       (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<title><anchor id="gimp-edit-cut"/>gimp_edit_cut ()</title>
+<indexterm><primary>gimp_edit_cut</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_edit_cut                   (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Cut from the specified drawable.
 </para>
@@ -99,8 +107,8 @@ internal GIMP edit buffer.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-edit-copy" role="function"/>gimp_edit_copy ()</title>
-<indexterm><primary>gimp_edit_copy</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_edit_copy                      (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<title><anchor id="gimp-edit-copy"/>gimp_edit_copy ()</title>
+<indexterm><primary>gimp_edit_copy</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_edit_copy                  (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Copy from the specified drawable.
 </para>
@@ -121,8 +129,8 @@ edit buffer.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-edit-copy-visible" role="function" condition="since:GIMP 2.2"/>gimp_edit_copy_visible ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_edit_copy_visible</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_edit_copy_visible              (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<title><anchor id="gimp-edit-copy-visible"/>gimp_edit_copy_visible ()</title>
+<indexterm role="GIMP 2.2"><primary>gimp_edit_copy_visible</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_edit_copy_visible          (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Copy from the projection.
 </para>
@@ -142,12 +150,12 @@ buffer.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the copy was successful, FALSE if the selection contained only transparent pixels.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
+</variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-edit-paste" role="function"/>gimp_edit_paste ()</title>
-<indexterm><primary>gimp_edit_paste</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_edit_paste                     (<link linkend="gint32">gint32</link> drawable_ID,
-                                                         <link linkend="gboolean">gboolean</link> paste_into);</programlisting>
+<title><anchor id="gimp-edit-paste"/>gimp_edit_paste ()</title>
+<indexterm><primary>gimp_edit_paste</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_edit_paste                 (<link linkend="gint32">gint32</link> drawable_ID,
+                                             <link linkend="gboolean">gboolean</link> paste_into);</programlisting>
 <para>
 Paste buffer to the specified drawable.
 </para>
@@ -180,8 +188,152 @@ not needed.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-edit-clear" role="function"/>gimp_edit_clear ()</title>
-<indexterm><primary>gimp_edit_clear</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_edit_clear                     (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<title><anchor id="gimp-edit-paste-as-new"/>gimp_edit_paste_as_new ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_edit_paste_as_new</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_edit_paste_as_new          (void);</programlisting>
+<para>
+Paste buffer to a new image.
+</para>
+<para>
+This procedure pastes a copy of the internal GIMP edit buffer to a
+new image. The GIMP edit buffer will be empty unless a call was
+previously made to either 'gimp-edit-cut' or 'gimp-edit-copy'. This
+procedure returns the new image.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The new image.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-edit-named-cut"/>gimp_edit_named_cut ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_edit_named_cut</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_edit_named_cut             (<link linkend="gint32">gint32</link> drawable_ID,
+                                             const <link linkend="gchar">gchar</link> *buffer_name);</programlisting>
+<para>
+Cut into a named buffer.
+</para>
+<para>
+This procedure works like gimp-edit-cut, but additionally stores the
+cut buffer into a named buffer that will stay available for later
+pasting, regardless of any intermediate copy or cut operations.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The drawable to cut from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buffer_name</parameter>&nbsp;:</term>
+<listitem><simpara> The name of the buffer to create.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The real name given to the buffer, or NULL if the selection contained only transparent pixels.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-edit-named-copy"/>gimp_edit_named_copy ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_edit_named_copy</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_edit_named_copy            (<link linkend="gint32">gint32</link> drawable_ID,
+                                             const <link linkend="gchar">gchar</link> *buffer_name);</programlisting>
+<para>
+Copy into a named buffer.
+</para>
+<para>
+This procedure works like gimp-edit-copy, but additionally stores
+the copied buffer into a named buffer that will stay available for
+later pasting, regardless of any intermediate copy or cut
+operations.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The drawable to copy from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buffer_name</parameter>&nbsp;:</term>
+<listitem><simpara> The name of the buffer to create.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The real name given to the buffer, or NULL if the selection contained only transparent pixels.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-edit-named-copy-visible"/>gimp_edit_named_copy_visible ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_edit_named_copy_visible</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_edit_named_copy_visible    (<link linkend="gint32">gint32</link> image_ID,
+                                             const <link linkend="gchar">gchar</link> *buffer_name);</programlisting>
+<para>
+Copy from the projection into a named buffer.
+</para>
+<para>
+This procedure works like gimp-edit-copy-visible, but additionally
+stores the copied buffer into a named buffer that will stay
+available for later pasting, regardless of any intermediate copy or
+cut operations.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The image to copy from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buffer_name</parameter>&nbsp;:</term>
+<listitem><simpara> The name of the buffer to create.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The real name given to the buffer.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-edit-named-paste"/>gimp_edit_named_paste ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_edit_named_paste</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_edit_named_paste           (<link linkend="gint32">gint32</link> drawable_ID,
+                                             const <link linkend="gchar">gchar</link> *buffer_name,
+                                             <link linkend="gboolean">gboolean</link> paste_into);</programlisting>
+<para>
+Paste named buffer to the specified drawable.
+</para>
+<para>
+This procedure works like gimp-edit-paste but pastes a named buffer
+instead of the global buffer.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The drawable to paste to.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buffer_name</parameter>&nbsp;:</term>
+<listitem><simpara> The name of the buffer to paste.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>paste_into</parameter>&nbsp;:</term>
+<listitem><simpara> Clear selection, or paste behind it?
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The new floating selection.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-edit-named-paste-as-new"/>gimp_edit_named_paste_as_new ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_edit_named_paste_as_new</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_edit_named_paste_as_new    (const <link linkend="gchar">gchar</link> *buffer_name);</programlisting>
+<para>
+Paste named buffer to a new image.
+</para>
+<para>
+This procedure works like gimp-edit-paste-as-new but pastes a named
+buffer instead of the global buffer.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>buffer_name</parameter>&nbsp;:</term>
+<listitem><simpara> The name of the buffer to paste.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The new image.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-edit-clear"/>gimp_edit_clear ()</title>
+<indexterm><primary>gimp_edit_clear</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_edit_clear                 (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Clear selected area of drawable.
 </para>
@@ -201,9 +353,9 @@ a selection if there is a selection active.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-edit-fill" role="function"/>gimp_edit_fill ()</title>
-<indexterm><primary>gimp_edit_fill</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_edit_fill                      (<link linkend="gint32">gint32</link> drawable_ID,
-                                                         <link linkend="GimpFillType">GimpFillType</link> fill_type);</programlisting>
+<title><anchor id="gimp-edit-fill"/>gimp_edit_fill ()</title>
+<indexterm><primary>gimp_edit_fill</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_edit_fill                  (<link linkend="gint32">gint32</link> drawable_ID,
+                                             <link linkend="GimpFillType">GimpFillType</link> fill_type);</programlisting>
 <para>
 Fill selected area of drawable.
 </para>
@@ -228,15 +380,15 @@ use <link linkend="gimp-drawable-fill"><function>gimp_drawable_fill()</function>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-edit-bucket-fill" role="function"/>gimp_edit_bucket_fill ()</title>
-<indexterm><primary>gimp_edit_bucket_fill</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_edit_bucket_fill               (<link linkend="gint32">gint32</link> drawable_ID,
-                                                         <link linkend="GimpBucketFillMode">GimpBucketFillMode</link> fill_mode,
-                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
-                                                         <link linkend="gdouble">gdouble</link> opacity,
-                                                         <link linkend="gdouble">gdouble</link> threshold,
-                                                         <link linkend="gboolean">gboolean</link> sample_merged,
-                                                         <link linkend="gdouble">gdouble</link> x,
-                                                         <link linkend="gdouble">gdouble</link> y);</programlisting>
+<title><anchor id="gimp-edit-bucket-fill"/>gimp_edit_bucket_fill ()</title>
+<indexterm><primary>gimp_edit_bucket_fill</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_edit_bucket_fill           (<link linkend="gint32">gint32</link> drawable_ID,
+                                             <link linkend="GimpBucketFillMode">GimpBucketFillMode</link> fill_mode,
+                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
+                                             <link linkend="gdouble">gdouble</link> opacity,
+                                             <link linkend="gdouble">gdouble</link> threshold,
+                                             <link linkend="gboolean">gboolean</link> sample_merged,
+                                             <link linkend="gdouble">gdouble</link> x,
+                                             <link linkend="gdouble">gdouble</link> y);</programlisting>
 <para>
 Fill the area specified either by the current selection if there is
 one, or by a seed fill starting at the specified coordinates.
@@ -285,23 +437,23 @@ relative to the drawable's origin.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-edit-blend" role="function"/>gimp_edit_blend ()</title>
-<indexterm><primary>gimp_edit_blend</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_edit_blend                     (<link linkend="gint32">gint32</link> drawable_ID,
-                                                         <link linkend="GimpBlendMode">GimpBlendMode</link> blend_mode,
-                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
-                                                         <link linkend="GimpGradientType">GimpGradientType</link> gradient_type,
-                                                         <link linkend="gdouble">gdouble</link> opacity,
-                                                         <link linkend="gdouble">gdouble</link> offset,
-                                                         <link linkend="GimpRepeatMode">GimpRepeatMode</link> repeat,
-                                                         <link linkend="gboolean">gboolean</link> reverse,
-                                                         <link linkend="gboolean">gboolean</link> supersample,
-                                                         <link linkend="gint">gint</link> max_depth,
-                                                         <link linkend="gdouble">gdouble</link> threshold,
-                                                         <link linkend="gboolean">gboolean</link> dither,
-                                                         <link linkend="gdouble">gdouble</link> x1,
-                                                         <link linkend="gdouble">gdouble</link> y1,
-                                                         <link linkend="gdouble">gdouble</link> x2,
-                                                         <link linkend="gdouble">gdouble</link> y2);</programlisting>
+<title><anchor id="gimp-edit-blend"/>gimp_edit_blend ()</title>
+<indexterm><primary>gimp_edit_blend</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_edit_blend                 (<link linkend="gint32">gint32</link> drawable_ID,
+                                             <link linkend="GimpBlendMode">GimpBlendMode</link> blend_mode,
+                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
+                                             <link linkend="GimpGradientType">GimpGradientType</link> gradient_type,
+                                             <link linkend="gdouble">gdouble</link> opacity,
+                                             <link linkend="gdouble">gdouble</link> offset,
+                                             <link linkend="GimpRepeatMode">GimpRepeatMode</link> repeat,
+                                             <link linkend="gboolean">gboolean</link> reverse,
+                                             <link linkend="gboolean">gboolean</link> supersample,
+                                             <link linkend="gint">gint</link> max_depth,
+                                             <link linkend="gdouble">gdouble</link> threshold,
+                                             <link linkend="gboolean">gboolean</link> dither,
+                                             <link linkend="gdouble">gdouble</link> x1,
+                                             <link linkend="gdouble">gdouble</link> y1,
+                                             <link linkend="gdouble">gdouble</link> x2,
+                                             <link linkend="gdouble">gdouble</link> y2);</programlisting>
 <para>
 Blend between the starting and ending coordinates with the specified
 blend mode and gradient type.
@@ -366,8 +518,8 @@ each gradient type.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-edit-stroke" role="function"/>gimp_edit_stroke ()</title>
-<indexterm><primary>gimp_edit_stroke</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_edit_stroke                    (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<title><anchor id="gimp-edit-stroke"/>gimp_edit_stroke ()</title>
+<indexterm><primary>gimp_edit_stroke</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_edit_stroke                (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Stroke the current selection
 </para>

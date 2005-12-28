@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
 <book xmlns="http://www.devhelp.net/book" title="GIMP Module Library Reference Manual" link="index.html" author="" name="libgimpmodule">
   <chapters>
     <sub name="GIMP Module Library" link="libgimpmodule.html">
       <sub name="GimpModule" link="GimpModule.html"/>
       <sub name="GimpModuleDB" link="GimpModuleDB.html"/>
     </sub>
+    <sub name="Index" link="ix01.html"/>
+    <sub name="Index of new symbols in GIMP 2.2" link="ix02.html"/>
+    <sub name="Index of new symbols in GIMP 2.4" link="ix03.html"/>
+    <sub name="Index of deprecated symbols" link="ix04.html"/>
   </chapters>
   <functions>
     <function name="GimpModule" link="GimpModule.html#GimpModule-struct"/>

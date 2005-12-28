@@ -4,32 +4,31 @@
 
 <refentry id="libgimp-gimpgimprc">
 <refmeta>
-<refentrytitle role="top_of_page">gimpgimprc</refentrytitle>
+<refentrytitle>gimpgimprc</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpgimprc</refname>
-<refpurpose>Interactions with settings from .gimprc.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>gimpgimprc</refname><refpurpose>Interactions with settings from .gimprc.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-<link linkend="gchar">gchar</link>*              <link linkend="gimp-gimprc-query">gimp_gimprc_query</link>                   (const <link linkend="gchar">gchar</link> *token);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-gimprc-set">gimp_gimprc_set</link>                     (const <link linkend="gchar">gchar</link> *token,
-                                                         const <link linkend="gchar">gchar</link> *value);
-<link linkend="gchar">gchar</link>*              <link linkend="gimp-get-default-comment">gimp_get_default_comment</link>            (void);
-<link linkend="gchar">gchar</link>*              <link linkend="gimp-get-module-load-inhibit">gimp_get_module_load_inhibit</link>        (void);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-get-monitor-resolution">gimp_get_monitor_resolution</link>         (<link linkend="gdouble">gdouble</link> *xres,
-                                                         <link linkend="gdouble">gdouble</link> *yres);
-<link linkend="gchar">gchar</link>*              <link linkend="gimp-get-theme-dir">gimp_get_theme_dir</link>                  (void);
+<link linkend="gchar">gchar</link>*      <link linkend="gimp-gimprc-query">gimp_gimprc_query</link>               (const <link linkend="gchar">gchar</link> *token);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-gimprc-set">gimp_gimprc_set</link>                 (const <link linkend="gchar">gchar</link> *token,
+                                             const <link linkend="gchar">gchar</link> *value);
+<link linkend="GimpColorConfig">GimpColorConfig</link>* <link linkend="gimp-get-color-configuration">gimp_get_color_configuration</link>
+                                            (void);
+<link linkend="gchar">gchar</link>*      <link linkend="gimp-get-default-comment">gimp_get_default_comment</link>        (void);
+<link linkend="gchar">gchar</link>*      <link linkend="gimp-get-module-load-inhibit">gimp_get_module_load_inhibit</link>    (void);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-get-monitor-resolution">gimp_get_monitor_resolution</link>     (<link linkend="gdouble">gdouble</link> *xres,
+                                             <link linkend="gdouble">gdouble</link> *yres);
+<link linkend="gchar">gchar</link>*      <link linkend="gimp-get-theme-dir">gimp_get_theme_dir</link>              (void);
 </synopsis>
 </refsynopsisdiv>
 
@@ -41,19 +40,19 @@
 
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 Interactions with settings from .gimprc.
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="gimp-gimprc-query" role="function"/>gimp_gimprc_query ()</title>
-<indexterm><primary>gimp_gimprc_query</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_gimprc_query                   (const <link linkend="gchar">gchar</link> *token);</programlisting>
+<title><anchor id="gimp-gimprc-query"/>gimp_gimprc_query ()</title>
+<indexterm><primary>gimp_gimprc_query</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_gimprc_query               (const <link linkend="gchar">gchar</link> *token);</programlisting>
 <para>
 Queries the gimprc file parser for information on a specified token.
 </para>
@@ -77,9 +76,9 @@ to be issued on gimprc parsing and will not be queryable.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-gimprc-set" role="function"/>gimp_gimprc_set ()</title>
-<indexterm><primary>gimp_gimprc_set</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gimprc_set                     (const <link linkend="gchar">gchar</link> *token,
-                                                         const <link linkend="gchar">gchar</link> *value);</programlisting>
+<title><anchor id="gimp-gimprc-set"/>gimp_gimprc_set ()</title>
+<indexterm><primary>gimp_gimprc_set</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_gimprc_set                 (const <link linkend="gchar">gchar</link> *token,
+                                             const <link linkend="gchar">gchar</link> *value);</programlisting>
 <para>
 Sets a gimprc token to a value and saves it in the gimprc.
 </para>
@@ -102,8 +101,23 @@ will accept _only_ string values in UTF-8 encoding.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-get-default-comment" role="function"/>gimp_get_default_comment ()</title>
-<indexterm><primary>gimp_get_default_comment</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_get_default_comment            (void);</programlisting>
+<title><anchor id="gimp-get-color-configuration"/>gimp_get_color_configuration ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_get_color_configuration</primary></indexterm><programlisting><link linkend="GimpColorConfig">GimpColorConfig</link>* gimp_get_color_configuration
+                                            (void);</programlisting>
+<para>
+Retrieve a copy of the current color management configuration.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A copy of the core's <link linkend="GimpColorConfig"><type>GimpColorConfig</type></link>. You should unref
+         this copy if you don't need it any longer.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-get-default-comment"/>gimp_get_default_comment ()</title>
+<indexterm><primary>gimp_get_default_comment</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_get_default_comment        (void);</programlisting>
 <para>
 Get the default image comment as specified in the Preferences.
 </para>
@@ -116,8 +130,8 @@ Returns a copy of the default image comment.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-get-module-load-inhibit" role="function"/>gimp_get_module_load_inhibit ()</title>
-<indexterm><primary>gimp_get_module_load_inhibit</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_get_module_load_inhibit        (void);</programlisting>
+<title><anchor id="gimp-get-module-load-inhibit"/>gimp_get_module_load_inhibit ()</title>
+<indexterm><primary>gimp_get_module_load_inhibit</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_get_module_load_inhibit    (void);</programlisting>
 <para>
 Get the list of modules which should not be loaded.
 </para>
@@ -130,9 +144,9 @@ Returns a copy of the list of modules which should not be loaded.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-get-monitor-resolution" role="function"/>gimp_get_monitor_resolution ()</title>
-<indexterm><primary>gimp_get_monitor_resolution</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_get_monitor_resolution         (<link linkend="gdouble">gdouble</link> *xres,
-                                                         <link linkend="gdouble">gdouble</link> *yres);</programlisting>
+<title><anchor id="gimp-get-monitor-resolution"/>gimp_get_monitor_resolution ()</title>
+<indexterm><primary>gimp_get_monitor_resolution</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_get_monitor_resolution     (<link linkend="gdouble">gdouble</link> *xres,
+                                             <link linkend="gdouble">gdouble</link> *yres);</programlisting>
 <para>
 Get the monitor resolution as specified in the Preferences.
 </para>
@@ -154,8 +168,8 @@ reasonable.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-get-theme-dir" role="function"/>gimp_get_theme_dir ()</title>
-<indexterm><primary>gimp_get_theme_dir</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_get_theme_dir                  (void);</programlisting>
+<title><anchor id="gimp-get-theme-dir"/>gimp_get_theme_dir ()</title>
+<indexterm><primary>gimp_get_theme_dir</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_get_theme_dir              (void);</programlisting>
 <para>
 Get the directory of the current GUI theme.
 </para>

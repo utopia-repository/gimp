@@ -170,10 +170,10 @@ export_convert_indexed (gint32  image_ID,
   /* check alpha */
   g_free (gimp_image_get_layers (image_ID, &nlayers));
   if (nlayers > 1 || gimp_drawable_has_alpha (*drawable_ID))
-    gimp_image_convert_indexed (image_ID, GIMP_FS_DITHER,
+    gimp_image_convert_indexed (image_ID, GIMP_NO_DITHER,
                                 GIMP_MAKE_PALETTE, 255, FALSE, FALSE, "");
   else
-    gimp_image_convert_indexed (image_ID, GIMP_FS_DITHER,
+    gimp_image_convert_indexed (image_ID, GIMP_NO_DITHER,
                                 GIMP_MAKE_PALETTE, 256, FALSE, FALSE, "");
 }
 
@@ -388,6 +388,14 @@ confirm_save_dialog (const gchar *message,
 
 			    NULL);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
+  gimp_window_set_transient (GTK_WINDOW (dialog));
+
   hbox = gtk_hbox_new (FALSE, 12);
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), hbox);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
@@ -461,7 +469,14 @@ export_dialog (GSList      *actions,
 
 			    NULL);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_NO,
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   hbox = gtk_hbox_new (FALSE, 12);
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), hbox);

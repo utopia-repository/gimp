@@ -50,10 +50,10 @@ size_restore (void)
 }
 
 static void
-create_sizemap_dialog_helper (void)
+create_sizemap_dialog_helper (GtkWidget *widget)
 {
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (sizeradio[7]), TRUE);
-  create_sizemap_dialog ();
+  create_sizemap_dialog (widget);
 }
 
 static void
@@ -94,7 +94,7 @@ create_sizepage (GtkNotebook *notebook)
                           TRUE, 0, 0,
                           _("The number of sizes of brushes to use"),
                           NULL);
-  g_signal_connect (sizenumadjust, "value_changed",
+  g_signal_connect (sizenumadjust, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &pcvals.size_num);
 
@@ -106,7 +106,7 @@ create_sizepage (GtkNotebook *notebook)
                           TRUE, 0, 0,
                           _("The smallest brush to create"),
                           NULL);
-  g_signal_connect (sizefirstadjust, "value_changed",
+  g_signal_connect (sizefirstadjust, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &pcvals.size_first);
 
@@ -118,7 +118,7 @@ create_sizepage (GtkNotebook *notebook)
                           TRUE, 0, 0,
                           _("The largest brush to create"),
                           NULL);
-  g_signal_connect (sizelastadjust, "value_changed",
+  g_signal_connect (sizelastadjust, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &pcvals.size_last);
 
@@ -182,7 +182,7 @@ create_sizepage (GtkNotebook *notebook)
 
   size_type_restore ();
 
-  tmpw = gtk_button_new_from_stock (GIMP_STOCK_EDIT);
+  tmpw = gtk_button_new_from_stock (GTK_STOCK_EDIT);
   gtk_box_pack_start (GTK_BOX (box4), tmpw, FALSE, FALSE, 0);
   gtk_widget_show (tmpw);
   g_signal_connect (tmpw, "clicked",

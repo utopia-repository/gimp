@@ -51,15 +51,22 @@
 
 /*  local function protypes  */
 
-static const GimpBuffer * gimp_edit_extract       (GimpImage    *gimage,
-                                                   GimpDrawable *drawable,
-                                                   GimpContext  *context,
-                                                   gboolean      cut_pixels);
-static gboolean           gimp_edit_fill_internal (GimpImage    *gimage,
-                                                   GimpDrawable *drawable,
-                                                   GimpContext  *context,
-                                                   GimpFillType  fill_type,
-                                                   const gchar  *undo_desc);
+static GimpBuffer * gimp_edit_extract         (GimpImage            *gimage,
+                                               GimpDrawable         *drawable,
+                                               GimpContext          *context,
+                                               gboolean              cut_pixels);
+static GimpBuffer * gimp_edit_extract_visible (GimpImage            *gimage,
+                                               GimpContext          *context);
+static GimpBuffer * gimp_edit_make_buffer     (Gimp                 *gimp,
+                                               TileManager          *tiles,
+                                               gboolean              mask_empty);
+static gboolean     gimp_edit_fill_internal   (GimpImage            *gimage,
+                                               GimpDrawable         *drawable,
+                                               GimpContext          *context,
+                                               GimpFillType          fill_type,
+                                               gdouble               opacity,
+                                               GimpLayerModeEffects  paint_mode,
+                                               const gchar          *undo_desc);
 
 
 /*  public functions  */
@@ -69,12 +76,24 @@ gimp_edit_cut (GimpImage    *gimage,
 	       GimpDrawable *drawable,
                GimpContext  *context)
 {
+  GimpBuffer *buffer;
+
   g_return_val_if_fail (GIMP_IS_IMAGE (gimage), NULL);
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
 
-  return gimp_edit_extract (gimage, drawable, context, TRUE);
+  buffer = gimp_edit_extract (gimage, drawable, context, TRUE);
+
+  if (buffer)
+    {
+      gimp_set_global_buffer (gimage->gimp, buffer);
+      g_object_unref (buffer);
+
+      return gimage->gimp->global_buffer;
+    }
+
+  return NULL;
 }
 
 const GimpBuffer *
@@ -82,73 +101,39 @@ gimp_edit_copy (GimpImage    *gimage,
 		GimpDrawable *drawable,
                 GimpContext  *context)
 {
+  GimpBuffer *buffer;
+
   g_return_val_if_fail (GIMP_IS_IMAGE (gimage), NULL);
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
 
-  return gimp_edit_extract (gimage, drawable, context, FALSE);
+  buffer = gimp_edit_extract (gimage, drawable, context, FALSE);
+
+  if (buffer)
+    {
+      gimp_set_global_buffer (gimage->gimp, buffer);
+      g_object_unref (buffer);
+
+      return gimage->gimp->global_buffer;
+    }
+
+  return NULL;
 }
 
 const GimpBuffer *
 gimp_edit_copy_visible (GimpImage   *gimage,
                         GimpContext *context)
 {
-  PixelRegion  srcPR, destPR;
-  TileManager *tiles;
-  gboolean     non_empty;
-  gint         x1, y1, x2, y2;
+  GimpBuffer *buffer;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (gimage), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
 
-  non_empty = gimp_channel_bounds (gimp_image_get_mask (gimage),
-                                   &x1, &y1, &x2, &y2);
-  if ((x1 == x2) || (y1 == y2))
+  buffer = gimp_edit_extract_visible (gimage, context);
+
+  if (buffer)
     {
-      g_message (_("Unable to cut or copy because the "
-		   "selected region is empty."));
-      return NULL;
-    }
-
-  gimp_projection_finish_draw (gimage->projection);
-  gimp_projection_flush_now (gimage->projection);
-
-  tiles = tile_manager_new (x2 - x1, y2 - y1,
-                            gimp_projection_get_bytes (gimage->projection));
-  tile_manager_set_offsets (tiles, x1, y1);
-
-  pixel_region_init (&srcPR, gimp_projection_get_tiles (gimage->projection),
-		     x1, y1,
-                     x2 - x1, y2 - y1,
-                     FALSE);
-  pixel_region_init (&destPR, tiles,
-                     0, 0,
-                     x2 - x1, y2 - y1,
-                     TRUE);
-
-  /*  use EEKy no-COW copying because sharing tiles with the projection
-   *  is buggy as hell, probably because tile_invalidate() doesn't
-   *  do what it should  --mitch
-   */
-  copy_region_nocow (&srcPR, &destPR);
-
-  /*  Only crop if the gimage mask wasn't empty  */
-  if (non_empty)
-    {
-      TileManager *crop = tile_manager_crop (tiles, 0);
-
-      if (crop != tiles)
-        {
-          tile_manager_unref (tiles);
-          tiles = crop;
-        }
-    }
-
-  if (tiles)
-    {
-      GimpBuffer *buffer = gimp_buffer_new (tiles, "Global Buffer", FALSE);
-
       gimp_set_global_buffer (gimage->gimp, buffer);
       g_object_unref (buffer);
 
@@ -192,9 +177,7 @@ gimp_edit_paste (GimpImage    *gimage,
   else
     type = gimp_image_base_type_with_alpha (gimage);
 
-  layer = gimp_layer_new_from_tiles (paste->tiles,
-                                     gimage,
-                                     type,
+  layer = gimp_layer_new_from_tiles (paste->tiles, gimage, type,
                                      _("Pasted Layer"),
                                      GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
 
@@ -293,18 +276,30 @@ gimp_edit_paste_as_new (Gimp       *gimp,
 			GimpImage  *invoke,
 			GimpBuffer *paste)
 {
-  GimpImage *gimage;
-  GimpLayer *layer;
+  GimpImage     *gimage;
+  GimpLayer     *layer;
+  GimpImageType  type;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (invoke == NULL || GIMP_IS_IMAGE (invoke), NULL);
   g_return_val_if_fail (GIMP_IS_BUFFER (paste), NULL);
 
+  switch (tile_manager_bpp (paste->tiles))
+    {
+    case 1: type = GIMP_GRAY_IMAGE;  break;
+    case 2: type = GIMP_GRAYA_IMAGE; break;
+    case 3: type = GIMP_RGB_IMAGE;   break;
+    case 4: type = GIMP_RGBA_IMAGE;  break;
+    default:
+      g_return_val_if_reached (NULL);
+      break;
+    }
+
   /*  create a new image  (always of type GIMP_RGB)  */
   gimage = gimp_create_image (gimp,
 			      gimp_buffer_get_width (paste),
                               gimp_buffer_get_height (paste),
-			      GIMP_RGB,
+			      GIMP_IMAGE_TYPE_BASE_TYPE (type),
 			      TRUE);
   gimp_image_undo_disable (gimage);
 
@@ -316,9 +311,7 @@ gimp_edit_paste_as_new (Gimp       *gimp,
                            gimp_image_get_unit (invoke));
     }
 
-  layer = gimp_layer_new_from_tiles (paste->tiles,
-                                     gimage,
-                                     gimp_image_base_type_with_alpha (gimage),
+  layer = gimp_layer_new_from_tiles (paste->tiles, gimage, type,
 				     _("Pasted Layer"),
 				     GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
 
@@ -332,10 +325,88 @@ gimp_edit_paste_as_new (Gimp       *gimp,
 
   gimp_image_undo_enable (gimage);
 
-  gimp_create_display (gimp, gimage, GIMP_UNIT_PIXEL, 1.0);
-  g_object_unref (gimage);
-
   return gimage;
+}
+
+const gchar *
+gimp_edit_named_cut (GimpImage    *gimage,
+                     const gchar  *name,
+                     GimpDrawable *drawable,
+                     GimpContext  *context)
+{
+  GimpBuffer *buffer;
+
+  g_return_val_if_fail (GIMP_IS_IMAGE (gimage), NULL);
+  g_return_val_if_fail (name != NULL, NULL);
+  g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
+  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), NULL);
+  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+
+  buffer = gimp_edit_extract (gimage, drawable, context, TRUE);
+
+  if (buffer)
+    {
+      gimp_object_set_name (GIMP_OBJECT (buffer), name);
+      gimp_container_add (gimage->gimp->named_buffers, GIMP_OBJECT (buffer));
+      g_object_unref (buffer);
+
+      return gimp_object_get_name (GIMP_OBJECT (buffer));
+    }
+
+  return NULL;
+}
+
+const gchar *
+gimp_edit_named_copy (GimpImage    *gimage,
+                      const gchar  *name,
+                      GimpDrawable *drawable,
+                      GimpContext  *context)
+{
+  GimpBuffer *buffer;
+
+  g_return_val_if_fail (GIMP_IS_IMAGE (gimage), NULL);
+  g_return_val_if_fail (name != NULL, NULL);
+  g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
+  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), NULL);
+  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+
+  buffer = gimp_edit_extract (gimage, drawable, context, FALSE);
+
+  if (buffer)
+    {
+      gimp_object_set_name (GIMP_OBJECT (buffer), name);
+      gimp_container_add (gimage->gimp->named_buffers, GIMP_OBJECT (buffer));
+      g_object_unref (buffer);
+
+      return gimp_object_get_name (GIMP_OBJECT (buffer));
+    }
+
+  return NULL;
+}
+
+const gchar *
+gimp_edit_named_copy_visible (GimpImage   *gimage,
+                              const gchar *name,
+                              GimpContext *context)
+{
+  GimpBuffer *buffer;
+
+  g_return_val_if_fail (GIMP_IS_IMAGE (gimage), NULL);
+  g_return_val_if_fail (name != NULL, NULL);
+  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+
+  buffer = gimp_edit_extract_visible (gimage, context);
+
+  if (buffer)
+    {
+      gimp_object_set_name (GIMP_OBJECT (buffer), name);
+      gimp_container_add (gimage->gimp->named_buffers, GIMP_OBJECT (buffer));
+      g_object_unref (buffer);
+
+      return gimp_object_get_name (GIMP_OBJECT (buffer));
+    }
+
+  return NULL;
 }
 
 gboolean
@@ -350,6 +421,7 @@ gimp_edit_clear (GimpImage    *gimage,
 
   return gimp_edit_fill_internal (gimage, drawable, context,
                                   GIMP_TRANSPARENT_FILL,
+                                  GIMP_OPACITY_OPAQUE, GIMP_ERASE_MODE,
                                   _("Clear"));
 }
 
@@ -399,13 +471,15 @@ gimp_edit_fill (GimpImage    *gimage,
     }
 
   return gimp_edit_fill_internal (gimage, drawable, context,
-                                  fill_type, undo_desc);
+                                  fill_type,
+                                  GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE,
+                                  undo_desc);
 }
 
 
 /*  private functions  */
 
-const GimpBuffer *
+static GimpBuffer *
 gimp_edit_extract (GimpImage    *gimage,
                    GimpDrawable *drawable,
                    GimpContext  *context,
@@ -422,13 +496,61 @@ gimp_edit_extract (GimpImage    *gimage,
 
   /*  Cut/copy the mask portion from the gimage  */
   tiles = gimp_selection_extract (gimp_image_get_mask (gimage),
-                                  drawable, context, cut_pixels, FALSE, TRUE);
+                                  drawable, context, cut_pixels, FALSE, FALSE);
 
   if (cut_pixels)
     gimp_image_undo_group_end (gimage);
 
+  return gimp_edit_make_buffer (gimage->gimp, tiles, empty);
+}
+
+static GimpBuffer *
+gimp_edit_extract_visible (GimpImage   *gimage,
+                           GimpContext *context)
+{
+  PixelRegion  srcPR, destPR;
+  TileManager *tiles;
+  gboolean     non_empty;
+  gint         x1, y1, x2, y2;
+
+  non_empty = gimp_channel_bounds (gimp_image_get_mask (gimage),
+                                   &x1, &y1, &x2, &y2);
+  if ((x1 == x2) || (y1 == y2))
+    {
+      g_message (_("Unable to cut or copy because the "
+		   "selected region is empty."));
+      return NULL;
+    }
+
+  tiles = tile_manager_new (x2 - x1, y2 - y1,
+                            gimp_projection_get_bytes (gimage->projection));
+  tile_manager_set_offsets (tiles, x1, y1);
+
+  pixel_region_init (&srcPR, gimp_projection_get_tiles (gimage->projection),
+		     x1, y1,
+                     x2 - x1, y2 - y1,
+                     FALSE);
+  pixel_region_init (&destPR, tiles,
+                     0, 0,
+                     x2 - x1, y2 - y1,
+                     TRUE);
+
+  /*  use EEKy no-COW copying because sharing tiles with the projection
+   *  is buggy as hell, probably because tile_invalidate() doesn't
+   *  do what it should  --mitch
+   */
+  copy_region_nocow (&srcPR, &destPR);
+
+  return gimp_edit_make_buffer (gimage->gimp, tiles, ! non_empty);
+}
+
+static GimpBuffer *
+gimp_edit_make_buffer (Gimp        *gimp,
+                       TileManager *tiles,
+                       gboolean     mask_empty)
+{
   /*  Only crop if the gimage mask wasn't empty  */
-  if (tiles && ! empty)
+  if (tiles && ! mask_empty)
     {
       TileManager *crop = tile_manager_crop (tiles, 0);
 
@@ -440,24 +562,19 @@ gimp_edit_extract (GimpImage    *gimage,
     }
 
   if (tiles)
-    {
-      GimpBuffer *buffer = gimp_buffer_new (tiles, "Global Buffer", FALSE);
-
-      gimp_set_global_buffer (gimage->gimp, buffer);
-      g_object_unref (buffer);
-
-      return gimage->gimp->global_buffer;
-    }
+    return gimp_buffer_new (tiles, _("Global Buffer"), FALSE);
 
   return NULL;
 }
 
 static gboolean
-gimp_edit_fill_internal (GimpImage    *gimage,
-                         GimpDrawable *drawable,
-                         GimpContext  *context,
-                         GimpFillType  fill_type,
-                         const gchar  *undo_desc)
+gimp_edit_fill_internal (GimpImage            *gimage,
+                         GimpDrawable         *drawable,
+                         GimpContext          *context,
+                         GimpFillType          fill_type,
+                         gdouble               opacity,
+                         GimpLayerModeEffects  paint_mode,
+                         const gchar          *undo_desc)
 {
   TileManager *buf_tiles;
   PixelRegion  bufPR;
@@ -533,9 +650,7 @@ gimp_edit_fill_internal (GimpImage    *gimage,
   pixel_region_init (&bufPR, buf_tiles, 0, 0, width, height, FALSE);
   gimp_drawable_apply_region (drawable, &bufPR,
                               TRUE, undo_desc,
-                              GIMP_OPACITY_OPAQUE,
-                              (fill_type == GIMP_TRANSPARENT_FILL) ?
-                              GIMP_ERASE_MODE : GIMP_NORMAL_MODE,
+                              opacity, paint_mode,
                               NULL, x, y);
 
   tile_manager_unref (buf_tiles);

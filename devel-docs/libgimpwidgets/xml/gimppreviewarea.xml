@@ -4,98 +4,94 @@
 
 <refentry id="GimpPreviewArea">
 <refmeta>
-<refentrytitle role="top_of_page">GimpPreviewArea</refentrytitle>
+<refentrytitle>GimpPreviewArea</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpPreviewArea</refname>
-<refpurpose>A general purpose preview widget which caches its pixel data.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>GimpPreviewArea</refname><refpurpose>A general purpose preview widget which caches its pixel data.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-                    <link linkend="GimpPreviewArea-struct">GimpPreviewArea</link>;
-<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-preview-area-new">gimp_preview_area_new</link>               (void);
-<link linkend="void">void</link>                <link linkend="gimp-preview-area-draw">gimp_preview_area_draw</link>              (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
-                                                         <link linkend="gint">gint</link> x,
-                                                         <link linkend="gint">gint</link> y,
-                                                         <link linkend="gint">gint</link> width,
-                                                         <link linkend="gint">gint</link> height,
-                                                         <link linkend="GimpImageType">GimpImageType</link> type,
-                                                         const <link linkend="guchar">guchar</link> *buf,
-                                                         <link linkend="gint">gint</link> rowstride);
-<link linkend="void">void</link>                <link linkend="gimp-preview-area-fill">gimp_preview_area_fill</link>              (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
-                                                         <link linkend="gint">gint</link> x,
-                                                         <link linkend="gint">gint</link> y,
-                                                         <link linkend="gint">gint</link> width,
-                                                         <link linkend="gint">gint</link> height,
-                                                         <link linkend="guchar">guchar</link> red,
-                                                         <link linkend="guchar">guchar</link> green,
-                                                         <link linkend="guchar">guchar</link> blue);
-<link linkend="void">void</link>                <link linkend="gimp-preview-area-blend">gimp_preview_area_blend</link>             (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
-                                                         <link linkend="gint">gint</link> x,
-                                                         <link linkend="gint">gint</link> y,
-                                                         <link linkend="gint">gint</link> width,
-                                                         <link linkend="gint">gint</link> height,
-                                                         <link linkend="GimpImageType">GimpImageType</link> type,
-                                                         const <link linkend="guchar">guchar</link> *buf1,
-                                                         <link linkend="gint">gint</link> rowstride1,
-                                                         const <link linkend="guchar">guchar</link> *buf2,
-                                                         <link linkend="gint">gint</link> rowstride2,
-                                                         <link linkend="guchar">guchar</link> opacity);
-<link linkend="void">void</link>                <link linkend="gimp-preview-area-mask">gimp_preview_area_mask</link>              (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
-                                                         <link linkend="gint">gint</link> x,
-                                                         <link linkend="gint">gint</link> y,
-                                                         <link linkend="gint">gint</link> width,
-                                                         <link linkend="gint">gint</link> height,
-                                                         <link linkend="GimpImageType">GimpImageType</link> type,
-                                                         const <link linkend="guchar">guchar</link> *buf1,
-                                                         <link linkend="gint">gint</link> rowstride1,
-                                                         const <link linkend="guchar">guchar</link> *buf2,
-                                                         <link linkend="gint">gint</link> rowstride2,
-                                                         const <link linkend="guchar">guchar</link> *mask,
-                                                         <link linkend="gint">gint</link> rowstride_mask);
-<link linkend="void">void</link>                <link linkend="gimp-preview-area-set-offsets">gimp_preview_area_set_offsets</link>       (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
-                                                         <link linkend="gint">gint</link> x,
-                                                         <link linkend="gint">gint</link> y);
-<link linkend="void">void</link>                <link linkend="gimp-preview-area-set-colormap">gimp_preview_area_set_colormap</link>      (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
-                                                         const <link linkend="guchar">guchar</link> *colormap,
-                                                         <link linkend="gint">gint</link> num_colors);
-<link linkend="void">void</link>                <link linkend="gimp-preview-area-set-max-size">gimp_preview_area_set_max_size</link>      (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
-                                                         <link linkend="gint">gint</link> width,
-                                                         <link linkend="gint">gint</link> height);
-<link linkend="void">void</link>                <link linkend="gimp-preview-area-menu-popup">gimp_preview_area_menu_popup</link>        (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
-                                                         <link linkend="GdkEventButton">GdkEventButton</link> *event);
+            <link linkend="GimpPreviewArea-struct">GimpPreviewArea</link>;
+<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-preview-area-new">gimp_preview_area_new</link>           (void);
+<link linkend="void">void</link>        <link linkend="gimp-preview-area-draw">gimp_preview_area_draw</link>          (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+                                             <link linkend="gint">gint</link> x,
+                                             <link linkend="gint">gint</link> y,
+                                             <link linkend="gint">gint</link> width,
+                                             <link linkend="gint">gint</link> height,
+                                             <link linkend="GimpImageType">GimpImageType</link> type,
+                                             const <link linkend="guchar">guchar</link> *buf,
+                                             <link linkend="gint">gint</link> rowstride);
+<link linkend="void">void</link>        <link linkend="gimp-preview-area-fill">gimp_preview_area_fill</link>          (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+                                             <link linkend="gint">gint</link> x,
+                                             <link linkend="gint">gint</link> y,
+                                             <link linkend="gint">gint</link> width,
+                                             <link linkend="gint">gint</link> height,
+                                             <link linkend="guchar">guchar</link> red,
+                                             <link linkend="guchar">guchar</link> green,
+                                             <link linkend="guchar">guchar</link> blue);
+<link linkend="void">void</link>        <link linkend="gimp-preview-area-blend">gimp_preview_area_blend</link>         (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+                                             <link linkend="gint">gint</link> x,
+                                             <link linkend="gint">gint</link> y,
+                                             <link linkend="gint">gint</link> width,
+                                             <link linkend="gint">gint</link> height,
+                                             <link linkend="GimpImageType">GimpImageType</link> type,
+                                             const <link linkend="guchar">guchar</link> *buf1,
+                                             <link linkend="gint">gint</link> rowstride1,
+                                             const <link linkend="guchar">guchar</link> *buf2,
+                                             <link linkend="gint">gint</link> rowstride2,
+                                             <link linkend="guchar">guchar</link> opacity);
+<link linkend="void">void</link>        <link linkend="gimp-preview-area-mask">gimp_preview_area_mask</link>          (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+                                             <link linkend="gint">gint</link> x,
+                                             <link linkend="gint">gint</link> y,
+                                             <link linkend="gint">gint</link> width,
+                                             <link linkend="gint">gint</link> height,
+                                             <link linkend="GimpImageType">GimpImageType</link> type,
+                                             const <link linkend="guchar">guchar</link> *buf1,
+                                             <link linkend="gint">gint</link> rowstride1,
+                                             const <link linkend="guchar">guchar</link> *buf2,
+                                             <link linkend="gint">gint</link> rowstride2,
+                                             const <link linkend="guchar">guchar</link> *mask,
+                                             <link linkend="gint">gint</link> rowstride_mask);
+<link linkend="void">void</link>        <link linkend="gimp-preview-area-set-offsets">gimp_preview_area_set_offsets</link>   (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+                                             <link linkend="gint">gint</link> x,
+                                             <link linkend="gint">gint</link> y);
+<link linkend="void">void</link>        <link linkend="gimp-preview-area-set-colormap">gimp_preview_area_set_colormap</link>  (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+                                             const <link linkend="guchar">guchar</link> *colormap,
+                                             <link linkend="gint">gint</link> num_colors);
+<link linkend="void">void</link>        <link linkend="gimp-preview-area-set-max-size">gimp_preview_area_set_max_size</link>  (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+                                             <link linkend="gint">gint</link> width,
+                                             <link linkend="gint">gint</link> height);
+<link linkend="void">void</link>        <link linkend="gimp-preview-area-menu-popup">gimp_preview_area_menu_popup</link>    (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+                                             <link linkend="GdkEventButton">GdkEventButton</link> *event);
 
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
-<title role="object_hierarchy.title">Object Hierarchy</title>
+<refsect1>
+<title>Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
-         +----<link linkend="GtkObject">GtkObject</link>
-               +----<link linkend="GtkWidget">GtkWidget</link>
-                     +----<link linkend="GtkDrawingArea">GtkDrawingArea</link>
-                           +----GimpPreviewArea
+   +----<link linkend="GtkObject">GtkObject</link>
+         +----<link linkend="GtkWidget">GtkWidget</link>
+               +----<link linkend="GtkDrawingArea">GtkDrawingArea</link>
+                     +----GimpPreviewArea
 </synopsis>
 
 </refsect1>
 
 
 
-<refsect1 role="impl_interfaces">
-<title role="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1>
+<title>Implemented Interfaces</title>
 <para>
 GimpPreviewArea implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -103,37 +99,37 @@ GimpPreviewArea implements
 </refsect1>
 
 
-<refsect1 role="properties">
-<title role="properties.title">Properties</title>
+<refsect1>
+<title>Properties</title>
 <synopsis>
 
-  &quot;<link linkend="GimpPreviewArea--check-size">check-size</link>&quot;               <link linkend="GimpCheckSize">GimpCheckSize</link>         : Read / Write
-  &quot;<link linkend="GimpPreviewArea--check-type">check-type</link>&quot;               <link linkend="GimpCheckType">GimpCheckType</link>         : Read / Write
+  &quot;<link linkend="GimpPreviewArea--check-size">check-size</link>&quot;           <link linkend="GimpCheckSize">GimpCheckSize</link>         : Read / Write
+  &quot;<link linkend="GimpPreviewArea--check-type">check-type</link>&quot;           <link linkend="GimpCheckType">GimpCheckType</link>         : Read / Write
 </synopsis>
 </refsect1>
 
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 A general purpose preview widget which caches its pixel data.
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="GimpPreviewArea-struct" role="struct"/>GimpPreviewArea</title>
+<title><anchor id="GimpPreviewArea-struct"/>GimpPreviewArea</title>
 <indexterm><primary>GimpPreviewArea</primary></indexterm><programlisting>typedef struct _GimpPreviewArea GimpPreviewArea;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-area-new" role="function"/>gimp_preview_area_new ()</title>
-<indexterm><primary>gimp_preview_area_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_preview_area_new               (void);</programlisting>
+<title><anchor id="gimp-preview-area-new"/>gimp_preview_area_new ()</title>
+<indexterm><primary>gimp_preview_area_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_preview_area_new           (void);</programlisting>
 <para>
-</para>
+Creates a new <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type></link> widget.</para>
 <para>
 
 </para><variablelist role="params">
@@ -143,15 +139,15 @@ Since GIMP 2.2
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-area-draw" role="function"/>gimp_preview_area_draw ()</title>
-<indexterm><primary>gimp_preview_area_draw</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_preview_area_draw              (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
-                                                         <link linkend="gint">gint</link> x,
-                                                         <link linkend="gint">gint</link> y,
-                                                         <link linkend="gint">gint</link> width,
-                                                         <link linkend="gint">gint</link> height,
-                                                         <link linkend="GimpImageType">GimpImageType</link> type,
-                                                         const <link linkend="guchar">guchar</link> *buf,
-                                                         <link linkend="gint">gint</link> rowstride);</programlisting>
+<title><anchor id="gimp-preview-area-draw"/>gimp_preview_area_draw ()</title>
+<indexterm><primary>gimp_preview_area_draw</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_area_draw          (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+                                             <link linkend="gint">gint</link> x,
+                                             <link linkend="gint">gint</link> y,
+                                             <link linkend="gint">gint</link> width,
+                                             <link linkend="gint">gint</link> height,
+                                             <link linkend="GimpImageType">GimpImageType</link> type,
+                                             const <link linkend="guchar">guchar</link> *buf,
+                                             <link linkend="gint">gint</link> rowstride);</programlisting>
 <para>
 Draws <parameter>buf</parameter> on <parameter>area</parameter> and queues a redraw on the given rectangle.
 </para>
@@ -186,15 +182,15 @@ Since GIMP 2.2</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-area-fill" role="function"/>gimp_preview_area_fill ()</title>
-<indexterm><primary>gimp_preview_area_fill</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_preview_area_fill              (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
-                                                         <link linkend="gint">gint</link> x,
-                                                         <link linkend="gint">gint</link> y,
-                                                         <link linkend="gint">gint</link> width,
-                                                         <link linkend="gint">gint</link> height,
-                                                         <link linkend="guchar">guchar</link> red,
-                                                         <link linkend="guchar">guchar</link> green,
-                                                         <link linkend="guchar">guchar</link> blue);</programlisting>
+<title><anchor id="gimp-preview-area-fill"/>gimp_preview_area_fill ()</title>
+<indexterm><primary>gimp_preview_area_fill</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_area_fill          (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+                                             <link linkend="gint">gint</link> x,
+                                             <link linkend="gint">gint</link> y,
+                                             <link linkend="gint">gint</link> width,
+                                             <link linkend="gint">gint</link> height,
+                                             <link linkend="guchar">guchar</link> red,
+                                             <link linkend="guchar">guchar</link> green,
+                                             <link linkend="guchar">guchar</link> blue);</programlisting>
 <para>
 Fills <parameter>area</parameter> in the given color and queues a redraw on the given
 rectangle.
@@ -230,18 +226,18 @@ Since GIMP 2.2</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-area-blend" role="function"/>gimp_preview_area_blend ()</title>
-<indexterm><primary>gimp_preview_area_blend</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_preview_area_blend             (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
-                                                         <link linkend="gint">gint</link> x,
-                                                         <link linkend="gint">gint</link> y,
-                                                         <link linkend="gint">gint</link> width,
-                                                         <link linkend="gint">gint</link> height,
-                                                         <link linkend="GimpImageType">GimpImageType</link> type,
-                                                         const <link linkend="guchar">guchar</link> *buf1,
-                                                         <link linkend="gint">gint</link> rowstride1,
-                                                         const <link linkend="guchar">guchar</link> *buf2,
-                                                         <link linkend="gint">gint</link> rowstride2,
-                                                         <link linkend="guchar">guchar</link> opacity);</programlisting>
+<title><anchor id="gimp-preview-area-blend"/>gimp_preview_area_blend ()</title>
+<indexterm><primary>gimp_preview_area_blend</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_area_blend         (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+                                             <link linkend="gint">gint</link> x,
+                                             <link linkend="gint">gint</link> y,
+                                             <link linkend="gint">gint</link> width,
+                                             <link linkend="gint">gint</link> height,
+                                             <link linkend="GimpImageType">GimpImageType</link> type,
+                                             const <link linkend="guchar">guchar</link> *buf1,
+                                             <link linkend="gint">gint</link> rowstride1,
+                                             const <link linkend="guchar">guchar</link> *buf2,
+                                             <link linkend="gint">gint</link> rowstride2,
+                                             <link linkend="guchar">guchar</link> opacity);</programlisting>
 <para>
 Composites <parameter>buf1</parameter> on <parameter>buf2</parameter> with the given <parameter>opacity</parameter>, draws the result
 to <parameter>area</parameter> and queues a redraw on the given rectangle.
@@ -288,19 +284,19 @@ Since GIMP 2.2</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-area-mask" role="function"/>gimp_preview_area_mask ()</title>
-<indexterm><primary>gimp_preview_area_mask</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_preview_area_mask              (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
-                                                         <link linkend="gint">gint</link> x,
-                                                         <link linkend="gint">gint</link> y,
-                                                         <link linkend="gint">gint</link> width,
-                                                         <link linkend="gint">gint</link> height,
-                                                         <link linkend="GimpImageType">GimpImageType</link> type,
-                                                         const <link linkend="guchar">guchar</link> *buf1,
-                                                         <link linkend="gint">gint</link> rowstride1,
-                                                         const <link linkend="guchar">guchar</link> *buf2,
-                                                         <link linkend="gint">gint</link> rowstride2,
-                                                         const <link linkend="guchar">guchar</link> *mask,
-                                                         <link linkend="gint">gint</link> rowstride_mask);</programlisting>
+<title><anchor id="gimp-preview-area-mask"/>gimp_preview_area_mask ()</title>
+<indexterm><primary>gimp_preview_area_mask</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_area_mask          (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+                                             <link linkend="gint">gint</link> x,
+                                             <link linkend="gint">gint</link> y,
+                                             <link linkend="gint">gint</link> width,
+                                             <link linkend="gint">gint</link> height,
+                                             <link linkend="GimpImageType">GimpImageType</link> type,
+                                             const <link linkend="guchar">guchar</link> *buf1,
+                                             <link linkend="gint">gint</link> rowstride1,
+                                             const <link linkend="guchar">guchar</link> *buf2,
+                                             <link linkend="gint">gint</link> rowstride2,
+                                             const <link linkend="guchar">guchar</link> *mask,
+                                             <link linkend="gint">gint</link> rowstride_mask);</programlisting>
 <para>
 Composites <parameter>buf1</parameter> on <parameter>buf2</parameter> with the given <parameter>mask</parameter>, draws the result on
 <parameter>area</parameter> and queues a redraw on the given rectangle.
@@ -351,10 +347,10 @@ Since GIMP 2.2</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-area-set-offsets" role="function" condition="since:GIMP 2.2"/>gimp_preview_area_set_offsets ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_preview_area_set_offsets</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_preview_area_set_offsets       (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
-                                                         <link linkend="gint">gint</link> x,
-                                                         <link linkend="gint">gint</link> y);</programlisting>
+<title><anchor id="gimp-preview-area-set-offsets"/>gimp_preview_area_set_offsets ()</title>
+<indexterm role="GIMP 2.2"><primary>gimp_preview_area_set_offsets</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_area_set_offsets   (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+                                             <link linkend="gint">gint</link> x,
+                                             <link linkend="gint">gint</link> y);</programlisting>
 <para>
 Sets the offsets of the previewed area. This information is used
 when drawing the checkerboard and to determine the dither offsets.</para>
@@ -370,17 +366,17 @@ when drawing the checkerboard and to determine the dither offsets.</para>
 <varlistentry><term><parameter>y</parameter>&nbsp;:</term>
 <listitem><simpara>    vertical offset
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
+</variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-area-set-colormap" role="function"/>gimp_preview_area_set_colormap ()</title>
-<indexterm><primary>gimp_preview_area_set_colormap</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_preview_area_set_colormap      (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
-                                                         const <link linkend="guchar">guchar</link> *colormap,
-                                                         <link linkend="gint">gint</link> num_colors);</programlisting>
+<title><anchor id="gimp-preview-area-set-colormap"/>gimp_preview_area_set_colormap ()</title>
+<indexterm><primary>gimp_preview_area_set_colormap</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_area_set_colormap  (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+                                             const <link linkend="guchar">guchar</link> *colormap,
+                                             <link linkend="gint">gint</link> num_colors);</programlisting>
 <para>
 Sets the colormap for the <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type></link> widget. You need to
 call this function before you use <link linkend="gimp-preview-area-draw"><function>gimp_preview_area_draw()</function></link> with
-an image type of <link linkend="GIMP-INDEXED-IMAGE:CAPS"><literal>GIMP_INDEXED_IMAGE</literal></link> or <link linkend="GIMP-INDEXEDA-IMAGE:CAPS"><literal>GIMP_INDEXEDA_IMAGE</literal></link>.
+an image type of <literal>GIMP_INDEXED_IMAGE</literal> or <literal>GIMP_INDEXEDA_IMAGE</literal>.
 </para>
 <para>
 Since GIMP 2.2</para>
@@ -398,10 +394,10 @@ Since GIMP 2.2</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-area-set-max-size" role="function" condition="since:GIMP 2.2"/>gimp_preview_area_set_max_size ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_preview_area_set_max_size</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_preview_area_set_max_size      (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
-                                                         <link linkend="gint">gint</link> width,
-                                                         <link linkend="gint">gint</link> height);</programlisting>
+<title><anchor id="gimp-preview-area-set-max-size"/>gimp_preview_area_set_max_size ()</title>
+<indexterm role="GIMP 2.2"><primary>gimp_preview_area_set_max_size</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_area_set_max_size  (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+                                             <link linkend="gint">gint</link> width,
+                                             <link linkend="gint">gint</link> height);</programlisting>
 <para>
 Usually a <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type></link> fills the size that it is
 allocated. This funtion allows you to limit the preview area to a
@@ -419,12 +415,12 @@ preview will draw itself centered into the allocated area.</para>
 <varlistentry><term><parameter>height</parameter>&nbsp;:</term>
 <listitem><simpara> the maximum height in pixels or -1 to unset the limit
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
+</variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-area-menu-popup" role="function" condition="since:GIMP 2.2"/>gimp_preview_area_menu_popup ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_preview_area_menu_popup</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_preview_area_menu_popup        (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
-                                                         <link linkend="GdkEventButton">GdkEventButton</link> *event);</programlisting>
+<title><anchor id="gimp-preview-area-menu-popup"/>gimp_preview_area_menu_popup ()</title>
+<indexterm role="GIMP 2.2"><primary>gimp_preview_area_menu_popup</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_area_menu_popup    (<link linkend="GimpPreviewArea">GimpPreviewArea</link> *area,
+                                             <link linkend="GdkEventButton">GdkEventButton</link> *event);</programlisting>
 <para>
 Creates a popup menu that allows to configure the size and type of
 the checkerboard pattern that the <parameter>area</parameter> uses to visualize transparency.</para>
@@ -435,20 +431,20 @@ the checkerboard pattern that the <parameter>area</parameter> uses to visualize 
 <listitem><simpara>  a <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type></link>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>event</parameter>&nbsp;:</term>
-<listitem><simpara> the button event that causes the menu to popup or <link linkend="NULL:CAPS"><literal>NULL</literal></link>
+<listitem><simpara> the button event that causes the menu to popup or <literal>NULL</literal>
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
+</variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 
 </refsect1>
-<refsect1 role="property_details">
-<title role="property_details.title">Property Details</title>
+<refsect1>
+<title>Properties</title>
 <refsect2><title><anchor id="GimpPreviewArea--check-size"/>The &quot;<literal>check-size</literal>&quot; property</title>
-<indexterm><primary>GimpPreviewArea:check-size</primary></indexterm><programlisting>  &quot;check-size&quot;               <link linkend="GimpCheckSize">GimpCheckSize</link>         : Read / Write</programlisting>
+<programlisting>  &quot;check-size&quot;           <link linkend="GimpCheckSize">GimpCheckSize</link>         : Read / Write</programlisting>
 <para></para><para>Default value: GIMP_CHECK_SIZE_MEDIUM_CHECKS</para>
 </refsect2>
 <refsect2><title><anchor id="GimpPreviewArea--check-type"/>The &quot;<literal>check-type</literal>&quot; property</title>
-<indexterm><primary>GimpPreviewArea:check-type</primary></indexterm><programlisting>  &quot;check-type&quot;               <link linkend="GimpCheckType">GimpCheckType</link>         : Read / Write</programlisting>
+<programlisting>  &quot;check-type&quot;           <link linkend="GimpCheckType">GimpCheckType</link>         : Read / Write</programlisting>
 <para></para><para>Default value: GIMP_CHECK_TYPE_GRAY_CHECKS</para>
 </refsect2>
 

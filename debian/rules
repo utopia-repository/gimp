@@ -1,4 +1,9 @@
 #!/usr/bin/make -f
+# Based on sample debhelper debian/rules file.
+# Written 2 Jun 1998 by Ben Gertzfield <che@debian.org>
+# Hacked 29 May 2000 by Ian McKellar <yakk@gimp.org>
+# Further hacked 20 Jun 2002 by Bastien Nocera <hadess@hadess.net>
+# And again on 14 Nov 2002 by Ari Pollak <ari@debian.org>
 # PLEASE NOTE: when building a development version or a version where the minor
 # library version changes or has changed but the major so version stays the 
 # same, make sure to Build-Conflict on libgimpX.X, Where libgimpX.X contains
@@ -6,12 +11,32 @@
 # libtool will stupidly relink against the system version of the library
 # when installing, and create a dependency on the old version of libgimp.
 
-## WARNING: compiling without -O2 (DEB_BUILD_OPTIONS=noopt) may produce
-##undesired effects, especially when scaling JPEG images.
+#export DH_VERBOSE=1
 
-include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/class/autotools.mk
-include /usr/share/cdbs/1/rules/simple-patchsys.mk
+# These are used for cross-compiling and for saving the configure script
+# from having to guess our platform (since we know it already)
+DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
+## WARNING: compiling without -O2 may produce undesired effects, especially
+## when scaling JPEG images
+CFLAGS = -Wall -g
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+ifeq ("arm",$(shell dpkg-architecture -qDEB_BUILD_ARCH_CPU))
+	CC = gcc-3.4
+else
+	CC = gcc
+endif
+#ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+#	INSTALL_PROGRAM += -s
+#endif
+
+apiver=2.0
 
 ## Read version numbers from the changelog (for upstream dev versions)
 version=$(shell dpkg-parsechangelog | grep '^Version: ' | sed -e 's/^Version: //' | sed -e 's/-.*//')
@@ -20,38 +45,157 @@ micro=$(shell echo ${version} | cut -d. -f3 | cut -d+ -f1)
 nextmicro=$(shell expr ${micro} + 1)
 
 
-DEB_CONFIGURE_EXTRA_FLAGS := \
-	--enable-python --disable-print --enable-default-binary
-DEB_BUILDDIR := $(DEB_SRCDIR)/build
+configure: config.status
+config.status:
+	dh_testdir
 
-DEB_DH_SHLIBDEPS_ARGS_ALL := \
-	-Llibgimp2.0 -l$(CURDIR)/debian/libgimp2.0/usr/lib -Xlibcontroller_midi.so
+ 	# Add here commands to compile the pacckage.
+	CC=$(CC) CFLAGS="$(CFLAGS)" ./configure --sysconfdir=/etc \
+	--prefix=/usr --enable-python --mandir=\$${prefix}/share/man \
+	--host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) \
+	--without-gimpprint --enable-default-binary
 
-# For the stable branch:
-DEB_DH_MAKESHLIBS_ARGS_libgimp2.0 := -V "libgimp2.0 (>= 2.2.0+rel)"
-# For the development branch:
-#DEB_DH_MAKESHLIBS_ARGS_libgimp2.0 := \
-#	-V "libgimp2.0 (>= ${version}), libgimp2.0 (<< ${major}.${nextmicro})"
+build: configure build-stamp
+build-stamp:
+	dh_testdir
+	$(MAKE)
 
-clean::
-	rm -rf build
+	mv plug-ins/uri/.libs/uri plug-ins/uri/uri.gnomevfs
+	# Build wget-only URI plugin
+	sed	-e 's/\(backend_sources.*gnome\)/#\1/' \
+		-e 's/#\(backend_sources.*wget\)/\1/' \
+		-e 's/\(am__objects.*gnome\)/#\1/' \
+		-e 's/#\(am__objects.*wget\)/\1/' \
+		plug-ins/uri/Makefile > plug-ins/uri/Makefile.wget
+	cd plug-ins/uri && make -f Makefile.wget
 
-common-install-impl::
+	cd $(CURDIR)
+	
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+
+	rm -f build-stamp install-stamp
+
+	# Add here commands to clean up after the build process.
+	rm -f plug-ins/uri/Makefile.wget
+	-$(MAKE) clean
+	-$(MAKE) distclean
+	find . -name '*.o' -o -name '_libs' -o -name '*.deps' -o -name \
+		'*.lo' -o -name '*.a' -o -name '*.P' -o -name 'Makefile'| xargs rm -rf
+	rm -f config.h config.log config.status libtool
+	rm -f intltool-extract intltool-merge \
+		intltool-update {po,po-tips}/.intltool-merge-cache{,make} \
+		po/POTFILES libgimpmath/test-md5
+	rm -f plug-ins/pygimp/*.py{c,o}
+	
+ifneq "$(wildcard /usr/share/misc/config.sub)" ""
+	cp -f /usr/share/misc/config.sub config.sub
+endif
+ifneq "$(wildcard /usr/share/misc/config.guess)" ""
+	cp -f /usr/share/misc/config.guess config.guess
+endif
+
+	dh_clean
+
+install: install-stamp
+install-stamp: build
+	dh_testdir
+	dh_testroot
+	dh_clean
+	dh_installdirs
+	
+	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp install
+	
+	mv $(CURDIR)/debian/tmp/usr/lib/gimp/2.0/plug-ins/uri \
+		$(CURDIR)/debian/gimp-wget/usr/lib/gimp/2.0/plug-ins/uri
+	mv $(CURDIR)/plug-ins/uri/uri.gnomevfs \
+		$(CURDIR)/debian/gimp-gnomevfs/usr/lib/gimp/2.0/plug-ins/uri
+
+	# Remove compiled python files from the distribution, this is done in
+	# postrm using dh_python
+	find $(CURDIR)/debian/tmp -name "*.py[co]" | xargs rm -rf
+	
 	mkdir -p debian/tmp/usr/share/mime-info/ \
 		debian/tmp/usr/share/application-registry/ \
 		debian/tmp/usr/share/pixmaps
-	install -D -m644 debian/tmp/usr/share/gimp/2.0/misc/gimp.desktop \
-		debian/tmp/usr/share/applications/gimp-2.2.desktop
-	install -m644 debian/tmp/usr/share/gimp/2.0/misc/gimp.keys \
-		debian/tmp/usr/share/mime-info/gimp-2.2.keys
-	install -m644 debian/tmp/usr/share/gimp/2.0/misc/gimp.applications \
-		debian/tmp/usr/share/application-registry/gimp-2.2.applications
+#	install -m644 debian/tmp/usr/share/gimp/2.0/images/wilber-icon.png \
+#		debian/tmp/usr/share/pixmaps/gimp.png
 
-	# Remove compiled python files from the distribution, they're created in 
-	# postrm using dh_python
-	find $(CURDIR)/debian/tmp -name "*.py[co]" -exec rm '{}' ';'
+	touch install-stamp
 
-	dh_movefiles
+# Build architecture-independent files here.
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_movefiles -i
+#	dh_installdebconf
+	dh_installdocs -i
+	
+	dh_installexamples -i
+	dh_installmenu -i
+	dh_installcron -i
+	dh_installman -i
+	dh_installinfo -i 
+	dh_installchangelogs -i ChangeLog
+	dh_link -i
+	dh_strip -i
+	dh_compress -i
+	dh_fixperms -i
+#	dh_perl
+	dh_python /usr/lib/gimp/$(apiver)/python
 
-binary-install/gimp-python::
-	dh_pysupport -pgimp-python /usr/lib/gimp/2.0/python
+#	dh_makeshlibs
+
+	dh_installdeb -i
+#	dh_perl
+#	dh_shlibdeps
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_movefiles -a
+#	dh_installdebconf
+	dh_installdocs -a
+	
+	dh_installexamples -a
+	dh_installmenu -a
+	dh_installcron -a
+	dh_installman -a
+	dh_installinfo -a
+	dh_installchangelogs -a ChangeLog
+	dh_desktop
+	dh_link -a
+	dh_strip -a --dbg-package=gimp-dbg
+	dh_compress -a
+	dh_fixperms -a
+#	dh_perl
+	dh_python -a /usr/lib/gimp/$(apiver)/python
+
+	dh_makeshlibs -a -Nlibgimp$(apiver)
+# For the stable branch:
+#	dh_makeshlibs -a -plibgimp$(major) \
+#		-V "libgimp2.0 (>= 2.4.0)"
+# For the development branch:
+	dh_makeshlibs -a -plibgimp$(apiver) \
+		-V "libgimp${apiver} (>= ${version}), \
+			libgimp${apiver} (<< ${major}.${nextmicro})"
+
+	dh_installdeb -a
+#	dh_perl
+	dh_shlibdeps -a -L libgimp$(apiver) -l$(CURDIR)/debian/libgimp$(apiver)/usr/lib -Xlibcontroller_midi.so
+	sed -i -e 's/libfreetype6 (>= 2.1.5-1)/libfreetype6 (>= 2.1.7)/' \
+		debian/gimp.substvars
+	dh_gencontrol -a
+	dh_md5sums -a
+	dh_builddeb -a
+
+binary: binary-indep binary-arch
+.PHONY: configure build clean binary-indep binary-arch binary

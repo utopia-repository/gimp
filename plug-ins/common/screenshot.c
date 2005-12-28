@@ -1,5 +1,5 @@
 /*
- *  ScreenShot plug-in
+ *  Screenshot plug-in
  *  Copyright 1998-2000 Sven Neumann <sven@gimp.org>
  *  Copyright 2003      Henrik Brix Andersen <brix@gimp.org>
  *
@@ -29,13 +29,18 @@
 
 #include <string.h>
 
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
+#include <gdk/gdkkeysyms.h>
+
 #if defined(GDK_WINDOWING_X11)
 #include <gdk/gdkx.h>
+
+#ifdef HAVE_X11_XMU_WINUTIL_H
+#include <X11/Xmu/WinUtil.h>
+#endif /* HAVE_X11_XMU_WINUTIL_H */
+
 #elif defined(GDK_WINDOWING_WIN32)
 #include <windows.h>
 #endif
@@ -53,117 +58,80 @@ static const guint8 screenshot_icon[] __attribute__ ((__aligned__ (4))) =
 #else
 static const guint8 screenshot_icon[] =
 #endif
-{
-  ""
+{ ""
   /* Pixbuf magic (0x47646b50) */
   "GdkP"
-  /* length: header (24) + pixel_data (2735) */
-  "\0\0\12\307"
+  /* length: header (24) + pixel_data (1653) */
+  "\0\0\6\215"
   /* pixdata_type (0x2010002) */
   "\2\1\0\2"
-  /* rowstride (128) */
-  "\0\0\0\200"
-  /* width (32) */
-  "\0\0\0\40"
-  /* height (32) */
-  "\0\0\0\40"
+  /* rowstride (96) */
+  "\0\0\0`"
+  /* width (24) */
+  "\0\0\0\30"
+  /* height (24) */
+  "\0\0\0\30"
   /* pixel_data: */
-  "\326\0\0\0\0\1eee\13\230\0\0\0\0\1\15\15\15z\207\0\0\0\377\1\14\14\14"
-  "W\227\0\0\0\0\11\0\0\0\377\306\306\306\354\364\364\364\377\372\372\372"
-  "\377\375\375\375\377\372\372\372\377\357\357\357\377\257\257\257\310"
-  "\0\0\0\377\226\0\0\0\0\12]]]\14\0\0\0\377\304\304\304\377\354\354\354"
-  "\377\367\367\367\377\372\372\372\377\366\366\366\377\352\352\352\377"
-  "\257\257\257\354\0\0\0\377\226\0\0\0\0\4QQQ+\0\0\0\377}}}\374\177\177"
-  "\177\366\204\200\200\200\366\2xxx\377\0\0\0\377\226\0\0\0\0\4\35\35\35"
-  "[\0\0\0\377333\343AAA\206\202PPPL\5KKKYBBB\211555\377\0\0\0\377'''\30"
-  "\225\0\0\0\0\4\6\6\6\226\0\0\0\377\35\35\35\324GGGc\203QQQU\4""777p\35"
-  "\35\35\377\0\0\0\377\6\6\6K\224\0\0\0\0\5\0\0\0\33\7\7\7\317\0\0\0\377"
-  "ZZZ\377eee\377\203fff\377\4ddd\377EEE\377\0\0\0\377\0\0\0\201\215\0\0"
-  "\0\0\6\0\0\0\4\0\0\0\20\0\0\0\30\2\2\1""4\0\0\0B\0\0\0S\202\0\0\0\377"
-  "\3''&\264ZYY\365uuu\377\205\217\217\217\377\3sss\377HHH\357\17\17\17"
-  "\330\202\0\0\0\377\3\0\0\0\233\37\37\37B\0\0\0\16\205\0\0\0\0\2\0\0\0"
-  "\14\0\0\0u\206\0\0\0\377\6XXX\354LLL\354OOO\345ppp\343\233\233\233\377"
-  "\252\252\252\377\205\265\265\265\377\10\262\262\262\377\221\221\221\377"
-  "PPP\372LLL\361===\353\36\36\36\343\37\37\37\330\0\0\0""0\203\0\0\0\0"
-  "\1\0\0\0\217\203\0\0\0\377\15kjh\377dca\377gec\377jig\377srp\377\243"
-  "\243\243\377eee\377\345\345\345\377\340\340\340\377|||\377\255\255\255"
-  "\377\213\213\213\377\212\212\212\377\204\204\204\204\377\10\206\206\206"
-  "\377\232\232\232\377xxx\377ooo\377|||\377sss\377HHH\367\27\27\27\243"
-  "\203\0\0\0\0\35\0\0\0\377cb^\377oom\377|{y\377a`^\377YYY\377222\377U"
-  "TS\377vur\377\217\217\217\377ZZZ\377\346\346\346\377\336\336\336\377"
-  "\203\203\203\377\242\242\242\377\213\213\213\377\220\217\217\377\201"
-  "\200\200\377zzx\377mlk\377rqp\377vvu\377\204\204\204\377\213\213\213"
-  "\377lll\377xxx\377\177\177\177\377ppp\377\0\0\0\377\203\0\0\0\0\35\0"
-  "\0\0\377\261\257\254\377\206\205\202\377\201\200|\377onk\377onl\377N"
-  "ML\377\200\200~\377feb\377@@@\377bbb\377RRR\377fff\377\262\262\262\377"
-  "\221\221\221\377\221\220\216\377rrp\377vwu\377iji\377QSR\377XYX\377c"
-  "eb\377_`]\377\202\202\201\377rrr\377iii\377bbb\377nnn\377\0\0\0\377\203"
-  "\0\0\0\0\23\0\0\0\377\210\207\201\377\265\264\262\377\262\262\260\377"
-  "\302\301\277\377\307\307\306\377\267\267\266\377`_]\377\"\"\40\377JJ"
-  "J\377sss\377iii\377www\377\264\263\263\377\200\200\177\377hkh\377[_]"
-  "\377_bb\377]aa\377\202RVV\377\5JNK\377>B=\377QSO\377hig\377jjj\377\202"
-  "\177\177\177\377\1\0\0\0\377\203\0\0\0\0\35\0\0\0\377\202\200w\377\177"
-  "}t\377tqh\377ljb\377a^W\377WUO\377\77=9\377$#\40\377LLL\377uuu\377pp"
-  "p\377\236\236\236\377\222\223\222\377\\__\377bfe\377JNP\377BHI\377CH"
-  "J\377BGJ\377>CE\3776::\377/3.\377/2,\377:=8\377jih\377}}}\377\200\200"
-  "\200\377\0\0\0\377\203\0\0\0\0\35\0\0\0\377\202\177w\377\200}u\377tq"
-  "h\377mjc\377a_X\377WUO\377@\77;\377.,*\377KKK\377mmm\377yyy\377\224\223"
-  "\222\377aee\377X]]\377\77DD\377VYW\377\\_^\377MQS\377GLM\377TXZ\377Q"
-  "TV\377;@A\377,/*\377**#\377SRO\377zzz\377\177\177\177\377\0\0\0\377\203"
-  "\0\0\0\0\12\0\0\0\377\201~u\377\177|t\377sph\377mjb\377a_X\377WUO\377"
-  "@>9\377/.+\377KKK\377\202ttt\377\21{}}\377QVW\377DHG\377`bb\377599\377"
-  "\20\21\21\377\6\6\6\377\11\11\11\377\25\27\27\377DFG\377SVW\3777<>\377"
-  "+,(\377860\377poo\377zzz\377\0\0\0\377\203\0\0\0\0\23\0\0\0\377\200}"
-  "u\377\177|t\377spg\377ljb\377a_X\377WTN\377@>9\377/.+\377KKK\377ttt\377"
-  "bdd\377rvw\377\77DD\377\\_^\3778;9\377444\377FFF\377111\377\202\37\37"
-  "\37\377\10\35\36\36\3778<<\377DIL\377154\377*)\"\377nmk\377\200\200\200"
-  "\377\0\0\0\377\203\0\0\0\0>\0\0\0\377\177}u\377~{s\377sph\377ljb\377"
-  "`^W\377UTM\377@=9\377..*\377III\377nnn\377_`a\377@FG\377HLL\377LPQ\377"
-  ",-+\377\251\251\251\377\200\200\200\377\242\242\242\377OOO\377\77\77"
-  "\77\377111\377)++\377HMP\377BIK\377\34\34\27\377NMK\377qqq\377\0\0\0"
-  "\377\0\0\0\2\0\0\0\1\0\0\0\0\0\0\0\377\177}t\377~{s\377rog\377lia\377"
-  "`^W\377USM\377\77=8\377..*\377III\377lll\377ghh\3779>\77\377SWV\377F"
-  "JG\377$$#\377lll\377\242\242\242\377\363\363\363\377\221\221\221\377"
-  "ddd\377DDD\377111\377GLO\377HNQ\377\35\35\32\377QPN\377lll\377\0\0\0"
-  "\377\0\0\0\6\202\0\0\0\3\36\0\0\0\377\177|t\377}zs\377rog\377kha\377"
-  "`]W\377USM\377>=8\377.-*\377HHH\377rrr\377dee\3777;<\377LRS\377:>:\377"
-  "\10\10\7\377CCC\377yyy\377\233\233\233\377\242\242\242\377{{{\377TTT"
-  "\377<<<\377INQ\377HMQ\377$%#\377mmk\377ttt\377\0\0\0\377\0\0\0\21\202"
-  "\0\0\0\10""3\0\0\0\377~{s\377}zr\377qog\377kha\377_]V\377TRL\377><8\377"
-  ".-*\377JJJ\377uuu\377iij\3777;<\3779AC\377387\377\21\22\20\377\37\37"
-  "\37\377\77\77\77\377ddd\377{{{\377ppp\377\223\223\223\377@AA\377CJM\377"
-  "\77FI\377-/.\377ssr\377ppp\377\0\0\0\377\0\0\0\31\0\0\0\14\0\0\0\16\0"
-  "\0\0\377~{t\377}zr\377qnf\377jh`\377^\\V\377SQL\377><7\377.-*\377HHH"
-  "\377www\377non\377/12\3776>>\377;CF\377%)&\377\33\34\33\377111\377DD"
-  "D\377\202TTT\377\23FFG\377MOR\377;BG\377058\377DEE\377uuu\377NNN\374"
-  "\21\21\21\302\0\0\0\34\0\0\0\15\0\0\0\17\0\0\0\264NLJ\377{xq\377ome\377"
-  "jg`\377`]V\377TQL\377973\377\204\0\0\0\377\14\22\23\23\3774:;\377;CG"
-  "\377>DC\377*.-\377'((\377111\377;;;\377<>>\377FJM\377FLO\377=BG\377\203"
-  "\0\0\0\377\7\10\10\10\273\1\1\1l\0\0\0\26\0\0\0\11\0\0\0\12\0\0\0m\0"
-  "\0\0\256\206\0\0\0\377\40\3\3\2\301\0\0\0\236\0\0\0n\0\0\0t\1\1\1\204"
-  "\17\20\21\354\0\0\0\377Z]^\377RVW\377<AC\3779>B\377\77EH\377HLO\377["
-  "]_\377UY[\377\0\0\0\377\14\15\16\266\0\0\0_\0\0\0I\0\0\0-\0\0\0\32\0"
-  "\0\0\13\0\0\0\4\0\0\0\5\0\0\0\14\0\0\0#\0\0\0;\0\0\0P\0\0\0\\\3\3\3f"
-  "\11\10\10[\4\4\4N\202\0\0\0B\24\0\0\0E\0\0\0O\0\0\0[\4\5\5\212\20\22"
-  "\24\321\0\0\0\377INR\377BIM\377BHL\377Z^`\377KOR\377NRU\377\0\0\0\377"
-  "\17\20\21\265\5\5\6c\0\0\0@\0\0\0-\0\0\0\31\0\0\0\15\0\0\0\4\202\0\0"
-  "\0\1\4\0\0\0\3\0\0\0\6\0\0\0\11\0\0\0\13\202\0\0\0\15\13\0\0\0\17\0\0"
-  "\0\22\0\0\0\24\0\0\0\26\0\0\0\32\0\0\0&\0\0\0""0\0\0\0<\1\1\2M\11\12"
-  "\13\232\34\37!\320\204\0\0\0\377\10\16\17\17\300\14\14\14w\0\0\0<\0\0"
-  "\0.\0\0\0\35\0\0\0\21\0\0\0\7\0\0\0\3\204\0\0\0\0\6\0\0\0\1\0\0\0\2\0"
-  "\0\0\1\0\0\0\2\0\0\0\1\0\0\0\2\202\0\0\0\3\23\0\0\0\5\0\0\0\6\0\0\0\17"
-  "\0\0\0\26\0\0\0\37\0\0\0#\0\0\0-\4\4\5@\3\3\3[\0\0\0p\2\3\3d\7\10\10"
-  "O\7\10\10""7\0\0\0&\0\0\0\35\0\0\0\24\0\0\0\12\0\0\0\5\0\0\0\1\217\0"
-  "\0\0\0\6\0\0\0\3\0\0\0\5\0\0\0\11\0\0\0\14\0\0\0\20\0\0\0\23\202\0\0"
-  "\0\25\7\0\0\0\23\0\0\0\21\0\0\0\15\0\0\0\13\0\0\0\7\0\0\0\4\0\0\0\2\222"
-  "\0\0\0\0\5\0\0\0\1\0\0\0\2\0\0\0\4\0\0\0\5\0\0\0\7\202\0\0\0\10\5\0\0"
-  "\0\6\0\0\0\5\0\0\0\3\0\0\0\2\0\0\0\1\207\0\0\0\0"
+  "\273\0\0\0\0\7kkk\17\250\250\250\316\265\265\265\377\276\276\276\377"
+  "\273\273\273\377\253\253\253\316rrr\17\221\0\0\0\0\7\210\210\210F\322"
+  "\322\322\364\370\370\370\377\376\376\376\377\370\370\370\377\325\325"
+  "\325\370\220\220\220F\221\0\0\0\0\7www\250\256\256\256\377\300\300\300"
+  "\377\310\310\310\377\303\303\303\377\260\260\260\377\204\204\204\253"
+  "\220\0\0\0\0\11\35\35\35\17""111\354<<<\334LLL\201PPPrLLL\201>>>\323"
+  ";;;\344'''\17\217\0\0\0\0\11\2\2\2E\40\40\40\377***\316RRR\200QQQ\200"
+  "PPP\200$$$\316\34\34\34\377\4\4\4E\215\0\0\0\0\5\0\0\0\12\0\0\0'\0\0"
+  "\0\207777\365ppp\377\203zzz\377\6ppp\377000\366\0\0\0\217\0\0\0'\0\0"
+  "\0\\\0\0\0""4\204\0\0\0\0\13\0\0\0\6\0\0\0/\2\2\2`\1\1\0\222\"\"\"\251"
+  "111\324FFF\342DDD\343PPP\312\216\216\216\377\244\244\244\377\204\260"
+  "\260\260\377\6\222\222\222\377DDD\364888\355'''\342\37\37\37\322\0\0"
+  "\0\3\202\0\0\0\0\14\0\0\0h988\377ddc\377feb\377edb\377kjg\377{{z\377"
+  "nnn\377\344\344\344\377\231\231\231\377\256\256\256\377\212\212\212\377"
+  "\202\203\203\203\377\202\201\201\201\377\6\226\226\226\377xxx\377www"
+  "\377yyy\377MMM\366\12\12\11E\202\0\0\0\0\1LKH\377\202yxu\377\5ffd\377"
+  ",,,\377a`^\377FFD\377ZZZ\377\202\220\220\220\377\4\240\240\240\377\217"
+  "\216\216\377\215\214\212\377nmj\377\202ffd\377\6nnm\377\212\212\212\377"
+  "lll\377fff\377kkk\377\6\6\6q\202\0\0\0\0\26>=:\377\232\232\226\377\222"
+  "\221\215\377\226\225\224\377\206\205\202\377\\\\Z\377((&\377ooo\377e"
+  "ee\377\232\232\232\377\206\206\205\377prp\377add\377X\\\\\377RVV\377"
+  "ORR\377BEA\377[]Y\377hhh\377~~~\377}}}\377\0\0\0\200\202\0\0\0\0\26>"
+  "=8\377\203\201x\377sph\377gd]\377XVP\377;:6\37700.\377qqq\377nnn\377"
+  "\222\222\221\377`cc\377W\\\\\377DHI\377FJL\377DIL\377<AC\377151\377/"
+  "1+\377OOL\377zzz\377~~~\377\0\0\0\200\202\0\0\0\0\26=<8\377\203\200x"
+  "\377sph\377hf^\377YVP\377=;7\377543\377mmm\377\200\200\200\377Z]]\377"
+  "KQQ\377NQR\377RTR\377)+,\377%((\377MOP\377PSU\377042\377+*$\377rrr\377"
+  "|||\377\0\0\0\200\202\0\0\0\0\26=;7\377\202\200x\377rog\377ge^\377XV"
+  "O\377<:6\377443\377qqq\377^`a\377PUW\377RVT\377698\377443\377,,,\377"
+  "\34\34\34\377\32\32\32\3777;;\377\77DG\377'(\"\377``\\\377{{{\377\0\0"
+  "\0\200\202\0\0\0\0\177<;7\377\202\177w\377rog\377fd]\377WUN\377<:6\377"
+  "442\377kkk\377VXY\377<BB\377VYY\377887\377\224\224\224\377\265\265\265"
+  "\377XXX\377;;;\377*++\377JPR\377)-,\377DC\77\377yyy\377\0\0\0\201\0\0"
+  "\0\1\0\0\0\2<;6\377\202\177w\377qnf\377fc\\\377VTN\377<:6\377442\377"
+  "mmm\377\\^^\377@EF\377KOL\377\36\36\36\377xxx\377\316\316\316\377\237"
+  "\237\237\377YYY\377:::\377NRU\377)-/\377ZZV\377vvv\377\0\0\0\206\0\0"
+  "\0\6\0\0\0\10<:6\377\200~v\377qnf\377eb\\\377VTN\377;95\377442\377nn"
+  "n\377XYZ\3779@@\3776<<\377\20\21\20\377...\377ggg\377\204\204\204\377"
+  "\206\206\206\377BBB\377EKN\377(,.\377hih\377jjj\377\0\0\0\215\0\0\0\16"
+  "\0\0\0\20<:6\377\200~v\377pnf\377dc[\377USM\377;95\377432\377ttt\377"
+  "ijj\377*./\377<DG\377$(&\377###\377@@@\377RRR\377JJJ\377JLP\377<BG\377"
+  "),,\377xxx\377BBB\371\0\0\0b\0\0\0\16\0\0\0\17\"\"\"\255XVP\371`^W\376"
+  "^\\U\377NKF\377,+(\363\0\0\0\310\0\0\0\274\0\0\0\276\20\22\22\3457>A"
+  "\377UXX\377045\377024\3778<=\377BFH\377SWY\377158\377\13\15\15\307\0"
+  "\0\0\251\0\0\0e\0\0\0\32\0\0\0\10\0\0\0\6\0\0\0\30\0\0\0G\0\0\0e\0\0"
+  "\0|\15\14\13o\5\5\4X\0\0\0F'\0\0\0J\0\0\0V\2\2\2q\24\26\27\324<AD\377"
+  "PUX\377@FJ\377RVY\377WZ\\\377379\377\17\20\21\262\0\0\0Q\0\0\0""3\0\0"
+  "\0\32\0\0\0\11\0\0\0\2\0\0\0\1\0\0\0\4\0\0\0\10\0\0\0\12\0\0\0\13\0\0"
+  "\0\15\0\0\0\20\0\0\0\22\0\0\0\26\0\0\0$\0\0\0""2\1\1\1D\11\12\12\212"
+  "$')\306\"%'\360&),\343\33\35\36\300\12\13\13l\0\0\0""6\0\0\0\"\0\0\0"
+  "\20\0\0\0\6\0\0\0\1\210\0\0\0\0\16\0\0\0\1\0\0\0\2\0\0\0\10\0\0\0\16"
+  "\0\0\0\25\0\0\0\34\0\0\0\"\0\0\0#\0\0\0\40\0\0\0\34\0\0\0\27\0\0\0\17"
+  "\0\0\0\7\0\0\0\2\215\0\0\0\0\3\0\0\0\2\0\0\0\4\0\0\0\6\202\0\0\0\11\4"
+  "\0\0\0\7\0\0\0\5\0\0\0\3\0\0\0\1\205\0\0\0\0"
 };
 
 
 /* Defines */
-#define PLUG_IN_NAME "plug_in_screenshot"
-#define HELP_ID      "plug-in-screenshot"
+#define PLUG_IN_PROC   "plug-in-screenshot"
+#define PLUG_IN_BINARY "screenshot"
 
 #ifdef __GNUC__
 #ifdef GDK_NATIVE_WINDOW_POINTER
@@ -173,20 +141,35 @@ static const guint8 screenshot_icon[] =
 #endif
 #endif
 
+typedef enum
+{
+  SHOOT_ROOT,
+  SHOOT_REGION,
+  SHOOT_WINDOW
+} ShootType;
+
 typedef struct
 {
-  gboolean         root;
-  guint            window_id;
-  guint            select_delay;
-  guint            grab_delay;
-} ScreenShotValues;
+  ShootType  shoot_type;
+  gboolean   decorate;
+  guint      window_id;
+  guint      select_delay;
+  gint       x1;
+  gint       y1;
+  gint       x2;
+  gint       y2;
+} ScreenshotValues;
 
-static ScreenShotValues shootvals =
+static ScreenshotValues shootvals =
 {
-  FALSE,     /* root window  */
-  0,         /* window ID    */
-  0,         /* select delay */
-  0,         /* grab delay   */
+  SHOOT_WINDOW, /* root window  */
+  TRUE,         /* include WM decorations */
+  0,            /* window ID    */
+  0,            /* select delay */
+  0,            /* coords of region dragged out by pointer */
+  0,
+  0,
+  0
 };
 
 
@@ -197,13 +180,14 @@ static void      run   (const gchar      *name,
 			gint             *nreturn_vals,
 			GimpParam       **return_vals);
 
-static GdkNativeWindow select_window  (GdkScreen       *screen);
-static gint32          create_image   (const GdkPixbuf *pixbuf);
+static GdkNativeWindow select_window  (GdkScreen        *screen);
+static gint32          create_image   (const GdkPixbuf  *pixbuf);
 
-static void      shoot                (void);
-static gboolean  shoot_dialog         (void);
-static void      shoot_delay          (gint32     delay);
-static gboolean  shoot_delay_callback (gpointer   data);
+static gint32    shoot                (GdkScreen        *screen);
+static gboolean  shoot_dialog         (GdkScreen       **screen);
+static void      shoot_delay          (gint32            delay);
+static gboolean  shoot_delay_callback (gpointer          data);
+static gboolean  shoot_quit_timeout   (gpointer          data);
 
 
 /* Global Variables */
@@ -215,14 +199,6 @@ GimpPlugInInfo PLUG_IN_INFO =
   run    /* run_proc   */
 };
 
-/* the image that will be returned */
-static gint32           image_ID   = -1;
-
-/* the screen on which we are running */
-static GdkScreen       *cur_screen = NULL;
-
-/* the window the user selected */
-static GdkNativeWindow  selected_native;
 
 /* Functions */
 
@@ -233,9 +209,13 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32, "run_mode",  "Interactive, non-interactive" },
-    { GIMP_PDB_INT32, "root",      "Root window { TRUE, FALSE }" },
-    { GIMP_PDB_INT32, "window_id", "Window id" }
+    { GIMP_PDB_INT32, "run-mode",  "Interactive, non-interactive"     },
+    { GIMP_PDB_INT32, "root",      "Root window { TRUE, FALSE }"      },
+    { GIMP_PDB_INT32, "window-id", "Window id"                        },
+    { GIMP_PDB_INT32, "x1",        "(optional) Region left x coord"   },
+    { GIMP_PDB_INT32, "y1",        "(optional) Region top y coord"    },
+    { GIMP_PDB_INT32, "x2",        "(optional) Region right x coord"  },
+    { GIMP_PDB_INT32, "y2",        "(optional) Region bottom y coord" }
   };
 
   static GimpParamDef return_vals[] =
@@ -243,28 +223,31 @@ query (void)
     { GIMP_PDB_IMAGE, "image", "Output image" }
   };
 
-  gimp_install_procedure (PLUG_IN_NAME,
-			  "Creates a screenshot of a single window or the whole screen",
-                          "After a user specified time out the user selects a window and "
-                          "another time out is started. At the end of the second time out "
-                          "the window is grabbed and the image is loaded into The GIMP. "
-                          "Alternatively the whole screen can be grabbed. When called "
-                          "non-interactively it may grab the root window or use the "
-                          "window-id passed as a parameter.",
-			  "Sven Neumann <sven@gimp.org>, Henrik Brix Andersen <brix@gimp.org>",
+  gimp_install_procedure (PLUG_IN_PROC,
+			  "Take a screenshot",
+                          "The plug-in allows to take screenshots of a an "
+                          "interactively selected window or of the desktop, "
+                          "either the whole desktop or an interactively "
+                          "selected region. When called non-interactively, it "
+                          "may grab the root window or use the window-id "
+                          "passed as a parameter.  The last four parameters "
+                          "are optional and can be used to specify the corners "
+                          "of the region to be grabbed.",
+			  "Sven Neumann <sven@gimp.org>, "
+                          "Henrik Brix Andersen <brix@gimp.org>",
 			  "1998 - 2003",
 			  "v0.9.7 (2003/11/15)",
-			  N_("_Screen Shot..."),
+			  N_("_Screenshot..."),
 			  NULL,
 			  GIMP_PLUGIN,
 			  G_N_ELEMENTS (args),
                           G_N_ELEMENTS (return_vals),
 			  args, return_vals);
 
-  gimp_plugin_menu_register (PLUG_IN_NAME, "<Toolbox>/File/Acquire");
-  /* gimp_plugin_menu_register (PLUG_IN_NAME, "<Image>/File/Acquire"); */
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Toolbox>/File/Acquire");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/File/Acquire");
 
-  gimp_plugin_icon_register (PLUG_IN_NAME,
+  gimp_plugin_icon_register (PLUG_IN_PROC,
                              GIMP_ICON_TYPE_INLINE_PIXBUF, screenshot_icon);
 }
 
@@ -275,20 +258,17 @@ run (const gchar      *name,
      gint             *nreturn_vals,
      GimpParam       **return_vals)
 {
-  /* Get the runmode from the in-parameters */
-  GimpRunMode run_mode = param[0].data.d_int32;
+  GimpRunMode        run_mode = param[0].data.d_int32;
+  GimpPDBStatusType  status   = GIMP_PDB_SUCCESS;
+  GdkScreen         *screen   = NULL;
+  gint32             image_ID;
 
-  /* status variable, use it to check for errors in invocation usually only
-   * during non-interactive calling
-   */
-  GimpPDBStatusType status = GIMP_PDB_SUCCESS;
-
-  /* always return at least the status to the caller. */
-  static GimpParam values[2];
+  static GimpParam   values[2];
 
   /* initialize the return of the status */
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = status;
+
   *nreturn_vals = 1;
   *return_vals  = values;
 
@@ -299,32 +279,47 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /* Possibly retrieve data from a previous run */
-      gimp_get_data (PLUG_IN_NAME, &shootvals);
+      gimp_get_data (PLUG_IN_PROC, &shootvals);
       shootvals.window_id = 0;
 
      /* Get information from the dialog */
-      if (!shoot_dialog ())
+      if (! shoot_dialog (&screen))
 	status = GIMP_PDB_EXECUTION_ERROR;
       break;
 
     case GIMP_RUN_NONINTERACTIVE:
       if (nparams == 3)
 	{
-	  shootvals.root         = param[1].data.d_int32;
+          gboolean do_root = param[1].data.d_int32;
+          if (do_root)
+            shootvals.shoot_type = SHOOT_ROOT;
+          else
+            shootvals.shoot_type = SHOOT_WINDOW;
 	  shootvals.window_id    = param[2].data.d_int32;
           shootvals.select_delay = 0;
-	  shootvals.grab_delay   = 0;
 	}
-      else
-	status = GIMP_PDB_CALLING_ERROR;
+      else if (nparams == 7)
+	{
+	  shootvals.shoot_type   = SHOOT_REGION;
+	  shootvals.window_id    = param[2].data.d_int32;
+          shootvals.select_delay = 0;
+          shootvals.x1           = param[3].data.d_int32;
+          shootvals.y1           = param[4].data.d_int32;
+          shootvals.x2           = param[5].data.d_int32;
+          shootvals.y2           = param[6].data.d_int32;
+	}
 
-      if (!gdk_init_check (NULL, NULL))
+        {
+          status = GIMP_PDB_CALLING_ERROR;
+        }
+
+      if (! gdk_init_check (NULL, NULL))
 	status = GIMP_PDB_CALLING_ERROR;
       break;
 
     case GIMP_RUN_WITH_LAST_VALS:
       /* Possibly retrieve data from a previous run */
-      gimp_get_data (PLUG_IN_NAME, &shootvals);
+      gimp_get_data (PLUG_IN_PROC, &shootvals);
       break;
 
     default:
@@ -333,10 +328,10 @@ run (const gchar      *name,
 
   if (status == GIMP_PDB_SUCCESS)
     {
-      if (shootvals.grab_delay > 0)
-	shoot_delay (shootvals.grab_delay);
-      /* Run the main function */
-      shoot ();
+      if (shootvals.select_delay > 0)
+	shoot_delay (shootvals.select_delay);
+
+      image_ID = shoot (screen);
 
       status = (image_ID != -1) ? GIMP_PDB_SUCCESS : GIMP_PDB_EXECUTION_ERROR;
     }
@@ -346,10 +341,11 @@ run (const gchar      *name,
       if (run_mode == GIMP_RUN_INTERACTIVE)
 	{
 	  /* Store variable states for next run */
-	  gimp_set_data (PLUG_IN_NAME, &shootvals, sizeof (ScreenShotValues));
-	  /* display the image */
+	  gimp_set_data (PLUG_IN_PROC, &shootvals, sizeof (ScreenshotValues));
+
 	  gimp_display_new (image_ID);
 	}
+
       /* set return values */
       *nreturn_vals = 2;
       values[1].type = GIMP_PDB_IMAGE;
@@ -359,24 +355,29 @@ run (const gchar      *name,
   values[0].data.d_status = status;
 }
 
-/* Allow the user to select a window with the mouse */
+
+/* Allow the user to select a window or a region with the mouse */
+
+#ifdef GDK_WINDOWING_X11
 
 static GdkNativeWindow
-select_window (GdkScreen *screen)
+select_window_x11 (GdkScreen *screen)
 {
-#if defined(GDK_WINDOWING_X11)
-  /* X11 specific code */
-
-#define MASK (ButtonPressMask | ButtonReleaseMask)
-
-  Display    *x_dpy;
-  Cursor      x_cursor;
-  XEvent      x_event;
-  Window      x_win;
-  Window      x_root;
-  gint        x_scr;
-  gint        status;
-  gint        buttons;
+  Display      *x_dpy;
+  Cursor        x_cursor;
+  XEvent        x_event;
+  Window        x_win;
+  Window        x_root;
+  XGCValues     gc_values;
+  GC            gc          = NULL;
+  GdkKeymapKey *keys        = NULL;
+  gint          x_scr;
+  gint          status;
+  gint          buttons;
+  gint          mask        = ButtonPressMask | ButtonReleaseMask;
+  gint          x, y, w, h;
+  gint          num_keys;
+  gboolean      cancel      = FALSE;
 
   x_dpy = GDK_SCREEN_XDISPLAY (screen);
   x_scr = GDK_SCREEN_XNUMBER (screen);
@@ -386,8 +387,36 @@ select_window (GdkScreen *screen)
   x_cursor = XCreateFontCursor (x_dpy, GDK_CROSSHAIR);
   buttons  = 0;
 
+  if (shootvals.shoot_type == SHOOT_REGION)
+    {
+      mask |= PointerMotionMask;
+
+      gc_values.function   = GXxor;
+      gc_values.plane_mask = AllPlanes;
+      gc_values.foreground = WhitePixel (x_dpy, x_scr);
+      gc_values.background = BlackPixel (x_dpy, x_scr);
+      gc_values.line_width = 0;
+      gc_values.line_style = LineSolid;
+      gc_values.fill_style = FillSolid;
+      gc_values.cap_style  = CapButt;
+      gc_values.join_style = JoinMiter;
+      gc_values.graphics_exposures = FALSE;
+      gc_values.clip_x_origin = 0;
+      gc_values.clip_y_origin = 0;
+      gc_values.clip_mask  = None;
+      gc_values.subwindow_mode = IncludeInferiors;
+
+      gc = XCreateGC (x_dpy, x_root,
+                      GCFunction | GCPlaneMask | GCForeground | GCLineWidth |
+                      GCLineStyle | GCCapStyle | GCJoinStyle |
+                      GCGraphicsExposures | GCBackground | GCFillStyle |
+                      GCClipXOrigin | GCClipYOrigin | GCClipMask |
+                      GCSubwindowMode,
+                      &gc_values);
+    }
+
   status = XGrabPointer (x_dpy, x_root, False,
-                         MASK, GrabModeSync, GrabModeAsync,
+                         mask, GrabModeSync, GrabModeAsync,
                          x_root, x_cursor, CurrentTime);
 
   if (status != GrabSuccess)
@@ -396,10 +425,19 @@ select_window (GdkScreen *screen)
       return 0;
     }
 
-  while ((x_win == None) || (buttons != 0))
+  if (gdk_keymap_get_entries_for_keyval (NULL, GDK_Escape, &keys, &num_keys))
+    {
+      gdk_error_trap_push ();
+      XGrabKey (x_dpy, keys[0].keycode, AnyModifier, x_root, False,
+                GrabModeAsync, GrabModeAsync);
+      gdk_flush ();
+      gdk_error_trap_pop ();
+    }
+
+  while (! cancel && ((x_win == None) || (buttons != 0)))
     {
       XAllowEvents (x_dpy, SyncPointer, CurrentTime);
-      XWindowEvent (x_dpy, x_root, MASK, &x_event);
+      XWindowEvent (x_dpy, x_root, mask | KeyPressMask, &x_event);
 
       switch (x_event.type)
         {
@@ -409,6 +447,15 @@ select_window (GdkScreen *screen)
               x_win = x_event.xbutton.subwindow;
               if (x_win == None)
                 x_win = x_root;
+#ifdef HAVE_X11_XMU_WINUTIL_H
+              else if (! shootvals.decorate)
+                {
+                  x_win = XmuClientWindow (x_dpy, x_win);
+                }
+#endif
+
+              shootvals.x2 = shootvals.x1 = x_event.xbutton.x_root;
+              shootvals.y2 = shootvals.y1 = x_event.xbutton.y_root;
             }
           buttons++;
           break;
@@ -416,39 +463,124 @@ select_window (GdkScreen *screen)
         case ButtonRelease:
           if (buttons > 0)
             buttons--;
+          if (! buttons && shootvals.shoot_type == SHOOT_REGION)
+            {
+              x = MIN (shootvals.x1, shootvals.x2);
+              y = MIN (shootvals.y1, shootvals.y2);
+              w = ABS (shootvals.x2 - shootvals.x1);
+              h = ABS (shootvals.y2 - shootvals.y1);
+
+              if (w > 0 && h > 0)
+                XDrawRectangle (x_dpy, x_root, gc, x, y, w, h);
+
+              shootvals.x2 = x_event.xbutton.x_root;
+              shootvals.y2 = x_event.xbutton.y_root;
+            }
+          break;
+
+        case MotionNotify:
+          if (buttons > 0)
+            {
+              x = MIN (shootvals.x1, shootvals.x2);
+              y = MIN (shootvals.y1, shootvals.y2);
+              w = ABS (shootvals.x2 - shootvals.x1);
+              h = ABS (shootvals.y2 - shootvals.y1);
+
+              if (w > 0 && h > 0)
+                XDrawRectangle (x_dpy, x_root, gc, x, y, w, h);
+
+              shootvals.x2 = x_event.xmotion.x_root;
+              shootvals.y2 = x_event.xmotion.y_root;
+
+              x = MIN (shootvals.x1, shootvals.x2);
+              y = MIN (shootvals.y1, shootvals.y2);
+              w = ABS (shootvals.x2 - shootvals.x1);
+              h = ABS (shootvals.y2 - shootvals.y1);
+
+              if (w > 0 && h > 0)
+                XDrawRectangle (x_dpy, x_root, gc, x, y, w, h);
+            }
+          break;
+
+        case KeyPress:
+          {
+            guint *keyvals;
+            gint   n;
+
+            if (gdk_keymap_get_entries_for_keycode (NULL, x_event.xkey.keycode,
+                                                    NULL, &keyvals, &n))
+              {
+                gint i;
+
+                for (i = 0; i < n && ! cancel; i++)
+                  if (keyvals[i] == GDK_Escape)
+                    cancel = TRUE;
+
+                g_free (keyvals);
+              }
+          }
           break;
 
         default:
-          g_assert_not_reached ();
+          break;
         }
+    }
+
+  if (keys)
+    {
+      XUngrabKey (x_dpy, keys[0].keycode, AnyModifier, x_root);
+      g_free (keys);
     }
 
   XUngrabPointer (x_dpy, CurrentTime);
   XFreeCursor (x_dpy, x_cursor);
 
   return x_win;
-#elif defined(GDK_WINDOWING_WIN32)
+}
+
+#endif
+
+
+#ifdef GDK_WINDOWING_WIN32
+
+static GdkNativeWindow
+select_window_win32 (GdkScreen *screen)
+{
   /* MS Windows specific code goes here (yet to be written) */
 
   /* basically the code should grab the pointer using a crosshair
-     cursor, allow the user to click on a window and return the
-     obtained HWND (as a GdkNativeWindow) - for more details consult
-     the X11 specific code above */
+   * cursor, allow the user to click on a window and return the
+   * obtained HWND (as a GdkNativeWindow) - for more details consult
+   * the X11 specific code above
+   */
 
-  /* note to self: take a look at the winsnap plug-in for example
-     code */
+  /* note to self: take a look at the winsnap plug-in for example code */
 
 #ifdef __GNUC__
 #warning Win32 screenshot window chooser not implemented yet
 #else
-#pragma message "Win32 screenshot window chooser not implemented yet"
+#pragma message("Win32 screenshot window chooser not implemented yet")
 #endif
+
   return 0;
-#else /* GDK_WINDOWING_WIN32 */
+}
+
+#endif
+
+
+static GdkNativeWindow
+select_window (GdkScreen *screen)
+{
+#if defined(GDK_WINDOWING_X11)
+  return select_window_x11 (screen);
+#elif defined(GDK_WINDOWING_WIN32)
+  return select_window_win32 (screen);
+#else
 #warning screenshot window chooser not implemented yet for this GDK backend
   return 0;
 #endif
 }
+
 
 /* Create a GimpImage from a GdkPixbuf */
 
@@ -465,17 +597,17 @@ create_image (const GdkPixbuf *pixbuf)
   gint          rowstride;
   gint          bpp;
   gboolean      status;
-  gchar        *pixels;
+  guchar       *pixels;
   gpointer      pr;
 
-  status = gimp_progress_init (_("Loading Screen Shot..."));
+  status = gimp_progress_init (_("Importing screenshot"));
 
   width  = gdk_pixbuf_get_width (pixbuf);
   height = gdk_pixbuf_get_height (pixbuf);
 
   image = gimp_image_new (width, height, GIMP_RGB);
   gimp_image_undo_disable (image);
-  layer = gimp_layer_new (image, _("Screen Shot"),
+  layer = gimp_layer_new (image, _("Screenshot"),
                           width, height,
                           GIMP_RGB_IMAGE, 100, GIMP_NORMAL_MODE);
 
@@ -523,100 +655,108 @@ create_image (const GdkPixbuf *pixbuf)
     {
       GimpParasite *parasite;
 
-      parasite = gimp_parasite_new ("gimp-comment", GIMP_PARASITE_PERSISTENT,
-                                    strlen (comment) + 1, comment);
+      parasite = gimp_parasite_new ("gimp-comment",
+                                    GIMP_PARASITE_PERSISTENT,
+                                    g_utf8_strlen (comment, -1) + 1,
+                                    comment);
 
-      gimp_image_parasite_attach (image_ID, parasite);
+      gimp_image_parasite_attach (image, parasite);
       gimp_parasite_free (parasite);
       g_free (comment);
     }
 
   gimp_image_undo_enable (image);
+
   return image;
 }
 
-/* The main ScreenShot function */
+/* The main Screenshot function */
 
-static void
-shoot (void)
+static gint32
+shoot (GdkScreen *screen)
 {
   GdkWindow    *window;
   GdkPixbuf    *screenshot;
   GdkRectangle  rect;
   GdkRectangle  screen_rect;
+  gint32        image;
   gint          x, y;
 
   /* use default screen if we are running non-interactively */
-  if (cur_screen == NULL)
-    cur_screen = gdk_screen_get_default ();
+  if (screen == NULL)
+    screen = gdk_screen_get_default ();
 
   screen_rect.x      = 0;
   screen_rect.y      = 0;
-  screen_rect.width  = gdk_screen_get_width (cur_screen);
-  screen_rect.height = gdk_screen_get_height (cur_screen);
+  screen_rect.width  = gdk_screen_get_width (screen);
+  screen_rect.height = gdk_screen_get_height (screen);
 
-  if (shootvals.root)
+
+  if (shootvals.shoot_type == SHOOT_REGION)
     {
-      /* entire screen */
-      window = gdk_screen_get_root_window (cur_screen);
+      rect.x = MIN (shootvals.x1, shootvals.x2);
+      rect.y = MIN (shootvals.y1, shootvals.y2);
+      rect.width  = ABS (shootvals.x2 - shootvals.x1);
+      rect.height = ABS (shootvals.y2 - shootvals.y1);
     }
   else
     {
-      GdkDisplay *display;
-
-      display = gdk_screen_get_display (cur_screen);
-
-      /* single window */
-      if (shootvals.window_id)
+      if (shootvals.shoot_type == SHOOT_ROOT)
         {
-          window = gdk_window_foreign_new_for_display (display,
-                                                       shootvals.window_id);
+          window = gdk_screen_get_root_window (screen);
         }
       else
         {
+          GdkDisplay *display = gdk_screen_get_display (screen);
+
           window = gdk_window_foreign_new_for_display (display,
-                                                       selected_native);
+                                                       shootvals.window_id);
         }
+
+      if (! window)
+        {
+          g_message (_("Specified window not found"));
+          return -1;
+        }
+
+      gdk_drawable_get_size (GDK_DRAWABLE (window), &rect.width, &rect.height);
+      gdk_window_get_origin (window, &x, &y);
+
+      rect.x = x;
+      rect.y = y;
     }
 
-  if (!window)
-    {
-      g_message (_("Specified window not found"));
-      return;
-    }
-
+  window = gdk_screen_get_root_window (screen);
   gdk_window_get_origin (window, &x, &y);
 
-  rect.x = x;
-  rect.y = y;
-  gdk_drawable_get_size (GDK_DRAWABLE (window), &rect.width, &rect.height);
-
   if (! gdk_rectangle_intersect (&rect, &screen_rect, &rect))
-    return;
+    return -1;
 
   screenshot = gdk_pixbuf_get_from_drawable (NULL, window,
                                              NULL,
                                              rect.x - x, rect.y - y, 0, 0,
                                              rect.width, rect.height);
 
-  gdk_display_beep (gdk_screen_get_display (cur_screen));
+  gdk_display_beep (gdk_screen_get_display (screen));
   gdk_flush ();
 
   if (!screenshot)
     {
-      g_message (_("Error obtaining Screen Shot"));
-      return;
+      g_message (_("There was an error taking the screenshot."));
+      return -1;
     }
 
-  image_ID = create_image (screenshot);
+  image = create_image (screenshot);
 
   g_object_unref (screenshot);
+
+  return image;
 }
 
-/*  ScreenShot dialog  */
+/*  Screenshot dialog  */
 
 static gboolean
-shoot_dialog (void)
+shoot_dialog (GdkScreen **screen)
 {
   GtkWidget *dialog;
   GtkWidget *main_vbox;
@@ -625,134 +765,167 @@ shoot_dialog (void)
   GtkWidget *hbox;
   GtkWidget *label;
   GtkWidget *button;
+  GtkWidget *toggle;
   GtkWidget *spinner;
   GdkPixbuf *pixbuf;
   GSList    *radio_group = NULL;
   GtkObject *adj;
   gboolean   run;
 
-  gimp_ui_init ("screenshot", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Screen Shot"), "screenshot",
+  dialog = gimp_dialog_new (_("Screenshot"), PLUG_IN_BINARY,
                             NULL, 0,
-			    gimp_standard_help_func, HELP_ID,
+			    gimp_standard_help_func, PLUG_IN_PROC,
 
 			    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			    _("Grab"),        GTK_RESPONSE_OK,
 
 			    NULL);
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
-  gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), main_vbox,
-		      TRUE, TRUE, 0);
-  gtk_widget_show (main_vbox);
+  button = gtk_dialog_add_button (GTK_DIALOG (dialog),
+                                  _("_Grab"), GTK_RESPONSE_OK);
 
-  hbox = gtk_hbox_new (FALSE, 12);
-  gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
-  gtk_widget_show (hbox);
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   pixbuf = gdk_pixbuf_new_from_inline (-1, screenshot_icon, FALSE, NULL);
   if (pixbuf)
     {
-      GtkWidget *image = gtk_image_new_from_pixbuf (pixbuf);
-
+      gtk_button_set_image (GTK_BUTTON (button),
+                            gtk_image_new_from_pixbuf (pixbuf));
       g_object_unref (pixbuf);
-
-      vbox = gtk_vbox_new (FALSE, 0);
-      gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
-      gtk_widget_show (vbox);
-
-      gtk_box_pack_start (GTK_BOX (vbox), image, FALSE, FALSE, 0);
-      gtk_widget_show (image);
     }
 
-  /*  single window  */
-  frame = gimp_frame_new (_("Grab"));
-  gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
+  main_vbox = gtk_vbox_new (FALSE, 12);
+  gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), main_vbox,
+                      FALSE, FALSE, 0);
+  gtk_widget_show (main_vbox);
+
+  frame = gimp_frame_new (_("Area"));
+  gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
+  gtk_widget_show (frame);
 
   vbox = gtk_vbox_new (FALSE, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
+  gtk_widget_show (vbox);
 
+
+  /*  single window  */
   button = gtk_radio_button_new_with_mnemonic (radio_group,
-					       _("a _Single Window"));
+					       _("Take a screenshot of "
+                                                 "a single _window"));
   radio_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), ! shootvals.root);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
+                                shootvals.shoot_type == SHOOT_WINDOW);
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
   g_object_set_data (G_OBJECT (button), "gimp-item-data",
-                     GINT_TO_POINTER (FALSE));
+                     GINT_TO_POINTER (SHOOT_WINDOW));
 
   g_signal_connect (button, "toggled",
                     G_CALLBACK (gimp_radio_button_update),
-                    &shootvals.root);
+                    &shootvals.shoot_type);
 
-  /*  select window delay  */
+#ifdef HAVE_X11_XMU_WINUTIL_H
+
+  hbox = gtk_hbox_new (FALSE, 12);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
+
+  toggle = gtk_check_button_new_with_mnemonic (_("Include window _decoration"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), shootvals.decorate);
+  gtk_box_pack_start (GTK_BOX (hbox), toggle, TRUE, TRUE, 24);
+  gtk_widget_show (toggle);
+
+  g_object_set_data (G_OBJECT (button), "set_sensitive", toggle);
+
+  g_signal_connect (toggle, "toggled",
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &shootvals.decorate);
+
+#endif /* HAVE_X11_XMU_WINUTIL_H */
+
+
+  /*  whole screen  */
+  button = gtk_radio_button_new_with_mnemonic (radio_group,
+					       _("Take a screenshot of "
+                                                 "the entire _screen"));
+  radio_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
+                                shootvals.shoot_type == SHOOT_ROOT);
+  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  gtk_widget_show (button);
+
+  g_object_set_data (G_OBJECT (button), "gimp-item-data",
+                     GINT_TO_POINTER (SHOOT_ROOT));
+
+  g_signal_connect (button, "toggled",
+                    G_CALLBACK (gimp_radio_button_update),
+                    &shootvals.shoot_type);
+
+
+  /*  dragged region  */
+  button = gtk_radio_button_new_with_mnemonic (radio_group,
+					       _("Select a _region to grab"));
+  radio_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
+                                shootvals.shoot_type == SHOOT_REGION);
+  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  gtk_widget_show (button);
+
+  gimp_help_set_help_data (button, _("If enabled, you can use the mouse to "
+                                     "select a rectangular region of the "
+                                     "screen."), NULL);
+
+  g_object_set_data (G_OBJECT (button), "gimp-item-data",
+                     GINT_TO_POINTER (SHOOT_REGION));
+
+  g_signal_connect (button, "toggled",
+                    G_CALLBACK (gimp_radio_button_update),
+                    &shootvals.shoot_type);
+
+
+  /*  grab delay  */
+  frame = gimp_frame_new (_("Delay"));
+  gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
+  gtk_widget_show (frame);
+
+  vbox = gtk_vbox_new (FALSE, 6);
+  gtk_container_add (GTK_CONTAINER (frame), vbox);
+  gtk_widget_show (vbox);
+
   hbox = gtk_hbox_new (FALSE, 6);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  label = gtk_label_new_with_mnemonic (_("S_elect Window After"));
+  /* this string is part of "Wait [spinbutton] seconds before grabbing" */
+  label = gtk_label_new_with_mnemonic (_("W_ait"));
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  adj = gtk_adjustment_new (shootvals.select_delay, 0.0, 100.0, 1.0, 5.0, 0.0);
-  spinner = gtk_spin_button_new (GTK_ADJUSTMENT (adj), 0, 0);
+  spinner = gimp_spin_button_new (&adj, shootvals.select_delay,
+                                  0.0, 100.0, 1.0, 5.0, 0.0, 0, 0);
   gtk_box_pack_start (GTK_BOX (hbox), spinner, FALSE, FALSE, 0);
   gtk_widget_show (spinner);
 
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), spinner);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &shootvals.select_delay);
 
-  label = gtk_label_new (_("Seconds Delay"));
+  /* this string is part of "Wait [spinbutton] seconds before grabbing" */
+  label = gtk_label_new (_("seconds before grabbing"));
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  /*  root window  */
-  button = gtk_radio_button_new_with_mnemonic (radio_group,
-					       _("the _Whole Screen"));
-  radio_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), shootvals.root);
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
-
-  g_object_set_data (G_OBJECT (button), "gimp-item-data",
-                     GINT_TO_POINTER (TRUE));
-
-  g_signal_connect (button, "toggled",
-                    G_CALLBACK (gimp_radio_button_update),
-                    &shootvals.root);
-
-  gtk_widget_show (button);
-  gtk_widget_show (vbox);
-  gtk_widget_show (frame);
-
-  /*  grab delay  */
-  hbox = gtk_hbox_new (FALSE, 6);
-  gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
-  gtk_widget_show (hbox);
-
-  label = gtk_label_new_with_mnemonic (_("Grab _After"));
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);
-
-  adj = gtk_adjustment_new (shootvals.grab_delay, 0.0, 100.0, 1.0, 5.0, 0.0);
-  spinner = gtk_spin_button_new (GTK_ADJUSTMENT (adj), 0, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), spinner, FALSE, FALSE, 0);
-  gtk_widget_show (spinner);
-
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), spinner);
-
-  g_signal_connect (adj, "value_changed",
-                    G_CALLBACK (gimp_int_adjustment_update),
-                    &shootvals.grab_delay);
-
-  label = gtk_label_new (_("Seconds Delay"));
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);
+  gimp_help_set_help_data (spinner, _("The number of seconds to wait after "
+                                      "selecting the window or region and "
+                                      "actually taking the screenshot."), NULL);
 
   gtk_widget_show (dialog);
 
@@ -761,20 +934,26 @@ shoot_dialog (void)
   if (run)
     {
       /* get the screen on which we are running */
-      cur_screen = gtk_widget_get_screen (dialog);
+      *screen = gtk_widget_get_screen (dialog);
     }
 
   gtk_widget_destroy (dialog);
 
   if (run)
-   {
-     if (!shootvals.root && !shootvals.window_id)
-       {
-         if (shootvals.select_delay > 0)
-           shoot_delay (shootvals.select_delay);
+    {
+      /*  A short timeout to give the server a chance to
+       *  redraw the area that was obscured by our dialog.
+       */
+      g_timeout_add (100, shoot_quit_timeout, NULL);
+      gtk_main ();
 
-         selected_native = select_window (cur_screen);
-       }
+      if (shootvals.shoot_type != SHOOT_ROOT && ! shootvals.window_id)
+        {
+          shootvals.window_id = select_window (*screen);
+
+          if (! shootvals.window_id)
+            return FALSE;
+        }
     }
 
   return run;
@@ -800,4 +979,11 @@ shoot_delay_callback (gpointer data)
     gtk_main_quit ();
 
   return *seconds_left;
+}
+
+static gboolean
+shoot_quit_timeout (gpointer data)
+{
+  gtk_main_quit ();
+  return FALSE;
 }

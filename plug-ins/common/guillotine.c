@@ -28,6 +28,10 @@
 
 #include "libgimp/stdplugins-intl.h"
 
+
+#define PLUG_IN_PROC "plug-in-guillotine"
+
+
 /* Declare local functions.
  */
 static void   query      (void);
@@ -56,12 +60,12 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",    "Input image"                  },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable (unused)"      }
   };
 
-  gimp_install_procedure ("plug_in_guillotine",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Slice up the image into subimages, cutting along "
                           "the image's Guides.  Fooey to you and your "
                           "broccoli, Pokey.",
@@ -75,7 +79,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_guillotine", "<Image>/Image/Transform");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Image/Transform");
 }
 
 static void
@@ -101,7 +105,7 @@ run (const gchar      *name,
 
   if (status == GIMP_PDB_SUCCESS)
     {
-      gimp_progress_init (_("Guillotine..."));
+      gimp_progress_init (_("Guillotine"));
       guillotine (image_ID);
       gimp_displays_flush ();
     }

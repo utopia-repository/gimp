@@ -7,6 +7,8 @@ libappactions_a_SOURCES = \
 	actions.c			\
 	actions.h			\
 	\
+	brush-editor-actions.c		\
+	brush-editor-actions.h		\
 	brushes-actions.c		\
 	brushes-actions.h		\
 	buffers-actions.c		\
@@ -25,8 +27,14 @@ libappactions_a_SOURCES = \
 	context-actions.h		\
 	context-commands.c		\
 	context-commands.h		\
+	cursor-info-actions.c		\
+	cursor-info-actions.h		\
+	cursor-info-commands.c		\
+	cursor-info-commands.h		\
 	data-commands.c			\
 	data-commands.h			\
+	data-editor-commands.c		\
+	data-editor-commands.h		\
 	debug-actions.c			\
 	debug-actions.h			\
 	debug-commands.c		\
@@ -35,6 +43,10 @@ libappactions_a_SOURCES = \
 	dialogs-actions.h		\
 	dialogs-commands.c		\
 	dialogs-commands.h		\
+	dock-actions.c			\
+	dock-actions.h			\
+	dock-commands.c			\
+	dock-commands.h			\
 	dockable-actions.c		\
 	dockable-actions.h		\
 	dockable-commands.c		\
@@ -101,10 +113,14 @@ libappactions_a_SOURCES = \
 	plug-in-actions.h		\
 	plug-in-commands.c		\
 	plug-in-commands.h		\
-	qmask-actions.c			\
-	qmask-actions.h			\
-	qmask-commands.c		\
-	qmask-commands.h		\
+	quick-mask-actions.c		\
+	quick-mask-actions.h		\
+	quick-mask-commands.c		\
+	quick-mask-commands.h		\
+	sample-point-editor-actions.c	\
+	sample-point-editor-actions.h	\
+	sample-point-editor-commands.c	\
+	sample-point-editor-commands.h	\
 	select-actions.c		\
 	select-actions.h		\
 	select-commands.c		\
@@ -132,7 +148,11 @@ libappactions_a_SOURCES = \
 	view-actions.c			\
 	view-actions.h			\
 	view-commands.c			\
-	view-commands.h
+	view-commands.h			\
+	window-actions.c		\
+	window-actions.h		\
+	window-commands.c		\
+	window-commands.h
 
 
 EXTRA_DIST = \
@@ -140,8 +160,7 @@ EXTRA_DIST = \
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-Actions\"	\
-	@GIMP_THREAD_FLAGS@ 		\
-	@GIMP_MP_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
 	-I$(top_builddir)	\

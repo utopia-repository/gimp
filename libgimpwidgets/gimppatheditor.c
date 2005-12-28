@@ -52,62 +52,31 @@ enum
 };
 
 
-static void     gimp_path_editor_class_init         (GimpPathEditorClass *klass);
-static void     gimp_path_editor_init               (GimpPathEditor      *editor);
+static void   gimp_path_editor_new_clicked        (GtkWidget           *widget,
+                                                   GimpPathEditor      *editor);
+static void   gimp_path_editor_move_clicked       (GtkWidget           *widget,
+                                                   GimpPathEditor      *editor);
+static void   gimp_path_editor_delete_clicked     (GtkWidget           *widget,
+                                                   GimpPathEditor      *editor);
+static void   gimp_path_editor_file_entry_changed (GtkWidget           *widget,
+                                                   GimpPathEditor      *editor);
+static void   gimp_path_editor_selection_changed  (GtkTreeSelection    *sel,
+                                                   GimpPathEditor      *editor);
+static void   gimp_path_editor_writable_toggled   (GtkCellRendererToggle *toggle,
+                                                   gchar               *path_str,
+                                                   GimpPathEditor      *editor);
 
-static void     gimp_path_editor_new_clicked        (GtkWidget           *widget,
-                                                     GimpPathEditor      *editor);
-static void     gimp_path_editor_move_clicked       (GtkWidget           *widget,
-                                                     GimpPathEditor      *editor);
-static void     gimp_path_editor_delete_clicked     (GtkWidget           *widget,
-                                                     GimpPathEditor      *editor);
-static void     gimp_path_editor_file_entry_changed (GtkWidget           *widget,
-                                                     GimpPathEditor      *editor);
-static void     gimp_path_editor_selection_changed  (GtkTreeSelection    *sel,
-                                                     GimpPathEditor      *editor);
-static void     gimp_path_editor_writable_toggled   (GtkCellRendererToggle *toggle,
-                                                     gchar               *path_str,
-                                                     GimpPathEditor      *editor);
 
+G_DEFINE_TYPE (GimpPathEditor, gimp_path_editor, GTK_TYPE_VBOX);
+
+#define parent_class gimp_path_editor_parent_class
 
 static guint gimp_path_editor_signals[LAST_SIGNAL] = { 0 };
 
-static GtkVBoxClass *parent_class = NULL;
-
-
-GType
-gimp_path_editor_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpPathEditorClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) gimp_path_editor_class_init,
-	NULL,		/* class_finalize */
-	NULL,		/* class_data     */
-	sizeof (GimpPathEditor),
-	0,              /* n_preallocs    */
-	(GInstanceInitFunc) gimp_path_editor_init,
-      };
-
-      type = g_type_register_static (GTK_TYPE_VBOX,
-                                     "GimpPathEditor",
-                                     &info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_path_editor_class_init (GimpPathEditorClass *klass)
 {
-  parent_class = g_type_class_peek_parent (klass);
-
   /**
    * GimpPathEditor::path-changed:
    *
@@ -115,7 +84,7 @@ gimp_path_editor_class_init (GimpPathEditorClass *klass)
    * or reorders an element of the search path.
    **/
   gimp_path_editor_signals[PATH_CHANGED] =
-    g_signal_new ("path_changed",
+    g_signal_new ("path-changed",
 		  G_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (GimpPathEditorClass, path_changed),
@@ -131,7 +100,7 @@ gimp_path_editor_class_init (GimpPathEditorClass *klass)
    * gimp_path_editor_set_dir_writable().
    **/
   gimp_path_editor_signals[WRITABLE_CHANGED] =
-    g_signal_new ("writable_changed",
+    g_signal_new ("writable-changed",
 		  G_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (GimpPathEditorClass, writable_changed),
@@ -294,7 +263,7 @@ gimp_path_editor_new (const gchar *filesel_title,
                       TRUE, TRUE, 0);
   gtk_widget_show (editor->file_entry);
 
-  g_signal_connect (editor->file_entry, "filename_changed",
+  g_signal_connect (editor->file_entry, "filename-changed",
                     G_CALLBACK (gimp_path_editor_file_entry_changed),
 		    editor);
 
@@ -370,11 +339,13 @@ gimp_path_editor_set_path (GimpPathEditor *editor,
 
   old_path = gimp_path_editor_get_path (editor);
 
-  if (old_path == path || (old_path && path && ! strcmp (old_path, path)))
+  if (old_path && path && strcmp (old_path, path) == 0)
     {
       g_free (old_path);
       return;
     }
+
+  g_free (old_path);
 
   path_list = gimp_path_parse (path, 16, TRUE, NULL);
 
@@ -743,7 +714,7 @@ gimp_path_editor_file_entry_changed (GtkWidget      *widget,
       return;
     }
 
-  utf8 = g_filename_to_utf8 (dir, -1, NULL, NULL, NULL);
+  utf8 = g_filename_display_name (dir);
 
   if (editor->sel_path == NULL)
     {

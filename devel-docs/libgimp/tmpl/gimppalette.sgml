@@ -64,6 +64,25 @@ Functions operating on a single palette.
 @Returns: 
 
 
+<!-- ##### FUNCTION gimp_palette_get_columns ##### -->
+<para>
+
+</para>
+
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_palette_set_columns ##### -->
+<para>
+
+</para>
+
+@name: 
+@columns: 
+@Returns: 
+
+
 <!-- ##### FUNCTION gimp_palette_add_entry ##### -->
 <para>
 
@@ -179,6 +198,15 @@ Functions operating on a single palette.
 
 </para>
 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_palette_is_editable ##### -->
+<para>
+
+</para>
+
+@name: 
 @Returns: 
 
 

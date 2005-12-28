@@ -132,7 +132,7 @@
     (gimp-context-set-background shadow-color)
     (gimp-edit-fill shadow-layer BACKGROUND-FILL)
     (gimp-selection-none image)
-    (gimp-layer-set-preserve-trans shadow-layer FALSE)
+    (gimp-layer-set-lock-alpha shadow-layer FALSE)
     (if (>= shadow-blur 1.0) (plug-in-gauss-rle 1
 						image
 						shadow-layer
@@ -175,4 +175,4 @@
 		    SF-TOGGLE     _"Allow resizing" TRUE)
 
 (script-fu-menu-register "script-fu-drop-shadow"
-			 _"<Image>/Script-Fu/Shadow")
+			 "<Image>/Filters/Light and Shadow/Shadow")

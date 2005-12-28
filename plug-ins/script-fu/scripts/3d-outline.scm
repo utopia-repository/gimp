@@ -50,10 +50,10 @@
     (gimp-context-set-background '(255 255 255))
     (gimp-edit-fill bg-layer BACKGROUND-FILL)
     (gimp-edit-clear pattern)
-    (gimp-layer-set-preserve-trans logo-layer TRUE)
+    (gimp-layer-set-lock-alpha logo-layer TRUE)
     (gimp-context-set-foreground '(0 0 0))
     (gimp-edit-fill logo-layer FOREGROUND-FILL)
-    (gimp-layer-set-preserve-trans logo-layer FALSE)
+    (gimp-layer-set-lock-alpha logo-layer FALSE)
     (plug-in-gauss-iir 1 img logo-layer outline-blur-radius TRUE TRUE)
 
     (gimp-drawable-set-visible pattern FALSE)
@@ -126,7 +126,7 @@
                     SF-ADJUSTMENT _"Shadow Y offset"     '(0 0 200 1 5 0 1))
 
 (script-fu-menu-register "script-fu-3d-outline-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-3d-outline-logo text-pattern
@@ -168,4 +168,4 @@
                     SF-ADJUSTMENT _"Shadow Y offset"     '(0 0 200 1 5 0 1))
 
 (script-fu-menu-register "script-fu-3d-outline-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

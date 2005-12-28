@@ -29,12 +29,15 @@
 #include <sys/types.h>
 #include <time.h>
 
+#include <glib/gstdio.h>
+
 #ifdef HAVE_ALSA
 #include <alsa/asoundlib.h>
 #endif
 
 #include <gtk/gtk.h>
 
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpmodule/gimpmodule.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
@@ -241,9 +244,7 @@ midi_class_init (ControllerMidiClass *klass)
                                                         _("Device:"),
                                                         blurb,
                                                         NULL,
-                                                        G_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT |
-                                                        GIMP_MODULE_PARAM_SERIALIZE));
+                                                        GIMP_CONFIG_PARAM_FLAGS));
 
   g_free (blurb);
 
@@ -252,9 +253,7 @@ midi_class_init (ControllerMidiClass *klass)
                                                      _("Channel:"),
                                                      _("The MIDI channel to read events from. Set to -1 for reading from all MIDI channels."),
                                                      -1, 15, -1,
-                                                     G_PARAM_READWRITE |
-                                                     G_PARAM_CONSTRUCT |
-                                                     GIMP_MODULE_PARAM_SERIALIZE));
+                                                     GIMP_CONFIG_PARAM_FLAGS));
 
   controller_class->name            = _("MIDI");
   controller_class->help_id         = "gimp-controller-midi";
@@ -441,10 +440,10 @@ midi_set_device (ControllerMidi *midi,
 #ifdef HAVE_ALSA
       if (! g_ascii_strcasecmp (midi->device, "alsa"))
         {
-          GAlsaSource *event_source;
-          gchar       *alsa;
-          gchar       *state;
-          gint         ret;
+          GSource *event_source;
+          gchar   *alsa;
+          gchar   *state;
+          gint     ret;
 
           ret = snd_seq_open (&midi->sequencer, "default",
                               SND_SEQ_OPEN_INPUT, 0);
@@ -484,19 +483,22 @@ midi_set_device (ControllerMidi *midi,
           g_object_set (midi, "state", state, NULL);
           g_free (state);
 
-          event_source = (GAlsaSource *) g_source_new (&alsa_source_funcs,
-                                                       sizeof (GAlsaSource));
-          event_source->controller = midi;
-          midi->seq_id = g_source_attach ((GSource *) event_source, NULL);
+          event_source = g_source_new (&alsa_source_funcs,
+                                       sizeof (GAlsaSource));
+
+          ((GAlsaSource *) event_source)->controller = midi;
+
+          midi->seq_id = g_source_attach (event_source, NULL);
+          g_source_unref (event_source);
 
           return TRUE;
         }
 #endif /* HAVE_ALSA */
 
 #ifdef G_OS_WIN32
-      fd = open (midi->device, O_RDONLY);
+      fd = g_open (midi->device, O_RDONLY, 0);
 #else
-      fd = open (midi->device, O_RDONLY | O_NONBLOCK);
+      fd = g_open (midi->device, O_RDONLY | O_NONBLOCK, 0);
 #endif
 
       if (fd >= 0)

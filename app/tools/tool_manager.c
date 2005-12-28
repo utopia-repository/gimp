@@ -98,7 +98,7 @@ tool_manager_init (Gimp *gimp)
 
   user_context = gimp_get_user_context (gimp);
 
-  g_signal_connect (user_context, "tool_changed",
+  g_signal_connect (user_context, "tool-changed",
 		    G_CALLBACK (tool_manager_tool_changed),
 		    tool_manager);
 }
@@ -460,10 +460,10 @@ tool_manager_tool_changed (GimpContext  *user_context,
   /* FIXME: gimp_busy HACK */
   if (user_context->gimp->busy)
     {
-      /*  there may be contexts waiting for the user_context's "tool_changed"
+      /*  there may be contexts waiting for the user_context's "tool-changed"
        *  signal, so stop emitting it.
        */
-      g_signal_stop_emission_by_name (user_context, "tool_changed");
+      g_signal_stop_emission_by_name (user_context, "tool-changed");
 
       if (G_TYPE_FROM_INSTANCE (tool_manager->active_tool) !=
 	  tool_info->tool_type)
@@ -548,8 +548,8 @@ tool_manager_image_clean_dirty (GimpImage       *gimage,
   GimpTool *active_tool = tool_manager->active_tool;
 
   if (active_tool &&
-      ! gimp_tool_control_preserve (active_tool->control) &&
-      (gimp_tool_control_dirty_mask (active_tool->control) & dirty_mask))
+      ! gimp_tool_control_get_preserve (active_tool->control) &&
+      (gimp_tool_control_get_dirty_mask (active_tool->control) & dirty_mask))
     {
       GimpDisplay *gdisp = active_tool->gdisp;
 
@@ -558,6 +558,6 @@ tool_manager_image_clean_dirty (GimpImage       *gimage,
           gdisp = GIMP_DRAW_TOOL (active_tool)->gdisp;
 
       if (gdisp && gdisp->gimage == gimage)
-        tool_manager_control_active (gimage->gimp, HALT, gdisp);
+        gimp_context_tool_changed (gimp_get_user_context (gimage->gimp));
     }
 }

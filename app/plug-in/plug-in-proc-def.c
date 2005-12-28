@@ -56,6 +56,7 @@ plug_in_proc_def_free (PlugInProcDef *proc_def)
   g_return_if_fail (proc_def != NULL);
 
   g_free (proc_def->db_info.name);
+  g_free (proc_def->db_info.original_name);
   g_free (proc_def->db_info.blurb);
   g_free (proc_def->db_info.help);
   g_free (proc_def->db_info.author);
@@ -103,6 +104,23 @@ plug_in_proc_def_free (PlugInProcDef *proc_def)
   g_free (proc_def->thumb_loader);
 
   g_free (proc_def);
+}
+
+PlugInProcDef *
+plug_in_proc_def_find (GSList      *list,
+                       const gchar *proc_name)
+{
+  GSList *l;
+
+  for (l = list; l; l = g_slist_next (l))
+    {
+      PlugInProcDef *proc_def = l->data;
+
+      if (! strcmp (proc_name, proc_def->db_info.name))
+        return proc_def;
+    }
+
+  return NULL;
 }
 
 const ProcRecord *
@@ -169,6 +187,41 @@ plug_in_proc_def_get_label (const PlugInProcDef *proc_def,
   return label;
 }
 
+void
+plug_in_proc_def_set_icon (PlugInProcDef *proc_def,
+                           GimpIconType   icon_type,
+                           const gchar   *icon_data,
+                           gint           icon_data_length)
+{
+  g_return_if_fail (proc_def != NULL);
+  g_return_if_fail (icon_type == -1 || icon_data != NULL);
+  g_return_if_fail (icon_type == -1 || icon_data_length > 0);
+
+  if (proc_def->icon_data)
+    {
+      g_free (proc_def->icon_data);
+      proc_def->icon_data_length = -1;
+      proc_def->icon_data        = NULL;
+    }
+
+  proc_def->icon_type = icon_type;
+
+  switch (proc_def->icon_type)
+    {
+    case GIMP_ICON_TYPE_STOCK_ID:
+    case GIMP_ICON_TYPE_IMAGE_FILE:
+      proc_def->icon_data_length = -1;
+      proc_def->icon_data        = g_strdup (icon_data);
+      break;
+
+    case GIMP_ICON_TYPE_INLINE_PIXBUF:
+      proc_def->icon_data_length = icon_data_length;
+      proc_def->icon_data        = g_memdup (icon_data,
+                                             icon_data_length);
+      break;
+    }
+}
+
 const gchar *
 plug_in_proc_def_get_stock_id (const PlugInProcDef *proc_def)
 {
@@ -224,28 +277,12 @@ gchar *
 plug_in_proc_def_get_help_id (const PlugInProcDef *proc_def,
                               const gchar         *help_domain)
 {
-  gchar *help_id;
-  gchar *p;
-
   g_return_val_if_fail (proc_def != NULL, NULL);
 
-  help_id = g_strdup (proc_def->db_info.name);
-
-  for (p = help_id; p && *p; p++)
-    if (*p == '_')
-      *p = '-';
-
   if (help_domain)
-    {
-      gchar *domain_and_id;
+    return g_strconcat (help_domain, "?", proc_def->db_info.name, NULL);
 
-      domain_and_id = g_strconcat (help_domain, "?", help_id, NULL);
-      g_free (help_id);
-
-      return domain_and_id;
-    }
-
-  return help_id;
+  return g_strdup (proc_def->db_info.name);
 }
 
 gboolean

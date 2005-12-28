@@ -4,11 +4,14 @@
 <ui>
   <popup action="brushes-popup">
     <menuitem action="brushes-edit" />
+    <menuitem action="brushes-open-as-image" />
     <separator />
     <menuitem action="brushes-new" />
     <menuitem action="brushes-duplicate" />
+    <menuitem action="brushes-copy-location" />
     <menuitem action="brushes-delete" />
     <separator />
     <menuitem action="brushes-refresh" />
+    <separator />
   </popup>
 </ui>

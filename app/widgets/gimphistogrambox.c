@@ -31,7 +31,6 @@
 #include "gimpcolorbar.h"
 #include "gimphistogrambox.h"
 #include "gimphistogramview.h"
-#include "gimppropwidgets.h"
 
 #include "gimp-intl.h"
 
@@ -47,8 +46,6 @@
 
 
 /*  local function prototypes  */
-
-static void   gimp_histogram_box_init            (GimpHistogramBox  *box);
 
 static void   gimp_histogram_box_low_adj_update  (GtkAdjustment     *adj,
                                                   GimpHistogramBox  *box);
@@ -75,32 +72,13 @@ static void gimp_histogram_draw_slider           (GtkWidget *widget,
                                                   GdkGC     *fill_gc,
                                                   gint       xpos);
 
-GType
-gimp_histogram_box_get_type (void)
+
+G_DEFINE_TYPE (GimpHistogramBox, gimp_histogram_box, GTK_TYPE_VBOX);
+
+
+static void
+gimp_histogram_box_class_init (GimpHistogramBoxClass *klass)
 {
-  static GType box_type = 0;
-
-  if (! box_type)
-    {
-      static const GTypeInfo box_info =
-      {
-        sizeof (GimpHistogramBoxClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) NULL,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpHistogramBox),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_histogram_box_init,
-      };
-
-      box_type = g_type_register_static (GTK_TYPE_VBOX,
-                                         "GimpHistogramBox",
-                                         &box_info, 0);
-    }
-
-  return box_type;
 }
 
 static void
@@ -127,7 +105,7 @@ gimp_histogram_box_init (GimpHistogramBox *box)
   gtk_container_add (GTK_CONTAINER (frame), view);
   gtk_widget_show (view);
 
-  g_signal_connect (view, "range_changed",
+  g_signal_connect (view, "range-changed",
                     G_CALLBACK (gimp_histogram_box_histogram_range),
                     box);
 
@@ -149,7 +127,7 @@ gimp_histogram_box_init (GimpHistogramBox *box)
   g_signal_connect (slider_area, "event",
                     G_CALLBACK (gimp_histogram_slider_area_event),
                     box);
-  g_signal_connect_after (slider_area, "expose_event",
+  g_signal_connect_after (slider_area, "expose-event",
                           G_CALLBACK (gimp_histogram_slider_area_expose),
                           box);
 
@@ -189,7 +167,7 @@ gimp_histogram_box_init (GimpHistogramBox *box)
   gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (adjustment, "value_changed",
+  g_signal_connect (adjustment, "value-changed",
                     G_CALLBACK (gimp_histogram_box_low_adj_update),
                     box);
 
@@ -201,7 +179,7 @@ gimp_histogram_box_init (GimpHistogramBox *box)
   gtk_box_pack_end (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (adjustment, "value_changed",
+  g_signal_connect (adjustment, "value-changed",
                     G_CALLBACK (gimp_histogram_box_high_adj_update),
                     box);
 

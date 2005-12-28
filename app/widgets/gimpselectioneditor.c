@@ -52,9 +52,6 @@
 #include "gimp-intl.h"
 
 
-static void   gimp_selection_editor_class_init (GimpSelectionEditorClass *klass);
-static void   gimp_selection_editor_init       (GimpSelectionEditor      *selection_editor);
-
 static GObject * gimp_selection_editor_constructor (GType                type,
                                                     guint                n_params,
                                                     GObjectConstructParam *params);
@@ -66,6 +63,8 @@ static gboolean gimp_selection_preview_button_press(GtkWidget           *widget,
                                                     GdkEventButton      *bevent,
                                                     GimpSelectionEditor *editor);
 static void   gimp_selection_editor_drop_color     (GtkWidget           *widget,
+                                                    gint                 x,
+                                                    gint                 y,
                                                     const GimpRGB       *color,
                                                     gpointer             data);
 
@@ -73,44 +72,17 @@ static void   gimp_selection_editor_mask_changed   (GimpImage           *gimage,
                                                     GimpSelectionEditor *editor);
 
 
-static GimpImageEditorClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpSelectionEditor, gimp_selection_editor,
+               GIMP_TYPE_IMAGE_EDITOR);
 
+#define parent_class gimp_selection_editor_parent_class
 
-GType
-gimp_selection_editor_get_type (void)
-{
-  static GType editor_type = 0;
-
-  if (! editor_type)
-    {
-      static const GTypeInfo editor_info =
-      {
-        sizeof (GimpSelectionEditorClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_selection_editor_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpSelectionEditor),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_selection_editor_init,
-      };
-
-      editor_type = g_type_register_static (GIMP_TYPE_IMAGE_EDITOR,
-                                            "GimpSelectionEditor",
-                                            &editor_info, 0);
-    }
-
-  return editor_type;
-}
 
 static void
 gimp_selection_editor_class_init (GimpSelectionEditorClass* klass)
 {
   GObjectClass         *object_class       = G_OBJECT_CLASS (klass);
   GimpImageEditorClass *image_editor_class = GIMP_IMAGE_EDITOR_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->constructor     = gimp_selection_editor_constructor;
 
@@ -139,7 +111,7 @@ gimp_selection_editor_init (GimpSelectionEditor *editor)
   gtk_container_add (GTK_CONTAINER (frame), editor->preview);
   gtk_widget_show (editor->preview);
 
-  g_signal_connect (editor->preview, "button_press_event",
+  g_signal_connect (editor->preview, "button-press-event",
                     G_CALLBACK (gimp_selection_preview_button_press),
                     editor);
 
@@ -212,7 +184,7 @@ gimp_selection_editor_set_image (GimpImageEditor *image_editor,
 
   if (gimage)
     {
-      g_signal_connect (gimage, "mask_changed",
+      g_signal_connect (gimage, "mask-changed",
                         G_CALLBACK (gimp_selection_editor_mask_changed),
                         editor);
 
@@ -317,6 +289,8 @@ gimp_selection_preview_button_press (GtkWidget           *widget,
 
 static void
 gimp_selection_editor_drop_color (GtkWidget     *widget,
+                                  gint           x,
+                                  gint           y,
                                   const GimpRGB *color,
                                   gpointer       data)
 {

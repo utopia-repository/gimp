@@ -34,6 +34,8 @@
 #include "dialogs.h"
 #include "dialogs-constructors.h"
 
+#include "info-dialog.h" /* EEK */
+
 #include "gimp-intl.h"
 
 
@@ -42,9 +44,9 @@ GimpDialogFactory *global_dock_factory    = NULL;
 GimpDialogFactory *global_toolbox_factory = NULL;
 
 
-#define FOREIGN(id,remember_size) \
+#define FOREIGN(id,singleton,remember_size) \
   { id, NULL, NULL, NULL, NULL, \
-    NULL, 0, TRUE,  TRUE, remember_size, FALSE }
+    NULL, 0, singleton,  TRUE, remember_size, FALSE }
 
 #define TOPLEVEL(id,new_func,singleton,session_managed,remember_size) \
   { id, NULL, NULL, NULL, NULL, \
@@ -54,30 +56,30 @@ GimpDialogFactory *global_toolbox_factory = NULL;
 static const GimpDialogFactoryEntry toplevel_entries[] =
 {
   /*  foreign toplevels without constructor  */
-  FOREIGN ("gimp-brightness-contrast-tool-dialog", FALSE),
-  FOREIGN ("gimp-color-picker-tool-dialog",        TRUE),
-  FOREIGN ("gimp-colorize-tool-dialog",            FALSE),
-  FOREIGN ("gimp-crop-tool-dialog",                FALSE),
-  FOREIGN ("gimp-curves-tool-dialog",              TRUE),
-  FOREIGN ("gimp-color-balance-tool-dialog",       FALSE),
-  FOREIGN ("gimp-hue-saturation-tool-dialog",      FALSE),
-  FOREIGN ("gimp-levels-tool-dialog",              TRUE),
-  FOREIGN ("gimp-measure-tool-dialog",             FALSE),
-  FOREIGN ("gimp-posterize-tool-dialog",           FALSE),
-  FOREIGN ("gimp-rotate-tool-dialog",              FALSE),
-  FOREIGN ("gimp-scale-tool-dialog",               FALSE),
-  FOREIGN ("gimp-shear-tool-dialog",               FALSE),
-  FOREIGN ("gimp-text-tool-dialog",                TRUE),
-  FOREIGN ("gimp-threshold-tool-dialog",           FALSE),
-  FOREIGN ("gimp-perspective-tool-dialog",         FALSE),
+  FOREIGN ("gimp-brightness-contrast-tool-dialog", TRUE,  FALSE),
+  FOREIGN ("gimp-color-picker-tool-dialog",        TRUE,  TRUE),
+  FOREIGN ("gimp-colorize-tool-dialog",            TRUE,  FALSE),
+  FOREIGN ("gimp-crop-tool-dialog",                TRUE,  FALSE),
+  FOREIGN ("gimp-curves-tool-dialog",              TRUE,  TRUE),
+  FOREIGN ("gimp-color-balance-tool-dialog",       TRUE,  FALSE),
+  FOREIGN ("gimp-hue-saturation-tool-dialog",      TRUE,  FALSE),
+  FOREIGN ("gimp-levels-tool-dialog",              TRUE,  TRUE),
+  FOREIGN ("gimp-measure-tool-dialog",             TRUE,  FALSE),
+  FOREIGN ("gimp-posterize-tool-dialog",           TRUE,  FALSE),
+  FOREIGN ("gimp-rotate-tool-dialog",              TRUE,  FALSE),
+  FOREIGN ("gimp-scale-tool-dialog",               TRUE,  FALSE),
+  FOREIGN ("gimp-shear-tool-dialog",               TRUE,  FALSE),
+  FOREIGN ("gimp-text-tool-dialog",                TRUE,  TRUE),
+  FOREIGN ("gimp-threshold-tool-dialog",           TRUE,  FALSE),
+  FOREIGN ("gimp-perspective-tool-dialog",         TRUE,  FALSE),
 
-  FOREIGN ("gimp-toolbox-color-dialog",            FALSE),
-  FOREIGN ("gimp-gradient-editor-color-dialog",    FALSE),
-  FOREIGN ("gimp-palette-editor-color-dialog",     FALSE),
-  FOREIGN ("gimp-colormap-editor-color-dialog",    FALSE),
+  FOREIGN ("gimp-toolbox-color-dialog",            TRUE,  FALSE),
+  FOREIGN ("gimp-gradient-editor-color-dialog",    TRUE,  FALSE),
+  FOREIGN ("gimp-palette-editor-color-dialog",     TRUE,  FALSE),
+  FOREIGN ("gimp-colormap-editor-color-dialog",    TRUE,  FALSE),
 
-  FOREIGN ("gimp-keyboard-shortcuts-dialog",       TRUE),
-  FOREIGN ("gimp-controller-action-dialog",        TRUE),
+  FOREIGN ("gimp-controller-editor-dialog",        FALSE, TRUE),
+  FOREIGN ("gimp-controller-action-dialog",        FALSE, TRUE),
 
   /*  ordinary toplevels  */
   TOPLEVEL ("gimp-image-new-dialog",
@@ -91,17 +93,21 @@ static const GimpDialogFactoryEntry toplevel_entries[] =
 
   /*  singleton toplevels  */
   TOPLEVEL ("gimp-preferences-dialog",
-            dialogs_preferences_get, TRUE, TRUE,  FALSE),
+            dialogs_preferences_get,        TRUE, TRUE,  FALSE),
+  TOPLEVEL ("gimp-keyboard-shortcuts-dialog",
+            dialogs_keyboard_shortcuts_get, TRUE, TRUE,  TRUE),
   TOPLEVEL ("gimp-module-dialog",
-            dialogs_module_get,      TRUE, TRUE,  TRUE),
+            dialogs_module_get,             TRUE, TRUE,  TRUE),
   TOPLEVEL ("gimp-tips-dialog",
-            dialogs_tips_get,        TRUE, FALSE, FALSE),
+            dialogs_tips_get,               TRUE, FALSE, FALSE),
   TOPLEVEL ("gimp-about-dialog",
-            dialogs_about_get,       TRUE, FALSE, FALSE),
+            dialogs_about_get,              TRUE, FALSE, FALSE),
   TOPLEVEL ("gimp-error-dialog",
-            dialogs_error_get,       TRUE, FALSE, FALSE),
+            dialogs_error_get,              TRUE, FALSE, FALSE),
+  TOPLEVEL ("gimp-close-all-dialog",
+            dialogs_close_all_get,          TRUE, FALSE, FALSE),
   TOPLEVEL ("gimp-quit-dialog",
-            dialogs_quit_get,        TRUE, FALSE, FALSE)
+            dialogs_quit_get,               TRUE, FALSE, FALSE)
 };
 
 #define DOCKABLE(id,name,blurb,stock_id,help_id,\
@@ -122,15 +128,19 @@ static const GimpDialogFactoryEntry dock_entries[] =
   DOCKABLE ("gimp-tool-options",
             N_("Tool Options"), NULL, GIMP_STOCK_TOOL_OPTIONS,
             GIMP_HELP_TOOL_OPTIONS_DIALOG,
-            dialogs_tool_options_get, 0, TRUE),
+            dialogs_tool_options_new, 0, TRUE),
   DOCKABLE ("gimp-device-status",
             N_("Devices"), N_("Device Status"), GIMP_STOCK_DEVICE_STATUS,
             GIMP_HELP_DEVICE_STATUS_DIALOG,
-            dialogs_device_status_get, 0, TRUE),
+            dialogs_device_status_new, 0, TRUE),
   DOCKABLE ("gimp-error-console",
             N_("Errors"), N_("Error Console"), GIMP_STOCK_WARNING,
             GIMP_HELP_ERRORS_DIALOG,
-            dialogs_error_console_get, 0, TRUE),
+            dialogs_error_console_new, 0, TRUE),
+  DOCKABLE ("gimp-cursor-view",
+            N_("Cursor"), N_("Cursor Info"), GIMP_STOCK_CURSOR,
+            GIMP_HELP_CURSOR_INFO_DIALOG,
+            dialogs_cursor_view_new, 0, TRUE),
 
   /*  list & grid views  */
   LISTGRID (image, N_("Images"), NULL, GIMP_STOCK_IMAGES,
@@ -183,6 +193,10 @@ static const GimpDialogFactoryEntry dock_entries[] =
             N_("Undo"), N_("Undo History"), GIMP_STOCK_UNDO_HISTORY,
             GIMP_HELP_UNDO_DIALOG,
             dialogs_undo_editor_new, 0, FALSE),
+  DOCKABLE ("gimp-sample-point-editor",
+            N_("Sample Points"), N_("Sample Points"), GIMP_STOCK_SAMPLE_POINT,
+            GIMP_HELP_SAMPLE_POINT_DIALOG,
+            dialogs_sample_point_editor_new, 0, FALSE),
 
   /*  display related  */
   DOCKABLE ("gimp-navigation-view",
@@ -317,4 +331,14 @@ dialogs_get_toolbox (void)
     }
 
   return NULL;
+}
+
+void
+dialogs_eek (void)
+{
+#ifdef __GNUC__
+#warning FIXME: get rid of info-dialog
+#endif
+  g_error ("eek we suck");
+  info_dialog_free (NULL);
 }

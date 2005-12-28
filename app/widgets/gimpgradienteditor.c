@@ -103,20 +103,32 @@
 
 /*  local function prototypes  */
 
-static void   gimp_gradient_editor_class_init (GimpGradientEditorClass *klass);
-static void   gimp_gradient_editor_init       (GimpGradientEditor      *editor);
-
 static GObject * gimp_gradient_editor_constructor   (GType               type,
                                                      guint               n_params,
                                                      GObjectConstructParam *params);
 
+static void   gimp_gradient_editor_destroy          (GtkObject          *object);
+static void   gimp_gradient_editor_unmap            (GtkWidget          *widget);
+static void   gimp_gradient_editor_unrealize        (GtkWidget          *widget);
 static void   gimp_gradient_editor_set_data         (GimpDataEditor     *editor,
                                                      GimpData           *data);
 
 static void   gimp_gradient_editor_gradient_dirty   (GimpGradientEditor *editor,
                                                      GimpGradient       *gradient);
 static void   gradient_editor_drop_gradient         (GtkWidget          *widget,
+                                                     gint                x,
+                                                     gint                y,
                                                      GimpViewable       *viewable,
+                                                     gpointer            data);
+static void   gradient_editor_drop_color            (GtkWidget          *widget,
+                                                     gint                x,
+                                                     gint                y,
+                                                     const GimpRGB      *color,
+                                                     gpointer            data);
+static void   gradient_editor_control_drop_color    (GtkWidget          *widget,
+                                                     gint                x,
+                                                     gint                y,
+                                                     const GimpRGB      *color,
                                                      gpointer            data);
 static void   gradient_editor_scrollbar_update      (GtkAdjustment      *adj,
                                                      GimpGradientEditor *editor);
@@ -132,7 +144,7 @@ static void   gradient_editor_set_hint              (GimpGradientEditor *editor,
 
 /* Gradient view functions */
 
-static gint      view_events                      (GtkWidget          *widget,
+static gboolean  view_events                      (GtkWidget          *widget,
                                                    GdkEvent           *event,
                                                    GimpGradientEditor *editor);
 static void      view_set_hint                    (GimpGradientEditor *editor,
@@ -145,7 +157,7 @@ static void      view_set_background              (GimpGradientEditor *editor,
 
 /* Gradient control functions */
 
-static gint      control_events                   (GtkWidget          *widget,
+static gboolean  control_events                   (GtkWidget          *widget,
                                                    GdkEvent           *event,
                                                    GimpGradientEditor *editor);
 static void      control_do_hint                  (GimpGradientEditor *editor,
@@ -197,11 +209,13 @@ static void      control_draw                     (GimpGradientEditor *editor,
 static void      control_draw_normal_handle       (GimpGradientEditor *editor,
                                                    GdkPixmap          *pixmap,
                                                    gdouble             pos,
-                                                   gint                height);
+                                                   gint                height,
+                                                   gboolean            selected);
 static void      control_draw_middle_handle       (GimpGradientEditor *editor,
                                                    GdkPixmap          *pixmap,
                                                    gdouble             pos,
-                                                   gint                height);
+                                                   gint                height,
+                                                   gboolean            selected);
 static void      control_draw_handle              (GdkPixmap          *pixmap,
                                                    GdkGC              *border_gc,
                                                    GdkGC              *fill_gc,
@@ -219,50 +233,37 @@ static void      seg_get_closest_handle           (GimpGradient         *grad,
                                                    gdouble               pos,
                                                    GimpGradientSegment **seg,
                                                    GradientEditorDragMode *handle);
+static gboolean  seg_in_selection                 (GimpGradient         *grad,
+                                                   GimpGradientSegment  *seg,
+                                                   GimpGradientSegment  *left,
+                                                   GimpGradientSegment  *right);
+
+static GtkWidget * gradient_hint_label_add        (GtkBox *box);
 
 
-static GimpDataEditorClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpGradientEditor, gimp_gradient_editor,
+               GIMP_TYPE_DATA_EDITOR);
 
+#define parent_class gimp_gradient_editor_parent_class
 
-GType
-gimp_gradient_editor_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpGradientEditorClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_gradient_editor_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpGradientEditor),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_gradient_editor_init,
-      };
-
-      type = g_type_register_static (GIMP_TYPE_DATA_EDITOR,
-                                     "GimpGradientEditor",
-                                     &info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_gradient_editor_class_init (GimpGradientEditorClass *klass)
 {
-  GObjectClass        *object_class = G_OBJECT_CLASS (klass);
-  GimpDataEditorClass *editor_class = GIMP_DATA_EDITOR_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
+  GObjectClass        *object_class     = G_OBJECT_CLASS (klass);
+  GtkObjectClass      *gtk_object_class = GTK_OBJECT_CLASS (klass);
+  GtkWidgetClass      *widget_class     = GTK_WIDGET_CLASS (klass);
+  GimpDataEditorClass *editor_class     = GIMP_DATA_EDITOR_CLASS (klass);
 
   object_class->constructor = gimp_gradient_editor_constructor;
 
+  gtk_object_class->destroy = gimp_gradient_editor_destroy;
+
+  widget_class->unmap       = gimp_gradient_editor_unmap;
+  widget_class->unrealize   = gimp_gradient_editor_unrealize;
+
   editor_class->set_data    = gimp_gradient_editor_set_data;
+  editor_class->title       = _("Gradient Editor");
 }
 
 static void
@@ -308,6 +309,10 @@ gimp_gradient_editor_init (GimpGradientEditor *editor)
                               gradient_editor_drop_gradient,
                               editor);
 
+  gimp_dnd_color_dest_add (GTK_WIDGET (editor->preview),
+                              gradient_editor_drop_color,
+                              editor);
+
   /* Gradient control */
   editor->control_pixmap       = NULL;
   editor->control_drag_segment = NULL;
@@ -331,6 +336,10 @@ gimp_gradient_editor_init (GimpGradientEditor *editor)
                     G_CALLBACK (control_events),
                     editor);
 
+  gimp_dnd_color_dest_add (GTK_WIDGET (editor->control),
+                              gradient_editor_control_drop_color,
+                              editor);
+
   /*  Scrollbar  */
   editor->zoom_factor = 1;
 
@@ -339,7 +348,7 @@ gimp_gradient_editor_init (GimpGradientEditor *editor)
                                             GRAD_SCROLLBAR_PAGE_SIZE,
                                             1.0);
 
-  g_signal_connect (editor->scroll_data, "value_changed",
+  g_signal_connect (editor->scroll_data, "value-changed",
                     G_CALLBACK (gradient_editor_scrollbar_update),
                     editor);
   g_signal_connect (editor->scroll_data, "changed",
@@ -370,25 +379,10 @@ gimp_gradient_editor_init (GimpGradientEditor *editor)
                     editor);
 
   /* Hint bar */
-  editor->hint_label1 = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (editor->hint_label1), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (editor), editor->hint_label1, FALSE, FALSE, 0);
-  gtk_widget_show (editor->hint_label1);
-
-  editor->hint_label2 = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (editor->hint_label2), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (editor), editor->hint_label2, FALSE, FALSE, 0);
-  gtk_widget_show (editor->hint_label2);
-
-  editor->hint_label3 = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (editor->hint_label3), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (editor), editor->hint_label3, FALSE, FALSE, 0);
-  gtk_widget_show (editor->hint_label3);
-
-  editor->hint_label4= gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (editor->hint_label4), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (editor), editor->hint_label4, FALSE, FALSE, 0);
-  gtk_widget_show (editor->hint_label4);
+  editor->hint_label1 = gradient_hint_label_add (GTK_BOX (editor));
+  editor->hint_label2 = gradient_hint_label_add (GTK_BOX (editor));
+  editor->hint_label3 = gradient_hint_label_add (GTK_BOX (editor));
+  editor->hint_label4 = gradient_hint_label_add (GTK_BOX (editor));
 
   /* Initialize other data */
   editor->left_saved_segments = NULL;
@@ -437,11 +431,53 @@ gimp_gradient_editor_constructor (GType                  type,
 }
 
 static void
+gimp_gradient_editor_destroy (GtkObject *object)
+{
+  GimpGradientEditor *editor = GIMP_GRADIENT_EDITOR (object);
+
+  if (editor->color_dialog)
+    gtk_dialog_response (GTK_DIALOG (editor->color_dialog),
+                         GTK_RESPONSE_CANCEL);
+
+  GTK_OBJECT_CLASS (parent_class)->destroy (object);
+}
+
+static void
+gimp_gradient_editor_unmap (GtkWidget *widget)
+{
+  GimpGradientEditor *editor = GIMP_GRADIENT_EDITOR (widget);
+
+  if (editor->color_dialog)
+    gtk_dialog_response (GTK_DIALOG (editor->color_dialog),
+                         GTK_RESPONSE_CANCEL);
+
+  GTK_WIDGET_CLASS (parent_class)->unmap (widget);
+}
+
+static void
+gimp_gradient_editor_unrealize (GtkWidget *widget)
+{
+  GimpGradientEditor *editor = GIMP_GRADIENT_EDITOR (widget);
+
+  if (editor->control_pixmap)
+    {
+      g_object_unref (editor->control_pixmap);
+      editor->control_pixmap = NULL;
+    }
+
+  GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
+}
+
+static void
 gimp_gradient_editor_set_data (GimpDataEditor *editor,
                                GimpData       *data)
 {
   GimpGradientEditor *gradient_editor = GIMP_GRADIENT_EDITOR (editor);
   GimpData           *old_data;
+
+  if (gradient_editor->color_dialog)
+    gtk_dialog_response (GTK_DIALOG (gradient_editor->color_dialog),
+                         GTK_RESPONSE_CANCEL);
 
   old_data = gimp_data_editor_get_data (editor);
 
@@ -449,7 +485,6 @@ gimp_gradient_editor_set_data (GimpDataEditor *editor,
     g_signal_handlers_disconnect_by_func (old_data,
                                           gimp_gradient_editor_gradient_dirty,
                                           gradient_editor);
-
 
   GIMP_DATA_EDITOR_CLASS (parent_class)->set_data (editor, data);
 
@@ -459,18 +494,11 @@ gimp_gradient_editor_set_data (GimpDataEditor *editor,
                               gradient_editor);
 
   gimp_view_set_viewable (GIMP_VIEW (gradient_editor->preview),
-                          (GimpViewable *) data);
-
-  if (gradient_editor->color_dialog)
-    {
-      gtk_widget_destroy (gradient_editor->color_dialog);
-      gradient_editor->color_dialog = NULL;
-      gtk_widget_set_sensitive (GTK_WIDGET (editor), TRUE);
-    }
+                          GIMP_VIEWABLE (data));
 
   gtk_widget_set_sensitive (gradient_editor->control, editor->data_editable);
 
-  control_update (gradient_editor, (GimpGradient *) data, TRUE);
+  control_update (gradient_editor, GIMP_GRADIENT (data), TRUE);
 }
 
 static void
@@ -602,10 +630,95 @@ gimp_gradient_editor_zoom (GimpGradientEditor *editor,
 
 static void
 gradient_editor_drop_gradient (GtkWidget    *widget,
+                               gint          x,
+                               gint          y,
                                GimpViewable *viewable,
                                gpointer      data)
 {
   gimp_data_editor_set_data (GIMP_DATA_EDITOR (data), GIMP_DATA (viewable));
+}
+
+static void
+gradient_editor_drop_color (GtkWidget     *widget,
+                            gint           x,
+                            gint           y,
+                            const GimpRGB *color,
+                            gpointer       data)
+{
+  GimpGradientEditor  *editor = GIMP_GRADIENT_EDITOR (data);
+  GimpGradient        *gradient;
+  gdouble              xpos;
+  GimpGradientSegment *seg, *lseg, *rseg;
+
+  gradient = GIMP_GRADIENT (GIMP_DATA_EDITOR (editor)->data);
+
+  xpos = control_calc_g_pos (editor, x);
+  seg = gimp_gradient_get_segment_at (gradient, xpos);
+
+  gimp_data_freeze (GIMP_DATA (gradient));
+
+  gimp_gradient_segment_split_midpoint (gradient, seg, &lseg, &rseg);
+
+  if (lseg)
+    {
+      lseg->right = xpos;
+      lseg->middle = (lseg->left + lseg->right) / 2.0;
+      lseg->right_color = *color;
+    }
+
+  if (rseg)
+    {
+      rseg->left = xpos;
+      rseg->middle = (rseg->left + rseg->right) / 2.0;
+      rseg->left_color  = *color;
+    }
+
+  gimp_data_thaw (GIMP_DATA (gradient));
+}
+
+static void
+gradient_editor_control_drop_color (GtkWidget     *widget,
+                                    gint           x,
+                                    gint           y,
+                                    const GimpRGB *color,
+                                    gpointer       data)
+{
+  GimpGradientEditor    *editor = GIMP_GRADIENT_EDITOR (data);
+  GimpGradient          *gradient;
+  gdouble                xpos;
+  GimpGradientSegment   *seg, *lseg, *rseg;
+  GradientEditorDragMode handle;
+
+  gradient = GIMP_GRADIENT (GIMP_DATA_EDITOR (editor)->data);
+
+  xpos = control_calc_g_pos (editor, x);
+  seg_get_closest_handle (gradient, xpos, &seg, &handle);
+
+  if (seg)
+    {
+      if (handle == GRAD_DRAG_LEFT)
+        {
+          lseg = seg->prev;
+          rseg = seg;
+        }
+      else
+        return;
+    }
+  else
+    {
+      lseg = gimp_gradient_get_segment_at (gradient, xpos);
+      rseg = NULL;
+    }
+
+  gimp_data_freeze (GIMP_DATA (gradient));
+
+  if (lseg)
+    lseg->right_color = *color;
+
+  if (rseg)
+    rseg->left_color  = *color;
+
+  gimp_data_thaw (GIMP_DATA (gradient));
 }
 
 static void
@@ -678,10 +791,7 @@ view_events (GtkWidget          *widget,
              GdkEvent           *event,
              GimpGradientEditor *editor)
 {
-  gint            x, y;
-  GdkEventButton *bevent;
-  GdkEventMotion *mevent;
-  GdkEventScroll *sevent;
+  gint x, y;
 
   if (! GIMP_DATA_EDITOR (editor)->data)
     return TRUE;
@@ -693,84 +803,110 @@ view_events (GtkWidget          *widget,
       break;
 
     case GDK_MOTION_NOTIFY:
-      gtk_widget_get_pointer (editor->preview, &x, &y);
+      {
+        GdkEventMotion *mevent = (GdkEventMotion *) event;
 
-      mevent = (GdkEventMotion *) event;
+        gtk_widget_get_pointer (editor->preview, &x, &y);
 
-      if (x != editor->preview_last_x)
-        {
-          editor->preview_last_x = x;
+        if (x != editor->preview_last_x)
+          {
+            editor->preview_last_x = x;
 
-          if (editor->preview_button_down)
-            {
-              if (mevent->state & GDK_CONTROL_MASK)
-                view_set_background (editor, x);
-              else
-                view_set_foreground (editor, x);
-            }
-          else
-            {
-              view_set_hint (editor, x);
-            }
-        }
+            if (editor->preview_button_down)
+              {
+                if (mevent->state & GDK_CONTROL_MASK)
+                  view_set_background (editor, x);
+                else
+                  view_set_foreground (editor, x);
+              }
+            else
+              {
+                view_set_hint (editor, x);
+              }
+          }
+      }
       break;
 
     case GDK_BUTTON_PRESS:
-      gtk_widget_get_pointer (editor->preview, &x, &y);
+      {
+        GdkEventButton *bevent = (GdkEventButton *) event;
 
-      bevent = (GdkEventButton *) event;
+        gtk_widget_get_pointer (editor->preview, &x, &y);
 
-      switch (bevent->button)
-        {
-        case 1:
-          editor->preview_last_x = x;
-          editor->preview_button_down = TRUE;
-          if (bevent->state & GDK_CONTROL_MASK)
-            view_set_background (editor, x);
-          else
-            view_set_foreground (editor, x);
-          break;
+        switch (bevent->button)
+          {
+          case 1:
+            editor->preview_last_x = x;
+            editor->preview_button_down = TRUE;
+            if (bevent->state & GDK_CONTROL_MASK)
+              view_set_background (editor, x);
+            else
+              view_set_foreground (editor, x);
+            break;
 
-        case 3:
-          if (GIMP_DATA_EDITOR (editor)->data_editable)
-            gimp_editor_popup_menu (GIMP_EDITOR (editor), NULL, NULL);
-          break;
+          case 3:
+            if (GIMP_DATA_EDITOR (editor)->data_editable)
+              gimp_editor_popup_menu (GIMP_EDITOR (editor), NULL, NULL);
+            break;
 
-        default:
-          break;
-        }
+          default:
+            break;
+          }
+      }
       break;
 
     case GDK_SCROLL:
-      sevent = (GdkEventScroll *) event;
+      {
+        GdkEventScroll *sevent = (GdkEventScroll *) event;
 
-      if (sevent->state & GDK_SHIFT_MASK)
-        {
-          if (sevent->direction == GDK_SCROLL_UP)
-            gimp_gradient_editor_zoom (editor, GIMP_ZOOM_IN);
-          else
-            gimp_gradient_editor_zoom (editor, GIMP_ZOOM_OUT);
-        }
-      else
-        {
-          GtkAdjustment *adj = GTK_ADJUSTMENT (editor->scroll_data);
+        if (sevent->state & GDK_CONTROL_MASK)
+          {
+            switch (sevent->direction)
+              {
+              case GDK_SCROLL_UP:
+                gimp_gradient_editor_zoom (editor, GIMP_ZOOM_IN);
+                break;
 
-          gfloat new_value = adj->value + ((sevent->direction == GDK_SCROLL_UP) ?
-                                           -adj->page_increment / 2 :
-                                           adj->page_increment / 2);
+              case GDK_SCROLL_DOWN:
+                gimp_gradient_editor_zoom (editor, GIMP_ZOOM_OUT);
+                break;
 
-          new_value = CLAMP (new_value, adj->lower, adj->upper - adj->page_size);
+              default:
+                break;
+              }
+          }
+        else
+          {
+            GtkAdjustment *adj   = GTK_ADJUSTMENT (editor->scroll_data);
+            gfloat         value = adj->value;
 
-          gtk_adjustment_set_value (adj, new_value);
-        }
+            switch (sevent->direction)
+              {
+              case GDK_SCROLL_UP:
+                value -= adj->page_increment / 2;
+                break;
+
+              case GDK_SCROLL_DOWN:
+                value += adj->page_increment / 2;
+                break;
+
+              deafult:
+                break;
+              }
+
+            value = CLAMP (value, adj->lower, adj->upper - adj->page_size);
+
+            gtk_adjustment_set_value (adj, value);
+          }
+      }
       break;
 
     case GDK_BUTTON_RELEASE:
       if (editor->preview_button_down)
         {
-          gtk_widget_get_pointer (editor->preview, &x, &y);
+          GdkEventButton *bevent = (GdkEventButton *) event;
 
-          bevent = (GdkEventButton *) event;
+          gtk_widget_get_pointer (editor->preview, &x, &y);
 
           editor->preview_last_x = x;
           editor->preview_button_down = FALSE;
@@ -806,20 +942,18 @@ view_set_hint (GimpGradientEditor *editor,
 
   xpos = control_calc_g_pos (editor, x);
 
-  gimp_gradient_get_color_at (GIMP_GRADIENT (data_editor->data),
+  gimp_gradient_get_color_at (GIMP_GRADIENT (data_editor->data), NULL,
                               xpos, FALSE, &rgb);
 
   gimp_rgb_to_hsv (&rgb, &hsv);
 
   str1 = g_strdup_printf (_("Position: %0.6f"), xpos);
-
   str2 = g_strdup_printf (_("RGB (%0.3f, %0.3f, %0.3f)"),
                           rgb.r, rgb.g, rgb.b);
-
   str3 = g_strdup_printf (_("HSV (%0.3f, %0.3f, %0.3f)"),
                           hsv.h * 360.0, hsv.s, hsv.v);
-  str4 = g_strdup_printf (_("Intensity: %0.3f    Opacity: %0.3f"),
-                          GIMP_RGB_INTENSITY (rgb.r, rgb.g, rgb.b), rgb.a);
+  str4 = g_strdup_printf (_("Luminance: %0.3f    Opacity: %0.3f"),
+                          GIMP_RGB_LUMINANCE (rgb.r, rgb.g, rgb.b), rgb.a);
 
 
   gradient_editor_set_hint (editor, str1, str2, str3, str4);
@@ -847,7 +981,7 @@ view_set_foreground (GimpGradientEditor *editor,
 
   xpos = control_calc_g_pos (editor, x);
 
-  gimp_gradient_get_color_at (gradient, xpos, FALSE, &color);
+  gimp_gradient_get_color_at (gradient, NULL, xpos, FALSE, &color);
 
   gimp_context_set_foreground (user_context, &color);
 
@@ -882,7 +1016,7 @@ view_set_background (GimpGradientEditor *editor,
 
   xpos = control_calc_g_pos (editor, x);
 
-  gimp_gradient_get_color_at (gradient, xpos, FALSE, &color);
+  gimp_gradient_get_color_at (gradient, NULL, xpos, FALSE, &color);
 
   gimp_context_set_background (user_context, &color);
 
@@ -911,14 +1045,12 @@ view_set_background (GimpGradientEditor *editor,
  * them yourself ;-)
  */
 
-static gint
+static gboolean
 control_events (GtkWidget          *widget,
                 GdkEvent           *event,
                 GimpGradientEditor *editor)
 {
   GimpGradient        *gradient;
-  GdkEventButton      *bevent;
-  GdkEventScroll      *sevent;
   GimpGradientSegment *seg;
   gint                 x, y;
   guint32              time;
@@ -941,9 +1073,9 @@ control_events (GtkWidget          *widget,
     case GDK_BUTTON_PRESS:
       if (editor->control_drag_mode == GRAD_DRAG_NONE)
         {
-          gtk_widget_get_pointer (editor->control, &x, &y);
+          GdkEventButton *bevent = (GdkEventButton *) event;
 
-          bevent = (GdkEventButton *) event;
+          gtk_widget_get_pointer (editor->control, &x, &y);
 
           editor->control_last_x     = x;
           editor->control_click_time = bevent->time;
@@ -967,27 +1099,29 @@ control_events (GtkWidget          *widget,
       break;
 
     case GDK_SCROLL:
-      sevent = (GdkEventScroll *) event;
+      {
+        GdkEventScroll *sevent = (GdkEventScroll *) event;
 
-      if (sevent->state & GDK_SHIFT_MASK)
-        {
-          if (sevent->direction == GDK_SCROLL_UP)
-            gimp_gradient_editor_zoom (editor, GIMP_ZOOM_IN);
-          else
-            gimp_gradient_editor_zoom (editor, GIMP_ZOOM_OUT);
-        }
-      else
-        {
-          GtkAdjustment *adj = GTK_ADJUSTMENT (editor->scroll_data);
+        if (sevent->state & GDK_SHIFT_MASK)
+          {
+            if (sevent->direction == GDK_SCROLL_UP)
+              gimp_gradient_editor_zoom (editor, GIMP_ZOOM_IN);
+            else
+              gimp_gradient_editor_zoom (editor, GIMP_ZOOM_OUT);
+          }
+        else
+          {
+            GtkAdjustment *adj = GTK_ADJUSTMENT (editor->scroll_data);
 
-          gfloat new_value = adj->value + ((sevent->direction == GDK_SCROLL_UP) ?
-                                           -adj->page_increment / 2 :
-                                           adj->page_increment / 2);
+            gfloat new_value = adj->value + ((sevent->direction == GDK_SCROLL_UP) ?
+                                             -adj->page_increment / 2 :
+                                             adj->page_increment / 2);
 
-          new_value = CLAMP (new_value, adj->lower, adj->upper - adj->page_size);
+            new_value = CLAMP (new_value, adj->lower, adj->upper - adj->page_size);
 
-          gtk_adjustment_set_value (adj, new_value);
-        }
+            gtk_adjustment_set_value (adj, new_value);
+          }
+      }
       break;
 
     case GDK_BUTTON_RELEASE:
@@ -1619,10 +1753,11 @@ control_draw (GimpGradientEditor *editor,
   gdouble                 g_pos;
   GimpGradientSegment    *seg;
   GradientEditorDragMode  handle;
+  gboolean                selected;
 
   /* Clear the pixmap */
 
-  gdk_draw_rectangle (pixmap, editor->control->style->bg_gc[GTK_STATE_NORMAL],
+  gdk_draw_rectangle (pixmap, editor->control->style->base_gc[GTK_STATE_NORMAL],
                       TRUE, 0, 0, width, height);
 
   if (! gradient)
@@ -1634,19 +1769,30 @@ control_draw (GimpGradientEditor *editor,
   sel_r = control_calc_p_pos (editor, editor->control_sel_r->right);
 
   gdk_draw_rectangle (pixmap,
-                      editor->control->style->dark_gc[GTK_STATE_NORMAL],
+                      editor->control->style->base_gc[GTK_STATE_SELECTED],
                       TRUE, sel_l, 0, sel_r - sel_l + 1, height);
 
   /* Draw handles */
 
+  selected = FALSE;
+
   for (seg = gradient->segments; seg; seg = seg->next)
     {
-      control_draw_normal_handle (editor, pixmap, seg->left, height);
-      control_draw_middle_handle (editor, pixmap, seg->middle, height);
+      if (seg == editor->control_sel_l)
+        selected = TRUE;
+
+      control_draw_normal_handle (editor, pixmap, seg->left, height,
+                                  selected);
+      control_draw_middle_handle (editor, pixmap, seg->middle, height,
+                                  selected);
 
       /* Draw right handle only if this is the last segment */
       if (seg->next == NULL)
-        control_draw_normal_handle (editor, pixmap, seg->right, height);
+        control_draw_normal_handle (editor, pixmap, seg->right, height,
+                                    selected);
+
+      if (seg == editor->control_sel_r)
+        selected = FALSE;
     }
 
   /* Draw the handle which is closest to the mouse position */
@@ -1655,26 +1801,33 @@ control_draw (GimpGradientEditor *editor,
 
   seg_get_closest_handle (gradient, CLAMP (g_pos, 0.0, 1.0), &seg, &handle);
 
+  selected = (seg &&
+              seg_in_selection (gradient, seg,
+                                editor->control_sel_l, editor->control_sel_r));
+
   switch (handle)
     {
     case GRAD_DRAG_LEFT:
       if (seg)
         {
-          control_draw_normal_handle (editor, pixmap,
-                                      seg->left, height);
+          control_draw_normal_handle (editor, pixmap, seg->left, height,
+                                      selected);
         }
       else
         {
           seg = gimp_gradient_segment_get_last (gradient->segments);
 
-          control_draw_normal_handle (editor, pixmap,
-                                      seg->right, height);
+          selected = (seg == editor->control_sel_r);
+
+          control_draw_normal_handle (editor, pixmap, seg->right, height,
+                                      selected);
         }
 
       break;
 
     case GRAD_DRAG_MIDDLE:
-      control_draw_middle_handle (editor, pixmap, seg->middle, height);
+      control_draw_middle_handle (editor, pixmap, seg->middle, height,
+                                  selected);
       break;
 
     default:
@@ -1686,10 +1839,13 @@ static void
 control_draw_normal_handle (GimpGradientEditor *editor,
                             GdkPixmap          *pixmap,
                             gdouble             pos,
-                            gint                height)
+                            gint                height,
+                            gboolean            selected)
 {
+  GtkStateType state = selected ? GTK_STATE_SELECTED : GTK_STATE_NORMAL;
+
   control_draw_handle (pixmap,
-                       editor->control->style->black_gc,
+                       editor->control->style->text_aa_gc[state],
                        editor->control->style->black_gc,
                        control_calc_p_pos (editor, pos), height);
 }
@@ -1698,11 +1854,14 @@ static void
 control_draw_middle_handle (GimpGradientEditor *editor,
                             GdkPixmap          *pixmap,
                             gdouble             pos,
-                            gint                height)
+                            gint                height,
+                            gboolean            selected)
 {
+  GtkStateType state = selected ? GTK_STATE_SELECTED : GTK_STATE_NORMAL;
+
   control_draw_handle (pixmap,
-                       editor->control->style->black_gc,
-                       editor->control->style->bg_gc[GTK_STATE_PRELIGHT],
+                       editor->control->style->text_aa_gc[state],
+                       editor->control->style->white_gc,
                        control_calc_p_pos (editor, pos), height);
 }
 
@@ -1801,4 +1960,38 @@ seg_get_closest_handle (GimpGradient            *grad,
           *handle = GRAD_DRAG_LEFT;
         }
     }
+}
+
+static gboolean
+seg_in_selection (GimpGradient         *grad,
+                  GimpGradientSegment  *seg,
+                  GimpGradientSegment  *left,
+                  GimpGradientSegment  *right)
+{
+  GimpGradientSegment *s;
+
+  for (s = left; s; s = s->next)
+    {
+      if (s == seg)
+        return TRUE;
+
+      if (s == right)
+        break;
+    }
+
+  return FALSE;
+}
+
+static GtkWidget *
+gradient_hint_label_add (GtkBox *box)
+{
+  GtkWidget *label = g_object_new (GTK_TYPE_LABEL,
+                                   "xalign",           0.0,
+                                   "yalign",           0.5,
+                                   "single-line-mode", TRUE,
+                                   NULL);
+  gtk_box_pack_start (box, label, FALSE, FALSE, 0);
+  gtk_widget_show (label);
+
+  return label;
 }

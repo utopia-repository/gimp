@@ -21,19 +21,13 @@
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #define GIMP_ENABLE_CONTROLLER_UNDER_CONSTRUCTION
 #include "libgimpwidgets/gimpcontroller.h"
 
 #include "widgets-types.h"
-
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-error.h"
-#include "config/gimpconfig-params.h"
-#include "config/gimpconfig-utils.h"
-#include "config/gimpconfigwriter.h"
-#include "config/gimpscanner.h"
 
 #include "core/gimp.h"
 #include "core/gimplist.h"
@@ -112,19 +106,6 @@ gimp_controllers_init (Gimp *gimp)
                                 G_CALLBACK (gimp_controllers_event_mapped),
                                 manager);
 
-  /*  EEEEEEK  */
-  {
-    static const GInterfaceInfo config_iface_info =
-    {
-      NULL,  /* iface_init     */
-      NULL,  /* iface_finalize */
-      NULL   /* iface_data     */
-    };
-
-    g_type_add_interface_static (GIMP_TYPE_CONTROLLER, GIMP_TYPE_CONFIG,
-                                 &config_iface_info);
-  }
-
   g_type_class_ref (GIMP_TYPE_CONTROLLER_WHEEL);
   g_type_class_ref (GIMP_TYPE_CONTROLLER_KEYBOARD);
 }
@@ -160,6 +141,9 @@ gimp_controllers_restore (Gimp          *gimp,
   manager->ui_manager = g_object_ref (ui_manager);
 
   filename = gimp_personal_rc_file ("controllerrc");
+
+  if (gimp->be_verbose)
+    g_print ("Parsing '%s'\n", gimp_filename_to_utf8 (filename));
 
   if (! gimp_config_deserialize_file (GIMP_CONFIG (manager->controllers),
                                       filename, NULL, &error))
@@ -212,6 +196,9 @@ gimp_controllers_save (Gimp *gimp)
   g_return_if_fail (manager != NULL);
 
   filename = gimp_personal_rc_file ("controllerrc");
+
+  if (gimp->be_verbose)
+    g_print ("Writing '%s'\n", gimp_filename_to_utf8 (filename));
 
   if (! gimp_config_serialize_to_file (GIMP_CONFIG (manager->controllers),
                                        filename,

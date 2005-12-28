@@ -26,6 +26,7 @@
 
 #include "libgimpmath/gimpmath.h"
 #include "libgimpbase/gimpbase.h"
+#include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
 
@@ -97,14 +98,9 @@ struct _GimpEditSelectionTool
 
 struct _GimpEditSelectionToolClass
 {
-  GimpDrawToolClass parent_class;
+  GimpDrawToolClass   parent_class;
 };
 
-
-static GType   gimp_edit_selection_tool_get_type   (void) G_GNUC_CONST;
-
-static void    gimp_edit_selection_tool_class_init (GimpEditSelectionToolClass *klass);
-static void    gimp_edit_selection_tool_init       (GimpEditSelectionTool *edit_selection_tool);
 
 static void    gimp_edit_selection_tool_button_release (GimpTool        *tool,
                                                         GimpCoords      *coords,
@@ -120,36 +116,11 @@ static void    gimp_edit_selection_tool_motion         (GimpTool        *tool,
 static void    gimp_edit_selection_tool_draw           (GimpDrawTool    *tool);
 
 
-static GimpDrawToolClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpEditSelectionTool, gimp_edit_selection_tool,
+               GIMP_TYPE_DRAW_TOOL);
 
+#define parent_class gimp_edit_selection_tool_parent_class
 
-static GType
-gimp_edit_selection_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpEditSelectionToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_edit_selection_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpEditSelectionTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_edit_selection_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_DRAW_TOOL,
-                                          "GimpEditSelectionTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
 
 static void
 gimp_edit_selection_tool_class_init (GimpEditSelectionToolClass *klass)
@@ -157,12 +128,10 @@ gimp_edit_selection_tool_class_init (GimpEditSelectionToolClass *klass)
   GimpToolClass     *tool_class = GIMP_TOOL_CLASS (klass);
   GimpDrawToolClass *draw_class = GIMP_DRAW_TOOL_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
-
   tool_class->button_release = gimp_edit_selection_tool_button_release;
   tool_class->motion         = gimp_edit_selection_tool_motion;
 
-  draw_class->draw             = gimp_edit_selection_tool_draw;
+  draw_class->draw           = gimp_edit_selection_tool_draw;
 }
 
 static void
@@ -214,7 +183,11 @@ gimp_edit_selection_tool_start (GimpTool          *parent_tool,
   GimpEditSelectionTool *edit_select;
   GimpDisplayShell      *shell;
   GimpItem              *active_item;
+  GimpChannel           *channel;
   gint                   off_x, off_y;
+  const BoundSeg        *segs_in;
+  const BoundSeg        *segs_out;
+  gint                   num_groups;
   const gchar           *undo_desc;
 
   edit_select = g_object_new (GIMP_TYPE_EDIT_SELECTION_TOOL, NULL);
@@ -279,30 +252,26 @@ gimp_edit_selection_tool_start (GimpTool          *parent_tool,
     {
     case GIMP_TRANSLATE_MODE_CHANNEL:
     case GIMP_TRANSLATE_MODE_LAYER_MASK:
-      gimp_channel_boundary (GIMP_CHANNEL (active_item),
-                             (const BoundSeg **) &edit_select->segs_in,
-                             (const BoundSeg **) &edit_select->segs_out,
-                             &edit_select->num_segs_in,
-                             &edit_select->num_segs_out,
-                             0, 0, 0, 0);
-      break;
+      channel = GIMP_CHANNEL (active_item);
+     break;
 
     default:
-      gimp_channel_boundary (gimp_image_get_mask (gdisp->gimage),
-                             (const BoundSeg **) &edit_select->segs_in,
-                             (const BoundSeg **) &edit_select->segs_out,
-                             &edit_select->num_segs_in,
-                             &edit_select->num_segs_out,
-                             0, 0, 0, 0);
+      channel = gimp_image_get_mask (gdisp->gimage);
       break;
     }
 
-  edit_select->segs_in  = g_memdup (edit_select->segs_in,
-                                    edit_select->num_segs_in *
-                                    sizeof (BoundSeg));
-  edit_select->segs_out = g_memdup (edit_select->segs_out,
-                                    edit_select->num_segs_out *
-                                    sizeof (BoundSeg));
+  gimp_channel_boundary (channel,
+                         &segs_in, &segs_out,
+                         &edit_select->num_segs_in, &edit_select->num_segs_out,
+                         0, 0, 0, 0);
+
+  edit_select->segs_in = boundary_sort (segs_in, edit_select->num_segs_in,
+                                        &num_groups);
+  edit_select->num_segs_in += num_groups;
+
+  edit_select->segs_out = boundary_sort (segs_out, edit_select->num_segs_out,
+                                         &num_groups);
+  edit_select->num_segs_out += num_groups;
 
   if (edit_select->edit_mode == GIMP_TRANSLATE_MODE_VECTORS)
     {
@@ -460,7 +429,7 @@ gimp_edit_selection_tool_start (GimpTool          *parent_tool,
   gimp_display_shell_selection_visibility (shell, GIMP_SELECTION_PAUSE);
 
   /* initialize the statusbar display */
-  gimp_tool_push_status_coords (GIMP_TOOL (edit_select),
+  gimp_tool_push_status_coords (GIMP_TOOL (edit_select), gdisp,
                                 _("Move: "), 0, ", ", 0);
 
   gimp_draw_tool_start (GIMP_DRAW_TOOL (edit_select), gdisp);
@@ -481,7 +450,7 @@ gimp_edit_selection_tool_button_release (GimpTool        *tool,
   /*  resume the current selection  */
   gimp_display_shell_selection_visibility (shell, GIMP_SELECTION_RESUME);
 
-  gimp_tool_pop_status (tool);
+  gimp_tool_pop_status (tool, gdisp);
 
   /*  Stop and free the selection core  */
   gimp_draw_tool_stop (GIMP_DRAW_TOOL (edit_select));
@@ -726,9 +695,8 @@ gimp_edit_selection_tool_motion (GimpTool        *tool,
   /********************************************************************/
   /********************************************************************/
 
-  gimp_tool_pop_status (tool);
-
-  gimp_tool_push_status_coords (tool,
+  gimp_tool_pop_status (tool, gdisp);
+  gimp_tool_push_status_coords (tool, gdisp,
                                 _("Move: "),
                                 edit_select->cumlx,
                                 ", ",
@@ -1049,8 +1017,9 @@ gimp_edit_selection_tool_key_press (GimpTool    *tool,
     return FALSE;
 
   /*  adapt arrow velocity to the zoom factor  */
-  velocity = ARROW_VELOCITY / GIMP_DISPLAY_SHELL (gdisp->shell)->scale;
-  velocity = MAX (1, velocity);
+  velocity = (ARROW_VELOCITY /
+              gimp_zoom_model_get_factor (GIMP_DISPLAY_SHELL (gdisp->shell)->zoom));
+  velocity = MAX (1.0, velocity);
 
   /*  check for mask translation first because the translate_layer
    *  modifiers match the translate_mask ones...

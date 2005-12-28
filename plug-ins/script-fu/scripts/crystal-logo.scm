@@ -165,7 +165,7 @@
     (gimp-layer-set-mode layer1 OVERLAY-MODE)
 
     (plug-in-gauss-rle 1 img text-layer blur TRUE TRUE)
-    (gimp-layer-set-preserve-trans text-layer TRUE)
+    (gimp-layer-set-lock-alpha text-layer TRUE)
     (gimp-context-set-background '(0 0 0))
     (gimp-edit-fill text-layer BACKGROUND-FILL)
     (gimp-layer-set-mode text-layer OVERLAY-MODE)
@@ -206,4 +206,4 @@
 						   "/scripts/images/beavis.jpg"))
 
 (script-fu-menu-register "script-fu-crystal-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

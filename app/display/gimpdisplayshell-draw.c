@@ -23,14 +23,17 @@
 #include "display-types.h"
 
 #include "core/gimp-utils.h"
+#include "core/gimpcontext.h"
 #include "core/gimpgrid.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-guides.h"
+#include "core/gimpimage-sample-points.h"
 #include "core/gimplist.h"
 
 #include "vectors/gimpstroke.h"
 #include "vectors/gimpvectors.h"
 
+#include "widgets/gimprender.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "gimpcanvas.h"
@@ -46,6 +49,9 @@
 
 static GdkGC * gimp_display_shell_get_grid_gc (GimpDisplayShell *shell,
                                                GimpGrid         *grid);
+static GdkGC * gimp_display_shell_get_pen_gc  (GimpDisplayShell *shell,
+                                               GimpContext      *context,
+                                               GimpActiveColor   active);
 
 
 /*  public functions  */
@@ -292,6 +298,138 @@ gimp_display_shell_draw_grid (GimpDisplayShell   *shell,
 }
 
 void
+gimp_display_shell_draw_pen (GimpDisplayShell  *shell,
+                             const GimpVector2 *points,
+                             gint               num_points,
+                             GimpContext       *context,
+                             GimpActiveColor    color,
+                             gint               width)
+{
+  GimpCanvas  *canvas;
+  GdkGC       *gc;
+  GdkGCValues  values;
+  GdkPoint    *coords;
+  gint         i;
+
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_if_fail (GIMP_IS_CONTEXT (context));
+  g_return_if_fail (num_points == 0 || points != NULL);
+
+  canvas = GIMP_CANVAS (shell->canvas);
+
+  coords = g_new (GdkPoint, MAX (2, num_points));
+
+  for (i = 0; i < num_points ; i++)
+    gimp_display_shell_transform_xy (shell,
+                                     points[i].x, points[i].y,
+                                     &coords[i].x, &coords[i].y,
+                                     FALSE);
+
+  if (num_points == 1)
+    {
+      coords[1] = coords[0];
+      num_points = 2;
+    }
+
+  gc = gimp_display_shell_get_pen_gc (shell, context, color);
+
+  values.line_width = MAX (1, width);
+  gdk_gc_set_values (gc, &values, GDK_GC_LINE_WIDTH);
+
+  gimp_canvas_set_custom_gc (canvas, gc);
+
+  gimp_canvas_draw_lines (canvas, GIMP_CANVAS_STYLE_CUSTOM, coords, num_points);
+
+  gimp_canvas_set_custom_gc (canvas, NULL);
+
+  g_free (coords);
+}
+
+void
+gimp_display_shell_draw_sample_point (GimpDisplayShell *shell,
+                                      GimpSamplePoint  *sample_point,
+                                      gboolean          active)
+{
+  GimpCanvasStyle style;
+  gdouble         x, y;
+  gint            x1, x2;
+  gint            y1, y2;
+  gint            w, h;
+
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_if_fail (sample_point != NULL);
+
+  if (sample_point->x < 0)
+    return;
+
+  gimp_display_shell_transform_xy_f (shell,
+                                     sample_point->x + 0.5,
+                                     sample_point->y + 0.5,
+                                     &x, &y, FALSE);
+
+  x1 = floor (x - GIMP_SAMPLE_POINT_DRAW_SIZE);
+  x2 = ceil  (x + GIMP_SAMPLE_POINT_DRAW_SIZE);
+  y1 = floor (y - GIMP_SAMPLE_POINT_DRAW_SIZE);
+  y2 = ceil  (y + GIMP_SAMPLE_POINT_DRAW_SIZE);
+
+  gdk_drawable_get_size (shell->canvas->window, &w, &h);
+
+  if (x < - GIMP_SAMPLE_POINT_DRAW_SIZE   ||
+      y < - GIMP_SAMPLE_POINT_DRAW_SIZE   ||
+      x > w + GIMP_SAMPLE_POINT_DRAW_SIZE ||
+      y > h + GIMP_SAMPLE_POINT_DRAW_SIZE)
+    return;
+
+  if (active)
+    style = GIMP_CANVAS_STYLE_SAMPLE_POINT_ACTIVE;
+  else
+    style = GIMP_CANVAS_STYLE_SAMPLE_POINT_NORMAL;
+
+#define HALF_SIZE (GIMP_SAMPLE_POINT_DRAW_SIZE / 2)
+
+  gimp_canvas_draw_line (GIMP_CANVAS (shell->canvas), style,
+                         x, y1, x, y1 + HALF_SIZE);
+  gimp_canvas_draw_line (GIMP_CANVAS (shell->canvas), style,
+                         x, y2 - HALF_SIZE, x, y2);
+
+  gimp_canvas_draw_line (GIMP_CANVAS (shell->canvas), style,
+                         x1, y, x1 + HALF_SIZE, y);
+  gimp_canvas_draw_line (GIMP_CANVAS (shell->canvas), style,
+                         x2 - HALF_SIZE, y, x2, y);
+
+  gimp_canvas_draw_arc (GIMP_CANVAS (shell->canvas), style,
+                        FALSE,
+                        x - HALF_SIZE, y - HALF_SIZE,
+                        GIMP_SAMPLE_POINT_DRAW_SIZE,
+                        GIMP_SAMPLE_POINT_DRAW_SIZE,
+                        0, 64 * 270);
+
+  gimp_canvas_draw_text (GIMP_CANVAS (shell->canvas), style,
+                         x + 2, y + 2,
+                         "%d",
+                         g_list_index (shell->gdisp->gimage->sample_points,
+                                       sample_point) + 1);
+}
+
+void
+gimp_display_shell_draw_sample_points (GimpDisplayShell *shell)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  if (gimp_display_shell_get_show_sample_points (shell))
+    {
+      GList *list;
+
+      for (list = shell->gdisp->gimage->sample_points;
+           list;
+           list = g_list_next (list))
+	{
+	  gimp_display_shell_draw_sample_point (shell, list->data, FALSE);
+	}
+    }
+}
+
+void
 gimp_display_shell_draw_vector (GimpDisplayShell *shell,
                                 GimpVectors      *vectors)
 {
@@ -417,14 +555,14 @@ gimp_display_shell_draw_area (GimpDisplayShell *shell,
       /*  display the image in RENDER_BUF_WIDTH x RENDER_BUF_HEIGHT
        *  sized chunks
        */
-      for (i = y; i < y2; i += GIMP_DISPLAY_SHELL_RENDER_BUF_HEIGHT)
+      for (i = y; i < y2; i += GIMP_RENDER_BUF_HEIGHT)
         {
-          for (j = x; j < x2; j += GIMP_DISPLAY_SHELL_RENDER_BUF_WIDTH)
+          for (j = x; j < x2; j += GIMP_RENDER_BUF_WIDTH)
             {
               gint dx, dy;
 
-              dx = MIN (x2 - j, GIMP_DISPLAY_SHELL_RENDER_BUF_WIDTH);
-              dy = MIN (y2 - i, GIMP_DISPLAY_SHELL_RENDER_BUF_HEIGHT);
+              dx = MIN (x2 - j, GIMP_RENDER_BUF_WIDTH);
+              dy = MIN (y2 - i, GIMP_RENDER_BUF_HEIGHT);
 
               gimp_display_shell_render (shell,
                                          j - shell->disp_xoffset,
@@ -482,10 +620,55 @@ gimp_display_shell_get_grid_gc (GimpDisplayShell *shell,
                                                      GDK_GC_JOIN_STYLE));
 
   gimp_rgb_get_gdk_color (&grid->fgcolor, &fg);
-  gimp_rgb_get_gdk_color (&grid->bgcolor, &bg);
-
   gdk_gc_set_rgb_fg_color (shell->grid_gc, &fg);
+
+  gimp_rgb_get_gdk_color (&grid->bgcolor, &bg);
   gdk_gc_set_rgb_bg_color (shell->grid_gc, &bg);
 
   return shell->grid_gc;
+}
+
+static GdkGC *
+gimp_display_shell_get_pen_gc (GimpDisplayShell *shell,
+                               GimpContext      *context,
+                               GimpActiveColor   active)
+{
+  GdkGCValues  values;
+  GimpRGB      rgb;
+  GdkColor     color;
+
+  if (shell->pen_gc)
+    return shell->pen_gc;
+
+  values.line_style = GDK_LINE_SOLID;
+  values.cap_style  = GDK_CAP_ROUND;
+  values.join_style = GDK_JOIN_ROUND;
+
+  shell->pen_gc = gdk_gc_new_with_values (shell->canvas->window,
+                                          &values, (GDK_GC_LINE_STYLE |
+                                                    GDK_GC_CAP_STYLE  |
+                                                    GDK_GC_JOIN_STYLE));
+
+  switch (active)
+    {
+    case GIMP_ACTIVE_COLOR_FOREGROUND:
+      gimp_context_get_foreground (context, &rgb);
+      break;
+
+    case GIMP_ACTIVE_COLOR_BACKGROUND:
+      gimp_context_get_background (context, &rgb);
+      break;
+    }
+
+  gimp_rgb_get_gdk_color (&rgb, &color);
+  gdk_gc_set_rgb_fg_color (shell->pen_gc, &color);
+
+  g_object_add_weak_pointer (G_OBJECT (shell->pen_gc),
+                             (gpointer *) &shell->pen_gc);
+
+  g_signal_connect_object (context, "notify",
+                           G_CALLBACK (g_object_unref),
+                           shell->pen_gc, G_CONNECT_SWAPPED);
+
+  return shell->pen_gc;
 }

@@ -84,10 +84,10 @@
                     SF-IMAGE       "Image"                0
                     SF-DRAWABLE    "Drawable"             0
 		    SF-ADJUSTMENT _"Offsets (pixels * 2)" '(10 2 100 1 10 0 1)
-		    SF-COLOR      _"Background Color"     '(191 191 191))
+		    SF-COLOR      _"Background color"     '(191 191 191))
 
 (script-fu-menu-register "script-fu-chrome-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-chrome-logo text
@@ -98,7 +98,6 @@
 	 (b-size (* size 0.2))
 	 (text-layer (car (gimp-text-fontname img -1 0 0 text b-size TRUE size PIXELS font))))
     (gimp-image-undo-disable img)
-    (gimp-drawable-set-name text-layer text)
     (apply-chrome-logo-effect img text-layer (* size 0.1) bg-color)
     (gimp-image-undo-enable img)
     (gimp-display-new img)))
@@ -116,4 +115,4 @@
 		    SF-COLOR      _"Background color"   '(191 191 191))
 
 (script-fu-menu-register "script-fu-chrome-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

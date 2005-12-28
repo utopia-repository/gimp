@@ -52,8 +52,8 @@
     (gimp-image-add-layer img shadow-layer 1)
     (gimp-image-add-layer img bg-layer 2)
     
-    (gimp-layer-set-preserve-trans text-layer TRUE)
-    (gimp-layer-set-preserve-trans shadow-layer TRUE)
+    (gimp-layer-set-lock-alpha text-layer TRUE)
+    (gimp-layer-set-lock-alpha shadow-layer TRUE)
     
     (gimp-context-set-background text-color)
     (gimp-edit-fill text-layer BACKGROUND-FILL)
@@ -116,7 +116,7 @@
 		    SF-TOGGLE _"Index image"       TRUE)
 
 (script-fu-menu-register "script-fu-tube-button-label-gimp-org"
-			 _"<Toolbox>/Xtns/Script-Fu/Web Page Themes/Classic.Gimp.Org")
+			 "<Toolbox>/Xtns/Web Page Themes/Classic.Gimp.Org")
 
 
 (script-fu-register "script-fu-tube-subbutton-label-gimp-org"
@@ -131,7 +131,7 @@
 		    SF-TOGGLE _"Index image"       TRUE)
 
 (script-fu-menu-register "script-fu-tube-subbutton-label-gimp-org"
-			 _"<Toolbox>/Xtns/Script-Fu/Web Page Themes/Classic.Gimp.Org")
+			 "<Toolbox>/Xtns/Web Page Themes/Classic.Gimp.Org")
 
 
 (script-fu-register "script-fu-tube-subsubbutton-label-gimp-org"
@@ -146,7 +146,7 @@
 		    SF-TOGGLE _"Index image"       TRUE)
 
 (script-fu-menu-register "script-fu-tube-subsubbutton-label-gimp-org"
-			 _"<Toolbox>/Xtns/Script-Fu/Web Page Themes/Classic.Gimp.Org")
+			 "<Toolbox>/Xtns/Web Page Themes/Classic.Gimp.Org")
 
 
 (script-fu-register "script-fu-labels-gimp-org"
@@ -171,4 +171,4 @@
 		    SF-ADJUSTMENT _"Height"             '(30 2 1000 1 10 0 1))
 
 (script-fu-menu-register "script-fu-labels-gimp-org"
-			 _"<Toolbox>/Xtns/Script-Fu/Web Page Themes/Classic.Gimp.Org")
+			 "<Toolbox>/Xtns/Web Page Themes/Classic.Gimp.Org")

@@ -49,7 +49,7 @@ typedef struct
 
 /*  these are the built-in units
  */
-static GimpUnitDef gimp_unit_defs[GIMP_UNIT_END] =
+static const GimpUnitDef gimp_unit_defs[GIMP_UNIT_END] =
 {
   /* pseudo unit */
   { FALSE,  0.0, 0, "pixels",      "px", "px", N_("pixel"),      N_("pixels") },
@@ -65,7 +65,7 @@ static GimpUnitDef gimp_unit_defs[GIMP_UNIT_END] =
 
 /*  not a unit at all but kept here to have the strings in one place
  */
-static GimpUnitDef gimp_unit_percent =
+static const GimpUnitDef gimp_unit_percent =
 {
   FALSE,    0.0, 0, "percent",     "%",  "%",  N_("percent"),    N_("percent")
 };
@@ -257,4 +257,31 @@ _gimp_unit_get_plural (Gimp     *gimp,
     return gettext (gimp_unit_percent.plural);
 
   return gettext (_gimp_unit_get_user_unit (gimp, unit)->plural);
+}
+
+
+/* The sole purpose of this function is to release the allocated
+ * memory. It must only be used from gimp_units_exit().
+ */
+void
+gimp_user_units_free (Gimp *gimp)
+{
+  GList *list;
+
+  for (list = gimp->user_units; list; list = g_list_next (list))
+    {
+      GimpUnitDef *user_unit = list->data;
+
+      g_free (user_unit->identifier);
+      g_free (user_unit->symbol);
+      g_free (user_unit->abbreviation);
+      g_free (user_unit->singular);
+      g_free (user_unit->plural);
+
+      g_free (user_unit);
+    }
+
+  g_list_free (gimp->user_units);
+  gimp->user_units   = NULL;
+  gimp->n_user_units = 0;
 }

@@ -40,72 +40,38 @@ enum
 };
 
 
-static void       gimp_module_class_init     (GimpModuleClass *klass);
-static void       gimp_module_init           (GimpModule      *module);
+static void       gimp_module_finalize       (GObject     *object);
 
-static void       gimp_module_finalize       (GObject         *object);
+static gboolean   gimp_module_load           (GTypeModule *module);
+static void       gimp_module_unload         (GTypeModule *module);
 
-static gboolean   gimp_module_load           (GTypeModule     *module);
-static void       gimp_module_unload         (GTypeModule     *module);
+static gboolean   gimp_module_open           (GimpModule  *module);
+static gboolean   gimp_module_close          (GimpModule  *module);
+static void       gimp_module_set_last_error (GimpModule  *module,
+                                              const gchar *error_str);
 
-static gboolean   gimp_module_open           (GimpModule      *module);
-static gboolean   gimp_module_close          (GimpModule      *module);
-static void       gimp_module_set_last_error (GimpModule      *module,
-                                              const gchar     *error_str);
 
+G_DEFINE_TYPE (GimpModule, gimp_module, G_TYPE_TYPE_MODULE);
+
+#define parent_class gimp_module_parent_class
 
 static guint module_signals[LAST_SIGNAL];
 
-static GTypeModuleClass *parent_class = NULL;
-
-
-GType
-gimp_module_get_type (void)
-{
-  static GType module_type = 0;
-
-  if (! module_type)
-    {
-      static const GTypeInfo module_info =
-      {
-        sizeof (GimpModuleClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_module_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpModule),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_module_init,
-      };
-
-      module_type = g_type_register_static (G_TYPE_TYPE_MODULE,
-                                            "GimpModule",
-                                            &module_info, 0);
-    }
-
-  return module_type;
-}
 
 static void
 gimp_module_class_init (GimpModuleClass *klass)
 {
-  GObjectClass     *object_class;
-  GTypeModuleClass *module_class;
-
-  object_class = G_OBJECT_CLASS (klass);
-  module_class = G_TYPE_MODULE_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
+  GObjectClass     *object_class = G_OBJECT_CLASS (klass);
+  GTypeModuleClass *module_class = G_TYPE_MODULE_CLASS (klass);
 
   module_signals[MODIFIED] =
     g_signal_new ("modified",
-		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (GimpModuleClass, modified),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpModuleClass, modified),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
   object_class->finalize = gimp_module_finalize;
 
@@ -135,9 +101,7 @@ gimp_module_init (GimpModule *module)
 static void
 gimp_module_finalize (GObject *object)
 {
-  GimpModule *module;
-
-  module = GIMP_MODULE (object);
+  GimpModule *module = GIMP_MODULE (object);
 
   if (module->info)
     {
@@ -163,18 +127,14 @@ gimp_module_finalize (GObject *object)
 static gboolean
 gimp_module_load (GTypeModule *module)
 {
-  GimpModule *gimp_module;
+  GimpModule *gimp_module = GIMP_MODULE (module);
   gpointer    func;
-
-  g_return_val_if_fail (GIMP_IS_MODULE (module), FALSE);
-
-  gimp_module = GIMP_MODULE (module);
 
   g_return_val_if_fail (gimp_module->filename != NULL, FALSE);
   g_return_val_if_fail (gimp_module->module == NULL, FALSE);
 
   if (gimp_module->verbose)
-    g_print (_("Loading module: '%s'\n"),
+    g_print ("Loading module '%s'\n",
              gimp_filename_to_utf8 (gimp_module->filename));
 
   if (! gimp_module_open (gimp_module))
@@ -189,10 +149,9 @@ gimp_module_load (GTypeModule *module)
       gimp_module_set_last_error (gimp_module,
                                   "Missing gimp_module_register() symbol");
 
-      if (gimp_module->verbose)
-	g_message (_("Module '%s' load error: %s"),
-		   gimp_filename_to_utf8 (gimp_module->filename),
-                   gimp_module->last_module_error);
+      g_message (_("Module '%s' load error: %s"),
+                 gimp_filename_to_utf8 (gimp_module->filename),
+                 gimp_module->last_module_error);
 
       gimp_module_close (gimp_module);
 
@@ -208,10 +167,9 @@ gimp_module_load (GTypeModule *module)
       gimp_module_set_last_error (gimp_module,
                                   "gimp_module_register() returned FALSE");
 
-      if (gimp_module->verbose)
-	g_message (_("Module '%s' load error: %s"),
-		   gimp_filename_to_utf8 (gimp_module->filename),
-                   gimp_module->last_module_error);
+      g_message (_("Module '%s' load error: %s"),
+                 gimp_filename_to_utf8 (gimp_module->filename),
+                 gimp_module->last_module_error);
 
       gimp_module_close (gimp_module);
 
@@ -228,13 +186,13 @@ gimp_module_load (GTypeModule *module)
 static void
 gimp_module_unload (GTypeModule *module)
 {
-  GimpModule *gimp_module;
-
-  g_return_if_fail (GIMP_IS_MODULE (module));
-
-  gimp_module = GIMP_MODULE (module);
+  GimpModule *gimp_module = GIMP_MODULE (module);
 
   g_return_if_fail (gimp_module->module != NULL);
+
+  if (gimp_module->verbose)
+    g_print ("Unloading module '%s'\n",
+             gimp_filename_to_utf8 (gimp_module->filename));
 
   gimp_module_close (gimp_module);
 }
@@ -276,12 +234,8 @@ gimp_module_new (const gchar *filename,
   else
     {
       if (verbose)
-	{
-	  gchar *filename_utf8 = g_filename_to_utf8 (filename,
-						     -1, NULL, NULL, NULL);
-	  g_print (_("Skipping module: '%s'\n"), filename_utf8);
-	  g_free (filename_utf8);
-	}
+        g_print ("Skipping module '%s'\n",
+                 gimp_filename_to_utf8 (filename));
 
       module->state = GIMP_MODULE_STATE_NOT_LOADED;
     }
@@ -322,10 +276,9 @@ gimp_module_query_module (GimpModule *module)
       gimp_module_set_last_error (module,
                                   "Missing gimp_module_query() symbol");
 
-      if (module->verbose)
-        g_message (_("Module '%s' load error: %s"),
-                   gimp_filename_to_utf8 (module->filename),
-                   module->last_module_error);
+      g_message (_("Module '%s' load error: %s"),
+                 gimp_filename_to_utf8 (module->filename),
+                 module->last_module_error);
 
       gimp_module_close (module);
 
@@ -350,10 +303,9 @@ gimp_module_query_module (GimpModule *module)
                                   "module ABI version does not match" :
                                   "gimp_module_query() returned NULL");
 
-      if (module->verbose)
-        g_message (_("Module '%s' load error: %s"),
-                   gimp_filename_to_utf8 (module->filename),
-                   module->last_module_error);
+      g_message (_("Module '%s' load error: %s"),
+                 gimp_filename_to_utf8 (module->filename),
+                 module->last_module_error);
 
       gimp_module_close (module);
 
@@ -437,28 +389,16 @@ gimp_module_state_name (GimpModuleState state)
  * @name:
  * @const_static_values:
  *
- * Registers an enum similar to g_enum_register_static() but for
- * modules. This function should actually live in GLib but since
- * there's no such API, it is provided here.
+ * This function is deprecated! Use g_type_module_register_enum() instead.
  *
  * Return value: a new enum #GType
  **/
 GType
 gimp_module_register_enum (GTypeModule      *module,
-                           const gchar	    *name,
+                           const gchar      *name,
                            const GEnumValue *const_static_values)
 {
-  GTypeInfo enum_type_info = { 0, };
-
-  g_return_val_if_fail (G_IS_TYPE_MODULE (module), 0);
-  g_return_val_if_fail (name != NULL, 0);
-  g_return_val_if_fail (const_static_values != NULL, 0);
-
-  g_enum_complete_type_info (G_TYPE_ENUM,
-                             &enum_type_info, const_static_values);
-
-  return g_type_module_register_type (G_TYPE_MODULE (module),
-                                      G_TYPE_ENUM, name, &enum_type_info, 0);
+  return g_type_module_register_enum (module, name, const_static_values);
 }
 
 
@@ -474,10 +414,9 @@ gimp_module_open (GimpModule *module)
       module->state = GIMP_MODULE_STATE_ERROR;
       gimp_module_set_last_error (module, g_module_error ());
 
-      if (module->verbose)
-        g_message (_("Module '%s' load error: %s"),
-                   gimp_filename_to_utf8 (module->filename),
-                   module->last_module_error);
+      g_message (_("Module '%s' load error: %s"),
+                 gimp_filename_to_utf8 (module->filename),
+                 module->last_module_error);
 
       return FALSE;
     }

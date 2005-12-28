@@ -46,10 +46,9 @@
 
 #include "resource.h"
 
-#include <gtk/gtk.h>
-
 #include "libgimp/gimp.h"
 #include "libgimp/gimpui.h"
+
 #include "libgimp/stdplugins-intl.h"
 
 /*
@@ -839,15 +838,15 @@ snap_toggle_update (GtkWidget *widget,
 static gboolean
 snap_dialog (void)
 {
-  GtkWidget	*dialog;
-  GtkWidget	*vbox;
-  GtkWidget	*hbox;
-  GtkWidget     *label;
-  GtkAdjustment *adj;
-  GSList	*radio_group = NULL;
-  gint		 radio_pressed[2];
-  gint		 decorations;
-  gboolean       run;
+  GtkWidget *dialog;
+  GtkWidget *vbox;
+  GtkWidget *hbox;
+  GtkWidget *label;
+  GtkObject *adj;
+  GSList    *radio_group = NULL;
+  gint	     radio_pressed[2];
+  gint	     decorations;
+  gboolean   run;
 
   /* Set defaults */
   radio_pressed[0] = (winsnapvals.root == FALSE);
@@ -866,6 +865,11 @@ snap_dialog (void)
                             _("Grab"),        GTK_RESPONSE_OK,
 
 			    NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                              GTK_RESPONSE_OK,
+                                              GTK_RESPONSE_CANCEL,
+                                              -1);
 
   vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
@@ -908,10 +912,10 @@ snap_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  adj = (GtkAdjustment *) gtk_adjustment_new ((gfloat) winsnapvals.delay,
-                                              0.0, 100.0,
-                                              1.0, 5.0, 0.0);
-  winsnapintf.delay_spinner = gtk_spin_button_new (adj, 0, 0);
+  winsnapintf.delay_spinner = gimp_spin_button_new (&adj,
+                                                    winsnapvals.delay,
+                                                    0.0, 100.0,
+                                                    1.0, 5.0, 0.0, 0, 0);
   gtk_box_pack_start (GTK_BOX (hbox),
                       winsnapintf.delay_spinner, FALSE, FALSE, 0);
   gtk_widget_show (winsnapintf.delay_spinner);
@@ -996,7 +1000,7 @@ query(void)
                           return_vals);
 
   gimp_plugin_menu_register (PLUG_IN_NAME, "<Toolbox>/File/Acquire");
-  /* gimp_plugin_menu_register (PLUG_IN_NAME, "<Image>/File/Acquire"); */
+  gimp_plugin_menu_register (PLUG_IN_NAME, "<Image>/File/Acquire");
 }
 
 /* Return values storage */

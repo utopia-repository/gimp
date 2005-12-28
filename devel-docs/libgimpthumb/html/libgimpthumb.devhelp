@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
 <book xmlns="http://www.devhelp.net/book" title="GIMP Thumbnail Library Reference Manual" link="index.html" author="" name="libgimpthumb">
   <chapters>
     <sub name="GIMP Thumbnail Library" link="libgimpthumb.html">
@@ -8,6 +7,10 @@
       <sub name="gimpthumb-enums" link="libgimpthumb-gimpthumb-enums.html"/>
       <sub name="gimpthumb-error" link="libgimpthumb-gimpthumb-error.html"/>
     </sub>
+    <sub name="Index" link="ix01.html"/>
+    <sub name="Index of new symbols in GIMP 2.2" link="ix02.html"/>
+    <sub name="Index of new symbols in GIMP 2.4" link="ix03.html"/>
+    <sub name="Index of deprecated symbols" link="ix04.html"/>
   </chapters>
   <functions>
     <function name="GimpThumbnail" link="GimpThumbnail.html#GimpThumbnail-struct"/>

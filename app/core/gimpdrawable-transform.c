@@ -32,6 +32,7 @@
 #include "base/tile.h"
 
 #include "paint-funcs/paint-funcs.h"
+#include "paint-funcs/scale-funcs.h"
 
 #include "gimp.h"
 #include "gimp-utils.h"
@@ -98,6 +99,16 @@ static void     sample_linear     (PixelSurround *surround,
                                    gint           bytes,
                                    gint           alpha);
 
+static void     sample_lanczos    (PixelSurround *surround,
+                                   gdouble        u,
+                                   gdouble        v,
+                                   guchar        *color,
+                                   gint           bytes,
+                                   gint           alpha,
+                                   const gdouble *kernel);
+
+static gdouble * kernel_lanczos   (void);
+
 
 /*  public functions  */
 
@@ -136,6 +147,8 @@ gimp_drawable_transform_tiles_affine (GimpDrawable           *drawable,
 
   gdouble      tu[5],tv[5],tw[5];     /* undivided source coordinates and
                                          divisor */
+
+  gdouble     *kernel = NULL;         /* Lanczos kernel                    */
 
   gint         coords;
   gint         width;
@@ -272,6 +285,14 @@ gimp_drawable_transform_tiles_affine (GimpDrawable           *drawable,
                      0, 0, x2 - x1, y2 - y1, TRUE);
   tile_manager_set_offsets (new_tiles, x1, y1);
 
+  width  = tile_manager_width (new_tiles);
+  bytes  = tile_manager_bpp (new_tiles);
+
+  /*  If the image is too small for lanczos, switch to cubic interpolation  */
+  if (interpolation_type == GIMP_INTERPOLATION_LANCZOS &&
+      (x2 - x1 < LANCZOS_WIDTH2 || y2 - y1 < LANCZOS_WIDTH2))
+    interpolation_type = GIMP_INTERPOLATION_CUBIC;
+
   /* initialise the pixel_surround and pixel_cache accessors */
   switch (interpolation_type)
     {
@@ -283,10 +304,12 @@ gimp_drawable_transform_tiles_affine (GimpDrawable           *drawable,
     case GIMP_INTERPOLATION_LINEAR:
       pixel_surround_init (&surround, orig_tiles, 2, 2, bg_color);
       break;
+    case GIMP_INTERPOLATION_LANCZOS:
+      kernel = kernel_lanczos ();
+      pixel_surround_init (&surround, orig_tiles,
+                           LANCZOS_WIDTH2, LANCZOS_WIDTH2, bg_color);
+      break;
     }
-
-  width  = tile_manager_width (new_tiles);
-  bytes  = tile_manager_bpp (new_tiles);
 
   dest = g_new (guchar, tile_manager_width (new_tiles) * bytes);
 
@@ -304,8 +327,7 @@ gimp_drawable_transform_tiles_affine (GimpDrawable           *drawable,
     {
       if (progress && !(y & 0xf))
         gimp_progress_set_value (progress,
-                                 (gdouble) (y - y1) /
-                                 (gdouble) (y2 - y1));
+                                 (gdouble) (y - y1) / (gdouble) (y2 - y1));
 
       /* set up inverse transform steps */
       tu[0] = uinc * x1 + m.coeff[0][1] * y + m.coeff[0][2];
@@ -362,8 +384,8 @@ gimp_drawable_transform_tiles_affine (GimpDrawable           *drawable,
           if (interpolation_type == GIMP_INTERPOLATION_NONE)
             {
               guchar color[MAX_CHANNELS];
-              gint   iu = (gint) u [0];
-              gint   iv = (gint) v [0];
+              gint   iu = (gint) u[0];
+              gint   iv = (gint) v[0];
               gint   b;
 
               if (iu >= u1 && iu < u2 &&
@@ -425,12 +447,23 @@ gimp_drawable_transform_tiles_affine (GimpDrawable           *drawable,
                     }
                   else
                     {
-                      if (interpolation_type == GIMP_INTERPOLATION_LINEAR)
-                        sample_linear (&surround, u[0] - u1, v[0] - v1,
-                                       color, bytes, alpha);
-                      else
-                        sample_cubic (&surround, u[0] - u1, v[0] - v1,
-                                      color, bytes, alpha);
+                      switch (interpolation_type)
+                        {
+                        case GIMP_INTERPOLATION_NONE:
+                          break;
+                        case GIMP_INTERPOLATION_LINEAR:
+                          sample_linear (&surround, u[0] - u1, v[0] - v1,
+                                         color, bytes, alpha);
+                          break;
+                        case GIMP_INTERPOLATION_CUBIC:
+                          sample_cubic (&surround, u[0] - u1, v[0] - v1,
+                                        color, bytes, alpha);
+                          break;
+                        case GIMP_INTERPOLATION_LANCZOS:
+                          sample_lanczos (&surround, u[0] - u1, v[0] - v1,
+                                          color, bytes, alpha, kernel);
+                          break;
+                        }
                     }
 
                   /*  Set the destination pixel  */
@@ -451,8 +484,19 @@ gimp_drawable_transform_tiles_affine (GimpDrawable           *drawable,
       pixel_region_set_row (&destPR, 0, (y - y1), width, dest);
     }
 
-  if (interpolation_type != GIMP_INTERPOLATION_NONE)
-    pixel_surround_clear (&surround);
+  switch (interpolation_type)
+    {
+    case GIMP_INTERPOLATION_NONE:
+      break;
+    case GIMP_INTERPOLATION_CUBIC:
+    case GIMP_INTERPOLATION_LINEAR:
+      pixel_surround_clear (&surround);
+      break;
+    case GIMP_INTERPOLATION_LANCZOS:
+      pixel_surround_clear (&surround);
+      g_free (kernel);
+      break;
+    }
 
   g_free (dest);
 
@@ -932,7 +976,7 @@ gimp_drawable_transform_flip (GimpDrawable        *drawable,
 
   if (orig_tiles)
     {
-      TileManager *new_tiles;
+      TileManager *new_tiles = NULL;
 
       if (auto_center)
         {
@@ -963,13 +1007,16 @@ gimp_drawable_transform_flip (GimpDrawable        *drawable,
         clip_result = TRUE;
 
       /* transform the buffer */
-      new_tiles = gimp_drawable_transform_tiles_flip (drawable, context,
-                                                      orig_tiles,
-                                                      flip_type, axis,
-                                                      clip_result);
+      if (orig_tiles)
+        {
+          new_tiles = gimp_drawable_transform_tiles_flip (drawable, context,
+                                                          orig_tiles,
+                                                          flip_type, axis,
+                                                          clip_result);
 
-      /* Free the cut/copied buffer */
-      tile_manager_unref (orig_tiles);
+          /* Free the cut/copied buffer */
+          tile_manager_unref (orig_tiles);
+        }
 
       if (new_tiles)
         {
@@ -1074,14 +1121,24 @@ gimp_drawable_transform_cut (GimpDrawable *drawable,
   /*  extract the selected mask if there is a selection  */
   if (! gimp_channel_is_empty (gimp_image_get_mask (gimage)))
     {
+      gint x, y, w, h;
+
       /* set the keep_indexed flag to FALSE here, since we use
        * gimp_layer_new_from_tiles() later which assumes that the tiles
        * are either RGB or GRAY.  Eeek!!!              (Sven)
        */
-      tiles = gimp_selection_extract (gimp_image_get_mask (gimage),
-                                      drawable, context, TRUE, FALSE, TRUE);
+      if (gimp_drawable_mask_intersect (drawable, &x, &y, &w, &h))
+        {
+          tiles = gimp_selection_extract (gimp_image_get_mask (gimage),
+                                          drawable, context, TRUE, FALSE, TRUE);
 
-      *new_layer = TRUE;
+          *new_layer = TRUE;
+        }
+      else
+        {
+          tiles = NULL;
+          *new_layer = FALSE;
+        }
     }
   else  /*  otherwise, just copy the layer  */
     {
@@ -1201,7 +1258,7 @@ sample_linear (PixelSurround *surround,
   /* calculate alpha value of result pixel */
   alphachan = &data[alpha];
   a_val = BILINEAR (alphachan[0],   alphachan[bytes],
-                    alphachan[row], alphachan[row+bytes], du, dv);
+                    alphachan[row], alphachan[row + bytes], du, dv);
   if (a_val <= 0.0)
     {
       a_recip = 0.0;
@@ -1226,10 +1283,10 @@ sample_linear (PixelSurround *surround,
   for (i = 0; i < alpha; i++)
     {
       gint newval = (a_recip *
-                     BILINEAR (alphachan[0]         * data[i],
-                               alphachan[bytes]     * data[bytes+i],
-                               alphachan[row]       * data[row+i],
-                               alphachan[row+bytes] * data[row+bytes+i],
+                     BILINEAR (alphachan[0]           * data[i],
+                               alphachan[bytes]       * data[bytes + i],
+                               alphachan[row]         * data[row + i],
+                               alphachan[row + bytes] * data[row + bytes + i],
                                du, dv));
 
       color[i] = CLAMP (newval, 0, 255);
@@ -1601,12 +1658,170 @@ sample_cubic (PixelSurround *surround,
       gint newval = (a_recip *
                      gimp_drawable_transform_cubic
                      (dv,
-                      CUBIC_SCALED_ROW (du, i + data + row * 0, data + alpha + row * 0, bytes),
-                      CUBIC_SCALED_ROW (du, i + data + row * 1, data + alpha + row * 1, bytes),
-                      CUBIC_SCALED_ROW (du, i + data + row * 2, data + alpha + row * 2, bytes),
-                      CUBIC_SCALED_ROW (du, i + data + row * 3, data + alpha + row * 3, bytes)));
+                      CUBIC_SCALED_ROW (du,
+                                        i + data + row * 0,
+                                        data + alpha + row * 0,
+                                        bytes),
+                      CUBIC_SCALED_ROW (du,
+                                        i + data + row * 1,
+                                        data + alpha + row * 1,
+                                        bytes),
+                      CUBIC_SCALED_ROW (du,
+                                        i + data + row * 2,
+                                        data + alpha + row * 2,
+                                        bytes),
+                      CUBIC_SCALED_ROW (du,
+                                        i + data + row * 3,
+                                        data + alpha + row * 3,
+                                        bytes)));
 
       color[i] = CLAMP (newval, 0, 255);
+    }
+
+  pixel_surround_release (surround);
+}
+
+
+/* Lanczos */
+
+static inline gdouble
+sinc (gdouble x)
+{
+  gdouble y = x * G_PI;
+
+  if (ABS (x) < EPSILON)
+    return 1.0;
+
+  return sin (y) / y;
+}
+
+static inline gdouble
+lanczos_sum (const guchar *data,
+             gdouble      *l,
+             gint          row,
+             gint          bytes,
+             gint          byte)
+{
+  gdouble sum = 0;
+  gint    j, k;
+
+  for (k = 0, j = 0; j < LANCZOS_WIDTH2; j++, k += bytes)
+    sum += (l[j] * data[row + k + byte]);
+
+  return sum;
+}
+
+static inline gdouble
+lanczos_sum_mul (const guchar  *data,
+                 const gdouble *l,
+                 gint           row,
+                 gint           bytes,
+                 gint           byte,
+                 gint           alpha)
+{
+  gdouble sum = 0;
+  gint    j, k;
+
+  for (k = 0, j = 0; j < LANCZOS_WIDTH2; j++, k += bytes)
+    sum += (l[j] *
+            data[row + k + byte] *
+            data[row + k + alpha]);
+
+  return sum;
+}
+
+static gdouble *
+kernel_lanczos (void)
+{
+  gdouble *kernel ;
+  gdouble  x  = 0.0;
+  gdouble  dx = (gdouble) LANCZOS_WIDTH / (gdouble) (LANCZOS_SAMPLES - 1);
+  gint     i;
+
+  kernel = g_new (gdouble, LANCZOS_SAMPLES);
+
+  for (i = 0 ;i < LANCZOS_SAMPLES; i++)
+    {
+      kernel[i] = ((ABS (x) < LANCZOS_WIDTH) ?
+                   (sinc (x) * sinc (x / LANCZOS_WIDTH)) : 0.0);
+      x += dx;
+    }
+
+  return kernel;
+}
+
+static void
+sample_lanczos (PixelSurround *surround,
+                gdouble        u,
+                gdouble        v,
+                guchar        *color,
+                gint           bytes,
+                gint           alpha,
+                const gdouble *kernel)
+{
+
+  gdouble  lu[LANCZOS_WIDTH2];      /* Lanczos sample value              */
+  gdouble  lv[LANCZOS_WIDTH2];      /* Lanczos sample value              */
+  gdouble  lusum, lvsum, weight;    /* Lanczos weighting vars            */
+  gint	   i,j,row, byte;           /* loop vars to fill source window   */
+  gint     du,dv;
+  guchar  *data;
+
+  gdouble  aval, arecip;            /* Handle alpha values               */
+  gdouble  newval;                  /* New interpolated RGB value        */
+
+  gint     iu = floor(u);
+  gint     iv = floor(v);
+
+  /* lock the pixel surround */
+  data = pixel_surround_lock (surround,
+                              iu - LANCZOS_WIDTH, iv - LANCZOS_WIDTH);
+
+  row = pixel_surround_rowstride (surround);
+
+  /* the fractional error */
+  du = (gint)((u - iu) * LANCZOS_SPP);
+  dv = (gint)((v - iv) * LANCZOS_SPP);
+
+  for (lusum = lvsum = i = 0, j = LANCZOS_WIDTH - 1;
+       j >= - LANCZOS_WIDTH;
+       j--, i++)
+    {
+        lusum += lu[i] = kernel[ABS (j * LANCZOS_SPP + du)];
+        lvsum += lv[i] = kernel[ABS (j * LANCZOS_SPP + dv)];
+    }
+
+  weight = lusum * lvsum;
+
+  for ( aval = 0, i = 0 ; i < LANCZOS_WIDTH2 ; i ++ )
+    aval += lv[i] * lanczos_sum (data, lu, i * row, bytes, alpha);
+
+  /* calculate alpha of result */
+  aval /= weight;
+
+  if ( aval <= 0.0 )
+    {
+      arecip = 0.0;
+      color[alpha] = 0;
+    }
+  else if ( aval > 255.0 )
+    {
+      arecip = 1.0 / aval;
+      color[alpha] = 255;
+    }
+  else
+    {
+      arecip = 1.0 / aval;
+      color[alpha] = RINT (aval);
+    }
+
+  for (byte = 0; byte < alpha; byte++)
+    {
+      for (newval = 0, i = 0; i < LANCZOS_WIDTH2; i ++)
+        newval += lv[i] * lanczos_sum_mul (data, lu,
+                                           i * row, bytes, byte, alpha);
+        newval *= arecip;
+        color[byte] = CLAMP (newval, 0, 255);
     }
 
   pixel_surround_release (surround);

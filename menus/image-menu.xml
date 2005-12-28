@@ -31,7 +31,10 @@
       <separator/>
       <placeholder name="Send"/>
       <separator/>
+      <placeholder name="Info"/>
+      <separator/>
       <menuitem action="view-close"/>
+      <menuitem action="file-close-all"/>
       <menuitem action="file-quit"/>
     </menu>
 
@@ -160,11 +163,14 @@
       <placeholder name="Paste">
 	<menuitem action="edit-paste"/>
 	<menuitem action="edit-paste-into"/>
-	<menuitem action="edit-paste-as-new"/>
       </placeholder>
+      <menu action="edit-paste-as-menu" name="Paste as">
+	<menuitem action="edit-paste-as-new-short"/>
+      </menu>
       <menu action="edit-buffer-menu" name="Buffer">
         <menuitem action="edit-named-cut"/>
 	<menuitem action="edit-named-copy"/>
+	<menuitem action="edit-named-copy-visible"/>
 	<menuitem action="edit-named-paste"/>
       </menu>
       <separator/>
@@ -180,6 +186,9 @@
         <menuitem action="select-stroke"/>
         <menuitem action="vectors-stroke"/>
       </placeholder>
+      <separator/>
+        <menuitem action="dialogs-preferences"/>      
+        <menuitem action="dialogs-keyboard-shortcuts"/>
       <separator/>
     </menu>
 
@@ -200,7 +209,7 @@
         <menuitem action="select-border"/>
       </placeholder>
       <separator/>
-      <menuitem action="qmask-toggle"/>
+      <menuitem action="quick-mask-toggle"/>
       <menuitem action="select-save"/>
       <menuitem action="vectors-selection-to-vectors-short"/>
       <separator/>
@@ -230,18 +239,25 @@
       <separator/>
       <menuitem action="view-shrink-wrap"/>
       <menuitem action="view-fullscreen"/>
-      <menuitem action="view-move-to-screen"/>
+      <menu action="view-move-to-screen-menu" name="Move to Screen">
+        <menuitem action="view-open-display"/>
+        <separator/>
+      </menu>
       <separator/>
-      <menuitem action="view-info-window"/>
       <menuitem action="view-navigation-window"/>
       <menuitem action="view-display-filters"/>
       <separator/>
       <menuitem action="view-show-selection"/>
       <menuitem action="view-show-layer-boundary"/>
       <menuitem action="view-show-guides"/>
-      <menuitem action="view-snap-to-guides"/>
       <menuitem action="view-show-grid"/>
+      <menuitem action="view-show-sample-points"/>
+      <separator/>
+      <menuitem action="view-snap-to-guides"/>
       <menuitem action="view-snap-to-grid"/>
+      <menuitem action="view-snap-to-canvas"/>
+      <menuitem action="view-snap-to-vectors"/>
+      <separator/>
       <menu action="view-padding-color-menu" name="Padding color">
         <menuitem action="view-padding-color-theme"/>
         <menuitem action="view-padding-color-light-check"/>
@@ -250,7 +266,6 @@
         <separator/>
         <menuitem action="view-padding-color-prefs"/>
       </menu>
-      <separator/>
       <menuitem action="view-show-menubar"/>
       <menuitem action="view-show-rulers"/>
       <menuitem action="view-show-scrollbars"/>
@@ -266,7 +281,6 @@
         <menuitem action="image-convert-rgb"/>
         <menuitem action="image-convert-grayscale"/>
         <menuitem action="image-convert-indexed"/>
-	<separator/>
       </menu>
       <menu action="image-transform-menu" name="Transform">
         <placeholder name="Flip">
@@ -302,6 +316,7 @@
       <menu action="image-guides-menu" name="Guides">
       </menu>
       <menuitem action="image-configure-grid"/>
+      <menuitem action="image-properties"/>
       <separator/>
     </menu>
 
@@ -333,28 +348,6 @@
         </placeholder>
         <separator/>
       </menu>
-      <menu action="layers-colors-menu" name="Colors">
-        <menuitem action="tools-color-balance"/>
-        <menuitem action="tools-hue-saturation"/>
-        <menuitem action="tools-colorize"/>
-        <menuitem action="tools-brightness-contrast"/>
-        <menuitem action="tools-threshold"/>
-        <menuitem action="tools-levels"/>
-        <menuitem action="tools-curves"/>
-        <menuitem action="tools-posterize"/>
-	<separator/>
-        <menuitem action="drawable-desaturate"/>
-        <menuitem action="drawable-invert"/>
-	<menu action="layers-colors-auto-menu" name="Auto">
-	  <menuitem action="drawable-equalize"/>
-	  <menuitem action="drawable-levels-stretch"/>
-	</menu>
-	<separator/>
-        <placeholder name="Info">
-          <menuitem action="dialogs-histogram"/>
-        </placeholder>
-        <separator/>
-      </menu>
       <menu action="layers-mask-menu" name="Mask">
         <placeholder name="Modify">
           <menuitem action="layers-mask-add"/>
@@ -379,6 +372,7 @@
       <menu action="layers-transparency-menu" name="Transparency">
         <placeholder name="Modify">
           <menuitem action="layers-alpha-add"/>
+          <menuitem action="layers-alpha-remove"/>
         </placeholder>
 	<separator/>
         <placeholder name="Selection">
@@ -423,7 +417,7 @@
         </menu>
         <menuitem action="drawable-visible" />
         <menuitem action="drawable-linked" />
-        <menuitem action="layers-preserve-transparency" />
+        <menuitem action="layers-lock-alpha" />
       </menu>
 
 -->
@@ -442,6 +436,34 @@
       <separator/>
     </menu>
 
+    <menu action="colors-menu" name="Colors">
+      <menuitem action="tools-color-balance"/>
+      <menuitem action="tools-hue-saturation"/>
+      <menuitem action="tools-colorize"/>
+      <menuitem action="tools-brightness-contrast"/>
+      <menuitem action="tools-threshold"/>
+      <menuitem action="tools-levels"/>
+      <menuitem action="tools-curves"/>
+      <menuitem action="tools-posterize"/>
+      <separator/>
+      <menuitem action="drawable-desaturate"/>
+      <placeholder name="Invert">
+        <menuitem action="drawable-invert"/>
+      </placeholder>
+      <separator/>
+      <menu action="colors-auto-menu" name="Auto">
+        <menuitem action="drawable-equalize"/>
+        <menuitem action="drawable-levels-stretch"/>
+      </menu>
+      <menu action="colors-components-menu" name="Components"/>
+      <menu action="colors-map-menu" name="Map"/>
+      <menu action="colors-info-menu" name="Info">
+        <menuitem action="dialogs-histogram"/>
+      </menu>
+      <separator/>
+      <placeholder name="Modify"/>
+    </menu>
+
     <menu action="tools-menu" name="Tools">
       <menuitem action="dialogs-toolbox"/>
       <menuitem action="context-colors-default"/>
@@ -451,6 +473,7 @@
 	<menuitem action="tools-rect-select"/>
 	<menuitem action="tools-ellipse-select"/>
 	<menuitem action="tools-free-select"/>
+	<menuitem action="tools-foreground-select"/>
 	<menuitem action="tools-fuzzy-select"/>
 	<menuitem action="tools-by-color-select"/>
 	<menuitem action="tools-iscissors"/>
@@ -512,6 +535,8 @@
   <menuitem action="dialogs-selection-editor"/>
   <menuitem action="dialogs-navigation"/>
   <menuitem action="dialogs-undo-history"/>
+  <menuitem action="dialogs-cursor"/>
+  <menuitem action="dialogs-sample-points"/>
   <separator/>
   <menuitem action="dialogs-colors"/>
   <menuitem action="dialogs-brushes"/>
@@ -535,17 +560,20 @@
       <menuitem action="plug-in-reset-all"/>
       <separator/>
       <menu action="plug-in-blur-menu" name="Blur"/>
-      <menu action="plug-in-colors-menu" name="Colors">
-	<menu action="plug-in-colors-map-menu" name="Map"/>
+      <menu action="plug-in-enhance-menu" name="Enhance"/>
+      <menu action="plug-in-distorts-menu" name="Distorts"/>
+      <menu action="plug-in-light-shadow-menu" name="Light and Shadow">
+        <placeholder name="Light"/>
+	<separator/>
+        <placeholder name="Shadow"/>
+	<separator/>
+        <placeholder name="Glass"/>
       </menu>
       <menu action="plug-in-noise-menu" name="Noise"/>
       <menu action="plug-in-edge-detect-menu" name="Edge-Detect"/>
-      <menu action="plug-in-enhance-menu" name="Enhance"/>
       <menu action="plug-in-generic-menu" name="Generic"/>
+      <menu action="plug-in-combine-menu" name="Combine"/>
       <separator/>
-      <menu action="plug-in-glass-effects-menu" name="Glass Effects"/>
-      <menu action="plug-in-light-effects-menu" name="Light Effects"/>
-      <menu action="plug-in-distorts-menu" name="Distorts"/>
       <menu action="plug-in-artistic-menu" name="Artistic"/>
       <menu action="plug-in-map-menu" name="Map"/>
       <menu action="plug-in-render-menu" name="Render">
@@ -555,11 +583,11 @@
 	<separator/>
       </menu>
       <menu action="plug-in-web-menu" name="Web"/>
+      <menu action="plug-in-animation-menu" name="Animation">
+        <placeholder name="Animators"/>
+	<separator/>
+      </menu>
       <separator/>
-      <menu action="plug-in-animation-menu" name="Animation"/>
-      <menu action="plug-in-combine-menu" name="Combine"/>
-      <separator/>
-      <menu action="plug-in-toys-menu" name="Toys"/>
     </menu>
 
   </menubar><menubar name="dummy-menubar"><menu action="image-popup">
@@ -590,7 +618,10 @@
       <separator/>
       <placeholder name="Send"/>
       <separator/>
+      <placeholder name="Info"/>
+      <separator/>
       <menuitem action="view-close"/>
+      <menuitem action="file-close-all"/>
       <menuitem action="file-quit"/>
     </menu>
 
@@ -719,11 +750,14 @@
       <placeholder name="Paste">
 	<menuitem action="edit-paste"/>
 	<menuitem action="edit-paste-into"/>
-	<menuitem action="edit-paste-as-new"/>
       </placeholder>
+      <menu action="edit-paste-as-menu" name="Paste as">
+	<menuitem action="edit-paste-as-new-short"/>
+      </menu>
       <menu action="edit-buffer-menu" name="Buffer">
         <menuitem action="edit-named-cut"/>
 	<menuitem action="edit-named-copy"/>
+	<menuitem action="edit-named-copy-visible"/>
 	<menuitem action="edit-named-paste"/>
       </menu>
       <separator/>
@@ -739,6 +773,9 @@
         <menuitem action="select-stroke"/>
         <menuitem action="vectors-stroke"/>
       </placeholder>
+      <separator/>
+        <menuitem action="dialogs-preferences"/>      
+        <menuitem action="dialogs-keyboard-shortcuts"/>
       <separator/>
     </menu>
 
@@ -759,7 +796,7 @@
         <menuitem action="select-border"/>
       </placeholder>
       <separator/>
-      <menuitem action="qmask-toggle"/>
+      <menuitem action="quick-mask-toggle"/>
       <menuitem action="select-save"/>
       <menuitem action="vectors-selection-to-vectors-short"/>
       <separator/>
@@ -789,18 +826,25 @@
       <separator/>
       <menuitem action="view-shrink-wrap"/>
       <menuitem action="view-fullscreen"/>
-      <menuitem action="view-move-to-screen"/>
+      <menu action="view-move-to-screen-menu" name="Move to Screen">
+        <menuitem action="view-open-display"/>
+        <separator/>
+      </menu>
       <separator/>
-      <menuitem action="view-info-window"/>
       <menuitem action="view-navigation-window"/>
       <menuitem action="view-display-filters"/>
       <separator/>
       <menuitem action="view-show-selection"/>
       <menuitem action="view-show-layer-boundary"/>
       <menuitem action="view-show-guides"/>
-      <menuitem action="view-snap-to-guides"/>
       <menuitem action="view-show-grid"/>
+      <menuitem action="view-show-sample-points"/>
+      <separator/>
+      <menuitem action="view-snap-to-guides"/>
       <menuitem action="view-snap-to-grid"/>
+      <menuitem action="view-snap-to-canvas"/>
+      <menuitem action="view-snap-to-vectors"/>
+      <separator/>
       <menu action="view-padding-color-menu" name="Padding color">
         <menuitem action="view-padding-color-theme"/>
         <menuitem action="view-padding-color-light-check"/>
@@ -809,7 +853,6 @@
         <separator/>
         <menuitem action="view-padding-color-prefs"/>
       </menu>
-      <separator/>
       <menuitem action="view-show-menubar"/>
       <menuitem action="view-show-rulers"/>
       <menuitem action="view-show-scrollbars"/>
@@ -825,7 +868,6 @@
         <menuitem action="image-convert-rgb"/>
         <menuitem action="image-convert-grayscale"/>
         <menuitem action="image-convert-indexed"/>
-	<separator/>
       </menu>
       <menu action="image-transform-menu" name="Transform">
         <placeholder name="Flip">
@@ -861,6 +903,7 @@
       <menu action="image-guides-menu" name="Guides">
       </menu>
       <menuitem action="image-configure-grid"/>
+      <menuitem action="image-properties"/>
       <separator/>
     </menu>
 
@@ -892,28 +935,6 @@
         </placeholder>
         <separator/>
       </menu>
-      <menu action="layers-colors-menu" name="Colors">
-        <menuitem action="tools-color-balance"/>
-        <menuitem action="tools-hue-saturation"/>
-        <menuitem action="tools-colorize"/>
-        <menuitem action="tools-brightness-contrast"/>
-        <menuitem action="tools-threshold"/>
-        <menuitem action="tools-levels"/>
-        <menuitem action="tools-curves"/>
-        <menuitem action="tools-posterize"/>
-	<separator/>
-        <menuitem action="drawable-desaturate"/>
-        <menuitem action="drawable-invert"/>
-	<menu action="layers-colors-auto-menu" name="Auto">
-	  <menuitem action="drawable-equalize"/>
-	  <menuitem action="drawable-levels-stretch"/>
-	</menu>
-	<separator/>
-        <placeholder name="Info">
-          <menuitem action="dialogs-histogram"/>
-        </placeholder>
-        <separator/>
-      </menu>
       <menu action="layers-mask-menu" name="Mask">
         <placeholder name="Modify">
           <menuitem action="layers-mask-add"/>
@@ -938,6 +959,7 @@
       <menu action="layers-transparency-menu" name="Transparency">
         <placeholder name="Modify">
           <menuitem action="layers-alpha-add"/>
+          <menuitem action="layers-alpha-remove"/>
         </placeholder>
 	<separator/>
         <placeholder name="Selection">
@@ -982,7 +1004,7 @@
         </menu>
         <menuitem action="drawable-visible" />
         <menuitem action="drawable-linked" />
-        <menuitem action="layers-preserve-transparency" />
+        <menuitem action="layers-lock-alpha" />
       </menu>
 
 -->
@@ -1001,6 +1023,34 @@
       <separator/>
     </menu>
 
+    <menu action="colors-menu" name="Colors">
+      <menuitem action="tools-color-balance"/>
+      <menuitem action="tools-hue-saturation"/>
+      <menuitem action="tools-colorize"/>
+      <menuitem action="tools-brightness-contrast"/>
+      <menuitem action="tools-threshold"/>
+      <menuitem action="tools-levels"/>
+      <menuitem action="tools-curves"/>
+      <menuitem action="tools-posterize"/>
+      <separator/>
+      <menuitem action="drawable-desaturate"/>
+      <placeholder name="Invert">
+        <menuitem action="drawable-invert"/>
+      </placeholder>
+      <separator/>
+      <menu action="colors-auto-menu" name="Auto">
+        <menuitem action="drawable-equalize"/>
+        <menuitem action="drawable-levels-stretch"/>
+      </menu>
+      <menu action="colors-components-menu" name="Components"/>
+      <menu action="colors-map-menu" name="Map"/>
+      <menu action="colors-info-menu" name="Info">
+        <menuitem action="dialogs-histogram"/>
+      </menu>
+      <separator/>
+      <placeholder name="Modify"/>
+    </menu>
+
     <menu action="tools-menu" name="Tools">
       <menuitem action="dialogs-toolbox"/>
       <menuitem action="context-colors-default"/>
@@ -1010,6 +1060,7 @@
 	<menuitem action="tools-rect-select"/>
 	<menuitem action="tools-ellipse-select"/>
 	<menuitem action="tools-free-select"/>
+	<menuitem action="tools-foreground-select"/>
 	<menuitem action="tools-fuzzy-select"/>
 	<menuitem action="tools-by-color-select"/>
 	<menuitem action="tools-iscissors"/>
@@ -1071,6 +1122,8 @@
   <menuitem action="dialogs-selection-editor"/>
   <menuitem action="dialogs-navigation"/>
   <menuitem action="dialogs-undo-history"/>
+  <menuitem action="dialogs-cursor"/>
+  <menuitem action="dialogs-sample-points"/>
   <separator/>
   <menuitem action="dialogs-colors"/>
   <menuitem action="dialogs-brushes"/>
@@ -1094,17 +1147,20 @@
       <menuitem action="plug-in-reset-all"/>
       <separator/>
       <menu action="plug-in-blur-menu" name="Blur"/>
-      <menu action="plug-in-colors-menu" name="Colors">
-	<menu action="plug-in-colors-map-menu" name="Map"/>
+      <menu action="plug-in-enhance-menu" name="Enhance"/>
+      <menu action="plug-in-distorts-menu" name="Distorts"/>
+      <menu action="plug-in-light-shadow-menu" name="Light and Shadow">
+        <placeholder name="Light"/>
+	<separator/>
+        <placeholder name="Shadow"/>
+	<separator/>
+        <placeholder name="Glass"/>
       </menu>
       <menu action="plug-in-noise-menu" name="Noise"/>
       <menu action="plug-in-edge-detect-menu" name="Edge-Detect"/>
-      <menu action="plug-in-enhance-menu" name="Enhance"/>
       <menu action="plug-in-generic-menu" name="Generic"/>
+      <menu action="plug-in-combine-menu" name="Combine"/>
       <separator/>
-      <menu action="plug-in-glass-effects-menu" name="Glass Effects"/>
-      <menu action="plug-in-light-effects-menu" name="Light Effects"/>
-      <menu action="plug-in-distorts-menu" name="Distorts"/>
       <menu action="plug-in-artistic-menu" name="Artistic"/>
       <menu action="plug-in-map-menu" name="Map"/>
       <menu action="plug-in-render-menu" name="Render">
@@ -1114,11 +1170,11 @@
 	<separator/>
       </menu>
       <menu action="plug-in-web-menu" name="Web"/>
+      <menu action="plug-in-animation-menu" name="Animation">
+        <placeholder name="Animators"/>
+	<separator/>
+      </menu>
       <separator/>
-      <menu action="plug-in-animation-menu" name="Animation"/>
-      <menu action="plug-in-combine-menu" name="Combine"/>
-      <separator/>
-      <menu action="plug-in-toys-menu" name="Toys"/>
     </menu>
 
   </menu></menubar>

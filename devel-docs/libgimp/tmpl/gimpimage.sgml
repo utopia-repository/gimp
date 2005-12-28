@@ -631,6 +631,16 @@ and operations involving multiple layers.
 @Returns: 
 
 
+<!-- ##### FUNCTION gimp_image_get_vectors ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@num_vectors: 
+@Returns: 
+
+
 <!-- ##### FUNCTION gimp_image_get_thumbnail_data ##### -->
 <para>
 
@@ -694,5 +704,6 @@ and operations involving multiple layers.
 @flags: 
 @size: 
 @data: 
+@Returns: 
 
 

@@ -23,22 +23,14 @@
 
 #include <gtk/gtk.h>
 
+#include <libgimp/gimp.h>
+#include <libgimp/gimpui.h>
+
 #include <pygobject.h>
 #include <pygtk/pygtk.h>
 
-#include <libgimp/gimp.h>
+#include "pygimp-api.h"
 
-#include <plug-ins/dbbrowser/gimpprocbrowser.h>
-
-
-typedef PyObject *(*PyGimpPDBFunctionNew)(const char *name, const char *blurb,
-					  const char *help, const char *author,
-					  const char *copyright,
-					  const char *date,
-					  GimpPDBProcType proc_type,
-					  int n_params, int n_return_vals,
-					  GimpParamDef *params,
-					  GimpParamDef *return_vals);
 
 typedef struct
 {
@@ -47,55 +39,57 @@ typedef struct
 } ProxyData;
 
 
-static PyTypeObject *PyGimpPDBFunction_Type;
-static PyGimpPDBFunctionNew pygimp_pdb_function_new;
-
-
-static GimpParamDef *
-copy_paramdefs(const GimpParamDef *paramdefs, gint n_params)
-{
-    GimpParamDef *copy;
-
-    copy = g_new(GimpParamDef, n_params);
-
-    while (n_params--)
-      {
-	copy[n_params].type = paramdefs[n_params].type;
-	copy[n_params].name = g_strdup(paramdefs[n_params].name);
-	copy[n_params].description = g_strdup(paramdefs[n_params].description);
-      }
-
-    return copy;
-}
-            
 static void
-proxy_apply_callback(const gchar        *name,
-		     const gchar        *blurb,
-		     const gchar        *help,
-		     const gchar        *author,
-		     const gchar        *copyright,
-		     const gchar        *date,
-		     GimpPDBProcType     proc_type,
-		     gint                n_params,
-		     gint                n_return_vals,
-		     const GimpParamDef *params,
-		     const GimpParamDef *return_vals,
-		     gpointer            user_data)
+proxy_response (GtkWidget *widget,
+                gint       response_id,
+                ProxyData *proxy_data)
 {
-    ProxyData *proxy_data = user_data;
-    GimpParamDef *params_copy, *return_vals_copy;
-    PyObject *pdb_func, *ret;
+    PyObject        *pdb_func, *ret;
+    gchar           *name;
+    gchar           *blurb;
+    gchar           *help;
+    gchar           *author;
+    gchar           *copyright;
+    gchar           *date;
+    GimpPDBProcType  proc_type;
+    gint             n_params;
+    gint             n_return_vals;
+    GimpParamDef    *params;
+    GimpParamDef    *return_vals;
 
-    params_copy      = copy_paramdefs(params, n_params);
-    return_vals_copy = copy_paramdefs(return_vals, n_return_vals);
+    if (response_id != GTK_RESPONSE_APPLY) {
+	if (proxy_data)
+	    gtk_widget_destroy (widget);
+	else
+	    gtk_main_quit ();
+
+	return;
+    }
+
+    if (proxy_data == NULL)
+        return;
+
+    name = gimp_proc_browser_dialog_get_selected(GIMP_PROC_BROWSER_DIALOG (widget));
+
+    if (name == NULL)
+	return;
+
+    gimp_procedural_db_proc_info(name, &blurb, &help, &author, &copyright,
+				 &date, &proc_type,
+				 &n_params, &n_return_vals,
+				 &params, &return_vals);
 
     pdb_func = pygimp_pdb_function_new(name, blurb, help, author, copyright,
 				       date, proc_type, n_params, n_return_vals,
-				       params_copy, return_vals_copy);
+				       params, return_vals);
 
     if (pdb_func == NULL) {
 	PyErr_Print();
-	return;
+
+	gimp_destroy_paramdefs(params,      n_params);
+	gimp_destroy_paramdefs(return_vals, n_return_vals);
+
+	goto bail;
     }
 
     if (proxy_data->data)
@@ -110,26 +104,43 @@ proxy_apply_callback(const gchar        *name,
         PyErr_Print();
 
     Py_DECREF(pdb_func);
+
+bail:
+    g_free(name);
+    g_free(blurb);
+    g_free(help);
+    g_free(author);
+    g_free(copyright);
+    g_free(date);
 }
 
 static void
-proxy_cleanup(gpointer data, GObject *obj)
+proxy_cleanup(gpointer data, GClosure *closure)
 {
-  ProxyData *proxy_data = data;
+    ProxyData *proxy_data = data;
 
-  Py_DECREF(proxy_data->func);
-  Py_XDECREF(proxy_data->data);
+    if (!data)
+        return;
 
-  g_free(proxy_data);
+    Py_DECREF(proxy_data->func);
+    Py_XDECREF(proxy_data->data);
+
+    g_free(proxy_data);
+}
+
+static void
+proxy_row_activated(GtkDialog *dialog)
+{
+    gtk_dialog_response (dialog, GTK_RESPONSE_APPLY);
 }
 
 static PyObject *
 proc_browser_dialog_new(PyObject *self, PyObject *args, PyObject *kwargs)
 {
     PyObject *py_func = Py_None, *py_data = Py_None;
-    GimpProcBrowserApplyCallback proxy_func = NULL;
     ProxyData *proxy_data = NULL;
     GObject *dlg;
+    gboolean has_apply = FALSE;
 
     static char *kwlist[] = { "apply_callback", "data", NULL };
 
@@ -139,7 +150,7 @@ proc_browser_dialog_new(PyObject *self, PyObject *args, PyObject *kwargs)
 
     if (py_func != Py_None) {
         if (PyCallable_Check(py_func))
-	    proxy_func = proxy_apply_callback;
+	    has_apply = TRUE;
 	else {
 	    PyErr_SetString(PyExc_TypeError,
 			    "apply_callback must be a callable object or None");
@@ -157,10 +168,29 @@ proc_browser_dialog_new(PyObject *self, PyObject *args, PyObject *kwargs)
 	}
     }
 
-    dlg = G_OBJECT(gimp_proc_browser_dialog_new(FALSE, proxy_func, proxy_data));
+    dlg = G_OBJECT(gimp_proc_browser_dialog_new("Python Procedure Browser",
+                                                "python-fu-procedure-browser",
+                                                gimp_standard_help_func, NULL,
+                                                NULL));
 
-    if (proxy_data)
-      g_object_weak_ref(dlg, proxy_cleanup, proxy_data);
+    if (has_apply) {
+        gtk_dialog_add_button(GTK_DIALOG(dlg),
+                              GTK_STOCK_APPLY, GTK_RESPONSE_APPLY);
+        gtk_dialog_set_default_response(GTK_DIALOG(dlg),
+                                        GTK_RESPONSE_APPLY);
+    }
+
+    gtk_dialog_add_button(GTK_DIALOG(dlg),
+                          GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE);
+
+    g_signal_connect_data(dlg, "response",
+                          G_CALLBACK(proxy_response), proxy_data,
+			  proxy_cleanup, 0);
+    g_signal_connect(dlg, "row-activated",
+                     G_CALLBACK(proxy_row_activated),
+                     NULL);
+
+    gtk_widget_show(GTK_WIDGET(dlg));
 
     return pygobject_new(dlg);
 }
@@ -179,35 +209,14 @@ static char procbrowser_doc[] =
 "This module provides a simple interface for the GIMP PDB Browser"
 ;
 
-void
+DL_EXPORT(void)
 initgimpprocbrowser(void)
 {
-    PyObject *m, *pygimp;
+    PyObject *m;
 
     init_pygobject();
     init_pygtk();
-
-    pygimp = PyImport_ImportModule("gimp");
-
-    if (pygimp) {
-	PyObject *module_dict = PyModule_GetDict(pygimp);
-	PyObject *type_object, *c_object;
-
-	type_object = PyDict_GetItemString(module_dict, "_PDBFunction");
-	c_object    = PyDict_GetItemString(module_dict, "_pdb_function_new");
-
-	if (PyType_Check(type_object) && PyCObject_Check(c_object)) {
-	    PyGimpPDBFunction_Type = (PyTypeObject*)type_object;
-	    pygimp_pdb_function_new = PyCObject_AsVoidPtr(c_object);
-	} else {
-	    PyErr_SetString(PyExc_RuntimeError,
-			    "could not find compatible gimp module");
-	    return;
-	}
-    } else {
-	PyErr_SetString(PyExc_ImportError, "could not import gimp");
-	return;
-    }
+    init_pygimp();
 
     /* Create the module and add the functions */
     m = Py_InitModule3("gimpprocbrowser",

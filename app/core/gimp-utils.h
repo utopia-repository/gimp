@@ -42,6 +42,7 @@ gint64        gimp_g_list_get_memsize       (GList        *list,
 gint64        gimp_g_value_get_memsize      (GValue       *value);
 
 gchar       * gimp_get_default_language     (const gchar  *category);
+GimpUnit      gimp_get_default_unit         (void);
 
 gboolean      gimp_boolean_handled_accum    (GSignalInvocationHint *ihint,
                                              GValue       *return_accu,
@@ -51,17 +52,13 @@ gboolean      gimp_boolean_handled_accum    (GSignalInvocationHint *ihint,
 GParameter  * gimp_parameters_append        (GType         object_type,
                                              GParameter   *params,
                                              gint         *n_params,
-                                            ...);
+                                             ...) G_GNUC_NULL_TERMINATED;
 GParameter  * gimp_parameters_append_valist (GType         object_type,
                                              GParameter   *params,
                                              gint         *n_params,
                                              va_list       args);
 void          gimp_parameters_free          (GParameter   *params,
                                              gint          n_params);
-
-const gchar * gimp_check_glib_version       (guint         required_major,
-                                             guint         required_minor,
-                                             guint         required_micro);
 
 
 #endif /* __APP_GIMP_UTILS_H__ */

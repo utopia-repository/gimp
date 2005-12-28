@@ -80,7 +80,6 @@ static struct {
   { "sbindir", "@sbindir@" },
   { "libexecdir", "@libexecdir@" },
   { "datadir", "@datadir@" },
-  { "datarootdir", "@datarootdir@" },
   { "sysconfdir", "@sysconfdir@" },
   { "sharedstatedir", "@sharedstatedir@" },
   { "localstatedir", "@localstatedir@" },

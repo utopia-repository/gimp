@@ -52,6 +52,12 @@
 #include "cursors/xbm/tool-fuzzy-select-mask.xbm"
 #include "cursors/xbm/tool-paths.xbm"
 #include "cursors/xbm/tool-paths-mask.xbm"
+#include "cursors/xbm/tool-paths-anchor.xbm"
+#include "cursors/xbm/tool-paths-anchor-mask.xbm"
+#include "cursors/xbm/tool-paths-control.xbm"
+#include "cursors/xbm/tool-paths-control-mask.xbm"
+#include "cursors/xbm/tool-paths-segment.xbm"
+#include "cursors/xbm/tool-paths-segment-mask.xbm"
 #include "cursors/xbm/tool-iscissors.xbm"
 #include "cursors/xbm/tool-iscissors-mask.xbm"
 #include "cursors/xbm/tool-move.xbm"
@@ -126,6 +132,8 @@
 #include "cursors/xbm/modifier-background-mask.xbm"
 #include "cursors/xbm/modifier-pattern.xbm"
 #include "cursors/xbm/modifier-pattern-mask.xbm"
+#include "cursors/xbm/modifier-join.xbm"
+#include "cursors/xbm/modifier-join-mask.xbm"
 
 
 typedef struct _GimpCursor GimpCursor;
@@ -231,6 +239,24 @@ static GimpCursor gimp_tool_cursors[] =
     tool_paths_width, tool_paths_height,
     0, 0,
     tool_paths, NULL, NULL, NULL
+  },
+  {
+    tool_paths_anchor_bits, tool_paths_anchor_mask_bits,
+    tool_paths_anchor_width, tool_paths_anchor_height,
+    0, 0,
+    tool_paths_anchor, NULL, NULL, NULL
+  },
+  {
+    tool_paths_control_bits, tool_paths_control_mask_bits,
+    tool_paths_control_width, tool_paths_control_height,
+    0, 0,
+    tool_paths_control, NULL, NULL, NULL
+  },
+  {
+    tool_paths_segment_bits, tool_paths_segment_mask_bits,
+    tool_paths_segment_width, tool_paths_segment_height,
+    0, 0,
+    tool_paths_segment, NULL, NULL, NULL
   },
   {
     tool_iscissors_bits, tool_iscissors_mask_bits,
@@ -459,6 +485,12 @@ static GimpCursor gimp_cursor_modifiers[] =
     modifier_pattern_width, modifier_pattern_height,
     0, 0,
     modifier_pattern, NULL, NULL, NULL
+  },
+  {
+    modifier_join_bits, modifier_join_mask_bits,
+    modifier_join_width, modifier_join_height,
+    0, 0,
+    modifier_join, NULL, NULL, NULL
   }
 };
 
@@ -466,7 +498,8 @@ static GdkBitmap *
 get_cursor_bitmap (GimpCursor *cursor)
 {
   if (! cursor->bitmap)
-    cursor->bitmap = gdk_bitmap_create_from_data (NULL, cursor->bits,
+    cursor->bitmap = gdk_bitmap_create_from_data (NULL,
+                                                  (const gchar *) cursor->bits,
                                                   cursor->width,
                                                   cursor->height);
   g_return_val_if_fail (cursor->bitmap != NULL, NULL);
@@ -478,7 +511,8 @@ static GdkBitmap *
 get_cursor_mask (GimpCursor *cursor)
 {
   if (! cursor->mask)
-    cursor->mask = gdk_bitmap_create_from_data (NULL, cursor->mask_bits,
+    cursor->mask = gdk_bitmap_create_from_data (NULL,
+                                                (const gchar *) cursor->mask_bits,
                                                 cursor->width,
                                                 cursor->height);
   g_return_val_if_fail (cursor->mask != NULL, NULL);

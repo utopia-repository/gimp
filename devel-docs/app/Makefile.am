@@ -1,7 +1,5 @@
 ## Process this file with automake to produce Makefile.in
 
-AUTOMAKE_OPTIONS = 1.6
-
 # The name of the module.
 DOC_MODULE = app
 
@@ -43,8 +41,7 @@ IGNORE_HFILES = \
 	gimpimage-convert-fsdither.h	\
 	gimphelp-ids.h			\
 	gimprc-blurbs.h			\
-	paint-funcs-generic.h		\
-	gimpitemfactory.h
+	paint-funcs-generic.h
 
 # Images to copy into HTML directory
 HTML_IMAGES=
@@ -93,14 +90,14 @@ GTKDOC_LIBS = \
         $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la       \
         $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la   \
         $(top_builddir)/libgimpthumb/libgimpthumb-$(GIMP_API_VERSION).la     \
+        $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la   \
         $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la \
         $(GTK_LIBS)                                                          \
         $(LIBART_LIBS)                                                       \
         $(PANGOFT2_LIBS)                                                     \
         $(FONTCONFIG_LIBS)                                                   \
         $(FREETYPE_LIBS)                                                     \
-        $(GIMP_THREAD_LIBS)                                                  \
-        $(GIMP_MP_LIBS)                                                      \
+        $(GTHREAD_LIBS)                                                      \
         $(INTLLIBS)                                                          \
         $(REGEXREPL)
 

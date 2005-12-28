@@ -35,38 +35,17 @@
  * these enums that are registered with the type system
  */
 
-#define GIMP_TYPE_CLONE_TYPE (gimp_clone_type_get_type ())
-
-GType gimp_clone_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_IMAGE_CLONE,   /*< desc="Image source"   >*/
-  GIMP_PATTERN_CLONE  /*< desc="Pattern source" >*/
-} GimpCloneType;
-
-
 #define GIMP_TYPE_CLONE_ALIGN_MODE (gimp_clone_align_mode_get_type ())
 
 GType gimp_clone_align_mode_get_type (void) G_GNUC_CONST;
 
 typedef enum /*< pdb-skip >*/
 {
-  GIMP_CLONE_ALIGN_NO,         /*< desc="Non-aligned" >*/
-  GIMP_CLONE_ALIGN_YES,        /*< desc="Aligned"     >*/
-  GIMP_CLONE_ALIGN_REGISTERED  /*< desc="Registered"  >*/
+  GIMP_CLONE_ALIGN_NO,          /*< desc="None"        >*/
+  GIMP_CLONE_ALIGN_YES,         /*< desc="Aligned"     >*/
+  GIMP_CLONE_ALIGN_REGISTERED,  /*< desc="Registered"  >*/
+  GIMP_CLONE_ALIGN_FIXED        /*< desc="Fixed"       >*/
 } GimpCloneAlignMode;
-
-
-#define GIMP_TYPE_DODGE_BURN_TYPE (gimp_dodge_burn_type_get_type ())
-
-GType gimp_dodge_burn_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_DODGE,  /*< desc="Dodge" >*/
-  GIMP_BURN    /*< desc="Burn"  >*/
-} GimpDodgeBurnType;
 
 
 #define GIMP_TYPE_CONVOLVE_TYPE (gimp_convolve_type_get_type ())
@@ -91,17 +70,6 @@ typedef enum  /*< pdb-skip >*/
   GIMP_INK_BLOB_TYPE_SQUARE,
   GIMP_INK_BLOB_TYPE_DIAMOND
 } GimpInkBlobType;
-
-
-#define GIMP_TYPE_PAINT_APPLICATION_MODE (gimp_paint_application_mode_get_type ())
-
-GType gimp_paint_application_mode_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_PAINT_CONSTANT,    /*< desc="Constant"    >*/
-  GIMP_PAINT_INCREMENTAL  /*< desc="Incremental" >*/
-} GimpPaintApplicationMode;
 
 
 /*

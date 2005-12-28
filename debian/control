@@ -3,15 +3,14 @@ Priority: optional
 Section: graphics
 Maintainer: Ari Pollak <ari@debian.org>
 Standards-Version: 3.6.1
-Build-Depends: debhelper (>= 5), cdbs (>= 0.4.37), autotools-dev, patchutils, gettext, intltool, libx11-dev | xlibs-dev, libice-dev | xlibs-dev, libsm-dev | xlibs-dev, libxmu-dev | xlibs-dev, libxpm-dev | xlibs-dev, libxt-dev | xlibs-dev, libaa1-dev, libgtk2.0-dev (>= 2.4.4-1), libgtkhtml2-dev (>= 2.0.0), libjpeg62-dev, libart-2.0-dev, libpng-dev, zlib1g-dev, libtiff4-dev, python-dev, python-gtk2-dev, python-support (>= 0.4), libexif-dev (>= 0.6.12), libmng-dev, librsvg2-dev (>= 2.7.2-2), libfontconfig1-dev (>= 2.2.0), libwmf-dev (>= 0.2.8-1.1), sed (>= 3.95), libfreetype6-dev (>= 2.2), libasound2-dev (>= 1.0.0) [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386]
-XS-Vcs-Svn: svn://svn.debian.org/svn/collab-maint/deb-maint/gimp/
-XS-Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/deb-maint/gimp/
+Build-Depends: debhelper (>= 5), binutils (>= 2.12.90.0.9), gettext, intltool, libx11-dev | xlibs-dev, libice-dev | xlibs-dev, libsm-dev | xlibs-dev, libxmu-dev | xlibs-dev, libxpm-dev | xlibs-dev, libxt-dev | xlibs-dev, libaa1-dev, libgtk2.0-dev (>= 2.6.0-1), libgtkhtml2-dev (>= 2.0.0), libjpeg62-dev, libart-2.0-dev, libpng-dev, zlib1g-dev, libtiff4-dev, python-dev, python-gtk2-dev, libexif-dev (>= 0.6.12), libmng-dev, librsvg2-dev (>= 2.7.2-2), libfontconfig1-dev (>= 2.2.0), libwmf-dev (>= 0.2.8-1.1), sed (>= 3.95), libfreetype6-dev, libpoppler-dev (>= 0.3.1), libgnomevfs2-dev (>= 2.10.0), libgnomeui-dev (>= 2.10.0), libasound2-dev (>= 1.0.0) [!kfreebsd-i386 !hurd-i386], gcc-3.4 [arm]
+#Build-Conflicts: libgimp2.0
 
 Package: libgimp2.0
 Architecture: any
 Section: libs
 Depends: ${shlibs:Depends}
-Description: Libraries necessary to Run the GIMP
+Description: Libraries necessary to run the GIMP - DEVELOPMENT VERSION
  This package includes the libgimp libraries, which are
  necessary to run The GIMP.
  .
@@ -35,15 +34,7 @@ Depends: python-gtk2 (>= 1.99.12), ${shlibs:Depends}, ${python:Depends}
 Description: Python support and plugins for The GIMP
  This package includes the Python modules necessary to write Python-based
  plugins for The GIMP. It includes several plugins with various useful
- features:
-  * Clothify: Make the specified layer look like it's printed on cloth
-  * ColorXHTML: Save the image as colored XHTML text
-  * Console: Python interactive interpreter with Gimp extensions
-  * Drop Shadow and Bevel - Add a drop shadow and/or bevel to a layer
-  * Foggify: Add a layer of fog to an image
-  * Py-Slice: Cuts an image along its guides and saves subimages + HTML
-  * Sphere: Generate simple spheres with drop shadows
-  * Whirl and Pinch: Distorts an image by whirling and pinching
+ features.
 
 Package: gimp-svg
 Architecture: any
@@ -53,26 +44,53 @@ Description: SVG (Scalable Vector Graphics) plugin for The GIMP
  This package includes the plugin necessary for opening SVG (Scalable
  Vector Graphics) files in The GIMP.
 
+Package: gimp-gnomevfs
+Architecture: any
+Section: graphics
+Depends: gimp (= ${Source-Version}), ${shlibs:Depends}
+Conflicts: gimp-wget
+Replaces: gimp-wget
+Description: GNOME-VFS URI plugin for The GIMP
+ This package includes a plugin which will open URIs (e.g.
+ ftp:, http:, smb:, and sftp:) using protocol handlers from GNOME-VFS.
+
+Package: gimp-wget
+Architecture: any
+Section: graphics
+Depends: wget, gimp (= ${Source-Version}), ${shlibs:Depends}
+Conflicts: gimp-gnomevfs
+Replaces: gimp-gnomevfs
+Description: Wget URI plugin for The GIMP
+ This package includes a plugin which will open URIs (e.g.
+ ftp: and http:) using the wget program.
+
 Package: gimp
 Architecture: any
 Section: graphics
-Depends: wget, gimp-data (= ${Source-Version}), ${shlibs:Depends}
-Conflicts: gimp-data (<< 2.2.11-2), libgimp2.0 (>= 2.3.0)
-Replaces: gimp-data (<< 2.2.11-2)
-Recommends: gimp-svg, gimp-print
-Suggests: gimp-help-en | gimp-help, gimp-python, libgimp-perl, gimp-data-extras, libasound2 (>= 1.0.0)
-Description: The GNU Image Manipulation Program
+Depends: gimp-gnomevfs | gimp-wget, gimp-data (= ${Source-Version}), ${shlibs:Depends}
+Recommends: gimp-svg
+Suggests: gimp-help-en | gimp-help, gimp-python, gimp-gnomevfs, libgimp-perl, gimp-data-extras, libasound2 (>= 1.0.0), gimp-dbg
+Description: The GNU Image Manipulation Program - DEVELOPMENT VERSION
  The GIMP lets you draw, paint, edit images, and much more! GIMP
  includes the functionality and plug-ins of other famous image
  editing and processing programs.
  .
  If you'd like to use a MIDI device as an input controller in GIMP,
  install libasound2 and read the how-to at /usr/share/doc/gimp/README.MIDI
+ .
+ This is the UNSTABLE DEVELOPMENT VERSION of gimp. It should not
+ be used for production purposes. File formats may change without notice,
+ gimp may crash, and you may lose data. If you need stability,
+ do not install this package, use the 2.2 version from testing/unstable instead.
+ If you do use this package, it is highly recommended that you install
+ the associated gimp-dbg package as well, so that you can produce
+ meaningful bug reports if needed.
 
 Package: gimp-data
 Architecture: all
 Section: graphics
-Recommends: gimp
+Conflicts: gimp1.3-data, gimp (<< 2.0.2-4)
+Replaces: gimp1.3-data, gimp (<< 2.0.2-4)
 Description: Data files for The GIMP
  This package contains architecture-independent supporting data files
  for use with The GIMP.
@@ -82,6 +100,8 @@ Architecture: any
 Section: libdevel
 Depends: libgimp2.0 (= ${Source-Version}), libgtk2.0-dev (>= 2.4.4-1), pkg-config
 Suggests: libgimp2.0-doc
+Conflicts: libgimp1.3-dev
+Replaces: libgimp1.3-dev
 Description: Headers and other files for compiling plugins for The GIMP
  This package contains the header files for the GNU Image Manipulation
  Program, along with the static versions of libgimp.
@@ -104,7 +124,7 @@ Architecture: any
 Section: graphics
 Depends: gimp (= ${Source-Version}) | libgimp2.0 (= ${Source-Version}), ${shlibs:Depends}
 Description: Debugging symbols for The GIMP
- This package includes the debugging symbols useful for debugging
- The GIMP and its libraries, contained in the gimp and libgimp2.0 packages.
- The debugging symbols are used for execution tracing and core dump
- analysis.
+  This package includes the debugging symbols useful for debugging
+  The GIMP and its libraries, contained in the gimp and libgimp2.0 packages.
+  The debugging symbols are used for execution tracing and core dump
+  analysis.

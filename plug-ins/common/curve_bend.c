@@ -36,12 +36,11 @@
 
 #include "config.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 
-#include <gtk/gtk.h>
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -50,13 +49,13 @@
 
 
 /* Defines */
-#define PLUG_IN_NAME        "plug_in_curve_bend"
+#define PLUG_IN_PROC        "plug-in-curve-bend"
+#define PLUG_IN_BINARY      "curve_bend"
 #define PLUG_IN_VERSION     "v1.3.18 (2003/08/26)"
 #define PLUG_IN_IMAGE_TYPES "RGB*, GRAY*"
 #define PLUG_IN_AUTHOR      "Wolfgang Hofer (hof@hotbot.com)"
 #define PLUG_IN_COPYRIGHT   "Wolfgang Hofer"
 #define PLUG_IN_DESCRIPTION "Bends a layer using 2 spline-curves"
-#define HELP_ID             "plug-in-curve-bend"
 
 #define PLUG_IN_ITER_NAME       "plug_in_curve_bend_Iterator"
 #define PLUG_IN_DATA_ITER_FROM  "plug_in_curve_bend_ITER_FROM"
@@ -324,6 +323,8 @@ static int gb_debug = FALSE;
 /* Functions */
 /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX PDB_STUFF XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
 
+#ifdef ROTATE_OPTIMIZE
+
 /* ============================================================================
  * p_pdb_procedure_available
  *   if requested procedure is available in the PDB return the number of args
@@ -370,22 +371,23 @@ p_pdb_procedure_available (const gchar *proc_name)
   return -1;
 }
 
+#endif /* ROTATE_OPTIMIZE */
+
 static gint
 p_gimp_rotate (gint32  image_id,
                gint32  drawable_id,
                gint32  interpolation,
                gdouble angle_deg)
 {
-  static gchar *l_rotate_proc = "gimp_rotate";
-  GimpParam    *return_vals;
-  gint          nreturn_vals;
   gdouble       l_angle_rad;
-  gint          l_nparams;
   gint          l_rc;
 
 #ifdef ROTATE_OPTIMIZE
-  static gchar *l_rotate_proc2 = "plug_in_rotate";
+  static gchar *l_rotate_proc = "plug-in-rotate";
+  GimpParam    *return_vals;
+  gint          nreturn_vals;
   gint32        l_angle_step;
+  gint          l_nparams;
 
   if     (angle_deg == 90.0)  { l_angle_step = 1; }
   else if(angle_deg == 180.0) { l_angle_step = 2; }
@@ -394,11 +396,11 @@ p_gimp_rotate (gint32  image_id,
 
   if (l_angle_step != 0)
     {
-      l_nparams = p_pdb_procedure_available (l_rotate_proc2);
+      l_nparams = p_pdb_procedure_available (l_rotate_proc);
       if (l_nparams == 5)
         {
           /* use faster rotate plugin on multiples of 90 degrees */
-          return_vals = gimp_run_procedure (l_rotate_proc2,
+          return_vals = gimp_run_procedure (l_rotate_proc,
                                             &nreturn_vals,
                                             GIMP_PDB_INT32, GIMP_RUN_NONINTERACTIVE,
                                             GIMP_PDB_IMAGE, image_id,
@@ -413,40 +415,16 @@ p_gimp_rotate (gint32  image_id,
             }
         }
     }
-#endif
+#endif /* ROTATE_OPTIMIZE */
 
-  l_rc = -1;
   l_angle_rad = (angle_deg * G_PI) / 180.0;
 
-  l_nparams = p_pdb_procedure_available (l_rotate_proc);
-  if (l_nparams >= 0)
-    {
-      /* use the new Interface (Gimp 1.1 style)
-       * (1.1 knows the image_id where the drawable belongs to)
-       */
-      return_vals = gimp_run_procedure (l_rotate_proc,
-                                        &nreturn_vals,
-                                        GIMP_PDB_DRAWABLE, drawable_id,
-                                        GIMP_PDB_INT32, interpolation,
-                                        GIMP_PDB_FLOAT, l_angle_rad,
-                                        GIMP_PDB_END);
+  l_rc = gimp_drawable_transform_rotate_default (drawable_id, l_angle_rad,
+                                                 TRUE, 0, 0, interpolation,
+                                                 FALSE);
 
-      if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
-        {
-          l_rc = 0;
-        }
-      else
-        {
-          g_printerr ("Error: %s call failed %d\n",
-                      l_rotate_proc, return_vals[0].data.d_status);
-        }
-
-      gimp_destroy_params (return_vals, nreturn_vals);
-    }
-  else
-    {
-      g_printerr ("Error: Procedure %s not found.\n", l_rotate_proc);
-    }
+  if (l_rc == -1)
+    g_printerr ("Error: gimp_drawable_transform_rotate_default call failed\n");
 
   return l_rc;
 }
@@ -542,7 +520,7 @@ query (void)
   };
 
   /* the actual installation of the bend plugin */
-  gimp_install_procedure (PLUG_IN_NAME,
+  gimp_install_procedure (PLUG_IN_PROC,
                           PLUG_IN_DESCRIPTION,
                           "This plug-in does bend the active layer "
                           "If there is a current selection it is copied to "
@@ -572,7 +550,7 @@ query (void)
                           args,
                           return_vals);
 
-  gimp_plugin_menu_register (PLUG_IN_NAME, "<Image>/Filters/Distorts");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Distorts");
 
    /* the installation of the Iterator procedure for the bend plugin */
   gimp_install_procedure (PLUG_IN_ITER_NAME,
@@ -676,7 +654,7 @@ run (const gchar      *name,
               bval.total_steps = total_steps;
               bval.current_step = current_step;
 
-              gimp_set_data (PLUG_IN_NAME, &bval, sizeof (bval));
+              gimp_set_data (PLUG_IN_PROC, &bval, sizeof (bval));
             }
           else
             {
@@ -749,7 +727,7 @@ run (const gchar      *name,
         {
         case GIMP_RUN_INTERACTIVE:
           /* Possibly retrieve data from a previous run */
-          /* gimp_get_data (PLUG_IN_NAME, &g_bndvals); */
+          /* gimp_get_data (PLUG_IN_PROC, &g_bndvals); */
 
           /* Get information from the dialog */
           cd = do_dialog (l_active_drawable);
@@ -762,7 +740,7 @@ run (const gchar      *name,
             {
               cd = g_new (BenderDialog, 1);
               cd->run = TRUE;
-              cd->show_progress = FALSE;
+              cd->show_progress = TRUE;
               cd->drawable = l_active_drawable;
 
               cd->rotation      = (gdouble) param[3].data.d_float;
@@ -855,7 +833,7 @@ p_save_pointfile (BenderDialog *cd,
   gint j;
   FILE *l_fp;
 
-  l_fp = fopen(filename, "w+");
+  l_fp = g_fopen(filename, "w+");
   if (!l_fp)
     {
       g_message (_("Could not open '%s' for writing: %s"),
@@ -907,7 +885,7 @@ p_load_pointfile (BenderDialog *cd,
   float l_fux, l_fuy, l_flx, l_fly;
   gint  l_iuy, l_ily ;
 
-  l_fp = fopen(filename, "r");
+  l_fp = g_fopen(filename, "r");
   if (!l_fp)
     {
       g_message (_("Could not open '%s' for reading: %s"),
@@ -1024,7 +1002,7 @@ p_store_values (BenderDialog *cd)
   BenderValues l_bval;
 
   p_cd_to_bval(cd, &l_bval);
-  gimp_set_data(PLUG_IN_NAME, &l_bval, sizeof(l_bval));
+  gimp_set_data(PLUG_IN_PROC, &l_bval, sizeof(l_bval));
 }
 
 static void
@@ -1035,7 +1013,7 @@ p_retrieve_values (BenderDialog *cd)
   l_bval.total_steps = 0;
   l_bval.current_step = -444.4;  /* init with an invalid  dummy value */
 
-  gimp_get_data (PLUG_IN_NAME, &l_bval);
+  gimp_get_data (PLUG_IN_PROC, &l_bval);
 
   if (l_bval.total_steps == 0)
   {
@@ -1145,7 +1123,7 @@ do_dialog (GimpDrawable *drawable)
   BenderDialog *cd;
 
   /* Init GTK  */
-  gimp_ui_init ("curve_bend", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
   /*  The curve_bend dialog  */
   cd = bender_new_dialog (drawable);
@@ -1236,14 +1214,21 @@ bender_new_dialog (GimpDrawable *drawable)
   p_retrieve_values(cd);       /* Possibly retrieve data from a previous run */
 
   /*  The shell and main vbox  */
-  cd->shell = gimp_dialog_new (_("Curve Bend"), "curve_bend",
+  cd->shell = gimp_dialog_new (_("Curve Bend"), PLUG_IN_BINARY,
                                NULL, 0,
-                               gimp_standard_help_func, HELP_ID,
+                               gimp_standard_help_func, PLUG_IN_PROC,
 
                                GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                                NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (cd->shell),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (cd->shell));
 
   g_signal_connect (cd->shell, "response",
                     G_CALLBACK (bender_response),
@@ -1294,7 +1279,7 @@ bender_new_dialog (GimpDrawable *drawable)
   gtk_widget_show (hbox);
 
   /*  The preview button  */
-  button = gtk_button_new_with_mnemonic (_("_Preview once"));
+  button = gtk_button_new_with_mnemonic (_("_Preview Once"));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
@@ -1340,7 +1325,7 @@ bender_new_dialog (GimpDrawable *drawable)
 
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), spinbutton);
 
-  g_signal_connect (cd->rotate_data, "value_changed",
+  g_signal_connect (cd->rotate_data, "value-changed",
                     G_CALLBACK (bender_rotate_adj_callback),
                     cd);
 
@@ -2044,7 +2029,7 @@ bender_load_callback (GtkWidget    *w,
   if (! cd->filechooser)
     {
       cd->filechooser =
-        gtk_file_chooser_dialog_new (_("Load Curve Points from file"),
+        gtk_file_chooser_dialog_new (_("Load Curve Points from File"),
                                      GTK_WINDOW (gtk_widget_get_toplevel (w)),
                                      GTK_FILE_CHOOSER_ACTION_OPEN,
 
@@ -2052,6 +2037,14 @@ bender_load_callback (GtkWidget    *w,
                                      GTK_STOCK_OPEN,   GTK_RESPONSE_OK,
 
                                      NULL);
+
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (cd->filechooser),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
+
+      gtk_dialog_set_default_response (GTK_DIALOG (cd->filechooser),
+                                       GTK_RESPONSE_OK);
 
       g_signal_connect (cd->filechooser, "response",
                         G_CALLBACK (p_points_load_from_file_response),
@@ -2071,7 +2064,7 @@ bender_save_callback (GtkWidget    *w,
   if (! cd->filechooser)
     {
       cd->filechooser =
-        gtk_file_chooser_dialog_new (_("Save Curve Points to file"),
+        gtk_file_chooser_dialog_new (_("Save Curve Points to File"),
                                      GTK_WINDOW (gtk_widget_get_toplevel (w)),
                                      GTK_FILE_CHOOSER_ACTION_SAVE,
 
@@ -2938,7 +2931,7 @@ p_vertical_bend (BenderDialog *cd,
   l_progress_step = 1.0 / l_progress_max;
   l_progress = 0.0;
   if (cd->show_progress)
-    gimp_progress_init ( _("Curve Bend..."));
+    gimp_progress_init ( _("Curve Bend"));
 
   for (l_row = l_first_row; l_row <= l_last_row; l_row++)
     {

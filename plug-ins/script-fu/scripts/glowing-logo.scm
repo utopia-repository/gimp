@@ -27,7 +27,7 @@
     (gimp-context-set-background bg-color)
     (gimp-edit-fill bg-layer BACKGROUND-FILL)
 
-    (gimp-layer-set-preserve-trans logo-layer TRUE)
+    (gimp-layer-set-lock-alpha logo-layer TRUE)
     (gimp-context-set-background '(0 0 0))
     (gimp-edit-fill logo-layer BACKGROUND-FILL)
 
@@ -79,7 +79,7 @@
 		    SF-COLOR      _"Background color"         '(7 0 20))
 
 (script-fu-menu-register "script-fu-glowing-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-glowing-logo text
@@ -107,4 +107,4 @@
 		    SF-COLOR      _"Background color"   '(7 0 20))
 
 (script-fu-menu-register "script-fu-glowing-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

@@ -79,6 +79,8 @@ void   layers_mask_to_selection_cmd_callback  (GtkAction   *action,
 
 void   layers_alpha_add_cmd_callback          (GtkAction   *action,
                                                gpointer     data);
+void   layers_alpha_remove_cmd_callback       (GtkAction   *action,
+                                               gpointer     data);
 void   layers_alpha_to_selection_cmd_callback (GtkAction   *action,
                                                gint         value,
                                                gpointer     data);
@@ -90,7 +92,7 @@ void   layers_mode_cmd_callback               (GtkAction   *action,
                                                gint         value,
                                                gpointer     data);
 
-void   layers_preserve_trans_cmd_callback     (GtkAction   *action,
+void   layers_lock_alpha_cmd_callback         (GtkAction   *action,
                                                gpointer     data);
 
 

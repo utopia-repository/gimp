@@ -59,30 +59,26 @@ static void     plug_in_actions_build_path        (GimpActionGroup *group,
 
 static GimpActionEntry plug_in_actions[] =
 {
-  { "plug-in-menu",                NULL, N_("Filte_rs")       },
-  { "plug-in-blur-menu",           NULL, N_("_Blur")          },
-  { "plug-in-colors-menu",         NULL, N_("_Colors")        },
-  { "plug-in-colors-map-menu",     NULL, N_("Ma_p")           },
-  { "plug-in-noise-menu",          NULL, N_("_Noise")         },
-  { "plug-in-edge-detect-menu",    NULL, N_("Edge-De_tect")   },
-  { "plug-in-enhance-menu",        NULL, N_("En_hance")       },
-  { "plug-in-generic-menu",        NULL, N_("_Generic")       },
-  { "plug-in-glass-effects-menu",  NULL, N_("Gla_ss Effects") },
-  { "plug-in-light-effects-menu",  NULL, N_("_Light Effects") },
-  { "plug-in-distorts-menu",       NULL, N_("_Distorts")      },
-  { "plug-in-artistic-menu",       NULL, N_("_Artistic")      },
-  { "plug-in-map-menu",            NULL, N_("_Map")           },
-  { "plug-in-render-menu",         NULL, N_("_Render")        },
-  { "plug-in-render-clouds-menu",  NULL, N_("_Clouds")        },
-  { "plug-in-render-nature-menu",  NULL, N_("_Nature")        },
-  { "plug-in-render-pattern-menu", NULL, N_("_Pattern")       },
-  { "plug-in-web-menu",            NULL, N_("_Web")           },
-  { "plug-in-animation-menu",      NULL, N_("An_imation")     },
-  { "plug-in-combine-menu",        NULL, N_("C_ombine")       },
-  { "plug-in-toys-menu",           NULL, N_("To_ys")          },
+  { "plug-in-menu",                   NULL, N_("Filte_rs")          },
+  { "plug-in-blur-menu",              NULL, N_("_Blur")             },
+  { "plug-in-noise-menu",             NULL, N_("_Noise")            },
+  { "plug-in-edge-detect-menu",       NULL, N_("Edge-De_tect")      },
+  { "plug-in-enhance-menu",           NULL, N_("En_hance")          },
+  { "plug-in-combine-menu",           NULL, N_("C_ombine")          },
+  { "plug-in-generic-menu",           NULL, N_("_Generic")          },
+  { "plug-in-light-shadow-menu",      NULL, N_("_Light and Shadow") },
+  { "plug-in-distorts-menu",          NULL, N_("_Distorts")         },
+  { "plug-in-artistic-menu",          NULL, N_("_Artistic")         },
+  { "plug-in-map-menu",               NULL, N_("_Map")              },
+  { "plug-in-render-menu",            NULL, N_("_Render")           },
+  { "plug-in-render-clouds-menu",     NULL, N_("_Clouds")           },
+  { "plug-in-render-nature-menu",     NULL, N_("_Nature")           },
+  { "plug-in-render-pattern-menu",    NULL, N_("_Pattern")          },
+  { "plug-in-web-menu",               NULL, N_("_Web")              },
+  { "plug-in-animation-menu",         NULL, N_("An_imation")        },
 
   { "plug-in-reset-all", GIMP_STOCK_RESET,
-    N_("Reset all Filters..."), NULL, NULL,
+    N_("Reset all _Filters"), NULL, NULL,
     G_CALLBACK (plug_in_reset_all_cmd_callback),
     GIMP_HELP_FILTER_RESET_ALL }
 };
@@ -90,12 +86,12 @@ static GimpActionEntry plug_in_actions[] =
 static GimpEnumActionEntry plug_in_repeat_actions[] =
 {
   { "plug-in-repeat", GTK_STOCK_EXECUTE,
-    N_("Repeat Last"), "<control>F", NULL,
+    N_("Re_peat Last"), "<control>F", NULL,
     FALSE, FALSE,
     GIMP_HELP_FILTER_REPEAT },
 
   { "plug-in-reshow", GIMP_STOCK_RESHOW_FILTER,
-    N_("Re-Show Last"), "<control><shift>F", NULL,
+    N_("R_e-Show Last"), "<control><shift>F", NULL,
     TRUE, FALSE,
     GIMP_HELP_FILTER_RESHOW }
 };
@@ -117,6 +113,18 @@ plug_in_actions_setup (GimpActionGroup *group)
                                       G_N_ELEMENTS (plug_in_repeat_actions),
                                       G_CALLBACK (plug_in_repeat_cmd_callback));
 
+  for (list = group->gimp->plug_in_menu_branches;
+       list;
+       list = g_slist_next (list))
+    {
+      PlugInMenuBranch *branch = list->data;
+
+      plug_in_actions_add_branch (group,
+                                  branch->prog_name,
+                                  branch->menu_path,
+                                  branch->menu_label);
+    }
+
   for (list = group->gimp->plug_in_proc_defs;
        list;
        list = g_slist_next (list))
@@ -136,6 +144,7 @@ plug_in_actions_setup (GimpActionGroup *group)
   g_signal_connect_object (group->gimp, "last-plug-in-changed",
                            G_CALLBACK (plug_in_actions_last_changed),
                            group, 0);
+
   plug_in_actions_last_changed (group->gimp, group);
 }
 
@@ -284,7 +293,7 @@ plug_in_actions_add_path (GimpActionGroup *group,
 {
   const gchar *progname;
   const gchar *locale_domain;
-  gchar       *path_translated  = NULL;
+  const gchar *path_translated;
 
   g_return_if_fail (GIMP_IS_ACTION_GROUP (group));
   g_return_if_fail (proc_def != NULL);
@@ -325,6 +334,39 @@ plug_in_actions_remove_proc (GimpActionGroup *group,
     }
 }
 
+void
+plug_in_actions_add_branch (GimpActionGroup *group,
+                            const gchar     *progname,
+                            const gchar     *menu_path,
+                            const gchar     *menu_label)
+{
+  const gchar *locale_domain;
+  const gchar *path_translated;
+  const gchar *label_translated;
+  gchar       *full;
+  gchar       *full_translated;
+
+  g_return_if_fail (GIMP_IS_ACTION_GROUP (group));
+  g_return_if_fail (menu_path != NULL);
+  g_return_if_fail (menu_label != NULL);
+
+  locale_domain = plug_ins_locale_domain (group->gimp, progname, NULL);
+
+  path_translated  = dgettext (locale_domain, menu_path);
+  label_translated = dgettext (locale_domain, menu_label);
+
+  full            = g_strconcat (menu_path,       "/", menu_label,       NULL);
+  full_translated = g_strconcat (path_translated, "/", label_translated, NULL);
+
+  if (plug_in_actions_check_translation (full, full_translated))
+    plug_in_actions_build_path (group, full, full_translated);
+  else
+    plug_in_actions_build_path (group, full, full);
+
+  g_free (full_translated);
+  g_free (full);
+}
+
 
 /*  private functions  */
 
@@ -342,12 +384,12 @@ plug_in_actions_last_changed (Gimp            *gimp,
       gchar         *reshow;
 
       progname = plug_in_proc_def_get_progname (proc_def);
-      domain   = plug_ins_locale_domain (group->gimp, progname, NULL);
+      domain   = plug_ins_locale_domain (gimp, progname, NULL);
 
       label = plug_in_proc_def_get_label (proc_def, domain);
 
       repeat = g_strdup_printf (_("Re_peat \"%s\""),  label);
-      reshow = g_strdup_printf (_("R_e-show \"%s\""), label);
+      reshow = g_strdup_printf (_("R_e-Show \"%s\""), label);
 
       g_free (label);
 
@@ -364,6 +406,9 @@ plug_in_actions_last_changed (Gimp            *gimp,
       gimp_action_group_set_action_label (group, "plug-in-reshow",
                                           _("Re-Show Last"));
     }
+
+  /* update sensitivity of the "plug-in-repeat" and "plug-in-reshow" actions */
+  plug_in_actions_update (group, gimp);
 }
 
 static gboolean
@@ -430,6 +475,8 @@ plug_in_actions_build_path (GimpActionGroup *group,
                             const gchar     *path_translated)
 {
   GHashTable *path_table;
+  gchar      *copy_original;
+  gchar      *copy_translated;
   gchar      *p1, *p2;
 
   path_table = g_object_get_data (G_OBJECT (group), "plug-in-path-table");
@@ -444,13 +491,14 @@ plug_in_actions_build_path (GimpActionGroup *group,
                               (GDestroyNotify) g_hash_table_destroy);
     }
 
-  p1 = strrchr (path_original, '/');
-  p2 = strrchr (path_translated, '/');
+  copy_original   = gimp_strip_uline (path_original);
+  copy_translated = g_strdup (path_translated);
 
-  if (p1 && p2 && ! g_hash_table_lookup (path_table, path_original))
+  p1 = strrchr (copy_original, '/');
+  p2 = strrchr (copy_translated, '/');
+
+  if (p1 && p2 && ! g_hash_table_lookup (path_table, copy_original))
     {
-      gchar     *copy_original   = g_strdup (path_original);
-      gchar     *copy_translated = g_strdup (path_translated);
       gchar     *label;
       GtkAction *action;
 
@@ -458,24 +506,21 @@ plug_in_actions_build_path (GimpActionGroup *group,
 
 #if 0
       g_print ("adding plug-in submenu '%s' (%s)\n",
-               path_original, label);
+               copy_original, label);
 #endif
 
-      action = gtk_action_new (path_original, label, NULL, NULL);
+      action = gtk_action_new (copy_original, label, NULL, NULL);
       gtk_action_group_add_action (GTK_ACTION_GROUP (group), action);
       g_object_unref (action);
 
-      g_hash_table_insert (path_table, g_strdup (path_original), action);
-
-      p1 = strrchr (copy_original, '/');
-      p2 = strrchr (copy_translated, '/');
+      g_hash_table_insert (path_table, g_strdup (copy_original), action);
 
       *p1 = '\0';
       *p2 = '\0';
 
       plug_in_actions_build_path (group, copy_original, copy_translated);
-
-      g_free (copy_original);
-      g_free (copy_translated);
     }
+
+  g_free (copy_original);
+  g_free (copy_translated);
 }

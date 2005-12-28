@@ -207,7 +207,7 @@ sub make_arg_recs {
 		$result .= <<CODE;
   {
     GIMP_PDB_$arg_types{$type}->{name},
-    "$arg->{name}",
+    "$arg->{canonical_name}",
     @{[ &quotewrap($desc, 4) ]}
   },
 CODE
@@ -658,7 +658,8 @@ CODE
 
 static ProcRecord ${name}_proc =
 {
-  "gimp_$name",
+  "gimp-$proc->{canonical_name}",
+  "gimp-$proc->{canonical_name}",
   @{[ &quotewrap($proc->{blurb}, 2) ]},
   @{[ &quotewrap($proc->{help},  2) ]},
   "$proc->{author}",
@@ -819,12 +820,6 @@ GPL
 	push @group_decls, $decl;
 	$longest = length $decl if $longest < length $decl;
 
-	$group_procs .= ' ' x 2 . "(* status_callback) (";
-	$group_procs .= q/_("Internal Procedures")/ unless $once;
-	$group_procs .= 'NULL' if $once++;
-	$group_procs .= qq/, _("$main::grp{$group}->{desc}"), /;
-       ($group_procs .= sprintf "%.3f", $pcount / $total) =~ s/\.?0*$//s;
-	$group_procs .= ($group_procs !~ /\.\d+$/s ? ".0" : "") . ");\n";
 	$group_procs .=  ' ' x 2 . "register_${group}_procs (gimp);\n\n";
 	$pcount += $out->{pcount};
     }
@@ -838,8 +833,7 @@ GPL
 #ifndef $guard
 #define $guard
 
-void internal_procs_init (Gimp               *gimp,
-                          GimpInitStatusFunc  status_callback);
+void internal_procs_init (Gimp *gimp);
 
 #endif /* $guard */
 HEADER
@@ -853,7 +847,6 @@ HEADER
 	print IFILE qq@#include <glib-object.h>\n\n@;
 	print IFILE qq@#include "pdb-types.h"\n\n@;
 	print IFILE qq@#include "core/gimp.h"\n\n@;
-	print IFILE qq@#include "gimp-intl.h"\n\n@;
 	print IFILE "/* Forward declarations for registering PDB procs */\n\n";
 	foreach (@group_decls) {
 	    print IFILE "void $_" . ' ' x ($longest - length $_) . " (Gimp *gimp);\n";
@@ -862,11 +855,9 @@ HEADER
 	print IFILE "\n/* $total procedures registered total */\n\n";
 	print IFILE <<BODY;
 void
-internal_procs_init (Gimp               *gimp,
-                     GimpInitStatusFunc  status_callback)
+internal_procs_init (Gimp *gimp)
 {
   g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (status_callback != NULL);
 
 $group_procs
 }

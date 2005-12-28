@@ -24,6 +24,7 @@
 #include <gdk/gdkkeysyms.h>
 
 #include "libgimpmath/gimpmath.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
@@ -40,6 +41,7 @@
 #include "core/gimpitem-linked.h"
 #include "core/gimplayer.h"
 #include "core/gimplayermask.h"
+#include "core/gimppickable.h"
 #include "core/gimpprogress.h"
 #include "core/gimptoolinfo.h"
 
@@ -72,9 +74,6 @@
 
 
 /*  local function prototypes  */
-
-static void   gimp_transform_tool_init        (GimpTransformTool      *tool);
-static void   gimp_transform_tool_class_init  (GimpTransformToolClass *tool);
 
 static GObject * gimp_transform_tool_constructor   (GType              type,
                                                     guint              n_params,
@@ -150,36 +149,11 @@ static void     gimp_transform_tool_notify_preview (GimpTransformOptions *option
                                                     GParamSpec           *pspec,
                                                     GimpTransformTool    *tr_tool);
 
-static GimpDrawToolClass *parent_class = NULL;
 
+G_DEFINE_TYPE (GimpTransformTool, gimp_transform_tool, GIMP_TYPE_DRAW_TOOL);
 
-GType
-gimp_transform_tool_get_type (void)
-{
-  static GType tool_type = 0;
+#define parent_class gimp_transform_tool_parent_class
 
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpTransformToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_transform_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpTransformTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_transform_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_DRAW_TOOL,
-                                          "GimpTransformTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
 
 static void
 gimp_transform_tool_class_init (GimpTransformToolClass *klass)
@@ -187,8 +161,6 @@ gimp_transform_tool_class_init (GimpTransformToolClass *klass)
   GObjectClass      *object_class = G_OBJECT_CLASS (klass);
   GimpToolClass     *tool_class   = GIMP_TOOL_CLASS (klass);
   GimpDrawToolClass *draw_class   = GIMP_DRAW_TOOL_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->constructor  = gimp_transform_tool_constructor;
   object_class->finalize     = gimp_transform_tool_finalize;
@@ -250,7 +222,7 @@ gimp_transform_tool_init (GimpTransformTool *tr_tool)
   tr_tool->direction        = GIMP_TRANSFORM_FORWARD;
 
   tr_tool->shell_desc       = NULL;
-  tr_tool->progress_text    = _("Transforming...");
+  tr_tool->progress_text    = _("Transforming");
   tr_tool->info_dialog      = NULL;
 }
 
@@ -649,7 +621,7 @@ gimp_transform_tool_cursor_update (GimpTool        *tool,
   if (tr_tool->use_grid)
     {
       GimpChannel        *selection = gimp_image_get_mask (gdisp->gimage);
-      GimpCursorType      cursor    = GDK_TOP_LEFT_ARROW;
+      GimpCursorType      cursor    = GIMP_CURSOR_MOUSE;
       GimpCursorModifier  modifier  = GIMP_CURSOR_MODIFIER_NONE;
 
       switch (options->type)
@@ -658,7 +630,8 @@ gimp_transform_tool_cursor_update (GimpTool        *tool,
           if (gimp_image_coords_in_active_drawable (gdisp->gimage, coords))
             {
               if (gimp_channel_is_empty (selection) ||
-                  gimp_channel_value (selection, coords->x, coords->y))
+                  gimp_pickable_get_opacity_at (GIMP_PICKABLE (selection),
+                                                coords->x, coords->y))
                 {
                   cursor = GIMP_CURSOR_MOUSE;
                 }
@@ -667,7 +640,8 @@ gimp_transform_tool_cursor_update (GimpTool        *tool,
 
         case GIMP_TRANSFORM_TYPE_SELECTION:
           if (gimp_channel_is_empty (selection) ||
-              gimp_channel_value (selection, coords->x, coords->y))
+              gimp_pickable_get_opacity_at (GIMP_PICKABLE (selection),
+                                            coords->x, coords->y))
             {
               cursor = GIMP_CURSOR_MOUSE;
             }
@@ -900,21 +874,24 @@ gimp_transform_tool_real_transform (GimpTransformTool *tr_tool,
         /*  always clip the selction and unfloated channels
          *  so they keep their size
          */
-        if (GIMP_IS_CHANNEL (active_item) &&
-            tile_manager_bpp (tr_tool->original) == 1)
-          clip_result = TRUE;
+        if (tr_tool->original)
+          {
+            if (GIMP_IS_CHANNEL (active_item) &&
+                tile_manager_bpp (tr_tool->original) == 1)
+              clip_result = TRUE;
 
-        ret =
-          gimp_drawable_transform_tiles_affine (GIMP_DRAWABLE (active_item),
-                                                context,
-                                                tr_tool->original,
-                                                &tr_tool->transform,
-                                                options->direction,
-                                                options->interpolation,
-                                                options->supersample,
-                                                options->recursion_level,
-                                                clip_result,
-                                                progress);
+            ret =
+              gimp_drawable_transform_tiles_affine (GIMP_DRAWABLE (active_item),
+                                                    context,
+                                                    tr_tool->original,
+                                                    &tr_tool->transform,
+                                                    options->direction,
+                                                    options->interpolation,
+                                                    options->supersample,
+                                                    options->recursion_level,
+                                                    clip_result,
+                                                    progress);
+          }
       }
       break;
 
@@ -1167,12 +1144,7 @@ gimp_transform_tool_force_expose_preview (GimpTransformTool *tr_tool)
   if (! tr_tool->use_grid)
     return;
 
-  /*  we might be called as the result of cancelling the transform
-   *  tool dialog, return silently because the draw tool may have
-   *  already been stopped by gimp_transform_tool_halt()
-   */
-  if (! gimp_draw_tool_is_active (GIMP_DRAW_TOOL (tr_tool)))
-    return;
+  g_return_if_fail (gimp_draw_tool_is_active (GIMP_DRAW_TOOL (tr_tool)));
 
   shell = GIMP_DISPLAY_SHELL (GIMP_DRAW_TOOL (tr_tool)->gdisp->shell);
 
@@ -1440,6 +1412,11 @@ gimp_transform_tool_dialog (GimpTransformTool *tr_tool)
                           NULL);
   gtk_dialog_set_default_response (GTK_DIALOG (tr_tool->info_dialog->shell),
                                    GTK_RESPONSE_OK);
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (tr_tool->info_dialog->shell),
+                                           RESPONSE_RESET,
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   g_signal_connect (tr_tool->info_dialog->shell, "response",
                     G_CALLBACK (gimp_transform_tool_response),

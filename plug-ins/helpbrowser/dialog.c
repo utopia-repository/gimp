@@ -2,7 +2,7 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * The GIMP Help Browser
- * Copyright (C) 1999-2004 Sven Neumann <sven@gimp.org>
+ * Copyright (C) 1999-2005 Sven Neumann <sven@gimp.org>
  *                         Michael Natterer <mitch@gimp.org>
  *
  * dialog.c
@@ -30,7 +30,10 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include <glib/gstdio.h>
+
 #include <gtk/gtk.h>
+
 #include <libgtkhtml/gtkhtml.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -42,37 +45,55 @@
 #include "libgimpbase/gimpwin32-io.h"
 #endif
 
+#include "gimpthrobber.h"
+#include "gimpthrobberaction.h"
+
 #include "dialog.h"
 #include "queue.h"
 #include "uri.h"
 
+#include "logo-pixbuf.h"
+
 #include "libgimp/stdplugins-intl.h"
 
+#ifndef _O_BINARY
+#define _O_BINARY 0
+#endif
 
-enum
-{
-  BUTTON_INDEX,
-  BUTTON_BACK,
-  BUTTON_FORWARD
-};
 
 enum
 {
   HISTORY_TITLE,
-  HISTORY_REF
+  HISTORY_URI
 };
 
 /*  local function prototypes  */
 
+static GtkUIManager * ui_manager_new (GtkWidget        *window);
 static void       browser_dialog_404 (HtmlDocument     *doc,
-                                      const gchar      *url,
+                                      const gchar      *uri,
                                       const gchar      *message);
 
-static void       button_callback    (GtkWidget        *widget,
+static void       back_callback      (GtkAction        *action,
                                       gpointer          data);
+static void       forward_callback   (GtkAction        *action,
+                                      gpointer          data);
+static void       index_callback     (GtkAction        *action,
+                                      gpointer          data);
+static void       zoom_in_callback   (GtkAction        *action,
+                                      gpointer          data);
+static void       zoom_out_callback  (GtkAction        *action,
+                                      gpointer          data);
+static void       close_callback     (GtkAction        *action,
+                                      gpointer          data);
+static void       online_callback    (GtkAction        *action,
+                                      gpointer          data);
+
 static void       update_toolbar     (void);
+
 static void       combo_changed      (GtkWidget        *widget,
                                       gpointer          data);
+
 static void       drag_begin         (GtkWidget        *widget,
                                       GdkDragContext   *context,
                                       gpointer          data);
@@ -82,24 +103,28 @@ static void       drag_data_get      (GtkWidget        *widget,
                                       guint             info,
                                       guint             time,
                                       gpointer          data);
+static void       view_realize       (GtkWidget        *widget);
+static void       view_unrealize     (GtkWidget        *widget);
+static gboolean   view_button_press  (GtkWidget        *widget,
+                                      GdkEventButton   *event);
 
 static void       title_changed      (HtmlDocument     *doc,
                                       const gchar      *new_title,
                                       gpointer          data);
 static void       link_clicked       (HtmlDocument     *doc,
-                                      const gchar      *url,
+                                      const gchar      *uri,
                                       gpointer          data);
 static gboolean   request_url        (HtmlDocument     *doc,
-                                      const gchar      *url,
+                                      const gchar      *uri,
                                       HtmlStream       *stream,
                                       GError          **error);
 static gboolean   io_handler         (GIOChannel       *io,
                                       GIOCondition      condition,
                                       gpointer          data);
-static void       load_remote_page   (const gchar      *ref);
+static void       load_remote_page   (const gchar      *uri);
 
 static void       history_add        (GtkComboBox      *combo,
-                                      const gchar      *ref,
+                                      const gchar      *uri,
                                       const gchar      *title);
 
 static gboolean   has_case_prefix    (const gchar      *haystack,
@@ -110,18 +135,21 @@ static gchar    * filename_from_uri  (const gchar      *uri);
 
 /*  private variables  */
 
-static const gchar  *eek_png_tag    = "<h1>Eeek!</h1>";
+static const gchar  *eek_png_tag  = "<h1>Eeek!</h1>";
 
-static Queue        *queue          = NULL;
-static gchar        *current_ref    = NULL;
+static Queue        *queue        = NULL;
+static gchar        *current_uri  = NULL;
 
-static GtkWidget    *back_button    = NULL;
-static GtkWidget    *forward_button = NULL;
-static GtkWidget    *html           = NULL;
+static GtkWidget    *html         = NULL;
+static GtkUIManager *ui_manager   = NULL;
+static GtkWidget    *button_prev  = NULL;
+static GtkWidget    *button_next  = NULL;
+static GdkCursor    *busy_cursor  = NULL;
 
 static GtkTargetEntry help_dnd_target_table[] =
 {
-  { "_NETSCAPE_URL", 0, 0 },
+  { "text/uri-list", 0, 0 },
+  { "_NETSCAPE_URL", 0, 0 }
 };
 
 
@@ -132,15 +160,18 @@ browser_dialog_open (void)
 {
   GtkWidget       *window;
   GtkWidget       *vbox;
+  GtkWidget       *toolbar;
   GtkWidget       *hbox;
-  GtkWidget       *bbox;
   GtkWidget       *scroll;
-  GtkWidget       *button;
   GtkWidget       *drag_source;
   GtkWidget       *image;
   GtkWidget       *combo;
+  GtkWidget       *button;
+  GtkToolItem     *item;
+  GtkAction       *action;
   GtkListStore    *history;
   GtkCellRenderer *cell;
+  GdkPixbuf       *pixbuf;
   gchar           *eek_png_path;
 
   gimp_ui_init ("helpbrowser", TRUE);
@@ -156,7 +187,7 @@ browser_dialog_open (void)
 
   /*  the dialog window  */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (window), _("GIMP Help browser"));
+  gtk_window_set_title (GTK_WINDOW (window), _("GIMP Help Browser"));
   gtk_window_set_role (GTK_WINDOW (window), "helpbrowser");
 
   gtk_window_set_default_size (GTK_WINDOW (window), 420, 500);
@@ -165,50 +196,50 @@ browser_dialog_open (void)
                     G_CALLBACK (gtk_main_quit),
                     NULL);
 
+  pixbuf = gdk_pixbuf_new_from_inline (-1, logo_data, FALSE, NULL);
+  gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
+  g_object_unref (pixbuf);
+
   vbox = gtk_vbox_new (FALSE, 2);
   gtk_container_add (GTK_CONTAINER (window), vbox);
   gtk_widget_show (vbox);
 
-  /*  buttons  */
-  bbox = gtk_hbutton_box_new ();
-  gtk_button_box_set_layout (GTK_BUTTON_BOX (bbox), GTK_BUTTONBOX_START);
-  gtk_box_pack_start (GTK_BOX (vbox), bbox, FALSE, FALSE, 0);
-  gtk_widget_show (bbox);
+  ui_manager = ui_manager_new (window);
 
-  button = gtk_button_new_from_stock (GTK_STOCK_INDEX);
-  gtk_container_add (GTK_CONTAINER (bbox), button);
-  gtk_widget_show (button);
+  toolbar = gtk_ui_manager_get_widget (ui_manager, "/help-browser-toolbar");
+  gtk_box_pack_start (GTK_BOX (vbox), toolbar, FALSE, FALSE, 0);
+  gtk_widget_show (toolbar);
 
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (button_callback),
-                    GINT_TO_POINTER (BUTTON_INDEX));
+  item = g_object_new (GTK_TYPE_MENU_TOOL_BUTTON, NULL);
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, 0);
+  gtk_widget_show (GTK_WIDGET (item));
 
-  back_button = button = gtk_button_new_from_stock (GTK_STOCK_GO_BACK);
-  gtk_container_add (GTK_CONTAINER (bbox), button);
-  gtk_widget_set_sensitive (GTK_WIDGET (button), FALSE);
-  gtk_widget_show (button);
+  action = gtk_ui_manager_get_action (ui_manager,
+                                      "/ui/help-browser-popup/forward");
+  gtk_action_connect_proxy (action, GTK_WIDGET (item));
+  g_object_notify (G_OBJECT (action), "tooltip");
+  button_next = GTK_WIDGET (item);
 
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (button_callback),
-                    GINT_TO_POINTER (BUTTON_BACK));
+  item = g_object_new (GTK_TYPE_MENU_TOOL_BUTTON, NULL);
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, 0);
+  gtk_widget_show (GTK_WIDGET (item));
 
-  forward_button = button = gtk_button_new_from_stock (GTK_STOCK_GO_FORWARD);
-  gtk_container_add (GTK_CONTAINER (bbox), button);
-  gtk_widget_set_sensitive (GTK_WIDGET (button), FALSE);
-  gtk_widget_show (button);
+  action = gtk_ui_manager_get_action (ui_manager,
+                                      "/ui/help-browser-popup/back");
+  gtk_action_connect_proxy (action, GTK_WIDGET (item));
+  g_object_notify (G_OBJECT (action), "tooltip");
+  button_prev = GTK_WIDGET (item);
 
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (button_callback),
-                    GINT_TO_POINTER (BUTTON_FORWARD));
+  item =
+    GTK_TOOL_ITEM (gtk_ui_manager_get_widget (ui_manager,
+                                              "/help-browser-toolbar/space"));
+  gtk_separator_tool_item_set_draw (GTK_SEPARATOR_TOOL_ITEM (item), FALSE);
+  gtk_tool_item_set_expand (item, TRUE);
 
-  button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
-  gtk_container_add (GTK_CONTAINER (bbox), button);
-  gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (bbox), button, TRUE);
-  gtk_widget_show (button);
-
-  g_signal_connect_swapped (button, "clicked",
-                            G_CALLBACK (gtk_widget_destroy),
-                            window);
+  button = gtk_ui_manager_get_widget (ui_manager,
+                                      "/help-browser-toolbar/online");
+  gimp_throbber_set_image (GIMP_THROBBER (button),
+                           gtk_image_new_from_pixbuf (pixbuf));
 
   hbox = gtk_hbox_new (FALSE, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
@@ -218,6 +249,9 @@ browser_dialog_open (void)
   drag_source = gtk_event_box_new ();
   gtk_box_pack_start (GTK_BOX (hbox), drag_source, FALSE, FALSE, 4);
   gtk_widget_show (drag_source);
+
+  gimp_help_set_help_data (drag_source,
+                           _("Drag and drop this icon to a web browser"), NULL);
 
   gtk_drag_source_set (GTK_WIDGET (drag_source),
                        GDK_BUTTON1_MASK,
@@ -259,7 +293,7 @@ browser_dialog_open (void)
   html  = html_view_new ();
   queue = queue_new ();
 
-  gtk_widget_set_size_request (GTK_WIDGET (html), -1, 200);
+  gtk_widget_set_size_request (html, -1, 200);
 
   scroll =
     gtk_scrolled_window_new (gtk_layout_get_hadjustment (GTK_LAYOUT (html)),
@@ -272,6 +306,17 @@ browser_dialog_open (void)
 
   gtk_container_add (GTK_CONTAINER (scroll), html);
   gtk_widget_show (html);
+
+  g_signal_connect (html, "realize",
+                    G_CALLBACK (view_realize),
+                    NULL);
+  g_signal_connect (html, "unrealize",
+                    G_CALLBACK (view_unrealize),
+                    NULL);
+
+  g_signal_connect (html, "button-press-event",
+                    G_CALLBACK (view_button_press),
+                    NULL);
 
   html_view_set_document (HTML_VIEW (html), html_document_new ());
 
@@ -299,54 +344,70 @@ idle_jump_to_anchor (const gchar *anchor)
   return FALSE;
 }
 
+static gboolean
+idle_scroll_to_pos (gpointer data)
+{
+  gint offset = GPOINTER_TO_INT (data);
+
+  if (html)
+    {
+      GtkAdjustment *adj = gtk_layout_get_vadjustment (GTK_LAYOUT (html));
+
+      gtk_adjustment_set_value (adj,
+                                (gdouble) offset / (1 << 16) * adj->upper);
+    }
+
+  return FALSE;
+}
+
 void
-browser_dialog_load (const gchar *ref,
+browser_dialog_load (const gchar *uri,
                      gboolean     add_to_queue)
 {
   HtmlDocument  *doc = HTML_VIEW (html)->document;
   GtkAdjustment *adj = gtk_layout_get_vadjustment (GTK_LAYOUT (html));
   gchar         *abs;
-  gchar         *new_ref;
+  gchar         *new_uri;
   gchar         *anchor;
   gchar         *tmp;
 
-  g_return_if_fail (ref != NULL);
+  g_return_if_fail (uri != NULL);
 
-  if (! current_ref)
+  if (! current_uri)
     {
       gchar *slash;
 
-      current_ref = g_strdup (ref);
+      current_uri = g_strdup (uri);
 
-      slash = strrchr (current_ref, '/');
+      slash = strrchr (current_uri, '/');
 
       if (slash)
         *slash = '\0';
     }
 
-  abs = uri_to_abs (ref, current_ref);
+  abs = uri_to_abs (uri, current_uri);
   if (! abs)
     return;
 
-  anchor = strchr (ref, '#');
+  anchor = strchr (uri, '#');
   if (anchor && anchor[0] && anchor[1])
     {
-      new_ref = g_strconcat (abs, anchor, NULL);
+      new_uri = g_strconcat (abs, anchor, NULL);
       anchor += 1;
     }
   else
     {
-      new_ref = g_strdup (abs);
+      new_uri = g_strdup (abs);
       anchor = NULL;
     }
 
   if (! has_case_prefix (abs, "file:/"))
     {
-      load_remote_page (ref);
+      load_remote_page (uri);
       return;
     }
 
-  tmp = uri_to_abs (current_ref, current_ref);
+  tmp = uri_to_abs (current_uri, current_uri);
   if (!tmp || strcmp (tmp, abs))
     {
       GError *error = NULL;
@@ -360,7 +421,12 @@ browser_dialog_load (const gchar *ref,
                          (GSourceFunc) idle_jump_to_anchor,
                          g_strdup (anchor), (GDestroyNotify) g_free);
 
-      if (! request_url (doc, abs, doc->current_stream, &error))
+      if (request_url (doc, abs, doc->current_stream, &error))
+        {
+          if (html->window)
+            gdk_window_set_cursor (html->window, busy_cursor);
+        }
+      else
         {
           browser_dialog_404 (doc, abs, error->message);
           g_error_free (error);
@@ -376,11 +442,11 @@ browser_dialog_load (const gchar *ref,
 
   g_free (tmp);
 
-  g_free (current_ref);
-  current_ref = new_ref;
+  g_free (current_uri);
+  current_uri = new_uri;
 
   if (add_to_queue)
-    queue_add (queue, new_ref);
+    queue_add (queue, new_uri);
 
   update_toolbar ();
 
@@ -390,9 +456,109 @@ browser_dialog_load (const gchar *ref,
 
 /*  private functions  */
 
+static GtkUIManager *
+ui_manager_new (GtkWidget *window)
+{
+  static GtkActionEntry actions[] =
+  {
+    { "back", GTK_STOCK_GO_BACK,
+      NULL, "<alt>Left", N_("Go back one page"),
+      G_CALLBACK (back_callback) },
+
+    { "forward", GTK_STOCK_GO_FORWARD,
+      NULL, "<alt>Right", N_("Go forward one page"),
+      G_CALLBACK (forward_callback) },
+
+    { "index", GTK_STOCK_INDEX,
+      NULL, "<alt>Home", N_("Go to the index page"),
+      G_CALLBACK (index_callback) },
+
+    { "zoom-in", GTK_STOCK_ZOOM_IN,
+      NULL, "<control>plus", NULL,
+      G_CALLBACK (zoom_in_callback) },
+
+    { "zoom-out", GTK_STOCK_ZOOM_OUT,
+      NULL, "<control>minus", NULL,
+      G_CALLBACK (zoom_out_callback) },
+
+    { "close", GTK_STOCK_CLOSE,
+      NULL, "<control>W", NULL,
+      G_CALLBACK (close_callback) },
+
+    { "quit", GTK_STOCK_QUIT,
+      NULL, "<control>Q", NULL,
+      G_CALLBACK (close_callback) },
+  };
+
+  GtkUIManager   *ui_manager = gtk_ui_manager_new ();
+  GtkActionGroup *group      = gtk_action_group_new ("Actions");
+  GtkAction      *action;
+  GError         *error      = NULL;
+
+  gtk_action_group_set_translation_domain (group, NULL);
+  gtk_action_group_add_actions (group, actions, G_N_ELEMENTS (actions), NULL);
+
+  action = gimp_throbber_action_new ("online",
+                                     "docs.gimp.org",
+                                     _("Visit the GIMP documentation website"),
+                                     GIMP_STOCK_WILBER);
+  g_signal_connect_closure (action, "activate",
+                            g_cclosure_new (G_CALLBACK (online_callback),
+                                            NULL, NULL),
+                            FALSE);
+  gtk_action_group_add_action (group, action);
+  g_object_unref (action);
+
+  gtk_window_add_accel_group (GTK_WINDOW (window),
+                              gtk_ui_manager_get_accel_group (ui_manager));
+  gtk_accel_group_lock (gtk_ui_manager_get_accel_group (ui_manager));
+
+  gtk_ui_manager_insert_action_group (ui_manager, group, -1);
+  g_object_unref (group);
+
+  gtk_ui_manager_add_ui_from_string (ui_manager,
+                                     "<ui>"
+                                     "  <toolbar name=\"help-browser-toolbar\">"
+                                     "    <toolitem action=\"index\" />"
+                                     "    <separator name=\"space\" />"
+                                     "    <toolitem action=\"online\" />"
+                                     "  </toolbar>"
+                                     "  <accelerator action=\"close\" />"
+                                     "  <accelerator action=\"quit\" />"
+                                     "</ui>",
+                                     -1, &error);
+
+  if (error)
+    {
+      g_warning ("error parsing ui: %s", error->message);
+      g_clear_error (&error);
+    }
+
+  gtk_ui_manager_add_ui_from_string (ui_manager,
+                                     "<ui>"
+                                     "  <popup name=\"help-browser-popup\">"
+                                     "    <menuitem action=\"back\" />"
+                                     "    <menuitem action=\"forward\" />"
+                                     "    <menuitem action=\"index\" />"
+                                     "    <separator />"
+                                     "    <menuitem action=\"zoom-in\" />"
+                                     "    <menuitem action=\"zoom-out\" />"
+                                     "  </popup>"
+                                     "</ui>",
+                                     -1, &error);
+
+  if (error)
+    {
+      g_warning ("error parsing ui: %s", error->message);
+      g_clear_error (&error);
+    }
+
+  return ui_manager;
+}
+
 static void
 browser_dialog_404 (HtmlDocument *doc,
-                    const gchar  *url,
+                    const gchar  *uri,
                     const gchar  *message)
 {
   gchar *msg = g_strdup_printf
@@ -411,7 +577,7 @@ browser_dialog_404 (HtmlDocument *doc,
      _("Document not found"),
      eek_png_tag,
      _("The requested URL could not be loaded:"),
-     url,
+     uri,
      message);
 
   html_document_write_stream (doc, msg, strlen (msg));
@@ -420,45 +586,133 @@ browser_dialog_404 (HtmlDocument *doc,
 }
 
 static void
-button_callback (GtkWidget *widget,
-                 gpointer   data)
+back_callback (GtkAction *action,
+               gpointer   data)
 {
-  const gchar *ref;
+  gdouble      pos;
+  const gchar *uri = queue_prev (queue, GPOINTER_TO_INT (data), &pos);
 
-  switch (GPOINTER_TO_INT (data))
+  if (uri)
     {
-    case BUTTON_INDEX:
-      browser_dialog_load ("index.html", TRUE);
-      break;
+      browser_dialog_load (uri, FALSE);
 
-    case BUTTON_BACK:
-      if (!(ref = queue_prev (queue)))
-        return;
-      browser_dialog_load (ref, FALSE);
-      queue_move_prev (queue);
-      break;
+      g_idle_add ((GSourceFunc) idle_scroll_to_pos,
+                  GINT_TO_POINTER ((gint) (pos * (1 << 16))));
 
-    case BUTTON_FORWARD:
-      if (!(ref = queue_next (queue)))
-        return;
-      browser_dialog_load (ref, FALSE);
-      queue_move_next (queue);
-      break;
-
-    default:
-      return;
+      queue_move_prev (queue, GPOINTER_TO_INT (data));
     }
 
   update_toolbar ();
 }
 
 static void
+forward_callback (GtkAction *action,
+                  gpointer   data)
+{
+  gdouble      pos;
+  const gchar *uri = queue_next (queue, GPOINTER_TO_INT (data), &pos);
+
+  if (uri)
+    {
+      browser_dialog_load (uri, FALSE);
+
+      g_idle_add ((GSourceFunc) idle_scroll_to_pos,
+                  GINT_TO_POINTER ((gint) (pos * (1 << 16))));
+
+      queue_move_next (queue, GPOINTER_TO_INT (data));
+    }
+
+  update_toolbar ();
+}
+
+static void
+index_callback (GtkAction *action,
+                gpointer   data)
+{
+  browser_dialog_load ("index.html", TRUE);
+}
+
+static void
+zoom_in_callback (GtkAction  *action,
+                  gpointer  data)
+{
+  html_view_zoom_in (HTML_VIEW (html));
+}
+
+static void
+zoom_out_callback (GtkAction *action,
+                   gpointer   data)
+{
+  html_view_zoom_out (HTML_VIEW (html));
+}
+
+static void
+online_callback (GtkAction *action,
+                 gpointer   data)
+{
+  load_remote_page ("http://docs.gimp.org/");
+}
+
+static void
+close_callback (GtkAction *action,
+                gpointer   data)
+{
+  gtk_widget_destroy (gtk_widget_get_toplevel (html));
+}
+
+static GtkWidget *
+build_menu (GList     *list,
+            GCallback  callback)
+{
+  GtkWidget *menu;
+  gint       i;
+
+  if (! list)
+    return NULL;
+
+  menu = gtk_menu_new ();
+
+  for (i = 0; list && i < 15; list = g_list_next (list), i++)
+    {
+      GtkWidget *menu_item = gtk_menu_item_new_with_label (list->data);
+
+      gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+      gtk_widget_show (menu_item);
+
+      g_signal_connect (menu_item, "activate",
+                        G_CALLBACK (callback),
+                        GINT_TO_POINTER (i));
+    }
+
+  g_list_free (list);
+
+  return menu;
+}
+
+static void
 update_toolbar (void)
 {
-  if (back_button)
-    gtk_widget_set_sensitive (back_button, queue_has_prev (queue));
-  if (forward_button)
-    gtk_widget_set_sensitive (forward_button, queue_has_next (queue));
+  GtkAction *action;
+
+  /*  update the back button and its menu  */
+
+  action = gtk_ui_manager_get_action (ui_manager,
+                                      "/ui/help-browser-popup/back");
+  gtk_action_set_sensitive (action, queue_has_prev (queue));
+
+  gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (button_prev),
+                                 build_menu (queue_list_prev (queue),
+                                             G_CALLBACK (back_callback)));
+
+  /*  update the forward button and its menu  */
+
+  action = gtk_ui_manager_get_action (ui_manager,
+                                      "/ui/help-browser-popup/forward");
+  gtk_action_set_sensitive (action, queue_has_next (queue));
+
+  gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (button_next),
+                                 build_menu (queue_list_next (queue),
+                                             G_CALLBACK (forward_callback)));
 }
 
 static void
@@ -473,7 +727,7 @@ combo_changed (GtkWidget *widget,
       GValue  value = { 0, };
 
       gtk_tree_model_get_value (gtk_combo_box_get_model (combo),
-                                &iter, HISTORY_REF, &value);
+                                &iter, HISTORY_URI, &value);
 
       browser_dialog_load (g_value_get_string (&value), TRUE);
 
@@ -486,7 +740,7 @@ drag_begin (GtkWidget      *widget,
             GdkDragContext *context,
             gpointer        data)
 {
-  gtk_drag_set_icon_stock (context, GTK_STOCK_JUMP_TO, -8, -8);
+  gtk_drag_set_icon_stock (context, GIMP_STOCK_WEB, -8, -8);
 }
 
 static void
@@ -497,14 +751,63 @@ drag_data_get (GtkWidget        *widget,
                guint             time,
                gpointer          data)
 {
-  if (! current_ref)
+  if (! current_uri)
     return;
 
-  gtk_selection_data_set (selection_data,
-                          selection_data->target,
-                          8,
-                          current_ref,
-                          strlen (current_ref));
+  if (selection_data->target == gdk_atom_intern ("text/uri-list", FALSE))
+    {
+      gchar *uris[2];
+
+      uris[0] = current_uri;
+      uris[1] = NULL;
+
+      gtk_selection_data_set_uris (selection_data, uris);
+    }
+  else if (selection_data->target == gdk_atom_intern ("_NETSCAPE_URL", FALSE))
+    {
+      gtk_selection_data_set (selection_data,
+                              selection_data->target,
+                              8, (guchar *) current_uri, strlen (current_uri));
+    }
+}
+
+static void
+view_realize (GtkWidget *widget)
+{
+  g_return_if_fail (busy_cursor == NULL);
+
+  busy_cursor = gdk_cursor_new_for_display (gtk_widget_get_display (widget),
+                                            GDK_WATCH);
+}
+
+static void
+view_unrealize (GtkWidget *widget)
+{
+  if (busy_cursor)
+    {
+      gdk_cursor_unref (busy_cursor);
+      busy_cursor = NULL;
+    }
+}
+
+static gboolean
+view_button_press (GtkWidget      *widget,
+                   GdkEventButton *event)
+{
+  gtk_widget_grab_focus (widget);
+
+  if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
+    {
+      GtkWidget *menu = gtk_ui_manager_get_widget (ui_manager,
+                                                   "/help-browser-popup");
+
+      gtk_menu_set_screen (GTK_MENU (menu), gtk_widget_get_screen (widget));
+      gtk_menu_popup (GTK_MENU (menu),
+                      NULL, NULL, NULL, NULL,
+                      event->button, event->time);
+    }
+
+  return FALSE;
 }
 
 static void
@@ -512,10 +815,13 @@ title_changed (HtmlDocument *doc,
                const gchar  *new_title,
                gpointer      data)
 {
+  gchar *title = NULL;
+
   if (new_title)
     {
-      gchar *title = g_strdup (new_title);
       gchar *c;
+
+      title = g_strdup (new_title);
 
       for (c = title; *c; c++)
         {
@@ -524,38 +830,48 @@ title_changed (HtmlDocument *doc,
         }
 
       title = g_strstrip (title);
-
-      history_add (GTK_COMBO_BOX (data), current_ref, title);
-
-      g_free (title);
+      if (! strlen (title))
+        {
+          g_free (title);
+          title = NULL;
+        }
     }
-  else
-    {
-      history_add (GTK_COMBO_BOX (data), current_ref, _("Untitled"));
-    }
+
+  history_add (GTK_COMBO_BOX (data),
+               current_uri, title ? title : _("Untitled"));
+
+  if (title)
+    queue_set_title (queue, title);
+
+  g_free (title);
 }
 
 static void
 link_clicked (HtmlDocument *doc,
-              const gchar  *url,
+              const gchar  *uri,
               gpointer      data)
 {
-  browser_dialog_load (url, TRUE);
+  GtkAdjustment *adj = gtk_layout_get_vadjustment (GTK_LAYOUT (html));
+
+  if (adj->upper > 0.0)
+    queue_set_scroll_offset (queue, adj->value / adj->upper);
+
+  browser_dialog_load (uri, TRUE);
 }
 
 static gboolean
 request_url (HtmlDocument *doc,
-             const gchar  *url,
+             const gchar  *uri,
              HtmlStream   *stream,
              GError      **error)
 {
   gchar *abs;
   gchar *filename;
 
-  g_return_val_if_fail (url != NULL, TRUE);
+  g_return_val_if_fail (uri != NULL, TRUE);
   g_return_val_if_fail (stream != NULL, TRUE);
 
-  abs = uri_to_abs (url, current_ref);
+  abs = uri_to_abs (uri, current_uri);
   if (! abs)
     return TRUE;
 
@@ -564,13 +880,7 @@ request_url (HtmlDocument *doc,
 
   if (filename)
     {
-      gint fd;
-
-#ifdef G_OS_WIN32
-      fd = open (filename, O_RDONLY|O_BINARY);
-#else
-      fd = open (filename, O_RDONLY);
-#endif
+      gint fd = g_open (filename, O_RDONLY | _O_BINARY, 0);
 
       if (fd != -1)
         {
@@ -616,10 +926,7 @@ io_handler (GIOChannel   *io,
         }
       else
 	{
-          html_stream_close (stream);
-          g_io_channel_unref (io);
-
-	  return FALSE;
+          goto error;
 	}
 
       if (condition & G_IO_HUP)
@@ -635,8 +942,12 @@ io_handler (GIOChannel   *io,
 
   if (condition & (G_IO_ERR | G_IO_HUP | G_IO_NVAL))
     {
+    error:
       html_stream_close (stream);
       g_io_channel_unref (io);
+
+      if (html->window)
+        gdk_window_set_cursor (html->window, NULL);
 
       return FALSE;
     }
@@ -645,22 +956,22 @@ io_handler (GIOChannel   *io,
 }
 
 static void
-load_remote_page (const gchar *ref)
+load_remote_page (const gchar *uri)
 {
   GimpParam *return_vals;
   gint       nreturn_vals;
 
   /*  try to call the user specified web browser */
-  return_vals = gimp_run_procedure ("plug_in_web_browser",
+  return_vals = gimp_run_procedure ("plug-in-web-browser",
                                     &nreturn_vals,
-                                    GIMP_PDB_STRING, ref,
+                                    GIMP_PDB_STRING, uri,
                                     GIMP_PDB_END);
   gimp_destroy_params (return_vals, nreturn_vals);
 }
 
 static void
 history_add (GtkComboBox *combo,
-             const gchar *ref,
+             const gchar *uri,
 	     const gchar *title)
 {
   GtkTreeModel *model = gtk_combo_box_get_model (combo);
@@ -672,9 +983,9 @@ history_add (GtkComboBox *combo,
        iter_valid;
        iter_valid = gtk_tree_model_iter_next (model, &iter))
     {
-      gtk_tree_model_get_value (model, &iter, HISTORY_REF, &value);
+      gtk_tree_model_get_value (model, &iter, HISTORY_URI, &value);
 
-      if (strcmp (g_value_get_string (&value), ref) == 0)
+      if (strcmp (g_value_get_string (&value), uri) == 0)
         {
           gtk_list_store_move_after (GTK_LIST_STORE (model), &iter, NULL);
           g_value_unset (&value);
@@ -689,7 +1000,7 @@ history_add (GtkComboBox *combo,
       gtk_list_store_prepend (GTK_LIST_STORE (model), &iter);
       gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                           HISTORY_TITLE, title,
-                          HISTORY_REF,   ref,
+                          HISTORY_URI,   uri,
                           -1);
     }
 

@@ -23,12 +23,10 @@
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
 
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-params.h"
-#include "config/gimpconfig-path.h"
 #include "config/gimprc.h"
 
 #include "pdb/procedural_db.h"
@@ -42,6 +40,7 @@
 #include "xcf/xcf.h"
 
 #include "gimp.h"
+#include "gimp-contexts.h"
 #include "gimp-documents.h"
 #include "gimp-gradients.h"
 #include "gimp-modules.h"
@@ -50,6 +49,7 @@
 #include "gimp-units.h"
 #include "gimp-utils.h"
 #include "gimpbrush.h"
+#include "gimpbrush-load.h"
 #include "gimpbrushgenerated.h"
 #include "gimpbrushpipe.h"
 #include "gimpbuffer.h"
@@ -61,6 +61,7 @@
 #include "gimpgradient-load.h"
 #include "gimpimage.h"
 #include "gimpimagefile.h"
+#include "gimpinterpreterdb.h"
 #include "gimplist.h"
 #include "gimpmarshal.h"
 #include "gimppalette.h"
@@ -83,9 +84,6 @@ enum
 };
 
 
-static void       gimp_class_init           (GimpClass         *klass);
-static void       gimp_init                 (Gimp              *gimp);
-
 static void       gimp_dispose              (GObject           *object);
 static void       gimp_finalize             (GObject           *object);
 
@@ -107,46 +105,18 @@ static void       gimp_edit_config_notify   (GObject           *edit_config,
                                              GObject           *global_config);
 
 
-static GimpObjectClass *parent_class = NULL;
+G_DEFINE_TYPE (Gimp, gimp, GIMP_TYPE_OBJECT);
+
+#define parent_class gimp_parent_class
 
 static guint gimp_signals[LAST_SIGNAL] = { 0, };
 
-
-GType
-gimp_get_type (void)
-{
-  static GType object_type = 0;
-
-  if (! object_type)
-    {
-      static const GTypeInfo object_info =
-      {
-        sizeof (GimpClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_class_init,
-        NULL,                /* class_finalize */
-        NULL,                /* class_data     */
-        sizeof (Gimp),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_init,
-      };
-
-      object_type = g_type_register_static (GIMP_TYPE_OBJECT,
-                                            "Gimp",
-                                            &object_info, 0);
-    }
-
-  return object_type;
-}
 
 static void
 gimp_class_init (GimpClass *klass)
 {
   GObjectClass    *object_class      = G_OBJECT_CLASS (klass);
   GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   gimp_signals[INITIALIZE] =
     g_signal_new ("initialize",
@@ -232,6 +202,7 @@ gimp_init (Gimp *gimp)
 
   gimp_modules_init (gimp);
 
+  gimp->interpreter_db      = gimp_interpreter_db_new ();
   gimp->environ_table       = gimp_environ_table_new ();
 
   gimp->plug_in_debug       = NULL;
@@ -239,9 +210,10 @@ gimp_init (Gimp *gimp)
   gimp->images              = gimp_list_new_weak (GIMP_TYPE_IMAGE, FALSE);
   gimp_object_set_name (GIMP_OBJECT (gimp->images), "images");
 
-  gimp->next_image_ID       = 1;
-  gimp->next_guide_ID       = 1;
-  gimp->image_table         = g_hash_table_new (g_direct_hash, NULL);
+  gimp->next_image_ID        = 1;
+  gimp->next_guide_ID        = 1;
+  gimp->next_sample_point_ID = 1;
+  gimp->image_table          = g_hash_table_new (g_direct_hash, NULL);
 
   gimp->next_item_ID        = 1;
   gimp->item_table          = g_hash_table_new (g_direct_hash, NULL);
@@ -276,10 +248,9 @@ gimp_init (Gimp *gimp)
   gimp->documents           = gimp_document_list_new (gimp);
 
   gimp->templates           = gimp_list_new (GIMP_TYPE_TEMPLATE, TRUE);
-  gimp_object_set_name (GIMP_OBJECT (gimp->tool_info_list), "templates");
+  gimp_object_set_name (GIMP_OBJECT (gimp->templates), "templates");
 
   gimp->image_new_last_template = NULL;
-  gimp->have_current_cut_buffer = FALSE;
 
   gimp->context_list        = NULL;
   gimp->default_context     = NULL;
@@ -317,8 +288,7 @@ gimp_finalize (GObject *object)
   if (gimp->be_verbose)
     g_print ("EXIT: gimp_finalize\n");
 
-  gimp_set_user_context (gimp, NULL);
-  gimp_set_default_context (gimp, NULL);
+  gimp_contexts_exit (gimp);
 
   if (gimp->image_new_last_template)
     {
@@ -434,6 +404,12 @@ gimp_finalize (GObject *object)
       gimp->environ_table = NULL;
     }
 
+  if (gimp->interpreter_db)
+    {
+      g_object_unref (gimp->interpreter_db);
+      gimp->interpreter_db = NULL;
+    }
+
   if (gimp->module_db)
     gimp_modules_exit (gimp);
 
@@ -457,8 +433,7 @@ gimp_finalize (GObject *object)
       gimp->session_name = NULL;
     }
 
-  if (gimp->user_units)
-    gimp_units_exit (gimp);
+  gimp_units_exit (gimp);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -534,13 +509,14 @@ static void
 gimp_real_initialize (Gimp               *gimp,
                       GimpInitStatusFunc  status_callback)
 {
-  GimpContext *context;
-  gchar       *path;
+  gchar *path;
 
   static const GimpDataFactoryLoaderEntry brush_loader_entries[] =
   {
     { gimp_brush_load,           GIMP_BRUSH_FILE_EXTENSION,           FALSE },
     { gimp_brush_load,           GIMP_BRUSH_PIXMAP_FILE_EXTENSION,    FALSE },
+    { gimp_brush_load_abr,       GIMP_BRUSH_PS_FILE_EXTENSION,        FALSE },
+    { gimp_brush_load_abr,       GIMP_BRUSH_PSP_FILE_EXTENSION,       FALSE },
     { gimp_brush_generated_load, GIMP_BRUSH_GENERATED_FILE_EXTENSION, TRUE  },
     { gimp_brush_pipe_load,      GIMP_BRUSH_PIPE_FILE_EXTENSION,      FALSE }
   };
@@ -566,6 +542,8 @@ gimp_real_initialize (Gimp               *gimp,
 
   if (gimp->be_verbose)
     g_print ("INIT: gimp_real_initialize\n");
+
+  status_callback (_("Initialization"), NULL, 0.0);
 
   gimp_fonts_init (gimp);
 
@@ -615,34 +593,29 @@ gimp_real_initialize (Gimp               *gimp,
   gimp->image_new_last_template =
     gimp_config_duplicate (GIMP_CONFIG (gimp->config->default_image));
 
-  gimp->have_current_cut_buffer = FALSE;
-
-  /*  the default context contains the user's saved preferences
-   *
-   *  TODO: load from disk
-   */
-  context = gimp_context_new (gimp, "Default", NULL);
-  gimp_set_default_context (gimp, context);
-  g_object_unref (context);
-
-  /*  the initial user_context is a straight copy of the default context
-   */
-  context = gimp_context_new (gimp, "User", context);
-  gimp_set_user_context (gimp, context);
-  g_object_unref (context);
+  /*  create user and default context  */
+  gimp_contexts_init (gimp);
 
   /*  add the builtin FG -> BG etc. gradients  */
   gimp_gradients_init (gimp);
 
   /*  register all internal procedures  */
-  (* status_callback) (_("Procedural Database"), NULL, -1);
-  procedural_db_init_procs (gimp, status_callback);
+  status_callback (NULL,_("Internal Procedures"), 0.2);
+  procedural_db_init_procs (gimp);
 
-  (* status_callback) (_("Plug-In Environment"), "", -1);
+  status_callback (NULL, _("Plug-In Interpreters"), 0.8);
+
+  path = gimp_config_path_expand (gimp->config->interpreter_path, TRUE, NULL);
+  gimp_interpreter_db_load (gimp->interpreter_db, path);
+  g_free (path);
+
+  status_callback (NULL, _("Plug-In Environment"), 0.9);
 
   path = gimp_config_path_expand (gimp->config->environ_path, TRUE, NULL);
   gimp_environ_table_load (gimp->environ_table, path);
   g_free (path);
+
+  status_callback (NULL, "", 1.0);
 }
 
 static void
@@ -671,7 +644,10 @@ gimp_real_exit (Gimp     *gimp,
   gimp_data_factory_data_save (gimp->palette_factory);
 
   gimp_fonts_reset (gimp);
-  gimp_documents_save (gimp);
+
+  if (gimp->config->save_document_history)
+    gimp_documents_save (gimp);
+
   gimp_templates_save (gimp);
   gimp_parasiterc_save (gimp);
   gimp_unitrc_save (gimp);
@@ -759,7 +735,7 @@ gimp_edit_config_notify (GObject    *edit_config,
 
   if (g_param_values_cmp (param_spec, &edit_value, &global_value))
     {
-      if (param_spec->flags & GIMP_PARAM_RESTART)
+      if (param_spec->flags & GIMP_CONFIG_PARAM_RESTART)
         {
 #ifdef GIMP_CONFIG_DEBUG
           g_print ("NOT Applying edit_config change of '%s' to global_config "
@@ -849,39 +825,40 @@ gimp_restore (Gimp               *gimp,
     g_print ("INIT: gimp_restore\n");
 
   /*  initialize  the global parasite table  */
-  (* status_callback) (_("Looking for data files"), _("Parasites"), 0.0);
+  status_callback (_("Looking for data files"), _("Parasites"), 0.0);
   gimp_parasiterc_load (gimp);
 
   /*  initialize the list of gimp brushes    */
-  (* status_callback) (NULL, _("Brushes"), 0.1);
+  status_callback (NULL, _("Brushes"), 0.1);
   gimp_data_factory_data_init (gimp->brush_factory, gimp->no_data);
 
   /*  initialize the list of gimp patterns   */
-  (* status_callback) (NULL, _("Patterns"), 0.2);
+  status_callback (NULL, _("Patterns"), 0.2);
   gimp_data_factory_data_init (gimp->pattern_factory, gimp->no_data);
 
   /*  initialize the list of gimp palettes   */
-  (* status_callback) (NULL, _("Palettes"), 0.3);
+  status_callback (NULL, _("Palettes"), 0.3);
   gimp_data_factory_data_init (gimp->palette_factory, gimp->no_data);
 
   /*  initialize the list of gimp gradients  */
-  (* status_callback) (NULL, _("Gradients"), 0.4);
+  status_callback (NULL, _("Gradients"), 0.4);
   gimp_data_factory_data_init (gimp->gradient_factory, gimp->no_data);
 
   /*  initialize the list of gimp fonts  */
-  (* status_callback) (NULL, _("Fonts"), 0.5);
-  gimp_fonts_load (gimp);
+  status_callback (NULL, _("Fonts"), 0.5);
+  if (! gimp->no_fonts)
+    gimp_fonts_load (gimp);
 
   /*  initialize the document history  */
-  (* status_callback) (NULL, _("Documents"), 0.6);
+  status_callback (NULL, _("Documents"), 0.6);
   gimp_documents_load (gimp);
 
   /*  initialize the template list  */
-  (* status_callback) (NULL, _("Templates"), 0.7);
+  status_callback (NULL, _("Templates"), 0.7);
   gimp_templates_load (gimp);
 
   /*  initialize the module list  */
-  (* status_callback) (NULL, _("Modules"), 0.8);
+  status_callback (NULL, _("Modules"), 0.8);
   gimp_modules_load (gimp);
 
   g_signal_emit (gimp, gimp_signals[RESTORE], 0, status_callback);
@@ -928,8 +905,6 @@ gimp_set_global_buffer (Gimp       *gimp,
 
   if (gimp->global_buffer)
     g_object_ref (gimp->global_buffer);
-
-  gimp->have_current_cut_buffer = (buffer != NULL);
 
   g_signal_emit (gimp, gimp_signals[BUFFER_CHANGED], 0);
 }
@@ -983,15 +958,18 @@ gimp_set_default_context (Gimp        *gimp,
                           GimpContext *context)
 {
   g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (! context || GIMP_IS_CONTEXT (context));
+  g_return_if_fail (context == NULL || GIMP_IS_CONTEXT (context));
 
-  if (gimp->default_context)
-    g_object_unref (gimp->default_context);
+  if (context != gimp->default_context)
+    {
+      if (gimp->default_context)
+        g_object_unref (gimp->default_context);
 
-  gimp->default_context = context;
+      gimp->default_context = context;
 
-  if (gimp->default_context)
-    g_object_ref (gimp->default_context);
+      if (gimp->default_context)
+        g_object_ref (gimp->default_context);
+    }
 }
 
 GimpContext *
@@ -1007,15 +985,18 @@ gimp_set_user_context (Gimp        *gimp,
                        GimpContext *context)
 {
   g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (! context || GIMP_IS_CONTEXT (context));
+  g_return_if_fail (context == NULL || GIMP_IS_CONTEXT (context));
 
-  if (gimp->user_context)
-    g_object_unref (gimp->user_context);
+  if (context != gimp->user_context)
+    {
+      if (gimp->user_context)
+        g_object_unref (gimp->user_context);
 
-  gimp->user_context = context;
+      gimp->user_context = context;
 
-  if (gimp->user_context)
-    g_object_ref (gimp->user_context);
+      if (gimp->user_context)
+        g_object_ref (gimp->user_context);
+    }
 }
 
 GimpContext *

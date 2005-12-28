@@ -23,19 +23,14 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-#include <sys/types.h>
-
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define PLUG_IN_PROC   "plug-in-diffraction"
+#define PLUG_IN_BINARY "diffraction"
 
 
 /***** Magic numbers *****/
@@ -151,26 +146,26 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",     "Input drawable" },
-    { GIMP_PDB_FLOAT,    "lam_r",        "Light frequency (red)" },
-    { GIMP_PDB_FLOAT,     "lam_g",        "Light frequency (green)" },
-    { GIMP_PDB_FLOAT,     "lam_b",        "Light frequency (blue)" },
-    { GIMP_PDB_FLOAT,     "contour_r",    "Number of contours (red)" },
-    { GIMP_PDB_FLOAT,     "contour_g",    "Number of contours (green)" },
-    { GIMP_PDB_FLOAT,     "contour_b",    "Number of contours (blue)" },
-    { GIMP_PDB_FLOAT,     "edges_r",      "Number of sharp edges (red)" },
-    { GIMP_PDB_FLOAT,     "edges_g",      "Number of sharp edges (green)" },
-    { GIMP_PDB_FLOAT,     "edges_b",      "Number of sharp edges (blue)" },
-    { GIMP_PDB_FLOAT,     "brightness",   "Brightness and shifting/fattening of contours" },
-    { GIMP_PDB_FLOAT,     "scattering",   "Scattering (Speed vs. quality)" },
-    { GIMP_PDB_FLOAT,     "polarization", "Polarization" }
+    { GIMP_PDB_FLOAT,    "lam-r",        "Light frequency (red)" },
+    { GIMP_PDB_FLOAT,    "lam-g",        "Light frequency (green)" },
+    { GIMP_PDB_FLOAT,    "lam-b",        "Light frequency (blue)" },
+    { GIMP_PDB_FLOAT,    "contour-r",    "Number of contours (red)" },
+    { GIMP_PDB_FLOAT,    "contour-g",    "Number of contours (green)" },
+    { GIMP_PDB_FLOAT,    "contour-b",    "Number of contours (blue)" },
+    { GIMP_PDB_FLOAT,    "edges-r",      "Number of sharp edges (red)" },
+    { GIMP_PDB_FLOAT,    "edges-g",      "Number of sharp edges (green)" },
+    { GIMP_PDB_FLOAT,    "edges-b",      "Number of sharp edges (blue)" },
+    { GIMP_PDB_FLOAT,    "brightness",   "Brightness and shifting/fattening of contours" },
+    { GIMP_PDB_FLOAT,    "scattering",   "Scattering (Speed vs. quality)" },
+    { GIMP_PDB_FLOAT,    "polarization", "Polarization" }
   };
 
-  gimp_install_procedure ("plug_in_diffraction",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Generate diffraction patterns",
-                          "Help?  What help?  Real men do not need help :-)",  /* FIXME */
+                          "Help?  What help?  Real men do not need help :-)",
                           "Federico Mena Quintero",
                           "Federico Mena Quintero & David Bleecker",
                           "April 1997, 0.5",
@@ -180,8 +175,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_diffraction",
-                             "<Image>/Filters/Render/Pattern");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Render/Pattern");
 }
 
 static void
@@ -217,7 +211,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /* Possibly retrieve data */
-      gimp_get_data ("plug_in_diffraction", &dvals);
+      gimp_get_data (PLUG_IN_PROC, &dvals);
 
       /* Get information from the dialog */
       if (!diffraction_dialog ())
@@ -250,7 +244,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /* Possibly retrieve data */
-      gimp_get_data ("plug_in_diffraction", &dvals);
+      gimp_get_data (PLUG_IN_PROC, &dvals);
       break;
 
     default:
@@ -261,7 +255,8 @@ run (const gchar      *name,
   active_drawable = gimp_drawable_get (param[2].data.d_drawable);
 
   /* Create the diffraction pattern */
-  if ((status == GIMP_PDB_SUCCESS) && gimp_drawable_is_rgb(active_drawable->drawable_id))
+  if ((status == GIMP_PDB_SUCCESS) &&
+      gimp_drawable_is_rgb (active_drawable->drawable_id))
     {
       /* Set the tile cache size */
       gimp_tile_cache_ntiles ((active_drawable->width + gimp_tile_width() - 1) /
@@ -276,11 +271,12 @@ run (const gchar      *name,
 
       /* Store data */
       if (run_mode == GIMP_RUN_INTERACTIVE)
-        gimp_set_data ("plug_in_diffraction",
-                       &dvals, sizeof(diffraction_vals_t));
+        gimp_set_data (PLUG_IN_PROC, &dvals, sizeof (diffraction_vals_t));
     }
   else if (status == GIMP_PDB_SUCCESS)
-    status = GIMP_PDB_EXECUTION_ERROR;
+    {
+      status = GIMP_PDB_EXECUTION_ERROR;
+    }
 
   values[0].data.d_status = status;
 
@@ -309,11 +305,11 @@ diffraction_func (gint x,
   py = 5.0 + param->dvert * (y - param->y1);
 
   diff_diffract (px, py, &rgb);
-  
+
   dest[0] = 255.0 * rgb.r;
   dest[1] = 255.0 * rgb.g;
   dest[2] = 255.0 * rgb.b;
-  
+
   if (bpp == 4)
     dest[3] = 255;
 }
@@ -331,7 +327,7 @@ diffraction (GimpDrawable *drawable)
   param.dhoriz = 10.0 / (x2 - x1 - 1);
   param.dvert  = -10.0 / (y2 - y1 - 1);
 
-  gimp_progress_init (_("Creating diffraction pattern..."));
+  gimp_progress_init (_("Creating diffraction pattern"));
   iter = gimp_rgn_iterator_new (drawable, 0);
   gimp_rgn_iterator_dest (iter, diffraction_func, &param);
   gimp_rgn_iterator_free (iter);
@@ -433,16 +429,23 @@ diffraction_dialog (void)
   GtkObject *adj;
   gboolean   run;
 
-  gimp_ui_init ("diffraction", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Diffraction Patterns"), "diffraction",
+  dialog = gimp_dialog_new (_("Diffraction Patterns"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-diffraction",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   hbox = gtk_hbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
@@ -499,7 +502,7 @@ diffraction_dialog (void)
                               dvals.lam_r, 0.0, 20.0, 0.2, 1.0, 3,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &dvals.lam_r);
 
@@ -508,7 +511,7 @@ diffraction_dialog (void)
                               dvals.lam_g, 0.0, 20.0, 0.2, 1.0, 3,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &dvals.lam_g);
 
@@ -517,7 +520,7 @@ diffraction_dialog (void)
                               dvals.lam_b, 0.0, 20.0, 0.2, 1.0, 3,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &dvals.lam_b);
 
@@ -537,7 +540,7 @@ diffraction_dialog (void)
                               dvals.contour_r, 0.0, 10.0, 0.1, 1.0, 3,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &dvals.contour_r);
 
@@ -546,7 +549,7 @@ diffraction_dialog (void)
                               dvals.contour_g, 0.0, 10.0, 0.1, 1.0, 3,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &dvals.contour_g);
 
@@ -555,7 +558,7 @@ diffraction_dialog (void)
                               dvals.contour_b, 0.0, 10.0, 0.1, 1.0, 3,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &dvals.contour_b);
 
@@ -575,7 +578,7 @@ diffraction_dialog (void)
                               dvals.edges_r, 0.0, 1.0, 0.01, 0.1, 3,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &dvals.edges_r);
 
@@ -584,7 +587,7 @@ diffraction_dialog (void)
                               dvals.edges_g, 0.0, 1.0, 0.01, 0.1, 3,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &dvals.edges_g);
 
@@ -593,11 +596,11 @@ diffraction_dialog (void)
                               dvals.edges_b, 0.0, 1.0, 0.01, 0.1, 3,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &dvals.edges_b);
 
-  label = gtk_label_new_with_mnemonic (_("Sharp edges"));
+  label = gtk_label_new_with_mnemonic (_("Sharp Edges"));
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook), table, label);
 
   /* Other options tab */
@@ -613,7 +616,7 @@ diffraction_dialog (void)
                               dvals.brightness, 0.0, 1.0, 0.01, 0.1, 3,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &dvals.brightness);
 
@@ -622,7 +625,7 @@ diffraction_dialog (void)
                               dvals.scattering, 0.0, 100.0, 1.0, 10.0, 3,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &dvals.scattering);
 
@@ -631,11 +634,11 @@ diffraction_dialog (void)
                               dvals.polarization, -1.0, 1.0, 0.02, 0.2, 3,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &dvals.polarization);
 
-  label = gtk_label_new_with_mnemonic (_("Other options"));
+  label = gtk_label_new_with_mnemonic (_("Other Options"));
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook), table, label);
 
   /* Done */
@@ -686,14 +689,15 @@ dialog_update_preview (void)
           px += dx;
         }
 
-      if ((y%10)==0)
-      {
-        gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dint.progress),
-                                       (gdouble) y /
-                                       (gdouble) (PREVIEW_HEIGHT - 1));
-        while (gtk_events_pending ())
-          gtk_main_iteration ();
-      }
+      if ((y % 10) == 0)
+        {
+          gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dint.progress),
+                                         (gdouble) y /
+                                         (gdouble) (PREVIEW_HEIGHT - 1));
+          while (gtk_events_pending ())
+            gtk_main_iteration ();
+        }
+
       py += dy;
     }
 

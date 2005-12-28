@@ -56,14 +56,14 @@ gradients_refresh_invoker (Gimp         *gimp,
                            GimpProgress *progress,
                            Argument     *args)
 {
-  gimp_data_factory_data_save (gimp->gradient_factory);
-  gimp_data_factory_data_init (gimp->gradient_factory, FALSE);
+  gimp_data_factory_data_refresh (gimp->gradient_factory);
   return procedural_db_return_args (&gradients_refresh_proc, TRUE);
 }
 
 static ProcRecord gradients_refresh_proc =
 {
-  "gimp_gradients_refresh",
+  "gimp-gradients-refresh",
+  "gimp-gradients-refresh",
   "Refresh current gradients. This function always succeeds.",
   "This procedure retrieves all gradients currently in the user's gradient path and updates the gradient dialogs accordingly.",
   "Michael Natterer",
@@ -121,21 +121,22 @@ static ProcArg gradients_get_list_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "num_gradients",
+    "num-gradients",
     "The number of loaded gradients"
   },
   {
     GIMP_PDB_STRINGARRAY,
-    "gradient_list",
+    "gradient-list",
     "The list of gradient names"
   }
 };
 
 static ProcRecord gradients_get_list_proc =
 {
-  "gimp_gradients_get_list",
+  "gimp-gradients-get-list",
+  "gimp-gradients-get-list",
   "Retrieve the list of loaded gradients.",
-  "This procedure returns a list of the gradients that are currently loaded. You can later use the 'gimp_context_set_gradient' function to set the active gradient.",
+  "This procedure returns a list of the gradients that are currently loaded. You can later use the 'gimp-context-set-gradient' function to set the active gradient.",
   "Federico Mena Quintero",
   "Federico Mena Quintero",
   "1997",
@@ -173,6 +174,8 @@ gradients_sample_uniform_invoker (Gimp         *gimp,
 
   if (success)
     {
+      GimpGradientSegment *seg = NULL;
+
       pos   = 0.0;
       delta = 1.0 / (i - 1);
 
@@ -184,7 +187,7 @@ gradients_sample_uniform_invoker (Gimp         *gimp,
 
       while (i--)
         {
-          gimp_gradient_get_color_at (gradient, pos, reverse, &color);
+          seg = gimp_gradient_get_color_at (gradient, seg, pos, reverse, &color);
 
           *pv++ = color.r;
           *pv++ = color.g;
@@ -210,7 +213,7 @@ static ProcArg gradients_sample_uniform_inargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "num_samples",
+    "num-samples",
     "The number of samples to take"
   },
   {
@@ -224,25 +227,26 @@ static ProcArg gradients_sample_uniform_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "array_length",
+    "array-length",
     "Length of the color_samples array (4 * num_samples)"
   },
   {
     GIMP_PDB_FLOATARRAY,
-    "color_samples",
+    "color-samples",
     "Color samples: { R1, G1, B1, A1, ..., Rn, Gn, Bn, An }"
   }
 };
 
 static ProcRecord gradients_sample_uniform_proc =
 {
-  "gimp_gradients_sample_uniform",
-  "This procedure is deprecated! Use 'gimp_gradient_get_uniform_samples' instead.",
-  "This procedure is deprecated! Use 'gimp_gradient_get_uniform_samples' instead.",
+  "gimp-gradients-sample-uniform",
+  "gimp-gradients-sample-uniform",
+  "This procedure is deprecated! Use 'gimp-gradient-get-uniform-samples' instead.",
+  "This procedure is deprecated! Use 'gimp-gradient-get-uniform-samples' instead.",
   "",
   "",
   "",
-  "gimp_gradient_get_uniform_samples",
+  "gimp-gradient-get-uniform-samples",
   GIMP_INTERNAL,
   2,
   gradients_sample_uniform_inargs,
@@ -278,6 +282,8 @@ gradients_sample_custom_invoker (Gimp         *gimp,
 
   if (success)
     {
+      GimpGradientSegment *seg = NULL;
+
       array_length = i * 4;
 
       pv = color_samples = g_new (gdouble, array_length);
@@ -286,7 +292,7 @@ gradients_sample_custom_invoker (Gimp         *gimp,
 
       while (i--)
         {
-          gimp_gradient_get_color_at (gradient, *pos, reverse, &color);
+          seg = gimp_gradient_get_color_at (gradient, seg, *pos, reverse, &color);
 
           *pv++ = color.r;
           *pv++ = color.g;
@@ -312,7 +318,7 @@ static ProcArg gradients_sample_custom_inargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "num_samples",
+    "num-samples",
     "The number of samples to take"
   },
   {
@@ -331,25 +337,26 @@ static ProcArg gradients_sample_custom_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "array_length",
+    "array-length",
     "Length of the color_samples array (4 * num_samples)"
   },
   {
     GIMP_PDB_FLOATARRAY,
-    "color_samples",
+    "color-samples",
     "Color samples: { R1, G1, B1, A1, ..., Rn, Gn, Bn, An }"
   }
 };
 
 static ProcRecord gradients_sample_custom_proc =
 {
-  "gimp_gradients_sample_custom",
-  "This procedure is deprecated! Use 'gimp_gradient_get_custom_samples' instead.",
-  "This procedure is deprecated! Use 'gimp_gradient_get_custom_samples' instead.",
+  "gimp-gradients-sample-custom",
+  "gimp-gradients-sample-custom",
+  "This procedure is deprecated! Use 'gimp-gradient-get-custom-samples' instead.",
+  "This procedure is deprecated! Use 'gimp-gradient-get-custom-samples' instead.",
   "",
   "",
   "",
-  "gimp_gradient_get_custom_samples",
+  "gimp-gradient-get-custom-samples",
   GIMP_INTERNAL,
   3,
   gradients_sample_custom_inargs,
@@ -397,10 +404,11 @@ gradients_get_gradient_data_invoker (Gimp         *gimp,
 
       if (gradient)
         {
-          gdouble *pv;
-          gdouble  pos, delta;
-          GimpRGB  color;
-          gint     i;
+          GimpGradientSegment *seg = NULL;
+          gdouble             *pv;
+          gdouble              pos, delta;
+          GimpRGB              color;
+          gint                 i;
 
           i     = sample_size;
           pos   = 0.0;
@@ -410,7 +418,7 @@ gradients_get_gradient_data_invoker (Gimp         *gimp,
 
           while (i--)
             {
-              gimp_gradient_get_color_at (gradient, pos, reverse, &color);
+              seg = gimp_gradient_get_color_at (gradient, seg, pos, reverse, &color);
 
               *pv++ = color.r;
               *pv++ = color.g;
@@ -445,7 +453,7 @@ static ProcArg gradients_get_gradient_data_inargs[] =
   },
   {
     GIMP_PDB_INT32,
-    "sample_size",
+    "sample-size",
     "Size of the sample to return when the gradient is changed (0 < sample_size <= 10000)"
   },
   {
@@ -469,20 +477,21 @@ static ProcArg gradients_get_gradient_data_outargs[] =
   },
   {
     GIMP_PDB_FLOATARRAY,
-    "grad_data",
+    "grad-data",
     "The gradient sample data"
   }
 };
 
 static ProcRecord gradients_get_gradient_data_proc =
 {
-  "gimp_gradients_get_gradient_data",
-  "This procedure is deprecated! Use 'gimp_gradient_get_uniform_samples' instead.",
-  "This procedure is deprecated! Use 'gimp_gradient_get_uniform_samples' instead.",
+  "gimp-gradients-get-gradient-data",
+  "gimp-gradients-get-gradient-data",
+  "This procedure is deprecated! Use 'gimp-gradient-get-uniform-samples' instead.",
+  "This procedure is deprecated! Use 'gimp-gradient-get-uniform-samples' instead.",
   "",
   "",
   "",
-  "gimp_gradient_get_uniform_samples",
+  "gimp-gradient-get-uniform-samples",
   GIMP_INTERNAL,
   3,
   gradients_get_gradient_data_inargs,

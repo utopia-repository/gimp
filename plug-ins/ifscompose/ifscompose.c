@@ -22,26 +22,18 @@
 /* TODO
  * ----
  *
- * 1. Run in non-interactive mode (need to figure out useful
- *    way for a script to give the 19N paramters for an image).
- *    Perhaps just support saving parameters to a file, script
- *    passes file name.  (The save-to-file part is already done [Yeti])
- * 2. Save settings on a per-layer basis (long term, needs GIMP
- *    support to do properly). Load/save from affine parameters?
- * 3. Figure out if we need multiple phases for supersampled
- *    brushes.
- * 4. (minor) Make undo work correctly when focus is in entry widget.
- *    (This seems fixed now (by mere change to spinbuttons) [Yeti])
+ * 1. Run in non-interactive mode (need to figure out useful way for a
+ *    script to give the 19N paramters for an image).  Perhaps just
+ *    support saving parameters to a file, script passes file name.
+ * 2. Figure out if we need multiple phases for supersampled brushes.
  */
 
 #include "config.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include <errno.h>
 
-#include <gtk/gtk.h>
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -64,8 +56,7 @@
 #define UNDO_LEVELS             24
 
 #define IFSCOMPOSE_PARASITE "ifscompose-parasite"
-#define IFSCOMPOSE_DATA     "plug_in_ifscompose"
-#define HELP_ID             "plug-in-ifs-compose"
+#define IFSCOMPOSE_PROC     "plug-in-ifscompose"
 
 typedef enum
 {
@@ -255,8 +246,6 @@ static ValuePair *value_pair_create       (gpointer   data,
                                            gboolean   create_scale,
                                            ValuePairType type);
 static void value_pair_update             (ValuePair *value_pair);
-static void value_pair_destroy_callback   (GtkWidget *widget,
-                                           ValuePair *value_pair);
 static void value_pair_scale_callback     (GtkAdjustment *adjustment,
                                            ValuePair *value_pair);
 
@@ -284,9 +273,10 @@ static void ifs_compose_response          (GtkWidget *widget,
  *  Some static variables
  */
 
-static IfsDialog        *ifsD      = NULL;
-static IfsOptionsDialog *ifsOptD   = NULL;
-static IfsDesignArea    *ifsDesign = NULL;
+static IfsDialog        *ifsD       = NULL;
+static IfsOptionsDialog *ifsOptD    = NULL;
+static IfsDesignArea    *ifsDesign  = NULL;
+
 
 static AffElement **elements = NULL;
 static gint        *element_selected = NULL;
@@ -302,19 +292,19 @@ static gint         undo_start = 0;
 /* num_elements = 0, signals not inited */
 static IfsComposeVals ifsvals =
 {
-  0,           /* num_elements */
+  0,       /* num_elements */
   50000,   /* iterations   */
-  4096,           /* max_memory   */
-  4,           /* subdivide    */
-  0.75,           /* radius       */
-  1.0,           /* aspect ratio */
-  0.5,           /* center_x     */
-  0.5,           /* center_y     */
+  4096,    /* max_memory   */
+  4,       /* subdivide    */
+  0.75,    /* radius       */
+  1.0,     /* aspect ratio */
+  0.5,     /* center_x     */
+  0.5,     /* center_y     */
 };
 
 static IfsComposeInterface ifscint =
 {
-  FALSE,        /* run */
+  FALSE,   /* run          */
 };
 
 GimpPlugInInfo PLUG_IN_INFO =
@@ -333,7 +323,7 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",    "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
   };
@@ -341,7 +331,7 @@ query (void)
   static GimpParamDef *return_vals = NULL;
   static int nreturn_vals = 0;
 
-  gimp_install_procedure ("plug_in_ifs_compose",
+  gimp_install_procedure (IFSCOMPOSE_PROC,
                           "Create an Iterated Function System (IFS) Fractal",
                           "Interactively create an Iterated Function System "
                           "fractal. Use the window on the upper left to adjust "
@@ -360,7 +350,7 @@ query (void)
                           G_N_ELEMENTS (args), nreturn_vals,
                           args, return_vals);
 
-  gimp_plugin_menu_register ("plug_in_ifs_compose",
+  gimp_plugin_menu_register (IFSCOMPOSE_PROC,
                              "<Image>/Filters/Render/Nature");
 }
 
@@ -372,12 +362,12 @@ run (const gchar      *name,
      GimpParam       **return_vals)
 {
   static GimpParam   values[1];
-  GimpDrawable      *active_drawable;
+  GimpDrawable      *drawable;
   GimpRunMode        run_mode;
   GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
   GimpParasite      *parasite = NULL;
   guint32            image_id;
-  gboolean           found_parasite;
+  gboolean           found_parasite = FALSE;
 
   run_mode = param[0].data.d_int32;
 
@@ -389,8 +379,8 @@ run (const gchar      *name,
 
   INIT_I18N ();
 
-  image_id        = param[1].data.d_image;
-  active_drawable = gimp_drawable_get (param[2].data.d_drawable);
+  image_id = param[1].data.d_image;
+  drawable = gimp_drawable_get (param[2].data.d_drawable);
 
   switch (run_mode)
     {
@@ -398,9 +388,8 @@ run (const gchar      *name,
       /*  Possibly retrieve data; first look for a parasite -
        *  if not found, fall back to global values
        */
-      parasite = gimp_drawable_parasite_find (active_drawable->drawable_id,
+      parasite = gimp_drawable_parasite_find (drawable->drawable_id,
                                               IFSCOMPOSE_PARASITE);
-      found_parasite = FALSE;
       if (parasite)
         {
           found_parasite = ifsvals_parse_string (gimp_parasite_data (parasite),
@@ -410,14 +399,13 @@ run (const gchar      *name,
 
       if (!found_parasite)
         {
-          gint length;
+          gint length = gimp_get_data_size (IFSCOMPOSE_PROC);
 
-          length = gimp_get_data_size (IFSCOMPOSE_DATA);
-          if (length)
+          if (length > 0)
             {
               gchar *data = g_new (gchar, length);
 
-              gimp_get_data (IFSCOMPOSE_DATA, data);
+              gimp_get_data (IFSCOMPOSE_PROC, data);
               ifsvals_parse_string (data, &ifsvals, &elements);
               g_free (data);
             }
@@ -427,34 +415,31 @@ run (const gchar      *name,
       count_for_naming = ifsvals.num_elements;
 
       /*  First acquire information with a dialog  */
-      if (! ifs_compose_dialog (active_drawable))
+      if (! ifs_compose_dialog (drawable))
         return;
       break;
 
     case GIMP_RUN_NONINTERACTIVE:
-      /*  Make sure all the arguments are there!  */
       status = GIMP_PDB_CALLING_ERROR;
       break;
 
     case GIMP_RUN_WITH_LAST_VALS:
-      /*  Possibly retrieve data  */
-        {
-          gint length;
+      {
+        gint length = gimp_get_data_size (IFSCOMPOSE_PROC);
 
-          length = gimp_get_data_size (IFSCOMPOSE_DATA);
-          if (length)
-            {
-              gchar *data = g_new (gchar, length);
+        if (length > 0)
+          {
+            gchar *data = g_new (gchar, length);
 
-              gimp_get_data (IFSCOMPOSE_DATA, data);
-              ifsvals_parse_string (data, &ifsvals, &elements);
-              g_free (data);
-            }
-          else
-            {
-              ifs_compose_set_defaults ();
-            }
-        }
+            gimp_get_data (IFSCOMPOSE_PROC, data);
+            ifsvals_parse_string (data, &ifsvals, &elements);
+            g_free (data);
+          }
+        else
+          {
+            ifs_compose_set_defaults ();
+          }
+      }
       break;
 
     default:
@@ -463,12 +448,11 @@ run (const gchar      *name,
 
   /*  Render the fractal  */
   if ((status == GIMP_PDB_SUCCESS) &&
-      (gimp_drawable_is_rgb (active_drawable->drawable_id) ||
-       gimp_drawable_is_gray (active_drawable->drawable_id)))
+      (gimp_drawable_is_rgb (drawable->drawable_id) ||
+       gimp_drawable_is_gray (drawable->drawable_id)))
     {
       /*  set the tile cache size so that the operation works well  */
-      gimp_tile_cache_ntiles (2 * (MAX (active_drawable->width,
-                                        active_drawable->height) /
+      gimp_tile_cache_ntiles (2 * (MAX (drawable->width, drawable->height) /
                                    gimp_tile_width () + 1));
 
       if (run_mode == GIMP_RUN_INTERACTIVE)
@@ -479,21 +463,20 @@ run (const gchar      *name,
           gimp_image_undo_group_start (image_id);
 
           /*  run the effect  */
-          ifs_compose (active_drawable);
+          ifs_compose (drawable);
 
           /*  Store data for next invocation - both globally and
            *  as a parasite on this layer
            */
           str = ifsvals_stringify (&ifsvals, elements);
 
-          gimp_set_data (IFSCOMPOSE_DATA, str, strlen (str) + 1);
+          gimp_set_data (IFSCOMPOSE_PROC, str, strlen (str) + 1);
 
           parasite = gimp_parasite_new (IFSCOMPOSE_PARASITE,
                                         GIMP_PARASITE_PERSISTENT |
                                         GIMP_PARASITE_UNDOABLE,
                                         strlen (str) + 1, str);
-          gimp_drawable_parasite_attach (active_drawable->drawable_id,
-                                         parasite);
+          gimp_drawable_parasite_attach (drawable->drawable_id, parasite);
           gimp_parasite_free (parasite);
 
           g_free (str);
@@ -503,7 +486,7 @@ run (const gchar      *name,
       else
         {
           /*  run the effect  */
-          ifs_compose (active_drawable);
+          ifs_compose (drawable);
         }
 
       /*  If the run mode is interactive, flush the displays  */
@@ -517,7 +500,7 @@ run (const gchar      *name,
 
   values[0].data.d_status = status;
 
-  gimp_drawable_detach (active_drawable);
+  gimp_drawable_detach (drawable);
 }
 
 static GtkWidget *
@@ -671,7 +654,7 @@ ifs_compose_color_page (void)
                     GTK_FILL, 0, 0, 0);
   gtk_widget_show (ifsD->target_cmap->hbox);
 
-  label = gtk_label_new (_("Scale Hue by:"));
+  label = gtk_label_new (_("Scale hue by:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_table_attach (GTK_TABLE (table), label, 2, 3, 0, 1,
                     GTK_FILL, GTK_FILL, 0, 0);
@@ -686,7 +669,7 @@ ifs_compose_color_page (void)
                     GTK_FILL, GTK_FILL, 0, 0);
   gtk_widget_show (ifsD->hue_scale_pair->spin);
 
-  label = gtk_label_new (_("Scale Value by:"));
+  label = gtk_label_new (_("Scale value by:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_table_attach (GTK_TABLE (table), label, 2, 3, 1, 2,
                     GTK_FILL, GTK_FILL, 0, 0);
@@ -709,28 +692,32 @@ ifs_compose_color_page (void)
   group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (ifsD->full_button));
   gtk_widget_show (ifsD->full_button);
 
-  gimp_rgb_set (&color, 1.0, 0.0, 0.0);
+  gimp_rgb_parse_name (&color, "red", -1);
+  gimp_rgb_set_alpha (&color, 1.0);
   ifsD->red_cmap = color_map_create (_("IFS Fractal: Red"), &color,
                                      &ifsD->current_vals.red_color, FALSE);
   gtk_table_attach (GTK_TABLE (table), ifsD->red_cmap->hbox, 1, 2, 2, 3,
                     GTK_FILL, GTK_FILL, 0, 0);
   gtk_widget_show (ifsD->red_cmap->hbox);
 
-  gimp_rgb_set (&color, 0.0, 1.0, 0.0);
+  gimp_rgb_parse_name (&color, "green", -1);
+  gimp_rgb_set_alpha (&color, 1.0);
   ifsD->green_cmap = color_map_create (_("IFS Fractal: Green"), &color,
                                        &ifsD->current_vals.green_color, FALSE);
   gtk_table_attach (GTK_TABLE (table), ifsD->green_cmap->hbox, 2, 3, 2, 3,
                     GTK_FILL, GTK_FILL, 0, 0);
   gtk_widget_show (ifsD->green_cmap->hbox);
 
-  gimp_rgb_set (&color, 0.0, 0.0, 1.0);
+  gimp_rgb_parse_name (&color, "blue", -1);
+  gimp_rgb_set_alpha (&color, 1.0);
   ifsD->blue_cmap = color_map_create (_("IFS Fractal: Blue"), &color,
                                       &ifsD->current_vals.blue_color, FALSE);
   gtk_table_attach (GTK_TABLE (table), ifsD->blue_cmap->hbox, 3, 4, 2, 3,
                     GTK_FILL, GTK_FILL, 0, 0);
   gtk_widget_show (ifsD->blue_cmap->hbox);
 
-  gimp_rgb_set (&color, 0.0, 0.0, 0.0);
+  gimp_rgb_parse_name (&color, "black", -1);
+  gimp_rgb_set_alpha (&color, 1.0);
   ifsD->black_cmap = color_map_create (_("IFS Fractal: Black"), &color,
                                        &ifsD->current_vals.black_color, FALSE);
   gtk_table_attach (GTK_TABLE (table), ifsD->black_cmap->hbox, 4, 5, 2, 3,
@@ -783,7 +770,7 @@ ifs_compose_dialog (GimpDrawable *drawable)
 
   dialog = gimp_dialog_new (_("IFS Fractal"), "ifscompose",
                             NULL, 0,
-                            gimp_standard_help_func, HELP_ID,
+                            gimp_standard_help_func, IFSCOMPOSE_PROC,
 
                             GTK_STOCK_OPEN,   RESPONSE_OPEN,
                             GTK_STOCK_SAVE,   RESPONSE_SAVE,
@@ -792,6 +779,16 @@ ifs_compose_dialog (GimpDrawable *drawable)
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           RESPONSE_OPEN,
+                                           RESPONSE_SAVE,
+                                           RESPONSE_RESET,
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   g_object_add_weak_pointer (G_OBJECT (dialog), (gpointer) &dialog);
 
@@ -1010,19 +1007,19 @@ design_area_create (GtkWidget *window,
   g_signal_connect (ifsDesign->area, "realize",
                     G_CALLBACK (design_area_realize),
                     NULL);
-  g_signal_connect (ifsDesign->area, "expose_event",
+  g_signal_connect (ifsDesign->area, "expose-event",
                     G_CALLBACK (design_area_expose),
                     NULL);
-  g_signal_connect (ifsDesign->area, "button_press_event",
+  g_signal_connect (ifsDesign->area, "button-press-event",
                     G_CALLBACK (design_area_button_press),
                     NULL);
-  g_signal_connect (ifsDesign->area, "button_release_event",
+  g_signal_connect (ifsDesign->area, "button-release-event",
                     G_CALLBACK (design_area_button_release),
                     NULL);
-  g_signal_connect (ifsDesign->area, "motion_notify_event",
+  g_signal_connect (ifsDesign->area, "motion-notify-event",
                     G_CALLBACK (design_area_motion),
                     NULL);
-  g_signal_connect (ifsDesign->area, "configure_event",
+  g_signal_connect (ifsDesign->area, "configure-event",
                     G_CALLBACK (design_area_configure),
                     NULL);
   gtk_widget_set_events (ifsDesign->area,
@@ -1068,7 +1065,7 @@ design_op_menu_create (GtkWidget *window)
       G_CALLBACK (recompute_center_cb) },
 
     { "options", GTK_STOCK_PREFERENCES,
-      N_("Render options"), NULL, NULL,
+      N_("Render Options"), NULL, NULL,
       G_CALLBACK (ifs_compose_options_callback) }
   };
   static GtkRadioActionEntry radio_actions[] =
@@ -1152,18 +1149,19 @@ design_op_menu_create (GtkWidget *window)
 static void
 design_op_actions_update (void)
 {
-  g_object_set (gtk_ui_manager_get_action (ifsDesign->ui_manager,
-                                           "/ui/dummy-menubar/ifs-compose-menu/undo"),
-                "sensitive", undo_cur >= 0,
-                NULL);
-  g_object_set (gtk_ui_manager_get_action (ifsDesign->ui_manager,
-                                           "/ui/dummy-menubar/ifs-compose-menu/redo"),
-                "sensitive", undo_cur != undo_num - 1,
-                NULL);
-  g_object_set (gtk_ui_manager_get_action (ifsDesign->ui_manager,
-                                           "/ui/dummy-menubar/ifs-compose-menu/delete"),
-                "sensitive", ifsvals.num_elements > 2,
-                NULL);
+  GtkAction *act;
+
+  act = gtk_ui_manager_get_action (ifsDesign->ui_manager,
+                                   "/ui/dummy-menubar/ifs-compose-menu/undo");
+  gtk_action_set_sensitive (act, undo_cur >= 0);
+
+  act = gtk_ui_manager_get_action (ifsDesign->ui_manager,
+                                   "/ui/dummy-menubar/ifs-compose-menu/redo");
+  gtk_action_set_sensitive (act, undo_cur != undo_num - 1);
+
+  act = gtk_ui_manager_get_action (ifsDesign->ui_manager,
+                                   "/ui/dummy-menubar/ifs-compose-menu/delete");
+  gtk_action_set_sensitive (act, ifsvals.num_elements > 2);
 }
 
 static void
@@ -1198,7 +1196,7 @@ ifs_options_dialog (GtkWidget *parent)
                           FALSE, FALSE, 0);
       gtk_widget_show (table);
 
-      label = gtk_label_new (_("Max. Memory:"));
+      label = gtk_label_new (_("Max. memory:"));
       gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
       gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
                         GTK_FILL, GTK_FILL, 0, 0);
@@ -1238,7 +1236,7 @@ ifs_options_dialog (GtkWidget *parent)
                         1, 2, 2, 3, GTK_FILL, GTK_FILL, 0, 0);
       gtk_widget_show (ifsOptD->subdivide_pair->spin);
 
-      label = gtk_label_new (_("Spot Radius:"));
+      label = gtk_label_new (_("Spot radius:"));
       gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
       gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
                         GTK_FILL, GTK_FILL, 0, 0);
@@ -1273,16 +1271,18 @@ ifs_compose (GimpDrawable *drawable)
   GimpImageType  type   = gimp_drawable_type (drawable->drawable_id);
   gint           width  = drawable->width;
   gint           height = drawable->height;
-  gint           num_bands, band_height, band_y, band_no;
+  gint           num_bands;
+  gint           band_height;
+  gint           band_y;
+  gint           band_no;
   gint           i, j;
-  gchar         *buffer;
   guchar        *data;
   guchar        *mask = NULL;
   guchar        *nhits;
   guchar         rc, gc, bc;
   GimpRGB        color;
 
-  num_bands = ceil((gdouble)(width*height*SQR(ifsvals.subdivide)*5)
+  num_bands = ceil ((gdouble) (width * height * SQR (ifsvals.subdivide) * 5)
                    / (1024 * ifsvals.max_memory));
   band_height = (height + num_bands - 1) / num_bands;
 
@@ -1296,32 +1296,23 @@ ifs_compose (GimpDrawable *drawable)
   gimp_context_get_background (&color);
   gimp_rgb_get_uchar (&color, &rc, &gc, &bc);
 
-  band_y = 0;
-  for (band_no = 0; band_no < num_bands; band_no++)
+  for (band_no = 0, band_y = 0; band_no < num_bands; band_no++)
     {
-      guchar *ptr;
-      guchar *maskptr;
-      guchar *dest;
-      guchar *destrow;
-      guchar maskval;
-      GimpPixelRgn dest_rgn;
-      gint progress;
-      gint max_progress;
+      GimpPixelRgn  dest_rgn;
+      gpointer      pr;
+      gint          progress;
+      gint          max_progress;
 
-      gpointer pr;
-
-      buffer = g_strdup_printf (_("Rendering IFS (%d/%d)..."),
-                                band_no+1, num_bands);
-      gimp_progress_init (buffer);
-      g_free (buffer);
+      gimp_progress_init_printf (_("Rendering IFS (%d/%d)"),
+                                 band_no + 1, num_bands);
 
       /* render the band to a buffer */
       if (band_y + band_height > height)
         band_height = height - band_y;
 
       /* we don't need to clear data since we store nhits */
-      memset(mask, 0, width*band_height*SQR(ifsvals.subdivide));
-      memset(nhits, 0, width*band_height*SQR(ifsvals.subdivide));
+      memset (mask, 0, width * band_height * SQR (ifsvals.subdivide));
+      memset (nhits, 0, width * band_height * SQR (ifsvals.subdivide));
 
       ifs_render (elements,
                   ifsvals.num_elements, width, height, ifsvals.iterations,
@@ -1329,11 +1320,8 @@ ifs_compose (GimpDrawable *drawable)
 
       /* transfer the image to the drawable */
 
-
-      buffer = g_strdup_printf (_("Copying IFS to image (%d/%d)..."),
-                                band_no+1, num_bands);
-      gimp_progress_init (buffer);
-      g_free (buffer);
+      gimp_progress_init_printf (_("Copying IFS to image (%d/%d)"),
+                                 band_no + 1, num_bands);
 
       progress = 0;
       max_progress = band_height * width;
@@ -1345,81 +1333,96 @@ ifs_compose (GimpDrawable *drawable)
            pr != NULL;
            pr = gimp_pixel_rgns_process (pr))
         {
-          destrow = dest_rgn.data;
+          guchar *destrow = dest_rgn.data;
 
           for (j = dest_rgn.y; j < (dest_rgn.y + dest_rgn.h); j++)
             {
-              dest = destrow;
+              guchar *dest = destrow;
 
               for (i = dest_rgn.x; i < (dest_rgn.x + dest_rgn.w); i++)
                 {
                   /* Accumulate a reduced pixel */
 
+                  gint rtot = 0;
+                  gint btot = 0;
+                  gint gtot = 0;
+                  gint mtot = 0;
                   gint ii, jj;
-                  gint rtot=0;
-                  gint btot=0;
-                  gint gtot=0;
-                  gint mtot=0;
+
                   for (jj = 0; jj < ifsvals.subdivide; jj++)
                     {
-                      ptr = data + 3 *
-                        (((j-band_y)*ifsvals.subdivide+jj) *
-                         ifsvals.subdivide*width +
-                         i*ifsvals.subdivide);
+                      guchar *ptr;
+                      guchar *maskptr;
+
+                      ptr = data +
+                        3 * (((j - band_y) * ifsvals.subdivide + jj) *
+                             ifsvals.subdivide * width +
+                             i * ifsvals.subdivide);
 
                       maskptr = mask +
-                        ((j-band_y)*ifsvals.subdivide+jj) *
-                        ifsvals.subdivide*width +
-                        i*ifsvals.subdivide;
+                        ((j - band_y) * ifsvals.subdivide + jj) *
+                        ifsvals.subdivide * width +
+                        i * ifsvals.subdivide;
+
                       for (ii = 0; ii < ifsvals.subdivide; ii++)
                         {
-                          maskval = *maskptr++;
+                          guchar  maskval = *maskptr++;
+
                           mtot += maskval;
                           rtot += maskval* *ptr++;
                           gtot += maskval* *ptr++;
                           btot += maskval* *ptr++;
                         }
                     }
+
                   if (mtot)
                     {
                       rtot /= mtot;
                       gtot /= mtot;
                       btot /= mtot;
-                      mtot /= SQR(ifsvals.subdivide);
+                      mtot /= SQR (ifsvals.subdivide);
                     }
+
                   /* and store it */
                   switch (type)
                     {
                      case GIMP_GRAY_IMAGE:
-                      *dest++ = (mtot*(rtot+btot+gtot)+
-                                 (255-mtot)*(rc+gc+bc))/(3*255);
+                      *dest++ = (mtot * (rtot + btot + gtot) +
+                                 (255 - mtot) * (rc + gc + bc)) / (3 * 255);
                       break;
+
                     case GIMP_GRAYA_IMAGE:
-                      *dest++ = (rtot+btot+gtot)/3;
+                      *dest++ = (rtot + btot + gtot) / 3;
                       *dest++ = mtot;
                       break;
+
                     case GIMP_RGB_IMAGE:
-                      *dest++ = (mtot*rtot + (255-mtot)*rc)/255;
-                      *dest++ = (mtot*gtot + (255-mtot)*gc)/255;
-                      *dest++ = (mtot*btot + (255-mtot)*bc)/255;
+                      *dest++ = (mtot * rtot + (255 - mtot) * rc) / 255;
+                      *dest++ = (mtot * gtot + (255 - mtot) * gc) / 255;
+                      *dest++ = (mtot * btot + (255 - mtot) * bc) / 255;
                       break;
+
                     case GIMP_RGBA_IMAGE:
                       *dest++ = rtot;
                       *dest++ = gtot;
                       *dest++ = btot;
                       *dest++ = mtot;
                       break;
+
                     case GIMP_INDEXED_IMAGE:
                     case GIMP_INDEXEDA_IMAGE:
                       g_error ("Indexed images not supported by IFS Fractal");
                       break;
                     }
                 }
+
               destrow += dest_rgn.rowstride;
             }
+
           progress += dest_rgn.w * dest_rgn.h;
           gimp_progress_update ((gdouble) progress / (gdouble) max_progress);
         }
+
       band_y += band_height;
     }
 
@@ -1487,9 +1490,16 @@ set_current_element (gint index)
 static void
 design_area_realize (GtkWidget *widget)
 {
-  GdkDisplay *display = gtk_widget_get_display (widget);
-  GdkCursor  *cursor  = gdk_cursor_new_for_display (display, GDK_CROSSHAIR);
+  const gint cursors[3] =
+  {
+    GDK_FLEUR,     /* OP_TRANSLATE */
+    GDK_EXCHANGE,  /* OP_ROTATE    */
+    GDK_CROSSHAIR  /* OP_SHEAR     */
+  };
 
+  GdkDisplay *display = gtk_widget_get_display (widget);
+  GdkCursor  *cursor  = gdk_cursor_new_for_display (display,
+                                                    cursors[ifsDesign->op]);
   gdk_window_set_cursor (widget->window, cursor);
   gdk_cursor_unref (cursor);
 }
@@ -2022,11 +2032,11 @@ color_map_create (gchar    *name,
                       FALSE, FALSE, 0);
   gtk_widget_show (color_map->button);
 
-  g_signal_connect (color_map->button, "color_changed",
+  g_signal_connect (color_map->button, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),
                     data);
 
-  g_signal_connect (color_map->button, "color_changed",
+  g_signal_connect (color_map->button, "color-changed",
                     G_CALLBACK (color_map_color_changed_cb),
                     color_map);
 
@@ -2111,48 +2121,35 @@ value_pair_create (gpointer      data,
   value_pair->data.d = data;
   value_pair->type   = type;
 
-  value_pair->adjustment =
-    gtk_adjustment_new (1.0, lower, upper,
-                        (upper-lower) / 100, (upper-lower) / 10,
-                        0.0);
-  /* We need to sink the adjustment, since we may not create a scale for
-   * it, so nobody will assume the initial refcount
-   */
-  g_object_ref (value_pair->adjustment);
-  gtk_object_sink (value_pair->adjustment);
+  value_pair->spin = gimp_spin_button_new (&value_pair->adjustment,
+                                           1.0, lower, upper,
+                                           (upper - lower) / 100,
+                                           (upper - lower) / 10,
+                                           0.0, 1.0, 3);
+  gtk_widget_set_size_request (value_pair->spin, 72, -1);
+
+  g_signal_connect (value_pair->adjustment, "value-changed",
+                    G_CALLBACK (value_pair_scale_callback),
+                    value_pair);
 
   if (create_scale)
     {
       value_pair->scale =
         gtk_hscale_new (GTK_ADJUSTMENT (value_pair->adjustment));
-      gtk_widget_ref (value_pair->scale);
 
       if (type == VALUE_PAIR_INT)
-          gtk_scale_set_digits (GTK_SCALE (value_pair->scale), 0);
+        gtk_scale_set_digits (GTK_SCALE (value_pair->scale), 0);
       else
-          gtk_scale_set_digits (GTK_SCALE (value_pair->scale), 3);
+        gtk_scale_set_digits (GTK_SCALE (value_pair->scale), 3);
 
       gtk_scale_set_draw_value (GTK_SCALE (value_pair->scale), FALSE);
       gtk_range_set_update_policy (GTK_RANGE (value_pair->scale),
                                    GTK_UPDATE_DELAYED);
     }
   else
-    value_pair->scale = NULL;
-
-  /* We destroy the value pair when the spinbutton is destroyed, so
-   * we don't need to hold a refcount on the entry
-   */
-
-  value_pair->spin
-    = gtk_spin_button_new (GTK_ADJUSTMENT (value_pair->adjustment),
-                           1.0, 3);
-  gtk_widget_set_size_request (value_pair->spin, 72, -1);
-  g_signal_connect (value_pair->spin, "destroy",
-                    G_CALLBACK (value_pair_destroy_callback),
-                    value_pair);
-  g_signal_connect (value_pair->adjustment, "value_changed",
-                    G_CALLBACK (value_pair_scale_callback),
-                    value_pair);
+    {
+      value_pair->scale = NULL;
+    }
 
   return value_pair;
 }
@@ -2193,16 +2190,7 @@ value_pair_scale_callback (GtkAdjustment *adjustment,
     }
 
   if (changed)
-      val_changed_update ();
-}
-
-static void
-value_pair_destroy_callback (GtkWidget *widget,
-                             ValuePair *value_pair)
-{
-  if (value_pair->scale)
-    g_object_unref (value_pair->scale);
-  g_object_unref (value_pair->adjustment);
+    val_changed_update ();
 }
 
 static void
@@ -2211,6 +2199,10 @@ design_op_update_callback (GtkRadioAction *action,
                            gpointer        data)
 {
   ifsDesign->op = gtk_radio_action_get_current_value (action);
+
+  /* cursor switch */
+  if (GTK_WIDGET_REALIZED (ifsDesign->area))
+    design_area_realize (ifsDesign->area);
 }
 
 static void
@@ -2388,7 +2380,7 @@ ifsfile_save_response (GtkWidget *dialog,
 
       str = ifsvals_stringify (&ifsvals, elements);
 
-      fh = fopen (filename, "w");
+      fh = g_fopen (filename, "w");
       if (! fh)
         {
           gchar *message =
@@ -2526,7 +2518,7 @@ ifs_compose_save (GtkWidget *parent)
   if (! dialog)
     {
       dialog =
-        gtk_file_chooser_dialog_new (_("Save as IFS Fraktal file"),
+        gtk_file_chooser_dialog_new (_("Save as IFS Fractal file"),
                                      GTK_WINDOW (parent),
                                      GTK_FILE_CHOOSER_ACTION_SAVE,
 
@@ -2534,6 +2526,11 @@ ifs_compose_save (GtkWidget *parent)
                                      GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
 
                                      NULL);
+
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
 
       gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
@@ -2556,7 +2553,7 @@ ifs_compose_load (GtkWidget *parent)
   if (! dialog)
     {
       dialog =
-        gtk_file_chooser_dialog_new (_("Open IFS Fraktal file"),
+        gtk_file_chooser_dialog_new (_("Open IFS Fractal file"),
                                      GTK_WINDOW (parent),
                                      GTK_FILE_CHOOSER_ACTION_OPEN,
 
@@ -2564,6 +2561,11 @@ ifs_compose_load (GtkWidget *parent)
                                      GTK_STOCK_OPEN,   GTK_RESPONSE_OK,
 
                                      NULL);
+
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
 
       gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 

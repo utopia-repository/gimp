@@ -58,11 +58,16 @@ gboolean gimp_path_set_tattoo        (gint32           image_ID,
 				      gint             tattovalue);
 gchar*   gimp_get_path_by_tattoo     (gint32           image_ID,
 				      gint             tattoo);
-gint     gimp_path_get_locked        (gint32           image_ID,
+gboolean gimp_path_get_locked        (gint32           image_ID,
 				      const gchar     *name);
 gboolean gimp_path_set_locked        (gint32           image_ID,
 				      const gchar     *name,
-				      gint             lockstatus);
+				      gboolean         locked);
+gboolean gimp_path_get_visible       (gint32           image_ID,
+				      const gchar     *name);
+gboolean gimp_path_set_visible       (gint32           image_ID,
+				      const gchar     *name,
+				      gboolean         visible);
 gboolean gimp_path_to_selection      (gint32           image_ID,
 				      const gchar     *name,
 				      GimpChannelOps   op,
@@ -72,6 +77,11 @@ gboolean gimp_path_to_selection      (gint32           image_ID,
 				      gdouble          feather_radius_y);
 gboolean gimp_path_import            (gint32           image_ID,
 				      const gchar     *filename,
+				      gboolean         merge,
+				      gboolean         scale);
+gboolean gimp_path_import_string     (gint32           image_ID,
+				      const gchar     *string,
+				      gint             length,
 				      gboolean         merge,
 				      gboolean         scale);
 

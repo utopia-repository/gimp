@@ -1,44 +1,41 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpWidgets</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
-<link rel="prev" href="libgimpwidgets-GimpStock.html" title="GimpStock">
+<link rel="prev" href="libgimpwidgets-GimpEnumWidgets.html" title="GimpEnumWidgets">
 <link rel="next" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
+<link rel="chapter" href="libgimpwidgets-gallery.html" title="Widget Gallery">
 <link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
 <link rel="part" href="libgimpwidgets-colordisplay.html" title="Part&#160;II.&#160;GIMP Display Filters">
 <link rel="part" href="libgimpwidgets-colorselector.html" title="Part&#160;III.&#160;GIMP Color Selectors">
 <link rel="part" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
 <link rel="part" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
 <link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
+<link rel="index" href="ix01.html" title="Index">
+<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
-<td><a accesskey="p" href="libgimpwidgets-GimpStock.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="libgimpwidgets-GimpEnumWidgets.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-utils.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpwidgets-deprecated.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2587694" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2652649" class="shortcut">Description</a></nobr></td></tr>
-</table>
+</tr></table>
 <div class="refentry" lang="en">
 <a name="libgimpwidgets-GimpWidgets"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2587694"></a><span class="refentrytitle">GimpWidgets</span>
-</h2>
+<h2><span class="refentrytitle">GimpWidgets</span></h2>
 <p>GimpWidgets &#8212; A collection of convenient widget constructors, standard callbacks and
 helper functions.</p>
 </td>
@@ -50,152 +47,217 @@ helper functions.</p>
 
 
 
-GtkWidget*          <a href="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new">gimp_radio_group_new</a>                (gboolean in_frame,
-                                                         const gchar *frame_title,
-                                                         ...);
-GtkWidget*          <a href="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new2">gimp_radio_group_new2</a>               (gboolean in_frame,
-                                                         const gchar *frame_title,
-                                                         GCallback radio_button_callback,
-                                                         gpointer radio_button_callback_data,
-                                                         gpointer initial,
-                                                         ...);
-void                <a href="libgimpwidgets-GimpWidgets.html#gimp-radio-group-set-active">gimp_radio_group_set_active</a>         (GtkRadioButton *radio_button,
-                                                         gpointer item_data);
-GtkWidget*          <a href="libgimpwidgets-GimpWidgets.html#gimp-int-radio-group-new">gimp_int_radio_group_new</a>            (gboolean in_frame,
-                                                         const gchar *frame_title,
-                                                         GCallback radio_button_callback,
-                                                         gpointer radio_button_callback_data,
-                                                         gint initial,
-                                                         ...);
-void                <a href="libgimpwidgets-GimpWidgets.html#gimp-int-radio-group-set-active">gimp_int_radio_group_set_active</a>     (GtkRadioButton *radio_button,
-                                                         gint item_data);
-GtkWidget*          <a href="libgimpwidgets-GimpWidgets.html#gimp-spin-button-new">gimp_spin_button_new</a>                (GtkObject **adjustment,
-                                                         gdouble value,
-                                                         gdouble lower,
-                                                         gdouble upper,
-                                                         gdouble step_increment,
-                                                         gdouble page_increment,
-                                                         gdouble page_size,
-                                                         gdouble climb_rate,
-                                                         guint digits);
-#define             <a href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-LABEL:CAPS">GIMP_SCALE_ENTRY_LABEL</a>              (adj)
-#define             <a href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SCALE:CAPS">GIMP_SCALE_ENTRY_SCALE</a>              (adj)
-#define             <a href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SCALE-ADJ:CAPS">GIMP_SCALE_ENTRY_SCALE_ADJ</a>          (adj)
-#define             <a href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SPINBUTTON:CAPS">GIMP_SCALE_ENTRY_SPINBUTTON</a>         (adj)
-#define             <a href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SPINBUTTON-ADJ:CAPS">GIMP_SCALE_ENTRY_SPINBUTTON_ADJ</a>     (adj)
-GtkObject*          <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new">gimp_scale_entry_new</a>                (GtkTable *table,
-                                                         gint column,
-                                                         gint row,
-                                                         const gchar *text,
-                                                         gint scale_width,
-                                                         gint spinbutton_width,
-                                                         gdouble value,
-                                                         gdouble lower,
-                                                         gdouble upper,
-                                                         gdouble step_increment,
-                                                         gdouble page_increment,
-                                                         guint digits,
-                                                         gboolean constrain,
-                                                         gdouble unconstrained_lower,
-                                                         gdouble unconstrained_upper,
-                                                         const gchar *tooltip,
-                                                         const gchar *help_id);
-void                <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-set-sensitive">gimp_scale_entry_set_sensitive</a>      (GtkObject *adjustment,
-                                                         gboolean sensitive);
-void                <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-set-logarithmic">gimp_scale_entry_set_logarithmic</a>    (GtkObject *adjustment,
-                                                         gboolean logarithmic);
-gboolean            <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-get-logarithmic">gimp_scale_entry_get_logarithmic</a>    (GtkObject *adjustment);
-GtkObject*          <a href="libgimpwidgets-GimpWidgets.html#gimp-color-scale-entry-new">gimp_color_scale_entry_new</a>          (GtkTable *table,
-                                                         gint column,
-                                                         gint row,
-                                                         const gchar *text,
-                                                         gint scale_width,
-                                                         gint spinbutton_width,
-                                                         gdouble value,
-                                                         gdouble lower,
-                                                         gdouble upper,
-                                                         gdouble step_increment,
-                                                         gdouble page_increment,
-                                                         guint digits,
-                                                         const gchar *tooltip,
-                                                         const gchar *help_id);
-#define             <a href="libgimpwidgets-GimpWidgets.html#GIMP-RANDOM-SEED-SPINBUTTON:CAPS">GIMP_RANDOM_SEED_SPINBUTTON</a>         (hbox)
-#define             <a href="libgimpwidgets-GimpWidgets.html#GIMP-RANDOM-SEED-SPINBUTTON-ADJ:CAPS">GIMP_RANDOM_SEED_SPINBUTTON_ADJ</a>     (hbox)
-#define             <a href="libgimpwidgets-GimpWidgets.html#GIMP-RANDOM-SEED-TOGGLE:CAPS">GIMP_RANDOM_SEED_TOGGLE</a>             (hbox)
-GtkWidget*          <a href="libgimpwidgets-GimpWidgets.html#gimp-random-seed-new">gimp_random_seed_new</a>                (guint32 *seed,
-                                                         gboolean *random_seed);
-#define             <a href="libgimpwidgets-GimpWidgets.html#GIMP-COORDINATES-CHAINBUTTON:CAPS">GIMP_COORDINATES_CHAINBUTTON</a>        (sizeentry)
-GtkWidget*          <a href="libgimpwidgets-GimpWidgets.html#gimp-coordinates-new">gimp_coordinates_new</a>                (<a
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new">gimp_radio_group_new</a>            (gboolean in_frame,
+                                             const gchar *frame_title,
+                                             ...);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new2">gimp_radio_group_new2</a>           (gboolean in_frame,
+                                             const gchar *frame_title,
+                                             GCallback radio_button_callback,
+                                             gpointer radio_button_callback_data,
+                                             gpointer initial,
+                                             ...);
+void        <a href="libgimpwidgets-GimpWidgets.html#gimp-radio-group-set-active">gimp_radio_group_set_active</a>     (<a
+href="../gtk/GtkRadioButton.html"
+>GtkRadioButton</a> *radio_button,
+                                             gpointer item_data);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="libgimpwidgets-GimpWidgets.html#gimp-int-radio-group-new">gimp_int_radio_group_new</a>        (gboolean in_frame,
+                                             const gchar *frame_title,
+                                             GCallback radio_button_callback,
+                                             gpointer radio_button_callback_data,
+                                             gint initial,
+                                             ...);
+void        <a href="libgimpwidgets-GimpWidgets.html#gimp-int-radio-group-set-active">gimp_int_radio_group_set_active</a> (<a
+href="../gtk/GtkRadioButton.html"
+>GtkRadioButton</a> *radio_button,
+                                             gint item_data);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="libgimpwidgets-GimpWidgets.html#gimp-spin-button-new">gimp_spin_button_new</a>            (<a
+href="../gtk/GtkObject.html"
+>GtkObject</a> **adjustment,
+                                             gdouble value,
+                                             gdouble lower,
+                                             gdouble upper,
+                                             gdouble step_increment,
+                                             gdouble page_increment,
+                                             gdouble page_size,
+                                             gdouble climb_rate,
+                                             guint digits);
+#define     <a href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-LABEL:CAPS">GIMP_SCALE_ENTRY_LABEL</a>          (adj)
+#define     <a href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SCALE:CAPS">GIMP_SCALE_ENTRY_SCALE</a>          (adj)
+#define     <a href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SCALE-ADJ:CAPS">GIMP_SCALE_ENTRY_SCALE_ADJ</a>      (adj)
+#define     <a href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SPINBUTTON:CAPS">GIMP_SCALE_ENTRY_SPINBUTTON</a>     (adj)
+#define     <a href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SPINBUTTON-ADJ:CAPS">GIMP_SCALE_ENTRY_SPINBUTTON_ADJ</a> (adj)
+<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>*  <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new">gimp_scale_entry_new</a>            (<a
+href="../gtk/GtkTable.html"
+>GtkTable</a> *table,
+                                             gint column,
+                                             gint row,
+                                             const gchar *text,
+                                             gint scale_width,
+                                             gint spinbutton_width,
+                                             gdouble value,
+                                             gdouble lower,
+                                             gdouble upper,
+                                             gdouble step_increment,
+                                             gdouble page_increment,
+                                             guint digits,
+                                             gboolean constrain,
+                                             gdouble unconstrained_lower,
+                                             gdouble unconstrained_upper,
+                                             const gchar *tooltip,
+                                             const gchar *help_id);
+void        <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-set-sensitive">gimp_scale_entry_set_sensitive</a>  (<a
+href="../gtk/GtkObject.html"
+>GtkObject</a> *adjustment,
+                                             gboolean sensitive);
+void        <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-set-logarithmic">gimp_scale_entry_set_logarithmic</a>
+                                            (<a
+href="../gtk/GtkObject.html"
+>GtkObject</a> *adjustment,
+                                             gboolean logarithmic);
+gboolean    <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-get-logarithmic">gimp_scale_entry_get_logarithmic</a>
+                                            (<a
+href="../gtk/GtkObject.html"
+>GtkObject</a> *adjustment);
+<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>*  <a href="libgimpwidgets-GimpWidgets.html#gimp-color-scale-entry-new">gimp_color_scale_entry_new</a>      (<a
+href="../gtk/GtkTable.html"
+>GtkTable</a> *table,
+                                             gint column,
+                                             gint row,
+                                             const gchar *text,
+                                             gint scale_width,
+                                             gint spinbutton_width,
+                                             gdouble value,
+                                             gdouble lower,
+                                             gdouble upper,
+                                             gdouble step_increment,
+                                             gdouble page_increment,
+                                             guint digits,
+                                             const gchar *tooltip,
+                                             const gchar *help_id);
+#define     <a href="libgimpwidgets-GimpWidgets.html#GIMP-RANDOM-SEED-SPINBUTTON:CAPS">GIMP_RANDOM_SEED_SPINBUTTON</a>     (hbox)
+#define     <a href="libgimpwidgets-GimpWidgets.html#GIMP-RANDOM-SEED-SPINBUTTON-ADJ:CAPS">GIMP_RANDOM_SEED_SPINBUTTON_ADJ</a> (hbox)
+#define     <a href="libgimpwidgets-GimpWidgets.html#GIMP-RANDOM-SEED-TOGGLE:CAPS">GIMP_RANDOM_SEED_TOGGLE</a>         (hbox)
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="libgimpwidgets-GimpWidgets.html#gimp-random-seed-new">gimp_random_seed_new</a>            (guint32 *seed,
+                                             gboolean *random_seed);
+#define     <a href="libgimpwidgets-GimpWidgets.html#GIMP-COORDINATES-CHAINBUTTON:CAPS">GIMP_COORDINATES_CHAINBUTTON</a>    (sizeentry)
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="libgimpwidgets-GimpWidgets.html#gimp-coordinates-new">gimp_coordinates_new</a>            (<a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a> unit,
-                                                         const gchar *unit_format,
-                                                         gboolean menu_show_pixels,
-                                                         gboolean menu_show_percent,
-                                                         gint spinbutton_width,
-                                                         <a href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy</a> update_policy,
-                                                         gboolean chainbutton_active,
-                                                         gboolean chain_constrains_ratio,
-                                                         const gchar *xlabel,
-                                                         gdouble x,
-                                                         gdouble xres,
-                                                         gdouble lower_boundary_x,
-                                                         gdouble upper_boundary_x,
-                                                         gdouble xsize_0,
-                                                         gdouble xsize_100,
-                                                         const gchar *ylabel,
-                                                         gdouble y,
-                                                         gdouble yres,
-                                                         gdouble lower_boundary_y,
-                                                         gdouble upper_boundary_y,
-                                                         gdouble ysize_0,
-                                                         gdouble ysize_100);
-GtkWidget*          <a href="libgimpwidgets-GimpWidgets.html#gimp-pixmap-button-new">gimp_pixmap_button_new</a>              (gchar **xpm_data,
-                                                         const gchar *text);
-void                <a href="libgimpwidgets-GimpWidgets.html#gimp-toggle-button-sensitive-update">gimp_toggle_button_sensitive_update</a> (GtkToggleButton *toggle_button);
-void                <a href="libgimpwidgets-GimpWidgets.html#gimp-toggle-button-update">gimp_toggle_button_update</a>           (GtkWidget *widget,
-                                                         gpointer data);
-void                <a href="libgimpwidgets-GimpWidgets.html#gimp-radio-button-update">gimp_radio_button_update</a>            (GtkWidget *widget,
-                                                         gpointer data);
-void                <a href="libgimpwidgets-GimpWidgets.html#gimp-int-adjustment-update">gimp_int_adjustment_update</a>          (GtkAdjustment *adjustment,
-                                                         gpointer data);
-void                <a href="libgimpwidgets-GimpWidgets.html#gimp-uint-adjustment-update">gimp_uint_adjustment_update</a>         (GtkAdjustment *adjustment,
-                                                         gpointer data);
-void                <a href="libgimpwidgets-GimpWidgets.html#gimp-float-adjustment-update">gimp_float_adjustment_update</a>        (GtkAdjustment *adjustment,
-                                                         gpointer data);
-void                <a href="libgimpwidgets-GimpWidgets.html#gimp-double-adjustment-update">gimp_double_adjustment_update</a>       (GtkAdjustment *adjustment,
-                                                         gpointer data);
-void                <a href="libgimpwidgets-GimpWidgets.html#gimp-unit-menu-update">gimp_unit_menu_update</a>               (GtkWidget *widget,
-                                                         gpointer data);
-GtkWidget*          <a href="libgimpwidgets-GimpWidgets.html#gimp-table-attach-aligned">gimp_table_attach_aligned</a>           (GtkTable *table,
-                                                         gint column,
-                                                         gint row,
-                                                         const gchar *label_text,
-                                                         gfloat xalign,
-                                                         gfloat yalign,
-                                                         GtkWidget *widget,
-                                                         gint colspan,
-                                                         gboolean left_align);
-void                <a href="libgimpwidgets-GimpWidgets.html#gimp-label-set-attributes">gimp_label_set_attributes</a>           (GtkLabel *label,
-                                                         ...);
+                                             const gchar *unit_format,
+                                             gboolean menu_show_pixels,
+                                             gboolean menu_show_percent,
+                                             gint spinbutton_width,
+                                             <a href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy</a> update_policy,
+                                             gboolean chainbutton_active,
+                                             gboolean chain_constrains_ratio,
+                                             const gchar *xlabel,
+                                             gdouble x,
+                                             gdouble xres,
+                                             gdouble lower_boundary_x,
+                                             gdouble upper_boundary_x,
+                                             gdouble xsize_0,
+                                             gdouble xsize_100,
+                                             const gchar *ylabel,
+                                             gdouble y,
+                                             gdouble yres,
+                                             gdouble lower_boundary_y,
+                                             gdouble upper_boundary_y,
+                                             gdouble ysize_0,
+                                             gdouble ysize_100);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="libgimpwidgets-GimpWidgets.html#gimp-pixmap-button-new">gimp_pixmap_button_new</a>          (gchar **xpm_data,
+                                             const gchar *text);
+void        <a href="libgimpwidgets-GimpWidgets.html#gimp-toggle-button-sensitive-update">gimp_toggle_button_sensitive_update</a>
+                                            (<a
+href="../gtk/GtkToggleButton.html"
+>GtkToggleButton</a> *toggle_button);
+void        <a href="libgimpwidgets-GimpWidgets.html#gimp-toggle-button-update">gimp_toggle_button_update</a>       (<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *widget,
+                                             gpointer data);
+void        <a href="libgimpwidgets-GimpWidgets.html#gimp-radio-button-update">gimp_radio_button_update</a>        (<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *widget,
+                                             gpointer data);
+void        <a href="libgimpwidgets-GimpWidgets.html#gimp-int-adjustment-update">gimp_int_adjustment_update</a>      (<a
+href="../gtk/GtkAdjustment.html"
+>GtkAdjustment</a> *adjustment,
+                                             gpointer data);
+void        <a href="libgimpwidgets-GimpWidgets.html#gimp-uint-adjustment-update">gimp_uint_adjustment_update</a>     (<a
+href="../gtk/GtkAdjustment.html"
+>GtkAdjustment</a> *adjustment,
+                                             gpointer data);
+void        <a href="libgimpwidgets-GimpWidgets.html#gimp-float-adjustment-update">gimp_float_adjustment_update</a>    (<a
+href="../gtk/GtkAdjustment.html"
+>GtkAdjustment</a> *adjustment,
+                                             gpointer data);
+void        <a href="libgimpwidgets-GimpWidgets.html#gimp-double-adjustment-update">gimp_double_adjustment_update</a>   (<a
+href="../gtk/GtkAdjustment.html"
+>GtkAdjustment</a> *adjustment,
+                                             gpointer data);
+void        <a href="libgimpwidgets-GimpWidgets.html#gimp-unit-menu-update">gimp_unit_menu_update</a>           (<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *widget,
+                                             gpointer data);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="libgimpwidgets-GimpWidgets.html#gimp-table-attach-aligned">gimp_table_attach_aligned</a>       (<a
+href="../gtk/GtkTable.html"
+>GtkTable</a> *table,
+                                             gint column,
+                                             gint row,
+                                             const gchar *label_text,
+                                             gfloat xalign,
+                                             gfloat yalign,
+                                             <a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *widget,
+                                             gint colspan,
+                                             gboolean left_align);
+void        <a href="libgimpwidgets-GimpWidgets.html#gimp-label-set-attributes">gimp_label_set_attributes</a>       (<a
+href="../gtk/GtkLabel.html"
+>GtkLabel</a> *label,
+                                             ...);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2652649"></a><h2>Description</h2>
+<a name="id2626223"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2652664"></a><h2>Details</h2>
+<a name="id2626234"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2652675"></a><h3>
+<a name="id2626240"></a><h3>
 <a name="gimp-radio-group-new"></a>gimp_radio_group_new ()</h3>
-<a class="indexterm" name="id2652686"></a><pre class="programlisting">GtkWidget*          gimp_radio_group_new                (gboolean in_frame,
-                                                         const gchar *frame_title,
-                                                         ...);</pre>
+<a class="indexterm" name="id2626249"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_radio_group_new            (gboolean in_frame,
+                                             const gchar *frame_title,
+                                             ...);</pre>
 <p>
 Convenience function to create a group of radio buttons embedded into
-a <span class="type">GtkFrame</span> or <span class="type">GtkVbox</span>.</p>
+a <a
+href="../gtk/GtkFrame.html"
+><span class="type">GtkFrame</span></a> or <span class="type">GtkVbox</span>.</p>
 <p>
 
 </p>
@@ -203,23 +265,31 @@ a <span class="type">GtkFrame</span> or <span class="type">GtkVbox</span>.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>in_frame</code></em>&#160;:</span></td>
-<td>    <code class="literal">TRUE</code> if you want a <span class="type">GtkFrame</span> around the radio button group.
+<td>
+<span class="term"><em class="parameter"><code>in_frame</code></em>&#160;:</span></td>
+<td>    <code class="literal">TRUE</code> if you want a <a
+href="../gtk/GtkFrame.html"
+><span class="type">GtkFrame</span></a> around the radio button group.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>frame_title</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>frame_title</code></em>&#160;:</span></td>
 <td> The title of the Frame or <code class="literal">NULL</code> if you don't want a title.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
 <td>         A <code class="literal">NULL</code>-terminated <em class="parameter"><code>va_list</code></em> describing the radio buttons.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A <span class="type">GtkFrame</span> or <span class="type">GtkVbox</span> (depending on <em class="parameter"><code>in_frame</code></em>).
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> A <a
+href="../gtk/GtkFrame.html"
+><span class="type">GtkFrame</span></a> or <span class="type">GtkVbox</span> (depending on <em class="parameter"><code>in_frame</code></em>).
 </td>
 </tr>
 </tbody>
@@ -227,17 +297,21 @@ a <span class="type">GtkFrame</span> or <span class="type">GtkVbox</span>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2652829"></a><h3>
+<a name="id2626412"></a><h3>
 <a name="gimp-radio-group-new2"></a>gimp_radio_group_new2 ()</h3>
-<a class="indexterm" name="id2652839"></a><pre class="programlisting">GtkWidget*          gimp_radio_group_new2               (gboolean in_frame,
-                                                         const gchar *frame_title,
-                                                         GCallback radio_button_callback,
-                                                         gpointer radio_button_callback_data,
-                                                         gpointer initial,
-                                                         ...);</pre>
+<a class="indexterm" name="id2626421"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_radio_group_new2           (gboolean in_frame,
+                                             const gchar *frame_title,
+                                             GCallback radio_button_callback,
+                                             gpointer radio_button_callback_data,
+                                             gpointer initial,
+                                             ...);</pre>
 <p>
 Convenience function to create a group of radio buttons embedded into
-a <span class="type">GtkFrame</span> or <span class="type">GtkVbox</span>.</p>
+a <a
+href="../gtk/GtkFrame.html"
+><span class="type">GtkFrame</span></a> or <span class="type">GtkVbox</span>.</p>
 <p>
 
 </p>
@@ -245,43 +319,54 @@ a <span class="type">GtkFrame</span> or <span class="type">GtkVbox</span>.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>in_frame</code></em>&#160;:</span></td>
-<td>              <code class="literal">TRUE</code> if you want a <span class="type">GtkFrame</span> around the
+<td>
+<span class="term"><em class="parameter"><code>in_frame</code></em>&#160;:</span></td>
+<td>              <code class="literal">TRUE</code> if you want a <a
+href="../gtk/GtkFrame.html"
+><span class="type">GtkFrame</span></a> around the
                         radio button group.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>frame_title</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>frame_title</code></em>&#160;:</span></td>
 <td>           The title of the Frame or <code class="literal">NULL</code> if you don't want
                         a title.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>radio_button_callback</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>radio_button_callback</code></em>&#160;:</span></td>
 <td> The callback each button's "toggled" signal will
                         be connected with.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>radio_button_callback_data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>radio_button_callback_data</code></em>&#160;:</span></td>
 <td>
                         The data which will be passed to <code class="function">g_signal_connect()</code>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>initial</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>initial</code></em>&#160;:</span></td>
 <td>               The <em class="parameter"><code>item_data</code></em> of the initially pressed radio button.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
 <td>                   A <code class="literal">NULL</code>-terminated <em class="parameter"><code>va_list</code></em> describing
                         the radio buttons.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A <span class="type">GtkFrame</span> or <span class="type">GtkVbox</span> (depending on <em class="parameter"><code>in_frame</code></em>).
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> A <a
+href="../gtk/GtkFrame.html"
+><span class="type">GtkFrame</span></a> or <span class="type">GtkVbox</span> (depending on <em class="parameter"><code>in_frame</code></em>).
 </td>
 </tr>
 </tbody>
@@ -289,12 +374,16 @@ a <span class="type">GtkFrame</span> or <span class="type">GtkVbox</span>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653073"></a><h3>
+<a name="id2626668"></a><h3>
 <a name="gimp-radio-group-set-active"></a>gimp_radio_group_set_active ()</h3>
-<a class="indexterm" name="id2653084"></a><pre class="programlisting">void                gimp_radio_group_set_active         (GtkRadioButton *radio_button,
-                                                         gpointer item_data);</pre>
+<a class="indexterm" name="id2626678"></a><pre class="programlisting">void        gimp_radio_group_set_active     (<a
+href="../gtk/GtkRadioButton.html"
+>GtkRadioButton</a> *radio_button,
+                                             gpointer item_data);</pre>
 <p>
-Calls <code class="function">gtk_toggle_button_set_active()</code> with the radio button that was
+Calls <a
+href="../gtk/GtkToggleButton.html#gtk-toggle-button-set-active"
+><code class="function">gtk_toggle_button_set_active()</code></a> with the radio button that was
 created with a matching <em class="parameter"><code>item_data</code></em>.</p>
 <p>
 
@@ -303,12 +392,16 @@ created with a matching <em class="parameter"><code>item_data</code></em>.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>radio_button</code></em>&#160;:</span></td>
-<td> Pointer to a <span class="type">GtkRadioButton</span>.
+<td>
+<span class="term"><em class="parameter"><code>radio_button</code></em>&#160;:</span></td>
+<td> Pointer to a <a
+href="../gtk/GtkRadioButton.html"
+><span class="type">GtkRadioButton</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>item_data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>item_data</code></em>&#160;:</span></td>
 <td> The <em class="parameter"><code>item_data</code></em> of the radio button you want to select.
 </td>
 </tr>
@@ -317,17 +410,21 @@ created with a matching <em class="parameter"><code>item_data</code></em>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653175"></a><h3>
+<a name="id2626780"></a><h3>
 <a name="gimp-int-radio-group-new"></a>gimp_int_radio_group_new ()</h3>
-<a class="indexterm" name="id2653186"></a><pre class="programlisting">GtkWidget*          gimp_int_radio_group_new            (gboolean in_frame,
-                                                         const gchar *frame_title,
-                                                         GCallback radio_button_callback,
-                                                         gpointer radio_button_callback_data,
-                                                         gint initial,
-                                                         ...);</pre>
+<a class="indexterm" name="id2626788"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_int_radio_group_new        (gboolean in_frame,
+                                             const gchar *frame_title,
+                                             GCallback radio_button_callback,
+                                             gpointer radio_button_callback_data,
+                                             gint initial,
+                                             ...);</pre>
 <p>
 Convenience function to create a group of radio buttons embedded into
-a <span class="type">GtkFrame</span> or <span class="type">GtkVbox</span>. This function does the same thing as
+a <a
+href="../gtk/GtkFrame.html"
+><span class="type">GtkFrame</span></a> or <span class="type">GtkVbox</span>. This function does the same thing as
 <a href="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new2"><code class="function">gimp_radio_group_new2()</code></a>, but it takes integers as <em class="parameter"><code>item_data</code></em> instead of
 pointers, since that is a very common case (mapping an enum to a radio
 group).</p>
@@ -338,43 +435,54 @@ group).</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>in_frame</code></em>&#160;:</span></td>
-<td>              <code class="literal">TRUE</code> if you want a <span class="type">GtkFrame</span> around the
+<td>
+<span class="term"><em class="parameter"><code>in_frame</code></em>&#160;:</span></td>
+<td>              <code class="literal">TRUE</code> if you want a <a
+href="../gtk/GtkFrame.html"
+><span class="type">GtkFrame</span></a> around the
                         radio button group.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>frame_title</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>frame_title</code></em>&#160;:</span></td>
 <td>           The title of the Frame or <code class="literal">NULL</code> if you don't want
                         a title.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>radio_button_callback</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>radio_button_callback</code></em>&#160;:</span></td>
 <td> The callback each button's "toggled" signal will
                         be connected with.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>radio_button_callback_data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>radio_button_callback_data</code></em>&#160;:</span></td>
 <td>
                         The data which will be passed to <code class="function">g_signal_connect()</code>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>initial</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>initial</code></em>&#160;:</span></td>
 <td>               The <em class="parameter"><code>item_data</code></em> of the initially pressed radio button.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
 <td>                   A <code class="literal">NULL</code>-terminated <em class="parameter"><code>va_list</code></em> describing
                         the radio buttons.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A <span class="type">GtkFrame</span> or <span class="type">GtkVbox</span> (depending on <em class="parameter"><code>in_frame</code></em>).
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> A <a
+href="../gtk/GtkFrame.html"
+><span class="type">GtkFrame</span></a> or <span class="type">GtkVbox</span> (depending on <em class="parameter"><code>in_frame</code></em>).
 </td>
 </tr>
 </tbody>
@@ -382,12 +490,16 @@ group).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653435"></a><h3>
+<a name="id2627053"></a><h3>
 <a name="gimp-int-radio-group-set-active"></a>gimp_int_radio_group_set_active ()</h3>
-<a class="indexterm" name="id2653448"></a><pre class="programlisting">void                gimp_int_radio_group_set_active     (GtkRadioButton *radio_button,
-                                                         gint item_data);</pre>
+<a class="indexterm" name="id2627064"></a><pre class="programlisting">void        gimp_int_radio_group_set_active (<a
+href="../gtk/GtkRadioButton.html"
+>GtkRadioButton</a> *radio_button,
+                                             gint item_data);</pre>
 <p>
-Calls <code class="function">gtk_toggle_button_set_active()</code> with the radio button that was created
+Calls <a
+href="../gtk/GtkToggleButton.html#gtk-toggle-button-set-active"
+><code class="function">gtk_toggle_button_set_active()</code></a> with the radio button that was created
 with a matching <em class="parameter"><code>item_data</code></em>. This function does the same thing as
 <a href="libgimpwidgets-GimpWidgets.html#gimp-radio-group-set-active"><code class="function">gimp_radio_group_set_active()</code></a>, but takes integers as <em class="parameter"><code>item_data</code></em> instead
 of pointers.</p>
@@ -398,12 +510,16 @@ of pointers.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>radio_button</code></em>&#160;:</span></td>
-<td> Pointer to a <span class="type">GtkRadioButton</span>.
+<td>
+<span class="term"><em class="parameter"><code>radio_button</code></em>&#160;:</span></td>
+<td> Pointer to a <a
+href="../gtk/GtkRadioButton.html"
+><span class="type">GtkRadioButton</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>item_data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>item_data</code></em>&#160;:</span></td>
 <td> The <em class="parameter"><code>item_data</code></em> of the radio button you want to select.
 </td>
 </tr>
@@ -412,21 +528,32 @@ of pointers.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653554"></a><h3>
+<a name="id2627161"></a><h3>
 <a name="gimp-spin-button-new"></a>gimp_spin_button_new ()</h3>
-<a class="indexterm" name="id2653565"></a><pre class="programlisting">GtkWidget*          gimp_spin_button_new                (GtkObject **adjustment,
-                                                         gdouble value,
-                                                         gdouble lower,
-                                                         gdouble upper,
-                                                         gdouble step_increment,
-                                                         gdouble page_increment,
-                                                         gdouble page_size,
-                                                         gdouble climb_rate,
-                                                         guint digits);</pre>
+<a class="indexterm" name="id2627169"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_spin_button_new            (<a
+href="../gtk/GtkObject.html"
+>GtkObject</a> **adjustment,
+                                             gdouble value,
+                                             gdouble lower,
+                                             gdouble upper,
+                                             gdouble step_increment,
+                                             gdouble page_increment,
+                                             gdouble page_size,
+                                             gdouble climb_rate,
+                                             guint digits);</pre>
 <p>
-This function is a shortcut for <code class="function">gtk_adjustment_new()</code> and a subsequent
-<code class="function">gtk_spin_button_new()</code> and does some more initialisation stuff like
-setting a standard minimum horizontal size.</p>
+This function is a shortcut for <a
+href="../gtk/GtkAdjustment.html#gtk-adjustment-new"
+><code class="function">gtk_adjustment_new()</code></a> and a
+subsequent <a
+href="../gtk/GtkSpinButton.html#gtk-spin-button-new"
+><code class="function">gtk_spin_button_new()</code></a>. It also calls
+<a
+href="../gtk/GtkSpinButton.html#gtk-spin-button-set-numeric"
+><code class="function">gtk_spin_button_set_numeric()</code></a> so that non-numeric text cannot be
+entered.</p>
 <p>
 
 </p>
@@ -434,53 +561,67 @@ setting a standard minimum horizontal size.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>adjustment</code></em>&#160;:</span></td>
-<td>     Returns the spinbutton's <span class="type">GtkAdjustment</span>.
+<td>
+<span class="term"><em class="parameter"><code>adjustment</code></em>&#160;:</span></td>
+<td>     Returns the spinbutton's <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
 <td>          The initial value of the spinbutton.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>lower</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>lower</code></em>&#160;:</span></td>
 <td>          The lower boundary.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>upper</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>upper</code></em>&#160;:</span></td>
 <td>          The uppper boundary.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>step_increment</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>step_increment</code></em>&#160;:</span></td>
 <td> The spinbutton's step increment.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>page_increment</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>page_increment</code></em>&#160;:</span></td>
 <td> The spinbutton's page increment (mouse button 2).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>page_size</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>page_size</code></em>&#160;:</span></td>
 <td>      The spinbutton's page size.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>climb_rate</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>climb_rate</code></em>&#160;:</span></td>
 <td>     The spinbutton's climb rate.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>digits</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>digits</code></em>&#160;:</span></td>
 <td>         The spinbutton's number of decimal digits.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A <span class="type">GtkSpinbutton</span> and it's <span class="type">GtkAdjustment</span>.
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> A <span class="type">GtkSpinbutton</span> and it's <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a>.
 </td>
 </tr>
 </tbody>
@@ -488,17 +629,22 @@ setting a standard minimum horizontal size.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653816"></a><h3>
+<a name="id2627427"></a><h3>
 <a name="GIMP-SCALE-ENTRY-LABEL:CAPS"></a>GIMP_SCALE_ENTRY_LABEL()</h3>
-<a class="indexterm" name="id2653826"></a><pre class="programlisting">#define             GIMP_SCALE_ENTRY_LABEL(adj)</pre>
+<a class="indexterm" name="id2627435"></a><pre class="programlisting">#define     GIMP_SCALE_ENTRY_LABEL(adj)</pre>
 <p>
-Returns the scale_entry's <span class="type">GtkLabel</span>.
+Returns the scale_entry's <a
+href="../gtk/GtkLabel.html"
+><span class="type">GtkLabel</span></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>adj</code></em>&#160;:</span></td>
-<td>The <span class="type">GtkAdjustment</span> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"><code class="function">gimp_scale_entry_new()</code></a>.
+<td>
+<span class="term"><em class="parameter"><code>adj</code></em>&#160;:</span></td>
+<td>The <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"><code class="function">gimp_scale_entry_new()</code></a>.
 
 
 </td>
@@ -507,17 +653,22 @@ Returns the scale_entry's <span class="type">GtkLabel</span>.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653879"></a><h3>
+<a name="id2627487"></a><h3>
 <a name="GIMP-SCALE-ENTRY-SCALE:CAPS"></a>GIMP_SCALE_ENTRY_SCALE()</h3>
-<a class="indexterm" name="id2653889"></a><pre class="programlisting">#define             GIMP_SCALE_ENTRY_SCALE(adj)</pre>
+<a class="indexterm" name="id2627496"></a><pre class="programlisting">#define     GIMP_SCALE_ENTRY_SCALE(adj)</pre>
 <p>
-Returns the scale_entry's <span class="type">GtkHScale</span>.
+Returns the scale_entry's <a
+href="../gtk/GtkHScale.html"
+><span class="type">GtkHScale</span></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>adj</code></em>&#160;:</span></td>
-<td>The <span class="type">GtkAdjustment</span> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"><code class="function">gimp_scale_entry_new()</code></a>.
+<td>
+<span class="term"><em class="parameter"><code>adj</code></em>&#160;:</span></td>
+<td>The <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"><code class="function">gimp_scale_entry_new()</code></a>.
 
 
 </td>
@@ -526,17 +677,24 @@ Returns the scale_entry's <span class="type">GtkHScale</span>.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653941"></a><h3>
+<a name="id2627548"></a><h3>
 <a name="GIMP-SCALE-ENTRY-SCALE-ADJ:CAPS"></a>GIMP_SCALE_ENTRY_SCALE_ADJ()</h3>
-<a class="indexterm" name="id2653954"></a><pre class="programlisting">#define             GIMP_SCALE_ENTRY_SCALE_ADJ(adj)</pre>
+<a class="indexterm" name="id2627558"></a><pre class="programlisting">#define     GIMP_SCALE_ENTRY_SCALE_ADJ(adj)</pre>
 <p>
-Returns the <span class="type">GtkAdjustment</span> of the scale_entry's <span class="type">GtkHScale</span>.
+Returns the <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a> of the scale_entry's <a
+href="../gtk/GtkHScale.html"
+><span class="type">GtkHScale</span></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>adj</code></em>&#160;:</span></td>
-<td>The <span class="type">GtkAdjustment</span> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"><code class="function">gimp_scale_entry_new()</code></a>.
+<td>
+<span class="term"><em class="parameter"><code>adj</code></em>&#160;:</span></td>
+<td>The <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"><code class="function">gimp_scale_entry_new()</code></a>.
 
 
 </td>
@@ -545,17 +703,22 @@ Returns the <span class="type">GtkAdjustment</span> of the scale_entry's <span c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2654012"></a><h3>
+<a name="id2627616"></a><h3>
 <a name="GIMP-SCALE-ENTRY-SPINBUTTON:CAPS"></a>GIMP_SCALE_ENTRY_SPINBUTTON()</h3>
-<a class="indexterm" name="id2654024"></a><pre class="programlisting">#define             GIMP_SCALE_ENTRY_SPINBUTTON(adj)</pre>
+<a class="indexterm" name="id2627627"></a><pre class="programlisting">#define     GIMP_SCALE_ENTRY_SPINBUTTON(adj)</pre>
 <p>
-Returns the scale_entry's <span class="type">GtkSpinButton</span>.
+Returns the scale_entry's <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>adj</code></em>&#160;:</span></td>
-<td>The <span class="type">GtkAdjustment</span> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"><code class="function">gimp_scale_entry_new()</code></a>.
+<td>
+<span class="term"><em class="parameter"><code>adj</code></em>&#160;:</span></td>
+<td>The <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"><code class="function">gimp_scale_entry_new()</code></a>.
 
 
 </td>
@@ -564,17 +727,24 @@ Returns the scale_entry's <span class="type">GtkSpinButton</span>.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2654077"></a><h3>
+<a name="id2627679"></a><h3>
 <a name="GIMP-SCALE-ENTRY-SPINBUTTON-ADJ:CAPS"></a>GIMP_SCALE_ENTRY_SPINBUTTON_ADJ()</h3>
-<a class="indexterm" name="id2654090"></a><pre class="programlisting">#define             GIMP_SCALE_ENTRY_SPINBUTTON_ADJ(adj)</pre>
+<a class="indexterm" name="id2627690"></a><pre class="programlisting">#define     GIMP_SCALE_ENTRY_SPINBUTTON_ADJ(adj)</pre>
 <p>
-Returns the <span class="type">GtkAdjustment</span> of the scale_entry's <span class="type">GtkSpinButton</span>.
+Returns the <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a> of the scale_entry's <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>adj</code></em>&#160;:</span></td>
-<td>The <span class="type">GtkAdjustment</span> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"><code class="function">gimp_scale_entry_new()</code></a>.
+<td>
+<span class="term"><em class="parameter"><code>adj</code></em>&#160;:</span></td>
+<td>The <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"><code class="function">gimp_scale_entry_new()</code></a>.
 
 
 </td>
@@ -583,28 +753,40 @@ Returns the <span class="type">GtkAdjustment</span> of the scale_entry's <span c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2654149"></a><h3>
+<a name="id2627750"></a><h3>
 <a name="gimp-scale-entry-new"></a>gimp_scale_entry_new ()</h3>
-<a class="indexterm" name="id2654160"></a><pre class="programlisting">GtkObject*          gimp_scale_entry_new                (GtkTable *table,
-                                                         gint column,
-                                                         gint row,
-                                                         const gchar *text,
-                                                         gint scale_width,
-                                                         gint spinbutton_width,
-                                                         gdouble value,
-                                                         gdouble lower,
-                                                         gdouble upper,
-                                                         gdouble step_increment,
-                                                         gdouble page_increment,
-                                                         guint digits,
-                                                         gboolean constrain,
-                                                         gdouble unconstrained_lower,
-                                                         gdouble unconstrained_upper,
-                                                         const gchar *tooltip,
-                                                         const gchar *help_id);</pre>
+<a class="indexterm" name="id2627758"></a><pre class="programlisting"><a
+href="../gtk/GtkObject.html"
+>GtkObject</a>*  gimp_scale_entry_new            (<a
+href="../gtk/GtkTable.html"
+>GtkTable</a> *table,
+                                             gint column,
+                                             gint row,
+                                             const gchar *text,
+                                             gint scale_width,
+                                             gint spinbutton_width,
+                                             gdouble value,
+                                             gdouble lower,
+                                             gdouble upper,
+                                             gdouble step_increment,
+                                             gdouble page_increment,
+                                             guint digits,
+                                             gboolean constrain,
+                                             gdouble unconstrained_lower,
+                                             gdouble unconstrained_upper,
+                                             const gchar *tooltip,
+                                             const gchar *help_id);</pre>
 <p>
-This function creates a <span class="type">GtkLabel</span>, a <span class="type">GtkHScale</span> and a <span class="type">GtkSpinButton</span> and
-attaches them to a 3-column <span class="type">GtkTable</span>.</p>
+This function creates a <a
+href="../gtk/GtkLabel.html"
+><span class="type">GtkLabel</span></a>, a <a
+href="../gtk/GtkHScale.html"
+><span class="type">GtkHScale</span></a> and a <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a> and
+attaches them to a 3-column <a
+href="../gtk/GtkTable.html"
+><span class="type">GtkTable</span></a>.</p>
 <p>
 
 </p>
@@ -612,97 +794,133 @@ attaches them to a 3-column <span class="type">GtkTable</span>.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>table</code></em>&#160;:</span></td>
-<td>               The <span class="type">GtkTable</span> the widgets will be attached to.
+<td>
+<span class="term"><em class="parameter"><code>table</code></em>&#160;:</span></td>
+<td>               The <a
+href="../gtk/GtkTable.html"
+><span class="type">GtkTable</span></a> the widgets will be attached to.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>column</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>column</code></em>&#160;:</span></td>
 <td>              The column to start with.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>row</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>row</code></em>&#160;:</span></td>
 <td>                 The row to attach the widgets.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
-<td>                The text for the <span class="type">GtkLabel</span> which will appear
-                      left of the <span class="type">GtkHScale</span>.
+<td>
+<span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
+<td>                The text for the <a
+href="../gtk/GtkLabel.html"
+><span class="type">GtkLabel</span></a> which will appear
+                      left of the <a
+href="../gtk/GtkHScale.html"
+><span class="type">GtkHScale</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>scale_width</code></em>&#160;:</span></td>
-<td>         The minimum horizontal size of the <span class="type">GtkHScale</span>.
+<td>
+<span class="term"><em class="parameter"><code>scale_width</code></em>&#160;:</span></td>
+<td>         The minimum horizontal size of the <a
+href="../gtk/GtkHScale.html"
+><span class="type">GtkHScale</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>spinbutton_width</code></em>&#160;:</span></td>
-<td>    The minimum horizontal size of the <span class="type">GtkSpinButton</span>.
+<td>
+<span class="term"><em class="parameter"><code>spinbutton_width</code></em>&#160;:</span></td>
+<td>    The minimum horizontal size of the <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
 <td>               The initial value.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>lower</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>lower</code></em>&#160;:</span></td>
 <td>               The lower boundary.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>upper</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>upper</code></em>&#160;:</span></td>
 <td>               The upper boundary.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>step_increment</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>step_increment</code></em>&#160;:</span></td>
 <td>      The step increment.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>page_increment</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>page_increment</code></em>&#160;:</span></td>
 <td>      The page increment.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>digits</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>digits</code></em>&#160;:</span></td>
 <td>              The number of decimal digits.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>constrain</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>constrain</code></em>&#160;:</span></td>
 <td>           <code class="literal">TRUE</code> if the range of possible values of the
-                      <span class="type">GtkSpinButton</span> should be the same as of the <span class="type">GtkHScale</span>.
+                      <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a> should be the same as of the <a
+href="../gtk/GtkHScale.html"
+><span class="type">GtkHScale</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>unconstrained_lower</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>unconstrained_lower</code></em>&#160;:</span></td>
 <td> The spinbutton's lower boundary
                       if <em class="parameter"><code>constrain</code></em> == <code class="literal">FALSE</code>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>unconstrained_upper</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>unconstrained_upper</code></em>&#160;:</span></td>
 <td> The spinbutton's upper boundary
                       if <em class="parameter"><code>constrain</code></em> == <code class="literal">FALSE</code>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>tooltip</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>tooltip</code></em>&#160;:</span></td>
 <td>             A tooltip message for the scale and the spinbutton.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>help_id</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>help_id</code></em>&#160;:</span></td>
 <td>             The widgets' help_id (see <a href="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data"><code class="function">gimp_help_set_help_data()</code></a>).
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> The <span class="type">GtkSpinButton</span>'s <span class="type">GtkAdjustment</span>.
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a>'s <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a>.
 </td>
 </tr>
 </tbody>
@@ -710,12 +928,18 @@ attaches them to a 3-column <span class="type">GtkTable</span>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2654660"></a><h3>
+<a name="id2628246"></a><h3>
 <a name="gimp-scale-entry-set-sensitive"></a>gimp_scale_entry_set_sensitive ()</h3>
-<a class="indexterm" name="id2654672"></a><pre class="programlisting">void                gimp_scale_entry_set_sensitive      (GtkObject *adjustment,
-                                                         gboolean sensitive);</pre>
+<a class="indexterm" name="id2628256"></a><pre class="programlisting">void        gimp_scale_entry_set_sensitive  (<a
+href="../gtk/GtkObject.html"
+>GtkObject</a> *adjustment,
+                                             gboolean sensitive);</pre>
 <p>
-Sets the sensitivity of the scale_entry's <span class="type">GtkLabel</span>, <span class="type">GtkHScale</span> and
+Sets the sensitivity of the scale_entry's <a
+href="../gtk/GtkLabel.html"
+><span class="type">GtkLabel</span></a>, <a
+href="../gtk/GtkHScale.html"
+><span class="type">GtkHScale</span></a> and
 <span class="type">GtkSpinbutton</span>.</p>
 <p>
 
@@ -724,14 +948,20 @@ Sets the sensitivity of the scale_entry's <span class="type">GtkLabel</span>, <s
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>adjustment</code></em>&#160;:</span></td>
-<td> a <span class="type">GtkAdjustment</span> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"><code class="function">gimp_scale_entry_new()</code></a>
+<td>
+<span class="term"><em class="parameter"><code>adjustment</code></em>&#160;:</span></td>
+<td> a <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"><code class="function">gimp_scale_entry_new()</code></a>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>sensitive</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>sensitive</code></em>&#160;:</span></td>
 <td>  a boolean value with the same semantics as the <em class="parameter"><code>sensitive</code></em>
-             parameter of <code class="function">gtk_widget_set_sensitive()</code>
+             parameter of <a
+href="../gtk/GtkWidget.html#gtk-widget-set-sensitive"
+><code class="function">gtk_widget_set_sensitive()</code></a>
 </td>
 </tr>
 </tbody>
@@ -739,10 +969,13 @@ Sets the sensitivity of the scale_entry's <span class="type">GtkLabel</span>, <s
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2654784"></a><h3>
+<a name="id2628368"></a><h3>
 <a name="gimp-scale-entry-set-logarithmic"></a>gimp_scale_entry_set_logarithmic ()</h3>
-<a class="indexterm" name="id2654799"></a><pre class="programlisting">void                gimp_scale_entry_set_logarithmic    (GtkObject *adjustment,
-                                                         gboolean logarithmic);</pre>
+<a class="indexterm" name="id2628378"></a><pre class="programlisting">void        gimp_scale_entry_set_logarithmic
+                                            (<a
+href="../gtk/GtkObject.html"
+>GtkObject</a> *adjustment,
+                                             gboolean logarithmic);</pre>
 <p>
 Sets whether the scale_entry's scale widget will behave in a linear
 or logharithmic fashion. Useful when an entry has to attend large
@@ -755,26 +988,33 @@ adjustment.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>adjustment</code></em>&#160;:</span></td>
-<td>  a  <span class="type">GtkAdjustment</span> as returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"><code class="function">gimp_scale_entry_new()</code></a>
+<td>
+<span class="term"><em class="parameter"><code>adjustment</code></em>&#160;:</span></td>
+<td>  a  <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a> as returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"><code class="function">gimp_scale_entry_new()</code></a>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>logarithmic</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>logarithmic</code></em>&#160;:</span></td>
 <td> a boolean value to set or reset logarithmic behaviour
               of the scale widget
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
+<p>Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2654888"></a><h3>
+<a name="id2628466"></a><h3>
 <a name="gimp-scale-entry-get-logarithmic"></a>gimp_scale_entry_get_logarithmic ()</h3>
-<a class="indexterm" name="id2654903"></a><pre class="programlisting">gboolean            gimp_scale_entry_get_logarithmic    (GtkObject *adjustment);</pre>
+<a class="indexterm" name="id2628477"></a><pre class="programlisting">gboolean    gimp_scale_entry_get_logarithmic
+                                            (<a
+href="../gtk/GtkObject.html"
+>GtkObject</a> *adjustment);</pre>
 <p>
 </p>
 <p>
@@ -784,12 +1024,16 @@ adjustment.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>adjustment</code></em>&#160;:</span></td>
-<td> a  <span class="type">GtkAdjustment</span> as returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"><code class="function">gimp_scale_entry_new()</code></a>
+<td>
+<span class="term"><em class="parameter"><code>adjustment</code></em>&#160;:</span></td>
+<td> a  <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a> as returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new"><code class="function">gimp_scale_entry_new()</code></a>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> <code class="literal">TRUE</code> if the the entry's scale widget will behave in
               logharithmic fashion, <code class="literal">FALSE</code> for linear behaviour.
 
@@ -797,30 +1041,40 @@ adjustment.</p>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
+<p>Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2654996"></a><h3>
+<a name="id2628562"></a><h3>
 <a name="gimp-color-scale-entry-new"></a>gimp_color_scale_entry_new ()</h3>
-<a class="indexterm" name="id2655007"></a><pre class="programlisting">GtkObject*          gimp_color_scale_entry_new          (GtkTable *table,
-                                                         gint column,
-                                                         gint row,
-                                                         const gchar *text,
-                                                         gint scale_width,
-                                                         gint spinbutton_width,
-                                                         gdouble value,
-                                                         gdouble lower,
-                                                         gdouble upper,
-                                                         gdouble step_increment,
-                                                         gdouble page_increment,
-                                                         guint digits,
-                                                         const gchar *tooltip,
-                                                         const gchar *help_id);</pre>
+<a class="indexterm" name="id2628571"></a><pre class="programlisting"><a
+href="../gtk/GtkObject.html"
+>GtkObject</a>*  gimp_color_scale_entry_new      (<a
+href="../gtk/GtkTable.html"
+>GtkTable</a> *table,
+                                             gint column,
+                                             gint row,
+                                             const gchar *text,
+                                             gint scale_width,
+                                             gint spinbutton_width,
+                                             gdouble value,
+                                             gdouble lower,
+                                             gdouble upper,
+                                             gdouble step_increment,
+                                             gdouble page_increment,
+                                             guint digits,
+                                             const gchar *tooltip,
+                                             const gchar *help_id);</pre>
 <p>
-This function creates a <span class="type">GtkLabel</span>, a <a href="GimpColorScale.html" title="GimpColorScale"><span class="type">GimpColorScale</span></a> and a
-<span class="type">GtkSpinButton</span> and attaches them to a 3-column <span class="type">GtkTable</span>.</p>
+This function creates a <a
+href="../gtk/GtkLabel.html"
+><span class="type">GtkLabel</span></a>, a <a href="GimpColorScale.html" title="GimpColorScale"><span class="type">GimpColorScale</span></a> and a
+<a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a> and attaches them to a 3-column <a
+href="../gtk/GtkTable.html"
+><span class="type">GtkTable</span></a>.</p>
 <p>
 
 </p>
@@ -828,79 +1082,108 @@ This function creates a <span class="type">GtkLabel</span>, a <a href="GimpColor
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>table</code></em>&#160;:</span></td>
-<td>               The <span class="type">GtkTable</span> the widgets will be attached to.
+<td>
+<span class="term"><em class="parameter"><code>table</code></em>&#160;:</span></td>
+<td>               The <a
+href="../gtk/GtkTable.html"
+><span class="type">GtkTable</span></a> the widgets will be attached to.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>column</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>column</code></em>&#160;:</span></td>
 <td>              The column to start with.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>row</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>row</code></em>&#160;:</span></td>
 <td>                 The row to attach the widgets.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
-<td>                The text for the <span class="type">GtkLabel</span> which will appear
-                      left of the <span class="type">GtkHScale</span>.
+<td>
+<span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
+<td>                The text for the <a
+href="../gtk/GtkLabel.html"
+><span class="type">GtkLabel</span></a> which will appear
+                      left of the <a
+href="../gtk/GtkHScale.html"
+><span class="type">GtkHScale</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>scale_width</code></em>&#160;:</span></td>
-<td>         The minimum horizontal size of the <span class="type">GtkHScale</span>.
+<td>
+<span class="term"><em class="parameter"><code>scale_width</code></em>&#160;:</span></td>
+<td>         The minimum horizontal size of the <a
+href="../gtk/GtkHScale.html"
+><span class="type">GtkHScale</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>spinbutton_width</code></em>&#160;:</span></td>
-<td>    The minimum horizontal size of the <span class="type">GtkSpinButton</span>.
+<td>
+<span class="term"><em class="parameter"><code>spinbutton_width</code></em>&#160;:</span></td>
+<td>    The minimum horizontal size of the <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
 <td>               The initial value.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>lower</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>lower</code></em>&#160;:</span></td>
 <td>               The lower boundary.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>upper</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>upper</code></em>&#160;:</span></td>
 <td>               The upper boundary.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>step_increment</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>step_increment</code></em>&#160;:</span></td>
 <td>      The step increment.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>page_increment</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>page_increment</code></em>&#160;:</span></td>
 <td>      The page increment.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>digits</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>digits</code></em>&#160;:</span></td>
 <td>              The number of decimal digits.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>tooltip</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>tooltip</code></em>&#160;:</span></td>
 <td>             A tooltip message for the scale and the spinbutton.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>help_id</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>help_id</code></em>&#160;:</span></td>
 <td>             The widgets' help_id (see <a href="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data"><code class="function">gimp_help_set_help_data()</code></a>).
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> The <span class="type">GtkSpinButton</span>'s <span class="type">GtkAdjustment</span>.
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a>'s <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a>.
 </td>
 </tr>
 </tbody>
@@ -908,17 +1191,22 @@ This function creates a <span class="type">GtkLabel</span>, a <a href="GimpColor
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2655414"></a><h3>
+<a name="id2628960"></a><h3>
 <a name="GIMP-RANDOM-SEED-SPINBUTTON:CAPS"></a>GIMP_RANDOM_SEED_SPINBUTTON()</h3>
-<a class="indexterm" name="id2655429"></a><pre class="programlisting">#define             GIMP_RANDOM_SEED_SPINBUTTON(hbox)</pre>
+<a class="indexterm" name="id2628970"></a><pre class="programlisting">#define     GIMP_RANDOM_SEED_SPINBUTTON(hbox)</pre>
 <p>
-Returns the random_seed's <span class="type">GtkSpinButton</span>.
+Returns the random_seed's <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>hbox</code></em>&#160;:</span></td>
-<td>The <span class="type">GtkHBox</span> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-random-seed-new"><code class="function">gimp_random_seed_new()</code></a>.
+<td>
+<span class="term"><em class="parameter"><code>hbox</code></em>&#160;:</span></td>
+<td>The <a
+href="../gtk/GtkHBox.html"
+><span class="type">GtkHBox</span></a> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-random-seed-new"><code class="function">gimp_random_seed_new()</code></a>.
 
 
 </td>
@@ -927,17 +1215,24 @@ Returns the random_seed's <span class="type">GtkSpinButton</span>.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2655489"></a><h3>
+<a name="id2629022"></a><h3>
 <a name="GIMP-RANDOM-SEED-SPINBUTTON-ADJ:CAPS"></a>GIMP_RANDOM_SEED_SPINBUTTON_ADJ()</h3>
-<a class="indexterm" name="id2655504"></a><pre class="programlisting">#define             GIMP_RANDOM_SEED_SPINBUTTON_ADJ(hbox)</pre>
+<a class="indexterm" name="id2629034"></a><pre class="programlisting">#define     GIMP_RANDOM_SEED_SPINBUTTON_ADJ(hbox)</pre>
 <p>
-Returns the <span class="type">GtkAdjustment</span> of the random_seed's <span class="type">GtkSpinButton</span>.
+Returns the <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a> of the random_seed's <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>hbox</code></em>&#160;:</span></td>
-<td>The <span class="type">GtkHBox</span> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-random-seed-new"><code class="function">gimp_random_seed_new()</code></a>.
+<td>
+<span class="term"><em class="parameter"><code>hbox</code></em>&#160;:</span></td>
+<td>The <a
+href="../gtk/GtkHBox.html"
+><span class="type">GtkHBox</span></a> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-random-seed-new"><code class="function">gimp_random_seed_new()</code></a>.
 
 
 </td>
@@ -946,16 +1241,17 @@ Returns the <span class="type">GtkAdjustment</span> of the random_seed's <span c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2655572"></a><h3>
+<a name="id2629093"></a><h3>
 <a name="GIMP-RANDOM-SEED-TOGGLE:CAPS"></a>GIMP_RANDOM_SEED_TOGGLE()</h3>
-<a class="indexterm" name="id2655587"></a><pre class="programlisting">#define             GIMP_RANDOM_SEED_TOGGLE(hbox)</pre>
+<a class="indexterm" name="id2629103"></a><pre class="programlisting">#define     GIMP_RANDOM_SEED_TOGGLE(hbox)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>hbox</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>hbox</code></em>&#160;:</span></td>
 <td>
 
 
@@ -965,10 +1261,12 @@ Returns the <span class="type">GtkAdjustment</span> of the random_seed's <span c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2655622"></a><h3>
+<a name="id2629134"></a><h3>
 <a name="gimp-random-seed-new"></a>gimp_random_seed_new ()</h3>
-<a class="indexterm" name="id2655636"></a><pre class="programlisting">GtkWidget*          gimp_random_seed_new                (guint32 *seed,
-                                                         gboolean *random_seed);</pre>
+<a class="indexterm" name="id2629142"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_random_seed_new            (guint32 *seed,
+                                             gboolean *random_seed);</pre>
 <p>
 Creates a widget that allows the user to control how the random number
 generator is initialized.</p>
@@ -979,20 +1277,29 @@ generator is initialized.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>seed</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>seed</code></em>&#160;:</span></td>
 <td>        A pointer to the variable which stores the random seed.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>random_seed</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>random_seed</code></em>&#160;:</span></td>
 <td> A pointer to a boolean indicating whether seed should be
               initialised randomly or not.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A <span class="type">GtkHBox</span> containing a <span class="type">GtkSpinButton</span> for the seed and
-         a <span class="type">GtkButton</span> for setting a random seed.
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> A <a
+href="../gtk/GtkHBox.html"
+><span class="type">GtkHBox</span></a> containing a <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a> for the seed and
+         a <a
+href="../gtk/GtkButton.html"
+><span class="type">GtkButton</span></a> for setting a random seed.
 </td>
 </tr>
 </tbody>
@@ -1000,16 +1307,17 @@ generator is initialized.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2655744"></a><h3>
+<a name="id2629239"></a><h3>
 <a name="GIMP-COORDINATES-CHAINBUTTON:CAPS"></a>GIMP_COORDINATES_CHAINBUTTON()</h3>
-<a class="indexterm" name="id2655758"></a><pre class="programlisting">#define             GIMP_COORDINATES_CHAINBUTTON(sizeentry)</pre>
+<a class="indexterm" name="id2629249"></a><pre class="programlisting">#define     GIMP_COORDINATES_CHAINBUTTON(sizeentry)</pre>
 <p>
 Returns the <a href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> which is attached to the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>sizeentry</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>sizeentry</code></em>&#160;:</span></td>
 <td>The <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> returned by <a href="libgimpwidgets-GimpWidgets.html#gimp-coordinates-new"><code class="function">gimp_coordinates_new()</code></a>.
 
 
@@ -1019,32 +1327,34 @@ Returns the <a href="GimpChainButton.html" title="GimpChainButton"><span class="
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2655826"></a><h3>
+<a name="id2629308"></a><h3>
 <a name="gimp-coordinates-new"></a>gimp_coordinates_new ()</h3>
-<a class="indexterm" name="id2655840"></a><pre class="programlisting">GtkWidget*          gimp_coordinates_new                (<a
+<a class="indexterm" name="id2629316"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_coordinates_new            (<a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a> unit,
-                                                         const gchar *unit_format,
-                                                         gboolean menu_show_pixels,
-                                                         gboolean menu_show_percent,
-                                                         gint spinbutton_width,
-                                                         <a href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy</a> update_policy,
-                                                         gboolean chainbutton_active,
-                                                         gboolean chain_constrains_ratio,
-                                                         const gchar *xlabel,
-                                                         gdouble x,
-                                                         gdouble xres,
-                                                         gdouble lower_boundary_x,
-                                                         gdouble upper_boundary_x,
-                                                         gdouble xsize_0,
-                                                         gdouble xsize_100,
-                                                         const gchar *ylabel,
-                                                         gdouble y,
-                                                         gdouble yres,
-                                                         gdouble lower_boundary_y,
-                                                         gdouble upper_boundary_y,
-                                                         gdouble ysize_0,
-                                                         gdouble ysize_100);</pre>
+                                             const gchar *unit_format,
+                                             gboolean menu_show_pixels,
+                                             gboolean menu_show_percent,
+                                             gint spinbutton_width,
+                                             <a href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy</a> update_policy,
+                                             gboolean chainbutton_active,
+                                             gboolean chain_constrains_ratio,
+                                             const gchar *xlabel,
+                                             gdouble x,
+                                             gdouble xres,
+                                             gdouble lower_boundary_x,
+                                             gdouble upper_boundary_x,
+                                             gdouble xsize_0,
+                                             gdouble xsize_100,
+                                             const gchar *ylabel,
+                                             gdouble y,
+                                             gdouble yres,
+                                             gdouble lower_boundary_y,
+                                             gdouble upper_boundary_y,
+                                             gdouble ysize_0,
+                                             gdouble ysize_100);</pre>
 <p>
 Convenience function that creates a <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> with two fields for x/y
 coordinates/sizes with a <a href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> attached to constrain either the
@@ -1056,124 +1366,149 @@ two fields' values or the ratio between them.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>unit</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>unit</code></em>&#160;:</span></td>
 <td>                   The initial unit of the <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>unit_format</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>unit_format</code></em>&#160;:</span></td>
 <td>            A printf-like unit-format string as is used with
                          <a href="GimpUnitMenu.html#gimp-unit-menu-new"><code class="function">gimp_unit_menu_new()</code></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>menu_show_pixels</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>menu_show_pixels</code></em>&#160;:</span></td>
 <td>       <code class="literal">TRUE</code> if the <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a> should contain an item
                          for GIMP_UNIT_PIXEL.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>menu_show_percent</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>menu_show_percent</code></em>&#160;:</span></td>
 <td>      <code class="literal">TRUE</code> if the <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a> should contain an item
                          for GIMP_UNIT_PERCENT.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>spinbutton_width</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>spinbutton_width</code></em>&#160;:</span></td>
 <td>       The horizontal size of the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>'s
-                          <span class="type">GtkSpinButton</span>'s.
+                          <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a>'s.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>update_policy</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>update_policy</code></em>&#160;:</span></td>
 <td>          The update policy for the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>chainbutton_active</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>chainbutton_active</code></em>&#160;:</span></td>
 <td>     <code class="literal">TRUE</code> if the attached <a href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> should be
                          active.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>chain_constrains_ratio</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>chain_constrains_ratio</code></em>&#160;:</span></td>
 <td> <code class="literal">TRUE</code> if the chainbutton should constrain the
                          fields' aspect ratio. If <code class="literal">FALSE</code>, the values will
                          be constrained.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>xlabel</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>xlabel</code></em>&#160;:</span></td>
 <td>                 The label for the X coordinate.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td>                      The initial value of the X coordinate.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>xres</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>xres</code></em>&#160;:</span></td>
 <td>                   The horizontal resolution in DPI.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>lower_boundary_x</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>lower_boundary_x</code></em>&#160;:</span></td>
 <td>       The lower boundary of the X coordinate.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>upper_boundary_x</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>upper_boundary_x</code></em>&#160;:</span></td>
 <td>       The upper boundary of the X coordinate.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>xsize_0</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>xsize_0</code></em>&#160;:</span></td>
 <td>                The X value which will be treated as 0%.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>xsize_100</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>xsize_100</code></em>&#160;:</span></td>
 <td>              The X value which will be treated as 100%.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>ylabel</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>ylabel</code></em>&#160;:</span></td>
 <td>                 The label for the Y coordinate.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td>                      The initial value of the Y coordinate.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>yres</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>yres</code></em>&#160;:</span></td>
 <td>                   The vertical resolution in DPI.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>lower_boundary_y</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>lower_boundary_y</code></em>&#160;:</span></td>
 <td>       The lower boundary of the Y coordinate.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>upper_boundary_y</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>upper_boundary_y</code></em>&#160;:</span></td>
 <td>       The upper boundary of the Y coordinate.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>ysize_0</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>ysize_0</code></em>&#160;:</span></td>
 <td>                The Y value which will be treated as 0%.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>ysize_100</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>ysize_100</code></em>&#160;:</span></td>
 <td>              The Y value which will be treated as 100%.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The new <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.
 </td>
 </tr>
@@ -1182,17 +1517,23 @@ two fields' values or the ratio between them.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2656501"></a><h3>
+<a name="id2629937"></a><h3>
 <a name="gimp-pixmap-button-new"></a>gimp_pixmap_button_new ()</h3>
-<a class="indexterm" name="id2656517"></a><pre class="programlisting">GtkWidget*          gimp_pixmap_button_new              (gchar **xpm_data,
-                                                         const gchar *text);</pre>
+<a class="indexterm" name="id2629949"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_pixmap_button_new          (gchar **xpm_data,
+                                             const gchar *text);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_pixmap_button_new</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-Convenience function that creates a <span class="type">GtkButton</span> with a <a href="GimpPixmap.html" title="GimpPixmap"><span class="type">GimpPixmap</span></a>
-and an optional <span class="type">GtkLabel</span>.</p>
+Convenience function that creates a <a
+href="../gtk/GtkButton.html"
+><span class="type">GtkButton</span></a> with a <a href="GimpPixmap.html" title="GimpPixmap"><span class="type">GimpPixmap</span></a>
+and an optional <a
+href="../gtk/GtkLabel.html"
+><span class="type">GtkLabel</span></a>.</p>
 <p>
 
 </p>
@@ -1200,18 +1541,23 @@ and an optional <span class="type">GtkLabel</span>.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>xpm_data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>xpm_data</code></em>&#160;:</span></td>
 <td> The XPM data which will be passed to <a href="GimpPixmap.html#gimp-pixmap-new"><code class="function">gimp_pixmap_new()</code></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
 <td>     An optional text which will appear right of the pixmap.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> The new <span class="type">GtkButton</span>.
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The new <a
+href="../gtk/GtkButton.html"
+><span class="type">GtkButton</span></a>.
 </td>
 </tr>
 </tbody>
@@ -1219,12 +1565,19 @@ and an optional <span class="type">GtkLabel</span>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2656652"></a><h3>
+<a name="id2630083"></a><h3>
 <a name="gimp-toggle-button-sensitive-update"></a>gimp_toggle_button_sensitive_update ()</h3>
-<a class="indexterm" name="id2656667"></a><pre class="programlisting">void                gimp_toggle_button_sensitive_update (GtkToggleButton *toggle_button);</pre>
+<a class="indexterm" name="id2630096"></a><pre class="programlisting">void        gimp_toggle_button_sensitive_update
+                                            (<a
+href="../gtk/GtkToggleButton.html"
+>GtkToggleButton</a> *toggle_button);</pre>
 <p>
-If you attached a pointer to a <span class="type">GtkWidget</span> with <code class="function">g_object_set_data()</code> and
-the "set_sensitive" key to the <span class="type">GtkToggleButton</span>, the sensitive state of
+If you attached a pointer to a <a
+href="../gtk/GtkWidget.html"
+><span class="type">GtkWidget</span></a> with <code class="function">g_object_set_data()</code> and
+the "set_sensitive" key to the <a
+href="../gtk/GtkToggleButton.html"
+><span class="type">GtkToggleButton</span></a>, the sensitive state of
 the attached widget will be set according to the toggle button's
 "active" state.
 </p>
@@ -1242,8 +1595,11 @@ button's inverse "active" state by attaching widgets with the
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>toggle_button</code></em>&#160;:</span></td>
-<td> The <span class="type">GtkToggleButton</span> the "set_sensitive" and
+<td>
+<span class="term"><em class="parameter"><code>toggle_button</code></em>&#160;:</span></td>
+<td> The <a
+href="../gtk/GtkToggleButton.html"
+><span class="type">GtkToggleButton</span></a> the "set_sensitive" and
                 "inverse_sensitive" lists are attached to.
 </td>
 </tr></tbody>
@@ -1251,10 +1607,12 @@ button's inverse "active" state by attaching widgets with the
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2656765"></a><h3>
+<a name="id2630194"></a><h3>
 <a name="gimp-toggle-button-update"></a>gimp_toggle_button_update ()</h3>
-<a class="indexterm" name="id2656779"></a><pre class="programlisting">void                gimp_toggle_button_update           (GtkWidget *widget,
-                                                         gpointer data);</pre>
+<a class="indexterm" name="id2630205"></a><pre class="programlisting">void        gimp_toggle_button_update       (<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *widget,
+                                             gpointer data);</pre>
 <p>
 Note that this function calls <a href="libgimpwidgets-GimpWidgets.html#gimp-toggle-button-sensitive-update"><code class="function">gimp_toggle_button_sensitive_update()</code></a>.</p>
 <p>
@@ -1264,14 +1622,20 @@ Note that this function calls <a href="libgimpwidgets-GimpWidgets.html#gimp-togg
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
-<td> A <span class="type">GtkToggleButton</span>.
+<td>
+<span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
+<td> A <a
+href="../gtk/GtkToggleButton.html"
+><span class="type">GtkToggleButton</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>   A pointer to a <span class="type">gint</span> variable which will store the value of
-         <code class="function">gtk_toggle_button_get_active()</code>.
+         <a
+href="../gtk/GtkToggleButton.html#gtk-toggle-button-get-active"
+><code class="function">gtk_toggle_button_get_active()</code></a>.
 </td>
 </tr>
 </tbody>
@@ -1279,10 +1643,12 @@ Note that this function calls <a href="libgimpwidgets-GimpWidgets.html#gimp-togg
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2656885"></a><h3>
+<a name="id2630312"></a><h3>
 <a name="gimp-radio-button-update"></a>gimp_radio_button_update ()</h3>
-<a class="indexterm" name="id2656899"></a><pre class="programlisting">void                gimp_radio_button_update            (GtkWidget *widget,
-                                                         gpointer data);</pre>
+<a class="indexterm" name="id2630323"></a><pre class="programlisting">void        gimp_radio_button_update        (<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *widget,
+                                             gpointer data);</pre>
 <p>
 Note that this function calls <a href="libgimpwidgets-GimpWidgets.html#gimp-toggle-button-sensitive-update"><code class="function">gimp_toggle_button_sensitive_update()</code></a>.</p>
 <p>
@@ -1292,12 +1658,16 @@ Note that this function calls <a href="libgimpwidgets-GimpWidgets.html#gimp-togg
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
-<td> A <span class="type">GtkRadioButton</span>.
+<td>
+<span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
+<td> A <a
+href="../gtk/GtkRadioButton.html"
+><span class="type">GtkRadioButton</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>   A pointer to a <span class="type">gint</span> variable which will store the value of
          GPOINTER_TO_INT (g_object_get_data (<em class="parameter"><code>widget</code></em>, "gimp-item-data")).
 </td>
@@ -1307,12 +1677,16 @@ Note that this function calls <a href="libgimpwidgets-GimpWidgets.html#gimp-togg
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2657003"></a><h3>
+<a name="id2630427"></a><h3>
 <a name="gimp-int-adjustment-update"></a>gimp_int_adjustment_update ()</h3>
-<a class="indexterm" name="id2657017"></a><pre class="programlisting">void                gimp_int_adjustment_update          (GtkAdjustment *adjustment,
-                                                         gpointer data);</pre>
+<a class="indexterm" name="id2630439"></a><pre class="programlisting">void        gimp_int_adjustment_update      (<a
+href="../gtk/GtkAdjustment.html"
+>GtkAdjustment</a> *adjustment,
+                                             gpointer data);</pre>
 <p>
-Note that the <span class="type">GtkAdjustment</span>'s value (which is a <span class="type">gdouble</span>) will be
+Note that the <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a>'s value (which is a <span class="type">gdouble</span>) will be
 rounded with <a
 href="../libgimpmath/libgimpmath-GimpMath.html#RINT:CAPS"
 ><code class="function">RINT()</code></a>.</p>
@@ -1323,12 +1697,16 @@ href="../libgimpmath/libgimpmath-GimpMath.html#RINT:CAPS"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>adjustment</code></em>&#160;:</span></td>
-<td> A <span class="type">GtkAdjustment</span>.
+<td>
+<span class="term"><em class="parameter"><code>adjustment</code></em>&#160;:</span></td>
+<td> A <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>       A pointer to a <span class="type">gint</span> variable which will store the
              <em class="parameter"><code>adjustment</code></em>'s value.
 </td>
@@ -1338,12 +1716,16 @@ href="../libgimpmath/libgimpmath-GimpMath.html#RINT:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2657134"></a><h3>
+<a name="id2630555"></a><h3>
 <a name="gimp-uint-adjustment-update"></a>gimp_uint_adjustment_update ()</h3>
-<a class="indexterm" name="id2657148"></a><pre class="programlisting">void                gimp_uint_adjustment_update         (GtkAdjustment *adjustment,
-                                                         gpointer data);</pre>
+<a class="indexterm" name="id2630568"></a><pre class="programlisting">void        gimp_uint_adjustment_update     (<a
+href="../gtk/GtkAdjustment.html"
+>GtkAdjustment</a> *adjustment,
+                                             gpointer data);</pre>
 <p>
-Note that the <span class="type">GtkAdjustment</span>'s value (which is a <span class="type">gdouble</span>) will be rounded
+Note that the <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a>'s value (which is a <span class="type">gdouble</span>) will be rounded
 with (<span class="type">guint</span>) (value + 0.5).</p>
 <p>
 
@@ -1352,12 +1734,16 @@ with (<span class="type">guint</span>) (value + 0.5).</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>adjustment</code></em>&#160;:</span></td>
-<td> A <span class="type">GtkAdjustment</span>.
+<td>
+<span class="term"><em class="parameter"><code>adjustment</code></em>&#160;:</span></td>
+<td> A <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>       A pointer to a <span class="type">guint</span> variable which will store the
              <em class="parameter"><code>adjustment</code></em>'s value.
 </td>
@@ -1367,10 +1753,12 @@ with (<span class="type">guint</span>) (value + 0.5).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2657263"></a><h3>
+<a name="id2630682"></a><h3>
 <a name="gimp-float-adjustment-update"></a>gimp_float_adjustment_update ()</h3>
-<a class="indexterm" name="id2657277"></a><pre class="programlisting">void                gimp_float_adjustment_update        (GtkAdjustment *adjustment,
-                                                         gpointer data);</pre>
+<a class="indexterm" name="id2630694"></a><pre class="programlisting">void        gimp_float_adjustment_update    (<a
+href="../gtk/GtkAdjustment.html"
+>GtkAdjustment</a> *adjustment,
+                                             gpointer data);</pre>
 <p>
 </p>
 <p>
@@ -1380,12 +1768,16 @@ with (<span class="type">guint</span>) (value + 0.5).</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>adjustment</code></em>&#160;:</span></td>
-<td> A <span class="type">GtkAdjustment</span>.
+<td>
+<span class="term"><em class="parameter"><code>adjustment</code></em>&#160;:</span></td>
+<td> A <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>       A pointer to a <span class="type">gfloat</span> varaiable which will store the
              <em class="parameter"><code>adjustment</code></em>'s value.
 </td>
@@ -1395,10 +1787,12 @@ with (<span class="type">guint</span>) (value + 0.5).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2657370"></a><h3>
+<a name="id2630786"></a><h3>
 <a name="gimp-double-adjustment-update"></a>gimp_double_adjustment_update ()</h3>
-<a class="indexterm" name="id2657384"></a><pre class="programlisting">void                gimp_double_adjustment_update       (GtkAdjustment *adjustment,
-                                                         gpointer data);</pre>
+<a class="indexterm" name="id2630798"></a><pre class="programlisting">void        gimp_double_adjustment_update   (<a
+href="../gtk/GtkAdjustment.html"
+>GtkAdjustment</a> *adjustment,
+                                             gpointer data);</pre>
 <p>
 </p>
 <p>
@@ -1408,12 +1802,16 @@ with (<span class="type">guint</span>) (value + 0.5).</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>adjustment</code></em>&#160;:</span></td>
-<td> A <span class="type">GtkAdjustment</span>.
+<td>
+<span class="term"><em class="parameter"><code>adjustment</code></em>&#160;:</span></td>
+<td> A <a
+href="../gtk/GtkAdjustment.html"
+><span class="type">GtkAdjustment</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>       A pointer to a <span class="type">gdouble</span> variable which will store the
              <em class="parameter"><code>adjustment</code></em>'s value.
 </td>
@@ -1423,13 +1821,17 @@ with (<span class="type">guint</span>) (value + 0.5).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2657477"></a><h3>
+<a name="id2630891"></a><h3>
 <a name="gimp-unit-menu-update"></a>gimp_unit_menu_update ()</h3>
-<a class="indexterm" name="id2657491"></a><pre class="programlisting">void                gimp_unit_menu_update               (GtkWidget *widget,
-                                                         gpointer data);</pre>
+<a class="indexterm" name="id2630902"></a><pre class="programlisting">void        gimp_unit_menu_update           (<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *widget,
+                                             gpointer data);</pre>
 <p>
 This callback can set the number of decimal digits of an arbitrary number
-of <span class="type">GtkSpinButton</span>'s. To use this functionality, attach the spinbuttons
+of <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a>'s. To use this functionality, attach the spinbuttons
 as list of data pointers attached with <code class="function">g_object_set_data()</code> with the
 "set_digits" key.
 </p>
@@ -1443,12 +1845,14 @@ to set up the list.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
 <td> A <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>   A pointer to a <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 ><span class="type">GimpUnit</span></a> variable which will store the unit menu's
@@ -1460,17 +1864,23 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2657612"></a><h3>
+<a name="id2631023"></a><h3>
 <a name="gimp-table-attach-aligned"></a>gimp_table_attach_aligned ()</h3>
-<a class="indexterm" name="id2657627"></a><pre class="programlisting">GtkWidget*          gimp_table_attach_aligned           (GtkTable *table,
-                                                         gint column,
-                                                         gint row,
-                                                         const gchar *label_text,
-                                                         gfloat xalign,
-                                                         gfloat yalign,
-                                                         GtkWidget *widget,
-                                                         gint colspan,
-                                                         gboolean left_align);</pre>
+<a class="indexterm" name="id2631036"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_table_attach_aligned       (<a
+href="../gtk/GtkTable.html"
+>GtkTable</a> *table,
+                                             gint column,
+                                             gint row,
+                                             const gchar *label_text,
+                                             gfloat xalign,
+                                             gfloat yalign,
+                                             <a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *widget,
+                                             gint colspan,
+                                             gboolean left_align);</pre>
 <p>
 Note that the <em class="parameter"><code>label_text</code></em> can be <code class="literal">NULL</code> and that the widget will be
 attached starting at (<em class="parameter"><code>column</code></em> + 1) in this case, too.</p>
@@ -1481,54 +1891,76 @@ attached starting at (<em class="parameter"><code>column</code></em> + 1) in thi
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>table</code></em>&#160;:</span></td>
-<td>      The <span class="type">GtkTable</span> the widgets will be attached to.
+<td>
+<span class="term"><em class="parameter"><code>table</code></em>&#160;:</span></td>
+<td>      The <a
+href="../gtk/GtkTable.html"
+><span class="type">GtkTable</span></a> the widgets will be attached to.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>column</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>column</code></em>&#160;:</span></td>
 <td>     The column to start with.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>row</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>row</code></em>&#160;:</span></td>
 <td>        The row to attach the widgets.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>label_text</code></em>&#160;:</span></td>
-<td> The text for the <span class="type">GtkLabel</span> which will be attached left of
+<td>
+<span class="term"><em class="parameter"><code>label_text</code></em>&#160;:</span></td>
+<td> The text for the <a
+href="../gtk/GtkLabel.html"
+><span class="type">GtkLabel</span></a> which will be attached left of
              the widget.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>xalign</code></em>&#160;:</span></td>
-<td>     The horizontal alignment of the <span class="type">GtkLabel</span>.
+<td>
+<span class="term"><em class="parameter"><code>xalign</code></em>&#160;:</span></td>
+<td>     The horizontal alignment of the <a
+href="../gtk/GtkLabel.html"
+><span class="type">GtkLabel</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>yalign</code></em>&#160;:</span></td>
-<td>     The vertival alignment of the <span class="type">GtkLabel</span>.
+<td>
+<span class="term"><em class="parameter"><code>yalign</code></em>&#160;:</span></td>
+<td>     The vertival alignment of the <a
+href="../gtk/GtkLabel.html"
+><span class="type">GtkLabel</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
-<td>     The <span class="type">GtkWidget</span> to attach right of the label.
+<td>
+<span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
+<td>     The <a
+href="../gtk/GtkWidget.html"
+><span class="type">GtkWidget</span></a> to attach right of the label.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>colspan</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>colspan</code></em>&#160;:</span></td>
 <td>    The number of columns the widget will use.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>left_align</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>left_align</code></em>&#160;:</span></td>
 <td> <code class="literal">TRUE</code> if the widget should be left-aligned.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> The created <span class="type">GtkLabel</span>.
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The created <a
+href="../gtk/GtkLabel.html"
+><span class="type">GtkLabel</span></a>.
 </td>
 </tr>
 </tbody>
@@ -1536,17 +1968,25 @@ attached starting at (<em class="parameter"><code>column</code></em> + 1) in thi
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2657936"></a><h3>
+<a name="id2631336"></a><h3>
 <a name="gimp-label-set-attributes"></a>gimp_label_set_attributes ()</h3>
-<a class="indexterm" name="id2657952"></a><pre class="programlisting">void                gimp_label_set_attributes           (GtkLabel *label,
-                                                         ...);</pre>
+<a class="indexterm" name="id2631348"></a><pre class="programlisting">void        gimp_label_set_attributes       (<a
+href="../gtk/GtkLabel.html"
+>GtkLabel</a> *label,
+                                             ...);</pre>
 <p>
-Sets Pango attributes on a <span class="type">GtkLabel</span> in a more convenient way than
-<code class="function">gtk_label_set_attributes()</code>.
+Sets Pango attributes on a <a
+href="../gtk/GtkLabel.html"
+><span class="type">GtkLabel</span></a> in a more convenient way than
+<a
+href="../gtk/GtkLabel.html#gtk-label-set-attributes"
+><code class="function">gtk_label_set_attributes()</code></a>.
 </p>
 <p>
 This function is useful if you want to change the font attributes
-of a <span class="type">GtkLabel</span>. This is an alternative to using PangoMarkup which
+of a <a
+href="../gtk/GtkLabel.html"
+><span class="type">GtkLabel</span></a>. This is an alternative to using PangoMarkup which
 is slow to parse and akward to handle in an i18n-friendly way.
 </p>
 <p>
@@ -1560,21 +2000,29 @@ use the PangoAttributes API directly.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
-<td> a <span class="type">GtkLabel</span>
+<td>
+<span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
+<td> a <a
+href="../gtk/GtkLabel.html"
+><span class="type">GtkLabel</span></a>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
 <td>   a list of PangoAttrType and value pairs terminated by -1.
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
+<p>Since  GIMP 2.2
 </p>
 </div>
 </div>
 </div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimpwidgets-GimpEnumWidgets.html"><b>&lt;&lt;&#160;GimpEnumWidgets</b></a></td>
+<td align="right"><a accesskey="n" href="libgimpwidgets-deprecated.html"><b>Part&#160;VI.&#160;Deprecated API&#160;&gt;&gt;</b></a></td>
+</tr></table>
 </body>
 </html>

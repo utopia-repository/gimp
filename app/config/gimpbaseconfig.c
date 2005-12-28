@@ -24,27 +24,16 @@
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "config-types.h"
 
-#include "gimpconfig-params.h"
+#include "base/pixel-processor.h"
 
 #include "gimprc-blurbs.h"
 #include "gimpbaseconfig.h"
 
 #include "gimp-intl.h"
-
-
-static void  gimp_base_config_class_init   (GimpBaseConfigClass *klass);
-static void  gimp_base_config_finalize     (GObject             *object);
-static void  gimp_base_config_set_property (GObject             *object,
-                                            guint                property_id,
-                                            const GValue        *value,
-                                            GParamSpec          *pspec);
-static void  gimp_base_config_get_property (GObject             *object,
-                                            guint                property_id,
-                                            GValue              *value,
-                                            GParamSpec          *pspec);
 
 
 enum
@@ -57,45 +46,27 @@ enum
   PROP_TILE_CACHE_SIZE
 };
 
-static GObjectClass *parent_class = NULL;
+
+static void   gimp_base_config_finalize     (GObject      *object);
+static void   gimp_base_config_set_property (GObject      *object,
+                                             guint         property_id,
+                                             const GValue *value,
+                                             GParamSpec   *pspec);
+static void   gimp_base_config_get_property (GObject      *object,
+                                             guint         property_id,
+                                             GValue       *value,
+                                             GParamSpec   *pspec);
 
 
-GType
-gimp_base_config_get_type (void)
-{
-  static GType config_type = 0;
+G_DEFINE_TYPE (GimpBaseConfig, gimp_base_config, G_TYPE_OBJECT);
 
-  if (! config_type)
-    {
-      static const GTypeInfo config_info =
-      {
-        sizeof (GimpBaseConfigClass),
-	NULL,           /* base_init      */
-        NULL,           /* base_finalize  */
-	(GClassInitFunc) gimp_base_config_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (GimpBaseConfig),
-	0,              /* n_preallocs    */
-	NULL            /* instance_init  */
-      };
+#define parent_class gimp_base_config_parent_class
 
-      config_type = g_type_register_static (G_TYPE_OBJECT,
-                                            "GimpBaseConfig",
-                                            &config_info, 0);
-    }
-
-  return config_type;
-}
 
 static void
 gimp_base_config_class_init (GimpBaseConfigClass *klass)
 {
-  GObjectClass *object_class;
-
-  parent_class = g_type_class_peek_parent (klass);
-
-  object_class = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->finalize     = gimp_base_config_finalize;
   object_class->set_property = gimp_base_config_set_property;
@@ -103,27 +74,32 @@ gimp_base_config_class_init (GimpBaseConfigClass *klass)
 
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_TEMP_PATH,
                                  "temp-path", TEMP_PATH_BLURB,
-				 GIMP_PARAM_PATH_DIR,
+				 GIMP_CONFIG_PATH_DIR,
                                  "${gimp_dir}" G_DIR_SEPARATOR_S "tmp",
-                                 GIMP_PARAM_RESTART);
+                                 GIMP_CONFIG_PARAM_RESTART);
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_SWAP_PATH,
                                  "swap-path", SWAP_PATH_BLURB,
-				 GIMP_PARAM_PATH_DIR,
+				 GIMP_CONFIG_PATH_DIR,
                                  "${gimp_dir}",
-                                 GIMP_PARAM_RESTART);
+                                 GIMP_CONFIG_PARAM_RESTART);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_STINGY_MEMORY_USE,
-                                    "stingy-memory-use", STINGY_MEMORY_USE_BLURB,
+                                    "stingy-memory-use", NULL,
                                     FALSE,
-                                    GIMP_PARAM_IGNORE);
+                                    GIMP_CONFIG_PARAM_IGNORE);
   GIMP_CONFIG_INSTALL_PROP_UINT (object_class, PROP_NUM_PROCESSORS,
                                  "num-processors", NUM_PROCESSORS_BLURB,
-                                 1, 30, 1,
+                                 1, GIMP_MAX_NUM_THREADS, 2,
                                  0);
   GIMP_CONFIG_INSTALL_PROP_MEMSIZE (object_class, PROP_TILE_CACHE_SIZE,
                                     "tile-cache-size", TILE_CACHE_SIZE_BLURB,
                                     0, MIN (G_MAXULONG, GIMP_MAX_MEMSIZE),
-                                    1 << 27, /* 128MB */
-                                    GIMP_PARAM_CONFIRM);
+                                    1 << 28, /* 256MB */
+                                    GIMP_CONFIG_PARAM_CONFIRM);
+}
+
+static void
+gimp_base_config_init (GimpBaseConfig *config)
+{
 }
 
 static void

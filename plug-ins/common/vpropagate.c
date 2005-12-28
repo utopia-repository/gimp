@@ -29,11 +29,8 @@
 
 #include "config.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -41,13 +38,11 @@
 #include "libgimp/stdplugins-intl.h"
 
 
-#define DEFAULT_PLUG_IN_NAME "plug_in_vpropagate"
+#define VPROPAGATE_PROC      "plug-in-vpropagate"
+#define ERODE_PROC           "plug-in-erode"
+#define DILATE_PROC          "plug-in-dilate"
+#define PLUG_IN_BINARY       "vpropagate"
 #define PLUG_IN_IMAGE_TYPES  "RGB*, GRAY*"
-#define SHORT_NAME           "vpropagate"
-#define HELP_ID              "plug-in-vpropagate"
-#define ERODE_PLUG_IN_NAME   "plug_in_erode"
-#define DILATE_PLUG_IN_NAME  "plug_in_dilate"
-
 
 #define VP_RGB          (1 << 0)
 #define VP_GRAY         (1 << 1)
@@ -222,18 +217,18 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE, "image", "Input image (not used)" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
-    { GIMP_PDB_INT32, "propagate-mode", "propagate 0:white, 1:black, 2:middle value 3:foreground to peak, 4:foreground, 5:background, 6:opaque, 7:transparent" },
-    { GIMP_PDB_INT32, "propagating-channel", "channels which values are propagated" },
-    { GIMP_PDB_FLOAT, "propagating-rate", "0.0 <= propagatating_rate <= 1.0" },
-    { GIMP_PDB_INT32, "direction-mask", "0 <= direction-mask <= 15" },
-    { GIMP_PDB_INT32, "lower-limit", "0 <= lower-limit <= 255" },
-    { GIMP_PDB_INT32, "upper-limit", "0 <= upper-limit <= 255" }
+    { GIMP_PDB_INT32,    "run-mode",            "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",               "Input image (not used)" },
+    { GIMP_PDB_DRAWABLE, "drawable",            "Input drawable" },
+    { GIMP_PDB_INT32,    "propagate-mode",      "propagate 0:white, 1:black, 2:middle value 3:foreground to peak, 4:foreground, 5:background, 6:opaque, 7:transparent" },
+    { GIMP_PDB_INT32,    "propagating-channel", "channels which values are propagated" },
+    { GIMP_PDB_FLOAT,    "propagating-rate",    "0.0 <= propagatating_rate <= 1.0" },
+    { GIMP_PDB_INT32,    "direction-mask",      "0 <= direction-mask <= 15" },
+    { GIMP_PDB_INT32,    "lower-limit",         "0 <= lower-limit <= 255" },
+    { GIMP_PDB_INT32,    "upper-limit",         "0 <= upper-limit <= 255" }
   };
 
-  gimp_install_procedure (DEFAULT_PLUG_IN_NAME,
+  gimp_install_procedure (VPROPAGATE_PROC,
                           "Propagate values of the layer",
                           "Propagate values of the layer",
                           "Shuji Narazaki (narazaki@InetQ.or.jp)",
@@ -245,7 +240,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_install_procedure (ERODE_PLUG_IN_NAME,
+  gimp_install_procedure (ERODE_PROC,
                           "Erode image",
                           "Erode image",
                           "Shuji Narazaki (narazaki@InetQ.or.jp)",
@@ -257,7 +252,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_install_procedure (DILATE_PLUG_IN_NAME,
+  gimp_install_procedure (DILATE_PROC,
                           "Dilate image",
                           "Dilate image",
                           "Shuji Narazaki (narazaki@InetQ.or.jp)",
@@ -269,9 +264,9 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register (DEFAULT_PLUG_IN_NAME, "<Image>/Filters/Distorts");
-  gimp_plugin_menu_register (ERODE_PLUG_IN_NAME,   "<Image>/Filters/Generic");
-  gimp_plugin_menu_register (DILATE_PLUG_IN_NAME,  "<Image>/Filters/Generic");
+  gimp_plugin_menu_register (VPROPAGATE_PROC, "<Image>/Filters/Distorts");
+  gimp_plugin_menu_register (ERODE_PROC,      "<Image>/Filters/Generic");
+  gimp_plugin_menu_register (DILATE_PROC,     "<Image>/Filters/Generic");
 }
 
 static void
@@ -300,9 +295,9 @@ run (const gchar      *name,
   switch (run_mode)
     {
     case GIMP_RUN_INTERACTIVE:
-      if (strcmp (name, DEFAULT_PLUG_IN_NAME) == 0)
+      if (strcmp (name, VPROPAGATE_PROC) == 0)
         {
-          gimp_get_data (DEFAULT_PLUG_IN_NAME, &vpvals);
+          gimp_get_data (VPROPAGATE_PROC, &vpvals);
           /* building the values of dialog variables from vpvals. */
           propagate_alpha =
             (vpvals.propagating_channel & PROPAGATING_ALPHA) ? TRUE : FALSE;
@@ -319,8 +314,8 @@ run (const gchar      *name,
           if (! vpropagate_dialog (drawable))
             return;
         }
-      else if (strcmp (name, ERODE_PLUG_IN_NAME) == 0 ||
-               strcmp (name, DILATE_PLUG_IN_NAME) == 0)
+      else if (strcmp (name, ERODE_PROC) == 0 ||
+               strcmp (name, DILATE_PROC) == 0)
         {
           vpvals.propagating_channel = PROPAGATING_VALUE;
           vpvals.propagating_rate    = 1.0;
@@ -328,15 +323,15 @@ run (const gchar      *name,
           vpvals.lower_limit         = 0;
           vpvals.upper_limit         = 255;
 
-          if (strcmp (name, ERODE_PLUG_IN_NAME) == 0)
+          if (strcmp (name, ERODE_PROC) == 0)
             vpvals.propagate_mode = 0;
-          else if (strcmp (name, DILATE_PLUG_IN_NAME) == 0)
+          else if (strcmp (name, DILATE_PROC) == 0)
             vpvals.propagate_mode = 1;
         }
       break;
 
     case GIMP_RUN_NONINTERACTIVE:
-      if (strcmp (name, DEFAULT_PLUG_IN_NAME) == 0)
+      if (strcmp (name, VPROPAGATE_PROC) == 0)
         {
           vpvals.propagate_mode      = param[3].data.d_int32;
           vpvals.propagating_channel = param[4].data.d_int32;
@@ -345,8 +340,8 @@ run (const gchar      *name,
           vpvals.lower_limit         = param[7].data.d_int32;
           vpvals.upper_limit         = param[8].data.d_int32;
         }
-      else if (strcmp (name, ERODE_PLUG_IN_NAME) == 0 ||
-               strcmp (name, DILATE_PLUG_IN_NAME) == 0)
+      else if (strcmp (name, ERODE_PROC) == 0 ||
+               strcmp (name, DILATE_PROC) == 0)
         {
           vpvals.propagating_channel = PROPAGATING_VALUE;
           vpvals.propagating_rate    = 1.0;
@@ -354,9 +349,9 @@ run (const gchar      *name,
           vpvals.lower_limit         = 0;
           vpvals.upper_limit         = 255;
 
-          if (strcmp (name, ERODE_PLUG_IN_NAME) == 0)
+          if (strcmp (name, ERODE_PROC) == 0)
             vpvals.propagate_mode = 0;
-          else if (strcmp (name, DILATE_PLUG_IN_NAME) == 0)
+          else if (strcmp (name, DILATE_PROC) == 0)
             vpvals.propagate_mode = 1;
         }
       break;
@@ -473,7 +468,7 @@ value_propagate_body (GimpDrawable *drawable,
   best = g_new (guchar, bytes);
 
   if (!preview)
-    gimp_progress_init (_("Value Propagating..."));
+    gimp_progress_init (_("Value Propagating"));
 
   gimp_context_get_foreground (&foreground);
   gimp_rgb_get_uchar (&foreground, fore+0, fore+1, fore+2);
@@ -1053,16 +1048,23 @@ vpropagate_dialog (GimpDrawable *drawable)
   gint       index = 0;
   gboolean   run;
 
-  gimp_ui_init ("vpropagate", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Value Propagate"), "vpropagate",
+  dialog = gimp_dialog_new (_("Value Propagate"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, HELP_ID,
+                            gimp_standard_help_func, VPROPAGATE_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -1130,10 +1132,10 @@ vpropagate_dialog (GimpDrawable *drawable)
                               vpvals.lower_limit, 0, 255, 1, 8, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &vpvals.lower_limit);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -1142,10 +1144,10 @@ vpropagate_dialog (GimpDrawable *drawable)
                               vpvals.upper_limit, 0, 255, 1, 8, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &vpvals.upper_limit);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -1154,10 +1156,10 @@ vpropagate_dialog (GimpDrawable *drawable)
                               vpvals.propagating_rate, 0, 1, 0.01, 0.1, 2,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &vpvals.propagating_rate);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -1179,18 +1181,18 @@ vpropagate_dialog (GimpDrawable *drawable)
       GtkWidget *toggle;
 
       toggle =
-        gtk_table_add_toggle (table, _("Propagating _Alpha Channel"),
+        gtk_table_add_toggle (table, _("Propagating _alpha channel"),
                               0, 3, 6,
                               G_CALLBACK (vpropagate_toggle_button_update),
                               &propagate_alpha);
 
-      if (gimp_layer_get_preserve_trans (drawable->drawable_id))
+      if (gimp_layer_get_lock_alpha (drawable->drawable_id))
         {
           gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), 0);
           gtk_widget_set_sensitive (toggle, FALSE);
         }
 
-      gtk_table_add_toggle (table, _("Propagating Value Channel"), 0, 3, 7,
+      gtk_table_add_toggle (table, _("Propagating value channel"), 0, 3, 7,
                             G_CALLBACK (vpropagate_toggle_button_update),
                             &propagate_value);
     }

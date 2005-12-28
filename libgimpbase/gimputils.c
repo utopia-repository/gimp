@@ -217,7 +217,7 @@ gimp_filename_to_utf8 (const gchar *filename)
 
   if (! filename_utf8)
     {
-      filename_utf8 = g_filename_to_utf8 (filename, -1, NULL, NULL, NULL);
+      filename_utf8 = g_filename_display_name (filename);
       g_hash_table_insert (ht, g_strdup (filename), filename_utf8);
     }
 
@@ -329,6 +329,48 @@ gimp_escape_uline (const gchar *str)
   *p = '\0';
 
   return escaped;
+}
+
+/**
+ * gimp_canonicalize_identifier:
+ * @identifier: The identifier string to canonicalize.
+ *
+ * Turns any input string into a canonicalized string.
+ *
+ * Canonical identifiers are e.g. expected by the PDB for procedure
+ * and parameter names. Every character of the input string that is
+ * not either '-', 'a-z', 'A-Z' or '0-9' will be replaced by a '-'.
+ *
+ * Return value: The canonicalized identifier. This is a newly
+ *               allocated string that should be freed with g_free()
+ *               when no longer needed.
+ *
+ * Since: GIMP 2.4
+ **/
+gchar *
+gimp_canonicalize_identifier (const gchar *identifier)
+{
+  gchar *canonicalized = NULL;
+
+  if (identifier)
+    {
+      gchar *p;
+
+      canonicalized = g_strdup (identifier);
+
+      for (p = canonicalized; *p != 0; p++)
+        {
+          gchar c = *p;
+
+          if (c != '-' &&
+              (c < '0' || c > '9') &&
+              (c < 'A' || c > 'Z') &&
+              (c < 'a' || c > 'z'))
+            *p = '-';
+        }
+    }
+
+  return canonicalized;
 }
 
 /**

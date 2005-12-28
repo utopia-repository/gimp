@@ -25,12 +25,11 @@
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "gui-types.h"
 
-#include "config/gimpconfig-utils.h"
-#include "config/gimpconfigwriter.h"
-#include "config/gimpscanner.h"
+#include "core/gimp.h"
 
 #include "color-history.h"
 
@@ -50,13 +49,19 @@ static gboolean  color_history_initialized = FALSE;
 
 
 void
-color_history_save (void)
+color_history_save (Gimp *gimp)
 {
   GimpConfigWriter *writer;
   gchar            *filename;
   gint              i;
 
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+
   filename = gimp_personal_rc_file ("colorrc");
+
+  if (gimp->be_verbose)
+    g_print ("Writing '%s'\n", gimp_filename_to_utf8 (filename));
+
   writer = gimp_config_writer_new_file (filename,
                                         TRUE,
                                         "GIMP colorrc\n\n"
@@ -98,13 +103,19 @@ color_history_save (void)
 }
 
 void
-color_history_restore (void)
+color_history_restore (Gimp *gimp)
 {
   gchar      *filename;
   GScanner   *scanner;
   GTokenType  token;
 
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+
   filename = gimp_personal_rc_file ("colorrc");
+
+  if (gimp->be_verbose)
+    g_print ("Parsing '%s'\n", gimp_filename_to_utf8 (filename));
+
   scanner = gimp_scanner_new_file (filename, NULL);
   g_free (filename);
 

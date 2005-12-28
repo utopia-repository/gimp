@@ -3,7 +3,7 @@
  *
  * Generates clickable image maps.
  *
- * Copyright (C) 1998-1999 Maurits Rijk  lpeek.mrijk@consunet.nl
+ * Copyright (C) 1998-2005 Maurits Rijk  m.rijk@chello.nl
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,12 +74,6 @@ void draw_circle(GdkWindow *window, GdkGC *gc, gint filled, gint x, gint y,
 void draw_polygon(GdkWindow *window, GdkGC *gc, GList *list);
 
 const char *get_filename(void);
-
-void set_arrow_func(void);
-void set_fuzzy_select_func(void);
-void set_rectangle_func(void);
-void set_circle_func(void);
-void set_polygon_func(void);
 
 ObjectList_t *get_shapes(void);
 void add_shape(Object_t *obj);

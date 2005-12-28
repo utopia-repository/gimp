@@ -194,8 +194,6 @@ static void
 init_procedures (void)
 {
   gchar          **proc_list;
-  gchar           *proc_name;
-  gchar           *arg_name;
   gchar           *proc_blurb;
   gchar           *proc_help;
   gchar           *proc_author;
@@ -221,10 +219,8 @@ init_procedures (void)
   /*  Register each procedure as a scheme func  */
   for (i = 0; i < num_procs; i++)
     {
-      proc_name = g_strdup (proc_list[i]);
-
       /*  lookup the procedure  */
-      if (gimp_procedural_db_proc_info (proc_name,
+      if (gimp_procedural_db_proc_info (proc_list[i],
                                         &proc_blurb,
                                         &proc_help,
                                         &proc_author,
@@ -234,33 +230,27 @@ init_procedures (void)
                                         &nparams, &nreturn_vals,
                                         &params, &return_vals))
         {
-          LISP args = NIL;
-          LISP code = NIL;
-          gint j;
-
-          /*  convert the names to scheme-like naming conventions  */
-          convert_string (proc_name);
+          LISP   args = NIL;
+          LISP   code = NIL;
+          gint   j;
 
           /*  create a new scheme func that calls gimp-proc-db-call  */
           for (j = 0; j < nparams; j++)
             {
-              arg_name = g_strdup (params[j].name);
-              convert_string (arg_name);
-              args = cons (cintern (arg_name), args);
-              code = cons (cintern (arg_name), code);
+              args = cons (rintern (params[j].name), args);
+              code = cons (rintern (params[j].name), code);
             }
 
           /*  reverse the list  */
           args = nreverse (args);
           code = nreverse (code);
 
-          /*  set the scheme-based procedure name  */
-          args = cons (cintern (proc_name), args);
+          /*  set the procedure name  */
+          args = cons (rintern (proc_list[i]), args);
 
-          /*  set the acture pdb procedure name  */
+          /*  set the actual pdb procedure name  */
           code = cons (cons (cintern ("quote"),
-                             cons (cintern (proc_list[i]), NIL)),
-                       code);
+                             cons (rintern (proc_list[i]), NIL)), code);
           code = cons (cintern ("gimp-proc-db-call"), code);
 
           leval_define (cons (args, cons (code, NIL)), NIL);
@@ -271,9 +261,12 @@ init_procedures (void)
           g_free (proc_author);
           g_free (proc_copyright);
           g_free (proc_date);
+
           gimp_destroy_paramdefs (params, nparams);
           gimp_destroy_paramdefs (return_vals, nreturn_vals);
         }
+
+      g_free (proc_list[i]);
     }
 
   g_free (proc_list);
@@ -425,6 +418,12 @@ init_constants (void)
   setvar (cintern ("BLUE-LUT"),  flocons (GIMP_HISTOGRAM_BLUE),  NIL);
   setvar (cintern ("ALPHA-LUT"), flocons (GIMP_HISTOGRAM_ALPHA), NIL);
 
+  /* Useful values from libgimpbase/gimplimits.h */
+  setvar (cintern ("MIN-IMAGE-SIZE"), flocons (GIMP_MIN_IMAGE_SIZE), NIL);
+  setvar (cintern ("MAX-IMAGE-SIZE"), flocons (GIMP_MAX_IMAGE_SIZE), NIL);
+  setvar (cintern ("MIN-RESOLUTION"), flocons (GIMP_MIN_RESOLUTION), NIL);
+  setvar (cintern ("MAX-RESOLUTION"), flocons (GIMP_MAX_RESOLUTION), NIL);
+
   /* Useful misc stuff */
   setvar (cintern ("TRUE"),           flocons (TRUE),  NIL);
   setvar (cintern ("FALSE"),          flocons (FALSE), NIL);
@@ -448,6 +447,7 @@ init_constants (void)
   setvar (cintern ("SF-OPTION"),      flocons (SF_OPTION),     NIL);
   setvar (cintern ("SF-PALETTE"),     flocons (SF_PALETTE),    NIL);
   setvar (cintern ("SF-TEXT"),        flocons (SF_TEXT),       NIL);
+  setvar (cintern ("SF-ENUM"),        flocons (SF_ENUM),       NIL);
 
   /* for SF_ADJUSTMENT */
   setvar (cintern ("SF-SLIDER"),      flocons (SF_SLIDER),     NIL);
@@ -546,7 +546,6 @@ marshall_proc_db_call (LISP a)
                                       &nparams, &nreturn_vals,
                                       &params, &return_vals))
     {
-      convert_string (proc_name);
       g_snprintf (error_str, sizeof (error_str),
                   "Invalid procedure name %s specified", proc_name);
       return my_err (error_str, NIL);
@@ -567,7 +566,6 @@ marshall_proc_db_call (LISP a)
   /*  Check the supplied number of arguments  */
   if ((nlength (a) - 1) != nparams)
     {
-      convert_string (proc_name);
       g_snprintf (error_str, sizeof (error_str),
                   "Invalid arguments supplied to %s -- "
                   "(# args: %ld, expecting: %d)",
@@ -646,7 +644,6 @@ marshall_proc_db_call (LISP a)
 
               if ((n_elements < 0) || (n_elements > nlength (list)))
                 {
-                  convert_string (proc_name);
                   g_snprintf (error_str, sizeof (error_str),
                               "INT32 array (argument %d) for function %s has "
                               "incorrect length (got %ld, expected %d)",
@@ -670,7 +667,6 @@ marshall_proc_db_call (LISP a)
 
               if ((n_elements < 0) || (n_elements > nlength (list)))
                 {
-                  convert_string (proc_name);
                   g_snprintf (error_str, sizeof (error_str),
                               "INT16 array (argument %d) for function %s has "
                               "incorrect length (got %ld, expected %d)",
@@ -694,7 +690,6 @@ marshall_proc_db_call (LISP a)
 
               if ((n_elements < 0) || (n_elements > nlength (list)))
                 {
-                  convert_string (proc_name);
                   g_snprintf (error_str, sizeof (error_str),
                               "INT8 array (argument %d) for function %s has "
                               "incorrect length (got %ld, expected %d)",
@@ -717,7 +712,6 @@ marshall_proc_db_call (LISP a)
 
               if ((n_elements < 0) || (n_elements > nlength (list)))
                 {
-                  convert_string (proc_name);
                   g_snprintf (error_str, sizeof (error_str),
                               "FLOAT array (argument %d) for function %s has "
                               "incorrect length (got %ld, expected %d)",
@@ -735,13 +729,12 @@ marshall_proc_db_call (LISP a)
             success = FALSE;
           if (success)
             {
-              gint    n_elements = args[i - 1].data.d_int32;
-              LISP    list       = car (a);
-              gint    j;
+              gint n_elements = args[i - 1].data.d_int32;
+              LISP list       = car (a);
+              gint j;
 
               if ((n_elements < 0) || (n_elements > nlength (list)))
                 {
-                  convert_string (proc_name);
                   g_snprintf (error_str, sizeof (error_str),
                               "String array (argument %d) for function %s has "
                               "incorrect length (got %ld, expected %d)",
@@ -851,8 +844,13 @@ marshall_proc_db_call (LISP a)
           break;
 
         case GIMP_PDB_PATH:
-          return my_err ("Paths are currently unsupported as arguments",
-                         car (a));
+          if (!TYPEP (car (a), tc_flonum))
+            success = FALSE;
+          if (success)
+            {
+              args[i].type = GIMP_PDB_PATH;
+              args[i].data.d_int32 = get_c_long (car (a));
+            }
           break;
 
         case GIMP_PDB_PARASITE:
@@ -910,7 +908,6 @@ marshall_proc_db_call (LISP a)
           break;
 
         default:
-          convert_string (proc_name);
           g_snprintf (error_str, sizeof (error_str),
                       "Argument %d for %s is an unknown type",
                       i + 1, proc_name);
@@ -1132,7 +1129,8 @@ marshall_proc_db_call (LISP a)
               break;
 
             case GIMP_PDB_PATH:
-              return my_err ("Paths are currently unsupported as return values", NIL);
+              return_val = cons (flocons (values[i + 1].data.d_int32),
+                                 return_val);
               break;
 
             case GIMP_PDB_PARASITE:

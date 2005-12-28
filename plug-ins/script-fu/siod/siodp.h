@@ -7,7 +7,7 @@
  Declarations which are private to SLIB.C internals.
  However, some of these should be moved to siod.h
 
- $Id: siodp.h 16047 2004-12-28 20:39:15Z  $
+ $Id: siodp.h,v 1.1.1.1 1997/11/24 22:03:54 sopwith Exp $
 
  */
 

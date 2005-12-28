@@ -80,7 +80,8 @@ static ProcArg image_convert_rgb_inargs[] =
 
 static ProcRecord image_convert_rgb_proc =
 {
-  "gimp_image_convert_rgb",
+  "gimp-image-convert-rgb",
+  "gimp-image-convert-rgb",
   "Convert specified image to RGB color",
   "This procedure converts the specified image to RGB color. This process requires an image of type GIMP_GRAY or GIMP_INDEXED. No image content is lost in this process aside from the colormap for an indexed image.",
   "Spencer Kimball & Peter Mattis",
@@ -130,7 +131,8 @@ static ProcArg image_convert_grayscale_inargs[] =
 
 static ProcRecord image_convert_grayscale_proc =
 {
-  "gimp_image_convert_grayscale",
+  "gimp-image-convert-grayscale",
+  "gimp-image-convert-grayscale",
   "Convert specified image to grayscale (256 intensity levels)",
   "This procedure converts the specified image to grayscale with 8 bits per pixel (256 intensity levels). This process requires an image of type GIMP_RGB or GIMP_INDEXED.",
   "Spencer Kimball & Peter Mattis",
@@ -196,16 +198,11 @@ image_convert_indexed_invoker (Gimp         *gimp,
               break;
 
             case GIMP_CUSTOM_PALETTE:
-              if (! gimp->palette_factory->container->num_children)
-                gimp_data_factory_data_init (gimp->palette_factory, FALSE);
-
               palette = (GimpPalette *)
                 gimp_container_get_child_by_name (gimp->palette_factory->container,
                                                   palette_name);
-
               if (palette == NULL)
                 success = FALSE;
-
               break;
 
             default:
@@ -235,27 +232,27 @@ static ProcArg image_convert_indexed_inargs[] =
   },
   {
     GIMP_PDB_INT32,
-    "dither_type",
+    "dither-type",
     "The dither type to use: { GIMP_NO_DITHER (0), GIMP_FS_DITHER (1), GIMP_FSLOWBLEED_DITHER (2), GIMP_FIXED_DITHER (3) }"
   },
   {
     GIMP_PDB_INT32,
-    "palette_type",
+    "palette-type",
     "The type of palette to use: { GIMP_MAKE_PALETTE (0), GIMP_REUSE_PALETTE (1), GIMP_WEB_PALETTE (2), GIMP_MONO_PALETTE (3), GIMP_CUSTOM_PALETTE (4) }"
   },
   {
     GIMP_PDB_INT32,
-    "num_cols",
+    "num-cols",
     "The number of colors to quantize to, ignored unless (palette_type == GIMP_MAKE_PALETTE)"
   },
   {
     GIMP_PDB_INT32,
-    "alpha_dither",
+    "alpha-dither",
     "Dither transparency to fake partial opacity"
   },
   {
     GIMP_PDB_INT32,
-    "remove_unused",
+    "remove-unused",
     "Remove unused or duplicate colour entries from final palette, ignored if (palette_type == GIMP_MAKE_PALETTE)"
   },
   {
@@ -267,7 +264,8 @@ static ProcArg image_convert_indexed_inargs[] =
 
 static ProcRecord image_convert_indexed_proc =
 {
-  "gimp_image_convert_indexed",
+  "gimp-image-convert-indexed",
+  "gimp-image-convert-indexed",
   "Convert specified image to and Indexed image",
   "This procedure converts the specified image to 'indexed' color. This process requires an image of type GIMP_GRAY or GIMP_RGB. The 'palette_type' specifies what kind of palette to use, A type of '0' means to use an optimal palette of 'num_cols' generated from the colors in the image. A type of '1' means to re-use the previous palette (not currently implemented). A type of '2' means to use the so-called WWW-optimized palette. Type '3' means to use only black and white colors. A type of '4' means to use a palette from the gimp palettes directories. The 'dither type' specifies what kind of dithering to use. '0' means no dithering, '1' means standard Floyd-Steinberg error diffusion, '2' means Floyd-Steinberg error diffusion with reduced bleeding, '3' means dithering based on pixel location ('Fixed' dithering).",
   "Spencer Kimball & Peter Mattis",

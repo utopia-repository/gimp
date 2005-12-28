@@ -23,7 +23,6 @@
 /*  uri list  */
 
 void            gimp_selection_data_set_uri_list  (GtkSelectionData *selection,
-                                                   GdkAtom           atom,
                                                    GList            *uris);
 GList         * gimp_selection_data_get_uri_list  (GtkSelectionData *selection);
 
@@ -31,7 +30,6 @@ GList         * gimp_selection_data_get_uri_list  (GtkSelectionData *selection);
 /*  color  */
 
 void            gimp_selection_data_set_color     (GtkSelectionData *selection,
-                                                   GdkAtom           atom,
                                                    const GimpRGB    *color);
 gboolean        gimp_selection_data_get_color     (GtkSelectionData *selection,
                                                    GimpRGB          *color);
@@ -40,35 +38,33 @@ gboolean        gimp_selection_data_get_color     (GtkSelectionData *selection,
 /*  stream (svg/png)  */
 
 void            gimp_selection_data_set_stream    (GtkSelectionData *selection,
-                                                   GdkAtom           atom,
                                                    const guchar     *stream,
                                                    gsize             stream_length);
 const guchar  * gimp_selection_data_get_stream    (GtkSelectionData *selection,
                                                    gsize            *stream_length);
 
 
-/*  pixbuf  */
-
-void            gimp_selection_data_set_pixbuf    (GtkSelectionData *selection,
-                                                   GdkAtom           atom,
-                                                   GdkPixbuf        *pixbuf,
-                                                   const gchar      *format);
-GdkPixbuf     * gimp_selection_data_get_pixbuf    (GtkSelectionData *selection);
-
-
 /*  image  */
 
 void            gimp_selection_data_set_image     (GtkSelectionData *selection,
-                                                   GdkAtom           atom,
                                                    GimpImage        *gimage);
 GimpImage     * gimp_selection_data_get_image     (GtkSelectionData *selection,
                                                    Gimp             *gimp);
 
 
+/*  component  */
+
+void            gimp_selection_data_set_component (GtkSelectionData *selection,
+                                                   GimpImage        *gimage,
+                                                   GimpChannelType   channel);
+GimpImage     * gimp_selection_data_get_component (GtkSelectionData *selection,
+                                                   Gimp             *gimp,
+                                                   GimpChannelType  *channel);
+
+
 /*  item  */
 
 void            gimp_selection_data_set_item      (GtkSelectionData *selection,
-                                                   GdkAtom           atom,
                                                    GimpItem         *item);
 GimpItem      * gimp_selection_data_get_item      (GtkSelectionData *selection,
                                                    Gimp             *gimp);
@@ -76,9 +72,8 @@ GimpItem      * gimp_selection_data_get_item      (GtkSelectionData *selection,
 
 /*  various data  */
 
-void            gimp_selection_data_set_viewable  (GtkSelectionData *selection,
-                                                   GdkAtom           atom,
-                                                   GimpViewable     *viewable);
+void            gimp_selection_data_set_object    (GtkSelectionData *selection,
+                                                   GimpObject       *object);
 
 GimpBrush     * gimp_selection_data_get_brush     (GtkSelectionData *selection,
                                                    Gimp             *gimp);
@@ -96,7 +91,7 @@ GimpImagefile * gimp_selection_data_get_imagefile (GtkSelectionData *selection,
                                                    Gimp             *gimp);
 GimpTemplate  * gimp_selection_data_get_template  (GtkSelectionData *selection,
                                                    Gimp             *gimp);
-GimpToolInfo  * gimp_selection_data_get_tool      (GtkSelectionData *selection,
+GimpToolInfo  * gimp_selection_data_get_tool_info (GtkSelectionData *selection,
                                                    Gimp             *gimp);
 
 

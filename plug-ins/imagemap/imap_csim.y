@@ -25,6 +25,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <glib/gstdio.h>
+
 #include <gtk/gtk.h>
 
 #include "imap_circle.h"
@@ -45,9 +47,9 @@ static MapInfo_t *_map_info;
 %}
 
 %union {
-   int val;
-   double value;
-   char id[1024];
+  int val;
+  double value;
+  char id[1024];		/* Large enough to hold all polygon points! */
 }
 
 %token<val> IMG SRC WIDTH HEIGHT BORDER USEMAP
@@ -320,7 +322,7 @@ load_csim (const char* filename)
 {
   gboolean status;
   extern FILE *csim_in;
-  csim_in = fopen(filename, "r");
+  csim_in = g_fopen(filename, "r");
   if (csim_in) {
     _map_info = get_map_info();
     status = !csim_parse();

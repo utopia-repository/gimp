@@ -56,9 +56,6 @@ enum
 };
 
 
-static void     gimp_ui_manager_init           (GimpUIManager      *manager);
-static void     gimp_ui_manager_class_init     (GimpUIManagerClass *klass);
-
 static GObject * gimp_ui_manager_constructor   (GType               type,
                                                 guint               n_params,
                                                 GObjectConstructParam *params);
@@ -75,6 +72,10 @@ static void     gimp_ui_manager_get_property   (GObject            *object,
 static void     gimp_ui_manager_connect_proxy  (GtkUIManager       *manager,
                                                 GtkAction          *action,
                                                 GtkWidget          *proxy);
+static GtkWidget * gimp_ui_manager_get_widget  (GtkUIManager       *manager,
+                                                const gchar        *path);
+static GtkAction * gimp_ui_manager_get_action  (GtkUIManager       *manager,
+                                                const gchar        *path);
 static void     gimp_ui_manager_real_update    (GimpUIManager      *manager,
                                                 gpointer            update_data);
 static GimpUIManagerUIEntry *
@@ -83,6 +84,9 @@ static GimpUIManagerUIEntry *
 static gboolean gimp_ui_manager_entry_load     (GimpUIManager      *manager,
                                                 GimpUIManagerUIEntry *entry,
                                                 GError            **error);
+static GimpUIManagerUIEntry *
+                gimp_ui_manager_entry_ensure   (GimpUIManager      *manager,
+                                                const gchar        *path);
 static void     gimp_ui_manager_menu_position  (GtkMenu            *menu,
                                                 gint               *x,
                                                 gint               *y,
@@ -102,46 +106,18 @@ static gboolean gimp_ui_manager_item_key_press (GtkWidget          *widget,
                                                 GimpUIManager      *manager);
 
 
+G_DEFINE_TYPE (GimpUIManager, gimp_ui_manager, GTK_TYPE_UI_MANAGER);
+
+#define parent_class gimp_ui_manager_parent_class
+
 static guint manager_signals[LAST_SIGNAL] = { 0 };
 
-static GtkUIManagerClass *parent_class = NULL;
-
-
-GType
-gimp_ui_manager_get_type (void)
-{
-  static GType type = 0;
-
-  if (!type)
-    {
-      static const GTypeInfo type_info =
-      {
-        sizeof (GimpUIManagerClass),
-	NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_ui_manager_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpUIManager),
-        0, /* n_preallocs */
-        (GInstanceInitFunc) gimp_ui_manager_init,
-      };
-
-      type = g_type_register_static (GTK_TYPE_UI_MANAGER,
-                                     "GimpUIManager",
-				     &type_info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_ui_manager_class_init (GimpUIManagerClass *klass)
 {
   GObjectClass      *object_class  = G_OBJECT_CLASS (klass);
   GtkUIManagerClass *manager_class = GTK_UI_MANAGER_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->constructor    = gimp_ui_manager_constructor;
   object_class->dispose        = gimp_ui_manager_dispose;
@@ -150,6 +126,8 @@ gimp_ui_manager_class_init (GimpUIManagerClass *klass)
   object_class->get_property   = gimp_ui_manager_get_property;
 
   manager_class->connect_proxy = gimp_ui_manager_connect_proxy;
+  manager_class->get_widget    = gimp_ui_manager_get_widget;
+  manager_class->get_action    = gimp_ui_manager_get_action;
 
   klass->update                = gimp_ui_manager_real_update;
 
@@ -338,6 +316,35 @@ gimp_ui_manager_connect_proxy (GtkUIManager *manager,
                             manager);
 }
 
+static GtkWidget *
+gimp_ui_manager_get_widget (GtkUIManager *manager,
+                            const gchar  *path)
+{
+  GimpUIManagerUIEntry *entry;
+
+  entry = gimp_ui_manager_entry_ensure (GIMP_UI_MANAGER (manager), path);
+
+  if (entry)
+    {
+      if (! strcmp (entry->ui_path, path))
+        return entry->widget;
+
+      return GTK_UI_MANAGER_CLASS (parent_class)->get_widget (manager, path);
+    }
+
+  return NULL;
+}
+
+static GtkAction *
+gimp_ui_manager_get_action (GtkUIManager *manager,
+                            const gchar  *path)
+{
+  if (gimp_ui_manager_entry_ensure (GIMP_UI_MANAGER (manager), path))
+    return GTK_UI_MANAGER_CLASS (parent_class)->get_action (manager, path);
+
+  return NULL;
+}
+
 static void
 gimp_ui_manager_real_update (GimpUIManager *manager,
                              gpointer       update_data)
@@ -404,8 +411,8 @@ gimp_ui_manager_update (GimpUIManager *manager,
 }
 
 GimpActionGroup *
-gimp_ui_manager_get_action_group (GimpUIManager   *manager,
-                                  const gchar     *name)
+gimp_ui_manager_get_action_group (GimpUIManager *manager,
+                                  const gchar   *name)
 {
   GList *list;
 
@@ -413,12 +420,12 @@ gimp_ui_manager_get_action_group (GimpUIManager   *manager,
   g_return_val_if_fail (name != NULL, NULL);
 
   for (list = gtk_ui_manager_get_action_groups (GTK_UI_MANAGER (manager));
-           list;
-           list = g_list_next (list))
+       list;
+       list = g_list_next (list))
     {
       GimpActionGroup *group = list->data;
 
-      if (! strcmp (gtk_action_group_get_name (GTK_ACTION_GROUP (group)), name))
+      if (! strcmp (name, gtk_action_group_get_name (GTK_ACTION_GROUP (group))))
         return group;
     }
 
@@ -431,17 +438,38 @@ gimp_ui_manager_find_action (GimpUIManager *manager,
                              const gchar   *action_name)
 {
   GimpActionGroup *group;
+  GtkAction       *action = NULL;
 
   g_return_val_if_fail (GIMP_IS_UI_MANAGER (manager), NULL);
-  g_return_val_if_fail (group_name != NULL, NULL);
   g_return_val_if_fail (action_name != NULL, NULL);
 
-  group = gimp_ui_manager_get_action_group (manager, group_name);
+  if (group_name)
+    {
+      group = gimp_ui_manager_get_action_group (manager, group_name);
 
-  if (group)
-    return gtk_action_group_get_action (GTK_ACTION_GROUP (group), action_name);
+      if (group)
+        action = gtk_action_group_get_action (GTK_ACTION_GROUP (group),
+                                              action_name);
+    }
+  else
+    {
+      GList *list;
 
-  return NULL;
+      for (list = gtk_ui_manager_get_action_groups (GTK_UI_MANAGER (manager));
+           list;
+           list = g_list_next (list))
+        {
+          group = list->data;
+
+          action = gtk_action_group_get_action (GTK_ACTION_GROUP (group),
+                                                action_name);
+
+          if (action)
+            break;
+        }
+    }
+
+  return action;
 }
 
 void
@@ -466,70 +494,6 @@ gimp_ui_manager_ui_register (GimpUIManager          *manager,
   entry->widget     = NULL;
 
   manager->registered_uis = g_list_prepend (manager->registered_uis, entry);
-}
-
-GtkWidget *
-gimp_ui_manager_ui_get (GimpUIManager *manager,
-                        const gchar   *ui_path)
-{
-  GimpUIManagerUIEntry *entry;
-
-  g_return_val_if_fail (GIMP_IS_UI_MANAGER (manager), NULL);
-  g_return_val_if_fail (ui_path != NULL, NULL);
-
-  entry = gimp_ui_manager_entry_get (manager, ui_path);
-
-  if (! entry)
-    {
-      g_warning ("%s: no entry registered for \"%s\"", G_STRFUNC, ui_path);
-      return NULL;
-    }
-
-  if (! entry->merge_id)
-    {
-      GError *error = NULL;
-
-      if (! gimp_ui_manager_entry_load (manager, entry, &error))
-        {
-          g_message ("%s\n\n%s\n\n%s",
-                     _("Your GIMP installation is incomplete:"),
-                     error->message,
-                     _("Plase make sure the menu XML files are correctly "
-                       "installed."));
-          g_clear_error (&error);
-          return NULL;
-        }
-    }
-
-  if (! entry->widget)
-    {
-      entry->widget = gtk_ui_manager_get_widget (GTK_UI_MANAGER (manager),
-                                                 entry->ui_path);
-
-      if (entry->widget)
-        {
-          g_object_ref (entry->widget);
-
-          /*  take ownership of popup menus  */
-          if (GTK_IS_MENU (entry->widget))
-            gtk_object_sink (GTK_OBJECT (entry->widget));
-
-          if (entry->setup_func)
-            entry->setup_func (manager, entry->ui_path);
-        }
-      else
-        {
-          g_warning ("%s: \"%s\" does not contain registered toplevel "
-                     "widget \"%s\"",
-                     G_STRFUNC, entry->basename, entry->ui_path);
-          return NULL;
-        }
-    }
-
-  if (! strcmp (entry->ui_path, ui_path))
-    return entry->widget;
-
-  return gtk_ui_manager_get_widget (GTK_UI_MANAGER (manager), ui_path);
 }
 
 typedef struct
@@ -558,7 +522,7 @@ gimp_ui_manager_ui_popup (GimpUIManager        *manager,
   g_return_if_fail (ui_path != NULL);
   g_return_if_fail (parent == NULL || GTK_IS_WIDGET (parent));
 
-  widget = gimp_ui_manager_ui_get (manager, ui_path);
+  widget = gtk_ui_manager_get_widget (GTK_UI_MANAGER (manager), ui_path);
 
   if (GTK_IS_MENU_ITEM (widget))
     widget = gtk_menu_item_get_submenu (GTK_MENU_ITEM (widget));
@@ -587,6 +551,9 @@ gimp_ui_manager_ui_popup (GimpUIManager        *manager,
       button        = 0;
       activate_time = 0;
     }
+
+  if (current_event)
+    gdk_event_free (current_event);
 
   menu_pos = g_object_get_data (G_OBJECT (widget), "menu-pos");
 
@@ -674,6 +641,79 @@ gimp_ui_manager_entry_load (GimpUIManager         *manager,
     return FALSE;
 
   return TRUE;
+}
+
+static GimpUIManagerUIEntry *
+gimp_ui_manager_entry_ensure (GimpUIManager *manager,
+                              const gchar   *path)
+{
+  GimpUIManagerUIEntry *entry;
+
+  entry = gimp_ui_manager_entry_get (manager, path);
+
+  if (! entry)
+    {
+      g_warning ("%s: no entry registered for \"%s\"", G_STRFUNC, path);
+      return NULL;
+    }
+
+  if (! entry->merge_id)
+    {
+      GError *error = NULL;
+
+      if (! gimp_ui_manager_entry_load (manager, entry, &error))
+        {
+          if (error->domain == G_FILE_ERROR &&
+              error->code == G_FILE_ERROR_EXIST)
+            {
+              g_message ("%s\n\n%s\n\n%s",
+                         _("Your GIMP installation is incomplete:"),
+                         error->message,
+                         _("Plase make sure the menu XML files are correctly "
+                           "installed."));
+            }
+          else
+            {
+              g_message (_("There was an error parsing the menu definition "
+                           "from %s: %s"),
+                         gimp_filename_to_utf8 (entry->basename),
+                         error->message);
+            }
+
+          g_clear_error (&error);
+          return NULL;
+        }
+    }
+
+  if (! entry->widget)
+    {
+      GtkUIManager *gtk_manager = GTK_UI_MANAGER (manager);
+
+      entry->widget =
+        GTK_UI_MANAGER_CLASS (parent_class)->get_widget (gtk_manager,
+                                                         entry->ui_path);
+
+      if (entry->widget)
+        {
+          g_object_ref (entry->widget);
+
+          /*  take ownership of popup menus  */
+          if (GTK_IS_MENU (entry->widget))
+            gtk_object_sink (GTK_OBJECT (entry->widget));
+
+          if (entry->setup_func)
+            entry->setup_func (manager, entry->ui_path);
+        }
+      else
+        {
+          g_warning ("%s: \"%s\" does not contain registered toplevel "
+                     "widget \"%s\"",
+                     G_STRFUNC, entry->basename, entry->ui_path);
+          return NULL;
+        }
+    }
+
+  return entry;
 }
 
 static void
@@ -772,7 +812,7 @@ gimp_ui_manager_item_realize (GtkWidget     *widget,
       if (! GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (widget->parent),
                                                  quark_key_press_connected)))
         {
-          g_signal_connect (widget->parent, "key_press_event",
+          g_signal_connect (widget->parent, "key-press-event",
                             G_CALLBACK (gimp_ui_manager_item_key_press),
                             manager);
 

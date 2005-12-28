@@ -24,37 +24,14 @@
 
 #include <libgimpbase/gimpbasetypes.h>
 
+#include <libgimpwidgets/gimpwidgetsenums.h>
+
 G_BEGIN_DECLS
 
 /* For information look into the html documentation */
 
 
-typedef enum
-{
-  GIMP_COLOR_AREA_FLAT = 0,
-  GIMP_COLOR_AREA_SMALL_CHECKS,
-  GIMP_COLOR_AREA_LARGE_CHECKS
-} GimpColorAreaType;
-
-typedef enum
-{
-  GIMP_COLOR_SELECTOR_HUE,
-  GIMP_COLOR_SELECTOR_SATURATION,
-  GIMP_COLOR_SELECTOR_VALUE,
-  GIMP_COLOR_SELECTOR_RED,
-  GIMP_COLOR_SELECTOR_GREEN,
-  GIMP_COLOR_SELECTOR_BLUE,
-  GIMP_COLOR_SELECTOR_ALPHA
-} GimpColorSelectorChannel;
-
-typedef enum
-{
-  GIMP_SIZE_ENTRY_UPDATE_NONE       = 0,
-  GIMP_SIZE_ENTRY_UPDATE_SIZE       = 1,
-  GIMP_SIZE_ENTRY_UPDATE_RESOLUTION = 2
-} GimpSizeEntryUpdatePolicy;
-
-
+typedef struct _GimpBrowser            GimpBrowser;
 typedef struct _GimpButton             GimpButton;
 typedef struct _GimpCellRendererColor  GimpCellRendererColor;
 typedef struct _GimpCellRendererToggle GimpCellRendererToggle;
@@ -72,20 +49,26 @@ typedef struct _GimpColorSelect        GimpColorSelect;
 typedef struct _GimpColorSelection     GimpColorSelection;
 typedef struct _GimpController         GimpController;
 typedef struct _GimpDialog             GimpDialog;
+typedef struct _GimpEnumStore          GimpEnumStore;
+typedef struct _GimpEnumComboBox       GimpEnumComboBox;
+typedef struct _GimpEnumLabel          GimpEnumLabel;
 typedef struct _GimpFileEntry          GimpFileEntry;
 typedef struct _GimpFrame              GimpFrame;
 typedef struct _GimpIntComboBox        GimpIntComboBox;
 typedef struct _GimpIntStore           GimpIntStore;
 typedef struct _GimpMemsizeEntry       GimpMemsizeEntry;
 typedef struct _GimpOffsetArea         GimpOffsetArea;
+typedef struct _GimpPageSelector       GimpPageSelector;
 typedef struct _GimpPathEditor         GimpPathEditor;
 typedef struct _GimpPickButton         GimpPickButton;
 typedef struct _GimpPreview            GimpPreview;
 typedef struct _GimpPreviewArea        GimpPreviewArea;
 typedef struct _GimpPixmap             GimpPixmap;
+typedef struct _GimpResolutionEntry    GimpResolutionEntry;
 typedef struct _GimpScrolledPreview    GimpScrolledPreview;
 typedef struct _GimpSizeEntry          GimpSizeEntry;
 typedef struct _GimpUnitMenu           GimpUnitMenu;
+typedef struct _GimpZoomModel          GimpZoomModel;
 
 
 typedef void (* GimpHelpFunc) (const gchar *help_id,

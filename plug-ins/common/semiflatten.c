@@ -22,12 +22,12 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include <libgimp/gimp.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define PLUG_IN_PROC "plug-in-semiflatten"
 
 
 /* Declare local functions.
@@ -59,12 +59,12 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image", "  Input image (unused)" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" }
+    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",    "Input image (unused)"         },
+    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"               }
   };
 
-  gimp_install_procedure ("plug_in_semiflatten",
+  gimp_install_procedure (PLUG_IN_PROC,
 			  "Flatten pixels in an RGBA image that aren't "
 			  "completely transparent against the current GIMP "
 			  "background color",
@@ -80,10 +80,8 @@ query (void)
 			  G_N_ELEMENTS (args), 0,
 			  args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_semiflatten",
-                             "<Image>/Filters/Colors");
-  gimp_plugin_menu_register ("plug_in_semiflatten",
-                             "<Image>/Layer/Transparency/Modify");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Web");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Layer/Transparency/Modify");
 }
 
 
@@ -100,12 +98,12 @@ run (const gchar      *name,
   GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
   GimpRunMode        run_mode;
 
+  run_mode = param[0].data.d_int32;
+
   *nreturn_vals = 1;
   *return_vals = values;
 
-  run_mode = param[0].data.d_int32;
-
-  values[0].type = GIMP_PDB_STATUS;
+  values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = status;
 
   INIT_I18N();
@@ -119,7 +117,7 @@ run (const gchar      *name,
       /*  Make sure that the drawable is indexed or RGB color  */
       if (gimp_drawable_is_rgb (drawable->drawable_id))
 	{
-	  gimp_progress_init (_("Semi-Flattening..."));
+	  gimp_progress_init (_("Semi-Flattening"));
 	  gimp_tile_cache_ntiles (2 * (drawable->width / gimp_tile_width ()
 				       + 1));
 	  semiflatten (drawable);
@@ -151,11 +149,10 @@ semiflatten_func (const guchar *src,
 static void
 semiflatten (GimpDrawable *drawable)
 {
-  GimpRGB      background;
+  GimpRGB background;
 
   gimp_context_get_background (&background);
   gimp_rgb_get_uchar (&background, &bgred, &bggreen, &bgblue);
 
   gimp_rgn_iterate2 (drawable, 0 /* unused */, semiflatten_func, NULL);
 }
-

@@ -45,9 +45,6 @@ enum
 };
 
 
-static void   gimp_plug_in_action_init          (GimpPlugInAction      *action);
-static void   gimp_plug_in_action_class_init    (GimpPlugInActionClass *klass);
-
 static void   gimp_plug_in_action_set_property  (GObject      *object,
                                                  guint         prop_id,
                                                  const GValue *value,
@@ -62,37 +59,12 @@ static void   gimp_plug_in_action_connect_proxy (GtkAction    *action,
                                                  GtkWidget    *proxy);
 
 
-static GtkActionClass *parent_class                = NULL;
-static guint           action_signals[LAST_SIGNAL] = { 0 };
+G_DEFINE_TYPE (GimpPlugInAction, gimp_plug_in_action, GIMP_TYPE_ACTION);
 
+#define parent_class gimp_plug_in_action_parent_class
 
-GType
-gimp_plug_in_action_get_type (void)
-{
-  static GType type = 0;
+static guint action_signals[LAST_SIGNAL] = { 0 };
 
-  if (!type)
-    {
-      static const GTypeInfo type_info =
-      {
-        sizeof (GimpPlugInActionClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_plug_in_action_class_init,
-        (GClassFinalizeFunc) NULL,
-        NULL,
-        sizeof (GimpPlugInAction),
-        0, /* n_preallocs */
-        (GInstanceInitFunc) gimp_plug_in_action_init,
-      };
-
-      type = g_type_register_static (GIMP_TYPE_ACTION,
-                                     "GimpPlugInAction",
-                                     &type_info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_plug_in_action_class_init (GimpPlugInActionClass *klass)
@@ -100,10 +72,8 @@ gimp_plug_in_action_class_init (GimpPlugInActionClass *klass)
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkActionClass *action_class = GTK_ACTION_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
-
-  object_class->set_property = gimp_plug_in_action_set_property;
-  object_class->get_property = gimp_plug_in_action_get_property;
+  object_class->set_property  = gimp_plug_in_action_set_property;
+  object_class->get_property  = gimp_plug_in_action_get_property;
 
   action_class->activate      = gimp_plug_in_action_activate;
   action_class->connect_proxy = gimp_plug_in_action_connect_proxy;
@@ -192,8 +162,7 @@ gimp_plug_in_action_connect_proxy (GtkAction *action,
 
       if (pixbuf)
         {
-          GdkScreen   *screen   = gtk_widget_get_screen (proxy);
-          GtkSettings *settings = gtk_settings_get_for_screen (screen);
+          GtkSettings *settings = gtk_widget_get_settings (proxy);
           gint         width;
           gint         height;
           GtkWidget   *image;
@@ -233,7 +202,7 @@ gimp_plug_in_action_new (const gchar   *name,
                        "name",     name,
                        "label",    label,
                        "tooltip",  tooltip,
-                       "stock_id", stock_id,
+                       "stock-id", stock_id,
                        "proc-def", proc_def,
                        NULL);
 }

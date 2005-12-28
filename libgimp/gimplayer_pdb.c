@@ -59,7 +59,7 @@ _gimp_layer_new (gint32                image_ID,
   gint nreturn_vals;
   gint32 layer_ID = -1;
 
-  return_vals = gimp_run_procedure ("gimp_layer_new",
+  return_vals = gimp_run_procedure ("gimp-layer-new",
 				    &nreturn_vals,
 				    GIMP_PDB_IMAGE, image_ID,
 				    GIMP_PDB_INT32, width,
@@ -101,7 +101,7 @@ gimp_layer_new_from_drawable (gint32 drawable_ID,
   gint nreturn_vals;
   gint32 layer_copy_ID = -1;
 
-  return_vals = gimp_run_procedure ("gimp_layer_new_from_drawable",
+  return_vals = gimp_run_procedure ("gimp-layer-new-from-drawable",
 				    &nreturn_vals,
 				    GIMP_PDB_DRAWABLE, drawable_ID,
 				    GIMP_PDB_IMAGE, dest_image_ID,
@@ -139,7 +139,7 @@ _gimp_layer_copy (gint32   layer_ID,
   gint nreturn_vals;
   gint32 layer_copy_ID = -1;
 
-  return_vals = gimp_run_procedure ("gimp_layer_copy",
+  return_vals = gimp_run_procedure ("gimp-layer-copy",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_INT32, add_alpha,
@@ -175,7 +175,7 @@ gimp_layer_add_alpha (gint32 layer_ID)
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_add_alpha",
+  return_vals = gimp_run_procedure ("gimp-layer-add-alpha",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_END);
@@ -214,7 +214,7 @@ gimp_layer_scale (gint32   layer_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_scale",
+  return_vals = gimp_run_procedure ("gimp-layer-scale",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_INT32, new_width,
@@ -257,7 +257,7 @@ gimp_layer_resize (gint32 layer_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_resize",
+  return_vals = gimp_run_procedure ("gimp-layer-resize",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_INT32, new_width,
@@ -291,7 +291,7 @@ gimp_layer_resize_to_image_size (gint32 layer_ID)
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_resize_to_image_size",
+  return_vals = gimp_run_procedure ("gimp-layer-resize-to-image-size",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_END);
@@ -329,7 +329,7 @@ gimp_layer_translate (gint32 layer_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_translate",
+  return_vals = gimp_run_procedure ("gimp-layer-translate",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_INT32, offx,
@@ -366,7 +366,7 @@ gimp_layer_set_offsets (gint32 layer_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_set_offsets",
+  return_vals = gimp_run_procedure ("gimp-layer-set-offsets",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_INT32, offx,
@@ -408,7 +408,7 @@ gimp_layer_create_mask (gint32          layer_ID,
   gint nreturn_vals;
   gint32 mask_ID = -1;
 
-  return_vals = gimp_run_procedure ("gimp_layer_create_mask",
+  return_vals = gimp_run_procedure ("gimp-layer-create-mask",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_INT32, mask_type,
@@ -440,7 +440,7 @@ gimp_layer_get_mask (gint32 layer_ID)
   gint nreturn_vals;
   gint32 mask_ID = -1;
 
-  return_vals = gimp_run_procedure ("gimp_layer_get_mask",
+  return_vals = gimp_run_procedure ("gimp-layer-get-mask",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_END);
@@ -473,7 +473,7 @@ gimp_layer_from_mask (gint32 mask_ID)
   gint nreturn_vals;
   gint32 layer_ID = -1;
 
-  return_vals = gimp_run_procedure ("gimp_layer_from_mask",
+  return_vals = gimp_run_procedure ("gimp-layer-from-mask",
 				    &nreturn_vals,
 				    GIMP_PDB_CHANNEL, mask_ID,
 				    GIMP_PDB_END);
@@ -510,7 +510,7 @@ gimp_layer_add_mask (gint32 layer_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_add_mask",
+  return_vals = gimp_run_procedure ("gimp-layer-add-mask",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_CHANNEL, mask_ID,
@@ -543,7 +543,7 @@ gimp_layer_remove_mask (gint32            layer_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_remove_mask",
+  return_vals = gimp_run_procedure ("gimp-layer-remove-mask",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_INT32, mode,
@@ -575,7 +575,7 @@ gimp_layer_is_floating_sel (gint32 layer_ID)
   gint nreturn_vals;
   gboolean is_floating_sel = FALSE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_is_floating_sel",
+  return_vals = gimp_run_procedure ("gimp-layer-is-floating-sel",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_END);
@@ -589,60 +589,60 @@ gimp_layer_is_floating_sel (gint32 layer_ID)
 }
 
 /**
- * gimp_layer_get_preserve_trans:
+ * gimp_layer_get_lock_alpha:
  * @layer_ID: The layer.
  *
- * Get the preserve transperancy setting of the specified layer.
+ * Get the lock alpha channel setting of the specified layer.
  *
- * This procedure returns the specified layer's preserve transperancy
+ * This procedure returns the specified layer's lock alpha channel
  * setting.
  *
- * Returns: The layer's preserve transperancy setting.
+ * Returns: The layer's lock alpha channel setting.
  */
 gboolean
-gimp_layer_get_preserve_trans (gint32 layer_ID)
+gimp_layer_get_lock_alpha (gint32 layer_ID)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
-  gboolean preserve_trans = FALSE;
+  gboolean lock_alpha = FALSE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_get_preserve_trans",
+  return_vals = gimp_run_procedure ("gimp-layer-get-lock-alpha",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_END);
 
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
-    preserve_trans = return_vals[1].data.d_int32;
+    lock_alpha = return_vals[1].data.d_int32;
 
   gimp_destroy_params (return_vals, nreturn_vals);
 
-  return preserve_trans;
+  return lock_alpha;
 }
 
 /**
- * gimp_layer_set_preserve_trans:
+ * gimp_layer_set_lock_alpha:
  * @layer_ID: The layer.
- * @preserve_trans: The new layer's preserve transperancy setting.
+ * @lock_alpha: The new layer's lock alpha channel setting.
  *
- * Set the preserve transperancy setting of the specified layer.
+ * Set the lock alpha channel setting of the specified layer.
  *
- * This procedure sets the specified layer's preserve transperancy
+ * This procedure sets the specified layer's lock alpha channel
  * setting.
  *
  * Returns: TRUE on success.
  */
 gboolean
-gimp_layer_set_preserve_trans (gint32   layer_ID,
-			       gboolean preserve_trans)
+gimp_layer_set_lock_alpha (gint32   layer_ID,
+			   gboolean lock_alpha)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_set_preserve_trans",
+  return_vals = gimp_run_procedure ("gimp-layer-set-lock-alpha",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
-				    GIMP_PDB_INT32, preserve_trans,
+				    GIMP_PDB_INT32, lock_alpha,
 				    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
@@ -671,7 +671,7 @@ gimp_layer_get_apply_mask (gint32 layer_ID)
   gint nreturn_vals;
   gboolean apply_mask = FALSE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_get_apply_mask",
+  return_vals = gimp_run_procedure ("gimp-layer-get-apply-mask",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_END);
@@ -705,7 +705,7 @@ gimp_layer_set_apply_mask (gint32   layer_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_set_apply_mask",
+  return_vals = gimp_run_procedure ("gimp-layer-set-apply-mask",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_INT32, apply_mask,
@@ -737,7 +737,7 @@ gimp_layer_get_show_mask (gint32 layer_ID)
   gint nreturn_vals;
   gboolean show_mask = FALSE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_get_show_mask",
+  return_vals = gimp_run_procedure ("gimp-layer-get-show-mask",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_END);
@@ -772,7 +772,7 @@ gimp_layer_set_show_mask (gint32   layer_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_set_show_mask",
+  return_vals = gimp_run_procedure ("gimp-layer-set-show-mask",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_INT32, show_mask,
@@ -789,13 +789,13 @@ gimp_layer_set_show_mask (gint32   layer_ID,
  * gimp_layer_get_edit_mask:
  * @layer_ID: The layer.
  *
- * Get the show mask of the specified layer.
+ * Get the edit mask of the specified layer.
  *
- * This procedure returns the specified layer's show mask. If the value
+ * This procedure returns the specified layer's edit mask. If the value
  * is non-zero, then the layer mask for this layer is currently active,
  * and not the layer.
  *
- * Returns: The layer show mask.
+ * Returns: The layer edit mask.
  */
 gboolean
 gimp_layer_get_edit_mask (gint32 layer_ID)
@@ -804,7 +804,7 @@ gimp_layer_get_edit_mask (gint32 layer_ID)
   gint nreturn_vals;
   gboolean edit_mask = FALSE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_get_edit_mask",
+  return_vals = gimp_run_procedure ("gimp-layer-get-edit-mask",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_END);
@@ -820,11 +820,11 @@ gimp_layer_get_edit_mask (gint32 layer_ID)
 /**
  * gimp_layer_set_edit_mask:
  * @layer_ID: The layer.
- * @edit_mask: The new layer show mask.
+ * @edit_mask: The new layer edit mask.
  *
- * Set the show mask of the specified layer.
+ * Set the edit mask of the specified layer.
  *
- * This procedure sets the specified layer's show mask. This controls
+ * This procedure sets the specified layer's edit mask. This controls
  * whether the layer or it's mask is currently active for editing. If
  * the specified layer has no layer mask, then this procedure will
  * return an error.
@@ -839,7 +839,7 @@ gimp_layer_set_edit_mask (gint32   layer_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_set_edit_mask",
+  return_vals = gimp_run_procedure ("gimp-layer-set-edit-mask",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_INT32, edit_mask,
@@ -869,7 +869,7 @@ gimp_layer_get_opacity (gint32 layer_ID)
   gint nreturn_vals;
   gdouble opacity = 0;
 
-  return_vals = gimp_run_procedure ("gimp_layer_get_opacity",
+  return_vals = gimp_run_procedure ("gimp-layer-get-opacity",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_END);
@@ -901,7 +901,7 @@ gimp_layer_set_opacity (gint32  layer_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_set_opacity",
+  return_vals = gimp_run_procedure ("gimp-layer-set-opacity",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_FLOAT, opacity,
@@ -931,7 +931,7 @@ gimp_layer_get_mode (gint32 layer_ID)
   gint nreturn_vals;
   GimpLayerModeEffects mode = 0;
 
-  return_vals = gimp_run_procedure ("gimp_layer_get_mode",
+  return_vals = gimp_run_procedure ("gimp-layer-get-mode",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_END);
@@ -963,7 +963,7 @@ gimp_layer_set_mode (gint32               layer_ID,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_layer_set_mode",
+  return_vals = gimp_run_procedure ("gimp-layer-set-mode",
 				    &nreturn_vals,
 				    GIMP_PDB_LAYER, layer_ID,
 				    GIMP_PDB_INT32, mode,

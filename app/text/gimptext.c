@@ -28,11 +28,9 @@
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "text-types.h"
-
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-params.h"
 
 #include "core/gimpstrokeoptions.h"
 #include "core/gimp-utils.h"
@@ -69,73 +67,34 @@ enum
   PROP_BORDER
 };
 
-static void     gimp_text_class_init           (GimpTextClass *klass);
-static void     gimp_text_finalize             (GObject       *object);
-static void     gimp_text_get_property         (GObject       *object,
-                                                guint          property_id,
-                                                GValue        *value,
-                                                GParamSpec    *pspec);
-static void     gimp_text_set_property         (GObject       *object,
-                                                guint          property_id,
-                                                const GValue  *value,
-                                                GParamSpec    *pspec);
-static gint64   gimp_text_get_memsize          (GimpObject    *object,
-                                                gint64        *gui_size);
+
+static void     gimp_text_finalize     (GObject      *object);
+static void     gimp_text_get_property (GObject      *object,
+                                        guint         property_id,
+                                        GValue       *value,
+                                        GParamSpec   *pspec);
+static void     gimp_text_set_property (GObject      *object,
+                                        guint         property_id,
+                                        const GValue *value,
+                                        GParamSpec   *pspec);
+static gint64   gimp_text_get_memsize  (GimpObject   *object,
+                                        gint64       *gui_size);
 
 
-static GimpObjectClass *parent_class = NULL;
+G_DEFINE_TYPE_WITH_CODE (GimpText, gimp_text, GIMP_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG, NULL));
 
+#define parent_class gimp_text_parent_class
 
-GType
-gimp_text_get_type (void)
-{
-  static GType text_type = 0;
-
-  if (! text_type)
-    {
-      static const GTypeInfo text_info =
-      {
-        sizeof (GimpTextClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) gimp_text_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (GimpText),
-	0,              /* n_preallocs    */
-	NULL            /* instance_init  */
-      };
-      static const GInterfaceInfo text_iface_info =
-      {
-        NULL,           /* iface_init     */
-        NULL,           /* iface_finalize */
-        NULL            /* iface_data     */
-      };
-
-      text_type = g_type_register_static (GIMP_TYPE_OBJECT,
-                                          "GimpText", &text_info, 0);
-
-      g_type_add_interface_static (text_type, GIMP_TYPE_CONFIG,
-                                   &text_iface_info);
-    }
-
-  return text_type;
-}
 
 static void
 gimp_text_class_init (GimpTextClass *klass)
 {
-  GObjectClass    *object_class;
-  GimpObjectClass *gimp_object_class;
-  GParamSpec      *param_spec;
+  GObjectClass    *object_class      = G_OBJECT_CLASS (klass);
+  GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
   GimpRGB          black;
   GimpMatrix2      identity;
   gchar           *language;
-
-  object_class      = G_OBJECT_CLASS (klass);
-  gimp_object_class = GIMP_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize         = gimp_text_finalize;
   object_class->get_property     = gimp_text_get_property;
@@ -175,7 +134,7 @@ gimp_text_class_init (GimpTextClass *klass)
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_AUTOHINT,
                                     "autohint", NULL,
                                     FALSE,
-                                    GIMP_PARAM_DEFAULTS);
+                                    GIMP_CONFIG_PARAM_DEFAULTS);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_ANTIALIAS,
                                     "antialias", NULL,
                                     TRUE,
@@ -183,7 +142,7 @@ gimp_text_class_init (GimpTextClass *klass)
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_KERNING,
                                     "kerning", NULL,
                                     FALSE,
-                                    GIMP_PARAM_DEFAULTS);
+                                    GIMP_CONFIG_PARAM_DEFAULTS);
   GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_LANGUAGE,
 				   "language", NULL,
 				   language,
@@ -201,7 +160,7 @@ gimp_text_class_init (GimpTextClass *klass)
                                 "outline", NULL,
                                  GIMP_TYPE_TEXT_OUTLINE,
                                  GIMP_TEXT_OUTLINE_NONE,
-                                 GIMP_PARAM_DEFAULTS);
+                                 GIMP_CONFIG_PARAM_DEFAULTS);
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_JUSTIFICATION,
                                 "justify", NULL,
                                  GIMP_TYPE_TEXT_JUSTIFICATION,
@@ -210,15 +169,15 @@ gimp_text_class_init (GimpTextClass *klass)
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_INDENTATION,
 				   "indent", NULL,
 				   -8192.0, 8192.0, 0.0,
-				   GIMP_PARAM_DEFAULTS);
+				   GIMP_CONFIG_PARAM_DEFAULTS);
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_LINE_SPACING,
 				   "line-spacing", NULL,
 				   -8192.0, 8192.0, 0.0,
-				   GIMP_PARAM_DEFAULTS);
+				   GIMP_CONFIG_PARAM_DEFAULTS);
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_LETTER_SPACING,
 				   "letter-spacing", NULL,
 				   -8192.0, 8192.0, 0.0,
-				   GIMP_PARAM_DEFAULTS);
+				   GIMP_CONFIG_PARAM_DEFAULTS);
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_BOX_MODE,
                                 "box-mode",
                                  NULL,
@@ -228,11 +187,11 @@ gimp_text_class_init (GimpTextClass *klass)
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_BOX_WIDTH,
                                    "box-width", NULL,
                                    0.0, GIMP_MAX_IMAGE_SIZE, 0.0,
-                                   GIMP_PARAM_DEFAULTS);
+                                   GIMP_CONFIG_PARAM_DEFAULTS);
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_BOX_HEIGHT,
                                    "box-height", NULL,
                                    0.0, GIMP_MAX_IMAGE_SIZE, 0.0,
-                                   GIMP_PARAM_DEFAULTS);
+                                   GIMP_CONFIG_PARAM_DEFAULTS);
   GIMP_CONFIG_INSTALL_PROP_UNIT (object_class, PROP_BOX_UNIT,
 				 "box-unit", NULL,
 				 TRUE, FALSE, GIMP_UNIT_PIXEL,
@@ -240,23 +199,29 @@ gimp_text_class_init (GimpTextClass *klass)
   GIMP_CONFIG_INSTALL_PROP_MATRIX2 (object_class, PROP_TRANSFORMATION,
                                     "transformation", NULL,
                                     &identity,
-                                    GIMP_PARAM_DEFAULTS);
+                                    GIMP_CONFIG_PARAM_DEFAULTS);
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_OFFSET_X,
                                    "offset-x", NULL,
                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0.0,
-                                   GIMP_PARAM_DEFAULTS);
+                                   GIMP_CONFIG_PARAM_DEFAULTS);
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_OFFSET_Y,
                                    "offset-y", NULL,
                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0.0,
-                                   GIMP_PARAM_DEFAULTS);
+                                   GIMP_CONFIG_PARAM_DEFAULTS);
 
   /*  border does only exist to implement the old text API  */
-  param_spec = g_param_spec_int ("border", NULL, NULL,
-                                 0, GIMP_MAX_IMAGE_SIZE, 0,
-                                 G_PARAM_CONSTRUCT | G_PARAM_WRITABLE);
-  g_object_class_install_property (object_class, PROP_BORDER, param_spec);
+  g_object_class_install_property (object_class, PROP_BORDER,
+                                   g_param_spec_int ("border", NULL, NULL,
+                                                     0, GIMP_MAX_IMAGE_SIZE, 0,
+                                                     G_PARAM_CONSTRUCT |
+                                                     G_PARAM_WRITABLE));
 
   g_free (language);
+}
+
+static void
+gimp_text_init (GimpText *text)
+{
 }
 
 static void
@@ -385,16 +350,8 @@ gimp_text_set_property (GObject      *object,
       text->text = g_value_dup_string (value);
       break;
     case PROP_FONT:
-      {
-        const gchar *font = g_value_get_string (value);
-        gsize        len  = strlen (font);
-
-        if (g_str_has_suffix (font, " Not-Rotated"))
-          len -= strlen ( " Not-Rotated");
-
-        g_free (text->font);
-        text->font = g_strndup (font, len);
-      }
+      g_free (text->font);
+      text->font = g_value_dup_string (value);
       break;
     case PROP_FONT_SIZE:
       text->font_size = g_value_get_double (value);
@@ -475,10 +432,8 @@ static gint64
 gimp_text_get_memsize (GimpObject *object,
                        gint64     *gui_size)
 {
-  GimpText *text;
+  GimpText *text    = GIMP_TEXT (object);
   gint64    memsize = 0;
-
-  text = GIMP_TEXT (object);
 
   if (text->text)
     memsize += strlen (text->text) + 1;
@@ -491,4 +446,24 @@ gimp_text_get_memsize (GimpObject *object,
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
+}
+
+void
+gimp_text_get_transformation (GimpText    *text,
+                              GimpMatrix3 *matrix)
+{
+  g_return_if_fail (GIMP_IS_TEXT (text));
+  g_return_if_fail (matrix != NULL);
+
+  matrix->coeff[0][0] = text->transformation.coeff[0][0];
+  matrix->coeff[0][1] = text->transformation.coeff[0][1];
+  matrix->coeff[0][2] = text->offset_x;
+
+  matrix->coeff[1][0] = text->transformation.coeff[1][0];
+  matrix->coeff[1][1] = text->transformation.coeff[1][1];
+  matrix->coeff[1][2] = text->offset_y;
+
+  matrix->coeff[2][0] = 0.0;
+  matrix->coeff[2][1] = 0.0;
+  matrix->coeff[2][1] = 1.0;
 }

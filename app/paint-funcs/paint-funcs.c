@@ -43,15 +43,6 @@
 #define EPSILON       0.0001
 
 
-typedef enum
-{
-  MinifyX_MinifyY,
-  MinifyX_MagnifyY,
-  MagnifyX_MinifyY,
-  MagnifyX_MagnifyY
-} ScaleType;
-
-
 /*  Layer modes information  */
 typedef struct _LayerMode LayerMode;
 struct _LayerMode
@@ -132,8 +123,8 @@ static const guchar  no_mask = OPAQUE_OPACITY;
 
 /*  Local function prototypes  */
 
-static gint *   make_curve               (gdouble        sigma,
-                                          guint         *length);
+static gint *   make_curve               (gdouble         sigma,
+                                          gint           *length);
 static gdouble  cubic                    (gdouble         dx,
                                           gint            jm1,
                                           gint            j,
@@ -151,10 +142,8 @@ static void     apply_layer_mode_replace (guchar         *src1,
                                           guint           bytes2,
                                           const gboolean *affect);
 
-static inline void rotate_pointers       (guchar         **p,
-                                          guint32          n);
-
-
+static inline void rotate_pointers       (guchar        **p,
+                                          guint32         n);
 
 static void
 update_tile_rowhints (Tile *tile,
@@ -349,7 +338,7 @@ update_tile_rowhints (Tile *tile,
 
 static gint *
 make_curve (gdouble  sigma,
-            guint   *length)
+            gint    *length)
 {
   gint    *curve;
   gdouble  sigma2;
@@ -431,6 +420,7 @@ cubic (gdouble dx,
                        ( 2 * jm1 - 5 * j + 4 * jp1 - jp2 ) ) * dx +
                      ( - jm1 + jp1 ) ) * dx + (j + j) ) / 2.0;
 }
+
 
 /*********************/
 /*  FUNCTIONS        */
@@ -1915,11 +1905,10 @@ extract_from_inten_pixels (guchar       *src,
                            const guchar *bg,
                            gboolean      cut,
                            guint         length,
-                           guint         bytes,
-                           gboolean      has_alpha)
+                           guint         src_bytes,
+                           guint         dest_bytes)
 {
   gint          b, alpha;
-  gint          dest_bytes;
   const guchar *m;
   gint          tmp;
 
@@ -1928,14 +1917,14 @@ extract_from_inten_pixels (guchar       *src,
   else
     m = &no_mask;
 
-  alpha = (has_alpha) ? bytes - 1 : bytes;
-  dest_bytes = (has_alpha) ? bytes : bytes + 1;
+  alpha = HAS_ALPHA (src_bytes) ? src_bytes - 1 : src_bytes;
+
   while (length --)
     {
       for (b = 0; b < alpha; b++)
         dest[b] = src[b];
 
-      if (has_alpha)
+      if (HAS_ALPHA (src_bytes))
         {
           dest[alpha] = INT_MULT(*m, src[alpha], tmp);
           if (cut)
@@ -1943,16 +1932,18 @@ extract_from_inten_pixels (guchar       *src,
         }
       else
         {
-          dest[alpha] = *m;
+          if (HAS_ALPHA (dest_bytes))
+            dest[alpha] = *m;
+
           if (cut)
-            for (b = 0; b < bytes; b++)
+            for (b = 0; b < src_bytes; b++)
               src[b] = INT_BLEND(bg[b], src[b], *m, tmp);
         }
 
       if (mask)
         m++;
 
-      src += bytes;
+      src += src_bytes;
       dest += dest_bytes;
     }
 }
@@ -1966,8 +1957,8 @@ extract_from_indexed_pixels (guchar       *src,
                              const guchar *bg,
                              gboolean      cut,
                              guint         length,
-                             guint         bytes,
-                             gboolean      has_alpha)
+                             guint         src_bytes,
+                             guint         dest_bytes)
 {
   gint          b;
   gint          index;
@@ -1985,7 +1976,7 @@ extract_from_indexed_pixels (guchar       *src,
       for (b = 0; b < 3; b++)
         dest[b] = cmap[index + b];
 
-      if (has_alpha)
+      if (HAS_ALPHA (src_bytes))
         {
           dest[3] = INT_MULT (*m, src[1], t);
           if (cut)
@@ -1993,7 +1984,9 @@ extract_from_indexed_pixels (guchar       *src,
         }
       else
         {
-          dest[3] = *m;
+          if (HAS_ALPHA (dest_bytes))
+            dest[3] = *m;
+
           if (cut)
             src[0] = (*m > 127) ? bg[0] : src[0];
         }
@@ -2001,8 +1994,8 @@ extract_from_indexed_pixels (guchar       *src,
       if (mask)
         m++;
 
-      src += bytes;
-      dest += 4;
+      src += src_bytes;
+      dest += dest_bytes;
     }
 }
 
@@ -2198,7 +2191,8 @@ copy_region (PixelRegion *src,
 #ifdef COWSHOW
           fputc('!',stderr);
 #endif
-          tile_manager_map_over_tile (dest->tiles, dest->curtile, src->curtile);
+          tile_manager_map_over_tile (dest->tiles,
+                                      dest->curtile, src->curtile);
         }
       else
         {
@@ -2315,7 +2309,9 @@ extract_alpha_region (PixelRegion *src,
   guchar * s, * m, * d;
   void * pr;
 
-  for (pr = pixel_regions_register (3, src, mask, dest); pr != NULL; pr = pixel_regions_process (pr))
+  for (pr = pixel_regions_register (3, src, mask, dest);
+       pr != NULL;
+       pr = pixel_regions_process (pr))
     {
       s = src->data;
       d = dest->data;
@@ -2338,14 +2334,13 @@ extract_alpha_region (PixelRegion *src,
 
 
 void
-extract_from_region (PixelRegion *src,
-                     PixelRegion *dest,
-                     PixelRegion *mask,
-                     guchar      *cmap,
-                     guchar      *bg,
-                     gint         type,
-                     gboolean     has_alpha,
-                     gboolean     cut)
+extract_from_region (PixelRegion       *src,
+                     PixelRegion       *dest,
+                     PixelRegion       *mask,
+                     const guchar      *cmap,
+                     const guchar      *bg,
+                     GimpImageBaseType  type,
+                     gboolean           cut)
 {
   gint    h;
   guchar *s, *d, *m;
@@ -2364,14 +2359,15 @@ extract_from_region (PixelRegion *src,
         {
           switch (type)
             {
-            case 0:  /*  RGB      */
-            case 1:  /*  GRAY     */
+            case GIMP_RGB:
+            case GIMP_GRAY:
               extract_from_inten_pixels (s, d, m, bg, cut, src->w,
-                                         src->bytes, has_alpha);
+                                         src->bytes, dest->bytes);
               break;
-            case 2:  /*  INDEXED  */
+
+            case GIMP_INDEXED:
               extract_from_indexed_pixels (s, d, m, cmap, bg, cut, src->w,
-                                           src->bytes, has_alpha);
+                                           src->bytes, dest->bytes);
               break;
             }
 
@@ -2675,7 +2671,7 @@ gaussian_blur_region (PixelRegion *srcR,
   guchar *src, *sp;
   guchar *dest, *dp;
   guchar *data;
-  gint   *buf, *b;
+  guint  *buf, *b;
   gint    pixels;
   gint    total;
   gint    i, row, col;
@@ -2700,7 +2696,7 @@ gaussian_blur_region (PixelRegion *srcR,
   bytes = srcR->bytes;
   alpha = bytes - 1;
 
-  buf = g_new (gint, MAX (width, height) * 2);
+  buf = g_new (guint, MAX (width, height) * 2);
 
   if (radius_y != 0.0)
     {
@@ -2829,275 +2825,6 @@ gaussian_blur_region (PixelRegion *srcR,
   g_free (buf);
 }
 
-
-/* non-interpolating scale_region.  [adam]
- */
-static void
-scale_region_no_resample (PixelRegion *srcPR,
-                          PixelRegion *destPR)
-{
-  gint   *x_src_offsets;
-  gint   *y_src_offsets;
-  guchar *src;
-  guchar *dest;
-  gint    width, height, orig_width, orig_height;
-  gint    last_src_y;
-  gint    row_bytes;
-  gint    x, y, b;
-  gchar   bytes;
-
-  orig_width = srcPR->w;
-  orig_height = srcPR->h;
-
-  width = destPR->w;
-  height = destPR->h;
-
-  bytes = srcPR->bytes;
-
-  /*  the data pointers...  */
-  x_src_offsets = g_new (gint, width * bytes);
-  y_src_offsets = g_new (gint, height);
-  src  = g_new (guchar, orig_width * bytes);
-  dest = g_new (guchar, width * bytes);
-
-  /*  pre-calc the scale tables  */
-  for (b = 0; b < bytes; b++)
-    for (x = 0; x < width; x++)
-      x_src_offsets [b + x * bytes] =
-        b + bytes * ((x * orig_width + orig_width / 2) / width);
-
-  for (y = 0; y < height; y++)
-    y_src_offsets [y] = (y * orig_height + orig_height / 2) / height;
-
-  /*  do the scaling  */
-  row_bytes = width * bytes;
-  last_src_y = -1;
-  for (y = 0; y < height; y++)
-    {
-      /* if the source of this line was the same as the source
-       *  of the last line, there's no point in re-rescaling.
-       */
-      if (y_src_offsets[y] != last_src_y)
-        {
-          pixel_region_get_row (srcPR, 0, y_src_offsets[y], orig_width, src, 1);
-          for (x = 0; x < row_bytes ; x++)
-            {
-              dest[x] = src[x_src_offsets[x]];
-            }
-          last_src_y = y_src_offsets[y];
-        }
-
-      pixel_region_set_row (destPR, 0, y, width, dest);
-    }
-
-  g_free (x_src_offsets);
-  g_free (y_src_offsets);
-  g_free (src);
-  g_free (dest);
-}
-
-
-static void
-get_premultiplied_double_row (PixelRegion *srcPR,
-                              gint         x,
-                              gint         y,
-                              gint         w,
-                              gdouble     *row,
-                              guchar      *tmp_src,
-                              gint         n)
-{
-  gint b;
-  gint bytes = srcPR->bytes;
-
-  pixel_region_get_row (srcPR, x, y, w, tmp_src, n);
-
-  if (pixel_region_has_alpha (srcPR))
-    {
-      /* premultiply the alpha into the double array */
-      gdouble *irow  = row;
-      gint     alpha = bytes - 1;
-      gdouble  mod_alpha;
-
-      for (x = 0; x < w; x++)
-        {
-          mod_alpha = tmp_src[alpha] / 255.0;
-          for (b = 0; b < alpha; b++)
-            irow[b] = mod_alpha * tmp_src[b];
-          irow[b] = tmp_src[alpha];
-          irow += bytes;
-          tmp_src += bytes;
-        }
-    }
-  else /* no alpha */
-    {
-      for (x = 0; x < w * bytes; x++)
-        row[x] = tmp_src[x];
-    }
-
-  /* set the off edge pixels to their nearest neighbor */
-  for (b = 0; b < 2 * bytes; b++)
-    row[b - 2 * bytes] = row[b % bytes];
-  for (b = 0; b < bytes * 2; b++)
-    row[b + w * bytes] = row[(w - 1) * bytes + b % bytes];
-}
-
-
-static void
-expand_line (gdouble               *dest,
-             gdouble               *src,
-             gint                   bytes,
-             gint                   old_width,
-             gint                   width,
-             GimpInterpolationType  interp)
-{
-  gdouble  ratio;
-  gint     x,b;
-  gint     src_col;
-  gdouble  frac;
-  gdouble *s;
-
-  ratio = old_width / (gdouble) width;
-
-  /* we can overflow src's boundaries, so we expect our caller to have
-     allocated extra space for us to do so safely (see scale_region ()) */
-
-  /* this could be optimized much more by precalculating the coefficients for
-     each x */
-  switch(interp)
-    {
-    case GIMP_INTERPOLATION_CUBIC:
-      for (x = 0; x < width; x++)
-        {
-          src_col = ((int) (x * ratio + 2.0 - 0.5)) - 2;
-          /* +2, -2 is there because (int) rounds towards 0 and we need
-             to round down */
-          frac = (x * ratio - 0.5) - src_col;
-          s = &src[src_col * bytes];
-          for (b = 0; b < bytes; b++)
-            dest[b] = cubic (frac, s[b - bytes], s[b], s[b + bytes],
-                             s[b + bytes * 2]);
-          dest += bytes;
-        }
-
-      break;
-
-    case GIMP_INTERPOLATION_LINEAR:
-      for (x = 0; x < width; x++)
-        {
-          src_col = ((int) (x * ratio + 2.0 - 0.5)) - 2;
-          /* +2, -2 is there because (int) rounds towards 0 and we need
-             to round down */
-          frac = (x * ratio - 0.5) - src_col;
-          s = &src[src_col * bytes];
-          for (b = 0; b < bytes; b++)
-            dest[b] = ((s[b + bytes] - s[b]) * frac + s[b]);
-          dest += bytes;
-        }
-      break;
-
-    case GIMP_INTERPOLATION_NONE:
-      g_assert_not_reached ();
-      break;
-    }
-}
-
-
-static void
-shrink_line (gdouble               *dest,
-             gdouble               *src,
-             gint                   bytes,
-             gint                   old_width,
-             gint                   width,
-             GimpInterpolationType  interp)
-{
-  gint          x;
-  gint          b;
-  gdouble      *srcp;
-  gdouble      *destp;
-  gdouble       accum[4];
-  gdouble       slice;
-  const gdouble avg_ratio = (gdouble) width / old_width;
-  const gdouble inv_width = 1.0 / width;
-  gint          slicepos;      /* slice position relative to width */
-
-#if 0
-  g_printerr ("shrink_line bytes=%d old_width=%d width=%d interp=%d "
-              "avg_ratio=%f\n",
-              bytes, old_width, width, interp, avg_ratio);
-#endif
-
-  g_return_if_fail (bytes <= 4);
-
-  /* This algorithm calculates the weighted average of pixel data that
-     each output pixel must receive, taking into account that it always
-     scales down, i.e. there's always more than one input pixel per each
-     output pixel.  */
-
-  srcp = src;
-  destp = dest;
-
-  slicepos = 0;
-
-  /* Initialize accum to the first pixel slice.  As there is no partial
-     pixel at start, that value is 0.  The source data is interleaved, so
-     we maintain BYTES accumulators at the same time to deal with that
-     many channels simultaneously.  */
-  for (b = 0; b < bytes; b++)
-    accum[b] = 0.0;
-
-  for (x = 0; x < width; x++)
-    {
-      /* Accumulate whole pixels.  */
-      do
-        {
-          for (b = 0; b < bytes; b++)
-            accum[b] += *srcp++;
-
-          slicepos += width;
-        }
-      while (slicepos < old_width);
-      slicepos -= old_width;
-
-      if (! (slicepos < width))
-        g_warning ("Assertion (slicepos < width) failed. Please report.");
-
-      if (slicepos == 0)
-        {
-          /* Simplest case: we have reached a whole pixel boundary.  Store
-             the average value per channel and reset the accumulators for
-             the next round.
-
-             The main reason to treat this case separately is to avoid an
-             access to out-of-bounds memory for the first pixel.  */
-          for (b = 0; b < bytes; b++)
-            {
-              *destp++ = accum[b] * avg_ratio;
-              accum[b] = 0.0;
-            }
-        }
-      else
-        {
-          for (b = 0; b < bytes; b++)
-            {
-              /* We have accumulated a whole pixel per channel where just a
-                 slice of it was needed.  Subtract now the previous pixel's
-                 extra slice.  */
-              slice = srcp[- bytes + b] * slicepos * inv_width;
-              *destp++ = (accum[b] - slice) * avg_ratio;
-
-              /* That slice is the initial value for the next round.  */
-              accum[b] = slice;
-            }
-        }
-    }
-
-  /* Sanity check: srcp should point to the next-to-last position, and
-     slicepos should be zero.  */
-  if (! (srcp - src == old_width * bytes && slicepos == 0))
-    g_warning ("Assertion (srcp - src == old_width * bytes && slicepos == 0)"
-               " failed. Please report.");
-}
-
 static inline void
 rotate_pointers (guchar  **p,
                  guint32   n)
@@ -3106,426 +2833,11 @@ rotate_pointers (guchar  **p,
   guchar  *tmp;
 
   tmp = p[0];
-  for (i = 0; i < n-1; i++)
-    {
-      p[i] = p[i+1];
-    }
+
+  for (i = 0; i < n - 1; i++)
+    p[i] = p[i + 1];
+
   p[i] = tmp;
-}
-
-static void
-get_scaled_row (gdouble              **src,
-                gint                   y,
-                gint                   new_width,
-                PixelRegion           *srcPR,
-                gdouble               *row,
-                guchar                *src_tmp,
-                GimpInterpolationType  interpolation_type)
-{
-  /* get the necesary lines from the source image, scale them,
-     and put them into src[] */
-  rotate_pointers ((gpointer) src, 4);
-  if (y < 0)
-    y = 0;
-  if (y < srcPR->h)
-    {
-      get_premultiplied_double_row (srcPR, 0, y, srcPR->w,
-                                    row, src_tmp, 1);
-      if (new_width > srcPR->w)
-        expand_line(src[3], row, srcPR->bytes,
-                    srcPR->w, new_width, interpolation_type);
-      else if (srcPR->w > new_width)
-        shrink_line(src[3], row, srcPR->bytes,
-                    srcPR->w, new_width, interpolation_type);
-      else /* no scailing needed */
-        memcpy(src[3], row, sizeof (gdouble) * new_width * srcPR->bytes);
-    }
-  else
-    memcpy(src[3], src[2], sizeof (gdouble) * new_width * srcPR->bytes);
-}
-
-void
-scale_region (PixelRegion           *srcPR,
-              PixelRegion           *destPR,
-              GimpInterpolationType  interpolation,
-              GimpProgressFunc       progress_callback,
-              gpointer               progress_data)
-{
-  gdouble *src[4];
-  guchar  *src_tmp;
-  guchar  *dest;
-  gdouble *row, *accum;
-  gint     bytes, b;
-  gint     width, height;
-  gint     orig_width, orig_height;
-  gdouble  y_rat;
-  gint     i;
-  gint     old_y = -4;
-  gint     new_y;
-  gint     x, y;
-
-  if (interpolation == GIMP_INTERPOLATION_NONE)
-    {
-      scale_region_no_resample (srcPR, destPR);
-      return;
-    }
-
-  orig_width = srcPR->w;
-  orig_height = srcPR->h;
-
-  width = destPR->w;
-  height = destPR->h;
-
-#if 0
-  g_printerr ("scale_region: (%d x %d) -> (%d x %d)\n",
-              orig_width, orig_height, width, height);
-#endif
-
-  /*  find the ratios of old y to new y  */
-  y_rat = (gdouble) orig_height / (gdouble) height;
-
-  bytes = destPR->bytes;
-
-  /*  the data pointers...  */
-  for (i = 0; i < 4; i++)
-    src[i] = g_new (gdouble, width * bytes);
-
-  dest = g_new (guchar, width * bytes);
-
-  src_tmp = g_new (guchar, orig_width * bytes);
-
-  /* offset the row pointer by 2*bytes so the range of the array
-     is [-2*bytes] to [(orig_width + 2)*bytes] */
-  row = g_new (gdouble, (orig_width + 2 * 2) * bytes);
-  row += bytes * 2;
-
-  accum = g_new (gdouble, width * bytes);
-
-  /*  Scale the selected region  */
-
-  for (y = 0; y < height; y++)
-    {
-      if (progress_callback && !(y & 0xf))
-        (* progress_callback) (0, height, y, progress_data);
-
-      if (height < orig_height)
-        {
-          gint          max;
-          gdouble       frac;
-          const gdouble inv_ratio = 1.0 / y_rat;
-
-          if (y == 0) /* load the first row if this is the first time through */
-            get_scaled_row (&src[0], 0, width, srcPR, row,
-                            src_tmp,
-                            interpolation);
-          new_y = (int) (y * y_rat);
-          frac = 1.0 - (y * y_rat - new_y);
-          for (x = 0; x < width * bytes; x++)
-            accum[x] = src[3][x] * frac;
-
-          max = (int) ((y + 1) * y_rat) - new_y - 1;
-
-          get_scaled_row (&src[0], ++new_y, width, srcPR, row,
-                          src_tmp,
-                          interpolation);
-
-          while (max > 0)
-            {
-              for (x = 0; x < width * bytes; x++)
-                accum[x] += src[3][x];
-              get_scaled_row (&src[0], ++new_y, width, srcPR, row,
-                              src_tmp,
-                              interpolation);
-              max--;
-            }
-          frac = (y + 1) * y_rat - ((int) ((y + 1) * y_rat));
-          for (x = 0; x < width * bytes; x++)
-            {
-              accum[x] += frac * src[3][x];
-              accum[x] *= inv_ratio;
-            }
-        }
-      else if (height > orig_height)
-        {
-          new_y = floor (y * y_rat - 0.5);
-
-          while (old_y <= new_y)
-            {
-              /* get the necesary lines from the source image, scale them,
-                 and put them into src[] */
-              get_scaled_row (&src[0], old_y + 2, width, srcPR, row,
-                              src_tmp,
-                              interpolation);
-              old_y++;
-            }
-
-          switch (interpolation)
-            {
-            case GIMP_INTERPOLATION_CUBIC:
-              {
-                gdouble p0, p1, p2, p3;
-                gdouble dy = (y * y_rat - 0.5) - new_y;
-
-                p0 = cubic (dy, 1, 0, 0, 0);
-                p1 = cubic (dy, 0, 1, 0, 0);
-                p2 = cubic (dy, 0, 0, 1, 0);
-                p3 = cubic (dy, 0, 0, 0, 1);
-                for (x = 0; x < width * bytes; x++)
-                  accum[x] = (p0 * src[0][x] + p1 * src[1][x] +
-                              p2 * src[2][x] + p3 * src[3][x]);
-              }
-
-              break;
-
-            case GIMP_INTERPOLATION_LINEAR:
-              {
-                gdouble idy = (y * y_rat - 0.5) - new_y;
-                gdouble dy = 1.0 - idy;
-
-                for (x = 0; x < width * bytes; x++)
-                  accum[x] = dy * src[1][x] + idy * src[2][x];
-              }
-
-              break;
-
-            case GIMP_INTERPOLATION_NONE:
-              g_assert_not_reached ();
-              break;
-            }
-        }
-      else /* height == orig_height */
-        {
-          get_scaled_row (&src[0], y, width, srcPR, row,
-                          src_tmp,
-                          interpolation);
-          memcpy (accum, src[3], sizeof (gdouble) * width * bytes);
-        }
-
-      if (pixel_region_has_alpha (srcPR))
-        {
-          /* unmultiply the alpha */
-          gdouble  inv_alpha;
-          gdouble *p = accum;
-          gint     alpha = bytes - 1;
-          gint     result;
-          guchar  *d = dest;
-
-          for (x = 0; x < width; x++)
-            {
-              if (p[alpha] > 0.001)
-                {
-                  inv_alpha = 255.0 / p[alpha];
-                  for (b = 0; b < alpha; b++)
-                    {
-                      result = RINT (inv_alpha * p[b]);
-                      if (result < 0)
-                        d[b] = 0;
-                      else if (result > 255)
-                        d[b] = 255;
-                      else
-                        d[b] = result;
-                    }
-                  result = RINT (p[alpha]);
-                  if (result > 255)
-                    d[alpha] = 255;
-                  else
-                    d[alpha] = result;
-                }
-              else /* alpha <= 0 */
-                for (b = 0; b <= alpha; b++)
-                  d[b] = 0;
-
-              d += bytes;
-              p += bytes;
-            }
-        }
-      else
-        {
-          gint w = width * bytes;
-
-          for (x = 0; x < w; x++)
-            {
-              if (accum[x] < 0.0)
-                dest[x] = 0;
-              else if (accum[x] > 255.0)
-                dest[x] = 255;
-              else
-                dest[x] = RINT (accum[x]);
-            }
-        }
-      pixel_region_set_row (destPR, 0, y, width, dest);
-    }
-
-  /*  free up temporary arrays  */
-  g_free (accum);
-  for (i = 0; i < 4; i++)
-    g_free (src[i]);
-  g_free (src_tmp);
-  g_free (dest);
-
-  row -= 2 * bytes;
-  g_free (row);
-}
-
-void
-subsample_region (PixelRegion *srcPR,
-                  PixelRegion *destPR,
-                  gint         subsample)
-{
-  guchar  *src,  *s;
-  guchar  *dest, *d;
-  gdouble *row,  *r;
-  gint destwidth;
-  gint src_row, src_col;
-  gint bytes, b;
-  gint width, height;
-  gint orig_width, orig_height;
-  gdouble x_rat, y_rat;
-  gdouble x_cum, y_cum;
-  gdouble x_last, y_last;
-  gdouble * x_frac, y_frac, tot_frac;
-  gint i, j;
-  gint frac;
-  gint advance_dest;
-
-  orig_width = srcPR->w / subsample;
-  orig_height = srcPR->h / subsample;
-  width = destPR->w;
-  height = destPR->h;
-
-#if 0
-  g_printerr ("subsample_region: (%d x %d) -> (%d x %d)\n",
-              orig_width, orig_height, width, height);
-#endif
-
-  /*  Some calculations...  */
-  bytes = destPR->bytes;
-  destwidth = destPR->rowstride;
-
-  /*  the data pointers...  */
-  src  = g_new (guchar, orig_width * bytes);
-  dest = destPR->data;
-
-  /*  find the ratios of old x to new x and old y to new y  */
-  x_rat = (gdouble) orig_width / (gdouble) width;
-  y_rat = (gdouble) orig_height / (gdouble) height;
-
-  /*  allocate an array to help with the calculations  */
-  row    = g_new (gdouble, width * bytes);
-  x_frac = g_new (gdouble, width + orig_width);
-
-  /*  initialize the pre-calculated pixel fraction array  */
-  src_col = 0;
-  x_cum = (gdouble) src_col;
-  x_last = x_cum;
-
-  for (i = 0; i < width + orig_width; i++)
-    {
-      if (x_cum + x_rat <= (src_col + 1 + EPSILON))
-        {
-          x_cum += x_rat;
-          x_frac[i] = x_cum - x_last;
-        }
-      else
-        {
-          src_col ++;
-          x_frac[i] = src_col - x_last;
-        }
-      x_last += x_frac[i];
-    }
-
-  /*  clear the "row" array  */
-  memset (row, 0, sizeof (gdouble) * width * bytes);
-
-  /*  counters...  */
-  src_row = 0;
-  y_cum = (gdouble) src_row;
-  y_last = y_cum;
-
-  pixel_region_get_row (srcPR, 0, src_row * subsample, orig_width * subsample, src, subsample);
-
-  /*  Scale the selected region  */
-  for (i = 0; i < height; )
-    {
-      src_col = 0;
-      x_cum = (gdouble) src_col;
-
-      /* determine the fraction of the src pixel we are using for y */
-      if (y_cum + y_rat <= (src_row + 1 + EPSILON))
-        {
-          y_cum += y_rat;
-          y_frac = y_cum - y_last;
-          advance_dest = TRUE;
-        }
-      else
-        {
-          src_row ++;
-          y_frac = src_row - y_last;
-          advance_dest = FALSE;
-        }
-
-      y_last += y_frac;
-
-      s = src;
-      r = row;
-
-      frac = 0;
-      j = width;
-
-      while (j)
-        {
-          tot_frac = x_frac[frac++] * y_frac;
-
-          for (b = 0; b < bytes; b++)
-            r[b] += s[b] * tot_frac;
-
-          /*  increment the destination  */
-          if (x_cum + x_rat <= (src_col + 1 + EPSILON))
-            {
-              r += bytes;
-              x_cum += x_rat;
-              j--;
-            }
-
-          /* increment the source */
-          else
-            {
-              s += bytes;
-              src_col++;
-            }
-        }
-
-      if (advance_dest)
-        {
-          tot_frac = 1.0 / (x_rat * y_rat);
-
-          /*  copy "row" to "dest"  */
-          d = dest;
-          r = row;
-
-          j = width;
-          while (j--)
-            {
-              b = bytes;
-              while (b--)
-                *d++ = (guchar) (*r++ * tot_frac + 0.5);
-            }
-
-          dest += destwidth;
-
-          /*  clear the "row" array  */
-          memset (row, 0, sizeof (gdouble) * destwidth);
-
-          i++;
-        }
-      else
-        pixel_region_get_row (srcPR, 0, src_row * subsample, orig_width * subsample, src, subsample);
-    }
-
-  /*  free up temporary arrays  */
-  g_free (row);
-  g_free (x_frac);
-  g_free (src);
 }
 
 
@@ -3693,7 +3005,7 @@ compute_border (gint16  *circ,
 }
 
 void
-fatten_region (PixelRegion *src,
+fatten_region (PixelRegion *region,
                gint16       xradius,
                gint16       yradius)
 {
@@ -3714,30 +3026,30 @@ fatten_region (PixelRegion *src,
   if (xradius <= 0 || yradius <= 0)
     return;
 
-  max = g_new (guchar *, src->w + 2 * xradius);
+  max = g_new (guchar *, region->w + 2 * xradius);
   buf = g_new (guchar *, yradius + 1);
   for (i = 0; i < yradius + 1; i++)
     {
-      buf[i] = g_new (guchar, src->w);
+      buf[i] = g_new (guchar, region->w);
     }
-  buffer = g_new (guchar, (src->w + 2 * xradius) * (yradius + 1));
-  for (i = 0; i < src->w + 2 * xradius; i++)
+  buffer = g_new (guchar, (region->w + 2 * xradius) * (yradius + 1));
+  for (i = 0; i < region->w + 2 * xradius; i++)
     {
       if (i < xradius)
         max[i] = buffer;
-      else if (i < src->w + xradius)
+      else if (i < region->w + xradius)
         max[i] = &buffer[(yradius + 1) * (i - xradius)];
       else
-        max[i] = &buffer[(yradius + 1) * (src->w + xradius - 1)];
+        max[i] = &buffer[(yradius + 1) * (region->w + xradius - 1)];
 
       for (j = 0; j < xradius + 1; j++)
         max[i][j] = 0;
     }
   /* offset the max pointer by xradius so the range of the array
-     is [-xradius] to [src->w + xradius] */
+     is [-xradius] to [region->w + xradius] */
   max += xradius;
 
-  out =  g_new (guchar, src->w);
+  out =  g_new (guchar, region->w);
 
   circ = g_new (gint16, 2 * xradius + 1);
   compute_border (circ, xradius, yradius);
@@ -3746,11 +3058,12 @@ fatten_region (PixelRegion *src,
      is [-xradius] to [xradius] */
   circ += xradius;
 
-  memset (buf[0], 0, src->w);
-  for (i = 0; i < yradius && i < src->h; i++) /* load top of image */
-    pixel_region_get_row (src, src->x, src->y + i, src->w, buf[i + 1], 1);
+  memset (buf[0], 0, region->w);
+  for (i = 0; i < yradius && i < region->h; i++) /* load top of image */
+    pixel_region_get_row (region,
+                          region->x, region->y + i, region->w, buf[i + 1], 1);
 
-  for (x = 0; x < src->w; x++) /* set up max for top of image */
+  for (x = 0; x < region->w; x++) /* set up max for top of image */
     {
       max[x][0] = 0;         /* buf[0][x] is always 0 */
       max[x][1] = buf[1][x]; /* MAX (buf[1][x], max[x][0]) always = buf[1][x]*/
@@ -3758,15 +3071,16 @@ fatten_region (PixelRegion *src,
         max[x][j] = MAX(buf[j][x], max[x][j-1]);
     }
 
-  for (y = 0; y < src->h; y++)
+  for (y = 0; y < region->h; y++)
     {
       rotate_pointers (buf, yradius + 1);
-      if (y < src->h - (yradius))
-        pixel_region_get_row (src, src->x, src->y + y + yradius, src->w,
+      if (y < region->h - (yradius))
+        pixel_region_get_row (region,
+                              region->x, region->y + y + yradius, region->w,
                               buf[yradius], 1);
       else
-        memset (buf[yradius], 0, src->w);
-      for (x = 0; x < src->w; x++) /* update max array */
+        memset (buf[yradius], 0, region->w);
+      for (x = 0; x < region->w; x++) /* update max array */
         {
           for (i = yradius; i > 0; i--)
             {
@@ -3776,7 +3090,7 @@ fatten_region (PixelRegion *src,
         }
       last_max = max[0][circ[-1]];
       last_index = 1;
-      for (x = 0; x < src->w; x++) /* render scan line */
+      for (x = 0; x < region->w; x++) /* render scan line */
         {
           last_index--;
           if (last_index >= 0)
@@ -3808,7 +3122,7 @@ fatten_region (PixelRegion *src,
               out[x] = last_max;
             }
         }
-      pixel_region_set_row (src, src->x, src->y + y, src->w, out);
+      pixel_region_set_row (region, region->x, region->y + y, region->w, out);
     }
   /* undo the offsets to the pointers so we can free the malloced memmory */
   circ -= xradius;
@@ -3824,7 +3138,7 @@ fatten_region (PixelRegion *src,
 }
 
 void
-thin_region (PixelRegion *src,
+thin_region (PixelRegion *region,
              gint16       xradius,
              gint16       yradius,
              gboolean     edge_lock)
@@ -3850,80 +3164,82 @@ thin_region (PixelRegion *src,
   if (xradius <= 0 || yradius <= 0)
     return;
 
-  max = g_new (guchar *, src->w + 2 * xradius);
+  max = g_new (guchar *, region->w + 2 * xradius);
 
   buf = g_new (guchar *, yradius + 1);
   for (i = 0; i < yradius + 1; i++)
     {
-      buf[i] = g_new (guchar, src->w);
+      buf[i] = g_new (guchar, region->w);
     }
 
-  buffer_size = (src->w + 2 * xradius + 1) * (yradius + 1);
+  buffer_size = (region->w + 2 * xradius + 1) * (yradius + 1);
   buffer = g_new (guchar, buffer_size);
   if (edge_lock)
     memset(buffer, 255, buffer_size);
   else
     memset(buffer, 0, buffer_size);
 
-  for (i = 0; i < src->w + 2 * xradius; i++)
+  for (i = 0; i < region->w + 2 * xradius; i++)
     {
       if (i < xradius)
         if (edge_lock)
           max[i] = buffer;
         else
-          max[i] = &buffer[(yradius + 1) * (src->w + xradius)];
-      else if (i < src->w + xradius)
+          max[i] = &buffer[(yradius + 1) * (region->w + xradius)];
+      else if (i < region->w + xradius)
         max[i] = &buffer[(yradius + 1) * (i - xradius)];
       else
         if (edge_lock)
-          max[i] = &buffer[(yradius + 1) * (src->w + xradius - 1)];
+          max[i] = &buffer[(yradius + 1) * (region->w + xradius - 1)];
         else
-          max[i] = &buffer[(yradius + 1) * (src->w + xradius)];
+          max[i] = &buffer[(yradius + 1) * (region->w + xradius)];
     }
   if (!edge_lock)
     for (j = 0 ; j < xradius + 1; j++)
       max[0][j] = 0;
 
   /* offset the max pointer by xradius so the range of the array
-     is [-xradius] to [src->w + xradius] */
+     is [-xradius] to [region->w + xradius] */
   max += xradius;
 
-  out = g_new (guchar, src->w);
+  out = g_new (guchar, region->w);
 
   circ = g_new (gint16, 2 * xradius + 1);
-  compute_border(circ, xradius, yradius);
+  compute_border (circ, xradius, yradius);
 
  /* offset the circ pointer by xradius so the range of the array
     is [-xradius] to [xradius] */
   circ += xradius;
 
-  for (i = 0; i < yradius && i < src->h; i++) /* load top of image */
-    pixel_region_get_row (src, src->x, src->y + i, src->w, buf[i + 1], 1);
+  for (i = 0; i < yradius && i < region->h; i++) /* load top of image */
+    pixel_region_get_row (region,
+                          region->x, region->y + i, region->w, buf[i + 1], 1);
   if (edge_lock)
-    memcpy (buf[0], buf[1], src->w);
+    memcpy (buf[0], buf[1], region->w);
   else
-    memset (buf[0], 0, src->w);
+    memset (buf[0], 0, region->w);
 
 
-  for (x = 0; x < src->w; x++) /* set up max for top of image */
+  for (x = 0; x < region->w; x++) /* set up max for top of image */
     {
       max[x][0] = buf[0][x];
       for (j = 1; j < yradius + 1; j++)
         max[x][j] = MIN(buf[j][x], max[x][j-1]);
     }
 
-  for (y = 0; y < src->h; y++)
+  for (y = 0; y < region->h; y++)
     {
       rotate_pointers (buf, yradius + 1);
-      if (y < src->h - yradius)
-        pixel_region_get_row (src, src->x, src->y + y + yradius, src->w,
+      if (y < region->h - yradius)
+        pixel_region_get_row (region,
+                              region->x, region->y + y + yradius, region->w,
                               buf[yradius], 1);
       else if (edge_lock)
-        memcpy (buf[yradius], buf[yradius - 1], src->w);
+        memcpy (buf[yradius], buf[yradius - 1], region->w);
       else
-        memset (buf[yradius], 0, src->w);
+        memset (buf[yradius], 0, region->w);
 
-      for (x = 0 ; x < src->w; x++) /* update max array */
+      for (x = 0 ; x < region->w; x++) /* update max array */
         {
           for (i = yradius; i > 0; i--)
             {
@@ -3934,7 +3250,7 @@ thin_region (PixelRegion *src,
       last_max =  max[0][circ[-1]];
       last_index = 0;
 
-      for (x = 0 ; x < src->w; x++) /* render scan line */
+      for (x = 0 ; x < region->w; x++) /* render scan line */
         {
           last_index--;
           if (last_index >= 0)
@@ -3966,7 +3282,7 @@ thin_region (PixelRegion *src,
               out[x] = last_max;
             }
         }
-      pixel_region_set_row (src, src->x, src->y + y, src->w, out);
+      pixel_region_set_row (region, region->x, region->y + y, region->w, out);
     }
 
   /* undo the offsets to the pointers so we can free the malloced memmory */
@@ -3979,6 +3295,194 @@ thin_region (PixelRegion *src,
   for (i = 0; i < yradius + 1; i++)
     g_free (buf[i]);
   g_free (buf);
+  g_free (out);
+}
+
+/*  Simple convolution filter to smooth a mask (1bpp).  */
+void
+smooth_region (PixelRegion *region)
+{
+  gint      x, y;
+  gint      width;
+  gint      i;
+  guchar   *buf[3];
+  guchar   *out;
+
+  width = region->w;
+
+  for (i = 0; i < 3; i++)
+    buf[i] = g_new (guchar, width + 2);
+
+  out = g_new (guchar, width);
+
+  /* load top of image */
+  pixel_region_get_row (region, region->x, region->y, width, buf[0] + 1, 1);
+
+  buf[0][0]         = buf[0][1];
+  buf[0][width + 1] = buf[0][width];
+
+  memcpy (buf[1], buf[0], width + 2);
+
+  for (y = 0; y < region->h; y++)
+    {
+      if (y + 1 < region->h)
+        {
+          pixel_region_get_row (region, region->x, region->y + y + 1, width,
+                                buf[2] + 1, 1);
+
+          buf[2][0]         = buf[2][1];
+          buf[2][width + 1] = buf[2][width];
+        }
+      else
+        {
+          memcpy (buf[2], buf[1], width + 2);
+        }
+
+      for (x = 0 ; x < width; x++)
+        {
+          gint value = (buf[0][x] + buf[0][x+1] + buf[0][x+2] +
+                        buf[1][x] + buf[2][x+1] + buf[1][x+2] +
+                        buf[2][x] + buf[1][x+1] + buf[2][x+2]);
+
+          out[x] = value / 9;
+        }
+
+      pixel_region_set_row (region, region->x, region->y + y, width, out);
+
+      rotate_pointers (buf, 3);
+    }
+
+  for (i = 0; i < 3; i++)
+    g_free (buf[i]);
+
+  g_free (out);
+}
+
+/*  Erode (radius 1 pixel) a mask (1bpp).  */
+void
+erode_region (PixelRegion *region)
+{
+  gint      x, y;
+  gint      width;
+  gint      i;
+  guchar   *buf[3];
+  guchar   *out;
+
+  width = region->w;
+
+  for (i = 0; i < 3; i++)
+    buf[i] = g_new (guchar, width + 2);
+
+  out = g_new (guchar, width);
+
+  /* load top of image */
+  pixel_region_get_row (region, region->x, region->y, width, buf[0] + 1, 1);
+
+  buf[0][0]         = buf[0][1];
+  buf[0][width + 1] = buf[0][width];
+
+  memcpy (buf[1], buf[0], width + 2);
+
+  for (y = 0; y < region->h; y++)
+    {
+      if (y + 1 < region->h)
+        {
+          pixel_region_get_row (region, region->x, region->y + y + 1, width,
+                                buf[2] + 1, 1);
+
+          buf[2][0]         = buf[2][1];
+          buf[2][width + 1] = buf[2][width];
+        }
+      else
+        {
+          memcpy (buf[2], buf[1], width + 2);
+        }
+
+      for (x = 0 ; x < width; x++)
+        {
+          gint min = 255;
+
+          if (buf[0][x+1] < min) min = buf[0][x+1];
+          if (buf[1][x]   < min) min = buf[1][x];
+          if (buf[1][x+1] < min) min = buf[1][x+1];
+          if (buf[1][x+2] < min) min = buf[1][x+2];
+          if (buf[2][x+1] < min) min = buf[2][x+1];
+
+          out[x] = min;
+        }
+
+      pixel_region_set_row (region, region->x, region->y + y, width, out);
+
+      rotate_pointers (buf, 3);
+    }
+
+  for (i = 0; i < 3; i++)
+    g_free (buf[i]);
+
+  g_free (out);
+}
+
+/*  Dilate (radius 1 pixel) a mask (1bpp).  */
+void
+dilate_region (PixelRegion *region)
+{
+  gint      x, y;
+  gint      width;
+  gint      i;
+  guchar   *buf[3];
+  guchar   *out;
+
+  width = region->w;
+
+  for (i = 0; i < 3; i++)
+    buf[i] = g_new (guchar, width + 2);
+
+  out = g_new (guchar, width);
+
+  /* load top of image */
+  pixel_region_get_row (region, region->x, region->y, width, buf[0] + 1, 1);
+
+  buf[0][0]         = buf[0][1];
+  buf[0][width + 1] = buf[0][width];
+
+  memcpy (buf[1], buf[0], width + 2);
+
+  for (y = 0; y < region->h; y++)
+    {
+      if (y + 1 < region->h)
+        {
+          pixel_region_get_row (region, region->x, region->y + y + 1, width,
+                                buf[2] + 1, 1);
+
+          buf[2][0]         = buf[2][1];
+          buf[2][width + 1] = buf[2][width];
+        }
+      else
+        {
+          memcpy (buf[2], buf[1], width + 2);
+        }
+
+      for (x = 0 ; x < width; x++)
+        {
+          gint max = 0;
+
+          if (buf[0][x+1] > max) max = buf[0][x+1];
+          if (buf[1][x]   > max) max = buf[1][x];
+          if (buf[1][x+1] > max) max = buf[1][x+1];
+          if (buf[1][x+2] > max) max = buf[1][x+2];
+          if (buf[2][x+1] > max) max = buf[2][x+1];
+
+          out[x] = max;
+        }
+
+      pixel_region_set_row (region, region->x, region->y + y, width, out);
+
+      rotate_pointers (buf, 3);
+    }
+
+  for (i = 0; i < 3; i++)
+    g_free (buf[i]);
+
   g_free (out);
 }
 
@@ -4349,7 +3853,8 @@ apply_mask_to_region (PixelRegion *src,
                       PixelRegion *mask,
                       guint        opacity)
 {
-  pixel_regions_process_parallel ((p_func)apply_mask_to_sub_region,
+  pixel_regions_process_parallel ((PixelProcessorFunc)
+                                  apply_mask_to_sub_region,
                                   &opacity, 2, src, mask);
 }
 
@@ -4407,10 +3912,12 @@ combine_mask_and_region (PixelRegion *src,
                          gboolean     stipple)
 {
   if (stipple)
-    pixel_regions_process_parallel ((p_func)combine_mask_and_sub_region_stipple,
+    pixel_regions_process_parallel ((PixelProcessorFunc)
+                                    combine_mask_and_sub_region_stipple,
                                     &opacity, 2, src, mask);
   else
-    pixel_regions_process_parallel ((p_func)combine_mask_and_sub_region_stroke,
+    pixel_regions_process_parallel ((PixelProcessorFunc)
+                                    combine_mask_and_sub_region_stroke,
                                     &opacity, 2, src, mask);
 }
 
@@ -4473,7 +3980,7 @@ struct initial_regions_struct
   guint                 opacity;
   GimpLayerModeEffects  mode;
   const gboolean       *affect;
-  InitialMode                type;
+  InitialMode           type;
   guchar               *data;
 };
 
@@ -4640,8 +4147,8 @@ initial_region (PixelRegion          *src,
   st.type    = type;
   st.data    = data;
 
-  pixel_regions_process_parallel ((p_func)initial_sub_region, &st, 3,
-                                    src, dest, mask);
+  pixel_regions_process_parallel ((PixelProcessorFunc) initial_sub_region,
+                                  &st, 3, src, dest, mask);
 }
 
 struct combine_regions_struct
@@ -5117,8 +4624,8 @@ combine_regions (PixelRegion          *src1,
 
   /* Start the actual processing.
    */
-  pixel_regions_process_parallel ((p_func)combine_sub_region, &st, 4,
-                                    src1, src2, dest, mask);
+  pixel_regions_process_parallel ((PixelProcessorFunc) combine_sub_region,
+                                  &st, 4, src1, src2, dest, mask);
 }
 
 void

@@ -21,10 +21,6 @@
 #include "config.h"
 
 #include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -32,10 +28,12 @@
 #include "libgimp/stdplugins-intl.h"
 
 
+#define PLUG_IN_PROC    "plug-in-unsharp-mask"
+#define PLUG_IN_BINARY  "unsharp"
 #define PLUG_IN_VERSION "0.10"
 
-#define SCALE_WIDTH   150
-#define ENTRY_WIDTH     4
+#define SCALE_WIDTH   120
+#define ENTRY_WIDTH     5
 
 /* Uncomment this line to get a rough estimate of how long the plug-in
  * takes to run.
@@ -129,7 +127,7 @@ query (void)
       { GIMP_PDB_INT32,    "threshold", "Threshold (0-255)" }
     };
 
-  gimp_install_procedure ("plug_in_unsharp_mask",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "An unsharp mask filter",
                           "The unsharp mask is a sharpening filter that works "
                           "by comparing using the difference of the image and "
@@ -146,8 +144,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_unsharp_mask",
-                             "<Image>/Filters/Enhance");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Enhance");
 }
 
 static void
@@ -179,13 +176,12 @@ run (const gchar      *name,
    * Get drawable information...
    */
   drawable = gimp_drawable_get (param[2].data.d_drawable);
-  gimp_tile_cache_ntiles (2 * MAX (drawable->width  / gimp_tile_width () + 1 ,
-			           drawable->height / gimp_tile_height () + 1));
+  gimp_tile_cache_ntiles (2 * (drawable->width / gimp_tile_width () + 1));
 
   switch (run_mode)
     {
     case GIMP_RUN_INTERACTIVE:
-      gimp_get_data ("plug_in_unsharp_mask", &unsharp_params);
+      gimp_get_data (PLUG_IN_PROC, &unsharp_params);
       /* Reset default values show preview unmodified */
 
       /* initialize pixel regions and buffer */
@@ -213,7 +209,7 @@ run (const gchar      *name,
       break;
 
     case GIMP_RUN_WITH_LAST_VALS:
-      gimp_get_data ("plug_in_unsharp_mask", &unsharp_params);
+      gimp_get_data (PLUG_IN_PROC, &unsharp_params);
       break;
 
     default:
@@ -230,7 +226,7 @@ run (const gchar      *name,
       gimp_displays_flush ();
 
       /* set data for next use of filter */
-      gimp_set_data ("plug_in_unsharp_mask", &unsharp_params,
+      gimp_set_data (PLUG_IN_PROC, &unsharp_params,
                      sizeof (UnsharpMaskParams));
 
       gimp_drawable_detach(drawable);
@@ -339,9 +335,9 @@ blur_line (const gdouble *ctable,
               src_p1 = src_p;
               ctable_p = ctable;
               sum = 0;
-              for (j = cmatrix_length; j > 0; j--)
+              for (j = 0; j < cmatrix_length; j++)
                 {
-                  sum += *(ctable_p + *src_p1);
+                  sum += cmatrix[j] * *src_p1;
                   src_p1 += bytes;
                   ctable_p += 256;
                 }
@@ -430,7 +426,7 @@ unsharp_region (GimpPixelRgn *srcPR,
   gint     threshold = unsharp_params.threshold;
 
   if (show_progress)
-    gimp_progress_init (_("Blurring..."));
+    gimp_progress_init (_("Blurring"));
 
   /* generate convolution matrix
      and make sure it's smaller than each dimension */
@@ -466,7 +462,7 @@ unsharp_region (GimpPixelRgn *srcPR,
     }
 
   if (show_progress)
-    gimp_progress_init (_("Merging..."));
+    gimp_progress_init (_("Merging"));
 
   /* merge the source and destination (which currently contains
      the blurred version) images */
@@ -631,16 +627,23 @@ unsharp_mask_dialog (GimpDrawable *drawable)
   GtkObject *adj;
   gboolean   run;
 
-  gimp_ui_init ("unsharp", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Unsharp Mask"), "unsharp",
+  dialog = gimp_dialog_new (_("Unsharp Mask"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-unsharp-mask",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -668,23 +671,23 @@ unsharp_mask_dialog (GimpDrawable *drawable)
                               TRUE, 0, 0,
                               NULL, NULL);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &unsharp_params.radius);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
   adj = gimp_scale_entry_new (GTK_TABLE (table), 0, 1,
                               _("_Amount:"), SCALE_WIDTH, ENTRY_WIDTH,
-                              unsharp_params.amount, 0.0, 5.0, 0.01, 0.1, 2,
+                              unsharp_params.amount, 0.0, 10.0, 0.01, 0.1, 2,
                               TRUE, 0, 0,
                               NULL, NULL);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &unsharp_params.amount);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -695,10 +698,10 @@ unsharp_mask_dialog (GimpDrawable *drawable)
                               TRUE, 0, 0,
                               NULL, NULL);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &unsharp_params.threshold);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 

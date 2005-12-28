@@ -24,13 +24,12 @@
 
 #include "tools-types.h"
 
-#include "base/tile-manager.h"
-
 #include "core/gimpdrawable-transform.h"
 #include "core/gimpimage.h"
 #include "core/gimpitem-linked.h"
 #include "core/gimplayer.h"
 #include "core/gimplayermask.h"
+#include "core/gimppickable.h"
 #include "core/gimptoolinfo.h"
 
 #include "widgets/gimphelp-ids.h"
@@ -45,9 +44,6 @@
 
 
 /*  local function prototypes  */
-
-static void          gimp_flip_tool_class_init    (GimpFlipToolClass *klass);
-static void          gimp_flip_tool_init          (GimpFlipTool      *flip_tool);
 
 static void          gimp_flip_tool_modifier_key  (GimpTool          *tool,
                                                    GdkModifierType    key,
@@ -65,10 +61,10 @@ static TileManager * gimp_flip_tool_transform     (GimpTransformTool *tool,
                                                    GimpDisplay       *gdisp);
 
 
-static GimpTransformToolClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpFlipTool, gimp_flip_tool, GIMP_TYPE_TRANSFORM_TOOL);
 
+#define parent_class gimp_flip_tool_parent_class
 
-/*  public functions  */
 
 void
 gimp_flip_tool_register (GimpToolRegisterCallback  callback,
@@ -87,44 +83,11 @@ gimp_flip_tool_register (GimpToolRegisterCallback  callback,
                 data);
 }
 
-GType
-gimp_flip_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpFlipToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_flip_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpFlipTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_flip_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_TRANSFORM_TOOL,
-                                          "GimpFlipTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
-
-
-/*  private functions  */
-
 static void
 gimp_flip_tool_class_init (GimpFlipToolClass *klass)
 {
   GimpToolClass          *tool_class  = GIMP_TOOL_CLASS (klass);
   GimpTransformToolClass *trans_class = GIMP_TRANSFORM_TOOL_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   tool_class->modifier_key  = gimp_flip_tool_modifier_key;
   tool_class->cursor_update = gimp_flip_tool_cursor_update;
@@ -139,12 +102,8 @@ gimp_flip_tool_init (GimpFlipTool *flip_tool)
   GimpTransformTool *transform_tool = GIMP_TRANSFORM_TOOL (flip_tool);
 
   gimp_tool_control_set_snap_to            (tool->control, FALSE);
-  gimp_tool_control_set_cursor             (tool->control,
-                                            GDK_SB_H_DOUBLE_ARROW);
   gimp_tool_control_set_tool_cursor        (tool->control,
                                             GIMP_TOOL_CURSOR_FLIP_HORIZONTAL);
-  gimp_tool_control_set_toggle_cursor      (tool->control,
-                                            GDK_SB_V_DOUBLE_ARROW);
   gimp_tool_control_set_toggle_tool_cursor (tool->control,
                                             GIMP_TOOL_CURSOR_FLIP_VERTICAL);
 
@@ -199,7 +158,8 @@ gimp_flip_tool_cursor_update (GimpTool        *tool,
 
       /*  Is there a selected region? If so, is cursor inside? */
       if (gimp_channel_is_empty (selection) ||
-          gimp_channel_value (selection, coords->x, coords->y))
+          gimp_pickable_get_opacity_at (GIMP_PICKABLE (selection),
+                                        coords->x, coords->y))
         {
           bad_cursor = FALSE;
         }
@@ -212,12 +172,12 @@ gimp_flip_tool_cursor_update (GimpTool        *tool,
     }
   else
     {
-      gimp_tool_control_set_cursor        (tool->control, GDK_SB_H_DOUBLE_ARROW);
-      gimp_tool_control_set_toggle_cursor (tool->control, GDK_SB_V_DOUBLE_ARROW);
+      gimp_tool_control_set_cursor        (tool->control, GIMP_CURSOR_MOUSE);
+      gimp_tool_control_set_toggle_cursor (tool->control, GIMP_CURSOR_MOUSE);
     }
 
-  gimp_tool_control_set_toggle (tool->control,
-                                options->flip_type == GIMP_ORIENTATION_VERTICAL);
+  gimp_tool_control_set_toggled (tool->control,
+                                 options->flip_type == GIMP_ORIENTATION_VERTICAL);
 
   GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state, gdisp);
 }
@@ -272,11 +232,12 @@ gimp_flip_tool_transform (GimpTransformTool *trans_tool,
     {
     case GIMP_TRANSFORM_TYPE_LAYER:
     case GIMP_TRANSFORM_TYPE_SELECTION:
-      ret = gimp_drawable_transform_tiles_flip (GIMP_DRAWABLE (active_item),
-                                                context,
-                                                trans_tool->original,
-                                                options->flip_type, axis,
-                                                FALSE);
+      if (trans_tool->original)
+        ret = gimp_drawable_transform_tiles_flip (GIMP_DRAWABLE (active_item),
+                                                  context,
+                                                  trans_tool->original,
+                                                  options->flip_type, axis,
+                                                  FALSE);
       break;
 
     case GIMP_TRANSFORM_TYPE_PATH:

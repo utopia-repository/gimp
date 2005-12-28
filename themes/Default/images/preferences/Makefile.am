@@ -3,6 +3,7 @@
 themedatadir = $(gimpdatadir)/themes/Default/images/preferences
 
 PREFS_IMAGES = \
+	color-management.png		\
 	controllers.png			\
 	default-comment.png		\
 	default-grid.png		\
@@ -10,10 +11,11 @@ PREFS_IMAGES = \
 	environment.png			\
 	folders.png			\
 	folders-brushes.png		\
+	folders-environ.png		\
 	folders-fonts.png		\
 	folders-gradients.png		\
+	folders-interp.png		\
 	folders-modules.png		\
-	folders-environ.png		\
 	folders-palettes.png		\
 	folders-patterns.png		\
 	folders-plug-ins.png		\

@@ -23,7 +23,7 @@
     (script-fu-util-image-resize-from-layer img logo-layer)
     (gimp-image-add-layer img bg-layer 1)
     (gimp-image-add-layer img glow-layer 1)
-    (gimp-layer-set-preserve-trans logo-layer TRUE)
+    (gimp-layer-set-lock-alpha logo-layer TRUE)
     (gimp-context-set-background '(0 0 0))
     (gimp-edit-fill bg-layer BACKGROUND-FILL)
     (gimp-edit-clear glow-layer)
@@ -67,7 +67,7 @@
 		    SF-COLOR      _"Glow color"             '(63 252 0))
 
 (script-fu-menu-register "script-fu-alien-glow-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-alien-glow-logo text
@@ -85,7 +85,6 @@
 	 (height (car (gimp-drawable-height text-layer))))
 
     (gimp-image-undo-disable img)
-    (gimp-drawable-set-name text-layer text)
     (apply-alien-glow-logo-effect img text-layer size glow-color)
     (gimp-image-undo-enable img)
     (gimp-display-new img)))
@@ -103,4 +102,4 @@
 		    SF-COLOR      _"Glow color"         '(63 252 0))
 
 (script-fu-menu-register "script-fu-alien-glow-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

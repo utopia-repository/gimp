@@ -22,6 +22,8 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpwidgets/gimpwidgets.h"
+
 #include "libgimpbase/gimpbase.h"
 
 #include "display-types.h"
@@ -36,15 +38,8 @@
 
 #include "file/file-utils.h"
 
-#ifdef __GNUC__
-#warning FIXME #include "dialogs/dialogs-types.h"
-#endif
-#include "dialogs/dialogs-types.h"
-#include "dialogs/info-window.h"
-
 #include "gimpdisplay.h"
 #include "gimpdisplayshell.h"
-#include "gimpdisplayshell-scale.h"
 #include "gimpdisplayshell-title.h"
 #include "gimpstatusbar.h"
 
@@ -120,11 +115,6 @@ gimp_display_shell_update_title_idle (gpointer data)
 
   gimp_statusbar_replace (GIMP_STATUSBAR (shell->statusbar), "title", title);
 
-#ifdef __GNUC__
-#warning FIXME: dont call info_window_update() here.
-#endif
-  info_window_update (shell->gdisp);
-
   return FALSE;
 }
 
@@ -172,7 +162,7 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
   image = shell->gdisp->gimage;
   gimp  = image->gimp;
 
-  gimp_display_shell_scale_get_fraction (shell->scale, &num, &denom);
+  gimp_zoom_model_get_fraction (shell->zoom, &num, &denom);
 
   while (i < title_len && *format)
     {
@@ -194,7 +184,7 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
                 const gchar *uri = gimp_image_get_uri (image);
 		gchar       *basename;
 
-		basename = file_utils_uri_to_utf8_basename (uri);
+		basename = file_utils_uri_display_basename (uri);
 
 		i += print (title, title_len, i, "%s", basename);
 
@@ -207,7 +197,7 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
 		gchar *filename;
                 const gchar *uri = gimp_image_get_uri (image);
 
-		filename = file_utils_uri_to_utf8_filename (uri);
+		filename = file_utils_uri_display_name (uri);
 
                 i += print (title, title_len, i, "%s", filename);
 
@@ -257,9 +247,12 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
 	      break;
 
 	    case 'z': /* user zoom factor (percentage) */
-	      i += print (title, title_len, i,
-                          shell->scale >= 0.15 ? "%.0f" : "%.2f",
-                          100 * shell->scale);
+              {
+                gdouble  scale = gimp_zoom_model_get_factor (shell->zoom);
+
+                i += print (title, title_len, i,
+                            scale >= 0.15 ? "%.0f" : "%.2f", 100.0 * scale);
+              }
 	      break;
 
 	    case 'D': /* dirty flag */
@@ -288,14 +281,12 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
 
 	    case 'B': /* dirty flag (long) */
 	      if (image->dirty)
-                i += print (title, title_len, i, "%s",
-                            _("(modified)"));
+                i += print (title, title_len, i, "%s", _("(modified)"));
 	      break;
 
 	    case 'A': /* clean flag (long) */
 	      if (! image->dirty)
-                i += print (title, title_len, i, "%s",
-                            _("(clean)"));
+                i += print (title, title_len, i, "%s", _("(clean)"));
 	      break;
 
             case 'm': /* memory used by image */
@@ -322,7 +313,7 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
                 gint num = gimp_container_num_children (image->layers);
 
                 i += print (title, title_len, i,
-                            num == 1 ? _("1 layer") : _("%d layers"), num);
+                            ngettext ("%d layer", "%d layers", num), num);
               }
               break;
 

@@ -38,9 +38,6 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
@@ -230,19 +227,19 @@ rcm_create_one_circle (gint   height,
   /* set signals */
   gtk_widget_set_events (st->preview, RANGE_ADJUST_MASK);
 
-  g_signal_connect_after (st->preview, "expose_event",
+  g_signal_connect_after (st->preview, "expose-event",
                           G_CALLBACK (rcm_expose_event),
                           st);
 
-  g_signal_connect (st->preview, "button_press_event",
+  g_signal_connect (st->preview, "button-press-event",
                     G_CALLBACK (rcm_button_press_event),
                     st);
 
-  g_signal_connect (st->preview, "button_release_event",
+  g_signal_connect (st->preview, "button-release-event",
                     G_CALLBACK (rcm_release_event),
                     st);
 
-  g_signal_connect (st->preview, "motion_notify_event",
+  g_signal_connect (st->preview, "motion-notify-event",
                     G_CALLBACK (rcm_motion_notify_event),
                     st);
 
@@ -299,7 +296,7 @@ rcm_create_one_circle (gint   height,
   gtk_widget_show (legend_table);
 
   /* spinbutton 1 */
-  label = gtk_label_new (_("From"));
+  label = gtk_label_new (_("From:"));
   gtk_widget_show (label);
   gtk_table_attach (GTK_TABLE (legend_table), label, 0, 1, 0, 1,
                     0, GTK_EXPAND, 5, 5);
@@ -325,7 +322,7 @@ rcm_create_one_circle (gint   height,
                     0, GTK_EXPAND, 4, 4);
 
   /* spinbutton 2 */
-  label = gtk_label_new (_("To"));
+  label = gtk_label_new (_("To:"));
   gtk_widget_show (label);
   gtk_table_attach (GTK_TABLE (legend_table), label, 3,4, 0,1,
                     0, GTK_EXPAND, 4, 4);
@@ -377,8 +374,8 @@ rcm_create_main (void)
 {
   GtkWidget *vbox;
 
-  Current.From = rcm_create_one_circle (SUM, _("From"));
-  Current.To   = rcm_create_one_circle (SUM, _("To"));
+  Current.From = rcm_create_one_circle (SUM, _("From:"));
+  Current.To   = rcm_create_one_circle (SUM, _("To:"));
 
   vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
@@ -443,19 +440,19 @@ rcm_create_gray (void)
 
   gtk_widget_add_events (preview, RANGE_ADJUST_MASK);
 
-  g_signal_connect_after (preview, "expose_event",
+  g_signal_connect_after (preview, "expose-event",
                           G_CALLBACK (rcm_gray_expose_event),
                           st);
 
-  g_signal_connect (preview, "button_press_event",
+  g_signal_connect (preview, "button-press-event",
                     G_CALLBACK (rcm_gray_button_press_event),
                     st);
 
-  g_signal_connect (preview, "button_release_event",
+  g_signal_connect (preview, "button-release-event",
                     G_CALLBACK (rcm_gray_release_event),
                     st);
 
-  g_signal_connect (preview, "motion_notify_event",
+  g_signal_connect (preview, "motion-notify-event",
                     G_CALLBACK (rcm_gray_motion_notify_event),
                     st);
 
@@ -556,7 +553,7 @@ rcm_create_gray (void)
   gtk_container_add (GTK_CONTAINER (frame), hbox);
   gtk_widget_show (hbox);
 
-  label = gtk_label_new (_("Saturation"));
+  label = gtk_label_new (_("Saturation:"));
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
@@ -565,6 +562,7 @@ rcm_create_gray (void)
                                               0.0, 1.0, 0.0001, 0.001, 0.0);
 
   entry = gtk_spin_button_new (adj, 0.01, 4);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (entry), TRUE);
   gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 0);
   gtk_widget_show (entry);
 
@@ -640,29 +638,34 @@ rcm_create_units (void)
 gboolean
 rcm_dialog (void)
 {
-  GtkWidget *dlg, *hbox, *notebook;
+  GtkWidget *dialog;
+  GtkWidget *hbox;
+  GtkWidget *notebook;
   GtkWidget *previews;
   gboolean   run;
 
   Current.Bna = g_new (RcmBna, 1);
 
-  /* init GTK and install colormap */
-  gimp_ui_init ("rcm", TRUE);
-
-  /* init stock icons */
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
   rcm_stock_init ();
 
-  /* Create dialog */
-  dlg = gimp_dialog_new (_("Colormap Rotation"), "rcm",
-                         NULL, 0,
-			 gimp_standard_help_func, "plug-in-rotate-colormap",
+  dialog = gimp_dialog_new (_("Colormap Rotation"), PLUG_IN_BINARY,
+                            NULL, 0,
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
-			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			 GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
-			 NULL);
+                            NULL);
 
-  Current.Bna->dlg = dlg;
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
+
+  Current.Bna->dlg = dialog;
 
   /* Create sub-dialogs */
   Current.reduced = rcm_reduce_image (Current.drawable, Current.mask,
@@ -673,7 +676,8 @@ rcm_dialog (void)
   /* H-Box */
   hbox = gtk_hbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), hbox, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), hbox,
+                      TRUE, TRUE, 0);
   gtk_widget_show (hbox);
 
   gtk_box_pack_start (GTK_BOX (hbox), previews, TRUE, TRUE, 0);
@@ -693,15 +697,15 @@ rcm_dialog (void)
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook), rcm_create_units (),
 			    gtk_label_new (_("Units")));
 
-  gtk_widget_show (dlg);
+  gtk_widget_show (dialog);
 
   rcm_render_circle (Current.From->preview, SUM, MARGIN);
   rcm_render_circle (Current.To->preview, SUM, MARGIN);
   rcm_render_circle (Current.Gray->preview, GRAY_SUM, GRAY_MARGIN);
 
-  run = (gimp_dialog_run (GIMP_DIALOG (dlg)) == GTK_RESPONSE_OK);
+  run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
 
-  gtk_widget_destroy (dlg);
+  gtk_widget_destroy (dialog);
 
   return run;
 }

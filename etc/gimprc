@@ -19,11 +19,11 @@
 # 
 # (temp-path "${gimp_dir}/tmp")
 
-# Sets the swap file location. The gimp uses a tile based memory allocation
+# Sets the swap file location. GIMP uses a tile based memory allocation
 # scheme. The swap file is used to quickly and easily swap tiles out to disk
-# and back in. Be aware that the swap file can easily get very large if the
-# GIMP is used with large images. Also, things can get horribly slow if the
-# swap file is created on a directory that is mounted over NFS.  For these
+# and back in. Be aware that the swap file can easily get very largeif GIMP
+# is used with large images. Also, things can get horribly slow if the swap
+# file is created on a directory that is mounted over NFS.  For these
 # reasons, it may be desirable to put your swap file in "/tmp".  This is a
 # single folder.
 # 
@@ -33,7 +33,7 @@
 # sets how many processors GIMP should use simultaneously.  This is an
 # integer value.
 # 
-# (num-processors 1)
+# (num-processors 2)
 
 # The tile cache is used to make sure the GIMP doesn't thrash tiles between
 # memory and disk. Setting this value higher will cause the GIMP to use less
@@ -44,10 +44,10 @@
 # or gigabytes. If no suffix is specified the size defaults to being
 # specified in kilobytes.
 # 
-# (tile-cache-size 128M)
+# (tile-cache-size 256M)
 
 # Sets the level of interpolation used for scaling and other transformations.
-#  Possible values are none, linear and cubic.
+#  Possible values are none, linear, cubic and lanczos.
 # 
 # (interpolation-type linear)
 
@@ -60,6 +60,11 @@
 # search.
 # 
 # (module-path "${gimp_dir}/modules:${gimp_plug_in_dir}/modules")
+
+# Sets the interpreter search path.  This is a colon-separated list of
+# folders to search.
+# 
+# (interpreter-path "${gimp_dir}/interpreters:${gimp_plug_in_dir}/interpreters")
 
 # Sets the environ search path.  This is a colon-separated list of folders to
 # search.
@@ -106,10 +111,6 @@
 # search.
 # 
 # (font-path "${gimp_dir}/fonts:${gimp_data_dir}/fonts")
-
-#   This is a colon-separated list of folders to search.
-# 
-# (font-path-writable "${gimp_dir}/fonts")
 
 # Specify a default brush.  The brush is searched for in the specified brush
 # path.  This is a string value.
@@ -164,15 +165,15 @@
 # Sets the default image in the "File/New" dialog.  This is a parameter list.
 # 
 # (default-image
-#     (width 420)
-#     (height 300)
+#     (width 377)
+#     (height 233)
 #     (unit pixels)
 #     (xresolution 72.000000)
 #     (yresolution 72.000000)
 #     (resolution-unit inches)
 #     (image-type rgb)
 #     (fill-type background-fill)
-#     (comment "Created with The GIMP"))
+#     (comment "Created with GIMP"))
 
 # Specify a default image grid.  This is a parameter list.
 # 
@@ -180,8 +181,8 @@
 #     (style intersections)
 #     (fgcolor (color-rgba 0.000000 0.000000 0.000000 1.000000))
 #     (bgcolor (color-rgba 1.000000 1.000000 1.000000 1.000000))
-#     (xspacing 10.000000)
-#     (yspacing 10.000000)
+#     (xspacing 32.000000)
+#     (yspacing 32.000000)
 #     (spacing-unit inches)
 #     (xoffset 0.000000)
 #     (yoffset 0.000000)
@@ -248,6 +249,20 @@
 # 
 # (min-colors 144)
 
+# Defines the color management behavior.  This is a parameter list.
+# 
+# (color-management
+#     (mode display)
+#     (display-profile-from-gdk yes)
+#     (display-rendering-intent perceptual)
+#     (simulation-rendering-intent perceptual)
+#     (display-module "CdisplayLcms"))
+
+# Add all opened and saved files to the document history on disk.  Possible
+# values are yes and no.
+# 
+# (save-document-history yes)
+
 # Sets the size of the checkerboard used to display transparency.  Possible
 # values are small-checks, medium-checks and large-checks.
 # 
@@ -270,12 +285,12 @@
 # 
 # (marching-ants-speed 300)
 
-# When enabled, the image window will automatically resize itself, when
+# When enabled, the image window will automatically resize itself when
 # zooming into and out of images.  Possible values are yes and no.
 # 
 # (resize-windows-on-zoom no)
 
-# When enabled, the image window will automatically resize itself, whenever
+# When enabled, the image window will automatically resize itself whenever
 # the physical image size changes.  Possible values are yes and no.
 # 
 # (resize-windows-on-resize no)
@@ -422,6 +437,7 @@
 #     (show-layer-boundary yes)
 #     (show-guides yes)
 #     (show-grid no)
+#     (show-sample-points yes)
 #     (padding-mode default)
 #     (padding-color (color-rgba 1.000000 1.000000 1.000000 1.000000)))
 
@@ -437,6 +453,7 @@
 #     (show-layer-boundary no)
 #     (show-guides no)
 #     (show-grid no)
+#     (show-sample-points no)
 #     (padding-mode custom)
 #     (padding-color (color-rgba 0.000000 0.000000 0.000000 1.000000)))
 
@@ -460,13 +477,8 @@
 # 
 # (move-tool-changes-active no)
 
-# When enabled, the GIMP will use a different info window per image view. 
-# Possible values are yes and no.
-# 
-# (info-window-per-display no)
-
-# When enabled, the GIMP will not save if the image is unchanged since
-# opening it.  Possible values are yes and no.
+# When enabled, the GIMP will not save an image if it has not been changed
+# since it was opened.  Possible values are yes and no.
 # 
 # (trust-dirty-flag no)
 
@@ -485,12 +497,16 @@
 # 
 # (restore-session yes)
 
-# Enable to display a handy GIMP tip on startup.  Possible values are yes and
+# Save the tool options when the GIMP exits.  Possible values are yes and no.
+# 
+# (save-tool-options no)
+
+# Enable displaying a handy GIMP tip on startup.  Possible values are yes and
 # no.
 # 
 # (show-tips yes)
 
-# Enable to display tooltips.  Possible values are yes and no.
+# Enable tooltips display.  Possible values are yes and no.
 # 
 # (show-tool-tips yes)
 
@@ -577,7 +593,7 @@
 # Sets the browser used by the help system.  Possible values are gimp and
 # web-browser.
 # 
-# (help-browser web-browser)
+# (help-browser gimp)
 
 # Sets the external web browser to be used.  This can be an absolute path or
 # the name of an executable to search for in the user's PATH. If the command
@@ -585,7 +601,7 @@
 # appended to the command with a space separating the two.  This is a single
 # filename.
 # 
-# (web-browser "mozilla %s")
+(web-browser "sensible-browser %s")
 
 # The window type hint that is set on the toolbox. This may affect how your
 # window manager decorates and handles the toolbox window.  Possible values
@@ -598,6 +614,13 @@
 # are normal, utility and keep-above.
 # 
 # (dock-window-hint normal)
+
+# When enabled, dock windows (the toolbox and palettes) are set to be
+# transient to the active image window. Most window managers will keep the
+# dock windows above the image window then, but it may also have other
+# effects.  Possible values are yes and no.
+# 
+# (transient-docks no)
 
 # Sets the pixel format of cursors the GIMP will use.  Possible values are
 # bitmap and pixbuf.

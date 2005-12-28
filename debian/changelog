@@ -1,113 +1,15 @@
-gimp (2.2.17-1) unstable; urgency=low
+gimp (2.3.6-1) experimental; urgency=low
 
-  * New upstream version
-    - Fixes a regression loading PSD files
-
- -- Ari Pollak <ari@debian.org>  Fri, 13 Jul 2007 10:31:45 -0400
-
-gimp (2.2.16-1) unstable; urgency=high
-
-  * New upstream version
-    - Fixes integer overflow in PSD plugin (CVE-2007-2949)
-  * Don't use find -exec xargs (Closes: #426415)
-
- -- Ari Pollak <ari@debian.org>  Fri, 06 Jul 2007 23:11:47 -0400
-
-gimp (2.2.15-1) unstable; urgency=low
-
-  * New upstream release
-
- -- Ari Pollak <ari@debian.org>  Sun, 27 May 2007 13:55:28 -0400
-
-gimp (2.2.14-2) unstable; urgency=high
-
-  * 06_sunras_CVE-2007-2356:
-    - Add patch from upstream to fix CVE-2007-2356, a stack overflow
-      in the sunras plugin code.
-
- -- Ari Pollak <ari@debian.org>  Tue, 01 May 2007 16:49:47 -0400
-
-gimp (2.2.14-1) unstable; urgency=low
-
-  * New upstream version
-  * Upgrade to new python policy by using dh_pysupport instead of dh_python
-    (Closes: #380816)
-  * Add XS-Vcs-Svn and XS-Vcs-Browser headers for the subversion repository
-
- -- Ari Pollak <ari@debian.org>  Wed, 18 Apr 2007 11:55:17 -0400
-
-gimp (2.2.13-1) unstable; urgency=low
-
-  * New upstream release
-
- -- Ari Pollak <ari@debian.org>  Thu, 24 Aug 2006 17:46:19 -0400
-
-gimp (2.2.12-2) unstable; urgency=low
-
-  * debian/patches/06_gradient-fix.patch:
-    - Add patch to fix crash on malformed gradient (Closes: #381440)
-  * debian/patches/07_autoconf2.60-fix.patch:
-    - Add patch to fix breakage with new autoconf, which resulted in
-      a broken .desktop file. (Closes: #383391)
-
- -- Ari Pollak <ari@debian.org>  Tue, 22 Aug 2006 22:19:01 -0400
-
-gimp (2.2.12-1) unstable; urgency=low
-
-  * New upstream release
-    - Fixes segfault when closing image while saving it (Closes: #339115)
-  * Acknowledge NMU (Closes: #377049), revert patch which has been applied
-    upstream
-
- -- Ari Pollak <ari@debian.org>  Tue, 11 Jul 2006 14:30:03 -0400
-
-gimp (2.2.11-3.1) unstable; urgency=low
-
-  * Non-maintainer upload.
-  * Apply fix from #377049 to fix buffer overflow, CVE-2006-3404.
-    (closes: #377049)
-
- -- James Vega <jamessan@debian.org>  Fri, 7 Jul 2006 12:55:41 -0400 
-
-gimp (2.2.11-3) unstable; urgency=low
-
-  * Revert MMX/SSE fix, it didn't make a difference. Instead,
-    apply patch from CVS HEAD to disable MMX/SSE-accelerated burn function,
-    and replace it with generic C function.
-    Really closes: #374271
-  * Fix incorrect watch file
-
- -- Ari Pollak <ari@debian.org>  Tue, 20 Jun 2006 10:32:20 -0400
-
-gimp (2.2.11-2) unstable; urgency=low
-
-  * Switch build system to cdbs + simple-patchsys
-  * Remove build-depends on gcc-3.4 (Closes: #371864)
-  * Update gimp-python package description
-  * Put gimp.desktop, gimp.keys, and gimp.applications in gimp package instead
-    of gimp-data, and make gimp-data Recommends: gimp (Closes: #363469)
+  * New development upstream release for experimental (Closes: #322568)
+  * Add build-dependencies on libpopper-glib-dev, libgnomevfs2-dev,
+    libgnomeui-dev, and libgnome-keyring-dev.
+  * Build both the gnome-vfs and wget URI plugins using some Makefile magic
+    and split them out into gimp-gnomevfs and gimp-wget. Have the gimp package
+    depend on gimp-gnomevfs | gimp-wget.
   * Add more Wilber samples to /usr/share/doc
-  * Re-add patch from Red Hat to fix MMX/SSE compile error
-    (Closes: #374271)
+  * Make libgimp2.0-dev suggest libgimp2.0-doc
 
- -- Ari Pollak <ari@debian.org>  Sun, 18 Jun 2006 11:48:06 -0400
-
-gimp (2.2.11-1) unstable; urgency=low
-
-  * New upstream release
-  * Stop building with gcc-3.4 on arm
-  * Fix build-depends to exclude kfreebsd-amd64 from using libasound2-dev
-    (Closes: #361459)
-
- -- Ari Pollak <ari@debian.org>  Thu, 13 Apr 2006 17:27:44 -0400
-
-gimp (2.2.10-2) unstable; urgency=low
-
-  * Apply patch from upstream CVS to fix saving EXIF data on JPEG files
-    (Closes: #307918)
-  * Conflict with libgimp2.0 (>= 2.3.0) (Closes: #349801)
-
- -- Ari Pollak <ari@debian.org>  Mon, 30 Jan 2006 15:09:49 -0500
+ -- Ari Pollak <ari@debian.org>  Wed, 28 Dec 2005 15:24:24 -0500
 
 gimp (2.2.10-1) unstable; urgency=low
 
@@ -126,7 +28,7 @@ gimp (2.2.9-8) unstable; urgency=low
     - Define PKG_CONFIG at the beginning of the gimptool script
       so the GTK/Glib cflags & libs are checked at runtime instead
       of gimp package compile-time. This was breaking gimp plugins
-      built with gimptool with GTK+ 2.8 installed, since 
+      built with gimptool with GTK+ 2.8 installed, since
       extra library/include dependencies on Cairo were added.
       An upstream bug has been filed about this (GNOME #324761).
 

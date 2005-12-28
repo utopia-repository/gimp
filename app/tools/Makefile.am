@@ -14,6 +14,10 @@ libapptools_a_sources = \
 	\
 	gimpairbrushtool.c		\
 	gimpairbrushtool.h		\
+	gimpalignoptions.c		\
+	gimpalignoptions.h		\
+	gimpaligntool.c			\
+	gimpaligntool.h			\
 	gimpblendoptions.c		\
 	gimpblendoptions.h		\
 	gimpblendtool.c			\
@@ -64,6 +68,12 @@ libapptools_a_sources = \
 	gimpfliptool.h			\
 	gimpfreeselecttool.c		\
 	gimpfreeselecttool.h		\
+	gimpforegroundselectoptions.c	\
+	gimpforegroundselectoptions.h	\
+	gimpforegroundselecttool.c	\
+	gimpforegroundselecttool.h	\
+	gimpforegroundselecttool-undo.c	\
+	gimpforegroundselecttool-undo.h	\
 	gimpfuzzyselecttool.c		\
 	gimpfuzzyselecttool.h		\
 	gimphistogramoptions.c		\
@@ -106,6 +116,14 @@ libapptools_a_sources = \
 	gimpperspectivetool.h		\
 	gimpposterizetool.c		\
 	gimpposterizetool.h		\
+	gimpnewrectselecttool.c		\
+	gimpnewrectselecttool.h		\
+	gimpnewrectselectoptions.c		\
+	gimpnewrectselectoptions.h		\
+	gimprectangletool.c		\
+	gimprectangletool.h		\
+	gimprectangleoptions.c		\
+	gimprectangleoptions.h		\
 	gimprectselecttool.c		\
 	gimprectselecttool.h		\
 	gimprotatetool.c		\
@@ -150,11 +168,12 @@ libapptools_a_SOURCES = $(libapptools_a_built_sources) $(libapptools_a_sources)
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-Tools\"	\
-	@GIMP_THREAD_FLAGS@ 		\
-	@GIMP_MP_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
+	-I$(top_builddir)	\
 	-I$(top_srcdir)		\
+	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
 	$(GTK_CFLAGS)		\
 	-I$(includedir)

@@ -49,6 +49,7 @@ typedef struct _ScaleDialogData ScaleDialogData;
 struct _ScaleDialogData
 {
   GimpDisplayShell *shell;
+  GimpZoomModel    *model;
   GtkObject        *scale_adj;
   GtkObject        *num_adj;
   GtkObject        *denom_adj;
@@ -68,152 +69,6 @@ static gdouble img2real                              (GimpDisplayShell *shell,
 
 
 /*  public functions  */
-
-gdouble
-gimp_display_shell_scale_zoom_step (GimpZoomType zoom_type,
-                                    gdouble      scale)
-{
-  gint    i, n_presets;
-  gdouble new_scale = 1.0;
-
-  /* This table is constructed to have fractions, that approximate
-   * sqrt(2)^k. This gives a smooth feeling regardless of the starting
-   * zoom level.
-   *
-   * Zooming in/out always jumps to a zoom step from the list above.
-   * However, we try to guarantee a certain size of the step, to
-   * avoid silly jumps from 101% to 100%.
-   * The factor 1.1 is chosen a bit arbitrary, but feels better
-   * than the geometric median of the zoom steps (2^(1/4)).
-   */
-
-#define ZOOM_MIN_STEP 1.1
-
-  gdouble presets[] = {
-    1.0 / 256, 1.0 / 180, 1.0 / 128, 1.0 / 90,
-    1.0 / 64,  1.0 / 45,  1.0 / 32,  1.0 / 23,
-    1.0 / 16,  1.0 / 11,  1.0 / 8,   2.0 / 11,
-    1.0 / 4,   1.0 / 3,   1.0 / 2,   2.0 / 3,
-      1.0,
-               3.0 / 2,      2.0,      3.0,
-      4.0,    11.0 / 2,      8.0,     11.0,
-      16.0,     23.0,       32.0,     45.0,
-      64.0,     90.0,      128.0,    180.0,
-      256.0,
-  };
-
-  n_presets = G_N_ELEMENTS (presets);
-
-  switch (zoom_type)
-    {
-    case GIMP_ZOOM_IN:
-      scale *= ZOOM_MIN_STEP;
-
-      new_scale = presets[n_presets-1];
-
-      for (i = n_presets - 1; i >= 0 && presets[i] > scale; i--)
-        new_scale = presets[i];
-
-      break;
-
-    case GIMP_ZOOM_OUT:
-      scale /= ZOOM_MIN_STEP;
-
-      new_scale = presets[0];
-
-      for (i = 0; i < n_presets && presets[i] < scale; i++)
-        new_scale = presets[i];
-
-      break;
-
-    case GIMP_ZOOM_TO:
-      new_scale = scale;
-      break;
-    }
-
-  return CLAMP (new_scale, 1.0/256.0, 256.0);
-
-#undef ZOOM_MIN_STEP
-}
-
-void
-gimp_display_shell_scale_get_fraction (gdouble  zoom_factor,
-                                       gint    *numerator,
-                                       gint    *denominator)
-{
-  gint     p0, p1, p2;
-  gint     q0, q1, q2;
-  gdouble  remainder, next_cf;
-  gboolean swapped = FALSE;
-
-  g_return_if_fail (numerator != NULL && denominator != NULL);
-
-  /* make sure that zooming behaves symmetrically */
-  if (zoom_factor < 1.0)
-    {
-      zoom_factor = 1.0 / zoom_factor;
-      swapped = TRUE;
-    }
-
-  /* calculate the continued fraction for the desired zoom factor */
-
-  p0 = 1;
-  q0 = 0;
-  p1 = floor (zoom_factor);
-  q1 = 1;
-
-  remainder = zoom_factor - p1;
-
-  while (fabs (remainder) >= 0.0001 &&
-         fabs (((gdouble) p1 / q1) - zoom_factor) > 0.0001)
-    {
-      remainder = 1.0 / remainder;
-
-      next_cf = floor (remainder);
-
-      p2 = next_cf * p1 + p0;
-      q2 = next_cf * q1 + q0;
-
-      /* Numerator and Denominator are limited by 256 */
-      /* also absurd ratios like 170:171 are excluded */
-      if (p2 > 256 || q2 > 256 || (p2 > 1 && q2 > 1 && p2 * q2 > 200))
-        break;
-
-      /* remember the last two fractions */
-      p0 = p1;
-      p1 = p2;
-      q0 = q1;
-      q1 = q2;
-
-      remainder = remainder - next_cf;
-    }
-
-  zoom_factor = (gdouble) p1 / q1;
-
-  /* hard upper and lower bounds for zoom ratio */
-
-  if (zoom_factor > 256.0)
-    {
-      p1 = 256;
-      q1 = 1;
-    }
-  else if (zoom_factor < 1.0 / 256.0)
-    {
-      p1 = 1;
-      q1 = 256;
-    }
-
-  if (swapped)
-    {
-      *numerator = q1;
-      *denominator = p1;
-    }
-  else
-    {
-      *numerator = p1;
-      *denominator = q1;
-    }
-}
 
 void
 gimp_display_shell_scale_setup (GimpDisplayShell *shell)
@@ -317,15 +172,15 @@ gimp_display_shell_scale_setup (GimpDisplayShell *shell)
   gtk_widget_queue_draw (GTK_WIDGET (vruler));
 
 #if 0
-  g_print ("offset_x:     %d\n"
-           "offset_y:     %d\n"
-           "disp_width:   %d\n"
-           "disp_height:  %d\n"
-           "disp_xoffset: %d\n"
-           "disp_yoffset: %d\n\n",
-           shell->offset_x, shell->offset_y,
-           shell->disp_width, shell->disp_height,
-           shell->disp_xoffset, shell->disp_yoffset);
+  g_printerr ("offset_x:     %d\n"
+              "offset_y:     %d\n"
+              "disp_width:   %d\n"
+              "disp_height:  %d\n"
+              "disp_xoffset: %d\n"
+              "disp_yoffset: %d\n\n",
+              shell->offset_x, shell->offset_y,
+              shell->disp_width, shell->disp_height,
+              shell->disp_xoffset, shell->disp_yoffset);
 #endif
 }
 
@@ -353,32 +208,98 @@ gimp_display_shell_scale_set_dot_for_dot (GimpDisplayShell *shell,
     }
 }
 
+/**
+ * gimp_display_shell_scale:
+ * @shell:     the #GimpDisplayShell
+ * @zoom_type: whether to zoom in, our or to a specific scale
+ * @scale:     ignored unless @zoom_type == %GIMP_ZOOM_TO
+ *
+ * This function calls gimp_display_shell_scale_to(). It tries to be
+ * smart whether to use the position of the mouse pointer or the
+ * center of the display as coordinates.
+ **/
 void
 gimp_display_shell_scale (GimpDisplayShell *shell,
                           GimpZoomType      zoom_type,
                           gdouble           new_scale)
 {
-  GimpDisplayConfig *config;
-  gdouble            offset_x, offset_y;
-  gdouble            scale;
+  GdkEvent *event;
+  gint      x, y;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_if_fail (shell->canvas != NULL);
 
-  scale = shell->scale;
+  x = shell->disp_width  / 2;
+  y = shell->disp_height / 2;
+
+  /*  Center on the mouse position instead of the display center,
+   *  if one of the following conditions is fulfilled:
+   *
+   *   (1) there's no current event (the action was triggered by an
+   *       input controller)
+   *   (2) the event originates from the canvas (a scroll event)
+   *   (3) the event originates from the shell (a key press event)
+   *
+   *  Basically the only situation where we don't want to center on
+   *  mouse position is if the action is being called from a menu.
+   */
+
+  event = gtk_get_current_event ();
+
+  if (! event ||
+      gtk_get_event_widget (event) == shell->canvas ||
+      gtk_get_event_widget (event) == GTK_WIDGET (shell))
+    {
+      gtk_widget_get_pointer (shell->canvas, &x, &y);
+    }
+
+  gimp_display_shell_scale_to (shell, zoom_type, new_scale, x, y);
+}
+
+/**
+ * gimp_display_shell_scale_to:
+ * @shell:     the #GimpDisplayShell
+ * @zoom_type: whether to zoom in, out or to a specified scale
+ * @scale:     ignored unless @zoom_type == %GIMP_ZOOM_TO
+ * @x:         x screen coordinate
+ * @y:         y screen coordinate
+ *
+ * This function changes the scale (zoom ratio) of the display shell.
+ * It either zooms in / out one step (%GIMP_ZOOM_IN / %GIMP_ZOOM_OUT)
+ * or sets the scale to the zoom ratio passed as @scale (%GIMP_ZOOM_TO).
+ *
+ * The display offsets are adjusted so that the point specified by @x
+ * and @y doesn't change it's position on screen (if possible). You
+ * would typically pass either the display center or the mouse
+ * position here.
+ **/
+void
+gimp_display_shell_scale_to (GimpDisplayShell *shell,
+                             GimpZoomType      zoom_type,
+                             gdouble           scale,
+                             gdouble           x,
+                             gdouble           y)
+{
+  GimpDisplayConfig *config;
+  gdouble            current;
+  gdouble            offset_x;
+  gdouble            offset_y;
+
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
   if (! shell->gdisp)
     return;
 
-  offset_x = shell->offset_x + (shell->disp_width  / 2.0);
-  offset_y = shell->offset_y + (shell->disp_height / 2.0);
+  current = gimp_zoom_model_get_factor (shell->zoom);
 
-  offset_x /= scale;
-  offset_y /= scale;
+  offset_x = shell->offset_x + x;
+  offset_y = shell->offset_y + y;
 
-  if (zoom_type == GIMP_ZOOM_TO)
-    scale = new_scale;
-  else
-    scale = gimp_display_shell_scale_zoom_step (zoom_type, scale);
+  offset_x /= current;
+  offset_y /= current;
+
+  if (zoom_type != GIMP_ZOOM_TO)
+    scale = gimp_zoom_model_zoom_step (zoom_type, current);
 
   offset_x *= scale;
   offset_y *= scale;
@@ -386,8 +307,7 @@ gimp_display_shell_scale (GimpDisplayShell *shell,
   config = GIMP_DISPLAY_CONFIG (shell->gdisp->gimage->gimp->config);
 
   gimp_display_shell_scale_by_values (shell, scale,
-                                      offset_x - (shell->disp_width  / 2),
-                                      offset_y - (shell->disp_height / 2),
+                                      offset_x - x, offset_y - y,
                                       config->resize_windows_on_zoom);
 }
 
@@ -461,15 +381,16 @@ gimp_display_shell_scale_by_values (GimpDisplayShell *shell,
   /*  Abort early if the values are all setup already. We don't
    *  want to inadvertently resize the window (bug #164281).
    */
-  if (shell->scale    == scale    &&
-      shell->offset_x == offset_x &&
+  if (gimp_zoom_model_get_factor (shell->zoom) == scale &&
+      shell->offset_x == offset_x                       &&
       shell->offset_y == offset_y)
     return;
 
   /* freeze the active tool */
   gimp_display_shell_pause (shell);
 
-  shell->scale    = scale;
+  gimp_zoom_model_zoom (shell->zoom, GIMP_ZOOM_TO, scale);
+
   shell->offset_x = offset_x;
   shell->offset_y = offset_y;
 
@@ -533,8 +454,18 @@ gimp_display_shell_scale_dialog (GimpDisplayShell *shell)
       return;
     }
 
+  if (fabs (shell->other_scale) <= 0.0001)
+    {
+      /* other_scale not yet initialized */
+      shell->other_scale = gimp_zoom_model_get_factor (shell->zoom);
+    }
+
   data = g_new (ScaleDialogData, 1);
+
   data->shell = shell;
+  data->model = g_object_new (GIMP_TYPE_ZOOM_MODEL,
+                              "value", fabs (shell->other_scale),
+                              NULL);
 
   shell->scale_dialog =
     gimp_viewable_dialog_new (GIMP_VIEWABLE (shell->gdisp->gimage),
@@ -550,8 +481,16 @@ gimp_display_shell_scale_dialog (GimpDisplayShell *shell)
 
                               NULL);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (shell->scale_dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   g_object_weak_ref (G_OBJECT (shell->scale_dialog),
                      (GWeakNotify) g_free, data);
+  g_object_weak_ref (G_OBJECT (shell->scale_dialog),
+                     (GWeakNotify) g_object_unref, data->model);
+
   g_object_add_weak_pointer (G_OBJECT (shell->scale_dialog),
                              (gpointer *) &shell->scale_dialog);
 
@@ -575,18 +514,15 @@ gimp_display_shell_scale_dialog (GimpDisplayShell *shell)
 
   hbox = gtk_hbox_new (FALSE, 6);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
-                             _("Zoom Ratio:"), 0.0, 0.5,
+                             _("Zoom ratio:"), 0.0, 0.5,
                              hbox, 1, FALSE);
 
-  if (fabs (shell->other_scale) <= 0.0001)
-    shell->other_scale = shell->scale;   /* other_scale not yet initialized */
-
-  gimp_display_shell_scale_get_fraction (fabs (shell->other_scale),
-                                         &num, &denom);
+  gimp_zoom_model_get_fraction (data->model, &num, &denom);
 
   spin = gimp_spin_button_new (&data->num_adj,
                                num, 1, 256,
                                1, 8, 1, 1, 0);
+  gtk_entry_set_activates_default (GTK_ENTRY (spin), TRUE);
   gtk_box_pack_start (GTK_BOX (hbox), spin, TRUE, TRUE, 0);
   gtk_widget_show (spin);
 
@@ -597,6 +533,7 @@ gimp_display_shell_scale_dialog (GimpDisplayShell *shell)
   spin = gimp_spin_button_new (&data->denom_adj,
                                denom, 1, 256,
                                1, 8, 1, 1, 0);
+  gtk_entry_set_activates_default (GTK_ENTRY (spin), TRUE);
   gtk_box_pack_start (GTK_BOX (hbox), spin, TRUE, TRUE, 0);
   gtk_widget_show (spin);
 
@@ -609,6 +546,7 @@ gimp_display_shell_scale_dialog (GimpDisplayShell *shell)
                                fabs (shell->other_scale) * 100,
                                100.0 / 256.0, 25600.0,
                                10, 50, 0, 1, 2);
+  gtk_entry_set_activates_default (GTK_ENTRY (spin), TRUE);
   gtk_box_pack_start (GTK_BOX (hbox), spin, TRUE, TRUE, 0);
   gtk_widget_show (spin);
 
@@ -658,7 +596,7 @@ static void
 update_zoom_values (GtkAdjustment   *adj,
                     ScaleDialogData *dialog)
 {
-  gint num, denom;
+  gint    num, denom;
   gdouble scale;
 
   g_signal_handlers_block_by_func (GTK_ADJUSTMENT (dialog->scale_adj),
@@ -677,7 +615,8 @@ update_zoom_values (GtkAdjustment   *adj,
     {
       scale = gtk_adjustment_get_value (GTK_ADJUSTMENT (dialog->scale_adj));
 
-      gimp_display_shell_scale_get_fraction (scale / 100.0, &num, &denom);
+      gimp_zoom_model_zoom (dialog->model, GIMP_ZOOM_TO, scale / 100.0);
+      gimp_zoom_model_get_fraction (dialog->model, &num, &denom);
 
       gtk_adjustment_set_value (GTK_ADJUSTMENT (dialog->num_adj), num);
       gtk_adjustment_set_value (GTK_ADJUSTMENT (dialog->denom_adj), denom);

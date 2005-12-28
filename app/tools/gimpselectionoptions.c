@@ -21,21 +21,22 @@
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
 
-#include "config/gimpconfig-params.h"
 #include "config/gimpguiconfig.h"
 
 #include "core/gimp.h"
 #include "core/gimptoolinfo.h"
 
-#include "widgets/gimppropwidgets.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "gimpbycolorselecttool.h"
 #include "gimpellipseselecttool.h"
+#include "gimpforegroundselecttool.h"
+#include "gimpnewrectselecttool.h"
 #include "gimpfuzzyselecttool.h"
 #include "gimpiscissorstool.h"
 #include "gimpselectionoptions.h"
@@ -64,8 +65,6 @@ enum
 };
 
 
-static void   gimp_selection_options_class_init (GimpSelectionOptionsClass *options_class);
-
 static void   gimp_selection_options_set_property (GObject         *object,
                                                    guint            property_id,
                                                    const GValue    *value,
@@ -82,44 +81,17 @@ static void   selection_options_fixed_mode_notify (GimpSelectionOptions *options
                                                    GtkWidget            *fixed_box);
 
 
-static GimpToolOptionsClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpSelectionOptions, gimp_selection_options,
+               GIMP_TYPE_TOOL_OPTIONS);
 
+#define parent_class gimp_selection_options_parent_class
 
-GType
-gimp_selection_options_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpSelectionOptionsClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_selection_options_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpSelectionOptions),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) NULL
-      };
-
-      type = g_type_register_static (GIMP_TYPE_TOOL_OPTIONS,
-                                     "GimpSelectionOptions",
-                                     &info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_selection_options_class_init (GimpSelectionOptionsClass *klass)
 {
   GObjectClass         *object_class  = G_OBJECT_CLASS (klass);
   GimpToolOptionsClass *options_class = GIMP_TOOL_OPTIONS_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->set_property = gimp_selection_options_set_property;
   object_class->get_property = gimp_selection_options_get_property;
@@ -195,6 +167,11 @@ gimp_selection_options_class_init (GimpSelectionOptionsClass *klass)
                                     "interactive", NULL,
                                     FALSE,
                                     0);
+}
+
+static void
+gimp_selection_options_init (GimpSelectionOptions *options)
+{
 }
 
 static void
@@ -345,31 +322,84 @@ gimp_selection_options_reset (GimpToolOptions *tool_options)
   GIMP_TOOL_OPTIONS_CLASS (parent_class)->reset (tool_options);
 }
 
+static const gchar *
+gimp_selection_options_get_modifier (GimpChannelOps operation)
+{
+  GdkModifierType mod = 0;
+
+  switch (operation)
+    {
+    case GIMP_CHANNEL_OP_ADD:
+      mod = GDK_SHIFT_MASK;
+      break;
+
+    case GIMP_CHANNEL_OP_SUBTRACT:
+      mod = GDK_CONTROL_MASK;
+      break;
+
+    case GIMP_CHANNEL_OP_REPLACE:
+      mod = 0;
+      break;
+
+    case GIMP_CHANNEL_OP_INTERSECT:
+      mod = GDK_CONTROL_MASK | GDK_SHIFT_MASK;
+      break;
+    }
+
+  return gimp_get_mod_string (mod);
+}
+
 GtkWidget *
 gimp_selection_options_gui (GimpToolOptions *tool_options)
 {
   GObject              *config  = G_OBJECT (tool_options);
   GimpSelectionOptions *options = GIMP_SELECTION_OPTIONS (tool_options);
-  GtkWidget            *vbox;
+  GtkWidget            *vbox    = gimp_tool_options_gui (tool_options);
   GtkWidget            *button;
-
-  vbox = gimp_tool_options_gui (tool_options);
 
   /*  the selection operation radio buttons  */
   {
     GtkWidget *hbox;
     GtkWidget *label;
+    GList     *children;
     GList     *list;
+    gint       i;
 
     hbox = gimp_prop_enum_stock_box_new (config, "operation",
                                          "gimp-selection", 0, 0);
     gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
     gtk_widget_show (hbox);
 
-    list = gtk_container_get_children (GTK_CONTAINER (hbox));
-    gtk_box_reorder_child (GTK_BOX (hbox), GTK_WIDGET (list->next->next->data),
-                           0);
-    g_list_free (list);
+    children = gtk_container_get_children (GTK_CONTAINER (hbox));
+
+    /*  add modifier keys to the tooltips  */
+    for (list = children, i = 0; list; list = list->next, i++)
+      {
+        GtkWidget       *button   = list->data;
+        GtkTooltipsData *data     = gtk_tooltips_data_get (button);
+        const gchar     *modifier = gimp_selection_options_get_modifier (i);
+
+        if (! modifier)
+          continue;
+
+        if (data && data->tip_text)
+          {
+            gchar *tip = g_strdup_printf ("%s  (%s)", data->tip_text, modifier);
+
+            gimp_help_set_help_data (button, tip, NULL);
+            g_free (tip);
+          }
+        else
+          {
+            gimp_help_set_help_data (button, modifier, NULL);
+          }
+      }
+
+    /*  move GIMP_CHANNEL_OP_REPLACE to the front  */
+    gtk_box_reorder_child (GTK_BOX (hbox),
+                           GTK_WIDGET (children->next->next->data), 0);
+
+    g_list_free (children);
 
     label = gtk_label_new (_("Mode:"));
     gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
@@ -383,8 +413,12 @@ gimp_selection_options_gui (GimpToolOptions *tool_options)
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
-  if (tool_options->tool_info->tool_type == GIMP_TYPE_RECT_SELECT_TOOL)
-    gtk_widget_set_sensitive (button, FALSE);
+  if (tool_options->tool_info->tool_type == GIMP_TYPE_RECT_SELECT_TOOL     ||
+      tool_options->tool_info->tool_type == GIMP_TYPE_NEW_RECT_SELECT_TOOL ||
+      tool_options->tool_info->tool_type == GIMP_TYPE_FOREGROUND_SELECT_TOOL)
+    {
+      gtk_widget_set_sensitive (button, FALSE);
+    }
 
   /*  the feather frame  */
   {
@@ -469,7 +503,7 @@ gimp_selection_options_gui (GimpToolOptions *tool_options)
     }
 
   /*  widgets for fixed size select  */
-  if (tool_options->tool_info->tool_type == GIMP_TYPE_RECT_SELECT_TOOL    ||
+  if (tool_options->tool_info->tool_type == GIMP_TYPE_RECT_SELECT_TOOL ||
       tool_options->tool_info->tool_type == GIMP_TYPE_ELLIPSE_SELECT_TOOL)
     {
       GtkWidget *frame;

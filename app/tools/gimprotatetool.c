@@ -60,9 +60,6 @@
 
 /*  local function prototypes  */
 
-static void   gimp_rotate_tool_class_init    (GimpRotateToolClass *klass);
-static void   gimp_rotate_tool_init          (GimpRotateTool      *rotate_tool);
-
 static void   gimp_rotate_tool_dialog        (GimpTransformTool   *tr_tool);
 static void   gimp_rotate_tool_dialog_update (GimpTransformTool   *tr_tool);
 static void   gimp_rotate_tool_prepare       (GimpTransformTool   *tr_tool,
@@ -78,12 +75,10 @@ static void   rotate_center_changed          (GtkWidget           *entry,
                                               GimpTransformTool   *tr_tool);
 
 
-/*  private variables  */
+G_DEFINE_TYPE (GimpRotateTool, gimp_rotate_tool, GIMP_TYPE_TRANSFORM_TOOL);
 
-static GimpTransformToolClass *parent_class = NULL;
+#define parent_class gimp_rotate_tool_parent_class
 
-
-/*  public functions  */
 
 void
 gimp_rotate_tool_register (GimpToolRegisterCallback  callback,
@@ -102,49 +97,16 @@ gimp_rotate_tool_register (GimpToolRegisterCallback  callback,
                 data);
 }
 
-GType
-gimp_rotate_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpRotateToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_rotate_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpRotateTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_rotate_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_TRANSFORM_TOOL,
-                                          "GimpRotateTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
-
-
-/*  private functions  */
-
 static void
 gimp_rotate_tool_class_init (GimpRotateToolClass *klass)
 {
   GimpTransformToolClass *trans_class = GIMP_TRANSFORM_TOOL_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
-
-  trans_class->dialog         = gimp_rotate_tool_dialog;
-  trans_class->dialog_update  = gimp_rotate_tool_dialog_update;
-  trans_class->prepare        = gimp_rotate_tool_prepare;
-  trans_class->motion         = gimp_rotate_tool_motion;
-  trans_class->recalc         = gimp_rotate_tool_recalc;
+  trans_class->dialog        = gimp_rotate_tool_dialog;
+  trans_class->dialog_update = gimp_rotate_tool_dialog_update;
+  trans_class->prepare       = gimp_rotate_tool_prepare;
+  trans_class->motion        = gimp_rotate_tool_motion;
+  trans_class->recalc        = gimp_rotate_tool_recalc;
 }
 
 static void
@@ -156,7 +118,7 @@ gimp_rotate_tool_init (GimpRotateTool *rotate_tool)
   gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_ROTATE);
 
   tr_tool->shell_desc    = _("Rotation Information");
-  tr_tool->progress_text = _("Rotating...");
+  tr_tool->progress_text = _("Rotating");
 }
 
 static void
@@ -339,10 +301,11 @@ gimp_rotate_tool_recalc (GimpTransformTool *tr_tool,
   tr_tool->cx = tr_tool->trans_info[CENTER_X];
   tr_tool->cy = tr_tool->trans_info[CENTER_Y];
 
-  gimp_transform_matrix_rotate_center (tr_tool->cx,
+  gimp_matrix3_identity (&tr_tool->transform);
+  gimp_transform_matrix_rotate_center (&tr_tool->transform,
+                                       tr_tool->cx,
                                        tr_tool->cy,
-                                       tr_tool->trans_info[ANGLE],
-                                       &tr_tool->transform);
+                                       tr_tool->trans_info[ANGLE]);
 }
 
 static void

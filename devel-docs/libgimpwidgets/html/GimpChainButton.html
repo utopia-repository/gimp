@@ -1,53 +1,44 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpChainButton</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="prev" href="GimpButton.html" title="GimpButton">
 <link rel="next" href="GimpColorArea.html" title="GimpColorArea">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
+<link rel="chapter" href="libgimpwidgets-gallery.html" title="Widget Gallery">
 <link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
 <link rel="part" href="libgimpwidgets-colordisplay.html" title="Part&#160;II.&#160;GIMP Display Filters">
 <link rel="part" href="libgimpwidgets-colorselector.html" title="Part&#160;III.&#160;GIMP Color Selectors">
 <link rel="part" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
 <link rel="part" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
 <link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
+<link rel="index" href="ix01.html" title="Index">
+<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
 <td><a accesskey="p" href="GimpButton.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpColorArea.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2596047" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2577219" class="shortcut">Description</a>
-                  &#160;|&#160;
-                  <a href="#id2595420" class="shortcut">Object Hierarchy</a>
-                  &#160;|&#160;
-                  <a href="#id2577172" class="shortcut">Implemented Interfaces</a>
-                  &#160;|&#160;
-                  <a href="#id2577194" class="shortcut">Signals</a></nobr></td></tr>
-</table>
+</tr></table>
 <div class="refentry" lang="en">
 <a name="GimpChainButton"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2596047"></a><span class="refentrytitle">GimpChainButton</span>
-</h2>
+<h2><span class="refentrytitle">GimpChainButton</span></h2>
 <p>GimpChainButton &#8212; Widget to visually connect two entry widgets.</p>
 </td>
-<td valign="top" align="right"></td>
+<td valign="top" align="right"><img src="gimp-chain-button.png"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
@@ -55,43 +46,53 @@
 
 
 
-                    <a href="GimpChainButton.html#GimpChainButton-struct">GimpChainButton</a>;
-enum                <a href="GimpChainButton.html#GimpChainPosition">GimpChainPosition</a>;
-GtkWidget*          <a href="GimpChainButton.html#gimp-chain-button-new">gimp_chain_button_new</a>               (<a href="GimpChainButton.html#GimpChainPosition">GimpChainPosition</a> position);
-void                <a href="GimpChainButton.html#gimp-chain-button-set-active">gimp_chain_button_set_active</a>        (<a href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button,
-                                                         gboolean active);
-gboolean            <a href="GimpChainButton.html#gimp-chain-button-get-active">gimp_chain_button_get_active</a>        (<a href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button);
+            <a href="GimpChainButton.html#GimpChainButton-struct">GimpChainButton</a>;
+enum        <a href="GimpChainButton.html#GimpChainPosition">GimpChainPosition</a>;
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="GimpChainButton.html#gimp-chain-button-new">gimp_chain_button_new</a>           (<a href="GimpChainButton.html#GimpChainPosition">GimpChainPosition</a> position);
+void        <a href="GimpChainButton.html#gimp-chain-button-set-active">gimp_chain_button_set_active</a>    (<a href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button,
+                                             gboolean active);
+gboolean    <a href="GimpChainButton.html#gimp-chain-button-get-active">gimp_chain_button_get_active</a>    (<a href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2595420"></a><h2>Object Hierarchy</h2>
+<a name="id2526086"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkContainer
-                           +----GtkTable
-                                 +----GimpChainButton
+   +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+         +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+               +----<a
+href="../gtk/GtkContainer.html"
+>GtkContainer</a>
+                     +----<a
+href="../gtk/GtkTable.html"
+>GtkTable</a>
+                           +----GimpChainButton
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577172"></a><h2>Implemented Interfaces</h2>
+<a name="id2526130"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpChainButton implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577194"></a><h2>Signals</h2>
+<a name="id2526147"></a><h2>Signal Prototypes</h2>
 <pre class="synopsis">
 
-  "<a href="GimpChainButton.html#GimpChainButton-toggled">toggled</a>"                                        : Run First
+"<a href="GimpChainButton.html#GimpChainButton-toggled">toggled</a>"   void        user_function      (<a href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *gimpchainbutton,
+                                            gpointer user_data);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577219"></a><h2>Description</h2>
+<a name="id2548297"></a><h2>Description</h2>
 <p>
 This widget provides a button showing either a linked or a broken
 chain that can be used to link two entries, spinbuttons, colors
@@ -108,20 +109,20 @@ necessary.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2562531"></a><h2>Details</h2>
+<a name="id2548336"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2562542"></a><h3>
+<a name="id2548342"></a><h3>
 <a name="GimpChainButton-struct"></a>GimpChainButton</h3>
-<a class="indexterm" name="id2562554"></a><pre class="programlisting">typedef struct _GimpChainButton GimpChainButton;</pre>
+<a class="indexterm" name="id2548351"></a><pre class="programlisting">typedef struct _GimpChainButton GimpChainButton;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562570"></a><h3>
+<a name="id2548368"></a><h3>
 <a name="GimpChainPosition"></a>enum GimpChainPosition</h3>
-<a class="indexterm" name="id2562582"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2548378"></a><pre class="programlisting">typedef enum
 {
   GIMP_CHAIN_TOP,
   GIMP_CHAIN_LEFT,
@@ -135,9 +136,11 @@ necessary.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562599"></a><h3>
+<a name="id2548395"></a><h3>
 <a name="gimp-chain-button-new"></a>gimp_chain_button_new ()</h3>
-<a class="indexterm" name="id2562611"></a><pre class="programlisting">GtkWidget*          gimp_chain_button_new               (<a href="GimpChainButton.html#GimpChainPosition">GimpChainPosition</a> position);</pre>
+<a class="indexterm" name="id2548404"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_chain_button_new           (<a href="GimpChainButton.html#GimpChainPosition">GimpChainPosition</a> position);</pre>
 <p>
 Creates a new <a href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> widget.
 </p>
@@ -155,13 +158,15 @@ for more than two widgets, but the look is optimized for two.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>position</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>position</code></em>&#160;:</span></td>
 <td> The position you are going to use for the button
            with respect to the widgets you want to chain.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> Pointer to the new <a href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a>, which is inactive
          by default. Use <a href="GimpChainButton.html#gimp-chain-button-set-active"><code class="function">gimp_chain_button_set_active()</code></a> to
          change its state.
@@ -172,10 +177,10 @@ for more than two widgets, but the look is optimized for two.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2586114"></a><h3>
+<a name="id2516875"></a><h3>
 <a name="gimp-chain-button-set-active"></a>gimp_chain_button_set_active ()</h3>
-<a class="indexterm" name="id2586126"></a><pre class="programlisting">void                gimp_chain_button_set_active        (<a href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button,
-                                                         gboolean active);</pre>
+<a class="indexterm" name="id2516884"></a><pre class="programlisting">void        gimp_chain_button_set_active    (<a href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button,
+                                             gboolean active);</pre>
 <p>
 Sets the state of the <a href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> to be either locked (<code class="literal">TRUE</code>) or
 unlocked (<code class="literal">FALSE</code>) and changes the showed pixmap to reflect the new state.</p>
@@ -186,12 +191,14 @@ unlocked (<code class="literal">FALSE</code>) and changes the showed pixmap to r
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>button</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>button</code></em>&#160;:</span></td>
 <td> Pointer to a <a href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>active</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>active</code></em>&#160;:</span></td>
 <td> The new state.
 </td>
 </tr>
@@ -200,9 +207,9 @@ unlocked (<code class="literal">FALSE</code>) and changes the showed pixmap to r
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2586231"></a><h3>
+<a name="id2522890"></a><h3>
 <a name="gimp-chain-button-get-active"></a>gimp_chain_button_get_active ()</h3>
-<a class="indexterm" name="id2586244"></a><pre class="programlisting">gboolean            gimp_chain_button_get_active        (<a href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button);</pre>
+<a class="indexterm" name="id2522901"></a><pre class="programlisting">gboolean    gimp_chain_button_get_active    (<a href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button);</pre>
 <p>
 Checks the state of the <a href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a>.</p>
 <p>
@@ -212,12 +219,14 @@ Checks the state of the <a href="GimpChainButton.html" title="GimpChainButton"><
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>button</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>button</code></em>&#160;:</span></td>
 <td> Pointer to a <a href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> <code class="literal">TRUE</code> if the <a href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> is active (locked).
 </td>
 </tr>
@@ -226,12 +235,12 @@ Checks the state of the <a href="GimpChainButton.html" title="GimpChainButton"><
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2586338"></a><h2>Signal Details</h2>
+<a name="id2522990"></a><h2>Signals</h2>
 <div class="refsect2" lang="en">
-<a name="id2514857"></a><h3>
+<a name="id2522996"></a><h3>
 <a name="GimpChainButton-toggled"></a>The "toggled" signal</h3>
-<a class="indexterm" name="id2514864"></a><pre class="programlisting">void                user_function                      (<a href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *gimpchainbutton,
-                                                        gpointer         user_data)            : Run First</pre>
+<pre class="programlisting">void        user_function                  (<a href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *gimpchainbutton,
+                                            gpointer user_data);</pre>
 <p>
 
 </p>
@@ -239,13 +248,15 @@ Checks the state of the <a href="GimpChainButton.html" title="GimpChainButton"><
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>gimpchainbutton</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>gimpchainbutton</code></em>&#160;:</span></td>
 <td>the object which received the signal.
 
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>
@@ -253,12 +264,16 @@ Checks the state of the <a href="GimpChainButton.html" title="GimpChainButton"><
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2514933"></a><h2>See Also</h2>
+<a name="id2523066"></a><h2>See Also</h2>
 <p>
 You may want to use the convenience function <a href="libgimpwidgets-GimpWidgets.html#gimp-coordinates-new"><code class="function">gimp_coordinates_new()</code></a> to set 
 up two GimpSizeEntries (see <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>) linked with a <a href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a>.
 </p>
 </div>
 </div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="GimpButton.html"><b>&lt;&lt;&#160;GimpButton</b></a></td>
+<td align="right"><a accesskey="n" href="GimpColorArea.html"><b>GimpColorArea&#160;&gt;&gt;</b></a></td>
+</tr></table>
 </body>
 </html>

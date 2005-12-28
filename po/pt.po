@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-22 17:32+0100\n"
+"POT-Creation-Date: 2004-12-28 16:58+0100\n"
 "PO-Revision-Date: 2004-04-06 00:02+0200\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -276,8 +276,8 @@ msgstr "Desenhável"
 msgid "Document History"
 msgstr "Histórico Documentos"
 
-#: app/actions/actions.c:120 app/core/core-enums.c:1041
-#: app/core/core-enums.c:1071
+#: app/actions/actions.c:120 app/core/core-enums.c:1040
+#: app/core/core-enums.c:1070
 msgid "Drawable"
 msgstr "Desenhável"
 
@@ -534,7 +534,7 @@ msgstr "Duplicar Canal"
 msgid "_Delete Channel"
 msgstr "/_Apagar Canal"
 
-#: app/actions/channels-actions.c:73 app/core/core-enums.c:1089
+#: app/actions/channels-actions.c:73 app/core/core-enums.c:1088
 #, fuzzy
 msgid "Delete channel"
 msgstr "Remover Canal"
@@ -1172,7 +1172,7 @@ msgstr "/Remover Entradas Estra_nhas"
 msgid "Remove dangling entries"
 msgstr "/Remover Entradas Estra_nhas"
 
-#: app/actions/documents-commands.c:251 app/actions/file-commands.c:170
+#: app/actions/documents-commands.c:251 app/actions/file-commands.c:163
 #: app/dialogs/file-open-dialog.c:198 app/dialogs/file-open-dialog.c:249
 #: app/dialogs/file-open-location-dialog.c:193
 #: app/display/gimpdisplayshell-dnd.c:334 app/widgets/gimplayertreeview.c:804
@@ -1521,7 +1521,7 @@ msgstr "Reverter"
 msgid "_Quit"
 msgstr "/Ficheiro/_Sair"
 
-#: app/actions/file-commands.c:215 app/dialogs/file-save-dialog.c:281
+#: app/actions/file-commands.c:208 app/dialogs/file-save-dialog.c:249
 #, c-format
 msgid ""
 "Saving '%s' failed:\n"
@@ -1532,36 +1532,36 @@ msgstr ""
 "\n"
 "%s"
 
-#: app/actions/file-commands.c:238 app/dialogs/file-save-dialog.c:78
+#: app/actions/file-commands.c:231 app/dialogs/file-save-dialog.c:77
 msgid "Save Image"
 msgstr "Gravar Imagem"
 
-#: app/actions/file-commands.c:254
+#: app/actions/file-commands.c:247
 msgid "Save a Copy of the Image"
 msgstr "Gravar uma Cópia da Imagem"
 
-#: app/actions/file-commands.c:265
+#: app/actions/file-commands.c:258
 msgid "Create New Template"
 msgstr "Criar Novo Modelo"
 
-#: app/actions/file-commands.c:269
+#: app/actions/file-commands.c:262
 msgid "Enter a name for this template"
 msgstr "Introduza um nome para este modelo"
 
-#: app/actions/file-commands.c:291
+#: app/actions/file-commands.c:284
 msgid "Revert failed. No file name associated with this image."
 msgstr "Reversão falhou. Não existe ficheiro associado a esta imagem."
 
-#: app/actions/file-commands.c:303
+#: app/actions/file-commands.c:296
 msgid "Revert Image"
 msgstr "Reverter Imagem"
 
-#: app/actions/file-commands.c:324
+#: app/actions/file-commands.c:317
 #, c-format
 msgid "Revert '%s' to '%s'?"
 msgstr ""
 
-#: app/actions/file-commands.c:330
+#: app/actions/file-commands.c:323
 #, fuzzy
 msgid ""
 "By reverting the image to the state saved on disk, you will lose all "
@@ -1572,20 +1572,20 @@ msgstr ""
 "\n"
 "Irá perder todas as suas alterações, incluindo informação de desfazer."
 
-#: app/actions/file-commands.c:380
+#: app/actions/file-commands.c:372
 #, fuzzy
 msgid "Open Image as Layer"
 msgstr "Abrir Imagem"
 
-#: app/actions/file-commands.c:385 app/dialogs/file-open-dialog.c:74
+#: app/actions/file-commands.c:377 app/dialogs/file-open-dialog.c:74
 msgid "Open Image"
 msgstr "Abrir Imagem"
 
-#: app/actions/file-commands.c:451
+#: app/actions/file-commands.c:444
 msgid "(Unnamed Template)"
 msgstr "(Modelo Sem Nome)"
 
-#: app/actions/file-commands.c:500
+#: app/actions/file-commands.c:493
 #, c-format
 msgid ""
 "Reverting to '%s' failed:\n"
@@ -2253,7 +2253,7 @@ msgstr "Duplicar Camada"
 msgid "_Delete Layer"
 msgstr "/_Remover Camada"
 
-#: app/actions/layers-actions.c:93 app/core/core-enums.c:1079
+#: app/actions/layers-actions.c:93 app/core/core-enums.c:1078
 #, fuzzy
 msgid "Delete layer"
 msgstr "Remover Camada"
@@ -2457,7 +2457,7 @@ msgstr "Cortar Camada"
 msgid "Layer Mask to Selection"
 msgstr "Máscara de Camada para Selecção"
 
-#: app/actions/layers-commands.c:904 app/core/gimplayer.c:1065
+#: app/actions/layers-commands.c:904 app/core/gimplayer.c:1066
 #: app/dialogs/layer-add-mask-dialog.c:62
 msgid "Add Layer Mask"
 msgstr "Adicionar Máscara de Camada"
@@ -2756,30 +2756,30 @@ msgstr "Ferramentas"
 msgid "Reset all Filters..."
 msgstr "/Repor todas _as Opções de Ferramentas..."
 
-#: app/actions/plug-in-actions.c:93 app/actions/plug-in-actions.c:363
+#: app/actions/plug-in-actions.c:93 app/actions/plug-in-actions.c:358
 msgid "Repeat Last"
 msgstr "Repetir Último"
 
-#: app/actions/plug-in-actions.c:98 app/actions/plug-in-actions.c:365
+#: app/actions/plug-in-actions.c:98 app/actions/plug-in-actions.c:360
 msgid "Re-Show Last"
 msgstr "Mostrar Novamente Último"
 
-#: app/actions/plug-in-actions.c:349
+#: app/actions/plug-in-actions.c:344
 #, c-format
 msgid "Re_peat \"%s\""
 msgstr "Re_petir \"%s\""
 
-#: app/actions/plug-in-actions.c:350
+#: app/actions/plug-in-actions.c:345
 #, c-format
 msgid "R_e-show \"%s\""
 msgstr "Mostrar Novam_ente \"%s\""
 
-#: app/actions/plug-in-commands.c:193
+#: app/actions/plug-in-commands.c:196
 #, fuzzy
 msgid "Reset all Filters"
 msgstr "Filtros Disponíveis"
 
-#: app/actions/plug-in-commands.c:207
+#: app/actions/plug-in-commands.c:210
 #, fuzzy
 msgid "Do you really want to reset all filters to default values?"
 msgstr ""
@@ -3448,7 +3448,7 @@ msgid "Path to Selection"
 msgstr "Caminho para Selecção"
 
 #: app/actions/vectors-commands.c:370 app/tools/gimpvectortool.c:1923
-#: app/vectors/gimpvectors.c:237
+#: app/vectors/gimpvectors.c:239
 msgid "Stroke Path"
 msgstr "Caminho Aclarar"
 
@@ -4792,298 +4792,293 @@ msgstr "Em Frente (Tradicional)"
 msgid "Backward (corrective)"
 msgstr "Para Trás (Corretivo)"
 
-#: app/core/core-enums.c:1029
+#: app/core/core-enums.c:1028
 msgid "<<invalid>>"
 msgstr "<<inválido>>"
 
-#: app/core/core-enums.c:1030
+#: app/core/core-enums.c:1029
 #, fuzzy
 msgid "Scale image"
 msgstr "Dimensionar Imagem"
 
-#: app/core/core-enums.c:1031
+#: app/core/core-enums.c:1030
 #, fuzzy
 msgid "Resize image"
 msgstr "Redimensionar Imagem"
 
-#: app/core/core-enums.c:1032
+#: app/core/core-enums.c:1031
 #, fuzzy
 msgid "Flip image"
 msgstr "Virar Imagem"
 
-#: app/core/core-enums.c:1033
+#: app/core/core-enums.c:1032
 #, fuzzy
 msgid "Rotate image"
 msgstr "Rodar Imagem"
 
-#: app/core/core-enums.c:1034
+#: app/core/core-enums.c:1033
 #, fuzzy
 msgid "Crop image"
 msgstr "Cortar Imagem"
 
-#: app/core/core-enums.c:1035
+#: app/core/core-enums.c:1034
 #, fuzzy
 msgid "Convert image"
 msgstr "Converter Imagem"
 
-#: app/core/core-enums.c:1036
+#: app/core/core-enums.c:1035
 #, fuzzy
 msgid "Merge layers"
 msgstr "Juntar Camadas"
 
-#: app/core/core-enums.c:1037
+#: app/core/core-enums.c:1036
 #, fuzzy
 msgid "Merge vectors"
 msgstr "Juntar Vectores"
 
-#: app/core/core-enums.c:1038 app/core/gimpchannel.c:383
+#: app/core/core-enums.c:1037 app/core/gimpchannel.c:383
 #, fuzzy
 msgid "Quick Mask"
 msgstr "Máscara Rápida"
 
-#: app/core/core-enums.c:1039 app/core/core-enums.c:1068
+#: app/core/core-enums.c:1038 app/core/core-enums.c:1067
 #: app/core/gimpimage-grid.c:59 app/dialogs/grid-dialog.c:144
 #: app/tools/tools-enums.c:175
 msgid "Grid"
 msgstr "Grelha"
 
-#: app/core/core-enums.c:1040 app/core/core-enums.c:1069
+#: app/core/core-enums.c:1039 app/core/core-enums.c:1068
 msgid "Guide"
 msgstr "Guia"
 
-#: app/core/core-enums.c:1042 app/core/core-enums.c:1072
+#: app/core/core-enums.c:1041 app/core/core-enums.c:1071
 #, fuzzy
 msgid "Drawable mod"
 msgstr "Alteração Desenhável"
 
-#: app/core/core-enums.c:1043 app/core/core-enums.c:1073
+#: app/core/core-enums.c:1042 app/core/core-enums.c:1072
 #, fuzzy
 msgid "Selection mask"
 msgstr "Máscara de Selecção"
 
-#: app/core/core-enums.c:1044 app/core/core-enums.c:1076
+#: app/core/core-enums.c:1043 app/core/core-enums.c:1075
 #, fuzzy
 msgid "Item visibility"
 msgstr "Visibilidade Item"
 
-#: app/core/core-enums.c:1045
+#: app/core/core-enums.c:1044
 #, fuzzy
 msgid "Linked item"
 msgstr "Item Ligado"
 
-#: app/core/core-enums.c:1046
+#: app/core/core-enums.c:1045
 #, fuzzy
 msgid "Item properties"
 msgstr "Propriedades Item"
 
-#: app/core/core-enums.c:1047 app/core/core-enums.c:1075
+#: app/core/core-enums.c:1046 app/core/core-enums.c:1074
 #, fuzzy
 msgid "Move item"
 msgstr "Mover Item"
 
-#: app/core/core-enums.c:1048
+#: app/core/core-enums.c:1047
 #, fuzzy
 msgid "Scale item"
 msgstr "Dimensionar Imagem"
 
-#: app/core/core-enums.c:1049
+#: app/core/core-enums.c:1048
 #, fuzzy
 msgid "Resize item"
 msgstr "Redimensionar Imagem"
 
-#: app/core/core-enums.c:1050 app/core/core-enums.c:1080
+#: app/core/core-enums.c:1049 app/core/core-enums.c:1079
 #, fuzzy
 msgid "Add layer mask"
 msgstr "Adicionar Máscara de Camada"
 
-#: app/core/core-enums.c:1051
+#: app/core/core-enums.c:1050
 #, fuzzy
 msgid "Apply layer mask"
 msgstr "Aplicar Máscara de Camada"
 
-#: app/core/core-enums.c:1052
+#: app/core/core-enums.c:1051
 #, fuzzy
 msgid "Floating selection to layer"
 msgstr "Selecção Flutuante para Camada"
 
-#: app/core/core-enums.c:1053
+#: app/core/core-enums.c:1052
 #, fuzzy
 msgid "Float selection"
 msgstr "Selecção Flutuante"
 
-#: app/core/core-enums.c:1054
+#: app/core/core-enums.c:1053
 #, fuzzy
 msgid "Anchor floating selection"
 msgstr "Ancorar Selecção Flutuante"
 
-#: app/core/core-enums.c:1055
+#: app/core/core-enums.c:1054
 #, fuzzy
 msgid "Remove floating selection"
 msgstr "Selecção Flutuante"
 
-#: app/core/core-enums.c:1056 app/core/gimp-edit.c:267
+#: app/core/core-enums.c:1055 app/core/gimp-edit.c:267
 msgid "Paste"
 msgstr "Colar"
 
-#: app/core/core-enums.c:1057 app/core/gimp-edit.c:418
+#: app/core/core-enums.c:1056 app/core/gimp-edit.c:418
 msgid "Cut"
 msgstr "Cortar"
 
-#: app/core/core-enums.c:1058 app/core/core-enums.c:1086
+#: app/core/core-enums.c:1057 app/core/core-enums.c:1085
 #: app/tools/gimptexttool.c:142 app/widgets/widgets-enums.c:263
 msgid "Text"
 msgstr "Texto"
 
-#: app/core/core-enums.c:1059 app/core/core-enums.c:1099
+#: app/core/core-enums.c:1058 app/core/core-enums.c:1098
 #: app/core/gimpdrawable-transform.c:867
 msgid "Transform"
 msgstr "Transformar"
 
-#: app/core/core-enums.c:1060 app/core/core-enums.c:1100
-#: app/paint/gimppaintcore.c:345
+#: app/core/core-enums.c:1059 app/core/core-enums.c:1099
+#: app/paint/gimppaintcore.c:344
 msgid "Paint"
 msgstr "Pintar"
 
-#: app/core/core-enums.c:1061 app/core/core-enums.c:1102
+#: app/core/core-enums.c:1060 app/core/core-enums.c:1100
 #, fuzzy
 msgid "Attach parasite"
 msgstr "Anexar Informações Anexas"
 
-#: app/core/core-enums.c:1062 app/core/core-enums.c:1103
+#: app/core/core-enums.c:1061 app/core/core-enums.c:1101
 #, fuzzy
 msgid "Remove parasite"
 msgstr "Remover Informações Anexas"
 
-#: app/core/core-enums.c:1063
+#: app/core/core-enums.c:1062
 #, fuzzy
 msgid "Import paths"
 msgstr "Importar Caminhos"
 
-#: app/core/core-enums.c:1064 app/pdb/drawable_cmds.c:1693
+#: app/core/core-enums.c:1063 app/pdb/drawable_cmds.c:1693
 msgid "Plug-In"
 msgstr "Plug-In"
 
-#: app/core/core-enums.c:1065
+#: app/core/core-enums.c:1064
 #, fuzzy
 msgid "Image type"
 msgstr "Tipo de Imagem"
 
-#: app/core/core-enums.c:1066
+#: app/core/core-enums.c:1065
 #, fuzzy
 msgid "Image size"
 msgstr "Tamanho da Imagem"
 
-#: app/core/core-enums.c:1067
+#: app/core/core-enums.c:1066
 #, fuzzy
 msgid "Resolution change"
 msgstr "Alteração de Resolução"
 
-#: app/core/core-enums.c:1070
+#: app/core/core-enums.c:1069
 #, fuzzy
 msgid "Change indexed palette"
 msgstr "Alterar Paleta Indexada"
 
-#: app/core/core-enums.c:1074
+#: app/core/core-enums.c:1073
 #, fuzzy
 msgid "Rename item"
 msgstr "Renomear Item"
 
-#: app/core/core-enums.c:1077
+#: app/core/core-enums.c:1076
 #, fuzzy
 msgid "Set item linked"
 msgstr "Definir Item Ligado"
 
-#: app/core/core-enums.c:1078
+#: app/core/core-enums.c:1077
 #, fuzzy
 msgid "New layer"
 msgstr "Nova Camada"
 
-#: app/core/core-enums.c:1081
+#: app/core/core-enums.c:1080
 #, fuzzy
 msgid "Delete layer mask"
 msgstr "Remover Máscara de Camada"
 
-#: app/core/core-enums.c:1082
+#: app/core/core-enums.c:1081
 #, fuzzy
 msgid "Reposition layer"
 msgstr "Reposicionar Camada"
 
-#: app/core/core-enums.c:1083
+#: app/core/core-enums.c:1082
 #, fuzzy
 msgid "Set layer mode"
 msgstr "Definir Modo da Camada"
 
-#: app/core/core-enums.c:1084
+#: app/core/core-enums.c:1083
 #, fuzzy
 msgid "Set layer opacity"
 msgstr "Definir Opacidade Camada"
 
-#: app/core/core-enums.c:1085
+#: app/core/core-enums.c:1084
 #, fuzzy
 msgid "Set preserve trans"
 msgstr "Definir Preservar Transp."
 
-#: app/core/core-enums.c:1087
+#: app/core/core-enums.c:1086
 #, fuzzy
 msgid "Text modified"
 msgstr "Somente quando Modificado"
 
-#: app/core/core-enums.c:1088
+#: app/core/core-enums.c:1087
 #, fuzzy
 msgid "New channel"
 msgstr "Novo Canal"
 
-#: app/core/core-enums.c:1090
+#: app/core/core-enums.c:1089
 #, fuzzy
 msgid "Reposition channel"
 msgstr "Reposicionar Canal"
 
-#: app/core/core-enums.c:1091
+#: app/core/core-enums.c:1090
 #, fuzzy
 msgid "Channel color"
 msgstr "Cor de Canal"
 
-#: app/core/core-enums.c:1092
+#: app/core/core-enums.c:1091
 #, fuzzy
 msgid "New vectors"
 msgstr "Novos Vectores"
 
-#: app/core/core-enums.c:1093
+#: app/core/core-enums.c:1092
 #, fuzzy
 msgid "Delete vectors"
 msgstr "Remover Vectores"
 
-#: app/core/core-enums.c:1094
+#: app/core/core-enums.c:1093
 #, fuzzy
 msgid "Vectors mod"
 msgstr "Mod de Vectores"
 
-#: app/core/core-enums.c:1095
+#: app/core/core-enums.c:1094
 #, fuzzy
 msgid "Reposition vectors"
 msgstr "Reposicionar Vectores"
 
-#: app/core/core-enums.c:1096
+#: app/core/core-enums.c:1095
 #, fuzzy
 msgid "FS to layer"
 msgstr "FS para Camada"
 
-#: app/core/core-enums.c:1097
+#: app/core/core-enums.c:1096
 #, fuzzy
 msgid "FS rigor"
 msgstr "FS Rigor"
 
-#: app/core/core-enums.c:1098
+#: app/core/core-enums.c:1097
 #, fuzzy
 msgid "FS relax"
 msgstr "FS Relax"
 
-#: app/core/core-enums.c:1101 app/paint/gimpink.c:102
-#: app/tools/gimpinktool.c:62
-msgid "Ink"
-msgstr "Tinta"
-
-#: app/core/core-enums.c:1104
+#: app/core/core-enums.c:1102
 msgid "EEK: can't undo"
 msgstr "EEK: impossível desfazer"
 
@@ -5212,7 +5207,7 @@ msgid "Invalid UTF-8 string in brush file '%s'."
 msgstr "Expressão UTF-8 inválida no ficheiro de pincel '%s'."
 
 #: app/core/gimpbrush.c:640 app/core/gimpcontext.c:1299
-#: app/core/gimpitem.c:475 app/core/gimppattern.c:400
+#: app/core/gimpitem.c:480 app/core/gimppattern.c:400
 #: app/dialogs/template-options-dialog.c:80 app/tools/gimpvectortool.c:339
 msgid "Unnamed"
 msgstr "Sem nome"
@@ -5390,11 +5385,11 @@ msgstr ""
 "%s"
 
 #: app/core/gimpdatafactory.c:411 app/core/gimpdatafactory.c:414
-#: app/core/gimpitem.c:272 app/core/gimpitem.c:275
+#: app/core/gimpitem.c:275 app/core/gimpitem.c:278
 msgid "copy"
 msgstr "copiar"
 
-#: app/core/gimpdatafactory.c:423 app/core/gimpitem.c:284
+#: app/core/gimpdatafactory.c:423 app/core/gimpitem.c:287
 #, c-format
 msgid "%s copy"
 msgstr "%s cópia"
@@ -5837,8 +5832,8 @@ msgstr "Não é possível criar antevisão"
 
 #. pixel size
 #: app/core/gimpimagefile.c:624 app/dialogs/info-window.c:552
-#: app/widgets/gimpsizebox.c:432 app/widgets/gimptemplateeditor.c:637
-#: app/widgets/gimptemplateeditor.c:675
+#: app/widgets/gimpsizebox.c:429 app/widgets/gimptemplateeditor.c:637
+#: app/widgets/gimptemplateeditor.c:673
 #, c-format
 msgid "%d x %d pixels"
 msgstr "%d x %d pixeis"
@@ -5857,15 +5852,15 @@ msgstr "%d Camadas"
 msgid "Could not open thumbnail '%s': %s"
 msgstr "Incapaz de abrir ficheiro de imagem de referência '%s': %s"
 
-#: app/core/gimpitem.c:1091
+#: app/core/gimpitem.c:1103
 msgid "Attach Parasite"
 msgstr "Anexar Informações Anexas"
 
-#: app/core/gimpitem.c:1101
+#: app/core/gimpitem.c:1113
 msgid "Attach Parasite to Item"
 msgstr "Anexar Informações Anexas ao Item"
 
-#: app/core/gimpitem.c:1140 app/core/gimpitem.c:1147
+#: app/core/gimpitem.c:1152 app/core/gimpitem.c:1159
 msgid "Remove Parasite from Item"
 msgstr "Remover Informações Anexas do Item"
 
@@ -5918,7 +5913,7 @@ msgstr "Virar Camada"
 msgid "Rotate Layer"
 msgstr "Rodar Camada"
 
-#: app/core/gimplayer.c:339 app/core/gimplayer.c:1109
+#: app/core/gimplayer.c:339 app/core/gimplayer.c:1110
 #: app/core/gimplayermask.c:236
 #, c-format
 msgid "%s mask"
@@ -5931,43 +5926,43 @@ msgid ""
 "(%s)"
 msgstr "Selecção Flutuante"
 
-#: app/core/gimplayer.c:1035
+#: app/core/gimplayer.c:1036
 msgid "Cannot add layer mask to layer which is not part of an image."
 msgstr ""
 "Impossível adicionar máscara de camada a camada que não é parte de uma "
 "imagem."
 
-#: app/core/gimplayer.c:1042
+#: app/core/gimplayer.c:1043
 msgid "Unable to add a layer mask since the layer already has one."
 msgstr "Impossível adicionar máscara de camada pois a camada já possui uma."
 
-#: app/core/gimplayer.c:1049
+#: app/core/gimplayer.c:1050
 msgid "Cannot add layer mask to a layer with no alpha channel."
 msgstr "Impossível adicionar máscara de camada a uma camada sem canal alfa."
 
-#: app/core/gimplayer.c:1059
+#: app/core/gimplayer.c:1060
 msgid "Cannot add layer mask of different dimensions than specified layer."
 msgstr ""
 "Impossível adicionar máscara de camada de dimensões diferentes da camada "
 "especificada."
 
-#: app/core/gimplayer.c:1163
+#: app/core/gimplayer.c:1164
 msgid "Transfer Alpha to Mask"
 msgstr "Transferir Alfa para Máscara"
 
-#: app/core/gimplayer.c:1323
+#: app/core/gimplayer.c:1324
 msgid "Apply Layer Mask"
 msgstr "Aplicar Máscara de Camada"
 
-#: app/core/gimplayer.c:1324
+#: app/core/gimplayer.c:1325
 msgid "Delete Layer Mask"
 msgstr "Remover Máscara de Camada"
 
-#: app/core/gimplayer.c:1425
+#: app/core/gimplayer.c:1426
 msgid "Add Alpha Channel"
 msgstr "Adicionar Canal Alfa"
 
-#: app/core/gimplayer.c:1447
+#: app/core/gimplayer.c:1448
 msgid "Layer to Image Size"
 msgstr "Camada para Tamanho de Imagem"
 
@@ -6333,22 +6328,22 @@ msgstr "Localização:"
 msgid "Enter location (URI):"
 msgstr "Interpolação:"
 
-#: app/dialogs/file-save-dialog.c:184
+#: app/dialogs/file-save-dialog.c:160
 #, fuzzy
 msgid "File exists"
 msgstr "Ficheiro Existe!"
 
-#: app/dialogs/file-save-dialog.c:189
+#: app/dialogs/file-save-dialog.c:165
 #, fuzzy
 msgid "_Replace"
 msgstr "Replicar"
 
-#: app/dialogs/file-save-dialog.c:199
+#: app/dialogs/file-save-dialog.c:175
 #, c-format
 msgid "A file named '%s' already exists."
 msgstr ""
 
-#: app/dialogs/file-save-dialog.c:204
+#: app/dialogs/file-save-dialog.c:180
 msgid "Do you want to replace it with the image you are saving?"
 msgstr ""
 
@@ -6436,7 +6431,7 @@ msgid "Is this what you want to do?"
 msgstr ""
 
 #. General
-#: app/dialogs/info-dialog.c:377 app/dialogs/preferences-dialog.c:1543
+#: app/dialogs/info-dialog.c:363 app/dialogs/preferences-dialog.c:1543
 #: app/dialogs/preferences-dialog.c:1697
 #: app/widgets/gimpcontrollereditor.c:197
 msgid "General"
@@ -7522,32 +7517,32 @@ msgid "Print Size"
 msgstr "Tamanho Impressão:"
 
 #. the image size labels
-#: app/dialogs/print-size-dialog.c:155 app/widgets/gimpsizebox.c:223
+#: app/dialogs/print-size-dialog.c:155 app/widgets/gimpsizebox.c:222
 #: app/widgets/gimptemplateeditor.c:236
 #, fuzzy
 msgid "_Width:"
 msgstr "Largura:"
 
-#: app/dialogs/print-size-dialog.c:162 app/widgets/gimpsizebox.c:227
+#: app/dialogs/print-size-dialog.c:162 app/widgets/gimpsizebox.c:225
 #: app/widgets/gimptemplateeditor.c:243
 #, fuzzy
 msgid "H_eight:"
 msgstr "Altura:"
 
 #. the resolution labels
-#: app/dialogs/print-size-dialog.c:210 app/widgets/gimpsizebox.c:276
+#: app/dialogs/print-size-dialog.c:210 app/widgets/gimpsizebox.c:273
 #: app/widgets/gimptemplateeditor.c:363
 #, fuzzy
 msgid "_X resolution:"
 msgstr "Resolução:"
 
-#: app/dialogs/print-size-dialog.c:217 app/widgets/gimpsizebox.c:279
+#: app/dialogs/print-size-dialog.c:217 app/widgets/gimpsizebox.c:276
 #: app/widgets/gimptemplateeditor.c:370
 #, fuzzy
 msgid "_Y resolution:"
 msgstr "Resolução:"
 
-#: app/dialogs/print-size-dialog.c:228 app/widgets/gimpsizebox.c:272
+#: app/dialogs/print-size-dialog.c:228 app/widgets/gimpsizebox.c:269
 #: app/widgets/gimptemplateeditor.c:383
 #, c-format
 msgid "pixels/%a"
@@ -8361,6 +8356,10 @@ msgstr "Sub/Sobre-Exposição"
 msgid "Eraser"
 msgstr "Borracha"
 
+#: app/paint/gimpink.c:101 app/tools/gimpinktool.c:62
+msgid "Ink"
+msgstr "Tinta"
+
 #: app/paint/gimppaintbrush.c:65 app/tools/gimppaintbrushtool.c:51
 msgid "Paintbrush"
 msgstr "Pincel"
@@ -8503,7 +8502,7 @@ msgstr "Pincel:"
 msgid "Brush UI"
 msgstr "Pincel UI"
 
-#: app/pdb/internal_procs.c:98 app/tools/gimppaintoptions-gui.c:283
+#: app/pdb/internal_procs.c:98 app/tools/gimppaintoptions-gui.c:284
 #: app/widgets/gimpwidgets-constructors.c:75
 #: app/widgets/gimpwidgets-constructors.c:108
 msgid "Color"
@@ -8935,7 +8934,7 @@ msgstr "Deslocamento:"
 msgid "Shape:"
 msgstr "Forma:"
 
-#: app/tools/gimpblendoptions.c:261 app/tools/gimppaintoptions-gui.c:417
+#: app/tools/gimpblendoptions.c:261 app/tools/gimppaintoptions-gui.c:418
 msgid "Repeat:"
 msgstr "Repetir:"
 
@@ -9768,7 +9767,7 @@ msgstr "Modo:"
 msgid "Brush:"
 msgstr "Pincel:"
 
-#: app/tools/gimppaintoptions-gui.c:135 app/tools/gimppaintoptions-gui.c:394
+#: app/tools/gimppaintoptions-gui.c:135 app/tools/gimppaintoptions-gui.c:395
 msgid "Gradient:"
 msgstr "Gradiente:"
 
@@ -9782,32 +9781,32 @@ msgstr "Margem Sólida"
 msgid "Pressure sensitivity"
 msgstr "Sensibilidade à Pressão"
 
-#: app/tools/gimppaintoptions-gui.c:236
+#: app/tools/gimppaintoptions-gui.c:237
 msgid "Opacity"
 msgstr "Opacidade"
 
-#: app/tools/gimppaintoptions-gui.c:250
+#: app/tools/gimppaintoptions-gui.c:251
 msgid "Hardness"
 msgstr "Resistência"
 
-#: app/tools/gimppaintoptions-gui.c:261
+#: app/tools/gimppaintoptions-gui.c:262
 msgid "Rate"
 msgstr "Taxa"
 
-#: app/tools/gimppaintoptions-gui.c:274
+#: app/tools/gimppaintoptions-gui.c:275
 msgid "Size"
 msgstr "Tamanho"
 
-#: app/tools/gimppaintoptions-gui.c:313
+#: app/tools/gimppaintoptions-gui.c:314
 #, fuzzy
 msgid "Fade out"
 msgstr "Clarear"
 
-#: app/tools/gimppaintoptions-gui.c:333 app/tools/gimppaintoptions-gui.c:403
+#: app/tools/gimppaintoptions-gui.c:334 app/tools/gimppaintoptions-gui.c:404
 msgid "Length:"
 msgstr "Comprimento:"
 
-#: app/tools/gimppaintoptions-gui.c:367
+#: app/tools/gimppaintoptions-gui.c:368
 #, fuzzy
 msgid "Use color from gradient"
 msgstr "Utilizar Cor do Gradiente"
@@ -10367,39 +10366,39 @@ msgstr "Remover Âncora"
 msgid "There is no active layer or channel to stroke to"
 msgstr "Não existe nenhuma camada ou canal activo para aclarar"
 
-#: app/vectors/gimpvectors.c:229
+#: app/vectors/gimpvectors.c:231
 msgid "Path"
 msgstr "Caminho"
 
-#: app/vectors/gimpvectors.c:230
+#: app/vectors/gimpvectors.c:232
 msgid "Rename Path"
 msgstr "Renomear Caminho"
 
-#: app/vectors/gimpvectors.c:231 app/vectors/gimpvectors.c:356
+#: app/vectors/gimpvectors.c:233 app/vectors/gimpvectors.c:373
 msgid "Move Path"
 msgstr "Mover Caminho"
 
-#: app/vectors/gimpvectors.c:232
+#: app/vectors/gimpvectors.c:234
 msgid "Scale Path"
 msgstr "Escalar Caminho"
 
-#: app/vectors/gimpvectors.c:233
+#: app/vectors/gimpvectors.c:235
 msgid "Resize Path"
 msgstr "Redimensionar Caminho"
 
-#: app/vectors/gimpvectors.c:234 app/vectors/gimpvectors.c:447
+#: app/vectors/gimpvectors.c:236 app/vectors/gimpvectors.c:464
 msgid "Flip Path"
 msgstr "Virar Caminho"
 
-#: app/vectors/gimpvectors.c:235 app/vectors/gimpvectors.c:491
+#: app/vectors/gimpvectors.c:237 app/vectors/gimpvectors.c:508
 msgid "Rotate Path"
 msgstr "Rodar Caminho"
 
-#: app/vectors/gimpvectors.c:236 app/vectors/gimpvectors.c:522
+#: app/vectors/gimpvectors.c:238 app/vectors/gimpvectors.c:539
 msgid "Transform Path"
 msgstr "Transformar Caminho"
 
-#: app/vectors/gimpvectors.c:551
+#: app/vectors/gimpvectors.c:568
 msgid "Cannot stroke empty path."
 msgstr "Incapaz de aclarar caminho vazio."
 
@@ -10430,49 +10429,49 @@ msgstr "Falha ao importar caminhos de '%s': %s"
 msgid "RGBA (%0.3f, %0.3f, %0.3f, %0.3f)"
 msgstr "RGBA (%0.3f, %0.3f, %0.3f, %0.3f)"
 
-#: app/widgets/gimpactionview.c:354 app/widgets/gimpcontrollereditor.c:374
+#: app/widgets/gimpactionview.c:292 app/widgets/gimpcontrollereditor.c:374
 #, fuzzy
 msgid "Action"
 msgstr "Adição"
 
-#: app/widgets/gimpactionview.c:383
+#: app/widgets/gimpactionview.c:317
 #, fuzzy
 msgid "Shortcut"
 msgstr "Atalhos Teclado"
 
-#: app/widgets/gimpactionview.c:405
+#: app/widgets/gimpactionview.c:339
 #, fuzzy
 msgid "Name"
 msgstr "_Nome:"
 
-#: app/widgets/gimpactionview.c:545 app/widgets/gimpactionview.c:738
+#: app/widgets/gimpactionview.c:479 app/widgets/gimpactionview.c:672
 #, fuzzy
 msgid "Changing shortcut failed."
 msgstr "A operação de pintura falhou."
 
-#: app/widgets/gimpactionview.c:585
+#: app/widgets/gimpactionview.c:519
 msgid "Conflicting Shortcuts"
 msgstr ""
 
-#: app/widgets/gimpactionview.c:591
+#: app/widgets/gimpactionview.c:525
 msgid "_Reassign shortcut"
 msgstr ""
 
-#: app/widgets/gimpactionview.c:602
+#: app/widgets/gimpactionview.c:536
 #, c-format
 msgid "Shortcut \"%s\" is already taken by \"%s\" from the \"%s\" group."
 msgstr ""
 
-#: app/widgets/gimpactionview.c:606
+#: app/widgets/gimpactionview.c:540
 #, c-format
 msgid "Reassigning the shortcut will cause it to be removed from \"%s\"."
 msgstr ""
 
-#: app/widgets/gimpactionview.c:673
+#: app/widgets/gimpactionview.c:607
 msgid "Removing shortcut failed."
 msgstr ""
 
-#: app/widgets/gimpactionview.c:678
+#: app/widgets/gimpactionview.c:612
 msgid "Invalid shortcut."
 msgstr ""
 
@@ -10989,7 +10988,7 @@ msgstr ""
 msgid "You can drop dockable dialogs here."
 msgstr "Pode largar diálogos anexáveis aqui."
 
-#: app/widgets/gimpdockable.c:210
+#: app/widgets/gimpdockable.c:209
 msgid "Close this Tab"
 msgstr "Fechar esta Aba"
 
@@ -11016,12 +11015,12 @@ msgstr ""
 msgid "By Extension"
 msgstr "/Por Extensão"
 
-#: app/widgets/gimpfiledialog.c:469
+#: app/widgets/gimpfiledialog.c:496
 #, fuzzy
 msgid "All Files"
 msgstr "Filtros Disponíveis"
 
-#: app/widgets/gimpfiledialog.c:608
+#: app/widgets/gimpfiledialog.c:635
 #, fuzzy, c-format
 msgid "Select File _Type (%s)"
 msgstr "Tipo Preenchimento %s"
@@ -11280,12 +11279,12 @@ msgstr ""
 msgid "Invalid UTF-8"
 msgstr "UTF-8 inválido"
 
-#: app/widgets/gimpsizebox.c:456
+#: app/widgets/gimpsizebox.c:451
 #, fuzzy, c-format
 msgid "%d x %d dpi"
 msgstr "%d x %d pixeis"
 
-#: app/widgets/gimpsizebox.c:458
+#: app/widgets/gimpsizebox.c:455
 #, fuzzy, c-format
 msgid "%d dpi"
 msgstr "dpi"
@@ -11362,12 +11361,12 @@ msgstr "_Nome:"
 msgid "_Icon:"
 msgstr "Íc_one:"
 
-#: app/widgets/gimptemplateeditor.c:699
+#: app/widgets/gimptemplateeditor.c:694
 #, fuzzy, c-format
 msgid "%d x %d dpi, %s"
 msgstr "%d x %d pixeis"
 
-#: app/widgets/gimptemplateeditor.c:701
+#: app/widgets/gimptemplateeditor.c:698
 #, c-format
 msgid "%d dpi, %s"
 msgstr ""

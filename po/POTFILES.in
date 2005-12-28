@@ -7,6 +7,7 @@ app/main.c
 app/sanity.c
 
 app/actions/actions.c
+app/actions/brush-editor-actions.c
 app/actions/brushes-actions.c
 app/actions/buffers-actions.c
 app/actions/channels-actions.c
@@ -14,9 +15,11 @@ app/actions/channels-commands.c
 app/actions/colormap-editor-actions.c
 app/actions/colormap-editor-commands.c
 app/actions/context-actions.c
+app/actions/cursor-info-actions.c
 app/actions/data-commands.c
 app/actions/debug-actions.c
 app/actions/dialogs-actions.c
+app/actions/dock-actions.c
 app/actions/dockable-actions.c
 app/actions/documents-actions.c
 app/actions/documents-commands.c
@@ -46,8 +49,9 @@ app/actions/palettes-commands.c
 app/actions/patterns-actions.c
 app/actions/plug-in-actions.c
 app/actions/plug-in-commands.c
-app/actions/qmask-actions.c
-app/actions/qmask-commands.c
+app/actions/quick-mask-actions.c
+app/actions/quick-mask-commands.c
+app/actions/sample-point-editor-actions.c
 app/actions/select-actions.c
 app/actions/select-commands.c
 app/actions/templates-actions.c
@@ -61,20 +65,18 @@ app/actions/vectors-actions.c
 app/actions/vectors-commands.c
 app/actions/view-actions.c
 app/actions/view-commands.c
+app/actions/window-actions.c
 
 app/base/base-enums.c
 app/base/tile-swap.c
 
-app/config/gimpconfig-deserialize.c
-app/config/gimpconfig-path.c
-app/config/gimpconfig-utils.c
-app/config/gimpconfig.c
-app/config/gimpconfigwriter.c
+app/config/gimpconfig-file.c
 app/config/gimprc.c
 app/config/gimprc-blurbs.h
-app/config/gimpscanner.c
+app/config/gimprc-deserialize.c
 
 app/core/core-enums.c
+app/core/gimp-contexts.c
 app/core/gimp-edit.c
 app/core/gimp-gradients.c
 app/core/gimp-gui.c
@@ -82,6 +84,7 @@ app/core/gimp-modules.c
 app/core/gimp-units.c
 app/core/gimp.c
 app/core/gimpbrush.c
+app/core/gimpbrush-load.c
 app/core/gimpbrushgenerated.c
 app/core/gimpbrushpipe.c
 app/core/gimpchannel.c
@@ -93,6 +96,7 @@ app/core/gimpdrawable-blend.c
 app/core/gimpdrawable-bucket-fill.c
 app/core/gimpdrawable-desaturate.c
 app/core/gimpdrawable-equalize.c
+app/core/gimpdrawable-foreground-extract.c
 app/core/gimpdrawable-invert.c
 app/core/gimpdrawable-levels.c
 app/core/gimpdrawable-offset.c
@@ -110,12 +114,14 @@ app/core/gimpimage-grid.c
 app/core/gimpimage-guides.c
 app/core/gimpimage-merge.c
 app/core/gimpimage-new.c
-app/core/gimpimage-qmask.c
+app/core/gimpimage-quick-mask.c
 app/core/gimpimage-resize.c
+app/core/gimpimage-sample-points.c
 app/core/gimpimage-scale.c
 app/core/gimpimage-undo-push.c
 app/core/gimpimage.c
 app/core/gimpimagefile.c
+app/core/gimpinterpreterdb.c
 app/core/gimpitem.c
 app/core/gimplayer-floating-sel.c
 app/core/gimplayer.c
@@ -126,12 +132,14 @@ app/core/gimppattern.c
 app/core/gimppdbprogress.c
 app/core/gimpprogress.c
 app/core/gimpselection.c
+app/core/gimpstrokeoptions.c
 app/core/gimptemplate.c
 app/core/gimpunit.c
 
 app/dialogs/about-dialog.c
 app/dialogs/channel-options-dialog.c
 app/dialogs/convert-dialog.c
+app/dialogs/desaturate-dialog.c
 app/dialogs/dialogs-constructors.c
 app/dialogs/dialogs.c
 app/dialogs/file-open-dialog.c
@@ -140,9 +148,10 @@ app/dialogs/file-save-dialog.c
 app/dialogs/grid-dialog.c
 app/dialogs/image-merge-layers-dialog.c
 app/dialogs/image-new-dialog.c
+app/dialogs/image-properties-dialog.c
 app/dialogs/image-scale-dialog.c
 app/dialogs/info-dialog.c
-app/dialogs/info-window.c
+app/dialogs/keyboard-shortcuts-dialog.c
 app/dialogs/layer-add-mask-dialog.c
 app/dialogs/layer-options-dialog.c
 app/dialogs/module-dialog.c
@@ -207,7 +216,6 @@ app/pdb/drawable_transform_cmds.c
 app/pdb/edit_cmds.c
 app/pdb/guides_cmds.c
 app/pdb/image_cmds.c
-app/pdb/internal_procs.c
 app/pdb/layer_cmds.c
 app/pdb/paths_cmds.c
 app/pdb/procedural_db.c
@@ -216,6 +224,7 @@ app/pdb/selection_cmds.c
 app/pdb/selection_tools_cmds.c
 app/pdb/transform_tools_cmds.c
 app/pdb/undo_cmds.c
+app/pdb/vectors_cmds.c
 
 app/plug-in/plug-in.c
 app/plug-in/plug-in-rc.c
@@ -244,6 +253,7 @@ app/tools/gimpcolorizetool.c
 app/tools/gimpcoloroptions.c
 app/tools/gimpcolorpickeroptions.c
 app/tools/gimpcolorpickertool.c
+app/tools/gimpcolortool.c
 app/tools/gimpconvolvetool.c
 app/tools/gimpcropoptions.c
 app/tools/gimpcroptool.c
@@ -255,6 +265,8 @@ app/tools/gimperasertool.c
 app/tools/gimpflipoptions.c
 app/tools/gimpfliptool.c
 app/tools/gimpfreeselecttool.c
+app/tools/gimpforegroundselectoptions.c
+app/tools/gimpforegroundselecttool.c
 app/tools/gimpfuzzyselecttool.c
 app/tools/gimphistogramoptions.c
 app/tools/gimphuesaturationtool.c
@@ -275,10 +287,13 @@ app/tools/gimppainttool.c
 app/tools/gimppenciltool.c
 app/tools/gimpperspectivetool.c
 app/tools/gimpposterizetool.c
+app/tools/gimprectangleoptions.c
+app/tools/gimprectangletool.c
 app/tools/gimprectselecttool.c
 app/tools/gimprotatetool.c
 app/tools/gimpscaletool.c
 app/tools/gimpselectionoptions.c
+app/tools/gimpselectiontool.c
 app/tools/gimpsheartool.c
 app/tools/gimpsmudgetool.c
 app/tools/gimptextoptions.c
@@ -313,15 +328,20 @@ app/widgets/gimpcontainergridview.c
 app/widgets/gimpcontainerpopup.c
 app/widgets/gimpcontrollereditor.c
 app/widgets/gimpcontrollerkeyboard.c
+app/widgets/gimpcontrollerlist.c
 app/widgets/gimpcontrollerwheel.c
+app/widgets/gimpcursorview.c
 app/widgets/gimpdataeditor.c
 app/widgets/gimpdevices.c
 app/widgets/gimpdevicestatus.c
 app/widgets/gimpdnd.c
+app/widgets/gimpdnd-xds.c
 app/widgets/gimpdock.c
 app/widgets/gimpdockable.c
+app/widgets/gimpdockseparator.c
 app/widgets/gimpdocumentview.c
 app/widgets/gimpdrawabletreeview.c
+app/widgets/gimpeditor.c
 app/widgets/gimperrorconsole.c
 app/widgets/gimperrordialog.c
 app/widgets/gimpfiledialog.c
@@ -331,13 +351,14 @@ app/widgets/gimpgrideditor.c
 app/widgets/gimphelp.c
 app/widgets/gimphistogrameditor.c
 app/widgets/gimpimagedock.c
+app/widgets/gimpimagepropview.c
 app/widgets/gimpitemtreeview.c
 app/widgets/gimplayertreeview.c
+app/widgets/gimpmenudock.c
 app/widgets/gimpmessagebox.c
 app/widgets/gimppaletteeditor.c
 app/widgets/gimppdbdialog.c
 app/widgets/gimpprogressdialog.c
-app/widgets/gimppropwidgets.c
 app/widgets/gimpselectiondata.c
 app/widgets/gimpselectioneditor.c
 app/widgets/gimpsizebox.c
@@ -366,4 +387,6 @@ app/xcf/xcf-write.c
 app/xcf/xcf-seek.c
 app/xcf/xcf.c
 
-data/misc/gimp.desktop.in.in
+desktop/gimp.desktop.in.in
+
+tools/gimp-remote.c

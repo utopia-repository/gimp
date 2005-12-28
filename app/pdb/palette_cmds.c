@@ -39,7 +39,10 @@ static ProcRecord palette_new_proc;
 static ProcRecord palette_duplicate_proc;
 static ProcRecord palette_rename_proc;
 static ProcRecord palette_delete_proc;
+static ProcRecord palette_is_editable_proc;
 static ProcRecord palette_get_info_proc;
+static ProcRecord palette_get_columns_proc;
+static ProcRecord palette_set_columns_proc;
 static ProcRecord palette_add_entry_proc;
 static ProcRecord palette_delete_entry_proc;
 static ProcRecord palette_entry_get_color_proc;
@@ -54,7 +57,10 @@ register_palette_procs (Gimp *gimp)
   procedural_db_register (gimp, &palette_duplicate_proc);
   procedural_db_register (gimp, &palette_rename_proc);
   procedural_db_register (gimp, &palette_delete_proc);
+  procedural_db_register (gimp, &palette_is_editable_proc);
   procedural_db_register (gimp, &palette_get_info_proc);
+  procedural_db_register (gimp, &palette_get_columns_proc);
+  procedural_db_register (gimp, &palette_set_columns_proc);
   procedural_db_register (gimp, &palette_add_entry_proc);
   procedural_db_register (gimp, &palette_delete_entry_proc);
   procedural_db_register (gimp, &palette_entry_get_color_proc);
@@ -114,7 +120,8 @@ static ProcArg palette_new_outargs[] =
 
 static ProcRecord palette_new_proc =
 {
-  "gimp_palette_new",
+  "gimp-palette-new",
+  "gimp-palette-new",
   "Creates a new palette",
   "This procedure creates a new, uninitialized palette",
   "Michael Natterer <mitch@gimp.org>",
@@ -190,7 +197,8 @@ static ProcArg palette_duplicate_outargs[] =
 
 static ProcRecord palette_duplicate_proc =
 {
-  "gimp_palette_duplicate",
+  "gimp-palette-duplicate",
+  "gimp-palette-duplicate",
   "Duplicates a palette",
   "This procedure creates an identical palette by a different name",
   "Michael Natterer <mitch@gimp.org>",
@@ -253,7 +261,7 @@ static ProcArg palette_rename_inargs[] =
   },
   {
     GIMP_PDB_STRING,
-    "new_name",
+    "new-name",
     "The new name of the palette"
   }
 };
@@ -269,7 +277,8 @@ static ProcArg palette_rename_outargs[] =
 
 static ProcRecord palette_rename_proc =
 {
-  "gimp_palette_rename",
+  "gimp-palette-rename",
+  "gimp-palette-rename",
   "Rename a palette",
   "This procedure renames a palette",
   "Michael Natterer <mitch@gimp.org>",
@@ -335,7 +344,8 @@ static ProcArg palette_delete_inargs[] =
 
 static ProcRecord palette_delete_proc =
 {
-  "gimp_palette_delete",
+  "gimp-palette-delete",
+  "gimp-palette-delete",
   "Deletes a palette",
   "This procedure deletes a palette",
   "Michael Natterer <mitch@gimp.org>",
@@ -348,6 +358,76 @@ static ProcRecord palette_delete_proc =
   0,
   NULL,
   { { palette_delete_invoker } }
+};
+
+static Argument *
+palette_is_editable_invoker (Gimp         *gimp,
+                             GimpContext  *context,
+                             GimpProgress *progress,
+                             Argument     *args)
+{
+  gboolean success = TRUE;
+  Argument *return_args;
+  gchar *name;
+  GimpPalette *palette = NULL;
+
+  name = (gchar *) args[0].value.pdb_pointer;
+  if (name == NULL || !g_utf8_validate (name, -1, NULL))
+    success = FALSE;
+
+  if (success)
+    {
+      palette = (GimpPalette *)
+        gimp_container_get_child_by_name (gimp->palette_factory->container, name);
+
+      if (palette)
+        success = TRUE;
+      else
+        success = FALSE;
+    }
+
+  return_args = procedural_db_return_args (&palette_is_editable_proc, success);
+
+  if (success)
+    return_args[1].value.pdb_int = GIMP_DATA (palette)->writable;
+
+  return return_args;
+}
+
+static ProcArg palette_is_editable_inargs[] =
+{
+  {
+    GIMP_PDB_STRING,
+    "name",
+    "The palette name."
+  }
+};
+
+static ProcArg palette_is_editable_outargs[] =
+{
+  {
+    GIMP_PDB_INT32,
+    "editable",
+    "True if the palette can be edited"
+  }
+};
+
+static ProcRecord palette_is_editable_proc =
+{
+  "gimp-palette-is-editable",
+  "gimp-palette-is-editable",
+  "Tests if palette can be edited",
+  "Returns True if you have permission to change the palette",
+  "Bill Skaggs <weskaggs@primate.ucdavis.edu",
+  "Bill Skaggs",
+  "2004",
+  NULL,
+  GIMP_INTERNAL,
+  1,
+  palette_is_editable_inargs,
+  1,
+  palette_is_editable_outargs,
+  { { palette_is_editable_invoker } }
 };
 
 static Argument *
@@ -394,14 +474,15 @@ static ProcArg palette_get_info_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "num_colors",
+    "num-colors",
     "The number of colors in the palette"
   }
 };
 
 static ProcRecord palette_get_info_proc =
 {
-  "gimp_palette_get_info",
+  "gimp-palette-get-info",
+  "gimp-palette-get-info",
   "Retrieve information about the specified palette.",
   "This procedure retrieves information about the specified palette. This includes the name, and the number of colors.",
   "Michael Natterer <mitch@gimp.org>",
@@ -414,6 +495,138 @@ static ProcRecord palette_get_info_proc =
   1,
   palette_get_info_outargs,
   { { palette_get_info_invoker } }
+};
+
+static Argument *
+palette_get_columns_invoker (Gimp         *gimp,
+                             GimpContext  *context,
+                             GimpProgress *progress,
+                             Argument     *args)
+{
+  gboolean success = TRUE;
+  Argument *return_args;
+  gchar *name;
+  GimpPalette *palette = NULL;
+
+  name = (gchar *) args[0].value.pdb_pointer;
+  if (name == NULL || !g_utf8_validate (name, -1, NULL))
+    success = FALSE;
+
+  if (success)
+    {
+      palette = (GimpPalette *)
+        gimp_container_get_child_by_name (gimp->palette_factory->container, name);
+
+      success = (palette != NULL);
+    }
+
+  return_args = procedural_db_return_args (&palette_get_columns_proc, success);
+
+  if (success)
+    return_args[1].value.pdb_int = palette->n_columns;
+
+  return return_args;
+}
+
+static ProcArg palette_get_columns_inargs[] =
+{
+  {
+    GIMP_PDB_STRING,
+    "name",
+    "The palette name."
+  }
+};
+
+static ProcArg palette_get_columns_outargs[] =
+{
+  {
+    GIMP_PDB_INT32,
+    "num-columns",
+    "The number of columns used to display this palette"
+  }
+};
+
+static ProcRecord palette_get_columns_proc =
+{
+  "gimp-palette-get-columns",
+  "gimp-palette-get-columns",
+  "Retrieves the number of columns to use to display this palette",
+  "This procedures retrieves the prefered number of columns to use when the palette is being displayed.",
+  "Sven Neumann <sven@gimp.org>",
+  "Sven Neumann",
+  "2005",
+  NULL,
+  GIMP_INTERNAL,
+  1,
+  palette_get_columns_inargs,
+  1,
+  palette_get_columns_outargs,
+  { { palette_get_columns_invoker } }
+};
+
+static Argument *
+palette_set_columns_invoker (Gimp         *gimp,
+                             GimpContext  *context,
+                             GimpProgress *progress,
+                             Argument     *args)
+{
+  gboolean success = TRUE;
+  gchar *name;
+  gint32 columns;
+  GimpPalette *palette = NULL;
+
+  name = (gchar *) args[0].value.pdb_pointer;
+  if (name == NULL || !g_utf8_validate (name, -1, NULL))
+    success = FALSE;
+
+  columns = args[1].value.pdb_int;
+  if (columns < 0 || columns > 64)
+    success = FALSE;
+
+  if (success)
+    {
+      palette = (GimpPalette *)
+        gimp_container_get_child_by_name (gimp->palette_factory->container, name);
+
+      if (palette && GIMP_DATA (palette)->writable)
+        gimp_palette_set_columns (palette, columns);
+      else
+        success = FALSE;
+    }
+
+  return procedural_db_return_args (&palette_set_columns_proc, success);
+}
+
+static ProcArg palette_set_columns_inargs[] =
+{
+  {
+    GIMP_PDB_STRING,
+    "name",
+    "The palette name."
+  },
+  {
+    GIMP_PDB_INT32,
+    "columns",
+    "The new number of columns"
+  }
+};
+
+static ProcRecord palette_set_columns_proc =
+{
+  "gimp-palette-set-columns",
+  "gimp-palette-set-columns",
+  "Sets the number of columns to use when displaying the palette",
+  "This procedures allows to control how many colors are shown per row when the palette is being displayed. This value can only be changed if the palette is writable. The maximum allowed value is 64.",
+  "Sven Neumann <sven@gimp.org>",
+  "Sven Neumann",
+  "2005",
+  NULL,
+  GIMP_INTERNAL,
+  2,
+  palette_set_columns_inargs,
+  0,
+  NULL,
+  { { palette_set_columns_invoker } }
 };
 
 static Argument *
@@ -446,7 +659,7 @@ palette_add_entry_invoker (Gimp         *gimp,
         gimp_container_get_child_by_name (gimp->palette_factory->container, name);
 
       if (palette && GIMP_DATA (palette)->writable)
-        entry = gimp_palette_add_entry (palette, entry_name, &color);
+        entry = gimp_palette_add_entry (palette, -1, entry_name, &color);
       else
         success = FALSE;
     }
@@ -468,7 +681,7 @@ static ProcArg palette_add_entry_inargs[] =
   },
   {
     GIMP_PDB_STRING,
-    "entry_name",
+    "entry-name",
     "The name of the entry"
   },
   {
@@ -482,14 +695,15 @@ static ProcArg palette_add_entry_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "entry_num",
+    "entry-num",
     "The index of the added entry"
   }
 };
 
 static ProcRecord palette_add_entry_proc =
 {
-  "gimp_palette_add_entry",
+  "gimp-palette-add-entry",
+  "gimp-palette-add-entry",
   "Adds a palette entry to the specified palette.",
   "This procedure adds an entry to the specifed palette. It returns an error if the entry palette does not exist.",
   "Michael Natterer <mitch@gimp.org>",
@@ -554,14 +768,15 @@ static ProcArg palette_delete_entry_inargs[] =
   },
   {
     GIMP_PDB_INT32,
-    "entry_num",
+    "entry-num",
     "The index of the added entry"
   }
 };
 
 static ProcRecord palette_delete_entry_proc =
 {
-  "gimp_palette_delete_entry",
+  "gimp-palette-delete-entry",
+  "gimp-palette-delete-entry",
   "Deletes a palette entry from the specified palette.",
   "This procedure deletes an entry from the specifed palette. It returns an error if the entry palette does not exist.",
   "Michael Natterer <mitch@gimp.org>",
@@ -633,7 +848,7 @@ static ProcArg palette_entry_get_color_inargs[] =
   },
   {
     GIMP_PDB_INT32,
-    "entry_num",
+    "entry-num",
     "The entry to retrieve"
   }
 };
@@ -649,7 +864,8 @@ static ProcArg palette_entry_get_color_outargs[] =
 
 static ProcRecord palette_entry_get_color_proc =
 {
-  "gimp_palette_entry_get_color",
+  "gimp-palette-entry-get-color",
+  "gimp-palette-entry-get-color",
   "Gets the specified palette entry from the specified palette.",
   "This procedure retrieves the color of the zero-based entry specifed for the specified palette. It returns an error if the entry does not exist.",
   "Michael Natterer <mitch@gimp.org>",
@@ -719,7 +935,7 @@ static ProcArg palette_entry_set_color_inargs[] =
   },
   {
     GIMP_PDB_INT32,
-    "entry_num",
+    "entry-num",
     "The entry to retrieve"
   },
   {
@@ -731,7 +947,8 @@ static ProcArg palette_entry_set_color_inargs[] =
 
 static ProcRecord palette_entry_set_color_proc =
 {
-  "gimp_palette_entry_set_color",
+  "gimp-palette-entry-set-color",
+  "gimp-palette-entry-set-color",
   "Sets the specified palette entry in the specified palette.",
   "This procedure sets the color of the zero-based entry specifed for the specified palette. It returns an error if the entry does not exist.",
   "Michael Natterer <mitch@gimp.org>",
@@ -798,7 +1015,7 @@ static ProcArg palette_entry_get_name_inargs[] =
   },
   {
     GIMP_PDB_INT32,
-    "entry_num",
+    "entry-num",
     "The entry to retrieve"
   }
 };
@@ -807,14 +1024,15 @@ static ProcArg palette_entry_get_name_outargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "entry_name",
+    "entry-name",
     "The name requested"
   }
 };
 
 static ProcRecord palette_entry_get_name_proc =
 {
-  "gimp_palette_entry_get_name",
+  "gimp-palette-entry-get-name",
+  "gimp-palette-entry-get-name",
   "Gets the specified palette entry from the specified palette.",
   "This procedure retrieves the name of the zero-based entry specifed for the specified palette. It returns an error if the entry does not exist.",
   "Michael Natterer <mitch@gimp.org>",
@@ -887,19 +1105,20 @@ static ProcArg palette_entry_set_name_inargs[] =
   },
   {
     GIMP_PDB_INT32,
-    "entry_num",
+    "entry-num",
     "The entry to retrieve"
   },
   {
     GIMP_PDB_STRING,
-    "entry_name",
+    "entry-name",
     "The new name"
   }
 };
 
 static ProcRecord palette_entry_set_name_proc =
 {
-  "gimp_palette_entry_set_name",
+  "gimp-palette-entry-set-name",
+  "gimp-palette-entry-set-name",
   "Sets the specified palette entry in the specified palette.",
   "This procedure sets the name of the zero-based entry specifed for the specified palette. It returns an error if the entry does not exist.",
   "Michael Natterer <mitch@gimp.org>",

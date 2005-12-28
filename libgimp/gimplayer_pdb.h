@@ -35,11 +35,11 @@ gint32               _gimp_layer_new                 (gint32                imag
 						      GimpImageType         type,
 						      const gchar          *name,
 						      gdouble               opacity,
-						      GimpLayerModeEffects  mode);
+						      GimpLayerModeEffects  mode) G_GNUC_INTERNAL;
 gint32               gimp_layer_new_from_drawable    (gint32                drawable_ID,
 						      gint32                dest_image_ID);
 gint32               _gimp_layer_copy                (gint32                layer_ID,
-						      gboolean              add_alpha);
+						      gboolean              add_alpha) G_GNUC_INTERNAL;
 gboolean             gimp_layer_add_alpha            (gint32                layer_ID);
 gboolean             gimp_layer_scale                (gint32                layer_ID,
 						      gint                  new_width,
@@ -66,9 +66,9 @@ gboolean             gimp_layer_add_mask             (gint32                laye
 gboolean             gimp_layer_remove_mask          (gint32                layer_ID,
 						      GimpMaskApplyMode     mode);
 gboolean             gimp_layer_is_floating_sel      (gint32                layer_ID);
-gboolean             gimp_layer_get_preserve_trans   (gint32                layer_ID);
-gboolean             gimp_layer_set_preserve_trans   (gint32                layer_ID,
-						      gboolean              preserve_trans);
+gboolean             gimp_layer_get_lock_alpha       (gint32                layer_ID);
+gboolean             gimp_layer_set_lock_alpha       (gint32                layer_ID,
+						      gboolean              lock_alpha);
 gboolean             gimp_layer_get_apply_mask       (gint32                layer_ID);
 gboolean             gimp_layer_set_apply_mask       (gint32                layer_ID,
 						      gboolean              apply_mask);

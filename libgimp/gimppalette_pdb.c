@@ -44,7 +44,7 @@ gimp_palette_new (const gchar *name)
   gint nreturn_vals;
   gchar *ret_name = NULL;
 
-  return_vals = gimp_run_procedure ("gimp_palette_new",
+  return_vals = gimp_run_procedure ("gimp-palette-new",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, name,
 				    GIMP_PDB_END);
@@ -76,7 +76,7 @@ gimp_palette_duplicate (const gchar *name)
   gint nreturn_vals;
   gchar *ret_name = NULL;
 
-  return_vals = gimp_run_procedure ("gimp_palette_duplicate",
+  return_vals = gimp_run_procedure ("gimp-palette-duplicate",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, name,
 				    GIMP_PDB_END);
@@ -110,7 +110,7 @@ gimp_palette_rename (const gchar *name,
   gint nreturn_vals;
   gchar *ret_name = NULL;
 
-  return_vals = gimp_run_procedure ("gimp_palette_rename",
+  return_vals = gimp_run_procedure ("gimp-palette-rename",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, name,
 				    GIMP_PDB_STRING, new_name,
@@ -143,7 +143,7 @@ gimp_palette_delete (const gchar *name)
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_palette_delete",
+  return_vals = gimp_run_procedure ("gimp-palette-delete",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, name,
 				    GIMP_PDB_END);
@@ -153,6 +153,38 @@ gimp_palette_delete (const gchar *name)
   gimp_destroy_params (return_vals, nreturn_vals);
 
   return success;
+}
+
+/**
+ * gimp_palette_is_editable:
+ * @name: The palette name.
+ *
+ * Tests if palette can be edited
+ *
+ * Returns True if you have permission to change the palette
+ *
+ * Returns: True if the palette can be edited.
+ *
+ * Since: GIMP 2.4
+ */
+gboolean
+gimp_palette_is_editable (const gchar *name)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean editable = FALSE;
+
+  return_vals = gimp_run_procedure ("gimp-palette-is-editable",
+				    &nreturn_vals,
+				    GIMP_PDB_STRING, name,
+				    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    editable = return_vals[1].data.d_int32;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return editable;
 }
 
 /**
@@ -177,7 +209,7 @@ gimp_palette_get_info (const gchar *name,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_palette_get_info",
+  return_vals = gimp_run_procedure ("gimp-palette-get-info",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, name,
 				    GIMP_PDB_END);
@@ -188,6 +220,75 @@ gimp_palette_get_info (const gchar *name,
 
   if (success)
     *num_colors = return_vals[1].data.d_int32;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_palette_get_columns:
+ * @name: The palette name.
+ *
+ * Retrieves the number of columns to use to display this palette
+ *
+ * This procedures retrieves the prefered number of columns to use when
+ * the palette is being displayed.
+ *
+ * Returns: The number of columns used to display this palette.
+ *
+ * Since: GIMP 2.4
+ */
+gint
+gimp_palette_get_columns (const gchar *name)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gint num_columns = 0;
+
+  return_vals = gimp_run_procedure ("gimp-palette-get-columns",
+				    &nreturn_vals,
+				    GIMP_PDB_STRING, name,
+				    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    num_columns = return_vals[1].data.d_int32;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return num_columns;
+}
+
+/**
+ * gimp_palette_set_columns:
+ * @name: The palette name.
+ * @columns: The new number of columns.
+ *
+ * Sets the number of columns to use when displaying the palette
+ *
+ * This procedures allows to control how many colors are shown per row
+ * when the palette is being displayed. This value can only be changed
+ * if the palette is writable. The maximum allowed value is 64.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: GIMP 2.4
+ */
+gboolean
+gimp_palette_set_columns (const gchar *name,
+			  gint         columns)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-palette-set-columns",
+				    &nreturn_vals,
+				    GIMP_PDB_STRING, name,
+				    GIMP_PDB_INT32, columns,
+				    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
   gimp_destroy_params (return_vals, nreturn_vals);
 
@@ -220,7 +321,7 @@ gimp_palette_add_entry (const gchar   *name,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_palette_add_entry",
+  return_vals = gimp_run_procedure ("gimp-palette-add-entry",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, name,
 				    GIMP_PDB_STRING, entry_name,
@@ -261,7 +362,7 @@ gimp_palette_delete_entry (const gchar *name,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_palette_delete_entry",
+  return_vals = gimp_run_procedure ("gimp-palette-delete-entry",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, name,
 				    GIMP_PDB_INT32, entry_num,
@@ -299,7 +400,7 @@ gimp_palette_entry_get_color (const gchar *name,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_palette_entry_get_color",
+  return_vals = gimp_run_procedure ("gimp-palette-entry-get-color",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, name,
 				    GIMP_PDB_INT32, entry_num,
@@ -340,7 +441,7 @@ gimp_palette_entry_set_color (const gchar   *name,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_palette_entry_set_color",
+  return_vals = gimp_run_procedure ("gimp-palette-entry-set-color",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, name,
 				    GIMP_PDB_INT32, entry_num,
@@ -379,7 +480,7 @@ gimp_palette_entry_get_name (const gchar  *name,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_palette_entry_get_name",
+  return_vals = gimp_run_procedure ("gimp-palette-entry-get-name",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, name,
 				    GIMP_PDB_INT32, entry_num,
@@ -422,7 +523,7 @@ gimp_palette_entry_set_name (const gchar *name,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_palette_entry_set_name",
+  return_vals = gimp_run_procedure ("gimp-palette-entry-set-name",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, name,
 				    GIMP_PDB_INT32, entry_num,

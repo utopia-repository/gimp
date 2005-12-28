@@ -29,11 +29,11 @@
 #define GIMP_TARGET_NETSCAPE_URL \
         { "_NETSCAPE_URL", 0, GIMP_DND_TYPE_NETSCAPE_URL }
 
+#define GIMP_TARGET_XDS \
+        { "XdndDirectSave0", 0, GIMP_DND_TYPE_XDS }
+
 #define GIMP_TARGET_COLOR \
         { "application/x-color", 0, GIMP_DND_TYPE_COLOR }
-
-#define GIMP_TARGET_PNG \
-        { "image/png", 0, GIMP_DND_TYPE_PNG }
 
 #define GIMP_TARGET_SVG \
         { "image/svg", 0, GIMP_DND_TYPE_SVG }
@@ -41,8 +41,17 @@
 #define GIMP_TARGET_SVG_XML \
         { "image/svg+xml", 0, GIMP_DND_TYPE_SVG_XML }
 
+/* just here for documentation purposes, the actual list of targets
+ * is created dynamically from available GdkPixbuf loaders
+ */
+#define GIMP_TARGET_PIXBUF \
+        { NULL, 0, GIMP_DND_TYPE_PIXBUF }
+
 #define GIMP_TARGET_IMAGE \
         { "application/x-gimp-image-id", GTK_TARGET_SAME_APP, GIMP_DND_TYPE_IMAGE }
+
+#define GIMP_TARGET_COMPONENT \
+        { "application/x-gimp-component", GTK_TARGET_SAME_APP, GIMP_DND_TYPE_COMPONENT }
 
 #define GIMP_TARGET_LAYER \
         { "application/x-gimp-layer-id", GTK_TARGET_SAME_APP, GIMP_DND_TYPE_LAYER }
@@ -52,9 +61,6 @@
 
 #define GIMP_TARGET_LAYER_MASK \
         { "application/x-gimp-layer-mask-id", GTK_TARGET_SAME_APP, GIMP_DND_TYPE_LAYER_MASK }
-
-#define GIMP_TARGET_COMPONENT \
-        { "application/x-gimp-component", GTK_TARGET_SAME_APP, GIMP_DND_TYPE_COMPONENT }
 
 #define GIMP_TARGET_VECTORS \
         { "application/x-gimp-vectors-id", GTK_TARGET_SAME_APP, GIMP_DND_TYPE_VECTORS }
@@ -83,8 +89,8 @@
 #define GIMP_TARGET_TEMPLATE \
         { "application/x-gimp-template-name", GTK_TARGET_SAME_APP, GIMP_DND_TYPE_TEMPLATE }
 
-#define GIMP_TARGET_TOOL \
-        { "application/x-gimp-tool-name", GTK_TARGET_SAME_APP, GIMP_DND_TYPE_TOOL }
+#define GIMP_TARGET_TOOL_INFO \
+        { "application/x-gimp-tool-info-name", GTK_TARGET_SAME_APP, GIMP_DND_TYPE_TOOL_INFO }
 
 #define GIMP_TARGET_DIALOG \
         { "application/x-gimp-dialog", GTK_TARGET_SAME_APP, GIMP_DND_TYPE_DIALOG }
@@ -95,11 +101,13 @@
 void  gimp_dnd_init (Gimp *gimp);
 
 
-/*  uri list  dnd functions  */
+/*  uri list dnd functions  */
 
 typedef GList * (* GimpDndDragUriListFunc) (GtkWidget *widget,
                                             gpointer   data);
 typedef void    (* GimpDndDropUriListFunc) (GtkWidget *widget,
+                                            gint       x,
+                                            gint       y,
                                             GList     *uri_list,
                                             gpointer   data);
 
@@ -117,20 +125,22 @@ void  gimp_dnd_uri_list_dest_remove   (GtkWidget              *widget);
 /*  color dnd functions  */
 
 typedef void (* GimpDndDragColorFunc) (GtkWidget     *widget,
-				       GimpRGB       *color,
-				       gpointer       data);
+                                       GimpRGB       *color,
+                                       gpointer       data);
 typedef void (* GimpDndDropColorFunc) (GtkWidget     *widget,
-				       const GimpRGB *color,
-				       gpointer       data);
+                                       gint           x,
+                                       gint           y,
+                                       const GimpRGB *color,
+                                       gpointer       data);
 
 void  gimp_dnd_color_source_add    (GtkWidget            *widget,
-				    GimpDndDragColorFunc  get_color_func,
-				    gpointer              data);
+                                    GimpDndDragColorFunc  get_color_func,
+                                    gpointer              data);
 void  gimp_dnd_color_source_remove (GtkWidget            *widget);
 
 void  gimp_dnd_color_dest_add      (GtkWidget            *widget,
-				    GimpDndDropColorFunc  set_color_func,
-				    gpointer              data);
+                                    GimpDndDropColorFunc  set_color_func,
+                                    gpointer              data);
 void  gimp_dnd_color_dest_remove   (GtkWidget            *widget);
 
 
@@ -140,6 +150,8 @@ typedef guchar * (* GimpDndDragStreamFunc) (GtkWidget    *widget,
                                             gsize        *stream_len,
                                             gpointer      data);
 typedef void     (* GimpDndDropStreamFunc) (GtkWidget    *widget,
+                                            gint          x,
+                                            gint          y,
                                             const guchar *stream,
                                             gsize         stream_len,
                                             gpointer      data);
@@ -155,13 +167,59 @@ void  gimp_dnd_svg_dest_add      (GtkWidget              *widget,
 void  gimp_dnd_svg_dest_remove   (GtkWidget              *widget);
 
 
+/*  pixbuf dnd functions  */
+
+typedef GdkPixbuf * (* GimpDndDragPixbufFunc) (GtkWidget    *widget,
+                                               gpointer      data);
+typedef void        (* GimpDndDropPixbufFunc) (GtkWidget    *widget,
+                                               gint          x,
+                                               gint          y,
+                                               GdkPixbuf    *pixbuf,
+                                               gpointer      data);
+
+void  gimp_dnd_pixbuf_source_add    (GtkWidget              *widget,
+                                     GimpDndDragPixbufFunc   get_pixbuf_func,
+                                     gpointer                data);
+void  gimp_dnd_pixbuf_source_remove (GtkWidget              *widget);
+
+void  gimp_dnd_pixbuf_dest_add      (GtkWidget              *widget,
+                                     GimpDndDropPixbufFunc   set_pixbuf_func,
+                                     gpointer                data);
+void  gimp_dnd_pixbuf_dest_remove   (GtkWidget              *widget);
+
+
+/*  component dnd functions  */
+
+typedef GimpImage * (* GimpDndDragComponentFunc) (GtkWidget       *widget,
+                                                  GimpChannelType *channel,
+                                                  gpointer         data);
+typedef void        (* GimpDndDropComponentFunc) (GtkWidget       *widget,
+                                                  gint             x,
+                                                  gint             y,
+                                                  GimpImage       *image,
+                                                  GimpChannelType  channel,
+                                                  gpointer         data);
+
+void  gimp_dnd_component_source_add    (GtkWidget                 *widget,
+                                        GimpDndDragComponentFunc   get_comp_func,
+                                        gpointer                   data);
+void  gimp_dnd_component_source_remove (GtkWidget                 *widget);
+
+void  gimp_dnd_component_dest_add      (GtkWidget                 *widget,
+                                        GimpDndDropComponentFunc   set_comp_func,
+                                        gpointer                   data);
+void  gimp_dnd_component_dest_remove   (GtkWidget                 *widget);
+
+
 /*  GimpViewable (by GType) dnd functions  */
 
 typedef GimpViewable * (* GimpDndDragViewableFunc) (GtkWidget     *widget,
-						    gpointer       data);
+                                                    gpointer       data);
 typedef void           (* GimpDndDropViewableFunc) (GtkWidget     *widget,
-						    GimpViewable  *viewable,
-						    gpointer       data);
+                                                    gint           x,
+                                                    gint           y,
+                                                    GimpViewable  *viewable,
+                                                    gpointer       data);
 
 
 gboolean gimp_dnd_drag_source_set_by_type (GtkWidget               *widget,
@@ -188,6 +246,14 @@ gboolean gimp_dnd_viewable_dest_remove    (GtkWidget               *widget,
                                            GType                    type);
 
 GimpViewable * gimp_dnd_get_drag_data     (GtkWidget               *widget);
+
+
+/*  Direct Save Protocol (XDS)  */
+
+void  gimp_dnd_xds_source_add    (GtkWidget               *widget,
+                                  GimpDndDragViewableFunc  get_image_func,
+                                  gpointer                 data);
+void  gimp_dnd_xds_source_remove (GtkWidget               *widget);
 
 
 #endif /* __GIMP_DND_H__ */

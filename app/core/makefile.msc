@@ -33,13 +33,14 @@ PKG_LINK = \
 OBJECTS = \
 #	..\undo.obj \
 	core-enums.obj \
-	cpercep.obj \
 	gimp.obj \
+	gimp-contexts.obj \
 	gimp-edit.obj \
 	gimp-gui.obj \
 	gimp-units.obj \
 	gimparea.obj \
 	gimpbrush.obj \
+	gimpbrush-load.obj \
 	gimpbrushgenerated.obj \
 	gimpbrushpipe.obj \
 	gimpbuffer.obj \
@@ -50,6 +51,7 @@ OBJECTS = \
 	gimpcontainer.obj \
 	gimpcontainer-filter.obj \
 	gimpcontext.obj \
+	gimpdashpattern.obj \
 	gimpdata.obj \
 	gimpdatafactory.obj \
 	gimp-documents.obj \
@@ -58,8 +60,10 @@ OBJECTS = \
 	gimpdrawable-blend.obj \
 	gimpdrawable-bucket-fill.obj \
 	gimpdrawable-combine.obj \
+	gimpdrawable-convert.obj \
 	gimpdrawable-desaturate.obj \
 	gimpdrawable-equalize.obj \
+	gimpdrawable-foreground-extract.obj \
 	gimpdrawable-histogram.obj \
 	gimpdrawable-invert.obj \
 	gimpdrawable-levels.obj \
@@ -88,15 +92,18 @@ OBJECTS = \
 	gimpimage-new.obj \
 	gimpimage-pick-color.obj \
 	gimpimage-preview.obj \
-	gimpimage-qmask.obj \
+	gimpimage-quick-mask.obj \
 	gimpimage-resize.obj \
 	gimpimage-rotate.obj \
+	gimpimage-sample-points.obj \
 	gimpimage-snap.obj \
 	gimpimage-scale.obj \
 	gimpimage-undo.obj \
 	gimpimage-undo-push.obj \
 	gimpimagefile.obj \
+	gimpinterpreterdb.obj \
 	gimpitem.obj \
+	gimpitem-align.obj \
 	gimpitem-linked.obj \
 	gimpitem-preview.obj \
 	gimpitemundo.obj \

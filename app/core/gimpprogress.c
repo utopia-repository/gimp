@@ -27,8 +27,8 @@
 
 #include "core-types.h"
 
+#include "gimp.h"
 #include "gimpmarshal.h"
-#include "gimp-gui.h"
 #include "gimpprogress.h"
 
 #include "gimp-intl.h"
@@ -103,8 +103,8 @@ gimp_progress_start (GimpProgress *progress,
 
   g_return_val_if_fail (GIMP_IS_PROGRESS (progress), NULL);
 
-  if (! message || ! strlen (message))
-    message = _("Please wait...");
+  if (! message)
+    message = _("Please wait");
 
   progress_iface = GIMP_PROGRESS_GET_INTERFACE (progress);
 
@@ -151,7 +151,7 @@ gimp_progress_set_text (GimpProgress *progress,
   g_return_if_fail (GIMP_IS_PROGRESS (progress));
 
   if (! message || ! strlen (message))
-    message = _("Please wait...");
+    message = _("Please wait");
 
   progress_iface = GIMP_PROGRESS_GET_INTERFACE (progress);
 
@@ -190,6 +190,33 @@ gimp_progress_get_value (GimpProgress *progress)
   return 0.0;
 }
 
+void
+gimp_progress_pulse (GimpProgress *progress)
+{
+  GimpProgressInterface *progress_iface;
+
+  g_return_if_fail (GIMP_IS_PROGRESS (progress));
+
+  progress_iface = GIMP_PROGRESS_GET_INTERFACE (progress);
+
+  if (progress_iface->pulse)
+    progress_iface->pulse (progress);
+}
+
+guint32
+gimp_progress_get_window (GimpProgress *progress)
+{
+  GimpProgressInterface *progress_iface;
+
+  g_return_val_if_fail (GIMP_IS_PROGRESS (progress), 0);
+
+  progress_iface = GIMP_PROGRESS_GET_INTERFACE (progress);
+
+  if (progress_iface->get_window)
+    return progress_iface->get_window (progress);
+
+  return 0;
+}
 
 void
 gimp_progress_message (GimpProgress *progress,

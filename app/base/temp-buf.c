@@ -18,28 +18,14 @@
 
 #include "config.h"
 
-#include <errno.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-#include <sys/types.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 
 #include <glib-object.h>
-
-#ifdef G_OS_WIN32
-#include <process.h>		/* For _getpid() */
-#endif
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
 
 #include "base-types.h"
-
-#include "config/gimpbaseconfig.h"
-#include "config/gimpconfig-path.h"
 
 #include "pixel-region.h"
 #include "temp-buf.h"
@@ -52,12 +38,6 @@ static void     temp_buf_to_color (TempBuf *src_buf,
 				   TempBuf *dest_buf);
 static void     temp_buf_to_gray  (TempBuf *src_buf,
 				   TempBuf *dest_buf);
-
-
-#ifdef __GNUC__
-#warning FIXME: extern GimpBaseConfig *base_config;
-#endif
-extern GimpBaseConfig *base_config;
 
 
 /*  Memory management  */
@@ -136,7 +116,7 @@ temp_buf_to_gray (TempBuf *src_buf,
       g_return_if_fail (src_buf->bytes == 3);
       while (num_pixels--)
         {
-          pix = GIMP_RGB_INTENSITY (src[0], src[1], src[2]) + 0.5;
+          pix = GIMP_RGB_LUMINANCE (src[0], src[1], src[2]) + 0.5;
           *dest++ = (guchar) pix;
 
           src += 3;
@@ -147,7 +127,7 @@ temp_buf_to_gray (TempBuf *src_buf,
       g_return_if_fail (src_buf->bytes == 4);
       while (num_pixels--)
         {
-          pix = GIMP_RGB_INTENSITY (src[0], src[1], src[2]) + 0.5;
+          pix = GIMP_RGB_LUMINANCE (src[0], src[1], src[2]) + 0.5;
           *dest++ = (guchar) pix;
 
           *dest++ = src[3];  /* alpha channel */
@@ -179,13 +159,11 @@ temp_buf_new (gint    width,
 
   temp = g_new (TempBuf, 1);
 
-  temp->width    = width;
-  temp->height   = height;
-  temp->bytes    = bytes;
-  temp->x        = x;
-  temp->y        = y;
-  temp->swapped  = FALSE;
-  temp->filename = NULL;
+  temp->width  = width;
+  temp->height = height;
+  temp->bytes  = bytes;
+  temp->x      = x;
+  temp->y      = y;
 
   temp->data = data = temp_buf_allocate (width * height * bytes);
 
@@ -339,30 +317,23 @@ temp_buf_resize (TempBuf *buf,
 		 gint     width,
 		 gint     height)
 {
-  gint size;
-
   g_return_val_if_fail (width > 0 && height > 0, NULL);
 
-  /*  calculate the requested size  */
-  size = width * height * bytes;
-
-  /*  First, configure the canvas buffer  */
-  if (!buf)
+  if (! buf)
     {
       buf = temp_buf_new (width, height, bytes, x, y, NULL);
     }
   else
     {
-      if (size != (buf->width * buf->height * buf->bytes))
-        {
-          /*  Make sure the temp buf is unswapped  */
-          temp_buf_unswap (buf);
+      gint new_size;
 
-          /*  Reallocate the data for it  */
-          buf->data = g_renew (guchar, buf->data, size);
+      new_size = width * height * bytes;
+
+      if (new_size != (buf->width * buf->height * buf->bytes))
+        {
+          buf->data = g_renew (guchar, buf->data, new_size);
         }
 
-      /*  Make sure the temp buf fields are valid  */
       buf->x      = x;
       buf->y      = y;
       buf->width  = width;
@@ -474,17 +445,8 @@ temp_buf_copy_area (TempBuf *src,
     }
 
   /*  Copy the region  */
-  srcPR.bytes     = src->bytes;
-  srcPR.w         = width;
-  srcPR.h         = height;
-  srcPR.rowstride = src->bytes * src->width;
-  srcPR.data      = temp_buf_data (src) + (y1 * srcPR.rowstride +
-					   x1 * srcPR.bytes);
-
-  destPR.bytes     = dest->bytes;
-  destPR.rowstride = new->bytes * new->width;
-  destPR.data      = temp_buf_data (new) + (dest_y * destPR.rowstride +
-					    dest_x * destPR.bytes);
+  pixel_region_init_temp_buf (&srcPR,  src, x1, y1, width, height);
+  pixel_region_init_temp_buf (&destPR, new, dest_x, dest_y, width, height);
 
   copy_region (&srcPR, &destPR);
 
@@ -499,18 +461,12 @@ temp_buf_free (TempBuf *temp_buf)
   if (temp_buf->data)
     g_free (temp_buf->data);
 
-  if (temp_buf->swapped)
-    temp_buf_swap_free (temp_buf);
-
   g_free (temp_buf);
 }
 
 guchar *
 temp_buf_data (TempBuf *temp_buf)
 {
-  if (temp_buf->swapped)
-    temp_buf_unswap (temp_buf);
-
   return temp_buf->data;
 }
 
@@ -518,9 +474,6 @@ guchar *
 temp_buf_data_clear (TempBuf *temp_buf)
 {
   g_return_val_if_fail (temp_buf != NULL, NULL);
-
-  if (temp_buf->swapped)
-    temp_buf_unswap (temp_buf);
 
   memset (temp_buf->data, 0,
 	  temp_buf->height * temp_buf->width * temp_buf->bytes);
@@ -535,18 +488,8 @@ temp_buf_get_memsize (TempBuf *temp_buf)
 
   g_return_val_if_fail (temp_buf != NULL, 0);
 
-  memsize += sizeof (TempBuf);
-
-  if (temp_buf->swapped)
-    {
-      memsize += strlen (temp_buf->filename) + 1;
-    }
-  else
-    {
-      memsize += ((gsize) temp_buf->bytes *
-                          temp_buf->width *
-                          temp_buf->height);
-    }
+  memsize += (sizeof (TempBuf)
+              + (gsize) temp_buf->bytes * temp_buf->width * temp_buf->height);
 
   return memsize;
 }
@@ -582,236 +525,4 @@ guchar *
 mask_buf_data_clear (MaskBuf *mask_buf)
 {
   return temp_buf_data_clear ((TempBuf *) mask_buf);
-}
-
-
-/******************************************************************
- *  temp buffer disk caching functions                            *
- ******************************************************************/
-
-/*  NOTES:
- *  Disk caching is setup as follows:
- *    On a call to temp_buf_swap, the TempBuf parameter is stored
- *    in a temporary variable called cached_in_memory.
- *    On the next call to temp_buf_swap, if cached_in_memory is non-null,
- *    cached_in_memory is moved to disk, and the latest TempBuf parameter
- *    is stored in cached_in_memory.  This method keeps the latest TempBuf
- *    structure in memory instead of moving it directly to disk as requested.
- *    On a call to temp_buf_unswap, if cached_in_memory is non-null, it is
- *    compared against the requested TempBuf.  If they are the same, nothing
- *    must be moved in from disk since it still resides in memory.  However,
- *    if the two pointers are different, the requested TempBuf is retrieved
- *    from disk.  In the former case, cached_in_memory is set to NULL;
- *    in the latter case, cached_in_memory is left unchanged.
- *    If temp_buf_swap_free is called, cached_in_memory must be checked
- *    against the temp buf being freed.  If they are the same, then
- *    cached_in_memory must be set to NULL;
- *
- *  In the case where memory usage is set to "stingy":
- *    temp bufs are not cached in memory at all, they go right to disk.
- */
-
-
-/*  a static counter for generating unique filenames
- */
-static gint tmp_file_index = 0;
-
-
-/*  a static pointer which keeps track of the last request for
- *  a swapped buffer
- */
-static TempBuf *cached_in_memory = NULL;
-
-
-static gchar *
-generate_unique_tmp_filename (GimpBaseConfig *config)
-{
-  pid_t  pid;
-  gchar *tmpdir;
-  gchar *tmpfile;
-  gchar *path;
-
-  tmpdir = gimp_config_path_expand (config->temp_path, TRUE, NULL);
-
-  pid = getpid ();
-
-  tmpfile = g_strdup_printf ("gimp%d.%d",
-                             (gint) pid,
-                             tmp_file_index++);
-
-  path = g_build_filename (tmpdir, tmpfile, NULL);
-
-  g_free (tmpfile);
-  g_free (tmpdir);
-
-  return path;
-}
-
-void
-temp_buf_swap (TempBuf *buf)
-{
-  TempBuf *swap;
-  gchar   *filename;
-  FILE    *fp;
-
-  if (!buf || buf->swapped)
-    return;
-
-  /*  Set the swapped flag  */
-  buf->swapped = TRUE;
-
-  if (base_config->stingy_memory_use)
-    {
-      swap = buf;
-    }
-  else
-    {
-      swap = cached_in_memory;
-      cached_in_memory = buf;
-    }
-
-  /*  For the case where there is no temp buf ready
-   *  to be moved to disk, return
-   */
-  if (! swap)
-    return;
-
-  /*  Get a unique filename for caching the data to a UNIX file  */
-  filename = generate_unique_tmp_filename (base_config);
-
-  /*  Check if generated filename is valid  */
-  if (g_file_test (filename, G_FILE_TEST_IS_DIR))
-    {
-      g_message ("Error in temp buf caching: \"%s\" is a directory (cannot overwrite)",
-		 gimp_filename_to_utf8 (filename));
-      g_free (filename);
-      return;
-    }
-
-  /*  Open file for overwrite  */
-  if ((fp = fopen (filename, "wb")))
-    {
-      gsize blocks_written;
-
-      blocks_written = fwrite (swap->data,
-                               swap->width * swap->height * swap->bytes, 1,
-                               fp);
-
-      /* Check whether all bytes were written and fclose() was able
-         to flush its buffers */
-      if ((0 != fclose (fp)) || (1 != blocks_written))
-        {
-          unlink (filename);
-          perror ("Write error on temp buf");
-          g_message ("Cannot write \"%s\"",
-		     gimp_filename_to_utf8 (filename));
-          g_free (filename);
-          return;
-        }
-    }
-  else
-    {
-      unlink (filename);
-      perror ("Error in temp buf caching");
-      g_message ("Cannot write \"%s\"",
-		 gimp_filename_to_utf8 (filename));
-      g_free (filename);
-      return;
-    }
-  /*  Finally, free the buffer's data  */
-  g_free (swap->data);
-  swap->data = NULL;
-
-  swap->filename = filename;
-}
-
-void
-temp_buf_unswap (TempBuf *buf)
-{
-  FILE     *fp;
-  gboolean  succ = FALSE;
-
-  if (!buf || !buf->swapped)
-    return;
-
-  /*  Set the swapped flag  */
-  buf->swapped = FALSE;
-
-  /*  If the requested temp buf is still in memory, simply return  */
-  if (cached_in_memory == buf)
-    {
-      cached_in_memory = NULL;
-      return;
-    }
-
-  /*  Allocate memory for the buffer's data  */
-  buf->data   = temp_buf_allocate (buf->width * buf->height * buf->bytes);
-
-  if (g_file_test (buf->filename, G_FILE_TEST_IS_REGULAR))
-    {
-      if ((fp = fopen (buf->filename, "rb")))
-	{
-	  gsize blocks_read;
-
-	  blocks_read = fread (buf->data,
-                               buf->width * buf->height * buf->bytes, 1,
-                               fp);
-
-	  fclose (fp);
-	  if (blocks_read != 1)
-            perror ("Read error on temp buf");
-	  else
-	    succ = TRUE;
-	}
-      else
-	perror ("Error in temp buf caching");
-
-      /*  Delete the swap file  */
-      unlink (buf->filename);
-    }
-
-  if (!succ)
-    g_message ("Error in temp buf caching: "
-               "information swapped to disk was lost!");
-
-  g_free (buf->filename);   /*  free filename  */
-  buf->filename = NULL;
-}
-
-void
-temp_buf_swap_free (TempBuf *buf)
-{
-  if (!buf->swapped)
-    return;
-
-  /*  Set the swapped flag  */
-  buf->swapped = FALSE;
-
-  /*  If the requested temp buf is cached in memory...  */
-  if (cached_in_memory == buf)
-    {
-      cached_in_memory = NULL;
-      return;
-    }
-
-  /*  Find out if the filename of the swapped data is an existing file... */
-  if (g_file_test (buf->filename, G_FILE_TEST_IS_REGULAR))
-    {
-      /*  Delete the swap file  */
-      unlink (buf->filename);
-    }
-  else
-    g_message ("Error in temp buf disk swapping: "
-               "information swapped to disk was lost!");
-
-  if (buf->filename)
-    g_free (buf->filename);   /*  free filename  */
-  buf->filename = NULL;
-}
-
-void
-swapping_free (void)
-{
-  if (cached_in_memory)
-    temp_buf_free (cached_in_memory);
 }

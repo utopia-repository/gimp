@@ -7,7 +7,7 @@
 ;;   Sven Neumann <neumanns@uni-duesseldorf.de>
 ;;
 ;; Modified June 24, 2005 by Kevin Cozens
-;; Incorporated changes made by Daniel P. Stasinski in his text-circle3.scm
+;; Incorporated changes made by Daniel P. Stasinski in his text-circle2.scm
 ;; script. The letters are now placed properly for both positive and negative
 ;; fill angles.
 
@@ -174,4 +174,4 @@
 		    SF-FONT       _"Font"               "Sans")
 
 (script-fu-menu-register "script-fu-text-circle"
-			 "<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

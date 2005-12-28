@@ -58,8 +58,13 @@ static void   edit_actions_pattern_changed    (GimpContext     *context,
 
 static GimpActionEntry edit_actions[] =
 {
-  { "edit-menu",        NULL, N_("_Edit")   },
-  { "edit-buffer-menu", NULL, N_("_Buffer") },
+  { "edit-menu",          NULL, N_("_Edit")     },
+  { "edit-paste-as-menu", NULL, N_("_Paste as") },
+  { "edit-buffer-menu",   NULL, N_("_Buffer")   },
+
+  { "undo-editor-popup",
+    GTK_STOCK_UNDO, N_("Undo History Menu"), NULL, NULL, NULL,
+    GIMP_HELP_UNDO_DIALOG },
 
   { "edit-undo", GTK_STOCK_UNDO,
     N_("_Undo"), "<control>Z",
@@ -75,7 +80,7 @@ static GimpActionEntry edit_actions[] =
 
   { "edit-undo-clear", GTK_STOCK_CLEAR,
     N_("_Clear Undo History"), "",
-    N_("Clear undo history..."),
+    N_("Clear undo history"),
     G_CALLBACK (edit_undo_clear_cmd_callback),
     GIMP_HELP_EDIT_UNDO_CLEAR },
 
@@ -105,7 +110,12 @@ static GimpActionEntry edit_actions[] =
     GIMP_HELP_EDIT_PASTE_INTO },
 
   { "edit-paste-as-new", GIMP_STOCK_PASTE_AS_NEW,
-    N_("Paste as _New"), NULL, NULL,
+    N_("Paste as New"), NULL, NULL,
+    G_CALLBACK (edit_paste_as_new_cmd_callback),
+    GIMP_HELP_EDIT_PASTE_AS_NEW },
+
+  { "edit-paste-as-new-short", GIMP_STOCK_PASTE_AS_NEW,
+    N_("_New Image"), NULL, NULL,
     G_CALLBACK (edit_paste_as_new_cmd_callback),
     GIMP_HELP_EDIT_PASTE_AS_NEW },
 
@@ -119,13 +129,18 @@ static GimpActionEntry edit_actions[] =
     G_CALLBACK (edit_named_copy_cmd_callback),
     GIMP_HELP_BUFFER_COPY },
 
+  { "edit-named-copy-visible", NULL, /* GIMP_STOCK_COPY_VISIBLE, */
+    N_("Copy _Visible Named..."), "", NULL,
+    G_CALLBACK (edit_named_copy_visible_cmd_callback),
+    GIMP_HELP_BUFFER_COPY },
+
   { "edit-named-paste", GTK_STOCK_PASTE,
     N_("_Paste Named..."), "<control><shift>V", NULL,
     G_CALLBACK (edit_named_paste_cmd_callback),
     GIMP_HELP_BUFFER_PASTE },
 
   { "edit-clear", GTK_STOCK_CLEAR,
-    N_("Cl_ear"), "<control>K", NULL,
+    N_("Cl_ear"), "Delete", NULL,
     G_CALLBACK (edit_clear_cmd_callback),
     GIMP_HELP_EDIT_CLEAR }
 };
@@ -155,6 +170,7 @@ edit_actions_setup (GimpActionGroup *group)
   GimpContext *context = gimp_get_user_context (group->gimp);
   GimpRGB      color;
   GimpPattern *pattern;
+  GtkAction   *action;
 
   gimp_action_group_add_actions (group,
                                  edit_actions,
@@ -165,13 +181,17 @@ edit_actions_setup (GimpActionGroup *group)
                                       G_N_ELEMENTS (edit_fill_actions),
                                       G_CALLBACK (edit_fill_cmd_callback));
 
-  g_signal_connect_object (context, "foreground_changed",
+  action = gtk_action_group_get_action (GTK_ACTION_GROUP (group),
+                                        "edit-paste-as-new-short");
+  gtk_action_set_accel_path (action, "<Actions>/edit/edit-paste-as-new");
+
+  g_signal_connect_object (context, "foreground-changed",
                            G_CALLBACK (edit_actions_foreground_changed),
                            group, 0);
-  g_signal_connect_object (context, "background_changed",
+  g_signal_connect_object (context, "background-changed",
                            G_CALLBACK (edit_actions_background_changed),
                            group, 0);
-  g_signal_connect_object (context, "pattern_changed",
+  g_signal_connect_object (context, "pattern-changed",
                            G_CALLBACK (edit_actions_pattern_changed),
                            group, 0);
 
@@ -240,12 +260,13 @@ edit_actions_update (GimpActionGroup *group,
   SET_SENSITIVE ("edit-cut",          drawable);
   SET_SENSITIVE ("edit-copy",         drawable);
   SET_SENSITIVE ("edit-copy-visible", gimage);
-  SET_SENSITIVE ("edit-paste",        gimage);
+  /*             "edit-paste" is always enabled  */
   SET_SENSITIVE ("edit-paste-into",   gimage);
 
-  SET_SENSITIVE ("edit-named-cut",    drawable);
-  SET_SENSITIVE ("edit-named-copy",   drawable);
-  SET_SENSITIVE ("edit-named-paste",  gimage);
+  SET_SENSITIVE ("edit-named-cut",          drawable);
+  SET_SENSITIVE ("edit-named-copy",         drawable);
+  SET_SENSITIVE ("edit-named-copy-visible", drawable);
+  SET_SENSITIVE ("edit-named-paste",        gimage);
 
   SET_SENSITIVE ("edit-clear",        drawable);
   SET_SENSITIVE ("edit-fill-fg",      drawable);

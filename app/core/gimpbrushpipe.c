@@ -24,7 +24,7 @@
 #include <errno.h>
 
 #include <sys/types.h>
-#include <sys/stat.h>
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -35,6 +35,7 @@
 #endif
 
 #include <glib-object.h>
+#include <glib/gstdio.h>
 
 #ifdef G_OS_WIN32
 #include <io.h>
@@ -48,16 +49,11 @@
 
 #include "base/temp-buf.h"
 
-#include "gimpbrush.h"
-#include "gimpbrush-header.h"
+#include "gimpbrush-load.h"
 #include "gimpbrushpipe.h"
-#include "gimppattern-header.h"
 
 #include "gimp-intl.h"
 
-
-static void        gimp_brush_pipe_class_init       (GimpBrushPipeClass *klass);
-static void        gimp_brush_pipe_init             (GimpBrushPipe      *pipe);
 
 static void        gimp_brush_pipe_finalize         (GObject      *object);
 
@@ -79,36 +75,10 @@ static gboolean    gimp_brush_pipe_want_null_motion (GimpBrush    *brush,
                                                      GimpCoords   *cur_coords);
 
 
-static GimpBrushClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpBrushPipe, gimp_brush_pipe, GIMP_TYPE_BRUSH);
 
+#define parent_class gimp_brush_pipe_parent_class
 
-GType
-gimp_brush_pipe_get_type (void)
-{
-  static GType brush_type = 0;
-
-  if (! brush_type)
-    {
-      static const GTypeInfo brush_info =
-      {
-        sizeof (GimpBrushPipeClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_brush_pipe_class_init,
-        NULL,		/* class_finalize */
-        NULL,		/* class_data     */
-        sizeof (GimpBrushPipe),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_brush_pipe_init,
-      };
-
-      brush_type = g_type_register_static (GIMP_TYPE_BRUSH,
-                                           "GimpBrushPipe",
-                                           &brush_info, 0);
-    }
-
-  return brush_type;
-}
 
 static void
 gimp_brush_pipe_class_init (GimpBrushPipeClass *klass)
@@ -117,8 +87,6 @@ gimp_brush_pipe_class_init (GimpBrushPipeClass *klass)
   GimpObjectClass   *gimp_object_class = GIMP_OBJECT_CLASS (klass);
   GimpViewableClass *viewable_class    = GIMP_VIEWABLE_CLASS (klass);
   GimpBrushClass    *brush_class       = GIMP_BRUSH_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize         = gimp_brush_pipe_finalize;
 
@@ -216,12 +184,7 @@ gimp_brush_pipe_get_popup_size (GimpViewable   *viewable,
                                 gint           *popup_width,
                                 gint           *popup_height)
 {
-  GimpBrush *brush = GIMP_BRUSH (viewable);
-
-  *popup_width  = brush->mask->width;
-  *popup_height = brush->mask->height;
-
-  return TRUE;
+  return gimp_viewable_get_size (viewable, popup_width, popup_height);
 }
 
 static GimpBrush *
@@ -313,7 +276,6 @@ gimp_brush_pipe_want_null_motion (GimpBrush  *brush,
 
 GList *
 gimp_brush_pipe_load (const gchar  *filename,
-                      gboolean      stingy_memory_use,
                       GError      **error)
 {
   GimpBrushPipe     *pipe = NULL;
@@ -330,7 +292,7 @@ gimp_brush_pipe_load (const gchar  *filename,
   g_return_val_if_fail (g_path_is_absolute (filename), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  fd = open (filename, O_RDONLY | _O_BINARY);
+  fd = g_open (filename, O_RDONLY | _O_BINARY, 0);
 
   if (fd == -1)
     {
@@ -355,7 +317,8 @@ gimp_brush_pipe_load (const gchar  *filename,
                           gimp_filename_to_utf8 (filename));
 
       pipe = g_object_new (GIMP_TYPE_BRUSH_PIPE,
-                           "name", utf8,
+                           "name",      utf8,
+                           "mime-type", "image/x-gimp-gih",
                            NULL);
 
       g_free (utf8);

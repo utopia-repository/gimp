@@ -121,7 +121,6 @@ xcf_load_image (Gimp    *gimp,
 {
   GimpImage    *gimage;
   GimpLayer    *layer;
-  GimpLayer    *last_layer = NULL;
   GimpChannel  *channel;
   GimpParasite *parasite;
   guint32       saved_pos;
@@ -141,8 +140,10 @@ xcf_load_image (Gimp    *gimp,
                               image_type,
                               FALSE);
 
+  gimp_image_undo_disable (gimage);
+
   /* read the image properties */
-  if (!xcf_load_image_props (info, gimage))
+  if (! xcf_load_image_props (info, gimage))
     goto hard_error;
 
   /* check for a GimpGrid parasite */
@@ -160,7 +161,6 @@ xcf_load_image (Gimp    *gimp,
           gimp_image_set_grid (GIMP_IMAGE (gimage), grid, FALSE);
         }
     }
-
 
   while (TRUE)
     {
@@ -191,19 +191,8 @@ xcf_load_image (Gimp    *gimp,
 
       /* add the layer to the image if its not the floating selection */
       if (layer != info->floating_sel)
-        {
-          gint position = gimp_container_num_children (gimage->layers);
-
-          /*  GIMP 2.2 wants an alpha channel for layers above the
-           *  background layer
-           */
-          if (last_layer)
-            gimp_layer_add_alpha (last_layer);
-
-          gimp_image_add_layer (gimage, layer, position);
-
-          last_layer = layer;
-        }
+        gimp_image_add_layer (gimage, layer,
+                              gimp_container_num_children (gimage->layers));
 
       /* restore the saved position so we'll be ready to
        *  read the next offset.
@@ -241,8 +230,7 @@ xcf_load_image (Gimp    *gimp,
 
       /* add the channel to the image if its not the selection */
       if (channel != gimage->selection_mask)
-        gimp_image_add_channel (gimage, channel,
-                                gimp_container_num_children (gimage->channels));
+        gimp_image_add_channel (gimage, channel, -1);
 
       /* restore the saved position so we'll be ready to
        *  read the next offset.
@@ -265,6 +253,8 @@ xcf_load_image (Gimp    *gimp,
   if (info->tattoo_state > 0)
     gimp_image_set_tattoo_state (gimage, info->tattoo_state);
 
+  gimp_image_undo_enable (gimage);
+
   return gimage;
 
  error:
@@ -273,6 +263,8 @@ xcf_load_image (Gimp    *gimp,
 
   g_message ("XCF: This file is corrupt!  I have loaded as much\n"
              "of it as I can, but it is incomplete.");
+
+  gimp_image_undo_enable (gimage);
 
   return gimage;
 
@@ -294,7 +286,7 @@ xcf_load_image_props (XcfInfo   *info,
 
   while (TRUE)
     {
-      if (! xcf_load_prop (info, &prop_type, &prop_size))
+      if (!xcf_load_prop (info, &prop_type, &prop_size))
         return FALSE;
 
       switch (prop_type)
@@ -373,10 +365,8 @@ xcf_load_image_props (XcfInfo   *info,
             nguides = prop_size / (4 + 1);
             for (i = 0; i < nguides; i++)
               {
-                info->cp += xcf_read_int32 (info->fp,
-                                            (guint32 *) &position, 1);
-                info->cp += xcf_read_int8 (info->fp,
-                                           (guint8 *) &orientation, 1);
+                info->cp += xcf_read_int32 (info->fp, (guint32 *) &position, 1);
+                info->cp += xcf_read_int8 (info->fp, (guint8 *) &orientation, 1);
 
                 /*  skip -1 guides from old XCFs  */
                 if (position < 0)
@@ -529,9 +519,8 @@ xcf_load_image_props (XcfInfo   *info,
               {
                 if (base + prop_size != info->cp)
                   {
-                    g_printerr ("Mismatch in PROP_VECTORS size: "
-                                "skipping %d bytes.\n",
-                                base + prop_size - info->cp);
+                    g_warning ("Mismatch in PROP_VECTORS size: skipping %d bytes.",
+                               base + prop_size - info->cp);
                     xcf_seek_pos (info, base + prop_size, NULL);
                   }
               }
@@ -547,22 +536,18 @@ xcf_load_image_props (XcfInfo   *info,
 
         default:
 #ifdef GIMP_UNSTABLE
-          g_printerr ("unexpected/unknown image property: %d (skipping)\n",
+          g_printerr ("unexpected/unknown image property: %d (skipping)",
                       prop_type);
 #endif
           {
-            gsize  size = prop_size;
             guint8 buf[16];
             guint  amount;
 
-            while (size > 0)
+            while (prop_size > 0)
               {
-                if (feof (info->fp))
-                  return FALSE;
-
-                amount = MIN (16, size);
+                amount = MIN (16, prop_size);
                 info->cp += xcf_read_int8 (info->fp, buf, amount);
-                size -= MIN (16, amount);
+                prop_size -= MIN (16, amount);
               }
           }
           break;
@@ -586,7 +571,7 @@ xcf_load_layer_props (XcfInfo   *info,
 
   while (TRUE)
     {
-      if (! xcf_load_prop (info, &prop_type, &prop_size))
+      if (!xcf_load_prop (info, &prop_type, &prop_size))
         return FALSE;
 
       switch (prop_type)
@@ -636,9 +621,9 @@ xcf_load_layer_props (XcfInfo   *info,
           }
           break;
 
-        case PROP_PRESERVE_TRANSPARENCY:
+        case PROP_LOCK_ALPHA:
           info->cp +=
-            xcf_read_int32 (info->fp, (guint32 *) &layer->preserve_trans, 1);
+            xcf_read_int32 (info->fp, (guint32 *) &layer->lock_alpha, 1);
           break;
 
         case PROP_APPLY_MASK:
@@ -683,7 +668,6 @@ xcf_load_layer_props (XcfInfo   *info,
                 gimp_item_parasite_attach (GIMP_ITEM (layer), p);
                 gimp_parasite_free (p);
               }
-
             if (info->cp - base != prop_size)
               g_message ("Error while loading a layer's parasites");
           }
@@ -694,23 +678,19 @@ xcf_load_layer_props (XcfInfo   *info,
           break;
 
         default:
-#ifdef GIMP_UNSTABLE
-          g_printerr ("unexpected/unknown layer property: %d (skipping)\n",
-                      prop_type);
-#endif
           {
-            gsize  size = prop_size;
             guint8 buf[16];
             guint  amount;
 
-            while (size > 0)
+#ifdef GIMP_UNSTABLE
+            g_printerr ("unexpected/unknown layer property: %d (skipping)",
+                        prop_type);
+#endif
+            while (prop_size > 0)
               {
-                if (feof (info->fp))
-                  return FALSE;
-
-                amount = MIN (16, size);
+                amount = MIN (16, prop_size);
                 info->cp += xcf_read_int8 (info->fp, buf, amount);
-                size -= MIN (16, amount);
+                prop_size -= MIN (16, amount);
               }
           }
           break;
@@ -730,7 +710,7 @@ xcf_load_channel_props (XcfInfo      *info,
 
   while (TRUE)
     {
-      if (! xcf_load_prop (info, &prop_type, &prop_size))
+      if (!xcf_load_prop (info, &prop_type, &prop_size))
         return FALSE;
 
       switch (prop_type)
@@ -825,7 +805,6 @@ xcf_load_channel_props (XcfInfo      *info,
                 gimp_item_parasite_attach (GIMP_ITEM (*channel), p);
                 gimp_parasite_free (p);
               }
-
             if (info->cp - base != prop_size)
               g_message ("Error while loading a channel's parasites");
           }
@@ -833,22 +812,19 @@ xcf_load_channel_props (XcfInfo      *info,
 
         default:
 #ifdef GIMP_UNSTABLE
-          g_printerr ("unexpected/unknown channel property: %d (skipping)\n",
+          g_printerr ("unexpected/unknown channel property: %d (skipping)",
                       prop_type);
 #endif
+
           {
-            gsize  size = prop_size;
             guint8 buf[16];
-            guint  amount;
+            guint amount;
 
-            while (size > 0)
+            while (prop_size > 0)
               {
-                if (feof (info->fp))
-                  return FALSE;
-
-                amount = MIN (16, size);
+                amount = MIN (16, prop_size);
                 info->cp += xcf_read_int8 (info->fp, buf, amount);
-                size -= MIN (16, amount);
+                prop_size -= MIN (16, amount);
               }
           }
           break;
@@ -863,16 +839,8 @@ xcf_load_prop (XcfInfo  *info,
                PropType *prop_type,
                guint32  *prop_size)
 {
-  if (G_UNLIKELY (xcf_read_int32 (info->fp, (guint32 *) prop_type, 1) != 4))
-    return FALSE;
-
-  info->cp += 4;
-
-  if (G_UNLIKELY (xcf_read_int32 (info->fp, (guint32 *) prop_size, 1) != 4))
-    return FALSE;
-
-  info->cp += 4;
-
+  info->cp += xcf_read_int32 (info->fp, (guint32 *) prop_type, 1);
+  info->cp += xcf_read_int32 (info->fp, (guint32 *) prop_size, 1);
   return TRUE;
 }
 
@@ -959,9 +927,6 @@ xcf_load_layer (XcfInfo   *info,
       layer_mask->apply_mask = apply_mask;
       layer_mask->edit_mask  = edit_mask;
       layer_mask->show_mask  = show_mask;
-
-      /*  GIMP 2.2 wants an alpha channel for layers with masks  */
-      gimp_layer_add_alpha (layer);
 
       gimp_layer_add_mask (layer, layer_mask, FALSE);
     }
@@ -1321,15 +1286,6 @@ xcf_load_tile_rle (XcfInfo *info,
   gint nmemb_read_successfully;
   guchar *xcfdata, *xcfodata, *xcfdatalimit;
 
-  /* Workaround for bug #357809: avoid crashing on g_malloc() and skip
-   * this tile (return TRUE without storing data) as if it did not
-   * contain any data.  It is better than returning FALSE, which would
-   * skip the whole hierarchy while there may still be some valid
-   * tiles in the file.
-   */
-  if (data_length <= 0)
-    return TRUE;
-
   data = tile_data_pointer (tile, 0, 0);
   bpp = tile_bpp (tile);
 
@@ -1642,8 +1598,8 @@ xcf_load_vector (XcfInfo   *info,
   info->cp += xcf_read_int32  (info->fp, &num_strokes,   1);
 
 #ifdef GIMP_XCF_PATH_DEBUG
-  g_printerr ("name: %s, tattoo: %d, visible: %d, linked: %d, "
-              "num_parasites %d, num_strokes %d\n",
+  g_printerr ("name: %s, tattoo: %d, visible: %d, linked: %d, num_parasites %d, "
+              "num_strokes %d\n",
               name, tattoo, visible, linked, num_parasites, num_strokes);
 #endif
 
@@ -1657,7 +1613,9 @@ xcf_load_vector (XcfInfo   *info,
 
   for (i = 0; i < num_parasites; i++)
     {
-      GimpParasite *parasite = xcf_load_parasite (info);
+      GimpParasite *parasite;
+
+      parasite = xcf_load_parasite (info);
 
       if (! parasite)
         return FALSE;
@@ -1668,11 +1626,11 @@ xcf_load_vector (XcfInfo   *info,
 
   for (i = 0; i < num_strokes; i++)
     {
-      gint         stroke_type_id;
-      gint         closed;
-      gint         num_axes;
-      gint         num_control_points;
-      gint         type;
+      guint32      stroke_type_id;
+      guint32      closed;
+      guint32      num_axes;
+      guint32      num_control_points;
+      guint32      type;
       gfloat       coords[6] = { 0.0, 0.0, 1.0, 0.5, 0.5, 0.5 };
       GimpStroke  *stroke;
       gint         j;
@@ -1706,12 +1664,6 @@ xcf_load_vector (XcfInfo   *info,
                         info->cp + 4 * num_axes * num_control_points,
                         NULL);
           continue;
-        }
-
-      if (num_axes < 2 || num_axes > 6)
-        {
-          g_printerr ("bad number of axes in stroke description\n");
-          return FALSE;
         }
 
       control_points = g_value_array_new (num_control_points);

@@ -1,14 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpfileops</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
 <link rel="prev" href="libgimp-gimpedit.html" title="gimpedit">
 <link rel="next" href="libgimp-gimpfloatingsel.html" title="gimpfloatingsel">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -18,27 +17,24 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
+<link rel="index" href="ix01.html" title="Index">
+<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimpedit.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpfloatingsel.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2570205" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2619040" class="shortcut">Description</a></nobr></td></tr>
-</table>
+</tr></table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpfileops"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2570205"></a><span class="refentrytitle">gimpfileops</span>
-</h2>
+<h2><span class="refentrytitle">gimpfileops</span></h2>
 <p>gimpfileops &#8212; File operations (load, save, etc.)</p>
 </td>
 <td valign="top" align="right"></td>
@@ -49,44 +45,48 @@
 
 
 
-gchar*              <a href="libgimp-gimpfileops.html#gimp-temp-name">gimp_temp_name</a>                      (const gchar *extension);
-gint32              <a href="libgimp-gimpfileops.html#gimp-file-load">gimp_file_load</a>                      (<a href="libgimp-gimpenums.html#GimpRunMode">GimpRunMode</a> run_mode,
-                                                         const gchar *filename,
-                                                         const gchar *raw_filename);
-gboolean            <a href="libgimp-gimpfileops.html#gimp-file-save">gimp_file_save</a>                      (<a href="libgimp-gimpenums.html#GimpRunMode">GimpRunMode</a> run_mode,
-                                                         gint32 image_ID,
-                                                         gint32 drawable_ID,
-                                                         const gchar *filename,
-                                                         const gchar *raw_filename);
-gboolean            <a href="libgimp-gimpfileops.html#gimp-register-magic-load-handler">gimp_register_magic_load_handler</a>    (const gchar *procedure_name,
-                                                         const gchar *extensions,
-                                                         const gchar *prefixes,
-                                                         const gchar *magics);
-gboolean            <a href="libgimp-gimpfileops.html#gimp-register-load-handler">gimp_register_load_handler</a>          (const gchar *procedure_name,
-                                                         const gchar *extensions,
-                                                         const gchar *prefixes);
-gboolean            <a href="libgimp-gimpfileops.html#gimp-register-save-handler">gimp_register_save_handler</a>          (const gchar *procedure_name,
-                                                         const gchar *extensions,
-                                                         const gchar *prefixes);
-gboolean            <a href="libgimp-gimpfileops.html#gimp-register-file-handler-mime">gimp_register_file_handler_mime</a>     (const gchar *procedure_name,
-                                                         const gchar *mime_type);
-gboolean            <a href="libgimp-gimpfileops.html#gimp-register-thumbnail-loader">gimp_register_thumbnail_loader</a>      (const gchar *load_proc,
-                                                         const gchar *thumb_proc);
+gchar*      <a href="libgimp-gimpfileops.html#gimp-temp-name">gimp_temp_name</a>                  (const gchar *extension);
+gint32      <a href="libgimp-gimpfileops.html#gimp-file-load">gimp_file_load</a>                  (<a href="libgimp-gimpenums.html#GimpRunMode">GimpRunMode</a> run_mode,
+                                             const gchar *filename,
+                                             const gchar *raw_filename);
+gint32      <a href="libgimp-gimpfileops.html#gimp-file-load-layer">gimp_file_load_layer</a>            (<a href="libgimp-gimpenums.html#GimpRunMode">GimpRunMode</a> run_mode,
+                                             gint32 image_ID,
+                                             const gchar *filename);
+gboolean    <a href="libgimp-gimpfileops.html#gimp-file-save">gimp_file_save</a>                  (<a href="libgimp-gimpenums.html#GimpRunMode">GimpRunMode</a> run_mode,
+                                             gint32 image_ID,
+                                             gint32 drawable_ID,
+                                             const gchar *filename,
+                                             const gchar *raw_filename);
+gboolean    <a href="libgimp-gimpfileops.html#gimp-register-magic-load-handler">gimp_register_magic_load_handler</a>
+                                            (const gchar *procedure_name,
+                                             const gchar *extensions,
+                                             const gchar *prefixes,
+                                             const gchar *magics);
+gboolean    <a href="libgimp-gimpfileops.html#gimp-register-load-handler">gimp_register_load_handler</a>      (const gchar *procedure_name,
+                                             const gchar *extensions,
+                                             const gchar *prefixes);
+gboolean    <a href="libgimp-gimpfileops.html#gimp-register-save-handler">gimp_register_save_handler</a>      (const gchar *procedure_name,
+                                             const gchar *extensions,
+                                             const gchar *prefixes);
+gboolean    <a href="libgimp-gimpfileops.html#gimp-register-file-handler-mime">gimp_register_file_handler_mime</a> (const gchar *procedure_name,
+                                             const gchar *mime_type);
+gboolean    <a href="libgimp-gimpfileops.html#gimp-register-thumbnail-loader">gimp_register_thumbnail_loader</a>  (const gchar *load_proc,
+                                             const gchar *thumb_proc);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2619040"></a><h2>Description</h2>
+<a name="id2588402"></a><h2>Description</h2>
 <p>
 File operations (load, save, etc.)
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2619056"></a><h2>Details</h2>
+<a name="id2588412"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2619066"></a><h3>
+<a name="id2588419"></a><h3>
 <a name="gimp-temp-name"></a>gimp_temp_name ()</h3>
-<a class="indexterm" name="id2619079"></a><pre class="programlisting">gchar*              gimp_temp_name                      (const gchar *extension);</pre>
+<a class="indexterm" name="id2588429"></a><pre class="programlisting">gchar*      gimp_temp_name                  (const gchar *extension);</pre>
 <p>
 Generates a unique filename.
 </p>
@@ -100,12 +100,14 @@ user's gimprc.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>extension</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>extension</code></em>&#160;:</span></td>
 <td> The extension the file will have.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The new temp filename.
 </td>
 </tr>
@@ -114,13 +116,13 @@ user's gimprc.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2619144"></a><h3>
+<a name="id2581448"></a><h3>
 <a name="gimp-file-load"></a>gimp_file_load ()</h3>
-<a class="indexterm" name="id2619156"></a><pre class="programlisting">gint32              gimp_file_load                      (<a href="libgimp-gimpenums.html#GimpRunMode">GimpRunMode</a> run_mode,
-                                                         const gchar *filename,
-                                                         const gchar *raw_filename);</pre>
+<a class="indexterm" name="id2581458"></a><pre class="programlisting">gint32      gimp_file_load                  (<a href="libgimp-gimpenums.html#GimpRunMode">GimpRunMode</a> run_mode,
+                                             const gchar *filename,
+                                             const gchar *raw_filename);</pre>
 <p>
-Loads a file by invoking the right load handler.
+Loads an image file by invoking the right load handler.
 </p>
 <p>
 This procedure invokes the correct file load handler using magic if
@@ -137,22 +139,26 @@ will not look like a URL.\"</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>run_mode</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>run_mode</code></em>&#160;:</span></td>
 <td> The run mode.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
 <td> The name of the file to load.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>raw_filename</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>raw_filename</code></em>&#160;:</span></td>
 <td> The name as entered by the user.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The output image.
 </td>
 </tr>
@@ -161,13 +167,62 @@ will not look like a URL.\"</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618718"></a><h3>
+<a name="id2581572"></a><h3>
+<a name="gimp-file-load-layer"></a>gimp_file_load_layer ()</h3>
+<a class="indexterm" name="id2581581"></a><pre class="programlisting">gint32      gimp_file_load_layer            (<a href="libgimp-gimpenums.html#GimpRunMode">GimpRunMode</a> run_mode,
+                                             gint32 image_ID,
+                                             const gchar *filename);</pre>
+<p>
+Loads an image file as a layer into an already opened image.
+</p>
+<p>
+This procedure behaves like the file-load procedure but opens the
+specified image as a layer into an already opened image.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>run_mode</code></em>&#160;:</span></td>
+<td> The run mode.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td> Destination image.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
+<td> The name of the file to load.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The layer created when loading the image file.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2580122"></a><h3>
 <a name="gimp-file-save"></a>gimp_file_save ()</h3>
-<a class="indexterm" name="id2618730"></a><pre class="programlisting">gboolean            gimp_file_save                      (<a href="libgimp-gimpenums.html#GimpRunMode">GimpRunMode</a> run_mode,
-                                                         gint32 image_ID,
-                                                         gint32 drawable_ID,
-                                                         const gchar *filename,
-                                                         const gchar *raw_filename);</pre>
+<a class="indexterm" name="id2580132"></a><pre class="programlisting">gboolean    gimp_file_save                  (<a href="libgimp-gimpenums.html#GimpRunMode">GimpRunMode</a> run_mode,
+                                             gint32 image_ID,
+                                             gint32 drawable_ID,
+                                             const gchar *filename,
+                                             const gchar *raw_filename);</pre>
 <p>
 Saves a file by extension.
 </p>
@@ -185,32 +240,38 @@ fetch a URL, and the full pathname will not look like a URL.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>run_mode</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>run_mode</code></em>&#160;:</span></td>
 <td> The run mode.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> Input image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> Drawable to save.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
 <td> The name of the file to save the image in.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>raw_filename</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>raw_filename</code></em>&#160;:</span></td>
 <td> The name as entered by the user.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -219,12 +280,13 @@ fetch a URL, and the full pathname will not look like a URL.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618887"></a><h3>
+<a name="id2580287"></a><h3>
 <a name="gimp-register-magic-load-handler"></a>gimp_register_magic_load_handler ()</h3>
-<a class="indexterm" name="id2618898"></a><pre class="programlisting">gboolean            gimp_register_magic_load_handler    (const gchar *procedure_name,
-                                                         const gchar *extensions,
-                                                         const gchar *prefixes,
-                                                         const gchar *magics);</pre>
+<a class="indexterm" name="id2580296"></a><pre class="programlisting">gboolean    gimp_register_magic_load_handler
+                                            (const gchar *procedure_name,
+                                             const gchar *extensions,
+                                             const gchar *prefixes,
+                                             const gchar *magics);</pre>
 <p>
 Registers a file load handler procedure.
 </p>
@@ -238,27 +300,32 @@ of a particular file format using magic file information.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>procedure_name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>procedure_name</code></em>&#160;:</span></td>
 <td> The name of the procedure to be used for loading.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>extensions</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>extensions</code></em>&#160;:</span></td>
 <td> comma separated list of extensions this handler can load (i.e. \"jpg,jpeg\").
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>prefixes</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>prefixes</code></em>&#160;:</span></td>
 <td> comma separated list of prefixes this handler can load (i.e. \"http:,ftp:\").
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>magics</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>magics</code></em>&#160;:</span></td>
 <td> comma separated list of magic file information this handler can load (i.e. \"0,string,GIF\").
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -267,11 +334,11 @@ of a particular file format using magic file information.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621689"></a><h3>
+<a name="id2578979"></a><h3>
 <a name="gimp-register-load-handler"></a>gimp_register_load_handler ()</h3>
-<a class="indexterm" name="id2621700"></a><pre class="programlisting">gboolean            gimp_register_load_handler          (const gchar *procedure_name,
-                                                         const gchar *extensions,
-                                                         const gchar *prefixes);</pre>
+<a class="indexterm" name="id2578988"></a><pre class="programlisting">gboolean    gimp_register_load_handler      (const gchar *procedure_name,
+                                             const gchar *extensions,
+                                             const gchar *prefixes);</pre>
 <p>
 Registers a file load handler procedure.
 </p>
@@ -285,22 +352,26 @@ of a particular file format.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>procedure_name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>procedure_name</code></em>&#160;:</span></td>
 <td> The name of the procedure to be used for loading.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>extensions</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>extensions</code></em>&#160;:</span></td>
 <td> comma separated list of extensions this handler can load (i.e. \"jpg,jpeg\").
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>prefixes</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>prefixes</code></em>&#160;:</span></td>
 <td> comma separated list of prefixes this handler can load (i.e. \"http:,ftp:\").
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -309,11 +380,11 @@ of a particular file format.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621812"></a><h3>
+<a name="id2579098"></a><h3>
 <a name="gimp-register-save-handler"></a>gimp_register_save_handler ()</h3>
-<a class="indexterm" name="id2621823"></a><pre class="programlisting">gboolean            gimp_register_save_handler          (const gchar *procedure_name,
-                                                         const gchar *extensions,
-                                                         const gchar *prefixes);</pre>
+<a class="indexterm" name="id2579107"></a><pre class="programlisting">gboolean    gimp_register_save_handler      (const gchar *procedure_name,
+                                             const gchar *extensions,
+                                             const gchar *prefixes);</pre>
 <p>
 Registers a file save handler procedure.
 </p>
@@ -327,22 +398,26 @@ in a particular file format.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>procedure_name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>procedure_name</code></em>&#160;:</span></td>
 <td> The name of the procedure to be used for saving.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>extensions</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>extensions</code></em>&#160;:</span></td>
 <td> comma separated list of extensions this handler can save (i.e. \"jpg,jpeg\").
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>prefixes</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>prefixes</code></em>&#160;:</span></td>
 <td> comma separated list of prefixes this handler can save (i.e. \"http:,ftp:\").
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -351,10 +426,10 @@ in a particular file format.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621934"></a><h3>
+<a name="id2579217"></a><h3>
 <a name="gimp-register-file-handler-mime"></a>gimp_register_file_handler_mime ()</h3>
-<a class="indexterm" name="id2621948"></a><pre class="programlisting">gboolean            gimp_register_file_handler_mime     (const gchar *procedure_name,
-                                                         const gchar *mime_type);</pre>
+<a class="indexterm" name="id2579226"></a><pre class="programlisting">gboolean    gimp_register_file_handler_mime (const gchar *procedure_name,
+                                             const gchar *mime_type);</pre>
 <p>
 Associates a MIME type with a file handler procedure.
 </p>
@@ -369,32 +444,35 @@ procedure.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>procedure_name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>procedure_name</code></em>&#160;:</span></td>
 <td> The name of the procedure to associate a MIME type with.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>mime_type</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>mime_type</code></em>&#160;:</span></td>
 <td> A single MIME type, like for example \"image/jpeg\".
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
+<p>Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622045"></a><h3>
+<a name="id2579320"></a><h3>
 <a name="gimp-register-thumbnail-loader"></a>gimp_register_thumbnail_loader ()</h3>
-<a class="indexterm" name="id2622060"></a><pre class="programlisting">gboolean            gimp_register_thumbnail_loader      (const gchar *load_proc,
-                                                         const gchar *thumb_proc);</pre>
+<a class="indexterm" name="id2579329"></a><pre class="programlisting">gboolean    gimp_register_thumbnail_loader  (const gchar *load_proc,
+                                             const gchar *thumb_proc);</pre>
 <p>
 Associates a thumbnail loader with a file load procedure.
 </p>
@@ -412,27 +490,34 @@ using this function.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>load_proc</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>load_proc</code></em>&#160;:</span></td>
 <td> The name of the procedure the thumbnail loader with.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>thumb_proc</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>thumb_proc</code></em>&#160;:</span></td>
 <td> The name of the thumbnail load procedure.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
+<p>Since  GIMP 2.2
 </p>
 </div>
 </div>
 </div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimp-gimpedit.html"><b>&lt;&lt;&#160;gimpedit</b></a></td>
+<td align="right"><a accesskey="n" href="libgimp-gimpfloatingsel.html"><b>gimpfloatingsel&#160;&gt;&gt;</b></a></td>
+</tr></table>
 </body>
 </html>

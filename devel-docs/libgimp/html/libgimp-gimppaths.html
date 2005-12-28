@@ -1,14 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimppaths</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
 <link rel="prev" href="libgimp-gimplayer.html" title="gimplayer">
 <link rel="next" href="libgimp-gimppixelfetcher.html" title="gimppixelfetcher">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -18,27 +17,24 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
+<link rel="index" href="ix01.html" title="Index">
+<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimplayer.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimppixelfetcher.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2509723" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2634332" class="shortcut">Description</a></nobr></td></tr>
-</table>
+</tr></table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppaths"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2509723"></a><span class="refentrytitle">gimppaths</span>
-</h2>
+<h2><span class="refentrytitle">gimppaths</span></h2>
 <p>gimppaths &#8212; Operations related to paths.</p>
 </td>
 <td valign="top" align="right"></td>
@@ -49,66 +45,78 @@
 
 
 
-gchar**             <a href="libgimp-gimppaths.html#gimp-path-list">gimp_path_list</a>                      (gint32 image_ID,
-                                                         gint *num_paths);
-gint                <a href="libgimp-gimppaths.html#gimp-path-get-points">gimp_path_get_points</a>                (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gint *path_closed,
-                                                         gint *num_path_point_details,
-                                                         gdouble **points_pairs);
-gchar*              <a href="libgimp-gimppaths.html#gimp-path-get-current">gimp_path_get_current</a>               (gint32 image_ID);
-gboolean            <a href="libgimp-gimppaths.html#gimp-path-set-current">gimp_path_set_current</a>               (gint32 image_ID,
-                                                         const gchar *name);
-gboolean            <a href="libgimp-gimppaths.html#gimp-path-set-points">gimp_path_set_points</a>                (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gint ptype,
-                                                         gint num_path_points,
-                                                         const gdouble *points_pairs);
-gboolean            <a href="libgimp-gimppaths.html#gimp-path-stroke-current">gimp_path_stroke_current</a>            (gint32 image_ID);
-gint                <a href="libgimp-gimppaths.html#gimp-path-get-point-at-dist">gimp_path_get_point_at_dist</a>         (gint32 image_ID,
-                                                         gdouble distance,
-                                                         gint *y_point,
-                                                         gdouble *slope);
-gint                <a href="libgimp-gimppaths.html#gimp-path-get-tattoo">gimp_path_get_tattoo</a>                (gint32 image_ID,
-                                                         const gchar *name);
-gchar*              <a href="libgimp-gimppaths.html#gimp-get-path-by-tattoo">gimp_get_path_by_tattoo</a>             (gint32 image_ID,
-                                                         gint tattoo);
-gboolean            <a href="libgimp-gimppaths.html#gimp-path-delete">gimp_path_delete</a>                    (gint32 image_ID,
-                                                         const gchar *name);
-gint                <a href="libgimp-gimppaths.html#gimp-path-get-locked">gimp_path_get_locked</a>                (gint32 image_ID,
-                                                         const gchar *name);
-gboolean            <a href="libgimp-gimppaths.html#gimp-path-set-locked">gimp_path_set_locked</a>                (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gint lockstatus);
-gboolean            <a href="libgimp-gimppaths.html#gimp-path-set-tattoo">gimp_path_set_tattoo</a>                (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gint tattovalue);
-gboolean            <a href="libgimp-gimppaths.html#gimp-path-to-selection">gimp_path_to_selection</a>              (gint32 image_ID,
-                                                         const gchar *name,
-                                                         <a href="libgimp-gimpenums.html#GimpChannelOps">GimpChannelOps</a> op,
-                                                         gboolean antialias,
-                                                         gboolean feather,
-                                                         gdouble feather_radius_x,
-                                                         gdouble feather_radius_y);
-gboolean            <a href="libgimp-gimppaths.html#gimp-path-import">gimp_path_import</a>                    (gint32 image_ID,
-                                                         const gchar *filename,
-                                                         gboolean merge,
-                                                         gboolean scale);
+gchar**     <a href="libgimp-gimppaths.html#gimp-path-list">gimp_path_list</a>                  (gint32 image_ID,
+                                             gint *num_paths);
+gint        <a href="libgimp-gimppaths.html#gimp-path-get-points">gimp_path_get_points</a>            (gint32 image_ID,
+                                             const gchar *name,
+                                             gint *path_closed,
+                                             gint *num_path_point_details,
+                                             gdouble **points_pairs);
+gchar*      <a href="libgimp-gimppaths.html#gimp-path-get-current">gimp_path_get_current</a>           (gint32 image_ID);
+gboolean    <a href="libgimp-gimppaths.html#gimp-path-set-current">gimp_path_set_current</a>           (gint32 image_ID,
+                                             const gchar *name);
+gboolean    <a href="libgimp-gimppaths.html#gimp-path-set-points">gimp_path_set_points</a>            (gint32 image_ID,
+                                             const gchar *name,
+                                             gint ptype,
+                                             gint num_path_points,
+                                             const gdouble *points_pairs);
+gboolean    <a href="libgimp-gimppaths.html#gimp-path-stroke-current">gimp_path_stroke_current</a>        (gint32 image_ID);
+gint        <a href="libgimp-gimppaths.html#gimp-path-get-point-at-dist">gimp_path_get_point_at_dist</a>     (gint32 image_ID,
+                                             gdouble distance,
+                                             gint *y_point,
+                                             gdouble *slope);
+gint        <a href="libgimp-gimppaths.html#gimp-path-get-tattoo">gimp_path_get_tattoo</a>            (gint32 image_ID,
+                                             const gchar *name);
+gchar*      <a href="libgimp-gimppaths.html#gimp-get-path-by-tattoo">gimp_get_path_by_tattoo</a>         (gint32 image_ID,
+                                             gint tattoo);
+gboolean    <a href="libgimp-gimppaths.html#gimp-path-delete">gimp_path_delete</a>                (gint32 image_ID,
+                                             const gchar *name);
+gboolean    <a href="libgimp-gimppaths.html#gimp-path-get-locked">gimp_path_get_locked</a>            (gint32 image_ID,
+                                             const gchar *name);
+gboolean    <a href="libgimp-gimppaths.html#gimp-path-set-locked">gimp_path_set_locked</a>            (gint32 image_ID,
+                                             const gchar *name,
+                                             gboolean locked);
+gboolean    <a href="libgimp-gimppaths.html#gimp-path-get-visible">gimp_path_get_visible</a>           (gint32 image_ID,
+                                             const gchar *name);
+gboolean    <a href="libgimp-gimppaths.html#gimp-path-set-visible">gimp_path_set_visible</a>           (gint32 image_ID,
+                                             const gchar *name,
+                                             gboolean visible);
+gboolean    <a href="libgimp-gimppaths.html#gimp-path-set-tattoo">gimp_path_set_tattoo</a>            (gint32 image_ID,
+                                             const gchar *name,
+                                             gint tattovalue);
+gboolean    <a href="libgimp-gimppaths.html#gimp-path-to-selection">gimp_path_to_selection</a>          (gint32 image_ID,
+                                             const gchar *name,
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
+>GimpChannelOps</a> op,
+                                             gboolean antialias,
+                                             gboolean feather,
+                                             gdouble feather_radius_x,
+                                             gdouble feather_radius_y);
+gboolean    <a href="libgimp-gimppaths.html#gimp-path-import">gimp_path_import</a>                (gint32 image_ID,
+                                             const gchar *filename,
+                                             gboolean merge,
+                                             gboolean scale);
+gboolean    <a href="libgimp-gimppaths.html#gimp-path-import-string">gimp_path_import_string</a>         (gint32 image_ID,
+                                             const gchar *string,
+                                             gint length,
+                                             gboolean merge,
+                                             gboolean scale);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2634332"></a><h2>Description</h2>
+<a name="id2596690"></a><h2>Description</h2>
 <p>
 Operations related to paths.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2634348"></a><h2>Details</h2>
+<a name="id2596701"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2634359"></a><h3>
+<a name="id2596707"></a><h3>
 <a name="gimp-path-list"></a>gimp_path_list ()</h3>
-<a class="indexterm" name="id2634371"></a><pre class="programlisting">gchar**             gimp_path_list                      (gint32 image_ID,
-                                                         gint *num_paths);</pre>
+<a class="indexterm" name="id2596717"></a><pre class="programlisting">gchar**     gimp_path_list                  (gint32 image_ID,
+                                             gint *num_paths);</pre>
 <p>
 List the paths associated with the passed image.
 </p>
@@ -121,17 +129,20 @@ List the paths associated with the passed image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The ID of the image to list the paths from.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_paths</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>num_paths</code></em>&#160;:</span></td>
 <td> The number of paths returned.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> List of the paths belonging to this image.
 </td>
 </tr>
@@ -140,13 +151,13 @@ List the paths associated with the passed image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2634459"></a><h3>
+<a name="id2596804"></a><h3>
 <a name="gimp-path-get-points"></a>gimp_path_get_points ()</h3>
-<a class="indexterm" name="id2634470"></a><pre class="programlisting">gint                gimp_path_get_points                (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gint *path_closed,
-                                                         gint *num_path_point_details,
-                                                         gdouble **points_pairs);</pre>
+<a class="indexterm" name="id2596813"></a><pre class="programlisting">gint        gimp_path_get_points            (gint32 image_ID,
+                                             const gchar *name,
+                                             gint *path_closed,
+                                             gint *num_path_point_details,
+                                             gdouble **points_pairs);</pre>
 <p>
 List the points associated with the named path.
 </p>
@@ -159,32 +170,38 @@ List the points associated with the named path.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The ID of the image to list the paths from.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The name of the path whose points should be listed.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>path_closed</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>path_closed</code></em>&#160;:</span></td>
 <td> Return if the path is closed. (0 = path open, 1 = path closed).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_path_point_details</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>num_path_point_details</code></em>&#160;:</span></td>
 <td> The number of points returned. Each point is made up of (x, y, pnt_type) of floats.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>points_pairs</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>points_pairs</code></em>&#160;:</span></td>
 <td> The points in the path represented as 3 floats. The first is the x pos, next is the y pos, last is the type of the pnt. The type field is dependant on the path type. For beziers (type 1 paths) the type can either be (1.0 = BEZIER_ANCHOR, 2.0 = BEZIER_CONTROL, 3.0 = BEZIER_MOVE). Note all points are returned in pixel resolution.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The type of the path. Currently only one type (1 = Bezier) is supported.
 </td>
 </tr>
@@ -193,9 +210,9 @@ List the points associated with the named path.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2634631"></a><h3>
+<a name="id2596972"></a><h3>
 <a name="gimp-path-get-current"></a>gimp_path_get_current ()</h3>
-<a class="indexterm" name="id2634642"></a><pre class="programlisting">gchar*              gimp_path_get_current               (gint32 image_ID);</pre>
+<a class="indexterm" name="id2596981"></a><pre class="programlisting">gchar*      gimp_path_get_current           (gint32 image_ID);</pre>
 <p>
 The name of the current path. Error if no paths.
 </p>
@@ -208,12 +225,14 @@ The name of the current path. Error if no paths.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The ID of the image to get the current path from.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The name of the current path.
 </td>
 </tr>
@@ -222,10 +241,10 @@ The name of the current path. Error if no paths.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2637543"></a><h3>
+<a name="id2599802"></a><h3>
 <a name="gimp-path-set-current"></a>gimp_path_set_current ()</h3>
-<a class="indexterm" name="id2637554"></a><pre class="programlisting">gboolean            gimp_path_set_current               (gint32 image_ID,
-                                                         const gchar *name);</pre>
+<a class="indexterm" name="id2599811"></a><pre class="programlisting">gboolean    gimp_path_set_current           (gint32 image_ID,
+                                             const gchar *name);</pre>
 <p>
 Sets the current path associated with the passed image.
 </p>
@@ -238,17 +257,20 @@ Sets a named path as the current path.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The ID of the image in which a path will become current.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The name of the path to make current.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -257,13 +279,13 @@ Sets a named path as the current path.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2637640"></a><h3>
+<a name="id2599896"></a><h3>
 <a name="gimp-path-set-points"></a>gimp_path_set_points ()</h3>
-<a class="indexterm" name="id2637651"></a><pre class="programlisting">gboolean            gimp_path_set_points                (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gint ptype,
-                                                         gint num_path_points,
-                                                         const gdouble *points_pairs);</pre>
+<a class="indexterm" name="id2599905"></a><pre class="programlisting">gboolean    gimp_path_set_points            (gint32 image_ID,
+                                             const gchar *name,
+                                             gint ptype,
+                                             gint num_path_points,
+                                             const gdouble *points_pairs);</pre>
 <p>
 Set the points associated with the named path.
 </p>
@@ -276,32 +298,38 @@ Set the points associated with the named path.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The ID of the image to set the paths in.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The name of the path to create. If it exists then a unique name will be created - query the list of paths if you want to make sure that the name of the path you create is unique. This will be set as the current path.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>ptype</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>ptype</code></em>&#160;:</span></td>
 <td> The type of the path. Currently only one type (1 = Bezier) is supported.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_path_points</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>num_path_points</code></em>&#160;:</span></td>
 <td> The number of elements in the array, i.e. the number of points in the path * 3. Each point is made up of (x, y, type) of floats. Currently only the creation of bezier curves is allowed. The type parameter must be set to (1) to indicate a BEZIER type curve. Note that for BEZIER curves, points must be given in the following order: ACCACCAC... If the path is not closed the last control point is missed off. Points consist of three control points (control/anchor/control) so for a curve that is not closed there must be at least two points passed (2 x,y pairs). If (num_path_points/3) % 3 = 0 then the path is assumed to be closed and the points are ACCACCACCACC.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>points_pairs</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>points_pairs</code></em>&#160;:</span></td>
 <td> The points in the path represented as 3 floats. The first is the x pos, next is the y pos, last is the type of the pnt. The type field is dependant on the path type. For beziers (type 1 paths) the type can either be (1.0 = BEZIER_ANCHOR, 2.0 = BEZIER_CONTROL, 3.0= BEZIER_MOVE). Note all points are returned in pixel resolution.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -310,9 +338,9 @@ Set the points associated with the named path.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2637801"></a><h3>
+<a name="id2600075"></a><h3>
 <a name="gimp-path-stroke-current"></a>gimp_path_stroke_current ()</h3>
-<a class="indexterm" name="id2637812"></a><pre class="programlisting">gboolean            gimp_path_stroke_current            (gint32 image_ID);</pre>
+<a class="indexterm" name="id2600084"></a><pre class="programlisting">gboolean    gimp_path_stroke_current        (gint32 image_ID);</pre>
 <p>
 Stroke the current path in the passed image.
 </p>
@@ -325,12 +353,14 @@ Stroke the current path in the passed image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The ID of the image which contains the path to stroke.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -339,12 +369,12 @@ Stroke the current path in the passed image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2637878"></a><h3>
+<a name="id2600149"></a><h3>
 <a name="gimp-path-get-point-at-dist"></a>gimp_path_get_point_at_dist ()</h3>
-<a class="indexterm" name="id2637890"></a><pre class="programlisting">gint                gimp_path_get_point_at_dist         (gint32 image_ID,
-                                                         gdouble distance,
-                                                         gint *y_point,
-                                                         gdouble *slope);</pre>
+<a class="indexterm" name="id2600158"></a><pre class="programlisting">gint        gimp_path_get_point_at_dist     (gint32 image_ID,
+                                             gdouble distance,
+                                             gint *y_point,
+                                             gdouble *slope);</pre>
 <p>
 Get point on a path at a specified distance along the path.
 </p>
@@ -362,27 +392,32 @@ path is used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The ID of the image the paths belongs to.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>distance</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>distance</code></em>&#160;:</span></td>
 <td> The distance along the path.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y_point</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>y_point</code></em>&#160;:</span></td>
 <td> The y position of the point.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>slope</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>slope</code></em>&#160;:</span></td>
 <td> The slope (dy / dx) at the specified point.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The x position of the point.
 </td>
 </tr>
@@ -391,10 +426,10 @@ path is used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2638022"></a><h3>
+<a name="id2600290"></a><h3>
 <a name="gimp-path-get-tattoo"></a>gimp_path_get_tattoo ()</h3>
-<a class="indexterm" name="id2638034"></a><pre class="programlisting">gint                gimp_path_get_tattoo                (gint32 image_ID,
-                                                         const gchar *name);</pre>
+<a class="indexterm" name="id2600299"></a><pre class="programlisting">gint        gimp_path_get_tattoo            (gint32 image_ID,
+                                             const gchar *name);</pre>
 <p>
 Returns the tattoo associated with the name path.
 </p>
@@ -410,17 +445,20 @@ even between sessions.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The name of the path whose tattoo should be obtained.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The tattoo associated with the named path.
 </td>
 </tr>
@@ -429,10 +467,10 @@ even between sessions.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2638124"></a><h3>
+<a name="id2600389"></a><h3>
 <a name="gimp-get-path-by-tattoo"></a>gimp_get_path_by_tattoo ()</h3>
-<a class="indexterm" name="id2638136"></a><pre class="programlisting">gchar*              gimp_get_path_by_tattoo             (gint32 image_ID,
-                                                         gint tattoo);</pre>
+<a class="indexterm" name="id2600398"></a><pre class="programlisting">gchar*      gimp_get_path_by_tattoo         (gint32 image_ID,
+                                             gint tattoo);</pre>
 <p>
 Return the name of the path with the given tattoo.
 </p>
@@ -449,17 +487,20 @@ be found.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>tattoo</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>tattoo</code></em>&#160;:</span></td>
 <td> The tattoo of the required path.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The name of the path with the specified tattoo.
 </td>
 </tr>
@@ -468,10 +509,10 @@ be found.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2638227"></a><h3>
+<a name="id2600488"></a><h3>
 <a name="gimp-path-delete"></a>gimp_path_delete ()</h3>
-<a class="indexterm" name="id2638239"></a><pre class="programlisting">gboolean            gimp_path_delete                    (gint32 image_ID,
-                                                         const gchar *name);</pre>
+<a class="indexterm" name="id2600498"></a><pre class="programlisting">gboolean    gimp_path_delete                (gint32 image_ID,
+                                             const gchar *name);</pre>
 <p>
 Delete the named path associated with the passed image.
 </p>
@@ -484,17 +525,20 @@ Delete the named path.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The ID of the image to delete the path from.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The name of the path to delete.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -503,10 +547,10 @@ Delete the named path.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2638326"></a><h3>
+<a name="id2600584"></a><h3>
 <a name="gimp-path-get-locked"></a>gimp_path_get_locked ()</h3>
-<a class="indexterm" name="id2638337"></a><pre class="programlisting">gint                gimp_path_get_locked                (gint32 image_ID,
-                                                         const gchar *name);</pre>
+<a class="indexterm" name="id2600593"></a><pre class="programlisting">gboolean    gimp_path_get_locked            (gint32 image_ID,
+                                             const gchar *name);</pre>
 <p>
 Returns the locked status associated with the named path.
 </p>
@@ -521,18 +565,21 @@ tool operations will also apply to the path.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The name of the path whose locked status should be obtained.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> The lock status associated with the name path. 0 is returned if the path is not locked. 1 is returned if the path is locked.
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE if the path is locked, FALSE otherwise.
 </td>
 </tr>
 </tbody>
@@ -540,11 +587,11 @@ tool operations will also apply to the path.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635457"></a><h3>
+<a name="id2600684"></a><h3>
 <a name="gimp-path-set-locked"></a>gimp_path_set_locked ()</h3>
-<a class="indexterm" name="id2635468"></a><pre class="programlisting">gboolean            gimp_path_set_locked                (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gint lockstatus);</pre>
+<a class="indexterm" name="id2600693"></a><pre class="programlisting">gboolean    gimp_path_set_locked            (gint32 image_ID,
+                                             const gchar *name,
+                                             gboolean locked);</pre>
 <p>
 Set the locked status associated with the named path.
 </p>
@@ -559,22 +606,26 @@ tool operations will also apply to the path.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> the name of the path whose locked status should be set.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>lockstatus</code></em>&#160;:</span></td>
-<td> The lock status associated with the name path. 0 if the path is not locked. 1 if the path is to be locked.
+<td>
+<span class="term"><em class="parameter"><code>locked</code></em>&#160;:</span></td>
+<td> Whether the path is locked.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -583,11 +634,97 @@ tool operations will also apply to the path.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635581"></a><h3>
+<a name="id2600803"></a><h3>
+<a name="gimp-path-get-visible"></a>gimp_path_get_visible ()</h3>
+<a class="indexterm" name="id2600812"></a><pre class="programlisting">gboolean    gimp_path_get_visible           (gint32 image_ID,
+                                             const gchar *name);</pre>
+<p>
+Get the visibility of the named path.
+</p>
+<p>
+This procedure returns the visibility of the specified path.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td> The image.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td> The name of the path whose visibility should be obtained.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE if the path is visible, FALSE otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2612636"></a><h3>
+<a name="gimp-path-set-visible"></a>gimp_path_set_visible ()</h3>
+<a class="indexterm" name="id2612644"></a><pre class="programlisting">gboolean    gimp_path_set_visible           (gint32 image_ID,
+                                             const gchar *name,
+                                             gboolean visible);</pre>
+<p>
+Sets the visibility of the named path.
+</p>
+<p>
+This procedure sets the specified path's visibility.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td> The image.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td> The name of the path whose visibility should be set.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>visible</code></em>&#160;:</span></td>
+<td> The new path visibility.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2612746"></a><h3>
 <a name="gimp-path-set-tattoo"></a>gimp_path_set_tattoo ()</h3>
-<a class="indexterm" name="id2635592"></a><pre class="programlisting">gboolean            gimp_path_set_tattoo                (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gint tattovalue);</pre>
+<a class="indexterm" name="id2612754"></a><pre class="programlisting">gboolean    gimp_path_set_tattoo            (gint32 image_ID,
+                                             const gchar *name,
+                                             gint tattovalue);</pre>
 <p>
 Sets the tattoo associated with the named path.
 </p>
@@ -604,22 +741,26 @@ obtained from a previous call to path_get_tattoo.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> the name of the path whose tattoo should be set.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>tattovalue</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>tattovalue</code></em>&#160;:</span></td>
 <td> The tattoo associated with the name path. Only values returned from 'path_get_tattoo' should be used here.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -628,15 +769,17 @@ obtained from a previous call to path_get_tattoo.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635707"></a><h3>
+<a name="id2612858"></a><h3>
 <a name="gimp-path-to-selection"></a>gimp_path_to_selection ()</h3>
-<a class="indexterm" name="id2635718"></a><pre class="programlisting">gboolean            gimp_path_to_selection              (gint32 image_ID,
-                                                         const gchar *name,
-                                                         <a href="libgimp-gimpenums.html#GimpChannelOps">GimpChannelOps</a> op,
-                                                         gboolean antialias,
-                                                         gboolean feather,
-                                                         gdouble feather_radius_x,
-                                                         gdouble feather_radius_y);</pre>
+<a class="indexterm" name="id2612866"></a><pre class="programlisting">gboolean    gimp_path_to_selection          (gint32 image_ID,
+                                             const gchar *name,
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
+>GimpChannelOps</a> op,
+                                             gboolean antialias,
+                                             gboolean feather,
+                                             gdouble feather_radius_x,
+                                             gdouble feather_radius_y);</pre>
 <p>
 Transforms the active path into a selection
 </p>
@@ -649,42 +792,50 @@ This procedure renders the desired path into the current selection.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The name of the path which should be made into selection.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>op</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>op</code></em>&#160;:</span></td>
 <td> The desired operation with current selection.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
 <td> Antialias selection.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
 <td> Feather selection.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather_radius_x</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>feather_radius_x</code></em>&#160;:</span></td>
 <td> Feather radius x.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather_radius_y</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>feather_radius_y</code></em>&#160;:</span></td>
 <td> Feather radius y.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -693,19 +844,18 @@ This procedure renders the desired path into the current selection.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635914"></a><h3>
+<a name="id2613041"></a><h3>
 <a name="gimp-path-import"></a>gimp_path_import ()</h3>
-<a class="indexterm" name="id2635926"></a><pre class="programlisting">gboolean            gimp_path_import                    (gint32 image_ID,
-                                                         const gchar *filename,
-                                                         gboolean merge,
-                                                         gboolean scale);</pre>
+<a class="indexterm" name="id2613049"></a><pre class="programlisting">gboolean    gimp_path_import                (gint32 image_ID,
+                                             const gchar *filename,
+                                             gboolean merge,
+                                             gboolean scale);</pre>
 <p>
 Import paths from an SVG file.
 </p>
 <p>
-This procedure imports paths from an SVG file. This is a temporary
-solution until the new vectors PDB API is in place. Don't rely on
-this function being available in future GIMP releases.</p>
+This procedure imports paths from an SVG file. SVG elements other
+than paths and basic shapes are ignored.</p>
 <p>
 
 </p>
@@ -713,34 +863,107 @@ this function being available in future GIMP releases.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
 <td> The name of the SVG file to import.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>merge</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>merge</code></em>&#160;:</span></td>
 <td> Merge paths into a single vectors object.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>scale</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>scale</code></em>&#160;:</span></td>
 <td> Scale the SVG to image dimensions.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2613167"></a><h3>
+<a name="gimp-path-import-string"></a>gimp_path_import_string ()</h3>
+<a class="indexterm" name="id2613176"></a><pre class="programlisting">gboolean    gimp_path_import_string         (gint32 image_ID,
+                                             const gchar *string,
+                                             gint length,
+                                             gboolean merge,
+                                             gboolean scale);</pre>
+<p>
+Import paths from an SVG string.
+</p>
+<p>
+This procedure works like <a href="libgimp-gimppaths.html#gimp-path-import"><code class="function">gimp_path_import()</code></a> but takes a string
+rather than reading the SVG from a file. This allows you to write
+scripts that generate SVG and feed it to GIMP.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td> The image.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>string</code></em>&#160;:</span></td>
+<td> A string that must be a complete and valid SVG document.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>length</code></em>&#160;:</span></td>
+<td> Number of bytes in string or -1 if the string is NULL terminated.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>merge</code></em>&#160;:</span></td>
+<td> Merge paths into a single vectors object.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>scale</code></em>&#160;:</span></td>
+<td> Scale the SVG to image dimensions.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
 </div>
 </div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimp-gimplayer.html"><b>&lt;&lt;&#160;gimplayer</b></a></td>
+<td align="right"><a accesskey="n" href="libgimp-gimppixelfetcher.html"><b>gimppixelfetcher&#160;&gt;&gt;</b></a></td>
+</tr></table>
 </body>
 </html>

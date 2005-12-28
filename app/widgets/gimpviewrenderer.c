@@ -32,18 +32,12 @@
 
 #include "widgets-types.h"
 
-#ifdef __GNUC__
-#warning FIXME #include "display/display-types.h"
-#endif
-#include "display/display-types.h"
-
 #include "base/temp-buf.h"
 
 #include "core/gimpmarshal.h"
 #include "core/gimpviewable.h"
 
-#include "display/gimpdisplayshell-render.h"
-
+#include "gimprender.h"
 #include "gimpviewrenderer.h"
 #include "gimpviewrenderer-utils.h"
 #include "gimpwidgets-utils.h"
@@ -55,10 +49,6 @@ enum
   LAST_SIGNAL
 };
 
-
-static void      gimp_view_renderer_class_init   (GimpViewRendererClass *klass);
-
-static void      gimp_view_renderer_init         (GimpViewRenderer   *renderer);
 
 static void      gimp_view_renderer_dispose      (GObject            *object);
 static void      gimp_view_renderer_finalize     (GObject            *object);
@@ -79,9 +69,11 @@ static GdkGC   * gimp_view_renderer_create_gc    (GimpViewRenderer   *renderer,
                                                   GtkWidget          *widget);
 
 
-static guint renderer_signals[LAST_SIGNAL] = { 0 };
+G_DEFINE_TYPE (GimpViewRenderer, gimp_view_renderer, G_TYPE_OBJECT);
 
-static GObjectClass *parent_class = NULL;
+#define parent_class gimp_view_renderer_parent_class
+
+static guint renderer_signals[LAST_SIGNAL] = { 0 };
 
 static GimpRGB  black_color;
 static GimpRGB  white_color;
@@ -89,40 +81,10 @@ static GimpRGB  green_color;
 static GimpRGB  red_color;
 
 
-GType
-gimp_view_renderer_get_type (void)
-{
-  static GType renderer_type = 0;
-
-  if (! renderer_type)
-    {
-      static const GTypeInfo renderer_info =
-      {
-        sizeof (GimpViewRendererClass),
-        NULL,           /* base_init      */
-        NULL,           /* base_finalize  */
-        (GClassInitFunc) gimp_view_renderer_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpViewRenderer),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc)  gimp_view_renderer_init,
-      };
-
-      renderer_type = g_type_register_static (G_TYPE_OBJECT,
-                                              "GimpViewRenderer",
-                                              &renderer_info, 0);
-    }
-
-  return renderer_type;
-}
-
 static void
 gimp_view_renderer_class_init (GimpViewRendererClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   renderer_signals[UPDATE] =
     g_signal_new ("update",
@@ -139,43 +101,43 @@ gimp_view_renderer_class_init (GimpViewRendererClass *klass)
   klass->draw            = gimp_view_renderer_real_draw;
   klass->render          = gimp_view_renderer_real_render;
 
+  klass->frame           = NULL;
+  klass->frame_left      = 0;
+  klass->frame_right     = 0;
+  klass->frame_top       = 0;
+  klass->frame_bottom    = 0;
+
   gimp_rgba_set (&black_color, 0.0, 0.0, 0.0, GIMP_OPACITY_OPAQUE);
   gimp_rgba_set (&white_color, 1.0, 1.0, 1.0, GIMP_OPACITY_OPAQUE);
   gimp_rgba_set (&green_color, 0.0, 0.94, 0.0, GIMP_OPACITY_OPAQUE);
   gimp_rgba_set (&red_color,   1.0, 0.0, 0.0, GIMP_OPACITY_OPAQUE);
-
-  klass->frame        = NULL;
-  klass->frame_left   = 0;
-  klass->frame_right  = 0;
-  klass->frame_top    = 0;
-  klass->frame_bottom = 0;
 }
 
 static void
 gimp_view_renderer_init (GimpViewRenderer *renderer)
 {
-  renderer->viewable       = NULL;
+  renderer->viewable     = NULL;
 
-  renderer->width          = 0;
-  renderer->height         = 0;
-  renderer->border_width   = 0;
-  renderer->dot_for_dot    = TRUE;
-  renderer->is_popup       = FALSE;
+  renderer->width        = 8;
+  renderer->height       = 8;
+  renderer->border_width = 0;
+  renderer->dot_for_dot  = TRUE;
+  renderer->is_popup     = FALSE;
 
-  renderer->border_type    = GIMP_VIEW_BORDER_BLACK;
-  renderer->border_color   = black_color;
-  renderer->gc             = NULL;
+  renderer->border_type  = GIMP_VIEW_BORDER_BLACK;
+  renderer->border_color = black_color;
+  renderer->gc           = NULL;
 
-  renderer->buffer         = NULL;
-  renderer->rowstride      = 0;
-  renderer->bytes          = 3;
+  renderer->buffer       = NULL;
+  renderer->rowstride    = 0;
+  renderer->bytes        = 3;
 
-  renderer->pixbuf = NULL;
-  renderer->bg_stock_id    = NULL;
+  renderer->pixbuf       = NULL;
+  renderer->bg_stock_id  = NULL;
 
-  renderer->size           = -1;
-  renderer->needs_render   = TRUE;
-  renderer->idle_id        = 0;
+  renderer->size         = -1;
+  renderer->needs_render = TRUE;
+  renderer->idle_id      = 0;
 }
 
 static void
@@ -336,12 +298,12 @@ gimp_view_renderer_set_viewable (GimpViewRenderer *renderer,
                                  (gpointer *) &renderer->viewable);
 
       g_signal_connect_swapped (renderer->viewable,
-                                "invalidate_preview",
+                                "invalidate-preview",
                                 G_CALLBACK (gimp_view_renderer_invalidate),
                                 renderer);
 
       g_signal_connect_swapped (renderer->viewable,
-                                "size_changed",
+                                "size-changed",
                                 G_CALLBACK (gimp_view_renderer_size_changed),
                                 renderer);
 
@@ -904,24 +866,21 @@ gimp_view_render_to_buffer (TempBuf    *temp_buf,
                             gint        dest_rowstride,
                             gint        dest_bytes)
 {
-  const guchar *src, *s;
-  guchar       *cb;
-  guchar       *pad_buf;
-  gint          a;
-  gint          i, j, b;
-  gint          x1, y1, x2, y2;
-  gint          rowstride;
-  gboolean      color;
-  gboolean      has_alpha;
-  gboolean      render_composite;
-  gint          red_component;
-  gint          green_component;
-  gint          blue_component;
-  gint          alpha_component;
-  gint          offset;
-
-  g_return_if_fail (temp_buf != NULL);
-  g_return_if_fail (dest_buffer != NULL);
+  guchar   *src, *s;
+  guchar   *cb;
+  guchar   *pad_buf;
+  gint      a;
+  gint      i, j, b;
+  gint      x1, y1, x2, y2;
+  gint      rowstride;
+  gboolean  color;
+  gboolean  has_alpha;
+  gboolean  render_composite;
+  gint      red_component;
+  gint      green_component;
+  gint      blue_component;
+  gint      alpha_component;
+  gint      offset;
 
   /*  Here are the different cases this functions handles correctly:
    *  1)  Offset temp_buf which does not necessarily cover full image area
@@ -944,11 +903,11 @@ gimp_view_render_to_buffer (TempBuf    *temp_buf,
    *  we render a composite view
    */
   if (has_alpha && render_composite && outside_bg == GIMP_VIEW_BG_CHECKS)
-    pad_buf = render_check_buf;
+    pad_buf = gimp_render_check_buf;
   else if (outside_bg == GIMP_VIEW_BG_WHITE)
-    pad_buf = render_white_buf;
+    pad_buf = gimp_render_white_buf;
   else
-    pad_buf = render_empty_buf;
+    pad_buf = gimp_render_empty_buf;
 
   if (render_composite)
     {
@@ -1004,7 +963,7 @@ gimp_view_render_to_buffer (TempBuf    *temp_buf,
           /*  Handle the leading transparency  */
           for (j = 0; j < x1; j++)
             for (b = 0; b < dest_bytes; b++)
-              render_temp_buf[j * dest_bytes + b] = cb[j * 3 + b];
+              gimp_render_temp_buf[j * dest_bytes + b] = cb[j * 3 + b];
 
           /*  The stuff in the middle  */
           s = src;
@@ -1018,38 +977,38 @@ gimp_view_render_to_buffer (TempBuf    *temp_buf,
                     {
                       if ((j + offset) & 0x4)
                         {
-                          render_temp_buf[j * 3 + 0] =
-                            render_blend_dark_check [(a | s[red_component])];
-                          render_temp_buf[j * 3 + 1] =
-                            render_blend_dark_check [(a | s[green_component])];
-                          render_temp_buf[j * 3 + 2] =
-                            render_blend_dark_check [(a | s[blue_component])];
+                          gimp_render_temp_buf[j * 3 + 0] =
+                            gimp_render_blend_dark_check [(a | s[red_component])];
+                          gimp_render_temp_buf[j * 3 + 1] =
+                            gimp_render_blend_dark_check [(a | s[green_component])];
+                          gimp_render_temp_buf[j * 3 + 2] =
+                            gimp_render_blend_dark_check [(a | s[blue_component])];
                         }
                       else
                         {
-                          render_temp_buf[j * 3 + 0] =
-                            render_blend_light_check [(a | s[red_component])];
-                          render_temp_buf[j * 3 + 1] =
-                            render_blend_light_check [(a | s[green_component])];
-                          render_temp_buf[j * 3 + 2] =
-                            render_blend_light_check [(a | s[blue_component])];
+                          gimp_render_temp_buf[j * 3 + 0] =
+                            gimp_render_blend_light_check [(a | s[red_component])];
+                          gimp_render_temp_buf[j * 3 + 1] =
+                            gimp_render_blend_light_check [(a | s[green_component])];
+                          gimp_render_temp_buf[j * 3 + 2] =
+                            gimp_render_blend_light_check [(a | s[blue_component])];
                         }
                     }
                   else /* GIMP_VIEW_BG_WHITE */
                     {
-                      render_temp_buf[j * 3 + 0] =
-                        render_blend_white [(a | s[red_component])];
-                      render_temp_buf[j * 3 + 1] =
-                        render_blend_white [(a | s[green_component])];
-                      render_temp_buf[j * 3 + 2] =
-                        render_blend_white [(a | s[blue_component])];
+                      gimp_render_temp_buf[j * 3 + 0] =
+                        gimp_render_blend_white [(a | s[red_component])];
+                      gimp_render_temp_buf[j * 3 + 1] =
+                        gimp_render_blend_white [(a | s[green_component])];
+                      gimp_render_temp_buf[j * 3 + 2] =
+                        gimp_render_blend_white [(a | s[blue_component])];
                     }
                 }
               else
                 {
-                  render_temp_buf[j * 3 + 0] = s[red_component];
-                  render_temp_buf[j * 3 + 1] = s[green_component];
-                  render_temp_buf[j * 3 + 2] = s[blue_component];
+                  gimp_render_temp_buf[j * 3 + 0] = s[red_component];
+                  gimp_render_temp_buf[j * 3 + 1] = s[green_component];
+                  gimp_render_temp_buf[j * 3 + 2] = s[blue_component];
                 }
 
               s += temp_buf->bytes;
@@ -1058,7 +1017,7 @@ gimp_view_render_to_buffer (TempBuf    *temp_buf,
           /*  Handle the trailing transparency  */
           for (j = x2; j < dest_width; j++)
             for (b = 0; b < dest_bytes; b++)
-              render_temp_buf[j * dest_bytes + b] = cb[j * 3 + b];
+              gimp_render_temp_buf[j * dest_bytes + b] = cb[j * 3 + b];
 
           src += rowstride;
         }
@@ -1066,11 +1025,11 @@ gimp_view_render_to_buffer (TempBuf    *temp_buf,
         {
           for (j = 0; j < dest_width; j++)
             for (b = 0; b < dest_bytes; b++)
-              render_temp_buf[j * dest_bytes + b] = cb[j * 3 + b];
+              gimp_render_temp_buf[j * dest_bytes + b] = cb[j * 3 + b];
         }
 
       memcpy (dest_buffer + i * dest_rowstride,
-              render_temp_buf,
+              gimp_render_temp_buf,
               dest_width * dest_bytes);
     }
 }

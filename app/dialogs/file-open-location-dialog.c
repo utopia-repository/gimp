@@ -83,6 +83,11 @@ file_open_location_dialog_new (Gimp *gimp)
                     G_CALLBACK (file_open_location_response),
                     gimp);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG(dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   hbox = gtk_hbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
@@ -114,6 +119,7 @@ file_open_location_dialog_new (Gimp *gimp)
                                        file_open_location_completion,
                                        NULL, NULL);
 
+  gtk_entry_set_activates_default (GTK_ENTRY (entry), TRUE);
   gtk_widget_set_size_request (entry, 400, -1);
   gtk_box_pack_start (GTK_BOX (vbox), entry, FALSE, FALSE, 0);
   gtk_widget_show (entry);
@@ -190,7 +196,7 @@ file_open_location_response (GtkDialog *dialog,
 
       if (image == NULL && status != GIMP_PDB_CANCEL)
         {
-          gchar *filename = file_utils_uri_to_utf8_filename (uri);
+          gchar *filename = file_utils_uri_display_name (uri);
 
           g_message (_("Opening '%s' failed:\n\n%s"),
                      filename, error->message);

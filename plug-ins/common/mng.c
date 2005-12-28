@@ -45,10 +45,11 @@
 #include "config.h"
 
 #include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
+#include <glib/gstdio.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -94,7 +95,9 @@
 #include "libgimp/stdplugins-intl.h"
 
 
-#define SCALE_WIDTH 125
+#define SAVE_PROC      "file-mng-save"
+#define PLUG_IN_BINARY "mng"
+#define SCALE_WIDTH    125
 
 enum
 {
@@ -553,7 +556,7 @@ mng_save_image (const gchar *filename,
 
   userdata = g_new0 (struct mnglib_userdata_t, 1);
 
-  if ((userdata->fp = fopen (filename, "wb")) == NULL)
+  if ((userdata->fp = g_fopen (filename, "wb")) == NULL)
     {
       g_message (_("Could not open '%s' for writing: %s"),
                  gimp_filename_to_utf8 (filename), g_strerror (errno));
@@ -661,7 +664,9 @@ mng_save_image (const gchar *filename,
                 gimp_context_get_background(&bgcolor);
                 gimp_rgb_get_uchar(&bgcolor, &red, &green, &blue);
 
-                if ((ret = mng_putchunk_back(handle, red, green, blue, MNG_BACKGROUNDCOLOR_MANDATORY, 0, MNG_BACKGROUNDIMAGE_NOTILE)) != MNG_NOERROR)
+                if ((ret = mng_putchunk_back(handle, red, green, blue,
+                                             MNG_BACKGROUNDCOLOR_MANDATORY,
+                                             0, MNG_BACKGROUNDIMAGE_NOTILE)) != MNG_NOERROR)
                 {
                         g_warning("Unable to mng_putchunk_back() in mng_save_image()");
                         mng_cleanup(&handle);
@@ -670,7 +675,9 @@ mng_save_image (const gchar *filename,
                         return 0;
                 }
 
-                if ((ret = mng_putchunk_bkgd(handle, MNG_FALSE, 2, 0, gimp_rgb_intensity_uchar(&bgcolor), red, green, blue)) != MNG_NOERROR)
+                if ((ret = mng_putchunk_bkgd(handle, MNG_FALSE, 2, 0,
+                                             gimp_rgb_luminance_uchar(&bgcolor),
+                                             red, green, blue)) != MNG_NOERROR)
                 {
                         g_warning("Unable to mng_putchunk_bkgd() in mng_save_image()");
                         mng_cleanup(&handle);
@@ -941,12 +948,12 @@ mng_save_image (const gchar *filename,
           return 0;
         }
 
-      if ((outfile = fopen (temp_file_name, "wb")) == NULL)
+      if ((outfile = g_fopen (temp_file_name, "wb")) == NULL)
         {
           g_message (_("Could not open '%s' for writing: %s"),
                      gimp_filename_to_utf8 (temp_file_name),
                      g_strerror (errno));
-          unlink (temp_file_name);
+          g_unlink (temp_file_name);
           mng_cleanup (&handle);
           fclose (userdata->fp);
           g_free (userdata);
@@ -961,7 +968,7 @@ mng_save_image (const gchar *filename,
           g_warning
             ("Unable to png_create_write_struct() in mng_save_image()");
           fclose (outfile);
-          unlink (temp_file_name);
+          g_unlink (temp_file_name);
           mng_cleanup (&handle);
           fclose (userdata->fp);
           g_free (userdata);
@@ -974,7 +981,7 @@ mng_save_image (const gchar *filename,
             ("Unable to png_create_info_struct() in mng_save_image()");
           png_destroy_write_struct (&png_ptr, (png_infopp) NULL);
           fclose (outfile);
-          unlink (temp_file_name);
+          g_unlink (temp_file_name);
           mng_cleanup (&handle);
           fclose (userdata->fp);
           g_free (userdata);
@@ -986,7 +993,7 @@ mng_save_image (const gchar *filename,
           g_warning ("HRM saving PNG in mng_save_image()");
           png_destroy_write_struct (&png_ptr, (png_infopp) NULL);
           fclose (outfile);
-          unlink (temp_file_name);
+          g_unlink (temp_file_name);
           mng_cleanup (&handle);
           fclose (userdata->fp);
           g_free (userdata);
@@ -1112,12 +1119,12 @@ mng_save_image (const gchar *filename,
 
       fclose (outfile);
 
-      if ((infile = fopen (temp_file_name, "rb")) == NULL)
+      if ((infile = g_fopen (temp_file_name, "rb")) == NULL)
         {
           g_message (_("Could not open '%s' for reading: %s"),
                      gimp_filename_to_utf8 (temp_file_name),
                      g_strerror (errno));
-          unlink (temp_file_name);
+          g_unlink (temp_file_name);
           mng_cleanup (&handle);
           fclose (userdata->fp);
           g_free (userdata);
@@ -1128,24 +1135,25 @@ mng_save_image (const gchar *filename,
 
       while (!feof (infile))
         {
-          unsigned char   chunksize_chars[4];
-          unsigned long   chunksize;
-          unsigned char   chunkname[5];
-          guchar         *chunkbuffer;
-
-          long            chunkwidth;
-          long            chunkheight;
-          char            chunkbitdepth;
-          char            chunkcolortype;
-          char            chunkcompression;
-          char            chunkfilter;
-          char            chunkinterlaced;
+          guchar  chunksize_chars[4];
+          gulong  chunksize;
+          gchar   chunkname[5];
+          guchar *chunkbuffer;
+          glong   chunkwidth;
+          glong   chunkheight;
+          gchar   chunkbitdepth;
+          gchar   chunkcolortype;
+          gchar   chunkcompression;
+          gchar   chunkfilter;
+          gchar   chunkinterlaced;
 
 
           if (fread (chunksize_chars, 1, 4, infile) != 4)
             break;
+
           if (fread (chunkname, 1, 4, infile) != 4)
             break;
+
           chunkname[4] = 0;
 
           chunksize = (chunksize_chars[0] << 24) | (chunksize_chars[1] << 16)
@@ -1260,7 +1268,7 @@ mng_save_image (const gchar *filename,
         }
 
       fclose (infile);
-      unlink (temp_file_name);
+      g_unlink (temp_file_name);
     }
 
   if ((ret = mng_putchunk_mend (handle)) != MNG_NOERROR)
@@ -1294,7 +1302,7 @@ mng_save_image (const gchar *filename,
 static gint
 mng_save_dialog (gint32 image_id)
 {
-  GtkWidget *dlg;
+  GtkWidget *dialog;
   GtkWidget *main_vbox;
   GtkWidget *frame;
   GtkWidget *vbox;
@@ -1311,18 +1319,25 @@ mng_save_dialog (gint32 image_id)
   gboolean   run;
 
 
-  dlg = gimp_dialog_new (_("Save as MNG"), "mng",
-                         NULL, 0,
-                         gimp_standard_help_func, "file-mng-save",
+  dialog = gimp_dialog_new (_("Save as MNG"), PLUG_IN_BINARY,
+                            NULL, 0,
+                            gimp_standard_help_func, SAVE_PROC,
 
-                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                         GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
 
-                         NULL);
+                            NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dlg)->vbox), main_vbox);
+  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
 
   frame = gimp_frame_new (_("MNG Options"));
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, TRUE, TRUE, 0);
@@ -1442,7 +1457,7 @@ mng_save_dialog (gint32 image_id)
                              _("PNG compression level:"), 0.0, 0.9,
                              scale, 1, FALSE);
 
-  g_signal_connect (scale_adj, "value_changed",
+  g_signal_connect (scale_adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &mng_data.compression_level);
 
@@ -1464,7 +1479,7 @@ mng_save_dialog (gint32 image_id)
                              _("JPEG compression quality:"), 0.0, 0.9,
                              scale, 1, FALSE);
 
-  g_signal_connect (scale_adj, "value_changed",
+  g_signal_connect (scale_adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &mng_data.quality);
 
@@ -1481,14 +1496,14 @@ mng_save_dialog (gint32 image_id)
                              _("JPEG smoothing factor:"), 0.0, 0.9,
                              scale, 1, FALSE);
 
-  g_signal_connect (scale_adj, "value_changed",
+  g_signal_connect (scale_adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &mng_data.smoothing);
 
   gtk_widget_show (vbox);
   gtk_widget_show (frame);
 
-  frame = gimp_frame_new (_("Animated MNG options"));
+  frame = gimp_frame_new (_("Animated MNG Options"));
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, TRUE, TRUE, 0);
 
   vbox = gtk_vbox_new (FALSE, 6);
@@ -1516,7 +1531,7 @@ mng_save_dialog (gint32 image_id)
                                      mng_data.default_delay,
                                      0, 65000, 10, 100, 0, 1, 0);
 
-  g_signal_connect (spinbutton_adj, "value_changed",
+  g_signal_connect (spinbutton_adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &mng_data.default_delay);
 
@@ -1536,11 +1551,11 @@ mng_save_dialog (gint32 image_id)
   gtk_widget_set_sensitive (frame, num_layers > 1);
 
   gtk_widget_show (main_vbox);
-  gtk_widget_show (dlg);
+  gtk_widget_show (dialog);
 
-  run = (gimp_dialog_run (GIMP_DIALOG (dlg)) == GTK_RESPONSE_OK);
+  run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
 
-  gtk_widget_destroy (dlg);
+  gtk_widget_destroy (dialog);
 
   return run;
 }
@@ -1553,32 +1568,27 @@ query (void)
 {
   static GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",    "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Drawable to save" },
-    { GIMP_PDB_STRING,   "filename",
-      "The name of the file to save the image in" },
-    { GIMP_PDB_STRING,   "raw_filename",
-     "The name of the file to save the image in" },
+    { GIMP_PDB_INT32,    "run-mode",        "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",           "Input image" },
+    { GIMP_PDB_DRAWABLE, "drawable",        "Drawable to save" },
+    { GIMP_PDB_STRING,   "filename",        "The name of the file to save the image in" },
+    { GIMP_PDB_STRING,   "raw-filename",    "The name of the file to save the image in" },
 
-    { GIMP_PDB_INT32,    "interlace", "Use interlacing" },
-    { GIMP_PDB_INT32,    "compression", "PNG deflate compression level (0 - 9)" },
-    { GIMP_PDB_FLOAT,    "quality", "JPEG quality factor (0.00 - 1.00)" },
-    { GIMP_PDB_FLOAT,    "smoothing", "JPEG smoothing factor (0.00 - 1.00)" },
-    { GIMP_PDB_INT32,    "loop", "(ANIMATED MNG) Loop infinitely" },
-    { GIMP_PDB_INT32,    "default_delay",
-     "(ANIMATED MNG) Default delay between frames in milliseconds" },
-    { GIMP_PDB_INT32,    "default_chunks",
-     "(ANIMATED MNG) Default chunks type (0 = PNG + Delta PNG; 1 = JNG + Delta PNG; 2 = All PNG; 3 = All JNG)" },
-    { GIMP_PDB_INT32,    "default_dispose",
-     "(ANIMATED MNG) Default dispose type (0 = combine; 1 = replace)" },
-    { GIMP_PDB_INT32,    "bkgd", "Write bKGD (background color) chunk" },
-    { GIMP_PDB_INT32,    "gama", "Write gAMA (gamma) chunk"},
-    { GIMP_PDB_INT32,    "phys", "Write pHYs (image resolution) chunk" },
-    { GIMP_PDB_INT32,    "time", "Write tIME (creation time) chunk" }
+    { GIMP_PDB_INT32,    "interlace",       "Use interlacing" },
+    { GIMP_PDB_INT32,    "compression",     "PNG deflate compression level (0 - 9)" },
+    { GIMP_PDB_FLOAT,    "quality",         "JPEG quality factor (0.00 - 1.00)" },
+    { GIMP_PDB_FLOAT,    "smoothing",       "JPEG smoothing factor (0.00 - 1.00)" },
+    { GIMP_PDB_INT32,    "loop",            "(ANIMATED MNG) Loop infinitely" },
+    { GIMP_PDB_INT32,    "default-delay",   "(ANIMATED MNG) Default delay between frames in milliseconds" },
+    { GIMP_PDB_INT32,    "default-chunks",  "(ANIMATED MNG) Default chunks type (0 = PNG + Delta PNG; 1 = JNG + Delta PNG; 2 = All PNG; 3 = All JNG)" },
+    { GIMP_PDB_INT32,    "default-dispose", "(ANIMATED MNG) Default dispose type (0 = combine; 1 = replace)" },
+    { GIMP_PDB_INT32,    "bkgd",            "Write bKGD (background color) chunk" },
+    { GIMP_PDB_INT32,    "gama",            "Write gAMA (gamma) chunk"},
+    { GIMP_PDB_INT32,    "phys",            "Write pHYs (image resolution) chunk" },
+    { GIMP_PDB_INT32,    "time",            "Write tIME (creation time) chunk" }
   };
 
-  gimp_install_procedure ("file_mng_save",
+  gimp_install_procedure (SAVE_PROC,
                           "Saves images in the MNG file format",
                           "This plug-in saves images in the Multiple-image "
                           "Network Graphics (MNG) format which can be used as "
@@ -1592,8 +1602,8 @@ query (void)
                           G_N_ELEMENTS (save_args), 0,
                           save_args, NULL);
 
-  gimp_register_file_handler_mime ("file_mng_save", "image/x-mng");
-  gimp_register_save_handler ("file_mng_save", "mng", "");
+  gimp_register_file_handler_mime (SAVE_PROC, "image/x-mng");
+  gimp_register_save_handler (SAVE_PROC, "mng", "");
 }
 
 static void
@@ -1612,7 +1622,7 @@ run (const gchar      *name,
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_SUCCESS;
 
-  if (strcmp (name, "file_mng_save") == 0)
+  if (strcmp (name, SAVE_PROC) == 0)
     {
       GimpRunMode      run_mode;
       gint32           image_id, original_image_id;
@@ -1626,9 +1636,9 @@ run (const gchar      *name,
       if ((run_mode == GIMP_RUN_INTERACTIVE)
           || (run_mode == GIMP_RUN_WITH_LAST_VALS))
         {
-          gimp_procedural_db_get_data ("file_mng_save", &mng_data);
+          gimp_procedural_db_get_data (SAVE_PROC, &mng_data);
 
-          gimp_ui_init ("mng", FALSE);
+          gimp_ui_init (PLUG_IN_BINARY, FALSE);
           export = gimp_export_image (&image_id, &drawable_id, "MNG",
                                       (GIMP_EXPORT_CAN_HANDLE_RGB |
                                        GIMP_EXPORT_CAN_HANDLE_GRAY |
@@ -1712,7 +1722,7 @@ run (const gchar      *name,
               if (mng_save_image
                   (param[3].data.d_string, image_id, drawable_id,
                    original_image_id) != 0)
-                gimp_set_data ("file_mng_save", &mng_data, sizeof (mng_data));
+                gimp_set_data (SAVE_PROC, &mng_data, sizeof (mng_data));
               else
                 values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
             }

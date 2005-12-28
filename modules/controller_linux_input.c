@@ -30,8 +30,11 @@
 
 #include <linux/input.h>
 
+#include <glib/gstdio.h>
+
 #include <gtk/gtk.h>
 
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpmodule/gimpmodule.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
@@ -219,9 +222,7 @@ linux_input_class_init (ControllerLinuxInputClass *klass)
                                                         _("Device:"),
                                                         _("The name of the device to read Linux Input events from."),
                                                         NULL,
-                                                        G_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT |
-                                                        GIMP_MODULE_PARAM_SERIALIZE));
+                                                        GIMP_CONFIG_PARAM_FLAGS));
 
   controller_class->name            = _("Linux Input");
   controller_class->help_id         = "gimp-controller-linux-input";
@@ -354,7 +355,7 @@ linux_input_set_device (ControllerLinuxInput *controller,
       gchar *state;
       gint   fd;
 
-      fd = open (controller->device, O_RDONLY);
+      fd = g_open (controller->device, O_RDONLY, 0);
 
       if (fd >= 0)
         {

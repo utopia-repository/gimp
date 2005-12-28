@@ -39,7 +39,7 @@ sub drawable_out_arg {
 # The defs
 
 sub flip {
-    &std_pdb_deprecated ('gimp_drawable_transform_flip_simple');
+    &std_pdb_deprecated ('gimp-drawable-transform-flip-simple');
 
     @inargs = (
 	&drawable_arg,
@@ -68,7 +68,7 @@ CODE
 }
 
 sub perspective {
-    &std_pdb_deprecated ('gimp_drawable_transform_perspective_default');
+    &std_pdb_deprecated ('gimp-drawable-transform-perspective-default');
 
     @inargs = (
 	&drawable_arg,
@@ -103,26 +103,21 @@ sub perspective {
     {
       GimpMatrix3           matrix;
       GimpInterpolationType interpolation_type = GIMP_INTERPOLATION_NONE;
-      gint                  off_x, off_y;
-
-      gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
-
-      x += off_x;
-      y += off_y;
 
       /* Assemble the transformation matrix */
-      gimp_transform_matrix_perspective (x, y, width, height,
+      gimp_matrix3_identity (&matrix);
+      gimp_transform_matrix_perspective (&matrix,
+                                         x, y, width, height,
                                          trans_info[X0], trans_info[Y0],
                                          trans_info[X1], trans_info[Y1],
                                          trans_info[X2], trans_info[Y2],
-                                         trans_info[X3], trans_info[Y3],
-                                         &matrix);
+                                         trans_info[X3], trans_info[Y3]);
 
       if (interpolation)
         interpolation_type = gimp->config->interpolation_type;
 
       if (progress)
-        gimp_progress_start (progress, _("Perspective..."), FALSE);
+        gimp_progress_start (progress, _("Perspective"), FALSE);
 
       /* Perspective the selection */
       success = gimp_drawable_transform_affine (drawable, context,
@@ -140,7 +135,7 @@ CODE
 }
 
 sub rotate {
-    &std_pdb_deprecated ('gimp_drawable_transform_rotate_default');
+    &std_pdb_deprecated ('gimp-drawable-transform-rotate-default');
 
     @inargs = (
 	&drawable_arg,
@@ -164,22 +159,17 @@ sub rotate {
     {
       GimpMatrix3           matrix;
       GimpInterpolationType interpolation_type = GIMP_INTERPOLATION_NONE;
-      gint                  off_x, off_y;
-
-      gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
-
-      x += off_x;
-      y += off_y;
 
       /* Assemble the transformation matrix */
-      gimp_transform_matrix_rotate (x, y, width, height,
-                                    angle, &matrix);
+      gimp_matrix3_identity (&matrix);
+      gimp_transform_matrix_rotate_rect (&matrix,
+                                         x, y, width, height, angle);
 
       if (interpolation)
         interpolation_type = gimp->config->interpolation_type;
 
       if (progress)
-        gimp_progress_start (progress, _("Rotating..."), FALSE);
+        gimp_progress_start (progress, _("Rotating"), FALSE);
 
       /* Rotate the selection */
       success = gimp_drawable_transform_affine (drawable, context,
@@ -197,7 +187,7 @@ CODE
 }
 
 sub scale {
-    &std_pdb_deprecated ('gimp_drawable_transform_scale_default');
+    &std_pdb_deprecated ('gimp-drawable-transform-scale-default');
 
     @inargs = (
 	&drawable_arg,
@@ -234,26 +224,21 @@ sub scale {
     {
       GimpMatrix3           matrix;
       GimpInterpolationType interpolation_type = GIMP_INTERPOLATION_NONE;
-      gint                  off_x, off_y;
-
-      gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
-
-      x += off_x;
-      y += off_y;
 
       /* Assemble the transformation matrix */
-      gimp_transform_matrix_scale (x, y, width, height,
+      gimp_matrix3_identity (&matrix);
+      gimp_transform_matrix_scale (&matrix,
+                                   x, y, width, height,
                                    trans_info[X0],
                                    trans_info[Y0],
                                    trans_info[X1] - trans_info[X0],
-                                   trans_info[Y1] - trans_info[Y0],
-                                   &matrix);
+                                   trans_info[Y1] - trans_info[Y0]);
 
       if (interpolation)
         interpolation_type = gimp->config->interpolation_type;
 
       if (progress)
-        gimp_progress_start (progress, _("Scaling..."), FALSE);
+        gimp_progress_start (progress, _("Scaling"), FALSE);
 
       /* Scale the selection */
       success = gimp_drawable_transform_affine (drawable, context,
@@ -271,7 +256,7 @@ CODE
 }
 
 sub shear {
-    &std_pdb_deprecated ('gimp_drawable_transform_shear_default');
+    &std_pdb_deprecated ('gimp-drawable-transform-shear-default');
 
     @inargs = (
 	&drawable_arg,
@@ -297,23 +282,18 @@ sub shear {
     {
       GimpMatrix3           matrix;
       GimpInterpolationType interpolation_type = GIMP_INTERPOLATION_NONE;
-      gint                  off_x, off_y;
-
-      gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
-
-      x += off_x;
-      y += off_y;
 
       /* Assemble the transformation matrix */
-      gimp_transform_matrix_shear (x, y, width, height,
-                                   shear_type, magnitude,
-                                   &matrix);
+      gimp_matrix3_identity (&matrix);
+      gimp_transform_matrix_shear (&matrix,
+                                   x, y, width, height,
+                                   shear_type, magnitude);
 
       if (interpolation)
         interpolation_type = gimp->config->interpolation_type;
 
       if (progress)
-        gimp_progress_start (progress, _("Shearing..."), FALSE);
+        gimp_progress_start (progress, _("Shearing"), FALSE);
 
       /* Shear the selection */
       success = gimp_drawable_transform_affine (drawable, context,
@@ -331,7 +311,7 @@ CODE
 }
 
 sub transform_2d {
-    &std_pdb_deprecated ('gimp_drawable_transform_2d_default');
+    &std_pdb_deprecated ('gimp-drawable-transform-2d-default');
 
     @inargs = (
 	&drawable_arg,
@@ -379,7 +359,7 @@ sub transform_2d {
         interpolation_type = gimp->config->interpolation_type;
 
       if (progress)
-        gimp_progress_start (progress, _("2D Transform..."), FALSE);
+        gimp_progress_start (progress, _("2D Transform"), FALSE);
 
       /* Transform the selection */
       success = gimp_drawable_transform_affine (drawable, context,

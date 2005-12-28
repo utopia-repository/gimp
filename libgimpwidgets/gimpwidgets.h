@@ -26,6 +26,7 @@
 
 #include <libgimpwidgets/gimpwidgetstypes.h>
 
+#include <libgimpwidgets/gimpbrowser.h>
 #include <libgimpwidgets/gimpbutton.h>
 #include <libgimpwidgets/gimpcellrenderercolor.h>
 #include <libgimpwidgets/gimpcellrenderertoggle.h>
@@ -42,6 +43,10 @@
 #include <libgimpwidgets/gimpcolorselect.h>
 #include <libgimpwidgets/gimpcolorselection.h>
 #include <libgimpwidgets/gimpdialog.h>
+#include <libgimpwidgets/gimpenumcombobox.h>
+#include <libgimpwidgets/gimpenumlabel.h>
+#include <libgimpwidgets/gimpenumstore.h>
+#include <libgimpwidgets/gimpenumwidgets.h>
 #include <libgimpwidgets/gimpfileentry.h>
 #include <libgimpwidgets/gimpframe.h>
 #include <libgimpwidgets/gimphelpui.h>
@@ -49,15 +54,20 @@
 #include <libgimpwidgets/gimpintstore.h>
 #include <libgimpwidgets/gimpmemsizeentry.h>
 #include <libgimpwidgets/gimpoffsetarea.h>
+#include <libgimpwidgets/gimppageselector.h>
 #include <libgimpwidgets/gimppatheditor.h>
 #include <libgimpwidgets/gimppickbutton.h>
 #include <libgimpwidgets/gimppixmap.h>
 #include <libgimpwidgets/gimppreview.h>
 #include <libgimpwidgets/gimppreviewarea.h>
+#include <libgimpwidgets/gimppropwidgets.h>
 #include <libgimpwidgets/gimpquerybox.h>
+#include <libgimpwidgets/gimpresolutionentry.h>
+#include <libgimpwidgets/gimpscrolledpreview.h>
 #include <libgimpwidgets/gimpsizeentry.h>
 #include <libgimpwidgets/gimpstock.h>
 #include <libgimpwidgets/gimpunitmenu.h>
+#include <libgimpwidgets/gimpzoommodel.h>
 
 #include <libgimpwidgets/gimpoldwidgets.h>
 
@@ -83,7 +93,7 @@ GtkWidget * gimp_int_radio_group_new (gboolean          in_frame,
 				       *  GtkWidget   **widget_ptr,
 				       */
 
-				      ...);
+				      ...) G_GNUC_NULL_TERMINATED;
 
 void        gimp_int_radio_group_set_active (GtkRadioButton *radio_button,
                                              gint            item_data);
@@ -101,7 +111,7 @@ GtkWidget * gimp_radio_group_new   (gboolean            in_frame,
 				     *  gboolean        active,
 				     */
 
-				    ...);
+				    ...) G_GNUC_NULL_TERMINATED;
 GtkWidget * gimp_radio_group_new2  (gboolean            in_frame,
 				    const gchar        *frame_title,
 				    GCallback           radio_button_callback,
@@ -114,7 +124,7 @@ GtkWidget * gimp_radio_group_new2  (gboolean            in_frame,
 				     *  GtkWidget     **widget_ptr,
 				     */
 
-				    ...);
+				    ...) G_GNUC_NULL_TERMINATED;
 
 void   gimp_radio_group_set_active (GtkRadioButton     *radio_button,
                                     gpointer            item_data);

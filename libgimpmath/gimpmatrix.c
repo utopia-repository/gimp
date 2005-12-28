@@ -22,12 +22,189 @@
 
 #include "config.h"
 
-#include <glib.h>
+#include <glib-object.h>
 
 #include "gimpmath.h"
 
 
 #define EPSILON 1e-6
+
+
+static GimpMatrix2 * matrix2_copy                  (const GimpMatrix2 *matrix);
+
+/**
+ * gimp_matrix2_get_type:
+ *
+ * Reveals the object type
+ *
+ * Returns: the #GType for Matrix2 objects
+ *
+ * Since: GIMP 2.4
+ **/
+GType
+gimp_matrix2_get_type (void)
+{
+  static GType matrix_type = 0;
+
+  if (!matrix_type)
+    matrix_type = g_boxed_type_register_static ("GimpMatrix2",
+					       (GBoxedCopyFunc) matrix2_copy,
+					       (GBoxedFreeFunc) g_free);
+
+  return matrix_type;
+}
+
+
+/*
+ * GIMP_TYPE_PARAM_MATRIX2
+ */
+
+#define GIMP_PARAM_SPEC_MATRIX2(pspec) (G_TYPE_CHECK_INSTANCE_CAST ((pspec), GIMP_TYPE_PARAM_MATRIX2, GimpParamSpecMatrix2))
+
+static void   gimp_param_matrix2_class_init  (GParamSpecClass *class);
+static void   gimp_param_matrix2_init        (GParamSpec      *pspec);
+static void   gimp_param_matrix2_set_default (GParamSpec      *pspec,
+                                              GValue          *value);
+static gint   gimp_param_matrix2_values_cmp  (GParamSpec      *pspec,
+                                              const GValue    *value1,
+                                              const GValue    *value2);
+
+typedef struct _GimpParamSpecMatrix2 GimpParamSpecMatrix2;
+
+struct _GimpParamSpecMatrix2
+{
+  GParamSpecBoxed      parent_instance;
+
+  GimpMatrix2          default_value;
+};
+
+/**
+ * gimp_param_matrix2_get_type:
+ *
+ * Reveals the object type
+ *
+ * Returns: the #GType for a GimpMatrix2 object
+ *
+ * Since: GIMP 2.4
+ **/
+GType
+gimp_param_matrix2_get_type (void)
+{
+  static GType spec_type = 0;
+
+  if (!spec_type)
+    {
+      static const GTypeInfo type_info =
+      {
+        sizeof (GParamSpecClass),
+        NULL, NULL,
+        (GClassInitFunc) gimp_param_matrix2_class_init,
+        NULL, NULL,
+        sizeof (GimpParamSpecMatrix2),
+        0,
+        (GInstanceInitFunc) gimp_param_matrix2_init
+      };
+
+      spec_type = g_type_register_static (G_TYPE_PARAM_BOXED,
+                                          "GimpParamMatrix2",
+                                          &type_info, 0);
+    }
+
+  return spec_type;
+}
+
+static void
+gimp_param_matrix2_class_init (GParamSpecClass *class)
+{
+  class->value_type        = GIMP_TYPE_MATRIX2;
+  class->value_set_default = gimp_param_matrix2_set_default;
+  class->values_cmp        = gimp_param_matrix2_values_cmp;
+}
+
+static void
+gimp_param_matrix2_init (GParamSpec *pspec)
+{
+  GimpParamSpecMatrix2 *cspec = GIMP_PARAM_SPEC_MATRIX2 (pspec);
+
+  gimp_matrix2_identity (&cspec->default_value);
+}
+
+static void
+gimp_param_matrix2_set_default (GParamSpec *pspec,
+                                GValue     *value)
+{
+  GimpParamSpecMatrix2 *cspec = GIMP_PARAM_SPEC_MATRIX2 (pspec);
+
+  g_value_set_static_boxed (value, &cspec->default_value);
+}
+
+static gint
+gimp_param_matrix2_values_cmp (GParamSpec   *pspec,
+                               const GValue *value1,
+                               const GValue *value2)
+{
+  GimpMatrix2 *matrix1;
+  GimpMatrix2 *matrix2;
+  gint         i, j;
+
+  matrix1 = value1->data[0].v_pointer;
+  matrix2 = value2->data[0].v_pointer;
+
+  /*  try to return at least *something*, it's useless anyway...  */
+
+  if (! matrix1)
+    return matrix2 != NULL ? -1 : 0;
+  else if (! matrix2)
+    return matrix1 != NULL;
+
+  for (i = 0; i < 2; i++)
+    for (j = 0; j < 2; j++)
+      if (matrix1->coeff[i][j] != matrix2->coeff[i][j])
+        return 1;
+
+  return 0;
+}
+
+/**
+ * gimp_param_spec_matrix2:
+ * @name:          Canonical name of the param
+ * @nick:          Nickname of the param
+ * @blurb:         Brief desciption of param.
+ * @default_value: Value to use if none is assigned.
+ * @flags:         a combination of #GParamFlags
+ *
+ * Creates a param spec to hold a #GimpMatrix2 value.
+ * See g_param_spec_internal() for more information.
+ *
+ * Returns: a newly allocated #GParamSpec instance
+ *
+ * Since: GIMP 2.4
+ **/
+GParamSpec *
+gimp_param_spec_matrix2 (const gchar       *name,
+                         const gchar       *nick,
+                         const gchar       *blurb,
+                         const GimpMatrix2 *default_value,
+                         GParamFlags        flags)
+{
+  GimpParamSpecMatrix2 *cspec;
+
+  g_return_val_if_fail (default_value != NULL, NULL);
+
+  cspec = g_param_spec_internal (GIMP_TYPE_PARAM_MATRIX2,
+                                 name, nick, blurb, flags);
+
+  cspec->default_value = *default_value;
+
+  return G_PARAM_SPEC (cspec);
+}
+
+
+static GimpMatrix2 *
+matrix2_copy (const GimpMatrix2 *matrix)
+{
+  return (GimpMatrix2 *) g_memdup (matrix, sizeof (GimpMatrix2));
+}
 
 
 /**
@@ -266,7 +443,6 @@ gimp_matrix3_yshear (GimpMatrix3 *matrix,
   matrix->coeff[1][2] += amount * matrix->coeff[0][2];
 }
 
-
 /**
  * gimp_matrix3_affine:
  * @matrix: The input matrix.
@@ -310,7 +486,6 @@ gimp_matrix3_affine (GimpMatrix3 *matrix,
 
   gimp_matrix3_mult (&affine, matrix);
 }
-
 
 /**
  * gimp_matrix3_determinant:
@@ -390,39 +565,13 @@ gimp_matrix3_invert (GimpMatrix3 *matrix)
 
 /*  functions to test for matrix properties  */
 
-
-/**
- * gimp_matrix3_is_diagonal:
- * @matrix: The matrix that is to be tested.
- *
- * Checks if the given matrix is diagonal.
- *
- * Returns: TRUE if the matrix is diagonal.
- */
-gboolean
-gimp_matrix3_is_diagonal (const GimpMatrix3 *matrix)
-{
-  gint i, j;
-
-  for (i = 0; i < 3; i++)
-    {
-      for (j = 0; j < 3; j++)
-        {
-          if (i != j && fabs (matrix->coeff[i][j]) > EPSILON)
-            return FALSE;
-        }
-    }
-
-  return TRUE;
-}
-
 /**
  * gimp_matrix3_is_identity:
  * @matrix: The matrix that is to be tested.
  *
  * Checks if the given matrix is the identity matrix.
  *
- * Returns: TRUE if the matrix is the identity matrix.
+ * Returns: %TRUE if the matrix is the identity matrix, %FALSE otherwise
  */
 gboolean
 gimp_matrix3_is_identity (const GimpMatrix3 *matrix)
@@ -449,11 +598,49 @@ gimp_matrix3_is_identity (const GimpMatrix3 *matrix)
   return TRUE;
 }
 
-/*  Check if we'll need to interpolate when applying this matrix.
-    This function returns TRUE if all entries of the upper left
-    2x2 matrix are either 0 or 1
+/**
+ * gimp_matrix3_is_diagonal:
+ * @matrix: The matrix that is to be tested.
+ *
+ * Checks if the given matrix is diagonal.
+ *
+ * Returns: %TRUE if the matrix is diagonal, %FALSE otherwise
  */
+gboolean
+gimp_matrix3_is_diagonal (const GimpMatrix3 *matrix)
+{
+  gint i, j;
 
+  for (i = 0; i < 3; i++)
+    {
+      for (j = 0; j < 3; j++)
+        {
+          if (i != j && fabs (matrix->coeff[i][j]) > EPSILON)
+            return FALSE;
+        }
+    }
+
+  return TRUE;
+}
+
+/**
+ * gimp_matrix3_is_affine:
+ * @matrix: The matrix that is to be tested.
+ *
+ * Checks if the given matrix defines an affine transformation.
+ *
+ * Returns: %TRUE if the matrix defines an affine transformation,
+ *          %FALSE otherwise
+ *
+ * Since: GIMP 2.4
+ */
+gboolean
+gimp_matrix3_is_affine (const GimpMatrix3 *matrix)
+{
+  return (fabs (matrix->coeff[2][0]) < EPSILON &&
+          fabs (matrix->coeff[2][1]) < EPSILON &&
+          fabs (matrix->coeff[2][2] - 1.0) < EPSILON);
+}
 
 /**
  * gimp_matrix3_is_simple:
@@ -462,8 +649,8 @@ gimp_matrix3_is_identity (const GimpMatrix3 *matrix)
  * Checks if we'll need to interpolate when applying this matrix as
  * a transformation.
  *
- * Returns: TRUE if all entries of the upper left 2x2 matrix are either
- * 0 or 1
+ * Returns: %TRUE if all entries of the upper left 2x2 matrix are
+ *          either 0 or 1, %FALSE otherwise
  */
 gboolean
 gimp_matrix3_is_simple (const GimpMatrix3 *matrix)

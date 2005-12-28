@@ -25,45 +25,20 @@
 #include "gimptoolcontrol.h"
 
 
-static void gimp_tool_control_class_init (GimpToolControlClass *klass);
-static void gimp_tool_control_init       (GimpToolControl      *tool);
+static void gimp_tool_control_finalize (GObject *object);
 
 
-static GimpObjectClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpToolControl, gimp_tool_control, GIMP_TYPE_OBJECT);
 
+#define parent_class gimp_tool_control_parent_class
 
-GType
-gimp_tool_control_get_type (void)
-{
-  static GType tool_control_type = 0;
-
-  if (! tool_control_type)
-    {
-      static const GTypeInfo tool_control_info =
-      {
-        sizeof (GimpToolControlClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) gimp_tool_control_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (GimpToolControl),
-	0,              /* n_preallocs    */
-	(GInstanceInitFunc) gimp_tool_control_init,
-      };
-
-      tool_control_type = g_type_register_static (GIMP_TYPE_OBJECT,
-		 			          "GimpToolControl",
-                                                  &tool_control_info, 0);
-    }
-
-  return tool_control_type;
-}
 
 static void
 gimp_tool_control_class_init (GimpToolControlClass *klass)
 {
-  parent_class = g_type_class_peek_parent (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = gimp_tool_control_finalize;
 }
 
 static void
@@ -72,52 +47,55 @@ gimp_tool_control_init (GimpToolControl *control)
   control->active                 = FALSE;
   control->paused_count           = 0;
 
-  control->toggled                = FALSE;
-
+  control->preserve               = TRUE;
   control->scroll_lock            = FALSE;
+  control->handle_empty_image     = FALSE;
+
+  control->dirty_mask             = GIMP_DIRTY_NONE;
+  control->motion_mode            = GIMP_MOTION_MODE_HINT;
+
   control->auto_snap_to           = TRUE;
   control->snap_offset_x          = 0;
   control->snap_offset_y          = 0;
   control->snap_width             = 0;
   control->snap_height            = 0;
 
-  control->preserve               = TRUE;
-  control->dirty_mask             = GIMP_DIRTY_NONE;
-  control->handle_empty_image     = FALSE;
-  control->motion_mode            = GIMP_MOTION_MODE_HINT;
+  control->toggled                = FALSE;
 
   control->cursor                 = GIMP_CURSOR_MOUSE;
   control->tool_cursor            = GIMP_TOOL_CURSOR_NONE;
   control->cursor_modifier        = GIMP_CURSOR_MODIFIER_NONE;
 
-  control->toggle_cursor          = GIMP_CURSOR_MOUSE;
-  control->toggle_tool_cursor     = GIMP_TOOL_CURSOR_NONE;
-  control->toggle_cursor_modifier = GIMP_CURSOR_MODIFIER_NONE;
+  control->toggle_cursor          = -1;
+  control->toggle_tool_cursor     = -1;
+  control->toggle_cursor_modifier = -1;
+
+  control->action_value_1         = NULL;
+  control->action_value_2         = NULL;
+  control->action_value_3         = NULL;
+  control->action_value_4         = NULL;
+
+  control->action_object_1        = NULL;
+  control->action_object_2        = NULL;
 }
 
-void
-gimp_tool_control_pause (GimpToolControl *control)
+static void
+gimp_tool_control_finalize (GObject *object)
 {
-  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+  GimpToolControl *control = GIMP_TOOL_CONTROL (object);
 
-  control->paused_count++;
+  g_free (control->action_value_1);
+  g_free (control->action_value_2);
+  g_free (control->action_value_3);
+  g_free (control->action_value_4);
+  g_free (control->action_object_1);
+  g_free (control->action_object_2);
+
+  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
-void
-gimp_tool_control_resume (GimpToolControl *control)
-{
-  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
 
-  control->paused_count--;
-}
-
-gboolean
-gimp_tool_control_is_paused (GimpToolControl *control)
-{
-  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
-
-  return control->paused_count > 0;
-}
+/*  public functions  */
 
 void
 gimp_tool_control_activate (GimpToolControl *control)
@@ -150,21 +128,112 @@ gimp_tool_control_is_active (GimpToolControl *control)
 }
 
 void
-gimp_tool_control_set_toggle (GimpToolControl *control,
-                              gboolean         toggled)
+gimp_tool_control_pause (GimpToolControl *control)
 {
   g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
 
-  control->toggled = toggled ? TRUE : FALSE;
+  control->paused_count++;
 }
 
 void
-gimp_tool_control_set_handles_empty_image (GimpToolControl *control,
-                                           gboolean         handle_empty)
+gimp_tool_control_resume (GimpToolControl *control)
+{
+  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+
+  control->paused_count--;
+}
+
+gboolean
+gimp_tool_control_is_paused (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
+
+  return control->paused_count > 0;
+}
+
+void
+gimp_tool_control_set_preserve (GimpToolControl *control,
+                                gboolean         preserve)
+{
+  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+
+  control->preserve = preserve ? TRUE : FALSE;
+}
+
+gboolean
+gimp_tool_control_get_preserve (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
+
+  return control->preserve;
+}
+
+void
+gimp_tool_control_set_scroll_lock (GimpToolControl *control,
+                                   gboolean         scroll_lock)
+{
+  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+
+  control->scroll_lock = scroll_lock ? TRUE : FALSE;
+}
+
+gboolean
+gimp_tool_control_get_scroll_lock (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
+
+  return control->scroll_lock;
+}
+
+void
+gimp_tool_control_set_handle_empty_image (GimpToolControl *control,
+                                          gboolean         handle_empty)
 {
   g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
 
   control->handle_empty_image = handle_empty ? TRUE : FALSE;
+}
+
+gboolean
+gimp_tool_control_get_handle_empty_image (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
+
+  return control->handle_empty_image;
+}
+
+void
+gimp_tool_control_set_dirty_mask (GimpToolControl *control,
+                                  GimpDirtyMask    dirty_mask)
+{
+  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+
+  control->dirty_mask = dirty_mask;
+}
+
+GimpDirtyMask
+gimp_tool_control_get_dirty_mask (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), GIMP_DIRTY_NONE);
+
+  return control->dirty_mask;
+}
+
+void
+gimp_tool_control_set_motion_mode (GimpToolControl *control,
+                                   GimpMotionMode   motion_mode)
+{
+  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+
+  control->motion_mode = motion_mode;
+}
+
+GimpMotionMode
+gimp_tool_control_get_motion_mode (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), GIMP_MOTION_MODE_HINT);
+
+  return control->motion_mode;
 }
 
 void
@@ -174,6 +243,14 @@ gimp_tool_control_set_snap_to (GimpToolControl *control,
   g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
 
   control->auto_snap_to = snap_to ? TRUE : FALSE;
+}
+
+gboolean
+gimp_tool_control_get_snap_to (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
+
+  return control->auto_snap_to;
 }
 
 void
@@ -192,30 +269,35 @@ gimp_tool_control_set_snap_offsets (GimpToolControl *control,
 }
 
 void
-gimp_tool_control_set_motion_mode (GimpToolControl *control,
-                                   GimpMotionMode   motion_mode)
+gimp_tool_control_get_snap_offsets (GimpToolControl *control,
+                                    gint            *offset_x,
+                                    gint            *offset_y,
+                                    gint            *width,
+                                    gint            *height)
 {
   g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
 
-  control->motion_mode = motion_mode;
+  if (offset_x) *offset_x = control->snap_offset_x;
+  if (offset_y) *offset_y = control->snap_offset_y;
+  if (width)    *width    = control->snap_width;
+  if (height)   *height   = control->snap_height;
 }
 
 void
-gimp_tool_control_set_preserve (GimpToolControl *control,
-                                gboolean         preserve)
+gimp_tool_control_set_toggled (GimpToolControl *control,
+                               gboolean         toggled)
 {
   g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
 
-  control->preserve = preserve ? TRUE : FALSE;
+  control->toggled = toggled ? TRUE : FALSE;
 }
 
-void
-gimp_tool_control_set_dirty_mask (GimpToolControl *control,
-                                  GimpDirtyMask    dirty_mask)
+gboolean
+gimp_tool_control_get_toggled (GimpToolControl *control)
 {
-  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
 
-  control->dirty_mask = dirty_mask;
+  return control->toggled;
 }
 
 void
@@ -272,101 +354,15 @@ gimp_tool_control_set_toggle_cursor_modifier (GimpToolControl    *control,
   control->toggle_cursor_modifier = cmodifier;
 }
 
-void
-gimp_tool_control_set_scroll_lock (GimpToolControl *control,
-                                   gboolean         scroll_lock)
-{
-  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
-
-  control->scroll_lock = scroll_lock ? TRUE : FALSE;
-}
-
-
-GimpMotionMode
-gimp_tool_control_motion_mode (GimpToolControl *control)
-{
-  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), GIMP_MOTION_MODE_HINT);
-
-  return control->motion_mode;
-}
-
-gboolean
-gimp_tool_control_handles_empty_image (GimpToolControl *control)
-{
-  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
-
-  return control->handle_empty_image;
-}
-
-gboolean
-gimp_tool_control_auto_snap_to (GimpToolControl *control)
-{
-  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
-
-  return control->auto_snap_to;
-}
-
-void
-gimp_tool_control_snap_offsets (GimpToolControl *control,
-                                gint            *offset_x,
-                                gint            *offset_y,
-                                gint            *width,
-                                gint            *height)
-{
-  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
-
-  if (offset_x) *offset_x = control->snap_offset_x;
-  if (offset_y) *offset_y = control->snap_offset_y;
-  if (width)    *width    = control->snap_width;
-  if (height)   *height   = control->snap_height;
-}
-
-gboolean
-gimp_tool_control_preserve (GimpToolControl *control)
-{
-  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
-
-  return control->preserve;
-}
-
-GimpDirtyMask
-gimp_tool_control_dirty_mask (GimpToolControl *control)
-{
-  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), GIMP_DIRTY_NONE);
-
-  return control->dirty_mask;
-}
-
-gboolean
-gimp_tool_control_scroll_lock (GimpToolControl *control)
-{
-  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
-
-  return control->scroll_lock;
-}
-
-gboolean
-gimp_tool_control_is_toggled (GimpToolControl *control)
-{
-  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
-
-  return control->toggled;
-}
-
 GimpCursorType
 gimp_tool_control_get_cursor (GimpToolControl *control)
 {
   g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
 
+  if (control->toggled && control->toggle_cursor != -1)
+    return control->toggle_cursor;
+
   return control->cursor;
-}
-
-GimpCursorType
-gimp_tool_control_get_toggle_cursor (GimpToolControl *control)
-{
-  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
-
-  return control->toggle_cursor;
 }
 
 GimpToolCursorType
@@ -374,15 +370,10 @@ gimp_tool_control_get_tool_cursor (GimpToolControl *control)
 {
   g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
 
+  if (control->toggled && control->toggle_tool_cursor != -1)
+    return control->toggle_tool_cursor;
+
   return control->tool_cursor;
-}
-
-GimpToolCursorType
-gimp_tool_control_get_toggle_tool_cursor (GimpToolControl *control)
-{
-  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
-
-  return control->toggle_tool_cursor;
 }
 
 GimpCursorModifier
@@ -390,13 +381,134 @@ gimp_tool_control_get_cursor_modifier (GimpToolControl *control)
 {
   g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
 
+  if (control->toggled && control->toggle_cursor_modifier != -1)
+    return control->toggle_cursor_modifier;
+
   return control->cursor_modifier;
 }
 
-GimpCursorModifier
-gimp_tool_control_get_toggle_cursor_modifier (GimpToolControl *control)
+void
+gimp_tool_control_set_action_value_1 (GimpToolControl *control,
+                                      const gchar     *action)
 {
-  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
+  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
 
-  return control->toggle_cursor_modifier;
+  if (action != control->action_value_1)
+    {
+      g_free (control->action_value_1);
+      control->action_value_1 = g_strdup (action);
+    }
+}
+
+const gchar *
+gimp_tool_control_get_action_value_1 (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), NULL);
+
+  return control->action_value_1;
+}
+
+void
+gimp_tool_control_set_action_value_2 (GimpToolControl *control,
+                                      const gchar     *action)
+{
+  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+
+  if (action != control->action_value_2)
+    {
+      g_free (control->action_value_2);
+      control->action_value_2 = g_strdup (action);
+    }
+}
+
+const gchar *
+gimp_tool_control_get_action_value_2 (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), NULL);
+
+  return control->action_value_2;
+}
+
+void
+gimp_tool_control_set_action_value_3 (GimpToolControl *control,
+                                      const gchar     *action)
+{
+  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+
+  if (action != control->action_value_3)
+    {
+      g_free (control->action_value_3);
+      control->action_value_3 = g_strdup (action);
+    }
+}
+
+const gchar *
+gimp_tool_control_get_action_value_3 (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), NULL);
+
+  return control->action_value_3;
+}
+
+void
+gimp_tool_control_set_action_value_4 (GimpToolControl *control,
+                                      const gchar     *action)
+{
+  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+
+  if (action != control->action_value_4)
+    {
+      g_free (control->action_value_4);
+      control->action_value_4 = g_strdup (action);
+    }
+}
+
+const gchar *
+gimp_tool_control_get_action_value_4 (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), NULL);
+
+  return control->action_value_4;
+}
+
+void
+gimp_tool_control_set_action_object_1 (GimpToolControl *control,
+                                       const gchar     *action)
+{
+  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+
+  if (action != control->action_object_1)
+    {
+      g_free (control->action_object_1);
+      control->action_object_1 = g_strdup (action);
+    }
+}
+
+const gchar *
+gimp_tool_control_get_action_object_1 (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), NULL);
+
+  return control->action_object_1;
+}
+
+void
+gimp_tool_control_set_action_object_2 (GimpToolControl *control,
+                                       const gchar     *action)
+{
+  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+
+  if (action != control->action_object_2)
+    {
+      g_free (control->action_object_2);
+      control->action_object_2 = g_strdup (action);
+    }
+}
+
+const gchar *
+gimp_tool_control_get_action_object_2 (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), NULL);
+
+  return control->action_object_2;
 }

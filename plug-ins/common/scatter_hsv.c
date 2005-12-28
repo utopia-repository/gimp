@@ -22,11 +22,7 @@
 
 #include "config.h"
 
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -34,9 +30,12 @@
 #include "libgimp/stdplugins-intl.h"
 
 
-#define PLUG_IN_NAME "plug_in_scatter_hsv"
-#define SHORT_NAME   "scatter_hsv"
-#define HELP_ID      "plug-in-scatter-hsv"
+#define HSV_NOISE_PROC   "plug-in-hsv-noise"
+#define SCATTER_HSV_PROC "plug-in-scatter-hsv"
+#define PLUG_IN_BINARY   "scatter_hsv"
+#define SCALE_WIDTH      100
+#define ENTRY_WIDTH        3
+
 
 static void     query               (void);
 static void     run                 (const gchar      *name,
@@ -59,8 +58,6 @@ static gint     randomize_value     (gint              now,
                                      gint              mod_p,
                                      gint              rand_max);
 
-#define SCALE_WIDTH         100
-#define ENTRY_WIDTH           3
 
 GimpPlugInInfo PLUG_IN_INFO =
 {
@@ -95,28 +92,41 @@ query (void)
 {
   static GimpParamDef args [] =
   {
-    { GIMP_PDB_INT32,    "run_mode",            "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",            "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",               "Input image (not used)" },
     { GIMP_PDB_DRAWABLE, "drawable",            "Input drawable" },
     { GIMP_PDB_INT32,    "holdness",            "convolution strength" },
-    { GIMP_PDB_INT32,    "hue_distance",        "distribution distance on hue axis [0,255]" },
-    { GIMP_PDB_INT32,    "saturation_distance", "distribution distance on saturation axis [0,255]" },
-    { GIMP_PDB_INT32,    "value_distance",      "distribution distance on value axis [0,255]" }
+    { GIMP_PDB_INT32,    "hue-distance",        "distribution distance on hue axis [0,255]" },
+    { GIMP_PDB_INT32,    "saturation-distance", "distribution distance on saturation axis [0,255]" },
+    { GIMP_PDB_INT32,    "value-distance",      "distribution distance on value axis [0,255]" }
   };
 
-  gimp_install_procedure (PLUG_IN_NAME,
+  gimp_install_procedure (HSV_NOISE_PROC,
                           "Scattering pixel values in HSV space",
                           "Scattering pixel values in HSV space",
                           "Shuji Narazaki (narazaki@InetQ.or.jp)",
                           "Shuji Narazaki",
                           "1997",
-                          N_("S_catter HSV..."),
+                          N_("HSV Noise..."),
                           "RGB*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register (PLUG_IN_NAME, "<Image>/Filters/Noise");
+  gimp_plugin_menu_register (HSV_NOISE_PROC, "<Image>/Filters/Noise");
+
+  gimp_install_procedure (SCATTER_HSV_PROC,
+                          "Scattering pixel values in HSV space",
+                          "Scattering pixel values in HSV space",
+                          "Shuji Narazaki (narazaki@InetQ.or.jp)",
+                          "Shuji Narazaki",
+                          "1997",
+                          NULL,
+                          "RGB*",
+                          GIMP_PLUGIN,
+                          G_N_ELEMENTS (args), 0,
+                          args, NULL);
+
 }
 
 static void
@@ -145,7 +155,7 @@ run (const gchar      *name,
   switch (run_mode)
     {
     case GIMP_RUN_INTERACTIVE:
-      gimp_get_data (PLUG_IN_NAME, &VALS);
+      gimp_get_data (HSV_NOISE_PROC, &VALS);
       if (!gimp_drawable_is_rgb (drawable->drawable_id))
         {
           g_message ("Cannot operate on non-RGB drawables.");
@@ -163,7 +173,7 @@ run (const gchar      *name,
       break;
 
     case GIMP_RUN_WITH_LAST_VALS:
-      gimp_get_data (PLUG_IN_NAME, &VALS);
+      gimp_get_data (HSV_NOISE_PROC, &VALS);
       break;
     }
 
@@ -172,7 +182,7 @@ run (const gchar      *name,
   if (run_mode != GIMP_RUN_NONINTERACTIVE)
     gimp_displays_flush();
   if (run_mode == GIMP_RUN_INTERACTIVE && status == GIMP_PDB_SUCCESS )
-    gimp_set_data (PLUG_IN_NAME, &VALS, sizeof (ValueType));
+    gimp_set_data (HSV_NOISE_PROC, &VALS, sizeof (ValueType));
 
   values[0].type = GIMP_PDB_STATUS;
   values[0].data.d_status = status;
@@ -205,7 +215,7 @@ scatter_hsv (GimpDrawable *drawable)
 {
   gimp_tile_cache_ntiles (2 * (drawable->width / gimp_tile_width () + 1));
 
-  gimp_progress_init (_("Scattering HSV..."));
+  gimp_progress_init (_("HSV Noise"));
 
   gimp_rgn_iterate2 (drawable, 0 /* unused */, scatter_hsv_func, NULL);
 
@@ -339,16 +349,23 @@ scatter_hsv_dialog (GimpDrawable *drawable)
   GtkObject *adj;
   gboolean   run;
 
-  gimp_ui_init (SHORT_NAME, TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Scatter HSV"), SHORT_NAME,
+  dialog = gimp_dialog_new (_("Scatter HSV"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, HELP_ID,
+                            gimp_standard_help_func, HSV_NOISE_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -373,10 +390,10 @@ scatter_hsv_dialog (GimpDrawable *drawable)
                               VALS.holdness, 1, 8, 1, 2, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &VALS.holdness);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -385,10 +402,10 @@ scatter_hsv_dialog (GimpDrawable *drawable)
                               VALS.hue_distance, 0, 255, 1, 8, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &VALS.hue_distance);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -397,10 +414,10 @@ scatter_hsv_dialog (GimpDrawable *drawable)
                               VALS.saturation_distance, 0, 255, 1, 8, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &VALS.saturation_distance);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -409,10 +426,10 @@ scatter_hsv_dialog (GimpDrawable *drawable)
                               VALS.value_distance, 0, 255, 1, 8, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &VALS.value_distance);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -424,4 +441,3 @@ scatter_hsv_dialog (GimpDrawable *drawable)
 
   return run;
 }
-

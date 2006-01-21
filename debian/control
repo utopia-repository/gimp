@@ -51,7 +51,7 @@ Depends: gimp (= ${Source-Version}), ${shlibs:Depends}
 Conflicts: gimp-wget
 Replaces: gimp-wget
 Description: GNOME-VFS URI plugin for The GIMP
- This package includes a plugin which will open URIs (e.g.
+ This package includes a plugin for The GIMP which will open URIs (e.g.
  ftp:, http:, smb:, and sftp:) using protocol handlers from GNOME-VFS.
 
 Package: gimp-wget
@@ -61,7 +61,7 @@ Depends: wget, gimp (= ${Source-Version}), ${shlibs:Depends}
 Conflicts: gimp-gnomevfs
 Replaces: gimp-gnomevfs
 Description: Wget URI plugin for The GIMP
- This package includes a plugin which will open URIs (e.g.
+ This package includes a plugin for The GIMP which will open URIs (e.g.
  ftp: and http:) using the wget program.
 
 Package: gimp

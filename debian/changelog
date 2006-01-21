@@ -1,3 +1,11 @@
+gimp (2.3.6-2) experimental; urgency=low
+
+  * Fix the wget URI plugin to not link with all of the GNOME-VFS libs,
+    which had resulted from me munging the URI plugin Makefile.
+    (Closes: #349228)
+
+ -- Ari Pollak <ari@debian.org>  Sat, 21 Jan 2006 12:16:41 -0500
+
 gimp (2.3.6-1) experimental; urgency=low
 
   * New development upstream release for experimental (Closes: #322568)

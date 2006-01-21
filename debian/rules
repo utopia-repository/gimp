@@ -66,6 +66,7 @@ build-stamp:
 		-e 's/#\(backend_sources.*wget\)/\1/' \
 		-e 's/\(am__objects.*gnome\)/#\1/' \
 		-e 's/#\(am__objects.*wget\)/\1/' \
+		-e '/^.*$$(URI_LIBS).*$$/d' \
 		plug-ins/uri/Makefile > plug-ins/uri/Makefile.wget
 	cd plug-ins/uri && make -f Makefile.wget
 
@@ -81,7 +82,7 @@ clean:
 	rm -f build-stamp install-stamp
 
 	# Add here commands to clean up after the build process.
-	rm -f plug-ins/uri/Makefile.wget
+	rm -f plug-ins/uri/{Makefile.wget,uri.gnomevfs}
 	-$(MAKE) clean
 	-$(MAKE) distclean
 	find . -name '*.o' -o -name '_libs' -o -name '*.deps' -o -name \

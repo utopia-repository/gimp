@@ -1,3 +1,12 @@
+gimp (2.3.6-3) experimental; urgency=low
+
+  * Apply patch from upstream CVS to fix saving EXIF data on JPEG files
+    (from #307918 for 2.2 branch)
+  * Conflict with libgimp2.0 (>= 2.5.0) in preparation for gimp 2.4
+    (from #349801 for 2.2 branch)
+
+ -- Ari Pollak <ari@debian.org>  Mon, 30 Jan 2006 15:19:51 -0500
+
 gimp (2.3.6-2) experimental; urgency=low
 
   * Fix the wget URI plugin to not link with all of the GNOME-VFS libs,

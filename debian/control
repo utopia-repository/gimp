@@ -53,7 +53,7 @@ Package: gimp
 Architecture: any
 Section: graphics
 Depends: wget, gimp-data (= ${Source-Version}), ${shlibs:Depends}
-Conflicts: gimp1.2 (<< 1.2.5-1), gimp1.3, gimp-nonfree, gimp-data (<< 2.0.2-4)
+Conflicts: gimp1.2 (<< 1.2.5-1), gimp1.3, gimp-nonfree, gimp-data (<< 2.0.2-4), libgimp2.0 (>= 2.3.0)
 Replaces: gimp1.2 (<< 1.2.5-1), gimp1.3, gimp-nonfree, gimp-data (<< 2.0.2-4)
 Provides: gimp2.0, gimp-nonfree
 Recommends: gimp-svg, gimp-print

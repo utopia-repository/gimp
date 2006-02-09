@@ -184,7 +184,7 @@ gimp_display_shell_class_init (GimpDisplayShellClass *klass)
                                    gimp_param_spec_unit ("unit", NULL, NULL,
                                                          TRUE, FALSE,
                                                          GIMP_UNIT_PIXEL,
-                                                         G_PARAM_READWRITE));
+                                                         GIMP_PARAM_READWRITE));
 
   gtk_rc_parse_string (display_rc_style);
 }
@@ -585,7 +585,7 @@ gimp_display_shell_new (GimpDisplay     *gdisp,
 
   /*  the toplevel shell */
   shell = g_object_new (GIMP_TYPE_DISPLAY_SHELL,
-                        "gravity", GDK_GRAVITY_CENTER,
+                     /* "gravity", GDK_GRAVITY_CENTER, */
                         "unit",    unit,
                         NULL);
 

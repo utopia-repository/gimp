@@ -156,7 +156,7 @@ def print_function_table(fpout, name, function_table, requirements=[]):
         for D in filter(lambda pf: pf != "GIMP_PIXELFORMAT_ANY", pixel_format):
           key = "%s_%s_%s_%s" % (string.lower(mode), pixel_depth_name(A), pixel_depth_name(B), pixel_depth_name(D))
           if function_table.has_key(key):
-            print >>fpout, ' { %s, %s, %s, %s, %s }, ' % (mode, A, B, D, function_table[key][0])
+            print >>fpout, ' { %s, %s, %s, %s, %s },' % (mode, A, B, D, function_table[key][0])
             pass
           pass
         pass
@@ -528,7 +528,7 @@ def gimp_composite_cfile(fpout, name, function_table, requirements=[], cpu_featu
 
 ###########################################
 
-op = optparse.OptionParser(version="$Revision: 1.20 $")
+op = optparse.OptionParser(version="$Revision: 1.21 $")
 op.add_option('-f', '--file', action='store',         type='string', dest='file',        default=None,
               help='the input object file')
 op.add_option('-t', '--test', action='store_true',                   dest='test',        default=False,

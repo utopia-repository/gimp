@@ -100,18 +100,18 @@ gboolean    <a href="libgimp-gimpedit.html#gimp-edit-stroke">gimp_edit_stroke</a
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2580955"></a><h2>Description</h2>
+<a name="id2578723"></a><h2>Description</h2>
 <p>
 Edit menu functions (cut, copy, paste, clear, etc.)
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2580967"></a><h2>Details</h2>
+<a name="id2578735"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2580973"></a><h3>
+<a name="id2578741"></a><h3>
 <a name="gimp-edit-cut"></a>gimp_edit_cut ()</h3>
-<a class="indexterm" name="id2580984"></a><pre class="programlisting">gboolean    gimp_edit_cut                   (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2578751"></a><pre class="programlisting">gboolean    gimp_edit_cut                   (gint32 drawable_ID);</pre>
 <p>
 Cut from the specified drawable.
 </p>
@@ -145,9 +145,9 @@ internal GIMP edit buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2581054"></a><h3>
+<a name="id2578821"></a><h3>
 <a name="gimp-edit-copy"></a>gimp_edit_copy ()</h3>
-<a class="indexterm" name="id2581064"></a><pre class="programlisting">gboolean    gimp_edit_copy                  (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2578831"></a><pre class="programlisting">gboolean    gimp_edit_copy                  (gint32 drawable_ID);</pre>
 <p>
 Copy from the specified drawable.
 </p>
@@ -181,9 +181,9 @@ edit buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2579777"></a><h3>
+<a name="id2580149"></a><h3>
 <a name="gimp-edit-copy-visible"></a>gimp_edit_copy_visible ()</h3>
-<a class="indexterm" name="id2579786"></a><pre class="programlisting">gboolean    gimp_edit_copy_visible          (gint32 image_ID);</pre>
+<a class="indexterm" name="id2580158"></a><pre class="programlisting">gboolean    gimp_edit_copy_visible          (gint32 image_ID);</pre>
 <p>
 Copy from the projection.
 </p>
@@ -220,9 +220,9 @@ buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2579860"></a><h3>
+<a name="id2580232"></a><h3>
 <a name="gimp-edit-paste"></a>gimp_edit_paste ()</h3>
-<a class="indexterm" name="id2579870"></a><pre class="programlisting">gint32      gimp_edit_paste                 (gint32 drawable_ID,
+<a class="indexterm" name="id2580242"></a><pre class="programlisting">gint32      gimp_edit_paste                 (gint32 drawable_ID,
                                              gboolean paste_into);</pre>
 <p>
 Paste buffer to the specified drawable.
@@ -272,9 +272,9 @@ not needed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2579969"></a><h3>
+<a name="id2580341"></a><h3>
 <a name="gimp-edit-paste-as-new"></a>gimp_edit_paste_as_new ()</h3>
-<a class="indexterm" name="id2579978"></a><pre class="programlisting">gint32      gimp_edit_paste_as_new          (void);</pre>
+<a class="indexterm" name="id2580350"></a><pre class="programlisting">gint32      gimp_edit_paste_as_new          (void);</pre>
 <p>
 Paste buffer to a new image.
 </p>
@@ -301,9 +301,9 @@ procedure returns the new image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2580030"></a><h3>
+<a name="id2580402"></a><h3>
 <a name="gimp-edit-named-cut"></a>gimp_edit_named_cut ()</h3>
-<a class="indexterm" name="id2580040"></a><pre class="programlisting">gchar*      gimp_edit_named_cut             (gint32 drawable_ID,
+<a class="indexterm" name="id2588912"></a><pre class="programlisting">gchar*      gimp_edit_named_cut             (gint32 drawable_ID,
                                              const gchar *buffer_name);</pre>
 <p>
 Cut into a named buffer.
@@ -344,9 +344,9 @@ pasting, regardless of any intermediate copy or cut operations.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2588585"></a><h3>
+<a name="id2589005"></a><h3>
 <a name="gimp-edit-named-copy"></a>gimp_edit_named_copy ()</h3>
-<a class="indexterm" name="id2588594"></a><pre class="programlisting">gchar*      gimp_edit_named_copy            (gint32 drawable_ID,
+<a class="indexterm" name="id2589014"></a><pre class="programlisting">gchar*      gimp_edit_named_copy            (gint32 drawable_ID,
                                              const gchar *buffer_name);</pre>
 <p>
 Copy into a named buffer.
@@ -388,9 +388,9 @@ operations.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2588687"></a><h3>
+<a name="id2589107"></a><h3>
 <a name="gimp-edit-named-copy-visible"></a>gimp_edit_named_copy_visible ()</h3>
-<a class="indexterm" name="id2588696"></a><pre class="programlisting">gchar*      gimp_edit_named_copy_visible    (gint32 image_ID,
+<a class="indexterm" name="id2589116"></a><pre class="programlisting">gchar*      gimp_edit_named_copy_visible    (gint32 image_ID,
                                              const gchar *buffer_name);</pre>
 <p>
 Copy from the projection into a named buffer.
@@ -432,9 +432,9 @@ cut operations.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2588788"></a><h3>
+<a name="id2589208"></a><h3>
 <a name="gimp-edit-named-paste"></a>gimp_edit_named_paste ()</h3>
-<a class="indexterm" name="id2577751"></a><pre class="programlisting">gint32      gimp_edit_named_paste           (gint32 drawable_ID,
+<a class="indexterm" name="id2589217"></a><pre class="programlisting">gint32      gimp_edit_named_paste           (gint32 drawable_ID,
                                              const gchar *buffer_name,
                                              gboolean paste_into);</pre>
 <p>
@@ -481,9 +481,9 @@ instead of the global buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2577862"></a><h3>
+<a name="id2589329"></a><h3>
 <a name="gimp-edit-named-paste-as-new"></a>gimp_edit_named_paste_as_new ()</h3>
-<a class="indexterm" name="id2577871"></a><pre class="programlisting">gint32      gimp_edit_named_paste_as_new    (const gchar *buffer_name);</pre>
+<a class="indexterm" name="id2589338"></a><pre class="programlisting">gint32      gimp_edit_named_paste_as_new    (const gchar *buffer_name);</pre>
 <p>
 Paste named buffer to a new image.
 </p>
@@ -516,9 +516,9 @@ buffer instead of the global buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2577943"></a><h3>
+<a name="id2589409"></a><h3>
 <a name="gimp-edit-clear"></a>gimp_edit_clear ()</h3>
-<a class="indexterm" name="id2577953"></a><pre class="programlisting">gboolean    gimp_edit_clear                 (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2589419"></a><pre class="programlisting">gboolean    gimp_edit_clear                 (gint32 drawable_ID);</pre>
 <p>
 Clear selected area of drawable.
 </p>
@@ -551,9 +551,9 @@ a selection if there is a selection active.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2578024"></a><h3>
+<a name="id2582159"></a><h3>
 <a name="gimp-edit-fill"></a>gimp_edit_fill ()</h3>
-<a class="indexterm" name="id2578034"></a><pre class="programlisting">gboolean    gimp_edit_fill                  (gint32 drawable_ID,
+<a class="indexterm" name="id2582170"></a><pre class="programlisting">gboolean    gimp_edit_fill                  (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpFillType">GimpFillType</a> fill_type);</pre>
 <p>
 Fill selected area of drawable.
@@ -595,9 +595,9 @@ use <a href="libgimp-gimpdrawable.html#gimp-drawable-fill"><code class="function
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2578135"></a><h3>
+<a name="id2582270"></a><h3>
 <a name="gimp-edit-bucket-fill"></a>gimp_edit_bucket_fill ()</h3>
-<a class="indexterm" name="id2578144"></a><pre class="programlisting">gboolean    gimp_edit_bucket_fill           (gint32 drawable_ID,
+<a class="indexterm" name="id2582279"></a><pre class="programlisting">gboolean    gimp_edit_bucket_fill           (gint32 drawable_ID,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBucketFillMode"
 >GimpBucketFillMode</a> fill_mode,
@@ -689,9 +689,9 @@ relative to the drawable's origin.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2578379"></a><h3>
+<a name="id2582513"></a><h3>
 <a name="gimp-edit-blend"></a>gimp_edit_blend ()</h3>
-<a class="indexterm" name="id2578389"></a><pre class="programlisting">gboolean    gimp_edit_blend                 (gint32 drawable_ID,
+<a class="indexterm" name="id2582524"></a><pre class="programlisting">gboolean    gimp_edit_blend                 (gint32 drawable_ID,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBlendMode"
 >GimpBlendMode</a> blend_mode,
@@ -835,9 +835,9 @@ each gradient type.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2578780"></a><h3>
+<a name="id2582913"></a><h3>
 <a name="gimp-edit-stroke"></a>gimp_edit_stroke ()</h3>
-<a class="indexterm" name="id2578790"></a><pre class="programlisting">gboolean    gimp_edit_stroke                (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2582923"></a><pre class="programlisting">gboolean    gimp_edit_stroke                (gint32 drawable_ID);</pre>
 <p>
 Stroke the current selection
 </p>

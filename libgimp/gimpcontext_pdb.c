@@ -32,7 +32,7 @@
  *
  * This procedure creates a new context by copying the current context.
  * This copy becomes the new current context for the calling plug-in
- * until it is popped again.
+ * until it is popped again using gimp-context-pop.
  *
  * Returns: TRUE on success.
  *
@@ -61,8 +61,10 @@ gimp_context_push (void)
  *
  * Pops the topmost context from the plug-in's context stack.
  *
- * This procedure creates a new context and makes it the current
- * context for the calling plug-in.
+ * This procedure removes the topmost context from the plug-in's
+ * context stack. The context that was active before the corresponding
+ * call to gimp-context-push becomes the new current context of the
+ * plug-in.
  *
  * Returns: TRUE on success.
  *
@@ -77,6 +79,73 @@ gimp_context_pop (void)
 
   return_vals = gimp_run_procedure ("gimp-context-pop",
 				    &nreturn_vals,
+				    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_context_get_paint_method:
+ *
+ * Retrieve the currently active paint method.
+ *
+ * This procedure returns the name of the currently active paint
+ * method.
+ *
+ * Returns: The name of the active paint method.
+ *
+ * Since: GIMP 2.4
+ */
+gchar *
+gimp_context_get_paint_method (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gchar *name = NULL;
+
+  return_vals = gimp_run_procedure ("gimp-context-get-paint-method",
+				    &nreturn_vals,
+				    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    name = g_strdup (return_vals[1].data.d_string);
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return name;
+}
+
+/**
+ * gimp_context_set_paint_method:
+ * @name: The name of the paint method.
+ *
+ * Set the specified paint method as the active paint method.
+ *
+ * This procedure allows the active paint method to be set by
+ * specifying its name. The name is simply a string which corresponds
+ * to one of the names of the available paint methods. If there is no
+ * matching method found, this procedure will return an error.
+ * Otherwise, the specified method becomes active and will be used in
+ * all subsequent paint operations.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: GIMP 2.4
+ */
+gboolean
+gimp_context_set_paint_method (const gchar *name)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-paint-method",
+				    &nreturn_vals,
+				    GIMP_PDB_STRING, name,
 				    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
@@ -416,7 +485,7 @@ gimp_context_set_paint_mode (GimpLayerModeEffects paint_mode)
  *
  * Retrieve the currently active brush.
  *
- * This procedure returns the nme of the currently active brush. All
+ * This procedure returns the name of the currently active brush. All
  * paint operations and stroke operations use this brush to control the
  * application of paint to the image.
  *
@@ -445,7 +514,7 @@ gimp_context_get_brush (void)
 
 /**
  * gimp_context_set_brush:
- * @name: The name o the brush.
+ * @name: The name of the brush.
  *
  * Set the specified brush as the active brush.
  *

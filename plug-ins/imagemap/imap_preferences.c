@@ -69,7 +69,7 @@ typedef struct {
    PreferencesData_t	*old_data;
 } PreferencesDialog_t;
 
-static void get_button_colors (PreferencesDialog_t *dialog, 
+static void get_button_colors (PreferencesDialog_t *dialog,
 			       ColorSelData_t *colors);
 
 static gint
@@ -192,7 +192,7 @@ preferences_save(PreferencesData_t *data)
 
    out = g_fopen(filename, "w");
    if (out) {
-      fprintf(out, "# Imagemap plug-in resource file\n\n");
+      fprintf(out, "# Image map plug-in resource file\n\n");
       if (data->default_map_type == NCSA)
 	 fprintf(out, "(default-map-type ncsa)\n");
       else if (data->default_map_type == CERN)
@@ -411,7 +411,7 @@ create_color_field(PreferencesDialog_t *data, GtkWidget *table, gint row,
    gimp_color_button_set_update (GIMP_COLOR_BUTTON (area), TRUE);
    gtk_table_attach_defaults (GTK_TABLE (table), area, col, col + 1, row,
 			      row + 1);
-   gtk_widget_show (area);   
+   gtk_widget_show (area);
 
    return area;
 }

@@ -27,11 +27,6 @@ else
 	CFLAGS += -O2
 endif
 
-ifeq ("arm",$(shell dpkg-architecture -qDEB_BUILD_ARCH_CPU))
-	CC = gcc-3.4
-else
-	CC = gcc
-endif
 #ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 #	INSTALL_PROGRAM += -s
 #endif
@@ -53,7 +48,7 @@ config.status:
 	CC=$(CC) CFLAGS="$(CFLAGS)" ./configure --sysconfdir=/etc \
 	--prefix=/usr --enable-python --mandir=\$${prefix}/share/man \
 	--host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) \
-	--without-gimpprint --enable-default-binary
+	--without-gnomeprint --without-gimpprint --enable-default-binary
 
 build: configure build-stamp
 build-stamp:

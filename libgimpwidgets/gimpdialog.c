@@ -51,10 +51,14 @@ static void       gimp_dialog_get_property (GObject         *object,
                                             GValue          *value,
                                             GParamSpec      *pspec);
 
+static void       gimp_dialog_hide         (GtkWidget       *widget);
 static gboolean   gimp_dialog_delete_event (GtkWidget       *widget,
                                             GdkEventAny     *event);
 static void       gimp_dialog_close        (GtkDialog       *dialog);
+
 static void       gimp_dialog_help         (GObject         *dialog);
+static void       gimp_dialog_response     (GtkDialog       *dialog,
+                                            gint             response_id);
 
 
 G_DEFINE_TYPE (GimpDialog, gimp_dialog, GTK_TYPE_DIALOG);
@@ -76,6 +80,7 @@ gimp_dialog_class_init (GimpDialogClass *klass)
   object_class->set_property = gimp_dialog_set_property;
   object_class->get_property = gimp_dialog_get_property;
 
+  widget_class->hide         = gimp_dialog_hide;
   widget_class->delete_event = gimp_dialog_delete_event;
 
   dialog_class->close        = gimp_dialog_close;
@@ -87,7 +92,7 @@ gimp_dialog_class_init (GimpDialogClass *klass)
    **/
   g_object_class_install_property (object_class, PROP_HELP_FUNC,
                                    g_param_spec_pointer ("help-func", NULL, NULL,
-                                                         G_PARAM_READWRITE |
+                                                         GIMP_PARAM_READWRITE |
                                                          G_PARAM_CONSTRUCT_ONLY));
 
   /**
@@ -98,7 +103,7 @@ gimp_dialog_class_init (GimpDialogClass *klass)
   g_object_class_install_property (object_class, PROP_HELP_ID,
                                    g_param_spec_string ("help-id", NULL, NULL,
                                                         NULL,
-                                                        G_PARAM_READWRITE |
+                                                        GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
 }
 
@@ -106,6 +111,10 @@ static void
 gimp_dialog_init (GimpDialog *dialog)
 {
   gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+
+  g_signal_connect (dialog, "response",
+                    G_CALLBACK (gimp_dialog_response),
+                    NULL);
 }
 
 static GObject *
@@ -210,6 +219,15 @@ gimp_dialog_get_property (GObject    *object,
     }
 }
 
+static void
+gimp_dialog_hide (GtkWidget *widget)
+{
+  /*  set focus to NULL so focus_out callbacks are invoked synchronously  */
+  gtk_window_set_focus (GTK_WINDOW (widget), NULL);
+
+  GTK_WIDGET_CLASS (parent_class)->hide (widget);
+}
+
 static gboolean
 gimp_dialog_delete_event (GtkWidget   *widget,
                           GdkEventAny *event)
@@ -243,6 +261,34 @@ gimp_dialog_help (GObject *dialog)
 
   if (help_func)
     help_func (g_object_get_data (dialog, "gimp-dialog-help-id"), dialog);
+}
+
+static void
+gimp_dialog_response (GtkDialog *dialog,
+                      gint       response_id)
+{
+  GList *children;
+  GList *list;
+
+  children = gtk_container_get_children (GTK_CONTAINER (dialog->action_area));
+
+  for (list = children; list; list = g_list_next (list))
+    {
+      GtkWidget *widget = list->data;
+
+      if (gtk_dialog_get_response_for_widget (dialog, widget) == response_id)
+        {
+          if (! GTK_IS_BUTTON (widget) ||
+              gtk_button_get_focus_on_click (GTK_BUTTON (widget)))
+            {
+              gtk_widget_grab_focus (widget);
+            }
+
+          break;
+        }
+    }
+
+  g_list_free (children);
 }
 
 

@@ -283,6 +283,8 @@
     <function name="GimpScrolledPreview" link="GimpScrolledPreview.html#GimpScrolledPreview-struct"/>
     <function name="gimp_scrolled_preview_set_position ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-set-position"/>
     <function name="gimp_scrolled_preview_set_policy ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-set-policy"/>
+    <function name="gimp_scrolled_preview_freeze ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-freeze"/>
+    <function name="gimp_scrolled_preview_thaw ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-thaw"/>
     <function name="GimpUnitMenu" link="GimpUnitMenu.html#GimpUnitMenu-struct"/>
     <function name="gimp_unit_menu_new ()" link="GimpUnitMenu.html#gimp-unit-menu-new"/>
     <function name="gimp_unit_menu_set_unit ()" link="GimpUnitMenu.html#gimp-unit-menu-set-unit"/>

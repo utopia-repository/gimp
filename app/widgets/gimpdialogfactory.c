@@ -50,14 +50,6 @@
 #endif
 
 
-typedef enum
-{
-  GIMP_DIALOG_SHOW_ALL,
-  GIMP_DIALOG_HIDE_ALL,
-  GIMP_DIALOG_SHOW_TOOLBOX
-} GimpDialogShowState;
-
-
 static void   gimp_dialog_factory_dispose             (GObject           *object);
 static void   gimp_dialog_factory_finalize            (GObject           *object);
 
@@ -65,7 +57,7 @@ static GtkWidget *
               gimp_dialog_factory_default_constructor (GimpDialogFactory *factory,
                                                        GimpDialogFactoryEntry *entry,
                                                        GimpContext       *context,
-                                                       gint               preview_size);
+                                                       gint               view_size);
 static void     gimp_dialog_factory_set_widget_data   (GtkWidget         *dialog,
                                                        GimpDialogFactory *factory,
                                                        GimpDialogFactoryEntry *entry);
@@ -281,7 +273,7 @@ gimp_dialog_factory_register_entry (GimpDialogFactory *factory,
                                     const gchar       *stock_id,
                                     const gchar       *help_id,
                                     GimpDialogNewFunc  new_func,
-                                    gint               preview_size,
+                                    gint               view_size,
                                     gboolean           singleton,
                                     gboolean           session_managed,
                                     gboolean           remember_size,
@@ -300,7 +292,7 @@ gimp_dialog_factory_register_entry (GimpDialogFactory *factory,
   entry->stock_id         = g_strdup (stock_id);
   entry->help_id          = g_strdup (help_id);
   entry->new_func         = new_func;
-  entry->preview_size     = preview_size;
+  entry->view_size        = view_size;
   entry->singleton        = singleton ? TRUE : FALSE;
   entry->session_managed  = session_managed ? TRUE : FALSE;
   entry->remember_size    = remember_size ? TRUE : FALSE;
@@ -360,7 +352,7 @@ gimp_dialog_factory_dialog_new_internal (GimpDialogFactory *factory,
                                          GdkScreen         *screen,
                                          GimpContext       *context,
                                          const gchar       *identifier,
-                                         gint               preview_size,
+                                         gint               view_size,
                                          gboolean           return_existing,
                                          gboolean           present)
 {
@@ -426,21 +418,21 @@ gimp_dialog_factory_dialog_new_internal (GimpDialogFactory *factory,
        *  - the factory's context, which happens when raising a toplevel
        *    dialog was the original request.
        */
-      if (preview_size < GIMP_VIEW_SIZE_TINY)
-        preview_size = entry->preview_size;
+      if (view_size < GIMP_VIEW_SIZE_TINY)
+        view_size = entry->view_size;
 
       if (context)
         dialog = factory->constructor (factory, entry,
                                        context,
-                                       preview_size);
+                                       view_size);
       else if (dock)
         dialog = factory->constructor (factory, entry,
                                        GIMP_DOCK (dock)->context,
-                                       preview_size);
+                                       view_size);
       else
         dialog = factory->constructor (factory, entry,
                                        factory->context,
-                                       preview_size);
+                                       view_size);
 
       if (dialog)
         {
@@ -538,7 +530,7 @@ gimp_dialog_factory_dialog_new_internal (GimpDialogFactory *factory,
  * @screen:       the #GdkScreen the dialog should appear on
  * @identifier:   the identifier of the dialog as registered with
  *                gimp_dialog_factory_register_entry()
- * @preview_size:
+ * @view_size:
  * @present:      whether gtk_window_present() should be called
  *
  * Creates a new toplevel dialog or a #GimpDockable, depending on whether
@@ -551,7 +543,7 @@ GtkWidget *
 gimp_dialog_factory_dialog_new (GimpDialogFactory *factory,
                                 GdkScreen         *screen,
                                 const gchar       *identifier,
-                                gint               preview_size,
+                                gint               view_size,
                                 gboolean           present)
 {
   g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (factory), NULL);
@@ -562,7 +554,7 @@ gimp_dialog_factory_dialog_new (GimpDialogFactory *factory,
                                                   screen,
                                                   factory->context,
                                                   identifier,
-                                                  preview_size,
+                                                  view_size,
                                                   FALSE,
                                                   present);
 }
@@ -573,7 +565,7 @@ gimp_dialog_factory_dialog_new (GimpDialogFactory *factory,
  * @screen:       the #GdkScreen the dialog should appear on
  * @identifiers:  a '|' separated list of identifiers of dialogs as
  *                registered with gimp_dialog_factory_register_entry()
- * @preview_size:
+ * @view_size:
  *
  * Raises any of a list of already existing toplevel dialog or
  * #GimpDockable if it was already created by this %facory.
@@ -587,7 +579,7 @@ GtkWidget *
 gimp_dialog_factory_dialog_raise (GimpDialogFactory *factory,
                                   GdkScreen         *screen,
                                   const gchar       *identifiers,
-                                  gint               preview_size)
+                                  gint               view_size)
 {
   GtkWidget *dialog;
 
@@ -616,7 +608,7 @@ gimp_dialog_factory_dialog_raise (GimpDialogFactory *factory,
                                                         screen,
                                                         NULL,
                                                         ids[i] ? ids[i] : ids[0],
-                                                        preview_size,
+                                                        view_size,
                                                         TRUE,
                                                         TRUE);
       g_strfreev (ids);
@@ -627,7 +619,7 @@ gimp_dialog_factory_dialog_raise (GimpDialogFactory *factory,
                                                         screen,
                                                         NULL,
                                                         identifiers,
-                                                        preview_size,
+                                                        view_size,
                                                         TRUE,
                                                         TRUE);
     }
@@ -641,7 +633,7 @@ gimp_dialog_factory_dialog_raise (GimpDialogFactory *factory,
  * @dock:         a #GimpDock crated by this %factory.
  * @identifier:   the identifier of the dialog as registered with
  *                gimp_dialog_factory_register_entry()
- * @preview_size:
+ * @view_size:
  *
  * Creates a new #GimpDockable in the context of the #GimpDock it will be
  * added to.
@@ -657,7 +649,7 @@ GtkWidget *
 gimp_dialog_factory_dockable_new (GimpDialogFactory *factory,
                                   GimpDock          *dock,
                                   const gchar       *identifier,
-                                  gint               preview_size)
+                                  gint               view_size)
 {
   g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (factory), NULL);
   g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
@@ -667,7 +659,7 @@ gimp_dialog_factory_dockable_new (GimpDialogFactory *factory,
                                                   gtk_widget_get_screen (GTK_WIDGET (dock)),
                                                   dock->context,
                                                   identifier,
-                                                  preview_size,
+                                                  view_size,
                                                   FALSE,
                                                   FALSE);
 }
@@ -998,6 +990,19 @@ gimp_dialog_factory_remove_dialog (GimpDialogFactory *factory,
 }
 
 void
+gimp_dialog_factory_show_toolbox (GimpDialogFactory *toolbox_factory)
+{
+  GtkWidget *toolbox;
+
+  g_return_if_fail (GIMP_IS_DIALOG_FACTORY (toolbox_factory));
+
+  toolbox = gimp_dialog_factory_get_toolbox (toolbox_factory);
+
+  if (toolbox)
+    gtk_window_present (GTK_WINDOW (toolbox));
+}
+
+void
 gimp_dialog_factories_session_save (GimpConfigWriter *writer)
 {
   GimpDialogFactoryClass *factory_class;
@@ -1036,60 +1041,28 @@ gimp_dialog_factories_session_clear (void)
 }
 
 void
-gimp_dialog_factories_toggle (GimpDialogFactory *toolbox_factory,
-                              gboolean           ensure_visibility)
+gimp_dialog_factories_toggle (void)
 {
-  static GimpDialogShowState toggle_state = GIMP_DIALOG_SHOW_ALL;
-  static gboolean            doing_update = FALSE;
+  static gboolean shown = TRUE;  /* FIXME */
 
   GimpDialogFactoryClass *factory_class;
 
-  if (doing_update)
-    return;
-
-  if (ensure_visibility && toggle_state != GIMP_DIALOG_HIDE_ALL)
-    {
-      GtkWidget *toolbox = gimp_dialog_factory_get_toolbox (toolbox_factory);
-
-      if (toolbox)
-        gtk_window_present (GTK_WINDOW (toolbox));
-
-      return;
-    }
-
-  doing_update = TRUE;
-
   factory_class = g_type_class_peek (GIMP_TYPE_DIALOG_FACTORY);
 
-  switch (toggle_state)
+  if (shown)
     {
-    case GIMP_DIALOG_SHOW_ALL:
-      toggle_state = GIMP_DIALOG_HIDE_ALL;
-
+      shown = FALSE;
       g_hash_table_foreach (factory_class->factories,
                             (GHFunc) gimp_dialog_factories_hide_foreach,
                             NULL);
-      break;
-
-    case GIMP_DIALOG_HIDE_ALL:
-      toggle_state = GIMP_DIALOG_SHOW_TOOLBOX;
-
-      gimp_dialog_factories_show_foreach (GIMP_OBJECT (toolbox_factory)->name,
-                                          toolbox_factory,
-                                          NULL);
-      break;
-
-    case GIMP_DIALOG_SHOW_TOOLBOX:
-      toggle_state = GIMP_DIALOG_SHOW_ALL;
-
+    }
+  else
+    {
+      shown = TRUE;
       g_hash_table_foreach (factory_class->factories,
                             (GHFunc) gimp_dialog_factories_show_foreach,
                             NULL);
-    default:
-      break;
     }
-
-  doing_update = FALSE;
 }
 
 void
@@ -1149,9 +1122,9 @@ static GtkWidget *
 gimp_dialog_factory_default_constructor (GimpDialogFactory      *factory,
                                          GimpDialogFactoryEntry *entry,
                                          GimpContext            *context,
-                                         gint                    preview_size)
+                                         gint                    view_size)
 {
-  return entry->new_func (factory, context, preview_size);
+  return entry->new_func (factory, context, view_size);
 }
 
 static void
@@ -1364,7 +1337,19 @@ gimp_dialog_factories_show_foreach (gconstpointer      key,
           if (! GTK_WIDGET_VISIBLE (list->data) &&
               visibility == GIMP_DIALOG_VISIBILITY_VISIBLE)
             {
-              gtk_widget_show (GTK_WIDGET (list->data));
+              GtkWindow *window       = GTK_WINDOW (list->data);
+              gboolean   focus_on_map = gtk_window_get_focus_on_map (window);
+
+              if (focus_on_map)
+                gtk_window_set_focus_on_map (window, FALSE);
+
+              gtk_widget_show (GTK_WIDGET (window));
+
+              if (GTK_WIDGET_VISIBLE (window))
+                gdk_window_raise (GTK_WIDGET (window)->window);
+
+              if (focus_on_map)
+                gtk_window_set_focus_on_map (window, TRUE);
             }
         }
     }

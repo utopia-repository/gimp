@@ -75,27 +75,27 @@ gboolean    <a href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-fini
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2544484"></a><h2>Description</h2>
+<a name="id2552815"></a><h2>Description</h2>
 <p>
 Functions for writing config info to a file for libgimpconfig.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2544496"></a><h2>Details</h2>
+<a name="id2552827"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2544502"></a><h3>
+<a name="id2552833"></a><h3>
 <a name="GimpConfigWriter"></a>GimpConfigWriter</h3>
-<a class="indexterm" name="id2544512"></a><pre class="programlisting">typedef struct _GimpConfigWriter GimpConfigWriter;</pre>
+<a class="indexterm" name="id2552843"></a><pre class="programlisting">typedef struct _GimpConfigWriter GimpConfigWriter;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2544529"></a><h3>
+<a name="id2552860"></a><h3>
 <a name="gimp-config-writer-new-file"></a>gimp_config_writer_new_file ()</h3>
-<a class="indexterm" name="id2544538"></a><pre class="programlisting"><a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a>* gimp_config_writer_new_file
+<a class="indexterm" name="id2552868"></a><pre class="programlisting"><a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a>* gimp_config_writer_new_file
                                             (const gchar *filename,
                                              gboolean atomic,
                                              const gchar *header,
@@ -149,9 +149,9 @@ possible race conditions. The temporary file is then moved to
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2560355"></a><h3>
+<a name="id2535020"></a><h3>
 <a name="gimp-config-writer-new-fd"></a>gimp_config_writer_new_fd ()</h3>
-<a class="indexterm" name="id2560364"></a><pre class="programlisting"><a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a>* gimp_config_writer_new_fd (gint fd);</pre>
+<a class="indexterm" name="id2535030"></a><pre class="programlisting"><a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a>* gimp_config_writer_new_fd (gint fd);</pre>
 <p>
 </p>
 <p>
@@ -180,9 +180,9 @@ possible race conditions. The temporary file is then moved to
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2560441"></a><h3>
+<a name="id2535108"></a><h3>
 <a name="gimp-config-writer-new-string"></a>gimp_config_writer_new_string ()</h3>
-<a class="indexterm" name="id2560452"></a><pre class="programlisting"><a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a>* gimp_config_writer_new_string
+<a class="indexterm" name="id2535118"></a><pre class="programlisting"><a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a>* gimp_config_writer_new_string
                                             (GString *string);</pre>
 <p>
 </p>
@@ -212,9 +212,9 @@ possible race conditions. The temporary file is then moved to
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2560531"></a><h3>
+<a name="id2535198"></a><h3>
 <a name="gimp-config-writer-open"></a>gimp_config_writer_open ()</h3>
-<a class="indexterm" name="id2560540"></a><pre class="programlisting">void        gimp_config_writer_open         (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2535207"></a><pre class="programlisting">void        gimp_config_writer_open         (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              const gchar *name);</pre>
 <p>
 This function writes the opening parenthese followed by <em class="parameter"><code>name</code></em>.
@@ -245,9 +245,9 @@ can be used by <a href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-r
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2565575"></a><h3>
+<a name="id2566003"></a><h3>
 <a name="gimp-config-writer-comment-mode"></a>gimp_config_writer_comment_mode ()</h3>
-<a class="indexterm" name="id2565585"></a><pre class="programlisting">void        gimp_config_writer_comment_mode (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2566012"></a><pre class="programlisting">void        gimp_config_writer_comment_mode (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              gboolean enable);</pre>
 <p>
 This function toggles whether the <em class="parameter"><code>writer</code></em> should create commented
@@ -282,9 +282,9 @@ funtion will insert a newline if necessary.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2565683"></a><h3>
+<a name="id2566109"></a><h3>
 <a name="gimp-config-writer-print"></a>gimp_config_writer_print ()</h3>
-<a class="indexterm" name="id2565692"></a><pre class="programlisting">void        gimp_config_writer_print        (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2566118"></a><pre class="programlisting">void        gimp_config_writer_print        (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              const gchar *string,
                                              gint len);</pre>
 <p>
@@ -321,9 +321,9 @@ must not contain any special characters that might need to be escaped.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2565820"></a><h3>
+<a name="id2566247"></a><h3>
 <a name="gimp-config-writer-printf"></a>gimp_config_writer_printf ()</h3>
-<a class="indexterm" name="id2565830"></a><pre class="programlisting">void        gimp_config_writer_printf       (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2566256"></a><pre class="programlisting">void        gimp_config_writer_printf       (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              const gchar *format,
                                              ...);</pre>
 <p>
@@ -359,9 +359,9 @@ A printf-like function for <a href="libgimpconfig-GimpConfigWriter.html#GimpConf
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2565951"></a><h3>
+<a name="id2566378"></a><h3>
 <a name="gimp-config-writer-identifier"></a>gimp_config_writer_identifier ()</h3>
-<a class="indexterm" name="id2565962"></a><pre class="programlisting">void        gimp_config_writer_identifier   (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2566389"></a><pre class="programlisting">void        gimp_config_writer_identifier   (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              const gchar *identifier);</pre>
 <p>
 Writes an identifier to <em class="parameter"><code>writer</code></em>. The <em class="parameter"><code>string</code></em> is *not* quoted and special
@@ -391,9 +391,9 @@ characters are *not* escaped.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2566058"></a><h3>
+<a name="id2566485"></a><h3>
 <a name="gimp-config-writer-string"></a>gimp_config_writer_string ()</h3>
-<a class="indexterm" name="id2566067"></a><pre class="programlisting">void        gimp_config_writer_string       (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2566495"></a><pre class="programlisting">void        gimp_config_writer_string       (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              const gchar *string);</pre>
 <p>
 Writes a string value to <em class="parameter"><code>writer</code></em>. The <em class="parameter"><code>string</code></em> is quoted and special
@@ -423,9 +423,9 @@ characters are escaped.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2566162"></a><h3>
+<a name="id2566590"></a><h3>
 <a name="gimp-config-writer-data"></a>gimp_config_writer_data ()</h3>
-<a class="indexterm" name="id2566171"></a><pre class="programlisting">void        gimp_config_writer_data         (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2566599"></a><pre class="programlisting">void        gimp_config_writer_data         (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              gint length,
                                              const guint8 *data);</pre>
 <p>
@@ -461,9 +461,9 @@ characters are escaped.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2566250"></a><h3>
+<a name="id2566702"></a><h3>
 <a name="gimp-config-writer-comment"></a>gimp_config_writer_comment ()</h3>
-<a class="indexterm" name="id2566259"></a><pre class="programlisting">void        gimp_config_writer_comment      (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2566712"></a><pre class="programlisting">void        gimp_config_writer_comment      (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              const gchar *comment);</pre>
 <p>
 Appends the <em class="parameter"><code>comment</code></em> to <em class="parameter"><code>str</code></em> and inserts linebreaks and hash-marks to
@@ -494,9 +494,9 @@ characters.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2566346"></a><h3>
+<a name="id2566809"></a><h3>
 <a name="gimp-config-writer-linefeed"></a>gimp_config_writer_linefeed ()</h3>
-<a class="indexterm" name="id2566355"></a><pre class="programlisting">void        gimp_config_writer_linefeed     (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
+<a class="indexterm" name="id2566819"></a><pre class="programlisting">void        gimp_config_writer_linefeed     (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
 <p>
 
 </p>
@@ -514,9 +514,9 @@ characters.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2566396"></a><h3>
+<a name="id2566865"></a><h3>
 <a name="gimp-config-writer-revert"></a>gimp_config_writer_revert ()</h3>
-<a class="indexterm" name="id2566405"></a><pre class="programlisting">void        gimp_config_writer_revert       (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
+<a class="indexterm" name="id2566874"></a><pre class="programlisting">void        gimp_config_writer_revert       (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
 <p>
 Reverts all changes to <em class="parameter"><code>writer</code></em> that were done since the last call
 to <a href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-open"><code class="function">gimp_config_writer_open()</code></a>. This can only work if you didn't call
@@ -538,9 +538,9 @@ to <a href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-open"><code c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2566482"></a><h3>
+<a name="id2566960"></a><h3>
 <a name="gimp-config-writer-close"></a>gimp_config_writer_close ()</h3>
-<a class="indexterm" name="id2566490"></a><pre class="programlisting">void        gimp_config_writer_close        (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
+<a class="indexterm" name="id2566969"></a><pre class="programlisting">void        gimp_config_writer_close        (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
 <p>
 Closes an element opened with <a href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-open"><code class="function">gimp_config_writer_open()</code></a>.</p>
 <p>
@@ -560,9 +560,9 @@ Closes an element opened with <a href="libgimpconfig-GimpConfigWriter.html#gimp-
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2566554"></a><h3>
+<a name="id2567040"></a><h3>
 <a name="gimp-config-writer-finish"></a>gimp_config_writer_finish ()</h3>
-<a class="indexterm" name="id2566563"></a><pre class="programlisting">gboolean    gimp_config_writer_finish       (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2567050"></a><pre class="programlisting">gboolean    gimp_config_writer_finish       (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              const gchar *footer,
                                              GError **error);</pre>
 <p>

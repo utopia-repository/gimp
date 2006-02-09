@@ -60,9 +60,8 @@ You might want to install fonts for use with GIMP only or you might not have
 permissions to install fonts system-wide. To make this possible, GIMP 2.0 also
 looks for fonts in the GIMP specific font search path that can be configured in
 your gimprc or from the Preferences Dialog. So, in order to install fonts to be
-used with GIMP, you can just copy them to ~/.gimp-2.0/fonts, press the Refresh
+used with GIMP, you can just copy them to ~/.gimp-2.3/fonts, press the Refresh
 button in the Fonts dialog and start using them.
-
 
 ---
 Ari Pollak <ari@debian.org>  Aug. 5, 2004

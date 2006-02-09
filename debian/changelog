@@ -1,3 +1,13 @@
+gimp (2.3.7-1) experimental; urgency=low
+
+  * New upstream release
+    - Fixes issue where saving a file would always report that the file
+      already exists (Closes: #347804)
+  * Don't build gimp with gcc 3.4 on arm anymore, since it seems gcc-4.0
+    builds correctly there now.
+
+ -- Ari Pollak <ari@debian.org>  Thu,  9 Feb 2006 12:08:49 -0500
+
 gimp (2.3.6-3) experimental; urgency=low
 
   * Apply patch from upstream CVS to fix saving EXIF data on JPEG files

@@ -168,6 +168,23 @@
                                              <link linkend="gint">gint</link> flags,
                                              <link linkend="gint">gint</link> size,
                                              <link linkend="gconstpointer">gconstpointer</link> data);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-add-vectors">gimp_image_add_vectors</link>          (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> vectors_ID,
+                                             <link linkend="gint">gint</link> position);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-remove-vectors">gimp_image_remove_vectors</link>       (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> vectors_ID);
+<link linkend="gint32">gint32</link>      <link linkend="gimp-image-get-active-vectors">gimp_image_get_active_vectors</link>   (<link linkend="gint32">gint32</link> image_ID);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-set-active-vectors">gimp_image_set_active_vectors</link>   (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> active_vectors_ID);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-lower-vectors">gimp_image_lower_vectors</link>        (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> vectors_ID);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-raise-vectors">gimp_image_raise_vectors</link>        (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> vectors_ID);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-lower-vectors-to-bottom">gimp_image_lower_vectors_to_bottom</link>
+                                            (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> vectors_ID);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-raise-vectors-to-top">gimp_image_raise_vectors_to_top</link> (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> vectors_ID);
 </synopsis>
 </refsynopsisdiv>
 
@@ -1826,6 +1843,198 @@ the new parasite.
 See Also: <link linkend="gimp-image-parasite-attach"><function>gimp_image_parasite_attach()</function></link>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-image-add-vectors"/>gimp_image_add_vectors ()</title>
+<indexterm><primary>gimp_image_add_vectors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_add_vectors          (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> vectors_ID,
+                                             <link linkend="gint">gint</link> position);</programlisting>
+<para>
+Add the specified vectors object to the image.
+</para>
+<para>
+This procedure adds the specified vectors object to the gimage at
+the given position. If the position is specified as -1, then the
+vectors object is inserted at the top of the vectors stack.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The image.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>vectors_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The vectors object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>position</parameter>&nbsp;:</term>
+<listitem><simpara> The vectors objects position.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-image-remove-vectors"/>gimp_image_remove_vectors ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_image_remove_vectors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_remove_vectors       (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> vectors_ID);</programlisting>
+<para>
+Remove the specified path from the image.
+</para>
+<para>
+This procedure removes the specified path from the image. If the
+path doesn't exist, an error is returned.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The image.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>vectors_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The vectors object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-image-get-active-vectors"/>gimp_image_get_active_vectors ()</title>
+<indexterm><primary>gimp_image_get_active_vectors</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_get_active_vectors   (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<para>
+Returns the specified image's active vectors.
+</para>
+<para>
+If there is an active path, its ID will be returned, otherwise, -1.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The image.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The active vectors.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-image-set-active-vectors"/>gimp_image_set_active_vectors ()</title>
+<indexterm><primary>gimp_image_set_active_vectors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_set_active_vectors   (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> active_vectors_ID);</programlisting>
+<para>
+Sets the specified image's active vectors.
+</para>
+<para>
+If the path exists, it is set as the active path in the image.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The image.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>active_vectors_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The new image active vectors.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-image-lower-vectors"/>gimp_image_lower_vectors ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_image_lower_vectors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_lower_vectors        (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> vectors_ID);</programlisting>
+<para>
+Lower the specified vectors in the image's vectors stack
+</para>
+<para>
+This procedure lowers the specified vectors one step in the existing
+vectors stack. It will not move the vectors if there is no vectors
+below it.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The image.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>vectors_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The vectors object to lower.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-image-raise-vectors"/>gimp_image_raise_vectors ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_image_raise_vectors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_raise_vectors        (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> vectors_ID);</programlisting>
+<para>
+Raise the specified vectors in the image's vectors stack
+</para>
+<para>
+This procedure raises the specified vectors one step in the existing
+vectors stack. It will not move the vectors if there is no vectors
+above it.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The image.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>vectors_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The vectors object to raise.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-image-lower-vectors-to-bottom"/>gimp_image_lower_vectors_to_bottom ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_image_lower_vectors_to_bottom</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_lower_vectors_to_bottom
+                                            (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> vectors_ID);</programlisting>
+<para>
+Lower the specified vectors in the image's vectors stack to bottom
+of stack
+</para>
+<para>
+This procedure lowers the specified vectors to bottom of the
+existing vectors stack. It will not move the vectors if there is no
+vectors below it.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The image.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>vectors_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The vectors object to lower to bottom.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-image-raise-vectors-to-top"/>gimp_image_raise_vectors_to_top ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_image_raise_vectors_to_top</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_raise_vectors_to_top (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> vectors_ID);</programlisting>
+<para>
+Raise the specified vectors in the image's vectors stack to top of
+stack
+</para>
+<para>
+This procedure raises the specified vectors to top of the existing
+vectors stack. It will not move the vectors if there is no vectors
+above it.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The image.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>vectors_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The vectors object to raise to top.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
 
 </refsect1>
 

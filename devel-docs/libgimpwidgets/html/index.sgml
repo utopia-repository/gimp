@@ -241,6 +241,8 @@
 <ANCHOR id="GimpScrolledPreview-struct" href="libgimpwidgets/GimpScrolledPreview.html#GimpScrolledPreview-struct">
 <ANCHOR id="gimp-scrolled-preview-set-position" href="libgimpwidgets/GimpScrolledPreview.html#gimp-scrolled-preview-set-position">
 <ANCHOR id="gimp-scrolled-preview-set-policy" href="libgimpwidgets/GimpScrolledPreview.html#gimp-scrolled-preview-set-policy">
+<ANCHOR id="gimp-scrolled-preview-freeze" href="libgimpwidgets/GimpScrolledPreview.html#gimp-scrolled-preview-freeze">
+<ANCHOR id="gimp-scrolled-preview-thaw" href="libgimpwidgets/GimpScrolledPreview.html#gimp-scrolled-preview-thaw">
 <ANCHOR id="GimpUnitMenu" href="libgimpwidgets/GimpUnitMenu.html">
 <ANCHOR id="GimpUnitMenu-struct" href="libgimpwidgets/GimpUnitMenu.html#GimpUnitMenu-struct">
 <ANCHOR id="gimp-unit-menu-new" href="libgimpwidgets/GimpUnitMenu.html#gimp-unit-menu-new">

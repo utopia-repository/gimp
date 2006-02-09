@@ -60,18 +60,18 @@ gchar*      <a href="libgimp-gimppatterns.html#gimp-patterns-get-pattern-data">g
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2625950"></a><h2>Description</h2>
+<a name="id2641096"></a><h2>Description</h2>
 <p>
 Functions relating to patterns.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2625961"></a><h2>Details</h2>
+<a name="id2641107"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2625967"></a><h3>
+<a name="id2641113"></a><h3>
 <a name="gimp-patterns-refresh"></a>gimp_patterns_refresh ()</h3>
-<a class="indexterm" name="id2625976"></a><pre class="programlisting">gboolean    gimp_patterns_refresh           (void);</pre>
+<a class="indexterm" name="id2641122"></a><pre class="programlisting">gboolean    gimp_patterns_refresh           (void);</pre>
 <p>
 Refresh current patterns. This function always succeeds.
 </p>
@@ -93,9 +93,9 @@ pattern path and updates all pattern dialogs accordingly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626021"></a><h3>
+<a name="id2641167"></a><h3>
 <a name="gimp-patterns-get-list"></a>gimp_patterns_get_list ()</h3>
-<a class="indexterm" name="id2626030"></a><pre class="programlisting">gchar**     gimp_patterns_get_list          (const gchar *filter,
+<a class="indexterm" name="id2641176"></a><pre class="programlisting">gchar**     gimp_patterns_get_list          (const gchar *filter,
                                              gint *num_patterns);</pre>
 <p>
 Retrieve a complete listing of the available patterns.
@@ -133,9 +133,9 @@ patterns. Each name returned can be used as input to the
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2639578"></a><h3>
+<a name="id2641693"></a><h3>
 <a name="gimp-patterns-get-pattern"></a>gimp_patterns_get_pattern ()</h3>
-<a class="indexterm" name="id2639586"></a><pre class="programlisting">gchar*      gimp_patterns_get_pattern       (gint *width,
+<a class="indexterm" name="id2641702"></a><pre class="programlisting">gchar*      gimp_patterns_get_pattern       (gint *width,
                                              gint *height);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -173,9 +173,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627097"></a><h3>
+<a name="id2640541"></a><h3>
 <a name="gimp-patterns-set-pattern"></a>gimp_patterns_set_pattern ()</h3>
-<a class="indexterm" name="id2627106"></a><pre class="programlisting">gboolean    gimp_patterns_set_pattern       (const gchar *name);</pre>
+<a class="indexterm" name="id2640550"></a><pre class="programlisting">gboolean    gimp_patterns_set_pattern       (const gchar *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_patterns_set_pattern</code> is deprecated and should not be used in newly-written code.</p>
@@ -205,9 +205,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627185"></a><h3>
+<a name="id2640629"></a><h3>
 <a name="gimp-patterns-get-pattern-data"></a>gimp_patterns_get_pattern_data ()</h3>
-<a class="indexterm" name="id2627194"></a><pre class="programlisting">gchar*      gimp_patterns_get_pattern_data  (const gchar *name,
+<a class="indexterm" name="id2640638"></a><pre class="programlisting">gchar*      gimp_patterns_get_pattern_data  (const gchar *name,
                                              gint *width,
                                              gint *height,
                                              gint *mask_bpp,

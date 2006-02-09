@@ -6,6 +6,7 @@
       <sub name="gimpbasetypes" link="libgimpbase-gimpbasetypes.html"/>
       <sub name="gimpversion" link="libgimpbase-gimpversion.html"/>
       <sub name="gimplimits" link="libgimpbase-gimplimits.html"/>
+      <sub name="gimpparam" link="libgimpbase-gimpparam.html"/>
       <sub name="gimpchecks" link="libgimpbase-gimpchecks.html"/>
       <sub name="gimpdatafiles" link="libgimpbase-gimpdatafiles.html"/>
       <sub name="gimpenv" link="libgimpbase-gimpenv.html"/>
@@ -69,6 +70,10 @@
     <function name="GIMP_MIN_RESOLUTION" link="libgimpbase-gimplimits.html#GIMP-MIN-RESOLUTION:CAPS"/>
     <function name="GIMP_MAX_RESOLUTION" link="libgimpbase-gimplimits.html#GIMP-MAX-RESOLUTION:CAPS"/>
     <function name="GIMP_MAX_MEMSIZE" link="libgimpbase-gimplimits.html#GIMP-MAX-MEMSIZE:CAPS"/>
+    <function name="GIMP_PARAM_STATIC_STRINGS" link="libgimpbase-gimpparam.html#GIMP-PARAM-STATIC-STRINGS:CAPS"/>
+    <function name="GIMP_PARAM_READABLE" link="libgimpbase-gimpparam.html#GIMP-PARAM-READABLE:CAPS"/>
+    <function name="GIMP_PARAM_WRITABLE" link="libgimpbase-gimpparam.html#GIMP-PARAM-WRITABLE:CAPS"/>
+    <function name="GIMP_PARAM_READWRITE" link="libgimpbase-gimpparam.html#GIMP-PARAM-READWRITE:CAPS"/>
     <function name="GIMP_CHECK_SIZE" link="libgimpbase-gimpchecks.html#GIMP-CHECK-SIZE:CAPS"/>
     <function name="GIMP_CHECK_SIZE_SM" link="libgimpbase-gimpchecks.html#GIMP-CHECK-SIZE-SM:CAPS"/>
     <function name="GIMP_CHECK_DARK" link="libgimpbase-gimpchecks.html#GIMP-CHECK-DARK:CAPS"/>

@@ -49,6 +49,11 @@
 <ANCHOR id="GIMP-MIN-RESOLUTION:CAPS" href="libgimpbase/libgimpbase-gimplimits.html#GIMP-MIN-RESOLUTION:CAPS">
 <ANCHOR id="GIMP-MAX-RESOLUTION:CAPS" href="libgimpbase/libgimpbase-gimplimits.html#GIMP-MAX-RESOLUTION:CAPS">
 <ANCHOR id="GIMP-MAX-MEMSIZE:CAPS" href="libgimpbase/libgimpbase-gimplimits.html#GIMP-MAX-MEMSIZE:CAPS">
+<ANCHOR id="libgimpbase-gimpparam" href="libgimpbase/libgimpbase-gimpparam.html">
+<ANCHOR id="GIMP-PARAM-STATIC-STRINGS:CAPS" href="libgimpbase/libgimpbase-gimpparam.html#GIMP-PARAM-STATIC-STRINGS:CAPS">
+<ANCHOR id="GIMP-PARAM-READABLE:CAPS" href="libgimpbase/libgimpbase-gimpparam.html#GIMP-PARAM-READABLE:CAPS">
+<ANCHOR id="GIMP-PARAM-WRITABLE:CAPS" href="libgimpbase/libgimpbase-gimpparam.html#GIMP-PARAM-WRITABLE:CAPS">
+<ANCHOR id="GIMP-PARAM-READWRITE:CAPS" href="libgimpbase/libgimpbase-gimpparam.html#GIMP-PARAM-READWRITE:CAPS">
 <ANCHOR id="libgimpbase-gimpchecks" href="libgimpbase/libgimpbase-gimpchecks.html">
 <ANCHOR id="GIMP-CHECK-SIZE:CAPS" href="libgimpbase/libgimpbase-gimpchecks.html#GIMP-CHECK-SIZE:CAPS">
 <ANCHOR id="GIMP-CHECK-SIZE-SM:CAPS" href="libgimpbase/libgimpbase-gimpchecks.html#GIMP-CHECK-SIZE-SM:CAPS">

@@ -60,7 +60,7 @@ void        <a href="GimpFileEntry.html#gimp-file-entry-set-filename">gimp_file_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2562862"></a><h2>Object Hierarchy</h2>
+<a name="id2548134"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -83,13 +83,13 @@ href="../gtk/GtkHBox.html"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2531324"></a><h2>Implemented Interfaces</h2>
+<a name="id2527869"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpFileEntry implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2531341"></a><h2>Signal Prototypes</h2>
+<a name="id2527886"></a><h2>Signal Prototypes</h2>
 <pre class="synopsis">
 
 "<a href="GimpFileEntry.html#GimpFileEntry-filename-changed">filename-changed</a>"
@@ -98,7 +98,7 @@ GimpFileEntry implements
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2531380"></a><h2>Description</h2>
+<a name="id2527925"></a><h2>Description</h2>
 <p>
 This widget is used to enter filenames or directories.
 </p>
@@ -127,20 +127,20 @@ will be emitted.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2567449"></a><h2>Details</h2>
+<a name="id2567881"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2567455"></a><h3>
+<a name="id2567887"></a><h3>
 <a name="GimpFileEntry-struct"></a>GimpFileEntry</h3>
-<a class="indexterm" name="id2567464"></a><pre class="programlisting">typedef struct _GimpFileEntry GimpFileEntry;</pre>
+<a class="indexterm" name="id2567896"></a><pre class="programlisting">typedef struct _GimpFileEntry GimpFileEntry;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567480"></a><h3>
+<a name="id2567913"></a><h3>
 <a name="gimp-file-entry-new"></a>gimp_file_entry_new ()</h3>
-<a class="indexterm" name="id2567491"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2567923"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>*  gimp_file_entry_new             (const gchar *title,
                                              const gchar *filename,
@@ -190,9 +190,9 @@ Creates a new <a href="GimpFileEntry.html" title="GimpFileEntry"><span class="ty
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567192"></a><h3>
+<a name="id2563765"></a><h3>
 <a name="gimp-file-entry-get-filename"></a>gimp_file_entry_get_filename ()</h3>
-<a class="indexterm" name="id2567201"></a><pre class="programlisting">gchar*      gimp_file_entry_get_filename    (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *entry);</pre>
+<a class="indexterm" name="id2563774"></a><pre class="programlisting">gchar*      gimp_file_entry_get_filename    (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *entry);</pre>
 <p>
 Note that you have to <code class="function">g_free()</code> the returned string.</p>
 <p>
@@ -218,9 +218,9 @@ Note that you have to <code class="function">g_free()</code> the returned string
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567270"></a><h3>
+<a name="id2563844"></a><h3>
 <a name="gimp-file-entry-set-filename"></a>gimp_file_entry_set_filename ()</h3>
-<a class="indexterm" name="id2567280"></a><pre class="programlisting">void        gimp_file_entry_set_filename    (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *entry,
+<a class="indexterm" name="id2563853"></a><pre class="programlisting">void        gimp_file_entry_set_filename    (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *entry,
                                              const gchar *filename);</pre>
 <p>
 If you specified <em class="parameter"><code>check_valid</code></em> as <code class="literal">TRUE</code> in <a href="GimpFileEntry.html#gimp-file-entry-new"><code class="function">gimp_file_entry_new()</code></a>
@@ -249,9 +249,9 @@ name.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2561283"></a><h2>Signals</h2>
+<a name="id2565662"></a><h2>Signals</h2>
 <div class="refsect2" lang="en">
-<a name="id2561289"></a><h3>
+<a name="id2565668"></a><h3>
 <a name="GimpFileEntry-filename-changed"></a>The "filename-changed" signal</h3>
 <pre class="programlisting">void        user_function                  (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *arg0,
                                             gpointer user_data);</pre>
@@ -271,7 +271,7 @@ This signal is emitted whenever the user changes the filename.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2561352"></a><h2>See Also</h2>
+<a name="id2565730"></a><h2>See Also</h2>
 <p>
 <a href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a>
 </p>

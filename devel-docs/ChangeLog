@@ -1,3 +1,19 @@
+2006-01-30  Sven Neumann  <sven@gimp.org>
+
+	* libgimpbase/libgimpbase-docs.sgml
+	* libgimpbase/libgimpbase-sections.txt
+	* libgimpbase/tmpl/gimpparam.sgml: added docs for GIMP_PARAM defines.
+
+2006-01-25  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt
+	* libgimpwidgets/libgimpwidgets-sections.txt: added new symbols.
+
+	* libgimp/tmpl/gimpcontext.sgml
+	* libgimp/tmpl/gimpimage.sgml
+	* libgimp/tmpl/gimpvectors.sgml
+	* libgimpwidgets/tmpl/gimpscrolledpreview.sgml: regenerated.
+
 2005-12-14  Sven Neumann  <sven@gimp.org>
 
 	* libgimpbase/Makefile.am

@@ -90,8 +90,8 @@ gimp_2_3_DEPENDENCIES = gui/libappgui.a actions/libappactions.a \
 	$(am__DEPENDENCIES_9) $(am__DEPENDENCIES_9) \
 	$(am__DEPENDENCIES_10)
 am__gimp_console_2_3_SOURCES_DIST = app_procs.c app_procs.h main.c \
-	batch.c batch.h errors.c errors.h sanity.c sanity.h units.c \
-	units.h gimp-intl.h
+	about.h batch.c batch.h errors.c errors.h sanity.c sanity.h \
+	units.c units.h gimp-intl.h
 am__objects_2 = gimp_console_2_3-app_procs.$(OBJEXT) \
 	gimp_console_2_3-main.$(OBJEXT) \
 	gimp_console_2_3-batch.$(OBJEXT) \
@@ -542,6 +542,7 @@ app_sources = \
 	app_procs.c	\
 	app_procs.h	\
 	main.c		\
+	about.h		\
 	batch.c		\
 	batch.h		\
 	errors.c	\

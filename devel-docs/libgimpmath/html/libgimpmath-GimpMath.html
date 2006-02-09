@@ -1,4 +1,40 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpMath</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Math Library Reference Manual"><link rel="up" href="libgimpmath.html" title="Part I. GIMP Math Library"><link rel="prev" href="libgimpmath.html" title="Part I. GIMP Math Library"><link rel="next" href="libgimpmath-GimpMatrix.html" title="GimpMatrix"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpmath.html" title="Part I. GIMP Math Library"><link rel="index" href="ix01.html" title="Index"><link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2"><link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4"><link rel="index" href="ix04.html" title="Index of deprecated symbols"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpmath.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpmath.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Math Library Reference Manual</th><td><a accesskey="n" href="libgimpmath-GimpMatrix.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimpmath-GimpMath"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">GimpMath</span></h2><p>GimpMath &#8212; Mathematical definitions and macros.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>GimpMath</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Math Library Reference Manual">
+<link rel="up" href="libgimpmath.html" title="Part&#160;I.&#160;GIMP Math Library">
+<link rel="prev" href="libgimpmath.html" title="Part&#160;I.&#160;GIMP Math Library">
+<link rel="next" href="libgimpmath-GimpMatrix.html" title="GimpMatrix">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libgimpmath.html" title="Part&#160;I.&#160;GIMP Math Library">
+<link rel="index" href="ix01.html" title="Index">
+<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="libgimpmath.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpmath.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Math Library Reference Manual</th>
+<td><a accesskey="n" href="libgimpmath-GimpMatrix.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="libgimpmath-GimpMath"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">GimpMath</span></h2>
+<p>GimpMath &#8212; Mathematical definitions and macros.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
 
 
 
@@ -9,50 +45,169 @@
 #define     <a href="libgimpmath-GimpMath.html#CLAMP0255:CAPS">CLAMP0255</a>                       (a)
 #define     <a href="libgimpmath-GimpMath.html#gimp-deg-to-rad">gimp_deg_to_rad</a>                 (angle)
 #define     <a href="libgimpmath-GimpMath.html#gimp-rad-to-deg">gimp_rad_to_deg</a>                 (angle)
-</pre></div><div class="refsect1" lang="en"><a name="id2469029"></a><h2>Description</h2><p>
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2470014"></a><h2>Description</h2>
+<p>
 Mathematical definitions and macros. These macros should be used
 rather than the ones from math.h for enhanced portability.
-</p></div><div class="refsect1" lang="en"><a name="id2469041"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2469047"></a><h3><a name="RINT:CAPS"></a>RINT()</h3><a class="indexterm" name="id2469055"></a><pre class="programlisting">#define     RINT(x)</pre><p>
-This macro rounds its argument <i class="parameter"><tt>x</tt></i> to an integer value in floating point
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2470027"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2470034"></a><h3>
+<a name="RINT:CAPS"></a>RINT()</h3>
+<a class="indexterm" name="id2470043"></a><pre class="programlisting">#define     RINT(x)</pre>
+<p>
+This macro rounds its argument <em class="parameter"><code>x</code></em> to an integer value in floating point
 format.
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td>the value to be rounded.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td>the value to be rounded.
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2469084"></a><h3><a name="ROUND:CAPS"></a>ROUND()</h3><a class="indexterm" name="id2469092"></a><pre class="programlisting">#define ROUND(x) ((int) ((x) + 0.5))
-</pre><p>
-This macro rounds its argument <i class="parameter"><tt>x</tt></i> to the nearest integer.
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td>the value to be rounded.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2470084"></a><h3>
+<a name="ROUND:CAPS"></a>ROUND()</h3>
+<a class="indexterm" name="id2470094"></a><pre class="programlisting">#define ROUND(x) ((int) ((x) + 0.5))
+</pre>
+<p>
+This macro rounds its argument <em class="parameter"><code>x</code></em> to the nearest integer.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td>the value to be rounded.
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2469120"></a><h3><a name="SQR:CAPS"></a>SQR()</h3><a class="indexterm" name="id2467626"></a><pre class="programlisting">#define SQR(x) ((x) * (x))
-</pre><p>
-This macro squares its argument <i class="parameter"><tt>x</tt></i>.
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td>the value to be squared.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2470133"></a><h3>
+<a name="SQR:CAPS"></a>SQR()</h3>
+<a class="indexterm" name="id2470143"></a><pre class="programlisting">#define SQR(x) ((x) * (x))
+</pre>
+<p>
+This macro squares its argument <em class="parameter"><code>x</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td>the value to be squared.
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2467653"></a><h3><a name="MAX255:CAPS"></a>MAX255()</h3><a class="indexterm" name="id2467662"></a><pre class="programlisting">#define MAX255(a)  ((a) | (((a) &amp; 256) - (((a) &amp; 256) &gt;&gt; 8)))
-</pre><p>
-This macro limits it argument <i class="parameter"><tt>a</tt></i>, an (0-511) int, to 255.
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>a</tt></i> :</span></td><td>the value to be limited.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2492558"></a><h3>
+<a name="MAX255:CAPS"></a>MAX255()</h3>
+<a class="indexterm" name="id2492567"></a><pre class="programlisting">#define MAX255(a)  ((a) | (((a) &amp; 256) - (((a) &amp; 256) &gt;&gt; 8)))
+</pre>
+<p>
+This macro limits it argument <em class="parameter"><code>a</code></em>, an (0-511) int, to 255.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>a</code></em>&#160;:</span></td>
+<td>the value to be limited.
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2467689"></a><h3><a name="CLAMP0255:CAPS"></a>CLAMP0255()</h3><a class="indexterm" name="id2467698"></a><pre class="programlisting">#define CLAMP0255(a)  CLAMP(a,0,255)
-</pre><p>
-This macro clamps its argument <i class="parameter"><tt>a</tt></i>, an int32-range int, between 0 and
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2492607"></a><h3>
+<a name="CLAMP0255:CAPS"></a>CLAMP0255()</h3>
+<a class="indexterm" name="id2492617"></a><pre class="programlisting">#define CLAMP0255(a)  CLAMP(a,0,255)
+</pre>
+<p>
+This macro clamps its argument <em class="parameter"><code>a</code></em>, an int32-range int, between 0 and
 255 inclusive.
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>a</tt></i> :</span></td><td>the value to be clamped.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>a</code></em>&#160;:</span></td>
+<td>the value to be clamped.
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2467726"></a><h3><a name="gimp-deg-to-rad"></a>gimp_deg_to_rad()</h3><a class="indexterm" name="id2467735"></a><pre class="programlisting">#define gimp_deg_to_rad(angle) ((angle) * (2.0 * G_PI) / 360.0)
-</pre><p>
-This macro converts its argument <i class="parameter"><tt>angle</tt></i> from degree to radian.
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>angle</tt></i> :</span></td><td>the angle to be converted.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2492657"></a><h3>
+<a name="gimp-deg-to-rad"></a>gimp_deg_to_rad()</h3>
+<a class="indexterm" name="id2492667"></a><pre class="programlisting">#define gimp_deg_to_rad(angle) ((angle) * (2.0 * G_PI) / 360.0)
+</pre>
+<p>
+This macro converts its argument <em class="parameter"><code>angle</code></em> from degree to radian.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></td>
+<td>the angle to be converted.
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2467764"></a><h3><a name="gimp-rad-to-deg"></a>gimp_rad_to_deg()</h3><a class="indexterm" name="id2467772"></a><pre class="programlisting">#define gimp_rad_to_deg(angle) ((angle) * 360.0 / (2.0 * G_PI))
-</pre><p>
-This macro converts its argument <i class="parameter"><tt>angle</tt></i> from radian to degree.
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>angle</tt></i> :</span></td><td>the angle to be converted.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2470487"></a><h3>
+<a name="gimp-rad-to-deg"></a>gimp_rad_to_deg()</h3>
+<a class="indexterm" name="id2470497"></a><pre class="programlisting">#define gimp_rad_to_deg(angle) ((angle) * 360.0 / (2.0 * G_PI))
+</pre>
+<p>
+This macro converts its argument <em class="parameter"><code>angle</code></em> from radian to degree.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></td>
+<td>the angle to be converted.
 
 
-</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpmath.html"><b>&lt;&lt; Part I. GIMP Math Library</b></a></td><td align="right"><a accesskey="n" href="libgimpmath-GimpMatrix.html"><b>GimpMatrix &gt;&gt;</b></a></td></tr></table></body></html>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimpmath.html"><b>&lt;&lt;&#160;Part&#160;I.&#160;GIMP Math Library</b></a></td>
+<td align="right"><a accesskey="n" href="libgimpmath-GimpMatrix.html"><b>GimpMatrix&#160;&gt;&gt;</b></a></td>
+</tr></table>
+</body>
+</html>

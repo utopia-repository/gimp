@@ -91,17 +91,17 @@ gboolean    <a href="libgimp-gimpbrush.html#gimp-brush-is-editable">gimp_brush_i
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2628484"></a><h2>Description</h2>
+<a name="id2627856"></a><h2>Description</h2>
 <p>
 Functions operating on a single brush.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2628495"></a><h2>Details</h2>
+<a name="id2627866"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2628501"></a><h3>
+<a name="id2627873"></a><h3>
 <a name="gimp-brush-new"></a>gimp_brush_new ()</h3>
-<a class="indexterm" name="id2628511"></a><pre class="programlisting">gchar*      gimp_brush_new                  (const gchar *name);</pre>
+<a class="indexterm" name="id2627883"></a><pre class="programlisting">gchar*      gimp_brush_new                  (const gchar *name);</pre>
 <p>
 Creates a new brush
 </p>
@@ -133,9 +133,9 @@ This procedure creates a new, uninitialized brush</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628580"></a><h3>
+<a name="id2627952"></a><h3>
 <a name="gimp-brush-duplicate"></a>gimp_brush_duplicate ()</h3>
-<a class="indexterm" name="id2628589"></a><pre class="programlisting">gchar*      gimp_brush_duplicate            (const gchar *name);</pre>
+<a class="indexterm" name="id2621087"></a><pre class="programlisting">gchar*      gimp_brush_duplicate            (const gchar *name);</pre>
 <p>
 Duplicates a brush
 </p>
@@ -167,9 +167,9 @@ This procedure creates an identical brush by a different name</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628658"></a><h3>
+<a name="id2621155"></a><h3>
 <a name="gimp-brush-rename"></a>gimp_brush_rename ()</h3>
-<a class="indexterm" name="id2628668"></a><pre class="programlisting">gchar*      gimp_brush_rename               (const gchar *name,
+<a class="indexterm" name="id2621165"></a><pre class="programlisting">gchar*      gimp_brush_rename               (const gchar *name,
                                              const gchar *new_name);</pre>
 <p>
 Rename a brush
@@ -208,9 +208,9 @@ This procedure renames a brush</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628757"></a><h3>
+<a name="id2621254"></a><h3>
 <a name="gimp-brush-delete"></a>gimp_brush_delete ()</h3>
-<a class="indexterm" name="id2628768"></a><pre class="programlisting">gboolean    gimp_brush_delete               (const gchar *name);</pre>
+<a class="indexterm" name="id2621265"></a><pre class="programlisting">gboolean    gimp_brush_delete               (const gchar *name);</pre>
 <p>
 Deletes a brush
 </p>
@@ -242,9 +242,9 @@ This procedure deletes a brush</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622812"></a><h3>
+<a name="id2621332"></a><h3>
 <a name="gimp-brush-get-info"></a>gimp_brush_get_info ()</h3>
-<a class="indexterm" name="id2622822"></a><pre class="programlisting">gboolean    gimp_brush_get_info             (const gchar *name,
+<a class="indexterm" name="id2621342"></a><pre class="programlisting">gboolean    gimp_brush_get_info             (const gchar *name,
                                              gint *width,
                                              gint *height,
                                              gint *mask_bpp,
@@ -305,9 +305,9 @@ includes the brush name, and the brush extents (width and height).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622977"></a><h3>
+<a name="id2637947"></a><h3>
 <a name="gimp-brush-get-pixels"></a>gimp_brush_get_pixels ()</h3>
-<a class="indexterm" name="id2622986"></a><pre class="programlisting">gboolean    gimp_brush_get_pixels           (const gchar *name,
+<a class="indexterm" name="id2637955"></a><pre class="programlisting">gboolean    gimp_brush_get_pixels           (const gchar *name,
                                              gint *width,
                                              gint *height,
                                              gint *mask_bpp,
@@ -396,9 +396,9 @@ includes the brush extents (width and height) and its pixels data.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2633484"></a><h3>
+<a name="id2638170"></a><h3>
 <a name="gimp-brush-get-spacing"></a>gimp_brush_get_spacing ()</h3>
-<a class="indexterm" name="id2633492"></a><pre class="programlisting">gboolean    gimp_brush_get_spacing          (const gchar *name,
+<a class="indexterm" name="id2638178"></a><pre class="programlisting">gboolean    gimp_brush_get_spacing          (const gchar *name,
                                              gint *spacing);</pre>
 <p>
 Get the brush spacing.
@@ -439,9 +439,9 @@ percentage of the maximum of the width and height of the mask.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2633574"></a><h3>
+<a name="id2638261"></a><h3>
 <a name="gimp-brush-set-spacing"></a>gimp_brush_set_spacing ()</h3>
-<a class="indexterm" name="id2633583"></a><pre class="programlisting">gboolean    gimp_brush_set_spacing          (const gchar *name,
+<a class="indexterm" name="id2638269"></a><pre class="programlisting">gboolean    gimp_brush_set_spacing          (const gchar *name,
                                              gint spacing);</pre>
 <p>
 Set the brush spacing.
@@ -481,9 +481,9 @@ The value should be a integer between 0 and 1000.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2633664"></a><h3>
+<a name="id2638350"></a><h3>
 <a name="gimp-brush-get-shape"></a>gimp_brush_get_shape ()</h3>
-<a class="indexterm" name="id2633672"></a><pre class="programlisting">gint        gimp_brush_get_shape            (const gchar *name);</pre>
+<a class="indexterm" name="id2638358"></a><pre class="programlisting">gint        gimp_brush_get_shape            (const gchar *name);</pre>
 <p>
 Get the shape of a generated brush.
 </p>
@@ -520,9 +520,9 @@ in the future.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2633740"></a><h3>
+<a name="id2638426"></a><h3>
 <a name="gimp-brush-set-shape"></a>gimp_brush_set_shape ()</h3>
-<a class="indexterm" name="id2633748"></a><pre class="programlisting">gint        gimp_brush_set_shape            (const gchar *name,
+<a class="indexterm" name="id2638434"></a><pre class="programlisting">gint        gimp_brush_set_shape            (const gchar *name,
                                              gint shape_in);</pre>
 <p>
 Set the shape of a generated brush.
@@ -566,9 +566,9 @@ in the future.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2633834"></a><h3>
+<a name="id2638520"></a><h3>
 <a name="gimp-brush-get-spikes"></a>gimp_brush_get_spikes ()</h3>
-<a class="indexterm" name="id2633843"></a><pre class="programlisting">gint        gimp_brush_get_spikes           (const gchar *name);</pre>
+<a class="indexterm" name="id2638529"></a><pre class="programlisting">gint        gimp_brush_get_spikes           (const gchar *name);</pre>
 <p>
 Get the number of spikes for a generated brush.
 </p>
@@ -601,9 +601,9 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2633907"></a><h3>
+<a name="id2638593"></a><h3>
 <a name="gimp-brush-set-spikes"></a>gimp_brush_set_spikes ()</h3>
-<a class="indexterm" name="id2633915"></a><pre class="programlisting">gint        gimp_brush_set_spikes           (const gchar *name,
+<a class="indexterm" name="id2638601"></a><pre class="programlisting">gint        gimp_brush_set_spikes           (const gchar *name,
                                              gint spikes_in);</pre>
 <p>
 Set the number of spikes for a generated brush.
@@ -643,9 +643,9 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2633999"></a><h3>
+<a name="id2638685"></a><h3>
 <a name="gimp-brush-get-angle"></a>gimp_brush_get_angle ()</h3>
-<a class="indexterm" name="id2634007"></a><pre class="programlisting">gdouble     gimp_brush_get_angle            (const gchar *name);</pre>
+<a class="indexterm" name="id2638693"></a><pre class="programlisting">gdouble     gimp_brush_get_angle            (const gchar *name);</pre>
 <p>
 Get the rotation angle of a generated brush.
 </p>
@@ -678,9 +678,9 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2634071"></a><h3>
+<a name="id2638757"></a><h3>
 <a name="gimp-brush-set-angle"></a>gimp_brush_set_angle ()</h3>
-<a class="indexterm" name="id2634080"></a><pre class="programlisting">gdouble     gimp_brush_set_angle            (const gchar *name,
+<a class="indexterm" name="id2638766"></a><pre class="programlisting">gdouble     gimp_brush_set_angle            (const gchar *name,
                                              gdouble angle_in);</pre>
 <p>
 Set the rotation angle of a generated brush.
@@ -720,9 +720,9 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2634163"></a><h3>
+<a name="id2638850"></a><h3>
 <a name="gimp-brush-get-radius"></a>gimp_brush_get_radius ()</h3>
-<a class="indexterm" name="id2634172"></a><pre class="programlisting">gdouble     gimp_brush_get_radius           (const gchar *name);</pre>
+<a class="indexterm" name="id2638858"></a><pre class="programlisting">gdouble     gimp_brush_get_radius           (const gchar *name);</pre>
 <p>
 Get the radius of a generated brush.
 </p>
@@ -755,9 +755,9 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2634236"></a><h3>
+<a name="id2638922"></a><h3>
 <a name="gimp-brush-set-radius"></a>gimp_brush_set_radius ()</h3>
-<a class="indexterm" name="id2634245"></a><pre class="programlisting">gdouble     gimp_brush_set_radius           (const gchar *name,
+<a class="indexterm" name="id2638931"></a><pre class="programlisting">gdouble     gimp_brush_set_radius           (const gchar *name,
                                              gdouble radius_in);</pre>
 <p>
 Set the radius of a generated brush.
@@ -797,9 +797,9 @@ any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2634328"></a><h3>
+<a name="id2639014"></a><h3>
 <a name="gimp-brush-get-aspect-ratio"></a>gimp_brush_get_aspect_ratio ()</h3>
-<a class="indexterm" name="id2634336"></a><pre class="programlisting">gdouble     gimp_brush_get_aspect_ratio     (const gchar *name);</pre>
+<a class="indexterm" name="id2639023"></a><pre class="programlisting">gdouble     gimp_brush_get_aspect_ratio     (const gchar *name);</pre>
 <p>
 Get the aspect ratio of a generated brush.
 </p>
@@ -832,9 +832,9 @@ for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2634400"></a><h3>
+<a name="id2639086"></a><h3>
 <a name="gimp-brush-set-aspect-ratio"></a>gimp_brush_set_aspect_ratio ()</h3>
-<a class="indexterm" name="id2634409"></a><pre class="programlisting">gdouble     gimp_brush_set_aspect_ratio     (const gchar *name,
+<a class="indexterm" name="id2639095"></a><pre class="programlisting">gdouble     gimp_brush_set_aspect_ratio     (const gchar *name,
                                              gdouble aspect_ratio_in);</pre>
 <p>
 Set the aspect ratio of a generated brush.
@@ -874,9 +874,9 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2634492"></a><h3>
+<a name="id2639179"></a><h3>
 <a name="gimp-brush-get-hardness"></a>gimp_brush_get_hardness ()</h3>
-<a class="indexterm" name="id2634501"></a><pre class="programlisting">gdouble     gimp_brush_get_hardness         (const gchar *name);</pre>
+<a class="indexterm" name="id2639187"></a><pre class="programlisting">gdouble     gimp_brush_get_hardness         (const gchar *name);</pre>
 <p>
 Get the hardness of a generated brush.
 </p>
@@ -910,9 +910,9 @@ called for any other type of brush, the function does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2634566"></a><h3>
+<a name="id2639252"></a><h3>
 <a name="gimp-brush-set-hardness"></a>gimp_brush_set_hardness ()</h3>
-<a class="indexterm" name="id2634574"></a><pre class="programlisting">gdouble     gimp_brush_set_hardness         (const gchar *name,
+<a class="indexterm" name="id2639261"></a><pre class="programlisting">gdouble     gimp_brush_set_hardness         (const gchar *name,
                                              gdouble hardness_in);</pre>
 <p>
 Set the hardness of a generated brush.
@@ -952,9 +952,9 @@ for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2634658"></a><h3>
+<a name="id2639344"></a><h3>
 <a name="gimp-brush-is-generated"></a>gimp_brush_is_generated ()</h3>
-<a class="indexterm" name="id2634666"></a><pre class="programlisting">gboolean    gimp_brush_is_generated         (const gchar *name);</pre>
+<a class="indexterm" name="id2639352"></a><pre class="programlisting">gboolean    gimp_brush_is_generated         (const gchar *name);</pre>
 <p>
 Tests if generated
 </p>
@@ -986,9 +986,9 @@ Returns True if this brush is parametric, False for other types</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2634728"></a><h3>
+<a name="id2639414"></a><h3>
 <a name="gimp-brush-is-editable"></a>gimp_brush_is_editable ()</h3>
-<a class="indexterm" name="id2634736"></a><pre class="programlisting">gboolean    gimp_brush_is_editable          (const gchar *name);</pre>
+<a class="indexterm" name="id2639423"></a><pre class="programlisting">gboolean    gimp_brush_is_editable          (const gchar *name);</pre>
 <p>
 Tests if brush can be edited
 </p>

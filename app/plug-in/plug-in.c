@@ -433,38 +433,13 @@ plug_in_open (PlugIn *plug_in)
 
   argc = 0;
 
-#if defined (G_OS_WIN32) && !GLIB_CHECK_VERSION (2, 8, 2)
-  /* In GLib < 2.8.2 on Win32 the argument vector passed to g_spawn*()
-   * should be in system codepage.
-   *
-   * Checking compile-time GLib version is the right thing to do.
-   * Even if running against GLib >= 2.8.2, code compiled against
-   * headers from GLib < 2.8.2 use backward-compatible functions that
-   * still take system codepage. Only code compiled against headers
-   * from GLib >= 2.8.2 use the g_spawn versions (that actually are
-   * called g_spawn*_utf8()) that take UTF-8.
-   */
-  if (interp)
-    {
-      args[argc++] = g_locale_from_utf8 (interp, -1, NULL, NULL, NULL);
-      if (args[argc-1] == NULL)
-	g_error ("Interpreter %s is a file name with characters not in the system codepage. That doesn't work when GIMP is built against GLib 2.8.1 or earlier.", interp);
-    }
-#else
   if (interp)
     args[argc++] = interp;
-#endif
 
   if (interp_arg)
     args[argc++] = interp_arg;
 
-#if defined (G_OS_WIN32) && !GLIB_CHECK_VERSION (2, 8, 2)
-  args[argc++] = g_locale_from_utf8 (plug_in->prog, -1, NULL, NULL, NULL);
-  if (args[argc-1] == NULL)
-    g_error ("Plug-in %s is a file name with characters not in the system codepage. That doesn't work when GIMP is built against GLib 2.8.1 or earlier.", plug_in->prog);
-#else
   args[argc++] = plug_in->prog;
-#endif
   args[argc++] = "-gimp";
   args[argc++] = read_fd;
   args[argc++] = write_fd;
@@ -543,18 +518,6 @@ cleanup:
   g_free (read_fd);
   g_free (write_fd);
   g_free (stm);
-
-#if defined (G_OS_WIN32) && !GLIB_CHECK_VERSION (2, 8, 2)
-  argc = 0;
-  if (interp)
-    g_free (args[argc++]);
-
-  if (interp_arg)
-    argc++;
-
-  g_free (args[argc++]);
-#endif
-
   g_free (interp);
   g_free (interp_arg);
 
@@ -1037,3 +1000,97 @@ plug_in_get_undo_desc (PlugIn *plug_in)
 
   return undo_desc;
 }
+
+/*  called from the PDB (gimp_plugin_menu_register)  */
+gboolean
+plug_in_menu_register (PlugIn      *plug_in,
+                       const gchar *proc_name,
+                       const gchar *menu_path)
+{
+  PlugInProcDef *proc_def = NULL;
+  GError        *error    = NULL;
+
+  g_return_val_if_fail (plug_in != NULL, FALSE);
+  g_return_val_if_fail (proc_name != NULL, FALSE);
+  g_return_val_if_fail (menu_path != NULL, FALSE);
+
+  if (plug_in->plug_in_def)
+    proc_def = plug_in_proc_def_find (plug_in->plug_in_def->proc_defs,
+                                      proc_name);
+
+  if (! proc_def)
+    proc_def = plug_in_proc_def_find (plug_in->temp_proc_defs,
+                                      proc_name);
+
+  if (! proc_def)
+    {
+      g_message ("Plug-in \"%s\"\n(%s)\n"
+                 "attempted to register the menu item \"%s\" "
+                 "for the procedure \"%s\".\n"
+                 "It has however not installed that procedure.  This "
+                 "is not allowed.",
+                 gimp_filename_to_utf8 (plug_in->name),
+                 gimp_filename_to_utf8 (plug_in->prog),
+                 menu_path, proc_name);
+
+      return FALSE;
+    }
+
+  if (! proc_def->menu_label)
+    {
+      g_message ("Plug-in \"%s\"\n(%s)\n"
+                 "attempted to register the menu item \"%s\" "
+                 "for procedure \"%s\".\n"
+                 "The menu label given in gimp_install_procedure() "
+                 "already contained a path.  To make this work, "
+                 "pass just the menu's label to "
+                 "gimp_install_procedure().",
+                 gimp_filename_to_utf8 (plug_in->name),
+                 gimp_filename_to_utf8 (plug_in->prog),
+                 menu_path, proc_name);
+
+      return FALSE;
+    }
+
+  if (! plug_in_proc_args_check (plug_in->name,
+                                 plug_in->prog,
+                                 proc_name,
+                                 menu_path,
+                                 proc_def->db_info.args,
+                                 proc_def->db_info.num_args,
+                                 proc_def->db_info.values,
+                                 proc_def->db_info.num_values,
+                                 &error))
+    {
+      g_message (error->message);
+      g_clear_error (&error);
+
+      return FALSE;
+    }
+
+  switch (proc_def->db_info.proc_type)
+    {
+    case GIMP_INTERNAL:
+      return FALSE;
+
+    case GIMP_PLUGIN:
+    case GIMP_EXTENSION:
+      if (! plug_in->query && ! plug_in->init)
+        return FALSE;
+
+    case GIMP_TEMPORARY:
+      break;
+    }
+
+  proc_def->menu_paths = g_list_append (proc_def->menu_paths,
+                                        g_strdup (menu_path));
+
+  if (proc_def->db_info.proc_type == GIMP_TEMPORARY
+      && ! plug_in->gimp->no_interface)
+    {
+      gimp_menus_create_item (plug_in->gimp, proc_def, menu_path);
+    }
+
+  return TRUE;
+}
+

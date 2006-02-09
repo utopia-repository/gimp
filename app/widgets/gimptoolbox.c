@@ -50,6 +50,8 @@
 #include "gimpwidgets-utils.h"
 #include "gtkhwrapbox.h"
 
+#include "about.h"
+
 #include "gimp-intl.h"
 
 
@@ -148,14 +150,14 @@ gimp_toolbox_class_init (GimpToolboxClass *klass)
                                       NULL, NULL,
                                       GTK_TYPE_ICON_SIZE,
                                       DEFAULT_TOOL_ICON_SIZE,
-                                      G_PARAM_READABLE));
+                                      GIMP_PARAM_READABLE));
 
   gtk_widget_class_install_style_property
     (widget_class, g_param_spec_enum ("button-relief",
                                       NULL, NULL,
                                       GTK_TYPE_RELIEF_STYLE,
                                       DEFAULT_BUTTON_RELIEF,
-                                      G_PARAM_READABLE));
+                                      GIMP_PARAM_READABLE));
 }
 
 static void
@@ -546,7 +548,7 @@ gimp_toolbox_new (GimpDialogFactory *dialog_factory,
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
 
   toolbox = g_object_new (GIMP_TYPE_TOOLBOX,
-                          "title",          _("GIMP"),
+                          "title",          GIMP_ACRONYM,
                           "context",        gimp_get_user_context (gimp),
                           "dialog-factory", dialog_factory,
                           NULL);

@@ -65,7 +65,7 @@ do_file_open_dialog (void)
   if (! dialog)
     {
       dialog =
-        gtk_file_chooser_dialog_new (_("Load Imagemap"),
+        gtk_file_chooser_dialog_new (_("Load Image Map"),
                                      NULL,
                                      GTK_FILE_CHOOSER_ACTION_OPEN,
 
@@ -167,7 +167,7 @@ do_file_save_as_dialog (void)
   if (! dialog)
     {
       dialog =
-        gtk_file_chooser_dialog_new (_("Save Imagemap"),
+        gtk_file_chooser_dialog_new (_("Save Image Map"),
                                      NULL,
                                      GTK_FILE_CHOOSER_ACTION_SAVE,
 
@@ -200,7 +200,7 @@ do_file_error_dialog (const char *error,
 {
    GtkWidget *dialog;
 
-   dialog = gtk_message_dialog_new_with_markup 
+   dialog = gtk_message_dialog_new_with_markup
      (NULL,
       GTK_DIALOG_DESTROY_WITH_PARENT,
       GTK_MESSAGE_ERROR,

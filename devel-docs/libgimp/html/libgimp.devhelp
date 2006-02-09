@@ -187,6 +187,8 @@
     <function name="gimp_context_set_palette ()" link="libgimp-gimpcontext.html#gimp-context-set-palette"/>
     <function name="gimp_context_get_font ()" link="libgimp-gimpcontext.html#gimp-context-get-font"/>
     <function name="gimp_context_set_font ()" link="libgimp-gimpcontext.html#gimp-context-set-font"/>
+    <function name="gimp_context_get_paint_method ()" link="libgimp-gimpcontext.html#gimp-context-get-paint-method"/>
+    <function name="gimp_context_set_paint_method ()" link="libgimp-gimpcontext.html#gimp-context-set-paint-method"/>
     <function name="gimp_gimprc_query ()" link="libgimp-gimpgimprc.html#gimp-gimprc-query"/>
     <function name="gimp_gimprc_set ()" link="libgimp-gimpgimprc.html#gimp-gimprc-set"/>
     <function name="gimp_get_color_configuration ()" link="libgimp-gimpgimprc.html#gimp-get-color-configuration"/>
@@ -439,6 +441,14 @@
     <function name="gimp_image_parasite_attach ()" link="libgimp-gimpimage.html#gimp-image-parasite-attach"/>
     <function name="gimp_image_parasite_detach ()" link="libgimp-gimpimage.html#gimp-image-parasite-detach"/>
     <function name="gimp_image_attach_new_parasite ()" link="libgimp-gimpimage.html#gimp-image-attach-new-parasite"/>
+    <function name="gimp_image_add_vectors ()" link="libgimp-gimpimage.html#gimp-image-add-vectors"/>
+    <function name="gimp_image_remove_vectors ()" link="libgimp-gimpimage.html#gimp-image-remove-vectors"/>
+    <function name="gimp_image_get_active_vectors ()" link="libgimp-gimpimage.html#gimp-image-get-active-vectors"/>
+    <function name="gimp_image_set_active_vectors ()" link="libgimp-gimpimage.html#gimp-image-set-active-vectors"/>
+    <function name="gimp_image_lower_vectors ()" link="libgimp-gimpimage.html#gimp-image-lower-vectors"/>
+    <function name="gimp_image_raise_vectors ()" link="libgimp-gimpimage.html#gimp-image-raise-vectors"/>
+    <function name="gimp_image_lower_vectors_to_bottom ()" link="libgimp-gimpimage.html#gimp-image-lower-vectors-to-bottom"/>
+    <function name="gimp_image_raise_vectors_to_top ()" link="libgimp-gimpimage.html#gimp-image-raise-vectors-to-top"/>
     <function name="gimp_layer_new ()" link="libgimp-gimplayer.html#gimp-layer-new"/>
     <function name="gimp_layer_copy ()" link="libgimp-gimplayer.html#gimp-layer-copy"/>
     <function name="gimp_layer_scale ()" link="libgimp-gimplayer.html#gimp-layer-scale"/>
@@ -583,10 +593,29 @@
     <function name="gimp_image_undo_enable ()" link="libgimp-gimpundo.html#gimp-image-undo-enable"/>
     <function name="gimp_image_undo_freeze ()" link="libgimp-gimpundo.html#gimp-image-undo-freeze"/>
     <function name="gimp_image_undo_thaw ()" link="libgimp-gimpundo.html#gimp-image-undo-thaw"/>
+    <function name="gimp_vectors_get_image ()" link="libgimp-gimpvectors.html#gimp-vectors-get-image"/>
+    <function name="gimp_vectors_get_linked ()" link="libgimp-gimpvectors.html#gimp-vectors-get-linked"/>
+    <function name="gimp_vectors_get_name ()" link="libgimp-gimpvectors.html#gimp-vectors-get-name"/>
+    <function name="gimp_vectors_get_tattoo ()" link="libgimp-gimpvectors.html#gimp-vectors-get-tattoo"/>
+    <function name="gimp_vectors_get_visible ()" link="libgimp-gimpvectors.html#gimp-vectors-get-visible"/>
+    <function name="gimp_vectors_new ()" link="libgimp-gimpvectors.html#gimp-vectors-new"/>
+    <function name="gimp_vectors_set_linked ()" link="libgimp-gimpvectors.html#gimp-vectors-set-linked"/>
+    <function name="gimp_vectors_set_name ()" link="libgimp-gimpvectors.html#gimp-vectors-set-name"/>
+    <function name="gimp_vectors_set_tattoo ()" link="libgimp-gimpvectors.html#gimp-vectors-set-tattoo"/>
+    <function name="gimp_vectors_set_visible ()" link="libgimp-gimpvectors.html#gimp-vectors-set-visible"/>
     <function name="gimp_vectors_get_strokes ()" link="libgimp-gimpvectors.html#gimp-vectors-get-strokes"/>
-    <function name="gimp_vectors_stroke_interpolate ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-interpolate"/>
+    <function name="gimp_vectors_stroke_close ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-close"/>
     <function name="gimp_vectors_stroke_remove ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-remove"/>
+    <function name="gimp_vectors_stroke_get_length ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-get-length"/>
+    <function name="gimp_vectors_stroke_get_point_at_dist ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-get-point-at-dist"/>
+    <function name="gimp_vectors_stroke_interpolate ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-interpolate"/>
+    <function name="gimp_vectors_stroke_scale ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-scale"/>
     <function name="gimp_vectors_stroke_translate ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-translate"/>
+    <function name="gimp_vectors_bezier_stroke_conicto ()" link="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-conicto"/>
+    <function name="gimp_vectors_bezier_stroke_cubicto ()" link="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-cubicto"/>
+    <function name="gimp_vectors_bezier_stroke_lineto ()" link="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-lineto"/>
+    <function name="gimp_vectors_bezier_stroke_new_ellipse ()" link="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-new-ellipse"/>
+    <function name="gimp_vectors_bezier_stroke_new_moveto ()" link="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-new-moveto"/>
     <function name="gimp_brush_new ()" link="libgimp-gimpbrush.html#gimp-brush-new"/>
     <function name="gimp_brush_duplicate ()" link="libgimp-gimpbrush.html#gimp-brush-duplicate"/>
     <function name="gimp_brush_rename ()" link="libgimp-gimpbrush.html#gimp-brush-rename"/>

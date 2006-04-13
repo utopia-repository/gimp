@@ -27,15 +27,6 @@ else
 	CFLAGS += -O2
 endif
 
-ifeq ("arm",$(shell dpkg-architecture -qDEB_BUILD_ARCH_CPU))
-	CC = gcc-3.4
-else
-	CC = gcc
-endif
-#ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
-#	INSTALL_PROGRAM += -s
-#endif
-
 major=2.0
 
 ## Read version numbers from the changelog (for upstream dev versions)

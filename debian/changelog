@@ -1,3 +1,12 @@
+gimp (2.2.11-1) unstable; urgency=low
+
+  * New upstream release
+  * Stop building with gcc-3.4 on arm
+  * Fix build-depends to exclude kfreebsd-amd64 from using libasound2-dev
+    (Closes: #361459)
+
+ -- Ari Pollak <ari@debian.org>  Thu, 13 Apr 2006 17:27:44 -0400
+
 gimp (2.2.10-2) unstable; urgency=low
 
   * Apply patch from upstream CVS to fix saving EXIF data on JPEG files

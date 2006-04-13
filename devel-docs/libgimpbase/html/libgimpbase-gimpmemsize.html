@@ -44,17 +44,17 @@ gchar*      <a href="libgimpbase-gimpmemsize.html#gimp-memsize-to-string">gimp_m
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2551625"></a><h2>Description</h2>
+<a name="id2519244"></a><h2>Description</h2>
 <p>
 Functions to (de)serialize a given memory size.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2551636"></a><h2>Details</h2>
+<a name="id2519256"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2551643"></a><h3>
+<a name="id2519262"></a><h3>
 <a name="gimp-memsize-serialize"></a>gimp_memsize_serialize ()</h3>
-<a class="indexterm" name="id2527744"></a><pre class="programlisting">gchar*      gimp_memsize_serialize          (guint64 memsize);</pre>
+<a class="indexterm" name="id2519271"></a><pre class="programlisting">gchar*      gimp_memsize_serialize          (guint64 memsize);</pre>
 <p>
 Creates a string representation of a given memory size. This string
 can be parsed by <a href="libgimpbase-gimpmemsize.html#gimp-memsize-deserialize"><code class="function">gimp_memsize_deserialize()</code></a> and can thus be used in
@@ -86,9 +86,9 @@ nice human-readable string please use <a href="libgimpbase-gimpmemsize.html#gimp
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2527835"></a><h3>
+<a name="id2529124"></a><h3>
 <a name="gimp-memsize-deserialize"></a>gimp_memsize_deserialize ()</h3>
-<a class="indexterm" name="id2527844"></a><pre class="programlisting">gboolean    gimp_memsize_deserialize        (const gchar *string,
+<a class="indexterm" name="id2529133"></a><pre class="programlisting">gboolean    gimp_memsize_deserialize        (const gchar *string,
                                              guint64 *memsize);</pre>
 <p>
 Parses a string representation of a memory size as returned by
@@ -126,9 +126,9 @@ Parses a string representation of a memory size as returned by
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2547893"></a><h3>
+<a name="id2469611"></a><h3>
 <a name="gimp-memsize-to-string"></a>gimp_memsize_to_string ()</h3>
-<a class="indexterm" name="id2547902"></a><pre class="programlisting">gchar*      gimp_memsize_to_string          (guint64 memsize);</pre>
+<a class="indexterm" name="id2469620"></a><pre class="programlisting">gchar*      gimp_memsize_to_string          (guint64 memsize);</pre>
 <p>
 This function returns a human readable, translated representation
 of the passed <em class="parameter"><code>memsize</code></em>. Large values are displayed using a
@@ -157,9 +157,9 @@ becomes "4.4 KB" and so on.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2520294"></a><h3>
+<a name="id2557935"></a><h3>
 <a name="GIMP-TYPE-MEMSIZE:CAPS"></a>GIMP_TYPE_MEMSIZE</h3>
-<a class="indexterm" name="id2520304"></a><pre class="programlisting">#define GIMP_TYPE_MEMSIZE               (gimp_memsize_get_type ())
+<a class="indexterm" name="id2557944"></a><pre class="programlisting">#define GIMP_TYPE_MEMSIZE               (gimp_memsize_get_type ())
 </pre>
 <p>
 <a href="libgimpbase-gimpmemsize.html#GIMP-TYPE-MEMSIZE:CAPS"><span class="type">GIMP_TYPE_MEMSIZE</span></a> is a <span class="type">GType</span> derived from <span class="type">G_TYPE_UINT64</span>.
@@ -167,9 +167,9 @@ becomes "4.4 KB" and so on.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2520341"></a><h3>
+<a name="id2557981"></a><h3>
 <a name="GIMP-VALUE-HOLDS-MEMSIZE:CAPS"></a>GIMP_VALUE_HOLDS_MEMSIZE()</h3>
-<a class="indexterm" name="id2520350"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_MEMSIZE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_MEMSIZE))
+<a class="indexterm" name="id2557990"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_MEMSIZE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_MEMSIZE))
 </pre>
 <p>
 

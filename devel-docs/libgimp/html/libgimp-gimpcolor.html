@@ -98,18 +98,18 @@ gboolean    <a href="libgimp-gimpcolor.html#gimp-threshold">gimp_threshold</a>  
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2560379"></a><h2>Description</h2>
+<a name="id2571568"></a><h2>Description</h2>
 <p>
 Functions for manipulating color, including curves and histograms.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2560391"></a><h2>Details</h2>
+<a name="id2571581"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2560397"></a><h3>
+<a name="id2571587"></a><h3>
 <a name="gimp-brightness-contrast"></a>gimp_brightness_contrast ()</h3>
-<a class="indexterm" name="id2560406"></a><pre class="programlisting">gboolean    gimp_brightness_contrast        (gint32 drawable_ID,
+<a class="indexterm" name="id2571596"></a><pre class="programlisting">gboolean    gimp_brightness_contrast        (gint32 drawable_ID,
                                              gint brightness,
                                              gint contrast);</pre>
 <p>
@@ -154,9 +154,9 @@ are defined between -127 and 127.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2560514"></a><h3>
+<a name="id2568332"></a><h3>
 <a name="gimp-levels"></a>gimp_levels ()</h3>
-<a class="indexterm" name="id2560524"></a><pre class="programlisting">gboolean    gimp_levels                     (gint32 drawable_ID,
+<a class="indexterm" name="id2568342"></a><pre class="programlisting">gboolean    gimp_levels                     (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHistogramChannel">GimpHistogramChannel</a> channel,
                                              gint low_input,
                                              gint high_input,
@@ -238,9 +238,9 @@ grayscale images. It will not operate on indexed drawables.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2560685"></a><h3>
+<a name="id2568503"></a><h3>
 <a name="gimp-levels-auto"></a>gimp_levels_auto ()</h3>
-<a class="indexterm" name="id2560695"></a><pre class="programlisting">gboolean    gimp_levels_auto                (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2568513"></a><pre class="programlisting">gboolean    gimp_levels_auto                (gint32 drawable_ID);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_levels_auto</code> is deprecated and should not be used in newly-written code.</p>
@@ -270,9 +270,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpcolor.html#gimp-levels-st
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2573452"></a><h3>
+<a name="id2573892"></a><h3>
 <a name="gimp-levels-stretch"></a>gimp_levels_stretch ()</h3>
-<a class="indexterm" name="id2573460"></a><pre class="programlisting">gboolean    gimp_levels_stretch             (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2573901"></a><pre class="programlisting">gboolean    gimp_levels_stretch             (gint32 drawable_ID);</pre>
 <p>
 Automatically modifies intensity levels in the specified drawable.
 </p>
@@ -305,9 +305,9 @@ not operate on indexed drawables.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2573522"></a><h3>
+<a name="id2573963"></a><h3>
 <a name="gimp-posterize"></a>gimp_posterize ()</h3>
-<a class="indexterm" name="id2573530"></a><pre class="programlisting">gboolean    gimp_posterize                  (gint32 drawable_ID,
+<a class="indexterm" name="id2573971"></a><pre class="programlisting">gboolean    gimp_posterize                  (gint32 drawable_ID,
                                              gint levels);</pre>
 <p>
 Posterize the specified drawable.
@@ -344,9 +344,9 @@ intensity channel to the specified 'levels' parameter.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2573607"></a><h3>
+<a name="id2574048"></a><h3>
 <a name="gimp-desaturate"></a>gimp_desaturate ()</h3>
-<a class="indexterm" name="id2573616"></a><pre class="programlisting">gboolean    gimp_desaturate                 (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2574056"></a><pre class="programlisting">gboolean    gimp_desaturate                 (gint32 drawable_ID);</pre>
 <p>
 Desaturate the contents of the specified drawable.
 </p>
@@ -376,9 +376,9 @@ This procedure only works on drawables of type RGB color.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2573675"></a><h3>
+<a name="id2574116"></a><h3>
 <a name="gimp-equalize"></a>gimp_equalize ()</h3>
-<a class="indexterm" name="id2573683"></a><pre class="programlisting">gboolean    gimp_equalize                   (gint32 drawable_ID,
+<a class="indexterm" name="id2574124"></a><pre class="programlisting">gboolean    gimp_equalize                   (gint32 drawable_ID,
                                              gboolean mask_only);</pre>
 <p>
 Equalize the contents of the specified drawable.
@@ -421,9 +421,9 @@ adjusted based on the histogram for the entire image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2573768"></a><h3>
+<a name="id2574209"></a><h3>
 <a name="gimp-invert"></a>gimp_invert ()</h3>
-<a class="indexterm" name="id2573776"></a><pre class="programlisting">gboolean    gimp_invert                     (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2574218"></a><pre class="programlisting">gboolean    gimp_invert                     (gint32 drawable_ID);</pre>
 <p>
 Invert the contents of the specified drawable.
 </p>
@@ -455,9 +455,9 @@ valid for this operation.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2573838"></a><h3>
+<a name="id2574279"></a><h3>
 <a name="gimp-curves-spline"></a>gimp_curves_spline ()</h3>
-<a class="indexterm" name="id2573846"></a><pre class="programlisting">gboolean    gimp_curves_spline              (gint32 drawable_ID,
+<a class="indexterm" name="id2574288"></a><pre class="programlisting">gboolean    gimp_curves_spline              (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHistogramChannel">GimpHistogramChannel</a> channel,
                                              gint num_points,
                                              const guint8 *control_pts);</pre>
@@ -513,9 +513,9 @@ to explicitly modify intensity levels.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2573970"></a><h3>
+<a name="id2574412"></a><h3>
 <a name="gimp-curves-explicit"></a>gimp_curves_explicit ()</h3>
-<a class="indexterm" name="id2573979"></a><pre class="programlisting">gboolean    gimp_curves_explicit            (gint32 drawable_ID,
+<a class="indexterm" name="id2574420"></a><pre class="programlisting">gboolean    gimp_curves_explicit            (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHistogramChannel">GimpHistogramChannel</a> channel,
                                              gint num_bytes,
                                              const guint8 *curve);</pre>
@@ -571,9 +571,9 @@ Catmull Rom splines.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2574101"></a><h3>
+<a name="id2574542"></a><h3>
 <a name="gimp-color-balance"></a>gimp_color_balance ()</h3>
-<a class="indexterm" name="id2574109"></a><pre class="programlisting">gboolean    gimp_color_balance              (gint32 drawable_ID,
+<a class="indexterm" name="id2574551"></a><pre class="programlisting">gboolean    gimp_color_balance              (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpTransferMode">GimpTransferMode</a> transfer_mode,
                                              gboolean preserve_lum,
                                              gdouble cyan_red,
@@ -644,9 +644,9 @@ the luminosity of each pixel remains fixed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2574271"></a><h3>
+<a name="id2574713"></a><h3>
 <a name="gimp-colorize"></a>gimp_colorize ()</h3>
-<a class="indexterm" name="id2574280"></a><pre class="programlisting">gboolean    gimp_colorize                   (gint32 drawable_ID,
+<a class="indexterm" name="id2574721"></a><pre class="programlisting">gboolean    gimp_colorize                   (gint32 drawable_ID,
                                              gdouble hue,
                                              gdouble saturation,
                                              gdouble lightness);</pre>
@@ -702,9 +702,9 @@ grayscale or indexed drawables.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2574401"></a><h3>
+<a name="id2574843"></a><h3>
 <a name="gimp-histogram"></a>gimp_histogram ()</h3>
-<a class="indexterm" name="id2574410"></a><pre class="programlisting">gboolean    gimp_histogram                  (gint32 drawable_ID,
+<a class="indexterm" name="id2574851"></a><pre class="programlisting">gboolean    gimp_histogram                  (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHistogramChannel">GimpHistogramChannel</a> channel,
                                              gint start_range,
                                              gint end_range,
@@ -809,9 +809,9 @@ pixels with transparent alpha values will not be counted.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2574657"></a><h3>
+<a name="id2575099"></a><h3>
 <a name="gimp-hue-saturation"></a>gimp_hue_saturation ()</h3>
-<a class="indexterm" name="id2574666"></a><pre class="programlisting">gboolean    gimp_hue_saturation             (gint32 drawable_ID,
+<a class="indexterm" name="id2575107"></a><pre class="programlisting">gboolean    gimp_hue_saturation             (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHueRange">GimpHueRange</a> hue_range,
                                              gdouble hue_offset,
                                              gdouble lightness,
@@ -870,9 +870,9 @@ provides the capability to limit range of affected hues.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2574802"></a><h3>
+<a name="id2575244"></a><h3>
 <a name="gimp-threshold"></a>gimp_threshold ()</h3>
-<a class="indexterm" name="id2574811"></a><pre class="programlisting">gboolean    gimp_threshold                  (gint32 drawable_ID,
+<a class="indexterm" name="id2575252"></a><pre class="programlisting">gboolean    gimp_threshold                  (gint32 drawable_ID,
                                              gint low_threshold,
                                              gint high_threshold);</pre>
 <p>

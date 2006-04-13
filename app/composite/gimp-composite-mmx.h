@@ -19,9 +19,9 @@ extern gboolean gimp_composite_mmx_install (void);
 #if defined(USE_MMX)
 #if defined(ARCH_X86)
 #if __GNUC__ >= 3
-#if defined(ARCH_X86_64) || !defined(PIC)
+#if defined(ARCH_X86_64) || (!defined(PIC) && !defined(__PIC__))
 #define COMPILE_MMX_IS_OKAY (1)
-#endif /* defined(ARCH_X86_64) || !defined(PIC) */
+#endif /* defined(ARCH_X86_64) || (!defined(PIC) && !defined(__PIC__)) */
 #endif /* __GNUC__ >= 3 */
 #endif /* defined(ARCH_X86) */
 #endif /* defined(USE_MMX) */
@@ -55,8 +55,6 @@ extern void gimp_composite_softlight_rgba8_rgba8_rgba8_mmx (GimpCompositeContext
 extern void gimp_composite_subtract_rgba8_rgba8_rgba8_mmx (GimpCompositeContext *ctx);
 extern void gimp_composite_swap_rgba8_rgba8_rgba8_mmx (GimpCompositeContext *ctx);
 extern void gimp_composite_valueonly_rgba8_rgba8_rgba8_mmx (GimpCompositeContext *ctx);
-#if 0
 extern void gimp_composite_addition_va8_va8_va8_mmx (GimpCompositeContext *ctx);
-#endif
 #endif /* COMPILE_IS_OKAY */
 #endif

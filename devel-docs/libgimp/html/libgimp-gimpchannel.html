@@ -72,17 +72,17 @@ gboolean    <a href="libgimp-gimpchannel.html#gimp-channel-combine-masks">gimp_c
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2567303"></a><h2>Description</h2>
+<a name="id2554065"></a><h2>Description</h2>
 <p>
 Functions for manipulating channels.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2567314"></a><h2>Details</h2>
+<a name="id2554076"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2567320"></a><h3>
+<a name="id2554082"></a><h3>
 <a name="gimp-channel-new"></a>gimp_channel_new ()</h3>
-<a class="indexterm" name="id2567331"></a><pre class="programlisting">gint32      gimp_channel_new                (gint32 image_ID,
+<a class="indexterm" name="id2554092"></a><pre class="programlisting">gint32      gimp_channel_new                (gint32 image_ID,
                                              const gchar *name,
                                              guint width,
                                              guint height,
@@ -154,9 +154,9 @@ initially.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2537965"></a><h3>
+<a name="id2567661"></a><h3>
 <a name="gimp-channel-copy"></a>gimp_channel_copy ()</h3>
-<a class="indexterm" name="id2537975"></a><pre class="programlisting">gint32      gimp_channel_copy               (gint32 channel_ID);</pre>
+<a class="indexterm" name="id2567671"></a><pre class="programlisting">gint32      gimp_channel_copy               (gint32 channel_ID);</pre>
 <p>
 Copy a channel.
 </p>
@@ -185,9 +185,9 @@ This procedure copies the specified channel and returns the copy.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2538038"></a><h3>
+<a name="id2567736"></a><h3>
 <a name="gimp-channel-get-show-masked"></a>gimp_channel_get_show_masked ()</h3>
-<a class="indexterm" name="id2538047"></a><pre class="programlisting">gboolean    gimp_channel_get_show_masked    (gint32 channel_ID);</pre>
+<a class="indexterm" name="id2567745"></a><pre class="programlisting">gboolean    gimp_channel_get_show_masked    (gint32 channel_ID);</pre>
 <p>
 Get the composite method of the specified channel.
 </p>
@@ -219,9 +219,9 @@ shown.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567905"></a><h3>
+<a name="id2515997"></a><h3>
 <a name="gimp-channel-set-show-masked"></a>gimp_channel_set_show_masked ()</h3>
-<a class="indexterm" name="id2567916"></a><pre class="programlisting">gboolean    gimp_channel_set_show_masked    (gint32 channel_ID,
+<a class="indexterm" name="id2516006"></a><pre class="programlisting">gboolean    gimp_channel_set_show_masked    (gint32 channel_ID,
                                              gboolean show_masked);</pre>
 <p>
 Set the composite method of the specified channel.
@@ -259,9 +259,9 @@ masked regions are shown. Otherwise, selected regions are shown.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2568006"></a><h3>
+<a name="id2516096"></a><h3>
 <a name="gimp-channel-get-opacity"></a>gimp_channel_get_opacity ()</h3>
-<a class="indexterm" name="id2568015"></a><pre class="programlisting">gdouble     gimp_channel_get_opacity        (gint32 channel_ID);</pre>
+<a class="indexterm" name="id2516105"></a><pre class="programlisting">gdouble     gimp_channel_get_opacity        (gint32 channel_ID);</pre>
 <p>
 Get the opacity of the specified channel.
 </p>
@@ -290,9 +290,9 @@ This procedure returns the specified channel's opacity.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2568080"></a><h3>
+<a name="id2516170"></a><h3>
 <a name="gimp-channel-set-opacity"></a>gimp_channel_set_opacity ()</h3>
-<a class="indexterm" name="id2568089"></a><pre class="programlisting">gboolean    gimp_channel_set_opacity        (gint32 channel_ID,
+<a class="indexterm" name="id2516179"></a><pre class="programlisting">gboolean    gimp_channel_set_opacity        (gint32 channel_ID,
                                              gdouble opacity);</pre>
 <p>
 Set the opacity of the specified channel.
@@ -328,9 +328,9 @@ This procedure sets the specified channel's opacity.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570632"></a><h3>
+<a name="id2516265"></a><h3>
 <a name="gimp-channel-get-color"></a>gimp_channel_get_color ()</h3>
-<a class="indexterm" name="id2570640"></a><pre class="programlisting">gboolean    gimp_channel_get_color          (gint32 channel_ID,
+<a class="indexterm" name="id2571070"></a><pre class="programlisting">gboolean    gimp_channel_get_color          (gint32 channel_ID,
                                              <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
@@ -368,9 +368,9 @@ This procedure returns the specified channel's compositing color.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2538103"></a><h3>
+<a name="id2571148"></a><h3>
 <a name="gimp-channel-set-color"></a>gimp_channel_set_color ()</h3>
-<a class="indexterm" name="id2543018"></a><pre class="programlisting">gboolean    gimp_channel_set_color          (gint32 channel_ID,
+<a class="indexterm" name="id2571157"></a><pre class="programlisting">gboolean    gimp_channel_set_color          (gint32 channel_ID,
                                              const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
@@ -408,9 +408,9 @@ This procedure sets the specified channel's compositing color.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570782"></a><h3>
+<a name="id2571238"></a><h3>
 <a name="gimp-channel-combine-masks"></a>gimp_channel_combine_masks ()</h3>
-<a class="indexterm" name="id2570791"></a><pre class="programlisting">gboolean    gimp_channel_combine_masks      (gint32 channel1_ID,
+<a class="indexterm" name="id2571248"></a><pre class="programlisting">gboolean    gimp_channel_combine_masks      (gint32 channel1_ID,
                                              gint32 channel2_ID,
                                              <a href="libgimp-gimpenums.html#GimpChannelOps">GimpChannelOps</a> operation,
                                              gint offx,

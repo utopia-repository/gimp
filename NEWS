@@ -6,6 +6,31 @@ here. New features are being added in the HEAD branch that will be
 released as GIMP version 2.4.
 
 
+Bugs fixed in GIMP 2.2.11
+=========================
+
+- fixed handling of EXIF data in JPEG plug-in (bug #303383)
+- let gimptool use pkg-config to determine compiler and linker flags at
+  run-time (bug #324761)
+- added GTK+ category in gimp.desktop file (bug #328012)
+- fixed guides scripts to allow guides at the right and bottom (bug #328320)
+- fixed icons in color picker buttons in Levels tool (bug #325745)
+- fixed parameter check in Compressor plug-in
+- made the internal help browser the default for all platforms (bug #329888)
+- fixed handling of alpha channel in Gaussian Blur plug-in (bug #331051)
+- fixed incorrect bitshifts in Win Icon plug-in (bug #330692)
+- fixed a potential crash in the Animation Playback plug-in (bug #328919)
+- corrected tile cache size in Unsharp Mask plug-in (bug #331344)
+- fixed the import of SVG circles
+- fixed rounding of resolution in BMP plug-in (bug #332501)
+- fixed resolution handling in PSD load plug-in
+- store resolution when saving in the PSD file format (bug #310426)
+- fixed crash in Revert function (bug #333568)
+- flush the projection before reading from it (bug #332933)
+- fixed MMX instructions on Pentium II machines (bug #162778)
+- fixed possible crash on closing a dockable (bug #338286)
+
+
 Bugs fixed in GIMP 2.2.10
 =========================
 
@@ -13,7 +38,7 @@ Bugs fixed in GIMP 2.2.10
 - fixed issue with Guides scripts (bug #320933)
 - corrected selection display problem (bug #319029)
 - fixed potential wget issue (bug #322977)
-- fixed non-interactive use of gimp-edit-stroke (bug #322977)
+- fixed non-interactive use of gimp-edit-stroke (bug #323778)
 - fixed Script-Fu crash in some locales such as Chinese (bug #163212)
 - fixed build of librsvg plug-in (bug #314400)
 - fixed parameter type in "plug-in-unsharp-mask" procedure (bug #325007).

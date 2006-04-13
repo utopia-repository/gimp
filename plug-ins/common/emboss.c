@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $Id: emboss.c,v 1.60 2005/09/30 08:15:54 mitch Exp $
+ * $Id: emboss.c,v 1.62 2006/03/17 09:29:44 neo Exp $
  */
 
 #include "config.h"
@@ -123,7 +123,7 @@ query (void)
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
-                          "Emboss filter",
+                          N_("Simulate an image created by embossing"),
                           "Emboss or Bumpmap the given drawable, specifying "
                           "the angle and elevation for the light source.",
                           "Eric L. Hernes, John Schlag",

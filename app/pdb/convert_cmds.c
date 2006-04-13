@@ -24,7 +24,9 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "core/gimp.h"
 #include "core/gimpcontainer.h"
@@ -33,162 +35,82 @@
 #include "core/gimpimage.h"
 #include "core/gimppalette.h"
 
-static ProcRecord image_convert_rgb_proc;
-static ProcRecord image_convert_grayscale_proc;
-static ProcRecord image_convert_indexed_proc;
 
-void
-register_convert_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &image_convert_rgb_proc);
-  procedural_db_register (gimp, &image_convert_grayscale_proc);
-  procedural_db_register (gimp, &image_convert_indexed_proc);
-}
-
-static Argument *
-image_convert_rgb_invoker (Gimp         *gimp,
-                           GimpContext  *context,
-                           GimpProgress *progress,
-                           Argument     *args)
+static GValueArray *
+image_convert_rgb_invoker (GimpProcedure     *procedure,
+                           Gimp              *gimp,
+                           GimpContext       *context,
+                           GimpProgress      *progress,
+                           const GValueArray *args)
 {
   gboolean success = TRUE;
-  GimpImage *gimage;
+  GimpImage *image;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
 
   if (success)
     {
-      if (gimp_image_base_type (gimage) != GIMP_RGB)
-        gimp_image_convert (gimage, GIMP_RGB, 0, 0, FALSE, FALSE, 0, NULL, NULL);
+      if (gimp_image_base_type (image) != GIMP_RGB)
+        gimp_image_convert (image, GIMP_RGB, 0, 0, FALSE, FALSE, 0, NULL, NULL);
       else
         success = FALSE;
     }
 
-  return procedural_db_return_args (&image_convert_rgb_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg image_convert_rgb_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  }
-};
-
-static ProcRecord image_convert_rgb_proc =
-{
-  "gimp-image-convert-rgb",
-  "gimp-image-convert-rgb",
-  "Convert specified image to RGB color",
-  "This procedure converts the specified image to RGB color. This process requires an image of type GIMP_GRAY or GIMP_INDEXED. No image content is lost in this process aside from the colormap for an indexed image.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  image_convert_rgb_inargs,
-  0,
-  NULL,
-  { { image_convert_rgb_invoker } }
-};
-
-static Argument *
-image_convert_grayscale_invoker (Gimp         *gimp,
-                                 GimpContext  *context,
-                                 GimpProgress *progress,
-                                 Argument     *args)
+static GValueArray *
+image_convert_grayscale_invoker (GimpProcedure     *procedure,
+                                 Gimp              *gimp,
+                                 GimpContext       *context,
+                                 GimpProgress      *progress,
+                                 const GValueArray *args)
 {
   gboolean success = TRUE;
-  GimpImage *gimage;
+  GimpImage *image;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
 
   if (success)
     {
-      if (gimp_image_base_type (gimage) != GIMP_GRAY)
-        gimp_image_convert (gimage, GIMP_GRAY, 0, 0, FALSE, FALSE, 0, NULL, NULL);
+      if (gimp_image_base_type (image) != GIMP_GRAY)
+        gimp_image_convert (image, GIMP_GRAY, 0, 0, FALSE, FALSE, 0, NULL, NULL);
       else
         success = FALSE;
     }
 
-  return procedural_db_return_args (&image_convert_grayscale_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg image_convert_grayscale_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  }
-};
-
-static ProcRecord image_convert_grayscale_proc =
-{
-  "gimp-image-convert-grayscale",
-  "gimp-image-convert-grayscale",
-  "Convert specified image to grayscale (256 intensity levels)",
-  "This procedure converts the specified image to grayscale with 8 bits per pixel (256 intensity levels). This process requires an image of type GIMP_RGB or GIMP_INDEXED.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  image_convert_grayscale_inargs,
-  0,
-  NULL,
-  { { image_convert_grayscale_invoker } }
-};
-
-static Argument *
-image_convert_indexed_invoker (Gimp         *gimp,
-                               GimpContext  *context,
-                               GimpProgress *progress,
-                               Argument     *args)
+static GValueArray *
+image_convert_indexed_invoker (GimpProcedure     *procedure,
+                               Gimp              *gimp,
+                               GimpContext       *context,
+                               GimpProgress      *progress,
+                               const GValueArray *args)
 {
   gboolean success = TRUE;
-  GimpImage *gimage;
+  GimpImage *image;
   gint32 dither_type;
   gint32 palette_type;
   gint32 num_cols;
   gboolean alpha_dither;
   gboolean remove_unused;
-  gchar *palette_name;
+  const gchar *palette;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  dither_type = args[1].value.pdb_int;
-  if (dither_type < GIMP_NO_DITHER || dither_type > GIMP_FIXED_DITHER)
-    success = FALSE;
-
-  palette_type = args[2].value.pdb_int;
-  if (palette_type < GIMP_MAKE_PALETTE || palette_type > GIMP_CUSTOM_PALETTE)
-    success = FALSE;
-
-  num_cols = args[3].value.pdb_int;
-
-  alpha_dither = args[4].value.pdb_int ? TRUE : FALSE;
-
-  remove_unused = args[5].value.pdb_int ? TRUE : FALSE;
-
-  palette_name = (gchar *) args[6].value.pdb_pointer;
-  if (palette_name == NULL || !g_utf8_validate (palette_name, -1, NULL))
-    success = FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  dither_type = g_value_get_enum (&args->values[1]);
+  palette_type = g_value_get_enum (&args->values[2]);
+  num_cols = g_value_get_int (&args->values[3]);
+  alpha_dither = g_value_get_boolean (&args->values[4]);
+  remove_unused = g_value_get_boolean (&args->values[5]);
+  palette = g_value_get_string (&args->values[6]);
 
   if (success)
     {
-      GimpPalette *palette = NULL;
+      GimpPalette *pal = NULL;
 
-      if (gimp_image_base_type (gimage) != GIMP_INDEXED)
+      if (gimp_image_base_type (image) != GIMP_INDEXED)
         {
           switch (palette_type)
             {
@@ -198,10 +120,10 @@ image_convert_indexed_invoker (Gimp         *gimp,
               break;
 
             case GIMP_CUSTOM_PALETTE:
-              palette = (GimpPalette *)
+              pal = (GimpPalette *)
                 gimp_container_get_child_by_name (gimp->palette_factory->container,
-                                                  palette_name);
-              if (palette == NULL)
+                                                  palette);
+              if (pal == NULL)
                 success = FALSE;
               break;
 
@@ -210,72 +132,128 @@ image_convert_indexed_invoker (Gimp         *gimp,
             }
         }
       else
-        {
-          success = FALSE;
-        }
+        success = FALSE;
 
       if (success)
-        gimp_image_convert (gimage, GIMP_INDEXED, num_cols, dither_type,
-                            alpha_dither, remove_unused, palette_type, palette,
+        gimp_image_convert (image, GIMP_INDEXED, num_cols, dither_type,
+                            alpha_dither, remove_unused, palette_type, pal,
                             NULL);
     }
 
-  return procedural_db_return_args (&image_convert_indexed_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg image_convert_indexed_inargs[] =
+void
+register_convert_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  },
-  {
-    GIMP_PDB_INT32,
-    "dither-type",
-    "The dither type to use: { GIMP_NO_DITHER (0), GIMP_FS_DITHER (1), GIMP_FSLOWBLEED_DITHER (2), GIMP_FIXED_DITHER (3) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "palette-type",
-    "The type of palette to use: { GIMP_MAKE_PALETTE (0), GIMP_REUSE_PALETTE (1), GIMP_WEB_PALETTE (2), GIMP_MONO_PALETTE (3), GIMP_CUSTOM_PALETTE (4) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "num-cols",
-    "The number of colors to quantize to, ignored unless (palette_type == GIMP_MAKE_PALETTE)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "alpha-dither",
-    "Dither transparency to fake partial opacity"
-  },
-  {
-    GIMP_PDB_INT32,
-    "remove-unused",
-    "Remove unused or duplicate colour entries from final palette, ignored if (palette_type == GIMP_MAKE_PALETTE)"
-  },
-  {
-    GIMP_PDB_STRING,
-    "palette",
-    "The name of the custom palette to use, ignored unless (palette_type == GIMP_CUSTOM_PALETTE)"
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcRecord image_convert_indexed_proc =
-{
-  "gimp-image-convert-indexed",
-  "gimp-image-convert-indexed",
-  "Convert specified image to and Indexed image",
-  "This procedure converts the specified image to 'indexed' color. This process requires an image of type GIMP_GRAY or GIMP_RGB. The 'palette_type' specifies what kind of palette to use, A type of '0' means to use an optimal palette of 'num_cols' generated from the colors in the image. A type of '1' means to re-use the previous palette (not currently implemented). A type of '2' means to use the so-called WWW-optimized palette. Type '3' means to use only black and white colors. A type of '4' means to use a palette from the gimp palettes directories. The 'dither type' specifies what kind of dithering to use. '0' means no dithering, '1' means standard Floyd-Steinberg error diffusion, '2' means Floyd-Steinberg error diffusion with reduced bleeding, '3' means dithering based on pixel location ('Fixed' dithering).",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  7,
-  image_convert_indexed_inargs,
-  0,
-  NULL,
-  { { image_convert_indexed_invoker } }
-};
+  /*
+   * gimp-image-convert-rgb
+   */
+  procedure = gimp_procedure_new (image_convert_rgb_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-image-convert-rgb");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-image-convert-rgb",
+                                     "Convert specified image to RGB color",
+                                     "This procedure converts the specified image to RGB color. This process requires an image of type GIMP_GRAY or GIMP_INDEXED. No image content is lost in this process aside from the colormap for an indexed image.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-image-convert-grayscale
+   */
+  procedure = gimp_procedure_new (image_convert_grayscale_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-image-convert-grayscale");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-image-convert-grayscale",
+                                     "Convert specified image to grayscale (256 intensity levels)",
+                                     "This procedure converts the specified image to grayscale with 8 bits per pixel (256 intensity levels). This process requires an image of type GIMP_RGB or GIMP_INDEXED.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-image-convert-indexed
+   */
+  procedure = gimp_procedure_new (image_convert_indexed_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-image-convert-indexed");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-image-convert-indexed",
+                                     "Convert specified image to and Indexed image",
+                                     "This procedure converts the specified image to 'indexed' color. This process requires an image of type GIMP_GRAY or GIMP_RGB. The 'palette_type' specifies what kind of palette to use, A type of '0' means to use an optimal palette of 'num_cols' generated from the colors in the image. A type of '1' means to re-use the previous palette (not currently implemented). A type of '2' means to use the so-called WWW-optimized palette. Type '3' means to use only black and white colors. A type of '4' means to use a palette from the gimp palettes directories. The 'dither type' specifies what kind of dithering to use. '0' means no dithering, '1' means standard Floyd-Steinberg error diffusion, '2' means Floyd-Steinberg error diffusion with reduced bleeding, '3' means dithering based on pixel location ('Fixed' dithering).",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("dither-type",
+                                                  "dither type",
+                                                  "The dither type to use: { GIMP_NO_DITHER (0), GIMP_FS_DITHER (1), GIMP_FSLOWBLEED_DITHER (2), GIMP_FIXED_DITHER (3) }",
+                                                  GIMP_TYPE_CONVERT_DITHER_TYPE,
+                                                  GIMP_NO_DITHER,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("palette-type",
+                                                  "palette type",
+                                                  "The type of palette to use: { GIMP_MAKE_PALETTE (0), GIMP_REUSE_PALETTE (1), GIMP_WEB_PALETTE (2), GIMP_MONO_PALETTE (3), GIMP_CUSTOM_PALETTE (4) }",
+                                                  GIMP_TYPE_CONVERT_PALETTE_TYPE,
+                                                  GIMP_MAKE_PALETTE,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("num-cols",
+                                                      "num cols",
+                                                      "The number of colors to quantize to, ignored unless (palette_type == GIMP_MAKE_PALETTE)",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("alpha-dither",
+                                                     "alpha dither",
+                                                     "Dither transparency to fake partial opacity",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("remove-unused",
+                                                     "remove unused",
+                                                     "Remove unused or duplicate color entries from final palette, ignored if (palette_type == GIMP_MAKE_PALETTE)",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("palette",
+                                                       "palette",
+                                                       "The name of the custom palette to use, ignored unless (palette_type == GIMP_CUSTOM_PALETTE)",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

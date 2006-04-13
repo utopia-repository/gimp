@@ -39,9 +39,9 @@ struct _GimpFileDialog
 {
   GtkFileChooserDialog  parent_instance;
 
-  PlugInProcDef        *file_proc;
+  GimpPlugInProcedure  *file_proc;
 
-  GimpImage            *gimage;
+  GimpImage            *image;
   gboolean              save_a_copy;
 
   GtkWidget            *thumb_box;
@@ -72,10 +72,10 @@ void        gimp_file_dialog_set_sensitive (GimpFileDialog       *dialog,
                                             gboolean              sensitive);
 
 void        gimp_file_dialog_set_file_proc (GimpFileDialog       *dialog,
-                                            PlugInProcDef        *file_proc);
+                                            GimpPlugInProcedure  *file_proc);
 
 void        gimp_file_dialog_set_image     (GimpFileDialog       *dialog,
-                                            GimpImage            *gimage,
+                                            GimpImage            *image,
                                             gboolean              save_a_copy);
 
 G_END_DECLS

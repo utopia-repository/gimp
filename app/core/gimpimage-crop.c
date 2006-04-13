@@ -75,18 +75,18 @@ static gint         gimp_image_crop_colors_alpha  (guchar       *col1,
 /*  public functions  */
 
 void
-gimp_image_crop (GimpImage   *gimage,
+gimp_image_crop (GimpImage   *image,
                  GimpContext *context,
-		 gint         x1,
-		 gint         y1,
-		 gint         x2,
-		 gint         y2,
-		 gboolean     active_layer_only,
-		 gboolean     crop_layers)
+                 gint         x1,
+                 gint         y1,
+                 gint         x2,
+                 gint         y2,
+                 gboolean     active_layer_only,
+                 gboolean     crop_layers)
 {
   gint width, height;
 
-  g_return_if_fail (GIMP_IS_IMAGE (gimage));
+  g_return_if_fail (GIMP_IS_IMAGE (image));
   g_return_if_fail (GIMP_IS_CONTEXT (context));
 
   width  = x2 - x1;
@@ -96,14 +96,14 @@ gimp_image_crop (GimpImage   *gimage,
   if (width < 1 || height < 1)
     return;
 
-  gimp_set_busy (gimage->gimp);
+  gimp_set_busy (image->gimp);
 
   if (active_layer_only)
     {
       GimpLayer *layer;
       gint       off_x, off_y;
 
-      layer = gimp_image_get_active_layer (gimage);
+      layer = gimp_image_get_active_layer (image);
 
       gimp_item_offsets (GIMP_ITEM (layer), &off_x, &off_y);
 
@@ -117,26 +117,26 @@ gimp_image_crop (GimpImage   *gimage,
       GimpItem *item;
       GList    *list;
 
-      g_object_freeze_notify (G_OBJECT (gimage));
+      g_object_freeze_notify (G_OBJECT (image));
 
       if (crop_layers)
-        gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_IMAGE_CROP,
+        gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_CROP,
                                      _("Crop Image"));
       else
-        gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_IMAGE_RESIZE,
+        gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_RESIZE,
                                      _("Resize Image"));
 
       /*  Push the image size to the stack  */
-      gimp_image_undo_push_image_size (gimage, NULL);
+      gimp_image_undo_push_image_size (image, NULL);
 
       /*  Set the new width and height  */
-      g_object_set (gimage,
+      g_object_set (image,
                     "width",  width,
                     "height", height,
                     NULL);
 
       /*  Resize all channels  */
-      for (list = GIMP_LIST (gimage->channels)->list;
+      for (list = GIMP_LIST (image->channels)->list;
            list;
            list = g_list_next (list))
         {
@@ -146,7 +146,7 @@ gimp_image_crop (GimpImage   *gimage,
         }
 
       /*  Resize all vectors  */
-      for (list = GIMP_LIST (gimage->vectors)->list;
+      for (list = GIMP_LIST (image->vectors)->list;
            list;
            list = g_list_next (list))
         {
@@ -156,11 +156,11 @@ gimp_image_crop (GimpImage   *gimage,
         }
 
       /*  Don't forget the selection mask!  */
-      gimp_item_resize (GIMP_ITEM (gimp_image_get_mask (gimage)), context,
+      gimp_item_resize (GIMP_ITEM (gimp_image_get_mask (image)), context,
                         width, height, -x1, -y1);
 
       /*  crop all layers  */
-      list = GIMP_LIST (gimage->layers)->list;
+      list = GIMP_LIST (image->layers)->list;
 
       while (list)
         {
@@ -177,12 +177,12 @@ gimp_image_crop (GimpImage   *gimage,
 
               gimp_item_offsets (item, &off_x, &off_y);
 
-              lx1 = CLAMP (off_x, 0, gimage->width);
-              ly1 = CLAMP (off_y, 0, gimage->height);
+              lx1 = CLAMP (off_x, 0, image->width);
+              ly1 = CLAMP (off_y, 0, image->height);
               lx2 = CLAMP (gimp_item_width  (item) + off_x,
-                           0, gimage->width);
+                           0, image->width);
               ly2 = CLAMP (gimp_item_height (item) + off_y,
-                           0, gimage->height);
+                           0, image->height);
 
               width  = lx2 - lx1;
               height = ly2 - ly1;
@@ -192,12 +192,12 @@ gimp_image_crop (GimpImage   *gimage,
                                   -(lx1 - off_x),
                                   -(ly1 - off_y));
               else
-                gimp_image_remove_layer (gimage, GIMP_LAYER (item));
+                gimp_image_remove_layer (image, GIMP_LAYER (item));
             }
         }
 
       /*  Reposition or remove all guides  */
-      list = gimage->guides;
+      list = image->guides;
       while (list)
         {
           GimpGuide *guide        = list->data;
@@ -225,13 +225,13 @@ gimp_image_crop (GimpImage   *gimage,
             }
 
           if (remove_guide)
-            gimp_image_remove_guide (gimage, guide, TRUE);
+            gimp_image_remove_guide (image, guide, TRUE);
           else if (new_position != guide->position)
-            gimp_image_move_guide (gimage, guide, new_position, TRUE);
+            gimp_image_move_guide (image, guide, new_position, TRUE);
         }
 
       /*  Reposition or remove sample points  */
-      list = gimage->sample_points;
+      list = image->sample_points;
       while (list)
         {
           GimpSamplePoint *sample_point        = list->data;
@@ -250,34 +250,34 @@ gimp_image_crop (GimpImage   *gimage,
             remove_sample_point = TRUE;
 
           if (remove_sample_point)
-            gimp_image_remove_sample_point (gimage, sample_point, TRUE);
+            gimp_image_remove_sample_point (image, sample_point, TRUE);
           else if (new_x != sample_point->x || new_y != sample_point->y)
-            gimp_image_move_sample_point (gimage, sample_point,
+            gimp_image_move_sample_point (image, sample_point,
                                           new_x, new_y, TRUE);
         }
 
-      gimp_image_undo_group_end (gimage);
+      gimp_image_undo_group_end (image);
 
-      gimp_image_update (gimage, 0, 0, gimage->width, gimage->height);
+      gimp_image_update (image, 0, 0, image->width, image->height);
 
-      gimp_viewable_size_changed (GIMP_VIEWABLE (gimage));
-      g_object_thaw_notify (G_OBJECT (gimage));
+      gimp_viewable_size_changed (GIMP_VIEWABLE (image));
+      g_object_thaw_notify (G_OBJECT (image));
     }
 
-  gimp_unset_busy (gimage->gimp);
+  gimp_unset_busy (image->gimp);
 }
 
 gboolean
-gimp_image_crop_auto_shrink (GimpImage *gimage,
-			     gint       x1,
-			     gint       y1,
-			     gint       x2,
-			     gint       y2,
-			     gboolean   active_drawable_only,
-			     gint      *shrunk_x1,
-			     gint      *shrunk_y1,
-			     gint      *shrunk_x2,
-			     gint      *shrunk_y2)
+gimp_image_crop_auto_shrink (GimpImage *image,
+                             gint       x1,
+                             gint       y1,
+                             gint       x2,
+                             gint       y2,
+                             gboolean   active_drawable_only,
+                             gint      *shrunk_x1,
+                             gint      *shrunk_y1,
+                             gint      *shrunk_x2,
+                             gint      *shrunk_y2)
 {
   GimpDrawable    *active_drawable = NULL;
   GimpPickable    *pickable;
@@ -292,14 +292,14 @@ gimp_image_crop_auto_shrink (GimpImage *gimage,
   gint             x, y, abort;
   gboolean         retval = FALSE;
 
-  g_return_val_if_fail (gimage != NULL, FALSE);
-  g_return_val_if_fail (GIMP_IS_IMAGE (gimage), FALSE);
+  g_return_val_if_fail (image != NULL, FALSE);
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
   g_return_val_if_fail (shrunk_x1 != NULL, FALSE);
   g_return_val_if_fail (shrunk_y1 != NULL, FALSE);
   g_return_val_if_fail (shrunk_x2 != NULL, FALSE);
   g_return_val_if_fail (shrunk_y2 != NULL, FALSE);
 
-  gimp_set_busy (gimage->gimp);
+  gimp_set_busy (image->gimp);
 
   /* You should always keep in mind that crop->tx2 and crop->ty2 are the NOT the
      coordinates of the bottomright corner of the area to be cropped. They point
@@ -308,25 +308,27 @@ gimp_image_crop_auto_shrink (GimpImage *gimage,
 
   if (active_drawable_only)
     {
-      active_drawable = gimp_image_active_drawable (gimage);
+      active_drawable = gimp_image_active_drawable (image);
 
       if (! active_drawable)
-	goto FINISH;
+        goto FINISH;
 
       pickable = GIMP_PICKABLE (active_drawable);
     }
   else
     {
-      pickable = GIMP_PICKABLE (gimage->projection);
+      pickable = GIMP_PICKABLE (image->projection);
    }
+
+  gimp_pickable_flush (pickable);
 
   type      = gimp_pickable_get_image_type (pickable);
   bytes     = GIMP_IMAGE_TYPE_BYTES (type);
   has_alpha = GIMP_IMAGE_TYPE_HAS_ALPHA (type);
 
   switch (gimp_image_crop_guess_bgcolor (pickable,
-					 bytes, has_alpha, bgcolor,
-					 x1, x2-1, y1, y2-1))
+                                         bytes, has_alpha, bgcolor,
+                                         x1, x2-1, y1, y2-1))
     {
     case AUTO_CROP_ALPHA:
       colors_equal_func = (ColorsEqualFunc) gimp_image_crop_colors_alpha;
@@ -357,7 +359,7 @@ gimp_image_crop_auto_shrink (GimpImage *gimage,
     {
       pixel_region_get_row (&PR, x1, y, width, buffer, 1);
       for (x = 0; x < width && !abort; x++)
-	abort = !(colors_equal_func) (bgcolor, buffer + x * bytes, bytes);
+        abort = !(colors_equal_func) (bgcolor, buffer + x * bytes, bytes);
     }
   if (y == y2 && !abort)
     goto FINISH;
@@ -369,7 +371,7 @@ gimp_image_crop_auto_shrink (GimpImage *gimage,
     {
       pixel_region_get_row (&PR, x1, y-1 , width, buffer, 1);
       for (x = 0; x < width && !abort; x++)
-	abort = !(colors_equal_func) (bgcolor, buffer + x * bytes, bytes);
+        abort = !(colors_equal_func) (bgcolor, buffer + x * bytes, bytes);
     }
   y2 = y + 1;
 
@@ -382,7 +384,7 @@ gimp_image_crop_auto_shrink (GimpImage *gimage,
     {
       pixel_region_get_col (&PR, x, y1, height, buffer, 1);
       for (y = 0; y < height && !abort; y++)
-	abort = !(colors_equal_func) (bgcolor, buffer + y * bytes, bytes);
+        abort = !(colors_equal_func) (bgcolor, buffer + y * bytes, bytes);
     }
   x1 = x - 1;
 
@@ -392,7 +394,7 @@ gimp_image_crop_auto_shrink (GimpImage *gimage,
     {
       pixel_region_get_col (&PR, x-1, y1, height, buffer, 1);
       for (y = 0; y < height && !abort; y++)
-	abort = !(colors_equal_func) (bgcolor, buffer + y * bytes, bytes);
+        abort = !(colors_equal_func) (bgcolor, buffer + y * bytes, bytes);
     }
   x2 = x + 1;
 
@@ -405,7 +407,7 @@ gimp_image_crop_auto_shrink (GimpImage *gimage,
 
  FINISH:
   g_free (buffer);
-  gimp_unset_busy (gimage->gimp);
+  gimp_unset_busy (image->gimp);
 
   return retval;
 }
@@ -415,13 +417,13 @@ gimp_image_crop_auto_shrink (GimpImage *gimage,
 
 static AutoCropType
 gimp_image_crop_guess_bgcolor (GimpPickable *pickable,
-			       gint          bytes,
-			       gboolean      has_alpha,
-			       guchar       *color,
-			       gint          x1,
-			       gint          x2,
-			       gint          y1,
-			       gint          y2)
+                               gint          bytes,
+                               gboolean      has_alpha,
+                               guchar       *color,
+                               gint          x1,
+                               gint          x2,
+                               gint          y1,
+                               gint          y2)
 {
   guchar *tl = NULL;
   guchar *tr = NULL;
@@ -449,16 +451,16 @@ gimp_image_crop_guess_bgcolor (GimpPickable *pickable,
     {
       alpha = bytes - 1;
       if ((tl[alpha] == 0 && tr[alpha] == 0) ||
-	  (tl[alpha] == 0 && bl[alpha] == 0) ||
-	  (tr[alpha] == 0 && br[alpha] == 0) ||
-	  (bl[alpha] == 0 && br[alpha] == 0))
-	{
-	  g_free (tl);
-	  g_free (tr);
-	  g_free (bl);
-	  g_free (br);
-	  return AUTO_CROP_ALPHA;
-	}
+          (tl[alpha] == 0 && bl[alpha] == 0) ||
+          (tr[alpha] == 0 && br[alpha] == 0) ||
+          (bl[alpha] == 0 && br[alpha] == 0))
+        {
+          g_free (tl);
+          g_free (tr);
+          g_free (bl);
+          g_free (br);
+          return AUTO_CROP_ALPHA;
+        }
     }
 
   if (gimp_image_crop_colors_equal (tl, tr, bytes) ||
@@ -467,7 +469,7 @@ gimp_image_crop_guess_bgcolor (GimpPickable *pickable,
       memcpy (color, tl, bytes);
     }
   else if (gimp_image_crop_colors_equal (br, bl, bytes) ||
-	   gimp_image_crop_colors_equal (br, tr, bytes))
+           gimp_image_crop_colors_equal (br, tr, bytes))
     {
       memcpy (color, br, bytes);
     }
@@ -492,8 +494,8 @@ gimp_image_crop_guess_bgcolor (GimpPickable *pickable,
 
 static int
 gimp_image_crop_colors_equal (guchar *col1,
-			      guchar *col2,
-			      gint    bytes)
+                              guchar *col2,
+                              gint    bytes)
 {
   gint b;
 
@@ -508,8 +510,8 @@ gimp_image_crop_colors_equal (guchar *col1,
 
 static gboolean
 gimp_image_crop_colors_alpha (guchar *dummy,
-			      guchar *col,
-			      gint    bytes)
+                              guchar *col,
+                              gint    bytes)
 {
   return (col[bytes - 1] == 0);
 }

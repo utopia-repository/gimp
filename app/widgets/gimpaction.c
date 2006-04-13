@@ -223,32 +223,41 @@ gimp_action_name_compare (GimpAction  *action1,
 /*  private functions  */
 
 static void
+gimp_action_set_proxy_tooltip (GimpAction *action,
+                               GtkWidget  *proxy)
+{
+  gchar *tooltip;
+
+  g_object_get (action, "tooltip", &tooltip, NULL);
+
+  if (tooltip)
+    {
+      gimp_help_set_help_data (proxy, tooltip,
+                               g_object_get_qdata (G_OBJECT (proxy),
+                                                   GIMP_HELP_ID));
+      g_free (tooltip);
+    }
+}
+
+static void
 gimp_action_set_proxy (GimpAction *action,
                        GtkWidget  *proxy)
 {
   if (! GTK_IS_IMAGE_MENU_ITEM (proxy))
     return;
 
+#ifdef DISABLE_MENU_TOOLTIPS
   /*  This is not quite the correct check, but works fine to enable
    *  tooltips only for the "Open Recent" menu items, since they are
    *  the only ones having both a viewable and a tooltip. --mitch
    */
   if (action->viewable)
     {
-      gchar *tooltip = NULL;
-
-      g_object_get (action, "tooltip", &tooltip, NULL);
-
-      if (tooltip)
-        {
-          const gchar *help_id;
-
-          help_id = g_object_get_qdata (G_OBJECT (proxy), GIMP_HELP_ID);
-
-          gimp_help_set_help_data (proxy, tooltip, help_id);
-          g_free (tooltip);
-        }
+      gimp_action_set_proxy_tooltip (action, proxy);
     }
+#else
+  gimp_action_set_proxy_tooltip (action, proxy);
+#endif
 
   if (action->color)
     {

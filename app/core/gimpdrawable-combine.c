@@ -42,7 +42,7 @@ gimp_drawable_real_apply_region (GimpDrawable         *drawable,
                                  gint                  x,
                                  gint                  y)
 {
-  GimpImage       *gimage;
+  GimpImage       *image;
   GimpItem        *item;
   GimpChannel     *mask;
   gint             x1, y1, x2, y2;
@@ -53,9 +53,9 @@ gimp_drawable_real_apply_region (GimpDrawable         *drawable,
 
   item = GIMP_ITEM (drawable);
 
-  gimage = gimp_item_get_image (item);
+  image = gimp_item_get_image (item);
 
-  mask = gimp_image_get_mask (gimage);
+  mask = gimp_image_get_mask (image);
 
   /*  don't apply the mask to itself and don't apply an empty mask  */
   if (GIMP_DRAWABLE (mask) == drawable || gimp_channel_is_empty (mask))
@@ -78,7 +78,7 @@ gimp_drawable_real_apply_region (GimpDrawable         *drawable,
   /*  get the layer offsets  */
   gimp_item_offsets (item, &offset_x, &offset_y);
 
-  /*  make sure the image application coordinates are within gimage bounds  */
+  /*  make sure the image application coordinates are within image bounds  */
   x1 = CLAMP (x, 0, gimp_item_width  (item));
   y1 = CLAMP (y, 0, gimp_item_height (item));
   x2 = CLAMP (x + src2PR->w, 0, gimp_item_width  (item));
@@ -105,15 +105,15 @@ gimp_drawable_real_apply_region (GimpDrawable         *drawable,
    */
   if (src1_tiles)
     pixel_region_init (&src1PR, src1_tiles,
-		       x1, y1, (x2 - x1), (y2 - y1), FALSE);
+                       x1, y1, (x2 - x1), (y2 - y1), FALSE);
   else
-    pixel_region_init (&src1PR, gimp_drawable_data (drawable),
-		       x1, y1, (x2 - x1), (y2 - y1), FALSE);
-  pixel_region_init (&destPR, gimp_drawable_data (drawable),
-		     x1, y1, (x2 - x1), (y2 - y1), TRUE);
+    pixel_region_init (&src1PR, gimp_drawable_get_tiles (drawable),
+                       x1, y1, (x2 - x1), (y2 - y1), FALSE);
+  pixel_region_init (&destPR, gimp_drawable_get_tiles (drawable),
+                     x1, y1, (x2 - x1), (y2 - y1), TRUE);
   pixel_region_resize (src2PR,
-		       src2PR->x + (x1 - x), src2PR->y + (y1 - y),
-		       (x2 - x1), (y2 - y1));
+                       src2PR->x + (x1 - x), src2PR->y + (y1 - y),
+                       (x2 - x1), (y2 - y1));
 
   if (mask)
     {
@@ -127,13 +127,13 @@ gimp_drawable_real_apply_region (GimpDrawable         *drawable,
       my = y1 + offset_y;
 
       pixel_region_init (&maskPR,
-			 gimp_drawable_data (GIMP_DRAWABLE (mask)),
-			 mx, my,
-			 (x2 - x1), (y2 - y1),
-			 FALSE);
+                         gimp_drawable_get_tiles (GIMP_DRAWABLE (mask)),
+                         mx, my,
+                         (x2 - x1), (y2 - y1),
+                         FALSE);
 
       combine_regions (&src1PR, src2PR, &destPR, &maskPR, NULL,
-		       opacity * 255.999,
+                       opacity * 255.999,
                        mode,
                        active_components,
                        operation);
@@ -141,7 +141,7 @@ gimp_drawable_real_apply_region (GimpDrawable         *drawable,
   else
     {
       combine_regions (&src1PR, src2PR, &destPR, NULL, NULL,
-		       opacity * 255.999,
+                       opacity * 255.999,
                        mode,
                        active_components,
                        operation);
@@ -164,7 +164,7 @@ gimp_drawable_real_replace_region (GimpDrawable *drawable,
                                    gint          x,
                                    gint          y)
 {
-  GimpImage       *gimage;
+  GimpImage       *image;
   GimpItem        *item;
   GimpChannel     *mask;
   gint             x1, y1, x2, y2;
@@ -175,9 +175,9 @@ gimp_drawable_real_replace_region (GimpDrawable *drawable,
 
   item = GIMP_ITEM (drawable);
 
-  gimage = gimp_item_get_image (item);
+  image = gimp_item_get_image (item);
 
-  mask = gimp_image_get_mask (gimage);
+  mask = gimp_image_get_mask (image);
 
   /*  don't apply the mask to itself and don't apply an empty mask  */
   if (GIMP_DRAWABLE (mask) == drawable || gimp_channel_is_empty (mask))
@@ -200,7 +200,7 @@ gimp_drawable_real_replace_region (GimpDrawable *drawable,
   /*  get the layer offsets  */
   gimp_item_offsets (item, &offset_x, &offset_y);
 
-  /*  make sure the image application coordinates are within gimage bounds  */
+  /*  make sure the image application coordinates are within image bounds  */
   x1 = CLAMP (x, 0, gimp_item_width (item));
   y1 = CLAMP (y, 0, gimp_item_height (item));
   x2 = CLAMP (x + src2PR->w, 0, gimp_item_width (item));
@@ -225,13 +225,13 @@ gimp_drawable_real_replace_region (GimpDrawable *drawable,
   /* configure the pixel regions
    *  If an alternative to using the drawable's data as src1 was provided...
    */
-  pixel_region_init (&src1PR, gimp_drawable_data (drawable),
-		     x1, y1, (x2 - x1), (y2 - y1), FALSE);
-  pixel_region_init (&destPR, gimp_drawable_data (drawable),
-		     x1, y1, (x2 - x1), (y2 - y1), TRUE);
+  pixel_region_init (&src1PR, gimp_drawable_get_tiles (drawable),
+                     x1, y1, (x2 - x1), (y2 - y1), FALSE);
+  pixel_region_init (&destPR, gimp_drawable_get_tiles (drawable),
+                     x1, y1, (x2 - x1), (y2 - y1), TRUE);
   pixel_region_resize (src2PR,
-		       src2PR->x + (x1 - x), src2PR->y + (y1 - y),
-		       (x2 - x1), (y2 - y1));
+                       src2PR->x + (x1 - x), src2PR->y + (y1 - y),
+                       (x2 - x1), (y2 - y1));
 
   if (mask)
     {
@@ -247,10 +247,10 @@ gimp_drawable_real_replace_region (GimpDrawable *drawable,
       my = y1 + offset_y;
 
       pixel_region_init (&mask2PR,
-			 gimp_drawable_data (GIMP_DRAWABLE (mask)),
-			 mx, my,
-			 (x2 - x1), (y2 - y1),
-			 FALSE);
+                         gimp_drawable_get_tiles (GIMP_DRAWABLE (mask)),
+                         mx, my,
+                         (x2 - x1), (y2 - y1),
+                         FALSE);
 
       temp_data = g_malloc ((y2 - y1) * (x2 - x1));
 
@@ -277,7 +277,7 @@ gimp_drawable_real_replace_region (GimpDrawable *drawable,
   else
     {
       combine_regions_replace (&src1PR, src2PR, &destPR, maskPR, NULL,
-			       opacity * 255.999,
+                               opacity * 255.999,
                                active_components,
                                operation);
     }

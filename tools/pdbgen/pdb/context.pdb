@@ -24,13 +24,6 @@ sub pdb_misc {
    $since = '2.2';
 }
 
-sub mitch_misc {
-   $author = 'Michael Natterer <mitch@gimp.org>';
-   $copyright = 'Michael Natterer';
-   $date = '2005';
-   $since = '2.4';
-}
-
 sub context_push {
     $blurb = 'Pushes a context to the top of the plug-in\'s context stack.';
 
@@ -46,13 +39,9 @@ HELP
 	code => <<'CODE'
 {
   if (gimp->current_plug_in && gimp->current_plug_in->open)
-    {
-      success = plug_in_context_push (gimp->current_plug_in);
-    }
+    success = plug_in_context_push (gimp->current_plug_in);
   else
-    {
-      success = FALSE;
-    }
+    success = FALSE;
 }
 CODE
     );
@@ -73,13 +62,9 @@ HELP
 	code => <<'CODE'
 {
   if (gimp->current_plug_in && gimp->current_plug_in->open)
-    {
-      success = plug_in_context_pop (gimp->current_plug_in);
-    }
+    success = plug_in_context_pop (gimp->current_plug_in);
   else
-    {
-      success = FALSE;
-    }
+    success = FALSE;
 }
 CODE
     );
@@ -92,18 +77,24 @@ sub context_get_paint_method {
 This procedure returns the name of the currently active paint method.
 HELP
 
-    &mitch_misc;
+    &mitch_pdb_misc('2005', '2.4');
 
     @outargs = (
 	{ name  => 'name', type  => 'string',
-	  desc  => 'The name of the active paint method',
-	  alias => 'g_strdup (gimp_object_get_name (GIMP_OBJECT (paint_info)))',
-	  no_declare => 1 }
+	  desc  => 'The name of the active paint method' }
     );
 
     %invoke = (
-	vars => [ 'GimpPaintInfo *paint_info' ],
-	code => 'success = (paint_info = gimp_context_get_paint_info (context)) != NULL;'
+	code => <<'CODE'
+{
+  GimpPaintInfo *paint_info = gimp_context_get_paint_info (context);
+
+  if (paint_info)
+    name = g_strdup (gimp_object_get_name (GIMP_OBJECT (paint_info)));
+  else
+    success = FALSE;
+}
+CODE
     );
 }
 
@@ -119,7 +110,7 @@ method becomes active and will be used in all subsequent paint
 operations.
 HELP
 
-    &mitch_misc;
+    &mitch_pdb_misc('2005', '2.4');
 
     @inargs = (
         { name => 'name', type => 'string',
@@ -127,10 +118,9 @@ HELP
     );
 
     %invoke = (
-	vars => [ 'GimpPaintInfo *paint_info' ],
 	code => <<'CODE'
 {
-  paint_info = (GimpPaintInfo *)
+  GimpPaintInfo *paint_info = (GimpPaintInfo *)
     gimp_container_get_child_by_name (gimp->paint_info_list, name);
 
   if (paint_info)
@@ -155,11 +145,16 @@ HELP
 
     @outargs = (
         { name => 'foreground', type => 'color',
-          desc => "The foreground color", alias => 'color',
-          void_ret => 1 }
+          desc => 'The foreground color', void_ret => 1 }
     );
 
-    %invoke = ( code => 'gimp_context_get_foreground (context, &color);' );
+    %invoke = (
+	code => <<'CODE'
+{
+  gimp_context_get_foreground (context, &foreground);
+}
+CODE
+    );
 }
 
 sub context_set_foreground {
@@ -175,15 +170,14 @@ HELP
 
     @inargs = (
         { name => 'foreground', type => 'color',
-          desc => "The foreground color", alias => 'color',
-          void_ret => 1 }
+          desc => 'The foreground color', void_ret => 1 }
     );
 
     %invoke = (
-	code => <<CODE
+	code => <<'CODE'
 {
-  gimp_rgb_set_alpha (&color, 1.0);
-  gimp_context_set_foreground (context, &color);
+  gimp_rgb_set_alpha (&foreground, 1.0);
+  gimp_context_set_foreground (context, &foreground);
 }
 CODE
     );
@@ -202,11 +196,16 @@ HELP
 
     @outargs = (
         { name => 'background', type => 'color',
-          desc => "The background color", alias => 'color',
-          void_ret => 1 }
+          desc => 'The background color', void_ret => 1 }
     );
 
-    %invoke = ( code => 'gimp_context_get_background (context, &color);' );
+    %invoke = (
+	code => <<'CODE'
+{
+  gimp_context_get_background (context, &background);
+}
+CODE
+    );
 }
 
 sub context_set_background {
@@ -222,15 +221,14 @@ HELP
 
     @inargs = (
         { name => 'background', type => 'color',
-          desc => "The background color", alias => 'color',
-          void_ret => 1 }
+          desc => 'The background color', void_ret => 1 }
     );
 
     %invoke = (
-	code => <<CODE
+	code => <<'CODE'
 {
-  gimp_rgb_set_alpha (&color, 1.0);
-  gimp_context_set_background (context, &color);
+  gimp_rgb_set_alpha (&background, 1.0);
+  gimp_context_set_background (context, &background);
 }
 CODE
     );
@@ -248,7 +246,13 @@ HELP
 
     &pdb_misc;
 
-    %invoke = ( code => 'gimp_context_set_default_colors (context);' );
+    %invoke = (
+	code => <<'CODE'
+{
+  gimp_context_set_default_colors (context);
+}
+CODE
+    );
 }
 
 sub context_swap_colors {
@@ -261,7 +265,13 @@ HELP
 
     &pdb_misc;
 
-    %invoke = ( code => 'gimp_context_swap_colors (context);' );
+    %invoke = (
+	code => <<'CODE'
+{
+  gimp_context_swap_colors (context);
+}
+CODE
+    );
 }
 
 sub context_get_opacity {
@@ -276,9 +286,15 @@ HELP
 
     @outargs = (
         { name => 'opacity', type => '0 <= float <= 100',
-          desc => 'The opacity: %%desc%%',
-          alias => 'gimp_context_get_opacity (context) * 100.0',
-          no_declare => 1 }
+          desc => 'The opacity %%desc%%' }
+    );
+
+    %invoke = (
+	code => <<'CODE'
+{
+  opacity = gimp_context_get_opacity (context) * 100.0;
+}
+CODE
     );
 }
 
@@ -294,10 +310,16 @@ HELP
 
     @inargs = (
         { name => 'opacity', type => '0 <= float <= 100',
-          desc => 'The opacity: %%desc%%' }
+          desc => 'The opacity %%desc%%' }
     );
 
-    %invoke = ( code => 'gimp_context_set_opacity (context, opacity / 100.0);' );
+    %invoke = (
+	code => <<'CODE'
+{
+  gimp_context_set_opacity (context, opacity / 100.0);
+}
+CODE
+    );
 }
 
 sub context_get_paint_mode {
@@ -313,9 +335,15 @@ HELP
 
     @outargs = (
         { name => 'paint_mode', type => 'enum GimpLayerModeEffects',
-          desc => 'The paint mode: { %%desc%% }',
-          alias => 'gimp_context_get_paint_mode (context)',
-          no_declare => 1 }
+          desc => 'The paint mode: %%desc%%' }
+    );
+
+    %invoke = (
+	code => <<'CODE'
+{
+  paint_mode = gimp_context_get_paint_mode (context);
+}
+CODE
     );
 }
 
@@ -330,10 +358,16 @@ HELP
 
     @inargs = (
         { name => 'paint_mode', type => 'enum GimpLayerModeEffects',
-          desc => 'The paint mode: { %%desc%% }' }
+          desc => 'The paint mode: %%desc%%' }
     );
 
-    %invoke = ( code => 'gimp_context_set_paint_mode (context, paint_mode);' );
+    %invoke = (
+	code => <<'CODE'
+{
+  gimp_context_set_paint_mode (context, paint_mode);
+}
+CODE
+    );
 }
 
 sub context_get_brush {
@@ -349,14 +383,20 @@ HELP
 
     @outargs = (
 	{ name  => 'name', type  => 'string',
-	  desc  => 'The name of the active brush',
-	  alias => 'g_strdup (gimp_object_get_name (GIMP_OBJECT (brush)))',
-	  no_declare => 1 }
+	  desc  => 'The name of the active brush' }
     );
 
     %invoke = (
-	vars => [ 'GimpBrush *brush' ],
-	code => 'success = (brush = gimp_context_get_brush (context)) != NULL;'
+	code => <<'CODE'
+{
+  GimpBrush *brush = gimp_context_get_brush (context);
+
+  if (brush)
+    name = g_strdup (gimp_object_get_name (GIMP_OBJECT (brush)));
+  else
+    success = FALSE;
+}
+CODE
     );
 }
 
@@ -379,10 +419,9 @@ HELP
     );
 
     %invoke = (
-	vars => [ 'GimpBrush *brush' ],
 	code => <<'CODE'
 {
-  brush = (GimpBrush *)
+  GimpBrush *brush = (GimpBrush *)
     gimp_container_get_child_by_name (gimp->brush_factory->container, name);
 
   if (brush)
@@ -407,14 +446,20 @@ HELP
 
     @outargs = (
 	{ name  => 'name', type  => 'string',
-	  desc  => 'The name of the active pattern',
-	  alias => 'g_strdup (gimp_object_get_name (GIMP_OBJECT (pattern)))',
-	  no_declare => 1 }
+	  desc  => 'The name of the active pattern' }
     );
 
     %invoke = (
-	vars => [ 'GimpPattern *pattern' ],
-	code => 'success = (pattern = gimp_context_get_pattern (context)) != NULL;'
+	code => <<'CODE'
+{
+  GimpPattern *pattern = gimp_context_get_pattern (context);
+
+  if (pattern)
+    name = g_strdup (gimp_object_get_name (GIMP_OBJECT (pattern)));
+  else
+    success = FALSE;
+}
+CODE
     );
 }
 
@@ -437,10 +482,9 @@ HELP
     );
 
     %invoke = (
-	vars => [ 'GimpPattern *pattern' ],
 	code => <<'CODE'
 {
-  pattern = (GimpPattern *)
+  GimpPattern *pattern = (GimpPattern *)
     gimp_container_get_child_by_name (gimp->pattern_factory->container, name);
 
   if (pattern)
@@ -463,14 +507,20 @@ HELP
 
     @outargs = (
 	{ name  => 'name', type  => 'string',
-	  desc  => 'The name of the active gradient',
-	  alias => 'g_strdup (gimp_object_get_name (GIMP_OBJECT (gradient)))',
-	  no_declare => 1 }
+	  desc  => 'The name of the active gradient' }
     );
 
     %invoke = (
-	vars => [ 'GimpGradient *gradient' ],
-	code => 'success = (gradient = gimp_context_get_gradient (context)) != NULL;'
+	code => <<'CODE'
+{
+  GimpGradient *gradient = gimp_context_get_gradient (context);
+
+  if (gradient)
+    name = g_strdup (gimp_object_get_name (GIMP_OBJECT (gradient)));
+  else
+    success = FALSE;
+}
+CODE
     );
 }
 
@@ -493,10 +543,9 @@ HELP
     );
 
     %invoke = (
-        vars => [ 'GimpGradient *gradient' ],
         code => <<'CODE'
 {
-  gradient = (GimpGradient *)
+  GimpGradient *gradient = (GimpGradient *)
     gimp_container_get_child_by_name (gimp->gradient_factory->container, name);
 
   if (gradient)
@@ -519,14 +568,20 @@ HELP
 
     @outargs = (
 	{ name  => 'name', type  => 'string',
-	  desc  => 'The name of the active palette',
-	  alias => 'g_strdup (gimp_object_get_name (GIMP_OBJECT (palette)))',
-	  no_declare => 1 }
+	  desc  => 'The name of the active palette' }
     );
 
     %invoke = (
-        vars => [ 'GimpPalette *palette' ],
-        code => 'success = (palette = gimp_context_get_palette (context)) != NULL;'
+        code => <<'CODE'
+{
+  GimpPalette *palette = gimp_context_get_palette (context);
+
+  if (palette)
+    name = g_strdup (gimp_object_get_name (GIMP_OBJECT (palette)));
+  else
+    success = FALSE;
+}
+CODE
     );
 }
 
@@ -549,10 +604,9 @@ HELP
     );
 
     %invoke = (
-        vars => [ 'GimpPalette *palette' ],
         code => <<'CODE'
 {
-  palette = (GimpPalette *)
+  GimpPalette *palette = (GimpPalette *)
     gimp_container_get_child_by_name (gimp->palette_factory->container, name);
 
   if (palette)
@@ -575,14 +629,20 @@ HELP
 
     @outargs = (
 	{ name  => 'name', type  => 'string',
-	  desc  => 'The name of the active font',
-	  alias => 'g_strdup (gimp_object_get_name (GIMP_OBJECT (font)))',
-	  no_declare => 1 }
+	  desc  => 'The name of the active font' }
     );
 
     %invoke = (
-        vars => [ 'GimpFont *font' ],
-        code => 'success = (font = gimp_context_get_font (context)) != NULL;'
+        code => <<'CODE'
+{
+  GimpFont *font = gimp_context_get_font (context);
+
+  if (font)
+    name = g_strdup (gimp_object_get_name (GIMP_OBJECT (font)));
+  else
+    success = FALSE;
+}
+CODE
     );
 }
 
@@ -605,10 +665,9 @@ HELP
     );
 
     %invoke = (
-        vars => [ 'GimpFont *font' ],
         code => <<'CODE'
 {
-  font = (GimpFont *)
+  GimpFont *font = (GimpFont *)
     gimp_container_get_child_by_name (gimp->fonts, name);
 
   if (font)
@@ -619,6 +678,7 @@ HELP
 CODE
     );
 }
+
 
 @headers = qw("core/gimp.h" "core/gimpcontainer.h" "core/gimpcontext.h"
               "core/gimpdatafactory.h"
@@ -636,6 +696,7 @@ CODE
             context_get_gradient context_set_gradient
             context_get_palette context_set_palette
             context_get_font context_set_font);
+
 %exports = (app => [@procs], lib => [@procs]);
 
 $desc = 'Context';

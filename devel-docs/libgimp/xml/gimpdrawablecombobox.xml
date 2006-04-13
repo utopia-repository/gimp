@@ -40,35 +40,38 @@
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkWidget">GtkWidget</link>
-               +----<link linkend="GtkContainer">GtkContainer</link>
-                     +----<link linkend="GtkBin">GtkBin</link>
-                           +----<link linkend="GtkComboBox">GtkComboBox</link>
-                                 +----<link linkend="GimpIntComboBox">GimpIntComboBox</link>
-                                       +----GimpDrawableComboBox
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkWidget">GtkWidget</link>
+                     +----<link linkend="GtkContainer">GtkContainer</link>
+                           +----<link linkend="GtkBin">GtkBin</link>
+                                 +----<link linkend="GtkComboBox">GtkComboBox</link>
+                                       +----<link linkend="GimpIntComboBox">GimpIntComboBox</link>
+                                             +----GimpDrawableComboBox
 </synopsis>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkWidget">GtkWidget</link>
-               +----<link linkend="GtkContainer">GtkContainer</link>
-                     +----<link linkend="GtkBin">GtkBin</link>
-                           +----<link linkend="GtkComboBox">GtkComboBox</link>
-                                 +----<link linkend="GimpIntComboBox">GimpIntComboBox</link>
-                                       +----GimpChannelComboBox
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkWidget">GtkWidget</link>
+                     +----<link linkend="GtkContainer">GtkContainer</link>
+                           +----<link linkend="GtkBin">GtkBin</link>
+                                 +----<link linkend="GtkComboBox">GtkComboBox</link>
+                                       +----<link linkend="GimpIntComboBox">GimpIntComboBox</link>
+                                             +----GimpChannelComboBox
 </synopsis>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkWidget">GtkWidget</link>
-               +----<link linkend="GtkContainer">GtkContainer</link>
-                     +----<link linkend="GtkBin">GtkBin</link>
-                           +----<link linkend="GtkComboBox">GtkComboBox</link>
-                                 +----<link linkend="GimpIntComboBox">GimpIntComboBox</link>
-                                       +----GimpLayerComboBox
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkWidget">GtkWidget</link>
+                     +----<link linkend="GtkContainer">GtkContainer</link>
+                           +----<link linkend="GtkBin">GtkBin</link>
+                                 +----<link linkend="GtkComboBox">GtkComboBox</link>
+                                       +----<link linkend="GimpIntComboBox">GimpIntComboBox</link>
+                                             +----GimpLayerComboBox
 </synopsis>
 
 </refsect1>

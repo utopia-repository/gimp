@@ -16,17 +16,19 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __PDB_GLUE_H__
-#define __PDB_GLUE_H__
+#ifndef __PLUG_IN_DATA_H__
+#define __PLUG_IN_DATA_H__
 
 
-#define gimp_layer_get_apply_mask(l)   (l)->mask ? gimp_layer_mask_get_apply((l)->mask) : FALSE;
-#define gimp_layer_get_show_mask(l)    (l)->mask ? gimp_layer_mask_get_show((l)->mask) : FALSE;
-#define gimp_layer_get_edit_mask(l)    (l)->mask ? gimp_layer_mask_get_edit((l)->mask) : FALSE;
+void           plug_in_data_free (Gimp         *gimp);
 
-#define gimp_layer_set_apply_mask(l,a) { if((l)->mask) gimp_layer_mask_set_apply((l)->mask,(a),TRUE); else success = FALSE; }
-#define gimp_layer_set_show_mask(l,s)  { if((l)->mask) gimp_layer_mask_set_show((l)->mask,(s),TRUE); else success = FALSE; }
-#define gimp_layer_set_edit_mask(l,e)  { if((l)->mask) gimp_layer_mask_set_edit((l)->mask,(e)); else success = FALSE; }
+void           plug_in_data_set  (Gimp         *gimp,
+                                  const gchar  *identifier,
+                                  gint32        bytes,
+                                  const guint8 *data);
+const guint8 * plug_in_data_get  (Gimp         *gimp,
+                                  const gchar  *identifier,
+                                  gint32       *bytes);
 
 
-#endif /* __PDB_GLUE_H__ */
+#endif  /*  __PLUG_IN_DATA_H__  */

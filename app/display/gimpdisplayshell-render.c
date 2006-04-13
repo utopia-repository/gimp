@@ -163,21 +163,21 @@ static void     render_image_indexed            (RenderInfo       *info);
 static void     render_image_indexed_a          (RenderInfo       *info);
 
 static void     render_image_init_info_full     (RenderInfo       *info,
-						 GimpDisplayShell *shell,
-						 gint              x,
-						 gint              y,
-						 gint              w,
-						 gint              h,
+                                                 GimpDisplayShell *shell,
+                                                 gint              x,
+                                                 gint              y,
+                                                 gint              w,
+                                                 gint              h,
                                                  GimpProjection   *projection);
 static void     render_image_init_info          (RenderInfo       *info,
-						 GimpDisplayShell *shell,
-						 gint              x,
-						 gint              y,
+                                                 GimpDisplayShell *shell,
+                                                 gint              x,
+                                                 gint              y,
                                                  TileManager      *tiles);
 static guint  * render_image_init_alpha         (gint              mult);
 static guchar * render_image_accelerate_scaling (gint              width,
-						 gint              start,
-						 gdouble           scalex);
+                                                 gint              start,
+                                                 gdouble           scalex);
 static guchar * render_image_tile_fault         (RenderInfo       *info);
 
 
@@ -205,7 +205,7 @@ static void  gimp_display_shell_render_mask      (GimpDisplayShell *shell,
 /*****************************************************************/
 /*  This function is the core of the display--it offsets and     */
 /*  scales the image according to the current parameters in the  */
-/*  gdisp object.  It handles color, grayscale, 8, 15, 16, 24,   */
+/*  display object.  It handles color, grayscale, 8, 15, 16, 24  */
 /*  & 32 bit output depths.                                      */
 /*****************************************************************/
 
@@ -223,7 +223,7 @@ gimp_display_shell_render (GimpDisplayShell *shell,
 
   g_return_if_fail (w > 0 && h > 0);
 
-  projection = shell->gdisp->gimage->projection;
+  projection = shell->display->image->projection;
 
   render_image_init_info_full (&info, shell, x, y, w, h, projection);
 
@@ -253,7 +253,7 @@ gimp_display_shell_render (GimpDisplayShell *shell,
   else if (shell->mask)
     {
       render_image_init_info (&info, shell, x, y,
-                              gimp_drawable_data (shell->mask));
+                              gimp_drawable_get_tiles (shell->mask));
 
       gimp_display_shell_render_mask (shell, &info);
     }
@@ -357,23 +357,53 @@ gimp_display_shell_render_mask (GimpDisplayShell *shell,
         RINT (floor ((y + 1) / info->scaley) - floor (y / info->scaley));
 
       if (!initial && (error == 0))
-	{
-	  memcpy (info->dest, info->dest - info->dest_bpl, info->dest_width);
-	}
+        {
+          memcpy (info->dest, info->dest - info->dest_bpl, info->dest_width);
+        }
       else
-	{
-	  const guchar *src  = info->src;
-	  guchar       *dest = info->dest;
+        {
+          const guchar *src  = info->src;
+          guchar       *dest = info->dest;
 
-	  for (x = info->x; x < xe; x++, src++, dest += 3)
-	    {
-              if (*src & 0x80)
-                continue;
+          switch (shell->mask_color)
+            {
+            case GIMP_RED_CHANNEL:
+              for (x = info->x; x < xe; x++, src++, dest += 3)
+                {
+                  if (*src & 0x80)
+                    continue;
 
-              dest[0] = dest[0] >> 2;
-              dest[1] = dest[1] >> 2;
+                  dest[1] = dest[1] >> 2;
+                  dest[2] = dest[2] >> 2;
+                }
+              break;
+
+            case GIMP_GREEN_CHANNEL:
+              for (x = info->x; x < xe; x++, src++, dest += 3)
+                {
+                  if (*src & 0x80)
+                    continue;
+
+                  dest[0] = dest[0] >> 2;
+                  dest[2] = dest[2] >> 2;
+                }
+              break;
+
+            case GIMP_BLUE_CHANNEL:
+              for (x = info->x; x < xe; x++, src++, dest += 3)
+                {
+                  if (*src & 0x80)
+                    continue;
+
+                  dest[0] = dest[0] >> 2;
+                  dest[1] = dest[1] >> 2;
+                }
+              break;
+
+            default:
+              break;
             }
-	}
+        }
 
       if (++y == ye)
         break;
@@ -381,12 +411,12 @@ gimp_display_shell_render_mask (GimpDisplayShell *shell,
       info->dest += info->dest_bpl;
 
       if (error)
-	{
-	  info->src_y += error;
-	  info->src = render_image_tile_fault (info);
+        {
+          info->src_y += error;
+          info->src = render_image_tile_fault (info);
 
-	  initial = TRUE;
-	}
+          initial = TRUE;
+        }
       else
         {
           initial = FALSE;
@@ -407,7 +437,7 @@ render_image_indexed (RenderInfo *info)
   gint          x, xe;
   gboolean      initial = TRUE;
 
-  cmap = gimp_image_get_colormap (info->shell->gdisp->gimage);
+  cmap = gimp_image_get_colormap (info->shell->display->image);
 
   y  = info->y;
   ye = info->y + info->h;
@@ -421,26 +451,26 @@ render_image_indexed (RenderInfo *info)
         RINT (floor ((y + 1) / info->scaley) - floor (y / info->scaley));
 
       if (!initial && (error == 0))
-	{
-	  memcpy (info->dest, info->dest - info->dest_bpl, info->dest_width);
-	}
+        {
+          memcpy (info->dest, info->dest - info->dest_bpl, info->dest_width);
+        }
       else
-	{
-	  const guchar *src  = info->src;
-	  guchar       *dest = info->dest;
+        {
+          const guchar *src  = info->src;
+          guchar       *dest = info->dest;
 
-	  for (x = info->x; x < xe; x++)
-	    {
+          for (x = info->x; x < xe; x++)
+            {
               guint  val = src[INDEXED_PIX] * 3;
 
-	      src += 1;
+              src += 1;
 
-	      dest[0] = cmap[val + 0];
-	      dest[1] = cmap[val + 1];
-	      dest[2] = cmap[val + 2];
-	      dest += 3;
-	    }
-	}
+              dest[0] = cmap[val + 0];
+              dest[1] = cmap[val + 1];
+              dest[2] = cmap[val + 2];
+              dest += 3;
+            }
+        }
 
       if (++y == ye)
         break;
@@ -448,12 +478,12 @@ render_image_indexed (RenderInfo *info)
       info->dest += info->dest_bpl;
 
       if (error)
-	{
-	  info->src_y += error;
-	  info->src = render_image_tile_fault (info);
+        {
+          info->src_y += error;
+          info->src = render_image_tile_fault (info);
 
-	  initial = TRUE;
-	}
+          initial = TRUE;
+        }
       else
         {
           initial = FALSE;
@@ -465,7 +495,7 @@ static void
 render_image_indexed_a (RenderInfo *info)
 {
   const guint  *alpha = info->alpha;
-  const guchar *cmap  = gimp_image_get_colormap (info->shell->gdisp->gimage);
+  const guchar *cmap  = gimp_image_get_colormap (info->shell->display->image);
   gint          y, ye;
   gint          x, xe;
   gboolean      initial = TRUE;
@@ -482,46 +512,46 @@ render_image_indexed_a (RenderInfo *info)
         RINT (floor ((y + 1) / info->scaley) - floor (y / info->scaley));
 
       if (!initial && (error == 0) && (y & check_mod))
-	{
-	  memcpy (info->dest, info->dest - info->dest_bpl, info->dest_width);
-	}
+        {
+          memcpy (info->dest, info->dest - info->dest_bpl, info->dest_width);
+        }
       else
-	{
+        {
           const guchar *src  = info->src;
           guchar       *dest = info->dest;
           guint         dark_light;
 
-	  dark_light = (y >> check_shift) + (info->x >> check_shift);
+          dark_light = (y >> check_shift) + (info->x >> check_shift);
 
-	  for (x = info->x; x < xe; x++)
-	    {
-	      guint r, g, b, a = alpha[src[ALPHA_I_PIX]];
+          for (x = info->x; x < xe; x++)
+            {
+              guint r, g, b, a = alpha[src[ALPHA_I_PIX]];
               guint val        = src[INDEXED_PIX] * 3;
 
-	      src += 2;
+              src += 2;
 
-	      if (dark_light & 0x1)
-		{
-		  r = gimp_render_blend_dark_check[(a | cmap[val + 0])];
-		  g = gimp_render_blend_dark_check[(a | cmap[val + 1])];
-		  b = gimp_render_blend_dark_check[(a | cmap[val + 2])];
-		}
-	      else
-		{
-		  r = gimp_render_blend_light_check[(a | cmap[val + 0])];
-		  g = gimp_render_blend_light_check[(a | cmap[val + 1])];
-		  b = gimp_render_blend_light_check[(a | cmap[val + 2])];
-		}
+              if (dark_light & 0x1)
+                {
+                  r = gimp_render_blend_dark_check[(a | cmap[val + 0])];
+                  g = gimp_render_blend_dark_check[(a | cmap[val + 1])];
+                  b = gimp_render_blend_dark_check[(a | cmap[val + 2])];
+                }
+              else
+                {
+                  r = gimp_render_blend_light_check[(a | cmap[val + 0])];
+                  g = gimp_render_blend_light_check[(a | cmap[val + 1])];
+                  b = gimp_render_blend_light_check[(a | cmap[val + 2])];
+                }
 
-		dest[0] = r;
-		dest[1] = g;
-		dest[2] = b;
-		dest += 3;
+                dest[0] = r;
+                dest[1] = g;
+                dest[2] = b;
+                dest += 3;
 
-		if (((x + 1) & check_mod) == 0)
-		  dark_light += 1;
-	      }
-	}
+                if (((x + 1) & check_mod) == 0)
+                  dark_light += 1;
+              }
+        }
 
       if (++y == ye)
         break;
@@ -529,12 +559,12 @@ render_image_indexed_a (RenderInfo *info)
       info->dest += info->dest_bpl;
 
       if (error)
-	{
-	  info->src_y += error;
-	  info->src = render_image_tile_fault (info);
+        {
+          info->src_y += error;
+          info->src = render_image_tile_fault (info);
 
-	  initial = TRUE;
-	}
+          initial = TRUE;
+        }
       else
         {
           initial = FALSE;
@@ -561,26 +591,26 @@ render_image_gray (RenderInfo *info)
         RINT (floor ((y + 1) / info->scaley) - floor (y / info->scaley));
 
       if (!initial && (error == 0))
-	{
-	  memcpy (info->dest, info->dest - info->dest_bpl, info->dest_width);
-	}
+        {
+          memcpy (info->dest, info->dest - info->dest_bpl, info->dest_width);
+        }
       else
-	{
-	  const guchar *src  = info->src;
-	  guchar       *dest = info->dest;
+        {
+          const guchar *src  = info->src;
+          guchar       *dest = info->dest;
 
-	  for (x = info->x; x < xe; x++)
-	    {
-	      guint val = src[GRAY_PIX];
+          for (x = info->x; x < xe; x++)
+            {
+              guint val = src[GRAY_PIX];
 
-	      src += 1;
+              src += 1;
 
-	      dest[0] = val;
-	      dest[1] = val;
-	      dest[2] = val;
-	      dest += 3;
-	    }
-	}
+              dest[0] = val;
+              dest[1] = val;
+              dest[2] = val;
+              dest += 3;
+            }
+        }
 
       if (++y == ye)
         break;
@@ -588,12 +618,12 @@ render_image_gray (RenderInfo *info)
       info->dest += info->dest_bpl;
 
       if (error)
-	{
-	  info->src_y += error;
-	  info->src = render_image_tile_fault (info);
+        {
+          info->src_y += error;
+          info->src = render_image_tile_fault (info);
 
-	  initial = TRUE;
-	}
+          initial = TRUE;
+        }
       else
         {
           initial = FALSE;
@@ -621,38 +651,38 @@ render_image_gray_a (RenderInfo *info)
         RINT (floor ((y + 1) / info->scaley) - floor (y / info->scaley));
 
       if (!initial && (error == 0) && (y & check_mod))
-	{
-	  memcpy (info->dest, info->dest - info->dest_bpl, info->dest_width);
-	}
+        {
+          memcpy (info->dest, info->dest - info->dest_bpl, info->dest_width);
+        }
       else
-	{
-	  const guchar *src  = info->src;
-	  guchar       *dest = info->dest;
+        {
+          const guchar *src  = info->src;
+          guchar       *dest = info->dest;
           guint         dark_light;
 
-	  dark_light = (y >> check_shift) + (info->x >> check_shift);
+          dark_light = (y >> check_shift) + (info->x >> check_shift);
 
-	  for (x = info->x; x < xe; x++)
-	    {
-	      guint a = alpha[src[ALPHA_G_PIX]];
+          for (x = info->x; x < xe; x++)
+            {
+              guint a = alpha[src[ALPHA_G_PIX]];
               guint val;
 
-	      if (dark_light & 0x1)
-		val = gimp_render_blend_dark_check[(a | src[GRAY_PIX])];
-	      else
-		val = gimp_render_blend_light_check[(a | src[GRAY_PIX])];
+              if (dark_light & 0x1)
+                val = gimp_render_blend_dark_check[(a | src[GRAY_PIX])];
+              else
+                val = gimp_render_blend_light_check[(a | src[GRAY_PIX])];
 
-	      src += 2;
+              src += 2;
 
-	      dest[0] = val;
-	      dest[1] = val;
-	      dest[2] = val;
-	      dest += 3;
+              dest[0] = val;
+              dest[1] = val;
+              dest[2] = val;
+              dest += 3;
 
-	      if (((x + 1) & check_mod) == 0)
-		dark_light += 1;
-	    }
-	}
+              if (((x + 1) & check_mod) == 0)
+                dark_light += 1;
+            }
+        }
 
       if (++y == ye)
         break;
@@ -660,12 +690,12 @@ render_image_gray_a (RenderInfo *info)
       info->dest += info->dest_bpl;
 
       if (error)
-	{
-	  info->src_y += error;
-	  info->src = render_image_tile_fault (info);
+        {
+          info->src_y += error;
+          info->src = render_image_tile_fault (info);
 
-	  initial = TRUE;
-	}
+          initial = TRUE;
+        }
       else
         {
           initial = FALSE;
@@ -692,13 +722,13 @@ render_image_rgb (RenderInfo *info)
         RINT (floor ((y + 1) / info->scaley) - floor (y / info->scaley));
 
       if (!initial && (error == 0))
-	{
-	  memcpy (info->dest, info->dest - info->dest_bpl, info->dest_width);
-	}
+        {
+          memcpy (info->dest, info->dest - info->dest_bpl, info->dest_width);
+        }
       else
-	{
+        {
           memcpy (info->dest, info->src, 3 * info->w);
-	}
+        }
 
       if (++y == ye)
         break;
@@ -706,12 +736,12 @@ render_image_rgb (RenderInfo *info)
       info->dest += info->dest_bpl;
 
       if (error)
-	{
-	  info->src_y += error;
-	  info->src = render_image_tile_fault (info);
+        {
+          info->src_y += error;
+          info->src = render_image_tile_fault (info);
 
-	  initial = TRUE;
-	}
+          initial = TRUE;
+        }
       else
         {
           initial = FALSE;
@@ -739,45 +769,45 @@ render_image_rgb_a (RenderInfo *info)
         RINT (floor ((y + 1) / info->scaley) - floor (y / info->scaley));
 
       if (!initial && (error == 0) && (y & check_mod))
-	{
-	  memcpy (info->dest, info->dest - info->dest_bpl, info->dest_width);
-	}
+        {
+          memcpy (info->dest, info->dest - info->dest_bpl, info->dest_width);
+        }
       else
-	{
-	  const guchar *src  = info->src;
-	  guchar       *dest = info->dest;
+        {
+          const guchar *src  = info->src;
+          guchar       *dest = info->dest;
           guint         dark_light;
 
-	  dark_light = (y >> check_shift) + (info->x >> check_shift);
+          dark_light = (y >> check_shift) + (info->x >> check_shift);
 
-	  for (x = info->x; x < xe; x++)
-	    {
+          for (x = info->x; x < xe; x++)
+            {
               guint r, g, b, a = alpha[src[ALPHA_PIX]];
 
-	      if (dark_light & 0x1)
-		{
-		  r = gimp_render_blend_dark_check[(a | src[RED_PIX])];
-		  g = gimp_render_blend_dark_check[(a | src[GREEN_PIX])];
-		  b = gimp_render_blend_dark_check[(a | src[BLUE_PIX])];
-		}
-	      else
-		{
-		  r = gimp_render_blend_light_check[(a | src[RED_PIX])];
-		  g = gimp_render_blend_light_check[(a | src[GREEN_PIX])];
-		  b = gimp_render_blend_light_check[(a | src[BLUE_PIX])];
-		}
+              if (dark_light & 0x1)
+                {
+                  r = gimp_render_blend_dark_check[(a | src[RED_PIX])];
+                  g = gimp_render_blend_dark_check[(a | src[GREEN_PIX])];
+                  b = gimp_render_blend_dark_check[(a | src[BLUE_PIX])];
+                }
+              else
+                {
+                  r = gimp_render_blend_light_check[(a | src[RED_PIX])];
+                  g = gimp_render_blend_light_check[(a | src[GREEN_PIX])];
+                  b = gimp_render_blend_light_check[(a | src[BLUE_PIX])];
+                }
 
-	      src += 4;
+              src += 4;
 
-	      dest[0] = r;
-	      dest[1] = g;
-	      dest[2] = b;
-	      dest += 3;
+              dest[0] = r;
+              dest[1] = g;
+              dest[2] = b;
+              dest += 3;
 
-	      if (((x + 1) & check_mod) == 0)
-		dark_light += 1;
-	    }
-	}
+              if (((x + 1) & check_mod) == 0)
+                dark_light += 1;
+            }
+        }
 
       if (++y == ye)
         break;
@@ -785,12 +815,12 @@ render_image_rgb_a (RenderInfo *info)
       info->dest += info->dest_bpl;
 
       if (error)
-	{
-	  info->src_y += error;
-	  info->src = render_image_tile_fault (info);
+        {
+          info->src_y += error;
+          info->src = render_image_tile_fault (info);
 
-	  initial = TRUE;
-	}
+          initial = TRUE;
+        }
       else
         {
           initial = FALSE;
@@ -831,9 +861,9 @@ render_image_init_info_full (RenderInfo       *info,
 
 static void
 render_image_init_info (RenderInfo       *info,
-			GimpDisplayShell *shell,
-			gint              x,
-			gint              y,
+                        GimpDisplayShell *shell,
+                        gint              x,
+                        gint              y,
                         TileManager      *tiles)
 {
   info->src_tiles = tiles;
@@ -855,11 +885,11 @@ render_image_init_alpha (gint mult)
   if (alpha_val != mult)
     {
       if (!alpha_mult)
-	alpha_mult = g_new (guint, 256);
+        alpha_mult = g_new (guint, 256);
 
       alpha_val = mult;
       for (i = 0; i < 256; i++)
-	alpha_mult[i] = ((mult * i) / 255) << 8;
+        alpha_mult[i] = ((mult * i) / 255) << 8;
     }
 
   return alpha_mult;
@@ -867,8 +897,8 @@ render_image_init_alpha (gint mult)
 
 static guchar *
 render_image_accelerate_scaling (gint    width,
-				 gint    start,
-				 gdouble scalex)
+                                 gint    start,
+                                 gdouble scalex)
 {
   static guchar *scale = NULL;
 
@@ -900,7 +930,7 @@ render_image_tile_fault (RenderInfo *info)
   gint          x;
 
   tile = tile_manager_get_tile (info->src_tiles,
-				info->src_x, info->src_y, TRUE, FALSE);
+                                info->src_x, info->src_y, TRUE, FALSE);
 
   g_return_val_if_fail (tile != NULL, tile_buf);
 
@@ -936,25 +966,25 @@ render_image_tile_fault (RenderInfo *info)
       step = *scale++;
 
       if (step)
-	{
-	  x += step;
-	  src += step * bpp;
+        {
+          x += step;
+          src += step * bpp;
 
-	  if ((x >> tile_shift) != tilex)
-	    {
-	      tile_release (tile, FALSE);
-	      tilex += 1;
+          if ((x >> tile_shift) != tilex)
+            {
+              tile_release (tile, FALSE);
+              tilex += 1;
 
-	      tile = tile_manager_get_tile (info->src_tiles,
+              tile = tile_manager_get_tile (info->src_tiles,
                                             x, info->src_y, TRUE, FALSE);
-	      if (!tile)
-		return tile_buf;
+              if (!tile)
+                return tile_buf;
 
-	      src = tile_data_pointer (tile,
+              src = tile_data_pointer (tile,
                                        x % TILE_WIDTH,
                                        info->src_y % TILE_HEIGHT);
-	    }
-	}
+            }
+        }
     }
   while (--width);
 

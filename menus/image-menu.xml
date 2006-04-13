@@ -466,10 +466,6 @@
     </menu>
 
     <menu action="tools-menu" name="Tools">
-      <menuitem action="dialogs-toolbox"/>
-      <menuitem action="context-colors-default"/>
-      <menuitem action="context-colors-swap"/>
-      <separator/>
       <menu action="tools-select-menu" name="Selection Tools">
 	<menuitem action="tools-rect-select"/>
 	<menuitem action="tools-ellipse-select"/>
@@ -513,9 +509,13 @@
       </menu>
       <menuitem action="tools-vector"/>
       <menuitem action="tools-color-picker"/>
-      <menuitem action="tools-magnify"/>
+      <menuitem action="tools-zoom"/>
       <menuitem action="tools-measure"/>
       <menuitem action="tools-text"/>
+      <separator/>
+      <menuitem action="dialogs-toolbox"/>
+      <menuitem action="context-colors-default"/>
+      <menuitem action="context-colors-swap"/>
     </menu>
 
     <menu action="dialogs-menu" name="Dialogs">
@@ -558,6 +558,9 @@
     <menu action="plug-in-menu" name="Filters">
       <menuitem action="plug-in-repeat"/>
       <menuitem action="plug-in-reshow"/>
+      <menu action="plug-in-recent-menu" name="Recently Used">
+        <placeholder name="Plug-Ins"/>
+      </menu>
       <menuitem action="plug-in-reset-all"/>
       <separator/>
       <menu action="plug-in-blur-menu" name="Blur"/>
@@ -1054,10 +1057,6 @@
     </menu>
 
     <menu action="tools-menu" name="Tools">
-      <menuitem action="dialogs-toolbox"/>
-      <menuitem action="context-colors-default"/>
-      <menuitem action="context-colors-swap"/>
-      <separator/>
       <menu action="tools-select-menu" name="Selection Tools">
 	<menuitem action="tools-rect-select"/>
 	<menuitem action="tools-ellipse-select"/>
@@ -1101,9 +1100,13 @@
       </menu>
       <menuitem action="tools-vector"/>
       <menuitem action="tools-color-picker"/>
-      <menuitem action="tools-magnify"/>
+      <menuitem action="tools-zoom"/>
       <menuitem action="tools-measure"/>
       <menuitem action="tools-text"/>
+      <separator/>
+      <menuitem action="dialogs-toolbox"/>
+      <menuitem action="context-colors-default"/>
+      <menuitem action="context-colors-swap"/>
     </menu>
 
     <menu action="dialogs-menu" name="Dialogs">
@@ -1146,6 +1149,9 @@
     <menu action="plug-in-menu" name="Filters">
       <menuitem action="plug-in-repeat"/>
       <menuitem action="plug-in-reshow"/>
+      <menu action="plug-in-recent-menu" name="Recently Used">
+        <placeholder name="Plug-Ins"/>
+      </menu>
       <menuitem action="plug-in-reset-all"/>
       <separator/>
       <menu action="plug-in-blur-menu" name="Blur"/>

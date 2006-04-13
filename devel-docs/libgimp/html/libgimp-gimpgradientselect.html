@@ -66,17 +66,17 @@ gboolean    <a href="libgimp-gimpgradientselect.html#gimp-gradients-set-popup">g
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2651752"></a><h2>Description</h2>
+<a name="id2653183"></a><h2>Description</h2>
 <p>
 Functions providing a gradient selection dialog.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2651764"></a><h2>Details</h2>
+<a name="id2653195"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2651770"></a><h3>
+<a name="id2653201"></a><h3>
 <a name="GimpRunGradientCallback"></a>GimpRunGradientCallback ()</h3>
-<a class="indexterm" name="id2651779"></a><pre class="programlisting">void        (*GimpRunGradientCallback)      (const gchar *gradient_name,
+<a class="indexterm" name="id2653210"></a><pre class="programlisting">void        (*GimpRunGradientCallback)      (const gchar *gradient_name,
                                              gint width,
                                              const gdouble *grad_data,
                                              gboolean dialog_closing,
@@ -124,9 +124,9 @@ Functions providing a gradient selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2643200"></a><h3>
+<a name="id2650741"></a><h3>
 <a name="gimp-gradient-select-new"></a>gimp_gradient_select_new ()</h3>
-<a class="indexterm" name="id2643209"></a><pre class="programlisting">const gchar* gimp_gradient_select_new       (const gchar *title,
+<a class="indexterm" name="id2650750"></a><pre class="programlisting">const gchar* gimp_gradient_select_new       (const gchar *title,
                                              const gchar *gradient_name,
                                              gint sample_size,
                                              <a href="libgimp-gimpgradientselect.html#GimpRunGradientCallback">GimpRunGradientCallback</a> callback,
@@ -180,9 +180,9 @@ Functions providing a gradient selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2651555"></a><h3>
+<a name="id2641248"></a><h3>
 <a name="gimp-gradient-select-destroy"></a>gimp_gradient_select_destroy ()</h3>
-<a class="indexterm" name="id2651564"></a><pre class="programlisting">void        gimp_gradient_select_destroy    (const gchar *gradient_callback);</pre>
+<a class="indexterm" name="id2641257"></a><pre class="programlisting">void        gimp_gradient_select_destroy    (const gchar *gradient_callback);</pre>
 <p>
 
 </p>
@@ -200,9 +200,9 @@ Functions providing a gradient selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2651608"></a><h3>
+<a name="id2641302"></a><h3>
 <a name="gimp-gradients-popup"></a>gimp_gradients_popup ()</h3>
-<a class="indexterm" name="id2652352"></a><pre class="programlisting">gboolean    gimp_gradients_popup            (const gchar *gradient_callback,
+<a class="indexterm" name="id2641310"></a><pre class="programlisting">gboolean    gimp_gradients_popup            (const gchar *gradient_callback,
                                              const gchar *popup_title,
                                              const gchar *initial_gradient,
                                              gint sample_size);</pre>
@@ -252,9 +252,9 @@ This procedure popups the gradients selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2652480"></a><h3>
+<a name="id2641438"></a><h3>
 <a name="gimp-gradients-close-popup"></a>gimp_gradients_close_popup ()</h3>
-<a class="indexterm" name="id2652489"></a><pre class="programlisting">gboolean    gimp_gradients_close_popup      (const gchar *gradient_callback);</pre>
+<a class="indexterm" name="id2641447"></a><pre class="programlisting">gboolean    gimp_gradients_close_popup      (const gchar *gradient_callback);</pre>
 <p>
 Popdown the Gimp gradient selection.
 </p>
@@ -283,9 +283,9 @@ This procedure closes an opened gradient selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2652552"></a><h3>
+<a name="id2641510"></a><h3>
 <a name="gimp-gradients-set-popup"></a>gimp_gradients_set_popup ()</h3>
-<a class="indexterm" name="id2652561"></a><pre class="programlisting">gboolean    gimp_gradients_set_popup        (const gchar *gradient_callback,
+<a class="indexterm" name="id2643365"></a><pre class="programlisting">gboolean    gimp_gradients_set_popup        (const gchar *gradient_callback,
                                              const gchar *gradient_name);</pre>
 <p>
 Sets the current gradient selection in a popup.

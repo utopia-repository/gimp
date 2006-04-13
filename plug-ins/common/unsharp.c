@@ -128,7 +128,7 @@ query (void)
     };
 
   gimp_install_procedure (PLUG_IN_PROC,
-                          "An unsharp mask filter",
+                          N_("The most widely useful method for sharpening an image"),
                           "The unsharp mask is a sharpening filter that works "
                           "by comparing using the difference of the image and "
                           "a blurred version of the image.  It is commonly "
@@ -176,7 +176,8 @@ run (const gchar      *name,
    * Get drawable information...
    */
   drawable = gimp_drawable_get (param[2].data.d_drawable);
-  gimp_tile_cache_ntiles (2 * (drawable->width / gimp_tile_width () + 1));
+  gimp_tile_cache_ntiles (2 * MAX (drawable->width  / gimp_tile_width () + 1 ,
+			           drawable->height / gimp_tile_height () + 1));
 
   switch (run_mode)
     {

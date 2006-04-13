@@ -279,7 +279,7 @@ enum
   LAST_SIGNAL
 };
 
-static gchar *gimp_context_prop_names[] =
+static const gchar *gimp_context_prop_names[] =
 {
   NULL, /* PROP_0 */
   "gimp",
@@ -1309,26 +1309,6 @@ gimp_context_new (Gimp        *gimp,
   return context;
 }
 
-const gchar *
-gimp_context_get_name (const GimpContext *context)
-{
-  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
-
-  return gimp_object_get_name (GIMP_OBJECT (context));
-}
-
-void
-gimp_context_set_name (GimpContext *context,
-                       const gchar *name)
-{
-  g_return_if_fail (GIMP_IS_CONTEXT (context));
-
-  if (! name)
-    name = _("Unnamed");
-
-  gimp_object_set_name (GIMP_OBJECT (context), name);
-}
-
 GimpContext *
 gimp_context_get_parent (const GimpContext *context)
 {
@@ -1811,13 +1791,13 @@ gimp_context_real_set_display (GimpContext *context,
 
   if (context->display)
     {
-      GimpImage *gimage;
+      GimpImage *image;
 
-      g_object_get (display, "image", &gimage, NULL);
+      g_object_get (display, "image", &image, NULL);
 
-      gimp_context_real_set_image (context, gimage);
+      gimp_context_real_set_image (context, image);
 
-      g_object_unref (gimage);
+      g_object_unref (image);
     }
 
   g_object_notify (G_OBJECT (context), "display");

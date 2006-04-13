@@ -18,7 +18,7 @@
 
 #include "config.h"
 
-#include "string.h"
+#include <string.h>
 
 #include <gtk/gtk.h>
 
@@ -26,11 +26,14 @@
 
 #include "menus-types.h"
 
+#include "config/gimpcoreconfig.h"
+
 #include "core/gimp.h"
 
-#include "plug-in/plug-ins.h"
+#include "pdb/gimppluginprocedure.h"
+
 #include "plug-in/plug-in-def.h"
-#include "plug-in/plug-in-proc-def.h"
+#include "plug-in/plug-in-locale-domain.h"
 
 #include "widgets/gimpuimanager.h"
 
@@ -43,8 +46,8 @@ typedef struct _PlugInMenuEntry PlugInMenuEntry;
 
 struct _PlugInMenuEntry
 {
-  PlugInProcDef *proc_def;
-  const gchar   *menu_path;
+  GimpPlugInProcedure *proc;
+  const gchar         *menu_path;
 };
 
 
@@ -81,32 +84,31 @@ plug_in_menus_init (Gimp        *gimp,
 
   for (tmp = plug_in_defs; tmp; tmp = g_slist_next (tmp))
     {
-      PlugInDef   *plug_in_def;
-      const gchar *locale_domain;
-      const gchar *locale_path;
-      GSList      *list;
+      PlugInDef *plug_in_def = tmp->data;
 
-      plug_in_def = (PlugInDef *) tmp->data;
-
-      if (! plug_in_def->proc_defs)
-        continue;
-
-      locale_domain = plug_ins_locale_domain (gimp,
-                                              plug_in_def->prog,
-                                              &locale_path);
-
-      for (list = domains; list; list = list->next)
-        if (! strcmp (locale_domain, (const gchar *) list->data))
-          break;
-
-      if (! list)
+      if (plug_in_def->procedures)
         {
-          domains = g_slist_append (domains, (gpointer) locale_domain);
+          const gchar *locale_domain;
+          const gchar *locale_path;
+          GSList      *list;
 
-          bindtextdomain (locale_domain, locale_path);
+          locale_domain = plug_in_locale_domain (gimp,
+                                                 plug_in_def->prog,
+                                                 &locale_path);
+
+          for (list = domains; list; list = list->next)
+            if (! strcmp (locale_domain, (const gchar *) list->data))
+              break;
+
+          if (! list)
+            {
+              domains = g_slist_append (domains, (gpointer) locale_domain);
+
+              bindtextdomain (locale_domain, locale_path);
 #ifdef HAVE_BIND_TEXTDOMAIN_CODESET
-          bind_textdomain_codeset (locale_domain, "UTF-8");
+              bind_textdomain_codeset (locale_domain, "UTF-8");
 #endif
+            }
         }
     }
 
@@ -117,30 +119,55 @@ void
 plug_in_menus_setup (GimpUIManager *manager,
                      const gchar   *ui_path)
 {
-  GTree  *menu_entries;
-  GSList *list;
+  GtkUIManager *ui_manager;
+  GTree        *menu_entries;
+  GSList       *list;
+  guint         merge_id;
+  gint          i;
 
   g_return_if_fail (GIMP_IS_UI_MANAGER (manager));
   g_return_if_fail (ui_path != NULL);
 
+  ui_manager = GTK_UI_MANAGER (manager);
+
+  merge_id = gtk_ui_manager_new_merge_id (ui_manager);
+
+  for (i = 0; i < manager->gimp->config->plug_in_history_size; i++)
+    {
+      gchar *action_name;
+      gchar *action_path;
+
+      action_name = g_strdup_printf ("plug-in-recent-%02d", i + 1);
+      action_path = g_strdup_printf ("%s/Filters/Recently Used/Plug-Ins",
+                                     ui_path);
+
+      gtk_ui_manager_add_ui (ui_manager, merge_id,
+                             action_path, action_name, action_name,
+                             GTK_UI_MANAGER_MENUITEM,
+                             FALSE);
+
+      g_free (action_name);
+      g_free (action_path);
+    }
+
   menu_entries = g_tree_new_full ((GCompareDataFunc) strcmp, NULL,
                                   g_free, g_free);
 
-  for (list = manager->gimp->plug_in_proc_defs;
+  for (list = manager->gimp->plug_in_procedures;
        list;
        list = g_slist_next (list))
     {
-      PlugInProcDef *proc_def = list->data;
+      GimpPlugInProcedure *proc = list->data;
 
-      if (proc_def->prog         &&
-          proc_def->menu_paths   &&
-          ! proc_def->extensions &&
-          ! proc_def->prefixes   &&
-          ! proc_def->magics)
+      if (proc->prog         &&
+          proc->menu_paths   &&
+          ! proc->extensions &&
+          ! proc->prefixes   &&
+          ! proc->magics)
         {
           GList *path;
 
-          for (path = proc_def->menu_paths; path; path = g_list_next (path))
+          for (path = proc->menu_paths; path; path = g_list_next (path))
             {
               if (! strncmp (path->data, manager->name, strlen (manager->name)))
                 {
@@ -149,15 +176,15 @@ plug_in_menus_setup (GimpUIManager *manager,
                   const gchar     *locale_domain;
                   gchar           *key;
 
-                  entry->proc_def  = proc_def;
+                  entry->proc      = proc;
                   entry->menu_path = path->data;
 
-                  progname = plug_in_proc_def_get_progname (proc_def);
+                  progname = gimp_plug_in_procedure_get_progname (proc);
 
-                  locale_domain = plug_ins_locale_domain (manager->gimp,
-                                                          progname, NULL);
+                  locale_domain = plug_in_locale_domain (manager->gimp,
+                                                         progname, NULL);
 
-                  if (proc_def->menu_label)
+                  if (proc->menu_label)
                     {
                       gchar *menu;
                       gchar *strip;
@@ -166,7 +193,7 @@ plug_in_menus_setup (GimpUIManager *manager,
                                                     path->data),
                                           "/",
                                           dgettext (locale_domain,
-                                                    proc_def->menu_label),
+                                                    proc->menu_label),
                                           NULL);
 
                       strip = gimp_strip_uline (menu);
@@ -204,10 +231,10 @@ plug_in_menus_setup (GimpUIManager *manager,
 }
 
 void
-plug_in_menus_add_proc (GimpUIManager *manager,
-                        const gchar   *ui_path,
-                        PlugInProcDef *proc_def,
-                        const gchar   *menu_path)
+plug_in_menus_add_proc (GimpUIManager       *manager,
+                        const gchar         *ui_path,
+                        GimpPlugInProcedure *proc,
+                        const gchar         *menu_path)
 {
   gchar *path;
   gchar *merge_key;
@@ -218,11 +245,11 @@ plug_in_menus_add_proc (GimpUIManager *manager,
 
   g_return_if_fail (GIMP_IS_UI_MANAGER (manager));
   g_return_if_fail (ui_path != NULL);
-  g_return_if_fail (proc_def != NULL);
+  g_return_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc));
 
   path = g_strdup (menu_path);
 
-  if (! proc_def->menu_label)
+  if (! proc->menu_label)
     {
       gchar *p;
 
@@ -239,7 +266,7 @@ plug_in_menus_add_proc (GimpUIManager *manager,
       *p = '\0';
     }
 
-  merge_key = g_strdup_printf ("%s-merge-id", proc_def->db_info.name);
+  merge_key = g_strdup_printf ("%s-merge-id", GIMP_OBJECT (proc)->name);
 
   merge_id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (manager),
                                                   merge_key));
@@ -276,13 +303,13 @@ plug_in_menus_add_proc (GimpUIManager *manager,
 
 #if 0
   g_print ("adding menu item for '%s' (@ %s)\n",
-           proc_def->db_info.name, action_path);
+           GIMP_OBJECT (proc)->name, action_path);
 #endif
 
   gtk_ui_manager_add_ui (GTK_UI_MANAGER (manager), merge_id,
                          action_path,
-                         proc_def->db_info.name,
-                         proc_def->db_info.name,
+                         GIMP_OBJECT (proc)->name,
+                         GIMP_OBJECT (proc)->name,
                          GTK_UI_MANAGER_MENUITEM,
                          FALSE);
 
@@ -291,16 +318,16 @@ plug_in_menus_add_proc (GimpUIManager *manager,
 }
 
 void
-plug_in_menus_remove_proc (GimpUIManager *manager,
-                           PlugInProcDef *proc_def)
+plug_in_menus_remove_proc (GimpUIManager       *manager,
+                           GimpPlugInProcedure *proc)
 {
   gchar *merge_key;
   guint  merge_id;
 
   g_return_if_fail (GIMP_IS_UI_MANAGER (manager));
-  g_return_if_fail (proc_def != NULL);
+  g_return_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc));
 
-  merge_key = g_strdup_printf ("%s-merge-id", proc_def->db_info.name);
+  merge_key = g_strdup_printf ("%s-merge-id", GIMP_OBJECT (proc)->name);
   merge_id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (manager),
                                                   merge_key));
   g_free (merge_key);
@@ -319,7 +346,7 @@ plug_in_menus_tree_traverse (gpointer         key,
 {
   const gchar *ui_path = g_object_get_data (G_OBJECT (manager), "ui-path");
 
-  plug_in_menus_add_proc (manager, ui_path, entry->proc_def, entry->menu_path);
+  plug_in_menus_add_proc (manager, ui_path, entry->proc, entry->menu_path);
 
   return FALSE;
 }

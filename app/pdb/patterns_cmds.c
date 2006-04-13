@@ -25,7 +25,9 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "base/temp-buf.h"
 #include "core/gimp.h"
@@ -35,199 +37,109 @@
 #include "core/gimplist.h"
 #include "core/gimppattern.h"
 
-static ProcRecord patterns_refresh_proc;
-static ProcRecord patterns_get_list_proc;
-static ProcRecord patterns_get_pattern_proc;
-static ProcRecord patterns_get_pattern_data_proc;
 
-void
-register_patterns_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &patterns_refresh_proc);
-  procedural_db_register (gimp, &patterns_get_list_proc);
-  procedural_db_register (gimp, &patterns_get_pattern_proc);
-  procedural_db_register (gimp, &patterns_get_pattern_data_proc);
-}
-
-static Argument *
-patterns_refresh_invoker (Gimp         *gimp,
-                          GimpContext  *context,
-                          GimpProgress *progress,
-                          Argument     *args)
+static GValueArray *
+patterns_refresh_invoker (GimpProcedure     *procedure,
+                          Gimp              *gimp,
+                          GimpContext       *context,
+                          GimpProgress      *progress,
+                          const GValueArray *args)
 {
   gimp_data_factory_data_refresh (gimp->pattern_factory);
-  return procedural_db_return_args (&patterns_refresh_proc, TRUE);
+  return gimp_procedure_get_return_values (procedure, TRUE);
 }
 
-static ProcRecord patterns_refresh_proc =
-{
-  "gimp-patterns-refresh",
-  "gimp-patterns-refresh",
-  "Refresh current patterns. This function always succeeds.",
-  "This procedure retrieves all patterns currently in the user's pattern path and updates all pattern dialogs accordingly.",
-  "Michael Natterer",
-  "Michael Natterer",
-  "2002",
-  NULL,
-  GIMP_INTERNAL,
-  0,
-  NULL,
-  0,
-  NULL,
-  { { patterns_refresh_invoker } }
-};
-
-static Argument *
-patterns_get_list_invoker (Gimp         *gimp,
-                           GimpContext  *context,
-                           GimpProgress *progress,
-                           Argument     *args)
+static GValueArray *
+patterns_get_list_invoker (GimpProcedure     *procedure,
+                           Gimp              *gimp,
+                           GimpContext       *context,
+                           GimpProgress      *progress,
+                           const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gchar *filter;
-  gint32 num_patterns;
+  GValueArray *return_vals;
+  const gchar *filter;
+  gint32 num_patterns = 0;
   gchar **pattern_list = NULL;
 
-  filter = (gchar *) args[0].value.pdb_pointer;
-  if (filter && !g_utf8_validate (filter, -1, NULL))
+  filter = g_value_get_string (&args->values[0]);
+
+  if (success)
+    {
+      pattern_list = gimp_container_get_filtered_name_array (gimp->pattern_factory->container,
+                                                             filter, &num_patterns);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    {
+      g_value_set_int (&return_vals->values[1], num_patterns);
+      gimp_value_take_stringarray (&return_vals->values[2], pattern_list, num_patterns);
+    }
+
+  return return_vals;
+}
+
+static GValueArray *
+patterns_get_pattern_invoker (GimpProcedure     *procedure,
+                              Gimp              *gimp,
+                              GimpContext       *context,
+                              GimpProgress      *progress,
+                              const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  gchar *name = NULL;
+  gint32 width = 0;
+  gint32 height = 0;
+
+  GimpPattern *pattern = gimp_context_get_pattern (context);
+
+  if (pattern)
+    {
+      name   = g_strdup (gimp_object_get_name (GIMP_OBJECT (pattern)));
+      width  = pattern->mask->width;
+      height = pattern->mask->height;
+    }
+  else
     success = FALSE;
 
-  if (success)
-    pattern_list = gimp_container_get_filtered_name_array (gimp->pattern_factory->container, filter, &num_patterns);
-
-  return_args = procedural_db_return_args (&patterns_get_list_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_int = num_patterns;
-      return_args[2].value.pdb_pointer = pattern_list;
+      g_value_take_string (&return_vals->values[1], name);
+      g_value_set_int (&return_vals->values[2], width);
+      g_value_set_int (&return_vals->values[3], height);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg patterns_get_list_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "filter",
-    "An optional regular expression used to filter the list"
-  }
-};
-
-static ProcArg patterns_get_list_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "num-patterns",
-    "The number of patterns in the pattern list"
-  },
-  {
-    GIMP_PDB_STRINGARRAY,
-    "pattern-list",
-    "The list of pattern names"
-  }
-};
-
-static ProcRecord patterns_get_list_proc =
-{
-  "gimp-patterns-get-list",
-  "gimp-patterns-get-list",
-  "Retrieve a complete listing of the available patterns.",
-  "This procedure returns a complete listing of available GIMP patterns. Each name returned can be used as input to the 'gimp-context-set-pattern'.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  patterns_get_list_inargs,
-  2,
-  patterns_get_list_outargs,
-  { { patterns_get_list_invoker } }
-};
-
-static Argument *
-patterns_get_pattern_invoker (Gimp         *gimp,
-                              GimpContext  *context,
-                              GimpProgress *progress,
-                              Argument     *args)
+static GValueArray *
+patterns_get_pattern_data_invoker (GimpProcedure     *procedure,
+                                   Gimp              *gimp,
+                                   GimpContext       *context,
+                                   GimpProgress      *progress,
+                                   const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpPattern *pattern;
-
-  success = (pattern = gimp_context_get_pattern (context)) != NULL;
-
-  return_args = procedural_db_return_args (&patterns_get_pattern_proc, success);
-
-  if (success)
-    {
-      return_args[1].value.pdb_pointer = g_strdup (GIMP_OBJECT (pattern)->name);
-      return_args[2].value.pdb_int = pattern->mask->width;
-      return_args[3].value.pdb_int = pattern->mask->height;
-    }
-
-  return return_args;
-}
-
-static ProcArg patterns_get_pattern_outargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The pattern name"
-  },
-  {
-    GIMP_PDB_INT32,
-    "width",
-    "The pattern width"
-  },
-  {
-    GIMP_PDB_INT32,
-    "height",
-    "The pattern height"
-  }
-};
-
-static ProcRecord patterns_get_pattern_proc =
-{
-  "gimp-patterns-get-pattern",
-  "gimp-patterns-get-pattern",
-  "This procedure is deprecated! Use 'gimp-context-get-pattern' instead.",
-  "This procedure is deprecated! Use 'gimp-context-get-pattern' instead.",
-  "",
-  "",
-  "",
-  "gimp-context-get-pattern",
-  GIMP_INTERNAL,
-  0,
-  NULL,
-  3,
-  patterns_get_pattern_outargs,
-  { { patterns_get_pattern_invoker } }
-};
-
-static Argument *
-patterns_get_pattern_data_invoker (Gimp         *gimp,
-                                   GimpContext  *context,
-                                   GimpProgress *progress,
-                                   Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  gchar *name;
+  GValueArray *return_vals;
+  const gchar *name;
+  gchar *actual_name = NULL;
+  gint32 width = 0;
+  gint32 height = 0;
+  gint32 mask_bpp = 0;
   gint32 length = 0;
   guint8 *mask_data = NULL;
-  GimpPattern *pattern = NULL;
 
-  name = (gchar *) args[0].value.pdb_pointer;
-  if (name && !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
+  name = g_value_get_string (&args->values[0]);
 
   if (success)
     {
+      GimpPattern *pattern;
+
       if (name && strlen (name))
         {
           pattern = (GimpPattern *)
@@ -241,86 +153,184 @@ patterns_get_pattern_data_invoker (Gimp         *gimp,
 
       if (pattern)
         {
-          length = pattern->mask->height * pattern->mask->width *
-                   pattern->mask->bytes;
-          mask_data = g_memdup (temp_buf_data (pattern->mask), length);
+          actual_name = g_strdup (gimp_object_get_name (GIMP_OBJECT (pattern)));
+          width       = pattern->mask->width;
+          height      = pattern->mask->height;
+          mask_bpp    = pattern->mask->bytes;
+          length      = pattern->mask->height * pattern->mask->width *
+                        pattern->mask->bytes;
+          mask_data   = g_memdup (temp_buf_data (pattern->mask), length);
         }
       else
         success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&patterns_get_pattern_data_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_pointer = g_strdup (GIMP_OBJECT (pattern)->name);
-      return_args[2].value.pdb_int = pattern->mask->width;
-      return_args[3].value.pdb_int = pattern->mask->height;
-      return_args[4].value.pdb_int = pattern->mask->bytes;
-      return_args[5].value.pdb_int = length;
-      return_args[6].value.pdb_pointer = mask_data;
+      g_value_take_string (&return_vals->values[1], actual_name);
+      g_value_set_int (&return_vals->values[2], width);
+      g_value_set_int (&return_vals->values[3], height);
+      g_value_set_int (&return_vals->values[4], mask_bpp);
+      g_value_set_int (&return_vals->values[5], length);
+      gimp_value_take_int8array (&return_vals->values[6], mask_data, length);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg patterns_get_pattern_data_inargs[] =
+void
+register_patterns_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The pattern name (\"\" means currently active pattern)"
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcArg patterns_get_pattern_data_outargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The pattern name"
-  },
-  {
-    GIMP_PDB_INT32,
-    "width",
-    "The pattern width"
-  },
-  {
-    GIMP_PDB_INT32,
-    "height",
-    "The pattern height"
-  },
-  {
-    GIMP_PDB_INT32,
-    "mask-bpp",
-    "Pattern bytes per pixel"
-  },
-  {
-    GIMP_PDB_INT32,
-    "length",
-    "Length of pattern mask data"
-  },
-  {
-    GIMP_PDB_INT8ARRAY,
-    "mask-data",
-    "The pattern mask data"
-  }
-};
+  /*
+   * gimp-patterns-refresh
+   */
+  procedure = gimp_procedure_new (patterns_refresh_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-patterns-refresh");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-patterns-refresh",
+                                     "Refresh current patterns. This function always succeeds.",
+                                     "This procedure retrieves all patterns currently in the user's pattern path and updates all pattern dialogs accordingly.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2002",
+                                     NULL);
 
-static ProcRecord patterns_get_pattern_data_proc =
-{
-  "gimp-patterns-get-pattern-data",
-  "gimp-patterns-get-pattern-data",
-  "This procedure is deprecated! Use 'gimp-pattern-get-pixels' instead.",
-  "This procedure is deprecated! Use 'gimp-pattern-get-pixels' instead.",
-  "",
-  "",
-  "",
-  "gimp-pattern-get-pixels",
-  GIMP_INTERNAL,
-  1,
-  patterns_get_pattern_data_inargs,
-  6,
-  patterns_get_pattern_data_outargs,
-  { { patterns_get_pattern_data_invoker } }
-};
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-patterns-get-list
+   */
+  procedure = gimp_procedure_new (patterns_get_list_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-patterns-get-list");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-patterns-get-list",
+                                     "Retrieve a complete listing of the available patterns.",
+                                     "This procedure returns a complete listing of available GIMP patterns. Each name returned can be used as input to the 'gimp-context-set-pattern'.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("filter",
+                                                       "filter",
+                                                       "An optional regular expression used to filter the list",
+                                                       FALSE, TRUE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-patterns",
+                                                          "num patterns",
+                                                          "The number of patterns in the pattern list",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string_array ("pattern-list",
+                                                                 "pattern list",
+                                                                 "The list of pattern names",
+                                                                 GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-patterns-get-pattern
+   */
+  procedure = gimp_procedure_new (patterns_get_pattern_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-patterns-get-pattern");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-patterns-get-pattern",
+                                     "This procedure is deprecated! Use 'gimp-context-get-pattern' instead.",
+                                     "This procedure is deprecated! Use 'gimp-context-get-pattern' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-context-get-pattern");
+
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("name",
+                                                           "name",
+                                                           "The pattern name",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("width",
+                                                          "width",
+                                                          "The pattern width",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("height",
+                                                          "height",
+                                                          "The pattern height",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-patterns-get-pattern-data
+   */
+  procedure = gimp_procedure_new (patterns_get_pattern_data_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-patterns-get-pattern-data");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-patterns-get-pattern-data",
+                                     "This procedure is deprecated! Use 'gimp-pattern-get-pixels' instead.",
+                                     "This procedure is deprecated! Use 'gimp-pattern-get-pixels' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-pattern-get-pixels");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The pattern name (\"\" means currently active pattern)",
+                                                       FALSE, TRUE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("actual-name",
+                                                           "actual name",
+                                                           "The pattern name",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("width",
+                                                          "width",
+                                                          "The pattern width",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("height",
+                                                          "height",
+                                                          "The pattern height",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("mask-bpp",
+                                                          "mask bpp",
+                                                          "Pattern bytes per pixel",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("length",
+                                                          "length",
+                                                          "Length of pattern mask data",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int8_array ("mask-data",
+                                                               "mask data",
+                                                               "The pattern mask data",
+                                                               GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

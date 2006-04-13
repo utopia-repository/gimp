@@ -59,7 +59,7 @@ EXTRA_DIST = makefile.msc
 # unit tests for the GimpConfig system
 #
 
-TESTS = test-config
+# TESTS = test-config
 
 test_config_DEPENDENCIES = $(gimpconfig_libs)
 

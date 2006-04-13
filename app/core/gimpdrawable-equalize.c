@@ -46,12 +46,12 @@ gimp_drawable_equalize (GimpDrawable *drawable,
   gint           x, y, width, height;
   GimpHistogram *hist;
   GimpLut       *lut;
-  GimpImage     *gimage;
+  GimpImage     *image;
 
   g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
 
-  gimage = gimp_item_get_image (GIMP_ITEM (drawable));
+  image = gimp_item_get_image (GIMP_ITEM (drawable));
   bytes  = gimp_drawable_bytes (drawable);
 
   if (! gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height))
@@ -60,14 +60,13 @@ gimp_drawable_equalize (GimpDrawable *drawable,
   hist = gimp_histogram_new ();
   gimp_drawable_calculate_histogram (drawable, hist);
 
-  /* Build equalization LUT */
-  lut = eq_histogram_lut_new (hist, bytes);
+  lut = equalize_lut_new (hist, bytes);
 
   /*  Apply the histogram  */
-  pixel_region_init (&srcPR, gimp_drawable_data (drawable),
-		     x, y, width, height, FALSE);
-  pixel_region_init (&destPR, gimp_drawable_shadow (drawable),
-		     x, y, width, height, TRUE);
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
+                     x, y, width, height, FALSE);
+  pixel_region_init (&destPR, gimp_drawable_get_shadow_tiles (drawable),
+                     x, y, width, height, TRUE);
 
   pixel_regions_process_parallel ((PixelProcessorFunc) gimp_lut_process,
                                   lut, 2, &srcPR, &destPR);

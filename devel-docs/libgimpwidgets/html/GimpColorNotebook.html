@@ -57,37 +57,38 @@ href="../gtk/GtkWidget.html"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2538514"></a><h2>Object Hierarchy</h2>
+<a name="id2585101"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
-   +----<a
+   +----GInitiallyUnowned
+         +----<a
 href="../gtk/GtkObject.html"
 >GtkObject</a>
-         +----<a
+               +----<a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>
-               +----<a
+                     +----<a
 href="../gtk/GtkContainer.html"
 >GtkContainer</a>
-                     +----<a
+                           +----<a
 href="../gtk/GtkBox.html"
 >GtkBox</a>
-                           +----<a
+                                 +----<a
 href="../gtk/GtkVBox.html"
 >GtkVBox</a>
-                                 +----<a href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a>
-                                       +----GimpColorNotebook
+                                       +----<a href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a>
+                                             +----GimpColorNotebook
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2587236"></a><h2>Implemented Interfaces</h2>
+<a name="id2587356"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorNotebook implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2587253"></a><h2>Style Properties</h2>
+<a name="id2587372"></a><h2>Style Properties</h2>
 <pre class="synopsis">
 
   "<a href="GimpColorNotebook.html#GimpColorNotebook--tab-border">tab-border</a>"           gint                  : Read
@@ -97,27 +98,27 @@ href="../gtk/gtk-Themeable-Stock-Images.html#GtkIconSize"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2587290"></a><h2>Description</h2>
+<a name="id2587410"></a><h2>Description</h2>
 <p>
 The <a href="GimpColorNotebook.html" title="GimpColorNotebook"><span class="type">GimpColorNotebook</span></a> widget is an implementation of a <a href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a>.
 It serves as a container for <span class="type">GimpColorSelectors</span>.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2584918"></a><h2>Details</h2>
+<a name="id2587442"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2584924"></a><h3>
+<a name="id2587179"></a><h3>
 <a name="GimpColorNotebook-struct"></a>GimpColorNotebook</h3>
-<a class="indexterm" name="id2584934"></a><pre class="programlisting">typedef struct _GimpColorNotebook GimpColorNotebook;</pre>
+<a class="indexterm" name="id2587189"></a><pre class="programlisting">typedef struct _GimpColorNotebook GimpColorNotebook;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2584950"></a><h3>
+<a name="id2587205"></a><h3>
 <a name="gimp-color-notebook-set-has-page"></a>gimp_color_notebook_set_has_page ()</h3>
-<a class="indexterm" name="id2584959"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2587214"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>*  gimp_color_notebook_set_has_page
                                             (<a href="GimpColorNotebook.html" title="GimpColorNotebook">GimpColorNotebook</a> *notebook,
@@ -162,9 +163,9 @@ The <em class="parameter"><code>page_type</code></em> passed must be a <a href="
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2595528"></a><h2>Style Properties</h2>
+<a name="id2584711"></a><h2>Style Properties</h2>
 <div class="refsect2" lang="en">
-<a name="id2595534"></a><h3>
+<a name="id2584717"></a><h3>
 <a name="GimpColorNotebook--tab-border"></a>The "<code class="literal">tab-border</code>" style property</h3>
 <pre class="programlisting">  "tab-border"           gint                  : Read</pre>
 <p>Width of the border around the tab contents.</p>
@@ -173,7 +174,7 @@ The <em class="parameter"><code>page_type</code></em> passed must be a <a href="
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2595999"></a><h3>
+<a name="id2595622"></a><h3>
 <a name="GimpColorNotebook--tab-icon-size"></a>The "<code class="literal">tab-icon-size</code>" style property</h3>
 <pre class="programlisting">  "tab-icon-size"        <a
 href="../gtk/gtk-Themeable-Stock-Images.html#GtkIconSize"

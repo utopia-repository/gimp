@@ -300,11 +300,11 @@ gimp_text_layer_set_tiles (GimpDrawable  *drawable,
                            gint           offset_x,
                            gint           offset_y)
 {
-  GimpTextLayer *layer  = GIMP_TEXT_LAYER (drawable);
-  GimpImage     *gimage = gimp_item_get_image (GIMP_ITEM (layer));
+  GimpTextLayer *layer = GIMP_TEXT_LAYER (drawable);
+  GimpImage     *image = gimp_item_get_image (GIMP_ITEM (layer));
 
   if (push_undo && ! layer->modified)
-    gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_DRAWABLE_MOD,
+    gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_DRAWABLE_MOD,
                                  undo_desc);
 
   GIMP_DRAWABLE_CLASS (parent_class)->set_tiles (drawable,
@@ -314,11 +314,11 @@ gimp_text_layer_set_tiles (GimpDrawable  *drawable,
 
   if (push_undo && ! layer->modified)
     {
-      gimp_image_undo_push_text_layer_modified (gimage, NULL, layer);
+      gimp_image_undo_push_text_layer_modified (image, NULL, layer);
 
       g_object_set (drawable, "modified", TRUE, NULL);
 
-      gimp_image_undo_group_end (gimage);
+      gimp_image_undo_group_end (image);
     }
 }
 
@@ -332,11 +332,11 @@ gimp_text_layer_push_undo (GimpDrawable *drawable,
                            gint          width,
                            gint          height)
 {
-  GimpTextLayer *layer  = GIMP_TEXT_LAYER (drawable);
-  GimpImage     *gimage = gimp_item_get_image (GIMP_ITEM (layer));
+  GimpTextLayer *layer = GIMP_TEXT_LAYER (drawable);
+  GimpImage     *image = gimp_item_get_image (GIMP_ITEM (layer));
 
   if (! layer->modified)
-    gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_DRAWABLE, undo_desc);
+    gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_DRAWABLE, undo_desc);
 
   GIMP_DRAWABLE_CLASS (parent_class)->push_undo (drawable, undo_desc,
                                                  tiles, sparse,
@@ -344,11 +344,11 @@ gimp_text_layer_push_undo (GimpDrawable *drawable,
 
   if (! layer->modified)
     {
-      gimp_image_undo_push_text_layer_modified (gimage, NULL, layer);
+      gimp_image_undo_push_text_layer_modified (image, NULL, layer);
 
       g_object_set (drawable, "modified", TRUE, NULL);
 
-      gimp_image_undo_group_end (gimage);
+      gimp_image_undo_group_end (image);
     }
 }
 
@@ -591,7 +591,7 @@ gimp_text_layer_render (GimpTextLayer *layer)
 
 static void
 gimp_text_layer_render_layout (GimpTextLayer  *layer,
-			       GimpTextLayout *layout)
+                               GimpTextLayout *layout)
 {
   GimpDrawable *drawable = GIMP_DRAWABLE (layer);
   GimpItem     *item     = GIMP_ITEM (layer);
@@ -612,23 +612,23 @@ gimp_text_layer_render_layout (GimpTextLayer  *layer,
   bitmap.buffer = g_malloc0 (bitmap.rows * bitmap.pitch);
 
   gimp_text_layout_render (layout,
-			   (GimpTextRenderFunc) gimp_text_render_bitmap,
-			   &bitmap);
+                           (GimpTextRenderFunc) gimp_text_render_bitmap,
+                           &bitmap);
 
   mask = tile_manager_new (bitmap.width, bitmap.rows, 1);
   pixel_region_init (&maskPR, mask, 0, 0, bitmap.width, bitmap.rows, TRUE);
 
   for (i = 0; i < bitmap.rows; i++)
     pixel_region_set_row (&maskPR,
-			  0, i, bitmap.width,
-			  bitmap.buffer + i * bitmap.pitch);
+                          0, i, bitmap.width,
+                          bitmap.buffer + i * bitmap.pitch);
 
   g_free (bitmap.buffer);
 
   pixel_region_init (&textPR, drawable->tiles,
-		     0, 0, bitmap.width, bitmap.rows, TRUE);
+                     0, 0, bitmap.width, bitmap.rows, TRUE);
   pixel_region_init (&maskPR, mask,
-		     0, 0, bitmap.width, bitmap.rows, FALSE);
+                     0, 0, bitmap.width, bitmap.rows, FALSE);
 
   apply_mask_to_region (&textPR, &maskPR, OPAQUE_OPACITY);
 

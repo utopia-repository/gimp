@@ -29,7 +29,7 @@
 
 #include "config/gimprc.h"
 
-#include "pdb/procedural_db.h"
+#include "pdb/gimp-pdb.h"
 
 #include "plug-in/plug-ins.h"
 
@@ -79,7 +79,7 @@ enum
   RESTORE,
   EXIT,
   BUFFER_CHANGED,
-  LAST_PLUG_IN_CHANGED,
+  LAST_PLUG_INS_CHANGED,
   LAST_SIGNAL
 };
 
@@ -157,11 +157,11 @@ gimp_class_init (GimpClass *klass)
                   gimp_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
-  gimp_signals[LAST_PLUG_IN_CHANGED] =
-    g_signal_new ("last-plug-in-changed",
+  gimp_signals[LAST_PLUG_INS_CHANGED] =
+    g_signal_new ("last-plug-ins-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GimpClass, last_plug_in_changed),
+                  G_STRUCT_OFFSET (GimpClass, last_plug_ins_changed),
                   NULL, NULL,
                   gimp_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
@@ -206,9 +206,10 @@ gimp_init (Gimp *gimp)
   gimp->environ_table       = gimp_environ_table_new ();
 
   gimp->plug_in_debug       = NULL;
+  gimp->plug_in_data_list   = NULL;
 
   gimp->images              = gimp_list_new_weak (GIMP_TYPE_IMAGE, FALSE);
-  gimp_object_set_name (GIMP_OBJECT (gimp->images), "images");
+  gimp_object_set_static_name (GIMP_OBJECT (gimp->images), "images");
 
   gimp->next_image_ID        = 1;
   gimp->next_guide_ID        = 1;
@@ -219,13 +220,14 @@ gimp_init (Gimp *gimp)
   gimp->item_table          = g_hash_table_new (g_direct_hash, NULL);
 
   gimp->displays            = gimp_list_new_weak (GIMP_TYPE_OBJECT, FALSE);
-  gimp_object_set_name (GIMP_OBJECT (gimp->displays), "displays");
+  gimp_object_set_static_name (GIMP_OBJECT (gimp->displays), "displays");
 
   gimp->next_display_ID     = 1;
 
   gimp->global_buffer       = NULL;
   gimp->named_buffers       = gimp_list_new (GIMP_TYPE_BUFFER, TRUE);
-  gimp_object_set_name (GIMP_OBJECT (gimp->named_buffers), "named buffers");
+  gimp_object_set_static_name (GIMP_OBJECT (gimp->named_buffers),
+                               "named buffers");
 
   gimp->fonts               = NULL;
   gimp->brush_factory       = NULL;
@@ -233,7 +235,7 @@ gimp_init (Gimp *gimp)
   gimp->gradient_factory    = NULL;
   gimp->palette_factory     = NULL;
 
-  procedural_db_init (gimp);
+  gimp_pdb_init (gimp);
 
   gimp->load_procs          = NULL;
   gimp->save_procs          = NULL;
@@ -241,14 +243,15 @@ gimp_init (Gimp *gimp)
   xcf_init (gimp);
 
   gimp->tool_info_list      = gimp_list_new (GIMP_TYPE_TOOL_INFO, FALSE);
-  gimp_object_set_name (GIMP_OBJECT (gimp->tool_info_list), "tool infos");
+  gimp_object_set_static_name (GIMP_OBJECT (gimp->tool_info_list),
+                               "tool infos");
 
   gimp->standard_tool_info  = NULL;
 
   gimp->documents           = gimp_document_list_new (gimp);
 
   gimp->templates           = gimp_list_new (GIMP_TYPE_TEMPLATE, TRUE);
-  gimp_object_set_name (GIMP_OBJECT (gimp->templates), "templates");
+  gimp_object_set_static_name (GIMP_OBJECT (gimp->templates), "templates");
 
   gimp->image_new_last_template = NULL;
 
@@ -290,6 +293,12 @@ gimp_finalize (GObject *object)
 
   gimp_contexts_exit (gimp);
 
+  if (gimp->last_plug_ins)
+    {
+      g_slist_free (gimp->last_plug_ins);
+      gimp->last_plug_ins = NULL;
+    }
+
   if (gimp->image_new_last_template)
     {
       g_object_unref (gimp->image_new_last_template);
@@ -318,7 +327,7 @@ gimp_finalize (GObject *object)
 
   xcf_exit (gimp);
 
-  procedural_db_free (gimp);
+  gimp_pdb_exit (gimp);
 
   if (gimp->load_procs)
     {
@@ -452,6 +461,9 @@ gimp_get_memsize (GimpObject *object,
 
   memsize += gimp_g_object_get_memsize (G_OBJECT (gimp->module_db));
 
+  memsize += gimp_g_list_get_memsize (gimp->plug_in_data_list,
+                                      0 /* FIXME */);
+
   memsize += gimp_g_hash_table_get_memsize (gimp->image_table);
   memsize += gimp_g_hash_table_get_memsize (gimp->item_table);
 
@@ -476,9 +488,6 @@ gimp_get_memsize (GimpObject *object,
 
   memsize += gimp_g_hash_table_get_memsize (gimp->procedural_ht);
   memsize += gimp_g_hash_table_get_memsize (gimp->procedural_compat_ht);
-
-  memsize += gimp_g_list_get_memsize (gimp->procedural_db_data_list,
-                                      0 /* FIXME */);
 
   memsize += gimp_g_slist_get_memsize (gimp->load_procs, 0 /* FIXME */);
   memsize += gimp_g_slist_get_memsize (gimp->save_procs, 0 /* FIXME */);
@@ -555,7 +564,8 @@ gimp_real_initialize (Gimp               *gimp,
                            G_N_ELEMENTS (brush_loader_entries),
                            gimp_brush_new,
                            gimp_brush_get_standard);
-  gimp_object_set_name (GIMP_OBJECT (gimp->brush_factory), "brush factory");
+  gimp_object_set_static_name (GIMP_OBJECT (gimp->brush_factory),
+                               "brush factory");
 
   gimp->pattern_factory =
     gimp_data_factory_new (gimp,
@@ -565,7 +575,8 @@ gimp_real_initialize (Gimp               *gimp,
                            G_N_ELEMENTS (pattern_loader_entries),
                            NULL,
                            gimp_pattern_get_standard);
-  gimp_object_set_name (GIMP_OBJECT (gimp->pattern_factory), "pattern factory");
+  gimp_object_set_static_name (GIMP_OBJECT (gimp->pattern_factory),
+                               "pattern factory");
 
   gimp->gradient_factory =
     gimp_data_factory_new (gimp,
@@ -575,7 +586,8 @@ gimp_real_initialize (Gimp               *gimp,
                            G_N_ELEMENTS (gradient_loader_entries),
                            gimp_gradient_new,
                            gimp_gradient_get_standard);
-  gimp_object_set_name (GIMP_OBJECT (gimp->gradient_factory), "gradient factory");
+  gimp_object_set_static_name (GIMP_OBJECT (gimp->gradient_factory),
+                               "gradient factory");
 
   gimp->palette_factory =
     gimp_data_factory_new (gimp,
@@ -585,7 +597,8 @@ gimp_real_initialize (Gimp               *gimp,
                            G_N_ELEMENTS (palette_loader_entries),
                            gimp_palette_new,
                            gimp_palette_get_standard);
-  gimp_object_set_name (GIMP_OBJECT (gimp->palette_factory), "palette factory");
+  gimp_object_set_static_name (GIMP_OBJECT (gimp->palette_factory),
+                               "palette factory");
 
   gimp_paint_init (gimp);
 
@@ -601,7 +614,7 @@ gimp_real_initialize (Gimp               *gimp,
 
   /*  register all internal procedures  */
   status_callback (NULL,_("Internal Procedures"), 0.2);
-  procedural_db_init_procs (gimp);
+  gimp_pdb_init_procs (gimp);
 
   status_callback (NULL, _("Plug-In Interpreters"), 0.8);
 
@@ -910,14 +923,28 @@ gimp_set_global_buffer (Gimp       *gimp,
 }
 
 void
-gimp_set_last_plug_in (Gimp          *gimp,
-                       PlugInProcDef *proc_def)
+gimp_set_last_plug_in (Gimp                *gimp,
+                       GimpPlugInProcedure *procedure)
 {
+  GSList *list;
+  gint    history_size;
+
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  gimp->last_plug_in = proc_def;
+  history_size = MAX (1, gimp->config->plug_in_history_size);
 
-  g_signal_emit (gimp, gimp_signals[LAST_PLUG_IN_CHANGED], 0);
+  gimp->last_plug_ins = g_slist_remove (gimp->last_plug_ins, procedure);
+  gimp->last_plug_ins = g_slist_prepend (gimp->last_plug_ins, procedure);
+
+  list = g_slist_nth (gimp->last_plug_ins, history_size);
+
+  if (list)
+    {
+      gimp->last_plug_ins = g_slist_remove_link (gimp->last_plug_ins, list);
+      g_slist_free (list);
+    }
+
+  g_signal_emit (gimp, gimp_signals[LAST_PLUG_INS_CHANGED], 0);
 }
 
 GimpImage *
@@ -927,13 +954,13 @@ gimp_create_image (Gimp              *gimp,
                    GimpImageBaseType  type,
                    gboolean           attach_comment)
 {
-  GimpImage *gimage;
+  GimpImage *image;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
 
-  gimage = gimp_image_new (gimp, width, height, type);
+  image = gimp_image_new (gimp, width, height, type);
 
-  gimp_container_add (gimp->images, GIMP_OBJECT (gimage));
+  gimp_container_add (gimp->images, GIMP_OBJECT (image));
 
   if (attach_comment)
     {
@@ -945,12 +972,12 @@ gimp_create_image (Gimp              *gimp,
                                                       GIMP_PARASITE_PERSISTENT,
                                                       strlen (comment) + 1,
                                                       comment);
-          gimp_image_parasite_attach (gimage, parasite);
+          gimp_image_parasite_attach (image, parasite);
           gimp_parasite_free (parasite);
         }
     }
 
-  return gimage;
+  return image;
 }
 
 void

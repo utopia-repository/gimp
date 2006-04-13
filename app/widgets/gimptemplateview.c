@@ -143,17 +143,17 @@ gimp_template_view_new (GimpViewType     view_type,
                                    "templates-delete", NULL);
 
   gimp_container_view_enable_dnd (editor->view,
-				  GTK_BUTTON (template_view->create_button),
-				  GIMP_TYPE_TEMPLATE);
+                                  GTK_BUTTON (template_view->create_button),
+                                  GIMP_TYPE_TEMPLATE);
   gimp_container_view_enable_dnd (editor->view,
-				  GTK_BUTTON (template_view->duplicate_button),
-				  GIMP_TYPE_TEMPLATE);
+                                  GTK_BUTTON (template_view->duplicate_button),
+                                  GIMP_TYPE_TEMPLATE);
   gimp_container_view_enable_dnd (editor->view,
-				  GTK_BUTTON (template_view->edit_button),
-				  GIMP_TYPE_TEMPLATE);
+                                  GTK_BUTTON (template_view->edit_button),
+                                  GIMP_TYPE_TEMPLATE);
   gimp_container_view_enable_dnd (editor->view,
-				  GTK_BUTTON (template_view->delete_button),
-				  GIMP_TYPE_TEMPLATE);
+                                  GTK_BUTTON (template_view->delete_button),
+                                  GIMP_TYPE_TEMPLATE);
 
   gimp_ui_manager_update (GIMP_EDITOR (editor->view)->ui_manager, editor);
 
@@ -217,7 +217,8 @@ gimp_template_view_tree_name_edited (GtkCellRendererText *cell,
         }
       else
         {
-          gchar *name = gimp_viewable_get_description (renderer->viewable, NULL);
+          gchar *name = gimp_viewable_get_description (renderer->viewable,
+                                                       NULL);
 
           gtk_list_store_set (GTK_LIST_STORE (tree_view->model), &iter,
                               tree_view->model_column_name, name,

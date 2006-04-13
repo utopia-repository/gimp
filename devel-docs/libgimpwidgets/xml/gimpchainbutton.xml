@@ -34,11 +34,12 @@ enum        <link linkend="GimpChainPosition">GimpChainPosition</link>;
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkWidget">GtkWidget</link>
-               +----<link linkend="GtkContainer">GtkContainer</link>
-                     +----<link linkend="GtkTable">GtkTable</link>
-                           +----GimpChainButton
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkWidget">GtkWidget</link>
+                     +----<link linkend="GtkContainer">GtkContainer</link>
+                           +----<link linkend="GtkTable">GtkTable</link>
+                                 +----GimpChainButton
 </synopsis>
 
 </refsect1>

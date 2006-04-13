@@ -61,42 +61,43 @@ gchar*      <a href="GimpProcBrowserDialog.html#gimp-proc-browser-dialog-get-sel
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2553233"></a><h2>Object Hierarchy</h2>
+<a name="id2530029"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
-   +----<a
+   +----GInitiallyUnowned
+         +----<a
 href="../gtk/GtkObject.html"
 >GtkObject</a>
-         +----<a
+               +----<a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>
-               +----<a
+                     +----<a
 href="../gtk/GtkContainer.html"
 >GtkContainer</a>
-                     +----<a
+                           +----<a
 href="../gtk/GtkBin.html"
 >GtkBin</a>
-                           +----<a
+                                 +----<a
 href="../gtk/GtkWindow.html"
 >GtkWindow</a>
-                                 +----<a
+                                       +----<a
 href="../gtk/GtkDialog.html"
 >GtkDialog</a>
-                                       +----<a
+                                             +----<a
 href="../libgimpwidgets/GimpDialog.html"
 >GimpDialog</a>
-                                             +----GimpProcBrowserDialog
+                                                   +----GimpProcBrowserDialog
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2666566"></a><h2>Implemented Interfaces</h2>
+<a name="id2663383"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpProcBrowserDialog implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2666582"></a><h2>Signal Prototypes</h2>
+<a name="id2663399"></a><h2>Signal Prototypes</h2>
 <pre class="synopsis">
 
 "<a href="GimpProcBrowserDialog.html#GimpProcBrowserDialog-row-activated">row-activated</a>"
@@ -108,26 +109,26 @@ GimpProcBrowserDialog implements
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2666641"></a><h2>Description</h2>
+<a name="id2663458"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2666652"></a><h2>Details</h2>
+<a name="id2663469"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2666658"></a><h3>
+<a name="id2663475"></a><h3>
 <a name="GimpProcBrowserDialog-struct"></a>GimpProcBrowserDialog</h3>
-<a class="indexterm" name="id2666667"></a><pre class="programlisting">typedef struct _GimpProcBrowserDialog GimpProcBrowserDialog;</pre>
+<a class="indexterm" name="id2664154"></a><pre class="programlisting">typedef struct _GimpProcBrowserDialog GimpProcBrowserDialog;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2666683"></a><h3>
+<a name="id2664170"></a><h3>
 <a name="gimp-proc-browser-dialog-new"></a>gimp_proc_browser_dialog_new ()</h3>
-<a class="indexterm" name="id2666692"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2664179"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>*  gimp_proc_browser_dialog_new    (const gchar *title,
                                              const gchar *role,
@@ -190,9 +191,9 @@ href="../gtk/GtkWindow.html#gtk-window-set-role"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2664463"></a><h3>
+<a name="id2666323"></a><h3>
 <a name="gimp-proc-browser-dialog-get-selected"></a>gimp_proc_browser_dialog_get_selected ()</h3>
-<a class="indexterm" name="id2664472"></a><pre class="programlisting">gchar*      gimp_proc_browser_dialog_get_selected
+<a class="indexterm" name="id2666332"></a><pre class="programlisting">gchar*      gimp_proc_browser_dialog_get_selected
                                             (<a href="GimpProcBrowserDialog.html" title="GimpProcBrowserDialog">GimpProcBrowserDialog</a> *dialog);</pre>
 <p>
 Retrieves the name of the currently selected procedure.</p>
@@ -223,9 +224,9 @@ Retrieves the name of the currently selected procedure.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2664551"></a><h2>Signals</h2>
+<a name="id2666411"></a><h2>Signals</h2>
 <div class="refsect2" lang="en">
-<a name="id2664557"></a><h3>
+<a name="id2666417"></a><h3>
 <a name="GimpProcBrowserDialog-row-activated"></a>The "row-activated" signal</h3>
 <pre class="programlisting">void        user_function                  (<a href="GimpProcBrowserDialog.html" title="GimpProcBrowserDialog">GimpProcBrowserDialog</a> *dialog,
                                             gpointer user_data);</pre>
@@ -255,7 +256,7 @@ href="../gtk/GtkTreeView.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2664636"></a><h3>
+<a name="id2666494"></a><h3>
 <a name="GimpProcBrowserDialog-selection-changed"></a>The "selection-changed" signal</h3>
 <pre class="programlisting">void        user_function                  (<a href="GimpProcBrowserDialog.html" title="GimpProcBrowserDialog">GimpProcBrowserDialog</a> *dialog,
                                             gpointer user_data);</pre>

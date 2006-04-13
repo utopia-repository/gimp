@@ -26,414 +26,182 @@
 #include "libgimpbase/gimpbase.h"
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "core/gimp.h"
-#include "procedural-db-query.h"
+#include "gimp-pdb-compat.h"
+#include "gimp-pdb-query.h"
+#include "plug-in/plug-in-data.h"
 
-static ProcRecord procedural_db_temp_name_proc;
-static ProcRecord procedural_db_dump_proc;
-static ProcRecord procedural_db_query_proc;
-static ProcRecord procedural_db_proc_info_proc;
-static ProcRecord procedural_db_proc_arg_proc;
-static ProcRecord procedural_db_proc_val_proc;
-static ProcRecord procedural_db_get_data_proc;
-static ProcRecord procedural_db_get_data_size_proc;
-static ProcRecord procedural_db_set_data_proc;
 
-void
-register_procedural_db_procs (Gimp *gimp)
+static GValueArray *
+procedural_db_temp_name_invoker (GimpProcedure     *procedure,
+                                 Gimp              *gimp,
+                                 GimpContext       *context,
+                                 GimpProgress      *progress,
+                                 const GValueArray *args)
 {
-  procedural_db_register (gimp, &procedural_db_temp_name_proc);
-  procedural_db_register (gimp, &procedural_db_dump_proc);
-  procedural_db_register (gimp, &procedural_db_query_proc);
-  procedural_db_register (gimp, &procedural_db_proc_info_proc);
-  procedural_db_register (gimp, &procedural_db_proc_arg_proc);
-  procedural_db_register (gimp, &procedural_db_proc_val_proc);
-  procedural_db_register (gimp, &procedural_db_get_data_proc);
-  procedural_db_register (gimp, &procedural_db_get_data_size_proc);
-  procedural_db_register (gimp, &procedural_db_set_data_proc);
-}
+  GValueArray *return_vals;
+  gchar *temp_name = NULL;
 
-static Argument *
-procedural_db_temp_name_invoker (Gimp         *gimp,
-                                 GimpContext  *context,
-                                 GimpProgress *progress,
-                                 Argument     *args)
-{
-  Argument *return_args;
-  gchar *temp_name;
   static gint proc_number = 0;
 
   temp_name = g_strdup_printf ("temp-procedure-number-%d", proc_number++);
 
-  return_args = procedural_db_return_args (&procedural_db_temp_name_proc, TRUE);
-  return_args[1].value.pdb_pointer = temp_name;
+  return_vals = gimp_procedure_get_return_values (procedure, TRUE);
+  g_value_take_string (&return_vals->values[1], temp_name);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg procedural_db_temp_name_outargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "temp-name",
-    "A unique temporary name for a temporary PDB entry"
-  }
-};
-
-static ProcRecord procedural_db_temp_name_proc =
-{
-  "gimp-procedural-db-temp-name",
-  "gimp-procedural-db-temp-name",
-  "Generates a unique temporary PDB name.",
-  "This procedure generates a temporary PDB entry name that is guaranteed to be unique. It is mainly used by the interactive popup dialogs to generate a PDB entry name.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  0,
-  NULL,
-  1,
-  procedural_db_temp_name_outargs,
-  { { procedural_db_temp_name_invoker } }
-};
-
-static Argument *
-procedural_db_dump_invoker (Gimp         *gimp,
-                            GimpContext  *context,
-                            GimpProgress *progress,
-                            Argument     *args)
+static GValueArray *
+procedural_db_dump_invoker (GimpProcedure     *procedure,
+                            Gimp              *gimp,
+                            GimpContext       *context,
+                            GimpProgress      *progress,
+                            const GValueArray *args)
 {
   gboolean success = TRUE;
-  gchar *filename;
+  const gchar *filename;
 
-  filename = (gchar *) args[0].value.pdb_pointer;
-  if (filename == NULL)
-    success = FALSE;
+  filename = g_value_get_string (&args->values[0]);
 
   if (success)
     {
-      success = procedural_db_dump (gimp, filename);
+      success = gimp_pdb_dump (gimp, filename);
     }
 
-  return procedural_db_return_args (&procedural_db_dump_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg procedural_db_dump_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "filename",
-    "The dump filename"
-  }
-};
-
-static ProcRecord procedural_db_dump_proc =
-{
-  "gimp-procedural-db-dump",
-  "gimp-procedural-db-dump",
-  "Dumps the current contents of the procedural database",
-  "This procedure dumps the contents of the procedural database to the specified file. The file will contain all of the information provided for each registered procedure. This file is in a format appropriate for use with the supplied \"pdb_self_doc.el\" Elisp script, which generates a texinfo document.",
-  "Spencer Kimball & Josh MacDonald",
-  "Spencer Kimball & Josh MacDonald & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  procedural_db_dump_inargs,
-  0,
-  NULL,
-  { { procedural_db_dump_invoker } }
-};
-
-static Argument *
-procedural_db_query_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
+static GValueArray *
+procedural_db_query_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gchar *name;
-  gchar *blurb;
-  gchar *help;
-  gchar *author;
-  gchar *copyright;
-  gchar *date;
-  gchar *proc_type;
-  gint num_procs;
-  gchar **procs;
+  GValueArray *return_vals;
+  const gchar *name;
+  const gchar *blurb;
+  const gchar *help;
+  const gchar *author;
+  const gchar *copyright;
+  const gchar *date;
+  const gchar *proc_type;
+  gint32 num_matches = 0;
+  gchar **procedure_names = NULL;
 
-  name = (gchar *) args[0].value.pdb_pointer;
-  if (name == NULL)
-    success = FALSE;
-
-  blurb = (gchar *) args[1].value.pdb_pointer;
-  if (blurb == NULL)
-    success = FALSE;
-
-  help = (gchar *) args[2].value.pdb_pointer;
-  if (help == NULL)
-    success = FALSE;
-
-  author = (gchar *) args[3].value.pdb_pointer;
-  if (author == NULL)
-    success = FALSE;
-
-  copyright = (gchar *) args[4].value.pdb_pointer;
-  if (copyright == NULL)
-    success = FALSE;
-
-  date = (gchar *) args[5].value.pdb_pointer;
-  if (date == NULL)
-    success = FALSE;
-
-  proc_type = (gchar *) args[6].value.pdb_pointer;
-  if (proc_type == NULL)
-    success = FALSE;
+  name = g_value_get_string (&args->values[0]);
+  blurb = g_value_get_string (&args->values[1]);
+  help = g_value_get_string (&args->values[2]);
+  author = g_value_get_string (&args->values[3]);
+  copyright = g_value_get_string (&args->values[4]);
+  date = g_value_get_string (&args->values[5]);
+  proc_type = g_value_get_string (&args->values[6]);
 
   if (success)
     {
-      success = procedural_db_query (gimp,
-                                     name, blurb, help, author, copyright, date, proc_type,
-                                     &num_procs, &procs);
+      success = gimp_pdb_query (gimp,
+                                name, blurb, help, author,
+                                copyright, date, proc_type,
+                                &num_matches, &procedure_names);
     }
 
-  return_args = procedural_db_return_args (&procedural_db_query_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_int = num_procs;
-      return_args[2].value.pdb_pointer = procs;
+      g_value_set_int (&return_vals->values[1], num_matches);
+      gimp_value_take_stringarray (&return_vals->values[2], procedure_names, num_matches);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg procedural_db_query_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The regex for procedure name"
-  },
-  {
-    GIMP_PDB_STRING,
-    "blurb",
-    "The regex for procedure blurb"
-  },
-  {
-    GIMP_PDB_STRING,
-    "help",
-    "The regex for procedure help"
-  },
-  {
-    GIMP_PDB_STRING,
-    "author",
-    "The regex for procedure author"
-  },
-  {
-    GIMP_PDB_STRING,
-    "copyright",
-    "The regex for procedure copyright"
-  },
-  {
-    GIMP_PDB_STRING,
-    "date",
-    "The regex for procedure date"
-  },
-  {
-    GIMP_PDB_STRING,
-    "proc-type",
-    "The regex for procedure type: { 'Internal GIMP procedure', 'GIMP Plug-In', 'GIMP Extension', 'Temporary Procedure' }"
-  }
-};
-
-static ProcArg procedural_db_query_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "num-matches",
-    "The number of matching procedures"
-  },
-  {
-    GIMP_PDB_STRINGARRAY,
-    "procedure-names",
-    "The list of procedure names"
-  }
-};
-
-static ProcRecord procedural_db_query_proc =
-{
-  "gimp-procedural-db-query",
-  "gimp-procedural-db-query",
-  "Queries the procedural database for its contents using regular expression matching.",
-  "This procedure queries the contents of the procedural database. It is supplied with seven arguments matching procedures on { name, blurb, help, author, copyright, date, procedure type}. This is accomplished using regular expression matching. For instance, to find all procedures with \"jpeg\" listed in the blurb, all seven arguments can be supplied as \".*\", except for the second, which can be supplied as \".*jpeg.*\". There are two return arguments for this procedure. The first is the number of procedures matching the query. The second is a concatenated list of procedure names corresponding to those matching the query. If no matching entries are found, then the returned string is NULL and the number of entries is 0.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  7,
-  procedural_db_query_inargs,
-  2,
-  procedural_db_query_outargs,
-  { { procedural_db_query_invoker } }
-};
-
-static Argument *
-procedural_db_proc_info_invoker (Gimp         *gimp,
-                                 GimpContext  *context,
-                                 GimpProgress *progress,
-                                 Argument     *args)
+static GValueArray *
+procedural_db_proc_info_invoker (GimpProcedure     *procedure,
+                                 Gimp              *gimp,
+                                 GimpContext       *context,
+                                 GimpProgress      *progress,
+                                 const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gchar *proc_name;
-  gchar *blurb;
-  gchar *help;
-  gchar *author;
-  gchar *copyright;
-  gchar *date;
+  GValueArray *return_vals;
+  const gchar *procedure_name;
+  gchar *blurb = NULL;
+  gchar *help = NULL;
+  gchar *author = NULL;
+  gchar *copyright = NULL;
+  gchar *date = NULL;
   gint32 proc_type = 0;
-  gint32 num_args;
-  gint32 num_values;
+  gint32 num_args = 0;
+  gint32 num_values = 0;
 
-  proc_name = (gchar *) args[0].value.pdb_pointer;
-  if (proc_name == NULL || !g_utf8_validate (proc_name, -1, NULL))
-    success = FALSE;
+  procedure_name = g_value_get_string (&args->values[0]);
 
   if (success)
     {
       GimpPDBProcType  ptype;
       gchar           *canonical;
 
-      canonical = gimp_canonicalize_identifier (proc_name);
+      canonical = gimp_canonicalize_identifier (procedure_name);
 
-      success = procedural_db_proc_info (gimp, canonical,
-                                         &blurb, &help, &author, &copyright, &date, &ptype,
-                                         &num_args, &num_values);
+      success = gimp_pdb_proc_info (gimp, canonical,
+                                    &blurb, &help, &author,
+                                    &copyright, &date, &ptype,
+                                    &num_args, &num_values);
       proc_type = ptype;
 
       g_free (canonical);
     }
 
-  return_args = procedural_db_return_args (&procedural_db_proc_info_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_pointer = blurb;
-      return_args[2].value.pdb_pointer = help;
-      return_args[3].value.pdb_pointer = author;
-      return_args[4].value.pdb_pointer = copyright;
-      return_args[5].value.pdb_pointer = date;
-      return_args[6].value.pdb_int = proc_type;
-      return_args[7].value.pdb_int = num_args;
-      return_args[8].value.pdb_int = num_values;
+      g_value_take_string (&return_vals->values[1], blurb);
+      g_value_take_string (&return_vals->values[2], help);
+      g_value_take_string (&return_vals->values[3], author);
+      g_value_take_string (&return_vals->values[4], copyright);
+      g_value_take_string (&return_vals->values[5], date);
+      g_value_set_enum (&return_vals->values[6], proc_type);
+      g_value_set_int (&return_vals->values[7], num_args);
+      g_value_set_int (&return_vals->values[8], num_values);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg procedural_db_proc_info_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "procedure",
-    "The procedure name"
-  }
-};
-
-static ProcArg procedural_db_proc_info_outargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "blurb",
-    "A short blurb"
-  },
-  {
-    GIMP_PDB_STRING,
-    "help",
-    "Detailed procedure help"
-  },
-  {
-    GIMP_PDB_STRING,
-    "author",
-    "Author(s) of the procedure"
-  },
-  {
-    GIMP_PDB_STRING,
-    "copyright",
-    "The copyright"
-  },
-  {
-    GIMP_PDB_STRING,
-    "date",
-    "Copyright date"
-  },
-  {
-    GIMP_PDB_INT32,
-    "proc-type",
-    "The procedure type: { GIMP_INTERNAL (0), GIMP_PLUGIN (1), GIMP_EXTENSION (2), GIMP_TEMPORARY (3) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "num-args",
-    "The number of input arguments"
-  },
-  {
-    GIMP_PDB_INT32,
-    "num-values",
-    "The number of return values"
-  }
-};
-
-static ProcRecord procedural_db_proc_info_proc =
-{
-  "gimp-procedural-db-proc-info",
-  "gimp-procedural-db-proc-info",
-  "Queries the procedural database for information on the specified procedure.",
-  "This procedure returns information on the specified procedure. A short blurb, detailed help, author(s), copyright information, procedure type, number of input, and number of return values are returned. For specific information on each input argument and return value, use the 'gimp_procedural_db_proc_arg' and 'gimp_procedural_db_proc_val' procedures.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1997",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  procedural_db_proc_info_inargs,
-  8,
-  procedural_db_proc_info_outargs,
-  { { procedural_db_proc_info_invoker } }
-};
-
-static Argument *
-procedural_db_proc_arg_invoker (Gimp         *gimp,
-                                GimpContext  *context,
-                                GimpProgress *progress,
-                                Argument     *args)
+static GValueArray *
+procedural_db_proc_arg_invoker (GimpProcedure     *procedure,
+                                Gimp              *gimp,
+                                GimpContext       *context,
+                                GimpProgress      *progress,
+                                const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gchar *proc_name;
+  GValueArray *return_vals;
+  const gchar *procedure_name;
   gint32 arg_num;
-  ProcRecord *proc;
-  ProcArg *arg = NULL;
+  gint32 arg_type = 0;
+  gchar *arg_name = NULL;
+  gchar *arg_desc = NULL;
 
-  proc_name = (gchar *) args[0].value.pdb_pointer;
-  if (proc_name == NULL || !g_utf8_validate (proc_name, -1, NULL))
-    success = FALSE;
-
-  arg_num = args[1].value.pdb_int;
+  procedure_name = g_value_get_string (&args->values[0]);
+  arg_num = g_value_get_int (&args->values[1]);
 
   if (success)
     {
-      gchar *canonical;
+      GimpProcedure *proc;
+      gchar         *canonical;
 
-      canonical = gimp_canonicalize_identifier (proc_name);
+      canonical = gimp_canonicalize_identifier (procedure_name);
 
-      proc = procedural_db_lookup (gimp, canonical);
+      proc = gimp_pdb_lookup (gimp, canonical);
 
       if (! proc)
         {
@@ -442,106 +210,61 @@ procedural_db_proc_arg_invoker (Gimp         *gimp,
           compat_name = g_hash_table_lookup (gimp->procedural_compat_ht, canonical);
 
           if (compat_name)
-            proc = procedural_db_lookup (gimp, compat_name);
+            proc = gimp_pdb_lookup (gimp, compat_name);
         }
 
       g_free (canonical);
 
       if (proc && (arg_num >= 0 && arg_num < proc->num_args))
-        arg = &proc->args[arg_num];
+        {
+          GParamSpec *pspec = proc->args[arg_num];
+
+          arg_type = gimp_pdb_compat_arg_type_from_gtype (G_PARAM_SPEC_VALUE_TYPE (pspec));
+          arg_name = g_strdup (g_param_spec_get_name (pspec));
+          arg_desc = g_strdup (g_param_spec_get_blurb (pspec));
+        }
       else
         success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&procedural_db_proc_arg_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_int = arg->arg_type;
-      return_args[2].value.pdb_pointer = g_strdup (arg->name);
-      return_args[3].value.pdb_pointer = g_strdup (arg->description);
+      g_value_set_enum (&return_vals->values[1], arg_type);
+      g_value_take_string (&return_vals->values[2], arg_name);
+      g_value_take_string (&return_vals->values[3], arg_desc);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg procedural_db_proc_arg_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "procedure",
-    "The procedure name"
-  },
-  {
-    GIMP_PDB_INT32,
-    "arg-num",
-    "The argument number"
-  }
-};
-
-static ProcArg procedural_db_proc_arg_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "arg-type",
-    "The type of argument { GIMP_PDB_INT32 (0), GIMP_PDB_INT16 (1), GIMP_PDB_INT8 (2), GIMP_PDB_FLOAT (3), GIMP_PDB_STRING (4), GIMP_PDB_INT32ARRAY (5), GIMP_PDB_INT16ARRAY (6), GIMP_PDB_INT8ARRAY (7), GIMP_PDB_FLOATARRAY (8), GIMP_PDB_STRINGARRAY (9), GIMP_PDB_COLOR (10), GIMP_PDB_REGION (11), GIMP_PDB_DISPLAY (12), GIMP_PDB_IMAGE (13), GIMP_PDB_LAYER (14), GIMP_PDB_CHANNEL (15), GIMP_PDB_DRAWABLE (16), GIMP_PDB_SELECTION (17), GIMP_PDB_BOUNDARY (18), GIMP_PDB_VECTORS (19), GIMP_PDB_PARASITE (20), GIMP_PDB_STATUS (21), GIMP_PDB_PATH (GIMP_PDB_VECTORS) }"
-  },
-  {
-    GIMP_PDB_STRING,
-    "arg-name",
-    "The name of the argument"
-  },
-  {
-    GIMP_PDB_STRING,
-    "arg-desc",
-    "A description of the argument"
-  }
-};
-
-static ProcRecord procedural_db_proc_arg_proc =
-{
-  "gimp-procedural-db-proc-arg",
-  "gimp-procedural-db-proc-arg",
-  "Queries the procedural database for information on the specified procedure's argument.",
-  "This procedure returns information on the specified procedure's argument. The argument type, name, and a description are retrieved.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1997",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  procedural_db_proc_arg_inargs,
-  3,
-  procedural_db_proc_arg_outargs,
-  { { procedural_db_proc_arg_invoker } }
-};
-
-static Argument *
-procedural_db_proc_val_invoker (Gimp         *gimp,
-                                GimpContext  *context,
-                                GimpProgress *progress,
-                                Argument     *args)
+static GValueArray *
+procedural_db_proc_val_invoker (GimpProcedure     *procedure,
+                                Gimp              *gimp,
+                                GimpContext       *context,
+                                GimpProgress      *progress,
+                                const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gchar *proc_name;
+  GValueArray *return_vals;
+  const gchar *procedure_name;
   gint32 val_num;
-  ProcRecord *proc;
-  ProcArg *val = NULL;
+  gint32 val_type = 0;
+  gchar *val_name = NULL;
+  gchar *val_desc = NULL;
 
-  proc_name = (gchar *) args[0].value.pdb_pointer;
-  if (proc_name == NULL || !g_utf8_validate (proc_name, -1, NULL))
-    success = FALSE;
-
-  val_num = args[1].value.pdb_int;
+  procedure_name = g_value_get_string (&args->values[0]);
+  val_num = g_value_get_int (&args->values[1]);
 
   if (success)
     {
-      gchar *canonical;
+      GimpProcedure *proc;
+      gchar         *canonical;
 
-      canonical = gimp_canonicalize_identifier (proc_name);
+      canonical = gimp_canonicalize_identifier (procedure_name);
 
-      proc = procedural_db_lookup (gimp, canonical);
+      proc = gimp_pdb_lookup (gimp, canonical);
 
       if (! proc)
         {
@@ -550,304 +273,548 @@ procedural_db_proc_val_invoker (Gimp         *gimp,
           compat_name = g_hash_table_lookup (gimp->procedural_compat_ht, canonical);
 
           if (compat_name)
-            proc = procedural_db_lookup (gimp, compat_name);
+            proc = gimp_pdb_lookup (gimp, compat_name);
         }
 
       g_free (canonical);
 
       if (proc && (val_num >= 0 && val_num < proc->num_values))
-        val = &proc->values[val_num];
+        {
+          GParamSpec *pspec = proc->values[val_num];
+
+          val_type = gimp_pdb_compat_arg_type_from_gtype (G_PARAM_SPEC_VALUE_TYPE (pspec));
+          val_name = g_strdup (g_param_spec_get_name (pspec));
+          val_desc = g_strdup (g_param_spec_get_blurb (pspec));
+        }
       else
         success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&procedural_db_proc_val_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_int = val->arg_type;
-      return_args[2].value.pdb_pointer = g_strdup (val->name);
-      return_args[3].value.pdb_pointer = g_strdup (val->description);
+      g_value_set_enum (&return_vals->values[1], val_type);
+      g_value_take_string (&return_vals->values[2], val_name);
+      g_value_take_string (&return_vals->values[3], val_desc);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg procedural_db_proc_val_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "procedure",
-    "The procedure name"
-  },
-  {
-    GIMP_PDB_INT32,
-    "val-num",
-    "The return value number"
-  }
-};
-
-static ProcArg procedural_db_proc_val_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "val-type",
-    "The type of return value { GIMP_PDB_INT32 (0), GIMP_PDB_INT16 (1), GIMP_PDB_INT8 (2), GIMP_PDB_FLOAT (3), GIMP_PDB_STRING (4), GIMP_PDB_INT32ARRAY (5), GIMP_PDB_INT16ARRAY (6), GIMP_PDB_INT8ARRAY (7), GIMP_PDB_FLOATARRAY (8), GIMP_PDB_STRINGARRAY (9), GIMP_PDB_COLOR (10), GIMP_PDB_REGION (11), GIMP_PDB_DISPLAY (12), GIMP_PDB_IMAGE (13), GIMP_PDB_LAYER (14), GIMP_PDB_CHANNEL (15), GIMP_PDB_DRAWABLE (16), GIMP_PDB_SELECTION (17), GIMP_PDB_BOUNDARY (18), GIMP_PDB_VECTORS (19), GIMP_PDB_PARASITE (20), GIMP_PDB_STATUS (21), GIMP_PDB_PATH (GIMP_PDB_VECTORS) }"
-  },
-  {
-    GIMP_PDB_STRING,
-    "val-name",
-    "The name of the return value"
-  },
-  {
-    GIMP_PDB_STRING,
-    "val-desc",
-    "A description of the return value"
-  }
-};
-
-static ProcRecord procedural_db_proc_val_proc =
-{
-  "gimp-procedural-db-proc-val",
-  "gimp-procedural-db-proc-val",
-  "Queries the procedural database for information on the specified procedure's return value.",
-  "This procedure returns information on the specified procedure's return value. The return value type, name, and a description are retrieved.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1997",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  procedural_db_proc_val_inargs,
-  3,
-  procedural_db_proc_val_outargs,
-  { { procedural_db_proc_val_invoker } }
-};
-
-static Argument *
-procedural_db_get_data_invoker (Gimp         *gimp,
-                                GimpContext  *context,
-                                GimpProgress *progress,
-                                Argument     *args)
+static GValueArray *
+procedural_db_get_data_invoker (GimpProcedure     *procedure,
+                                Gimp              *gimp,
+                                GimpContext       *context,
+                                GimpProgress      *progress,
+                                const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gchar *identifier;
-  gint32 bytes;
-  guint8 *data_copy = NULL;
-  const guint8 *data;
+  GValueArray *return_vals;
+  const gchar *identifier;
+  gint32 bytes = 0;
+  guint8 *data = NULL;
 
-  identifier = (gchar *) args[0].value.pdb_pointer;
-  if (identifier == NULL || !g_utf8_validate (identifier, -1, NULL))
-    success = FALSE;
+  identifier = g_value_get_string (&args->values[0]);
 
   if (success)
     {
-      gchar *canonical;
+      gchar        *canonical = gimp_canonicalize_identifier (identifier);
+      const guint8 *orig_data;
 
-      canonical = gimp_canonicalize_identifier (identifier);
-
-      data = procedural_db_get_data (gimp, canonical, &bytes);
-      success = (data != NULL);
+      orig_data = plug_in_data_get (gimp, canonical, &bytes);
 
       g_free (canonical);
 
-      if (success)
-        data_copy = g_memdup (data, bytes);
+      if (orig_data)
+        data = g_memdup (orig_data, bytes);
+      else
+        success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&procedural_db_get_data_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_int = bytes;
-      return_args[2].value.pdb_pointer = data_copy;
+      g_value_set_int (&return_vals->values[1], bytes);
+      gimp_value_take_int8array (&return_vals->values[2], data, bytes);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg procedural_db_get_data_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "identifier",
-    "The identifier associated with data"
-  }
-};
-
-static ProcArg procedural_db_get_data_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "bytes",
-    "The number of bytes in the data"
-  },
-  {
-    GIMP_PDB_INT8ARRAY,
-    "data",
-    "A byte array containing data"
-  }
-};
-
-static ProcRecord procedural_db_get_data_proc =
-{
-  "gimp-procedural-db-get-data",
-  "gimp-procedural-db-get-data",
-  "Returns data associated with the specified identifier.",
-  "This procedure returns any data which may have been associated with the specified identifier. The data is a variable length array of bytes. If no data has been associated with the identifier, an error is returned.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1997",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  procedural_db_get_data_inargs,
-  2,
-  procedural_db_get_data_outargs,
-  { { procedural_db_get_data_invoker } }
-};
-
-static Argument *
-procedural_db_get_data_size_invoker (Gimp         *gimp,
-                                     GimpContext  *context,
-                                     GimpProgress *progress,
-                                     Argument     *args)
+static GValueArray *
+procedural_db_get_data_size_invoker (GimpProcedure     *procedure,
+                                     Gimp              *gimp,
+                                     GimpContext       *context,
+                                     GimpProgress      *progress,
+                                     const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gchar *identifier;
+  GValueArray *return_vals;
+  const gchar *identifier;
+  gint32 bytes = 0;
+
+  identifier = g_value_get_string (&args->values[0]);
+
+  if (success)
+    {
+      gchar *canonical = gimp_canonicalize_identifier (identifier);
+
+      if (! plug_in_data_get (gimp, canonical, &bytes))
+        success = FALSE;
+
+      g_free (canonical);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_set_int (&return_vals->values[1], bytes);
+
+  return return_vals;
+}
+
+static GValueArray *
+procedural_db_set_data_invoker (GimpProcedure     *procedure,
+                                Gimp              *gimp,
+                                GimpContext       *context,
+                                GimpProgress      *progress,
+                                const GValueArray *args)
+{
+  gboolean success = TRUE;
+  const gchar *identifier;
   gint32 bytes;
   const guint8 *data;
 
-  identifier = (gchar *) args[0].value.pdb_pointer;
-  if (identifier == NULL || !g_utf8_validate (identifier, -1, NULL))
-    success = FALSE;
+  identifier = g_value_get_string (&args->values[0]);
+  bytes = g_value_get_int (&args->values[1]);
+  data = gimp_value_get_int8array (&args->values[2]);
 
   if (success)
     {
-      gchar *canonical;
+      gchar *canonical = gimp_canonicalize_identifier (identifier);
 
-      canonical = gimp_canonicalize_identifier (identifier);
-
-      data = procedural_db_get_data (gimp, canonical, &bytes);
-      success = (data != NULL);
+      plug_in_data_set (gimp, canonical, bytes, data);
 
       g_free (canonical);
     }
 
-  return_args = procedural_db_return_args (&procedural_db_get_data_size_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_int = bytes;
-
-  return return_args;
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg procedural_db_get_data_size_inargs[] =
+void
+register_procedural_db_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_STRING,
-    "identifier",
-    "The identifier associated with data"
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcArg procedural_db_get_data_size_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "bytes",
-    "The number of bytes in the data"
-  }
-};
+  /*
+   * gimp-procedural-db-temp-name
+   */
+  procedure = gimp_procedure_new (procedural_db_temp_name_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-procedural-db-temp-name");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-procedural-db-temp-name",
+                                     "Generates a unique temporary PDB name.",
+                                     "This procedure generates a temporary PDB entry name that is guaranteed to be unique. It is mainly used by the interactive popup dialogs to generate a PDB entry name.",
+                                     "Andy Thomas",
+                                     "Andy Thomas",
+                                     "1998",
+                                     NULL);
 
-static ProcRecord procedural_db_get_data_size_proc =
-{
-  "gimp-procedural-db-get-data-size",
-  "gimp-procedural-db-get-data-size",
-  "Returns size of data associated with the specified identifier.",
-  "This procedure returns the size of any data which may have been associated with the specified identifier. If no data has been associated with the identifier, an error is returned.",
-  "Nick Lamb",
-  "Nick Lamb",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  procedural_db_get_data_size_inargs,
-  1,
-  procedural_db_get_data_size_outargs,
-  { { procedural_db_get_data_size_invoker } }
-};
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("temp-name",
+                                                           "temp name",
+                                                           "A unique temporary name for a temporary PDB entry",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
 
-static Argument *
-procedural_db_set_data_invoker (Gimp         *gimp,
-                                GimpContext  *context,
-                                GimpProgress *progress,
-                                Argument     *args)
-{
-  gboolean success = TRUE;
-  gchar *identifier;
-  gint32 bytes;
-  guint8 *data;
+  /*
+   * gimp-procedural-db-dump
+   */
+  procedure = gimp_procedure_new (procedural_db_dump_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-procedural-db-dump");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-procedural-db-dump",
+                                     "Dumps the current contents of the procedural database",
+                                     "This procedure dumps the contents of the procedural database to the specified file. The file will contain all of the information provided for each registered procedure. This file is in a format appropriate for use with the supplied \"pdb_self_doc.el\" Elisp script, which generates a texinfo document.",
+                                     "Spencer Kimball & Josh MacDonald",
+                                     "Spencer Kimball & Josh MacDonald & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
 
-  identifier = (gchar *) args[0].value.pdb_pointer;
-  if (identifier == NULL || !g_utf8_validate (identifier, -1, NULL))
-    success = FALSE;
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("filename",
+                                                       "filename",
+                                                       "The dump filename",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
 
-  bytes = args[1].value.pdb_int;
-  if (bytes <= 0)
-    success = FALSE;
+  /*
+   * gimp-procedural-db-query
+   */
+  procedure = gimp_procedure_new (procedural_db_query_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-procedural-db-query");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-procedural-db-query",
+                                     "Queries the procedural database for its contents using regular expression matching.",
+                                     "This procedure queries the contents of the procedural database. It is supplied with seven arguments matching procedures on { name, blurb, help, author, copyright, date, procedure type}. This is accomplished using regular expression matching. For instance, to find all procedures with \"jpeg\" listed in the blurb, all seven arguments can be supplied as \".*\", except for the second, which can be supplied as \".*jpeg.*\". There are two return arguments for this procedure. The first is the number of procedures matching the query. The second is a concatenated list of procedure names corresponding to those matching the query. If no matching entries are found, then the returned string is NULL and the number of entries is 0.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
 
-  data = (guint8 *) args[2].value.pdb_pointer;
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The regex for procedure name",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("blurb",
+                                                       "blurb",
+                                                       "The regex for procedure blurb",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("help",
+                                                       "help",
+                                                       "The regex for procedure help",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("author",
+                                                       "author",
+                                                       "The regex for procedure author",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("copyright",
+                                                       "copyright",
+                                                       "The regex for procedure copyright",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("date",
+                                                       "date",
+                                                       "The regex for procedure date",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("proc-type",
+                                                       "proc type",
+                                                       "The regex for procedure type: { 'Internal GIMP procedure', 'GIMP Plug-In', 'GIMP Extension', 'Temporary Procedure' }",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-matches",
+                                                          "num matches",
+                                                          "The number of matching procedures",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string_array ("procedure-names",
+                                                                 "procedure names",
+                                                                 "The list of procedure names",
+                                                                 GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
 
-  if (success)
-    {
-      gchar *canonical;
+  /*
+   * gimp-procedural-db-proc-info
+   */
+  procedure = gimp_procedure_new (procedural_db_proc_info_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-procedural-db-proc-info");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-procedural-db-proc-info",
+                                     "Queries the procedural database for information on the specified procedure.",
+                                     "This procedure returns information on the specified procedure. A short blurb, detailed help, author(s), copyright information, procedure type, number of input, and number of return values are returned. For specific information on each input argument and return value, use the 'gimp_procedural_db_proc_arg' and 'gimp_procedural_db_proc_val' procedures.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1997",
+                                     NULL);
 
-      canonical = gimp_canonicalize_identifier (identifier);
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("procedure-name",
+                                                       "procedure name",
+                                                       "The procedure name",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("blurb",
+                                                           "blurb",
+                                                           "A short blurb",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("help",
+                                                           "help",
+                                                           "Detailed procedure help",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("author",
+                                                           "author",
+                                                           "Author(s) of the procedure",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("copyright",
+                                                           "copyright",
+                                                           "The copyright",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("date",
+                                                           "date",
+                                                           "Copyright date",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_enum ("proc-type",
+                                                      "proc type",
+                                                      "The procedure type: { GIMP_INTERNAL (0), GIMP_PLUGIN (1), GIMP_EXTENSION (2), GIMP_TEMPORARY (3) }",
+                                                      GIMP_TYPE_PDB_PROC_TYPE,
+                                                      GIMP_INTERNAL,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-args",
+                                                          "num args",
+                                                          "The number of input arguments",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-values",
+                                                          "num values",
+                                                          "The number of return values",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
 
-      procedural_db_set_data (gimp, canonical, bytes, data);
+  /*
+   * gimp-procedural-db-proc-arg
+   */
+  procedure = gimp_procedure_new (procedural_db_proc_arg_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-procedural-db-proc-arg");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-procedural-db-proc-arg",
+                                     "Queries the procedural database for information on the specified procedure's argument.",
+                                     "This procedure returns information on the specified procedure's argument. The argument type, name, and a description are retrieved.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1997",
+                                     NULL);
 
-      g_free (canonical);
-    }
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("procedure-name",
+                                                       "procedure name",
+                                                       "The procedure name",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("arg-num",
+                                                      "arg num",
+                                                      "The argument number",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_enum ("arg-type",
+                                                         "arg type",
+                                                         "The type of argument: { GIMP_PDB_INT32 (0), GIMP_PDB_INT16 (1), GIMP_PDB_INT8 (2), GIMP_PDB_FLOAT (3), GIMP_PDB_STRING (4), GIMP_PDB_INT32ARRAY (5), GIMP_PDB_INT16ARRAY (6), GIMP_PDB_INT8ARRAY (7), GIMP_PDB_FLOATARRAY (8), GIMP_PDB_STRINGARRAY (9), GIMP_PDB_COLOR (10), GIMP_PDB_REGION (11), GIMP_PDB_DISPLAY (12), GIMP_PDB_IMAGE (13), GIMP_PDB_LAYER (14), GIMP_PDB_CHANNEL (15), GIMP_PDB_DRAWABLE (16), GIMP_PDB_SELECTION (17), GIMP_PDB_BOUNDARY (18), GIMP_PDB_VECTORS (19), GIMP_PDB_PARASITE (20), GIMP_PDB_STATUS (21), GIMP_PDB_PATH (GIMP_PDB_VECTORS) }",
+                                                         GIMP_TYPE_PDB_ARG_TYPE,
+                                                         GIMP_PDB_INT32,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_param_spec_enum_exclude_value (GIMP_PARAM_SPEC_ENUM (procedure->values[0]),
+                                      GIMP_PDB_END);
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("arg-name",
+                                                           "arg name",
+                                                           "The name of the argument",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("arg-desc",
+                                                           "arg desc",
+                                                           "A description of the argument",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
 
-  return procedural_db_return_args (&procedural_db_set_data_proc, success);
+  /*
+   * gimp-procedural-db-proc-val
+   */
+  procedure = gimp_procedure_new (procedural_db_proc_val_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-procedural-db-proc-val");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-procedural-db-proc-val",
+                                     "Queries the procedural database for information on the specified procedure's return value.",
+                                     "This procedure returns information on the specified procedure's return value. The return value type, name, and a description are retrieved.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1997",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("procedure-name",
+                                                       "procedure name",
+                                                       "The procedure name",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("val-num",
+                                                      "val num",
+                                                      "The return value number",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_enum ("val-type",
+                                                         "val type",
+                                                         "The type of return value: { GIMP_PDB_INT32 (0), GIMP_PDB_INT16 (1), GIMP_PDB_INT8 (2), GIMP_PDB_FLOAT (3), GIMP_PDB_STRING (4), GIMP_PDB_INT32ARRAY (5), GIMP_PDB_INT16ARRAY (6), GIMP_PDB_INT8ARRAY (7), GIMP_PDB_FLOATARRAY (8), GIMP_PDB_STRINGARRAY (9), GIMP_PDB_COLOR (10), GIMP_PDB_REGION (11), GIMP_PDB_DISPLAY (12), GIMP_PDB_IMAGE (13), GIMP_PDB_LAYER (14), GIMP_PDB_CHANNEL (15), GIMP_PDB_DRAWABLE (16), GIMP_PDB_SELECTION (17), GIMP_PDB_BOUNDARY (18), GIMP_PDB_VECTORS (19), GIMP_PDB_PARASITE (20), GIMP_PDB_STATUS (21), GIMP_PDB_PATH (GIMP_PDB_VECTORS) }",
+                                                         GIMP_TYPE_PDB_ARG_TYPE,
+                                                         GIMP_PDB_INT32,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_param_spec_enum_exclude_value (GIMP_PARAM_SPEC_ENUM (procedure->values[0]),
+                                      GIMP_PDB_END);
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("val-name",
+                                                           "val name",
+                                                           "The name of the return value",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("val-desc",
+                                                           "val desc",
+                                                           "A description of the return value",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-procedural-db-get-data
+   */
+  procedure = gimp_procedure_new (procedural_db_get_data_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-procedural-db-get-data");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-procedural-db-get-data",
+                                     "Returns data associated with the specified identifier.",
+                                     "This procedure returns any data which may have been associated with the specified identifier. The data is a variable length array of bytes. If no data has been associated with the identifier, an error is returned.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1997",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("identifier",
+                                                       "identifier",
+                                                       "The identifier associated with data",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("bytes",
+                                                          "bytes",
+                                                          "The number of bytes in the data",
+                                                          1, G_MAXINT32, 1,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int8_array ("data",
+                                                               "data",
+                                                               "A byte array containing data",
+                                                               GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-procedural-db-get-data-size
+   */
+  procedure = gimp_procedure_new (procedural_db_get_data_size_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-procedural-db-get-data-size");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-procedural-db-get-data-size",
+                                     "Returns size of data associated with the specified identifier.",
+                                     "This procedure returns the size of any data which may have been associated with the specified identifier. If no data has been associated with the identifier, an error is returned.",
+                                     "Nick Lamb",
+                                     "Nick Lamb",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("identifier",
+                                                       "identifier",
+                                                       "The identifier associated with data",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("bytes",
+                                                          "bytes",
+                                                          "The number of bytes in the data",
+                                                          1, G_MAXINT32, 1,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-procedural-db-set-data
+   */
+  procedure = gimp_procedure_new (procedural_db_set_data_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-procedural-db-set-data");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-procedural-db-set-data",
+                                     "Associates the specified identifier with the supplied data.",
+                                     "This procedure associates the supplied data with the provided identifier. The data may be subsequently retrieved by a call to 'procedural-db-get-data'.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1997",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("identifier",
+                                                       "identifier",
+                                                       "The identifier associated with data",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("bytes",
+                                                      "bytes",
+                                                      "The number of bytes in the data",
+                                                      1, G_MAXINT32, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int8_array ("data",
+                                                           "data",
+                                                           "A byte array containing data",
+                                                           GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
 }
-
-static ProcArg procedural_db_set_data_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "identifier",
-    "The identifier associated with data"
-  },
-  {
-    GIMP_PDB_INT32,
-    "bytes",
-    "The number of bytes in the data"
-  },
-  {
-    GIMP_PDB_INT8ARRAY,
-    "data",
-    "A byte array containing data"
-  }
-};
-
-static ProcRecord procedural_db_set_data_proc =
-{
-  "gimp-procedural-db-set-data",
-  "gimp-procedural-db-set-data",
-  "Associates the specified identifier with the supplied data.",
-  "This procedure associates the supplied data with the provided identifier. The data may be subsequently retrieved by a call to 'procedural-db-get-data'.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1997",
-  NULL,
-  GIMP_INTERNAL,
-  3,
-  procedural_db_set_data_inargs,
-  0,
-  NULL,
-  { { procedural_db_set_data_invoker } }
-};

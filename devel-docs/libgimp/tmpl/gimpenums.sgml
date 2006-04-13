@@ -33,6 +33,15 @@ Enums and definitions.
 @GIMP_BRUSH_HARD: 
 @GIMP_BRUSH_SOFT: 
 
+<!-- ##### ENUM GimpBrushGeneratedShape ##### -->
+<para>
+
+</para>
+
+@GIMP_BRUSH_GENERATED_CIRCLE: 
+@GIMP_BRUSH_GENERATED_SQUARE: 
+@GIMP_BRUSH_GENERATED_DIAMOND: 
+
 <!-- ##### ENUM GimpConvertDitherType ##### -->
 <para>
 
@@ -198,15 +207,6 @@ Enums and definitions.
 @GIMP_ROTATE_90: 
 @GIMP_ROTATE_180: 
 @GIMP_ROTATE_270: 
-
-<!-- ##### ENUM GimpRunMode ##### -->
-<para>
-
-</para>
-
-@GIMP_RUN_INTERACTIVE: 
-@GIMP_RUN_NONINTERACTIVE: 
-@GIMP_RUN_WITH_LAST_VALS: 
 
 <!-- ##### FUNCTION gimp_enums_get_type_names ##### -->
 <para>

@@ -25,7 +25,9 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "core/gimp.h"
 #include "core/gimpcontainer-filter.h"
@@ -34,158 +36,85 @@
 #include "core/gimpgradient.h"
 #include "core/gimplist.h"
 
-static ProcRecord gradients_refresh_proc;
-static ProcRecord gradients_get_list_proc;
-static ProcRecord gradients_sample_uniform_proc;
-static ProcRecord gradients_sample_custom_proc;
-static ProcRecord gradients_get_gradient_data_proc;
 
-void
-register_gradients_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &gradients_refresh_proc);
-  procedural_db_register (gimp, &gradients_get_list_proc);
-  procedural_db_register (gimp, &gradients_sample_uniform_proc);
-  procedural_db_register (gimp, &gradients_sample_custom_proc);
-  procedural_db_register (gimp, &gradients_get_gradient_data_proc);
-}
-
-static Argument *
-gradients_refresh_invoker (Gimp         *gimp,
-                           GimpContext  *context,
-                           GimpProgress *progress,
-                           Argument     *args)
+static GValueArray *
+gradients_refresh_invoker (GimpProcedure     *procedure,
+                           Gimp              *gimp,
+                           GimpContext       *context,
+                           GimpProgress      *progress,
+                           const GValueArray *args)
 {
   gimp_data_factory_data_refresh (gimp->gradient_factory);
-  return procedural_db_return_args (&gradients_refresh_proc, TRUE);
+  return gimp_procedure_get_return_values (procedure, TRUE);
 }
 
-static ProcRecord gradients_refresh_proc =
-{
-  "gimp-gradients-refresh",
-  "gimp-gradients-refresh",
-  "Refresh current gradients. This function always succeeds.",
-  "This procedure retrieves all gradients currently in the user's gradient path and updates the gradient dialogs accordingly.",
-  "Michael Natterer",
-  "Michael Natterer",
-  "2002",
-  NULL,
-  GIMP_INTERNAL,
-  0,
-  NULL,
-  0,
-  NULL,
-  { { gradients_refresh_invoker } }
-};
-
-static Argument *
-gradients_get_list_invoker (Gimp         *gimp,
-                            GimpContext  *context,
-                            GimpProgress *progress,
-                            Argument     *args)
+static GValueArray *
+gradients_get_list_invoker (GimpProcedure     *procedure,
+                            Gimp              *gimp,
+                            GimpContext       *context,
+                            GimpProgress      *progress,
+                            const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gchar *filter;
-  gint32 num_gradients;
+  GValueArray *return_vals;
+  const gchar *filter;
+  gint32 num_gradients = 0;
   gchar **gradient_list = NULL;
 
-  filter = (gchar *) args[0].value.pdb_pointer;
-  if (filter && !g_utf8_validate (filter, -1, NULL))
-    success = FALSE;
-
-  if (success)
-    gradient_list = gimp_container_get_filtered_name_array (gimp->gradient_factory->container, filter, &num_gradients);
-
-  return_args = procedural_db_return_args (&gradients_get_list_proc, success);
+  filter = g_value_get_string (&args->values[0]);
 
   if (success)
     {
-      return_args[1].value.pdb_int = num_gradients;
-      return_args[2].value.pdb_pointer = gradient_list;
+      gradient_list = gimp_container_get_filtered_name_array (gimp->gradient_factory->container,
+                                                              filter, &num_gradients);
     }
 
-  return return_args;
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    {
+      g_value_set_int (&return_vals->values[1], num_gradients);
+      gimp_value_take_stringarray (&return_vals->values[2], gradient_list, num_gradients);
+    }
+
+  return return_vals;
 }
 
-static ProcArg gradients_get_list_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "filter",
-    "An optional regular expression used to filter the list"
-  }
-};
-
-static ProcArg gradients_get_list_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "num-gradients",
-    "The number of loaded gradients"
-  },
-  {
-    GIMP_PDB_STRINGARRAY,
-    "gradient-list",
-    "The list of gradient names"
-  }
-};
-
-static ProcRecord gradients_get_list_proc =
-{
-  "gimp-gradients-get-list",
-  "gimp-gradients-get-list",
-  "Retrieve the list of loaded gradients.",
-  "This procedure returns a list of the gradients that are currently loaded. You can later use the 'gimp-context-set-gradient' function to set the active gradient.",
-  "Federico Mena Quintero",
-  "Federico Mena Quintero",
-  "1997",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  gradients_get_list_inargs,
-  2,
-  gradients_get_list_outargs,
-  { { gradients_get_list_invoker } }
-};
-
-static Argument *
-gradients_sample_uniform_invoker (Gimp         *gimp,
-                                  GimpContext  *context,
-                                  GimpProgress *progress,
-                                  Argument     *args)
+static GValueArray *
+gradients_sample_uniform_invoker (GimpProcedure     *procedure,
+                                  Gimp              *gimp,
+                                  GimpContext       *context,
+                                  GimpProgress      *progress,
+                                  const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gint32 i;
+  GValueArray *return_vals;
+  gint32 num_samples;
   gboolean reverse;
   gint32 array_length = 0;
   gdouble *color_samples = NULL;
-  GimpGradient *gradient;
-  gdouble pos, delta;
-  GimpRGB color;
-  gdouble *pv;
 
-  i = args[0].value.pdb_int;
-  if (i < 2)
-    success = FALSE;
-
-  reverse = args[1].value.pdb_int ? TRUE : FALSE;
+  num_samples = g_value_get_int (&args->values[0]);
+  reverse = g_value_get_boolean (&args->values[1]);
 
   if (success)
     {
+      GimpGradient        *gradient;
       GimpGradientSegment *seg = NULL;
+      gdouble              pos, delta;
+      GimpRGB              color;
+      gdouble             *pv;
 
       pos   = 0.0;
-      delta = 1.0 / (i - 1);
+      delta = 1.0 / (num_samples - 1);
 
-      array_length = i * 4;
+      array_length = num_samples * 4;
 
       pv = color_samples = g_new (gdouble, array_length);
 
       gradient = gimp_context_get_gradient (context);
 
-      while (i--)
+      while (num_samples--)
         {
           seg = gimp_gradient_get_color_at (gradient, seg, pos, reverse, &color);
 
@@ -198,199 +127,101 @@ gradients_sample_uniform_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&gradients_sample_uniform_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_int = array_length;
-      return_args[2].value.pdb_pointer = color_samples;
+      g_value_set_int (&return_vals->values[1], array_length);
+      gimp_value_take_floatarray (&return_vals->values[2], color_samples, array_length);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg gradients_sample_uniform_inargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "num-samples",
-    "The number of samples to take"
-  },
-  {
-    GIMP_PDB_INT32,
-    "reverse",
-    "Use the reverse gradient (TRUE or FALSE)"
-  }
-};
-
-static ProcArg gradients_sample_uniform_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "array-length",
-    "Length of the color_samples array (4 * num_samples)"
-  },
-  {
-    GIMP_PDB_FLOATARRAY,
-    "color-samples",
-    "Color samples: { R1, G1, B1, A1, ..., Rn, Gn, Bn, An }"
-  }
-};
-
-static ProcRecord gradients_sample_uniform_proc =
-{
-  "gimp-gradients-sample-uniform",
-  "gimp-gradients-sample-uniform",
-  "This procedure is deprecated! Use 'gimp-gradient-get-uniform-samples' instead.",
-  "This procedure is deprecated! Use 'gimp-gradient-get-uniform-samples' instead.",
-  "",
-  "",
-  "",
-  "gimp-gradient-get-uniform-samples",
-  GIMP_INTERNAL,
-  2,
-  gradients_sample_uniform_inargs,
-  2,
-  gradients_sample_uniform_outargs,
-  { { gradients_sample_uniform_invoker } }
-};
-
-static Argument *
-gradients_sample_custom_invoker (Gimp         *gimp,
-                                 GimpContext  *context,
-                                 GimpProgress *progress,
-                                 Argument     *args)
+static GValueArray *
+gradients_sample_custom_invoker (GimpProcedure     *procedure,
+                                 Gimp              *gimp,
+                                 GimpContext       *context,
+                                 GimpProgress      *progress,
+                                 const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gint32 i;
-  gdouble *pos;
+  GValueArray *return_vals;
+  gint32 num_samples;
+  const gdouble *positions;
   gboolean reverse;
   gint32 array_length = 0;
   gdouble *color_samples = NULL;
-  GimpGradient *gradient;
-  GimpRGB color;
-  gdouble *pv;
 
-  i = args[0].value.pdb_int;
-  if (i <= 0)
-    success = FALSE;
-
-  pos = (gdouble *) args[1].value.pdb_pointer;
-
-  reverse = args[2].value.pdb_int ? TRUE : FALSE;
+  num_samples = g_value_get_int (&args->values[0]);
+  positions = gimp_value_get_floatarray (&args->values[1]);
+  reverse = g_value_get_boolean (&args->values[2]);
 
   if (success)
     {
+      GimpGradient        *gradient;
       GimpGradientSegment *seg = NULL;
+      GimpRGB              color;
+      gdouble             *pv;
 
-      array_length = i * 4;
+      array_length = num_samples * 4;
 
       pv = color_samples = g_new (gdouble, array_length);
 
       gradient = gimp_context_get_gradient (context);
 
-      while (i--)
+      while (num_samples--)
         {
-          seg = gimp_gradient_get_color_at (gradient, seg, *pos, reverse, &color);
+          seg = gimp_gradient_get_color_at (gradient, seg, *positions,
+                                            reverse, &color);
 
           *pv++ = color.r;
           *pv++ = color.g;
           *pv++ = color.b;
           *pv++ = color.a;
 
-          pos++;
+          positions++;
         }
     }
 
-  return_args = procedural_db_return_args (&gradients_sample_custom_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_int = array_length;
-      return_args[2].value.pdb_pointer = color_samples;
+      g_value_set_int (&return_vals->values[1], array_length);
+      gimp_value_take_floatarray (&return_vals->values[2], color_samples, array_length);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg gradients_sample_custom_inargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "num-samples",
-    "The number of samples to take"
-  },
-  {
-    GIMP_PDB_FLOATARRAY,
-    "positions",
-    "The list of positions to sample along the gradient"
-  },
-  {
-    GIMP_PDB_INT32,
-    "reverse",
-    "Use the reverse gradient (TRUE or FALSE)"
-  }
-};
-
-static ProcArg gradients_sample_custom_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "array-length",
-    "Length of the color_samples array (4 * num_samples)"
-  },
-  {
-    GIMP_PDB_FLOATARRAY,
-    "color-samples",
-    "Color samples: { R1, G1, B1, A1, ..., Rn, Gn, Bn, An }"
-  }
-};
-
-static ProcRecord gradients_sample_custom_proc =
-{
-  "gimp-gradients-sample-custom",
-  "gimp-gradients-sample-custom",
-  "This procedure is deprecated! Use 'gimp-gradient-get-custom-samples' instead.",
-  "This procedure is deprecated! Use 'gimp-gradient-get-custom-samples' instead.",
-  "",
-  "",
-  "",
-  "gimp-gradient-get-custom-samples",
-  GIMP_INTERNAL,
-  3,
-  gradients_sample_custom_inargs,
-  2,
-  gradients_sample_custom_outargs,
-  { { gradients_sample_custom_invoker } }
-};
-
-static Argument *
-gradients_get_gradient_data_invoker (Gimp         *gimp,
-                                     GimpContext  *context,
-                                     GimpProgress *progress,
-                                     Argument     *args)
+static GValueArray *
+gradients_get_gradient_data_invoker (GimpProcedure     *procedure,
+                                     Gimp              *gimp,
+                                     GimpContext       *context,
+                                     GimpProgress      *progress,
+                                     const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gchar *name;
+  GValueArray *return_vals;
+  const gchar *name;
   gint32 sample_size;
   gboolean reverse;
-  gdouble *values = NULL;
-  GimpGradient *gradient = NULL;
+  gchar *actual_name = NULL;
+  gint32 width = 0;
+  gdouble *grad_data = NULL;
 
-  name = (gchar *) args[0].value.pdb_pointer;
-  if (name && !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
-
-  sample_size = args[1].value.pdb_int;
-  if (sample_size <= 0 || sample_size > 10000)
-    sample_size = GIMP_GRADIENT_DEFAULT_SAMPLE_SIZE;
-
-  reverse = args[2].value.pdb_int ? TRUE : FALSE;
+  name = g_value_get_string (&args->values[0]);
+  sample_size = g_value_get_int (&args->values[1]);
+  reverse = g_value_get_boolean (&args->values[2]);
 
   if (success)
     {
+      GimpGradient *gradient;
+
+      if (sample_size < 1 || sample_size > 10000)
+        sample_size = GIMP_GRADIENT_DEFAULT_SAMPLE_SIZE;
+
       if (name && strlen (name))
         {
           gradient = (GimpGradient *)
@@ -408,15 +239,17 @@ gradients_get_gradient_data_invoker (Gimp         *gimp,
           gdouble             *pv;
           gdouble              pos, delta;
           GimpRGB              color;
-          gint                 i;
 
-          i     = sample_size;
           pos   = 0.0;
-          delta = 1.0 / (i - 1);
+          delta = 1.0 / (sample_size - 1);
 
-          pv = values = g_new (gdouble, i * 4);
+          actual_name = g_strdup (gimp_object_get_name (GIMP_OBJECT (gradient)));
+          grad_data   = g_new (gdouble, sample_size * 4);
+          width       = sample_size * 4;
 
-          while (i--)
+          pv = grad_data;
+
+          while (sample_size)
             {
               seg = gimp_gradient_get_color_at (gradient, seg, pos, reverse, &color);
 
@@ -432,70 +265,212 @@ gradients_get_gradient_data_invoker (Gimp         *gimp,
         success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&gradients_get_gradient_data_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_pointer = g_strdup (GIMP_OBJECT (gradient)->name);
-      return_args[2].value.pdb_int = sample_size * 4;
-      return_args[3].value.pdb_pointer = values;
+      g_value_take_string (&return_vals->values[1], actual_name);
+      g_value_set_int (&return_vals->values[2], width);
+      gimp_value_take_floatarray (&return_vals->values[3], grad_data, width);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg gradients_get_gradient_data_inargs[] =
+void
+register_gradients_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The gradient name (\"\" means current active gradient)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "sample-size",
-    "Size of the sample to return when the gradient is changed (0 < sample_size <= 10000)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "reverse",
-    "Use the reverse gradient (TRUE or FALSE)"
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcArg gradients_get_gradient_data_outargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The gradient name"
-  },
-  {
-    GIMP_PDB_INT32,
-    "width",
-    "The gradient sample width (r,g,b,a)"
-  },
-  {
-    GIMP_PDB_FLOATARRAY,
-    "grad-data",
-    "The gradient sample data"
-  }
-};
+  /*
+   * gimp-gradients-refresh
+   */
+  procedure = gimp_procedure_new (gradients_refresh_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-gradients-refresh");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-gradients-refresh",
+                                     "Refresh current gradients. This function always succeeds.",
+                                     "This procedure retrieves all gradients currently in the user's gradient path and updates the gradient dialogs accordingly.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2002",
+                                     NULL);
 
-static ProcRecord gradients_get_gradient_data_proc =
-{
-  "gimp-gradients-get-gradient-data",
-  "gimp-gradients-get-gradient-data",
-  "This procedure is deprecated! Use 'gimp-gradient-get-uniform-samples' instead.",
-  "This procedure is deprecated! Use 'gimp-gradient-get-uniform-samples' instead.",
-  "",
-  "",
-  "",
-  "gimp-gradient-get-uniform-samples",
-  GIMP_INTERNAL,
-  3,
-  gradients_get_gradient_data_inargs,
-  3,
-  gradients_get_gradient_data_outargs,
-  { { gradients_get_gradient_data_invoker } }
-};
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-gradients-get-list
+   */
+  procedure = gimp_procedure_new (gradients_get_list_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-gradients-get-list");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-gradients-get-list",
+                                     "Retrieve the list of loaded gradients.",
+                                     "This procedure returns a list of the gradients that are currently loaded. You can later use the 'gimp-context-set-gradient' function to set the active gradient.",
+                                     "Federico Mena Quintero",
+                                     "Federico Mena Quintero",
+                                     "1997",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("filter",
+                                                       "filter",
+                                                       "An optional regular expression used to filter the list",
+                                                       FALSE, TRUE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-gradients",
+                                                          "num gradients",
+                                                          "The number of loaded gradients",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string_array ("gradient-list",
+                                                                 "gradient list",
+                                                                 "The list of gradient names",
+                                                                 GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-gradients-sample-uniform
+   */
+  procedure = gimp_procedure_new (gradients_sample_uniform_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-gradients-sample-uniform");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-gradients-sample-uniform",
+                                     "This procedure is deprecated! Use 'gimp-gradient-get-uniform-samples' instead.",
+                                     "This procedure is deprecated! Use 'gimp-gradient-get-uniform-samples' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-gradient-get-uniform-samples");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("num-samples",
+                                                      "num samples",
+                                                      "The number of samples to take",
+                                                      2, G_MAXINT32, 2,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("reverse",
+                                                     "reverse",
+                                                     "Use the reverse gradient (TRUE or FALSE)",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("array-length",
+                                                          "array length",
+                                                          "Length of the color_samples array (4 * num_samples)",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_float_array ("color-samples",
+                                                                "color samples",
+                                                                "Color samples: { R1, G1, B1, A1, ..., Rn, Gn, Bn, An }",
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-gradients-sample-custom
+   */
+  procedure = gimp_procedure_new (gradients_sample_custom_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-gradients-sample-custom");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-gradients-sample-custom",
+                                     "This procedure is deprecated! Use 'gimp-gradient-get-custom-samples' instead.",
+                                     "This procedure is deprecated! Use 'gimp-gradient-get-custom-samples' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-gradient-get-custom-samples");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("num-samples",
+                                                      "num samples",
+                                                      "The number of samples to take",
+                                                      0, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_float_array ("positions",
+                                                            "positions",
+                                                            "The list of positions to sample along the gradient",
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("reverse",
+                                                     "reverse",
+                                                     "Use the reverse gradient (TRUE or FALSE)",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("array-length",
+                                                          "array length",
+                                                          "Length of the color_samples array (4 * num_samples)",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_float_array ("color-samples",
+                                                                "color samples",
+                                                                "Color samples: { R1, G1, B1, A1, ..., Rn, Gn, Bn, An }",
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-gradients-get-gradient-data
+   */
+  procedure = gimp_procedure_new (gradients_get_gradient_data_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-gradients-get-gradient-data");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-gradients-get-gradient-data",
+                                     "This procedure is deprecated! Use 'gimp-gradient-get-uniform-samples' instead.",
+                                     "This procedure is deprecated! Use 'gimp-gradient-get-uniform-samples' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-gradient-get-uniform-samples");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The gradient name (\"\" means current active gradient)",
+                                                       FALSE, TRUE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("sample-size",
+                                                      "sample size",
+                                                      "Size of the sample to return when the gradient is changed: (1 <= sample_size <= 10000)",
+                                                      1, 10000, 1,
+                                                      GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("reverse",
+                                                     "reverse",
+                                                     "Use the reverse gradient (TRUE or FALSE)",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("actual-name",
+                                                           "actual name",
+                                                           "The gradient name",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("width",
+                                                          "width",
+                                                          "The gradient sample width (r,g,b,a)",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_float_array ("grad-data",
+                                                                "grad data",
+                                                                "The gradient sample data",
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

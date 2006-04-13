@@ -153,10 +153,10 @@ gimp_vectors_tree_view_constructor (GType                  type,
                                    GDK_SHIFT_MASK | GDK_CONTROL_MASK,
                                    NULL);
   gimp_container_view_enable_dnd (GIMP_CONTAINER_VIEW (editor),
-				  GTK_BUTTON (view->toselection_button),
-				  GIMP_TYPE_VECTORS);
+                                  GTK_BUTTON (view->toselection_button),
+                                  GIMP_TYPE_VECTORS);
   gtk_box_reorder_child (GTK_BOX (editor->button_box),
-			 view->toselection_button, 5);
+                         view->toselection_button, 5);
 
   view->tovectors_button =
     gimp_editor_add_action_button (editor, "vectors",
@@ -165,7 +165,7 @@ gimp_vectors_tree_view_constructor (GType                  type,
                                    GDK_SHIFT_MASK,
                                    NULL);
   gtk_box_reorder_child (GTK_BOX (editor->button_box),
-			 view->tovectors_button, 6);
+                         view->tovectors_button, 6);
 
   view->stroke_button =
     gimp_editor_add_action_button (editor, "vectors",
@@ -174,10 +174,10 @@ gimp_vectors_tree_view_constructor (GType                  type,
                                    GDK_SHIFT_MASK,
                                    NULL);
   gimp_container_view_enable_dnd (GIMP_CONTAINER_VIEW (editor),
-				  GTK_BUTTON (view->stroke_button),
-				  GIMP_TYPE_VECTORS);
+                                  GTK_BUTTON (view->stroke_button),
+                                  GIMP_TYPE_VECTORS);
   gtk_box_reorder_child (GTK_BOX (editor->button_box),
-			 view->stroke_button, 7);
+                         view->stroke_button, 7);
 
   gimp_dnd_svg_dest_add (GTK_WIDGET (tree_view->view), NULL, view);
 
@@ -216,7 +216,7 @@ gimp_vectors_tree_view_drop_svg (GimpContainerTreeView   *tree_view,
                                  GtkTreeViewDropPosition  drop_pos)
 {
   GimpItemTreeView *view  = GIMP_ITEM_TREE_VIEW (tree_view);
-  GimpImage        *image = view->gimage;
+  GimpImage        *image = view->image;
   gint              index = -1;
   GError           *error = NULL;
 
@@ -261,18 +261,18 @@ gimp_vectors_tree_view_drag_svg (GtkWidget *widget,
                                  gsize     *svg_data_len,
                                  gpointer   data)
 {
-  GimpItemTreeView *view   = GIMP_ITEM_TREE_VIEW (data);
-  GimpImage        *gimage = view->gimage;
+  GimpItemTreeView *view  = GIMP_ITEM_TREE_VIEW (data);
+  GimpImage        *image = view->image;
   GimpItem         *item;
   gchar            *svg_data = NULL;
 
-  item = GIMP_ITEM_TREE_VIEW_GET_CLASS (view)->get_active_item (gimage);
+  item = GIMP_ITEM_TREE_VIEW_GET_CLASS (view)->get_active_item (image);
 
   *svg_data_len = 0;
 
   if (item)
     {
-      svg_data = gimp_vectors_export_string (gimage, GIMP_VECTORS (item));
+      svg_data = gimp_vectors_export_string (image, GIMP_VECTORS (item));
 
       if (svg_data)
         *svg_data_len = strlen (svg_data);

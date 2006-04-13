@@ -20,13 +20,6 @@
 #define __PLUG_IN_ENUMS_H__
 
 
-typedef enum
-{
-  GIMP_RUN_INTERACTIVE,
-  GIMP_RUN_NONINTERACTIVE,
-  GIMP_RUN_WITH_LAST_VALS
-} GimpRunMode;
-
 typedef enum /*< pdb-skip >*/ /*< skip >*/
 {
   PLUG_IN_RGB_IMAGE      = 1 << 0,

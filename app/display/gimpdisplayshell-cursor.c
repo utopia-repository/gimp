@@ -40,10 +40,10 @@
 
 
 static void  gimp_display_shell_real_set_cursor (GimpDisplayShell   *shell,
-						 GimpCursorType      cursor_type,
-						 GimpToolCursorType  tool_cursor,
-						 GimpCursorModifier  modifier,
-						 gboolean            always_install);
+                                                 GimpCursorType      cursor_type,
+                                                 GimpToolCursorType  tool_cursor,
+                                                 GimpCursorModifier  modifier,
+                                                 gboolean            always_install);
 
 
 void
@@ -109,7 +109,7 @@ gimp_display_shell_update_cursor (GimpDisplayShell *shell,
                                   gint              image_x,
                                   gint              image_y)
 {
-  GimpImage *gimage;
+  GimpImage *image;
   gboolean   new_cursor;
   gint       t_x = -1;
   gint       t_y = -1;
@@ -120,7 +120,7 @@ gimp_display_shell_update_cursor (GimpDisplayShell *shell,
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-  gimage = shell->gdisp->gimage;
+  image = shell->display->image;
 
   new_cursor = (shell->draw_cursor &&
                 shell->proximity   &&
@@ -164,7 +164,7 @@ gimp_display_shell_update_cursor (GimpDisplayShell *shell,
 
   if (cursor_view)
     gimp_cursor_view_update_cursor (GIMP_CURSOR_VIEW (cursor_view),
-                                    shell->gdisp->gimage, shell->unit,
+                                    shell->display->image, shell->unit,
                                     t_x, t_y);
 }
 
@@ -202,26 +202,26 @@ gimp_display_shell_real_set_cursor (GimpDisplayShell   *shell,
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-  config = GIMP_DISPLAY_CONFIG (shell->gdisp->gimage->gimp->config);
+  config = GIMP_DISPLAY_CONFIG (shell->display->image->gimp->config);
 
   if (cursor_type != GIMP_CURSOR_NONE &&
       cursor_type != GIMP_CURSOR_BAD)
     {
       switch (config->cursor_mode)
-	{
-	case GIMP_CURSOR_MODE_TOOL_ICON:
-	  break;
+        {
+        case GIMP_CURSOR_MODE_TOOL_ICON:
+          break;
 
-	case GIMP_CURSOR_MODE_TOOL_CROSSHAIR:
-	  cursor_type = GIMP_CURSOR_CROSSHAIR_SMALL;
-	  break;
+        case GIMP_CURSOR_MODE_TOOL_CROSSHAIR:
+          cursor_type = GIMP_CURSOR_CROSSHAIR_SMALL;
+          break;
 
-	case GIMP_CURSOR_MODE_CROSSHAIR:
-	  cursor_type = GIMP_CURSOR_CROSSHAIR;
-	  tool_cursor = GIMP_TOOL_CURSOR_NONE;
-	  modifier    = GIMP_CURSOR_MODIFIER_NONE;
-	  break;
-	}
+        case GIMP_CURSOR_MODE_CROSSHAIR:
+          cursor_type = GIMP_CURSOR_CROSSHAIR;
+          tool_cursor = GIMP_TOOL_CURSOR_NONE;
+          modifier    = GIMP_CURSOR_MODIFIER_NONE;
+          break;
+        }
     }
 
   cursor_format = GIMP_GUI_CONFIG (config)->cursor_format;

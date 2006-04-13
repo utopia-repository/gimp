@@ -122,7 +122,7 @@ image_new_dialog_new (Gimp *gimp)
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog->dialog)->vbox),
-		      main_vbox, TRUE, TRUE, 0);
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   table = gtk_table_new (1, 2, FALSE);
@@ -159,13 +159,13 @@ image_new_dialog_new (Gimp *gimp)
 
 void
 image_new_dialog_set (GtkWidget    *widget,
-                      GimpImage    *gimage,
+                      GimpImage    *image,
                       GimpTemplate *template)
 {
   ImageNewDialog *dialog;
 
   g_return_if_fail (GTK_IS_WIDGET (widget));
-  g_return_if_fail (gimage == NULL || GIMP_IS_IMAGE (gimage));
+  g_return_if_fail (image == NULL || GIMP_IS_IMAGE (image));
   g_return_if_fail (template == NULL || GIMP_IS_TEMPLATE (template));
 
   dialog = g_object_get_data (G_OBJECT (widget), "gimp-image-new-dialog");
@@ -179,7 +179,7 @@ image_new_dialog_set (GtkWidget    *widget,
     }
   else
     {
-      template = gimp_image_new_get_last_template (dialog->gimp, gimage);
+      template = gimp_image_new_get_last_template (dialog->gimp, image);
 
       gimp_config_sync (G_OBJECT (template), G_OBJECT (dialog->template), 0);
 

@@ -23,6 +23,8 @@
 
 #include <glib-object.h>
 
+#include "libgimpbase/gimpbase.h"
+
 #include "paint-types.h"
 
 #include "base/pixel-region.h"
@@ -36,13 +38,30 @@
 #include "core/gimpimage.h"
 #include "core/gimppattern.h"
 #include "core/gimppickable.h"
-#include "core/gimpprojection.h"
 
 #include "gimpclone.h"
 #include "gimpcloneoptions.h"
 
 #include "gimp-intl.h"
 
+
+enum
+{
+  PROP_0,
+  PROP_SRC_DRAWABLE,
+  PROP_SRC_X,
+  PROP_SRC_Y
+};
+
+
+static void   gimp_clone_set_property     (GObject          *object,
+                                           guint             property_id,
+                                           const GValue     *value,
+                                           GParamSpec       *pspec);
+static void   gimp_clone_get_property     (GObject          *object,
+                                           guint             property_id,
+                                           GValue           *value,
+                                           GParamSpec       *pspec);
 
 static void   gimp_clone_paint            (GimpPaintCore    *paint_core,
                                            GimpDrawable     *drawable,
@@ -93,12 +112,34 @@ gimp_clone_register (Gimp                      *gimp,
 static void
 gimp_clone_class_init (GimpCloneClass *klass)
 {
+  GObjectClass       *object_class     = G_OBJECT_CLASS (klass);
   GimpPaintCoreClass *paint_core_class = GIMP_PAINT_CORE_CLASS (klass);
   GimpBrushCoreClass *brush_core_class = GIMP_BRUSH_CORE_CLASS (klass);
+
+  object_class->set_property               = gimp_clone_set_property;
+  object_class->get_property               = gimp_clone_get_property;
 
   paint_core_class->paint                  = gimp_clone_paint;
 
   brush_core_class->handles_changing_brush = TRUE;
+
+  g_object_class_install_property (object_class, PROP_SRC_DRAWABLE,
+                                   g_param_spec_object ("src-drawable",
+                                                        NULL, NULL,
+                                                        GIMP_TYPE_DRAWABLE,
+                                                        GIMP_PARAM_READWRITE));
+
+  g_object_class_install_property (object_class, PROP_SRC_X,
+                                   g_param_spec_double ("src-x", NULL, NULL,
+                                                        0, GIMP_MAX_IMAGE_SIZE,
+                                                        0.0,
+                                                        GIMP_PARAM_READWRITE));
+
+  g_object_class_install_property (object_class, PROP_SRC_Y,
+                                   g_param_spec_double ("src-y", NULL, NULL,
+                                                        0, GIMP_MAX_IMAGE_SIZE,
+                                                        0.0,
+                                                        GIMP_PARAM_READWRITE));
 }
 
 static void
@@ -110,12 +151,62 @@ gimp_clone_init (GimpClone *clone)
   clone->src_x        = 0.0;
   clone->src_y        = 0.0;
 
-  clone->orig_src_x   = 0;
-  clone->orig_src_y   = 0;
+  clone->orig_src_x   = 0.0;
+  clone->orig_src_y   = 0.0;
 
-  clone->offset_x     = 0;
-  clone->offset_y     = 0;
+  clone->offset_x     = 0.0;
+  clone->offset_y     = 0.0;
   clone->first_stroke = TRUE;
+}
+
+static void
+gimp_clone_set_property (GObject      *object,
+                         guint         property_id,
+                         const GValue *value,
+                         GParamSpec   *pspec)
+{
+  GimpClone *clone = GIMP_CLONE (object);
+
+  switch (property_id)
+    {
+    case PROP_SRC_DRAWABLE:
+      gimp_clone_set_src_drawable (clone, g_value_get_object (value));
+      break;
+    case PROP_SRC_X:
+      clone->src_x = g_value_get_double (value);
+      break;
+    case PROP_SRC_Y:
+      clone->src_y = g_value_get_double (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
+static void
+gimp_clone_get_property (GObject    *object,
+                         guint       property_id,
+                         GValue     *value,
+                         GParamSpec *pspec)
+{
+  GimpClone *clone = GIMP_CLONE (object);
+
+  switch (property_id)
+    {
+    case PROP_SRC_DRAWABLE:
+      g_value_set_object (value, clone->src_drawable);
+      break;
+    case PROP_SRC_X:
+      g_value_set_int (value, clone->src_x);
+      break;
+    case PROP_SRC_Y:
+      g_value_set_int (value, clone->src_y);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
 }
 
 static void
@@ -210,6 +301,9 @@ gimp_clone_paint (GimpPaintCore    *paint_core,
     default:
       break;
     }
+
+  g_object_notify (G_OBJECT (clone), "src-x");
+  g_object_notify (G_OBJECT (clone), "src-y");
 }
 
 static void
@@ -221,8 +315,8 @@ gimp_clone_motion (GimpPaintCore    *paint_core,
   GimpCloneOptions    *options          = GIMP_CLONE_OPTIONS (paint_options);
   GimpContext         *context          = GIMP_CONTEXT (paint_options);
   GimpPressureOptions *pressure_options = paint_options->pressure_options;
-  GimpImage           *gimage;
-  GimpImage           *src_gimage       = NULL;
+  GimpImage           *image;
+  GimpImage           *src_image       = NULL;
   GimpPickable        *src_pickable     = NULL;
   guchar              *s;
   guchar              *d;
@@ -237,9 +331,9 @@ gimp_clone_motion (GimpPaintCore    *paint_core,
   gint                 offset_x;
   gint                 offset_y;
 
-  gimage = gimp_item_get_image (GIMP_ITEM (drawable));
+  image = gimp_item_get_image (GIMP_ITEM (drawable));
 
-  opacity = gimp_paint_options_get_fade (paint_options, gimage,
+  opacity = gimp_paint_options_get_fade (paint_options, image,
                                          paint_core->pixel_dist);
   if (opacity == 0.0)
     return;
@@ -255,19 +349,21 @@ gimp_clone_motion (GimpPaintCore    *paint_core,
         return;
 
       src_pickable = GIMP_PICKABLE (clone->src_drawable);
-      src_gimage   = gimp_pickable_get_image (src_pickable);
+      src_image   = gimp_pickable_get_image (src_pickable);
 
       if (options->sample_merged)
         {
           gint off_x, off_y;
 
-          src_pickable = GIMP_PICKABLE (src_gimage->projection);
+          src_pickable = GIMP_PICKABLE (src_image->projection);
 
           gimp_item_offsets (GIMP_ITEM (clone->src_drawable), &off_x, &off_y);
 
           offset_x += off_x;
           offset_y += off_y;
         }
+
+      gimp_pickable_flush (src_pickable);
     }
 
   area = gimp_paint_core_get_paint_area (paint_core, drawable, paint_options);
@@ -294,13 +390,13 @@ gimp_clone_motion (GimpPaintCore    *paint_core,
       if (!(x2 - x1) || !(y2 - y1))
         return;
 
-      /*  If the source gimage is different from the destination,
+      /*  If the source image is different from the destination,
        *  then we should copy straight from the destination image
        *  to the canvas.
        *  Otherwise, we need a call to get_orig_image to make sure
        *  we get a copy of the unblemished (offset) image
        */
-      if ((  options->sample_merged && (src_gimage          != gimage)) ||
+      if ((  options->sample_merged && (src_image          != image)) ||
           (! options->sample_merged && (clone->src_drawable != drawable)))
         {
           pixel_region_init (&srcPR, src_tiles,
@@ -358,7 +454,7 @@ gimp_clone_motion (GimpPaintCore    *paint_core,
           switch (options->clone_type)
             {
             case GIMP_IMAGE_CLONE:
-              gimp_clone_line_image (gimage, src_gimage,
+              gimp_clone_line_image (image, src_image,
                                      drawable, src_pickable,
                                      s, d,
                                      srcPR.bytes, destPR.bytes, destPR.w);
@@ -366,7 +462,7 @@ gimp_clone_motion (GimpPaintCore    *paint_core,
               break;
 
             case GIMP_PATTERN_CLONE:
-              gimp_clone_line_pattern (gimage, drawable,
+              gimp_clone_line_pattern (image, drawable,
                                        pattern, d,
                                        area->x + offset_x,
                                        area->y + y + offset_y,
@@ -506,4 +602,6 @@ gimp_clone_set_src_drawable (GimpClone    *clone,
     g_signal_connect (clone->src_drawable, "removed",
                       G_CALLBACK (gimp_clone_src_drawable_removed),
                       clone);
+
+  g_object_notify (G_OBJECT (clone), "src-drawable");
 }

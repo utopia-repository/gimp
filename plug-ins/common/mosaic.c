@@ -45,9 +45,13 @@
 #define COUNT_THRESHOLD   0.1
 #define MAX_POINTS        12
 
-#define SQUARES  0
-#define HEXAGONS 1
-#define OCTAGONS 2
+typedef enum
+{
+  SQUARES   = 0,
+  HEXAGONS  = 1,
+  OCTAGONS  = 2,
+  TRIANGLES = 3
+} TileType;
 
 #define SMOOTH   0
 #define ROUGH    1
@@ -85,7 +89,7 @@ typedef struct
   gdouble  color_variation;
   gboolean antialiasing;
   gint     color_averaging;
-  gint     tile_type;
+  TileType tile_type;
   gint     tile_surface;
   gint     grout_color;
   gboolean update_preview;
@@ -140,142 +144,146 @@ static void      make_curve_d      (gint         *curve,
                                     gint          length);
 
 /*  grid creation and localization machinery  */
-static gdouble   fp_rand              (gdouble val);
-static void      grid_create_squares  (gint x1,
-                                       gint y1,
-                                       gint x2,
-                                       gint y2);
-static void      grid_create_hexagons (gint x1,
-                                       gint y1,
-                                       gint x2,
-                                       gint y2);
-static void      grid_create_octagons (gint x1,
-                                       gint y1,
-                                       gint x2,
-                                       gint y2);
-static void      grid_localize        (gint x1,
-                                       gint y1,
-                                       gint x2,
-                                       gint y2);
+static gdouble   fp_rand               (gdouble val);
+static void      grid_create_squares   (gint x1,
+                                        gint y1,
+                                        gint x2,
+                                        gint y2);
+static void      grid_create_hexagons  (gint x1,
+                                        gint y1,
+                                        gint x2,
+                                        gint y2);
+static void      grid_create_octagons  (gint x1,
+                                        gint y1,
+                                        gint x2,
+                                        gint y2);
+static void      grid_create_triangles (gint x1,
+                                        gint y1,
+                                        gint x2,
+                                        gint y2);
+static void      grid_localize         (gint x1,
+                                        gint y1,
+                                        gint x2,
+                                        gint y2);
 
-static void      grid_render          (GimpDrawable *drawable,
-                                       gint          x1,
-                                       gint          y1,
-                                       gint          x2,
-                                       gint          y2,
-                                       GimpPreview  *preview);
-static void      split_poly           (Polygon      *poly,
-                                       GimpDrawable *drawable,
-                                       guchar       *col,
-                                       gdouble      *dir,
-                                       gdouble       color_vary,
-                                       gint          x1,
-                                       gint          y1,
-                                       gint          x2,
-                                       gint          y2,
-                                       guchar       *dest);
-static void      clip_poly            (gdouble      *vec,
-                                       gdouble      *pt,
-                                       Polygon      *poly,
-                                       Polygon      *new_poly);
-static void      clip_point           (gdouble      *dir,
-                                       gdouble      *pt,
-                                       gdouble       x1,
-                                       gdouble       y1,
-                                       gdouble       x2,
-                                       gdouble       y2,
-                                       Polygon      *poly);
-static void      process_poly         (Polygon      *poly,
-                                       gboolean      allow_split,
-                                       GimpDrawable *drawable,
-                                       guchar       *col,
-                                       gboolean      vary,
-                                       gint          x1,
-                                       gint          y1,
-                                       gint          x2,
-                                       gint          y2,
-                                       guchar       *dest);
-static void      render_poly          (Polygon      *poly,
-                                       GimpDrawable *drawable,
-                                       guchar       *col,
-                                       gdouble       vary,
-                                       gint          x1,
-                                       gint          y1,
-                                       gint          x2,
-                                       gint          y2,
-                                       guchar       *dest);
-static void      find_poly_dir        (Polygon      *poly,
-                                       guchar       *m_gr,
-                                       guchar       *h_gr,
-                                       guchar       *v_gr,
-                                       gdouble      *dir,
-                                       gdouble      *loc,
-                                       gint          x1,
-                                       gint          y1,
-                                       gint          x2,
-                                       gint          y2);
-static void      find_poly_color      (Polygon      *poly,
-                                       GimpDrawable *drawable,
-                                       guchar       *col,
-                                       double        vary,
-                                       gint          x1,
-                                       gint          y1,
-                                       gint          x2,
-                                       gint          y2);
-static void      scale_poly           (Polygon      *poly,
-                                       gdouble       cx,
-                                       gdouble       cy,
-                                       gdouble       scale);
-static void      fill_poly_color      (Polygon      *poly,
-                                       GimpDrawable *drawable,
-                                       guchar       *col,
-                                       gint          x1,
-                                       gint          y1,
-                                       gint          x2,
-                                       gint          y2,
-                                       guchar       *dest);
-static void      fill_poly_image      (Polygon      *poly,
-                                       GimpDrawable *drawable,
-                                       gdouble       vary,
-                                       gint          x1,
-                                       gint          y1,
-                                       gint          x2,
-                                       gint          y2,
-                                       guchar       *dest);
+static void      grid_render           (GimpDrawable *drawable,
+                                        gint          x1,
+                                        gint          y1,
+                                        gint          x2,
+                                        gint          y2,
+                                        GimpPreview  *preview);
+static void      split_poly            (Polygon      *poly,
+                                        GimpDrawable *drawable,
+                                        guchar       *col,
+                                        gdouble      *dir,
+                                        gdouble       color_vary,
+                                        gint          x1,
+                                        gint          y1,
+                                        gint          x2,
+                                        gint          y2,
+                                        guchar       *dest);
+static void      clip_poly             (gdouble      *vec,
+                                        gdouble      *pt,
+                                        Polygon      *poly,
+                                        Polygon      *new_poly);
+static void      clip_point            (gdouble      *dir,
+                                        gdouble      *pt,
+                                        gdouble       x1,
+                                        gdouble       y1,
+                                        gdouble       x2,
+                                        gdouble       y2,
+                                        Polygon      *poly);
+static void      process_poly          (Polygon      *poly,
+                                        gboolean      allow_split,
+                                        GimpDrawable *drawable,
+                                        guchar       *col,
+                                        gboolean      vary,
+                                        gint          x1,
+                                        gint          y1,
+                                        gint          x2,
+                                        gint          y2,
+                                        guchar       *dest);
+static void      render_poly           (Polygon      *poly,
+                                        GimpDrawable *drawable,
+                                        guchar       *col,
+                                        gdouble       vary,
+                                        gint          x1,
+                                        gint          y1,
+                                        gint          x2,
+                                        gint          y2,
+                                        guchar       *dest);
+static void      find_poly_dir         (Polygon      *poly,
+                                        guchar       *m_gr,
+                                        guchar       *h_gr,
+                                        guchar       *v_gr,
+                                        gdouble      *dir,
+                                        gdouble      *loc,
+                                        gint          x1,
+                                        gint          y1,
+                                        gint          x2,
+                                        gint          y2);
+static void      find_poly_color       (Polygon      *poly,
+                                        GimpDrawable *drawable,
+                                        guchar       *col,
+                                        double        vary,
+                                        gint          x1,
+                                        gint          y1,
+                                        gint          x2,
+                                        gint          y2);
+static void      scale_poly            (Polygon      *poly,
+                                        gdouble       cx,
+                                        gdouble       cy,
+                                        gdouble       scale);
+static void      fill_poly_color       (Polygon      *poly,
+                                        GimpDrawable *drawable,
+                                        guchar       *col,
+                                        gint          x1,
+                                        gint          y1,
+                                        gint          x2,
+                                        gint          y2,
+                                        guchar       *dest);
+static void      fill_poly_image       (Polygon      *poly,
+                                        GimpDrawable *drawable,
+                                        gdouble       vary,
+                                        gint          x1,
+                                        gint          y1,
+                                        gint          x2,
+                                        gint          y2,
+                                        guchar       *dest);
 
-static void      calc_spec_vec        (SpecVec      *vec,
-                                       gint          xs,
-                                       gint          ys,
-                                       gint          xe,
-                                       gint          ye);
-static gdouble   calc_spec_contrib    (SpecVec      *vec,
-                                       gint          n,
-                                       gdouble       x,
-                                       gdouble       y);
-static void      convert_segment      (gint          x1,
-                                       gint          y1,
-                                       gint          x2,
-                                       gint          y2,
-                                       gint          offset,
-                                       gint         *min,
-                                       gint         *max);
-static void      polygon_add_point    (Polygon      *poly,
-                                       gdouble       x,
-                                       gdouble       y);
-static gboolean  polygon_find_center  (Polygon      *poly,
-                                       gdouble      *x,
-                                       gdouble      *y);
-static void      polygon_translate    (Polygon      *poly,
-                                       gdouble       tx,
-                                       gdouble       ty);
-static void      polygon_scale        (Polygon      *poly,
-                                       gdouble       scale);
-static gboolean  polygon_extents      (Polygon      *poly,
-                                       gdouble      *min_x,
-                                       gdouble      *min_y,
-                                       gdouble      *max_x,
-                                       gdouble      *max_y);
-static void      polygon_reset        (Polygon      *poly);
+static void      calc_spec_vec         (SpecVec      *vec,
+                                        gint          xs,
+                                        gint          ys,
+                                        gint          xe,
+                                        gint          ye);
+static gdouble   calc_spec_contrib     (SpecVec      *vec,
+                                        gint          n,
+                                        gdouble       x,
+                                        gdouble       y);
+static void      convert_segment       (gint          x1,
+                                        gint          y1,
+                                        gint          x2,
+                                        gint          y2,
+                                        gint          offset,
+                                        gint         *min,
+                                        gint         *max);
+static void      polygon_add_point     (Polygon      *poly,
+                                        gdouble       x,
+                                        gdouble       y);
+static gboolean  polygon_find_center   (Polygon      *poly,
+                                        gdouble      *x,
+                                        gdouble      *y);
+static void      polygon_translate     (Polygon      *poly,
+                                        gdouble       tx,
+                                        gdouble       ty);
+static void      polygon_scale         (Polygon      *poly,
+                                        gdouble       scale);
+static gboolean  polygon_extents       (Polygon      *poly,
+                                        gdouble      *min_x,
+                                        gdouble      *min_y,
+                                        gdouble      *max_x,
+                                        gdouble      *max_y);
+static void      polygon_reset         (Polygon      *poly);
 
 /*
  *  Some static variables
@@ -344,13 +352,13 @@ query (void)
     { GIMP_PDB_FLOAT,    "color-variation",  "Magnitude of random color variations (0.0 - 1.0)" },
     { GIMP_PDB_INT32,    "antialiasing",     "Enables smoother tile output at the cost of speed" },
     { GIMP_PDB_INT32,    "color-averaging",  "Tile color based on average of subsumed pixels" },
-    { GIMP_PDB_INT32,    "tile-type",        "Tile geometry: { SQUARES (0), HEXAGONS (1), OCTAGONS (2) }" },
+    { GIMP_PDB_INT32,    "tile-type",        "Tile geometry: { SQUARES (0), HEXAGONS (1), OCTAGONS (2), TRIANGLES (3) }" },
     { GIMP_PDB_INT32,    "tile-surface",     "Surface characteristics: { SMOOTH (0), ROUGH (1) }" },
     { GIMP_PDB_INT32,    "grout-color",      "Grout color (black/white or fore/background): { BW (0), FG_BG (1) }" }
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
-                          "Convert the input drawable into a collection of tiles",
+                          N_("Convert the image into irregular tiles"),
                           "Help not yet written for this plug-in",
                           "Spencer Kimball",
                           "Spencer Kimball & Peter Mattis",
@@ -424,7 +432,7 @@ run (const gchar      *name,
           mvals.grout_color = param[14].data.d_int32;
         }
       if (status == GIMP_PDB_SUCCESS &&
-          (mvals.tile_type < SQUARES || mvals.tile_type > OCTAGONS))
+          (mvals.tile_type < SQUARES || mvals.tile_type > TRIANGLES))
         status = GIMP_PDB_CALLING_ERROR;
       if (status == GIMP_PDB_SUCCESS &&
           (mvals.tile_surface < SMOOTH || mvals.tile_surface > ROUGH))
@@ -512,6 +520,9 @@ mosaic (GimpDrawable *drawable,
     case OCTAGONS:
       grid_create_octagons (x1, y1, x2, y2);
       break;
+    case TRIANGLES:
+      grid_create_triangles(x1, y1, x2, y2);
+      break;
     default:
       break;
     }
@@ -569,14 +580,11 @@ mosaic_dialog (GimpDrawable *drawable)
   GtkWidget *preview;
   GtkWidget *toggle;
   GtkWidget *vbox;
-  GtkWidget *toggle_vbox;
   GtkWidget *hbox;
-  GtkWidget *frame;
+  GtkWidget *combo;
   GtkWidget *table;
-  GtkWidget *square;
-  GtkWidget *hexagon;
-  GtkWidget *octogon;
   GtkObject *scale_data;
+  gint       row = 0;
   gboolean   run;
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
@@ -611,124 +619,36 @@ mosaic_dialog (GimpDrawable *drawable)
                             drawable);
 
   /*  The hbox -- splits the scripts and the info vbox  */
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_hbox_new (FALSE, 12);
   gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  /*  The vbox for first column of options  */
-  vbox = gtk_vbox_new (FALSE, 12);
-  gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
-
-  /*  the vertical box and its toggle buttons  */
-  frame = gimp_frame_new (_("Options"));
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
-
-  toggle_vbox = gtk_vbox_new (FALSE, 6);
-  gtk_container_add (GTK_CONTAINER (frame), toggle_vbox);
-
-  toggle = gtk_check_button_new_with_mnemonic (_("_Antialiasing"));
-  gtk_box_pack_start (GTK_BOX (toggle_vbox), toggle, FALSE, FALSE, 0);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), mvals.antialiasing);
-  gtk_widget_show (toggle);
-
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update),
-                    &mvals.antialiasing);
-  g_signal_connect_swapped (toggle, "toggled",
-                            G_CALLBACK (gimp_preview_invalidate),
-                            preview);
-
-  toggle = gtk_check_button_new_with_mnemonic ( _("Co_lor averaging"));
-  gtk_box_pack_start (GTK_BOX (toggle_vbox), toggle, FALSE, FALSE, 0);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
-                                mvals.color_averaging);
-  gtk_widget_show (toggle);
-
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update),
-                    &mvals.color_averaging);
-  g_signal_connect_swapped (toggle, "toggled",
-                            G_CALLBACK (gimp_preview_invalidate),
-                            preview);
-
-  toggle = gtk_check_button_new_with_mnemonic ( _("Allo_w tile splitting"));
-  gtk_box_pack_start (GTK_BOX (toggle_vbox), toggle, FALSE, FALSE, 0);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
-                                mvals.tile_allow_split);
-  gtk_widget_show (toggle);
-
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update),
-                    &mvals.tile_allow_split);
-  g_signal_connect_swapped (toggle, "toggled",
-                            G_CALLBACK (gimp_preview_invalidate),
-                            preview);
-
-  toggle = gtk_check_button_new_with_mnemonic ( _("_Pitted surfaces"));
-  gtk_box_pack_start (GTK_BOX (toggle_vbox), toggle, FALSE, FALSE, 0);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
-                                (mvals.tile_surface == ROUGH));
-  gtk_widget_show (toggle);
-
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update),
-                    &mvals.tile_surface);
-  g_signal_connect_swapped (toggle, "toggled",
-                            G_CALLBACK (gimp_preview_invalidate),
-                            preview);
-
-  toggle = gtk_check_button_new_with_mnemonic ( _("_FG/BG lighting"));
-  gtk_box_pack_start (GTK_BOX (toggle_vbox), toggle, FALSE, FALSE, 0);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
-                                (mvals.grout_color == FG_BG));
-  gtk_widget_show (toggle);
-
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update),
-                    &mvals.grout_color);
-  g_signal_connect_swapped (toggle, "toggled",
-                            G_CALLBACK (gimp_preview_invalidate),
-                            preview);
-
-  gtk_widget_show (toggle_vbox);
-  gtk_widget_show (frame);
-
-  /*  tiling primitive  */
-  frame = gimp_int_radio_group_new (TRUE, _("Tiling Primitives"),
-                                    G_CALLBACK (gimp_radio_button_update),
-                                    &mvals.tile_type, mvals.tile_type,
-
-                                    _("_Squares"),            SQUARES,  &square,
-                                    _("He_xagons"),           HEXAGONS, &hexagon,
-                                    _("Oc_tagons & squares"), OCTAGONS, &octogon,
-
-                                    NULL);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
-  gtk_widget_show (frame);
-
-  g_signal_connect_swapped (square, "toggled",
-                            G_CALLBACK (gimp_preview_invalidate),
-                            preview);
-  g_signal_connect_swapped (hexagon, "toggled",
-                            G_CALLBACK (gimp_preview_invalidate),
-                            preview);
-  g_signal_connect_swapped (octogon, "toggled",
-                            G_CALLBACK (gimp_preview_invalidate),
-                            preview);
-
-  gtk_widget_show (vbox);
-
-  /*  parameter settings  */
-  frame = gimp_frame_new (_("Settings"));
-  gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
-
-  table = gtk_table_new (6, 3, FALSE);
+  table = gtk_table_new (7, 3, FALSE);
+  gtk_box_pack_start (GTK_BOX (hbox), table, TRUE, TRUE, 0);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
-  gtk_container_add (GTK_CONTAINER (frame), table);
+  gtk_widget_show (table);
 
-  scale_data = gimp_scale_entry_new (GTK_TABLE (table), 0, 0,
-                                     _("T_ile size:"), SCALE_WIDTH, 5,
+  combo = gimp_int_combo_box_new (_("Squares"),            SQUARES,
+                                  _("Hexagons"),           HEXAGONS,
+                                  _("Octagons & squares"), OCTAGONS,
+                                  _("Triangles"),          TRIANGLES,
+                                  NULL);
+  gimp_int_combo_box_connect (GIMP_INT_COMBO_BOX (combo),
+                              mvals.tile_type,
+                              G_CALLBACK (gimp_int_combo_box_get_active),
+                              &mvals.tile_type);
+
+  gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
+                             _("_Tiling primitives:"), 0.0, 0.5,
+                             combo, 2, FALSE);
+
+  g_signal_connect_swapped (combo, "changed",
+                            G_CALLBACK (gimp_preview_invalidate),
+                            preview);
+
+  scale_data = gimp_scale_entry_new (GTK_TABLE (table), 0, row++,
+                                     _("Tile _size:"), SCALE_WIDTH, 5,
                                      mvals.tile_size, 5.0, 100.0, 1.0, 10.0, 1,
                                      TRUE, 0, 0,
                                      NULL, NULL);
@@ -739,11 +659,12 @@ mosaic_dialog (GimpDrawable *drawable)
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
-  scale_data = gimp_scale_entry_new (GTK_TABLE (table), 0, 1,
+  scale_data = gimp_scale_entry_new (GTK_TABLE (table), 0, row++,
                                      _("Tile _height:"), SCALE_WIDTH, 5,
                                      mvals.tile_height, 1.0, 50.0, 1.0, 10.0, 1,
                                      TRUE, 0, 0,
                                      NULL, NULL);
+
   g_signal_connect (scale_data, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mvals.tile_height);
@@ -751,7 +672,7 @@ mosaic_dialog (GimpDrawable *drawable)
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
-  scale_data = gimp_scale_entry_new (GTK_TABLE (table), 0, 2,
+  scale_data = gimp_scale_entry_new (GTK_TABLE (table), 0, row++,
                                      _("Til_e spacing:"), SCALE_WIDTH, 5,
                                      mvals.tile_spacing, 1.0, 50.0, 1.0, 10.0, 1,
                                      TRUE, 0, 0,
@@ -763,7 +684,7 @@ mosaic_dialog (GimpDrawable *drawable)
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
-  scale_data = gimp_scale_entry_new (GTK_TABLE (table), 0, 3,
+  scale_data = gimp_scale_entry_new (GTK_TABLE (table), 0, row++,
                                      _("Tile _neatness:"), SCALE_WIDTH, 5,
                                      mvals.tile_neatness,
                                      0.0, 1.0, 0.10, 0.1, 2,
@@ -776,7 +697,7 @@ mosaic_dialog (GimpDrawable *drawable)
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
-  scale_data = gimp_scale_entry_new (GTK_TABLE (table), 0, 4,
+  scale_data = gimp_scale_entry_new (GTK_TABLE (table), 0, row++,
                                      _("Light _direction:"), SCALE_WIDTH, 5,
                                      mvals.light_dir, 0.0, 360.0, 1.0, 15.0, 1,
                                      TRUE, 0, 0,
@@ -788,7 +709,7 @@ mosaic_dialog (GimpDrawable *drawable)
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
-  scale_data = gimp_scale_entry_new (GTK_TABLE (table), 0, 5,
+  scale_data = gimp_scale_entry_new (GTK_TABLE (table), 0, row++,
                                      _("Color _variation:"), SCALE_WIDTH, 5,
                                      mvals.color_variation,
                                      0.0, 1.0, 0.01, 0.1, 2,
@@ -801,8 +722,74 @@ mosaic_dialog (GimpDrawable *drawable)
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
-  gtk_widget_show (frame);
-  gtk_widget_show (table);
+  /*  the vertical box and its toggle buttons  */
+  vbox = gtk_vbox_new (FALSE, 6);
+  gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
+  gtk_widget_show (vbox);
+
+  toggle = gtk_check_button_new_with_mnemonic (_("_Antialiasing"));
+  gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), mvals.antialiasing);
+  gtk_widget_show (toggle);
+
+  g_signal_connect (toggle, "toggled",
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &mvals.antialiasing);
+  g_signal_connect_swapped (toggle, "toggled",
+                            G_CALLBACK (gimp_preview_invalidate),
+                            preview);
+
+  toggle = gtk_check_button_new_with_mnemonic ( _("Co_lor averaging"));
+  gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
+                                mvals.color_averaging);
+  gtk_widget_show (toggle);
+
+  g_signal_connect (toggle, "toggled",
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &mvals.color_averaging);
+  g_signal_connect_swapped (toggle, "toggled",
+                            G_CALLBACK (gimp_preview_invalidate),
+                            preview);
+
+  toggle = gtk_check_button_new_with_mnemonic ( _("Allo_w tile splitting"));
+  gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
+                                mvals.tile_allow_split);
+  gtk_widget_show (toggle);
+
+  g_signal_connect (toggle, "toggled",
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &mvals.tile_allow_split);
+  g_signal_connect_swapped (toggle, "toggled",
+                            G_CALLBACK (gimp_preview_invalidate),
+                            preview);
+
+  toggle = gtk_check_button_new_with_mnemonic ( _("_Pitted surfaces"));
+  gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
+                                (mvals.tile_surface == ROUGH));
+  gtk_widget_show (toggle);
+
+  g_signal_connect (toggle, "toggled",
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &mvals.tile_surface);
+  g_signal_connect_swapped (toggle, "toggled",
+                            G_CALLBACK (gimp_preview_invalidate),
+                            preview);
+
+  toggle = gtk_check_button_new_with_mnemonic ( _("_FG/BG lighting"));
+  gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
+                                (mvals.grout_color == FG_BG));
+  gtk_widget_show (toggle);
+
+  g_signal_connect (toggle, "toggled",
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &mvals.grout_color);
+  g_signal_connect_swapped (toggle, "toggled",
+                            G_CALLBACK (gimp_preview_invalidate),
+                            preview);
 
   gtk_widget_show (dialog);
 
@@ -1423,6 +1410,49 @@ grid_create_octagons (gint x1,
 
 
 static void
+grid_create_triangles (gint x1,
+                       gint y1,
+                       gint x2,
+                       gint y2)
+{
+  gint     rows, cols;
+  gint     width, height;
+  gint     i, j;
+  gdouble  tri_mid, tri_height;
+  Vertex  *pt;
+
+  width  = x2 - x1;
+  height = y2 - y1;
+  tri_mid    = mvals.tile_size / 2.0;              /* cos 60 */
+  tri_height = mvals.tile_size / 2.0 * sqrt (3.0); /* sin 60 */
+
+  rows = (height + 2 * tri_height - 1) / (2 * tri_height);
+  cols = (width + mvals.tile_size - 1) / mvals.tile_size;
+
+  grid = g_new (Vertex, (cols + 2) * 2 * (rows + 2));
+  grid += (cols + 2) * 2 + 2;
+
+  for (i = -1; i <= rows; i++)
+    for (j = -1; j <= cols; j++)
+      {
+        pt = grid + (i * (cols + 2) * 2 + j * 2);
+
+        pt[0].x = x1 + mvals.tile_size * j;
+        pt[0].y = y1 + (tri_height*2) * i;
+        pt[1].x = pt[0].x + tri_mid;
+        pt[1].y = pt[0].y + tri_height;
+      }
+
+  grid_rows = rows;
+  grid_cols = cols;
+  grid_row_pad = 1;
+  grid_col_pad = 1;
+  grid_multiple = 2;
+  grid_rowstride = (cols + 2) * 2;
+}
+
+
+static void
 grid_localize (gint x1,
                gint y1,
                gint x2,
@@ -1695,6 +1725,64 @@ grid_render (GimpDrawable *drawable,
             process_poly (&poly, FALSE, drawable, col, vary,
                           x1, y1, x2, y2, dest);
             break;
+          case TRIANGLES:
+            /*  Lower left  */
+            polygon_reset (&poly);
+            polygon_add_point (&poly,
+                                grid[index].x,
+                                grid[index].y);
+            polygon_add_point (&poly,
+                                grid[index + grid_multiple].x,
+                                grid[index + grid_multiple].y);
+            polygon_add_point (&poly,
+                                grid[index + 1].x,
+                                grid[index + 1].y);
+            process_poly (&poly, mvals.tile_allow_split, drawable, col, vary,
+                          x1, y1, x2, y2, dest);
+
+            /*  lower right  */
+            polygon_reset (&poly);
+            polygon_add_point (&poly,
+                                grid[index + 1].x,
+                                grid[index + 1].y);
+            polygon_add_point (&poly,
+                                grid[index + grid_multiple].x,
+                                grid[index + grid_multiple].y);
+            polygon_add_point (&poly,
+                                grid[index + grid_multiple + 1].x,
+                                grid[index + grid_multiple + 1].y);
+            process_poly (&poly, mvals.tile_allow_split, drawable, col, vary,
+                          x1, y1, x2, y2, dest);
+
+            /*  upper left  */
+            polygon_reset (&poly);
+            polygon_add_point (&poly,
+                                grid[index + 1].x,
+                                grid[index + 1].y);
+            polygon_add_point (&poly,
+                                grid[index + grid_multiple + grid_rowstride].x,
+                                grid[index + grid_multiple + grid_rowstride].y);
+            polygon_add_point (&poly,
+                                grid[index + grid_rowstride].x,
+                                grid[index + grid_rowstride].y);
+            process_poly (&poly, mvals.tile_allow_split, drawable, col, vary,
+                           x1, y1, x2, y2, dest);
+
+            /*  upper right  */
+            polygon_reset (&poly);
+            polygon_add_point (&poly,
+                                grid[index + 1].x,
+                                grid[index + 1].y);
+            polygon_add_point (&poly,
+                                grid[index + grid_multiple +1 ].x,
+                                grid[index + grid_multiple +1 ].y);
+            polygon_add_point (&poly,
+                                grid[index + grid_multiple + grid_rowstride].x,
+                                grid[index + grid_multiple + grid_rowstride].y);
+            process_poly (&poly, mvals.tile_allow_split, drawable, col, vary,
+                           x1, y1, x2, y2, dest);
+            break;
+
           }
 
         if (!preview)
@@ -1725,7 +1813,7 @@ process_poly (Polygon      *poly,
 {
   gdouble dir[2];
   gdouble loc[2];
-  gdouble cx, cy;
+  gdouble cx = 0.0, cy = 0.0;
   gdouble magnitude;
   gdouble distance;
   gdouble color_vary;
@@ -1764,7 +1852,7 @@ render_poly (Polygon      *poly,
              gint          y2,
              guchar       *dest)
 {
-  gdouble cx, cy;
+  gdouble cx = 0.0, cy = 0.0;
 
   polygon_find_center (poly, &cx, &cy);
 
@@ -1793,7 +1881,7 @@ split_poly (Polygon      *poly,
 {
   Polygon new_poly;
   gdouble spacing;
-  gdouble cx, cy;
+  gdouble cx = 0.0, cy = 0.0;
   gdouble magnitude;
   gdouble vec[2];
   gdouble pt[2];
@@ -1939,8 +2027,8 @@ find_poly_dir (Polygon *poly,
                gint     x2,
                gint     y2)
 {
-  gdouble dmin_x, dmin_y;
-  gdouble dmax_x, dmax_y;
+  gdouble dmin_x = 0.0, dmin_y = 0.0;
+  gdouble dmax_x = 0.0, dmax_y = 0.0;
   gint    xs, ys;
   gint    xe, ye;
   gint    min_x, min_y;
@@ -2048,8 +2136,8 @@ find_poly_color (Polygon      *poly,
                  gint          y2)
 {
   GimpPixelRgn  src_rgn;
-  gdouble       dmin_x, dmin_y;
-  gdouble       dmax_x, dmax_y;
+  gdouble       dmin_x = 0.0, dmin_y = 0.0;
+  gdouble       dmax_x = 0.0, dmax_y = 0.0;
   gint          xs, ys;
   gint          xe, ye;
   gint          min_x, min_y;
@@ -2150,8 +2238,8 @@ fill_poly_color (Polygon      *poly,
                  guchar       *dest)
 {
   GimpPixelRgn  src_rgn;
-  gdouble       dmin_x, dmin_y;
-  gdouble       dmax_x, dmax_y;
+  gdouble       dmin_x = 0.0, dmin_y = 0.0;
+  gdouble       dmax_x = 0.0, dmax_y = 0.0;
   gint          xs, ys;
   gint          xe, ye;
   gint          min_x, min_y;
@@ -2335,8 +2423,8 @@ fill_poly_image (Polygon      *poly,
                  guchar       *dest)
 {
   GimpPixelRgn  src_rgn, dest_rgn;
-  gdouble       dmin_x, dmin_y;
-  gdouble       dmax_x, dmax_y;
+  gdouble       dmin_x = 0.0, dmin_y = 0.0;
+  gdouble       dmax_x = 0.0, dmax_y = 0.0;
   gint          xs, ys;
   gint          xe, ye;
   gint          min_x, min_y;

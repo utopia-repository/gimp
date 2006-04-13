@@ -413,8 +413,8 @@ yellow-blue. Negative values increase the amount of the former,
 positive values increase the amount of the latter. Color balance can
 be controlled with the 'transfer_mode' setting, which allows
 shadows, midtones, and highlights in an image to be affected
-differently. The 'preserve_lum' parameter, if non-zero, ensures that
-the luminosity of each pixel remains fixed.</para>
+differently. The 'preserve_lum' parameter, if TRUE, ensures that the
+luminosity of each pixel remains fixed.</para>
 <para>
 
 </para><variablelist role="params">
@@ -566,10 +566,10 @@ provides the capability to limit range of affected hues.</para>
 <listitem><simpara> Hue offset in degrees.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>lightness</parameter>&nbsp;:</term>
-<listitem><simpara> lightness modification.
+<listitem><simpara> Lightness modification.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>saturation</parameter>&nbsp;:</term>
-<listitem><simpara> saturation modification.
+<listitem><simpara> Saturation modification.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>

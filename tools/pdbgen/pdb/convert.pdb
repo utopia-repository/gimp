@@ -17,19 +17,27 @@
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
-sub simple_inargs {
-    @inargs = (
-	&std_image_arg
-    );
-}
+sub image_convert_rgb {
+    $blurb = 'Convert specified image to RGB color';
 
-sub simple_invoke {
-    my $type = shift;
+    $help = <<'HELP';
+This procedure converts the specified image to RGB color. This process
+requires an image of type GIMP_GRAY or GIMP_INDEXED. No image content
+is lost in this process aside from the colormap for an indexed image.
+HELP
+
+    &std_pdb_misc;
+
+    @inargs = (
+	{ name => 'image', type => 'image',
+	  desc => 'The image' }
+    );
+
     %invoke = (
-	code => <<CODE
+	code => <<'CODE'
 {
-  if (gimp_image_base_type (gimage) != $type)
-    gimp_image_convert (gimage, $type, 0, 0, FALSE, FALSE, 0, NULL, NULL);
+  if (gimp_image_base_type (image) != GIMP_RGB)
+    gimp_image_convert (image, GIMP_RGB, 0, 0, FALSE, FALSE, 0, NULL, NULL);
   else
     success = FALSE;
 }
@@ -37,32 +45,32 @@ CODE
     );
 }
 
-sub image_convert_rgb {
-    $blurb = 'Convert specified image to RGB color';
-
-    $help = <<'HELP';
-This procedure converts the specified image to RGB color. This process requires
-an image of type GIMP_GRAY or GIMP_INDEXED. No image content is lost in this 
-process aside from the colormap for an indexed image.
-HELP
-
-    &std_pdb_misc;
-    &simple_inargs;
-    &simple_invoke('GIMP_RGB');
-}
-
 sub image_convert_grayscale {
     $blurb = 'Convert specified image to grayscale (256 intensity levels)';
 
     $help = <<'HELP';
-This procedure converts the specified image to grayscale with 8 bits per pixel
-(256 intensity levels). This process requires an image of type GIMP_RGB or 
-GIMP_INDEXED.
+This procedure converts the specified image to grayscale with 8 bits
+per pixel (256 intensity levels). This process requires an image of
+type GIMP_RGB or GIMP_INDEXED.
 HELP
 
     &std_pdb_misc;
-    &simple_inargs;
-    &simple_invoke('GIMP_GRAY');
+
+    @inargs = (
+	{ name => 'image', type => 'image',
+	  desc => 'The image' }
+    );
+
+    %invoke = (
+	code => <<'CODE'
+{
+  if (gimp_image_base_type (image) != GIMP_GRAY)
+    gimp_image_convert (image, GIMP_GRAY, 0, 0, FALSE, FALSE, 0, NULL, NULL);
+  else
+    success = FALSE;
+}
+CODE
+    );
 }
 
 sub image_convert_indexed {
@@ -87,31 +95,31 @@ HELP
     &std_pdb_misc;
 
     @inargs = (
-	&std_image_arg,
+	{ name => 'image', type => 'image',
+	  desc => 'The image' },
 	{ name => 'dither_type', type => 'enum GimpConvertDitherType',
-	  desc => 'The dither type to use: { %%desc%% }' },
+	  desc => 'The dither type to use: %%desc%%' },
 	{ name => 'palette_type', type => 'enum GimpConvertPaletteType',
-	  desc => 'The type of palette to use: { %%desc%% }' },
+	  desc => 'The type of palette to use: %%desc%%' },
 	{ name => 'num_cols', type => 'int32',
 	  desc => 'The number of colors to quantize to, ignored unless
 		   (palette_type == GIMP_MAKE_PALETTE)' },
 	{ name => 'alpha_dither', type => 'boolean',
 	  desc => 'Dither transparency to fake partial opacity' },
 	{ name => 'remove_unused', type => 'boolean',
-	  desc => 'Remove unused or duplicate colour entries from final
+	  desc => 'Remove unused or duplicate color entries from final
 		   palette, ignored if (palette_type == GIMP_MAKE_PALETTE)' },
 	{ name => 'palette', type => 'string',
 	  desc => 'The name of the custom palette to use, ignored unless
-		   (palette_type == GIMP_CUSTOM_PALETTE)',
-	  alias => 'palette_name' }
+		   (palette_type == GIMP_CUSTOM_PALETTE)' }
     );
 
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPalette *palette = NULL;
+  GimpPalette *pal = NULL;
 
-  if (gimp_image_base_type (gimage) != GIMP_INDEXED)
+  if (gimp_image_base_type (image) != GIMP_INDEXED)
     {
       switch (palette_type)
 	{
@@ -121,10 +129,10 @@ HELP
 	  break;
 
 	case GIMP_CUSTOM_PALETTE:
-          palette = (GimpPalette *)
+          pal = (GimpPalette *)
             gimp_container_get_child_by_name (gimp->palette_factory->container,
-                                              palette_name);
-	  if (palette == NULL)
+                                              palette);
+	  if (pal == NULL)
 	    success = FALSE;
 	  break;
 
@@ -133,24 +141,26 @@ HELP
 	}
     }
   else
-    {
-      success = FALSE;
-    }
+    success = FALSE;
 
   if (success)
-    gimp_image_convert (gimage, GIMP_INDEXED, num_cols, dither_type,
-		        alpha_dither, remove_unused, palette_type, palette,
+    gimp_image_convert (image, GIMP_INDEXED, num_cols, dither_type,
+		        alpha_dither, remove_unused, palette_type, pal,
                         NULL);
 }
 CODE
     );
 }
 
+
 @headers = qw("core/gimp.h" "core/gimpcontainer.h" "core/gimpdatafactory.h"
               "core/gimpimage.h" "core/gimpimage-convert.h"
               "core/gimppalette.h");
 
-@procs = qw(image_convert_rgb image_convert_grayscale image_convert_indexed);
+@procs = qw(image_convert_rgb
+            image_convert_grayscale
+            image_convert_indexed);
+
 %exports = (app => [@procs], lib => [@procs]);
 
 $desc = 'Convert';

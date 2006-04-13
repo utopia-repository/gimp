@@ -42,6 +42,7 @@
 #include "display/gimpdisplay-foreach.h"
 #include "display/gimpdisplayshell.h"
 #include "display/gimpdisplayshell-render.h"
+#include "display/gimpstatusbar.h"
 
 #include "tools/gimp-tools.h"
 
@@ -111,10 +112,16 @@ static void       gui_device_change_notify      (Gimp               *gimp);
 
 static void       gui_global_buffer_changed     (Gimp               *gimp);
 
+static void       gui_menu_show_tooltip         (GimpUIManager      *manager,
+                                                 const gchar        *tooltip,
+                                                 Gimp               *gimp);
+static void       gui_menu_hide_tooltip         (GimpUIManager      *manager,
+                                                 Gimp               *gimp);
+
 static void       gui_display_changed           (GimpContext        *context,
                                                  GimpDisplay        *display,
                                                  Gimp               *gimp);
-static void       gui_image_disconnect          (GimpImage          *gimage,
+static void       gui_image_disconnect          (GimpImage          *image,
                                                  Gimp               *gimp);
 
 
@@ -353,13 +360,13 @@ gui_restore_callback (Gimp               *gimp,
 
   image_disconnect_handler_id =
     gimp_container_add_handler (gimp->images, "disconnect",
-				G_CALLBACK (gui_image_disconnect),
-				gimp);
+                                G_CALLBACK (gui_image_disconnect),
+                                gimp);
 
-  if (! gui_config->show_tool_tips)
+  if (! gui_config->show_tooltips)
     gimp_help_disable_tooltips ();
 
-  g_signal_connect (gui_config, "notify::show-tool-tips",
+  g_signal_connect (gui_config, "notify::show-tooltips",
                     G_CALLBACK (gui_show_tooltips_notify),
                     gimp);
 
@@ -374,8 +381,8 @@ gui_restore_callback (Gimp               *gimp,
                     gimp);
 
   g_signal_connect (gimp_get_user_context (gimp), "display-changed",
-		    G_CALLBACK (gui_display_changed),
-		    gimp);
+                    G_CALLBACK (gui_display_changed),
+                    gimp);
 
   /* make sure the monitor resolution is valid */
   if (display_config->monitor_res_from_gdk               ||
@@ -387,10 +394,10 @@ gui_restore_callback (Gimp               *gimp,
       gimp_get_screen_resolution (NULL, &xres, &yres);
 
       g_object_set (gimp->config,
-		    "monitor-xresolution",                      xres,
-		    "monitor-yresolution",                      yres,
-		    "monitor-resolution-from-windowing-system", TRUE,
-		    NULL);
+                    "monitor-xresolution",                      xres,
+                    "monitor-yresolution",                      yres,
+                    "monitor-resolution-from-windowing-system", TRUE,
+                    NULL);
     }
 
   actions_init (gimp);
@@ -437,6 +444,12 @@ gui_restore_after_callback (Gimp               *gimp,
   g_signal_connect_object (gui_config, "notify::tearoff-menus",
                            G_CALLBACK (gui_tearoff_menus_notify),
                            image_ui_manager, 0);
+  g_signal_connect (image_ui_manager, "show-tooltip",
+                    G_CALLBACK (gui_menu_show_tooltip),
+                    gimp);
+  g_signal_connect (image_ui_manager, "hide-tooltip",
+                    G_CALLBACK (gui_menu_hide_tooltip),
+                    gimp);
 
   gimp_devices_restore (gimp);
   gimp_controllers_restore (gimp, image_ui_manager);
@@ -542,7 +555,7 @@ gui_show_tooltips_notify (GimpGuiConfig *gui_config,
                           GParamSpec    *param_spec,
                           Gimp          *gimp)
 {
-  if (gui_config->show_tool_tips)
+  if (gui_config->show_tooltips)
     gimp_help_enable_tooltips ();
   else
     gimp_help_disable_tooltips ();
@@ -590,9 +603,41 @@ gui_global_buffer_changed (Gimp *gimp)
 }
 
 static void
+gui_menu_show_tooltip (GimpUIManager *manager,
+                       const gchar   *tooltip,
+                       Gimp          *gimp)
+{
+  GimpContext *context = gimp_get_user_context (gimp);
+  GimpDisplay *display = gimp_context_get_display (context);
+
+  if (display)
+    {
+      GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (display->shell);
+
+      gimp_statusbar_push (GIMP_STATUSBAR (shell->statusbar), "menu-tooltip",
+                           tooltip);
+    }
+}
+
+static void
+gui_menu_hide_tooltip (GimpUIManager *manager,
+                       Gimp          *gimp)
+{
+  GimpContext *context = gimp_get_user_context (gimp);
+  GimpDisplay *display = gimp_context_get_display (context);
+
+  if (display)
+    {
+      GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (display->shell);
+
+      gimp_statusbar_pop (GIMP_STATUSBAR (shell->statusbar), "menu-tooltip");
+    }
+}
+
+static void
 gui_display_changed (GimpContext *context,
-		     GimpDisplay *display,
-		     Gimp        *gimp)
+                     GimpDisplay *display,
+                     Gimp        *gimp)
 {
   if (! display)
     {
@@ -608,7 +653,7 @@ gui_display_changed (GimpContext *context,
             {
               GimpDisplay *display2 = list->data;
 
-              if (display2->gimage == image)
+              if (display2->image == image)
                 {
                   gimp_context_set_display (context, display2);
 
@@ -628,12 +673,12 @@ gui_display_changed (GimpContext *context,
 }
 
 static void
-gui_image_disconnect (GimpImage *gimage,
-		      Gimp      *gimp)
+gui_image_disconnect (GimpImage *image,
+                      Gimp      *gimp)
 {
   /*  check if this is the last image and if it had a display  */
   if (gimp_container_num_children (gimp->images) == 1 &&
-      gimage->instance_count                      > 0)
+      image->instance_count > 0)
     {
       dialogs_show_toolbox ();
     }

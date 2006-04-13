@@ -59,7 +59,7 @@ static void   file_actions_close_all_update    (GimpContainer   *container,
                                                 GimpActionGroup *group);
 
 
-static GimpActionEntry file_actions[] =
+static const GimpActionEntry file_actions[] =
 {
   { "file-menu",             NULL, N_("_File")        },
   { "file-open-recent-menu", NULL, N_("Open _Recent") },
@@ -101,22 +101,26 @@ static GimpActionEntry file_actions[] =
     GIMP_HELP_FILE_SAVE_A_COPY },
 
   { "file-save-as-template", NULL,
-    N_("Save as _Template..."), NULL, NULL,
+    N_("Save as _Template..."), NULL,
+    N_("Create a new template from this image"),
     G_CALLBACK (file_save_template_cmd_callback),
     GIMP_HELP_FILE_SAVE_AS_TEMPLATE },
 
   { "file-revert", GTK_STOCK_REVERT_TO_SAVED,
-    N_("Re_vert"), NULL, NULL,
+    N_("Re_vert"), NULL,
+    N_("Reload the image file from disk"),
     G_CALLBACK (file_revert_cmd_callback),
     GIMP_HELP_FILE_REVERT },
 
   { "file-close-all", GTK_STOCK_CLOSE,
-    N_("Close all"), "<shift><control>W", NULL,
+    N_("Close all"), "<shift><control>W",
+    N_("Close all opened images"),
     G_CALLBACK (file_close_all_cmd_callback),
     GIMP_HELP_FILE_CLOSE_ALL },
 
   { "file-quit", GTK_STOCK_QUIT,
-    N_("_Quit"), "<control>Q", NULL,
+    N_("_Quit"), "<control>Q",
+    N_("Quit the GNU Image Manipulation Program"),
     G_CALLBACK (file_quit_cmd_callback),
     GIMP_HELP_FILE_QUIT }
 };
@@ -147,7 +151,7 @@ file_actions_setup (GimpActionGroup *group)
       entries[i].name           = g_strdup_printf ("file-open-recent-%02d",
                                                    i + 1);
       entries[i].stock_id       = GTK_STOCK_OPEN;
-      entries[i].label          = NULL;
+      entries[i].label          = "";
       entries[i].tooltip        = NULL;
       entries[i].value          = i;
       entries[i].value_variable = FALSE;
@@ -202,21 +206,21 @@ void
 file_actions_update (GimpActionGroup *group,
                      gpointer         data)
 {
-  GimpImage    *gimage   = action_data_get_image (data);
+  GimpImage    *image   = action_data_get_image (data);
   GimpDrawable *drawable = NULL;
 
-  if (gimage)
-    drawable = gimp_image_active_drawable (gimage);
+  if (image)
+    drawable = gimp_image_active_drawable (image);
 
 #define SET_SENSITIVE(action,condition) \
         gimp_action_group_set_action_sensitive (group, action, (condition) != 0)
 
-  SET_SENSITIVE ("file-open-as-layer",    gimage);
-  SET_SENSITIVE ("file-save",             gimage && drawable);
-  SET_SENSITIVE ("file-save-as",          gimage && drawable);
-  SET_SENSITIVE ("file-save-a-copy",      gimage && drawable);
-  SET_SENSITIVE ("file-save-as-template", gimage);
-  SET_SENSITIVE ("file-revert",           gimage && GIMP_OBJECT (gimage)->name);
+  SET_SENSITIVE ("file-open-as-layer",    image);
+  SET_SENSITIVE ("file-save",             image && drawable);
+  SET_SENSITIVE ("file-save-as",          image && drawable);
+  SET_SENSITIVE ("file-save-a-copy",      image && drawable);
+  SET_SENSITIVE ("file-save-as-template", image);
+  SET_SENSITIVE ("file-revert",           image && GIMP_OBJECT (image)->name);
 
 #undef SET_SENSITIVE
 }

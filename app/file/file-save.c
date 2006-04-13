@@ -51,12 +51,11 @@
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
 #include "core/gimpimagefile.h"
+#include "core/gimpparamspecs.h"
 #include "core/gimpprogress.h"
 
-#include "pdb/procedural_db.h"
-
-#include "plug-in/plug-in.h"
-#include "plug-in/plug-in-proc-def.h"
+#include "pdb/gimp-pdb.h"
+#include "pdb/gimppluginprocedure.h"
 
 #include "file-save.h"
 #include "file-utils.h"
@@ -68,32 +67,30 @@
 /*  public functions  */
 
 GimpPDBStatusType
-file_save (GimpImage      *gimage,
-           GimpContext    *context,
-           GimpProgress   *progress,
-           const gchar    *uri,
-           PlugInProcDef  *file_proc,
-           GimpRunMode     run_mode,
-           gboolean        save_a_copy,
-           GError        **error)
+file_save (GimpImage           *image,
+           GimpContext         *context,
+           GimpProgress        *progress,
+           const gchar         *uri,
+           GimpPlugInProcedure *file_proc,
+           GimpRunMode          run_mode,
+           gboolean             save_a_copy,
+           GError             **error)
 {
-  const ProcRecord  *proc;
-  Argument          *args;
-  Argument          *return_vals;
+  GValueArray       *return_vals;
   GimpPDBStatusType  status;
-  gint               i;
-  gchar             *filename = NULL;
+  gchar             *filename;
 
-  g_return_val_if_fail (GIMP_IS_IMAGE (gimage), GIMP_PDB_CALLING_ERROR);
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), GIMP_PDB_CALLING_ERROR);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), GIMP_PDB_CALLING_ERROR);
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress),
                         GIMP_PDB_CALLING_ERROR);
   g_return_val_if_fail (uri != NULL, GIMP_PDB_CALLING_ERROR);
-  g_return_val_if_fail (file_proc != NULL, GIMP_PDB_CALLING_ERROR);
+  g_return_val_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (file_proc),
+                        GIMP_PDB_CALLING_ERROR);
   g_return_val_if_fail (error == NULL || *error == NULL,
                         GIMP_PDB_CALLING_ERROR);
 
-  if (! gimp_image_active_drawable (gimage))
+  if (! gimp_image_active_drawable (image))
     return GIMP_PDB_EXECUTION_ERROR;
 
   filename = file_utils_filename_from_uri (uri);
@@ -120,28 +117,26 @@ file_save (GimpImage      *gimage,
             }
         }
     }
+  else
+    {
+      filename = g_strdup (uri);
+    }
 
   /* ref the image, so it can't get deleted during save */
-  g_object_ref (gimage);
+  g_object_ref (image);
 
-  proc = plug_in_proc_def_get_proc (file_proc);
+  return_vals = gimp_pdb_run_proc (image->gimp, context, progress,
+                                   GIMP_OBJECT (file_proc)->name,
+                                   GIMP_TYPE_INT32,       run_mode,
+                                   GIMP_TYPE_IMAGE_ID,    gimp_image_get_ID (image),
+                                   GIMP_TYPE_DRAWABLE_ID, gimp_item_get_ID (GIMP_ITEM (gimp_image_active_drawable (image))),
+                                   G_TYPE_STRING,         filename,
+                                   G_TYPE_STRING,         uri,
+                                   G_TYPE_NONE);
 
-  args = g_new0 (Argument, proc->num_args);
+  status = g_value_get_enum (&return_vals->values[0]);
 
-  for (i = 0; i < proc->num_args; i++)
-    args[i].arg_type = proc->args[i].arg_type;
-
-  args[0].value.pdb_int = run_mode;
-  args[1].value.pdb_int = gimp_image_get_ID (gimage);
-  args[2].value.pdb_int =
-    gimp_item_get_ID (GIMP_ITEM (gimp_image_active_drawable (gimage)));
-  args[3].value.pdb_pointer = filename ? filename : (gchar *) uri;
-  args[4].value.pdb_pointer = (gchar *) uri;
-
-  return_vals = procedural_db_execute (gimage->gimp, context, progress,
-                                       proc->name, args);
-
-  status = return_vals[0].value.pdb_int;
+  g_value_array_free (return_vals);
 
   if (status == GIMP_PDB_SUCCESS)
     {
@@ -151,30 +146,30 @@ file_save (GimpImage      *gimage,
       if (save_a_copy)
         {
           /*  remember the "save-a-copy" filename for the next invocation  */
-          g_object_set_data_full (G_OBJECT (gimage), "gimp-image-save-a-copy",
+          g_object_set_data_full (G_OBJECT (image), "gimp-image-save-a-copy",
                                   g_strdup (uri),
                                   (GDestroyNotify) g_free);
         }
       else
-	{
+        {
           /*  reset the "save-a-copy" filename when the image URI changes  */
-          if (strcmp (uri, gimp_image_get_uri (gimage)))
-            g_object_set_data (G_OBJECT (gimage),
+          if (strcmp (uri, gimp_image_get_uri (image)))
+            g_object_set_data (G_OBJECT (image),
                                "gimp-image-save-a-copy", NULL);
 
-	  gimp_image_set_uri (gimage, uri);
-          gimp_image_set_save_proc (gimage, file_proc);
-          gimp_image_clean_all (gimage);
-	}
+          gimp_image_set_uri (image, uri);
+          gimp_image_set_save_proc (image, file_proc);
+          gimp_image_clean_all (image);
+        }
 
-      documents = GIMP_DOCUMENT_LIST (gimage->gimp->documents);
+      documents = GIMP_DOCUMENT_LIST (image->gimp->documents);
       imagefile = gimp_document_list_add_uri (documents,
                                               uri,
                                               file_proc->mime_type);
 
-      gimp_imagefile_save_thumbnail (imagefile, file_proc->mime_type, gimage);
+      gimp_imagefile_save_thumbnail (imagefile, file_proc->mime_type, image);
 
-      if (gimage->gimp->config->save_document_history)
+      if (image->gimp->config->save_document_history)
         gimp_recent_list_add_uri (uri, file_proc->mime_type);
     }
   else if (status != GIMP_PDB_CANCEL)
@@ -183,10 +178,7 @@ file_save (GimpImage      *gimage,
                    _("Plug-In could not save image"));
     }
 
-  g_free (return_vals);
-  g_free (args);
-
-  g_object_unref (gimage);
+  g_object_unref (image);
 
  out:
   g_free (filename);

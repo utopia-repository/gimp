@@ -79,10 +79,10 @@ static void   gimp_menu_dock_factory_display_changed (GimpContext    *context,
                                                       GimpObject     *display,
                                                       GimpDock       *dock);
 static void   gimp_menu_dock_factory_image_changed   (GimpContext    *context,
-                                                      GimpImage      *gimage,
+                                                      GimpImage      *image,
                                                       GimpDock       *dock);
 static void   gimp_menu_dock_image_changed           (GimpContext    *context,
-                                                      GimpImage      *gimage,
+                                                      GimpImage      *image,
                                                       GimpDock       *dock);
 static void   gimp_menu_dock_auto_clicked            (GtkWidget      *widget,
                                                       GimpDock       *dock);
@@ -152,8 +152,8 @@ gimp_menu_dock_init (GimpMenuDock *dock)
   gtk_widget_show (dock->image_combo);
 
   g_signal_connect (dock->image_combo, "destroy",
-		    G_CALLBACK (gtk_widget_destroyed),
-		    &dock->image_combo);
+                    G_CALLBACK (gtk_widget_destroyed),
+                    &dock->image_combo);
 
   gimp_help_set_help_data (dock->image_combo, NULL, GIMP_HELP_DOCK_IMAGE_MENU);
 
@@ -397,10 +397,10 @@ gimp_menu_dock_new (GimpDialogFactory *dialog_factory,
                      GIMP_HELP_DOCK, NULL);
 
   gimp_context_define_properties (context,
-				  GIMP_CONTEXT_ALL_PROPS_MASK &
-				  ~(GIMP_CONTEXT_IMAGE_MASK |
-				    GIMP_CONTEXT_DISPLAY_MASK),
-				  FALSE);
+                                  GIMP_CONTEXT_ALL_PROPS_MASK &
+                                  ~(GIMP_CONTEXT_IMAGE_MASK |
+                                    GIMP_CONTEXT_DISPLAY_MASK),
+                                  FALSE);
   gimp_context_set_parent (context, dialog_factory->context);
 
   if (menu_dock->auto_follow_active)
@@ -414,18 +414,18 @@ gimp_menu_dock_new (GimpDialogFactory *dialog_factory,
     }
 
   g_signal_connect_object (dialog_factory->context, "display-changed",
-			   G_CALLBACK (gimp_menu_dock_factory_display_changed),
-			   menu_dock,
-			   0);
+                           G_CALLBACK (gimp_menu_dock_factory_display_changed),
+                           menu_dock,
+                           0);
   g_signal_connect_object (dialog_factory->context, "image-changed",
-			   G_CALLBACK (gimp_menu_dock_factory_image_changed),
-			   menu_dock,
-			   0);
+                           G_CALLBACK (gimp_menu_dock_factory_image_changed),
+                           menu_dock,
+                           0);
 
   g_signal_connect_object (context, "image-changed",
-			   G_CALLBACK (gimp_menu_dock_image_changed),
-			   menu_dock,
-			   0);
+                           G_CALLBACK (gimp_menu_dock_image_changed),
+                           menu_dock,
+                           0);
 
   settings = gtk_widget_get_settings (GTK_WIDGET (menu_dock));
   gtk_icon_size_lookup_for_settings (settings,
@@ -448,7 +448,7 @@ gimp_menu_dock_set_auto_follow_active (GimpMenuDock *menu_dock,
   g_return_if_fail (GIMP_IS_MENU_DOCK (menu_dock));
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menu_dock->auto_button),
-				auto_follow_active ? TRUE : FALSE);
+                                auto_follow_active ? TRUE : FALSE);
 }
 
 void
@@ -540,60 +540,60 @@ gimp_menu_dock_factory_display_changed (GimpContext *context,
 
 static void
 gimp_menu_dock_factory_image_changed (GimpContext *context,
-                                      GimpImage   *gimage,
+                                      GimpImage   *image,
                                       GimpDock    *dock)
 {
   GimpMenuDock *menu_dock = GIMP_MENU_DOCK (dock);
 
   /*  won't do anything if we already set the display above  */
-  if (gimage && menu_dock->auto_follow_active)
-    gimp_context_set_image (dock->context, gimage);
+  if (image && menu_dock->auto_follow_active)
+    gimp_context_set_image (dock->context, image);
 }
 
 static void
 gimp_menu_dock_image_changed (GimpContext *context,
-                              GimpImage   *gimage,
+                              GimpImage   *image,
                               GimpDock    *dock)
 {
   GimpMenuDock  *menu_dock         = GIMP_MENU_DOCK (dock);
   GimpContainer *image_container   = menu_dock->image_container;
   GimpContainer *display_container = menu_dock->display_container;
 
-  if (gimage == NULL && ! gimp_container_is_empty (image_container))
+  if (image == NULL && ! gimp_container_is_empty (image_container))
     {
-      gimage = GIMP_IMAGE (gimp_container_get_child_by_index (image_container,
+      image = GIMP_IMAGE (gimp_container_get_child_by_index (image_container,
                                                               0));
 
-      if (gimage)
-	{
-	  /*  this invokes this function recursively but we don't enter
-	   *  the if() branch the second time
-	   */
-	  gimp_context_set_image (context, gimage);
+      if (image)
+        {
+          /*  this invokes this function recursively but we don't enter
+           *  the if() branch the second time
+           */
+          gimp_context_set_image (context, image);
 
-	  /*  stop the emission of the original signal (the emission of
-	   *  the recursive signal is finished)
-	   */
-	  g_signal_stop_emission_by_name (context, "image-changed");
-	}
+          /*  stop the emission of the original signal (the emission of
+           *  the recursive signal is finished)
+           */
+          g_signal_stop_emission_by_name (context, "image-changed");
+        }
     }
-  else if (gimage != NULL && ! gimp_container_is_empty (display_container))
+  else if (image != NULL && ! gimp_container_is_empty (display_container))
     {
-      GimpObject *gdisp;
-      GimpImage  *gdisp_gimage;
+      GimpObject *display;
+      GimpImage  *display_image;
       gboolean    find_display = TRUE;
 
-      gdisp = gimp_context_get_display (context);
+      display = gimp_context_get_display (context);
 
-      if (gdisp)
+      if (display)
         {
-          g_object_get (gdisp, "image", &gdisp_gimage, NULL);
+          g_object_get (display, "image", &display_image, NULL);
 
-          if (gdisp_gimage)
+          if (display_image)
             {
-              g_object_unref (gdisp_gimage);
+              g_object_unref (display_image);
 
-              if (gdisp_gimage == gimage)
+              if (display_image == image)
                 find_display = FALSE;
             }
         }
@@ -606,21 +606,21 @@ gimp_menu_dock_image_changed (GimpContext *context,
                list;
                list = g_list_next (list))
             {
-              gdisp = GIMP_OBJECT (list->data);
+              display = GIMP_OBJECT (list->data);
 
-              g_object_get (gdisp, "image", &gdisp_gimage, NULL);
+              g_object_get (display, "image", &display_image, NULL);
 
-              if (gdisp_gimage)
+              if (display_image)
                 {
-                  g_object_unref (gdisp_gimage);
+                  g_object_unref (display_image);
 
-                  if (gdisp_gimage == gimage)
+                  if (display_image == image)
                     {
                       /*  this invokes this function recursively but we
                        *  don't enter the if(find_display) branch the
                        *  second time
                        */
-                      gimp_context_set_display (context, gdisp);
+                      gimp_context_set_display (context, display);
 
                       /*  don't stop signal emission here because the
                        *  context's image was not changed by the

@@ -37,6 +37,37 @@ gimp_brush_application_mode_get_type (void)
 }
 
 GType
+gimp_brush_generated_shape_get_type (void)
+{
+  static const GEnumValue values[] =
+  {
+    { GIMP_BRUSH_GENERATED_CIRCLE, "GIMP_BRUSH_GENERATED_CIRCLE", "circle" },
+    { GIMP_BRUSH_GENERATED_SQUARE, "GIMP_BRUSH_GENERATED_SQUARE", "square" },
+    { GIMP_BRUSH_GENERATED_DIAMOND, "GIMP_BRUSH_GENERATED_DIAMOND", "diamond" },
+    { 0, NULL, NULL }
+  };
+
+  static const GimpEnumDesc descs[] =
+  {
+    { GIMP_BRUSH_GENERATED_CIRCLE, "GIMP_BRUSH_GENERATED_CIRCLE", NULL },
+    { GIMP_BRUSH_GENERATED_SQUARE, "GIMP_BRUSH_GENERATED_SQUARE", NULL },
+    { GIMP_BRUSH_GENERATED_DIAMOND, "GIMP_BRUSH_GENERATED_DIAMOND", NULL },
+    { 0, NULL, NULL }
+  };
+
+  static GType type = 0;
+
+  if (! type)
+    {
+      type = g_enum_register_static ("GimpBrushGeneratedShape", values);
+      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_enum_set_value_descriptions (type, descs);
+    }
+
+  return type;
+}
+
+GType
 gimp_convert_dither_type_get_type (void)
 {
   static const GEnumValue values[] =
@@ -563,37 +594,6 @@ gimp_rotation_type_get_type (void)
   return type;
 }
 
-GType
-gimp_run_mode_get_type (void)
-{
-  static const GEnumValue values[] =
-  {
-    { GIMP_RUN_INTERACTIVE, "GIMP_RUN_INTERACTIVE", "interactive" },
-    { GIMP_RUN_NONINTERACTIVE, "GIMP_RUN_NONINTERACTIVE", "noninteractive" },
-    { GIMP_RUN_WITH_LAST_VALS, "GIMP_RUN_WITH_LAST_VALS", "with-last-vals" },
-    { 0, NULL, NULL }
-  };
-
-  static const GimpEnumDesc descs[] =
-  {
-    { GIMP_RUN_INTERACTIVE, "GIMP_RUN_INTERACTIVE", NULL },
-    { GIMP_RUN_NONINTERACTIVE, "GIMP_RUN_NONINTERACTIVE", NULL },
-    { GIMP_RUN_WITH_LAST_VALS, "GIMP_RUN_WITH_LAST_VALS", NULL },
-    { 0, NULL, NULL }
-  };
-
-  static GType type = 0;
-
-  if (! type)
-    {
-      type = g_enum_register_static ("GimpRunMode", values);
-      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
-      gimp_enum_set_value_descriptions (type, descs);
-    }
-
-  return type;
-}
-
 
 /* Generated data ends here */
 
@@ -605,6 +605,7 @@ static const GimpGetTypeFunc get_type_funcs[] =
   gimp_add_mask_type_get_type,
   gimp_blend_mode_get_type,
   gimp_brush_application_mode_get_type,
+  gimp_brush_generated_shape_get_type,
   gimp_bucket_fill_mode_get_type,
   gimp_channel_ops_get_type,
   gimp_channel_type_get_type,
@@ -647,11 +648,12 @@ static const GimpGetTypeFunc get_type_funcs[] =
   gimp_transform_direction_get_type
 };
 
-static const gchar *type_names[] =
+static const gchar * const type_names[] =
 {
   "GimpAddMaskType",
   "GimpBlendMode",
   "GimpBrushApplicationMode",
+  "GimpBrushGeneratedShape",
   "GimpBucketFillMode",
   "GimpChannelOps",
   "GimpChannelType",

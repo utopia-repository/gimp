@@ -122,7 +122,7 @@
                                              <link linkend="gint">gint</link> *num_parasites,
                                              <link linkend="gchar">gchar</link> ***parasites);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-drawable-parasite-attach">gimp_drawable_parasite_attach</link>   (<link linkend="gint32">gint32</link> drawable_ID,
-                                             <link linkend="GimpParasite">GimpParasite</link> *parasite);
+                                             const <link linkend="GimpParasite">GimpParasite</link> *parasite);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-drawable-parasite-detach">gimp_drawable_parasite_detach</link>   (<link linkend="gint32">gint32</link> drawable_ID,
                                              const <link linkend="gchar">gchar</link> *name);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-drawable-attach-new-parasite">gimp_drawable_attach_new_parasite</link>
@@ -237,7 +237,7 @@ Delete a drawable.
 </para>
 <para>
 This procedure deletes the specified drawable. This must not be done
-if the gimage containing this drawable was already deleted or if the
+if the image containing this drawable was already deleted or if the
 drawable was already removed from the image. The only case in which
 this procedure is useful is if you want to get rid of a drawable
 which has not yet been added to an image.</para>
@@ -374,7 +374,7 @@ Get the tattoo of the specified drawable.
 This procedure returns the specified drawable's tattoo. A tattoo is
 a unique and permanent identifier attached to a drawable that can be
 used to uniquely identify a drawable within an image even between
-sessions</para>
+sessions.</para>
 <para>
 
 </para><variablelist role="params">
@@ -395,7 +395,7 @@ Set the tattoo of the specified drawable.
 This procedure sets the specified drawable's tattoo. A tattoo is a
 unique and permanent identifier attached to a drawable that can be
 used to uniquely identify a drawable within an image even between
-sessions</para>
+sessions.</para>
 <para>
 
 </para><variablelist role="params">
@@ -650,15 +650,16 @@ Requesting no undo is useful for such applications as 'auto-apply'.</para>
 Fill the drawable with the specified fill mode.
 </para>
 <para>
-This procedure fills the drawable with the fill mode. If the fill
-mode is foreground the current foreground color is used. If the fill
-mode is background, the current background color is used. If the
-fill type is white, then white is used. Transparent fill only
-affects layers with an alpha channel, in which case the alpha
-channel is set to transparent. If the drawable has no alpha channel,
-it is filled to white. No fill leaves the drawable's contents
-undefined. This procedure is unlike the bucket fill tool because it
-fills regardless of a selection</para>
+This procedure fills the drawable. If the fill mode is foreground
+the current foreground color is used. If the fill mode is
+background, the current background color is used. If the fill type
+is white, then white is used. Transparent fill only affects layers
+with an alpha channel, in which case the alpha channel is set to
+transparent. If the drawable has no alpha channel, it is filled to
+white. No fill leaves the drawable's contents undefined. This
+procedure is unlike the bucket fill tool because it fills regardless
+of a selection. Its main purpose is to fill a newly created drawable
+before adding it to the image. This operation cannot be undone.</para>
 <para>
 
 </para><variablelist role="params">
@@ -832,7 +833,7 @@ This procedure is deprecated!</para>
 <title><anchor id="gimp-drawable-has-alpha"/>gimp_drawable_has_alpha ()</title>
 <indexterm><primary>gimp_drawable_has_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_drawable_has_alpha         (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
-Returns non-zero if the drawable has an alpha channel.
+Returns TRUE if the drawable has an alpha channel.
 </para>
 <para>
 This procedure returns whether the specified drawable has an alpha
@@ -891,15 +892,15 @@ This procedure returns the drawable's type.</para>
 Returns whether the drawable is an RGB type.
 </para>
 <para>
-This procedure returns non-zero if the specified drawable is of type
-{ RGB, RGBA }.</para>
+This procedure returns TRUE if the specified drawable is of type {
+RGB, RGBA }.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> non-zero if the drawable is an RGB type.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the drawable is an RGB type.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -909,15 +910,15 @@ This procedure returns non-zero if the specified drawable is of type
 Returns whether the drawable is a grayscale type.
 </para>
 <para>
-This procedure returns non-zero if the specified drawable is of type
-{ Gray, GrayA }.</para>
+This procedure returns TRUE if the specified drawable is of type {
+Gray, GrayA }.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> non-zero if the drawable is a grayscale type.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the drawable is a grayscale type.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -927,15 +928,15 @@ This procedure returns non-zero if the specified drawable is of type
 Returns whether the drawable is an indexed type.
 </para>
 <para>
-This procedure returns non-zero if the specified drawable is of type
-{ Indexed, IndexedA }.</para>
+This procedure returns TRUE if the specified drawable is of type {
+Indexed, IndexedA }.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> non-zero if the drawable is an indexed type.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the drawable is an indexed type.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -1024,15 +1025,14 @@ The offsets of a channel will be returned as 0.</para>
 Returns whether the drawable is a layer.
 </para>
 <para>
-This procedure returns non-zero if the specified drawable is a
-layer.</para>
+This procedure returns TRUE if the specified drawable is a layer.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Non-zero if the drawable is a layer.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the drawable is a layer.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -1042,7 +1042,7 @@ layer.</para>
 Returns whether the drawable is a layer mask.
 </para>
 <para>
-This procedure returns non-zero if the specified drawable is a layer
+This procedure returns TRUE if the specified drawable is a layer
 mask.</para>
 <para>
 
@@ -1050,7 +1050,7 @@ mask.</para>
 <varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Non-zero if the drawable is a layer mask.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the drawable is a layer mask.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -1060,15 +1060,14 @@ mask.</para>
 Returns whether the drawable is a channel.
 </para>
 <para>
-This procedure returns non-zero if the specified drawable is a
-channel.</para>
+This procedure returns TRUE if the specified drawable is a channel.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Non-zero if the drawable is a channel.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the drawable is a channel.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -1189,7 +1188,7 @@ Returns a list of all currently attached parasites.</para>
 <refsect2>
 <title><anchor id="gimp-drawable-parasite-attach"/>gimp_drawable_parasite_attach ()</title>
 <indexterm><primary>gimp_drawable_parasite_attach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_drawable_parasite_attach   (<link linkend="gint32">gint32</link> drawable_ID,
-                                             <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
+                                             const <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
 <para>
 Add a parasite to a drawable.
 </para>

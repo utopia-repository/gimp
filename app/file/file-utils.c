@@ -37,17 +37,19 @@
 #include <glib-object.h>
 #include <glib/gstdio.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
+#include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
+#include "libgimpthumb/gimpthumb.h"
 
 #include "core/core-types.h"
 
 #include "core/gimp.h"
 #include "core/gimpimage.h"
+#include "core/gimpimagefile.h"
 
-#include "pdb/procedural_db.h"
-
-#include "plug-in/plug-in.h"
-#include "plug-in/plug-in-proc-def.h"
+#include "pdb/gimppluginprocedure.h"
 
 #include "file-utils.h"
 
@@ -56,29 +58,29 @@
 
 /*  local function prototypes  */
 
-static PlugInProcDef * file_proc_find_by_prefix    (GSList       *procs,
-                                                    const gchar  *uri,
-                                                    gboolean      skip_magic);
-static PlugInProcDef * file_proc_find_by_extension (GSList       *procs,
-                                                    const gchar  *uri,
-                                                    gboolean      skip_magic);
-static PlugInProcDef * file_proc_find_by_name      (GSList       *procs,
-                                                    const gchar  *uri,
-                                                    gboolean      skip_magic);
-static void            file_convert_string         (const gchar  *instr,
-                                                    gchar        *outmem,
-                                                    gint          maxmem,
-                                                    gint         *nmem);
-static gint            file_check_single_magic     (const gchar  *offset,
-                                                    const gchar  *type,
-                                                    const gchar  *value,
-                                                    const guchar *file_head,
-                                                    gint          headsize,
-                                                    FILE         *ifp);
-static gint            file_check_magic_list       (GSList       *magics_list,
-                                                    const guchar *head,
-                                                    gint          headsize,
-                                                    FILE         *ifp);
+static GimpPlugInProcedure * file_proc_find_by_prefix    (GSList       *procs,
+                                                          const gchar  *uri,
+                                                          gboolean      skip_magic);
+static GimpPlugInProcedure * file_proc_find_by_extension (GSList       *procs,
+                                                          const gchar  *uri,
+                                                          gboolean      skip_magic);
+static GimpPlugInProcedure * file_proc_find_by_name      (GSList       *procs,
+                                                          const gchar  *uri,
+                                                          gboolean      skip_magic);
+static void                  file_convert_string         (const gchar  *instr,
+                                                          gchar        *outmem,
+                                                          gint          maxmem,
+                                                          gint         *nmem);
+static gint                  file_check_single_magic     (const gchar  *offset,
+                                                          const gchar  *type,
+                                                          const gchar  *value,
+                                                          const guchar *file_head,
+                                                          gint          headsize,
+                                                          FILE         *ifp);
+static gint                  file_check_magic_list       (GSList       *magics_list,
+                                                          const guchar *head,
+                                                          gint          headsize,
+                                                          FILE         *ifp);
 
 
 /*  public functions  */
@@ -176,13 +178,13 @@ file_utils_filename_from_uri (const gchar *uri)
   return filename;
 }
 
-PlugInProcDef *
+GimpPlugInProcedure *
 file_utils_find_proc (GSList       *procs,
                       const gchar  *uri)
 {
-  PlugInProcDef *file_proc;
-  GSList        *all_procs = procs;
-  gchar         *filename;
+  GimpPlugInProcedure *file_proc;
+  GSList              *all_procs = procs;
+  gchar               *filename;
 
   g_return_val_if_fail (procs != NULL, NULL);
   g_return_val_if_fail (uri != NULL, NULL);
@@ -198,12 +200,12 @@ file_utils_find_proc (GSList       *procs,
   /* Then look for magics */
   if (filename)
     {
-      PlugInProcDef *size_matched_proc = NULL;
-      FILE          *ifp               = NULL;
-      gint           head_size         = -2;
-      gint           size_match_count  = 0;
-      gint           match_val;
-      guchar         head[256];
+      GimpPlugInProcedure *size_matched_proc = NULL;
+      FILE                *ifp               = NULL;
+      gint                 head_size         = -2;
+      gint                 size_match_count  = 0;
+      gint                 match_val;
+      guchar               head[256];
 
       while (procs)
         {
@@ -254,7 +256,7 @@ file_utils_find_proc (GSList       *procs,
   return file_proc_find_by_name (all_procs, uri, FALSE);
 }
 
-PlugInProcDef *
+GimpPlugInProcedure *
 file_utils_find_proc_by_extension (GSList      *procs,
                                    const gchar *uri)
 {
@@ -369,9 +371,92 @@ file_utils_uri_display_name (const gchar *uri)
   return g_strdup (uri);
 }
 
+GdkPixbuf *
+file_utils_load_thumbnail (const gchar *filename)
+{
+  GimpThumbnail *thumbnail = NULL;
+  GdkPixbuf     *pixbuf    = NULL;
+  gchar         *uri;
+
+  g_return_val_if_fail (filename != NULL, NULL);
+
+  uri = g_filename_to_uri (filename, NULL, NULL);
+
+  if (uri)
+    {
+      thumbnail = gimp_thumbnail_new ();
+      gimp_thumbnail_set_uri (thumbnail, uri);
+
+      pixbuf = gimp_thumbnail_load_thumb (thumbnail,
+                                          GIMP_THUMBNAIL_SIZE_NORMAL,
+                                          NULL);
+    }
+
+  g_free (uri);
+
+  if (pixbuf)
+    {
+      gint width  = gdk_pixbuf_get_width (pixbuf);
+      gint height = gdk_pixbuf_get_height (pixbuf);
+
+      if (gdk_pixbuf_get_n_channels (pixbuf) != 3)
+        {
+          GdkPixbuf *tmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8,
+                                           width, height);
+
+          gdk_pixbuf_composite_color (pixbuf, tmp,
+                                      0, 0, width, height, 0, 0, 1.0, 1.0,
+                                      GDK_INTERP_NEAREST, 255,
+                                      0, 0, GIMP_CHECK_SIZE_SM,
+                                      0x66666666, 0x99999999);
+
+          g_object_unref (pixbuf);
+          pixbuf = tmp;
+        }
+    }
+
+  return pixbuf;
+}
+
+gboolean
+file_utils_save_thumbnail (GimpImage   *image,
+                           const gchar *filename)
+{
+  const gchar *image_uri;
+  gboolean     success = FALSE;
+
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
+  g_return_val_if_fail (filename != NULL, FALSE);
+
+  image_uri = gimp_object_get_name (GIMP_OBJECT (image));
+
+  if (image_uri)
+    {
+      gchar *uri = g_filename_to_uri (filename, NULL, NULL);
+
+      if (uri)
+        {
+          if ( ! strcmp (uri, image_uri))
+            {
+              GimpImagefile *imagefile;
+
+              imagefile = gimp_imagefile_new (image->gimp, uri);
+              success = gimp_imagefile_save_thumbnail (imagefile, NULL,
+                                                       image);
+              g_object_unref (imagefile);
+            }
+
+          g_free (uri);
+        }
+    }
+
+  return success;
+}
+
+
 /*  private functions  */
 
-static PlugInProcDef *
+static GimpPlugInProcedure *
 file_proc_find_by_prefix (GSList      *procs,
                           const gchar *uri,
                           gboolean     skip_magic)
@@ -380,25 +465,25 @@ file_proc_find_by_prefix (GSList      *procs,
 
   for (p = procs; p; p = g_slist_next (p))
     {
-      PlugInProcDef *proc = p->data;
-      GSList        *prefixes;
+      GimpPlugInProcedure *proc = p->data;
+      GSList              *prefixes;
 
       if (skip_magic && proc->magics_list)
-	continue;
+        continue;
 
       for (prefixes = proc->prefixes_list;
-	   prefixes;
-	   prefixes = g_slist_next (prefixes))
-	{
-	  if (strncmp (uri, prefixes->data, strlen (prefixes->data)) == 0)
-	    return proc;
-	}
+           prefixes;
+           prefixes = g_slist_next (prefixes))
+        {
+          if (strncmp (uri, prefixes->data, strlen (prefixes->data)) == 0)
+            return proc;
+        }
      }
 
   return NULL;
 }
 
-static PlugInProcDef *
+static GimpPlugInProcedure *
 file_proc_find_by_extension (GSList      *procs,
                              const gchar *uri,
                              gboolean     skip_magic)
@@ -413,42 +498,42 @@ file_proc_find_by_extension (GSList      *procs,
 
   for (p = procs; p; p = g_slist_next (p))
     {
-      PlugInProcDef *proc = p->data;
-      GSList        *extensions;
+      GimpPlugInProcedure *proc = p->data;
+      GSList              *extensions;
 
       for (extensions = proc->extensions_list;
-	   ext && extensions;
-	   extensions = g_slist_next (extensions))
-	{
-	  const gchar *p1 = ext;
-	  const gchar *p2 = extensions->data;
+           ext && extensions;
+           extensions = g_slist_next (extensions))
+        {
+          const gchar *p1 = ext;
+          const gchar *p2 = extensions->data;
 
           if (skip_magic && proc->magics_list)
-	    continue;
+            continue;
 
-	  while (*p1 && *p2)
-	    {
-	      if (g_ascii_tolower (*p1) != g_ascii_tolower (*p2))
-		break;
+          while (*p1 && *p2)
+            {
+              if (g_ascii_tolower (*p1) != g_ascii_tolower (*p2))
+                break;
 
-	      p1++;
-	      p2++;
-	    }
+              p1++;
+              p2++;
+            }
 
-	  if (!(*p1) && !(*p2))
-	    return proc;
-	}
+          if (!(*p1) && !(*p2))
+            return proc;
+        }
     }
 
   return NULL;
 }
 
-static PlugInProcDef *
+static GimpPlugInProcedure *
 file_proc_find_by_name (GSList      *procs,
-		        const gchar *uri,
-		        gboolean     skip_magic)
+                        const gchar *uri,
+                        gboolean     skip_magic)
 {
-  PlugInProcDef *proc;
+  GimpPlugInProcedure *proc;
 
   proc = file_proc_find_by_prefix (procs, uri, skip_magic);
 
@@ -460,9 +545,9 @@ file_proc_find_by_name (GSList      *procs,
 
 static void
 file_convert_string (const gchar *instr,
-		     gchar       *outmem,
-		     gint         maxmem,
-		     gint        *nmem)
+                     gchar       *outmem,
+                     gint         maxmem,
+                     gint        *nmem)
 {
   /* Convert a string in C-notation to array of char */
   const guchar *uin  = (const guchar *) instr;
@@ -610,7 +695,7 @@ file_check_single_magic (const gchar  *offset,
       fileval = 0;
       if (numbytes == 5)    /* Check for file size ? */
         {
-	  struct stat buf;
+          struct stat buf;
 
           if (fstat (fileno (ifp), &buf) < 0) return (0);
           fileval = buf.st_size;
@@ -671,9 +756,9 @@ file_check_single_magic (const gchar  *offset,
  */
 static gint
 file_check_magic_list (GSList       *magics_list,
-		       const guchar *head,
-		       gint          headsize,
-		       FILE         *ifp)
+                       const guchar *head,
+                       gint          headsize,
+                       FILE         *ifp)
 
 {
   const gchar *offset;
@@ -697,14 +782,14 @@ file_check_magic_list (GSList       *magics_list,
                                            head, headsize,
                                            ifp);
       if (and)
-	found = found && match_val;
+        found = found && match_val;
       else
-	found = match_val;
+        found = match_val;
 
       and = (strchr (offset, '&') != NULL);
 
       if ((!and) && found)
-	return match_val;
+        return match_val;
     }
 
   return 0;

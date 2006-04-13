@@ -1,4 +1,4 @@
-/* $Id: maze.c,v 1.40 2005/09/30 08:16:06 mitch Exp $
+/* $Id: maze.c,v 1.41 2006/03/28 12:58:47 neo Exp $
  * This is a plug-in for the GIMP.
  * It draws mazes...
  *
@@ -150,7 +150,7 @@ query (void)
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
-			  "Draws a maze.",
+			  N_("Draw a labyrinth"),
 			  "Generates a maze using either the depth-first "
                           "search method or Prim's algorithm.  Can make "
                           "tileable mazes too.",

@@ -21,8 +21,6 @@ $destdir = "$main::destdir/app/pdb";
 
 *arg_types = \%Gimp::CodeGen::pdb::arg_types;
 *arg_parse = \&Gimp::CodeGen::pdb::arg_parse;
-*arg_ptype = \&Gimp::CodeGen::pdb::arg_ptype;
-*arg_vname = \&Gimp::CodeGen::pdb::arg_vname;
 
 *enums = \%Gimp::CodeGen::enums::enums;
 
@@ -61,63 +59,10 @@ sub format_code_frag {
     $code;
 }
 
-sub arg_value {
-    my ($arg, $argc) = @_;
-    my $cast = "";
-
-    my $type = &arg_ptype($arg);
-
-    if ($type eq 'pointer' || $arg->{type} =~ /int(16|8)$/) {
-	$cast = "($arg->{type}) ";
-    }
-
-    return "${cast}args[$argc].value.pdb_$type";
-}
-
-sub make_arg_test {
-    my ($arg, $reverse, $test) = @_;
-    my $result = "";
-
-    my $yes = exists $arg->{on_success};
-    my $no  = !exists $arg->{no_success} || exists $arg->{on_fail};
-
-    if ($yes || $no) {
-	&$reverse(\$test) if $yes;
-
-	if (exists $arg->{cond}) {
-	    my $cond = "";
-	    foreach (@{$arg->{cond}}) {
-		$cond .= '!' if $yes;
-		$cond .= /\W/ ? "($_)" : $_;
-		$cond .= $yes ? ' !! ' : ' && ';
-	    }
-	    $test = "$cond($test)";
-	}
-
-	$result = ' ' x 2 . "if ($test)\n";
-
-	$result .= &format_code_frag($arg->{on_success}, 1) if $yes;
-
-	if ($no) {
-	    $result .= ' ' x 2 . "else\n" if $yes;
-
-	    if (!exists $arg->{no_success}) {
-		$success = 1;
-		$result .= ' ' x 4 . "success = FALSE;\n";
-	    }
-
-	    if (exists $arg->{on_fail}) {
-		$result .= &format_code_frag($_->{on_fail}, 1);
-	    }
-	}
-    }
-
-    $result;
-}
-
 sub declare_args {
     my $proc = shift;
     my $out = shift;
+    my $outargs = shift;
 
     local $result = "";
 
@@ -133,16 +78,11 @@ sub declare_args {
 	    }
 
 	    unless (exists $_->{no_declare}) {
-		my $type = exists $_->{no_id_lookup} ? 'gint32 ' : $arg->{type};
-
-		$result .= ' ' x 2 . $type . &arg_vname($_);
-		if (!exists $_->{no_init} && exists $_->{init} && 
-		    !exists $arg->{struct}) {
-		    for ($arg->{type}) {
-			/\*$/     && do { $result .= ' = NULL';  last };
-			/boolean/ && do { $result .= ' = FALSE'; last };
-					  $result .= ' = 0';
-		    }
+		if ($outargs) {
+		    $result .= "  $arg->{type}$_->{name} = $arg->{init_value}";
+		}
+		else {
+		    $result .= "  $arg->{const_type}$_->{name}";
 		}
 		$result .= ";\n";
 
@@ -158,67 +98,29 @@ sub declare_args {
     $result;
 }
 
-sub declare_vars {
-    my $proc = shift;
-    my $code = "";
-    if (exists $proc->{invoke}->{vars}) {
-	foreach (@{$proc->{invoke}->{vars}}) {
-	   $code .= ' ' x 2 . $_ . ";\n";
-	}
-    }
-    $code;
-}
+sub make_desc {
+    my $arg = shift;
+    my ($type, $name, @remove) = &arg_parse($arg->{type});
+    my $desc = $arg->{desc};
+    my $info = $arg->{type};
 
-sub make_arg_recs {
-    my $proc = shift;
-
-    my $result = "";
-    my $once;
-
-    foreach (@_) {
-	my @args = @{$proc->{$_}} if exists $proc->{$_};
-
-	if (scalar @args) {
-	    $result .= "\nstatic ProcArg $proc->{name}_${_}\[] =\n{\n";
-
-	    foreach $arg (@{$proc->{$_}}) {
-		my ($type, $name, @remove) = &arg_parse($arg->{type});
-		my $desc = $arg->{desc};
-		my $info = $arg->{type};
-
-		for ($type) {
-		    /array/     && do { 				 last };
-		    /boolean/   && do { $info = 'TRUE or FALSE';	 last };
-		    /int|float/ && do { $info =~ s/$type/$arg->{name}/e; last };
-		    /enum/      && do { my $enum = $enums{$name};
-					$info = $enum->{info};
-					foreach (@remove) {
-					    $info =~ s/$_ \(.*?\)(, )?//
-					}				 
-					$info =~ s/, $//;
-					if (!$#{[$info =~ /,/g]} &&
-					     $desc !~ /{ %%desc%% }/) {
-					    $info =~ s/,/ or/
-					}				 last };
-		}
-
-		$desc =~ s/%%desc%%/$info/eg;
-
-		$result .= <<CODE;
-  {
-    GIMP_PDB_$arg_types{$type}->{name},
-    "$arg->{canonical_name}",
-    @{[ &quotewrap($desc, 4) ]}
-  },
-CODE
-	    }
-
-	    $result =~ s/,\n$/\n/s;
-	    $result .= "};\n";
-	}
+    for ($type) {
+	/array/     && do { 				     last };
+	/boolean/   && do { $info = '(TRUE or FALSE)';	     last };
+	/int|float/ && do { $info =~ s/$type/$arg->{name}/e;
+			    $info = '('. $info . ')';        last };
+	/enum/      && do { my $enum = $enums{$name};
+			    $info = '{ ' . $enum->{info};
+			    foreach (@remove) {
+				$info =~ s/$_ \(.*?\)(, )?//
+			    }				 
+			    $info =~ s/, $//;
+			    $info .= ' }';                   last };
     }
 
-    $result;
+    $desc =~ s/%%desc%%/$info/eg;
+
+    $desc;
 }
 
 sub marshal_inargs {
@@ -232,186 +134,20 @@ sub marshal_inargs {
     foreach (@inargs) {
 	my($pdbtype, @typeinfo) = &arg_parse($_->{type});
 	my $arg = $arg_types{$pdbtype};
-	my $var = &arg_vname($_);
-	my $value = &arg_value($arg, $argc++);
-	
-	if (exists $arg->{id_func} && !exists $_->{no_id_lookup}) {
-	    my $id_func = $arg->{id_func};
-	    $id_func = $_->{id_func} if exists $_->{id_func};
+	my $var = $_->{name};
+	my $value;
 
-	    $result .= "  $var = $id_func (gimp, $value);\n";
+	$value = "&args->values[$argc]";
+	$result .= eval qq/"  $arg->{get_value_func};\n"/;
 
-	    if (exists $arg->{check_func}) {
-		my $check_func = eval qq/"$arg->{check_func}"/;
+	$argc++;
 
-		$result .= &make_arg_test($_, sub { ${$_[0]} =~ s/==/!=/ },
-		                          "! $check_func");
-	    } else {
-		$result .= &make_arg_test($_, sub { ${$_[0]} =~ s/==/!=/ },
-				          "$var == NULL");
-	    }
+	if (!exists $_->{no_success}) {
+	    $success = 1;
 	}
-	else {
-	    $result .= ' ' x 2 . "$var = $value";
-	    $result .= ' ? TRUE : FALSE' if $pdbtype eq 'boolean';
-	    $result .= ";\n";
-
-	    if ($pdbtype eq 'string' || $pdbtype eq 'parasite') {
-		my ($reverse, $test, $utf8, $utf8testvar);
-
-		$test = "$var == NULL";
-                $utf8 = 1;
-
-		if ($pdbtype eq 'parasite') {
-		    $test .= " || $var->name == NULL";
-		    $utf8testvar = "$var->name";
-		}
-		else {
-		    $utf8 = !exists $_->{no_validate};
-		    $utf8testvar = "$var";
-		}
-
-		if (exists $_->{null_ok}) {
-		    $reverse = sub { ${$_[0]} =~ s/!//; };
-		    $test = "$var && !g_utf8_validate ($var, -1, NULL)";
-		}
-		elsif ($utf8) {
-		    $reverse = sub { ${$_[0]} =~ s/!//;
-				     ${$_[0]} =~ s/||/&&/g;
-				     ${$_[0]} =~ s/==/!=/g };
-                    $test .= " || !g_utf8_validate ($utf8testvar, -1, NULL)";
-		}
-		else {
-		    $reverse = sub { ${$_[0]} =~ s/||/&&/g;
-				     ${$_[0]} =~ s/==/!=/g };
-		}
-
-		$result .= &make_arg_test($_, $reverse, $test);
-	    }
-	    elsif ($pdbtype eq 'tattoo') {
-		$result .= &make_arg_test($_, sub { ${$_[0]} =~ s/==/!=/ },
-					  "$var == 0");
-	    }
-	    elsif ($pdbtype eq 'unit') {
-		$typeinfo[0] = 'GIMP_UNIT_PIXEL' unless defined $typeinfo[0];
-		$result .= &make_arg_test($_, sub { ${$_[0]} = "!(${$_[0]})" },
-					  "$var < $typeinfo[0] || $var >= " .
-					  '_gimp_unit_get_number_of_units (gimp)');
-	    }
-	    elsif ($pdbtype eq 'enum' && !$enums{$typeinfo[0]}->{contig}) {
-		if (!exists $_->{no_success} || exists $_->{on_success} ||
-		     exists $_->{on_fail}) {
-		    my %vals; my $symbols = $enums{pop @typeinfo}->{symbols};
-		    @vals{@$symbols}++; delete @vals{@typeinfo};
-
-		    my $okvals = ""; my $failvals = "";
-
-		    my $once = 0;
-		    foreach (@$symbols) {
-			if (exists $vals{$_}) {
-			    $okvals .= ' ' x 4 if $once++;
-			    $okvals .= "case $_:\n";
-			}
-		    }
-
-		    sub format_switch_frag {
-			my ($arg, $key) = @_;
-			my $frag = "";
-			if (exists $arg->{$key}) {
-			    $frag = &format_code_frag($arg->{$key}, 1);
-			    $frag =~ s/\t/' ' x 8/eg;
-			    $frag =~ s/^/' ' x 2/meg;
-			}
-			$frag;
-		    }
-
-		    $okvals .= &format_switch_frag($_, 'on_success');
-		    chomp $okvals;
-
-		    $failvals .= "default:\n";
-		    if (!exists $_->{no_success}) {
-			$success = 1;
-			$failvals .= ' ' x 6 . "success = FALSE;\n"
-		    }
-		    $failvals .=  &format_switch_frag($_, 'on_fail');
-		    chomp $failvals;
-
-		    $result .= <<CODE;
-  switch ($var)
-    {
-    $okvals
-      break;
-
-    $failvals
-      break;
-    }
-CODE
-		}
-	    }
-	    elsif (defined $typeinfo[0] || defined $typeinfo[2]) {
-		my $code = ""; my $tests = 0; my $extra = "";
-
-		if ($pdbtype eq 'enum') {
-		    my $symbols = $enums{shift @typeinfo}->{symbols};
-
-		    my ($start, $end) = (0, $#$symbols);
-
-		    my $syms = "@$symbols "; my $test = $syms;
-		    foreach (@typeinfo) { $test =~ s/$_ // }
-
-		    if ($syms =~ /$test/g) {
-			if (pos $syms  == length $syms) {
-			    $start = @typeinfo;
-			}
-			else {
-			    $end -= @typeinfo;
-			}
-		    }
-		    else {
-			foreach (@typeinfo) {
-			    $extra .= " || $var == $_";
-			}
-		    }
-
-		    $typeinfo[0] = $symbols->[$start];
-		    if ($start != $end) {
-			$typeinfo[1] = '<';
-			$typeinfo[2] = $symbols->[$end];
-			$typeinfo[3] = '>';
-		    }
-		    else {
-			$typeinfo[1] = '!=';
-			undef @typeinf[2..3];
-		    }
-		}
-		elsif ($pdbtype eq 'float') {
-		    foreach (@typeinfo[0, 2]) {
-			$_ .= '.0' if defined $_ && !/\./
-		    }
-		}
-
-		if (defined $typeinfo[0]) {
-		    $code .= "$var $typeinfo[1] $typeinfo[0]";
-		    $code .= '.0' if $pdbtype eq 'float' && $typeinfo[0] !~ /\./;
-		    $tests++;
-		}
-
-		if (defined $typeinfo[2]) {
-		    $code .= ' || ' if $tests;
-		    $code .= "$var $typeinfo[3] $typeinfo[2]";
-		}
-
-		$code .= $extra;
-
-		$result .= &make_arg_test($_, sub { ${$_[0]} = "!(${$_[0]})" },
-					  $code);
-	    }
-	}
-
-	$result .= "\n";
     }
 
-    $result = "\n" . $result if $result;
+    $result = "\n" . $result . "\n" if $result;
     $result;
 }
 
@@ -419,7 +155,7 @@ sub marshal_outargs {
     my $proc = shift;
 
     my $result = <<CODE;
-  return_args = procedural_db_return_args (\&$proc->{name}_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 CODE
 
     my $argc = 0;
@@ -431,24 +167,26 @@ CODE
 	foreach (@{$proc->{outargs}}) {
 	    my ($pdbtype) = &arg_parse($_->{type});
 	    my $arg = $arg_types{$pdbtype};
-	    my $type = &arg_ptype($arg);
-	    my $var = &arg_vname($_);
+	    my $var = $_->{name};
+	    my $var_len;
+	    my $value;
 
-	    $argc++; $outargs .= ' ' x 2;
+	    $argc++;
 
-            if (exists $arg->{id_ret_func}) {
-		my $ret = eval qq/"$arg->{id_ret_func}"/;
-		$ret = eval qq/"$_->{id_ret_func}"/ if exists $_->{id_ret_func};
+	    $value = "&return_vals->values[$argc]";
 
-		if (exists $_->{return_fail}) {
-		    $var = "$var ? $ret : $_->{return_fail}";
+	    if (exists $_->{array}) {
+		my $arrayarg = $_->{array};
+
+		if (exists $arrayarg->{name}) {
+		    $var_len = $arrayarg->{name};
 		}
 		else {
-		    $var = $ret;
+		    $var_len = 'num_' . $_->{name};
 		}
 	    }
 
-	    $outargs .= "return_args[$argc].value.pdb_$type = $var;\n";
+	    $outargs .= eval qq/"  $arg->{set_value_func};\n"/;
 	}
 
 	$outargs =~ s/^/' ' x 2/meg if $success;
@@ -459,20 +197,320 @@ CODE
 	$result .= ' ' x 4 . "{\n" if $success && $argc > 1;
 	$result .= $outargs;
 	$result .= ' ' x 4 . "}\n" if $success && $argc > 1;
-        $result .= "\n" . ' ' x 2 . "return return_args;\n";
+        $result .= "\n" . ' ' x 2 . "return return_vals;\n";
     }
     else {
-	$result =~ s/_args =//;
+	$result =~ s/_vals =//;
     }
 
     $result =~ s/, success\);$/, TRUE);/m unless $success;
     $result;
 }
 
+sub generate_pspec {
+    my $arg = shift;
+    my ($pdbtype, @typeinfo) = &arg_parse($arg->{type});
+    my $name = $arg->{canonical_name};
+    my $nick = $arg->{canonical_name};
+    my $blurb = &make_desc($arg);
+    my $min;
+    my $max;
+    my $default;
+    my $flags = 'GIMP_PARAM_READWRITE';
+    my $pspec = "";
+    my $postproc = "";
+
+    $nick =~ s/-/ /g;
+
+    if (exists $arg->{no_success}) {
+	$flags .= ' | GIMP_PARAM_NO_VALIDATE';
+    }
+
+    if ($pdbtype eq 'image') {
+	$pspec = <<CODE;
+gimp_param_spec_image_id ("$name",
+                          "$nick",
+                          "$blurb",
+                          gimp,
+                          GIMP_PARAM_READWRITE)
+CODE
+    }
+    elsif ($pdbtype eq 'drawable') {
+	$pspec = <<CODE;
+gimp_param_spec_drawable_id ("$name",
+                             "$nick",
+                             "$blurb",
+                             gimp,
+                             $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'layer') {
+	$pspec = <<CODE;
+gimp_param_spec_layer_id ("$name",
+                          "$nick",
+                          "$blurb",
+                          gimp,
+                          $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'channel') {
+	$pspec = <<CODE;
+gimp_param_spec_channel_id ("$name",
+                            "$nick",
+                            "$blurb",
+                            gimp,
+                            $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'layer_mask') {
+	$pspec = <<CODE;
+gimp_param_spec_layer_mask_id ("$name",
+                               "$nick",
+                               "$blurb",
+                               gimp,
+                               $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'selection') {
+	$pspec = <<CODE;
+gimp_param_spec_selection_id ("$name",
+                              "$nick",
+                              "$blurb",
+                              gimp,
+                              $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'vectors') {
+	$pspec = <<CODE;
+gimp_param_spec_vectors_id ("$name",
+                            "$nick",
+                            "$blurb",
+                            gimp,
+                            $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'display') {
+	$pspec = <<CODE;
+gimp_param_spec_display_id ("$name",
+                            "$nick",
+                            "$blurb",
+                            gimp,
+                            $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'tattoo') {
+	$pspec = <<CODE;
+g_param_spec_uint ("$name",
+                   "$nick",
+                   "$blurb",
+                   1, G_MAXUINT32, 1,
+                   $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'guide') {
+	$pspec = <<CODE;
+g_param_spec_uint ("$name",
+                   "$nick",
+                   "$blurb",
+                   1, G_MAXUINT32, 1,
+                   $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'float') {
+	$min = defined $typeinfo[0] ? $typeinfo[0] : -G_MAXDOUBLE;
+	$max = defined $typeinfo[2] ? $typeinfo[2] : G_MAXDOUBLE;
+	$default = exists $arg->{default} ? $arg->{default} : defined $typeinfo[0] ? $typeinfo[0] : 0.0;
+	$pspec = <<CODE;
+g_param_spec_double ("$name",
+                     "$nick",
+                     "$blurb",
+                     $min, $max, $default,
+                     $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'int32') {
+	$min = defined $typeinfo[0] ? $typeinfo[0] : G_MININT32;
+	$max = defined $typeinfo[2] ? $typeinfo[2] : G_MAXINT32;
+	$default = exists $arg->{default} ? $arg->{default} : defined $typeinfo[0] ? $typeinfo[0] : 0;
+	$pspec = <<CODE;
+gimp_param_spec_int32 ("$name",
+                       "$nick",
+                       "$blurb",
+                       $min, $max, $default,
+                       $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'int16') {
+	$min = defined $typeinfo[0] ? $typeinfo[0] : G_MININT16;
+	$max = defined $typeinfo[2] ? $typeinfo[2] : G_MAXINT16;
+	$default = exists $arg->{default} ? $arg->{default} : defined $typeinfo[0] ? $typeinfo[0] : 0;
+	$pspec = <<CODE;
+gimp_param_spec_int16 ("$name",
+                       "$nick",
+                       "$blurb",
+                       $min, $max, $default,
+                       $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'int8') {
+	$min = defined $typeinfo[0] ? $typeinfo[0] : 0;
+	$max = defined $typeinfo[2] ? $typeinfo[2] : G_MAXUINT8;
+	$default = exists $arg->{default} ? $arg->{default} : defined $typeinfo[0] ? $typeinfo[0] : 0;
+	$pspec = <<CODE;
+gimp_param_spec_int8 ("$name",
+                      "$nick",
+                      "$blurb",
+                      $min, $max, $default,
+                      $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'boolean') {
+	$default = exists $arg->{default} ? $arg->{default} : FALSE;
+	$pspec = <<CODE;
+g_param_spec_boolean ("$name",
+                      "$nick",
+                      "$blurb",
+                      $default,
+                      $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'string') {
+	$no_validate = exists $arg->{no_validate} ? 'TRUE' : 'FALSE';
+	$null_ok = exists $arg->{null_ok} ? 'TRUE' : 'FALSE';
+	$default = exists $arg->{default} ? $arg->{default} : NULL;
+	$pspec = <<CODE;
+gimp_param_spec_string ("$name",
+                        "$nick",
+                        "$blurb",
+                        $no_validate, $null_ok,
+                        $default,
+                        $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'enum') {
+	$enum_type = $typeinfo[0];
+	$enum_type =~ s/([a-z])([A-Z])/$1_$2/g;
+	$enum_type =~ s/([A-Z]+)([A-Z])/$1_$2/g;
+	$enum_type =~ tr/[a-z]/[A-Z]/;
+	$enum_type =~ s/^GIMP/GIMP_TYPE/;
+	$default = exists $arg->{default} ? $arg->{default} : $enums{$typeinfo[0]}->{symbols}[0];
+
+	my ($foo, $bar, @remove) = &arg_parse($arg->{type});
+
+	foreach (@remove) {
+	    $postproc .= 'gimp_param_spec_enum_exclude_value (GIMP_PARAM_SPEC_ENUM ($pspec),';
+	    $postproc .= "\n                                    $_);\n";
+	}
+
+	if ($postproc eq '') {
+	    $pspec = <<CODE;
+g_param_spec_enum ("$name",
+                   "$nick",
+                   "$blurb",
+                   $enum_type,
+                   $default,
+                   $flags)
+CODE
+	}
+	else {
+	    $pspec = <<CODE;
+gimp_param_spec_enum ("$name",
+                      "$nick",
+                      "$blurb",
+                      $enum_type,
+                      $default,
+                      $flags)
+CODE
+        }
+    }
+    elsif ($pdbtype eq 'unit') {
+	$typeinfo[0] = 'GIMP_UNIT_PIXEL' unless defined $typeinfo[0];
+	$allow_pixels = $typeinfo[0] eq 'GIMP_UNIT_PIXEL' ? TRUE : FALSE;
+	$allow_percent = exists $arg->{allow_percent} ? TRUE : FALSE;
+	$default = exists $arg->{default} ? $arg->{default} : $typeinfo[0];
+	$pspec = <<CODE;
+gimp_param_spec_unit ("$name",
+                      "$nick",
+                      "$blurb",
+                      $allow_pixels,
+                      $allow_percent,
+                      $default,
+                      $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'color') {
+	$default = exists $arg->{default} ? $arg->{default} : NULL;
+	$pspec = <<CODE;
+gimp_param_spec_rgb ("$name",
+                     "$nick",
+                     "$blurb",
+                     $default,
+                     $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'parasite') {
+	$pspec = <<CODE;
+gimp_param_spec_parasite ("$name",
+                          "$nick",
+                          "$blurb",
+                          $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'int32array') {
+	$pspec = <<CODE;
+gimp_param_spec_int32_array ("$name",
+                             "$nick",
+                             "$blurb",
+                             $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'int16array') {
+	$pspec = <<CODE;
+gimp_param_spec_int16_array ("$name",
+                             "$nick",
+                             "$blurb",
+                             $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'int8array') {
+	$pspec = <<CODE;
+gimp_param_spec_int8_array ("$name",
+                            "$nick",
+                            "$blurb",
+                            $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'floatarray') {
+	$pspec = <<CODE;
+gimp_param_spec_float_array ("$name",
+                             "$nick",
+                             "$blurb",
+                             $flags)
+CODE
+    }
+    elsif ($pdbtype eq 'stringarray') {
+	$pspec = <<CODE;
+gimp_param_spec_string_array ("$name",
+                              "$nick",
+                              "$blurb",
+                              $flags)
+CODE
+    }
+    else {
+	warn "Unsupported PDB type: $arg->{name} ($arg->{type})";
+	exit -1;
+    }
+
+    $pspec =~ s/\s$//;
+
+    return ($pspec, $postproc);
+}
+
 sub generate {
     my @procs = @{(shift)};
     my %out;
     my $total = 0.0;
+    my $argc;
 
     foreach $name (@procs) {
 	my $proc = $main::pdb{$name};
@@ -485,10 +523,70 @@ sub generate {
 
 	$out->{pcount}++; $total++;
 
-	$out->{procs} .= "static ProcRecord ${name}_proc;\n";
+	$out->{register} .= <<CODE;
+  /*
+   * gimp-$proc->{canonical_name}
+   */
+  procedure = gimp_procedure_new (${name}_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-$proc->{canonical_name}");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-$proc->{canonical_name}",
+                                     @{[ &quotewrap($proc->{blurb}, 2) ]},
+                                     @{[ &quotewrap($proc->{help},  2) ]},
+                                     "$proc->{author}",
+                                     "$proc->{copyright}",
+                                     "$proc->{date}",
+                                     @{[$proc->{deprecated} ? "\"$proc->{deprecated}\"" : 'NULL']});
+
+CODE
+
+        $argc = 0;
+
+        foreach $arg (@inargs) {
+	    my ($pspec, $postproc) = &generate_pspec($arg);
+
+	    $pspec =~ s/^/' ' x length("  gimp_procedure_add_argument (")/meg;
+
+	    $out->{register} .= <<CODE;
+  gimp_procedure_add_argument (procedure,
+${pspec});
+CODE
+
+            if ($postproc ne '') {
+		$pspec = "procedure->args[$argc]";
+		$postproc =~ s/^/'  '/meg;
+		$out->{register} .= eval qq/"$postproc"/;
+	    }
+
+	    $argc++;
+	}
+
+	$argc = 0;
+
+	foreach $arg (@outargs) {
+	    my ($pspec, $postproc) = &generate_pspec($arg);
+	    my $argc = 0;
+
+	    $pspec =~ s/^/' ' x length("  gimp_procedure_add_return_value (")/meg;
+
+	    $out->{register} .= <<CODE;
+  gimp_procedure_add_return_value (procedure,
+${pspec});
+CODE
+
+            if ($postproc ne '') {
+		$pspec = "procedure->values[$argc]";
+		$postproc =~ s/^/'  '/meg;
+		$out->{register} .= eval qq/"$postproc"/;
+	    }
+
+	    $argc++;
+	}
 
 	$out->{register} .= <<CODE;
-  procedural_db_register (gimp, \&${name}_proc);
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
 CODE
 
 	if (exists $proc->{invoke}->{headers}) {
@@ -497,133 +595,24 @@ CODE
 	    }
 	}
 
-	$out->{code} .= "\nstatic Argument *\n";
-	$out->{code} .= "${name}_invoker (Gimp         *gimp,\n";
-	$out->{code} .=  ' ' x length($name) . "          GimpContext  *context,\n";
-	$out->{code} .=  ' ' x length($name) . "          GimpProgress *progress,\n";
-	$out->{code} .=  ' ' x length($name) . "          Argument     *args)\n{\n";
+	$out->{code} .= "\nstatic GValueArray *\n";
+	$out->{code} .= "${name}_invoker (GimpProcedure     *procedure,\n";
+	$out->{code} .=  ' ' x length($name) . "          Gimp              *gimp,\n";
+	$out->{code} .=  ' ' x length($name) . "          GimpContext       *context,\n";
+	$out->{code} .=  ' ' x length($name) . "          GimpProgress      *progress,\n";
+	$out->{code} .=  ' ' x length($name) . "          const GValueArray *args)\n{\n";
 
 	my $code = "";
 
-	if (exists $proc->{invoke}->{proc}) {
-	    my ($procname, $args) = @{$proc->{invoke}->{proc}};
-	    my ($exec, $fail, $argtype);
-	    my $custom = $proc->{invoke}->{code};
-
-	    $exec = "procedural_db_execute (gimp, context, progress, $procname, $args)";
-	    $fail = "procedural_db_return_args (\&${name}_proc, FALSE)";
-
-	    $argtype = 'Argument';
-	    if (exists $proc->{invoke}->{args}) {
-		foreach (@{$proc->{invoke}->{args}}) {
-		    $code .= "  $argtype *$_;\n";
-		}
-	    }
-
-	    foreach (qw(exec fail argtype)) { $custom =~ s/%%$_%%/"\$$_"/eeg }
-
-	    my $pos = 0;
-	    foreach (@{$proc->{inargs}}) {
-		my $arg = $arg_types{(&arg_parse($_->{type}))[0]};
-		my $var = &arg_vname($_);
-		$custom =~ s/%%$var%%/&arg_value($arg, $pos)/e;
-		$pos++;
-	    }
-
-	    $code .= &declare_vars($proc);
-	    $code .= "\n" if length($code);
-	    $code .= &format_code_frag($custom, 0) . "}\n";
-	}
-	elsif (exists $proc->{invoke}->{pass_through}) {
-	    my $invoke = $proc->{invoke};
-
-	    my $argc = 0;
-	    $argc += @{$invoke->{pass_args}} if exists $invoke->{pass_args};
-	    $argc += @{$invoke->{make_args}} if exists $invoke->{make_args};
-
-	    my %pass; my @passgroup;
-	    my $before = 0; my $contig = 0; my $pos = -1;
-	    if (exists $invoke->{pass_args}) {
-		foreach (@{$invoke->{pass_args}}) {
-		    $pass{$_}++;
-		    $_ - 1 == $before ? $contig = 1 : $pos++;
-		    push @{$passgroup[$pos]}, $_;
-		    $before = $_;
-		}
-	    } 
-	    $code .= ' ' x 2 . "int i;\n" if $contig;
-
-	    $code .= ' ' x 2 . "Argument argv[$argc];\n";
-
-	    my $tempproc; $pos = 0;
-	    foreach (@{$proc->{inargs}}) {
-		$_->{argpos} = $pos++;
-		push @{$tempproc->{inargs}}, $_ if !exists $pass{$_->{argpos}};
-	    }
-
-	    $code .= &declare_args($tempproc, $out, qw(inargs)) . "\n";
-	    $code .= &declare_vars($proc);
-
-	    my $marshal = "";
-	    foreach (@{$tempproc->{inargs}}) {
-		my $argproc; $argproc->{inargs} = [ $_ ];
-		$marshal .= &marshal_inargs($argproc, $_->{argpos});
-		chop $marshal;
-	    }
-	    $marshal .= "\n" if $marshal;
-
-	    if ($success) {
-		$marshal .= <<CODE;
-  if (!success)
-    return procedural_db_return_args (\&${name}_proc, FALSE);
-
-CODE
-	    }
-
-	    $marshal = substr($marshal, 1) if $marshal;
-	    $code .= $marshal;
-
-	    foreach (@passgroup) {
-		$code .= ($#$_ ? <<LOOP : <<CODE) . "\n";
-  for (i = $_->[0]; i < @{[ $_->[$#$_] + 1 ]}; i++)
-    argv[i] = args[i];
-LOOP
-  argv[$_->[0]] = args[$_->[0]];
-CODE
-	    }
-
-	    if (exists $invoke->{make_args}) {
-		$pos = 0;
-		foreach (@{$invoke->{make_args}}) {
-		    while (exists $pass{$pos}) { $pos++ }
-		    
-		    my $arg = $arg_types{(&arg_parse($_->{type}))[0]};
-		    my $type = &arg_ptype($arg);
-
-		    $code .= <<CODE;
-  argv[$pos].arg_type = GIMP_PDB_$arg->{name};
-CODE
-
-		    my $frag = $_->{code};
-		    $frag =~ s/%%arg%%/"argv[$pos].value.pdb_$type"/e;
-		    $code .= &format_code_frag($frag, 0);
-
-		    $pos++;
-		}
-		$code .= "\n";
-	    }
-
-	    $code .= <<CODE;
-  return $invoke->{pass_through}_invoker (gimp, context, progress, argv);
-}
-CODE
+	if (exists $proc->{invoke}->{no_marshalling}) {
+	    $code .= &format_code_frag($proc->{invoke}->{code}, 0) . "}\n";
 	}
 	else {
 	    my $invoker = "";
 	
-	    $invoker .= ' ' x 2 . "Argument *return_args;\n" if scalar @outargs;
-	    $invoker .= &declare_args($proc, $out, qw(inargs outargs));
-	    $invoker .= &declare_vars($proc);
+	    $invoker .= ' ' x 2 . "GValueArray *return_vals;\n" if scalar @outargs;
+	    $invoker .= &declare_args($proc, $out, 0, qw(inargs));
+	    $invoker .= &declare_args($proc, $out, 1, qw(outargs));
 
 	    $invoker .= &marshal_inargs($proc, 0);
 	    $invoker .= "\n" if $invoker && $invoker !~ /\n\n/s;
@@ -651,29 +640,6 @@ CODE
 	}
 
         $out->{code} .= $code;
-
-	$out->{code} .= &make_arg_recs($proc, qw(inargs outargs));
-
-	$out->{code} .= <<CODE;
-
-static ProcRecord ${name}_proc =
-{
-  "gimp-$proc->{canonical_name}",
-  "gimp-$proc->{canonical_name}",
-  @{[ &quotewrap($proc->{blurb}, 2) ]},
-  @{[ &quotewrap($proc->{help},  2) ]},
-  "$proc->{author}",
-  "$proc->{copyright}",
-  "$proc->{date}",
-  @{[$proc->{deprecated} ? "\"$proc->{deprecated}\"" : 'NULL']},
-  GIMP_INTERNAL,
-  @{[scalar @inargs]},
-  @{[scalar @inargs ? "${name}_inargs" : 'NULL']},
-  @{[scalar @outargs]},
-  @{[scalar @outargs ? "${name}_outargs" : 'NULL']},
-  { { ${name}_invoker } }
-};
-CODE
     }
 
     my $gpl = <<'GPL';
@@ -708,8 +674,6 @@ GPL
 	my $out = $out{$group};
 
 	foreach (@{$main::grp{$group}->{headers}}) { $out->{headers}->{$_}++ }
-	delete $out->{headers}->{q/"procedural_db.h"/};
-	delete $out->{headers}->{q/"config.h"/};
 
 	my @headers = sort {
 	    my ($x, $y) = ($a, $b);
@@ -763,7 +727,11 @@ GPL
 
 		    $headers .= '#include "pdb-types.h"';
 		    $headers .= "\n";
-		    $headers .= '#include "procedural_db.h"';
+		    $headers .= '#include "gimp-pdb.h"';
+		    $headers .= "\n";
+		    $headers .= '#include "gimpprocedure.h"';
+		    $headers .= "\n";
+		    $headers .= '#include "core/gimpparamspecs.h"';
 		    $headers .= "\n\n";
 		}
 	    }
@@ -808,11 +776,10 @@ GPL
 	print CFILE qq/#include "config.h"\n\n/;
 	print CFILE $headers, "\n";
 	print CFILE $extra->{decls}, "\n" if exists $extra->{decls};
-	print CFILE $out->{procs};
-	print CFILE "\nvoid\nregister_${group}_procs (Gimp *gimp)\n";
-	print CFILE "{\n$out->{register}}\n";
 	print CFILE "\n", $extra->{code} if exists $extra->{code};
 	print CFILE $out->{code};
+	print CFILE "\nvoid\nregister_${group}_procs (Gimp *gimp)\n";
+	print CFILE "{\n  GimpProcedure *procedure;\n\n$out->{register}}\n";
 	close CFILE;
 	&write_file($cfile);
 
@@ -820,7 +787,7 @@ GPL
 	push @group_decls, $decl;
 	$longest = length $decl if $longest < length $decl;
 
-	$group_procs .=  ' ' x 2 . "register_${group}_procs (gimp);\n\n";
+	$group_procs .=  ' ' x 2 . "register_${group}_procs (gimp);\n";
 	$pcount += $out->{pcount};
     }
 

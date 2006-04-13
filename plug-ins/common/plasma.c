@@ -39,7 +39,7 @@
  * Ported to GIMP Plug-in API 1.0
  *    by Eiichi Takamori <taka@ma1.seikyou.ne.jp>
  *
- * $Id: plasma.c,v 1.80 2005/09/30 08:15:59 mitch Exp $
+ * $Id: plasma.c,v 1.82 2006/03/17 09:29:46 neo Exp $
  *
  * A few functions names and their order are changed :)
  * Plasma implementation almost hasn't been changed.
@@ -175,8 +175,7 @@ query (void)
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
-                          "Create a plasma cloud like image on the "
-                          "specified drawable",
+                          N_("Create a random plasma texture"),
                           "More help",
                           "Stephen Norris & (ported to 1.0 by) Eiichi Takamori",
                           "Stephen Norris",

@@ -24,118 +24,114 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "core/gimp.h"
 #include "core/gimpcontainer-filter.h"
 #include "core/gimpcontainer.h"
 #include "text/gimp-fonts.h"
 
-static ProcRecord fonts_refresh_proc;
-static ProcRecord fonts_get_list_proc;
+
+static GValueArray *
+fonts_refresh_invoker (GimpProcedure     *procedure,
+                       Gimp              *gimp,
+                       GimpContext       *context,
+                       GimpProgress      *progress,
+                       const GValueArray *args)
+{
+  gimp_fonts_load (gimp);
+  return gimp_procedure_get_return_values (procedure, TRUE);
+}
+
+static GValueArray *
+fonts_get_list_invoker (GimpProcedure     *procedure,
+                        Gimp              *gimp,
+                        GimpContext       *context,
+                        GimpProgress      *progress,
+                        const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  const gchar *filter;
+  gint32 num_fonts = 0;
+  gchar **font_list = NULL;
+
+  filter = g_value_get_string (&args->values[0]);
+
+  if (success)
+    {
+      font_list = gimp_container_get_filtered_name_array (gimp->fonts,
+                                                          filter, &num_fonts);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    {
+      g_value_set_int (&return_vals->values[1], num_fonts);
+      gimp_value_take_stringarray (&return_vals->values[2], font_list, num_fonts);
+    }
+
+  return return_vals;
+}
 
 void
 register_fonts_procs (Gimp *gimp)
 {
-  procedural_db_register (gimp, &fonts_refresh_proc);
-  procedural_db_register (gimp, &fonts_get_list_proc);
+  GimpProcedure *procedure;
+
+  /*
+   * gimp-fonts-refresh
+   */
+  procedure = gimp_procedure_new (fonts_refresh_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-fonts-refresh");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-fonts-refresh",
+                                     "Refresh current fonts. This function always succeeds.",
+                                     "This procedure retrieves all fonts currently in the user's font path and updates the font dialogs accordingly.",
+                                     "Sven Neumann <sven@gimp.org>",
+                                     "Sven Neumann",
+                                     "2003",
+                                     NULL);
+
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-fonts-get-list
+   */
+  procedure = gimp_procedure_new (fonts_get_list_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-fonts-get-list");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-fonts-get-list",
+                                     "Retrieve the list of loaded fonts.",
+                                     "This procedure returns a list of the fonts that are currently available.",
+                                     "Sven Neumann <sven@gimp.org>",
+                                     "Sven Neumann",
+                                     "2003",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("filter",
+                                                       "filter",
+                                                       "An optional regular expression used to filter the list",
+                                                       FALSE, TRUE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-fonts",
+                                                          "num fonts",
+                                                          "The number of available fonts",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string_array ("font-list",
+                                                                 "font list",
+                                                                 "The list of font names",
+                                                                 GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
 }
-
-static Argument *
-fonts_refresh_invoker (Gimp         *gimp,
-                       GimpContext  *context,
-                       GimpProgress *progress,
-                       Argument     *args)
-{
-  gimp_fonts_load (gimp);
-  return procedural_db_return_args (&fonts_refresh_proc, TRUE);
-}
-
-static ProcRecord fonts_refresh_proc =
-{
-  "gimp-fonts-refresh",
-  "gimp-fonts-refresh",
-  "Refresh current fonts. This function always succeeds.",
-  "This procedure retrieves all fonts currently in the user's font path and updates the font dialogs accordingly.",
-  "Sven Neumann",
-  "Sven Neumann",
-  "2003",
-  NULL,
-  GIMP_INTERNAL,
-  0,
-  NULL,
-  0,
-  NULL,
-  { { fonts_refresh_invoker } }
-};
-
-static Argument *
-fonts_get_list_invoker (Gimp         *gimp,
-                        GimpContext  *context,
-                        GimpProgress *progress,
-                        Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  gchar *filter;
-  gint32 num_fonts;
-  gchar **font_list = NULL;
-
-  filter = (gchar *) args[0].value.pdb_pointer;
-  if (filter && !g_utf8_validate (filter, -1, NULL))
-    success = FALSE;
-
-  if (success)
-    font_list = gimp_container_get_filtered_name_array (gimp->fonts, filter, &num_fonts);
-
-  return_args = procedural_db_return_args (&fonts_get_list_proc, success);
-
-  if (success)
-    {
-      return_args[1].value.pdb_int = num_fonts;
-      return_args[2].value.pdb_pointer = font_list;
-    }
-
-  return return_args;
-}
-
-static ProcArg fonts_get_list_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "filter",
-    "An optional regular expression used to filter the list"
-  }
-};
-
-static ProcArg fonts_get_list_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "num-fonts",
-    "The number of available fonts"
-  },
-  {
-    GIMP_PDB_STRINGARRAY,
-    "font-list",
-    "The list of font names"
-  }
-};
-
-static ProcRecord fonts_get_list_proc =
-{
-  "gimp-fonts-get-list",
-  "gimp-fonts-get-list",
-  "Retrieve the list of loaded fonts.",
-  "This procedure returns a list of the fonts that are currently available.",
-  "Sven Neumann",
-  "Sven Neumann",
-  "2003",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  fonts_get_list_inargs,
-  2,
-  fonts_get_list_outargs,
-  { { fonts_get_list_invoker } }
-};

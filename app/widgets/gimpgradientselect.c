@@ -30,8 +30,9 @@
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "core/gimpgradient.h"
+#include "core/gimpparamspecs.h"
 
-#include "pdb/procedural_db.h"
+#include "pdb/gimp-pdb.h"
 
 #include "gimpcontainerbox.h"
 #include "gimpdatafactoryview.h"
@@ -45,18 +46,17 @@ enum
 };
 
 
-static GObject  * gimp_gradient_select_constructor  (GType          type,
-                                                     guint          n_params,
-                                                     GObjectConstructParam *params);
-static void       gimp_gradient_select_set_property (GObject       *object,
-                                                     guint          property_id,
-                                                     const GValue  *value,
-                                                     GParamSpec    *pspec);
+static GObject     * gimp_gradient_select_constructor  (GType          type,
+                                                        guint          n_params,
+                                                        GObjectConstructParam *params);
+static void          gimp_gradient_select_set_property (GObject       *object,
+                                                        guint          property_id,
+                                                        const GValue  *value,
+                                                        GParamSpec    *pspec);
 
-static Argument * gimp_gradient_select_run_callback (GimpPdbDialog *dialog,
-                                                     GimpObject    *object,
-                                                     gboolean       closing,
-                                                     gint          *n_return_vals);
+static GValueArray * gimp_gradient_select_run_callback (GimpPdbDialog *dialog,
+                                                        GimpObject    *object,
+                                                        gboolean       closing);
 
 
 G_DEFINE_TYPE (GimpGradientSelect, gimp_gradient_select,
@@ -120,11 +120,10 @@ gimp_gradient_select_constructor (GType                  type,
   return object;
 }
 
-static Argument *
+static GValueArray *
 gimp_gradient_select_run_callback (GimpPdbDialog *dialog,
                                    GimpObject    *object,
-                                   gboolean       closing,
-                                   gint          *n_return_vals)
+                                   gboolean       closing)
 {
   GimpGradient        *gradient = GIMP_GRADIENT (object);
   GimpGradientSegment *seg      = NULL;
@@ -132,6 +131,8 @@ gimp_gradient_select_run_callback (GimpPdbDialog *dialog,
   gdouble              pos, delta;
   GimpRGB              color;
   gint                 i;
+  GimpArray           *array;
+  GValueArray         *return_vals;
 
   i      = GIMP_GRADIENT_SELECT (dialog)->sample_size;
   pos    = 0.0;
@@ -152,16 +153,26 @@ gimp_gradient_select_run_callback (GimpPdbDialog *dialog,
       pos += delta;
     }
 
-  return procedural_db_run_proc (dialog->caller_context->gimp,
-                                 dialog->caller_context,
-                                 NULL,
-                                 dialog->callback_name,
-                                 n_return_vals,
-                                 GIMP_PDB_STRING,     GIMP_OBJECT (gradient)->name,
-                                 GIMP_PDB_INT32,      GIMP_GRADIENT_SELECT (dialog)->sample_size * 4,
-                                 GIMP_PDB_FLOATARRAY, values,
-                                 GIMP_PDB_INT32,      closing,
-                                 GIMP_PDB_END);
+  array = gimp_array_new ((guint8 *) values,
+                          GIMP_GRADIENT_SELECT (dialog)->sample_size * 4 *
+                          sizeof (gdouble),
+                          TRUE);
+  array->static_data = FALSE;
+
+  return_vals =
+    gimp_pdb_run_proc (dialog->caller_context->gimp,
+                       dialog->caller_context,
+                       NULL,
+                       dialog->callback_name,
+                       G_TYPE_STRING,         GIMP_OBJECT (gradient)->name,
+                       GIMP_TYPE_INT32,       array->length / sizeof (gdouble),
+                       GIMP_TYPE_FLOAT_ARRAY, array,
+                       GIMP_TYPE_INT32,       closing,
+                       G_TYPE_NONE);
+
+  gimp_array_free (array);
+
+  return return_vals;
 }
 
 static void

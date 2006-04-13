@@ -235,7 +235,7 @@ gimp_display_config_init (GimpDisplayConfig *config)
                     config);
 
   config->default_fullscreen_view =
-    g_object_new (GIMP_TYPE_DISPLAY_OPTIONS_FULLSCREEN, NULL);
+    g_object_new (GIMP_TYPE_DISPLAY_OPTIONS, NULL);
 
   g_signal_connect (config->default_fullscreen_view, "notify",
                     G_CALLBACK (gimp_display_config_fullscreen_notify),
@@ -261,9 +261,9 @@ gimp_display_config_finalize (GObject *object)
 
 static void
 gimp_display_config_set_property (GObject      *object,
-				  guint         property_id,
-				  const GValue *value,
-				  GParamSpec   *pspec)
+                                  guint         property_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec)
 {
   GimpDisplayConfig *display_config = GIMP_DISPLAY_CONFIG (object);
 
@@ -354,9 +354,9 @@ gimp_display_config_set_property (GObject      *object,
 
 static void
 gimp_display_config_get_property (GObject    *object,
-				  guint       property_id,
-				  GValue     *value,
-				  GParamSpec *pspec)
+                                  guint       property_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec)
 {
   GimpDisplayConfig *display_config = GIMP_DISPLAY_CONFIG (object);
 

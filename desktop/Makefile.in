@@ -62,13 +62,24 @@ am__vpath_adj = case $$p in \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 am__installdirs = "$(DESTDIR)$(applicationsdir)" \
-	"$(DESTDIR)$(iconsdir)" "$(DESTDIR)$(mimeinfodir)" \
+	"$(DESTDIR)$(icons16dir)" "$(DESTDIR)$(icons22dir)" \
+	"$(DESTDIR)$(icons24dir)" "$(DESTDIR)$(icons32dir)" \
+	"$(DESTDIR)$(icons48dir)" "$(DESTDIR)$(icons64dir)" \
+	"$(DESTDIR)$(iconsscalabledir)" "$(DESTDIR)$(mimeinfodir)" \
 	"$(DESTDIR)$(registrydir)"
 applicationsDATA_INSTALL = $(INSTALL_DATA)
-iconsDATA_INSTALL = $(INSTALL_DATA)
+icons16DATA_INSTALL = $(INSTALL_DATA)
+icons22DATA_INSTALL = $(INSTALL_DATA)
+icons24DATA_INSTALL = $(INSTALL_DATA)
+icons32DATA_INSTALL = $(INSTALL_DATA)
+icons48DATA_INSTALL = $(INSTALL_DATA)
+icons64DATA_INSTALL = $(INSTALL_DATA)
+iconsscalableDATA_INSTALL = $(INSTALL_DATA)
 mimeinfoDATA_INSTALL = $(INSTALL_DATA)
 registryDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(applications_DATA) $(icons_DATA) $(mimeinfo_DATA) \
+DATA = $(applications_DATA) $(icons16_DATA) $(icons22_DATA) \
+	$(icons24_DATA) $(icons32_DATA) $(icons48_DATA) \
+	$(icons64_DATA) $(iconsscalable_DATA) $(mimeinfo_DATA) \
 	$(registry_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 AA = @AA@
@@ -241,6 +252,7 @@ INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
 INTLTOOL_SERVER_RULE = @INTLTOOL_SERVER_RULE@
+INTLTOOL_SERVICE_RULE = @INTLTOOL_SERVICE_RULE@
 INTLTOOL_SHEET_RULE = @INTLTOOL_SHEET_RULE@
 INTLTOOL_SOUNDLIST_RULE = @INTLTOOL_SOUNDLIST_RULE@
 INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
@@ -334,7 +346,6 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
-SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -350,6 +361,8 @@ SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
 URI_CFLAGS = @URI_CFLAGS@
 URI_LIBS = @URI_LIBS@
+USE_BINRELOC_FALSE = @USE_BINRELOC_FALSE@
+USE_BINRELOC_TRUE = @USE_BINRELOC_TRUE@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WINDRES = @WINDRES@
@@ -428,19 +441,37 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 desktop_in_files = gimp.desktop.in.in
 desktop_files = $(desktop_in_files:.desktop.in.in=.desktop)
-@DESKTOP_DATADIR_TRUE@applicationsdir = @DESKTOP_DATADIR@/applications
+@DESKTOP_DATADIR_TRUE@applicationsdir = $(DESKTOP_DATADIR)/applications
 @DESKTOP_DATADIR_TRUE@applications_DATA = $(desktop_files)
-@DESKTOP_DATADIR_TRUE@iconsdir = @DESKTOP_DATADIR@/icons/hicolor/48x48/apps
-@DESKTOP_DATADIR_TRUE@icons_DATA = gimp.png
-@DESKTOP_DATADIR_TRUE@mimeinfodir = @DESKTOP_DATADIR@/mime-info
+@DESKTOP_DATADIR_TRUE@mimeinfodir = $(DESKTOP_DATADIR)/mime-info
 @DESKTOP_DATADIR_TRUE@mimeinfo_DATA = gimp.keys
-@DESKTOP_DATADIR_TRUE@registrydir = @DESKTOP_DATADIR@/application-registry
+@DESKTOP_DATADIR_TRUE@registrydir = $(DESKTOP_DATADIR)/application-registry
 @DESKTOP_DATADIR_TRUE@registry_DATA = gimp.applications
+@DESKTOP_DATADIR_TRUE@icons16dir = $(DESKTOP_DATADIR)/icons/hicolor/16x16/apps
+@DESKTOP_DATADIR_TRUE@icons16_DATA = 16x16/gimp.png
+@DESKTOP_DATADIR_TRUE@icons22dir = $(DESKTOP_DATADIR)/icons/hicolor/22x22/apps
+@DESKTOP_DATADIR_TRUE@icons22_DATA = 22x22/gimp.png
+@DESKTOP_DATADIR_TRUE@icons24dir = $(DESKTOP_DATADIR)/icons/hicolor/24x24/apps
+@DESKTOP_DATADIR_TRUE@icons24_DATA = 24x24/gimp.png
+@DESKTOP_DATADIR_TRUE@icons32dir = $(DESKTOP_DATADIR)/icons/hicolor/32x32/apps
+@DESKTOP_DATADIR_TRUE@icons32_DATA = 32x32/gimp.png
+@DESKTOP_DATADIR_TRUE@icons48dir = $(DESKTOP_DATADIR)/icons/hicolor/48x48/apps
+@DESKTOP_DATADIR_TRUE@icons48_DATA = 48x48/gimp.png
+@DESKTOP_DATADIR_TRUE@icons64dir = $(DESKTOP_DATADIR)/icons/hicolor/64x64/apps
+@DESKTOP_DATADIR_TRUE@icons64_DATA = 64x64/gimp.png
+@DESKTOP_DATADIR_TRUE@iconsscalabledir = $(DESKTOP_DATADIR)/icons/hicolor/scalable/apps
+@DESKTOP_DATADIR_TRUE@iconsscalable_DATA = scalable/gimp.svg
 EXTRA_DIST = \
 	gimp.applications.in	\
 	gimp.desktop.in.in	\
 	gimp.keys.in		\
-	gimp.png
+	16x16/gimp.png		\
+	22x22/gimp.png		\
+	24x24/gimp.png		\
+	32x32/gimp.png		\
+	48x48/gimp.png		\
+	64x64/gimp.png		\
+	scalable/gimp.svg
 
 DISTCLEANFILES = $(desktop_files)
 all: all-am
@@ -508,22 +539,124 @@ uninstall-applicationsDATA:
 	  echo " rm -f '$(DESTDIR)$(applicationsdir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(applicationsdir)/$$f"; \
 	done
-install-iconsDATA: $(icons_DATA)
+install-icons16DATA: $(icons16_DATA)
 	@$(NORMAL_INSTALL)
-	test -z "$(iconsdir)" || $(mkdir_p) "$(DESTDIR)$(iconsdir)"
-	@list='$(icons_DATA)'; for p in $$list; do \
+	test -z "$(icons16dir)" || $(mkdir_p) "$(DESTDIR)$(icons16dir)"
+	@list='$(icons16_DATA)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f=$(am__strip_dir) \
-	  echo " $(iconsDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(iconsdir)/$$f'"; \
-	  $(iconsDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(iconsdir)/$$f"; \
+	  echo " $(icons16DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(icons16dir)/$$f'"; \
+	  $(icons16DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(icons16dir)/$$f"; \
 	done
 
-uninstall-iconsDATA:
+uninstall-icons16DATA:
 	@$(NORMAL_UNINSTALL)
-	@list='$(icons_DATA)'; for p in $$list; do \
+	@list='$(icons16_DATA)'; for p in $$list; do \
 	  f=$(am__strip_dir) \
-	  echo " rm -f '$(DESTDIR)$(iconsdir)/$$f'"; \
-	  rm -f "$(DESTDIR)$(iconsdir)/$$f"; \
+	  echo " rm -f '$(DESTDIR)$(icons16dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(icons16dir)/$$f"; \
+	done
+install-icons22DATA: $(icons22_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(icons22dir)" || $(mkdir_p) "$(DESTDIR)$(icons22dir)"
+	@list='$(icons22_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(icons22DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(icons22dir)/$$f'"; \
+	  $(icons22DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(icons22dir)/$$f"; \
+	done
+
+uninstall-icons22DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(icons22_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(icons22dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(icons22dir)/$$f"; \
+	done
+install-icons24DATA: $(icons24_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(icons24dir)" || $(mkdir_p) "$(DESTDIR)$(icons24dir)"
+	@list='$(icons24_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(icons24DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(icons24dir)/$$f'"; \
+	  $(icons24DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(icons24dir)/$$f"; \
+	done
+
+uninstall-icons24DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(icons24_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(icons24dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(icons24dir)/$$f"; \
+	done
+install-icons32DATA: $(icons32_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(icons32dir)" || $(mkdir_p) "$(DESTDIR)$(icons32dir)"
+	@list='$(icons32_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(icons32DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(icons32dir)/$$f'"; \
+	  $(icons32DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(icons32dir)/$$f"; \
+	done
+
+uninstall-icons32DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(icons32_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(icons32dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(icons32dir)/$$f"; \
+	done
+install-icons48DATA: $(icons48_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(icons48dir)" || $(mkdir_p) "$(DESTDIR)$(icons48dir)"
+	@list='$(icons48_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(icons48DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(icons48dir)/$$f'"; \
+	  $(icons48DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(icons48dir)/$$f"; \
+	done
+
+uninstall-icons48DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(icons48_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(icons48dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(icons48dir)/$$f"; \
+	done
+install-icons64DATA: $(icons64_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(icons64dir)" || $(mkdir_p) "$(DESTDIR)$(icons64dir)"
+	@list='$(icons64_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(icons64DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(icons64dir)/$$f'"; \
+	  $(icons64DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(icons64dir)/$$f"; \
+	done
+
+uninstall-icons64DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(icons64_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(icons64dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(icons64dir)/$$f"; \
+	done
+install-iconsscalableDATA: $(iconsscalable_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(iconsscalabledir)" || $(mkdir_p) "$(DESTDIR)$(iconsscalabledir)"
+	@list='$(iconsscalable_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(iconsscalableDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(iconsscalabledir)/$$f'"; \
+	  $(iconsscalableDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(iconsscalabledir)/$$f"; \
+	done
+
+uninstall-iconsscalableDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(iconsscalable_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(iconsscalabledir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(iconsscalabledir)/$$f"; \
 	done
 install-mimeinfoDATA: $(mimeinfo_DATA)
 	@$(NORMAL_INSTALL)
@@ -567,6 +700,7 @@ CTAGS:
 
 
 distdir: $(DISTFILES)
+	$(mkdir_p) $(distdir)/16x16 $(distdir)/22x22 $(distdir)/24x24 $(distdir)/32x32 $(distdir)/48x48 $(distdir)/64x64 $(distdir)/scalable
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -600,7 +734,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(applicationsdir)" "$(DESTDIR)$(iconsdir)" "$(DESTDIR)$(mimeinfodir)" "$(DESTDIR)$(registrydir)"; do \
+	for dir in "$(DESTDIR)$(applicationsdir)" "$(DESTDIR)$(icons16dir)" "$(DESTDIR)$(icons22dir)" "$(DESTDIR)$(icons24dir)" "$(DESTDIR)$(icons32dir)" "$(DESTDIR)$(icons48dir)" "$(DESTDIR)$(icons64dir)" "$(DESTDIR)$(iconsscalabledir)" "$(DESTDIR)$(mimeinfodir)" "$(DESTDIR)$(registrydir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-am
@@ -628,6 +762,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+@DESKTOP_DATADIR_FALSE@install-data-hook:
 clean: clean-am
 
 clean-am: clean-generic clean-libtool mostlyclean-am
@@ -646,8 +781,13 @@ info: info-am
 
 info-am:
 
-install-data-am: install-applicationsDATA install-iconsDATA \
-	install-mimeinfoDATA install-registryDATA
+install-data-am: install-applicationsDATA install-icons16DATA \
+	install-icons22DATA install-icons24DATA install-icons32DATA \
+	install-icons48DATA install-icons64DATA \
+	install-iconsscalableDATA install-mimeinfoDATA \
+	install-registryDATA
+	@$(NORMAL_INSTALL)
+	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 
 install-exec-am:
 
@@ -673,7 +813,10 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-applicationsDATA uninstall-iconsDATA \
+uninstall-am: uninstall-applicationsDATA uninstall-icons16DATA \
+	uninstall-icons22DATA uninstall-icons24DATA \
+	uninstall-icons32DATA uninstall-icons48DATA \
+	uninstall-icons64DATA uninstall-iconsscalableDATA \
 	uninstall-info-am uninstall-mimeinfoDATA \
 	uninstall-registryDATA
 
@@ -681,16 +824,25 @@ uninstall-am: uninstall-applicationsDATA uninstall-iconsDATA \
 	dist-hook distclean distclean-generic distclean-libtool \
 	distdir dvi dvi-am html html-am info info-am install \
 	install-am install-applicationsDATA install-data \
-	install-data-am install-exec install-exec-am install-iconsDATA \
-	install-info install-info-am install-man install-mimeinfoDATA \
-	install-registryDATA install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic \
-	mostlyclean-libtool pdf pdf-am ps ps-am uninstall uninstall-am \
-	uninstall-applicationsDATA uninstall-iconsDATA \
-	uninstall-info-am uninstall-mimeinfoDATA \
-	uninstall-registryDATA
+	install-data-am install-data-hook install-exec install-exec-am \
+	install-icons16DATA install-icons22DATA install-icons24DATA \
+	install-icons32DATA install-icons48DATA install-icons64DATA \
+	install-iconsscalableDATA install-info install-info-am \
+	install-man install-mimeinfoDATA install-registryDATA \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+	uninstall uninstall-am uninstall-applicationsDATA \
+	uninstall-icons16DATA uninstall-icons22DATA \
+	uninstall-icons24DATA uninstall-icons32DATA \
+	uninstall-icons48DATA uninstall-icons64DATA \
+	uninstall-iconsscalableDATA uninstall-info-am \
+	uninstall-mimeinfoDATA uninstall-registryDATA
 
+
+# touch the toplevel icon directory as required by the icon theme spec
+@DESKTOP_DATADIR_TRUE@install-data-hook:
+@DESKTOP_DATADIR_TRUE@	touch $(DESTDIR)$(DESKTOP_DATADIR)/icons/hicolor
 
 gimp.desktop: gimp.desktop.in $(wildcard $(top_srcdir)/po/*.po)
 	$(INTLTOOL_MERGE) $(top_srcdir)/po $< $(@) -d -u -c $(top_builddir)/po/.intltool-merge-cachemake

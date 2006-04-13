@@ -171,14 +171,14 @@ gimp_display_shell_drop_drawable (GtkWidget    *widget,
                                   GimpViewable *viewable,
                                   gpointer      data)
 {
-  GimpDisplayShell *shell  = GIMP_DISPLAY_SHELL (data);
-  GimpImage        *gimage = shell->gdisp->gimage;
+  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (data);
+  GimpImage        *image = shell->display->image;
   GType             new_type;
   GimpItem         *new_item;
 
   D (g_print ("drop drawable on canvas\n"));
 
-  if (gimage->gimp->busy)
+  if (image->gimp->busy)
     return;
 
   if (GIMP_IS_LAYER (viewable))
@@ -186,7 +186,7 @@ gimp_display_shell_drop_drawable (GtkWidget    *widget,
   else
     new_type = GIMP_TYPE_LAYER;
 
-  new_item = gimp_item_convert (GIMP_ITEM (viewable), gimage, new_type, TRUE);
+  new_item = gimp_item_convert (GIMP_ITEM (viewable), image, new_type, TRUE);
 
   if (new_item)
     {
@@ -196,7 +196,7 @@ gimp_display_shell_drop_drawable (GtkWidget    *widget,
 
       new_layer = GIMP_LAYER (new_item);
 
-      gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_EDIT_PASTE,
+      gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_EDIT_PASTE,
                                    _("Drop New Layer"));
 
       gimp_display_shell_untransform_viewport (shell, &x, &y, &width, &height);
@@ -208,14 +208,14 @@ gimp_display_shell_drop_drawable (GtkWidget    *widget,
 
       gimp_item_translate (new_item, off_x, off_y, FALSE);
 
-      gimp_image_add_layer (gimage, new_layer, -1);
+      gimp_image_add_layer (image, new_layer, -1);
 
-      gimp_image_undo_group_end (gimage);
+      gimp_image_undo_group_end (image);
 
-      gimp_image_flush (gimage);
+      gimp_image_flush (image);
 
-      gimp_context_set_display (gimp_get_user_context (gimage->gimp),
-                                shell->gdisp);
+      gimp_context_set_display (gimp_get_user_context (image->gimp),
+                                shell->display);
     }
 }
 
@@ -226,33 +226,33 @@ gimp_display_shell_drop_vectors (GtkWidget    *widget,
                                  GimpViewable *viewable,
                                  gpointer      data)
 {
-  GimpDisplayShell *shell  = GIMP_DISPLAY_SHELL (data);
-  GimpImage        *gimage = shell->gdisp->gimage;
+  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (data);
+  GimpImage        *image = shell->display->image;
   GimpItem         *new_item;
 
   D (g_print ("drop vectors on canvas\n"));
 
-  if (gimage->gimp->busy)
+  if (image->gimp->busy)
     return;
 
-  new_item = gimp_item_convert (GIMP_ITEM (viewable), gimage,
+  new_item = gimp_item_convert (GIMP_ITEM (viewable), image,
                                 G_TYPE_FROM_INSTANCE (viewable), TRUE);
 
   if (new_item)
     {
       GimpVectors *new_vectors = GIMP_VECTORS (new_item);
 
-      gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_EDIT_PASTE,
+      gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_EDIT_PASTE,
                                    _("Drop New Path"));
 
-      gimp_image_add_vectors (gimage, new_vectors, -1);
+      gimp_image_add_vectors (image, new_vectors, -1);
 
-      gimp_image_undo_group_end (gimage);
+      gimp_image_undo_group_end (image);
 
-      gimp_image_flush (gimage);
+      gimp_image_flush (image);
 
-      gimp_context_set_display (gimp_get_user_context (gimage->gimp),
-                                shell->gdisp);
+      gimp_context_set_display (gimp_get_user_context (image->gimp),
+                                shell->display);
     }
 }
 
@@ -264,16 +264,16 @@ gimp_display_shell_drop_svg (GtkWidget     *widget,
                              gsize          svg_data_len,
                              gpointer       data)
 {
-  GimpDisplayShell *shell  = GIMP_DISPLAY_SHELL (data);
-  GimpImage        *gimage = shell->gdisp->gimage;
+  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (data);
+  GimpImage        *image = shell->display->image;
   GError           *error  = NULL;
 
   D (g_print ("drop SVG on canvas\n"));
 
-  if (gimage->gimp->busy)
+  if (image->gimp->busy)
     return;
 
-  if (! gimp_vectors_import_buffer (gimage,
+  if (! gimp_vectors_import_buffer (image,
                                     (const gchar *) svg_data, svg_data_len,
                                     TRUE, TRUE, -1, &error))
     {
@@ -282,10 +282,10 @@ gimp_display_shell_drop_svg (GtkWidget     *widget,
     }
   else
     {
-      gimp_image_flush (gimage);
+      gimp_image_flush (image);
 
-      gimp_context_set_display (gimp_get_user_context (gimage->gimp),
-                                shell->gdisp);
+      gimp_context_set_display (gimp_get_user_context (image->gimp),
+                                shell->display);
     }
 }
 
@@ -295,13 +295,13 @@ gimp_display_shell_bucket_fill (GimpDisplayShell   *shell,
                                 const GimpRGB      *color,
                                 GimpPattern        *pattern)
 {
-  GimpImage    *gimage = shell->gdisp->gimage;
+  GimpImage    *image = shell->display->image;
   GimpDrawable *drawable;
 
-  if (gimage->gimp->busy)
+  if (image->gimp->busy)
     return;
 
-  drawable = gimp_image_active_drawable (gimage);
+  drawable = gimp_image_active_drawable (image);
 
   if (! drawable)
     return;
@@ -326,10 +326,10 @@ gimp_display_shell_bucket_fill (GimpDisplayShell   *shell,
                                       color, pattern);
     }
 
-  gimp_image_flush (gimage);
+  gimp_image_flush (image);
 
-  gimp_context_set_display (gimp_get_user_context (gimage->gimp),
-                            shell->gdisp);
+  gimp_context_set_display (gimp_get_user_context (image->gimp),
+                            shell->display);
 }
 
 static void
@@ -368,14 +368,14 @@ gimp_display_shell_drop_buffer (GtkWidget    *widget,
                                 GimpViewable *viewable,
                                 gpointer      data)
 {
-  GimpDisplayShell *shell  = GIMP_DISPLAY_SHELL (data);
-  GimpImage        *gimage = shell->gdisp->gimage;
+  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (data);
+  GimpImage        *image = shell->display->image;
   GimpBuffer       *buffer;
   gint              x, y, width, height;
 
   D (g_print ("drop buffer on canvas\n"));
 
-  if (gimage->gimp->busy)
+  if (image->gimp->busy)
     return;
 
   buffer = GIMP_BUFFER (viewable);
@@ -384,14 +384,14 @@ gimp_display_shell_drop_buffer (GtkWidget    *widget,
 
   /* FIXME: popup a menu for selecting "Paste Into" */
 
-  gimp_edit_paste (gimage, gimp_image_active_drawable (gimage),
-		   buffer, FALSE,
+  gimp_edit_paste (image, gimp_image_active_drawable (image),
+                   buffer, FALSE,
                    x, y, width, height);
 
-  gimp_image_flush (gimage);
+  gimp_image_flush (image);
 
-  gimp_context_set_display (gimp_get_user_context (gimage->gimp),
-                            shell->gdisp);
+  gimp_context_set_display (gimp_get_user_context (image->gimp),
+                            shell->display);
 }
 
 static void
@@ -401,14 +401,14 @@ gimp_display_shell_drop_uri_list (GtkWidget *widget,
                                   GList     *uri_list,
                                   gpointer   data)
 {
-  GimpDisplayShell *shell  = GIMP_DISPLAY_SHELL (data);
-  GimpImage        *gimage = shell->gdisp->gimage;
+  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (data);
+  GimpImage        *image = shell->display->image;
   GimpContext      *context;
   GList            *list;
 
   D (g_print ("drop uri list on canvas\n"));
 
-  context = gimp_get_user_context (gimage->gimp);
+  context = gimp_get_user_context (image->gimp);
 
   for (list = uri_list; list; list = g_list_next (list))
     {
@@ -417,9 +417,9 @@ gimp_display_shell_drop_uri_list (GtkWidget *widget,
       GimpPDBStatusType  status;
       GError            *error = NULL;
 
-      new_layer = file_open_layer (gimage->gimp, context,
+      new_layer = file_open_layer (image->gimp, context,
                                    GIMP_PROGRESS (shell->statusbar),
-                                   gimage, uri, GIMP_RUN_INTERACTIVE,
+                                   image, uri, GIMP_RUN_INTERACTIVE, NULL,
                                    &status, &error);
 
       if (new_layer)
@@ -439,7 +439,7 @@ gimp_display_shell_drop_uri_list (GtkWidget *widget,
 
           gimp_item_translate (new_item, off_x, off_y, FALSE);
 
-          gimp_image_add_layer (gimage, new_layer, -1);
+          gimp_image_add_layer (image, new_layer, -1);
         }
       else if (status != GIMP_PDB_CANCEL)
         {
@@ -453,9 +453,9 @@ gimp_display_shell_drop_uri_list (GtkWidget *widget,
         }
     }
 
-  gimp_image_flush (gimage);
+  gimp_image_flush (image);
 
-  gimp_context_set_display (context, shell->gdisp);
+  gimp_context_set_display (context, shell->display);
 }
 
 static void
@@ -467,11 +467,10 @@ gimp_display_shell_drop_component (GtkWidget       *widget,
                                    gpointer         data)
 {
   GimpDisplayShell *shell      = GIMP_DISPLAY_SHELL (data);
-  GimpImage        *dest_image = shell->gdisp->gimage;
+  GimpImage        *dest_image = shell->display->image;
   GimpChannel      *channel;
   GimpItem         *new_item;
   const gchar      *desc;
-  gchar            *name;
 
   D (g_print ("drop component on canvas\n"));
 
@@ -493,9 +492,8 @@ gimp_display_shell_drop_component (GtkWidget       *widget,
 
       gimp_enum_get_value (GIMP_TYPE_CHANNEL_TYPE, component,
                            NULL, NULL, &desc, NULL);
-      name = g_strdup_printf (_("%s Channel Copy"), desc);
-      gimp_object_set_name (GIMP_OBJECT (new_layer), name);
-      g_free (name);
+      gimp_object_take_name (GIMP_OBJECT (new_layer),
+                             g_strdup_printf (_("%s Channel Copy"), desc));
 
       gimp_image_undo_group_start (dest_image, GIMP_UNDO_GROUP_EDIT_PASTE,
                                    _("Drop New Layer"));
@@ -516,7 +514,7 @@ gimp_display_shell_drop_component (GtkWidget       *widget,
       gimp_image_flush (dest_image);
 
       gimp_context_set_display (gimp_get_user_context (dest_image->gimp),
-                                shell->gdisp);
+                                shell->display);
     }
 }
 
@@ -527,18 +525,18 @@ gimp_display_shell_drop_pixbuf (GtkWidget *widget,
                                 GdkPixbuf *pixbuf,
                                 gpointer   data)
 {
-  GimpDisplayShell *shell  = GIMP_DISPLAY_SHELL (data);
-  GimpImage        *gimage = shell->gdisp->gimage;
+  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (data);
+  GimpImage        *image = shell->display->image;
   GimpLayer        *new_layer;
 
   D (g_print ("drop pixbuf on canvas\n"));
 
-  if (gimage->gimp->busy)
+  if (image->gimp->busy)
     return;
 
   new_layer =
-    gimp_layer_new_from_pixbuf (pixbuf, gimage,
-                                gimp_image_base_type_with_alpha (gimage),
+    gimp_layer_new_from_pixbuf (pixbuf, image,
+                                gimp_image_base_type_with_alpha (image),
                                 _("Dropped Buffer"),
                                 GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
 
@@ -550,7 +548,7 @@ gimp_display_shell_drop_pixbuf (GtkWidget *widget,
 
       new_item = GIMP_ITEM (new_layer);
 
-      gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_EDIT_PASTE,
+      gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_EDIT_PASTE,
                                    _("Drop New Layer"));
 
       gimp_display_shell_untransform_viewport (shell, &x, &y, &width, &height);
@@ -562,13 +560,13 @@ gimp_display_shell_drop_pixbuf (GtkWidget *widget,
 
       gimp_item_translate (new_item, off_x, off_y, FALSE);
 
-      gimp_image_add_layer (gimage, new_layer, -1);
+      gimp_image_add_layer (image, new_layer, -1);
 
-      gimp_image_undo_group_end (gimage);
+      gimp_image_undo_group_end (image);
 
-      gimp_image_flush (gimage);
+      gimp_image_flush (image);
 
-      gimp_context_set_display (gimp_get_user_context (gimage->gimp),
-                                shell->gdisp);
+      gimp_context_set_display (gimp_get_user_context (image->gimp),
+                                shell->display);
     }
 }

@@ -3,8 +3,40 @@
                          Development Branch
                    ------------------------------
 
-This is the development branch of The GIMP. Here's where all the shiny
+This is the development branch of GIMP. Here's where all the shiny
 new stuff is being done that will one day be released as GIMP 2.4.
+
+
+Changes in GIMP 2.3.8
+=====================
+
+- added new tile primitive Triangle to Mosaic plug-in
+- speed up Gaussian Blur plug-in
+- suppress redundant progress updates from plug-ins
+- changed some gimprc and sessionrc default values (window hints,
+  fullscreen mode)
+- do not focus transform tool dialogs on map
+- renamed Magnify tool to Zoom tool and added some missing tool shortcuts
+- added a submenu with recently used plug-ins to the Filters menu
+- fixed look-up table used for Contrast adjustments
+- improved the user interface of the Animation Playback plug-in
+- added framework for describing menu entries in the statusbar
+- added lots of helpful blurbs to procedures and core actions
+- remove color from the Watercolor selector if Shift is being pressed
+- ported PDB internals to GParamSpec and GValue
+- speedup and UI improvements for the SIOX tool
+- added parasite getters and settors for vectors
+- made PSD load and save plug-ins 64bit clean
+- some string review
+- ported ellipse select tool to the new rectangle tool
+- added basic support for layer masks to the PSD save plug-in
+- avoid relocations by declaring more data as const
+- new application icons in more sizes and as a SVG
+- provide script-specific samples instead of hard-coding "Aa" for font preview
+- build the Screenshot plug-in on all platforms
+- allow to discard invisible layers when merging visible layers
+- nicer output from gimp-procedural-db-dump
+- bug fixes and code cleanup
 
 
 Changes in GIMP 2.3.7

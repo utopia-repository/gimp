@@ -3,7 +3,7 @@ Priority: optional
 Section: graphics
 Maintainer: Ari Pollak <ari@debian.org>
 Standards-Version: 3.6.1
-Build-Depends: debhelper (>= 5), binutils (>= 2.12.90.0.9), gettext, intltool,
+Build-Depends: debhelper (>= 5), gettext, intltool,
  libx11-dev | xlibs-dev, libice-dev | xlibs-dev, libsm-dev | xlibs-dev,
  libxmu-dev | xlibs-dev, libxpm-dev | xlibs-dev, libxt-dev | xlibs-dev,
  libaa1-dev, libgtk2.0-dev (>= 2.8.8), libgtkhtml2-dev (>= 2.0.0),
@@ -13,7 +13,7 @@ Build-Depends: debhelper (>= 5), binutils (>= 2.12.90.0.9), gettext, intltool,
  libwmf-dev (>= 0.2.8-1.1), libfreetype6-dev,
  libpoppler-dev (>= 0.3.1), libgnomevfs2-dev (>= 2.10.0),
  libgnomeui-dev (>=	2.10.0), 
- libasound2-dev (>= 1.0.0) [!kfreebsd-i386 !hurd-i386]
+ libasound2-dev (>= 1.0.0) [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386]
 Build-Conflicts: libgimp2.0
 
 Package: libgimp2.0
@@ -44,7 +44,15 @@ Depends: python-gtk2 (>= 1.99.12), ${shlibs:Depends}, ${python:Depends}
 Description: Python support and plugins for The GIMP
  This package includes the Python modules necessary to write Python-based
  plugins for The GIMP. It includes several plugins with various useful
- features.
+ features:
+  * Clothify: Make the specified layer look like it's printed on cloth
+  * ColorXHTML: Save the image as colored XHTML text
+  * Console: Python interactive interpreter with Gimp extensions
+  * Drop Shadow and Bevel - Add a drop shadow and/or bevel to a layer
+  * Foggify: Add a layer of fog to an image
+  * Py-Slice: Cuts an image along its guides and saves subimages + HTML
+  * Sphere: Generate simple spheres with drop shadows
+  * Whirl and Pinch: Distorts an image by whirling and pinching
 
 Package: gimp-svg
 Architecture: any
@@ -77,8 +85,8 @@ Description: Wget URI plugin for The GIMP
 Package: gimp
 Architecture: any
 Section: graphics
-Depends: gimp-gnomevfs | gimp-wget, gimp-data (= ${Source-Version}), ${shlibs:Depends}
-Recommends: gimp-svg, gimp-gnomeprint | gimp-print
+Depends: gimp-data (= ${Source-Version}), ${shlibs:Depends}
+Recommends: gimp-gnomevfs | gimp-wget, gimp-svg, gimp-print
 Suggests: gimp-help-en | gimp-help, gimp-python, libgimp-perl, gimp-data-extras, libasound2 (>= 1.0.0), gimp-dbg
 Description: The GNU Image Manipulation Program - DEVELOPMENT VERSION
  The GIMP lets you draw, paint, edit images, and much more! GIMP

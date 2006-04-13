@@ -1,3 +1,73 @@
+2006-04-11  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2006-04-05  Nickolay V. Shmyrev <nshmyrev@yandex.ru>
+
+	* ru.po: Updated Russian translation.
+
+2006-04-05  Marco Ciampa <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2006-04-03  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+
+	* es.po: Updated Spanish translation.
+
+2006-04-01  Marco Ciampa <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2006-03-14  Žygimantas Beručka  <zygis@gnome.org>
+
+	* lt.po: Updated Lithuanian translation.
+
+2006-03-12  Hendrik Brandt  <heb@gnome-de.org>
+
+	* de.po: Updated German translation.
+	
+2006-03-10  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+
+	* es.po: Updated Spanish translation.
+
+2006-03-09  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+	Quim Perez i Noguer <noguer@osona.com>, and
+	Xavier Conde Rueda <xavi.conde@gmail.com>
+
+2006-03-02  Inaki Larranaga  <dooteo@euskalgnu.org>
+
+	* eu.po: Updated Basque translation.
+
+2006-02-28  Sven Neumann  <sven@gimp.org>
+
+	* Makefile.in.in: changed sed expression to deal with the encoding
+	tag in POTFILES.in.
+
+2006-02-28  Sven Neumann  <sven@gimp.org>
+
+	* POTFILES.in: specify encoding.
+
+	* de.po: updated german translation.
+
+2006-02-24  Marco Ciampa <ciampix@libero.it>
+
+        * it.po: updated italian translation.
+
+2006-02-19  Sven Neumann  <sven@gimp.org>
+
+	* de.po: updated german translation.
+
+2006-02-12  Nickolay V. Shmyrev <nshmyrev@yandex.ru>
+
+	* ru.po: Updated Russian translation by	
+	Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+
+2006-02-11  Funda Wang  <fundawang@linux.net.cn>
+
+	* zh_CN.po: Updated Simplified Chinese translation.
+
 2006-02-08  Sven Neumann  <sven@gimp.org>
 
 	* de.po: updated german translation.

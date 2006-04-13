@@ -26,78 +26,47 @@
 #include "libgimpbase/gimpbase.h"
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
 #include "core/gimplayer.h"
 #include "text/gimptext-compat.h"
 
-static ProcRecord text_fontname_proc;
-static ProcRecord text_get_extents_fontname_proc;
-static ProcRecord text_proc;
-static ProcRecord text_get_extents_proc;
 
-void
-register_text_tool_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &text_fontname_proc);
-  procedural_db_register (gimp, &text_get_extents_fontname_proc);
-  procedural_db_register (gimp, &text_proc);
-  procedural_db_register (gimp, &text_get_extents_proc);
-}
-
-static Argument *
-text_fontname_invoker (Gimp         *gimp,
-                       GimpContext  *context,
-                       GimpProgress *progress,
-                       Argument     *args)
+static GValueArray *
+text_fontname_invoker (GimpProcedure     *procedure,
+                       Gimp              *gimp,
+                       GimpContext       *context,
+                       GimpProgress      *progress,
+                       const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpImage *gimage;
+  GValueArray *return_vals;
+  GimpImage *image;
   GimpDrawable *drawable;
   gdouble x;
   gdouble y;
-  gchar *text;
+  const gchar *text;
   gint32 border;
   gboolean antialias;
   gdouble size;
   gint32 size_type;
-  gchar *fontname;
+  const gchar *fontname;
   GimpLayer *text_layer = NULL;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[1].value.pdb_int);
-
-  x = args[2].value.pdb_float;
-
-  y = args[3].value.pdb_float;
-
-  text = (gchar *) args[4].value.pdb_pointer;
-  if (text == NULL || !g_utf8_validate (text, -1, NULL))
-    success = FALSE;
-
-  border = args[5].value.pdb_int;
-  if (border < -1)
-    success = FALSE;
-
-  antialias = args[6].value.pdb_int ? TRUE : FALSE;
-
-  size = args[7].value.pdb_float;
-  if (size <= 0.0)
-    success = FALSE;
-
-  size_type = args[8].value.pdb_int;
-  if (size_type < GIMP_PIXELS || size_type > GIMP_POINTS)
-    success = FALSE;
-
-  fontname = (gchar *) args[9].value.pdb_pointer;
-  if (fontname == NULL || !g_utf8_validate (fontname, -1, NULL))
-    success = FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (&args->values[1], gimp);
+  x = g_value_get_double (&args->values[2]);
+  y = g_value_get_double (&args->values[3]);
+  text = g_value_get_string (&args->values[4]);
+  border = g_value_get_int (&args->values[5]);
+  antialias = g_value_get_boolean (&args->values[6]);
+  size = g_value_get_double (&args->values[7]);
+  size_type = g_value_get_enum (&args->values[8]);
+  fontname = g_value_get_string (&args->values[9]);
 
   if (success)
     {
@@ -108,7 +77,7 @@ text_fontname_invoker (Gimp         *gimp,
         {
           gchar *real_fontname = g_strdup_printf ("%s %d", fontname, (gint) size);
 
-          text_layer = text_render (gimage, drawable, context,
+          text_layer = text_render (image, drawable, context,
                                     x, y, real_fontname, text,
                                     border, antialias);
 
@@ -116,132 +85,40 @@ text_fontname_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&text_fontname_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = text_layer ? gimp_item_get_ID (GIMP_ITEM (text_layer)) : -1;
+    gimp_value_set_layer (&return_vals->values[1], text_layer);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg text_fontname_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  },
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable: (-1 for a new text layer)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x",
-    "The x coordinate for the left of the text bounding box"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y",
-    "The y coordinate for the top of the text bounding box"
-  },
-  {
-    GIMP_PDB_STRING,
-    "text",
-    "The text to generate (in UTF-8 encoding)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "border",
-    "The size of the border: -1 <= border"
-  },
-  {
-    GIMP_PDB_INT32,
-    "antialias",
-    "Antialiasing (TRUE or FALSE)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "size",
-    "The size of text in either pixels or points"
-  },
-  {
-    GIMP_PDB_INT32,
-    "size-type",
-    "The units of specified size: GIMP_PIXELS (0) or GIMP_POINTS (1)"
-  },
-  {
-    GIMP_PDB_STRING,
-    "fontname",
-    "The name of the font"
-  }
-};
-
-static ProcArg text_fontname_outargs[] =
-{
-  {
-    GIMP_PDB_LAYER,
-    "text-layer",
-    "The new text layer or -1 if no layer was created."
-  }
-};
-
-static ProcRecord text_fontname_proc =
-{
-  "gimp-text-fontname",
-  "gimp-text-fontname",
-  "Add text at the specified location as a floating selection or a new layer.",
-  "This tool requires a fontname matching an installed PangoFT2 font. You can specify the fontsize in units of pixels or points, and the appropriate metric is specified using the size_type argument. The x and y parameters together control the placement of the new text by specifying the upper left corner of the text bounding box. If the specified drawable parameter is valid, the text will be created as a floating selection attached to the drawable. If the drawable parameter is not valid (-1), the text will appear as a new layer. Finally, a border can be specified around the final rendered text. The border is measured in pixels.",
-  "Martin Edlman & Sven Neumann",
-  "Spencer Kimball & Peter Mattis",
-  "1998- 2001",
-  NULL,
-  GIMP_INTERNAL,
-  10,
-  text_fontname_inargs,
-  1,
-  text_fontname_outargs,
-  { { text_fontname_invoker } }
-};
-
-static Argument *
-text_get_extents_fontname_invoker (Gimp         *gimp,
-                                   GimpContext  *context,
-                                   GimpProgress *progress,
-                                   Argument     *args)
+static GValueArray *
+text_get_extents_fontname_invoker (GimpProcedure     *procedure,
+                                   Gimp              *gimp,
+                                   GimpContext       *context,
+                                   GimpProgress      *progress,
+                                   const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gchar *text;
+  GValueArray *return_vals;
+  const gchar *text;
   gdouble size;
   gint32 size_type;
-  gchar *fontname;
-  gint32 width;
-  gint32 height;
-  gint32 ascent;
-  gint32 descent;
-  gchar *real_fontname;
+  const gchar *fontname;
+  gint32 width = 0;
+  gint32 height = 0;
+  gint32 ascent = 0;
+  gint32 descent = 0;
 
-  text = (gchar *) args[0].value.pdb_pointer;
-  if (text == NULL || !g_utf8_validate (text, -1, NULL))
-    success = FALSE;
-
-  size = args[1].value.pdb_float;
-  if (size <= 0.0)
-    success = FALSE;
-
-  size_type = args[2].value.pdb_int;
-  if (size_type < GIMP_PIXELS || size_type > GIMP_POINTS)
-    success = FALSE;
-
-  fontname = (gchar *) args[3].value.pdb_pointer;
-  if (fontname == NULL || !g_utf8_validate (fontname, -1, NULL))
-    success = FALSE;
+  text = g_value_get_string (&args->values[0]);
+  size = g_value_get_double (&args->values[1]);
+  size_type = g_value_get_enum (&args->values[2]);
+  fontname = g_value_get_string (&args->values[3]);
 
   if (success)
     {
-      real_fontname = g_strdup_printf ("%s %d", fontname, (gint) size);
+      gchar *real_fontname = g_strdup_printf ("%s %d", fontname, (gint) size);
 
       success = text_get_extents (real_fontname, text,
                                   &width, &height,
@@ -250,171 +127,64 @@ text_get_extents_fontname_invoker (Gimp         *gimp,
       g_free (real_fontname);
     }
 
-  return_args = procedural_db_return_args (&text_get_extents_fontname_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_int = width;
-      return_args[2].value.pdb_int = height;
-      return_args[3].value.pdb_int = ascent;
-      return_args[4].value.pdb_int = descent;
+      g_value_set_int (&return_vals->values[1], width);
+      g_value_set_int (&return_vals->values[2], height);
+      g_value_set_int (&return_vals->values[3], ascent);
+      g_value_set_int (&return_vals->values[4], descent);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg text_get_extents_fontname_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "text",
-    "The text to generate (in UTF-8 encoding)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "size",
-    "The size of text in either pixels or points"
-  },
-  {
-    GIMP_PDB_INT32,
-    "size-type",
-    "The units of specified size: GIMP_PIXELS (0) or GIMP_POINTS (1)"
-  },
-  {
-    GIMP_PDB_STRING,
-    "fontname",
-    "The name of the font"
-  }
-};
-
-static ProcArg text_get_extents_fontname_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "width",
-    "The width of the specified font"
-  },
-  {
-    GIMP_PDB_INT32,
-    "height",
-    "The height of the specified font"
-  },
-  {
-    GIMP_PDB_INT32,
-    "ascent",
-    "The ascent of the specified font"
-  },
-  {
-    GIMP_PDB_INT32,
-    "descent",
-    "The descent of the specified font"
-  }
-};
-
-static ProcRecord text_get_extents_fontname_proc =
-{
-  "gimp-text-get-extents-fontname",
-  "gimp-text-get-extents-fontname",
-  "Get extents of the bounding box for the specified text.",
-  "This tool returns the width and height of a bounding box for the specified text string with the specified font information. Ascent and descent for the specified font are returned as well.",
-  "Martin Edlman & Sven Neumann",
-  "Spencer Kimball & Peter Mattis",
-  "1998- 2001",
-  NULL,
-  GIMP_INTERNAL,
-  4,
-  text_get_extents_fontname_inargs,
-  4,
-  text_get_extents_fontname_outargs,
-  { { text_get_extents_fontname_invoker } }
-};
-
-static Argument *
-text_invoker (Gimp         *gimp,
-              GimpContext  *context,
-              GimpProgress *progress,
-              Argument     *args)
+static GValueArray *
+text_invoker (GimpProcedure     *procedure,
+              Gimp              *gimp,
+              GimpContext       *context,
+              GimpProgress      *progress,
+              const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpImage *gimage;
+  GValueArray *return_vals;
+  GimpImage *image;
   GimpDrawable *drawable;
   gdouble x;
   gdouble y;
-  gchar *text;
+  const gchar *text;
   gint32 border;
   gboolean antialias;
   gdouble size;
   gint32 size_type;
-  gchar *foundry;
-  gchar *family;
-  gchar *weight;
-  gchar *slant;
-  gchar *set_width;
-  gchar *spacing;
-  gchar *registry;
-  gchar *encoding;
+  const gchar *foundry;
+  const gchar *family;
+  const gchar *weight;
+  const gchar *slant;
+  const gchar *set_width;
+  const gchar *spacing;
+  const gchar *registry;
+  const gchar *encoding;
   GimpLayer *text_layer = NULL;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[1].value.pdb_int);
-
-  x = args[2].value.pdb_float;
-
-  y = args[3].value.pdb_float;
-
-  text = (gchar *) args[4].value.pdb_pointer;
-  if (text == NULL || !g_utf8_validate (text, -1, NULL))
-    success = FALSE;
-
-  border = args[5].value.pdb_int;
-  if (border < -1)
-    success = FALSE;
-
-  antialias = args[6].value.pdb_int ? TRUE : FALSE;
-
-  size = args[7].value.pdb_float;
-  if (size <= 0.0)
-    success = FALSE;
-
-  size_type = args[8].value.pdb_int;
-  if (size_type < GIMP_PIXELS || size_type > GIMP_POINTS)
-    success = FALSE;
-
-  foundry = (gchar *) args[9].value.pdb_pointer;
-  if (foundry == NULL)
-    success = FALSE;
-
-  family = (gchar *) args[10].value.pdb_pointer;
-  if (family == NULL)
-    success = FALSE;
-
-  weight = (gchar *) args[11].value.pdb_pointer;
-  if (weight == NULL)
-    success = FALSE;
-
-  slant = (gchar *) args[12].value.pdb_pointer;
-  if (slant == NULL)
-    success = FALSE;
-
-  set_width = (gchar *) args[13].value.pdb_pointer;
-  if (set_width == NULL)
-    success = FALSE;
-
-  spacing = (gchar *) args[14].value.pdb_pointer;
-  if (spacing == NULL)
-    success = FALSE;
-
-  registry = (gchar *) args[15].value.pdb_pointer;
-  if (registry == NULL)
-    success = FALSE;
-
-  encoding = (gchar *) args[16].value.pdb_pointer;
-  if (encoding == NULL)
-    success = FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (&args->values[1], gimp);
+  x = g_value_get_double (&args->values[2]);
+  y = g_value_get_double (&args->values[3]);
+  text = g_value_get_string (&args->values[4]);
+  border = g_value_get_int (&args->values[5]);
+  antialias = g_value_get_boolean (&args->values[6]);
+  size = g_value_get_double (&args->values[7]);
+  size_type = g_value_get_enum (&args->values[8]);
+  foundry = g_value_get_string (&args->values[9]);
+  family = g_value_get_string (&args->values[10]);
+  weight = g_value_get_string (&args->values[11]);
+  slant = g_value_get_string (&args->values[12]);
+  set_width = g_value_get_string (&args->values[13]);
+  spacing = g_value_get_string (&args->values[14]);
+  registry = g_value_get_string (&args->values[15]);
+  encoding = g_value_get_string (&args->values[16]);
 
   if (success)
     {
@@ -425,7 +195,7 @@ text_invoker (Gimp         *gimp,
         {
           gchar *real_fontname = g_strdup_printf ("%s %d", family, (gint) size);
 
-          text_layer = text_render (gimage, drawable, context,
+          text_layer = text_render (image, drawable, context,
                                     x, y, real_fontname, text,
                                     border, antialias);
 
@@ -433,202 +203,54 @@ text_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&text_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = text_layer ? gimp_item_get_ID (GIMP_ITEM (text_layer)) : -1;
+    gimp_value_set_layer (&return_vals->values[1], text_layer);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg text_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  },
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable: (-1 for a new text layer)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x",
-    "The x coordinate for the left of the text bounding box"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y",
-    "The y coordinate for the top of the text bounding box"
-  },
-  {
-    GIMP_PDB_STRING,
-    "text",
-    "The text to generate (in UTF-8 encoding)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "border",
-    "The size of the border: -1 <= border"
-  },
-  {
-    GIMP_PDB_INT32,
-    "antialias",
-    "Antialiasing (TRUE or FALSE)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "size",
-    "The size of text in either pixels or points"
-  },
-  {
-    GIMP_PDB_INT32,
-    "size-type",
-    "The units of specified size: GIMP_PIXELS (0) or GIMP_POINTS (1)"
-  },
-  {
-    GIMP_PDB_STRING,
-    "foundry",
-    "The font foundry"
-  },
-  {
-    GIMP_PDB_STRING,
-    "family",
-    "The font family"
-  },
-  {
-    GIMP_PDB_STRING,
-    "weight",
-    "The font weight"
-  },
-  {
-    GIMP_PDB_STRING,
-    "slant",
-    "The font slant"
-  },
-  {
-    GIMP_PDB_STRING,
-    "set-width",
-    "The font set-width"
-  },
-  {
-    GIMP_PDB_STRING,
-    "spacing",
-    "The font spacing"
-  },
-  {
-    GIMP_PDB_STRING,
-    "registry",
-    "The font registry"
-  },
-  {
-    GIMP_PDB_STRING,
-    "encoding",
-    "The font encoding"
-  }
-};
-
-static ProcArg text_outargs[] =
-{
-  {
-    GIMP_PDB_LAYER,
-    "text-layer",
-    "The new text layer or -1 if no layer was created."
-  }
-};
-
-static ProcRecord text_proc =
-{
-  "gimp-text",
-  "gimp-text",
-  "This procedure is deprecated! Use 'gimp-text-fontname' instead.",
-  "This procedure is deprecated! Use 'gimp-text-fontname' instead.",
-  "",
-  "",
-  "",
-  "gimp-text-fontname",
-  GIMP_INTERNAL,
-  17,
-  text_inargs,
-  1,
-  text_outargs,
-  { { text_invoker } }
-};
-
-static Argument *
-text_get_extents_invoker (Gimp         *gimp,
-                          GimpContext  *context,
-                          GimpProgress *progress,
-                          Argument     *args)
+static GValueArray *
+text_get_extents_invoker (GimpProcedure     *procedure,
+                          Gimp              *gimp,
+                          GimpContext       *context,
+                          GimpProgress      *progress,
+                          const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gchar *text;
+  GValueArray *return_vals;
+  const gchar *text;
   gdouble size;
   gint32 size_type;
-  gchar *foundry;
-  gchar *family;
-  gchar *weight;
-  gchar *slant;
-  gchar *set_width;
-  gchar *spacing;
-  gchar *registry;
-  gchar *encoding;
-  gint32 width;
-  gint32 height;
-  gint32 ascent;
-  gint32 descent;
-  gchar *real_fontname;
+  const gchar *foundry;
+  const gchar *family;
+  const gchar *weight;
+  const gchar *slant;
+  const gchar *set_width;
+  const gchar *spacing;
+  const gchar *registry;
+  const gchar *encoding;
+  gint32 width = 0;
+  gint32 height = 0;
+  gint32 ascent = 0;
+  gint32 descent = 0;
 
-  text = (gchar *) args[0].value.pdb_pointer;
-  if (text == NULL || !g_utf8_validate (text, -1, NULL))
-    success = FALSE;
-
-  size = args[1].value.pdb_float;
-  if (size <= 0.0)
-    success = FALSE;
-
-  size_type = args[2].value.pdb_int;
-  if (size_type < GIMP_PIXELS || size_type > GIMP_POINTS)
-    success = FALSE;
-
-  foundry = (gchar *) args[3].value.pdb_pointer;
-  if (foundry == NULL)
-    success = FALSE;
-
-  family = (gchar *) args[4].value.pdb_pointer;
-  if (family == NULL)
-    success = FALSE;
-
-  weight = (gchar *) args[5].value.pdb_pointer;
-  if (weight == NULL)
-    success = FALSE;
-
-  slant = (gchar *) args[6].value.pdb_pointer;
-  if (slant == NULL)
-    success = FALSE;
-
-  set_width = (gchar *) args[7].value.pdb_pointer;
-  if (set_width == NULL)
-    success = FALSE;
-
-  spacing = (gchar *) args[8].value.pdb_pointer;
-  if (spacing == NULL)
-    success = FALSE;
-
-  registry = (gchar *) args[9].value.pdb_pointer;
-  if (registry == NULL)
-    success = FALSE;
-
-  encoding = (gchar *) args[10].value.pdb_pointer;
-  if (encoding == NULL)
-    success = FALSE;
+  text = g_value_get_string (&args->values[0]);
+  size = g_value_get_double (&args->values[1]);
+  size_type = g_value_get_enum (&args->values[2]);
+  foundry = g_value_get_string (&args->values[3]);
+  family = g_value_get_string (&args->values[4]);
+  weight = g_value_get_string (&args->values[5]);
+  slant = g_value_get_string (&args->values[6]);
+  set_width = g_value_get_string (&args->values[7]);
+  spacing = g_value_get_string (&args->values[8]);
+  registry = g_value_get_string (&args->values[9]);
+  encoding = g_value_get_string (&args->values[10]);
 
   if (success)
     {
-      real_fontname = g_strdup_printf ("%s %d", family, (gint) size);
+      gchar *real_fontname = g_strdup_printf ("%s %d", family, (gint) size);
 
       success = text_get_extents (real_fontname, text,
                                   &width, &height,
@@ -637,116 +259,428 @@ text_get_extents_invoker (Gimp         *gimp,
       g_free (real_fontname);
     }
 
-  return_args = procedural_db_return_args (&text_get_extents_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_int = width;
-      return_args[2].value.pdb_int = height;
-      return_args[3].value.pdb_int = ascent;
-      return_args[4].value.pdb_int = descent;
+      g_value_set_int (&return_vals->values[1], width);
+      g_value_set_int (&return_vals->values[2], height);
+      g_value_set_int (&return_vals->values[3], ascent);
+      g_value_set_int (&return_vals->values[4], descent);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg text_get_extents_inargs[] =
+void
+register_text_tool_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_STRING,
-    "text",
-    "The text to generate (in UTF-8 encoding)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "size",
-    "The size of text in either pixels or points"
-  },
-  {
-    GIMP_PDB_INT32,
-    "size-type",
-    "The units of specified size: GIMP_PIXELS (0) or GIMP_POINTS (1)"
-  },
-  {
-    GIMP_PDB_STRING,
-    "foundry",
-    "The font foundry"
-  },
-  {
-    GIMP_PDB_STRING,
-    "family",
-    "The font family"
-  },
-  {
-    GIMP_PDB_STRING,
-    "weight",
-    "The font weight"
-  },
-  {
-    GIMP_PDB_STRING,
-    "slant",
-    "The font slant"
-  },
-  {
-    GIMP_PDB_STRING,
-    "set-width",
-    "The font set-width"
-  },
-  {
-    GIMP_PDB_STRING,
-    "spacing",
-    "The font spacing"
-  },
-  {
-    GIMP_PDB_STRING,
-    "registry",
-    "The font registry"
-  },
-  {
-    GIMP_PDB_STRING,
-    "encoding",
-    "The font encoding"
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcArg text_get_extents_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "width",
-    "The width of the specified font"
-  },
-  {
-    GIMP_PDB_INT32,
-    "height",
-    "The height of the specified font"
-  },
-  {
-    GIMP_PDB_INT32,
-    "ascent",
-    "The ascent of the specified font"
-  },
-  {
-    GIMP_PDB_INT32,
-    "descent",
-    "The descent of the specified font"
-  }
-};
+  /*
+   * gimp-text-fontname
+   */
+  procedure = gimp_procedure_new (text_fontname_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-text-fontname");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-text-fontname",
+                                     "Add text at the specified location as a floating selection or a new layer.",
+                                     "This tool requires a fontname matching an installed PangoFT2 font. You can specify the fontsize in units of pixels or points, and the appropriate metric is specified using the size_type argument. The x and y parameters together control the placement of the new text by specifying the upper left corner of the text bounding box. If the specified drawable parameter is valid, the text will be created as a floating selection attached to the drawable. If the drawable parameter is not valid (-1), the text will appear as a new layer. Finally, a border can be specified around the final rendered text. The border is measured in pixels.",
+                                     "Martin Edlman & Sven Neumann",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1998- 2001",
+                                     NULL);
 
-static ProcRecord text_get_extents_proc =
-{
-  "gimp-text-get-extents",
-  "gimp-text-get-extents",
-  "This procedure is deprecated! Use 'gimp-text-get-extents-fontname' instead.",
-  "This procedure is deprecated! Use 'gimp-text-get-extents-fontname' instead.",
-  "",
-  "",
-  "",
-  "gimp-text-get-extents-fontname",
-  GIMP_INTERNAL,
-  11,
-  text_get_extents_inargs,
-  4,
-  text_get_extents_outargs,
-  { { text_get_extents_invoker } }
-};
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable: (-1 for a new text layer)",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x",
+                                                    "x",
+                                                    "The x coordinate for the left of the text bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y",
+                                                    "y",
+                                                    "The y coordinate for the top of the text bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("text",
+                                                       "text",
+                                                       "The text to generate (in UTF-8 encoding)",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("border",
+                                                      "border",
+                                                      "The size of the border (-1 <= border)",
+                                                      -1, G_MAXINT32, -1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("antialias",
+                                                     "antialias",
+                                                     "Antialiasing (TRUE or FALSE)",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("size",
+                                                    "size",
+                                                    "The size of text in either pixels or points",
+                                                    0, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("size-type",
+                                                  "size type",
+                                                  "The units of specified size: { GIMP_PIXELS (0), GIMP_POINTS (1) }",
+                                                  GIMP_TYPE_SIZE_TYPE,
+                                                  GIMP_PIXELS,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("fontname",
+                                                       "fontname",
+                                                       "The name of the font",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_layer_id ("text-layer",
+                                                             "text layer",
+                                                             "The new text layer or -1 if no layer was created.",
+                                                             gimp,
+                                                             GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-text-get-extents-fontname
+   */
+  procedure = gimp_procedure_new (text_get_extents_fontname_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-text-get-extents-fontname");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-text-get-extents-fontname",
+                                     "Get extents of the bounding box for the specified text.",
+                                     "This tool returns the width and height of a bounding box for the specified text string with the specified font information. Ascent and descent for the specified font are returned as well.",
+                                     "Martin Edlman & Sven Neumann",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1998- 2001",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("text",
+                                                       "text",
+                                                       "The text to generate (in UTF-8 encoding)",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("size",
+                                                    "size",
+                                                    "The size of text in either pixels or points",
+                                                    0, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("size-type",
+                                                  "size type",
+                                                  "The units of specified size: { GIMP_PIXELS (0), GIMP_POINTS (1) }",
+                                                  GIMP_TYPE_SIZE_TYPE,
+                                                  GIMP_PIXELS,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("fontname",
+                                                       "fontname",
+                                                       "The name of the font",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("width",
+                                                          "width",
+                                                          "The width of the specified font",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("height",
+                                                          "height",
+                                                          "The height of the specified font",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("ascent",
+                                                          "ascent",
+                                                          "The ascent of the specified font",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("descent",
+                                                          "descent",
+                                                          "The descent of the specified font",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-text
+   */
+  procedure = gimp_procedure_new (text_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-text");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-text",
+                                     "This procedure is deprecated! Use 'gimp-text-fontname' instead.",
+                                     "This procedure is deprecated! Use 'gimp-text-fontname' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-text-fontname");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable: (-1 for a new text layer)",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x",
+                                                    "x",
+                                                    "The x coordinate for the left of the text bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y",
+                                                    "y",
+                                                    "The y coordinate for the top of the text bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("text",
+                                                       "text",
+                                                       "The text to generate (in UTF-8 encoding)",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("border",
+                                                      "border",
+                                                      "The size of the border (-1 <= border)",
+                                                      -1, G_MAXINT32, -1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("antialias",
+                                                     "antialias",
+                                                     "Antialiasing (TRUE or FALSE)",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("size",
+                                                    "size",
+                                                    "The size of text in either pixels or points",
+                                                    0, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("size-type",
+                                                  "size type",
+                                                  "The units of specified size: { GIMP_PIXELS (0), GIMP_POINTS (1) }",
+                                                  GIMP_TYPE_SIZE_TYPE,
+                                                  GIMP_PIXELS,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("foundry",
+                                                       "foundry",
+                                                       "The font foundry",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("family",
+                                                       "family",
+                                                       "The font family",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("weight",
+                                                       "weight",
+                                                       "The font weight",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("slant",
+                                                       "slant",
+                                                       "The font slant",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("set-width",
+                                                       "set width",
+                                                       "The font set-width",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("spacing",
+                                                       "spacing",
+                                                       "The font spacing",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("registry",
+                                                       "registry",
+                                                       "The font registry",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("encoding",
+                                                       "encoding",
+                                                       "The font encoding",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_layer_id ("text-layer",
+                                                             "text layer",
+                                                             "The new text layer or -1 if no layer was created.",
+                                                             gimp,
+                                                             GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-text-get-extents
+   */
+  procedure = gimp_procedure_new (text_get_extents_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-text-get-extents");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-text-get-extents",
+                                     "This procedure is deprecated! Use 'gimp-text-get-extents-fontname' instead.",
+                                     "This procedure is deprecated! Use 'gimp-text-get-extents-fontname' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-text-get-extents-fontname");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("text",
+                                                       "text",
+                                                       "The text to generate (in UTF-8 encoding)",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("size",
+                                                    "size",
+                                                    "The size of text in either pixels or points",
+                                                    0, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("size-type",
+                                                  "size type",
+                                                  "The units of specified size: { GIMP_PIXELS (0), GIMP_POINTS (1) }",
+                                                  GIMP_TYPE_SIZE_TYPE,
+                                                  GIMP_PIXELS,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("foundry",
+                                                       "foundry",
+                                                       "The font foundry",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("family",
+                                                       "family",
+                                                       "The font family",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("weight",
+                                                       "weight",
+                                                       "The font weight",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("slant",
+                                                       "slant",
+                                                       "The font slant",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("set-width",
+                                                       "set width",
+                                                       "The font set-width",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("spacing",
+                                                       "spacing",
+                                                       "The font spacing",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("registry",
+                                                       "registry",
+                                                       "The font registry",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("encoding",
+                                                       "encoding",
+                                                       "The font encoding",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("width",
+                                                          "width",
+                                                          "The width of the specified font",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("height",
+                                                          "height",
+                                                          "The height of the specified font",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("ascent",
+                                                          "ascent",
+                                                          "The ascent of the specified font",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("descent",
+                                                          "descent",
+                                                          "The descent of the specified font",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

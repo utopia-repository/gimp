@@ -25,7 +25,9 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "core/gimp.h"
 #include "core/gimpchannel-select.h"
@@ -39,138 +41,55 @@
 #include "vectors/gimpvectors-import.h"
 #include "vectors/gimpvectors.h"
 
-static ProcRecord path_list_proc;
-static ProcRecord path_get_current_proc;
-static ProcRecord path_set_current_proc;
-static ProcRecord path_delete_proc;
-static ProcRecord path_get_points_proc;
-static ProcRecord path_set_points_proc;
-static ProcRecord path_stroke_current_proc;
-static ProcRecord path_get_point_at_dist_proc;
-static ProcRecord path_get_tattoo_proc;
-static ProcRecord path_set_tattoo_proc;
-static ProcRecord get_path_by_tattoo_proc;
-static ProcRecord path_get_locked_proc;
-static ProcRecord path_set_locked_proc;
-static ProcRecord path_get_visible_proc;
-static ProcRecord path_set_visible_proc;
-static ProcRecord path_to_selection_proc;
-static ProcRecord path_import_proc;
-static ProcRecord path_import_string_proc;
 
-void
-register_paths_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &path_list_proc);
-  procedural_db_register (gimp, &path_get_current_proc);
-  procedural_db_register (gimp, &path_set_current_proc);
-  procedural_db_register (gimp, &path_delete_proc);
-  procedural_db_register (gimp, &path_get_points_proc);
-  procedural_db_register (gimp, &path_set_points_proc);
-  procedural_db_register (gimp, &path_stroke_current_proc);
-  procedural_db_register (gimp, &path_get_point_at_dist_proc);
-  procedural_db_register (gimp, &path_get_tattoo_proc);
-  procedural_db_register (gimp, &path_set_tattoo_proc);
-  procedural_db_register (gimp, &get_path_by_tattoo_proc);
-  procedural_db_register (gimp, &path_get_locked_proc);
-  procedural_db_register (gimp, &path_set_locked_proc);
-  procedural_db_register (gimp, &path_get_visible_proc);
-  procedural_db_register (gimp, &path_set_visible_proc);
-  procedural_db_register (gimp, &path_to_selection_proc);
-  procedural_db_register (gimp, &path_import_proc);
-  procedural_db_register (gimp, &path_import_string_proc);
-}
-
-static Argument *
-path_list_invoker (Gimp         *gimp,
-                   GimpContext  *context,
-                   GimpProgress *progress,
-                   Argument     *args)
+static GValueArray *
+path_list_invoker (GimpProcedure     *procedure,
+                   Gimp              *gimp,
+                   GimpContext       *context,
+                   GimpProgress      *progress,
+                   const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpImage *gimage;
-  gint32 num_paths;
+  GValueArray *return_vals;
+  GimpImage *image;
+  gint32 num_paths = 0;
   gchar **path_list = NULL;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  if (success)
-    path_list = gimp_container_get_name_array (gimage->vectors, &num_paths);
-
-  return_args = procedural_db_return_args (&path_list_proc, success);
+  image = gimp_value_get_image (&args->values[0], gimp);
 
   if (success)
     {
-      return_args[1].value.pdb_int = num_paths;
-      return_args[2].value.pdb_pointer = path_list;
+      path_list = gimp_container_get_name_array (image->vectors, &num_paths);
     }
 
-  return return_args;
-}
-
-static ProcArg path_list_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The ID of the image to list the paths from"
-  }
-};
-
-static ProcArg path_list_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "num-paths",
-    "The number of paths returned."
-  },
-  {
-    GIMP_PDB_STRINGARRAY,
-    "path-list",
-    "List of the paths belonging to this image."
-  }
-};
-
-static ProcRecord path_list_proc =
-{
-  "gimp-path-list",
-  "gimp-path-list",
-  "List the paths associated with the passed image.",
-  "List the paths associated with the passed image.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  path_list_inargs,
-  2,
-  path_list_outargs,
-  { { path_list_invoker } }
-};
-
-static Argument *
-path_get_current_invoker (Gimp         *gimp,
-                          GimpContext  *context,
-                          GimpProgress *progress,
-                          Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpImage *gimage;
-  gchar *name = NULL;
-  GimpVectors *vectors;
-
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      vectors = gimp_image_get_active_vectors (gimage);
+      g_value_set_int (&return_vals->values[1], num_paths);
+      gimp_value_take_stringarray (&return_vals->values[2], path_list, num_paths);
+    }
+
+  return return_vals;
+}
+
+static GValueArray *
+path_get_current_invoker (GimpProcedure     *procedure,
+                          Gimp              *gimp,
+                          GimpContext       *context,
+                          GimpProgress      *progress,
+                          const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpImage *image;
+  gchar *name = NULL;
+
+  image = gimp_value_get_image (&args->values[0], gimp);
+
+  if (success)
+    {
+      GimpVectors *vectors = gimp_image_get_active_vectors (image);
 
       if (vectors)
         name = g_strdup (gimp_object_get_name (GIMP_OBJECT (vectors)));
@@ -178,205 +97,90 @@ path_get_current_invoker (Gimp         *gimp,
         success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&path_get_current_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_pointer = name;
+    g_value_take_string (&return_vals->values[1], name);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg path_get_current_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The ID of the image to get the current path from."
-  }
-};
-
-static ProcArg path_get_current_outargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the current path."
-  }
-};
-
-static ProcRecord path_get_current_proc =
-{
-  "gimp-path-get-current",
-  "gimp-path-get-current",
-  "The name of the current path. Error if no paths.",
-  "The name of the current path. Error if no paths.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  path_get_current_inargs,
-  1,
-  path_get_current_outargs,
-  { { path_get_current_invoker } }
-};
-
-static Argument *
-path_set_current_invoker (Gimp         *gimp,
-                          GimpContext  *context,
-                          GimpProgress *progress,
-                          Argument     *args)
+static GValueArray *
+path_set_current_invoker (GimpProcedure     *procedure,
+                          Gimp              *gimp,
+                          GimpContext       *context,
+                          GimpProgress      *progress,
+                          const GValueArray *args)
 {
   gboolean success = TRUE;
-  GimpImage *gimage;
-  gchar *name;
-  GimpVectors *vectors;
+  GimpImage *image;
+  const gchar *name;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  name = (gchar *) args[1].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  name = g_value_get_string (&args->values[1]);
 
   if (success)
     {
-      vectors = gimp_image_get_vectors_by_name (gimage, name);
+      GimpVectors *vectors = gimp_image_get_vectors_by_name (image, name);
 
       if (vectors)
-        gimp_image_set_active_vectors (gimage, vectors);
+        gimp_image_set_active_vectors (image, vectors);
       else
         success = FALSE;
     }
 
-  return procedural_db_return_args (&path_set_current_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg path_set_current_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The ID of the image in which a path will become current."
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the path to make current."
-  }
-};
-
-static ProcRecord path_set_current_proc =
-{
-  "gimp-path-set-current",
-  "gimp-path-set-current",
-  "Sets the current path associated with the passed image.",
-  "Sets a named path as the current path.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  path_set_current_inargs,
-  0,
-  NULL,
-  { { path_set_current_invoker } }
-};
-
-static Argument *
-path_delete_invoker (Gimp         *gimp,
-                     GimpContext  *context,
-                     GimpProgress *progress,
-                     Argument     *args)
+static GValueArray *
+path_delete_invoker (GimpProcedure     *procedure,
+                     Gimp              *gimp,
+                     GimpContext       *context,
+                     GimpProgress      *progress,
+                     const GValueArray *args)
 {
   gboolean success = TRUE;
-  GimpImage *gimage;
-  gchar *name;
-  GimpVectors *vectors;
+  GimpImage *image;
+  const gchar *name;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  name = (gchar *) args[1].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  name = g_value_get_string (&args->values[1]);
 
   if (success)
     {
-      vectors = gimp_image_get_vectors_by_name (gimage, name);
+      GimpVectors *vectors = gimp_image_get_vectors_by_name (image, name);
 
       if (vectors)
-        gimp_image_remove_vectors (gimage, vectors);
+        gimp_image_remove_vectors (image, vectors);
       else
         success = FALSE;
     }
 
-  return procedural_db_return_args (&path_delete_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg path_delete_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The ID of the image to delete the path from."
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the path to delete."
-  }
-};
-
-static ProcRecord path_delete_proc =
-{
-  "gimp-path-delete",
-  "gimp-path-delete",
-  "Delete the named path associated with the passed image.",
-  "Delete the named path.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  path_delete_inargs,
-  0,
-  NULL,
-  { { path_delete_invoker } }
-};
-
-static Argument *
-path_get_points_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
+static GValueArray *
+path_get_points_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpImage *gimage;
-  gchar *name;
+  GValueArray *return_vals;
+  GimpImage *image;
+  const gchar *name;
   gint32 path_type = 0;
   gint32 path_closed = 0;
-  gint32 num_point_details = 0;
+  gint32 num_path_point_details = 0;
   gdouble *points_pairs = NULL;
-  GimpVectors *vectors;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  name = (gchar *) args[1].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  name = g_value_get_string (&args->values[1]);
 
   if (success)
     {
-      vectors = gimp_image_get_vectors_by_name (gimage, name);
+      GimpVectors *vectors = gimp_image_get_vectors_by_name (image, name);
 
       if (vectors)
         {
@@ -388,14 +192,14 @@ path_get_points_invoker (Gimp         *gimp,
           points = gimp_vectors_compat_get_points (vectors, &num_points,
                                                    &path_closed);
 
-          num_point_details = num_points * 3;
+          num_path_point_details = num_points * 3;
 
           if (points)
             {
               gdouble *curr_point;
               gint     i;
 
-              points_pairs = g_new0 (gdouble, num_point_details);
+              points_pairs = g_new0 (gdouble, num_path_point_details);
 
               for (i = 0, curr_point = points_pairs;
                    i < num_points;
@@ -415,107 +219,43 @@ path_get_points_invoker (Gimp         *gimp,
         success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&path_get_points_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_int = path_type;
-      return_args[2].value.pdb_int = path_closed;
-      return_args[3].value.pdb_int = num_point_details;
-      return_args[4].value.pdb_pointer = points_pairs;
+      g_value_set_int (&return_vals->values[1], path_type);
+      g_value_set_int (&return_vals->values[2], path_closed);
+      g_value_set_int (&return_vals->values[3], num_path_point_details);
+      gimp_value_take_floatarray (&return_vals->values[4], points_pairs, num_path_point_details);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg path_get_points_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The ID of the image to list the paths from."
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the path whose points should be listed."
-  }
-};
-
-static ProcArg path_get_points_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "path-type",
-    "The type of the path. Currently only one type (1 = Bezier) is supported"
-  },
-  {
-    GIMP_PDB_INT32,
-    "path-closed",
-    "Return if the path is closed. (0 = path open, 1 = path closed)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "num-path-point-details",
-    "The number of points returned. Each point is made up of (x, y, pnt_type) of floats."
-  },
-  {
-    GIMP_PDB_FLOATARRAY,
-    "points-pairs",
-    "The points in the path represented as 3 floats. The first is the x pos, next is the y pos, last is the type of the pnt. The type field is dependant on the path type. For beziers (type 1 paths) the type can either be (1.0 = BEZIER_ANCHOR, 2.0 = BEZIER_CONTROL, 3.0 = BEZIER_MOVE). Note all points are returned in pixel resolution."
-  }
-};
-
-static ProcRecord path_get_points_proc =
-{
-  "gimp-path-get-points",
-  "gimp-path-get-points",
-  "List the points associated with the named path.",
-  "List the points associated with the named path.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  path_get_points_inargs,
-  4,
-  path_get_points_outargs,
-  { { path_get_points_invoker } }
-};
-
-static Argument *
-path_set_points_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
+static GValueArray *
+path_set_points_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
 {
   gboolean success = TRUE;
-  GimpImage *gimage;
-  gchar *name = NULL;
+  GimpImage *image;
+  const gchar *name;
   gint32 ptype;
-  gint32 num_path_points = 0;
-  gdouble *points_pairs;
-  gboolean closed = FALSE;
+  gint32 num_path_points;
+  const gdouble *points_pairs;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  name = (gchar *) args[1].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
-
-  ptype = args[2].value.pdb_int;
-
-  num_path_points = args[3].value.pdb_int;
-  if (num_path_points <= 0)
-    success = FALSE;
-
-  points_pairs = (gdouble *) args[4].value.pdb_pointer;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  name = g_value_get_string (&args->values[1]);
+  ptype = g_value_get_int (&args->values[2]);
+  num_path_points = g_value_get_int (&args->values[3]);
+  points_pairs = gimp_value_get_floatarray (&args->values[4]);
 
   if (success)
     {
+      gboolean closed = FALSE;
+
       if ((num_path_points / 3) % 3 == 0)
         closed = TRUE;
       else if ((num_path_points / 3) % 3 != 2)
@@ -524,7 +264,7 @@ path_set_points_invoker (Gimp         *gimp,
       if (success)
         {
           GimpVectors            *vectors;
-          gdouble                *curr_point_pair;
+          const gdouble          *curr_point_pair;
           GimpVectorsCompatPoint *points;
           gint                    n_points;
           gint                    i;
@@ -542,85 +282,37 @@ path_set_points_invoker (Gimp         *gimp,
               points[i].type = curr_point_pair[2];
             }
 
-          vectors = gimp_vectors_compat_new (gimage, name, points, n_points,
+          vectors = gimp_vectors_compat_new (image, name, points, n_points,
                                              closed);
 
           g_free (points);
 
           if (vectors)
-            gimp_image_add_vectors (gimage, vectors, 0);
+            gimp_image_add_vectors (image, vectors, 0);
           else
             success = FALSE;
         }
     }
 
-  return procedural_db_return_args (&path_set_points_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg path_set_points_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The ID of the image to set the paths in."
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the path to create. If it exists then a unique name will be created - query the list of paths if you want to make sure that the name of the path you create is unique. This will be set as the current path."
-  },
-  {
-    GIMP_PDB_INT32,
-    "ptype",
-    "The type of the path. Currently only one type (1 = Bezier) is supported."
-  },
-  {
-    GIMP_PDB_INT32,
-    "num-path-points",
-    "The number of elements in the array, i.e. the number of points in the path * 3. Each point is made up of (x, y, type) of floats. Currently only the creation of bezier curves is allowed. The type parameter must be set to (1) to indicate a BEZIER type curve. Note that for BEZIER curves, points must be given in the following order: ACCACCAC... If the path is not closed the last control point is missed off. Points consist of three control points (control/anchor/control) so for a curve that is not closed there must be at least two points passed (2 x,y pairs). If (num_path_points/3) % 3 = 0 then the path is assumed to be closed and the points are ACCACCACCACC."
-  },
-  {
-    GIMP_PDB_FLOATARRAY,
-    "points-pairs",
-    "The points in the path represented as 3 floats. The first is the x pos, next is the y pos, last is the type of the pnt. The type field is dependant on the path type. For beziers (type 1 paths) the type can either be (1.0 = BEZIER_ANCHOR, 2.0 = BEZIER_CONTROL, 3.0= BEZIER_MOVE). Note all points are returned in pixel resolution."
-  }
-};
-
-static ProcRecord path_set_points_proc =
-{
-  "gimp-path-set-points",
-  "gimp-path-set-points",
-  "Set the points associated with the named path.",
-  "Set the points associated with the named path.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  5,
-  path_set_points_inargs,
-  0,
-  NULL,
-  { { path_set_points_invoker } }
-};
-
-static Argument *
-path_stroke_current_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
+static GValueArray *
+path_stroke_current_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
 {
   gboolean success = TRUE;
-  GimpImage *gimage;
+  GimpImage *image;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
 
   if (success)
     {
-      GimpVectors  *vectors  = gimp_image_get_active_vectors (gimage);
-      GimpDrawable *drawable = gimp_image_active_drawable (gimage);
+      GimpVectors  *vectors  = gimp_image_get_active_vectors (image);
+      GimpDrawable *drawable = gimp_image_active_drawable (image);
 
       if (vectors && drawable)
         {
@@ -637,65 +329,37 @@ path_stroke_current_invoker (Gimp         *gimp,
         success = FALSE;
     }
 
-  return procedural_db_return_args (&path_stroke_current_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg path_stroke_current_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The ID of the image which contains the path to stroke."
-  }
-};
-
-static ProcRecord path_stroke_current_proc =
-{
-  "gimp-path-stroke-current",
-  "gimp-path-stroke-current",
-  "Stroke the current path in the passed image.",
-  "Stroke the current path in the passed image.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  path_stroke_current_inargs,
-  0,
-  NULL,
-  { { path_stroke_current_invoker } }
-};
-
-static Argument *
-path_get_point_at_dist_invoker (Gimp         *gimp,
-                                GimpContext  *context,
-                                GimpProgress *progress,
-                                Argument     *args)
+static GValueArray *
+path_get_point_at_dist_invoker (GimpProcedure     *procedure,
+                                Gimp              *gimp,
+                                GimpContext       *context,
+                                GimpProgress      *progress,
+                                const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpImage *gimage;
+  GValueArray *return_vals;
+  GimpImage *image;
   gdouble distance;
   gint32 x_point = 0;
   gint32 y_point = 0;
-  gdouble slope = 0;
-  GimpVectors *vectors;
-  GimpStroke *stroke;
-  gdouble distance_along;
-  gdouble stroke_length;
-  gdouble stroke_distance;
-  GimpCoords position;
+  gdouble slope = 0.0;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  distance = args[1].value.pdb_float;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  distance = g_value_get_double (&args->values[1]);
 
   if (success)
     {
-      vectors = gimp_image_get_active_vectors (gimage);
+      GimpVectors *vectors;
+      GimpStroke  *stroke;
+      gdouble      distance_along;
+      gdouble      stroke_length;
+      gdouble      stroke_distance;
+      GimpCoords   position;
+
+      vectors = gimp_image_get_active_vectors (image);
 
       if (vectors)
         {
@@ -739,93 +403,37 @@ path_get_point_at_dist_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&path_get_point_at_dist_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_int = x_point;
-      return_args[2].value.pdb_int = y_point;
-      return_args[3].value.pdb_float = slope;
+      g_value_set_int (&return_vals->values[1], x_point);
+      g_value_set_int (&return_vals->values[2], y_point);
+      g_value_set_double (&return_vals->values[3], slope);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg path_get_point_at_dist_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The ID of the image the paths belongs to"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "distance",
-    "The distance along the path."
-  }
-};
-
-static ProcArg path_get_point_at_dist_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "x-point",
-    "The x position of the point."
-  },
-  {
-    GIMP_PDB_INT32,
-    "y-point",
-    "The y position of the point."
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "slope",
-    "The slope (dy / dx) at the specified point."
-  }
-};
-
-static ProcRecord path_get_point_at_dist_proc =
-{
-  "gimp-path-get-point-at-dist",
-  "gimp-path-get-point-at-dist",
-  "Get point on a path at a specified distance along the path.",
-  "This will return the x,y position of a point at a given distance along the bezier curve. The distance will be obtained by first digitizing the curve internally and then walking along the curve. For a closed curve the start of the path is the first point on the path that was created. This might not be obvious. Note the current path is used.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  path_get_point_at_dist_inargs,
-  3,
-  path_get_point_at_dist_outargs,
-  { { path_get_point_at_dist_invoker } }
-};
-
-static Argument *
-path_get_tattoo_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
+static GValueArray *
+path_get_tattoo_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpImage *gimage;
-  gchar *name;
+  GValueArray *return_vals;
+  GimpImage *image;
+  const gchar *name;
   gint32 tattoo = 0;
-  GimpVectors *vectors;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  name = (gchar *) args[1].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  name = g_value_get_string (&args->values[1]);
 
   if (success)
     {
-      vectors = gimp_image_get_vectors_by_name (gimage, name);
+      GimpVectors *vectors = gimp_image_get_vectors_by_name (image, name);
 
       if (vectors)
         tattoo = gimp_item_get_tattoo (GIMP_ITEM (vectors));
@@ -833,80 +441,33 @@ path_get_tattoo_invoker (Gimp         *gimp,
         success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&path_get_tattoo_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = tattoo;
+    g_value_set_int (&return_vals->values[1], tattoo);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg path_get_tattoo_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the path whose tattoo should be obtained."
-  }
-};
-
-static ProcArg path_get_tattoo_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "tattoo",
-    "The tattoo associated with the named path."
-  }
-};
-
-static ProcRecord path_get_tattoo_proc =
-{
-  "gimp-path-get-tattoo",
-  "gimp-path-get-tattoo",
-  "Returns the tattoo associated with the name path.",
-  "This procedure returns the tattoo associated with the specified path. A tattoo is a unique and permanent identifier attached to a path that can be used to uniquely identify a path within an image even between sessions.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  path_get_tattoo_inargs,
-  1,
-  path_get_tattoo_outargs,
-  { { path_get_tattoo_invoker } }
-};
-
-static Argument *
-path_set_tattoo_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
+static GValueArray *
+path_set_tattoo_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
 {
   gboolean success = TRUE;
-  GimpImage *gimage;
-  gchar *name;
-  gint32 tattovalue = 0;
-  GimpVectors *vectors;
+  GimpImage *image;
+  const gchar *name;
+  gint32 tattovalue;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  name = (gchar *) args[1].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
-
-  tattovalue = args[2].value.pdb_int;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  name = g_value_get_string (&args->values[1]);
+  tattovalue = g_value_get_int (&args->values[2]);
 
   if (success)
     {
-      vectors = gimp_image_get_vectors_by_name (gimage, name);
+      GimpVectors *vectors = gimp_image_get_vectors_by_name (image, name);
 
       if (vectors)
         gimp_item_set_tattoo (GIMP_ITEM (vectors), tattovalue);
@@ -914,68 +475,28 @@ path_set_tattoo_invoker (Gimp         *gimp,
         success = FALSE;
     }
 
-  return procedural_db_return_args (&path_set_tattoo_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg path_set_tattoo_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "the name of the path whose tattoo should be set"
-  },
-  {
-    GIMP_PDB_INT32,
-    "tattovalue",
-    "The tattoo associated with the name path. Only values returned from 'path_get_tattoo' should be used here"
-  }
-};
-
-static ProcRecord path_set_tattoo_proc =
-{
-  "gimp-path-set-tattoo",
-  "gimp-path-set-tattoo",
-  "Sets the tattoo associated with the named path.",
-  "This procedure sets the tattoo associated with the specified path. A tattoo is a unique and permenant identifier attached to a path that can be used to uniquely identify a path within an image even between sessions. Note that the value passed to this function must have been obtained from a previous call to path_get_tattoo.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  3,
-  path_set_tattoo_inargs,
-  0,
-  NULL,
-  { { path_set_tattoo_invoker } }
-};
-
-static Argument *
-get_path_by_tattoo_invoker (Gimp         *gimp,
-                            GimpContext  *context,
-                            GimpProgress *progress,
-                            Argument     *args)
+static GValueArray *
+get_path_by_tattoo_invoker (GimpProcedure     *procedure,
+                            Gimp              *gimp,
+                            GimpContext       *context,
+                            GimpProgress      *progress,
+                            const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpImage *gimage;
+  GValueArray *return_vals;
+  GimpImage *image;
   gint32 tattoo;
   gchar *name = NULL;
-  GimpVectors *vectors;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  tattoo = args[1].value.pdb_int;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  tattoo = g_value_get_int (&args->values[1]);
 
   if (success)
     {
-      vectors = gimp_image_get_vectors_by_tattoo (gimage, tattoo);
+      GimpVectors *vectors = gimp_image_get_vectors_by_tattoo (image, tattoo);
 
       if (vectors)
         name = g_strdup (gimp_object_get_name (GIMP_OBJECT (vectors)));
@@ -983,79 +504,33 @@ get_path_by_tattoo_invoker (Gimp         *gimp,
         success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&get_path_by_tattoo_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_pointer = name;
+    g_value_take_string (&return_vals->values[1], name);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg get_path_by_tattoo_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  },
-  {
-    GIMP_PDB_INT32,
-    "tattoo",
-    "The tattoo of the required path."
-  }
-};
-
-static ProcArg get_path_by_tattoo_outargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the path with the specified tattoo."
-  }
-};
-
-static ProcRecord get_path_by_tattoo_proc =
-{
-  "gimp-get-path-by-tattoo",
-  "gimp-get-path-by-tattoo",
-  "Return the name of the path with the given tattoo.",
-  "The procedure returns the name of the path in the specified image which has the passed tattoo. The tattoos are unique within the image and will be preserved across sessions and through renaming of the path. An error is returned if no path with the specified tattoo can be found.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  get_path_by_tattoo_inargs,
-  1,
-  get_path_by_tattoo_outargs,
-  { { get_path_by_tattoo_invoker } }
-};
-
-static Argument *
-path_get_locked_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
+static GValueArray *
+path_get_locked_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpImage *gimage;
-  gchar *name;
+  GValueArray *return_vals;
+  GimpImage *image;
+  const gchar *name;
   gboolean locked = FALSE;
-  GimpVectors *vectors;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  name = (gchar *) args[1].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  name = g_value_get_string (&args->values[1]);
 
   if (success)
     {
-      vectors = gimp_image_get_vectors_by_name (gimage, name);
+      GimpVectors *vectors = gimp_image_get_vectors_by_name (image, name);
 
       if (vectors)
         locked = gimp_item_get_linked (GIMP_ITEM (vectors));
@@ -1063,80 +538,33 @@ path_get_locked_invoker (Gimp         *gimp,
         success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&path_get_locked_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = locked;
+    g_value_set_boolean (&return_vals->values[1], locked);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg path_get_locked_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the path whose locked status should be obtained."
-  }
-};
-
-static ProcArg path_get_locked_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "locked",
-    "TRUE if the path is locked, FALSE otherwise"
-  }
-};
-
-static ProcRecord path_get_locked_proc =
-{
-  "gimp-path-get-locked",
-  "gimp-path-get-locked",
-  "Returns the locked status associated with the named path.",
-  "This procedure returns the lock status associated with the specified path. A path can be \"locked\" which means that the transformation tool operations will also apply to the path.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  path_get_locked_inargs,
-  1,
-  path_get_locked_outargs,
-  { { path_get_locked_invoker } }
-};
-
-static Argument *
-path_set_locked_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
+static GValueArray *
+path_set_locked_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
 {
   gboolean success = TRUE;
-  GimpImage *gimage;
-  gchar *name;
-  gboolean locked = FALSE;
-  GimpVectors *vectors;
+  GimpImage *image;
+  const gchar *name;
+  gboolean locked;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  name = (gchar *) args[1].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
-
-  locked = args[2].value.pdb_int ? TRUE : FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  name = g_value_get_string (&args->values[1]);
+  locked = g_value_get_boolean (&args->values[2]);
 
   if (success)
     {
-      vectors = gimp_image_get_vectors_by_name (gimage, name);
+      GimpVectors *vectors = gimp_image_get_vectors_by_name (image, name);
 
       if (vectors)
         gimp_item_set_linked (GIMP_ITEM (vectors), locked, TRUE);
@@ -1144,240 +572,39 @@ path_set_locked_invoker (Gimp         *gimp,
         success = FALSE;
     }
 
-  return procedural_db_return_args (&path_set_locked_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg path_set_locked_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "the name of the path whose locked status should be set"
-  },
-  {
-    GIMP_PDB_INT32,
-    "locked",
-    "Whether the path is locked"
-  }
-};
-
-static ProcRecord path_set_locked_proc =
-{
-  "gimp-path-set-locked",
-  "gimp-path-set-locked",
-  "Set the locked status associated with the named path.",
-  "This procedure sets the lock status associated with the specified path. A path can be \"locked\" which means that the transformation tool operations will also apply to the path.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  3,
-  path_set_locked_inargs,
-  0,
-  NULL,
-  { { path_set_locked_invoker } }
-};
-
-static Argument *
-path_get_visible_invoker (Gimp         *gimp,
-                          GimpContext  *context,
-                          GimpProgress *progress,
-                          Argument     *args)
+static GValueArray *
+path_to_selection_invoker (GimpProcedure     *procedure,
+                           Gimp              *gimp,
+                           GimpContext       *context,
+                           GimpProgress      *progress,
+                           const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpImage *gimage;
-  gchar *name;
-  gboolean visible = FALSE;
-  GimpVectors *vectors;
-
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  name = (gchar *) args[1].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
-
-  if (success)
-    {
-      vectors = gimp_image_get_vectors_by_name (gimage, name);
-
-      if (vectors)
-        visible = gimp_item_get_visible (GIMP_ITEM (vectors));
-      else
-        success = FALSE;
-    }
-
-  return_args = procedural_db_return_args (&path_get_visible_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_int = visible;
-
-  return return_args;
-}
-
-static ProcArg path_get_visible_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the path whose visibility should be obtained."
-  }
-};
-
-static ProcArg path_get_visible_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "visible",
-    "TRUE if the path is visible, FALSE otherwise"
-  }
-};
-
-static ProcRecord path_get_visible_proc =
-{
-  "gimp-path-get-visible",
-  "gimp-path-get-visible",
-  "Get the visibility of the named path.",
-  "This procedure returns the visibility of the specified path.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  path_get_visible_inargs,
-  1,
-  path_get_visible_outargs,
-  { { path_get_visible_invoker } }
-};
-
-static Argument *
-path_set_visible_invoker (Gimp         *gimp,
-                          GimpContext  *context,
-                          GimpProgress *progress,
-                          Argument     *args)
-{
-  gboolean success = TRUE;
-  GimpImage *gimage;
-  gchar *name;
-  gboolean visible = FALSE;
-  GimpVectors *vectors;
-
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  name = (gchar *) args[1].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
-
-  visible = args[2].value.pdb_int ? TRUE : FALSE;
-
-  if (success)
-    {
-      vectors = gimp_image_get_vectors_by_name (gimage, name);
-
-      if (vectors)
-        gimp_item_set_visible (GIMP_ITEM (vectors), visible, TRUE);
-      else
-        success = FALSE;
-    }
-
-  return procedural_db_return_args (&path_set_visible_proc, success);
-}
-
-static ProcArg path_set_visible_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the path whose visibility should be set"
-  },
-  {
-    GIMP_PDB_INT32,
-    "visible",
-    "The new path visibility"
-  }
-};
-
-static ProcRecord path_set_visible_proc =
-{
-  "gimp-path-set-visible",
-  "gimp-path-set-visible",
-  "Sets the visibility of the named path.",
-  "This procedure sets the specified path's visibility.",
-  "Sven Neumann",
-  "Sven Neumann",
-  "2005",
-  NULL,
-  GIMP_INTERNAL,
-  3,
-  path_set_visible_inargs,
-  0,
-  NULL,
-  { { path_set_visible_invoker } }
-};
-
-static Argument *
-path_to_selection_invoker (Gimp         *gimp,
-                           GimpContext  *context,
-                           GimpProgress *progress,
-                           Argument     *args)
-{
-  gboolean success = TRUE;
-  GimpImage *gimage;
-  gchar *name;
+  GimpImage *image;
+  const gchar *name;
   gint32 op;
   gboolean antialias;
   gboolean feather;
   gdouble feather_radius_x;
   gdouble feather_radius_y;
-  GimpVectors *vectors;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  name = (gchar *) args[1].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
-
-  op = args[2].value.pdb_int;
-  if (op < GIMP_CHANNEL_OP_ADD || op > GIMP_CHANNEL_OP_INTERSECT)
-    success = FALSE;
-
-  antialias = args[3].value.pdb_int ? TRUE : FALSE;
-
-  feather = args[4].value.pdb_int ? TRUE : FALSE;
-
-  feather_radius_x = args[5].value.pdb_float;
-
-  feather_radius_y = args[6].value.pdb_float;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  name = g_value_get_string (&args->values[1]);
+  op = g_value_get_enum (&args->values[2]);
+  antialias = g_value_get_boolean (&args->values[3]);
+  feather = g_value_get_boolean (&args->values[4]);
+  feather_radius_x = g_value_get_double (&args->values[5]);
+  feather_radius_y = g_value_get_double (&args->values[6]);
 
   if (success)
     {
-      vectors = gimp_image_get_vectors_by_name (gimage, name);
+      GimpVectors *vectors = gimp_image_get_vectors_by_name (image, name);
 
       if (vectors)
-        gimp_channel_select_vectors (gimp_image_get_mask (gimage),
+        gimp_channel_select_vectors (gimp_image_get_mask (image),
                                      _("Path to Selection"),
                                      vectors,
                                      op,
@@ -1389,214 +616,692 @@ path_to_selection_invoker (Gimp         *gimp,
         success = FALSE;
     }
 
-  return procedural_db_return_args (&path_to_selection_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg path_to_selection_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the path which should be made into selection."
-  },
-  {
-    GIMP_PDB_INT32,
-    "op",
-    "The desired operation with current selection."
-  },
-  {
-    GIMP_PDB_INT32,
-    "antialias",
-    "Antialias selection."
-  },
-  {
-    GIMP_PDB_INT32,
-    "feather",
-    "Feather selection."
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "feather-radius-x",
-    "Feather radius x."
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "feather-radius-y",
-    "Feather radius y."
-  }
-};
-
-static ProcRecord path_to_selection_proc =
-{
-  "gimp-path-to-selection",
-  "gimp-path-to-selection",
-  "Transforms the active path into a selection",
-  "This procedure renders the desired path into the current selection.",
-  "Joao S. O. Bueno",
-  "Joao S. O. Bueno",
-  "2003",
-  NULL,
-  GIMP_INTERNAL,
-  7,
-  path_to_selection_inargs,
-  0,
-  NULL,
-  { { path_to_selection_invoker } }
-};
-
-static Argument *
-path_import_invoker (Gimp         *gimp,
-                     GimpContext  *context,
-                     GimpProgress *progress,
-                     Argument     *args)
+static GValueArray *
+path_import_invoker (GimpProcedure     *procedure,
+                     Gimp              *gimp,
+                     GimpContext       *context,
+                     GimpProgress      *progress,
+                     const GValueArray *args)
 {
   gboolean success = TRUE;
-  GimpImage *gimage;
-  gchar *filename;
+  GimpImage *image;
+  const gchar *filename;
   gboolean merge;
   gboolean scale;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  filename = (gchar *) args[1].value.pdb_pointer;
-  if (filename == NULL)
-    success = FALSE;
-
-  merge = args[2].value.pdb_int ? TRUE : FALSE;
-
-  scale = args[3].value.pdb_int ? TRUE : FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  filename = g_value_get_string (&args->values[1]);
+  merge = g_value_get_boolean (&args->values[2]);
+  scale = g_value_get_boolean (&args->values[3]);
 
   if (success)
-    success = gimp_vectors_import_file (gimage, filename, merge, scale, -1, NULL);
+    {
+      success = gimp_vectors_import_file (image, filename, merge, scale, -1, NULL);
+    }
 
-  return procedural_db_return_args (&path_import_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg path_import_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  },
-  {
-    GIMP_PDB_STRING,
-    "filename",
-    "The name of the SVG file to import."
-  },
-  {
-    GIMP_PDB_INT32,
-    "merge",
-    "Merge paths into a single vectors object."
-  },
-  {
-    GIMP_PDB_INT32,
-    "scale",
-    "Scale the SVG to image dimensions."
-  }
-};
-
-static ProcRecord path_import_proc =
-{
-  "gimp-path-import",
-  "gimp-path-import",
-  "Import paths from an SVG file.",
-  "This procedure imports paths from an SVG file. SVG elements other than paths and basic shapes are ignored.",
-  "Sven Neumann",
-  "Sven Neumann",
-  "2003",
-  NULL,
-  GIMP_INTERNAL,
-  4,
-  path_import_inargs,
-  0,
-  NULL,
-  { { path_import_invoker } }
-};
-
-static Argument *
-path_import_string_invoker (Gimp         *gimp,
-                            GimpContext  *context,
-                            GimpProgress *progress,
-                            Argument     *args)
+static GValueArray *
+path_import_string_invoker (GimpProcedure     *procedure,
+                            Gimp              *gimp,
+                            GimpContext       *context,
+                            GimpProgress      *progress,
+                            const GValueArray *args)
 {
   gboolean success = TRUE;
-  GimpImage *gimage;
-  gchar *string;
+  GimpImage *image;
+  const gchar *string;
   gint32 length;
   gboolean merge;
   gboolean scale;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  string = (gchar *) args[1].value.pdb_pointer;
-  if (string == NULL)
-    success = FALSE;
-
-  length = args[2].value.pdb_int;
-
-  merge = args[3].value.pdb_int ? TRUE : FALSE;
-
-  scale = args[4].value.pdb_int ? TRUE : FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  string = g_value_get_string (&args->values[1]);
+  length = g_value_get_int (&args->values[2]);
+  merge = g_value_get_boolean (&args->values[3]);
+  scale = g_value_get_boolean (&args->values[4]);
 
   if (success)
-    success = gimp_vectors_import_buffer (gimage, string, length, merge, scale, -1, NULL);
+    {
+      success = gimp_vectors_import_buffer (image, string, length,
+                                            merge, scale, -1, NULL);
+    }
 
-  return procedural_db_return_args (&path_import_string_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg path_import_string_inargs[] =
+void
+register_paths_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  },
-  {
-    GIMP_PDB_STRING,
-    "string",
-    "A string that must be a complete and valid SVG document."
-  },
-  {
-    GIMP_PDB_INT32,
-    "length",
-    "Number of bytes in string or -1 if the string is NULL terminated."
-  },
-  {
-    GIMP_PDB_INT32,
-    "merge",
-    "Merge paths into a single vectors object."
-  },
-  {
-    GIMP_PDB_INT32,
-    "scale",
-    "Scale the SVG to image dimensions."
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcRecord path_import_string_proc =
-{
-  "gimp-path-import-string",
-  "gimp-path-import-string",
-  "Import paths from an SVG string.",
-  "This procedure works like gimp_path_import() but takes a string rather than reading the SVG from a file. This allows you to write scripts that generate SVG and feed it to GIMP.",
-  "Sven Neumann",
-  "Sven Neumann",
-  "2005",
-  NULL,
-  GIMP_INTERNAL,
-  5,
-  path_import_string_inargs,
-  0,
-  NULL,
-  { { path_import_string_invoker } }
-};
+  /*
+   * gimp-path-list
+   */
+  procedure = gimp_procedure_new (path_list_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-path-list");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-path-list",
+                                     "This procedure is deprecated! Use 'gimp-image-get-vectors' instead.",
+                                     "This procedure is deprecated! Use 'gimp-image-get-vectors' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-image-get-vectors");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image to list the paths from",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-paths",
+                                                          "num paths",
+                                                          "The number of paths returned.",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string_array ("path-list",
+                                                                 "path list",
+                                                                 "List of the paths belonging to this image.",
+                                                                 GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-path-get-current
+   */
+  procedure = gimp_procedure_new (path_get_current_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-path-get-current");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-path-get-current",
+                                     "This procedure is deprecated! Use 'gimp-image-get-active-vectors' instead.",
+                                     "This procedure is deprecated! Use 'gimp-image-get-active-vectors' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-image-get-active-vectors");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image to get the current path from",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("name",
+                                                           "name",
+                                                           "The name of the current path.",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-path-set-current
+   */
+  procedure = gimp_procedure_new (path_set_current_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-path-set-current");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-path-set-current",
+                                     "This procedure is deprecated! Use 'gimp-image-set-active-vectors' instead.",
+                                     "This procedure is deprecated! Use 'gimp-image-set-active-vectors' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-image-set-active-vectors");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image in which a path will become current",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The name of the path to make current.",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-path-delete
+   */
+  procedure = gimp_procedure_new (path_delete_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-path-delete");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-path-delete",
+                                     "This procedure is deprecated! Use 'gimp-image-remove-vectors' instead.",
+                                     "This procedure is deprecated! Use 'gimp-image-remove-vectors' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-image-remove-vectors");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image to delete the path from",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The name of the path to delete.",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-path-get-points
+   */
+  procedure = gimp_procedure_new (path_get_points_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-path-get-points");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-path-get-points",
+                                     "List the points associated with the named path.",
+                                     "List the points associated with the named path.",
+                                     "Andy Thomas",
+                                     "Andy Thomas",
+                                     "1999",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image to list the paths from",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The name of the path whose points should be listed.",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("path-type",
+                                                          "path type",
+                                                          "The type of the path. Currently only one type (1 = Bezier) is supported",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("path-closed",
+                                                          "path closed",
+                                                          "Return if the path is closed. (0 = path open, 1 = path closed)",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-path-point-details",
+                                                          "num path point details",
+                                                          "The number of points returned. Each point is made up of (x, y, pnt_type) of floats.",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_float_array ("points-pairs",
+                                                                "points pairs",
+                                                                "The points in the path represented as 3 floats. The first is the x pos, next is the y pos, last is the type of the pnt. The type field is dependant on the path type. For beziers (type 1 paths) the type can either be (1.0 = BEZIER_ANCHOR, 2.0 = BEZIER_CONTROL, 3.0 = BEZIER_MOVE). Note all points are returned in pixel resolution.",
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-path-set-points
+   */
+  procedure = gimp_procedure_new (path_set_points_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-path-set-points");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-path-set-points",
+                                     "Set the points associated with the named path.",
+                                     "Set the points associated with the named path.",
+                                     "Andy Thomas",
+                                     "Andy Thomas",
+                                     "1999",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image to set the paths in",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The name of the path to create. If it exists then a unique name will be created - query the list of paths if you want to make sure that the name of the path you create is unique. This will be set as the current path.",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("ptype",
+                                                      "ptype",
+                                                      "The type of the path. Currently only one type (1 = Bezier) is supported.",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("num-path-points",
+                                                      "num path points",
+                                                      "The number of elements in the array, i.e. the number of points in the path * 3. Each point is made up of (x, y, type) of floats. Currently only the creation of bezier curves is allowed. The type parameter must be set to (1) to indicate a BEZIER type curve. Note that for BEZIER curves, points must be given in the following order: ACCACCAC... If the path is not closed the last control point is missed off. Points consist of three control points (control/anchor/control) so for a curve that is not closed there must be at least two points passed (2 x,y pairs). If (num_path_points/3) % 3 = 0 then the path is assumed to be closed and the points are ACCACCACCACC.",
+                                                      0, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_float_array ("points-pairs",
+                                                            "points pairs",
+                                                            "The points in the path represented as 3 floats. The first is the x pos, next is the y pos, last is the type of the pnt. The type field is dependant on the path type. For beziers (type 1 paths) the type can either be (1.0 = BEZIER_ANCHOR, 2.0 = BEZIER_CONTROL, 3.0= BEZIER_MOVE). Note all points are returned in pixel resolution.",
+                                                            GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-path-stroke-current
+   */
+  procedure = gimp_procedure_new (path_stroke_current_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-path-stroke-current");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-path-stroke-current",
+                                     "Stroke the current path in the passed image.",
+                                     "Stroke the current path in the passed image.",
+                                     "Andy Thomas",
+                                     "Andy Thomas",
+                                     "1999",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image which contains the path to stroke",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-path-get-point-at-dist
+   */
+  procedure = gimp_procedure_new (path_get_point_at_dist_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-path-get-point-at-dist");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-path-get-point-at-dist",
+                                     "This procedure is deprecated! Use 'gimp-vectors-stroke-get-point-at-dist' instead.",
+                                     "This will return the x,y position of a point at a given distance along the bezier curve. The distance will be obtained by first digitizing the curve internally and then walking along the curve. For a closed curve the start of the path is the first point on the path that was created. This might not be obvious. Note the current path is used.",
+                                     "Andy Thomas",
+                                     "Andy Thomas",
+                                     "1999",
+                                     "gimp-vectors-stroke-get-point-at-dist");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image the paths belongs to",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("distance",
+                                                    "distance",
+                                                    "The distance along the path.",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("x-point",
+                                                          "x point",
+                                                          "The x position of the point.",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("y-point",
+                                                          "y point",
+                                                          "The y position of the point.",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_double ("slope",
+                                                        "slope",
+                                                        "The slope (dy / dx) at the specified point.",
+                                                        -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-path-get-tattoo
+   */
+  procedure = gimp_procedure_new (path_get_tattoo_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-path-get-tattoo");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-path-get-tattoo",
+                                     "This procedure is deprecated! Use 'gimp-vectors-get-tattoo' instead.",
+                                     "This procedure is deprecated! Use 'gimp-vectors-get-tattoo' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-vectors-get-tattoo");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The name of the path whose tattoo should be obtained.",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("tattoo",
+                                                          "tattoo",
+                                                          "The tattoo associated with the named path.",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-path-set-tattoo
+   */
+  procedure = gimp_procedure_new (path_set_tattoo_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-path-set-tattoo");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-path-set-tattoo",
+                                     "This procedure is deprecated! Use 'gimp-vectors-set-tattoo' instead.",
+                                     "This procedure is deprecated! Use 'gimp-vectors-set-tattoo' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-vectors-set-tattoo");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "the name of the path whose tattoo should be set",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("tattovalue",
+                                                      "tattovalue",
+                                                      "The tattoo associated with the name path. Only values returned from 'path_get_tattoo' should be used here",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-get-path-by-tattoo
+   */
+  procedure = gimp_procedure_new (get_path_by_tattoo_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-get-path-by-tattoo");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-get-path-by-tattoo",
+                                     "This procedure is deprecated! Use 'gimp-image-get-vectors-by-tattoo' instead.",
+                                     "This procedure is deprecated! Use 'gimp-image-get-vectors-by-tattoo' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-image-get-vectors-by-tattoo");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("tattoo",
+                                                      "tattoo",
+                                                      "The tattoo of the required path.",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("name",
+                                                           "name",
+                                                           "The name of the path with the specified tattoo.",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-path-get-locked
+   */
+  procedure = gimp_procedure_new (path_get_locked_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-path-get-locked");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-path-get-locked",
+                                     "This procedure is deprecated! Use 'gimp-vectors-get-linked' instead.",
+                                     "This procedure is deprecated! Use 'gimp-vectors-get-linked' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-vectors-get-linked");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The name of the path whose locked status should be obtained.",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("locked",
+                                                         "locked",
+                                                         "TRUE if the path is locked, FALSE otherwise",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-path-set-locked
+   */
+  procedure = gimp_procedure_new (path_set_locked_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-path-set-locked");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-path-set-locked",
+                                     "This procedure is deprecated! Use 'gimp-vectors-set-linked' instead.",
+                                     "This procedure is deprecated! Use 'gimp-vectors-set-linked' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-vectors-set-linked");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "the name of the path whose locked status should be set",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("locked",
+                                                     "locked",
+                                                     "Whether the path is locked",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-path-to-selection
+   */
+  procedure = gimp_procedure_new (path_to_selection_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-path-to-selection");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-path-to-selection",
+                                     "Transforms the active path into a selection",
+                                     "This procedure renders the desired path into the current selection.",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2003",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The name of the path which should be made into selection.",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("op",
+                                                  "op",
+                                                  "The desired operation with current selection: { GIMP_CHANNEL_OP_ADD (0), GIMP_CHANNEL_OP_SUBTRACT (1), GIMP_CHANNEL_OP_REPLACE (2), GIMP_CHANNEL_OP_INTERSECT (3) }",
+                                                  GIMP_TYPE_CHANNEL_OPS,
+                                                  GIMP_CHANNEL_OP_ADD,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("antialias",
+                                                     "antialias",
+                                                     "Antialias selection.",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("feather",
+                                                     "feather",
+                                                     "Feather selection.",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("feather-radius-x",
+                                                    "feather radius x",
+                                                    "Feather radius x.",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("feather-radius-y",
+                                                    "feather radius y",
+                                                    "Feather radius y.",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-path-import
+   */
+  procedure = gimp_procedure_new (path_import_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-path-import");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-path-import",
+                                     "Import paths from an SVG file.",
+                                     "This procedure imports paths from an SVG file. SVG elements other than paths and basic shapes are ignored.",
+                                     "Sven Neumann <sven@gimp.org>",
+                                     "Sven Neumann",
+                                     "2003",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("filename",
+                                                       "filename",
+                                                       "The name of the SVG file to import.",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("merge",
+                                                     "merge",
+                                                     "Merge paths into a single vectors object.",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("scale",
+                                                     "scale",
+                                                     "Scale the SVG to image dimensions.",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-path-import-string
+   */
+  procedure = gimp_procedure_new (path_import_string_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-path-import-string");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-path-import-string",
+                                     "Import paths from an SVG string.",
+                                     "This procedure works like gimp_path_import() but takes a string rather than reading the SVG from a file. This allows you to write scripts that generate SVG and feed it to GIMP.",
+                                     "Sven Neumann <sven@gimp.org>",
+                                     "Sven Neumann",
+                                     "2005",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("string",
+                                                       "string",
+                                                       "A string that must be a complete and valid SVG document.",
+                                                       TRUE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("length",
+                                                      "length",
+                                                      "Number of bytes in string or -1 if the string is NULL terminated.",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("merge",
+                                                     "merge",
+                                                     "Merge paths into a single vectors object.",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("scale",
+                                                     "scale",
+                                                     "Scale the SVG to image dimensions.",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

@@ -62,17 +62,17 @@ gboolean    <a href="libgimp-gimppaletteselect.html#gimp-palettes-set-popup">gim
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2652667"></a><h2>Description</h2>
+<a name="id2652881"></a><h2>Description</h2>
 <p>
 Functions providing a palette selection dialog.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2652678"></a><h2>Details</h2>
+<a name="id2652893"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2652685"></a><h3>
+<a name="id2652899"></a><h3>
 <a name="GimpRunPaletteCallback"></a>GimpRunPaletteCallback ()</h3>
-<a class="indexterm" name="id2652694"></a><pre class="programlisting">void        (*GimpRunPaletteCallback)       (const gchar *palette_name,
+<a class="indexterm" name="id2652908"></a><pre class="programlisting">void        (*GimpRunPaletteCallback)       (const gchar *palette_name,
                                              gboolean dialog_closing,
                                              gpointer user_data);</pre>
 <p>
@@ -106,9 +106,9 @@ Functions providing a palette selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2650427"></a><h3>
+<a name="id2651092"></a><h3>
 <a name="gimp-palette-select-new"></a>gimp_palette_select_new ()</h3>
-<a class="indexterm" name="id2650436"></a><pre class="programlisting">const gchar* gimp_palette_select_new        (const gchar *title,
+<a class="indexterm" name="id2651101"></a><pre class="programlisting">const gchar* gimp_palette_select_new        (const gchar *title,
                                              const gchar *palette_name,
                                              <a href="libgimp-gimppaletteselect.html#GimpRunPaletteCallback">GimpRunPaletteCallback</a> callback,
                                              gpointer data);</pre>
@@ -155,9 +155,9 @@ Functions providing a palette selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653532"></a><h3>
+<a name="id2643544"></a><h3>
 <a name="gimp-palette-select-destroy"></a>gimp_palette_select_destroy ()</h3>
-<a class="indexterm" name="id2653541"></a><pre class="programlisting">void        gimp_palette_select_destroy     (const gchar *palette_callback);</pre>
+<a class="indexterm" name="id2643553"></a><pre class="programlisting">void        gimp_palette_select_destroy     (const gchar *palette_callback);</pre>
 <p>
 
 </p>
@@ -175,9 +175,9 @@ Functions providing a palette selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653585"></a><h3>
+<a name="id2643598"></a><h3>
 <a name="gimp-palettes-popup"></a>gimp_palettes_popup ()</h3>
-<a class="indexterm" name="id2653594"></a><pre class="programlisting">gboolean    gimp_palettes_popup             (const gchar *palette_callback,
+<a class="indexterm" name="id2643607"></a><pre class="programlisting">gboolean    gimp_palettes_popup             (const gchar *palette_callback,
                                              const gchar *popup_title,
                                              const gchar *initial_palette);</pre>
 <p>
@@ -220,9 +220,9 @@ This procedure popups the palette selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2654520"></a><h3>
+<a name="id2654890"></a><h3>
 <a name="gimp-palettes-close-popup"></a>gimp_palettes_close_popup ()</h3>
-<a class="indexterm" name="id2654529"></a><pre class="programlisting">gboolean    gimp_palettes_close_popup       (const gchar *palette_callback);</pre>
+<a class="indexterm" name="id2654899"></a><pre class="programlisting">gboolean    gimp_palettes_close_popup       (const gchar *palette_callback);</pre>
 <p>
 Popdown the Gimp palette selection.
 </p>
@@ -251,9 +251,9 @@ This procedure closes an opened palette selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2654592"></a><h3>
+<a name="id2654962"></a><h3>
 <a name="gimp-palettes-set-popup"></a>gimp_palettes_set_popup ()</h3>
-<a class="indexterm" name="id2654600"></a><pre class="programlisting">gboolean    gimp_palettes_set_popup         (const gchar *palette_callback,
+<a class="indexterm" name="id2654971"></a><pre class="programlisting">gboolean    gimp_palettes_set_popup         (const gchar *palette_callback,
                                              const gchar *palette_name);</pre>
 <p>
 Sets the current palette selection in a popup.

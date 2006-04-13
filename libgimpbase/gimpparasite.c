@@ -31,12 +31,136 @@
 #include <glib-object.h>
 
 #ifdef G_OS_WIN32
-#include <process.h>		/* For _getpid() */
+#include <process.h>                /* For _getpid() */
 #endif
 
 #include "gimpbasetypes.h"
 
 #include "gimpparasite.h"
+
+
+/*
+ * GIMP_TYPE_PARASITE
+ */
+
+GType
+gimp_parasite_get_type (void)
+{
+  static GType type = 0;
+
+  if (! type)
+    type = g_boxed_type_register_static ("GimpParasite",
+                                         (GBoxedCopyFunc) gimp_parasite_copy,
+                                         (GBoxedFreeFunc) gimp_parasite_free);
+
+  return type;
+}
+
+
+/*
+ * GIMP_TYPE_PARAM_PARASITE
+ */
+
+static void       gimp_param_parasite_class_init  (GParamSpecClass *class);
+static void       gimp_param_parasite_init        (GParamSpec      *pspec);
+static gboolean   gimp_param_parasite_validate    (GParamSpec      *pspec,
+                                                   GValue          *value);
+static gint       gimp_param_parasite_values_cmp  (GParamSpec      *pspec,
+                                                   const GValue    *value1,
+                                                   const GValue    *value2);
+
+GType
+gimp_param_parasite_get_type (void)
+{
+  static GType type = 0;
+
+  if (! type)
+    {
+      static const GTypeInfo type_info =
+      {
+        sizeof (GParamSpecClass),
+        NULL, NULL,
+        (GClassInitFunc) gimp_param_parasite_class_init,
+        NULL, NULL,
+        sizeof (GimpParamSpecParasite),
+        0,
+        (GInstanceInitFunc) gimp_param_parasite_init
+      };
+
+      type = g_type_register_static (G_TYPE_PARAM_BOXED,
+                                     "GimpParamParasite",
+                                     &type_info, 0);
+    }
+
+  return type;
+}
+
+static void
+gimp_param_parasite_class_init (GParamSpecClass *class)
+{
+  class->value_type     = GIMP_TYPE_PARASITE;
+  class->value_validate = gimp_param_parasite_validate;
+  class->values_cmp     = gimp_param_parasite_values_cmp;
+}
+
+static void
+gimp_param_parasite_init (GParamSpec *pspec)
+{
+}
+
+static gboolean
+gimp_param_parasite_validate (GParamSpec *pspec,
+                              GValue     *value)
+{
+  GimpParasite *parasite = value->data[0].v_pointer;
+
+  if (! parasite)
+    {
+      return TRUE;
+    }
+  else if (parasite->name == NULL                          ||
+           ! g_utf8_validate (parasite->name, -1, NULL)    ||
+           (parasite->size == 0 && parasite->data != NULL) ||
+           (parasite->size >  0 && parasite->data == NULL))
+    {
+      g_value_set_boxed (value, NULL);
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gint
+gimp_param_parasite_values_cmp (GParamSpec   *pspec,
+                                const GValue *value1,
+                                const GValue *value2)
+{
+  GimpParasite *parasite1 = value1->data[0].v_pointer;
+  GimpParasite *parasite2 = value2->data[0].v_pointer;
+
+  /*  try to return at least *something*, it's useless anyway...  */
+
+  if (! parasite1)
+    return parasite2 != NULL ? -1 : 0;
+  else if (! parasite2)
+    return parasite1 != NULL;
+  else
+    return gimp_parasite_compare (parasite1, parasite2);
+}
+
+GParamSpec *
+gimp_param_spec_parasite (const gchar *name,
+                          const gchar *nick,
+                          const gchar *blurb,
+                          GParamFlags  flags)
+{
+  GimpParamSpecParasite *parasite_spec;
+
+  parasite_spec = g_param_spec_internal (GIMP_TYPE_PARAM_PARASITE,
+                                         name, nick, blurb, flags);
+
+  return G_PARAM_SPEC (parasite_spec);
+}
 
 
 #ifdef DEBUG
@@ -65,9 +189,9 @@ gimp_parasite_print (GimpParasite *parasite)
 
 GimpParasite *
 gimp_parasite_new (const gchar    *name,
-		   guint32         flags,
-		   guint32         size,
-		   gconstpointer   data)
+                   guint32         flags,
+                   guint32         size,
+                   gconstpointer   data)
 {
   GimpParasite *parasite;
 
@@ -102,7 +226,7 @@ gimp_parasite_free (GimpParasite *parasite)
 
 gboolean
 gimp_parasite_is_type (const GimpParasite *parasite,
-		       const gchar        *name)
+                       const gchar        *name)
 {
   if (!parasite || !parasite->name)
     return FALSE;
@@ -117,12 +241,12 @@ gimp_parasite_copy (const GimpParasite *parasite)
     return NULL;
 
   return gimp_parasite_new (parasite->name, parasite->flags,
-			    parasite->size, parasite->data);
+                            parasite->size, parasite->data);
 }
 
 gboolean
 gimp_parasite_compare (const GimpParasite *a,
-		       const GimpParasite *b)
+                       const GimpParasite *b)
 {
   if (a && b &&
       a->name && b->name &&
@@ -131,9 +255,9 @@ gimp_parasite_compare (const GimpParasite *a,
       a->size == b->size)
     {
       if (a->data == NULL && b->data == NULL)
-	return TRUE;
+        return TRUE;
       else if (a->data && b->data && memcmp (a->data, b->data, a->size) == 0)
-	return TRUE;
+        return TRUE;
     }
 
   return FALSE;
@@ -168,7 +292,7 @@ gimp_parasite_is_undoable (const GimpParasite *parasite)
 
 gboolean
 gimp_parasite_has_flag (const GimpParasite *parasite,
-			gulong              flag)
+                        gulong              flag)
 {
   if (parasite == NULL)
     return FALSE;

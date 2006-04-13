@@ -102,7 +102,7 @@ each other and want to check if their caller has already used
 <varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> True if undo is enabled for this image.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if undo is enabled for this image.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -123,7 +123,7 @@ be time and memory intensive.</para>
 <varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> True if the image undo has been disabled.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the image undo has been disabled.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -143,7 +143,7 @@ image undo stack.</para>
 <varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> True if the image undo has been enabled.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the image undo has been enabled.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -169,7 +169,7 @@ else 'undo' behaviour is undefined.</para>
 <varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> True if the image undo has been frozen.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the image undo has been frozen.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -195,7 +195,7 @@ responsibility of the caller.</para>
 <varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> True if the image undo has been thawed.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the image undo has been thawed.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

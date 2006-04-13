@@ -47,15 +47,15 @@
 
 
 GimpLayer *
-text_render (GimpImage    *gimage,
-	     GimpDrawable *drawable,
+text_render (GimpImage    *image,
+             GimpDrawable *drawable,
              GimpContext  *context,
-	     gint          text_x,
-	     gint          text_y,
-	     const gchar  *fontname,
-	     const gchar  *text,
-	     gint          border,
-	     gboolean      antialias)
+             gint          text_x,
+             gint          text_y,
+             const gchar  *fontname,
+             const gchar  *text,
+             gint          border,
+             gboolean      antialias)
 {
   PangoFontDescription *desc;
   GimpText             *gtext;
@@ -64,7 +64,7 @@ text_render (GimpImage    *gimage,
   gchar                *font;
   gdouble               size;
 
-  g_return_val_if_fail (GIMP_IS_IMAGE (gimage), NULL);
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (drawable == NULL || GIMP_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail (drawable == NULL ||
                         gimp_item_is_attached (GIMP_ITEM (drawable)), NULL);
@@ -89,14 +89,14 @@ text_render (GimpImage    *gimage,
                         "text",      text,
                         "font",      font,
                         "font-size", size,
-			"antialias", antialias,
+                        "antialias", antialias,
                         "border",    border,
                         "color",     &color,
                         NULL);
 
   g_free (font);
 
-  layer = gimp_text_layer_new (gimage, gtext);
+  layer = gimp_text_layer_new (image, gtext);
 
   g_object_unref (gtext);
 
@@ -104,7 +104,7 @@ text_render (GimpImage    *gimage,
     return NULL;
 
   /*  Start a group undo  */
-  gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_TEXT,
+  gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TEXT,
                                _("Add Text Layer"));
 
   /*  Set the layer offsets  */
@@ -115,29 +115,29 @@ text_render (GimpImage    *gimage,
    *  this might not always be desired, but in general,
    *  it seems like the correct behavior.
    */
-  if (! gimp_channel_is_empty (gimp_image_get_mask (gimage)))
-    gimp_channel_clear (gimp_image_get_mask (gimage), NULL, TRUE);
+  if (! gimp_channel_is_empty (gimp_image_get_mask (image)))
+    gimp_channel_clear (gimp_image_get_mask (image), NULL, TRUE);
 
   /*  If the drawable is NULL, create a new layer  */
   if (drawable == NULL)
-    gimp_image_add_layer (gimage, layer, -1);
+    gimp_image_add_layer (image, layer, -1);
   /*  Otherwise, instantiate the text as the new floating selection */
   else
     floating_sel_attach (layer, drawable);
 
   /*  end the group undo  */
-  gimp_image_undo_group_end (gimage);
+  gimp_image_undo_group_end (image);
 
   return layer;
 }
 
 gboolean
 text_get_extents (const gchar *fontname,
-		  const gchar *text,
-		  gint        *width,
-		  gint        *height,
-		  gint        *ascent,
-		  gint        *descent)
+                  const gchar *text,
+                  gint        *width,
+                  gint        *height,
+                  gint        *ascent,
+                  gint        *descent)
 {
   PangoFontDescription *font_desc;
   PangoContext         *context;

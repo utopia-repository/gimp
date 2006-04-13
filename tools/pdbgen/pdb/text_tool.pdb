@@ -17,76 +17,6 @@
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
-# Text
-
-sub pdb_misc {
-   &std_pdb_misc;
-   $author = 'Martin Edlman';
-   $date = '1998';
-}
-
-sub text_arg () {{
-    name => 'text',
-    type => 'string',
-    desc => 'The text to generate (in UTF-8 encoding)'
-}}
-
-sub fontname_arg () {{
-    name => 'fontname',
-    type => 'string',
-    desc => 'The name of the font'
-}}
-
-sub size_args () {(
-    { name => 'size', type => '0 < float',
-      desc => 'The size of text in either pixels or points' },
-    { name => 'size_type', type => 'enum GimpSizeType',
-      desc => 'The units of specified size: %%desc%%' }
-)}
-
-sub render_args () {(
-    &std_image_arg,
-    { name => 'drawable', type => 'drawable',
-      desc => 'The affected drawable: (-1 for a new text layer)',
-      no_success => 1 },
-    { name => 'x', type => 'float',
-      desc => 'The x coordinate for the left of the text bounding box' },
-    { name => 'y', type => 'float',
-      desc => 'The y coordinate for the top of the text bounding box' },
-    &text_arg,
-    { name => 'border', type => '-1 <= int32',
-      desc => 'The size of the border: %%desc%%' },
-    &std_antialias_arg,
-    &size_args
-)}
-
-@props = qw(foundry family weight slant set_width spacing registry encoding);
-
-sub font_prop_args {
-   my @result;
-   foreach (@props) {
-	(my $desc = $_) =~ s/_/-/g;
-	push @result, { name => $_, type => 'string', no_validate => 1,
-			desc => qq/The font $desc/ }
-   }
-   @result;
-}
-
-sub render_outargs {
-   @outargs = (
-	{ name => 'text_layer', type => 'layer',
-	  desc => 'The new text layer or -1 if no layer was created.',
-	  init => 1, return_fail => -1 }
-   );
-}
-
-sub extents_outargs {
-    foreach (qw(width height ascent descent)) {
-	push @outargs, { name => $_, type => 'int32',
-			 desc => "The $_ of the specified font" }
-    }
-}
-
 sub text_fontname {
     $blurb = <<'BLURB';
 Add text at the specified location as a floating selection or a new layer.
@@ -102,19 +32,40 @@ specified drawable parameter is valid, the text will be created as a floating
 selection attached to the drawable. If the drawable parameter is not valid
 (-1), the text will appear as a new layer. Finally, a border can be specified
 around the final rendered text. The border is measured in pixels.
-
 HELP
 
-    &pdb_misc;
-    $author .= ' & Sven Neumann';
-    $date   .= '- 2001';
+    &std_pdb_misc;
+    $author = 'Martin Edlman & Sven Neumann';
+    $date = '1998- 2001';
 
     @inargs = (
-        &render_args,
-	&fontname_arg
+	{ name => 'image', type => 'image',
+	  desc => 'The image' },
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable: (-1 for a new text layer)',
+	  no_success => 1 },
+	{ name => 'x', type => 'float',
+	  desc => 'The x coordinate for the left of the text bounding box' },
+	{ name => 'y', type => 'float',
+	  desc => 'The y coordinate for the top of the text bounding box' },
+	{ name => 'text', type => 'string',
+	  desc => 'The text to generate (in UTF-8 encoding)' },
+	{ name => 'border', type => '-1 <= int32',
+	  desc => 'The size of the border %%desc%%' },
+	{ name => 'antialias', type => 'boolean',
+	  desc => 'Antialiasing %%desc%%' },
+	{ name => 'size', type => '0 < float',
+	  desc => 'The size of text in either pixels or points' },
+	{ name => 'size_type', type => 'enum GimpSizeType',
+	  desc => 'The units of specified size: %%desc%%' },
+	{ name => 'fontname', type => 'string',
+	  desc => 'The name of the font' }
     );
 
-    &render_outargs;
+    @outargs = (
+	{ name => 'text_layer', type => 'layer',
+	  desc => 'The new text layer or -1 if no layer was created.' }
+    );
 
     %invoke = (
 	code => <<'CODE'
@@ -126,7 +77,7 @@ HELP
     {
       gchar *real_fontname = g_strdup_printf ("%s %d", fontname, (gint) size);
 
-      text_layer = text_render (gimage, drawable, context,
+      text_layer = text_render (image, drawable, context,
                                 x, y, real_fontname, text,
                                 border, antialias);
 
@@ -146,24 +97,36 @@ string with the specified font information. Ascent and descent for the
 specified font are returned as well.
 HELP
 
-    &pdb_misc;
-    $author .= ' & Sven Neumann';
-    $date   .= '- 2001';
+    &std_pdb_misc;
+    $author = 'Martin Edlman & Sven Neumann';
+    $date = '1998- 2001';
  
     @inargs = (
-	&text_arg,
-	&size_args,
-	&fontname_arg
+	{ name => 'text', type => 'string',
+	  desc => 'The text to generate (in UTF-8 encoding)' },
+	{ name => 'size', type => '0 < float',
+	  desc => 'The size of text in either pixels or points' },
+	{ name => 'size_type', type => 'enum GimpSizeType',
+	  desc => 'The units of specified size: %%desc%%' },
+	{ name => 'fontname', type => 'string',
+	  desc => 'The name of the font' }
     );
 
-    &extents_outargs;
-    $outargs[0]->{void_ret} = 1;
+    @outargs = (
+	{ name => 'width', type => 'int32', void_ret => 1,
+	  desc => 'The width of the specified font' },
+	{ name => 'height', type => 'int32',
+	  desc => 'The height of the specified font' },
+	{ name => 'ascent', type => 'int32',
+	  desc => 'The ascent of the specified font' },
+	{ name => 'descent', type => 'int32',
+	  desc => 'The descent of the specified font' }
+    );
 
     %invoke = (
-	vars => [ 'gchar *real_fontname' ],
 	code => <<'CODE'
 {
-  real_fontname = g_strdup_printf ("%s %d", fontname, (gint) size);
+  gchar *real_fontname = g_strdup_printf ("%s %d", fontname, (gint) size);
 
   success = text_get_extents (real_fontname, text,
 			      &width, &height,
@@ -179,11 +142,47 @@ sub text {
     &std_pdb_deprecated ('gimp-text-fontname');
 
     @inargs = (
-	&render_args,
-        &font_prop_args
+	{ name => 'image', type => 'image',
+	  desc => 'The image' },
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable: (-1 for a new text layer)',
+	  no_success => 1 },
+	{ name => 'x', type => 'float',
+	  desc => 'The x coordinate for the left of the text bounding box' },
+	{ name => 'y', type => 'float',
+	  desc => 'The y coordinate for the top of the text bounding box' },
+	{ name => 'text', type => 'string',
+	  desc => 'The text to generate (in UTF-8 encoding)' },
+	{ name => 'border', type => '-1 <= int32',
+	  desc => 'The size of the border %%desc%%' },
+	{ name => 'antialias', type => 'boolean',
+	  desc => 'Antialiasing %%desc%%' },
+	{ name => 'size', type => '0 < float',
+	  desc => 'The size of text in either pixels or points' },
+	{ name => 'size_type', type => 'enum GimpSizeType',
+	  desc => 'The units of specified size: %%desc%%' },
+	{ name => 'foundry', type => 'string', no_validate => 1,
+	  desc => 'The font foundry' },
+	{ name => 'family', type => 'string', no_validate => 1,
+	  desc => 'The font family' },
+	{ name => 'weight', type => 'string', no_validate => 1,
+	  desc => 'The font weight' },
+	{ name => 'slant', type => 'string', no_validate => 1,
+	  desc => 'The font slant' },
+	{ name => 'set_width', type => 'string', no_validate => 1,
+	  desc => 'The font set-width' },
+	{ name => 'spacing', type => 'string', no_validate => 1,
+	  desc => 'The font spacing' },
+	{ name => 'registry', type => 'string', no_validate => 1,
+	  desc => 'The font registry' },
+	{ name => 'encoding', type => 'string', no_validate => 1,
+	  desc => 'The font encoding' }
     );
 
-    &render_outargs;
+    @outargs = (
+	{ name => 'text_layer', type => 'layer',
+	  desc => 'The new text layer or -1 if no layer was created.' }
+    );
 
     %invoke = (
 	code => <<'CODE'
@@ -195,7 +194,7 @@ sub text {
     {
       gchar *real_fontname = g_strdup_printf ("%s %d", family, (gint) size);
 
-      text_layer = text_render (gimage, drawable, context,
+      text_layer = text_render (image, drawable, context,
                                 x, y, real_fontname, text,
                                 border, antialias);
 
@@ -210,19 +209,45 @@ sub text_get_extents {
     &std_pdb_deprecated ('gimp-text-get-extents-fontname');
 
     @inargs = (
-	&text_arg,
-	&size_args,
-	&font_prop_args
+	{ name => 'text', type => 'string',
+	  desc => 'The text to generate (in UTF-8 encoding)' },
+	{ name => 'size', type => '0 < float',
+	  desc => 'The size of text in either pixels or points' },
+	{ name => 'size_type', type => 'enum GimpSizeType',
+	  desc => 'The units of specified size: %%desc%%' },
+	{ name => 'foundry', type => 'string', no_validate => 1,
+	  desc => 'The font foundry' },
+	{ name => 'family', type => 'string', no_validate => 1,
+	  desc => 'The font family' },
+	{ name => 'weight', type => 'string', no_validate => 1,
+	  desc => 'The font weight' },
+	{ name => 'slant', type => 'string', no_validate => 1,
+	  desc => 'The font slant' },
+	{ name => 'set_width', type => 'string', no_validate => 1,
+	  desc => 'The font set-width' },
+	{ name => 'spacing', type => 'string', no_validate => 1,
+	  desc => 'The font spacing' },
+	{ name => 'registry', type => 'string', no_validate => 1,
+	  desc => 'The font registry' },
+	{ name => 'encoding', type => 'string', no_validate => 1,
+	  desc => 'The font encoding' }
     );
 
-    &extents_outargs;
-    $outargs[0]->{void_ret} = 1;
+    @outargs = (
+	{ name => 'width', type => 'int32', void_ret => 1,
+	  desc => 'The width of the specified font' },
+	{ name => 'height', type => 'int32',
+	  desc => 'The height of the specified font' },
+	{ name => 'ascent', type => 'int32',
+	  desc => 'The ascent of the specified font' },
+	{ name => 'descent', type => 'int32',
+	  desc => 'The descent of the specified font' }
+    );
 
     %invoke = (
-	vars => [ 'gchar *real_fontname' ],
 	code => <<'CODE'
 {
-  real_fontname = g_strdup_printf ("%s %d", family, (gint) size);
+  gchar *real_fontname = g_strdup_printf ("%s %d", family, (gint) size);
 
   success = text_get_extents (real_fontname, text,
 			      &width, &height,
@@ -234,9 +259,12 @@ CODE
     );
 }
 
+
 @headers = qw("libgimpbase/gimpbase.h" "text/gimptext-compat.h");
 
-@procs = qw(text_fontname text_get_extents_fontname text text_get_extents);
+@procs = qw(text_fontname text_get_extents_fontname
+            text text_get_extents);
+
 %exports = (app => [@procs], lib => [@procs]);
 
 $desc = 'Text procedures';

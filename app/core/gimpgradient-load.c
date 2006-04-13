@@ -87,19 +87,14 @@ gimp_gradient_load (const gchar  *filename,
       utf8 = gimp_any_to_utf8 (&line[strlen ("Name: ")], -1,
                                _("Invalid UTF-8 string in gradient file '%s'."),
                                gimp_filename_to_utf8 (filename));
-      g_strstrip (utf8);
-
-      gimp_object_set_name (GIMP_OBJECT (gradient), utf8);
-      g_free (utf8);
+      gimp_object_take_name (GIMP_OBJECT (gradient), g_strstrip (utf8));
 
       fgets (line, 1024, file);
     }
   else /* old gradient format */
     {
-      gchar *name = g_filename_display_basename (filename);
-
-      gimp_object_set_name (GIMP_OBJECT (gradient), name);
-      g_free (name);
+      gimp_object_take_name (GIMP_OBJECT (gradient),
+                             g_filename_display_basename (filename));
     }
 
   num_segments = atoi (line);
@@ -126,9 +121,9 @@ gimp_gradient_load (const gchar  *filename,
       seg->prev = prev;
 
       if (prev)
-	prev->next = seg;
+        prev->next = seg;
       else
-	gradient->segments = seg;
+        gradient->segments = seg;
 
       fgets (line, 1024, file);
 
@@ -159,17 +154,17 @@ gimp_gradient_load (const gchar  *filename,
       if (errno != ERANGE &&
           sscanf (end, "%d %d", &type, &color) == 2)
         {
-	  seg->type  = (GimpGradientSegmentType) type;
-	  seg->color = (GimpGradientSegmentColor) color;
+          seg->type  = (GimpGradientSegmentType) type;
+          seg->color = (GimpGradientSegmentColor) color;
         }
       else
         {
-	  g_message (_("Corrupt segment %d in gradient file '%s'."),
-		     i, gimp_filename_to_utf8 (filename));
+          g_message (_("Corrupt segment %d in gradient file '%s'."),
+                     i, gimp_filename_to_utf8 (filename));
           g_object_unref (gradient);
           fclose (file);
           return NULL;
-	}
+        }
 
       if ( (prev && (prev->right < seg->left))
            || (!prev && (0. < seg->left) ))

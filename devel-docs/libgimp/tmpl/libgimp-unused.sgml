@@ -24,6 +24,15 @@ user-defined units.
 gimpunit
 
 
+<!-- ##### ENUM GimpRunMode ##### -->
+<para>
+
+</para>
+
+@GIMP_RUN_INTERACTIVE: 
+@GIMP_RUN_NONINTERACTIVE: 
+@GIMP_RUN_WITH_LAST_VALS: 
+
 <!-- ##### FUNCTION gimp_unit_get_abbreviation ##### -->
 <para>
 

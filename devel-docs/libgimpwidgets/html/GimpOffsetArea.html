@@ -65,30 +65,31 @@ href="../gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2558021"></a><h2>Object Hierarchy</h2>
+<a name="id2571546"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
-   +----<a
+   +----GInitiallyUnowned
+         +----<a
 href="../gtk/GtkObject.html"
 >GtkObject</a>
-         +----<a
+               +----<a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>
-               +----<a
+                     +----<a
 href="../gtk/GtkDrawingArea.html"
 >GtkDrawingArea</a>
-                     +----GimpOffsetArea
+                           +----GimpOffsetArea
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2558059"></a><h2>Implemented Interfaces</h2>
+<a name="id2571590"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpOffsetArea implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2558076"></a><h2>Signal Prototypes</h2>
+<a name="id2571607"></a><h2>Signal Prototypes</h2>
 <pre class="synopsis">
 
 "<a href="GimpOffsetArea.html#GimpOffsetArea-offsets-changed">offsets-changed</a>"
@@ -99,26 +100,26 @@ GimpOffsetArea implements
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2571449"></a><h2>Description</h2>
+<a name="id2558533"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2571460"></a><h2>Details</h2>
+<a name="id2558544"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2571466"></a><h3>
+<a name="id2558550"></a><h3>
 <a name="GimpOffsetArea-struct"></a>GimpOffsetArea</h3>
-<a class="indexterm" name="id2571475"></a><pre class="programlisting">typedef struct _GimpOffsetArea GimpOffsetArea;</pre>
+<a class="indexterm" name="id2558560"></a><pre class="programlisting">typedef struct _GimpOffsetArea GimpOffsetArea;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2571492"></a><h3>
+<a name="id2558576"></a><h3>
 <a name="gimp-offset-area-new"></a>gimp_offset_area_new ()</h3>
-<a class="indexterm" name="id2571501"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2558585"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>*  gimp_offset_area_new            (gint orig_width,
                                              gint orig_height);</pre>
@@ -155,9 +156,9 @@ specify the new offsets.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572719"></a><h3>
+<a name="id2570204"></a><h3>
 <a name="gimp-offset-area-set-size"></a>gimp_offset_area_set_size ()</h3>
-<a class="indexterm" name="id2572728"></a><pre class="programlisting">void        gimp_offset_area_set_size       (<a href="GimpOffsetArea.html" title="GimpOffsetArea">GimpOffsetArea</a> *offset_area,
+<a class="indexterm" name="id2570213"></a><pre class="programlisting">void        gimp_offset_area_set_size       (<a href="GimpOffsetArea.html" title="GimpOffsetArea">GimpOffsetArea</a> *offset_area,
                                              gint width,
                                              gint height);</pre>
 <p>
@@ -193,9 +194,9 @@ signal is emitted.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572836"></a><h3>
+<a name="id2570321"></a><h3>
 <a name="gimp-offset-area-set-offsets"></a>gimp_offset_area_set_offsets ()</h3>
-<a class="indexterm" name="id2572845"></a><pre class="programlisting">void        gimp_offset_area_set_offsets    (<a href="GimpOffsetArea.html" title="GimpOffsetArea">GimpOffsetArea</a> *offset_area,
+<a class="indexterm" name="id2570330"></a><pre class="programlisting">void        gimp_offset_area_set_offsets    (<a href="GimpOffsetArea.html" title="GimpOffsetArea">GimpOffsetArea</a> *offset_area,
                                              gint offset_x,
                                              gint offset_y);</pre>
 <p>
@@ -230,9 +231,9 @@ It does not emit the "offsets-changed" signal.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570123"></a><h3>
+<a name="id2568473"></a><h3>
 <a name="gimp-offset-area-set-pixbuf"></a>gimp_offset_area_set_pixbuf ()</h3>
-<a class="indexterm" name="id2570132"></a><pre class="programlisting">void        gimp_offset_area_set_pixbuf     (<a href="GimpOffsetArea.html" title="GimpOffsetArea">GimpOffsetArea</a> *offset_area,
+<a class="indexterm" name="id2568482"></a><pre class="programlisting">void        gimp_offset_area_set_pixbuf     (<a href="GimpOffsetArea.html" title="GimpOffsetArea">GimpOffsetArea</a> *offset_area,
                                              <a
 href="../gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
 >GdkPixbuf</a> *pixbuf);</pre>
@@ -266,9 +267,9 @@ href="../gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2570224"></a><h2>Signals</h2>
+<a name="id2568573"></a><h2>Signals</h2>
 <div class="refsect2" lang="en">
-<a name="id2570230"></a><h3>
+<a name="id2568579"></a><h3>
 <a name="GimpOffsetArea-offsets-changed"></a>The "offsets-changed" signal</h3>
 <pre class="programlisting">void        user_function                  (<a href="GimpOffsetArea.html" title="GimpOffsetArea">GimpOffsetArea</a> *gimpoffsetarea,
                                             gint arg1,

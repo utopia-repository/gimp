@@ -30,12 +30,13 @@
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkWidget">GtkWidget</link>
-               +----<link linkend="GtkContainer">GtkContainer</link>
-                     +----<link linkend="GtkBin">GtkBin</link>
-                           +----<link linkend="GtkButton">GtkButton</link>
-                                 +----GimpPickButton
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkWidget">GtkWidget</link>
+                     +----<link linkend="GtkContainer">GtkContainer</link>
+                           +----<link linkend="GtkBin">GtkBin</link>
+                                 +----<link linkend="GtkButton">GtkButton</link>
+                                       +----GimpPickButton
 </synopsis>
 
 </refsect1>

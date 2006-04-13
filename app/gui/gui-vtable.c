@@ -41,8 +41,9 @@
 
 #include "text/gimpfont.h"
 
+#include "pdb/gimppluginprocedure.h"
+
 #include "plug-in/plug-ins.h"
-#include "plug-in/plug-in-proc-def.h"
 
 #include "widgets/gimpactiongroup.h"
 #include "widgets/gimpbrushselect.h"
@@ -76,64 +77,64 @@
 
 /*  local function prototypes  */
 
-static void           gui_threads_enter        (Gimp          *gimp);
-static void           gui_threads_leave        (Gimp          *gimp);
-static void           gui_set_busy             (Gimp          *gimp);
-static void           gui_unset_busy           (Gimp          *gimp);
-static void           gui_message              (Gimp          *gimp,
-                                                const gchar   *domain,
-                                                const gchar   *message);
-static void           gui_help                 (Gimp          *gimp,
-                                                const gchar   *help_domain,
-                                                const gchar   *help_id);
-static const gchar  * gui_get_program_class    (Gimp          *gimp);
-static gchar        * gui_get_display_name     (Gimp          *gimp,
-                                                gint           gdisp_ID,
-                                                gint          *monitor_number);
-static const gchar  * gui_get_theme_dir        (Gimp          *gimp);
-static GimpObject   * gui_display_get_by_ID    (Gimp          *gimp,
-                                                gint           ID);
-static gint           gui_display_get_ID       (GimpObject    *display);
-static guint32        gui_display_get_window   (GimpObject    *display);
-static GimpObject   * gui_display_create       (GimpImage     *gimage,
-                                                GimpUnit       unit,
-                                                gdouble        scale);
-static void           gui_display_delete       (GimpObject    *display);
-static void           gui_displays_reconnect   (Gimp          *gimp,
-                                                GimpImage     *old_image,
-                                                GimpImage     *new_image);
-static void           gui_menus_init           (Gimp          *gimp,
-                                                GSList        *plug_in_defs,
-                                                const gchar   *plugins_domain);
-static void           gui_menus_create_item    (Gimp          *gimp,
-                                                PlugInProcDef *proc_def,
-                                                const gchar   *menu_path);
-static void           gui_menus_delete_item    (Gimp          *gimp,
-                                                PlugInProcDef *proc_def);
-static void           gui_menus_create_branch  (Gimp          *gimp,
-                                                const gchar   *progname,
-                                                const gchar   *menu_path,
-                                                const gchar   *menu_label);
-static GimpProgress * gui_new_progress         (Gimp          *gimp,
-                                                gint           display_ID);
-static void           gui_free_progress        (Gimp          *gimp,
-                                                GimpProgress  *progress);
-static gboolean       gui_pdb_dialog_new       (Gimp          *gimp,
-                                                GimpContext   *context,
-                                                GimpContainer *container,
-                                                const gchar   *title,
-                                                const gchar   *callback_name,
-                                                const gchar   *object_name,
-                                                va_list        args);
-static gboolean       gui_pdb_dialog_set       (Gimp          *gimp,
-                                                GimpContainer *container,
-                                                const gchar   *callback_name,
-                                                const gchar   *object_name,
-                                                va_list        args);
-static gboolean       gui_pdb_dialog_close     (Gimp          *gimp,
-                                                GimpContainer *container,
-                                                const gchar   *callback_name);
-static void           gui_pdb_dialogs_check    (Gimp          *gimp);
+static void           gui_threads_enter        (Gimp                *gimp);
+static void           gui_threads_leave        (Gimp                *gimp);
+static void           gui_set_busy             (Gimp                *gimp);
+static void           gui_unset_busy           (Gimp                *gimp);
+static void           gui_message              (Gimp                *gimp,
+                                                const gchar         *domain,
+                                                const gchar         *message);
+static void           gui_help                 (Gimp                *gimp,
+                                                const gchar         *help_domain,
+                                                const gchar         *help_id);
+static const gchar  * gui_get_program_class    (Gimp                *gimp);
+static gchar        * gui_get_display_name     (Gimp                *gimp,
+                                                gint                 display_ID,
+                                                gint                *monitor_number);
+static const gchar  * gui_get_theme_dir        (Gimp                *gimp);
+static GimpObject   * gui_display_get_by_ID    (Gimp                *gimp,
+                                                gint                 ID);
+static gint           gui_display_get_ID       (GimpObject          *display);
+static guint32        gui_display_get_window   (GimpObject          *display);
+static GimpObject   * gui_display_create       (GimpImage           *image,
+                                                GimpUnit             unit,
+                                                gdouble              scale);
+static void           gui_display_delete       (GimpObject          *display);
+static void           gui_displays_reconnect   (Gimp                *gimp,
+                                                GimpImage           *old_image,
+                                                GimpImage           *new_image);
+static void           gui_menus_init           (Gimp                *gimp,
+                                                GSList              *plug_in_defs,
+                                                const gchar         *plugins_domain);
+static void           gui_menus_create_item    (Gimp                *gimp,
+                                                GimpPlugInProcedure *proc,
+                                                const gchar         *menu_path);
+static void           gui_menus_delete_item    (Gimp                *gimp,
+                                                GimpPlugInProcedure *proc);
+static void           gui_menus_create_branch  (Gimp                *gimp,
+                                                const gchar         *progname,
+                                                const gchar         *menu_path,
+                                                const gchar         *menu_label);
+static GimpProgress * gui_new_progress         (Gimp                *gimp,
+                                                GimpObject          *display);
+static void           gui_free_progress        (Gimp                *gimp,
+                                                GimpProgress        *progress);
+static gboolean       gui_pdb_dialog_new       (Gimp                *gimp,
+                                                GimpContext         *context,
+                                                GimpContainer       *container,
+                                                const gchar         *title,
+                                                const gchar         *callback_name,
+                                                const gchar         *object_name,
+                                                va_list              args);
+static gboolean       gui_pdb_dialog_set       (Gimp                *gimp,
+                                                GimpContainer       *container,
+                                                const gchar         *callback_name,
+                                                const gchar         *object_name,
+                                                va_list              args);
+static gboolean       gui_pdb_dialog_close     (Gimp                *gimp,
+                                                GimpContainer       *container,
+                                                const gchar         *callback_name);
+static void           gui_pdb_dialogs_check    (Gimp                *gimp);
 
 
 /*  public functions  */
@@ -279,21 +280,21 @@ gui_get_program_class (Gimp *gimp)
 
 static gchar *
 gui_get_display_name (Gimp *gimp,
-                      gint  gdisp_ID,
+                      gint  display_ID,
                       gint *monitor_number)
 {
-  GimpDisplay *gdisp = NULL;
+  GimpDisplay *display = NULL;
   GdkScreen   *screen;
   gint         monitor;
 
-  if (gdisp_ID > 0)
-    gdisp = gimp_display_get_by_ID (gimp, gdisp_ID);
+  if (display_ID > 0)
+    display = gimp_display_get_by_ID (gimp, display_ID);
 
-  if (gdisp)
+  if (display)
     {
-      screen  = gtk_widget_get_screen (gdisp->shell);
+      screen  = gtk_widget_get_screen (display->shell);
       monitor = gdk_screen_get_monitor_at_window (screen,
-                                                  gdisp->shell->window);
+                                                  display->shell->window);
     }
   else
     {
@@ -343,25 +344,25 @@ gui_display_get_window (GimpObject *display)
 }
 
 static GimpObject *
-gui_display_create (GimpImage *gimage,
+gui_display_create (GimpImage *image,
                     GimpUnit   unit,
                     gdouble    scale)
 {
-  GimpDisplay *gdisp;
+  GimpDisplay *display;
   GList       *image_managers;
 
   image_managers = gimp_ui_managers_from_name ("<Image>");
 
-  gdisp = gimp_display_new (gimage, unit, scale,
-                            global_menu_factory,
-                            image_managers->data);
+  display = gimp_display_new (image, unit, scale,
+                              global_menu_factory,
+                              image_managers->data);
 
-  gimp_context_set_display (gimp_get_user_context (gimage->gimp), gdisp);
+  gimp_context_set_display (gimp_get_user_context (image->gimp), display);
 
-  gimp_ui_manager_update (GIMP_DISPLAY_SHELL (gdisp->shell)->menubar_manager,
-                          gdisp);
+  gimp_ui_manager_update (GIMP_DISPLAY_SHELL (display->shell)->menubar_manager,
+                          display);
 
-  return GIMP_OBJECT (gdisp);
+  return GIMP_OBJECT (display);
 }
 
 static void
@@ -387,9 +388,9 @@ gui_menus_init (Gimp        *gimp,
 }
 
 static void
-gui_menus_add_proc (Gimp          *gimp,
-                    PlugInProcDef *proc_def,
-                    const gchar   *menu_path)
+gui_menus_add_proc (Gimp                *gimp,
+                    GimpPlugInProcedure *proc,
+                    const gchar         *menu_path)
 {
   gchar *prefix;
   gchar *p;
@@ -410,44 +411,44 @@ gui_menus_add_proc (Gimp          *gimp,
           if (! strcmp (prefix, "<Image>"))
             {
               plug_in_menus_add_proc (list->data, "/image-menubar",
-                                      proc_def, menu_path);
+                                      proc, menu_path);
               plug_in_menus_add_proc (list->data, "/dummy-menubar/image-popup",
-                                      proc_def, menu_path);
+                                      proc, menu_path);
             }
           else if (! strcmp (prefix, "<Toolbox>"))
             {
               plug_in_menus_add_proc (list->data, "/toolbox-menubar",
-                                      proc_def, menu_path);
+                                      proc, menu_path);
             }
           else if (! strcmp (prefix, "<Brushes>"))
             {
               plug_in_menus_add_proc (list->data, "/brushes-popup",
-                                      proc_def, menu_path);
+                                      proc, menu_path);
             }
           else if (! strcmp (prefix, "<Gradients>"))
             {
               plug_in_menus_add_proc (list->data, "/gradients-popup",
-                                      proc_def, menu_path);
+                                      proc, menu_path);
             }
           else if (! strcmp (prefix, "<Palettes>"))
             {
               plug_in_menus_add_proc (list->data, "/palettes-popup",
-                                      proc_def, menu_path);
+                                      proc, menu_path);
             }
           else if (! strcmp (prefix, "<Patterns>"))
             {
               plug_in_menus_add_proc (list->data, "/patterns-popup",
-                                      proc_def, menu_path);
+                                      proc, menu_path);
             }
           else if (! strcmp (prefix, "<Fonts>"))
             {
               plug_in_menus_add_proc (list->data, "/fonts-popup",
-                                      proc_def, menu_path);
+                                      proc, menu_path);
             }
           else if (! strcmp (prefix, "<Buffers>"))
             {
               plug_in_menus_add_proc (list->data, "/buffers-popup",
-                                      proc_def, menu_path);
+                                      proc, menu_path);
             }
         }
     }
@@ -456,9 +457,9 @@ gui_menus_add_proc (Gimp          *gimp,
 }
 
 static void
-gui_menus_delete_proc (Gimp          *gimp,
-                       PlugInProcDef *proc_def,
-                       const gchar   *menu_path)
+gui_menus_delete_proc (Gimp                *gimp,
+                       GimpPlugInProcedure *proc,
+                       const gchar         *menu_path)
 {
   gchar *prefix;
   gchar *p;
@@ -476,7 +477,7 @@ gui_menus_delete_proc (Gimp          *gimp,
            list;
            list = g_list_next (list))
         {
-          plug_in_menus_remove_proc (list->data, proc_def);
+          plug_in_menus_remove_proc (list->data, proc);
         }
     }
 
@@ -484,9 +485,9 @@ gui_menus_delete_proc (Gimp          *gimp,
 }
 
 static void
-gui_menus_create_item (Gimp          *gimp,
-                       PlugInProcDef *proc_def,
-                       const gchar   *menu_path)
+gui_menus_create_item (Gimp                *gimp,
+                       GimpPlugInProcedure *proc,
+                       const gchar         *menu_path)
 {
   GList *list;
 
@@ -496,39 +497,39 @@ gui_menus_create_item (Gimp          *gimp,
     {
       if (menu_path == NULL)
         {
-          plug_in_actions_add_proc (list->data, proc_def);
+          plug_in_actions_add_proc (list->data, proc);
         }
       else
         {
-          plug_in_actions_add_path (list->data, proc_def, menu_path);
+          plug_in_actions_add_path (list->data, proc, menu_path);
         }
     }
 
   if (menu_path == NULL)
     {
-      for (list = proc_def->menu_paths; list; list = g_list_next (list))
-        gui_menus_add_proc (gimp, proc_def, list->data);
+      for (list = proc->menu_paths; list; list = g_list_next (list))
+        gui_menus_add_proc (gimp, proc, list->data);
     }
   else
     {
-      gui_menus_add_proc (gimp, proc_def, menu_path);
+      gui_menus_add_proc (gimp, proc, menu_path);
     }
 }
 
 static void
-gui_menus_delete_item (Gimp          *gimp,
-                       PlugInProcDef *proc_def)
+gui_menus_delete_item (Gimp                *gimp,
+                       GimpPlugInProcedure *proc)
 {
   GList *list;
 
-  for (list = proc_def->menu_paths; list; list = g_list_next (list))
-    gui_menus_delete_proc (gimp, proc_def, list->data);
+  for (list = proc->menu_paths; list; list = g_list_next (list))
+    gui_menus_delete_proc (gimp, proc, list->data);
 
   for (list = gimp_action_groups_from_name ("plug-in");
        list;
        list = g_list_next (list))
     {
-      plug_in_actions_remove_proc (list->data, proc_def);
+      plug_in_actions_remove_proc (list->data, proc);
     }
 }
 
@@ -549,13 +550,10 @@ gui_menus_create_branch (Gimp        *gimp,
 }
 
 static GimpProgress *
-gui_new_progress (Gimp *gimp,
-                  gint  display_ID)
+gui_new_progress (Gimp       *gimp,
+                  GimpObject *display)
 {
-  GimpDisplay *display = NULL;
-
-  if (display_ID > 0)
-    display = gimp_display_get_by_ID (gimp, display_ID);
+  g_return_val_if_fail (display == NULL || GIMP_IS_DISPLAY (display), NULL);
 
   if (display)
     return GIMP_PROGRESS (display);

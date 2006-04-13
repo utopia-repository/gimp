@@ -26,6 +26,18 @@
 #include <langinfo.h>
 #endif
 
+#include <sys/types.h>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#include <glib.h>
+
+#ifdef G_OS_WIN32
+#include <process.h>
+#endif
+
 #include <glib-object.h>
 #include <gobject/gvaluecollector.h>
 
@@ -34,6 +46,9 @@
 
 #include "core-types.h"
 
+#include "config/gimpbaseconfig.c"
+
+#include "gimp.h"
 #include "gimp-utils.h"
 
 
@@ -165,15 +180,15 @@ gimp_get_default_language (const gchar *category)
     {
       p = getenv ("LANG");
       if (p != NULL)
-	lang = g_strdup (p);
+        lang = g_strdup (p);
       else
-	{
-	  p = getenv (category);
-	  if (p != NULL)
-	    lang = g_strdup (p);
-	  else
-	    lang = g_win32_getlocale ();
-	}
+        {
+          p = getenv (category);
+          if (p != NULL)
+            lang = g_strdup (p);
+          else
+            lang = g_win32_getlocale ();
+        }
     }
 
 #else
@@ -325,4 +340,46 @@ gimp_parameters_free (GParameter *params,
 
       g_free (params);
     }
+}
+
+void
+gimp_value_array_truncate (GValueArray  *args,
+                           gint          n_values)
+{
+  gint i;
+
+  g_return_if_fail (args != NULL);
+  g_return_if_fail (n_values > 0 && n_values <= args->n_values);
+
+  for (i = args->n_values; i > n_values; i--)
+    g_value_array_remove (args, i - 1);
+}
+
+gchar *
+gimp_get_temp_filename (Gimp        *gimp,
+                        const gchar *extension)
+{
+  static gint  id = 0;
+  static gint  pid;
+  gchar       *filename;
+  gchar       *basename;
+  gchar       *path;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+  g_return_val_if_fail (extension != NULL, NULL);
+
+  if (id == 0)
+    pid = getpid ();
+
+  basename = g_strdup_printf ("gimp-temp-%d%d.%s", pid, id++, extension);
+
+  path = gimp_config_path_expand (GIMP_BASE_CONFIG (gimp->config)->temp_path,
+                                  TRUE, NULL);
+
+  filename = g_build_filename (path, basename, NULL);
+
+  g_free (path);
+  g_free (basename);
+
+  return filename;
 }

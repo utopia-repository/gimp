@@ -34,6 +34,12 @@
 #include "gimpzoompreview.h"
 
 
+enum
+{
+  PROP_0,
+  PROP_DRAWABLE
+};
+
 typedef struct GimpZoomPreviewPrivate
 {
   GimpDrawable  *drawable;
@@ -41,10 +47,22 @@ typedef struct GimpZoomPreviewPrivate
   GdkRectangle   extents;
 } GimpZoomPreviewPrivate;
 
+
 #define GIMP_ZOOM_PREVIEW_GET_PRIVATE(obj) \
   ((GimpZoomPreviewPrivate *) ((GimpZoomPreview *) (obj))->priv)
 
+static GObject * gimp_zoom_preview_constructor (GType                  type,
+                                                guint                  n_params,
+                                                GObjectConstructParam *params);
 
+static void     gimp_zoom_preview_get_property    (GObject         *object,
+                                                   guint            property_id,
+                                                   GValue          *value,
+                                                   GParamSpec      *pspec);
+static void     gimp_zoom_preview_set_property    (GObject         *object,
+                                                   guint            property_id,
+                                                   const GValue    *value,
+                                                   GParamSpec      *pspec);
 static void     gimp_zoom_preview_set_adjustments (GimpZoomPreview *preview,
                                                    gdouble          old_factor,
                                                    gdouble          new_factor);
@@ -66,6 +84,9 @@ static void     gimp_zoom_preview_draw_thumb      (GimpPreview     *preview,
                                                    gint             height);
 static void     gimp_zoom_preview_set_cursor      (GimpPreview     *preview);
 
+static void     gimp_zoom_preview_set_drawable    (GimpZoomPreview *preview,
+                                                   GimpDrawable    *drawable);
+
 
 G_DEFINE_TYPE (GimpZoomPreview, gimp_zoom_preview, GIMP_TYPE_SCROLLED_PREVIEW)
 #define parent_class gimp_zoom_preview_parent_class
@@ -77,6 +98,10 @@ gimp_zoom_preview_class_init (GimpZoomPreviewClass *klass)
   GtkWidgetClass   *widget_class  = GTK_WIDGET_CLASS (klass);
   GimpPreviewClass *preview_class = GIMP_PREVIEW_CLASS (klass);
 
+  object_class->constructor  = gimp_zoom_preview_constructor;
+  object_class->get_property = gimp_zoom_preview_get_property;
+  object_class->set_property = gimp_zoom_preview_set_property;
+
   widget_class->style_set    = gimp_zoom_preview_style_set;
 
   preview_class->draw        = gimp_zoom_preview_draw;
@@ -85,6 +110,18 @@ gimp_zoom_preview_class_init (GimpZoomPreviewClass *klass)
   preview_class->set_cursor  = gimp_zoom_preview_set_cursor;
 
   g_type_class_add_private (object_class, sizeof (GimpZoomPreviewPrivate));
+
+  /**
+   * GimpZoomPreview:drawable:
+   *
+   * The drawable the #GimpZoomPreview is currently attached to.
+   *
+   * Since: GIMP 2.4
+   */
+  g_object_class_install_property (object_class, PROP_DRAWABLE,
+                                   g_param_spec_pointer ("drawable", NULL, NULL,
+                                                         GIMP_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
@@ -140,6 +177,61 @@ gimp_zoom_preview_init (GimpZoomPreview *preview)
 
   gimp_scrolled_preview_set_policy (GIMP_SCROLLED_PREVIEW (preview),
                                     GTK_POLICY_ALWAYS, GTK_POLICY_ALWAYS);
+}
+
+static GObject *
+gimp_zoom_preview_constructor (GType                  type,
+                               guint                  n_params,
+                               GObjectConstructParam *params)
+{
+  GObject *object;
+
+  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
+
+  gimp_zoom_preview_set_adjustments (GIMP_ZOOM_PREVIEW (object), 1.0, 1.0);
+
+  return object;
+}
+
+static void
+gimp_zoom_preview_get_property (GObject    *object,
+                                guint       property_id,
+                                GValue     *value,
+                                GParamSpec *pspec)
+{
+  GimpZoomPreview *preview = GIMP_ZOOM_PREVIEW (object);
+
+  switch (property_id)
+    {
+    case PROP_DRAWABLE:
+      g_value_set_pointer (value, gimp_zoom_preview_get_drawable (preview));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
+static void
+gimp_zoom_preview_set_property (GObject      *object,
+                                guint         property_id,
+                                const GValue *value,
+                                GParamSpec   *pspec)
+{
+  GimpZoomPreview *preview = GIMP_ZOOM_PREVIEW (object);
+
+  switch (property_id)
+    {
+    case PROP_DRAWABLE:
+      gimp_zoom_preview_set_drawable (preview,
+                                      g_value_get_pointer (value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
 }
 
 static void
@@ -422,27 +514,15 @@ gimp_zoom_preview_set_cursor (GimpPreview *preview)
     }
 }
 
-/**
- * gimp_zoom_preview_new:
- * @drawable: a #GimpDrawable
- *
- * Creates a new #GimpZoomPreview widget for @drawable.
- *
- * Since: GIMP 2.4
- **/
-GtkWidget *
-gimp_zoom_preview_new (GimpDrawable *drawable)
+static void
+gimp_zoom_preview_set_drawable (GimpZoomPreview *preview,
+                                GimpDrawable    *drawable)
 {
-  GimpZoomPreview        *preview;
-  GimpZoomPreviewPrivate *priv;
+  GimpZoomPreviewPrivate *priv = GIMP_ZOOM_PREVIEW_GET_PRIVATE (preview);
   gint                    width, height;
   gint                    max_width, max_height;
   gint                    x1, y1;
   gint                    x2, y2;
-
-  preview = g_object_new (GIMP_TYPE_ZOOM_PREVIEW, NULL);
-
-  priv = GIMP_ZOOM_PREVIEW_GET_PRIVATE (preview);
 
   priv->drawable = drawable;
 
@@ -483,16 +563,30 @@ gimp_zoom_preview_new (GimpDrawable *drawable)
   g_object_set (GIMP_PREVIEW (preview)->frame,
                 "ratio", (gdouble) width / (gdouble) height,
                 NULL);
+}
 
-  gimp_zoom_preview_set_adjustments (preview, 1.0, 1.0);
-
-  return GTK_WIDGET (preview);
+/**
+ * gimp_zoom_preview_new:
+ * @drawable: a #GimpDrawable
+ *
+ * Creates a new #GimpZoomPreview widget for @drawable.
+ *
+ * Since: GIMP 2.4
+ **/
+GtkWidget *
+gimp_zoom_preview_new (GimpDrawable *drawable)
+{
+  return g_object_new (GIMP_TYPE_ZOOM_PREVIEW,
+                       "drawable", drawable,
+                       NULL);
 }
 
 /**
  * gimp_zoom_get_drawable:
  * @preview: a #GimpZoomPreview widget
  *
+ * Returns the #GimpDrawable the #GimpZoomPreview is attached to.
+ * 
  * Return Value: the #GimpDrawable that was passed to gimp_zoom_preview_new().
  *
  * Since: GIMP 2.4
@@ -509,6 +603,8 @@ gimp_zoom_preview_get_drawable (GimpZoomPreview *preview)
  * gimp_zoom_get_factor:
  * @preview: a #GimpZoomPreview widget
  *
+ * Returns the zoom factor of the zoom model the preview is currently using.
+ *
  * Return Value: the current zoom factor
  *
  * Since: GIMP 2.4
@@ -523,11 +619,18 @@ gimp_zoom_preview_get_factor (GimpZoomPreview *preview)
 
 /**
  * gimp_zoom_preview_get_source:
- * @preview:
- * @width:
- * @height:
- * @bpp:
+ * @preview: a #GimpZoomPreview widget
+ * @width: a pointer to an int where the current width of the zoom widget
+ *         will be put.
+ * @height: a pointer to an int where the current width of the zoom widget
+ *          will be put.
+ * @bpp: a pointer to an int where the bpp of the current drawable the zoom
+ *       widget is using will be put.
  *
+ * Returns the scaled image data of the part of the drawable the
+ * #GimpZoomPreview is currently showing, as a newly allocated array of guchar.
+ * This function also allow to get the current width, height and bpp of the
+ * #GimpZoomPreview.
  *
  * Return Value:
  *

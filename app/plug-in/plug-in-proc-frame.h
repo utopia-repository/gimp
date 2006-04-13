@@ -24,37 +24,38 @@
 
 struct _PlugInProcFrame
 {
-  gint          ref_count;
+  gint           ref_count;
 
-  GimpContext  *main_context;
-  GList        *context_stack;
+  GimpContext   *main_context;
+  GList         *context_stack;
 
-  ProcRecord   *proc_rec;
-  GMainLoop    *main_loop;
+  GimpProcedure *procedure;
+  GMainLoop     *main_loop;
 
-  Argument     *return_vals;
-  gint          n_return_vals;
+  GValueArray   *return_vals;
 
-  GimpProgress *progress;
-  gboolean      progress_created;
-  gulong        progress_cancel_id;
+  GimpProgress  *progress;
+  gboolean       progress_created;
+  gulong         progress_cancel_id;
 };
 
 
-PlugInProcFrame * plug_in_proc_frame_new     (GimpContext     *context,
-                                              GimpProgress    *progress,
-                                              ProcRecord      *proc_rec);
-void              plug_in_proc_frame_init    (PlugInProcFrame *proc_frame,
-                                              GimpContext     *context,
-                                              GimpProgress    *progress,
-                                              ProcRecord      *proc_rec);
+PlugInProcFrame * plug_in_proc_frame_new         (GimpContext     *context,
+                                                  GimpProgress    *progress,
+                                                  GimpProcedure   *procedure);
+void              plug_in_proc_frame_init        (PlugInProcFrame *proc_frame,
+                                                  GimpContext     *context,
+                                                  GimpProgress    *progress,
+                                                  GimpProcedure   *procedure);
 
-void              plug_in_proc_frame_dispose (PlugInProcFrame *proc_frame,
-                                              PlugIn          *plug_in);
+void              plug_in_proc_frame_dispose     (PlugInProcFrame *proc_frame,
+                                                  PlugIn          *plug_in);
 
-PlugInProcFrame * plug_in_proc_frame_ref     (PlugInProcFrame *proc_frame);
-void              plug_in_proc_frame_unref   (PlugInProcFrame *proc_frame,
-                                              PlugIn          *plug_in);
+PlugInProcFrame * plug_in_proc_frame_ref         (PlugInProcFrame *proc_frame);
+void              plug_in_proc_frame_unref       (PlugInProcFrame *proc_frame,
+                                                  PlugIn          *plug_in);
+
+GValueArray * plug_in_proc_frame_get_return_vals (PlugInProcFrame *proc_frame);
 
 
 #endif /* __PLUG_IN_PROC_FRAME_H__ */

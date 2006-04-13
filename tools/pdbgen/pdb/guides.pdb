@@ -17,45 +17,38 @@
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
-sub pdb_misc {
-    $author = $copyright = 'Adam D. Moss';
-    $date = '1998';
-}
-
-sub image_add_guide {
-    my ($desc, $type, $max, $pos) = @_;
-
-    $blurb = "Add a $desc guide to an image.";
+sub image_add_hguide {
+    $blurb = 'Add a horizontal guide to an image.';
 
     $help = <<HELP;
-This procedure adds a $desc guide to an image. It takes the input image and the
-$type-position of the new guide as parameters. It returns the guide ID of the
-new guide.
+This procedure adds a horizontal guide to an image. It takes the input
+image and the y-position of the new guide as parameters. It returns
+the guide ID of the new guide.
 HELP
 
-    &pdb_misc;
+    &adam_pdb_misc('1998');
 
     @inargs = (
-	&std_image_arg,
-	{ name => "${type}position", type => '0 <= int32',
-	  desc => "The guide's ${type}-offset from $pos of image",
-	  alias => 'offset' }
+	{ name => 'image', type => 'image',
+	  desc => 'The image' },
+	{ name => 'yposition', type => '0 <= int32',
+	  desc => "The guide's y-offset from top of image" }
     );
 
     @outargs = (
-	{ name => 'guide', type => 'guide', init => 1, alias => 'guide_ID',
+	{ name => 'guide', type => 'guide',
 	  desc => 'The new guide' }
     );
 
-    my $func = substr($desc, 0, 1);
     %invoke = (
-	vars => [ 'GimpGuide *guide' ],
-	code => <<CODE
+	code => <<'CODE'
 {
-  if (offset <= gimage->$max)
+  if (yposition <= image->height)
     {
-      guide = gimp_image_add_${func}guide (gimage, offset, TRUE);
-      guide_ID = guide->guide_ID;
+      GimpGuide *g;
+
+      g = gimp_image_add_hguide (image, yposition, TRUE);
+      guide = g->guide_ID;
     }
   else
     success = FALSE;
@@ -64,14 +57,44 @@ CODE
     );
 }
 
-# The defs
-
-sub image_add_hguide {
-    &image_add_guide('horizontal', 'y', 'height', 'top');
-}
-
 sub image_add_vguide {
-    &image_add_guide('vertical', 'x', 'width', 'left');
+    $blurb = 'Add a vertical guide to an image.';
+
+    $help = <<HELP;
+This procedure adds a vertical guide to an image. It takes the input
+image and the x-position of the new guide as parameters. It returns
+the guide ID of the new guide.
+HELP
+
+    &adam_pdb_misc('1998');
+
+    @inargs = (
+	{ name => 'image', type => 'image',
+	  desc => 'The image' },
+	{ name => 'xposition', type => '0 <= int32',
+	  desc => "The guide's x-offset from left of image" }
+    );
+
+    @outargs = (
+	{ name => 'guide', type => 'guide',
+	  desc => 'The new guide' }
+    );
+
+    %invoke = (
+	code => <<'CODE'
+{
+  if (xposition <= image->width)
+    {
+      GimpGuide *g;
+
+      g = gimp_image_add_vguide (image, xposition, TRUE);
+      guide = g->guide_ID;
+    }
+  else
+    success = FALSE;
+}
+CODE
+    );
 }
 
 sub image_delete_guide {
@@ -82,31 +105,24 @@ This procedure takes an image and a guide ID as input and removes the specified
 guide from the specified image.
 HELP
 
-    &pdb_misc;
+    &adam_pdb_misc('1998');
 
     @inargs = (
-	&std_image_arg,
+	{ name => 'image', type => 'image',
+	  desc => 'The image' },
 	{ name => 'guide', type => 'guide',
 	  desc => 'The ID of the guide to be removed' }
     );
 
     %invoke = (
-	vars => [ 'GList *guides' ],
 	code => <<'CODE'
 {
-  success = FALSE;
+  GimpGuide *g = gimp_image_get_guide (image, guide);
 
-  for (guides = gimage->guides; guides; guides = g_list_next (guides))
-    {
-      GimpGuide *g = (GimpGuide *) guides->data;
-
-      if ((g->guide_ID == guide) && (g->position >= 0))
-	{
-          gimp_image_remove_guide (gimage, g, TRUE);
-	  success = TRUE;
-	  break;
-	}
-    }
+  if (g)
+    gimp_image_remove_guide (image, g, TRUE);
+  else
+    success = FALSE;
 }
 CODE
     );
@@ -122,58 +138,27 @@ guide ID is 0, the procedure will return the first Guide. The procedure will
 return 0 if given the final guide ID as an argument or the image has no guides.
 HELP
 
-    &pdb_misc;
+    &adam_pdb_misc('1998');
 
     @inargs = (
-	&std_image_arg,
-	{ name => 'guide', type => 'guide',
+	{ name => 'image', type => 'image',
+	  desc => 'The image' },
+	{ name => 'guide', type => 'guide', no_success => 1,
 	  desc => 'The ID of the current guide (0 if first invocation)' }
     );
 
     @outargs = (
-	{ name => 'next_guide', type => 'guide', init => 1,
+	{ name => 'next_guide', type => 'guide',
 	  desc => "The next guide's ID" }
     );
 
     %invoke = (
-	vars => [ 'GList *guides', 'gboolean guide_found' ],
 	code => <<'CODE'
 {
-  if (gimage->guides != NULL)
-    {
-      success     = FALSE;
-      guide_found = FALSE;
+  GimpGuide *g = gimp_image_get_next_guide (image, guide, &success);
 
-      for (guides = gimage->guides; guides; guides = g_list_next (guides))
-        {
-          GimpGuide *g = (GimpGuide *) guides->data;
-
-          if (g->position < 0)
-            continue;
-
-          if (guide == 0)  /* init - Return first guide ID in list */
-            {
-              next_guide = g->guide_ID;
-
-              guide_found = TRUE;
-              break;
-            }
-
-          if (! guide_found)
-            {
-              if (g->guide_ID == guide)
-                guide_found = TRUE;
-            }
-          else
-            {
-              next_guide = g->guide_ID;
-	      break;
-            }
-        }
-
-      if (guide_found)
-        success = TRUE;
-    }
+  if (g)
+    next_guide = g->guide_ID;
 }
 CODE
     );
@@ -187,38 +172,31 @@ This procedure takes an image and a guide ID as input and returns the
 orientations of the guide.
 HELP
 
-    &pdb_misc;
+    &adam_pdb_misc('1998');
 
     @inargs = (
-	&std_image_arg,
+	{ name => 'image', type => 'image',
+	  desc => 'The image' },
 	{ name => 'guide', type => 'guide',
 	  desc => 'The guide' }
     );
 
     @outargs = (
-	{ name => 'orientation', type => &std_orientation_enum, init => 1,
-	  desc => "The guide's orientation: { %%desc%% }",
+	{ name => 'orientation',
+	  type => 'enum GimpOrientationType (no GIMP_ORIENTATION_UNKNOWN)',
+	  desc => "The guide's orientation: %%desc%%",
 	  libdef => 'GIMP_ORIENTATION_UNKNOWN' }
     );
 
     %invoke = (
-	vars => [ 'GList *guides' ],
 	code => <<'CODE'
 {
-  success = FALSE;
+  GimpGuide *g = gimp_image_get_guide (image, guide);
 
-  for (guides = gimage->guides; guides; guides = g_list_next (guides))
-    {
-      GimpGuide *g = (GimpGuide *) guides->data;
-
-      if ((g->guide_ID == guide) && (g->position >= 0))
-	{
-	  orientation = g->orientation;
-
-	  success = TRUE;
-	  break;
-	}
-    }
+  if (g)
+    orientation = g->orientation;
+  else
+    success = FALSE;
 }
 CODE
     );
@@ -232,47 +210,41 @@ This procedure takes an image and a guide ID as input and returns the position
 of the guide relative to the top or left of the image.
 HELP
 
-    &pdb_misc;
+    &adam_pdb_misc('1998');
 
     @inargs = (
-	&std_image_arg,
+	{ name => 'image', type => 'image',
+	  desc => 'The image' },
 	{ name => 'guide', type => 'guide',
 	  desc => 'The guide' }
     );
 
     @outargs = (
-	{ name => 'position', type => 'int32', init => 1, libdef => '-1',
+	{ name => 'position', type => 'int32', libdef => '-1',
 	  desc => "The guide's position relative to top or left of image" }
     );
 
     %invoke = (
-	vars => [ 'GList *guides' ],
 	code => <<'CODE'
 {
-  success = FALSE;
+  GimpGuide *g = gimp_image_get_guide (image, guide);
 
-  for (guides = gimage->guides; guides; guides = g_list_next (guides))
-    {
-      GimpGuide *g = (GimpGuide *) guides->data;
-
-      if ((g->guide_ID == guide) && (g->position >= 0))
-	{
-	  position = g->position;
-
-	  success = TRUE;
-	  break;
-	}
-    }
+  if (g)
+    position = g->position;
+  else
+    success = FALSE;
 }
 CODE
     );
 }
+
 
 @headers = qw("core/gimpimage-guides.h" "core/gimpimage-undo-push.h");
 
 @procs = qw(image_add_hguide image_add_vguide image_delete_guide
 	    image_find_next_guide image_get_guide_orientation
 	    image_get_guide_position);
+
 %exports = (app => [@procs], lib => [@procs]);
 
 $desc = 'Guide procedures';

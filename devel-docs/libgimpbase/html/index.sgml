@@ -23,6 +23,7 @@
 <ANCHOR id="GimpPDBStatusType" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBStatusType">
 <ANCHOR id="GimpProgressCommand" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpProgressCommand">
 <ANCHOR id="GimpRepeatMode" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpRepeatMode">
+<ANCHOR id="GimpRunMode" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode">
 <ANCHOR id="GimpSizeType" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType">
 <ANCHOR id="GimpStackTraceMode" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpStackTraceMode">
 <ANCHOR id="GimpTransferMode" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode">
@@ -109,6 +110,11 @@
 <ANCHOR id="GIMP-PARASITE-ATTACH-GRANDPARENT:CAPS" href="libgimpbase/libgimpbase-gimpparasite.html#GIMP-PARASITE-ATTACH-GRANDPARENT:CAPS">
 <ANCHOR id="GIMP-PARASITE-GRANDPARENT-PERSISTENT:CAPS" href="libgimpbase/libgimpbase-gimpparasite.html#GIMP-PARASITE-GRANDPARENT-PERSISTENT:CAPS">
 <ANCHOR id="GIMP-PARASITE-GRANDPARENT-UNDOABLE:CAPS" href="libgimpbase/libgimpbase-gimpparasite.html#GIMP-PARASITE-GRANDPARENT-UNDOABLE:CAPS">
+<ANCHOR id="GIMP-TYPE-PARASITE:CAPS" href="libgimpbase/libgimpbase-gimpparasite.html#GIMP-TYPE-PARASITE:CAPS">
+<ANCHOR id="GIMP-TYPE-PARAM-PARASITE:CAPS" href="libgimpbase/libgimpbase-gimpparasite.html#GIMP-TYPE-PARAM-PARASITE:CAPS">
+<ANCHOR id="GIMP-IS-PARAM-SPEC-PARASITE:CAPS" href="libgimpbase/libgimpbase-gimpparasite.html#GIMP-IS-PARAM-SPEC-PARASITE:CAPS">
+<ANCHOR id="gimp-param-spec-parasite" href="libgimpbase/libgimpbase-gimpparasite.html#gimp-param-spec-parasite">
+<ANCHOR id="GIMP-VALUE-HOLDS-PARASITE:CAPS" href="libgimpbase/libgimpbase-gimpparasite.html#GIMP-VALUE-HOLDS-PARASITE:CAPS">
 <ANCHOR id="libgimpbase-gimpparasiteio" href="libgimpbase/libgimpbase-gimpparasiteio.html">
 <ANCHOR id="GIMP-PIXPIPE-MAXDIM:CAPS" href="libgimpbase/libgimpbase-gimpparasiteio.html#GIMP-PIXPIPE-MAXDIM:CAPS">
 <ANCHOR id="gimp-pixpipe-params-init" href="libgimpbase/libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-init">

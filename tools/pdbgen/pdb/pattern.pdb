@@ -17,55 +17,44 @@
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
-sub mitch_misc {
-    $author = 'Michael Natterer <mitch@gimp.org>';
-    $copyright = 'Michael Natterer';
-    $date = '2004';
-    $since = '2.2';
-}
-
-sub pattern_arg () {{
-    name => 'name',
-    type => 'string',
-    desc => 'The pattern name.'
-}}
-
-
-# The defs
-
 sub pattern_get_info {
     $blurb = 'Retrieve information about the specified pattern.';
+
     $help = <<'HELP';
 This procedure retrieves information about the specified pattern.
 This includes the pattern extents (width and height).
 HELP
 
-    &mitch_misc;
+    &mitch_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &pattern_arg
+	{ name => 'name', type => 'string',
+	  desc => 'The pattern name.' }
     );
 
     @outargs = (
-	{ name => 'width', type => 'int32', no_declare => '1',
-          alias => 'pattern->mask->width', void_ret => '1',
+	{ name => 'width', type => 'int32', void_ret => '1',
           desc => "The pattern width" },
-	{ name => 'height', type => 'int32', no_declare => '1',
-          alias => 'pattern->mask->height',
+	{ name => 'height', type => 'int32',
           desc => "The pattern height" },
-	{ name => 'bpp', type => 'int32', no_declare => '1',
-          alias => 'pattern->mask->bytes',
+	{ name => 'bpp', type => 'int32',
           desc => "The pattern bpp" }
     );
 
     %invoke = (
-	vars => [ 'GimpPattern *pattern = NULL' ],
 	code => <<'CODE'
 {
-  pattern = (GimpPattern *)
+  GimpPattern *pattern = (GimpPattern *)
     gimp_container_get_child_by_name (gimp->pattern_factory->container, name);
 
-  success = (pattern != NULL);
+  if (pattern)
+    {
+      width  = pattern->mask->width;
+      height = pattern->mask->height;
+      bpp    = pattern->mask->bytes;
+    }
+  else
+    success = FALSE;
 }
 CODE
     );
@@ -82,37 +71,36 @@ includes the pattern extents (width and height), its bpp and its pixel
 data.
 HELP
 
-    &mitch_misc;
+    &mitch_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &pattern_arg
+	{ name => 'name', type => 'string',
+	  desc => 'The pattern name.' }
     );
 
     @outargs = (
-	{ name => 'width', type => 'int32', no_declare => '1',
-          alias => 'pattern->mask->width', void_ret => '1',
+	{ name => 'width', type => 'int32', void_ret => '1',
           desc => "The pattern width" },
-	{ name => 'height', type => 'int32', no_declare => '1',
-          alias => 'pattern->mask->height',
+	{ name => 'height', type => 'int32',
           desc => "The pattern height" },
-	{ name => 'bpp', type => 'int32', no_declare => '1',
-          alias => 'pattern->mask->bytes',
+	{ name => 'bpp', type => 'int32',
           desc => "The pattern bpp" },
-        { name => 'color_bytes', type => 'int8array', init => 1,
+        { name => 'color_bytes', type => 'int8array',
 	  desc => 'The pattern data.',
-          array => { init => 1,
-		     desc => 'Number of pattern bytes' } }
+          array => { desc => 'Number of pattern bytes' } }
     );
     
     %invoke = (
-	vars => [ 'GimpPattern *pattern = NULL' ],
 	code => <<'CODE'
 {
-  pattern = (GimpPattern *)
+  GimpPattern *pattern = (GimpPattern *)
     gimp_container_get_child_by_name (gimp->pattern_factory->container, name);
 
   if (pattern)
     {
+      width           = pattern->mask->width;
+      height          = pattern->mask->height;
+      bpp             = pattern->mask->bytes;
       num_color_bytes = pattern->mask->height * pattern->mask->width *
 	                pattern->mask->bytes;
       color_bytes     = g_memdup (temp_buf_data (pattern->mask),
@@ -131,6 +119,7 @@ CODE
               "core/gimpdatafactory.h" "core/gimppattern.h" );
 
 @procs = qw(pattern_get_info pattern_get_pixels);
+
 %exports = (app => [@procs], lib => [@procs]);
 
 $desc = 'Pattern';

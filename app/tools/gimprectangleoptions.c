@@ -54,12 +54,60 @@ struct _GimpRectangleOptionsPrivate
   gdouble  center_y;
 
   GimpUnit unit;
+
+  GtkWidget *dimensions_entry;
 };
 
-static void   gimp_rectangle_options_iface_base_init    (GimpRectangleOptionsInterface *rectangle_options_iface);
+static void gimp_rectangle_options_iface_base_init     (GimpRectangleOptionsInterface *rectangle_options_iface);
 
 static GimpRectangleOptionsPrivate *
-              gimp_rectangle_options_get_private        (GimpRectangleOptions *options);
+            gimp_rectangle_options_get_private         (GimpRectangleOptions *options);
+
+void        gimp_rectangle_options_set_highlight       (GimpRectangleOptions *options,
+                                                        gboolean              highlight);
+gboolean    gimp_rectangle_options_get_highlight       (GimpRectangleOptions *options);
+
+void        gimp_rectangle_options_set_fixed_width     (GimpRectangleOptions *options,
+                                                        gboolean              fixed_width);
+gboolean    gimp_rectangle_options_get_fixed_width     (GimpRectangleOptions *options);
+void        gimp_rectangle_options_set_width           (GimpRectangleOptions *options,
+                                                        gdouble               width);
+gdouble     gimp_rectangle_options_get_width           (GimpRectangleOptions *options);
+
+void        gimp_rectangle_options_set_fixed_height    (GimpRectangleOptions *options,
+                                                        gboolean              fixed_height);
+gboolean    gimp_rectangle_options_get_fixed_height    (GimpRectangleOptions *options);
+void        gimp_rectangle_options_set_height          (GimpRectangleOptions *options,
+                                                        gdouble               height);
+gdouble     gimp_rectangle_options_get_height          (GimpRectangleOptions *options);
+
+void        gimp_rectangle_options_set_fixed_aspect    (GimpRectangleOptions *options,
+                                                        gboolean              fixed_aspect);
+gboolean    gimp_rectangle_options_get_fixed_aspect    (GimpRectangleOptions *options);
+void        gimp_rectangle_options_set_aspect          (GimpRectangleOptions *options,
+                                                        gdouble               aspect);
+gdouble     gimp_rectangle_options_get_aspect          (GimpRectangleOptions *options);
+
+void        gimp_rectangle_options_set_fixed_center    (GimpRectangleOptions *options,
+                                                        gboolean              fixed_center);
+gboolean    gimp_rectangle_options_get_fixed_center    (GimpRectangleOptions *options);
+void        gimp_rectangle_options_set_center_x        (GimpRectangleOptions *options,
+                                                        gdouble               center_x);
+gdouble     gimp_rectangle_options_get_center_x        (GimpRectangleOptions *options);
+void        gimp_rectangle_options_set_center_y        (GimpRectangleOptions *options,
+                                                        gdouble               center_y);
+gdouble     gimp_rectangle_options_get_center_y        (GimpRectangleOptions *options);
+
+void        gimp_rectangle_options_set_unit            (GimpRectangleOptions *options,
+                                                        GimpUnit              unit);
+GimpUnit    gimp_rectangle_options_get_unit            (GimpRectangleOptions *options);
+
+void        gimp_rectangle_options_set_entry           (GimpRectangleOptions *options,
+                                                        GtkWidget            *entry);
+GtkWidget * gimp_rectangle_options_get_entry           (GimpRectangleOptions *options);
+
+static void rectangle_dimensions_changed               (GtkWidget            *widget,
+                                                        GimpRectangleOptions *options);
 
 
 GType
@@ -165,6 +213,12 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *options_i
                                                                  GIMP_UNIT_PIXEL,
                                                                  GIMP_PARAM_READWRITE));
 
+      g_object_interface_install_property (options_iface,
+                                           g_param_spec_object ("dimensions-entry",
+                                                                NULL, NULL,
+                                                                GTK_TYPE_WIDGET,
+                                                                GIMP_PARAM_READWRITE));
+
       initialized = TRUE;
     }
 }
@@ -261,6 +315,9 @@ gimp_rectangle_options_install_properties (GObjectClass *klass)
   g_object_class_override_property (klass,
                                     GIMP_RECTANGLE_OPTIONS_PROP_UNIT,
                                     "unit");
+  g_object_class_override_property (klass,
+                                    GIMP_RECTANGLE_OPTIONS_PROP_DIMENSIONS_ENTRY,
+                                    "dimensions-entry");
 }
 
 void
@@ -550,6 +607,32 @@ gimp_rectangle_options_get_unit (GimpRectangleOptions *options)
 }
 
 void
+gimp_rectangle_options_set_entry (GimpRectangleOptions *options,
+                                  GtkWidget            *entry)
+{
+  GimpRectangleOptionsPrivate *private;
+
+  g_return_if_fail (GIMP_IS_RECTANGLE_OPTIONS (options));
+
+  private = GIMP_RECTANGLE_OPTIONS_GET_PRIVATE (options);
+
+  private->dimensions_entry = entry;
+  g_object_notify (G_OBJECT (options), "dimensions-entry");
+}
+
+GtkWidget *
+gimp_rectangle_options_get_entry (GimpRectangleOptions *options)
+{
+  GimpRectangleOptionsPrivate *private;
+
+  g_return_val_if_fail (GIMP_IS_RECTANGLE_OPTIONS (options), NULL);
+
+  private = GIMP_RECTANGLE_OPTIONS_GET_PRIVATE (options);
+
+  return private->dimensions_entry;
+}
+
+void
 gimp_rectangle_options_set_property (GObject      *object,
                                      guint         property_id,
                                      const GValue *value,
@@ -591,6 +674,9 @@ gimp_rectangle_options_set_property (GObject      *object,
       break;
     case GIMP_RECTANGLE_OPTIONS_PROP_UNIT:
       gimp_rectangle_options_set_unit (options, g_value_get_int (value));
+      break;
+    case GIMP_RECTANGLE_OPTIONS_PROP_DIMENSIONS_ENTRY:
+      gimp_rectangle_options_set_entry (options, g_value_get_object (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -641,6 +727,9 @@ gimp_rectangle_options_get_property (GObject      *object,
     case GIMP_RECTANGLE_OPTIONS_PROP_UNIT:
       g_value_set_int (value, gimp_rectangle_options_get_unit (options));
       break;
+    case GIMP_RECTANGLE_OPTIONS_PROP_DIMENSIONS_ENTRY:
+      g_value_set_object (value, gimp_rectangle_options_get_entry (options));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -653,12 +742,12 @@ gimp_rectangle_options_gui (GimpToolOptions *tool_options)
   GObject     *config  = G_OBJECT (tool_options);
   GtkWidget   *vbox;
   GtkWidget   *button;
-  GtkWidget   *controls_container;
   GtkWidget   *table;
   GtkWidget   *entry;
   GtkWidget   *hbox;
   GtkWidget   *label;
   GtkWidget   *spinbutton;
+  GtkObject   *adjustment;
 
   vbox = gimp_tool_options_gui (tool_options);
 
@@ -709,11 +798,52 @@ gimp_rectangle_options_gui (GimpToolOptions *tool_options)
 
   gtk_widget_show (table);
 
-  controls_container = gtk_vbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), controls_container, FALSE, FALSE, 0);
-  gtk_widget_show (controls_container);
-  g_object_set_data (G_OBJECT (tool_options),
-                     "controls-container", controls_container);
+  entry = gimp_size_entry_new (2, GIMP_UNIT_PIXEL, "%a",
+                               TRUE, TRUE, FALSE, 4,
+                               GIMP_SIZE_ENTRY_UPDATE_SIZE);
+  g_object_set (tool_options, "dimensions-entry", entry, NULL);
+
+  gtk_table_set_row_spacings (GTK_TABLE (entry), 3);
+  gtk_table_set_col_spacings (GTK_TABLE (entry), 3);
+
+  spinbutton = gimp_spin_button_new (&adjustment, 1, 0, 1, 1, 10, 1, 1, 2);
+  gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), 4);
+  gimp_size_entry_add_field (GIMP_SIZE_ENTRY (entry),
+                             GTK_SPIN_BUTTON (spinbutton), NULL);
+  gtk_table_attach_defaults (GTK_TABLE (entry), spinbutton, 1, 2, 2, 3);
+  gtk_widget_show (spinbutton);
+
+  spinbutton = gimp_spin_button_new (&adjustment, 1, 0, 1, 1, 10, 1, 1, 2);
+  gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), 4);
+  gimp_size_entry_add_field (GIMP_SIZE_ENTRY (entry),
+                             GTK_SPIN_BUTTON (spinbutton), NULL);
+  gtk_table_attach_defaults (GTK_TABLE (entry), spinbutton, 2, 3, 2, 3);
+  gtk_widget_show (spinbutton);
+
+  gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry), _("1 "), 1, 0, 0.0);
+  gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry), _("2 "), 2, 0, 0.0);
+  gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry), _("X"), 0, 1, 0.5);
+  gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry), _("Y"), 0, 2, 0.5);
+
+  gtk_box_pack_start (GTK_BOX (vbox), entry, FALSE, FALSE, 0);
+
+  g_signal_connect (entry, "value-changed",
+                    G_CALLBACK (rectangle_dimensions_changed),
+                    tool_options);
+
+  gtk_widget_show (entry);
+
+  gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (entry), 0, 0);
+  gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (entry), 1, 0);
+  gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (entry), 2, 0);
+  gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (entry), 3, 0);
 
   return vbox;
+}
+
+static void
+rectangle_dimensions_changed (GtkWidget            *widget,
+                              GimpRectangleOptions *options)
+{
+  g_object_notify (G_OBJECT (options), "dimensions-entry");
 }

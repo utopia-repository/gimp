@@ -24,6 +24,8 @@
 
 #include "core-types.h"
 
+#include "pdb/gimppluginprocedure.h"
+
 #include "gimp.h"
 #include "gimp-gui.h"
 #include "gimpcontainer.h"
@@ -122,8 +124,8 @@ gimp_set_busy_until_idle (Gimp *gimp)
       gimp_set_busy (gimp);
 
       gimp->busy_idle_id = g_idle_add_full (G_PRIORITY_HIGH,
-					    gimp_idle_unset_busy, gimp,
-					    NULL);
+                                            gimp_idle_unset_busy, gimp,
+                                            NULL);
     }
 }
 
@@ -188,14 +190,14 @@ gimp_get_program_class (Gimp *gimp)
 
 gchar *
 gimp_get_display_name (Gimp *gimp,
-                       gint  gdisp_ID,
+                       gint  display_ID,
                        gint *monitor_number)
 {
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (monitor_number != NULL, NULL);
 
   if (gimp->gui.get_display_name)
-    return gimp->gui.get_display_name (gimp, gdisp_ID, monitor_number);
+    return gimp->gui.get_display_name (gimp, display_ID, monitor_number);
 
   *monitor_number = 0;
 
@@ -253,18 +255,18 @@ gimp_get_display_window (Gimp       *gimp,
 
 GimpObject *
 gimp_create_display (Gimp      *gimp,
-                     GimpImage *gimage,
+                     GimpImage *image,
                      GimpUnit   unit,
                      gdouble    scale)
 {
   GimpObject *display = NULL;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
-  g_return_val_if_fail (GIMP_IS_IMAGE (gimage), NULL);
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
   if (gimp->gui.display_create)
     {
-      display = gimp->gui.display_create (gimage, unit, scale);
+      display = gimp->gui.display_create (image, unit, scale);
 
       gimp_container_add (gimp->displays, display);
     }
@@ -309,26 +311,26 @@ gimp_menus_init (Gimp        *gimp,
 }
 
 void
-gimp_menus_create_item (Gimp          *gimp,
-                        PlugInProcDef *proc_def,
-                        const gchar   *menu_path)
+gimp_menus_create_item (Gimp                *gimp,
+                        GimpPlugInProcedure *proc,
+                        const gchar         *menu_path)
 {
   g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (proc_def != NULL);
+  g_return_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc));
 
   if (gimp->gui.menus_create_item)
-    gimp->gui.menus_create_item (gimp, proc_def, menu_path);
+    gimp->gui.menus_create_item (gimp, proc, menu_path);
 }
 
 void
-gimp_menus_delete_item (Gimp          *gimp,
-                        PlugInProcDef *proc_def)
+gimp_menus_delete_item (Gimp                *gimp,
+                        GimpPlugInProcedure *proc)
 {
   g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (proc_def != NULL);
+  g_return_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc));
 
   if (gimp->gui.menus_delete_item)
-    gimp->gui.menus_delete_item (gimp, proc_def);
+    gimp->gui.menus_delete_item (gimp, proc);
 }
 
 void
@@ -346,13 +348,14 @@ gimp_menus_create_branch (Gimp        *gimp,
 }
 
 GimpProgress *
-gimp_new_progress (Gimp *gimp,
-                   gint  display_ID)
+gimp_new_progress (Gimp       *gimp,
+                   GimpObject *display)
 {
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+  g_return_val_if_fail (display == NULL || GIMP_IS_OBJECT (display), NULL);
 
   if (gimp->gui.progress_new)
-    return gimp->gui.progress_new (gimp, display_ID);
+    return gimp->gui.progress_new (gimp, display);
 
   return NULL;
 }

@@ -17,8 +17,6 @@
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
-# The defs
-
 sub display_new {
     $blurb = 'Create a new display for the specified image.';
 
@@ -32,23 +30,29 @@ HELP
 
     &std_pdb_misc;
 
-    @inargs = ( &std_image_arg );
+    @inargs = (
+	{ name => 'image', type => 'image',
+	  desc => 'The image' }
+    );
 
     @outargs = (
 	{ name => 'display', type => 'display',
-	  desc => 'The new display', init => 1 }
+	  desc => 'The new display' }
     );
 
     %invoke = (
 	code => <<'CODE'
 {
-  display = gimp_create_display (gimp, gimage, GIMP_UNIT_PIXEL, 1.0);
+  display = gimp_create_display (gimp, image, GIMP_UNIT_PIXEL, 1.0);
 
-  success = (display != NULL);
-
-  /* the first display takes ownership of the image */
-  if (success && gimage->disp_count == 1)
-    g_object_unref (gimage);
+  if (display)
+    {
+      /* the first display takes ownership of the image */
+      if (image->disp_count == 1)
+        g_object_unref (image);
+    }
+  else
+    success = FALSE;
 }
 CODE
     );
@@ -69,7 +73,13 @@ HELP
 	  desc => 'The display to delete' }
     );
 
-    %invoke = ( code => 'gimp_delete_display (gimp, display);' );
+    %invoke = (
+	code => <<'CODE'
+{
+  gimp_delete_display (gimp, display);
+}
+CODE
+    );
 }
 
 sub display_get_window_handle {
@@ -82,9 +92,7 @@ an Xlib XID. A value of 0 is returned for an invalid display or if this
 function is unimplemented for the windowing system that is being used.
 HELP
 
-    $author = $copyright = 'Sven Neumann';
-    $date = '2005';
-    $since = '2.4';
+    &neo_pdb_misc('2005', '2.4');
 
     @inargs = (
 	{ name => 'display', type => 'display',
@@ -93,10 +101,16 @@ HELP
 
     @outargs = (
         { name => 'window', type => 'int32',
-          desc => 'The native window handle or 0', init => 1 }
+          desc => 'The native window handle or 0' }
     );
 
-    %invoke = ( code => 'window = (gint32) gimp_get_display_window (gimp, display);' );
+    %invoke = (
+	code => <<'CODE'
+{
+  window = (gint32) gimp_get_display_window (gimp, display);
+}
+CODE
+    );
 }
 
 sub displays_flush {
@@ -112,7 +126,12 @@ HELP
 
     %invoke = (
         headers => [ qw("core/gimpcontainer.h") ],
-        code => 'gimp_container_foreach (gimp->images, (GFunc) gimp_image_flush, NULL);'
+        code    => <<'CODE'
+
+{
+  gimp_container_foreach (gimp->images, (GFunc) gimp_image_flush, NULL);
+}
+CODE
     );
 }
 
@@ -135,7 +154,8 @@ HELP
 	  desc => 'The new image (must not have a display)' }
      );
 
-    %invoke = ( code => <<'CODE'
+    %invoke = (
+	code => <<'CODE'
 {
   success = (old_image != new_image    &&
              old_image->disp_count > 0 &&
@@ -154,10 +174,12 @@ CODE
     );
 }
 
+
 @headers = qw("core/gimp.h");
 
 @procs = qw(display_new display_delete display_get_window_handle
             displays_flush displays_reconnect);
+
 %exports = (app => [@procs], lib => [@procs]);
 
 $desc = 'Display procedures';

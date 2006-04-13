@@ -54,15 +54,16 @@ enum        <link linkend="GimpColorSelectorChannel">GimpColorSelectorChannel</l
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkWidget">GtkWidget</link>
-               +----<link linkend="GtkContainer">GtkContainer</link>
-                     +----<link linkend="GtkBox">GtkBox</link>
-                           +----<link linkend="GtkVBox">GtkVBox</link>
-                                 +----GimpColorSelector
-                                       +----<link linkend="GimpColorNotebook">GimpColorNotebook</link>
-                                       +----<link linkend="GimpColorScales">GimpColorScales</link>
-                                       +----<link linkend="GimpColorSelect">GimpColorSelect</link>
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkWidget">GtkWidget</link>
+                     +----<link linkend="GtkContainer">GtkContainer</link>
+                           +----<link linkend="GtkBox">GtkBox</link>
+                                 +----<link linkend="GtkVBox">GtkVBox</link>
+                                       +----GimpColorSelector
+                                             +----<link linkend="GimpColorNotebook">GimpColorNotebook</link>
+                                             +----<link linkend="GimpColorScales">GimpColorScales</link>
+                                             +----<link linkend="GimpColorSelect">GimpColorSelect</link>
 </synopsis>
 
 </refsect1>

@@ -30,40 +30,52 @@
 
 
 void
-gimp_parasite_attach (Gimp         *gimp,
-		      GimpParasite *parasite)
+gimp_parasite_attach (Gimp               *gimp,
+                      const GimpParasite *parasite)
 {
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (parasite != NULL);
+
   gimp_parasite_list_add (gimp->parasites, parasite);
 }
 
 void
 gimp_parasite_detach (Gimp        *gimp,
-		      const gchar *name)
+                      const gchar *name)
 {
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (name != NULL);
+
   gimp_parasite_list_remove (gimp->parasites, name);
 }
 
-GimpParasite *
+const GimpParasite *
 gimp_parasite_find (Gimp        *gimp,
-		    const gchar *name)
+                    const gchar *name)
 {
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+  g_return_val_if_fail (name != NULL, NULL);
+
   return gimp_parasite_list_find (gimp->parasites, name);
 }
 
 static void
 list_func (const gchar    *key,
-	   GimpParasite   *parasite,
-	   gchar        ***current)
+           GimpParasite   *parasite,
+           gchar        ***current)
 {
   *(*current)++ = g_strdup (key);
 }
 
 gchar **
 gimp_parasite_list (Gimp *gimp,
-		    gint *count)
+                    gint *count)
 {
   gchar **list;
   gchar **current;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+  g_return_val_if_fail (count != NULL, NULL);
 
   *count = gimp_parasite_list_length (gimp->parasites);
 
@@ -80,8 +92,7 @@ gimp_parasite_list (Gimp *gimp,
 void
 gimp_parasite_shift_parent (GimpParasite *parasite)
 {
-  if (parasite == NULL)
-    return;
+  g_return_if_fail (parasite != NULL);
 
   parasite->flags = (parasite->flags >> 8);
 }
@@ -103,7 +114,7 @@ gimp_parasiterc_load (Gimp *gimp)
     g_print ("Parsing '%s'\n", gimp_filename_to_utf8 (filename));
 
   if (! gimp_config_deserialize_file (GIMP_CONFIG (gimp->parasites),
-				      filename, NULL, &error))
+                                      filename, NULL, &error))
     {
       if (error->code != GIMP_CONFIG_ERROR_OPEN_ENOENT)
         g_message (error->message);
@@ -135,9 +146,9 @@ gimp_parasiterc_save (Gimp *gimp)
     g_print ("Writing '%s'\n", gimp_filename_to_utf8 (filename));
 
   if (! gimp_config_serialize_to_file (GIMP_CONFIG (gimp->parasites),
-				       filename,
-				       header, footer, NULL,
-				       &error))
+                                       filename,
+                                       header, footer, NULL,
+                                       &error))
     {
       g_message (error->message);
       g_error_free (error);

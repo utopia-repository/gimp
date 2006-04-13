@@ -116,7 +116,7 @@ static void query(void)
    static int nreturn_vals = 0;
 
    gimp_install_procedure("plug_in_imagemap",
-			  "Creates a clickable imagemap.",
+			  N_("Create a clickable imagemap"),
 			  "",
 			  "Maurits Rijk",
 			  "Maurits Rijk",
@@ -1093,7 +1093,10 @@ preview_leave(GtkWidget *widget, GdkEventCrossing *event)
 static gboolean
 button_press(GtkWidget* widget, GdkEventButton* event, gpointer data)
 {
-   return _button_press_func(widget, event, _button_press_param);
+  if (_button_press_func)
+    return _button_press_func(widget, event, _button_press_param);
+
+  return FALSE;
 }
 
 /* A few global vars for key movement */

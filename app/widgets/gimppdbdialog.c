@@ -31,7 +31,7 @@
 
 #include "core/gimpcontext.h"
 
-#include "pdb/procedural_db.h"
+#include "pdb/gimp-pdb.h"
 
 #include "gimpmenufactory.h"
 #include "gimppdbdialog.h"
@@ -305,25 +305,21 @@ gimp_pdb_dialog_run_callback (GimpPdbDialog *dialog,
     {
       dialog->callback_busy = TRUE;
 
-      if (procedural_db_lookup (dialog->caller_context->gimp,
-                                dialog->callback_name))
+      if (gimp_pdb_lookup (dialog->caller_context->gimp,
+                           dialog->callback_name))
         {
-          Argument *return_vals;
-          gint      n_return_vals;
+          GValueArray *return_vals;
 
-          return_vals = klass->run_callback (dialog, object, closing,
-                                             &n_return_vals);
+          return_vals = klass->run_callback (dialog, object, closing);
 
-          if (! return_vals ||
-              return_vals[0].value.pdb_int != GIMP_PDB_SUCCESS)
+          if (g_value_get_enum (&return_vals->values[0]) != GIMP_PDB_SUCCESS)
             {
               g_message (_("Unable to run %s callback. "
                            "The corresponding plug-in may have crashed."),
                          g_type_name (G_TYPE_FROM_INSTANCE (dialog)));
             }
 
-          if (return_vals)
-            procedural_db_destroy_args (return_vals, n_return_vals);
+          g_value_array_free (return_vals);
         }
 
       dialog->callback_busy = FALSE;
@@ -345,7 +341,7 @@ gimp_pdb_dialog_get_by_callback (GimpPdbDialogClass *klass,
 
       if (dialog->callback_name &&
           ! strcmp (callback_name, dialog->callback_name))
-	return dialog;
+        return dialog;
     }
 
   return NULL;
@@ -368,8 +364,8 @@ gimp_pdb_dialogs_check_callback (GimpPdbDialogClass *klass)
 
       if (dialog->caller_context && dialog->callback_name)
         {
-          if (! procedural_db_lookup (dialog->caller_context->gimp,
-                                      dialog->callback_name))
+          if (! gimp_pdb_lookup (dialog->caller_context->gimp,
+                                 dialog->callback_name))
             {
               gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_CLOSE);
             }

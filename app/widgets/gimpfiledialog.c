@@ -37,8 +37,10 @@
 
 #include "file/file-utils.h"
 
-#include "plug-in/plug-in-proc-def.h"
-#include "plug-in/plug-ins.h"
+#include "plug-in/plug-in-locale-domain.h"
+
+#include "pdb/gimp-pdb.h"
+#include "pdb/gimppluginprocedure.h"
 
 #include "gimpfiledialog.h"
 #include "gimpfileprocview.h"
@@ -266,7 +268,7 @@ gimp_file_dialog_new (Gimp                 *gimp,
       automatic_help_id = GIMP_HELP_FILE_OPEN_BY_EXTENSION;
 
       /* FIXME */
-      local_only = (procedural_db_lookup (gimp, "file-uri-load") == NULL);
+      local_only = (gimp_pdb_lookup (gimp, "file-uri-load") == NULL);
       break;
 
     case GTK_FILE_CHOOSER_ACTION_SAVE:
@@ -275,7 +277,7 @@ gimp_file_dialog_new (Gimp                 *gimp,
       automatic_help_id = GIMP_HELP_FILE_SAVE_BY_EXTENSION;
 
       /* FIXME */
-      local_only = (procedural_db_lookup (gimp, "file-uri-save") == NULL);
+      local_only = (gimp_pdb_lookup (gimp, "file-uri-save") == NULL);
       break;
 
     default:
@@ -349,8 +351,8 @@ gimp_file_dialog_set_sensitive (GimpFileDialog *dialog,
 }
 
 void
-gimp_file_dialog_set_file_proc (GimpFileDialog *dialog,
-                                PlugInProcDef  *file_proc)
+gimp_file_dialog_set_file_proc (GimpFileDialog      *dialog,
+                                GimpPlugInProcedure *file_proc)
 {
   g_return_if_fail (GIMP_IS_FILE_DIALOG (dialog));
 
@@ -361,23 +363,23 @@ gimp_file_dialog_set_file_proc (GimpFileDialog *dialog,
 
 void
 gimp_file_dialog_set_image (GimpFileDialog *dialog,
-                            GimpImage      *gimage,
+                            GimpImage      *image,
                             gboolean        save_a_copy)
 {
   const gchar *uri     = NULL;
   gboolean     uri_set = FALSE;
 
   g_return_if_fail (GIMP_IS_FILE_DIALOG (dialog));
-  g_return_if_fail (GIMP_IS_IMAGE (gimage));
+  g_return_if_fail (GIMP_IS_IMAGE (image));
 
-  dialog->gimage      = gimage;
+  dialog->image       = image;
   dialog->save_a_copy = save_a_copy;
 
   if (save_a_copy)
-    uri = g_object_get_data (G_OBJECT (gimage), "gimp-image-save-a-copy");
+    uri = g_object_get_data (G_OBJECT (image), "gimp-image-save-a-copy");
 
   if (! uri)
-    uri = gimp_object_get_name (GIMP_OBJECT (gimage));
+    uri = gimp_object_get_name (GIMP_OBJECT (image));
 
   if (uri)
     uri_set = gtk_file_chooser_set_uri (GTK_FILE_CHOOSER (dialog), uri);
@@ -386,7 +388,7 @@ gimp_file_dialog_set_image (GimpFileDialog *dialog,
 
   if (! uri_set)
     {
-      const gchar *name = gimp_image_get_uri (gimage);
+      const gchar *name = gimp_image_get_uri (image);
       gchar       *current;
 
       if (! name)
@@ -437,17 +439,17 @@ gimp_file_dialog_add_filters (GimpFileDialog *dialog,
   GSList        *list;
 
   all = gtk_file_filter_new ();
-  gtk_file_filter_set_name (all, _("All Files"));
+  gtk_file_filter_set_name (all, _("All files"));
   gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog), all);
   gtk_file_filter_add_pattern (all, "*");
 
   all = gtk_file_filter_new ();
-  gtk_file_filter_set_name (all, _("All Images"));
+  gtk_file_filter_set_name (all, _("All images"));
   gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog), all);
 
   for (list = file_procs; list; list = g_slist_next (list))
     {
-      PlugInProcDef *file_proc = list->data;
+      GimpPlugInProcedure *file_proc = list->data;
 
       if (file_proc->extensions_list)
         {
@@ -458,9 +460,9 @@ gimp_file_dialog_add_filters (GimpFileDialog *dialog,
           GSList        *ext;
           gint           i;
 
-          domain = plug_ins_locale_domain (gimp, file_proc->prog, NULL);
+          domain = plug_in_locale_domain (gimp, file_proc->prog, NULL);
 
-          label = plug_in_proc_def_get_label (file_proc, domain);
+          label = gimp_plug_in_procedure_get_label (file_proc, domain);
 
           str = g_string_new (label);
           g_free (label);
@@ -591,7 +593,7 @@ gimp_file_dialog_proc_changed (GimpFileProcView *view,
 
   if (gtk_file_chooser_get_action (chooser) == GTK_FILE_CHOOSER_ACTION_SAVE)
     {
-      PlugInProcDef *proc = dialog->file_proc;
+      GimpPlugInProcedure *proc = dialog->file_proc;
 
       if (proc && proc->extensions_list)
         {

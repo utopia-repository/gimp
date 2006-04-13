@@ -55,10 +55,12 @@ LIBRARIES = $(noinst_LIBRARIES)
 ARFLAGS = cru
 libappplug_in_a_AR = $(AR) $(ARFLAGS)
 libappplug_in_a_LIBADD =
-am_libappplug_in_a_OBJECTS = plug-in.$(OBJEXT) \
-	plug-in-context.$(OBJEXT) plug-in-debug.$(OBJEXT) \
-	plug-in-def.$(OBJEXT) plug-in-message.$(OBJEXT) \
-	plug-in-params.$(OBJEXT) plug-in-proc-def.$(OBJEXT) \
+am_libappplug_in_a_OBJECTS = plug-in-enums.$(OBJEXT) plug-in.$(OBJEXT) \
+	plug-in-context.$(OBJEXT) plug-in-data.$(OBJEXT) \
+	plug-in-debug.$(OBJEXT) plug-in-def.$(OBJEXT) \
+	plug-in-file.$(OBJEXT) plug-in-help-domain.$(OBJEXT) \
+	plug-in-locale-domain.$(OBJEXT) plug-in-menu-branch.$(OBJEXT) \
+	plug-in-message.$(OBJEXT) plug-in-params.$(OBJEXT) \
 	plug-in-proc-frame.$(OBJEXT) plug-in-progress.$(OBJEXT) \
 	plug-in-rc.$(OBJEXT) plug-in-run.$(OBJEXT) \
 	plug-in-shm.$(OBJEXT) plug-ins.$(OBJEXT) \
@@ -250,6 +252,7 @@ INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
 INTLTOOL_SERVER_RULE = @INTLTOOL_SERVER_RULE@
+INTLTOOL_SERVICE_RULE = @INTLTOOL_SERVICE_RULE@
 INTLTOOL_SHEET_RULE = @INTLTOOL_SHEET_RULE@
 INTLTOOL_SOUNDLIST_RULE = @INTLTOOL_SOUNDLIST_RULE@
 INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
@@ -343,7 +346,6 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
-SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -359,6 +361,8 @@ SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
 URI_CFLAGS = @URI_CFLAGS@
 URI_LIBS = @URI_LIBS@
+USE_BINRELOC_FALSE = @USE_BINRELOC_FALSE@
+USE_BINRELOC_TRUE = @USE_BINRELOC_TRUE@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WINDRES = @WINDRES@
@@ -449,22 +453,31 @@ INCLUDES = \
 
 noinst_LIBRARIES = libappplug-in.a
 libappplug_in_a_SOURCES = \
+	plug-in-enums.c 	\
 	plug-in-enums.h 	\
 	plug-in-types.h 	\
 	plug-in.c		\
 	plug-in.h		\
 	plug-in-context.c	\
 	plug-in-context.h	\
+	plug-in-data.c		\
+	plug-in-data.h		\
 	plug-in-debug.c		\
 	plug-in-debug.h		\
 	plug-in-def.c		\
 	plug-in-def.h		\
+	plug-in-file.c		\
+	plug-in-file.h		\
+	plug-in-help-domain.c	\
+	plug-in-help-domain.h	\
+	plug-in-locale-domain.c	\
+	plug-in-locale-domain.h	\
+	plug-in-menu-branch.c	\
+	plug-in-menu-branch.h	\
 	plug-in-message.c	\
 	plug-in-message.h	\
 	plug-in-params.c	\
 	plug-in-params.h	\
-	plug-in-proc-def.c	\
-	plug-in-proc-def.h	\
 	plug-in-proc-frame.c	\
 	plug-in-proc-frame.h	\
 	plug-in-progress.c	\
@@ -481,6 +494,13 @@ libappplug_in_a_SOURCES = \
 	plug-ins-query.h
 
 EXTRA_DIST = makefile.msc
+
+#
+# rules to generate built sources
+#
+# setup autogeneration dependencies
+gen_sources = xgen-bec
+CLEANFILES = $(EXTRA_PROGRAMS) $(gen_sources)
 all: all-am
 
 .SUFFIXES:
@@ -529,11 +549,16 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-context.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-data.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-debug.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-def.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-enums.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-file.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-help-domain.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-locale-domain.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-menu-branch.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-message.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-params.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-proc-def.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-proc-frame.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-progress.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-rc.Po@am__quote@
@@ -670,6 +695,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -740,6 +766,20 @@ uninstall-am: uninstall-info-am
 	pdf pdf-am ps ps-am tags uninstall uninstall-am \
 	uninstall-info-am
 
+
+$(srcdir)/plug-in-enums.c: $(srcdir)/plug-in-enums.h $(GIMP_MKENUMS)
+	$(GIMP_MKENUMS) \
+		--fhead "#include \"config.h\"\n#include <glib-object.h>\n#include \"libgimpbase/gimpbase.h\"\n#include \"plug-in-enums.h\"\n#include \"gimp-intl.h\"" \
+		--fprod "\n/* enumerations from \"@filename@\" */" \
+		--vhead "GType\n@enum_name@_get_type (void)\n{\n  static const G@Type@Value values[] =\n  {" \
+		--vprod "    { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
+		--vtail "    { 0, NULL, NULL }\n  };\n" \
+		--dhead "  static const Gimp@Type@Desc descs[] =\n  {" \
+		--dprod "    { @VALUENAME@, @valuedesc@, @valuehelp@ }," \
+		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (! type)\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
+		$(srcdir)/plug-in-enums.h > xgen-bec \
+	&& cp xgen-bec $(@F) \
+	&& rm -f xgen-bec
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

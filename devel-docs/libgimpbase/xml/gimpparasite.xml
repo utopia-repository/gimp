@@ -46,6 +46,15 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-parasite-name">gim
 #define     <link linkend="GIMP-PARASITE-ATTACH-GRANDPARENT:CAPS">GIMP_PARASITE_ATTACH_GRANDPARENT</link>
 #define     <link linkend="GIMP-PARASITE-GRANDPARENT-PERSISTENT:CAPS">GIMP_PARASITE_GRANDPARENT_PERSISTENT</link>
 #define     <link linkend="GIMP-PARASITE-GRANDPARENT-UNDOABLE:CAPS">GIMP_PARASITE_GRANDPARENT_UNDOABLE</link>
+#define     <link linkend="GIMP-TYPE-PARASITE:CAPS">GIMP_TYPE_PARASITE</link>
+#define     <link linkend="GIMP-TYPE-PARAM-PARASITE:CAPS">GIMP_TYPE_PARAM_PARASITE</link>
+#define     <link linkend="GIMP-IS-PARAM-SPEC-PARASITE:CAPS">GIMP_IS_PARAM_SPEC_PARASITE</link>     (pspec)
+<link linkend="GParamSpec">GParamSpec</link>* <link linkend="gimp-param-spec-parasite">gimp_param_spec_parasite</link>        (const <link linkend="gchar">gchar</link> *name,
+                                             const <link linkend="gchar">gchar</link> *nick,
+                                             const <link linkend="gchar">gchar</link> *blurb,
+                                             <link linkend="GParamFlags">GParamFlags</link> flags);
+#define     <link linkend="GIMP-VALUE-HOLDS-PARASITE:CAPS">GIMP_VALUE_HOLDS_PARASITE</link>       (value)
+
 </synopsis>
 </refsynopsisdiv>
 
@@ -74,7 +83,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
   guint32   flags;  /* save Parasite in XCF file, etc.                */
   guint32   size;   /* amount of data                                 */
   gpointer  data;   /* a pointer to the data.  plugin is              *
-		     * responsible for tracking byte order            */
+                     * responsible for tracking byte order            */
 } GimpParasite;
 </programlisting>
 <para>
@@ -326,6 +335,72 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 <para>
 
 </para></refsect2>
+<refsect2>
+<title><anchor id="GIMP-TYPE-PARASITE:CAPS"/>GIMP_TYPE_PARASITE</title>
+<indexterm><primary>GIMP_TYPE_PARASITE</primary></indexterm><programlisting>#define GIMP_TYPE_PARASITE               (gimp_parasite_get_type ())
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GIMP-TYPE-PARAM-PARASITE:CAPS"/>GIMP_TYPE_PARAM_PARASITE</title>
+<indexterm><primary>GIMP_TYPE_PARAM_PARASITE</primary></indexterm><programlisting>#define GIMP_TYPE_PARAM_PARASITE           (gimp_param_parasite_get_type ())
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GIMP-IS-PARAM-SPEC-PARASITE:CAPS"/>GIMP_IS_PARAM_SPEC_PARASITE()</title>
+<indexterm><primary>GIMP_IS_PARAM_SPEC_PARASITE</primary></indexterm><programlisting>#define GIMP_IS_PARAM_SPEC_PARASITE(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_PARASITE))
+</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>pspec</parameter>&nbsp;:</term>
+<listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-param-spec-parasite"/>gimp_param_spec_parasite ()</title>
+<indexterm><primary>gimp_param_spec_parasite</primary></indexterm><programlisting><link linkend="GParamSpec">GParamSpec</link>* gimp_param_spec_parasite        (const <link linkend="gchar">gchar</link> *name,
+                                             const <link linkend="gchar">gchar</link> *nick,
+                                             const <link linkend="gchar">gchar</link> *blurb,
+                                             <link linkend="GParamFlags">GParamFlags</link> flags);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>nick</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>blurb</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>flags</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="GIMP-VALUE-HOLDS-PARASITE:CAPS"/>GIMP_VALUE_HOLDS_PARASITE()</title>
+<indexterm><primary>GIMP_VALUE_HOLDS_PARASITE</primary></indexterm><programlisting>#define GIMP_VALUE_HOLDS_PARASITE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_PARASITE))
+</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
 

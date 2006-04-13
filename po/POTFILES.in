@@ -1,6 +1,8 @@
 # Files from the Gimp distribution which have already been
 # marked to allow runtime translation of messages
 
+[encoding: UTF-8]
+
 app/about.h
 app/app_procs.c
 app/batch.c
@@ -150,7 +152,6 @@ app/dialogs/image-merge-layers-dialog.c
 app/dialogs/image-new-dialog.c
 app/dialogs/image-properties-dialog.c
 app/dialogs/image-scale-dialog.c
-app/dialogs/info-dialog.c
 app/dialogs/keyboard-shortcuts-dialog.c
 app/dialogs/layer-add-mask-dialog.c
 app/dialogs/layer-options-dialog.c
@@ -214,11 +215,12 @@ app/pdb/color_cmds.c
 app/pdb/drawable_cmds.c
 app/pdb/drawable_transform_cmds.c
 app/pdb/edit_cmds.c
+app/pdb/gimp-pdb.c
+app/pdb/gimpprocedure.c
 app/pdb/guides_cmds.c
 app/pdb/image_cmds.c
 app/pdb/layer_cmds.c
 app/pdb/paths_cmds.c
-app/pdb/procedural_db.c
 app/pdb/procedural_db_cmds.c
 app/pdb/selection_cmds.c
 app/pdb/selection_tools_cmds.c

@@ -105,14 +105,14 @@ gimp_eraser_motion (GimpPaintCore    *paint_core,
   GimpEraserOptions   *options          = GIMP_ERASER_OPTIONS (paint_options);
   GimpContext         *context          = GIMP_CONTEXT (paint_options);
   GimpPressureOptions *pressure_options = paint_options->pressure_options;
-  GimpImage           *gimage;
+  GimpImage           *image;
   gdouble              opacity;
   TempBuf             *area;
   guchar               col[MAX_CHANNELS];
 
-  gimage = gimp_item_get_image (GIMP_ITEM (drawable));
+  image = gimp_item_get_image (GIMP_ITEM (drawable));
 
-  opacity = gimp_paint_options_get_fade (paint_options, gimage,
+  opacity = gimp_paint_options_get_fade (paint_options, image,
                                          paint_core->pixel_dist);
   if (opacity == 0.0)
     return;
@@ -121,23 +121,23 @@ gimp_eraser_motion (GimpPaintCore    *paint_core,
   if (! area)
     return;
 
-  gimp_image_get_background (gimage, drawable, context, col);
+  gimp_image_get_background (image, drawable, context, col);
 
   /*  set the alpha channel  */
   col[area->bytes - 1] = OPAQUE_OPACITY;
 
   /*  color the pixels  */
   color_pixels (temp_buf_data (area), col,
-		area->width * area->height, area->bytes);
+                area->width * area->height, area->bytes);
 
   if (pressure_options->opacity)
     opacity *= PRESSURE_SCALE * paint_core->cur_coords.pressure;
 
   gimp_brush_core_paste_canvas (GIMP_BRUSH_CORE (paint_core), drawable,
-				MIN (opacity, GIMP_OPACITY_OPAQUE),
-				gimp_context_get_opacity (context),
-				(options->anti_erase ?
+                                MIN (opacity, GIMP_OPACITY_OPAQUE),
+                                gimp_context_get_opacity (context),
+                                (options->anti_erase ?
                                  GIMP_ANTI_ERASE_MODE : GIMP_ERASE_MODE),
-				gimp_paint_options_get_brush_mode (paint_options),
-				paint_options->application_mode);
+                                gimp_paint_options_get_brush_mode (paint_options),
+                                paint_options->application_mode);
 }

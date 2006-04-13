@@ -69,23 +69,23 @@ libexec_PROGRAMS = AlienMap2$(EXEEXT) CEL$(EXEEXT) \
 	postscript$(EXEEXT) procedure-browser$(EXEEXT) psd$(EXEEXT) \
 	psd_save$(EXEEXT) $(am__EXEEXT_7) randomize$(EXEEXT) \
 	raw$(EXEEXT) retinex$(EXEEXT) ripple$(EXEEXT) rotate$(EXEEXT) \
-	sample_colorize$(EXEEXT) scatter_hsv$(EXEEXT) $(am__EXEEXT_8) \
-	sel_gauss$(EXEEXT) semiflatten$(EXEEXT) sharpen$(EXEEXT) \
-	shift$(EXEEXT) sinus$(EXEEXT) smooth_palette$(EXEEXT) \
-	snoise$(EXEEXT) sobel$(EXEEXT) softglow$(EXEEXT) \
-	sparkle$(EXEEXT) spheredesigner$(EXEEXT) spread$(EXEEXT) \
-	struc$(EXEEXT) sunras$(EXEEXT) $(am__EXEEXT_9) tga$(EXEEXT) \
-	threshold_alpha$(EXEEXT) $(am__EXEEXT_10) tile$(EXEEXT) \
-	tileit$(EXEEXT) tiler$(EXEEXT) uniteditor$(EXEEXT) \
-	unsharp$(EXEEXT) video$(EXEEXT) vinvert$(EXEEXT) \
-	vpropagate$(EXEEXT) warp$(EXEEXT) waves$(EXEEXT) \
-	webbrowser$(EXEEXT) whirlpinch$(EXEEXT) wind$(EXEEXT) \
-	$(am__EXEEXT_11) $(am__EXEEXT_12) xbm$(EXEEXT) \
-	$(am__EXEEXT_13) xwd$(EXEEXT) zealouscrop$(EXEEXT)
+	sample_colorize$(EXEEXT) scatter_hsv$(EXEEXT) \
+	screenshot$(EXEEXT) sel_gauss$(EXEEXT) semiflatten$(EXEEXT) \
+	sharpen$(EXEEXT) shift$(EXEEXT) sinus$(EXEEXT) \
+	smooth_palette$(EXEEXT) snoise$(EXEEXT) sobel$(EXEEXT) \
+	softglow$(EXEEXT) sparkle$(EXEEXT) spheredesigner$(EXEEXT) \
+	spread$(EXEEXT) struc$(EXEEXT) sunras$(EXEEXT) $(am__EXEEXT_8) \
+	tga$(EXEEXT) threshold_alpha$(EXEEXT) $(am__EXEEXT_9) \
+	tile$(EXEEXT) tileit$(EXEEXT) tiler$(EXEEXT) \
+	uniteditor$(EXEEXT) unsharp$(EXEEXT) video$(EXEEXT) \
+	vinvert$(EXEEXT) vpropagate$(EXEEXT) warp$(EXEEXT) \
+	waves$(EXEEXT) webbrowser$(EXEEXT) whirlpinch$(EXEEXT) \
+	wind$(EXEEXT) $(am__EXEEXT_10) $(am__EXEEXT_11) xbm$(EXEEXT) \
+	$(am__EXEEXT_12) xwd$(EXEEXT) zealouscrop$(EXEEXT)
 EXTRA_PROGRAMS = aa$(EXEEXT) gnomeprint$(EXEEXT) mail$(EXEEXT) \
 	mng$(EXEEXT) png$(EXEEXT) poppler$(EXEEXT) psp$(EXEEXT) \
-	screenshot$(EXEEXT) svg$(EXEEXT) tiff$(EXEEXT) \
-	winprint$(EXEEXT) wmf$(EXEEXT) xpm$(EXEEXT)
+	svg$(EXEEXT) tiff$(EXEEXT) winprint$(EXEEXT) wmf$(EXEEXT) \
+	xpm$(EXEEXT)
 subdir = plug-ins/common
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -108,12 +108,11 @@ am__EXEEXT_4 = @MNG@
 am__EXEEXT_5 = @PNG@
 am__EXEEXT_6 = @POPPLER@
 am__EXEEXT_7 = @PSP@
-am__EXEEXT_8 = @SCREENSHOT@
-am__EXEEXT_9 = @SVG@
-am__EXEEXT_10 = @TIFF@
-am__EXEEXT_11 = @WINPRINT@
-am__EXEEXT_12 = @WMF@
-am__EXEEXT_13 = @XPM@
+am__EXEEXT_8 = @SVG@
+am__EXEEXT_9 = @TIFF@
+am__EXEEXT_10 = @WINPRINT@
+am__EXEEXT_11 = @WMF@
+am__EXEEXT_12 = @XPM@
 am__installdirs = "$(DESTDIR)$(libexecdir)"
 libexecPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(libexec_PROGRAMS)
@@ -1417,6 +1416,7 @@ INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
 INTLTOOL_SERVER_RULE = @INTLTOOL_SERVER_RULE@
+INTLTOOL_SERVICE_RULE = @INTLTOOL_SERVICE_RULE@
 INTLTOOL_SHEET_RULE = @INTLTOOL_SHEET_RULE@
 INTLTOOL_SOUNDLIST_RULE = @INTLTOOL_SOUNDLIST_RULE@
 INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
@@ -1510,7 +1510,6 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
-SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -1526,6 +1525,8 @@ SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
 URI_CFLAGS = @URI_CFLAGS@
 URI_LIBS = @URI_LIBS@
+USE_BINRELOC_FALSE = @USE_BINRELOC_FALSE@
+USE_BINRELOC_TRUE = @USE_BINRELOC_TRUE@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WINDRES = @WINDRES@

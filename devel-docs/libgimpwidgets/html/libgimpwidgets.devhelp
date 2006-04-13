@@ -585,14 +585,15 @@
     <function name="GIMP_STOCK_WILBER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-WILBER:CAPS"/>
     <function name="GIMP_STOCK_WILBER_EEK" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-WILBER-EEK:CAPS"/>
     <function name="GIMP_STOCK_ZOOM_FOLLOW_WINDOW" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-ZOOM-FOLLOW-WINDOW:CAPS"/>
+    <function name="GIMP_STOCK_QMASK_ON" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-QMASK-ON:CAPS"/>
+    <function name="GIMP_STOCK_QMASK_OFF" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-QMASK-OFF:CAPS"/>
     <function name="GIMP_STOCK_BRUSH" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-BRUSH:CAPS"/>
     <function name="GIMP_STOCK_BUFFER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-BUFFER:CAPS"/>
+    <function name="GIMP_STOCK_DETACH" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-DETACH:CAPS"/>
     <function name="GIMP_STOCK_FONT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-FONT:CAPS"/>
     <function name="GIMP_STOCK_GRADIENT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT:CAPS"/>
     <function name="GIMP_STOCK_PALETTE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-PALETTE:CAPS"/>
     <function name="GIMP_STOCK_PATTERN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-PATTERN:CAPS"/>
-    <function name="GIMP_STOCK_QMASK_ON" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-QMASK-ON:CAPS"/>
-    <function name="GIMP_STOCK_QMASK_OFF" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-QMASK-OFF:CAPS"/>
     <function name="gimp_enum_radio_box_new ()" link="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new"/>
     <function name="gimp_enum_radio_box_new_with_range ()" link="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new-with-range"/>
     <function name="gimp_enum_radio_frame_new ()" link="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-frame-new"/>

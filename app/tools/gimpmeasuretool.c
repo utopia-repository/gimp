@@ -62,29 +62,29 @@
 
 static void     gimp_measure_tool_control         (GimpTool        *tool,
                                                    GimpToolAction   action,
-                                                   GimpDisplay     *gdisp);
+                                                   GimpDisplay     *display);
 static void     gimp_measure_tool_button_press    (GimpTool        *tool,
                                                    GimpCoords      *coords,
                                                    guint32          time,
                                                    GdkModifierType  state,
-                                                   GimpDisplay     *gdisp);
+                                                   GimpDisplay     *display);
 static void     gimp_measure_tool_button_release  (GimpTool        *tool,
                                                    GimpCoords      *coords,
                                                    guint32          time,
                                                    GdkModifierType  state,
-                                                   GimpDisplay     *gdisp);
+                                                   GimpDisplay     *display);
 static void     gimp_measure_tool_motion          (GimpTool        *tool,
                                                    GimpCoords      *coords,
                                                    guint32          time,
                                                    GdkModifierType  state,
-                                                   GimpDisplay     *gdisp);
+                                                   GimpDisplay     *display);
 static gboolean gimp_measure_tool_key_press       (GimpTool        *tool,
                                                    GdkEventKey     *kevent,
-                                                   GimpDisplay     *gdisp);
+                                                   GimpDisplay     *display);
 static void     gimp_measure_tool_cursor_update   (GimpTool        *tool,
                                                    GimpCoords      *coords,
                                                    GdkModifierType  state,
-                                                   GimpDisplay     *gdisp);
+                                                   GimpDisplay     *display);
 
 static void     gimp_measure_tool_draw            (GimpDrawTool    *draw_tool);
 
@@ -97,7 +97,7 @@ static gdouble     gimp_measure_tool_get_angle     (gint             dx,
 
 static GtkWidget * gimp_measure_tool_dialog_new    (GimpMeasureTool *mtool);
 static void        gimp_measure_tool_dialog_update (GimpMeasureTool *mtool,
-                                                    GimpDisplay     *gdisp);
+                                                    GimpDisplay     *display);
 
 
 G_DEFINE_TYPE (GimpMeasureTool, gimp_measure_tool, GIMP_TYPE_DRAW_TOOL);
@@ -116,7 +116,7 @@ gimp_measure_tool_register (GimpToolRegisterCallback  callback,
                 "gimp-measure-tool",
                 _("Measure"),
                 _("Measure distances and angles"),
-                N_("_Measure"), NULL,
+                N_("_Measure"), "<shift>M",
                 NULL, GIMP_HELP_TOOL_MEASURE,
                 GIMP_STOCK_TOOL_MEASURE,
                 data);
@@ -151,7 +151,7 @@ gimp_measure_tool_init (GimpMeasureTool *measure_tool)
 static void
 gimp_measure_tool_control (GimpTool       *tool,
                            GimpToolAction  action,
-                           GimpDisplay    *gdisp)
+                           GimpDisplay    *display)
 {
   switch (action)
     {
@@ -167,7 +167,7 @@ gimp_measure_tool_control (GimpTool       *tool,
       break;
     }
 
-  GIMP_TOOL_CLASS (parent_class)->control (tool, action, gdisp);
+  GIMP_TOOL_CLASS (parent_class)->control (tool, action, display);
 }
 
 static void
@@ -175,7 +175,7 @@ gimp_measure_tool_button_press (GimpTool        *tool,
                                 GimpCoords      *coords,
                                 guint32          time,
                                 GdkModifierType  state,
-                                GimpDisplay     *gdisp)
+                                GimpDisplay     *display)
 {
   GimpMeasureTool    *mtool = GIMP_MEASURE_TOOL (tool);
   GimpMeasureOptions *options;
@@ -184,24 +184,24 @@ gimp_measure_tool_button_press (GimpTool        *tool,
 
   options = GIMP_MEASURE_OPTIONS (tool->tool_info->tool_options);
 
-  shell = GIMP_DISPLAY_SHELL (gdisp->shell);
+  shell = GIMP_DISPLAY_SHELL (display->shell);
 
   /*  if we are changing displays, pop the statusbar of the old one  */
-  if (gimp_tool_control_is_active (tool->control) && gdisp != tool->gdisp)
+  if (gimp_tool_control_is_active (tool->control) && display != tool->display)
     {
-      gimp_tool_pop_status (tool, gdisp);
+      gimp_tool_pop_status (tool, display);
     }
 
   mtool->function = CREATING;
 
-  if (gimp_tool_control_is_active (tool->control) && gdisp == tool->gdisp)
+  if (gimp_tool_control_is_active (tool->control) && display == tool->display)
     {
       /*  if the cursor is in one of the handles,
        *  the new function will be moving or adding a new point or guide
        */
       for (i = 0; i < mtool->num_points; i++)
-	{
-	  if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (tool), gdisp,
+        {
+          if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (tool), display,
                                         coords->x,
                                         coords->y,
                                         GIMP_HANDLE_CIRCLE,
@@ -210,10 +210,10 @@ gimp_measure_tool_button_press (GimpTool        *tool,
                                         TARGET, TARGET,
                                         GTK_ANCHOR_CENTER,
                                         FALSE))
-	    {
-	      if (state & (GDK_CONTROL_MASK | GDK_MOD1_MASK))
-		{
-		  GimpGuide *guide;
+            {
+              if (state & (GDK_CONTROL_MASK | GDK_MOD1_MASK))
+                {
+                  GimpGuide *guide;
                   gboolean   create_hguide;
                   gboolean   create_vguide;
 
@@ -221,50 +221,50 @@ gimp_measure_tool_button_press (GimpTool        *tool,
                                    (mtool->y[i] ==
                                     CLAMP (mtool->y[i],
                                            0,
-                                           gdisp->gimage->height)));
+                                           display->image->height)));
 
                   create_vguide = ((state & GDK_MOD1_MASK) &&
                                    (mtool->x[i] ==
                                     CLAMP (mtool->x[i],
                                            0,
-                                           gdisp->gimage->width)));
+                                           display->image->width)));
 
-		  if (create_hguide && create_vguide)
-		    gimp_image_undo_group_start (gdisp->gimage,
+                  if (create_hguide && create_vguide)
+                    gimp_image_undo_group_start (display->image,
                                                  GIMP_UNDO_GROUP_IMAGE_GUIDE,
                                                  _("Add Guides"));
 
-		  if (create_hguide)
-		    {
-		      guide = gimp_image_add_hguide (gdisp->gimage,
+                  if (create_hguide)
+                    {
+                      guide = gimp_image_add_hguide (display->image,
                                                      mtool->y[i],
                                                      TRUE);
-		      gimp_image_update_guide (gdisp->gimage, guide);
-		    }
+                      gimp_image_update_guide (display->image, guide);
+                    }
 
-		  if (create_vguide)
-		    {
-		      guide = gimp_image_add_vguide (gdisp->gimage,
+                  if (create_vguide)
+                    {
+                      guide = gimp_image_add_vguide (display->image,
                                                      mtool->x[i],
                                                      TRUE);
-		      gimp_image_update_guide (gdisp->gimage, guide);
-		    }
+                      gimp_image_update_guide (display->image, guide);
+                    }
 
-		  if (create_hguide && create_vguide)
-		    gimp_image_undo_group_end (gdisp->gimage);
+                  if (create_hguide && create_vguide)
+                    gimp_image_undo_group_end (display->image);
 
-		  if (create_hguide || create_vguide)
-                    gimp_image_flush (gdisp->gimage);
+                  if (create_hguide || create_vguide)
+                    gimp_image_flush (display->image);
 
-		  mtool->function = GUIDING;
-		  break;
-		}
+                  mtool->function = GUIDING;
+                  break;
+                }
 
-	      mtool->function = (state & GDK_SHIFT_MASK) ? ADDING : MOVING;
-	      mtool->point = i;
-	      break;
-	    }
-	}
+              mtool->function = (state & GDK_SHIFT_MASK) ? ADDING : MOVING;
+              mtool->point = i;
+              break;
+            }
+        }
 
       /*  adding to the middle point makes no sense  */
       if (i == 0 &&
@@ -276,28 +276,28 @@ gimp_measure_tool_button_press (GimpTool        *tool,
 
       /*  if the function is still CREATING, we are outside the handles  */
       if (mtool->function == CREATING)
-	{
-	  if (mtool->num_points > 1 && (state & GDK_MOD1_MASK))
-	    {
-	      mtool->function = MOVING_ALL;
+        {
+          if (mtool->num_points > 1 && (state & GDK_MOD1_MASK))
+            {
+              mtool->function = MOVING_ALL;
 
               mtool->last_x = coords->x;
               mtool->last_y = coords->y;
-	    }
-	}
+            }
+        }
     }
 
   if (mtool->function == CREATING)
     {
       if (gimp_tool_control_is_active (tool->control))
-	{
-	  gimp_draw_tool_stop (GIMP_DRAW_TOOL (mtool));
+        {
+          gimp_draw_tool_stop (GIMP_DRAW_TOOL (mtool));
 
           mtool->x[0] = mtool->x[1] = mtool->x[2] = 0.0;
           mtool->y[0] = mtool->y[1] = mtool->y[2] = 0.0;
 
-          gimp_measure_tool_dialog_update (mtool, gdisp);
-	}
+          gimp_measure_tool_dialog_update (mtool, display);
+        }
 
       /*  set the first point and go into ADDING mode  */
       mtool->x[0]       = coords->x + 0.5;
@@ -306,19 +306,19 @@ gimp_measure_tool_button_press (GimpTool        *tool,
       mtool->num_points = 1;
       mtool->function   = ADDING;
 
-      /*  set the gdisplay  */
-      tool->gdisp = gdisp;
+      /*  set the displaylay  */
+      tool->display = display;
 
       if (gimp_tool_control_is_active (tool->control))
-	{
-	  gimp_tool_replace_status (tool, gdisp, " ");
+        {
+          gimp_tool_replace_status (tool, display, " ");
         }
       else
         {
           gimp_tool_control_activate (tool->control);
         }
 
-      gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), gdisp);
+      gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), display);
     }
 
   /*  create the info window if necessary  */
@@ -332,7 +332,7 @@ gimp_measure_tool_button_press (GimpTool        *tool,
 
   if (mtool->dialog)
     gimp_viewable_dialog_set_viewable (GIMP_VIEWABLE_DIALOG (mtool->dialog),
-                                       GIMP_VIEWABLE (tool->gdisp->gimage));
+                                       GIMP_VIEWABLE (tool->display->image));
 }
 
 static void
@@ -340,7 +340,7 @@ gimp_measure_tool_button_release (GimpTool        *tool,
                                   GimpCoords      *coords,
                                   guint32          time,
                                   GdkModifierType  state,
-                                  GimpDisplay     *gdisp)
+                                  GimpDisplay     *display)
 {
   GimpMeasureTool *measure_tool = GIMP_MEASURE_TOOL (tool);
 
@@ -352,7 +352,7 @@ gimp_measure_tool_motion (GimpTool        *tool,
                           GimpCoords      *coords,
                           guint32          time,
                           GdkModifierType  state,
-                          GimpDisplay     *gdisp)
+                          GimpDisplay     *display)
 {
   GimpMeasureTool    *mtool = GIMP_MEASURE_TOOL (tool);
   GimpMeasureOptions *options;
@@ -377,28 +377,28 @@ gimp_measure_tool_motion (GimpTool        *tool,
     {
     case ADDING:
       switch (mtool->point)
-	{
-	case 0:  /*  we are adding to the start point  */
-	  break;
-	case 1:  /*  we are adding to the end point,
+        {
+        case 0:  /*  we are adding to the start point  */
+          break;
+        case 1:  /*  we are adding to the end point,
                      make it the new start point  */
-	  tmp = mtool->x[0];
-	  mtool->x[0] = mtool->x[1];
-	  mtool->x[1] = tmp;
-	  tmp = mtool->y[0];
-	  mtool->y[0] = mtool->y[1];
-	  mtool->y[1] = tmp;
-	  break;
-	case 2:  /*  we are adding to the third point,
+          tmp = mtool->x[0];
+          mtool->x[0] = mtool->x[1];
+          mtool->x[1] = tmp;
+          tmp = mtool->y[0];
+          mtool->y[0] = mtool->y[1];
+          mtool->y[1] = tmp;
+          break;
+        case 2:  /*  we are adding to the third point,
                      make it the new start point  */
-	  mtool->x[1] = mtool->x[0];
-	  mtool->y[1] = mtool->y[0];
-	  mtool->x[0] = mtool->x[2];
-	  mtool->y[0] = mtool->y[2];
-	  break;
-	default:
-	  break;
-	}
+          mtool->x[1] = mtool->x[0];
+          mtool->y[1] = mtool->y[0];
+          mtool->x[0] = mtool->x[2];
+          mtool->y[0] = mtool->y[2];
+          break;
+        default:
+          break;
+        }
       mtool->num_points = MIN (mtool->num_points + 1, 3);
       mtool->point = mtool->num_points - 1;
       mtool->function = MOVING;
@@ -408,22 +408,22 @@ gimp_measure_tool_motion (GimpTool        *tool,
       /*  if we are moving the start point and only have two,
           make it the end point  */
       if (mtool->num_points == 2 && mtool->point == 0)
-	{
-	  tmp = mtool->x[0];
-	  mtool->x[0] = mtool->x[1];
-	  mtool->x[1] = tmp;
-	  tmp = mtool->y[0];
-	  mtool->y[0] = mtool->y[1];
-	  mtool->y[1] = tmp;
-	  mtool->point = 1;
-	}
+        {
+          tmp = mtool->x[0];
+          mtool->x[0] = mtool->x[1];
+          mtool->x[1] = tmp;
+          tmp = mtool->y[0];
+          mtool->y[0] = mtool->y[1];
+          mtool->y[1] = tmp;
+          mtool->point = 1;
+        }
       i = mtool->point;
 
       mtool->x[i] = ROUND (coords->x);
       mtool->y[i] = ROUND (coords->y);
 
       if (state & GDK_CONTROL_MASK)
-	{
+        {
           gdouble  x = mtool->x[i];
           gdouble  y = mtool->y[i];
 
@@ -439,10 +439,10 @@ gimp_measure_tool_motion (GimpTool        *tool,
       dy = ROUND (coords->y) - mtool->last_y;
 
       for (i = 0; i < mtool->num_points; i++)
-	{
-	  mtool->x[i] += dx;
-	  mtool->y[i] += dy;
-	}
+        {
+          mtool->x[i] += dx;
+          mtool->y[i] += dy;
+        }
 
       mtool->last_x = ROUND (coords->x);
       mtool->last_y = ROUND (coords->y);
@@ -453,7 +453,7 @@ gimp_measure_tool_motion (GimpTool        *tool,
     }
 
   if (mtool->function == MOVING)
-    gimp_measure_tool_dialog_update (mtool, gdisp);
+    gimp_measure_tool_dialog_update (mtool, display);
 
   gimp_draw_tool_resume (GIMP_DRAW_TOOL (mtool));
 }
@@ -461,9 +461,9 @@ gimp_measure_tool_motion (GimpTool        *tool,
 static gboolean
 gimp_measure_tool_key_press (GimpTool    *tool,
                              GdkEventKey *kevent,
-                             GimpDisplay *gdisp)
+                             GimpDisplay *display)
 {
-  if (gdisp == tool->gdisp)
+  if (display == tool->display)
     {
       switch (kevent->keyval)
         {
@@ -483,7 +483,7 @@ static void
 gimp_measure_tool_cursor_update (GimpTool        *tool,
                                  GimpCoords      *coords,
                                  GdkModifierType  state,
-                                 GimpDisplay     *gdisp)
+                                 GimpDisplay     *display)
 {
   GimpMeasureTool   *mtool     = GIMP_MEASURE_TOOL (tool);
   gboolean           in_handle = FALSE;
@@ -491,11 +491,11 @@ gimp_measure_tool_cursor_update (GimpTool        *tool,
   GimpCursorModifier modifier  = GIMP_CURSOR_MODIFIER_NONE;
   gint               i;
 
-  if (gimp_tool_control_is_active (tool->control) && tool->gdisp == gdisp)
+  if (gimp_tool_control_is_active (tool->control) && tool->display == display)
     {
       for (i = 0; i < mtool->num_points; i++)
-	{
-	  if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (tool), gdisp,
+        {
+          if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (tool), display,
                                         coords->x,
                                         coords->y,
                                         GIMP_HANDLE_CIRCLE,
@@ -504,35 +504,35 @@ gimp_measure_tool_cursor_update (GimpTool        *tool,
                                         TARGET, TARGET,
                                         GTK_ANCHOR_CENTER,
                                         FALSE))
-	    {
-	      in_handle = TRUE;
+            {
+              in_handle = TRUE;
 
-	      if (state & GDK_CONTROL_MASK)
-		{
-		  if (state & GDK_MOD1_MASK)
-		    cursor = GDK_BOTTOM_RIGHT_CORNER;
-		  else
-		    cursor = GDK_BOTTOM_SIDE;
-		  break;
-		}
+              if (state & GDK_CONTROL_MASK)
+                {
+                  if (state & GDK_MOD1_MASK)
+                    cursor = GDK_BOTTOM_RIGHT_CORNER;
+                  else
+                    cursor = GDK_BOTTOM_SIDE;
+                  break;
+                }
 
-	      if (state & GDK_MOD1_MASK)
-		{
-		  cursor = GDK_RIGHT_SIDE;
-		  break;
-		}
+              if (state & GDK_MOD1_MASK)
+                {
+                  cursor = GDK_RIGHT_SIDE;
+                  break;
+                }
 
-	      if (state & GDK_SHIFT_MASK)
-		modifier = GIMP_CURSOR_MODIFIER_PLUS;
-	      else
-		modifier = GIMP_CURSOR_MODIFIER_MOVE;
+              if (state & GDK_SHIFT_MASK)
+                modifier = GIMP_CURSOR_MODIFIER_PLUS;
+              else
+                modifier = GIMP_CURSOR_MODIFIER_MOVE;
 
-	      if (i == 0 && mtool->num_points == 3 &&
-		  modifier == GIMP_CURSOR_MODIFIER_PLUS)
-		modifier = GIMP_CURSOR_MODIFIER_MOVE;
-	      break;
-	    }
-	}
+              if (i == 0 && mtool->num_points == 3 &&
+                  modifier == GIMP_CURSOR_MODIFIER_PLUS)
+                modifier = GIMP_CURSOR_MODIFIER_MOVE;
+              break;
+            }
+        }
 
       if (! in_handle && mtool->num_points > 1 && state & GDK_MOD1_MASK)
         modifier = GIMP_CURSOR_MODIFIER_MOVE;
@@ -541,7 +541,7 @@ gimp_measure_tool_cursor_update (GimpTool        *tool,
   gimp_tool_control_set_cursor          (tool->control, cursor);
   gimp_tool_control_set_cursor_modifier (tool->control, modifier);
 
-  GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state, gdisp);
+  GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state, display);
 }
 
 static void
@@ -556,7 +556,7 @@ gimp_measure_tool_draw (GimpDrawTool *draw_tool)
   for (i = 0; i < mtool->num_points; i++)
     {
       if (i == 0 && mtool->num_points == 3)
-	{
+        {
           gimp_draw_tool_draw_handle (draw_tool,
                                       GIMP_HANDLE_CIRCLE,
                                       mtool->x[i],
@@ -565,9 +565,9 @@ gimp_measure_tool_draw (GimpDrawTool *draw_tool)
                                       TARGET,
                                       GTK_ANCHOR_CENTER,
                                       FALSE);
-	}
+        }
       else
-	{
+        {
           gimp_draw_tool_draw_handle (draw_tool,
                                       GIMP_HANDLE_CROSS,
                                       mtool->x[i],
@@ -576,10 +576,10 @@ gimp_measure_tool_draw (GimpDrawTool *draw_tool)
                                       TARGET * 2,
                                       GTK_ANCHOR_CENTER,
                                       FALSE);
-	}
+        }
 
       if (i > 0)
-	{
+        {
           gimp_draw_tool_draw_line (draw_tool,
                                     mtool->x[0],
                                     mtool->y[0],
@@ -587,8 +587,8 @@ gimp_measure_tool_draw (GimpDrawTool *draw_tool)
                                     mtool->y[i],
                                     FALSE);
 
-	  /*  only draw the arc if the lines are long enough  */
-          if (gimp_draw_tool_calc_distance (draw_tool, tool->gdisp,
+          /*  only draw the arc if the lines are long enough  */
+          if (gimp_draw_tool_calc_distance (draw_tool, tool->display,
                                             mtool->x[0],
                                             mtool->y[0],
                                             mtool->x[i],
@@ -596,7 +596,7 @@ gimp_measure_tool_draw (GimpDrawTool *draw_tool)
             {
               draw_arc++;
             }
-	}
+        }
     }
 
   if (mtool->num_points > 1 && draw_arc == mtool->num_points - 1)
@@ -605,12 +605,12 @@ gimp_measure_tool_draw (GimpDrawTool *draw_tool)
       angle2 = (mtool->angle1 - mtool->angle2) * 64.0;
 
       if (angle2 > 11520)
-	  angle2 -= 23040;
+          angle2 -= 23040;
       if (angle2 < -11520)
-	  angle2 += 23040;
+          angle2 += 23040;
 
       if (angle2 != 0)
-	{
+        {
           gimp_draw_tool_draw_arc_by_anchor (draw_tool,
                                              FALSE,
                                              mtool->x[0],
@@ -621,13 +621,13 @@ gimp_measure_tool_draw (GimpDrawTool *draw_tool)
                                              GTK_ANCHOR_CENTER,
                                              FALSE);
 
-	  if (mtool->num_points == 2)
+          if (mtool->num_points == 2)
             {
               GimpDisplayShell *shell;
               gdouble           target;
               gdouble           arc_radius;
 
-              shell = GIMP_DISPLAY_SHELL (tool->gdisp->shell);
+              shell = GIMP_DISPLAY_SHELL (tool->display->shell);
 
               target     = FUNSCALEX (shell, (TARGET >> 1));
               arc_radius = FUNSCALEX (shell, ARC_RADIUS);
@@ -641,7 +641,7 @@ gimp_measure_tool_draw (GimpDrawTool *draw_tool)
                                         mtool->y[0],
                                         FALSE);
             }
-	}
+        }
     }
 }
 
@@ -653,7 +653,7 @@ gimp_measure_tool_halt (GimpMeasureTool *mtool)
   if (mtool->dialog)
     gtk_widget_destroy (mtool->dialog);
 
-  gimp_tool_pop_status (tool, tool->gdisp);
+  gimp_tool_pop_status (tool, tool->display);
 
   if (gimp_draw_tool_is_active (GIMP_DRAW_TOOL (mtool)))
     gimp_draw_tool_stop (GIMP_DRAW_TOOL (mtool));
@@ -672,7 +672,7 @@ gimp_measure_tool_get_angle (gint    dx,
 
   if (dx)
     angle = gimp_rad_to_deg (atan (((gdouble) (dy) / yres) /
-				   ((gdouble) (dx) / xres)));
+                                   ((gdouble) (dx) / xres)));
   else if (dy)
     angle = dy > 0 ? 270.0 : 90.0;
   else
@@ -681,9 +681,9 @@ gimp_measure_tool_get_angle (gint    dx,
   if (dx > 0)
     {
       if (dy > 0)
-	angle = 360.0 - angle;
+        angle = 360.0 - angle;
       else
-	angle = -angle;
+        angle = -angle;
     }
   else
     {
@@ -695,10 +695,10 @@ gimp_measure_tool_get_angle (gint    dx,
 
 static void
 gimp_measure_tool_dialog_update (GimpMeasureTool *mtool,
-                                 GimpDisplay     *gdisp)
+                                 GimpDisplay     *display)
 {
-  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (gdisp->shell);
-  GimpImage        *image = gdisp->gimage;
+  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (display->shell);
+  GimpImage        *image = display->image;
   gint              ax, ay;
   gint              bx, by;
   gint              pixel_width;
@@ -765,14 +765,14 @@ gimp_measure_tool_dialog_update (GimpMeasureTool *mtool,
 
   if (shell->unit == GIMP_UNIT_PIXEL)
     {
-      g_snprintf (buf, sizeof (buf), "%.1f %s, %.2f \302\260 (%d x %d)",
+      g_snprintf (buf, sizeof (buf), "%.1f %s, %.2f \302\260 (%d × %d)",
                   pixel_distance, _("pixels"), pixel_angle,
                   pixel_width, pixel_height);
     }
   else
     {
       g_snprintf (format, sizeof (format),
-                  "%%.%df %s, %%.2f \302\260 (%%.%df x %%.%df)",
+                  "%%.%df %s, %%.2f \302\260 (%%.%df × %%.%df)",
                   _gimp_unit_get_digits (image->gimp, shell->unit),
                   _gimp_unit_get_plural (image->gimp, shell->unit),
                   _gimp_unit_get_digits (image->gimp, shell->unit),
@@ -782,22 +782,29 @@ gimp_measure_tool_dialog_update (GimpMeasureTool *mtool,
                   unit_width, unit_height);
     }
 
-  gimp_tool_replace_status (GIMP_TOOL (mtool), gdisp, buf);
+  gimp_tool_replace_status (GIMP_TOOL (mtool), display, buf);
 
   if (mtool->dialog)
     {
       g_snprintf (format, sizeof (format), "%%.%df",
                   _gimp_unit_get_digits (image->gimp, shell->unit));
-
       /* Distance */
       g_snprintf (buf, sizeof (buf), "%.1f", pixel_distance);
       gtk_label_set_text (GTK_LABEL (mtool->distance_label[0]), buf);
 
-      g_snprintf (buf, sizeof (buf), format, unit_distance);
-      gtk_label_set_text (GTK_LABEL (mtool->distance_label[1]), buf);
+      if (shell->unit != GIMP_UNIT_PIXEL)
+        {
+          g_snprintf (buf, sizeof (buf), format, unit_distance);
+          gtk_label_set_text (GTK_LABEL (mtool->distance_label[1]), buf);
 
-      gtk_label_set_text (GTK_LABEL (mtool->unit_label[0]),
-                          _gimp_unit_get_plural (image->gimp, shell->unit));
+          gtk_label_set_text (GTK_LABEL (mtool->unit_label[0]),
+                              _gimp_unit_get_plural (image->gimp, shell->unit));
+        }
+      else
+        {
+          gtk_label_set_text (GTK_LABEL (mtool->distance_label[1]), " ");
+          gtk_label_set_text (GTK_LABEL (mtool->unit_label[0]),  " ");
+        }
 
       /* Angle */
       g_snprintf (buf, sizeof (buf), "%.2f", pixel_angle);
@@ -820,21 +827,37 @@ gimp_measure_tool_dialog_update (GimpMeasureTool *mtool,
       g_snprintf (buf, sizeof (buf), "%d", pixel_width);
       gtk_label_set_text (GTK_LABEL (mtool->width_label[0]), buf);
 
-      g_snprintf (buf, sizeof (buf), format, unit_width);
-      gtk_label_set_text (GTK_LABEL (mtool->width_label[1]), buf);
+      if (shell->unit != GIMP_UNIT_PIXEL)
+        {
+          g_snprintf (buf, sizeof (buf), format, unit_width);
+          gtk_label_set_text (GTK_LABEL (mtool->width_label[1]), buf);
 
-      gtk_label_set_text (GTK_LABEL (mtool->unit_label[2]),
-                          _gimp_unit_get_plural (image->gimp, shell->unit));
+          gtk_label_set_text (GTK_LABEL (mtool->unit_label[2]),
+                              _gimp_unit_get_plural (image->gimp, shell->unit));
+        }
+      else
+        {
+          gtk_label_set_text (GTK_LABEL (mtool->width_label[1]), " ");
+          gtk_label_set_text (GTK_LABEL (mtool->unit_label[2]), " ");
+        }
 
-      /* Height */
       g_snprintf (buf, sizeof (buf), "%d", pixel_height);
       gtk_label_set_text (GTK_LABEL (mtool->height_label[0]), buf);
 
-      g_snprintf (buf, sizeof (buf), format, unit_height);
-      gtk_label_set_text (GTK_LABEL (mtool->height_label[1]), buf);
+      /* Height */
+      if (shell->unit != GIMP_UNIT_PIXEL)
+        {
+          g_snprintf (buf, sizeof (buf), format, unit_height);
+          gtk_label_set_text (GTK_LABEL (mtool->height_label[1]), buf);
 
-      gtk_label_set_text (GTK_LABEL (mtool->unit_label[3]),
-                          _gimp_unit_get_plural (image->gimp, shell->unit));
+          gtk_label_set_text (GTK_LABEL (mtool->unit_label[3]),
+                              _gimp_unit_get_plural (image->gimp, shell->unit));
+        }
+      else
+        {
+          gtk_label_set_text (GTK_LABEL (mtool->height_label[1]), " ");
+          gtk_label_set_text (GTK_LABEL (mtool->unit_label[3]), " ");
+        }
 
       if (GTK_WIDGET_VISIBLE (mtool->dialog))
         gdk_window_show (mtool->dialog->window);
@@ -852,12 +875,14 @@ gimp_measure_tool_dialog_new (GimpMeasureTool *mtool)
   GtkWidget *label;
 
   dialog = gimp_tool_dialog_new (tool->tool_info,
-                                 NULL /* tool->gdisp->shell */,
+                                 NULL /* tool->display->shell */,
                                  _("Measure Distances and Angles"),
 
                                  GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
 
                                  NULL);
+
+  gtk_window_set_focus_on_map (GTK_WINDOW (dialog), FALSE);
 
   g_signal_connect (dialog, "response",
                     G_CALLBACK (gtk_widget_destroy),

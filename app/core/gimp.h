@@ -72,7 +72,7 @@ struct _Gimp
   GSList                 *plug_in_defs;
   gboolean                write_pluginrc;
 
-  GSList                 *plug_in_proc_defs;
+  GSList                 *plug_in_procedures;
   GSList                 *plug_in_menu_branches;
   GSList                 *plug_in_locale_domains;
   GSList                 *plug_in_help_domains;
@@ -80,12 +80,13 @@ struct _Gimp
   PlugIn                 *current_plug_in;
   GSList                 *open_plug_ins;
   GSList                 *plug_in_stack;
-  PlugInProcDef          *last_plug_in;
+  GSList                 *last_plug_ins;
 
   PlugInShm              *plug_in_shm;
   GimpInterpreterDB      *interpreter_db;
   GimpEnvironTable       *environ_table;
   GimpPlugInDebug        *plug_in_debug;
+  GList                  *plug_in_data_list;
 
   GimpContainer          *images;
   gint                    next_image_ID;
@@ -111,7 +112,6 @@ struct _Gimp
 
   GHashTable             *procedural_ht;
   GHashTable             *procedural_compat_ht;
-  GList                  *procedural_db_data_list;
 
   GSList                 *load_procs;
   GSList                 *save_procs;
@@ -140,60 +140,60 @@ struct _GimpClass
 {
   GimpObjectClass  parent_class;
 
-  void     (* initialize)           (Gimp               *gimp,
-                                     GimpInitStatusFunc  status_callback);
-  void     (* restore)              (Gimp               *gimp,
-                                     GimpInitStatusFunc  status_callback);
-  gboolean (* exit)                 (Gimp               *gimp,
-                                     gboolean            force);
+  void     (* initialize)            (Gimp               *gimp,
+                                      GimpInitStatusFunc  status_callback);
+  void     (* restore)               (Gimp               *gimp,
+                                      GimpInitStatusFunc  status_callback);
+  gboolean (* exit)                  (Gimp               *gimp,
+                                      gboolean            force);
 
-  void     (* buffer_changed)       (Gimp               *gimp);
-  void     (* last_plug_in_changed) (Gimp               *gimp);
+  void     (* buffer_changed)        (Gimp               *gimp);
+  void     (* last_plug_ins_changed) (Gimp               *gimp);
 };
 
 
 GType         gimp_get_type             (void) G_GNUC_CONST;
 
-Gimp        * gimp_new                  (const gchar        *name,
-                                         const gchar        *session_name,
-                                         gboolean            be_verbose,
-                                         gboolean            no_data,
-                                         gboolean            no_fonts,
-                                         gboolean            no_interface,
-                                         gboolean            use_shm,
-                                         gboolean            console_messages,
-                                         GimpStackTraceMode  stack_trace_mode,
-                                         GimpPDBCompatMode   pdb_compat_mode);
+Gimp        * gimp_new                  (const gchar         *name,
+                                         const gchar         *session_name,
+                                         gboolean             be_verbose,
+                                         gboolean             no_data,
+                                         gboolean             no_fonts,
+                                         gboolean             no_interface,
+                                         gboolean             use_shm,
+                                         gboolean             console_messages,
+                                         GimpStackTraceMode   stack_trace_mode,
+                                         GimpPDBCompatMode    pdb_compat_mode);
 
-void          gimp_load_config          (Gimp               *gimp,
-                                         const gchar        *alternate_system_gimprc,
-                                         const gchar        *alternate_gimprc);
-void          gimp_initialize           (Gimp               *gimp,
-                                         GimpInitStatusFunc  status_callback);
-void          gimp_restore              (Gimp               *gimp,
-                                         GimpInitStatusFunc  status_callback);
+void          gimp_load_config          (Gimp                *gimp,
+                                         const gchar         *alternate_system_gimprc,
+                                         const gchar         *alternate_gimprc);
+void          gimp_initialize           (Gimp                *gimp,
+                                         GimpInitStatusFunc   status_callback);
+void          gimp_restore              (Gimp                *gimp,
+                                         GimpInitStatusFunc   status_callback);
 
-void          gimp_exit                 (Gimp               *gimp,
-                                         gboolean            force);
+void          gimp_exit                 (Gimp                *gimp,
+                                         gboolean             force);
 
-void          gimp_set_global_buffer    (Gimp               *gimp,
-                                         GimpBuffer         *buffer);
-void          gimp_set_last_plug_in     (Gimp               *gimp,
-                                         PlugInProcDef      *proc_def);
+void          gimp_set_global_buffer    (Gimp                *gimp,
+                                         GimpBuffer          *buffer);
+void          gimp_set_last_plug_in     (Gimp                *gimp,
+                                         GimpPlugInProcedure *procedure);
 
-GimpImage   * gimp_create_image         (Gimp               *gimp,
-					 gint                width,
-					 gint                height,
-					 GimpImageBaseType   type,
-					 gboolean            attach_comment);
+GimpImage   * gimp_create_image         (Gimp                *gimp,
+                                         gint                 width,
+                                         gint                 height,
+                                         GimpImageBaseType    type,
+                                         gboolean             attach_comment);
 
-void          gimp_set_default_context  (Gimp               *gimp,
-					 GimpContext        *context);
-GimpContext * gimp_get_default_context  (Gimp               *gimp);
+void          gimp_set_default_context  (Gimp                *gimp,
+                                         GimpContext         *context);
+GimpContext * gimp_get_default_context  (Gimp                *gimp);
 
-void          gimp_set_user_context     (Gimp               *gimp,
-					 GimpContext        *context);
-GimpContext * gimp_get_user_context     (Gimp               *gimp);
+void          gimp_set_user_context     (Gimp                *gimp,
+                                         GimpContext         *context);
+GimpContext * gimp_get_user_context     (Gimp                *gimp);
 
 
 #endif  /* __GIMP_H__ */

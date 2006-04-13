@@ -27,7 +27,9 @@
 #include "libgimpcolor/gimpcolor.h"
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "core/gimp.h"
 #include "core/gimpcontainer-filter.h"
@@ -36,285 +38,279 @@
 #include "core/gimplist.h"
 #include "core/gimppalette.h"
 
-static ProcRecord palettes_refresh_proc;
-static ProcRecord palettes_get_list_proc;
-static ProcRecord palettes_get_palette_proc;
-static ProcRecord palettes_get_palette_entry_proc;
 
-void
-register_palettes_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &palettes_refresh_proc);
-  procedural_db_register (gimp, &palettes_get_list_proc);
-  procedural_db_register (gimp, &palettes_get_palette_proc);
-  procedural_db_register (gimp, &palettes_get_palette_entry_proc);
-}
-
-static Argument *
-palettes_refresh_invoker (Gimp         *gimp,
-                          GimpContext  *context,
-                          GimpProgress *progress,
-                          Argument     *args)
+static GValueArray *
+palettes_refresh_invoker (GimpProcedure     *procedure,
+                          Gimp              *gimp,
+                          GimpContext       *context,
+                          GimpProgress      *progress,
+                          const GValueArray *args)
 {
   gimp_data_factory_data_refresh (gimp->palette_factory);
-  return procedural_db_return_args (&palettes_refresh_proc, TRUE);
+  return gimp_procedure_get_return_values (procedure, TRUE);
 }
 
-static ProcRecord palettes_refresh_proc =
-{
-  "gimp-palettes-refresh",
-  "gimp-palettes-refresh",
-  "Refreshes current palettes. This function always succeeds.",
-  "This procedure retrieves all palettes currently in the user's palette path and updates the palette dialogs accordingly.",
-  "Adrian Likins <adrian@gimp.org>",
-  "Adrian Likins",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  0,
-  NULL,
-  0,
-  NULL,
-  { { palettes_refresh_invoker } }
-};
-
-static Argument *
-palettes_get_list_invoker (Gimp         *gimp,
-                           GimpContext  *context,
-                           GimpProgress *progress,
-                           Argument     *args)
+static GValueArray *
+palettes_get_list_invoker (GimpProcedure     *procedure,
+                           Gimp              *gimp,
+                           GimpContext       *context,
+                           GimpProgress      *progress,
+                           const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gchar *filter;
-  gint32 num_palettes;
+  GValueArray *return_vals;
+  const gchar *filter;
+  gint32 num_palettes = 0;
   gchar **palette_list = NULL;
 
-  filter = (gchar *) args[0].value.pdb_pointer;
-  if (filter && !g_utf8_validate (filter, -1, NULL))
+  filter = g_value_get_string (&args->values[0]);
+
+  if (success)
+    {
+      palette_list = gimp_container_get_filtered_name_array (gimp->palette_factory->container,
+                                                             filter, &num_palettes);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    {
+      g_value_set_int (&return_vals->values[1], num_palettes);
+      gimp_value_take_stringarray (&return_vals->values[2], palette_list, num_palettes);
+    }
+
+  return return_vals;
+}
+
+static GValueArray *
+palettes_get_palette_invoker (GimpProcedure     *procedure,
+                              Gimp              *gimp,
+                              GimpContext       *context,
+                              GimpProgress      *progress,
+                              const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  gchar *name = NULL;
+  gint32 num_colors = 0;
+
+  GimpPalette *palette = gimp_context_get_palette (context);
+
+  if (palette)
+    {
+      name       = g_strdup (gimp_object_get_name (GIMP_OBJECT (palette)));
+      num_colors = palette->n_colors;
+    }
+  else
     success = FALSE;
 
-  if (success)
-    palette_list = gimp_container_get_filtered_name_array (gimp->palette_factory->container, filter, &num_palettes);
-
-  return_args = procedural_db_return_args (&palettes_get_list_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_int = num_palettes;
-      return_args[2].value.pdb_pointer = palette_list;
+      g_value_take_string (&return_vals->values[1], name);
+      g_value_set_int (&return_vals->values[2], num_colors);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg palettes_get_list_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "filter",
-    "An optional regular expression used to filter the list"
-  }
-};
-
-static ProcArg palettes_get_list_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "num-palettes",
-    "The number of palettes in the list"
-  },
-  {
-    GIMP_PDB_STRINGARRAY,
-    "palette-list",
-    "The list of palette names"
-  }
-};
-
-static ProcRecord palettes_get_list_proc =
-{
-  "gimp-palettes-get-list",
-  "gimp-palettes-get-list",
-  "Retrieves a list of all of the available palettes",
-  "This procedure returns a complete listing of available palettes. Each name returned can be used as input to the command 'gimp-context-set-palette'.",
-  "Nathan Summers <rock@gimp.org>",
-  "Nathan Summers",
-  "2001",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  palettes_get_list_inargs,
-  2,
-  palettes_get_list_outargs,
-  { { palettes_get_list_invoker } }
-};
-
-static Argument *
-palettes_get_palette_invoker (Gimp         *gimp,
-                              GimpContext  *context,
-                              GimpProgress *progress,
-                              Argument     *args)
+static GValueArray *
+palettes_get_palette_entry_invoker (GimpProcedure     *procedure,
+                                    Gimp              *gimp,
+                                    GimpContext       *context,
+                                    GimpProgress      *progress,
+                                    const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpPalette *palette;
-
-  success = (palette = gimp_context_get_palette (context)) != NULL;
-
-  return_args = procedural_db_return_args (&palettes_get_palette_proc, success);
-
-  if (success)
-    {
-      return_args[1].value.pdb_pointer = g_strdup (GIMP_OBJECT (palette)->name);
-      return_args[2].value.pdb_int = palette->n_colors;
-    }
-
-  return return_args;
-}
-
-static ProcArg palettes_get_palette_outargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The palette name"
-  },
-  {
-    GIMP_PDB_INT32,
-    "num-colors",
-    "The palette num_colors"
-  }
-};
-
-static ProcRecord palettes_get_palette_proc =
-{
-  "gimp-palettes-get-palette",
-  "gimp-palettes-get-palette",
-  "This procedure is deprecated! Use 'gimp-context-get-palette' instead.",
-  "This procedure is deprecated! Use 'gimp-context-get-palette' instead.",
-  "",
-  "",
-  "",
-  "gimp-context-get-palette",
-  GIMP_INTERNAL,
-  0,
-  NULL,
-  2,
-  palettes_get_palette_outargs,
-  { { palettes_get_palette_invoker } }
-};
-
-static Argument *
-palettes_get_palette_entry_invoker (Gimp         *gimp,
-                                    GimpContext  *context,
-                                    GimpProgress *progress,
-                                    Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  gchar *name;
+  GValueArray *return_vals;
+  const gchar *name;
   gint32 entry_num;
-  GimpRGB color;
-  GimpPalette *palette = NULL;
+  gchar *actual_name = NULL;
+  gint32 num_colors = 0;
+  GimpRGB color = { 0.0, 0.0, 0.0, 1.0 };
 
-  name = (gchar *) args[0].value.pdb_pointer;
-  if (name && !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
-
-  entry_num = args[1].value.pdb_int;
+  name = g_value_get_string (&args->values[0]);
+  entry_num = g_value_get_int (&args->values[1]);
 
   if (success)
     {
+      GimpPalette *palette;
+
       if (name && strlen (name))
-      {
-        palette = (GimpPalette *)
-          gimp_container_get_child_by_name (gimp->palette_factory->container,
-                                            name);
-      }
-    else
-      {
-        palette = gimp_context_get_palette (context);
-      }
+        {
+          palette = (GimpPalette *)
+            gimp_container_get_child_by_name (gimp->palette_factory->container,
+                                              name);
+        }
+      else
+        {
+          palette = gimp_context_get_palette (context);
+        }
 
       if (palette)
         {
-          if (entry_num < 0 || entry_num >= palette->n_colors)
+          if (entry_num >= 0 && entry_num < palette->n_colors)
             {
-              success = FALSE;
+              GimpPaletteEntry *entry = g_list_nth_data (palette->colors, entry_num);
+
+              actual_name = g_strdup (gimp_object_get_name (GIMP_OBJECT (palette)));
+              num_colors  = palette->n_colors;
+              color       = entry->color;
             }
           else
-            {
-              GimpPaletteEntry *entry;
-
-              entry = (GimpPaletteEntry *)
-                g_list_nth_data (palette->colors, entry_num);
-
-              color = entry->color;
-            }
+            success = FALSE;
         }
       else
         success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&palettes_get_palette_entry_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_pointer = g_strdup (GIMP_OBJECT (palette)->name);
-      return_args[2].value.pdb_int = palette->n_colors;
-      return_args[3].value.pdb_color = color;
+      g_value_take_string (&return_vals->values[1], actual_name);
+      g_value_set_int (&return_vals->values[2], num_colors);
+      gimp_value_set_rgb (&return_vals->values[3], &color);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg palettes_get_palette_entry_inargs[] =
+void
+register_palettes_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The palette name (\"\" means currently active palette)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "entry-num",
-    "The entry to retrieve"
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcArg palettes_get_palette_entry_outargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The palette name"
-  },
-  {
-    GIMP_PDB_INT32,
-    "num-colors",
-    "The palette num_colors"
-  },
-  {
-    GIMP_PDB_COLOR,
-    "color",
-    "The color requested"
-  }
-};
+  /*
+   * gimp-palettes-refresh
+   */
+  procedure = gimp_procedure_new (palettes_refresh_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-palettes-refresh");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-palettes-refresh",
+                                     "Refreshes current palettes. This function always succeeds.",
+                                     "This procedure retrieves all palettes currently in the user's palette path and updates the palette dialogs accordingly.",
+                                     "Adrian Likins <adrian@gimp.org>",
+                                     "Adrian Likins",
+                                     "1998",
+                                     NULL);
 
-static ProcRecord palettes_get_palette_entry_proc =
-{
-  "gimp-palettes-get-palette-entry",
-  "gimp-palettes-get-palette-entry",
-  "This procedure is deprecated! Use 'gimp-palette-entry-get-color' instead.",
-  "This procedure is deprecated! Use 'gimp-palette-entry-get-color' instead.",
-  "",
-  "",
-  "",
-  "gimp-palette-entry-get-color",
-  GIMP_INTERNAL,
-  2,
-  palettes_get_palette_entry_inargs,
-  3,
-  palettes_get_palette_entry_outargs,
-  { { palettes_get_palette_entry_invoker } }
-};
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-palettes-get-list
+   */
+  procedure = gimp_procedure_new (palettes_get_list_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-palettes-get-list");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-palettes-get-list",
+                                     "Retrieves a list of all of the available palettes",
+                                     "This procedure returns a complete listing of available palettes. Each name returned can be used as input to the command 'gimp-context-set-palette'.",
+                                     "Nathan Summers <rock@gimp.org>",
+                                     "Nathan Summers",
+                                     "2001",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("filter",
+                                                       "filter",
+                                                       "An optional regular expression used to filter the list",
+                                                       FALSE, TRUE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-palettes",
+                                                          "num palettes",
+                                                          "The number of palettes in the list",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string_array ("palette-list",
+                                                                 "palette list",
+                                                                 "The list of palette names",
+                                                                 GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-palettes-get-palette
+   */
+  procedure = gimp_procedure_new (palettes_get_palette_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-palettes-get-palette");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-palettes-get-palette",
+                                     "This procedure is deprecated! Use 'gimp-context-get-palette' instead.",
+                                     "This procedure is deprecated! Use 'gimp-context-get-palette' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-context-get-palette");
+
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("name",
+                                                           "name",
+                                                           "The palette name",
+                                                           FALSE, TRUE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-colors",
+                                                          "num colors",
+                                                          "The palette num_colors",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-palettes-get-palette-entry
+   */
+  procedure = gimp_procedure_new (palettes_get_palette_entry_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-palettes-get-palette-entry");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-palettes-get-palette-entry",
+                                     "This procedure is deprecated! Use 'gimp-palette-entry-get-color' instead.",
+                                     "This procedure is deprecated! Use 'gimp-palette-entry-get-color' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-palette-entry-get-color");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The palette name (\"\" means currently active palette)",
+                                                       FALSE, TRUE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("entry-num",
+                                                      "entry num",
+                                                      "The entry to retrieve",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("actual-name",
+                                                           "actual name",
+                                                           "The palette name",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-colors",
+                                                          "num colors",
+                                                          "The palette num_colors",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_rgb ("color",
+                                                        "color",
+                                                        "The color requested",
+                                                        NULL,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

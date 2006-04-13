@@ -163,7 +163,7 @@ href="../gtk/GtkWidget.html"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2599254"></a><h2>Description</h2>
+<a name="id2599489"></a><h2>Description</h2>
 <p>
 These functions provide simple dialogs for entering a single string,
 integer, double, boolean or pixel size value.
@@ -184,11 +184,11 @@ callback function is called and returns the entered value.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2599295"></a><h2>Details</h2>
+<a name="id2599530"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2599301"></a><h3>
+<a name="id2599536"></a><h3>
 <a name="GimpQueryStringCallback"></a>GimpQueryStringCallback ()</h3>
-<a class="indexterm" name="id2599310"></a><pre class="programlisting">void        (*GimpQueryStringCallback)      (<a
+<a class="indexterm" name="id2599545"></a><pre class="programlisting">void        (*GimpQueryStringCallback)      (<a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a> *query_box,
                                              const gchar *string,
@@ -224,9 +224,9 @@ Note that you have to <code class="function">g_free()</code> the returned string
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599406"></a><h3>
+<a name="id2599641"></a><h3>
 <a name="GimpQueryIntCallback"></a>GimpQueryIntCallback ()</h3>
-<a class="indexterm" name="id2599415"></a><pre class="programlisting">void        (*GimpQueryIntCallback)         (<a
+<a class="indexterm" name="id2599650"></a><pre class="programlisting">void        (*GimpQueryIntCallback)         (<a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a> *query_box,
                                              gint value,
@@ -262,9 +262,9 @@ href="../gtk/GtkWidget.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603963"></a><h3>
+<a name="id2604166"></a><h3>
 <a name="GimpQueryDoubleCallback"></a>GimpQueryDoubleCallback ()</h3>
-<a class="indexterm" name="id2603971"></a><pre class="programlisting">void        (*GimpQueryDoubleCallback)      (<a
+<a class="indexterm" name="id2604175"></a><pre class="programlisting">void        (*GimpQueryDoubleCallback)      (<a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a> *query_box,
                                              gdouble value,
@@ -300,9 +300,9 @@ href="../gtk/GtkWidget.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604049"></a><h3>
+<a name="id2604252"></a><h3>
 <a name="GimpQuerySizeCallback"></a>GimpQuerySizeCallback ()</h3>
-<a class="indexterm" name="id2604057"></a><pre class="programlisting">void        (*GimpQuerySizeCallback)        (<a
+<a class="indexterm" name="id2604261"></a><pre class="programlisting">void        (*GimpQuerySizeCallback)        (<a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a> *query_box,
                                              gdouble size,
@@ -347,9 +347,9 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604165"></a><h3>
+<a name="id2604369"></a><h3>
 <a name="GimpQueryBooleanCallback"></a>GimpQueryBooleanCallback ()</h3>
-<a class="indexterm" name="id2604174"></a><pre class="programlisting">void        (*GimpQueryBooleanCallback)     (<a
+<a class="indexterm" name="id2604378"></a><pre class="programlisting">void        (*GimpQueryBooleanCallback)     (<a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a> *query_box,
                                              gboolean value,
@@ -385,9 +385,9 @@ href="../gtk/GtkWidget.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604261"></a><h3>
+<a name="id2604465"></a><h3>
 <a name="gimp-query-string-box"></a>gimp_query_string_box ()</h3>
-<a class="indexterm" name="id2604270"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2604474"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>*  gimp_query_string_box           (const gchar *title,
                                              <a
@@ -484,9 +484,9 @@ href="../gtk/GtkDialog.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604538"></a><h3>
+<a name="id2604742"></a><h3>
 <a name="gimp-query-int-box"></a>gimp_query_int_box ()</h3>
-<a class="indexterm" name="id2604549"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2604752"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>*  gimp_query_int_box              (const gchar *title,
                                              <a
@@ -597,9 +597,9 @@ href="../gtk/GtkDialog.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604837"></a><h3>
+<a name="id2560461"></a><h3>
 <a name="gimp-query-double-box"></a>gimp_query_double_box ()</h3>
-<a class="indexterm" name="id2604845"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2537578"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>*  gimp_query_double_box           (const gchar *title,
                                              <a
@@ -719,9 +719,9 @@ href="../gtk/GtkDialog.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605155"></a><h3>
+<a name="id2605364"></a><h3>
 <a name="gimp-query-size-box"></a>gimp_query_size_box ()</h3>
-<a class="indexterm" name="id2605164"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2605372"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>*  gimp_query_size_box             (const gchar *title,
                                              <a
@@ -866,9 +866,9 @@ href="../gtk/GtkDialog.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605560"></a><h3>
+<a name="id2605768"></a><h3>
 <a name="gimp-query-boolean-box"></a>gimp_query_boolean_box ()</h3>
-<a class="indexterm" name="id2605568"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2605777"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>*  gimp_query_boolean_box          (const gchar *title,
                                              <a
@@ -982,9 +982,9 @@ href="../gtk/GtkDialog.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605858"></a><h3>
+<a name="id2606066"></a><h3>
 <a name="GIMP-QUERY-BOX-VBOX:CAPS"></a>GIMP_QUERY_BOX_VBOX()</h3>
-<a class="indexterm" name="id2605866"></a><pre class="programlisting">#define     GIMP_QUERY_BOX_VBOX(qbox)</pre>
+<a class="indexterm" name="id2606074"></a><pre class="programlisting">#define     GIMP_QUERY_BOX_VBOX(qbox)</pre>
 <p>
 A macro to access the <a
 href="../gtk/GtkVBox.html"
@@ -1005,7 +1005,7 @@ more widgets.
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2605912"></a><h2>See Also</h2>
+<a name="id2606120"></a><h2>See Also</h2>
 <p>
 GimpSizeEntry
 </p>

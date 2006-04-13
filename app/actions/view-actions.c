@@ -60,7 +60,7 @@ static void   view_actions_check_type_notify (GimpDisplayConfig *config,
                                               GimpActionGroup   *group);
 
 
-static GimpActionEntry view_actions[] =
+static const GimpActionEntry view_actions[] =
 {
   { "view-menu",                NULL, N_("_View")          },
   { "view-zoom-menu",           NULL, N_("_Zoom")          },
@@ -70,65 +70,73 @@ static GimpActionEntry view_actions[] =
     GIMP_HELP_VIEW_CHANGE_SCREEN },
 
   { "view-new", GTK_STOCK_NEW,
-    N_("_New View"), "", NULL,
+    N_("_New View"), "",
+    N_("Create another view on this image"),
     G_CALLBACK (view_new_cmd_callback),
     GIMP_HELP_VIEW_NEW },
 
   { "view-close", GTK_STOCK_CLOSE,
-    N_( "_Close"), "<control>W", NULL,
+    N_( "_Close"), "<control>W",
+    N_("Close this image window"),
     G_CALLBACK (window_close_cmd_callback),
     GIMP_HELP_FILE_CLOSE },
 
   { "view-zoom-fit-in", GTK_STOCK_ZOOM_FIT,
     N_("_Fit Image in Window"), "<control><shift>E",
-    N_("Fit image in window"),
+    N_("Adjust the zoom ratio so that the image becomes fully visible"),
     G_CALLBACK (view_zoom_fit_in_cmd_callback),
     GIMP_HELP_VIEW_ZOOM_FIT_IN },
 
   { "view-zoom-fit-to", GTK_STOCK_ZOOM_FIT,
     N_("Fit Image _to Window"), NULL,
-    N_("Fit image to window"),
+    N_("Adjust the zoom ratio so that the window is used optimally"),
     G_CALLBACK (view_zoom_fit_to_cmd_callback),
     GIMP_HELP_VIEW_ZOOM_FIT_TO },
 
   { "view-navigation-window", GIMP_STOCK_NAVIGATION,
-    N_("Na_vigation Window"), NULL, NULL,
+    N_("Na_vigation Window"), NULL,
+    N_("Show an overview window for this image"),
     G_CALLBACK (view_navigation_window_cmd_callback),
     GIMP_HELP_NAVIGATION_DIALOG },
 
   { "view-display-filters", GIMP_STOCK_DISPLAY_FILTER,
-    N_("Display _Filters..."), NULL, NULL,
+    N_("Display _Filters..."), NULL,
+    N_("Configure filters applied to this view"),
     G_CALLBACK (view_display_filters_cmd_callback),
     GIMP_HELP_DISPLAY_FILTER_DIALOG },
 
   { "view-shrink-wrap", GTK_STOCK_ZOOM_FIT,
     N_("Shrink _Wrap"), "<control>E",
-    N_("Shrink wrap"),
+    N_("Reduce the image window to the size of the image display"),
     G_CALLBACK (view_shrink_wrap_cmd_callback),
     GIMP_HELP_VIEW_SHRINK_WRAP },
 
   { "view-open-display", NULL,
-    N_("_Open Display..."), NULL, NULL,
+    N_("_Open Display..."), NULL,
+    N_("Connect to another display"),
     G_CALLBACK (window_open_display_cmd_callback),
     NULL }
 };
 
-static GimpToggleActionEntry view_toggle_actions[] =
+static const GimpToggleActionEntry view_toggle_actions[] =
 {
   { "view-dot-for-dot", NULL,
-    N_("_Dot for Dot"), NULL, NULL,
+    N_("_Dot for Dot"), NULL,
+    N_("A pixel on the screen represents an image pixel"),
     G_CALLBACK (view_dot_for_dot_cmd_callback),
     TRUE,
     GIMP_HELP_VIEW_DOT_FOR_DOT },
 
   { "view-show-selection", NULL,
-    N_("Show _Selection"), "<control>T", NULL,
+    N_("Show _Selection"), "<control>T",
+    N_("Display the selection outline"),
     G_CALLBACK (view_toggle_selection_cmd_callback),
     TRUE,
     GIMP_HELP_VIEW_SHOW_SELECTION },
 
   { "view-show-layer-boundary", NULL,
-    N_("Show _Layer Boundary"), NULL, NULL,
+    N_("Show _Layer Boundary"), NULL,
+    N_("Draw a border around the active layer"),
     G_CALLBACK (view_toggle_layer_boundary_cmd_callback),
     TRUE,
     GIMP_HELP_VIEW_SHOW_LAYER_BOUNDARY },
@@ -200,13 +208,14 @@ static GimpToggleActionEntry view_toggle_actions[] =
     GIMP_HELP_VIEW_SHOW_STATUSBAR },
 
   { "view-fullscreen", GTK_STOCK_FULLSCREEN,
-    N_("Fullscr_een"), "F11", NULL,
+    N_("Fullscr_een"), "F11",
+    N_("Toggle fullscreen view"),
     G_CALLBACK (view_fullscreen_cmd_callback),
     FALSE,
     GIMP_HELP_VIEW_FULLSCREEN }
 };
 
-static GimpEnumActionEntry view_zoom_actions[] =
+static const GimpEnumActionEntry view_zoom_actions[] =
 {
   { "view-zoom", NULL,
     "Set zoom factor", NULL, NULL,
@@ -258,7 +267,7 @@ static GimpEnumActionEntry view_zoom_actions[] =
     GIMP_HELP_VIEW_ZOOM_IN }
 };
 
-static GimpRadioActionEntry view_zoom_explicit_actions[] =
+static const GimpRadioActionEntry view_zoom_explicit_actions[] =
 {
   { "view-zoom-16-1", NULL,
     N_("1_6:1  (1600%)"), NULL, NULL,
@@ -312,7 +321,7 @@ static GimpRadioActionEntry view_zoom_explicit_actions[] =
     GIMP_HELP_VIEW_ZOOM_OTHER }
 };
 
-static GimpEnumActionEntry view_padding_color_actions[] =
+static const GimpEnumActionEntry view_padding_color_actions[] =
 {
   { "view-padding-color-theme", NULL,
     N_("From _Theme"), NULL, NULL,
@@ -340,7 +349,7 @@ static GimpEnumActionEntry view_padding_color_actions[] =
     GIMP_HELP_VIEW_PADDING_COLOR }
 };
 
-static GimpEnumActionEntry view_scroll_horizontal_actions[] =
+static const GimpEnumActionEntry view_scroll_horizontal_actions[] =
 {
   { "view-scroll-horizontal", NULL,
     "Set horizontal scroll offset", NULL, NULL,
@@ -378,7 +387,7 @@ static GimpEnumActionEntry view_scroll_horizontal_actions[] =
     NULL }
 };
 
-static GimpEnumActionEntry view_scroll_vertical_actions[] =
+static const GimpEnumActionEntry view_scroll_vertical_actions[] =
 {
   { "view-scroll-vertical", NULL,
     "Set vertical scroll offset", NULL, NULL,
@@ -488,16 +497,14 @@ void
 view_actions_update (GimpActionGroup *group,
                      gpointer         data)
 {
-  GimpDisplay        *gdisp      = action_data_get_display (data);
+  GimpDisplay        *display    = action_data_get_display (data);
   GimpDisplayShell   *shell      = NULL;
   GimpDisplayOptions *options    = NULL;
-  GimpImage          *gimage     = NULL;
   gboolean            fullscreen = FALSE;
 
-  if (gdisp)
+  if (display)
     {
-      shell  = GIMP_DISPLAY_SHELL (gdisp->shell);
-      gimage = gdisp->gimage;
+      shell = GIMP_DISPLAY_SHELL (display->shell);
 
       fullscreen = gimp_display_shell_get_fullscreen (shell);
 
@@ -515,47 +522,47 @@ view_actions_update (GimpActionGroup *group,
 #define SET_COLOR(action,color) \
         gimp_action_group_set_action_color (group, action, color, FALSE)
 
-  SET_SENSITIVE ("view-new",   gdisp);
-  SET_SENSITIVE ("view-close", gdisp);
+  SET_SENSITIVE ("view-new",   display);
+  SET_SENSITIVE ("view-close", display);
 
-  SET_SENSITIVE ("view-dot-for-dot", gdisp);
-  SET_ACTIVE    ("view-dot-for-dot", gdisp && shell->dot_for_dot);
+  SET_SENSITIVE ("view-dot-for-dot", display);
+  SET_ACTIVE    ("view-dot-for-dot", display && shell->dot_for_dot);
 
-  SET_SENSITIVE ("view-zoom-out",    gdisp);
-  SET_SENSITIVE ("view-zoom-in",     gdisp);
-  SET_SENSITIVE ("view-zoom-fit-in", gdisp);
-  SET_SENSITIVE ("view-zoom-fit-to", gdisp);
+  SET_SENSITIVE ("view-zoom-out",    display);
+  SET_SENSITIVE ("view-zoom-in",     display);
+  SET_SENSITIVE ("view-zoom-fit-in", display);
+  SET_SENSITIVE ("view-zoom-fit-to", display);
 
-  SET_SENSITIVE ("view-zoom-16-1",  gdisp);
-  SET_SENSITIVE ("view-zoom-8-1",   gdisp);
-  SET_SENSITIVE ("view-zoom-4-1",   gdisp);
-  SET_SENSITIVE ("view-zoom-2-1",   gdisp);
-  SET_SENSITIVE ("view-zoom-1-1",   gdisp);
-  SET_SENSITIVE ("view-zoom-1-2",   gdisp);
-  SET_SENSITIVE ("view-zoom-1-4",   gdisp);
-  SET_SENSITIVE ("view-zoom-1-8",   gdisp);
-  SET_SENSITIVE ("view-zoom-1-16",  gdisp);
-  SET_SENSITIVE ("view-zoom-other", gdisp);
+  SET_SENSITIVE ("view-zoom-16-1",  display);
+  SET_SENSITIVE ("view-zoom-8-1",   display);
+  SET_SENSITIVE ("view-zoom-4-1",   display);
+  SET_SENSITIVE ("view-zoom-2-1",   display);
+  SET_SENSITIVE ("view-zoom-1-1",   display);
+  SET_SENSITIVE ("view-zoom-1-2",   display);
+  SET_SENSITIVE ("view-zoom-1-4",   display);
+  SET_SENSITIVE ("view-zoom-1-8",   display);
+  SET_SENSITIVE ("view-zoom-1-16",  display);
+  SET_SENSITIVE ("view-zoom-other", display);
 
-  if (gdisp)
+  if (display)
     view_actions_set_zoom (group, shell);
 
-  SET_SENSITIVE ("view-navigation-window", gdisp);
-  SET_SENSITIVE ("view-display-filters",   gdisp);
+  SET_SENSITIVE ("view-navigation-window", display);
+  SET_SENSITIVE ("view-display-filters",   display);
 
-  SET_SENSITIVE ("view-show-selection",      gdisp);
-  SET_ACTIVE    ("view-show-selection",      gdisp && options->show_selection);
-  SET_SENSITIVE ("view-show-layer-boundary", gdisp);
-  SET_ACTIVE    ("view-show-layer-boundary", gdisp && options->show_layer_boundary);
-  SET_ACTIVE    ("view-show-guides",         gdisp && options->show_guides);
-  SET_ACTIVE    ("view-show-grid",           gdisp && options->show_grid);
-  SET_ACTIVE    ("view-show-sample-points",  gdisp && options->show_sample_points);
-  SET_ACTIVE    ("view-snap-to-guides",      gdisp && shell->snap_to_guides);
-  SET_ACTIVE    ("view-snap-to-grid",        gdisp && shell->snap_to_grid);
-  SET_ACTIVE    ("view-snap-to-canvas",      gdisp && shell->snap_to_canvas);
-  SET_ACTIVE    ("view-snap-to-vectors",     gdisp && shell->snap_to_vectors);
+  SET_SENSITIVE ("view-show-selection",      display);
+  SET_ACTIVE    ("view-show-selection",      display && options->show_selection);
+  SET_SENSITIVE ("view-show-layer-boundary", display);
+  SET_ACTIVE    ("view-show-layer-boundary", display && options->show_layer_boundary);
+  SET_ACTIVE    ("view-show-guides",         display && options->show_guides);
+  SET_ACTIVE    ("view-show-grid",           display && options->show_grid);
+  SET_ACTIVE    ("view-show-sample-points",  display && options->show_sample_points);
+  SET_ACTIVE    ("view-snap-to-guides",      display && shell->snap_to_guides);
+  SET_ACTIVE    ("view-snap-to-grid",        display && shell->snap_to_grid);
+  SET_ACTIVE    ("view-snap-to-canvas",      display && shell->snap_to_canvas);
+  SET_ACTIVE    ("view-snap-to-vectors",     display && shell->snap_to_vectors);
 
-  if (gdisp)
+  if (display)
     {
       SET_COLOR ("view-padding-color-menu", &options->padding_color);
 
@@ -572,24 +579,24 @@ view_actions_update (GimpActionGroup *group,
         }
     }
 
-  SET_SENSITIVE ("view-show-menubar",    gdisp);
-  SET_ACTIVE    ("view-show-menubar",    gdisp && options->show_menubar);
-  SET_SENSITIVE ("view-show-rulers",     gdisp);
-  SET_ACTIVE    ("view-show-rulers",     gdisp && options->show_rulers);
-  SET_SENSITIVE ("view-show-scrollbars", gdisp);
-  SET_ACTIVE    ("view-show-scrollbars", gdisp && options->show_scrollbars);
-  SET_SENSITIVE ("view-show-statusbar",  gdisp);
-  SET_ACTIVE    ("view-show-statusbar",  gdisp && options->show_statusbar);
+  SET_SENSITIVE ("view-show-menubar",    display);
+  SET_ACTIVE    ("view-show-menubar",    display && options->show_menubar);
+  SET_SENSITIVE ("view-show-rulers",     display);
+  SET_ACTIVE    ("view-show-rulers",     display && options->show_rulers);
+  SET_SENSITIVE ("view-show-scrollbars", display);
+  SET_ACTIVE    ("view-show-scrollbars", display && options->show_scrollbars);
+  SET_SENSITIVE ("view-show-statusbar",  display);
+  SET_ACTIVE    ("view-show-statusbar",  display && options->show_statusbar);
 
-  SET_SENSITIVE ("view-shrink-wrap", gdisp);
-  SET_SENSITIVE ("view-fullscreen",  gdisp);
-  SET_ACTIVE    ("view-fullscreen",  gdisp && fullscreen);
+  SET_SENSITIVE ("view-shrink-wrap", display);
+  SET_SENSITIVE ("view-fullscreen",  display);
+  SET_ACTIVE    ("view-fullscreen",  display && fullscreen);
 
   if (GIMP_IS_DISPLAY (group->user_data) ||
       GIMP_IS_GIMP (group->user_data))
     {
       /*  see view_actions_setup()  */
-      window_actions_update (group, gdisp ? gdisp->shell : NULL);
+      window_actions_update (group, display ? display->shell : NULL);
     }
 
 #undef SET_ACTIVE

@@ -6,6 +6,7 @@ static const GimpGetTypeFunc get_type_funcs[] =
   gimp_add_mask_type_get_type,
   gimp_blend_mode_get_type,
   gimp_brush_application_mode_get_type,
+  gimp_brush_generated_shape_get_type,
   gimp_bucket_fill_mode_get_type,
   gimp_channel_ops_get_type,
   gimp_channel_type_get_type,
@@ -48,11 +49,12 @@ static const GimpGetTypeFunc get_type_funcs[] =
   gimp_transform_direction_get_type
 };
 
-static const gchar *type_names[] =
+static const gchar * const type_names[] =
 {
   "GimpAddMaskType",
   "GimpBlendMode",
   "GimpBrushApplicationMode",
+  "GimpBrushGeneratedShape",
   "GimpBucketFillMode",
   "GimpChannelOps",
   "GimpChannelType",

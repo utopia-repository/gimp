@@ -199,7 +199,7 @@ gimp_item_init (GimpItem *item)
 {
   item->ID        = 0;
   item->tattoo    = 0;
-  item->gimage    = NULL;
+  item->image     = NULL;
   item->parasites = gimp_parasite_list_new ();
   item->width     = 0;
   item->height    = 0;
@@ -255,11 +255,11 @@ gimp_item_finalize (GObject *object)
 {
   GimpItem *item = GIMP_ITEM (object);
 
-  if (item->gimage && item->gimage->gimp)
+  if (item->image && item->image->gimp)
     {
-      g_hash_table_remove (item->gimage->gimp->item_table,
+      g_hash_table_remove (item->image->gimp->item_table,
                            GINT_TO_POINTER (item->ID));
-      item->gimage = NULL;
+      item->image = NULL;
     }
 
   if (item->parasites)
@@ -293,7 +293,7 @@ gimp_item_real_duplicate (GimpItem *item,
   gchar    *new_name;
 
   g_return_val_if_fail (GIMP_IS_ITEM (item), NULL);
-  g_return_val_if_fail (GIMP_IS_IMAGE (item->gimage), NULL);
+  g_return_val_if_fail (GIMP_IS_IMAGE (item->image), NULL);
   g_return_val_if_fail (g_type_is_a (new_type, GIMP_TYPE_ITEM), NULL);
 
   /*  formulate the new name  */
@@ -355,7 +355,7 @@ gimp_item_real_rename (GimpItem    *item,
                        const gchar *undo_desc)
 {
   if (gimp_item_is_attached (item))
-    gimp_image_undo_push_item_rename (item->gimage, undo_desc, item);
+    gimp_image_undo_push_item_rename (item->image, undo_desc, item);
 
   gimp_object_set_name (GIMP_OBJECT (item), new_name);
 
@@ -477,7 +477,7 @@ gimp_item_is_removed (const GimpItem *item)
 /**
  * gimp_item_configure:
  * @item:     The #GimpItem to configure.
- * @gimage:   The #GimpImage to which the item belongs.
+ * @image:    The #GimpImage to which the item belongs.
  * @offset_x: The X offset to assign the item.
  * @offset_y: The Y offset to assign the item.
  * @width:    The width to assign the item.
@@ -491,7 +491,7 @@ gimp_item_is_removed (const GimpItem *item)
  */
 void
 gimp_item_configure (GimpItem    *item,
-                     GimpImage   *gimage,
+                     GimpImage   *image,
                      gint         offset_x,
                      gint         offset_y,
                      gint         width,
@@ -499,19 +499,19 @@ gimp_item_configure (GimpItem    *item,
                      const gchar *name)
 {
   g_return_if_fail (GIMP_IS_ITEM (item));
-  g_return_if_fail (GIMP_IS_IMAGE (gimage));
+  g_return_if_fail (GIMP_IS_IMAGE (image));
 
   g_object_freeze_notify (G_OBJECT (item));
 
   if (item->ID == 0)
     {
-      item->ID = gimage->gimp->next_item_ID++;
+      item->ID = image->gimp->next_item_ID++;
 
-      g_hash_table_insert (gimage->gimp->item_table,
+      g_hash_table_insert (image->gimp->item_table,
                            GINT_TO_POINTER (item->ID),
                            item);
 
-      gimp_item_set_image (item, gimage);
+      gimp_item_set_image (item, image);
 
       g_object_notify (G_OBJECT (item), "id");
     }
@@ -524,7 +524,10 @@ gimp_item_configure (GimpItem    *item,
   g_object_notify (G_OBJECT (item), "width");
   g_object_notify (G_OBJECT (item), "height");
 
-  gimp_object_set_name (GIMP_OBJECT (item), name ? name : _("Unnamed"));
+  if (name)
+    gimp_object_set_name (GIMP_OBJECT (item), name);
+  else
+    gimp_object_set_static_name (GIMP_OBJECT (item), _("Unnamed"));
 
   g_object_thaw_notify (G_OBJECT (item));
 }
@@ -557,7 +560,7 @@ gimp_item_duplicate (GimpItem *item,
                      gboolean  add_alpha)
 {
   g_return_val_if_fail (GIMP_IS_ITEM (item), NULL);
-  g_return_val_if_fail (GIMP_IS_IMAGE (item->gimage), NULL);
+  g_return_val_if_fail (GIMP_IS_IMAGE (item->image), NULL);
   g_return_val_if_fail (g_type_is_a (new_type, GIMP_TYPE_ITEM), NULL);
 
   return GIMP_ITEM_GET_CLASS (item)->duplicate (item, new_type, add_alpha);
@@ -581,7 +584,7 @@ gimp_item_convert (GimpItem  *item,
   GimpItem *new_item;
 
   g_return_val_if_fail (GIMP_IS_ITEM (item), NULL);
-  g_return_val_if_fail (GIMP_IS_IMAGE (item->gimage), NULL);
+  g_return_val_if_fail (GIMP_IS_IMAGE (item->image), NULL);
   g_return_val_if_fail (GIMP_IS_IMAGE (dest_image), NULL);
   g_return_val_if_fail (g_type_is_a (new_type, GIMP_TYPE_ITEM), NULL);
 
@@ -689,24 +692,24 @@ gimp_item_translate (GimpItem *item,
                      gboolean  push_undo)
 {
   GimpItemClass *item_class;
-  GimpImage     *gimage;
+  GimpImage     *image;
 
   g_return_if_fail (GIMP_IS_ITEM (item));
 
   item_class = GIMP_ITEM_GET_CLASS (item);
-  gimage     = gimp_item_get_image (item);
+  image     = gimp_item_get_image (item);
 
   if (! gimp_item_is_attached (item))
     push_undo = FALSE;
 
   if (push_undo)
-    gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_ITEM_DISPLACE,
+    gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_ITEM_DISPLACE,
                                  item_class->translate_desc);
 
   item_class->translate (item, offset_x, offset_y, push_undo);
 
   if (push_undo)
-    gimp_image_undo_group_end (gimage);
+    gimp_image_undo_group_end (image);
 }
 
 /**
@@ -725,7 +728,7 @@ gimp_item_check_scaling (const GimpItem *item,
                          gint            new_width,
                          gint            new_height)
 {
-  GimpImage *gimage;
+  GimpImage *image;
   gdouble    img_scale_w;
   gdouble    img_scale_h;
   gint       new_item_width;
@@ -733,10 +736,10 @@ gimp_item_check_scaling (const GimpItem *item,
 
   g_return_val_if_fail (GIMP_IS_ITEM (item), FALSE);
 
-  gimage = gimp_item_get_image (item);
+  image = gimp_item_get_image (item);
 
-  img_scale_w     = (gdouble) new_width  / (gdouble) gimage->width;
-  img_scale_h     = (gdouble) new_height / (gdouble) gimage->height;
+  img_scale_w     = (gdouble) new_width  / (gdouble) image->width;
+  img_scale_h     = (gdouble) new_height / (gdouble) image->height;
   new_item_width  = ROUND (img_scale_w * (gdouble) item->width);
   new_item_height = ROUND (img_scale_h * (gdouble) item->height);
 
@@ -753,7 +756,7 @@ gimp_item_scale (GimpItem              *item,
                  GimpProgress          *progress)
 {
   GimpItemClass *item_class;
-  GimpImage     *gimage;
+  GimpImage     *image;
 
   g_return_if_fail (GIMP_IS_ITEM (item));
   g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
@@ -762,17 +765,17 @@ gimp_item_scale (GimpItem              *item,
     return;
 
   item_class = GIMP_ITEM_GET_CLASS (item);
-  gimage     = gimp_item_get_image (item);
+  image     = gimp_item_get_image (item);
 
   if (gimp_item_is_attached (item))
-    gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_ITEM_SCALE,
+    gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_ITEM_SCALE,
                                  item_class->scale_desc);
 
   item_class->scale (item, new_width, new_height, new_offset_x, new_offset_y,
                      interpolation, progress);
 
   if (gimp_item_is_attached (item))
-    gimp_image_undo_group_end (gimage);
+    gimp_image_undo_group_end (image);
 }
 
 /**
@@ -919,7 +922,7 @@ gimp_item_resize (GimpItem    *item,
                   gint         offset_y)
 {
   GimpItemClass *item_class;
-  GimpImage     *gimage;
+  GimpImage     *image;
 
   g_return_if_fail (GIMP_IS_ITEM (item));
   g_return_if_fail (GIMP_IS_CONTEXT (context));
@@ -928,16 +931,16 @@ gimp_item_resize (GimpItem    *item,
     return;
 
   item_class = GIMP_ITEM_GET_CLASS (item);
-  gimage     = gimp_item_get_image (item);
+  image     = gimp_item_get_image (item);
 
   if (gimp_item_is_attached (item))
-    gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_ITEM_RESIZE,
+    gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_ITEM_RESIZE,
                                  item_class->resize_desc);
 
   item_class->resize (item, context, new_width, new_height, offset_x, offset_y);
 
   if (gimp_item_is_attached (item))
-    gimp_image_undo_group_end (gimage);
+    gimp_image_undo_group_end (image);
 }
 
 void
@@ -948,21 +951,21 @@ gimp_item_flip (GimpItem            *item,
                 gboolean             clip_result)
 {
   GimpItemClass *item_class;
-  GimpImage     *gimage;
+  GimpImage     *image;
 
   g_return_if_fail (GIMP_IS_ITEM (item));
   g_return_if_fail (gimp_item_is_attached (item));
   g_return_if_fail (GIMP_IS_CONTEXT (context));
 
   item_class = GIMP_ITEM_GET_CLASS (item);
-  gimage     = gimp_item_get_image (item);
+  image     = gimp_item_get_image (item);
 
-  gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_TRANSFORM,
+  gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TRANSFORM,
                                item_class->flip_desc);
 
   item_class->flip (item, context, flip_type, axis, clip_result);
 
-  gimp_image_undo_group_end (gimage);
+  gimp_image_undo_group_end (image);
 }
 
 void
@@ -974,22 +977,22 @@ gimp_item_rotate (GimpItem         *item,
                   gboolean          clip_result)
 {
   GimpItemClass *item_class;
-  GimpImage     *gimage;
+  GimpImage     *image;
 
   g_return_if_fail (GIMP_IS_ITEM (item));
   g_return_if_fail (gimp_item_is_attached (item));
   g_return_if_fail (GIMP_IS_CONTEXT (context));
 
   item_class = GIMP_ITEM_GET_CLASS (item);
-  gimage     = gimp_item_get_image (item);
+  image     = gimp_item_get_image (item);
 
-  gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_TRANSFORM,
+  gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TRANSFORM,
                                item_class->rotate_desc);
 
   item_class->rotate (item, context, rotate_type, center_x, center_y,
                       clip_result);
 
-  gimp_image_undo_group_end (gimage);
+  gimp_image_undo_group_end (image);
 }
 
 void
@@ -1004,7 +1007,7 @@ gimp_item_transform (GimpItem               *item,
                      GimpProgress           *progress)
 {
   GimpItemClass *item_class;
-  GimpImage     *gimage;
+  GimpImage     *image;
 
   g_return_if_fail (GIMP_IS_ITEM (item));
   g_return_if_fail (gimp_item_is_attached (item));
@@ -1013,16 +1016,16 @@ gimp_item_transform (GimpItem               *item,
   g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
 
   item_class = GIMP_ITEM_GET_CLASS (item);
-  gimage     = gimp_item_get_image (item);
+  image     = gimp_item_get_image (item);
 
-  gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_TRANSFORM,
+  gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TRANSFORM,
                                item_class->transform_desc);
 
   item_class->transform (item, context, matrix, direction, interpolation,
                          supersample, recursion_level,
                          clip_result, progress);
 
-  gimp_image_undo_group_end (gimage);
+  gimp_image_undo_group_end (image);
 }
 
 gboolean
@@ -1046,16 +1049,16 @@ gimp_item_stroke (GimpItem       *item,
 
   if (item_class->stroke)
     {
-      GimpImage *gimage = gimp_item_get_image (item);
+      GimpImage *image = gimp_item_get_image (item);
 
       gimp_stroke_desc_prepare (stroke_desc, context, use_default_values);
 
-      gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_PAINT,
+      gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_PAINT,
                                    item_class->stroke_desc);
 
       retval = item_class->stroke (item, drawable, stroke_desc);
 
-      gimp_image_undo_group_end (gimage);
+      gimp_image_undo_group_end (image);
 
       gimp_stroke_desc_finish (stroke_desc);
     }
@@ -1106,86 +1109,95 @@ gimp_item_get_image (const GimpItem *item)
 {
   g_return_val_if_fail (GIMP_IS_ITEM (item), NULL);
 
-  return item->gimage;
+  return item->image;
 }
 
 void
 gimp_item_set_image (GimpItem  *item,
-                     GimpImage *gimage)
+                     GimpImage *image)
 {
   g_return_if_fail (GIMP_IS_ITEM (item));
   g_return_if_fail (! gimp_item_is_attached (item));
-  g_return_if_fail (gimage == NULL || GIMP_IS_IMAGE (gimage));
+  g_return_if_fail (image == NULL || GIMP_IS_IMAGE (image));
 
-  if (gimage == NULL)
+  if (image == NULL)
     {
       item->tattoo = 0;
     }
-  else if (item->tattoo == 0 || item->gimage != gimage)
+  else if (item->tattoo == 0 || item->image != image)
     {
-      item->tattoo = gimp_image_get_new_tattoo (gimage);
+      item->tattoo = gimp_image_get_new_tattoo (image);
     }
 
-  item->gimage = gimage;
+  item->image = image;
 }
 
 void
-gimp_item_parasite_attach (GimpItem     *item,
-                           GimpParasite *parasite)
+gimp_item_parasite_attach (GimpItem           *item,
+                           const GimpParasite *parasite)
 {
+  GimpParasite *copy;
+
   g_return_if_fail (GIMP_IS_ITEM (item));
+  g_return_if_fail (parasite != NULL);
+
+  /*  make a temp copy of the struct because
+   *  gimp_parasite_shift_parent() changes it
+   */
+  copy = g_memdup (parasite, sizeof (GimpParasite));
 
   if (gimp_item_is_attached (item))
     {
       /*  only set the dirty bit manually if we can be saved and the new
        *  parasite differs from the current one and we aren't undoable
        */
-      if (gimp_parasite_is_undoable (parasite))
+      if (gimp_parasite_is_undoable (copy))
         {
           /* do a group in case we have attach_parent set */
-          gimp_image_undo_group_start (item->gimage,
+          gimp_image_undo_group_start (item->image,
                                        GIMP_UNDO_GROUP_PARASITE_ATTACH,
                                        _("Attach Parasite"));
 
-          gimp_image_undo_push_item_parasite (item->gimage, NULL, item,
-                                              parasite);
+          gimp_image_undo_push_item_parasite (item->image, NULL, item, copy);
         }
-      else if (gimp_parasite_is_persistent (parasite) &&
-               ! gimp_parasite_compare (parasite,
+      else if (gimp_parasite_is_persistent (copy) &&
+               ! gimp_parasite_compare (copy,
                                         gimp_item_parasite_find
-                                        (item, gimp_parasite_name (parasite))))
+                                        (item, gimp_parasite_name (copy))))
         {
-          gimp_image_undo_push_cantundo (item->gimage,
+          gimp_image_undo_push_cantundo (item->image,
                                          _("Attach Parasite to Item"));
         }
     }
 
-  gimp_parasite_list_add (item->parasites, parasite);
+  gimp_parasite_list_add (item->parasites, copy);
 
-  if (gimp_parasite_has_flag (parasite, GIMP_PARASITE_ATTACH_PARENT))
+  if (gimp_parasite_has_flag (copy, GIMP_PARASITE_ATTACH_PARENT))
     {
-      gimp_parasite_shift_parent (parasite);
-      gimp_image_parasite_attach (item->gimage, parasite);
+      gimp_parasite_shift_parent (copy);
+      gimp_image_parasite_attach (item->image, copy);
     }
-  else if (gimp_parasite_has_flag (parasite, GIMP_PARASITE_ATTACH_GRANDPARENT))
+  else if (gimp_parasite_has_flag (copy, GIMP_PARASITE_ATTACH_GRANDPARENT))
     {
-      gimp_parasite_shift_parent (parasite);
-      gimp_parasite_shift_parent (parasite);
-      gimp_parasite_attach (item->gimage->gimp, parasite);
+      gimp_parasite_shift_parent (copy);
+      gimp_parasite_shift_parent (copy);
+      gimp_parasite_attach (item->image->gimp, copy);
     }
 
   if (gimp_item_is_attached (item) &&
-      gimp_parasite_is_undoable (parasite))
+      gimp_parasite_is_undoable (copy))
     {
-      gimp_image_undo_group_end (item->gimage);
+      gimp_image_undo_group_end (item->image);
     }
+
+  g_free (copy);
 }
 
 void
 gimp_item_parasite_detach (GimpItem    *item,
                            const gchar *name)
 {
-  GimpParasite *parasite;
+  const GimpParasite *parasite;
 
   g_return_if_fail (GIMP_IS_ITEM (item));
 
@@ -1196,21 +1208,21 @@ gimp_item_parasite_detach (GimpItem    *item,
 
   if (gimp_parasite_is_undoable (parasite))
     {
-      gimp_image_undo_push_item_parasite_remove (item->gimage,
+      gimp_image_undo_push_item_parasite_remove (item->image,
                                                  _("Remove Parasite from Item"),
                                                  item,
                                                  gimp_parasite_name (parasite));
     }
   else if (gimp_parasite_is_persistent (parasite))
     {
-      gimp_image_undo_push_cantundo (item->gimage,
+      gimp_image_undo_push_cantundo (item->image,
                                      _("Remove Parasite from Item"));
     }
 
   gimp_parasite_list_remove (item->parasites, name);
 }
 
-GimpParasite *
+const GimpParasite *
 gimp_item_parasite_find (const GimpItem *item,
                          const gchar    *name)
 {
@@ -1267,10 +1279,10 @@ gimp_item_set_visible (GimpItem *item,
     {
       if (push_undo && gimp_item_is_attached (item))
         {
-          GimpImage *gimage = gimp_item_get_image (item);
+          GimpImage *image = gimp_item_get_image (item);
 
-          if (gimage)
-            gimp_image_undo_push_item_visibility (gimage, NULL, item);
+          if (image)
+            gimp_image_undo_push_item_visibility (image, NULL, item);
         }
 
       item->visible = visible ? TRUE : FALSE;
@@ -1290,10 +1302,10 @@ gimp_item_set_linked (GimpItem *item,
     {
       if (push_undo && gimp_item_is_attached (item))
         {
-          GimpImage *gimage = gimp_item_get_image (item);
+          GimpImage *image = gimp_item_get_image (item);
 
-          if (gimage)
-            gimp_image_undo_push_item_linked (gimage, NULL, item);
+          if (image)
+            gimp_image_undo_push_item_linked (image, NULL, item);
         }
 
       item->linked = linked ? TRUE : FALSE;

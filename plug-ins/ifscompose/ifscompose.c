@@ -332,7 +332,7 @@ query (void)
   static int nreturn_vals = 0;
 
   gimp_install_procedure (IFSCOMPOSE_PROC,
-                          "Create an Iterated Function System (IFS) Fractal",
+                          N_("Create an Iterated Function System (IFS) fractal"),
                           "Interactively create an Iterated Function System "
                           "fractal. Use the window on the upper left to adjust "
                           "the component transformations of the fractal. The "
@@ -1296,12 +1296,11 @@ ifs_compose (GimpDrawable *drawable)
   gimp_context_get_background (&color);
   gimp_rgb_get_uchar (&color, &rc, &gc, &bc);
 
+ 
   for (band_no = 0, band_y = 0; band_no < num_bands; band_no++)
     {
-      GimpPixelRgn  dest_rgn;
+      GimpPixelRgn  dest_rgn; 
       gpointer      pr;
-      gint          progress;
-      gint          max_progress;
 
       gimp_progress_init_printf (_("Rendering IFS (%d/%d)"),
                                  band_no + 1, num_bands);
@@ -1320,14 +1319,10 @@ ifs_compose (GimpDrawable *drawable)
 
       /* transfer the image to the drawable */
 
-      gimp_progress_init_printf (_("Copying IFS to image (%d/%d)"),
-                                 band_no + 1, num_bands);
-
-      progress = 0;
-      max_progress = band_height * width;
 
       gimp_pixel_rgn_init (&dest_rgn, drawable, 0, band_y,
                            width, band_height, TRUE, TRUE);
+
 
       for (pr = gimp_pixel_rgns_register (1, &dest_rgn);
            pr != NULL;
@@ -1418,9 +1413,6 @@ ifs_compose (GimpDrawable *drawable)
 
               destrow += dest_rgn.rowstride;
             }
-
-          progress += dest_rgn.w * dest_rgn.h;
-          gimp_progress_update ((gdouble) progress / (gdouble) max_progress);
         }
 
       band_y += band_height;

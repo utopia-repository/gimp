@@ -138,25 +138,25 @@ gimp_selection_data_get_uri_list (GtkSelectionData *selection)
 
     while (*buffer && (buffer - (gchar *) selection->data < selection->length))
       {
-	gchar *name = name_buffer;
-	gint   len  = 0;
+        gchar *name = name_buffer;
+        gint   len  = 0;
 
-	while (len < sizeof (name_buffer) && *buffer && *buffer != '\n')
-	  {
-	    *name++ = *buffer++;
-	    len++;
-	  }
-	if (len == 0)
-	  break;
+        while (len < sizeof (name_buffer) && *buffer && *buffer != '\n')
+          {
+            *name++ = *buffer++;
+            len++;
+          }
+        if (len == 0)
+          break;
 
-	if (*(name - 1) == 0xd)   /* gmc uses RETURN+NEWLINE as delimiter */
-	  len--;
+        if (*(name - 1) == 0xd)   /* gmc uses RETURN+NEWLINE as delimiter */
+          len--;
 
-	if (len > 2)
-	  crap_list = g_list_prepend (crap_list, g_strndup (name_buffer, len));
+        if (len > 2)
+          crap_list = g_list_prepend (crap_list, g_strndup (name_buffer, len));
 
-	if (*buffer)
-	  buffer++;
+        if (*buffer)
+          buffer++;
       }
   }
 
@@ -330,10 +330,10 @@ gimp_selection_data_get_color (GtkSelectionData *selection,
   color_vals = (guint16 *) selection->data;
 
   gimp_rgba_set_uchar (color,
-		       (guchar) (color_vals[0] >> 8),
-		       (guchar) (color_vals[1] >> 8),
-		       (guchar) (color_vals[2] >> 8),
-		       (guchar) (color_vals[3] >> 8));
+                       (guchar) (color_vals[0] >> 8),
+                       (guchar) (color_vals[1] >> 8),
+                       (guchar) (color_vals[2] >> 8),
+                       (guchar) (color_vals[3] >> 8));
 
   return TRUE;
 }
@@ -371,14 +371,14 @@ gimp_selection_data_get_stream (GtkSelectionData *selection,
 
 void
 gimp_selection_data_set_image (GtkSelectionData *selection,
-                               GimpImage        *gimage)
+                               GimpImage        *image)
 {
   gchar *str;
 
   g_return_if_fail (selection != NULL);
-  g_return_if_fail (GIMP_IS_IMAGE (gimage));
+  g_return_if_fail (GIMP_IS_IMAGE (image));
 
-  str = g_strdup_printf ("%d:%d", getpid (), gimp_image_get_ID (gimage));
+  str = g_strdup_printf ("%d:%d", getpid (), gimp_image_get_ID (image));
 
   gtk_selection_data_set (selection, selection->target,
                           8, (guchar *) str, strlen (str) + 1);
@@ -415,15 +415,15 @@ gimp_selection_data_get_image (GtkSelectionData *selection,
 
 void
 gimp_selection_data_set_component (GtkSelectionData *selection,
-                                   GimpImage        *gimage,
+                                   GimpImage        *image,
                                    GimpChannelType   channel)
 {
   gchar *str;
 
   g_return_if_fail (selection != NULL);
-  g_return_if_fail (GIMP_IS_IMAGE (gimage));
+  g_return_if_fail (GIMP_IS_IMAGE (image));
 
-  str = g_strdup_printf ("%d:%d:%d", getpid (), gimp_image_get_ID (gimage),
+  str = g_strdup_printf ("%d:%d:%d", getpid (), gimp_image_get_ID (image),
                          (gint) channel);
 
   gtk_selection_data_set (selection, selection->target,

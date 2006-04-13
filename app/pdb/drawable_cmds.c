@@ -24,7 +24,9 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "base/temp-buf.h"
 #include "base/tile-manager.h"
@@ -41,1677 +43,722 @@
 #include "gimp-intl.h"
 #include "plug-in/plug-in.h"
 
-static ProcRecord drawable_delete_proc;
-static ProcRecord drawable_is_layer_proc;
-static ProcRecord drawable_is_layer_mask_proc;
-static ProcRecord drawable_is_channel_proc;
-static ProcRecord drawable_type_proc;
-static ProcRecord drawable_type_with_alpha_proc;
-static ProcRecord drawable_has_alpha_proc;
-static ProcRecord drawable_is_rgb_proc;
-static ProcRecord drawable_is_gray_proc;
-static ProcRecord drawable_is_indexed_proc;
-static ProcRecord drawable_bpp_proc;
-static ProcRecord drawable_width_proc;
-static ProcRecord drawable_height_proc;
-static ProcRecord drawable_offsets_proc;
-static ProcRecord drawable_get_image_proc;
-static ProcRecord drawable_set_image_proc;
-static ProcRecord drawable_get_name_proc;
-static ProcRecord drawable_set_name_proc;
-static ProcRecord drawable_get_visible_proc;
-static ProcRecord drawable_set_visible_proc;
-static ProcRecord drawable_get_linked_proc;
-static ProcRecord drawable_set_linked_proc;
-static ProcRecord drawable_get_tattoo_proc;
-static ProcRecord drawable_set_tattoo_proc;
-static ProcRecord drawable_mask_bounds_proc;
-static ProcRecord drawable_mask_intersect_proc;
-static ProcRecord drawable_merge_shadow_proc;
-static ProcRecord drawable_update_proc;
-static ProcRecord drawable_get_pixel_proc;
-static ProcRecord drawable_set_pixel_proc;
-static ProcRecord drawable_fill_proc;
-static ProcRecord drawable_offset_proc;
-static ProcRecord drawable_thumbnail_proc;
-static ProcRecord drawable_sub_thumbnail_proc;
-static ProcRecord drawable_foreground_extract_proc;
 
-void
-register_drawable_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &drawable_delete_proc);
-  procedural_db_register (gimp, &drawable_is_layer_proc);
-  procedural_db_register (gimp, &drawable_is_layer_mask_proc);
-  procedural_db_register (gimp, &drawable_is_channel_proc);
-  procedural_db_register (gimp, &drawable_type_proc);
-  procedural_db_register (gimp, &drawable_type_with_alpha_proc);
-  procedural_db_register (gimp, &drawable_has_alpha_proc);
-  procedural_db_register (gimp, &drawable_is_rgb_proc);
-  procedural_db_register (gimp, &drawable_is_gray_proc);
-  procedural_db_register (gimp, &drawable_is_indexed_proc);
-  procedural_db_register (gimp, &drawable_bpp_proc);
-  procedural_db_register (gimp, &drawable_width_proc);
-  procedural_db_register (gimp, &drawable_height_proc);
-  procedural_db_register (gimp, &drawable_offsets_proc);
-  procedural_db_register (gimp, &drawable_get_image_proc);
-  procedural_db_register (gimp, &drawable_set_image_proc);
-  procedural_db_register (gimp, &drawable_get_name_proc);
-  procedural_db_register (gimp, &drawable_set_name_proc);
-  procedural_db_register (gimp, &drawable_get_visible_proc);
-  procedural_db_register (gimp, &drawable_set_visible_proc);
-  procedural_db_register (gimp, &drawable_get_linked_proc);
-  procedural_db_register (gimp, &drawable_set_linked_proc);
-  procedural_db_register (gimp, &drawable_get_tattoo_proc);
-  procedural_db_register (gimp, &drawable_set_tattoo_proc);
-  procedural_db_register (gimp, &drawable_mask_bounds_proc);
-  procedural_db_register (gimp, &drawable_mask_intersect_proc);
-  procedural_db_register (gimp, &drawable_merge_shadow_proc);
-  procedural_db_register (gimp, &drawable_update_proc);
-  procedural_db_register (gimp, &drawable_get_pixel_proc);
-  procedural_db_register (gimp, &drawable_set_pixel_proc);
-  procedural_db_register (gimp, &drawable_fill_proc);
-  procedural_db_register (gimp, &drawable_offset_proc);
-  procedural_db_register (gimp, &drawable_thumbnail_proc);
-  procedural_db_register (gimp, &drawable_sub_thumbnail_proc);
-  procedural_db_register (gimp, &drawable_foreground_extract_proc);
-}
-
-static Argument *
-drawable_delete_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
+static GValueArray *
+drawable_delete_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
   if (success)
     {
-      success = gimp_item_is_floating (GIMP_ITEM (drawable));
-
-      if (success)
+      if (gimp_item_is_floating (GIMP_ITEM (drawable)))
         gimp_item_sink (GIMP_ITEM (drawable));
+      else
+        success = FALSE;
     }
 
-  return procedural_db_return_args (&drawable_delete_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg drawable_delete_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable to delete"
-  }
-};
-
-static ProcRecord drawable_delete_proc =
-{
-  "gimp-drawable-delete",
-  "gimp-drawable-delete",
-  "Delete a drawable.",
-  "This procedure deletes the specified drawable. This must not be done if the gimage containing this drawable was already deleted or if the drawable was already removed from the image. The only case in which this procedure is useful is if you want to get rid of a drawable which has not yet been added to an image.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_delete_inargs,
-  0,
-  NULL,
-  { { drawable_delete_invoker } }
-};
-
-static Argument *
-drawable_is_layer_invoker (Gimp         *gimp,
-                           GimpContext  *context,
-                           GimpProgress *progress,
-                           Argument     *args)
+static GValueArray *
+drawable_is_layer_invoker (GimpProcedure     *procedure,
+                           Gimp              *gimp,
+                           GimpContext       *context,
+                           GimpProgress      *progress,
+                           const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
+  gboolean layer = FALSE;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&drawable_is_layer_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_int = GIMP_IS_LAYER (drawable) ? TRUE : FALSE;
-
-  return return_args;
-}
-
-static ProcArg drawable_is_layer_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_is_layer_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "layer",
-    "Non-zero if the drawable is a layer"
-  }
-};
-
-static ProcRecord drawable_is_layer_proc =
-{
-  "gimp-drawable-is-layer",
-  "gimp-drawable-is-layer",
-  "Returns whether the drawable is a layer.",
-  "This procedure returns non-zero if the specified drawable is a layer.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_is_layer_inargs,
-  1,
-  drawable_is_layer_outargs,
-  { { drawable_is_layer_invoker } }
-};
-
-static Argument *
-drawable_is_layer_mask_invoker (Gimp         *gimp,
-                                GimpContext  *context,
-                                GimpProgress *progress,
-                                Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&drawable_is_layer_mask_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_int = GIMP_IS_LAYER_MASK (drawable) ? TRUE : FALSE;
-
-  return return_args;
-}
-
-static ProcArg drawable_is_layer_mask_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_is_layer_mask_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "layer-mask",
-    "Non-zero if the drawable is a layer mask"
-  }
-};
-
-static ProcRecord drawable_is_layer_mask_proc =
-{
-  "gimp-drawable-is-layer-mask",
-  "gimp-drawable-is-layer-mask",
-  "Returns whether the drawable is a layer mask.",
-  "This procedure returns non-zero if the specified drawable is a layer mask.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_is_layer_mask_inargs,
-  1,
-  drawable_is_layer_mask_outargs,
-  { { drawable_is_layer_mask_invoker } }
-};
-
-static Argument *
-drawable_is_channel_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&drawable_is_channel_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_int = GIMP_IS_CHANNEL (drawable) ? TRUE : FALSE;
-
-  return return_args;
-}
-
-static ProcArg drawable_is_channel_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_is_channel_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "channel",
-    "Non-zero if the drawable is a channel"
-  }
-};
-
-static ProcRecord drawable_is_channel_proc =
-{
-  "gimp-drawable-is-channel",
-  "gimp-drawable-is-channel",
-  "Returns whether the drawable is a channel.",
-  "This procedure returns non-zero if the specified drawable is a channel.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_is_channel_inargs,
-  1,
-  drawable_is_channel_outargs,
-  { { drawable_is_channel_invoker } }
-};
-
-static Argument *
-drawable_type_invoker (Gimp         *gimp,
-                       GimpContext  *context,
-                       GimpProgress *progress,
-                       Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&drawable_type_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_int = gimp_drawable_type (drawable);
-
-  return return_args;
-}
-
-static ProcArg drawable_type_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_type_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "type",
-    "The drawable's type: { GIMP_RGB_IMAGE (0), GIMP_RGBA_IMAGE (1), GIMP_GRAY_IMAGE (2), GIMP_GRAYA_IMAGE (3), GIMP_INDEXED_IMAGE (4), GIMP_INDEXEDA_IMAGE (5) }"
-  }
-};
-
-static ProcRecord drawable_type_proc =
-{
-  "gimp-drawable-type",
-  "gimp-drawable-type",
-  "Returns the drawable's type.",
-  "This procedure returns the drawable's type.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_type_inargs,
-  1,
-  drawable_type_outargs,
-  { { drawable_type_invoker } }
-};
-
-static Argument *
-drawable_type_with_alpha_invoker (Gimp         *gimp,
-                                  GimpContext  *context,
-                                  GimpProgress *progress,
-                                  Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&drawable_type_with_alpha_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_int = gimp_drawable_type_with_alpha (drawable);
-
-  return return_args;
-}
-
-static ProcArg drawable_type_with_alpha_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_type_with_alpha_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "type-with-alpha",
-    "The drawable's type with alpha: { GIMP_RGB_IMAGE (0), GIMP_RGBA_IMAGE (1), GIMP_GRAY_IMAGE (2), GIMP_GRAYA_IMAGE (3), GIMP_INDEXED_IMAGE (4), GIMP_INDEXEDA_IMAGE (5) }"
-  }
-};
-
-static ProcRecord drawable_type_with_alpha_proc =
-{
-  "gimp-drawable-type-with-alpha",
-  "gimp-drawable-type-with-alpha",
-  "Returns the drawable's type with alpha.",
-  "This procedure returns the drawable's type as if had an alpha channel. If the type is currently Gray, for instance, the returned type would be GrayA. If the drawable already has an alpha channel, the drawable's type is simply returned.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_type_with_alpha_inargs,
-  1,
-  drawable_type_with_alpha_outargs,
-  { { drawable_type_with_alpha_invoker } }
-};
-
-static Argument *
-drawable_has_alpha_invoker (Gimp         *gimp,
-                            GimpContext  *context,
-                            GimpProgress *progress,
-                            Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&drawable_has_alpha_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_int = gimp_drawable_has_alpha (drawable);
-
-  return return_args;
-}
-
-static ProcArg drawable_has_alpha_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_has_alpha_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "has-alpha",
-    "Does the drawable have an alpha channel?"
-  }
-};
-
-static ProcRecord drawable_has_alpha_proc =
-{
-  "gimp-drawable-has-alpha",
-  "gimp-drawable-has-alpha",
-  "Returns non-zero if the drawable has an alpha channel.",
-  "This procedure returns whether the specified drawable has an alpha channel. This can only be true for layers, and the associated type will be one of: { RGBA , GRAYA, INDEXEDA }.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_has_alpha_inargs,
-  1,
-  drawable_has_alpha_outargs,
-  { { drawable_has_alpha_invoker } }
-};
-
-static Argument *
-drawable_is_rgb_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&drawable_is_rgb_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_int = gimp_drawable_is_rgb (drawable);
-
-  return return_args;
-}
-
-static ProcArg drawable_is_rgb_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_is_rgb_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "is-rgb",
-    "non-zero if the drawable is an RGB type"
-  }
-};
-
-static ProcRecord drawable_is_rgb_proc =
-{
-  "gimp-drawable-is-rgb",
-  "gimp-drawable-is-rgb",
-  "Returns whether the drawable is an RGB type.",
-  "This procedure returns non-zero if the specified drawable is of type { RGB, RGBA }.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_is_rgb_inargs,
-  1,
-  drawable_is_rgb_outargs,
-  { { drawable_is_rgb_invoker } }
-};
-
-static Argument *
-drawable_is_gray_invoker (Gimp         *gimp,
-                          GimpContext  *context,
-                          GimpProgress *progress,
-                          Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&drawable_is_gray_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_int = gimp_drawable_is_gray (drawable);
-
-  return return_args;
-}
-
-static ProcArg drawable_is_gray_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_is_gray_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "is-gray",
-    "non-zero if the drawable is a grayscale type"
-  }
-};
-
-static ProcRecord drawable_is_gray_proc =
-{
-  "gimp-drawable-is-gray",
-  "gimp-drawable-is-gray",
-  "Returns whether the drawable is a grayscale type.",
-  "This procedure returns non-zero if the specified drawable is of type { Gray, GrayA }.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_is_gray_inargs,
-  1,
-  drawable_is_gray_outargs,
-  { { drawable_is_gray_invoker } }
-};
-
-static Argument *
-drawable_is_indexed_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&drawable_is_indexed_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_int = gimp_drawable_is_indexed (drawable);
-
-  return return_args;
-}
-
-static ProcArg drawable_is_indexed_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_is_indexed_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "is-indexed",
-    "non-zero if the drawable is an indexed type"
-  }
-};
-
-static ProcRecord drawable_is_indexed_proc =
-{
-  "gimp-drawable-is-indexed",
-  "gimp-drawable-is-indexed",
-  "Returns whether the drawable is an indexed type.",
-  "This procedure returns non-zero if the specified drawable is of type { Indexed, IndexedA }.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_is_indexed_inargs,
-  1,
-  drawable_is_indexed_outargs,
-  { { drawable_is_indexed_invoker } }
-};
-
-static Argument *
-drawable_bpp_invoker (Gimp         *gimp,
-                      GimpContext  *context,
-                      GimpProgress *progress,
-                      Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&drawable_bpp_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_int = gimp_drawable_bytes (drawable);
-
-  return return_args;
-}
-
-static ProcArg drawable_bpp_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_bpp_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "bpp",
-    "Bytes per pixel"
-  }
-};
-
-static ProcRecord drawable_bpp_proc =
-{
-  "gimp-drawable-bpp",
-  "gimp-drawable-bpp",
-  "Returns the bytes per pixel.",
-  "This procedure returns the number of bytes per pixel (or the number of channels) for the specified drawable.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_bpp_inargs,
-  1,
-  drawable_bpp_outargs,
-  { { drawable_bpp_invoker } }
-};
-
-static Argument *
-drawable_width_invoker (Gimp         *gimp,
-                        GimpContext  *context,
-                        GimpProgress *progress,
-                        Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&drawable_width_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_int = gimp_item_width (GIMP_ITEM (drawable));
-
-  return return_args;
-}
-
-static ProcArg drawable_width_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_width_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "width",
-    "Width of drawable"
-  }
-};
-
-static ProcRecord drawable_width_proc =
-{
-  "gimp-drawable-width",
-  "gimp-drawable-width",
-  "Returns the width of the drawable.",
-  "This procedure returns the specified drawable's width in pixels.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_width_inargs,
-  1,
-  drawable_width_outargs,
-  { { drawable_width_invoker } }
-};
-
-static Argument *
-drawable_height_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&drawable_height_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_int = gimp_item_height (GIMP_ITEM (drawable));
-
-  return return_args;
-}
-
-static ProcArg drawable_height_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_height_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "height",
-    "Height of drawable"
-  }
-};
-
-static ProcRecord drawable_height_proc =
-{
-  "gimp-drawable-height",
-  "gimp-drawable-height",
-  "Returns the height of the drawable.",
-  "This procedure returns the specified drawable's height in pixels.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_height_inargs,
-  1,
-  drawable_height_outargs,
-  { { drawable_height_invoker } }
-};
-
-static Argument *
-drawable_offsets_invoker (Gimp         *gimp,
-                          GimpContext  *context,
-                          GimpProgress *progress,
-                          Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-  gint32 offset_x;
-  gint32 offset_y;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  if (success)
-    gimp_item_offsets (GIMP_ITEM (drawable), &offset_x, &offset_y);
-
-  return_args = procedural_db_return_args (&drawable_offsets_proc, success);
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
   if (success)
     {
-      return_args[1].value.pdb_int = offset_x;
-      return_args[2].value.pdb_int = offset_y;
+      layer = GIMP_IS_LAYER (drawable);
     }
 
-  return return_args;
-}
-
-static ProcArg drawable_offsets_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_offsets_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "offset-x",
-    "x offset of drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "offset-y",
-    "y offset of drawable"
-  }
-};
-
-static ProcRecord drawable_offsets_proc =
-{
-  "gimp-drawable-offsets",
-  "gimp-drawable-offsets",
-  "Returns the offsets for the drawable.",
-  "This procedure returns the specified drawable's offsets. This only makes sense if the drawable is a layer since channels are anchored. The offsets of a channel will be returned as 0.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_offsets_inargs,
-  2,
-  drawable_offsets_outargs,
-  { { drawable_offsets_invoker } }
-};
-
-static Argument *
-drawable_get_image_invoker (Gimp         *gimp,
-                            GimpContext  *context,
-                            GimpProgress *progress,
-                            Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-  GimpImage *gimage = NULL;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    success = (gimage = gimp_item_get_image (GIMP_ITEM (drawable))) != NULL;
+    g_value_set_boolean (&return_vals->values[1], layer);
 
-  return_args = procedural_db_return_args (&drawable_get_image_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_int = gimp_image_get_ID (gimage);
-
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_get_image_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_get_image_outargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The drawable's image"
-  }
-};
-
-static ProcRecord drawable_get_image_proc =
-{
-  "gimp-drawable-get-image",
-  "gimp-drawable-get-image",
-  "Returns the drawable's image.",
-  "This procedure returns the drawable's image.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_get_image_inargs,
-  1,
-  drawable_get_image_outargs,
-  { { drawable_get_image_invoker } }
-};
-
-static Argument *
-drawable_set_image_invoker (Gimp         *gimp,
-                            GimpContext  *context,
-                            GimpProgress *progress,
-                            Argument     *args)
+static GValueArray *
+drawable_is_layer_mask_invoker (GimpProcedure     *procedure,
+                                Gimp              *gimp,
+                                GimpContext       *context,
+                                GimpProgress      *progress,
+                                const GValueArray *args)
 {
   gboolean success = TRUE;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
-  GimpImage *gimage;
+  gboolean layer_mask = FALSE;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  gimage = gimp_image_get_by_ID (gimp, args[1].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
   if (success)
     {
-      success = (gimage == gimp_item_get_image (GIMP_ITEM (drawable)));
+      layer_mask = GIMP_IS_LAYER_MASK (drawable);
     }
 
-  return procedural_db_return_args (&drawable_set_image_proc, success);
-}
-
-static ProcArg drawable_set_image_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  }
-};
-
-static ProcRecord drawable_set_image_proc =
-{
-  "gimp-drawable-set-image",
-  "gimp-drawable-set-image",
-  "This procedure is deprecated!",
-  "This procedure is deprecated!",
-  "",
-  "",
-  "",
-  "NONE",
-  GIMP_INTERNAL,
-  2,
-  drawable_set_image_inargs,
-  0,
-  NULL,
-  { { drawable_set_image_invoker } }
-};
-
-static Argument *
-drawable_get_name_invoker (Gimp         *gimp,
-                           GimpContext  *context,
-                           GimpProgress *progress,
-                           Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&drawable_get_name_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_pointer = g_strdup (gimp_object_get_name (GIMP_OBJECT (drawable)));
+    g_value_set_boolean (&return_vals->values[1], layer_mask);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_get_name_inargs[] =
+static GValueArray *
+drawable_is_channel_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
 {
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  gboolean channel = FALSE;
 
-static ProcArg drawable_get_name_outargs[] =
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+
+  if (success)
+    {
+      channel = GIMP_IS_CHANNEL (drawable);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_set_boolean (&return_vals->values[1], channel);
+
+  return return_vals;
+}
+
+static GValueArray *
+drawable_type_invoker (GimpProcedure     *procedure,
+                       Gimp              *gimp,
+                       GimpContext       *context,
+                       GimpProgress      *progress,
+                       const GValueArray *args)
 {
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The drawable name"
-  }
-};
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  gint32 type = 0;
 
-static ProcRecord drawable_get_name_proc =
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+
+  if (success)
+    {
+      type = gimp_drawable_type (drawable);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_set_enum (&return_vals->values[1], type);
+
+  return return_vals;
+}
+
+static GValueArray *
+drawable_type_with_alpha_invoker (GimpProcedure     *procedure,
+                                  Gimp              *gimp,
+                                  GimpContext       *context,
+                                  GimpProgress      *progress,
+                                  const GValueArray *args)
 {
-  "gimp-drawable-get-name",
-  "gimp-drawable-get-name",
-  "Get the name of the specified drawable.",
-  "This procedure returns the specified drawable's name.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_get_name_inargs,
-  1,
-  drawable_get_name_outargs,
-  { { drawable_get_name_invoker } }
-};
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  gint32 type_with_alpha = 0;
 
-static Argument *
-drawable_set_name_invoker (Gimp         *gimp,
-                           GimpContext  *context,
-                           GimpProgress *progress,
-                           Argument     *args)
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+
+  if (success)
+    {
+      type_with_alpha = gimp_drawable_type_with_alpha (drawable);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_set_enum (&return_vals->values[1], type_with_alpha);
+
+  return return_vals;
+}
+
+static GValueArray *
+drawable_has_alpha_invoker (GimpProcedure     *procedure,
+                            Gimp              *gimp,
+                            GimpContext       *context,
+                            GimpProgress      *progress,
+                            const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  gboolean has_alpha = FALSE;
+
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+
+  if (success)
+    {
+      has_alpha = gimp_drawable_has_alpha (drawable);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_set_boolean (&return_vals->values[1], has_alpha);
+
+  return return_vals;
+}
+
+static GValueArray *
+drawable_is_rgb_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  gboolean is_rgb = FALSE;
+
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+
+  if (success)
+    {
+      is_rgb = gimp_drawable_is_rgb (drawable);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_set_boolean (&return_vals->values[1], is_rgb);
+
+  return return_vals;
+}
+
+static GValueArray *
+drawable_is_gray_invoker (GimpProcedure     *procedure,
+                          Gimp              *gimp,
+                          GimpContext       *context,
+                          GimpProgress      *progress,
+                          const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  gboolean is_gray = FALSE;
+
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+
+  if (success)
+    {
+      is_gray = gimp_drawable_is_gray (drawable);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_set_boolean (&return_vals->values[1], is_gray);
+
+  return return_vals;
+}
+
+static GValueArray *
+drawable_is_indexed_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  gboolean is_indexed = FALSE;
+
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+
+  if (success)
+    {
+      is_indexed = gimp_drawable_is_indexed (drawable);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_set_boolean (&return_vals->values[1], is_indexed);
+
+  return return_vals;
+}
+
+static GValueArray *
+drawable_bpp_invoker (GimpProcedure     *procedure,
+                      Gimp              *gimp,
+                      GimpContext       *context,
+                      GimpProgress      *progress,
+                      const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  gint32 bpp = 0;
+
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+
+  if (success)
+    {
+      bpp = gimp_drawable_bytes (drawable);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_set_int (&return_vals->values[1], bpp);
+
+  return return_vals;
+}
+
+static GValueArray *
+drawable_width_invoker (GimpProcedure     *procedure,
+                        Gimp              *gimp,
+                        GimpContext       *context,
+                        GimpProgress      *progress,
+                        const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  gint32 width = 0;
+
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+
+  if (success)
+    {
+      width = gimp_item_width (GIMP_ITEM (drawable));
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_set_int (&return_vals->values[1], width);
+
+  return return_vals;
+}
+
+static GValueArray *
+drawable_height_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  gint32 height = 0;
+
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+
+  if (success)
+    {
+      height = gimp_item_height (GIMP_ITEM (drawable));
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_set_int (&return_vals->values[1], height);
+
+  return return_vals;
+}
+
+static GValueArray *
+drawable_offsets_invoker (GimpProcedure     *procedure,
+                          Gimp              *gimp,
+                          GimpContext       *context,
+                          GimpProgress      *progress,
+                          const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  gint32 offset_x = 0;
+  gint32 offset_y = 0;
+
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+
+  if (success)
+    {
+      gimp_item_offsets (GIMP_ITEM (drawable), &offset_x, &offset_y);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    {
+      g_value_set_int (&return_vals->values[1], offset_x);
+      g_value_set_int (&return_vals->values[2], offset_y);
+    }
+
+  return return_vals;
+}
+
+static GValueArray *
+drawable_get_image_invoker (GimpProcedure     *procedure,
+                            Gimp              *gimp,
+                            GimpContext       *context,
+                            GimpProgress      *progress,
+                            const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  GimpImage *image = NULL;
+
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+
+  if (success)
+    {
+      image = gimp_item_get_image (GIMP_ITEM (drawable));
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    gimp_value_set_image (&return_vals->values[1], image);
+
+  return return_vals;
+}
+
+static GValueArray *
+drawable_set_image_invoker (GimpProcedure     *procedure,
+                            Gimp              *gimp,
+                            GimpContext       *context,
+                            GimpProgress      *progress,
+                            const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
-  gchar *name;
+  GimpImage *image;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  name = (gchar *) args[1].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  image = gimp_value_get_image (&args->values[1], gimp);
 
   if (success)
-    success = gimp_item_rename (GIMP_ITEM (drawable), name);
+    {
+      if (image != gimp_item_get_image (GIMP_ITEM (drawable)))
+        success = FALSE;
+    }
 
-  return procedural_db_return_args (&drawable_set_name_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg drawable_set_name_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The new drawable name"
-  }
-};
-
-static ProcRecord drawable_set_name_proc =
-{
-  "gimp-drawable-set-name",
-  "gimp-drawable-set-name",
-  "Set the name of the specified drawable.",
-  "This procedure sets the specified drawable's name.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  drawable_set_name_inargs,
-  0,
-  NULL,
-  { { drawable_set_name_invoker } }
-};
-
-static Argument *
-drawable_get_visible_invoker (Gimp         *gimp,
-                              GimpContext  *context,
-                              GimpProgress *progress,
-                              Argument     *args)
+static GValueArray *
+drawable_get_name_invoker (GimpProcedure     *procedure,
+                           Gimp              *gimp,
+                           GimpContext       *context,
+                           GimpProgress      *progress,
+                           const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
+  gchar *name = NULL;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&drawable_get_visible_proc, success);
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_visible (GIMP_ITEM (drawable));
+    {
+      name = g_strdup (gimp_object_get_name (GIMP_OBJECT (drawable)));
+    }
 
-  return return_args;
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_take_string (&return_vals->values[1], name);
+
+  return return_vals;
 }
 
-static ProcArg drawable_get_visible_inargs[] =
+static GValueArray *
+drawable_set_name_invoker (GimpProcedure     *procedure,
+                           Gimp              *gimp,
+                           GimpContext       *context,
+                           GimpProgress      *progress,
+                           const GValueArray *args)
 {
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
+  gboolean success = TRUE;
+  GimpDrawable *drawable;
+  const gchar *name;
 
-static ProcArg drawable_get_visible_outargs[] =
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  name = g_value_get_string (&args->values[1]);
+
+  if (success)
+    {
+      success = gimp_item_rename (GIMP_ITEM (drawable), name);
+    }
+
+  return gimp_procedure_get_return_values (procedure, success);
+}
+
+static GValueArray *
+drawable_get_visible_invoker (GimpProcedure     *procedure,
+                              Gimp              *gimp,
+                              GimpContext       *context,
+                              GimpProgress      *progress,
+                              const GValueArray *args)
 {
-  {
-    GIMP_PDB_INT32,
-    "visible",
-    "The drawable visibility"
-  }
-};
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  gboolean visible = FALSE;
 
-static ProcRecord drawable_get_visible_proc =
-{
-  "gimp-drawable-get-visible",
-  "gimp-drawable-get-visible",
-  "Get the visibility of the specified drawable.",
-  "This procedure returns the specified drawable's visibility.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_get_visible_inargs,
-  1,
-  drawable_get_visible_outargs,
-  { { drawable_get_visible_invoker } }
-};
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
-static Argument *
-drawable_set_visible_invoker (Gimp         *gimp,
-                              GimpContext  *context,
-                              GimpProgress *progress,
-                              Argument     *args)
+  if (success)
+    {
+      visible = gimp_item_get_visible (GIMP_ITEM (drawable));
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_set_boolean (&return_vals->values[1], visible);
+
+  return return_vals;
+}
+
+static GValueArray *
+drawable_set_visible_invoker (GimpProcedure     *procedure,
+                              Gimp              *gimp,
+                              GimpContext       *context,
+                              GimpProgress      *progress,
+                              const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gboolean visible;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  visible = args[1].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  visible = g_value_get_boolean (&args->values[1]);
 
   if (success)
-    gimp_item_set_visible (GIMP_ITEM (drawable), visible, TRUE);
+    {
+      gimp_item_set_visible (GIMP_ITEM (drawable), visible, TRUE);
+    }
 
-  return procedural_db_return_args (&drawable_set_visible_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg drawable_set_visible_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "visible",
-    "The new drawable visibility"
-  }
-};
-
-static ProcRecord drawable_set_visible_proc =
-{
-  "gimp-drawable-set-visible",
-  "gimp-drawable-set-visible",
-  "Set the visibility of the specified drawable.",
-  "This procedure sets the specified drawable's visibility.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  drawable_set_visible_inargs,
-  0,
-  NULL,
-  { { drawable_set_visible_invoker } }
-};
-
-static Argument *
-drawable_get_linked_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
+static GValueArray *
+drawable_get_linked_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
+  gboolean linked = FALSE;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&drawable_get_linked_proc, success);
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_linked (GIMP_ITEM (drawable));
+    {
+      linked = gimp_item_get_linked (GIMP_ITEM (drawable));
+    }
 
-  return return_args;
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_set_boolean (&return_vals->values[1], linked);
+
+  return return_vals;
 }
 
-static ProcArg drawable_get_linked_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_get_linked_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "linked",
-    "The drawable linked state (for moves)"
-  }
-};
-
-static ProcRecord drawable_get_linked_proc =
-{
-  "gimp-drawable-get-linked",
-  "gimp-drawable-get-linked",
-  "Get the linked state of the specified drawable.",
-  "This procedure returns the specified drawable's linked state.",
-  "Wolfgang Hofer",
-  "Wolfgang Hofer",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_get_linked_inargs,
-  1,
-  drawable_get_linked_outargs,
-  { { drawable_get_linked_invoker } }
-};
-
-static Argument *
-drawable_set_linked_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
+static GValueArray *
+drawable_set_linked_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gboolean linked;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  linked = args[1].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  linked = g_value_get_boolean (&args->values[1]);
 
   if (success)
-    gimp_item_set_linked (GIMP_ITEM (drawable), linked, TRUE);
+    {
+      gimp_item_set_linked (GIMP_ITEM (drawable), linked, TRUE);
+    }
 
-  return procedural_db_return_args (&drawable_set_linked_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg drawable_set_linked_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "linked",
-    "The new drawable linked state"
-  }
-};
-
-static ProcRecord drawable_set_linked_proc =
-{
-  "gimp-drawable-set-linked",
-  "gimp-drawable-set-linked",
-  "Set the linked state of the specified drawable.",
-  "This procedure sets the specified drawable's linked state.",
-  "Wolfgang Hofer",
-  "Wolfgang Hofer",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  drawable_set_linked_inargs,
-  0,
-  NULL,
-  { { drawable_set_linked_invoker } }
-};
-
-static Argument *
-drawable_get_tattoo_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
+static GValueArray *
+drawable_get_tattoo_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
+  gint32 tattoo = 0;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&drawable_get_tattoo_proc, success);
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_tattoo (GIMP_ITEM (drawable));
+    {
+      tattoo = gimp_item_get_tattoo (GIMP_ITEM (drawable));
+    }
 
-  return return_args;
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_set_uint (&return_vals->values[1], tattoo);
+
+  return return_vals;
 }
 
-static ProcArg drawable_get_tattoo_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_get_tattoo_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "tattoo",
-    "The drawable tattoo"
-  }
-};
-
-static ProcRecord drawable_get_tattoo_proc =
-{
-  "gimp-drawable-get-tattoo",
-  "gimp-drawable-get-tattoo",
-  "Get the tattoo of the specified drawable.",
-  "This procedure returns the specified drawable's tattoo. A tattoo is a unique and permanent identifier attached to a drawable that can be used to uniquely identify a drawable within an image even between sessions",
-  "Jay Cox",
-  "Jay Cox",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_get_tattoo_inargs,
-  1,
-  drawable_get_tattoo_outargs,
-  { { drawable_get_tattoo_invoker } }
-};
-
-static Argument *
-drawable_set_tattoo_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
+static GValueArray *
+drawable_set_tattoo_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 tattoo;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  tattoo = args[1].value.pdb_int;
-  if (tattoo == 0)
-    success = FALSE;
-
-  if (success)
-    gimp_item_set_tattoo (GIMP_ITEM (drawable), tattoo);
-
-  return procedural_db_return_args (&drawable_set_tattoo_proc, success);
-}
-
-static ProcArg drawable_set_tattoo_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "tattoo",
-    "The new drawable tattoo"
-  }
-};
-
-static ProcRecord drawable_set_tattoo_proc =
-{
-  "gimp-drawable-set-tattoo",
-  "gimp-drawable-set-tattoo",
-  "Set the tattoo of the specified drawable.",
-  "This procedure sets the specified drawable's tattoo. A tattoo is a unique and permanent identifier attached to a drawable that can be used to uniquely identify a drawable within an image even between sessions",
-  "Jay Cox",
-  "Jay Cox",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  drawable_set_tattoo_inargs,
-  0,
-  NULL,
-  { { drawable_set_tattoo_invoker } }
-};
-
-static Argument *
-drawable_mask_bounds_invoker (Gimp         *gimp,
-                              GimpContext  *context,
-                              GimpProgress *progress,
-                              Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-  gboolean non_empty = FALSE;
-  gint32 x1;
-  gint32 y1;
-  gint32 x2;
-  gint32 y2;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  if (success)
-    non_empty = gimp_drawable_mask_bounds (drawable, &x1, &y1, &x2, &y2);
-
-  return_args = procedural_db_return_args (&drawable_mask_bounds_proc, success);
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  tattoo = g_value_get_uint (&args->values[1]);
 
   if (success)
     {
-      return_args[1].value.pdb_int = non_empty;
-      return_args[2].value.pdb_int = x1;
-      return_args[3].value.pdb_int = y1;
-      return_args[4].value.pdb_int = x2;
-      return_args[5].value.pdb_int = y2;
+      gimp_item_set_tattoo (GIMP_ITEM (drawable), tattoo);
     }
 
-  return return_args;
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg drawable_mask_bounds_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_mask_bounds_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "non-empty",
-    "TRUE if there is a selection"
-  },
-  {
-    GIMP_PDB_INT32,
-    "x1",
-    "x coordinate of the upper left corner of selection bounds"
-  },
-  {
-    GIMP_PDB_INT32,
-    "y1",
-    "y coordinate of the upper left corner of selection bounds"
-  },
-  {
-    GIMP_PDB_INT32,
-    "x2",
-    "x coordinate of the lower right corner of selection bounds"
-  },
-  {
-    GIMP_PDB_INT32,
-    "y2",
-    "y coordinate of the lower right corner of selection bounds"
-  }
-};
-
-static ProcRecord drawable_mask_bounds_proc =
-{
-  "gimp-drawable-mask-bounds",
-  "gimp-drawable-mask-bounds",
-  "Find the bounding box of the current selection in relation to the specified drawable.",
-  "This procedure returns whether there is a selection. If there is one, the upper left and lower righthand corners of its bounding box are returned. These coordinates are specified relative to the drawable's origin, and bounded by the drawable's extents. Please note that the pixel specified by the lower righthand coordinate of the bounding box is not part of the selection. The selection ends at the upper left corner of this pixel. This means the width of the selection can be calculated as (x2 - x1), its height as (y2 - y1). Note that the returned boolean does NOT correspond with the returned region being empty or not, it always returns whether the selection is non_empty. See gimp_drawable_mask_intersect() for a boolean return value which is more useful in most cases.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_mask_bounds_inargs,
-  5,
-  drawable_mask_bounds_outargs,
-  { { drawable_mask_bounds_invoker } }
-};
-
-static Argument *
-drawable_mask_intersect_invoker (Gimp         *gimp,
-                                 GimpContext  *context,
-                                 GimpProgress *progress,
-                                 Argument     *args)
+static GValueArray *
+drawable_mask_bounds_invoker (GimpProcedure     *procedure,
+                              Gimp              *gimp,
+                              GimpContext       *context,
+                              GimpProgress      *progress,
+                              const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean non_empty = FALSE;
-  gint32 x;
-  gint32 y;
-  gint32 width;
-  gint32 height;
+  gint32 x1 = 0;
+  gint32 y1 = 0;
+  gint32 x2 = 0;
+  gint32 y2 = 0;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  if (success)
-    non_empty = gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height);
-
-  return_args = procedural_db_return_args (&drawable_mask_intersect_proc, success);
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
   if (success)
     {
-      return_args[1].value.pdb_int = non_empty;
-      return_args[2].value.pdb_int = x;
-      return_args[3].value.pdb_int = y;
-      return_args[4].value.pdb_int = width;
-      return_args[5].value.pdb_int = height;
+      non_empty = gimp_drawable_mask_bounds (drawable, &x1, &y1, &x2, &y2);
     }
 
-  return return_args;
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    {
+      g_value_set_boolean (&return_vals->values[1], non_empty);
+      g_value_set_int (&return_vals->values[2], x1);
+      g_value_set_int (&return_vals->values[3], y1);
+      g_value_set_int (&return_vals->values[4], x2);
+      g_value_set_int (&return_vals->values[5], y2);
+    }
+
+  return return_vals;
 }
 
-static ProcArg drawable_mask_intersect_inargs[] =
+static GValueArray *
+drawable_mask_intersect_invoker (GimpProcedure     *procedure,
+                                 Gimp              *gimp,
+                                 GimpContext       *context,
+                                 GimpProgress      *progress,
+                                 const GValueArray *args)
 {
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  gboolean non_empty = FALSE;
+  gint32 x = 0;
+  gint32 y = 0;
+  gint32 width = 0;
+  gint32 height = 0;
 
-static ProcArg drawable_mask_intersect_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "non-empty",
-    "TRUE if the returned area is not empty"
-  },
-  {
-    GIMP_PDB_INT32,
-    "x",
-    "x coordinate of the upper left corner of the intersection"
-  },
-  {
-    GIMP_PDB_INT32,
-    "y",
-    "y coordinate of the upper left corner of the intersection"
-  },
-  {
-    GIMP_PDB_INT32,
-    "width",
-    "width of the intersection"
-  },
-  {
-    GIMP_PDB_INT32,
-    "height",
-    "height of the intersection"
-  }
-};
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
-static ProcRecord drawable_mask_intersect_proc =
-{
-  "gimp-drawable-mask-intersect",
-  "gimp-drawable-mask-intersect",
-  "Find the bounding box of the current selection in relation to the specified drawable.",
-  "This procedure returns whether there is an intersection between the drawable and the selection. Unlike gimp_drawable_mask_bounds(), the intersection's bounds are returned as x, y, width, height. If there is no selection this function returns TRUE and the returned bounds are the extents of the whole drawable.",
-  "Michael Natterer <mitch@gimp.org>",
-  "Michael Natterer",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_mask_intersect_inargs,
-  5,
-  drawable_mask_intersect_outargs,
-  { { drawable_mask_intersect_invoker } }
-};
+  if (success)
+    {
+      non_empty = gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height);
+    }
 
-static Argument *
-drawable_merge_shadow_invoker (Gimp         *gimp,
-                               GimpContext  *context,
-                               GimpProgress *progress,
-                               Argument     *args)
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    {
+      g_value_set_boolean (&return_vals->values[1], non_empty);
+      g_value_set_int (&return_vals->values[2], x);
+      g_value_set_int (&return_vals->values[3], y);
+      g_value_set_int (&return_vals->values[4], width);
+      g_value_set_int (&return_vals->values[5], height);
+    }
+
+  return return_vals;
+}
+
+static GValueArray *
+drawable_merge_shadow_invoker (GimpProcedure     *procedure,
+                               Gimp              *gimp,
+                               GimpContext       *context,
+                               GimpProgress      *progress,
+                               const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gboolean undo;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  undo = args[1].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  undo = g_value_get_boolean (&args->values[1]);
 
   if (success)
     {
-      success = gimp_item_is_attached (GIMP_ITEM (drawable));
-
-      if (success)
+      if (gimp_item_is_attached (GIMP_ITEM (drawable)))
         {
           gchar *undo_desc = NULL;
 
@@ -1725,48 +772,19 @@ drawable_merge_shadow_invoker (Gimp         *gimp,
 
           g_free (undo_desc);
         }
+      else
+        success = FALSE;
     }
 
-  return procedural_db_return_args (&drawable_merge_shadow_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg drawable_merge_shadow_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "undo",
-    "Push merge to undo stack?"
-  }
-};
-
-static ProcRecord drawable_merge_shadow_proc =
-{
-  "gimp-drawable-merge-shadow",
-  "gimp-drawable-merge-shadow",
-  "Merge the shadow buffer with the specified drawable.",
-  "This procedure combines the contents of the image's shadow buffer (for temporary processing) with the specified drawable. The \"undo\" parameter specifies whether to add an undo step for the operation. Requesting no undo is useful for such applications as 'auto-apply'.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  drawable_merge_shadow_inargs,
-  0,
-  NULL,
-  { { drawable_merge_shadow_invoker } }
-};
-
-static Argument *
-drawable_update_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
+static GValueArray *
+drawable_update_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -1775,115 +793,59 @@ drawable_update_invoker (Gimp         *gimp,
   gint32 width;
   gint32 height;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  x = args[1].value.pdb_int;
-
-  y = args[2].value.pdb_int;
-
-  width = args[3].value.pdb_int;
-
-  height = args[4].value.pdb_int;
-
-  if (success)
-    gimp_drawable_update (drawable, x, y, width, height);
-
-  return procedural_db_return_args (&drawable_update_proc, success);
-}
-
-static ProcArg drawable_update_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "x",
-    "x coordinate of upper left corner of update region"
-  },
-  {
-    GIMP_PDB_INT32,
-    "y",
-    "y coordinate of upper left corner of update region"
-  },
-  {
-    GIMP_PDB_INT32,
-    "width",
-    "Width of update region"
-  },
-  {
-    GIMP_PDB_INT32,
-    "height",
-    "Height of update region"
-  }
-};
-
-static ProcRecord drawable_update_proc =
-{
-  "gimp-drawable-update",
-  "gimp-drawable-update",
-  "Update the specified region of the drawable.",
-  "This procedure updates the specified region of the drawable. The (x, y) coordinate pair is relative to the drawable's origin, not to the image origin. Therefore, the entire drawable can be updated using (0, 0, width, height).",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  5,
-  drawable_update_inargs,
-  0,
-  NULL,
-  { { drawable_update_invoker } }
-};
-
-static Argument *
-drawable_get_pixel_invoker (Gimp         *gimp,
-                            GimpContext  *context,
-                            GimpProgress *progress,
-                            Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-  gint32 x;
-  gint32 y;
-  gint32 num_channels = 0;
-  guint8 *pixel = NULL;
-  guint8 *p;
-  gint b;
-  Tile *tile;
-
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  x = args[1].value.pdb_int;
-  if (x < 0)
-    success = FALSE;
-
-  y = args[2].value.pdb_int;
-  if (y < 0)
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  x = g_value_get_int (&args->values[1]);
+  y = g_value_get_int (&args->values[2]);
+  width = g_value_get_int (&args->values[3]);
+  height = g_value_get_int (&args->values[4]);
 
   if (success)
     {
-      if (x < gimp_item_width  (GIMP_ITEM (drawable)) &&
-          y < gimp_item_height (GIMP_ITEM (drawable)))
+      gimp_drawable_update (drawable, x, y, width, height);
+    }
+
+  return gimp_procedure_get_return_values (procedure, success);
+}
+
+static GValueArray *
+drawable_get_pixel_invoker (GimpProcedure     *procedure,
+                            Gimp              *gimp,
+                            GimpContext       *context,
+                            GimpProgress      *progress,
+                            const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  gint32 x_coord;
+  gint32 y_coord;
+  gint32 num_channels = 0;
+  guint8 *pixel = NULL;
+
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  x_coord = g_value_get_int (&args->values[1]);
+  y_coord = g_value_get_int (&args->values[2]);
+
+  if (success)
+    {
+      if (x_coord < gimp_item_width  (GIMP_ITEM (drawable)) &&
+          y_coord < gimp_item_height (GIMP_ITEM (drawable)))
         {
+          Tile   *tile;
+          guint8 *p;
+          gint    b;
+
           num_channels = gimp_drawable_bytes (drawable);
           pixel = g_new (guint8, num_channels);
 
-          tile = tile_manager_get_tile (gimp_drawable_data (drawable), x, y,
+          tile = tile_manager_get_tile (gimp_drawable_get_tiles (drawable),
+                                        x_coord, y_coord,
                                         TRUE, TRUE);
 
-          x %= TILE_WIDTH;
-          y %= TILE_HEIGHT;
+          x_coord %= TILE_WIDTH;
+          y_coord %= TILE_HEIGHT;
 
-          p = tile_data_pointer (tile, x, y);
+          p = tile_data_pointer (tile, x_coord, y_coord);
           for (b = 0; b < num_channels; b++)
             pixel[b] = p[b];
 
@@ -1893,113 +855,55 @@ drawable_get_pixel_invoker (Gimp         *gimp,
         success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&drawable_get_pixel_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_int = num_channels;
-      return_args[2].value.pdb_pointer = pixel;
+      g_value_set_int (&return_vals->values[1], num_channels);
+      gimp_value_take_int8array (&return_vals->values[2], pixel, num_channels);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_get_pixel_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "x-coord",
-    "The x coordinate"
-  },
-  {
-    GIMP_PDB_INT32,
-    "y-coord",
-    "The y coordinate"
-  }
-};
-
-static ProcArg drawable_get_pixel_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "num-channels",
-    "The number of channels for the pixel"
-  },
-  {
-    GIMP_PDB_INT8ARRAY,
-    "pixel",
-    "The pixel value"
-  }
-};
-
-static ProcRecord drawable_get_pixel_proc =
-{
-  "gimp-drawable-get-pixel",
-  "gimp-drawable-get-pixel",
-  "Gets the value of the pixel at the specified coordinates.",
-  "This procedure gets the pixel value at the specified coordinates. The 'num_channels' argument must always be equal to the bytes-per-pixel value for the specified drawable.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1997",
-  NULL,
-  GIMP_INTERNAL,
-  3,
-  drawable_get_pixel_inargs,
-  2,
-  drawable_get_pixel_outargs,
-  { { drawable_get_pixel_invoker } }
-};
-
-static Argument *
-drawable_set_pixel_invoker (Gimp         *gimp,
-                            GimpContext  *context,
-                            GimpProgress *progress,
-                            Argument     *args)
+static GValueArray *
+drawable_set_pixel_invoker (GimpProcedure     *procedure,
+                            Gimp              *gimp,
+                            GimpContext       *context,
+                            GimpProgress      *progress,
+                            const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
-  gint32 x;
-  gint32 y;
+  gint32 x_coord;
+  gint32 y_coord;
   gint32 num_channels;
-  guint8 *pixel;
-  guint8 *p;
-  gint b;
-  Tile *tile;
+  const guint8 *pixel;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  x = args[1].value.pdb_int;
-  if (x < 0)
-    success = FALSE;
-
-  y = args[2].value.pdb_int;
-  if (y < 0)
-    success = FALSE;
-
-  num_channels = args[3].value.pdb_int;
-
-  pixel = (guint8 *) args[4].value.pdb_pointer;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  x_coord = g_value_get_int (&args->values[1]);
+  y_coord = g_value_get_int (&args->values[2]);
+  num_channels = g_value_get_int (&args->values[3]);
+  pixel = gimp_value_get_int8array (&args->values[4]);
 
   if (success)
     {
-      if (x < gimp_item_width  (GIMP_ITEM (drawable)) &&
-          y < gimp_item_height (GIMP_ITEM (drawable)) &&
+      if (x_coord < gimp_item_width  (GIMP_ITEM (drawable)) &&
+          y_coord < gimp_item_height (GIMP_ITEM (drawable)) &&
           num_channels == gimp_drawable_bytes (drawable))
         {
-          tile = tile_manager_get_tile (gimp_drawable_data (drawable), x, y,
+          Tile   *tile;
+          guint8 *p;
+          gint    b;
+
+          tile = tile_manager_get_tile (gimp_drawable_get_tiles (drawable),
+                                        x_coord, y_coord,
                                         TRUE, TRUE);
 
-          x %= TILE_WIDTH;
-          y %= TILE_HEIGHT;
+          x_coord %= TILE_WIDTH;
+          y_coord %= TILE_HEIGHT;
 
-          p = tile_data_pointer (tile, x, y);
+          p = tile_data_pointer (tile, x_coord, y_coord);
           for (b = 0; b < num_channels; b++)
             *p++ = *pixel++;
 
@@ -2009,117 +913,37 @@ drawable_set_pixel_invoker (Gimp         *gimp,
         success = FALSE;
     }
 
-  return procedural_db_return_args (&drawable_set_pixel_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg drawable_set_pixel_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "x-coord",
-    "The x coordinate"
-  },
-  {
-    GIMP_PDB_INT32,
-    "y-coord",
-    "The y coordinate"
-  },
-  {
-    GIMP_PDB_INT32,
-    "num-channels",
-    "The number of channels for the pixel"
-  },
-  {
-    GIMP_PDB_INT8ARRAY,
-    "pixel",
-    "The pixel value"
-  }
-};
-
-static ProcRecord drawable_set_pixel_proc =
-{
-  "gimp-drawable-set-pixel",
-  "gimp-drawable-set-pixel",
-  "Sets the value of the pixel at the specified coordinates.",
-  "This procedure sets the pixel value at the specified coordinates. The 'num_channels' argument must always be equal to the bytes-per-pixel value for the specified drawable. Note that this function is not undoable, you should use it only on drawables you just created yourself.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1997",
-  NULL,
-  GIMP_INTERNAL,
-  5,
-  drawable_set_pixel_inargs,
-  0,
-  NULL,
-  { { drawable_set_pixel_invoker } }
-};
-
-static Argument *
-drawable_fill_invoker (Gimp         *gimp,
-                       GimpContext  *context,
-                       GimpProgress *progress,
-                       Argument     *args)
+static GValueArray *
+drawable_fill_invoker (GimpProcedure     *procedure,
+                       Gimp              *gimp,
+                       GimpContext       *context,
+                       GimpProgress      *progress,
+                       const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 fill_type;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  fill_type = args[1].value.pdb_int;
-  if (fill_type < GIMP_FOREGROUND_FILL || fill_type > GIMP_PATTERN_FILL)
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  fill_type = g_value_get_enum (&args->values[1]);
 
   if (success)
-    gimp_drawable_fill_by_type (drawable, context, (GimpFillType) fill_type);
+    {
+      gimp_drawable_fill_by_type (drawable, context, (GimpFillType) fill_type);
+    }
 
-  return procedural_db_return_args (&drawable_fill_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg drawable_fill_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "fill-type",
-    "The type of fill: GIMP_FOREGROUND_FILL (0), GIMP_BACKGROUND_FILL (1), GIMP_WHITE_FILL (2), GIMP_TRANSPARENT_FILL (3), GIMP_PATTERN_FILL (4)"
-  }
-};
-
-static ProcRecord drawable_fill_proc =
-{
-  "gimp-drawable-fill",
-  "gimp-drawable-fill",
-  "Fill the drawable with the specified fill mode.",
-  "This procedure fills the drawable with the fill mode. If the fill mode is foreground the current foreground color is used. If the fill mode is background, the current background color is used. If the fill type is white, then white is used. Transparent fill only affects layers with an alpha channel, in which case the alpha channel is set to transparent. If the drawable has no alpha channel, it is filled to white. No fill leaves the drawable's contents undefined. This procedure is unlike the bucket fill tool because it fills regardless of a selection",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  drawable_fill_inargs,
-  0,
-  NULL,
-  { { drawable_fill_invoker } }
-};
-
-static Argument *
-drawable_offset_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
+static GValueArray *
+drawable_offset_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -2128,111 +952,49 @@ drawable_offset_invoker (Gimp         *gimp,
   gint32 offset_x;
   gint32 offset_y;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  wrap_around = args[1].value.pdb_int ? TRUE : FALSE;
-
-  fill_type = args[2].value.pdb_int;
-  if (fill_type < GIMP_OFFSET_BACKGROUND || fill_type > GIMP_OFFSET_TRANSPARENT)
-    success = FALSE;
-
-  offset_x = args[3].value.pdb_int;
-
-  offset_y = args[4].value.pdb_int;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  wrap_around = g_value_get_boolean (&args->values[1]);
+  fill_type = g_value_get_enum (&args->values[2]);
+  offset_x = g_value_get_int (&args->values[3]);
+  offset_y = g_value_get_int (&args->values[4]);
 
   if (success)
     {
-      success = gimp_item_is_attached (GIMP_ITEM (drawable));
-
-      if (success)
+      if (gimp_item_is_attached (GIMP_ITEM (drawable)))
         gimp_drawable_offset (drawable, context, wrap_around, fill_type,
                               offset_x, offset_y);
+      else
+        success = FALSE;
     }
 
-  return procedural_db_return_args (&drawable_offset_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg drawable_offset_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable to offset"
-  },
-  {
-    GIMP_PDB_INT32,
-    "wrap-around",
-    "wrap image around or fill vacated regions"
-  },
-  {
-    GIMP_PDB_INT32,
-    "fill-type",
-    "fill vacated regions of drawable with background or transparent: GIMP_OFFSET_BACKGROUND (0) or GIMP_OFFSET_TRANSPARENT (1)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "offset-x",
-    "offset by this amount in X direction"
-  },
-  {
-    GIMP_PDB_INT32,
-    "offset-y",
-    "offset by this amount in Y direction"
-  }
-};
-
-static ProcRecord drawable_offset_proc =
-{
-  "gimp-drawable-offset",
-  "gimp-drawable-offset",
-  "Offset the drawable by the specified amounts in the X and Y directions",
-  "This procedure offsets the specified drawable by the amounts specified by 'offset_x' and 'offset_y'. If 'wrap_around' is set to TRUE, then portions of the drawable which are offset out of bounds are wrapped around. Alternatively, the undefined regions of the drawable can be filled with transparency or the background color, as specified by the 'fill_type' parameter.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1997",
-  NULL,
-  GIMP_INTERNAL,
-  5,
-  drawable_offset_inargs,
-  0,
-  NULL,
-  { { drawable_offset_invoker } }
-};
-
-static Argument *
-drawable_thumbnail_invoker (Gimp         *gimp,
-                            GimpContext  *context,
-                            GimpProgress *progress,
-                            Argument     *args)
+static GValueArray *
+drawable_thumbnail_invoker (GimpProcedure     *procedure,
+                            Gimp              *gimp,
+                            GimpContext       *context,
+                            GimpProgress      *progress,
+                            const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
-  gint32 req_width;
-  gint32 req_height;
-  gint32 width = 0;
-  gint32 height = 0;
+  gint32 width;
+  gint32 height;
+  gint32 actual_width = 0;
+  gint32 actual_height = 0;
   gint32 bpp = 0;
-  gint32 num_bytes = 0;
+  gint32 thumbnail_data_count = 0;
   guint8 *thumbnail_data = NULL;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  req_width = args[1].value.pdb_int;
-  if (req_width <= 0 || req_width > 512)
-    success = FALSE;
-
-  req_height = args[2].value.pdb_int;
-  if (req_height <= 0 || req_height > 512)
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  width = g_value_get_int (&args->values[1]);
+  height = g_value_get_int (&args->values[2]);
 
   if (success)
     {
-      GimpImage *gimage = gimp_item_get_image (GIMP_ITEM (drawable));
+      GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
       TempBuf   *buf;
       gint       dwidth, dheight;
 
@@ -2241,123 +1003,57 @@ drawable_thumbnail_invoker (Gimp         *gimp,
       dheight = gimp_item_height (GIMP_ITEM (drawable));
 
       if (dwidth > dheight)
-        req_height = MAX (1, (req_width * dheight) / dwidth);
+        height = MAX (1, (width * dheight) / dwidth);
       else
-        req_width  = MAX (1, (req_height * dwidth) / dheight);
+        width  = MAX (1, (height * dwidth) / dheight);
 
-      if (gimage->gimp->config->layer_previews)
+      if (image->gimp->config->layer_previews)
         buf = gimp_viewable_get_new_preview (GIMP_VIEWABLE (drawable),
-                                             req_width, req_height);
+                                             width, height);
       else
         buf = gimp_viewable_get_dummy_preview (GIMP_VIEWABLE (drawable),
-                                               req_width, req_height,
+                                               width, height,
                                                gimp_drawable_has_alpha (drawable) ?
                                                4 : 3);
 
       if (buf)
         {
-          num_bytes      = buf->height * buf->width * buf->bytes;
-          thumbnail_data = g_memdup (temp_buf_data (buf), num_bytes);
-          width          = buf->width;
-          height         = buf->height;
-          bpp            = buf->bytes;
+          actual_width         = buf->width;
+          actual_height        = buf->height;
+          bpp                  = buf->bytes;
+          thumbnail_data_count = actual_width * actual_height * bpp;
+          thumbnail_data       = g_memdup (temp_buf_data (buf),
+                                           thumbnail_data_count);
 
           temp_buf_free (buf);
         }
       else
-        {
-          success = FALSE;
-        }
+        success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&drawable_thumbnail_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_int = width;
-      return_args[2].value.pdb_int = height;
-      return_args[3].value.pdb_int = bpp;
-      return_args[4].value.pdb_int = num_bytes;
-      return_args[5].value.pdb_pointer = thumbnail_data;
+      g_value_set_int (&return_vals->values[1], actual_width);
+      g_value_set_int (&return_vals->values[2], actual_height);
+      g_value_set_int (&return_vals->values[3], bpp);
+      g_value_set_int (&return_vals->values[4], thumbnail_data_count);
+      gimp_value_take_int8array (&return_vals->values[5], thumbnail_data, thumbnail_data_count);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_thumbnail_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "width",
-    "The thumbnail width"
-  },
-  {
-    GIMP_PDB_INT32,
-    "height",
-    "The thumbnail height"
-  }
-};
-
-static ProcArg drawable_thumbnail_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "width",
-    "The previews width"
-  },
-  {
-    GIMP_PDB_INT32,
-    "height",
-    "The previews height"
-  },
-  {
-    GIMP_PDB_INT32,
-    "bpp",
-    "The previews bpp"
-  },
-  {
-    GIMP_PDB_INT32,
-    "thumbnail-data-count",
-    "The number of bytes in thumbnail data"
-  },
-  {
-    GIMP_PDB_INT8ARRAY,
-    "thumbnail-data",
-    "The thumbnail data"
-  }
-};
-
-static ProcRecord drawable_thumbnail_proc =
-{
-  "gimp-drawable-thumbnail",
-  "gimp-drawable-thumbnail",
-  "Get a thumbnail of a drawable.",
-  "This function gets data from which a thumbnail of a drawable preview can be created. Maximum x or y dimension is 512 pixels. The pixels are returned in RGB[A] or GRAY[A] format. The bpp return value gives the number of bytes in the image.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  3,
-  drawable_thumbnail_inargs,
-  5,
-  drawable_thumbnail_outargs,
-  { { drawable_thumbnail_invoker } }
-};
-
-static Argument *
-drawable_sub_thumbnail_invoker (Gimp         *gimp,
-                                GimpContext  *context,
-                                GimpProgress *progress,
-                                Argument     *args)
+static GValueArray *
+drawable_sub_thumbnail_invoker (GimpProcedure     *procedure,
+                                Gimp              *gimp,
+                                GimpContext       *context,
+                                GimpProgress      *progress,
+                                const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gint32 src_x;
   gint32 src_y;
@@ -2368,48 +1064,26 @@ drawable_sub_thumbnail_invoker (Gimp         *gimp,
   gint32 width = 0;
   gint32 height = 0;
   gint32 bpp = 0;
-  gint32 num_bytes = 0;
+  gint32 thumbnail_data_count = 0;
   guint8 *thumbnail_data = NULL;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  src_x = args[1].value.pdb_int;
-  if (src_x < 0)
-    success = FALSE;
-
-  src_y = args[2].value.pdb_int;
-  if (src_y < 0)
-    success = FALSE;
-
-  src_width = args[3].value.pdb_int;
-  if (src_width <= 0)
-    success = FALSE;
-
-  src_height = args[4].value.pdb_int;
-  if (src_height <= 0)
-    success = FALSE;
-
-  dest_width = args[5].value.pdb_int;
-  if (dest_width <= 0 || dest_width > 512)
-    success = FALSE;
-
-  dest_height = args[6].value.pdb_int;
-  if (dest_height <= 0 || dest_height > 512)
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  src_x = g_value_get_int (&args->values[1]);
+  src_y = g_value_get_int (&args->values[2]);
+  src_width = g_value_get_int (&args->values[3]);
+  src_height = g_value_get_int (&args->values[4]);
+  dest_width = g_value_get_int (&args->values[5]);
+  dest_height = g_value_get_int (&args->values[6]);
 
   if (success)
     {
-      success = ((src_x + src_width)  <= gimp_item_width  (GIMP_ITEM (drawable)) &&
-                 (src_y + src_height) <= gimp_item_height (GIMP_ITEM (drawable)));
-
-      if (success)
+      if ((src_x + src_width)  <= gimp_item_width  (GIMP_ITEM (drawable)) &&
+          (src_y + src_height) <= gimp_item_height (GIMP_ITEM (drawable)))
         {
-          GimpImage *gimage = gimp_item_get_image (GIMP_ITEM (drawable));
+          GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
           TempBuf   *buf;
 
-          if (gimage->gimp->config->layer_previews)
+          if (image->gimp->config->layer_previews)
             buf = gimp_drawable_get_sub_preview (drawable,
                                                  src_x, src_y,
                                                  src_width, src_height,
@@ -2422,188 +1096,1312 @@ drawable_sub_thumbnail_invoker (Gimp         *gimp,
 
           if (buf)
             {
-              num_bytes      = buf->height * buf->width * buf->bytes;
-              thumbnail_data = g_memdup (temp_buf_data (buf), num_bytes);
-              width          = buf->width;
-              height         = buf->height;
-              bpp            = buf->bytes;
+              width                = buf->width;
+              height               = buf->height;
+              bpp                  = buf->bytes;
+              thumbnail_data_count = buf->height * buf->width * buf->bytes;
+              thumbnail_data       = g_memdup (temp_buf_data (buf),
+                                               thumbnail_data_count);
 
               temp_buf_free (buf);
             }
           else
-            {
-              success = FALSE;
-            }
+            success = FALSE;
         }
+      else
+        success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&drawable_sub_thumbnail_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_int = width;
-      return_args[2].value.pdb_int = height;
-      return_args[3].value.pdb_int = bpp;
-      return_args[4].value.pdb_int = num_bytes;
-      return_args[5].value.pdb_pointer = thumbnail_data;
+      g_value_set_int (&return_vals->values[1], width);
+      g_value_set_int (&return_vals->values[2], height);
+      g_value_set_int (&return_vals->values[3], bpp);
+      g_value_set_int (&return_vals->values[4], thumbnail_data_count);
+      gimp_value_take_int8array (&return_vals->values[5], thumbnail_data, thumbnail_data_count);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_sub_thumbnail_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "src-x",
-    "The x coordinate of the area"
-  },
-  {
-    GIMP_PDB_INT32,
-    "src-y",
-    "The y coordinate of the area"
-  },
-  {
-    GIMP_PDB_INT32,
-    "src-width",
-    "The width of the area"
-  },
-  {
-    GIMP_PDB_INT32,
-    "src-height",
-    "The height of the area"
-  },
-  {
-    GIMP_PDB_INT32,
-    "dest-width",
-    "The thumbnail width"
-  },
-  {
-    GIMP_PDB_INT32,
-    "dest-height",
-    "The thumbnail height"
-  }
-};
-
-static ProcArg drawable_sub_thumbnail_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "width",
-    "The previews width"
-  },
-  {
-    GIMP_PDB_INT32,
-    "height",
-    "The previews height"
-  },
-  {
-    GIMP_PDB_INT32,
-    "bpp",
-    "The previews bpp"
-  },
-  {
-    GIMP_PDB_INT32,
-    "thumbnail-data-count",
-    "The number of bytes in thumbnail data"
-  },
-  {
-    GIMP_PDB_INT8ARRAY,
-    "thumbnail-data",
-    "The thumbnail data"
-  }
-};
-
-static ProcRecord drawable_sub_thumbnail_proc =
-{
-  "gimp-drawable-sub-thumbnail",
-  "gimp-drawable-sub-thumbnail",
-  "Get a thumbnail of a sub-area of a drawable drawable.",
-  "This function gets data from which a thumbnail of a drawable preview can be created. Maximum x or y dimension is 512 pixels. The pixels are returned in RGB[A] or GRAY[A] format. The bpp return value gives the number of bytes in the image.",
-  "Michael Natterer <mitch@gimp.org>",
-  "Michael Natterer <mitch@gimp.org>",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  7,
-  drawable_sub_thumbnail_inargs,
-  5,
-  drawable_sub_thumbnail_outargs,
-  { { drawable_sub_thumbnail_invoker } }
-};
-
-static Argument *
-drawable_foreground_extract_invoker (Gimp         *gimp,
-                                     GimpContext  *context,
-                                     GimpProgress *progress,
-                                     Argument     *args)
+static GValueArray *
+drawable_foreground_extract_invoker (GimpProcedure     *procedure,
+                                     Gimp              *gimp,
+                                     GimpContext       *context,
+                                     GimpProgress      *progress,
+                                     const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 mode;
   GimpDrawable *mask;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  mode = args[1].value.pdb_int;
-  if (mode != GIMP_FOREGROUND_EXTRACT_SIOX)
-    success = FALSE;
-
-  mask = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[2].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (mask) && ! gimp_item_is_removed (GIMP_ITEM (mask))))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  mode = g_value_get_enum (&args->values[1]);
+  mask = gimp_value_get_drawable (&args->values[2], gimp);
 
   if (success)
     {
-      success = gimp_item_is_attached (GIMP_ITEM (drawable));
-
-      if (success)
+      if (gimp_item_is_attached (GIMP_ITEM (drawable)))
         gimp_drawable_foreground_extract (drawable, mode, mask, progress);
+      else
+        success = FALSE;
     }
 
-  return procedural_db_return_args (&drawable_foreground_extract_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg drawable_foreground_extract_inargs[] =
+void
+register_drawable_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "mode",
-    "The algorithm to use: GIMP_FOREGROUND_EXTRACT_SIOX (0)"
-  },
-  {
-    GIMP_PDB_DRAWABLE,
-    "mask",
-    "Tri-Map"
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcRecord drawable_foreground_extract_proc =
-{
-  "gimp-drawable-foreground-extract",
-  "gimp-drawable-foreground-extract",
-  "Extract the foreground of a drawable using a given trimap.",
-  "Image Segmentation by Uniform Color Clustering, see http://www.inf.fu-berlin.de/inst/pubs/tr-b-05-07.pdf",
-  "Gerald Friedland <fland@inf.fu-berlin.de>, Kristian Jantz <jantz@inf.fu-berlin.de>, Sven Neumann <sven@gimp.org>",
-  "Gerald Friedland",
-  "2005",
-  NULL,
-  GIMP_INTERNAL,
-  3,
-  drawable_foreground_extract_inargs,
-  0,
-  NULL,
-  { { drawable_foreground_extract_invoker } }
-};
+  /*
+   * gimp-drawable-delete
+   */
+  procedure = gimp_procedure_new (drawable_delete_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-delete");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-delete",
+                                     "Delete a drawable.",
+                                     "This procedure deletes the specified drawable. This must not be done if the image containing this drawable was already deleted or if the drawable was already removed from the image. The only case in which this procedure is useful is if you want to get rid of a drawable which has not yet been added to an image.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable to delete",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-is-layer
+   */
+  procedure = gimp_procedure_new (drawable_is_layer_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-is-layer");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-is-layer",
+                                     "Returns whether the drawable is a layer.",
+                                     "This procedure returns TRUE if the specified drawable is a layer.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("layer",
+                                                         "layer",
+                                                         "TRUE if the drawable is a layer",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-is-layer-mask
+   */
+  procedure = gimp_procedure_new (drawable_is_layer_mask_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-is-layer-mask");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-is-layer-mask",
+                                     "Returns whether the drawable is a layer mask.",
+                                     "This procedure returns TRUE if the specified drawable is a layer mask.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("layer-mask",
+                                                         "layer mask",
+                                                         "TRUE if the drawable is a layer mask",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-is-channel
+   */
+  procedure = gimp_procedure_new (drawable_is_channel_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-is-channel");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-is-channel",
+                                     "Returns whether the drawable is a channel.",
+                                     "This procedure returns TRUE if the specified drawable is a channel.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("channel",
+                                                         "channel",
+                                                         "TRUE if the drawable is a channel",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-type
+   */
+  procedure = gimp_procedure_new (drawable_type_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-type");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-type",
+                                     "Returns the drawable's type.",
+                                     "This procedure returns the drawable's type.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_enum ("type",
+                                                      "type",
+                                                      "The drawable's type: { GIMP_RGB_IMAGE (0), GIMP_RGBA_IMAGE (1), GIMP_GRAY_IMAGE (2), GIMP_GRAYA_IMAGE (3), GIMP_INDEXED_IMAGE (4), GIMP_INDEXEDA_IMAGE (5) }",
+                                                      GIMP_TYPE_IMAGE_TYPE,
+                                                      GIMP_RGB_IMAGE,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-type-with-alpha
+   */
+  procedure = gimp_procedure_new (drawable_type_with_alpha_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-type-with-alpha");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-type-with-alpha",
+                                     "Returns the drawable's type with alpha.",
+                                     "This procedure returns the drawable's type as if had an alpha channel. If the type is currently Gray, for instance, the returned type would be GrayA. If the drawable already has an alpha channel, the drawable's type is simply returned.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_enum ("type-with-alpha",
+                                                         "type with alpha",
+                                                         "The drawable's type with alpha: { GIMP_RGBA_IMAGE (1), GIMP_GRAYA_IMAGE (3), GIMP_INDEXEDA_IMAGE (5) }",
+                                                         GIMP_TYPE_IMAGE_TYPE,
+                                                         GIMP_RGB_IMAGE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_param_spec_enum_exclude_value (GIMP_PARAM_SPEC_ENUM (procedure->values[0]),
+                                      GIMP_RGB_IMAGE);
+  gimp_param_spec_enum_exclude_value (GIMP_PARAM_SPEC_ENUM (procedure->values[0]),
+                                      GIMP_GRAY_IMAGE);
+  gimp_param_spec_enum_exclude_value (GIMP_PARAM_SPEC_ENUM (procedure->values[0]),
+                                      GIMP_INDEXED_IMAGE);
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-has-alpha
+   */
+  procedure = gimp_procedure_new (drawable_has_alpha_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-has-alpha");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-has-alpha",
+                                     "Returns TRUE if the drawable has an alpha channel.",
+                                     "This procedure returns whether the specified drawable has an alpha channel. This can only be true for layers, and the associated type will be one of: { RGBA , GRAYA, INDEXEDA }.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("has-alpha",
+                                                         "has alpha",
+                                                         "Does the drawable have an alpha channel?",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-is-rgb
+   */
+  procedure = gimp_procedure_new (drawable_is_rgb_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-is-rgb");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-is-rgb",
+                                     "Returns whether the drawable is an RGB type.",
+                                     "This procedure returns TRUE if the specified drawable is of type { RGB, RGBA }.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("is-rgb",
+                                                         "is rgb",
+                                                         "TRUE if the drawable is an RGB type",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-is-gray
+   */
+  procedure = gimp_procedure_new (drawable_is_gray_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-is-gray");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-is-gray",
+                                     "Returns whether the drawable is a grayscale type.",
+                                     "This procedure returns TRUE if the specified drawable is of type { Gray, GrayA }.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("is-gray",
+                                                         "is gray",
+                                                         "TRUE if the drawable is a grayscale type",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-is-indexed
+   */
+  procedure = gimp_procedure_new (drawable_is_indexed_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-is-indexed");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-is-indexed",
+                                     "Returns whether the drawable is an indexed type.",
+                                     "This procedure returns TRUE if the specified drawable is of type { Indexed, IndexedA }.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("is-indexed",
+                                                         "is indexed",
+                                                         "TRUE if the drawable is an indexed type",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-bpp
+   */
+  procedure = gimp_procedure_new (drawable_bpp_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-bpp");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-bpp",
+                                     "Returns the bytes per pixel.",
+                                     "This procedure returns the number of bytes per pixel (or the number of channels) for the specified drawable.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("bpp",
+                                                          "bpp",
+                                                          "Bytes per pixel",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-width
+   */
+  procedure = gimp_procedure_new (drawable_width_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-width");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-width",
+                                     "Returns the width of the drawable.",
+                                     "This procedure returns the specified drawable's width in pixels.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("width",
+                                                          "width",
+                                                          "Width of drawable",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-height
+   */
+  procedure = gimp_procedure_new (drawable_height_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-height");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-height",
+                                     "Returns the height of the drawable.",
+                                     "This procedure returns the specified drawable's height in pixels.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("height",
+                                                          "height",
+                                                          "Height of drawable",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-offsets
+   */
+  procedure = gimp_procedure_new (drawable_offsets_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-offsets");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-offsets",
+                                     "Returns the offsets for the drawable.",
+                                     "This procedure returns the specified drawable's offsets. This only makes sense if the drawable is a layer since channels are anchored. The offsets of a channel will be returned as 0.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("offset-x",
+                                                          "offset x",
+                                                          "x offset of drawable",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("offset-y",
+                                                          "offset y",
+                                                          "y offset of drawable",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-get-image
+   */
+  procedure = gimp_procedure_new (drawable_get_image_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-get-image");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-get-image",
+                                     "Returns the drawable's image.",
+                                     "This procedure returns the drawable's image.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_image_id ("image",
+                                                             "image",
+                                                             "The drawable's image",
+                                                             gimp,
+                                                             GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-set-image
+   */
+  procedure = gimp_procedure_new (drawable_set_image_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-set-image");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-set-image",
+                                     "This procedure is deprecated!",
+                                     "This procedure is deprecated!",
+                                     "",
+                                     "",
+                                     "",
+                                     "NONE");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-get-name
+   */
+  procedure = gimp_procedure_new (drawable_get_name_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-get-name");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-get-name",
+                                     "Get the name of the specified drawable.",
+                                     "This procedure returns the specified drawable's name.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("name",
+                                                           "name",
+                                                           "The drawable name",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-set-name
+   */
+  procedure = gimp_procedure_new (drawable_set_name_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-set-name");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-set-name",
+                                     "Set the name of the specified drawable.",
+                                     "This procedure sets the specified drawable's name.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The new drawable name",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-get-visible
+   */
+  procedure = gimp_procedure_new (drawable_get_visible_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-get-visible");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-get-visible",
+                                     "Get the visibility of the specified drawable.",
+                                     "This procedure returns the specified drawable's visibility.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("visible",
+                                                         "visible",
+                                                         "The drawable visibility",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-set-visible
+   */
+  procedure = gimp_procedure_new (drawable_set_visible_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-set-visible");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-set-visible",
+                                     "Set the visibility of the specified drawable.",
+                                     "This procedure sets the specified drawable's visibility.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("visible",
+                                                     "visible",
+                                                     "The new drawable visibility",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-get-linked
+   */
+  procedure = gimp_procedure_new (drawable_get_linked_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-get-linked");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-get-linked",
+                                     "Get the linked state of the specified drawable.",
+                                     "This procedure returns the specified drawable's linked state.",
+                                     "Wolfgang Hofer",
+                                     "Wolfgang Hofer",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("linked",
+                                                         "linked",
+                                                         "The drawable linked state (for moves)",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-set-linked
+   */
+  procedure = gimp_procedure_new (drawable_set_linked_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-set-linked");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-set-linked",
+                                     "Set the linked state of the specified drawable.",
+                                     "This procedure sets the specified drawable's linked state.",
+                                     "Wolfgang Hofer",
+                                     "Wolfgang Hofer",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("linked",
+                                                     "linked",
+                                                     "The new drawable linked state",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-get-tattoo
+   */
+  procedure = gimp_procedure_new (drawable_get_tattoo_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-get-tattoo");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-get-tattoo",
+                                     "Get the tattoo of the specified drawable.",
+                                     "This procedure returns the specified drawable's tattoo. A tattoo is a unique and permanent identifier attached to a drawable that can be used to uniquely identify a drawable within an image even between sessions.",
+                                     "Jay Cox",
+                                     "Jay Cox",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_uint ("tattoo",
+                                                      "tattoo",
+                                                      "The drawable tattoo",
+                                                      1, G_MAXUINT32, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-set-tattoo
+   */
+  procedure = gimp_procedure_new (drawable_set_tattoo_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-set-tattoo");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-set-tattoo",
+                                     "Set the tattoo of the specified drawable.",
+                                     "This procedure sets the specified drawable's tattoo. A tattoo is a unique and permanent identifier attached to a drawable that can be used to uniquely identify a drawable within an image even between sessions.",
+                                     "Jay Cox",
+                                     "Jay Cox",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_uint ("tattoo",
+                                                  "tattoo",
+                                                  "The new drawable tattoo",
+                                                  1, G_MAXUINT32, 1,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-mask-bounds
+   */
+  procedure = gimp_procedure_new (drawable_mask_bounds_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-mask-bounds");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-mask-bounds",
+                                     "Find the bounding box of the current selection in relation to the specified drawable.",
+                                     "This procedure returns whether there is a selection. If there is one, the upper left and lower righthand corners of its bounding box are returned. These coordinates are specified relative to the drawable's origin, and bounded by the drawable's extents. Please note that the pixel specified by the lower righthand coordinate of the bounding box is not part of the selection. The selection ends at the upper left corner of this pixel. This means the width of the selection can be calculated as (x2 - x1), its height as (y2 - y1). Note that the returned boolean does NOT correspond with the returned region being empty or not, it always returns whether the selection is non_empty. See gimp_drawable_mask_intersect() for a boolean return value which is more useful in most cases.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("non-empty",
+                                                         "non empty",
+                                                         "TRUE if there is a selection",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("x1",
+                                                          "x1",
+                                                          "x coordinate of the upper left corner of selection bounds",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("y1",
+                                                          "y1",
+                                                          "y coordinate of the upper left corner of selection bounds",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("x2",
+                                                          "x2",
+                                                          "x coordinate of the lower right corner of selection bounds",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("y2",
+                                                          "y2",
+                                                          "y coordinate of the lower right corner of selection bounds",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-mask-intersect
+   */
+  procedure = gimp_procedure_new (drawable_mask_intersect_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-mask-intersect");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-mask-intersect",
+                                     "Find the bounding box of the current selection in relation to the specified drawable.",
+                                     "This procedure returns whether there is an intersection between the drawable and the selection. Unlike gimp_drawable_mask_bounds(), the intersection's bounds are returned as x, y, width, height. If there is no selection this function returns TRUE and the returned bounds are the extents of the whole drawable.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("non-empty",
+                                                         "non empty",
+                                                         "TRUE if the returned area is not empty",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("x",
+                                                          "x",
+                                                          "x coordinate of the upper left corner of the intersection",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("y",
+                                                          "y",
+                                                          "y coordinate of the upper left corner of the intersection",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("width",
+                                                          "width",
+                                                          "width of the intersection",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("height",
+                                                          "height",
+                                                          "height of the intersection",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-merge-shadow
+   */
+  procedure = gimp_procedure_new (drawable_merge_shadow_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-merge-shadow");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-merge-shadow",
+                                     "Merge the shadow buffer with the specified drawable.",
+                                     "This procedure combines the contents of the image's shadow buffer (for temporary processing) with the specified drawable. The \"undo\" parameter specifies whether to add an undo step for the operation. Requesting no undo is useful for such applications as 'auto-apply'.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("undo",
+                                                     "undo",
+                                                     "Push merge to undo stack?",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-update
+   */
+  procedure = gimp_procedure_new (drawable_update_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-update");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-update",
+                                     "Update the specified region of the drawable.",
+                                     "This procedure updates the specified region of the drawable. The (x, y) coordinate pair is relative to the drawable's origin, not to the image origin. Therefore, the entire drawable can be updated using (0, 0, width, height).",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("x",
+                                                      "x",
+                                                      "x coordinate of upper left corner of update region",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("y",
+                                                      "y",
+                                                      "y coordinate of upper left corner of update region",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("width",
+                                                      "width",
+                                                      "Width of update region",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("height",
+                                                      "height",
+                                                      "Height of update region",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-get-pixel
+   */
+  procedure = gimp_procedure_new (drawable_get_pixel_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-get-pixel");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-get-pixel",
+                                     "Gets the value of the pixel at the specified coordinates.",
+                                     "This procedure gets the pixel value at the specified coordinates. The 'num_channels' argument must always be equal to the bytes-per-pixel value for the specified drawable.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1997",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("x-coord",
+                                                      "x coord",
+                                                      "The x coordinate",
+                                                      0, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("y-coord",
+                                                      "y coord",
+                                                      "The y coordinate",
+                                                      0, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-channels",
+                                                          "num channels",
+                                                          "The number of channels for the pixel",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int8_array ("pixel",
+                                                               "pixel",
+                                                               "The pixel value",
+                                                               GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-set-pixel
+   */
+  procedure = gimp_procedure_new (drawable_set_pixel_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-set-pixel");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-set-pixel",
+                                     "Sets the value of the pixel at the specified coordinates.",
+                                     "This procedure sets the pixel value at the specified coordinates. The 'num_channels' argument must always be equal to the bytes-per-pixel value for the specified drawable. Note that this function is not undoable, you should use it only on drawables you just created yourself.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1997",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("x-coord",
+                                                      "x coord",
+                                                      "The x coordinate",
+                                                      0, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("y-coord",
+                                                      "y coord",
+                                                      "The y coordinate",
+                                                      0, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("num-channels",
+                                                      "num channels",
+                                                      "The number of channels for the pixel",
+                                                      0, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int8_array ("pixel",
+                                                           "pixel",
+                                                           "The pixel value",
+                                                           GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-fill
+   */
+  procedure = gimp_procedure_new (drawable_fill_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-fill");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-fill",
+                                     "Fill the drawable with the specified fill mode.",
+                                     "This procedure fills the drawable. If the fill mode is foreground the current foreground color is used. If the fill mode is background, the current background color is used. If the fill type is white, then white is used. Transparent fill only affects layers with an alpha channel, in which case the alpha channel is set to transparent. If the drawable has no alpha channel, it is filled to white. No fill leaves the drawable's contents undefined. This procedure is unlike the bucket fill tool because it fills regardless of a selection. Its main purpose is to fill a newly created drawable before adding it to the image. This operation cannot be undone.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("fill-type",
+                                                  "fill type",
+                                                  "The type of fill: { GIMP_FOREGROUND_FILL (0), GIMP_BACKGROUND_FILL (1), GIMP_WHITE_FILL (2), GIMP_TRANSPARENT_FILL (3), GIMP_PATTERN_FILL (4) }",
+                                                  GIMP_TYPE_FILL_TYPE,
+                                                  GIMP_FOREGROUND_FILL,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-offset
+   */
+  procedure = gimp_procedure_new (drawable_offset_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-offset");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-offset",
+                                     "Offset the drawable by the specified amounts in the X and Y directions",
+                                     "This procedure offsets the specified drawable by the amounts specified by 'offset_x' and 'offset_y'. If 'wrap_around' is set to TRUE, then portions of the drawable which are offset out of bounds are wrapped around. Alternatively, the undefined regions of the drawable can be filled with transparency or the background color, as specified by the 'fill_type' parameter.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1997",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable to offset",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("wrap-around",
+                                                     "wrap around",
+                                                     "wrap image around or fill vacated regions",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("fill-type",
+                                                  "fill type",
+                                                  "fill vacated regions of drawable with background or transparent: { GIMP_OFFSET_BACKGROUND (0), GIMP_OFFSET_TRANSPARENT (1) }",
+                                                  GIMP_TYPE_OFFSET_TYPE,
+                                                  GIMP_OFFSET_BACKGROUND,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("offset-x",
+                                                      "offset x",
+                                                      "offset by this amount in X direction",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("offset-y",
+                                                      "offset y",
+                                                      "offset by this amount in Y direction",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-thumbnail
+   */
+  procedure = gimp_procedure_new (drawable_thumbnail_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-thumbnail");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-thumbnail",
+                                     "Get a thumbnail of a drawable.",
+                                     "This function gets data from which a thumbnail of a drawable preview can be created. Maximum x or y dimension is 512 pixels. The pixels are returned in RGB[A] or GRAY[A] format. The bpp return value gives the number of bytes in the image.",
+                                     "Andy Thomas",
+                                     "Andy Thomas",
+                                     "1999",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("width",
+                                                      "width",
+                                                      "The requested thumbnail width",
+                                                      1, 512, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("height",
+                                                      "height",
+                                                      "The requested thumbnail height",
+                                                      1, 512, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("actual-width",
+                                                          "actual width",
+                                                          "The previews width",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("actual-height",
+                                                          "actual height",
+                                                          "The previews height",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("bpp",
+                                                          "bpp",
+                                                          "The previews bpp",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("thumbnail-data-count",
+                                                          "thumbnail data count",
+                                                          "The number of bytes in thumbnail data",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int8_array ("thumbnail-data",
+                                                               "thumbnail data",
+                                                               "The thumbnail data",
+                                                               GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-sub-thumbnail
+   */
+  procedure = gimp_procedure_new (drawable_sub_thumbnail_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-sub-thumbnail");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-sub-thumbnail",
+                                     "Get a thumbnail of a sub-area of a drawable drawable.",
+                                     "This function gets data from which a thumbnail of a drawable preview can be created. Maximum x or y dimension is 512 pixels. The pixels are returned in RGB[A] or GRAY[A] format. The bpp return value gives the number of bytes in the image.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("src-x",
+                                                      "src x",
+                                                      "The x coordinate of the area",
+                                                      0, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("src-y",
+                                                      "src y",
+                                                      "The y coordinate of the area",
+                                                      0, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("src-width",
+                                                      "src width",
+                                                      "The width of the area",
+                                                      1, G_MAXINT32, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("src-height",
+                                                      "src height",
+                                                      "The height of the area",
+                                                      1, G_MAXINT32, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("dest-width",
+                                                      "dest width",
+                                                      "The thumbnail width",
+                                                      1, 512, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("dest-height",
+                                                      "dest height",
+                                                      "The thumbnail height",
+                                                      1, 512, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("width",
+                                                          "width",
+                                                          "The previews width",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("height",
+                                                          "height",
+                                                          "The previews height",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("bpp",
+                                                          "bpp",
+                                                          "The previews bpp",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("thumbnail-data-count",
+                                                          "thumbnail data count",
+                                                          "The number of bytes in thumbnail data",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int8_array ("thumbnail-data",
+                                                               "thumbnail data",
+                                                               "The thumbnail data",
+                                                               GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-foreground-extract
+   */
+  procedure = gimp_procedure_new (drawable_foreground_extract_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-foreground-extract");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-foreground-extract",
+                                     "Extract the foreground of a drawable using a given trimap.",
+                                     "Image Segmentation by Uniform Color Clustering, see http://www.inf.fu-berlin.de/inst/pubs/tr-b-05-07.pdf",
+                                     "Gerald Friedland <fland@inf.fu-berlin.de>, Kristian Jantz <jantz@inf.fu-berlin.de>, Sven Neumann <sven@gimp.org>",
+                                     "Gerald Friedland",
+                                     "2005",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("mode",
+                                                  "mode",
+                                                  "The algorithm to use: { GIMP_FOREGROUND_EXTRACT_SIOX (0) }",
+                                                  GIMP_TYPE_FOREGROUND_EXTRACT_MODE,
+                                                  GIMP_FOREGROUND_EXTRACT_SIOX,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("mask",
+                                                            "mask",
+                                                            "Tri-Map",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

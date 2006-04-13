@@ -67,6 +67,7 @@ static void            gimp_image_map_finalize       (GObject      *object);
 
 static GimpImage     * gimp_image_map_get_image      (GimpPickable *pickable);
 static GimpImageType   gimp_image_map_get_image_type (GimpPickable *pickable);
+static gint            gimp_image_map_get_bytes      (GimpPickable *pickable);
 static TileManager   * gimp_image_map_get_tiles      (GimpPickable *pickable);
 static guchar        * gimp_image_map_get_color_at   (GimpPickable *pickable,
                                                       gint          x,
@@ -119,6 +120,7 @@ gimp_image_map_pickable_iface_init (GimpPickableInterface *iface)
 {
   iface->get_image      = gimp_image_map_get_image;
   iface->get_image_type = gimp_image_map_get_image_type;
+  iface->get_bytes      = gimp_image_map_get_bytes;
   iface->get_tiles      = gimp_image_map_get_tiles;
   iface->get_color_at   = gimp_image_map_get_color_at;
 }
@@ -151,6 +153,14 @@ gimp_image_map_get_image_type (GimpPickable *pickable)
   GimpImageMap *image_map = GIMP_IMAGE_MAP (pickable);
 
   return gimp_pickable_get_image_type (GIMP_PICKABLE (image_map->drawable));
+}
+
+static gint
+gimp_image_map_get_bytes (GimpPickable *pickable)
+{
+  GimpImageMap *image_map = GIMP_IMAGE_MAP (pickable);
+
+  return gimp_pickable_get_bytes (GIMP_PICKABLE (image_map->drawable));
 }
 
 static TileManager *
@@ -216,13 +226,13 @@ gimp_image_map_new (GimpDrawable *drawable,
                     const gchar  *undo_desc)
 {
   GimpImageMap *image_map;
-  GimpImage    *gimage;
+  GimpImage    *image;
 
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
 
-  gimage = gimp_item_get_image (GIMP_ITEM (drawable));
+  image = gimp_item_get_image (GIMP_ITEM (drawable));
 
-  g_return_val_if_fail (GIMP_IS_IMAGE (gimage), NULL);
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
   image_map = g_object_new (GIMP_TYPE_IMAGE_MAP, NULL);
 
@@ -308,7 +318,7 @@ gimp_image_map_apply (GimpImageMap          *image_map,
 
       /*  Copy from the image to the new tiles  */
       pixel_region_init (&image_map->srcPR,
-                         gimp_drawable_data (image_map->drawable),
+                         gimp_drawable_get_tiles (image_map->drawable),
                          x, y, width, height, FALSE);
       pixel_region_init (&image_map->destPR, image_map->undo_tiles,
                          0, 0, width, height, TRUE);
@@ -327,7 +337,7 @@ gimp_image_map_apply (GimpImageMap          *image_map,
       pixel_region_init (&image_map->srcPR, image_map->undo_tiles,
                          0, 0, undo_width, undo_height, FALSE);
       pixel_region_init (&image_map->destPR,
-                         gimp_drawable_data (image_map->drawable),
+                         gimp_drawable_get_tiles (image_map->drawable),
                          undo_offset_x, undo_offset_y,
                          undo_width, undo_height, TRUE);
 
@@ -340,7 +350,7 @@ gimp_image_map_apply (GimpImageMap          *image_map,
 
   /*  Configure the dest as the shadow buffer  */
   pixel_region_init (&image_map->destPR,
-                     gimp_drawable_shadow (image_map->drawable),
+                     gimp_drawable_get_shadow_tiles (image_map->drawable),
                      x, y, width, height, TRUE);
 
   /*  Apply the image transformation to the pixels  */
@@ -355,7 +365,7 @@ gimp_image_map_apply (GimpImageMap          *image_map,
 void
 gimp_image_map_commit (GimpImageMap *image_map)
 {
-  GimpImage *gimage;
+  GimpImage *image;
   gint       x1, y1, x2, y2;
 
   g_return_if_fail (GIMP_IS_IMAGE_MAP (image_map));
@@ -370,9 +380,9 @@ gimp_image_map_commit (GimpImageMap *image_map)
     }
 
   /*  Make sure the drawable is still valid  */
-  gimage = gimp_item_get_image (GIMP_ITEM (image_map->drawable));
+  image = gimp_item_get_image (GIMP_ITEM (image_map->drawable));
 
-  if (! gimage)
+  if (! image)
     return;
 
   /*  Register an undo step  */
@@ -398,7 +408,7 @@ gimp_image_map_commit (GimpImageMap *image_map)
 void
 gimp_image_map_clear (GimpImageMap *image_map)
 {
-  GimpImage   *gimage;
+  GimpImage   *image;
   PixelRegion  srcPR, destPR;
 
   g_return_if_fail (GIMP_IS_IMAGE_MAP (image_map));
@@ -413,9 +423,9 @@ gimp_image_map_clear (GimpImageMap *image_map)
     }
 
   /*  Make sure the drawable is still valid  */
-  gimage = gimp_item_get_image (GIMP_ITEM (image_map->drawable));
+  image = gimp_item_get_image (GIMP_ITEM (image_map->drawable));
 
-  if (! gimage)
+  if (! image)
     return;
 
   /*  restore the original image  */
@@ -434,7 +444,7 @@ gimp_image_map_clear (GimpImageMap *image_map)
       /*  Copy from the drawable to the tiles  */
       pixel_region_init (&srcPR, image_map->undo_tiles,
                          0, 0, width, height, FALSE);
-      pixel_region_init (&destPR, gimp_drawable_data (image_map->drawable),
+      pixel_region_init (&destPR, gimp_drawable_get_tiles (image_map->drawable),
                          offset_x, offset_y, width, height, TRUE);
 
       /* if the user has changed the image depth get out quickly */
@@ -464,13 +474,13 @@ gimp_image_map_clear (GimpImageMap *image_map)
 void
 gimp_image_map_abort (GimpImageMap *image_map)
 {
-  GimpImage *gimage;
+  GimpImage *image;
 
   g_return_if_fail (GIMP_IS_IMAGE_MAP (image_map));
 
-  gimage = gimp_item_get_image (GIMP_ITEM (image_map->drawable));
+  image = gimp_item_get_image (GIMP_ITEM (image_map->drawable));
 
-  if (! gimage)
+  if (! image)
     return;
 
   gimp_image_map_clear (image_map);
@@ -484,13 +494,13 @@ gimp_image_map_abort (GimpImageMap *image_map)
 static gboolean
 gimp_image_map_do (GimpImageMap *image_map)
 {
-  GimpImage   *gimage;
+  GimpImage   *image;
   PixelRegion  shadowPR;
   gint         i;
 
-  gimage = gimp_item_get_image (GIMP_ITEM (image_map->drawable));
+  image = gimp_item_get_image (GIMP_ITEM (image_map->drawable));
 
-  if (! gimage)
+  if (! image)
     {
       image_map->idle_id = 0;
 
@@ -513,7 +523,7 @@ gimp_image_map_do (GimpImageMap *image_map)
       w = image_map->destPR.w;
       h = image_map->destPR.h;
 
-      pixel_region_init (&shadowPR, gimage->shadow, x, y, w, h, FALSE);
+      pixel_region_init (&shadowPR, image->shadow, x, y, w, h, FALSE);
 
       gimp_drawable_apply_region (image_map->drawable, &shadowPR,
                                   FALSE, NULL,
@@ -529,7 +539,7 @@ gimp_image_map_do (GimpImageMap *image_map)
         {
           image_map->idle_id = 0;
 
-          gimp_image_flush (gimage);
+          gimp_image_flush (image);
 
           return FALSE;
         }

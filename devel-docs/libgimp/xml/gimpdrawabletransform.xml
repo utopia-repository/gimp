@@ -214,7 +214,7 @@ Flip the specified drawable either vertically or horizontally.
 This procedure flips the specified drawable if no selection exists.
 If a selection exists, the portion of the drawable which lies under
 the selection is cut from the drawable and made into a floating
-selection which is then flipped. If auto_center is set to true, the
+selection which is then flipped. If auto_center is set to TRUE, the
 flip is around the selection's center. Otherwise, the coordinate of
 the axis needs to be specified. The return value is the ID of the
 flipped drawable. If there was no selection, this will be equal to
@@ -689,16 +689,16 @@ this will be the newly created and scaled drawable.</para>
 <listitem><simpara> The affected drawable.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>x0</parameter>&nbsp;:</term>
-<listitem><simpara> The new x coordinate of upper-left corner of newly scaled region.
+<listitem><simpara> The new x coordinate of the upper-left corner of the scaled region.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>y0</parameter>&nbsp;:</term>
-<listitem><simpara> The new y coordinate of upper-left corner of newly scaled region.
+<listitem><simpara> The new y coordinate of the upper-left corner of the scaled region.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>x1</parameter>&nbsp;:</term>
-<listitem><simpara> The new x coordinate of lower-right corner of newly scaled region.
+<listitem><simpara> The new x coordinate of the lower-right corner of the scaled region.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>y1</parameter>&nbsp;:</term>
-<listitem><simpara> The new y coordinate of lower-right corner of newly scaled region.
+<listitem><simpara> The new y coordinate of the lower-right corner of the scaled region.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transform_direction</parameter>&nbsp;:</term>
 <listitem><simpara> Direction of Transformation.
@@ -744,16 +744,16 @@ uses no interpolation/supersampling at all, or default values
 <listitem><simpara> The affected drawable.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>x0</parameter>&nbsp;:</term>
-<listitem><simpara> The new x coordinate of upper-left corner of newly scaled region.
+<listitem><simpara> The new x coordinate of the upper-left corner of the scaled region.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>y0</parameter>&nbsp;:</term>
-<listitem><simpara> The new y coordinate of upper-left corner of newly scaled region.
+<listitem><simpara> The new y coordinate of the upper-left corner of the scaled region.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>x1</parameter>&nbsp;:</term>
-<listitem><simpara> The new x coordinate of lower-right corner of newly scaled region.
+<listitem><simpara> The new x coordinate of the lower-right corner of the scaled region.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>y1</parameter>&nbsp;:</term>
-<listitem><simpara> The new y coordinate of lower-right corner of newly scaled region.
+<listitem><simpara> The new y coordinate of the lower-right corner of the scaled region.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>interpolate</parameter>&nbsp;:</term>
 <listitem><simpara> Whether to use interpolation and supersampling.

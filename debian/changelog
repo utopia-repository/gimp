@@ -1,3 +1,13 @@
+gimp (2.3.8-1) experimental; urgency=low
+
+  * New upstream release
+  * Change URI plugin dependencies to Recommends
+  * Fix build-depends to exclude kfreebsd-amd64 from using libasound2-dev
+    (Closes: #361459)
+  * Update gimp-python package description
+
+ -- Ari Pollak <ari@debian.org>  Thu, 13 Apr 2006 14:08:42 -0400
+
 gimp (2.3.7-1) experimental; urgency=low
 
   * New upstream release

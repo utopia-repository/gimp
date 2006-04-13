@@ -36,9 +36,7 @@
 
 #include "core/gimp.h"
 
-#include "pdb/procedural_db.h"
-
-#include "plug-in-proc-def.h"
+#include "pdb/gimppluginprocedure.h"
 
 
 static int
@@ -89,26 +87,26 @@ plug_ins_query (Gimp          *gimp,
    * where we can store the strings.
    */
 
-  for (list = gimp->plug_in_proc_defs; list; list = g_slist_next (list))
+  for (list = gimp->plug_in_procedures; list; list = g_slist_next (list))
     {
-      PlugInProcDef *proc_def = list->data;
+      GimpPlugInProcedure *proc = list->data;
 
-      if (proc_def->prog && proc_def->menu_paths)
+      if (proc->prog && proc->menu_paths)
         {
           gchar *name;
 
-          if (proc_def->menu_label)
+          if (proc->menu_label)
             {
-              name = proc_def->menu_label;
+              name = proc->menu_label;
             }
           else
             {
-              name = strrchr (proc_def->menu_paths->data, '/');
+              name = strrchr (proc->menu_paths->data, '/');
 
               if (name)
                 name = name + 1;
               else
-                name = proc_def->menu_paths->data;
+                name = proc->menu_paths->data;
             }
 
           name = gimp_strip_uline (name);
@@ -116,7 +114,7 @@ plug_ins_query (Gimp          *gimp,
           if (! search_str || ! match_strings (&sregex, name))
             {
               num_plugins++;
-              matched = g_slist_prepend (matched, proc_def);
+              matched = g_slist_prepend (matched, proc);
             }
 
           g_free (name);
@@ -134,23 +132,22 @@ plug_ins_query (Gimp          *gimp,
 
   for (list = matched; list; list = g_slist_next (list))
     {
-      PlugInProcDef *proc_def = list->data;
-      ProcRecord    *proc_rec = &proc_def->db_info;
-      gchar         *name;
+      GimpPlugInProcedure *proc = list->data;
+      gchar               *name;
 
-      if (proc_def->menu_label)
+      if (proc->menu_label)
         name = g_strdup_printf ("%s/%s",
-                                (gchar *) proc_def->menu_paths->data,
-                                proc_def->menu_label);
+                                (gchar *) proc->menu_paths->data,
+                                proc->menu_label);
       else
-        name = g_strdup (proc_def->menu_paths->data);
+        name = g_strdup (proc->menu_paths->data);
 
       (*menu_strs)[i]     = gimp_strip_uline (name);
       (*accel_strs)[i]    = NULL;
-      (*prog_strs)[i]     = g_strdup (proc_def->prog);
-      (*types_strs)[i]    = g_strdup (proc_def->image_types);
-      (*realname_strs)[i] = g_strdup (proc_rec->name);
-      (*time_ints)[i]     = proc_def->mtime;
+      (*prog_strs)[i]     = g_strdup (proc->prog);
+      (*types_strs)[i]    = g_strdup (proc->image_types);
+      (*realname_strs)[i] = g_strdup (GIMP_OBJECT (proc)->name);
+      (*time_ints)[i]     = proc->mtime;
 
       g_free (name);
 

@@ -46,8 +46,8 @@ gimp_displays_dirty (Gimp *gimp)
     {
       GimpDisplay *display = list->data;
 
-      if (display->gimage->dirty)
-	return TRUE;
+      if (display->image->dirty)
+        return TRUE;
     }
 
   return FALSE;
@@ -149,9 +149,9 @@ gimp_displays_delete (Gimp *gimp)
    */
   while (GIMP_LIST (gimp->displays)->list)
     {
-      GimpDisplay *gdisp = GIMP_LIST (gimp->displays)->list->data;
+      GimpDisplay *display = GIMP_LIST (gimp->displays)->list->data;
 
-      gimp_display_delete (gdisp);
+      gimp_display_delete (display);
     }
 }
 
@@ -167,7 +167,7 @@ gimp_displays_reconnect (Gimp      *gimp,
   g_return_if_fail (GIMP_IS_IMAGE (old));
   g_return_if_fail (GIMP_IS_IMAGE (new));
 
-  /*  remember which contexts refer to old_gimage  */
+  /*  remember which contexts refer to old_image  */
   for (list = gimp->context_list; list; list = g_list_next (list))
     {
       GimpContext *context = list->data;
@@ -180,13 +180,13 @@ gimp_displays_reconnect (Gimp      *gimp,
        list;
        list = g_list_next (list))
     {
-      GimpDisplay *gdisp = list->data;
+      GimpDisplay *display = list->data;
 
-      if (gdisp->gimage == old)
-	gimp_display_reconnect (gdisp, new);
+      if (display->image == old)
+        gimp_display_reconnect (display, new);
     }
 
-  /*  set the new_gimage on the remembered contexts (in reverse
+  /*  set the new_image on the remembered contexts (in reverse
    *  order, since older contexts are usually the parents of
    *  newer ones)
    */

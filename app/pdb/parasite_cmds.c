@@ -26,763 +26,917 @@
 #include "libgimpbase/gimpbase.h"
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "core/gimp-parasites.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
+#include "vectors/gimpvectors.h"
 
-static ProcRecord parasite_find_proc;
-static ProcRecord parasite_attach_proc;
-static ProcRecord parasite_detach_proc;
-static ProcRecord parasite_list_proc;
-static ProcRecord drawable_parasite_find_proc;
-static ProcRecord drawable_parasite_attach_proc;
-static ProcRecord drawable_parasite_detach_proc;
-static ProcRecord drawable_parasite_list_proc;
-static ProcRecord image_parasite_find_proc;
-static ProcRecord image_parasite_attach_proc;
-static ProcRecord image_parasite_detach_proc;
-static ProcRecord image_parasite_list_proc;
 
-void
-register_parasite_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &parasite_find_proc);
-  procedural_db_register (gimp, &parasite_attach_proc);
-  procedural_db_register (gimp, &parasite_detach_proc);
-  procedural_db_register (gimp, &parasite_list_proc);
-  procedural_db_register (gimp, &drawable_parasite_find_proc);
-  procedural_db_register (gimp, &drawable_parasite_attach_proc);
-  procedural_db_register (gimp, &drawable_parasite_detach_proc);
-  procedural_db_register (gimp, &drawable_parasite_list_proc);
-  procedural_db_register (gimp, &image_parasite_find_proc);
-  procedural_db_register (gimp, &image_parasite_attach_proc);
-  procedural_db_register (gimp, &image_parasite_detach_proc);
-  procedural_db_register (gimp, &image_parasite_list_proc);
-}
-
-static Argument *
-parasite_find_invoker (Gimp         *gimp,
-                       GimpContext  *context,
-                       GimpProgress *progress,
-                       Argument     *args)
+static GValueArray *
+parasite_find_invoker (GimpProcedure     *procedure,
+                       Gimp              *gimp,
+                       GimpContext       *context,
+                       GimpProgress      *progress,
+                       const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gchar *name;
+  GValueArray *return_vals;
+  const gchar *name;
   GimpParasite *parasite = NULL;
 
-  name = (gchar *) args[0].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
+  name = g_value_get_string (&args->values[0]);
 
   if (success)
     {
       parasite = gimp_parasite_copy (gimp_parasite_find (gimp, name));
-      success = parasite != NULL;
+
+      if (! parasite)
+        success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&parasite_find_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_pointer = parasite;
+    g_value_take_boxed (&return_vals->values[1], parasite);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg parasite_find_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the parasite to find"
-  }
-};
-
-static ProcArg parasite_find_outargs[] =
-{
-  {
-    GIMP_PDB_PARASITE,
-    "parasite",
-    "The found parasite"
-  }
-};
-
-static ProcRecord parasite_find_proc =
-{
-  "gimp-parasite-find",
-  "gimp-parasite-find",
-  "Finds the named parasite.",
-  "Finds and returns the named parasite that was previously attached to the gimp.",
-  "Jay Cox",
-  "Jay Cox",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  parasite_find_inargs,
-  1,
-  parasite_find_outargs,
-  { { parasite_find_invoker } }
-};
-
-static Argument *
-parasite_attach_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
+static GValueArray *
+parasite_attach_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
 {
   gboolean success = TRUE;
-  GimpParasite *parasite;
+  const GimpParasite *parasite;
 
-  parasite = (GimpParasite *) args[0].value.pdb_pointer;
-  if (parasite == NULL || parasite->name == NULL || !g_utf8_validate (parasite->name, -1, NULL))
-    success = FALSE;
+  parasite = g_value_get_boxed (&args->values[0]);
 
   if (success)
-    gimp_parasite_attach (gimp, parasite);
+    {
+      gimp_parasite_attach (gimp, parasite);
+    }
 
-  return procedural_db_return_args (&parasite_attach_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg parasite_attach_inargs[] =
-{
-  {
-    GIMP_PDB_PARASITE,
-    "parasite",
-    "The parasite to attach to the gimp"
-  }
-};
-
-static ProcRecord parasite_attach_proc =
-{
-  "gimp-parasite-attach",
-  "gimp-parasite-attach",
-  "Add a parasite to the gimp.",
-  "This procedure attaches a parasite to the gimp. It has no return values.",
-  "Jay Cox",
-  "Jay Cox",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  parasite_attach_inargs,
-  0,
-  NULL,
-  { { parasite_attach_invoker } }
-};
-
-static Argument *
-parasite_detach_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
+static GValueArray *
+parasite_detach_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
 {
   gboolean success = TRUE;
-  gchar *name;
+  const gchar *name;
 
-  name = (gchar *) args[0].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
+  name = g_value_get_string (&args->values[0]);
 
   if (success)
-    gimp_parasite_detach (gimp, name);
+    {
+      gimp_parasite_detach (gimp, name);
+    }
 
-  return procedural_db_return_args (&parasite_detach_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg parasite_detach_inargs[] =
+static GValueArray *
+parasite_list_invoker (GimpProcedure     *procedure,
+                       Gimp              *gimp,
+                       GimpContext       *context,
+                       GimpProgress      *progress,
+                       const GValueArray *args)
 {
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the parasite to detach from the gimp."
-  }
-};
-
-static ProcRecord parasite_detach_proc =
-{
-  "gimp-parasite-detach",
-  "gimp-parasite-detach",
-  "Removes a parasite from the gimp.",
-  "This procedure detaches a parasite from the gimp. It has no return values.",
-  "Jay Cox",
-  "Jay Cox",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  parasite_detach_inargs,
-  0,
-  NULL,
-  { { parasite_detach_invoker } }
-};
-
-static Argument *
-parasite_list_invoker (Gimp         *gimp,
-                       GimpContext  *context,
-                       GimpProgress *progress,
-                       Argument     *args)
-{
-  Argument *return_args;
-  gint32 num_parasites;
-  gchar **parasites;
+  GValueArray *return_vals;
+  gint32 num_parasites = 0;
+  gchar **parasites = NULL;
 
   parasites = gimp_parasite_list (gimp, &num_parasites);
 
-  return_args = procedural_db_return_args (&parasite_list_proc, TRUE);
+  return_vals = gimp_procedure_get_return_values (procedure, TRUE);
 
-  return_args[1].value.pdb_int = num_parasites;
-  return_args[2].value.pdb_pointer = parasites;
+  g_value_set_int (&return_vals->values[1], num_parasites);
+  gimp_value_take_stringarray (&return_vals->values[2], parasites, num_parasites);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg parasite_list_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "num-parasites",
-    "The number of attached parasites"
-  },
-  {
-    GIMP_PDB_STRINGARRAY,
-    "parasites",
-    "The names of currently attached parasites"
-  }
-};
-
-static ProcRecord parasite_list_proc =
-{
-  "gimp-parasite-list",
-  "gimp-parasite-list",
-  "List all parasites.",
-  "Returns a list of all currently attached parasites.",
-  "Marc Lehmann",
-  "Marc Lehmann",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  0,
-  NULL,
-  2,
-  parasite_list_outargs,
-  { { parasite_list_invoker } }
-};
-
-static Argument *
-drawable_parasite_find_invoker (Gimp         *gimp,
-                                GimpContext  *context,
-                                GimpProgress *progress,
-                                Argument     *args)
+static GValueArray *
+image_parasite_find_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-  gchar *name;
+  GValueArray *return_vals;
+  GimpImage *image;
+  const gchar *name;
   GimpParasite *parasite = NULL;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  name = (gchar *) args[1].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  name = g_value_get_string (&args->values[1]);
 
   if (success)
     {
-      parasite = gimp_parasite_copy (gimp_item_parasite_find (GIMP_ITEM (drawable), name));
-      success = parasite != NULL;
+      parasite = gimp_parasite_copy (gimp_image_parasite_find (image, name));
+
+      if (! parasite)
+        success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&drawable_parasite_find_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_pointer = parasite;
+    g_value_take_boxed (&return_vals->values[1], parasite);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_parasite_find_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the parasite to find"
-  }
-};
-
-static ProcArg drawable_parasite_find_outargs[] =
-{
-  {
-    GIMP_PDB_PARASITE,
-    "parasite",
-    "The found parasite"
-  }
-};
-
-static ProcRecord drawable_parasite_find_proc =
-{
-  "gimp-drawable-parasite-find",
-  "gimp-drawable-parasite-find",
-  "Finds the named parasite in a drawable",
-  "Finds and returns the named parasite that was previously attached to a drawable.",
-  "Jay Cox",
-  "Jay Cox",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  drawable_parasite_find_inargs,
-  1,
-  drawable_parasite_find_outargs,
-  { { drawable_parasite_find_invoker } }
-};
-
-static Argument *
-drawable_parasite_attach_invoker (Gimp         *gimp,
-                                  GimpContext  *context,
-                                  GimpProgress *progress,
-                                  Argument     *args)
+static GValueArray *
+image_parasite_attach_invoker (GimpProcedure     *procedure,
+                               Gimp              *gimp,
+                               GimpContext       *context,
+                               GimpProgress      *progress,
+                               const GValueArray *args)
 {
   gboolean success = TRUE;
-  GimpDrawable *drawable;
-  GimpParasite *parasite;
+  GimpImage *image;
+  const GimpParasite *parasite;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  parasite = (GimpParasite *) args[1].value.pdb_pointer;
-  if (parasite == NULL || parasite->name == NULL || !g_utf8_validate (parasite->name, -1, NULL))
-    success = FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  parasite = g_value_get_boxed (&args->values[1]);
 
   if (success)
-    gimp_item_parasite_attach (GIMP_ITEM (drawable), parasite);
+    {
+      gimp_image_parasite_attach (image, parasite);
+    }
 
-  return procedural_db_return_args (&drawable_parasite_attach_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg drawable_parasite_attach_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_PARASITE,
-    "parasite",
-    "The parasite to attach to a drawable"
-  }
-};
-
-static ProcRecord drawable_parasite_attach_proc =
-{
-  "gimp-drawable-parasite-attach",
-  "gimp-drawable-parasite-attach",
-  "Add a parasite to a drawable.",
-  "This procedure attaches a parasite to a drawable. It has no return values.",
-  "Jay Cox",
-  "Jay Cox",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  drawable_parasite_attach_inargs,
-  0,
-  NULL,
-  { { drawable_parasite_attach_invoker } }
-};
-
-static Argument *
-drawable_parasite_detach_invoker (Gimp         *gimp,
-                                  GimpContext  *context,
-                                  GimpProgress *progress,
-                                  Argument     *args)
+static GValueArray *
+image_parasite_detach_invoker (GimpProcedure     *procedure,
+                               Gimp              *gimp,
+                               GimpContext       *context,
+                               GimpProgress      *progress,
+                               const GValueArray *args)
 {
   gboolean success = TRUE;
-  GimpDrawable *drawable;
-  gchar *name;
+  GimpImage *image;
+  const gchar *name;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  name = (gchar *) args[1].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  name = g_value_get_string (&args->values[1]);
 
   if (success)
-    gimp_item_parasite_detach (GIMP_ITEM (drawable), name);
+    {
+      gimp_image_parasite_detach (image, name);
+    }
 
-  return procedural_db_return_args (&drawable_parasite_detach_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg drawable_parasite_detach_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the parasite to detach from a drawable."
-  }
-};
-
-static ProcRecord drawable_parasite_detach_proc =
-{
-  "gimp-drawable-parasite-detach",
-  "gimp-drawable-parasite-detach",
-  "Removes a parasite from a drawable.",
-  "This procedure detaches a parasite from a drawable. It has no return values.",
-  "Jay Cox",
-  "Jay Cox",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  drawable_parasite_detach_inargs,
-  0,
-  NULL,
-  { { drawable_parasite_detach_invoker } }
-};
-
-static Argument *
-drawable_parasite_list_invoker (Gimp         *gimp,
-                                GimpContext  *context,
-                                GimpProgress *progress,
-                                Argument     *args)
+static GValueArray *
+image_parasite_list_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-  gint32 num_parasites;
+  GValueArray *return_vals;
+  GimpImage *image;
+  gint32 num_parasites = 0;
   gchar **parasites = NULL;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  if (success)
-    parasites = gimp_item_parasite_list (GIMP_ITEM (drawable), &num_parasites);
-
-  return_args = procedural_db_return_args (&drawable_parasite_list_proc, success);
+  image = gimp_value_get_image (&args->values[0], gimp);
 
   if (success)
     {
-      return_args[1].value.pdb_int = num_parasites;
-      return_args[2].value.pdb_pointer = parasites;
+      parasites = gimp_image_parasite_list (image, &num_parasites);
     }
 
-  return return_args;
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    {
+      g_value_set_int (&return_vals->values[1], num_parasites);
+      gimp_value_take_stringarray (&return_vals->values[2], parasites, num_parasites);
+    }
+
+  return return_vals;
 }
 
-static ProcArg drawable_parasite_list_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcArg drawable_parasite_list_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "num-parasites",
-    "The number of attached parasites"
-  },
-  {
-    GIMP_PDB_STRINGARRAY,
-    "parasites",
-    "The names of currently attached parasites"
-  }
-};
-
-static ProcRecord drawable_parasite_list_proc =
-{
-  "gimp-drawable-parasite-list",
-  "gimp-drawable-parasite-list",
-  "List all parasites.",
-  "Returns a list of all currently attached parasites.",
-  "Marc Lehmann",
-  "Marc Lehmann",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  drawable_parasite_list_inargs,
-  2,
-  drawable_parasite_list_outargs,
-  { { drawable_parasite_list_invoker } }
-};
-
-static Argument *
-image_parasite_find_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
+static GValueArray *
+drawable_parasite_find_invoker (GimpProcedure     *procedure,
+                                Gimp              *gimp,
+                                GimpContext       *context,
+                                GimpProgress      *progress,
+                                const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpImage *gimage;
-  gchar *name;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  const gchar *name;
   GimpParasite *parasite = NULL;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  name = (gchar *) args[1].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  name = g_value_get_string (&args->values[1]);
 
   if (success)
     {
-      parasite = gimp_parasite_copy (gimp_image_parasite_find (gimage, name));
-      success = parasite != NULL;
+      parasite = gimp_parasite_copy (gimp_item_parasite_find (GIMP_ITEM (drawable),
+                                                              name));
+
+      if (! parasite)
+        success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&image_parasite_find_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_pointer = parasite;
+    g_value_take_boxed (&return_vals->values[1], parasite);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg image_parasite_find_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the parasite to find"
-  }
-};
-
-static ProcArg image_parasite_find_outargs[] =
-{
-  {
-    GIMP_PDB_PARASITE,
-    "parasite",
-    "The found parasite"
-  }
-};
-
-static ProcRecord image_parasite_find_proc =
-{
-  "gimp-image-parasite-find",
-  "gimp-image-parasite-find",
-  "Finds the named parasite in an image",
-  "Finds and returns the named parasite that was previously attached to an image.",
-  "Jay Cox",
-  "Jay Cox",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  image_parasite_find_inargs,
-  1,
-  image_parasite_find_outargs,
-  { { image_parasite_find_invoker } }
-};
-
-static Argument *
-image_parasite_attach_invoker (Gimp         *gimp,
-                               GimpContext  *context,
-                               GimpProgress *progress,
-                               Argument     *args)
+static GValueArray *
+drawable_parasite_attach_invoker (GimpProcedure     *procedure,
+                                  Gimp              *gimp,
+                                  GimpContext       *context,
+                                  GimpProgress      *progress,
+                                  const GValueArray *args)
 {
   gboolean success = TRUE;
-  GimpImage *gimage;
-  GimpParasite *parasite;
+  GimpDrawable *drawable;
+  const GimpParasite *parasite;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  parasite = (GimpParasite *) args[1].value.pdb_pointer;
-  if (parasite == NULL || parasite->name == NULL || !g_utf8_validate (parasite->name, -1, NULL))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  parasite = g_value_get_boxed (&args->values[1]);
 
   if (success)
-    gimp_image_parasite_attach (gimage, parasite);
+    {
+      gimp_item_parasite_attach (GIMP_ITEM (drawable), parasite);
+    }
 
-  return procedural_db_return_args (&image_parasite_attach_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg image_parasite_attach_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  },
-  {
-    GIMP_PDB_PARASITE,
-    "parasite",
-    "The parasite to attach to an image"
-  }
-};
-
-static ProcRecord image_parasite_attach_proc =
-{
-  "gimp-image-parasite-attach",
-  "gimp-image-parasite-attach",
-  "Add a parasite to an image.",
-  "This procedure attaches a parasite to an image. It has no return values.",
-  "Jay Cox",
-  "Jay Cox",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  image_parasite_attach_inargs,
-  0,
-  NULL,
-  { { image_parasite_attach_invoker } }
-};
-
-static Argument *
-image_parasite_detach_invoker (Gimp         *gimp,
-                               GimpContext  *context,
-                               GimpProgress *progress,
-                               Argument     *args)
+static GValueArray *
+drawable_parasite_detach_invoker (GimpProcedure     *procedure,
+                                  Gimp              *gimp,
+                                  GimpContext       *context,
+                                  GimpProgress      *progress,
+                                  const GValueArray *args)
 {
   gboolean success = TRUE;
-  GimpImage *gimage;
-  gchar *name;
+  GimpDrawable *drawable;
+  const gchar *name;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  name = (gchar *) args[1].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  name = g_value_get_string (&args->values[1]);
 
   if (success)
-    gimp_image_parasite_detach (gimage, name);
+    {
+      gimp_item_parasite_detach (GIMP_ITEM (drawable), name);
+    }
 
-  return procedural_db_return_args (&image_parasite_detach_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg image_parasite_detach_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The name of the parasite to detach from an image."
-  }
-};
-
-static ProcRecord image_parasite_detach_proc =
-{
-  "gimp-image-parasite-detach",
-  "gimp-image-parasite-detach",
-  "Removes a parasite from an image.",
-  "This procedure detaches a parasite from an image. It has no return values.",
-  "Jay Cox",
-  "Jay Cox",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  image_parasite_detach_inargs,
-  0,
-  NULL,
-  { { image_parasite_detach_invoker } }
-};
-
-static Argument *
-image_parasite_list_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
+static GValueArray *
+drawable_parasite_list_invoker (GimpProcedure     *procedure,
+                                Gimp              *gimp,
+                                GimpContext       *context,
+                                GimpProgress      *progress,
+                                const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpImage *gimage;
-  gint32 num_parasites;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  gint32 num_parasites = 0;
   gchar **parasites = NULL;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  if (success)
-    parasites = gimp_image_parasite_list (gimage, &num_parasites);
-
-  return_args = procedural_db_return_args (&image_parasite_list_proc, success);
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
   if (success)
     {
-      return_args[1].value.pdb_int = num_parasites;
-      return_args[2].value.pdb_pointer = parasites;
+      parasites = gimp_item_parasite_list (GIMP_ITEM (drawable), &num_parasites);
     }
 
-  return return_args;
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    {
+      g_value_set_int (&return_vals->values[1], num_parasites);
+      gimp_value_take_stringarray (&return_vals->values[2], parasites, num_parasites);
+    }
+
+  return return_vals;
 }
 
-static ProcArg image_parasite_list_inargs[] =
+static GValueArray *
+vectors_parasite_find_invoker (GimpProcedure     *procedure,
+                               Gimp              *gimp,
+                               GimpContext       *context,
+                               GimpProgress      *progress,
+                               const GValueArray *args)
 {
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image"
-  }
-};
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpVectors *vectors;
+  const gchar *name;
+  GimpParasite *parasite = NULL;
 
-static ProcArg image_parasite_list_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "num-parasites",
-    "The number of attached parasites"
-  },
-  {
-    GIMP_PDB_STRINGARRAY,
-    "parasites",
-    "The names of currently attached parasites"
-  }
-};
+  vectors = gimp_value_get_vectors (&args->values[0], gimp);
+  name = g_value_get_string (&args->values[1]);
 
-static ProcRecord image_parasite_list_proc =
+  if (success)
+    {
+      parasite = gimp_parasite_copy (gimp_item_parasite_find (GIMP_ITEM (vectors),
+                                                              name));
+
+      if (! parasite)
+        success = FALSE;
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_take_boxed (&return_vals->values[1], parasite);
+
+  return return_vals;
+}
+
+static GValueArray *
+vectors_parasite_attach_invoker (GimpProcedure     *procedure,
+                                 Gimp              *gimp,
+                                 GimpContext       *context,
+                                 GimpProgress      *progress,
+                                 const GValueArray *args)
 {
-  "gimp-image-parasite-list",
-  "gimp-image-parasite-list",
-  "List all parasites.",
-  "Returns a list of all currently attached parasites.",
-  "Marc Lehmann",
-  "Marc Lehmann",
-  "1999",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  image_parasite_list_inargs,
-  2,
-  image_parasite_list_outargs,
-  { { image_parasite_list_invoker } }
-};
+  gboolean success = TRUE;
+  GimpVectors *vectors;
+  const GimpParasite *parasite;
+
+  vectors = gimp_value_get_vectors (&args->values[0], gimp);
+  parasite = g_value_get_boxed (&args->values[1]);
+
+  if (success)
+    {
+      gimp_item_parasite_attach (GIMP_ITEM (vectors), parasite);
+    }
+
+  return gimp_procedure_get_return_values (procedure, success);
+}
+
+static GValueArray *
+vectors_parasite_detach_invoker (GimpProcedure     *procedure,
+                                 Gimp              *gimp,
+                                 GimpContext       *context,
+                                 GimpProgress      *progress,
+                                 const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GimpVectors *vectors;
+  const gchar *name;
+
+  vectors = gimp_value_get_vectors (&args->values[0], gimp);
+  name = g_value_get_string (&args->values[1]);
+
+  if (success)
+    {
+      gimp_item_parasite_detach (GIMP_ITEM (vectors), name);
+    }
+
+  return gimp_procedure_get_return_values (procedure, success);
+}
+
+static GValueArray *
+vectors_parasite_list_invoker (GimpProcedure     *procedure,
+                               Gimp              *gimp,
+                               GimpContext       *context,
+                               GimpProgress      *progress,
+                               const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpVectors *vectors;
+  gint32 num_parasites = 0;
+  gchar **parasites = NULL;
+
+  vectors = gimp_value_get_vectors (&args->values[0], gimp);
+
+  if (success)
+    {
+      parasites = gimp_item_parasite_list (GIMP_ITEM (vectors), &num_parasites);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    {
+      g_value_set_int (&return_vals->values[1], num_parasites);
+      gimp_value_take_stringarray (&return_vals->values[2], parasites, num_parasites);
+    }
+
+  return return_vals;
+}
+
+void
+register_parasite_procs (Gimp *gimp)
+{
+  GimpProcedure *procedure;
+
+  /*
+   * gimp-parasite-find
+   */
+  procedure = gimp_procedure_new (parasite_find_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-parasite-find");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-parasite-find",
+                                     "Finds the named parasite.",
+                                     "Finds and returns the named parasite that was previously attached to the gimp.",
+                                     "Jay Cox",
+                                     "Jay Cox",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The name of the parasite to find",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_parasite ("parasite",
+                                                             "parasite",
+                                                             "The found parasite",
+                                                             GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-parasite-attach
+   */
+  procedure = gimp_procedure_new (parasite_attach_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-parasite-attach");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-parasite-attach",
+                                     "Add a parasite to the gimp.",
+                                     "This procedure attaches a parasite to the gimp. It has no return values.",
+                                     "Jay Cox",
+                                     "Jay Cox",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_parasite ("parasite",
+                                                         "parasite",
+                                                         "The parasite to attach to the gimp",
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-parasite-detach
+   */
+  procedure = gimp_procedure_new (parasite_detach_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-parasite-detach");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-parasite-detach",
+                                     "Removes a parasite from the gimp.",
+                                     "This procedure detaches a parasite from the gimp. It has no return values.",
+                                     "Jay Cox",
+                                     "Jay Cox",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The name of the parasite to detach from the gimp.",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-parasite-list
+   */
+  procedure = gimp_procedure_new (parasite_list_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-parasite-list");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-parasite-list",
+                                     "List all parasites.",
+                                     "Returns a list of all currently attached parasites.",
+                                     "Marc Lehmann",
+                                     "Marc Lehmann",
+                                     "1999",
+                                     NULL);
+
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-parasites",
+                                                          "num parasites",
+                                                          "The number of attached parasites",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string_array ("parasites",
+                                                                 "parasites",
+                                                                 "The names of currently attached parasites",
+                                                                 GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-image-parasite-find
+   */
+  procedure = gimp_procedure_new (image_parasite_find_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-image-parasite-find");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-image-parasite-find",
+                                     "Finds the named parasite in an image",
+                                     "Finds and returns the named parasite that was previously attached to an image.",
+                                     "Jay Cox",
+                                     "Jay Cox",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The name of the parasite to find",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_parasite ("parasite",
+                                                             "parasite",
+                                                             "The found parasite",
+                                                             GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-image-parasite-attach
+   */
+  procedure = gimp_procedure_new (image_parasite_attach_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-image-parasite-attach");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-image-parasite-attach",
+                                     "Add a parasite to an image.",
+                                     "This procedure attaches a parasite to an image. It has no return values.",
+                                     "Jay Cox",
+                                     "Jay Cox",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_parasite ("parasite",
+                                                         "parasite",
+                                                         "The parasite to attach to an image",
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-image-parasite-detach
+   */
+  procedure = gimp_procedure_new (image_parasite_detach_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-image-parasite-detach");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-image-parasite-detach",
+                                     "Removes a parasite from an image.",
+                                     "This procedure detaches a parasite from an image. It has no return values.",
+                                     "Jay Cox",
+                                     "Jay Cox",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The name of the parasite to detach from an image.",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-image-parasite-list
+   */
+  procedure = gimp_procedure_new (image_parasite_list_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-image-parasite-list");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-image-parasite-list",
+                                     "List all parasites.",
+                                     "Returns a list of all currently attached parasites.",
+                                     "Marc Lehmann",
+                                     "Marc Lehmann",
+                                     "1999",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-parasites",
+                                                          "num parasites",
+                                                          "The number of attached parasites",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string_array ("parasites",
+                                                                 "parasites",
+                                                                 "The names of currently attached parasites",
+                                                                 GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-parasite-find
+   */
+  procedure = gimp_procedure_new (drawable_parasite_find_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-parasite-find");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-parasite-find",
+                                     "Finds the named parasite in a drawable",
+                                     "Finds and returns the named parasite that was previously attached to a drawable.",
+                                     "Jay Cox",
+                                     "Jay Cox",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The name of the parasite to find",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_parasite ("parasite",
+                                                             "parasite",
+                                                             "The found parasite",
+                                                             GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-parasite-attach
+   */
+  procedure = gimp_procedure_new (drawable_parasite_attach_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-parasite-attach");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-parasite-attach",
+                                     "Add a parasite to a drawable.",
+                                     "This procedure attaches a parasite to a drawable. It has no return values.",
+                                     "Jay Cox",
+                                     "Jay Cox",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_parasite ("parasite",
+                                                         "parasite",
+                                                         "The parasite to attach to a drawable",
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-parasite-detach
+   */
+  procedure = gimp_procedure_new (drawable_parasite_detach_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-parasite-detach");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-parasite-detach",
+                                     "Removes a parasite from a drawable.",
+                                     "This procedure detaches a parasite from a drawable. It has no return values.",
+                                     "Jay Cox",
+                                     "Jay Cox",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The name of the parasite to detach from a drawable.",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-parasite-list
+   */
+  procedure = gimp_procedure_new (drawable_parasite_list_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-parasite-list");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-parasite-list",
+                                     "List all parasites.",
+                                     "Returns a list of all currently attached parasites.",
+                                     "Marc Lehmann",
+                                     "Marc Lehmann",
+                                     "1999",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-parasites",
+                                                          "num parasites",
+                                                          "The number of attached parasites",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string_array ("parasites",
+                                                                 "parasites",
+                                                                 "The names of currently attached parasites",
+                                                                 GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-vectors-parasite-find
+   */
+  procedure = gimp_procedure_new (vectors_parasite_find_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-vectors-parasite-find");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-vectors-parasite-find",
+                                     "Finds the named parasite in a vectors object",
+                                     "Finds and returns the named parasite that was previously attached to a vectors object.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2006",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_vectors_id ("vectors",
+                                                           "vectors",
+                                                           "The vectors object",
+                                                           gimp,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The name of the parasite to find",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_parasite ("parasite",
+                                                             "parasite",
+                                                             "The found parasite",
+                                                             GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-vectors-parasite-attach
+   */
+  procedure = gimp_procedure_new (vectors_parasite_attach_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-vectors-parasite-attach");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-vectors-parasite-attach",
+                                     "Add a parasite to a vectors object",
+                                     "This procedure attaches a parasite to a vectors object. It has no return values.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2006",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_vectors_id ("vectors",
+                                                           "vectors",
+                                                           "The vectors object",
+                                                           gimp,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_parasite ("parasite",
+                                                         "parasite",
+                                                         "The parasite to attach to a vectors object",
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-vectors-parasite-detach
+   */
+  procedure = gimp_procedure_new (vectors_parasite_detach_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-vectors-parasite-detach");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-vectors-parasite-detach",
+                                     "Removes a parasite from a vectors object",
+                                     "This procedure detaches a parasite from a vectors object. It has no return values.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2006",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_vectors_id ("vectors",
+                                                           "vectors",
+                                                           "The vectors object",
+                                                           gimp,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The name of the parasite to detach from a vectors object.",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-vectors-parasite-list
+   */
+  procedure = gimp_procedure_new (vectors_parasite_list_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-vectors-parasite-list");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-vectors-parasite-list",
+                                     "List all parasites.",
+                                     "Returns a list of all currently attached parasites.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2006",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_vectors_id ("vectors",
+                                                           "vectors",
+                                                           "The vectors object",
+                                                           gimp,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-parasites",
+                                                          "num parasites",
+                                                          "The number of attached parasites",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string_array ("parasites",
+                                                                 "parasites",
+                                                                 "The names of currently attached parasites",
+                                                                 GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

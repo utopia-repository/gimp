@@ -36,6 +36,18 @@ typedef enum
 } GimpBrushApplicationMode;
 
 
+#define GIMP_TYPE_BRUSH_GENERATED_SHAPE (gimp_brush_generated_shape_get_type ())
+
+GType gimp_brush_generated_shape_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_BRUSH_GENERATED_CIRCLE,
+  GIMP_BRUSH_GENERATED_SQUARE,
+  GIMP_BRUSH_GENERATED_DIAMOND
+} GimpBrushGeneratedShape;
+
+
 #define GIMP_TYPE_CONVERT_DITHER_TYPE (gimp_convert_dither_type_get_type ())
 
 GType gimp_convert_dither_type_get_type (void) G_GNUC_CONST;
@@ -245,18 +257,6 @@ typedef enum
   GIMP_ROTATE_180,
   GIMP_ROTATE_270
 } GimpRotationType;
-
-
-#define GIMP_TYPE_RUN_MODE (gimp_run_mode_get_type ())
-
-GType gimp_run_mode_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_RUN_INTERACTIVE,
-  GIMP_RUN_NONINTERACTIVE,
-  GIMP_RUN_WITH_LAST_VALS
-} GimpRunMode;
 
 
 void           gimp_enums_init           (void);

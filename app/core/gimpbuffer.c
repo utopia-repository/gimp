@@ -251,7 +251,7 @@ gimp_buffer_get_description (GimpViewable  *viewable,
 {
   GimpBuffer *buffer = GIMP_BUFFER (viewable);
 
-  return g_strdup_printf ("%s (%d x %d)",
+  return g_strdup_printf ("%s (%d × %d)",
                           GIMP_OBJECT (buffer)->name,
                           gimp_buffer_get_width (buffer),
                           gimp_buffer_get_height (buffer));
@@ -271,9 +271,9 @@ gimp_buffer_new (TileManager *tiles,
   width  = tile_manager_width (tiles);
   height = tile_manager_height (tiles);
 
-  buffer = g_object_new (GIMP_TYPE_BUFFER, NULL);
-
-  gimp_object_set_name (GIMP_OBJECT (buffer), name);
+  buffer = g_object_new (GIMP_TYPE_BUFFER,
+                         "name", name,
+                         NULL);
 
   if (copy_pixels)
     {

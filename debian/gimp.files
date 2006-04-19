@@ -5,7 +5,10 @@ usr/bin/gimp-?.?
 usr/bin/gimp
 usr/bin/gimp-remote-?.?
 usr/bin/gimp-remote
+usr/share/applications
+usr/share/application-registry
 usr/share/man/man1/gimp-?.?.1
 usr/share/man/man1/gimp.1
 usr/share/man/man1/gimp-remote-?.?.1
 usr/share/man/man1/gimp-remote.1
+usr/share/mime-info

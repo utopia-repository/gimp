@@ -1,3 +1,11 @@
+gimp (2.3.8-2) experimental; urgency=low
+
+  * Change build-dependency on libpoppler-dev to libpoppler-glib-dev
+  * Put gimp.desktop, gimp.keys, and gimp.applications in gimp package instead
+    of gimp-data,and make gimp-data Recommends: gimp (Closes: #363469)
+
+ -- Ari Pollak <ari@debian.org>  Wed, 19 Apr 2006 12:14:45 -0400
+
 gimp (2.3.8-1) experimental; urgency=low
 
   * New upstream release

@@ -1,3 +1,9 @@
+gimp (2.3.8-3) experimental; urgency=low
+
+  * Whoops, don't replace & conflict with 2.3.8-2 (Closes: #364244)
+
+ -- Ari Pollak <ari@debian.org>  Fri, 21 Apr 2006 13:09:00 -0400
+
 gimp (2.3.8-2) experimental; urgency=low
 
   * Change build-dependency on libpoppler-dev to libpoppler-glib-dev

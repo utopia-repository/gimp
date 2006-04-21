@@ -86,8 +86,8 @@ Package: gimp
 Architecture: any
 Section: graphics
 Depends: gimp-data (= ${Source-Version}), ${shlibs:Depends}
-Conflicts: gimp-data (<= 2.3.8-2)
-Replaces: gimp-data (<= 2.3.8-2)
+Conflicts: gimp-data (<< 2.3.8-2)
+Replaces: gimp-data (<< 2.3.8-2)
 Recommends: gimp-gnomevfs | gimp-wget, gimp-svg, gimp-print
 Suggests: gimp-help-en | gimp-help, gimp-python, libgimp-perl, gimp-data-extras, libasound2 (>= 1.0.0), gimp-dbg
 Description: The GNU Image Manipulation Program - DEVELOPMENT VERSION

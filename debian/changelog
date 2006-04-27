@@ -1,3 +1,9 @@
+gimp (2.3.8-4) experimental; urgency=low
+
+  * Change libgtk2.0-0 dependency to >= 2.3.8 (Closes: #365023)
+
+ -- Ari Pollak <ari@debian.org>  Thu, 27 Apr 2006 09:11:50 -0400
+
 gimp (2.3.8-3) experimental; urgency=low
 
   * Whoops, don't replace & conflict with 2.3.8-2 (Closes: #364244)

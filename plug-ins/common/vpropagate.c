@@ -26,6 +26,10 @@
    (self == min && (! modified_flag))   ; modified_flag holds history of update
    In other word, pixel itself is not a neighbor of it.
 */
+/*
+   in response to bug #156545, after lengthy discussion, the meanings of "dilate"
+   and "erode" are being swapped -- 19 May 2006.
+*/
 
 #include "config.h"
 
@@ -125,7 +129,7 @@ static void         propagate_transparent   (GimpImageBaseType,
                                              int, guchar *, guchar *, guchar *,
                                              void *);
 
-GimpPlugInInfo PLUG_IN_INFO =
+const GimpPlugInInfo PLUG_IN_INFO =
 {
   NULL,  /* init_proc  */
   NULL,  /* quit_proc  */
@@ -215,7 +219,7 @@ MAIN ()
 static void
 query (void)
 {
-  static GimpParamDef args[] =
+  static const GimpParamDef args[] =
   {
     { GIMP_PDB_INT32,    "run-mode",            "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",               "Input image (not used)" },
@@ -324,9 +328,9 @@ run (const gchar      *name,
           vpvals.upper_limit         = 255;
 
           if (strcmp (name, ERODE_PROC) == 0)
-            vpvals.propagate_mode = 0;
-          else if (strcmp (name, DILATE_PROC) == 0)
             vpvals.propagate_mode = 1;
+          else if (strcmp (name, DILATE_PROC) == 0)
+            vpvals.propagate_mode = 0;
         }
       break;
 
@@ -350,9 +354,9 @@ run (const gchar      *name,
           vpvals.upper_limit         = 255;
 
           if (strcmp (name, ERODE_PROC) == 0)
-            vpvals.propagate_mode = 0;
-          else if (strcmp (name, DILATE_PROC) == 0)
             vpvals.propagate_mode = 1;
+          else if (strcmp (name, DILATE_PROC) == 0)
+            vpvals.propagate_mode = 0;
         }
       break;
 

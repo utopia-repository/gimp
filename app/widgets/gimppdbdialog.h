@@ -41,6 +41,8 @@ struct _GimpPdbDialog
 {
   GimpDialog       parent_instance;
 
+  GimpPDB         *pdb;
+
   /*  The context we were created with. This is the context the plug-in
    *  exists in and must be used when calling the plug-in.
    */
@@ -79,7 +81,6 @@ void            gimp_pdb_dialog_run_callback    (GimpPdbDialog      *dialog,
 
 GimpPdbDialog * gimp_pdb_dialog_get_by_callback (GimpPdbDialogClass *klass,
                                                  const gchar        *callback_name);
-void            gimp_pdb_dialogs_check_callback (GimpPdbDialogClass *klass);
 
 
 G_END_DECLS

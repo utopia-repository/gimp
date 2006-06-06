@@ -4,16 +4,19 @@
 
 <refentry id="GimpColorSelect">
 <refmeta>
-<refentrytitle>GimpColorSelect</refentrytitle>
+<refentrytitle id="top_of_page">GimpColorSelect</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpColorSelect</refname><refpurpose>A <link linkend="GimpColorSelector"><type>GimpColorSelector</type></link> implementation.</refpurpose>
+<refname>GimpColorSelect</refname>
+<refpurpose>A <link linkend="GimpColorSelector"><type>GimpColorSelector</type></link> implementation.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -24,8 +27,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 id="object_hierarchy">
+<title id="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -43,8 +46,8 @@
 
 
 
-<refsect1>
-<title>Implemented Interfaces</title>
+<refsect1 id="impl_interfaces">
+<title id="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpColorSelect implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -55,8 +58,8 @@ GimpColorSelect implements
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 The <link linkend="GimpColorSelect"><type>GimpColorSelect</type></link> widget is an implementation of a <link linkend="GimpColorSelector"><type>GimpColorSelector</type></link>.
 It shows a square area that allows to interactively change two color channels
@@ -66,10 +69,10 @@ will then change the other two channels accordingly.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpColorSelect-struct"/>GimpColorSelect</title>
+<title><anchor id="GimpColorSelect-struct" role="struct"/>GimpColorSelect</title>
 <indexterm><primary>GimpColorSelect</primary></indexterm><programlisting>typedef struct _GimpColorSelect GimpColorSelect;</programlisting>
 <para>
 

@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
 <link rel="prev" href="libgimp-gimpdrawable.html" title="gimpdrawable">
 <link rel="next" href="libgimp-gimpedit.html" title="gimpedit">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -23,24 +24,29 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimpdrawable.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpedit.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpdrawabletransform"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpdrawabletransform</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpdrawabletransform</span></h2>
 <p>gimpdrawabletransform &#8212; </p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -236,17 +242,17 @@ gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2589696"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2589706"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2589711"></a><h3>
+<a name="id2592683"></a><h3>
 <a name="gimp-drawable-transform-flip-simple"></a>gimp_drawable_transform_flip_simple ()</h3>
-<a class="indexterm" name="id2589722"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip_simple
+<a class="indexterm" name="id2592698"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip_simple
                                             (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type,
                                              gboolean auto_center,
@@ -315,9 +321,9 @@ created and flipped drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2589872"></a><h3>
+<a name="id2592847"></a><h3>
 <a name="gimp-drawable-transform-flip"></a>gimp_drawable_transform_flip ()</h3>
-<a class="indexterm" name="id2589882"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip    (gint32 drawable_ID,
+<a class="indexterm" name="id2592862"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip    (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
                                              gdouble x1,
@@ -384,7 +390,7 @@ transform.</p>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
-<td> Direction of Transformation.
+<td> Direction of transformation.
 </td>
 </tr>
 <tr>
@@ -425,9 +431,9 @@ transform.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2590130"></a><h3>
+<a name="id2593109"></a><h3>
 <a name="gimp-drawable-transform-flip-default"></a>gimp_drawable_transform_flip_default ()</h3>
-<a class="indexterm" name="id2590140"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip_default
+<a class="indexterm" name="id2593124"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip_default
                                             (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
@@ -504,9 +510,9 @@ uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2590333"></a><h3>
+<a name="id2593317"></a><h3>
 <a name="gimp-drawable-transform-perspective"></a>gimp_drawable_transform_perspective ()</h3>
-<a class="indexterm" name="id2590344"></a><pre class="programlisting">gint32      gimp_drawable_transform_perspective
+<a class="indexterm" name="id2593332"></a><pre class="programlisting">gint32      gimp_drawable_transform_perspective
                                             (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
@@ -608,7 +614,7 @@ to have been projected via a perspective transform.</p>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
-<td> Direction of Transformation.
+<td> Direction of transformation.
 </td>
 </tr>
 <tr>
@@ -649,9 +655,9 @@ to have been projected via a perspective transform.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2590683"></a><h3>
+<a name="id2593670"></a><h3>
 <a name="gimp-drawable-transform-perspective-default"></a>gimp_drawable_transform_perspective_default ()</h3>
-<a class="indexterm" name="id2590694"></a><pre class="programlisting">gint32      gimp_drawable_transform_perspective_default
+<a class="indexterm" name="id2593686"></a><pre class="programlisting">gint32      gimp_drawable_transform_perspective_default
                                             (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
@@ -757,9 +763,9 @@ which uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2590971"></a><h3>
+<a name="id2593962"></a><h3>
 <a name="gimp-drawable-transform-rotate-simple"></a>gimp_drawable_transform_rotate_simple ()</h3>
-<a class="indexterm" name="id2590981"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate_simple
+<a class="indexterm" name="id2593977"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate_simple
                                             (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpRotationType">GimpRotationType</a> rotate_type,
                                              gboolean auto_center,
@@ -834,9 +840,9 @@ this will be the newly created and rotated drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2591151"></a><h3>
+<a name="id2594146"></a><h3>
 <a name="gimp-drawable-transform-rotate"></a>gimp_drawable_transform_rotate ()</h3>
-<a class="indexterm" name="id2591161"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate  (gint32 drawable_ID,
+<a class="indexterm" name="id2594161"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate  (gint32 drawable_ID,
                                              gdouble angle,
                                              gboolean auto_center,
                                              gint center_x,
@@ -901,7 +907,7 @@ this will be the newly created and rotated drawable.</p>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
-<td> Direction of Transformation.
+<td> Direction of transformation.
 </td>
 </tr>
 <tr>
@@ -942,9 +948,9 @@ this will be the newly created and rotated drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2591408"></a><h3>
+<a name="id2594408"></a><h3>
 <a name="gimp-drawable-transform-rotate-default"></a>gimp_drawable_transform_rotate_default ()</h3>
-<a class="indexterm" name="id2591419"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate_default
+<a class="indexterm" name="id2594423"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate_default
                                             (gint32 drawable_ID,
                                              gdouble angle,
                                              gboolean auto_center,
@@ -1022,9 +1028,9 @@ which uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2591614"></a><h3>
+<a name="id2594617"></a><h3>
 <a name="gimp-drawable-transform-scale"></a>gimp_drawable_transform_scale ()</h3>
-<a class="indexterm" name="id2591624"></a><pre class="programlisting">gint32      gimp_drawable_transform_scale   (gint32 drawable_ID,
+<a class="indexterm" name="id2594632"></a><pre class="programlisting">gint32      gimp_drawable_transform_scale   (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
                                              gdouble x1,
@@ -1088,7 +1094,7 @@ this will be the newly created and scaled drawable.</p>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
-<td> Direction of Transformation.
+<td> Direction of transformation.
 </td>
 </tr>
 <tr>
@@ -1129,9 +1135,9 @@ this will be the newly created and scaled drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2591872"></a><h3>
+<a name="id2594880"></a><h3>
 <a name="gimp-drawable-transform-scale-default"></a>gimp_drawable_transform_scale_default ()</h3>
-<a class="indexterm" name="id2591883"></a><pre class="programlisting">gint32      gimp_drawable_transform_scale_default
+<a class="indexterm" name="id2594894"></a><pre class="programlisting">gint32      gimp_drawable_transform_scale_default
                                             (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
@@ -1208,9 +1214,9 @@ uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2592078"></a><h3>
+<a name="id2595089"></a><h3>
 <a name="gimp-drawable-transform-shear"></a>gimp_drawable_transform_shear ()</h3>
-<a class="indexterm" name="id2592088"></a><pre class="programlisting">gint32      gimp_drawable_transform_shear   (gint32 drawable_ID,
+<a class="indexterm" name="id2595104"></a><pre class="programlisting">gint32      gimp_drawable_transform_shear   (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> shear_type,
                                              gdouble magnitude,
                                              <a
@@ -1264,7 +1270,7 @@ indicates the extent (in pixels) to shear by.</p>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
-<td> Direction of Transformation.
+<td> Direction of transformation.
 </td>
 </tr>
 <tr>
@@ -1305,9 +1311,9 @@ indicates the extent (in pixels) to shear by.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2592298"></a><h3>
+<a name="id2595314"></a><h3>
 <a name="gimp-drawable-transform-shear-default"></a>gimp_drawable_transform_shear_default ()</h3>
-<a class="indexterm" name="id2592309"></a><pre class="programlisting">gint32      gimp_drawable_transform_shear_default
+<a class="indexterm" name="id2595328"></a><pre class="programlisting">gint32      gimp_drawable_transform_shear_default
                                             (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> shear_type,
                                              gdouble magnitude,
@@ -1371,9 +1377,9 @@ uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2592462"></a><h3>
+<a name="id2595482"></a><h3>
 <a name="gimp-drawable-transform-2d"></a>gimp_drawable_transform_2d ()</h3>
-<a class="indexterm" name="id2592471"></a><pre class="programlisting">gint32      gimp_drawable_transform_2d      (gint32 drawable_ID,
+<a class="indexterm" name="id2595495"></a><pre class="programlisting">gint32      gimp_drawable_transform_2d      (gint32 drawable_ID,
                                              gdouble source_x,
                                              gdouble source_y,
                                              gdouble scale_x,
@@ -1461,7 +1467,7 @@ Otherwise, this will be the newly created and transformed drawable.</p>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
-<td> Direction of Transformation.
+<td> Direction of transformation.
 </td>
 </tr>
 <tr>
@@ -1502,9 +1508,9 @@ Otherwise, this will be the newly created and transformed drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2592786"></a><h3>
+<a name="id2595819"></a><h3>
 <a name="gimp-drawable-transform-2d-default"></a>gimp_drawable_transform_2d_default ()</h3>
-<a class="indexterm" name="id2592798"></a><pre class="programlisting">gint32      gimp_drawable_transform_2d_default
+<a class="indexterm" name="id2595836"></a><pre class="programlisting">gint32      gimp_drawable_transform_2d_default
                                             (gint32 drawable_ID,
                                              gdouble source_x,
                                              gdouble source_y,
@@ -1602,9 +1608,9 @@ uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2593075"></a><h3>
+<a name="id2596113"></a><h3>
 <a name="gimp-drawable-transform-matrix"></a>gimp_drawable_transform_matrix ()</h3>
-<a class="indexterm" name="id2593086"></a><pre class="programlisting">gint32      gimp_drawable_transform_matrix  (gint32 drawable_ID,
+<a class="indexterm" name="id2596129"></a><pre class="programlisting">gint32      gimp_drawable_transform_matrix  (gint32 drawable_ID,
                                              gdouble coeff_0_0,
                                              gdouble coeff_0_1,
                                              gdouble coeff_0_2,
@@ -1704,7 +1710,7 @@ Otherwise, this will be the newly created and transformed drawable.</p>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
-<td> Direction of Transformation.
+<td> Direction of transformation.
 </td>
 </tr>
 <tr>
@@ -1745,9 +1751,9 @@ Otherwise, this will be the newly created and transformed drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2593471"></a><h3>
+<a name="id2596513"></a><h3>
 <a name="gimp-drawable-transform-matrix-default"></a>gimp_drawable_transform_matrix_default ()</h3>
-<a class="indexterm" name="id2593482"></a><pre class="programlisting">gint32      gimp_drawable_transform_matrix_default
+<a class="indexterm" name="id2596530"></a><pre class="programlisting">gint32      gimp_drawable_transform_matrix_default
                                             (gint32 drawable_ID,
                                              gdouble coeff_0_0,
                                              gdouble coeff_0_1,
@@ -1859,9 +1865,5 @@ which uses no interpolation/supersampling at all, or default values
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimp-gimpdrawable.html"><b>&lt;&lt;&#160;gimpdrawable</b></a></td>
-<td align="right"><a accesskey="n" href="libgimp-gimpedit.html"><b>gimpedit&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

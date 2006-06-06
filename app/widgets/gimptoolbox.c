@@ -121,7 +121,7 @@ static void        toolbox_paste_received        (GtkClipboard   *clipboard,
                                                   gpointer        data);
 
 
-G_DEFINE_TYPE (GimpToolbox, gimp_toolbox, GIMP_TYPE_IMAGE_DOCK);
+G_DEFINE_TYPE (GimpToolbox, gimp_toolbox, GIMP_TYPE_IMAGE_DOCK)
 
 #define parent_class gimp_toolbox_parent_class
 
@@ -145,19 +145,19 @@ gimp_toolbox_class_init (GimpToolboxClass *klass)
 
   image_dock_class->ui_manager_name = "<Toolbox>";
 
-  gtk_widget_class_install_style_property
-    (widget_class, g_param_spec_enum ("tool-icon-size",
-                                      NULL, NULL,
-                                      GTK_TYPE_ICON_SIZE,
-                                      DEFAULT_TOOL_ICON_SIZE,
-                                      GIMP_PARAM_READABLE));
+  gtk_widget_class_install_style_property (widget_class,
+                                           g_param_spec_enum ("tool-icon-size",
+                                                              NULL, NULL,
+                                                              GTK_TYPE_ICON_SIZE,
+                                                              DEFAULT_TOOL_ICON_SIZE,
+                                                              GIMP_PARAM_READABLE));
 
-  gtk_widget_class_install_style_property
-    (widget_class, g_param_spec_enum ("button-relief",
-                                      NULL, NULL,
-                                      GTK_TYPE_RELIEF_STYLE,
-                                      DEFAULT_BUTTON_RELIEF,
-                                      GIMP_PARAM_READABLE));
+  gtk_widget_class_install_style_property (widget_class,
+                                           g_param_spec_enum ("button-relief",
+                                                              NULL, NULL,
+                                                              GTK_TYPE_RELIEF_STYLE,
+                                                              DEFAULT_BUTTON_RELIEF,
+                                                              GIMP_PARAM_READABLE));
 }
 
 static void
@@ -237,10 +237,8 @@ gimp_toolbox_constructor (GType                  type,
    */
   display = gtk_widget_get_display (GTK_WIDGET (toolbox));
   for (list = gdk_display_list_devices (display); list; list = list->next)
-    {
-      if (! ((GdkDevice *) (list->data))->has_cursor)
-        break;
-    }
+    if (! ((GdkDevice *) (list->data))->has_cursor)
+      break;
 
   if (! list)  /* all devices have cursor */
     {
@@ -306,6 +304,9 @@ gimp_toolbox_delete_event (GtkWidget   *widget,
 {
   GtkAction *action;
 
+  /* activate the action instead of simply calling gimp_exit(), so the
+   * quit action's senistivity is taken into account
+   */
   action = gimp_ui_manager_find_action (GIMP_IMAGE_DOCK (widget)->ui_manager,
                                         "file", "file-quit");
   if (action)
@@ -336,7 +337,7 @@ gimp_toolbox_size_allocate (GtkWidget     *widget,
 
   tool_info = (GimpToolInfo *)
     gimp_container_get_child_by_name (gimp->tool_info_list,
-                                      "gimp-rect-select-tool");
+                                      "gimp-new-rect-select-tool");
   tool_button = g_object_get_data (G_OBJECT (tool_info), TOOL_BUTTON_DATA_KEY);
 
   if (tool_button)
@@ -502,7 +503,7 @@ gimp_toolbox_set_geometry (GimpToolbox *toolbox)
 
   tool_info = (GimpToolInfo *)
     gimp_container_get_child_by_name (gimp->tool_info_list,
-                                      "gimp-rect-select-tool");
+                                      "gimp-new-rect-select-tool");
   tool_button = g_object_get_data (G_OBJECT (tool_info), TOOL_BUTTON_DATA_KEY);
 
   if (tool_button)
@@ -605,12 +606,10 @@ toolbox_create_tools (GimpToolbox *toolbox,
        list;
        list = g_list_next (list))
     {
-      GimpToolInfo *tool_info;
+      GimpToolInfo *tool_info = list->data;
       GtkWidget    *button;
       GtkWidget    *image;
       const gchar  *stock_id;
-
-      tool_info = (GimpToolInfo *) list->data;
 
       button = gtk_radio_button_new (group);
       group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));

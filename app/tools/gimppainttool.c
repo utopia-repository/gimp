@@ -101,12 +101,9 @@ static void   gimp_paint_tool_cursor_update  (GimpTool            *tool,
 
 static void   gimp_paint_tool_draw           (GimpDrawTool        *draw_tool);
 
-static void   gimp_paint_tool_color_picked   (GimpColorTool       *color_tool,
-                                              GimpColorPickState   pick_state,
-                                              GimpImageType        sample_type,
-                                              GimpRGB             *color,
-                                              gint                 color_index);
-
+static void   gimp_paint_tool_brush_changed  (GimpContext         *context,
+                                              GimpBrush           *brush,
+                                              GimpPaintTool       *paint_tool);
 static void   gimp_paint_tool_set_brush      (GimpBrushCore       *brush_core,
                                               GimpBrush           *brush,
                                               GimpPaintTool       *paint_tool);
@@ -118,7 +115,7 @@ static void   gimp_paint_tool_notify_brush   (GimpDisplayConfig   *config,
                                               GimpPaintTool       *paint_tool);
 
 
-G_DEFINE_TYPE (GimpPaintTool, gimp_paint_tool, GIMP_TYPE_COLOR_TOOL);
+G_DEFINE_TYPE (GimpPaintTool, gimp_paint_tool, GIMP_TYPE_COLOR_TOOL)
 
 #define parent_class gimp_paint_tool_parent_class
 
@@ -126,10 +123,9 @@ G_DEFINE_TYPE (GimpPaintTool, gimp_paint_tool, GIMP_TYPE_COLOR_TOOL);
 static void
 gimp_paint_tool_class_init (GimpPaintToolClass *klass)
 {
-  GObjectClass       *object_class     = G_OBJECT_CLASS (klass);
-  GimpToolClass      *tool_class       = GIMP_TOOL_CLASS (klass);
-  GimpDrawToolClass  *draw_tool_class  = GIMP_DRAW_TOOL_CLASS (klass);
-  GimpColorToolClass *color_tool_class = GIMP_COLOR_TOOL_CLASS (klass);
+  GObjectClass      *object_class    = G_OBJECT_CLASS (klass);
+  GimpToolClass     *tool_class      = GIMP_TOOL_CLASS (klass);
+  GimpDrawToolClass *draw_tool_class = GIMP_DRAW_TOOL_CLASS (klass);
 
   object_class->constructor  = gimp_paint_tool_constructor;
   object_class->finalize     = gimp_paint_tool_finalize;
@@ -143,8 +139,6 @@ gimp_paint_tool_class_init (GimpPaintToolClass *klass)
   tool_class->cursor_update  = gimp_paint_tool_cursor_update;
 
   draw_tool_class->draw      = gimp_paint_tool_draw;
-
-  color_tool_class->picked   = gimp_paint_tool_color_picked;
 }
 
 static void
@@ -211,9 +205,13 @@ gimp_paint_tool_constructor (GType                  type,
 
   if (GIMP_IS_BRUSH_CORE (paint_tool->core))
     {
-      g_signal_connect       (paint_tool->core, "set-brush",
-                              G_CALLBACK (gimp_paint_tool_set_brush),
-                              paint_tool);
+      g_signal_connect_object (tool->tool_info->tool_options, "brush-changed",
+                               G_CALLBACK (gimp_paint_tool_brush_changed),
+                               paint_tool, 0);
+
+      g_signal_connect (paint_tool->core, "set-brush",
+                        G_CALLBACK (gimp_paint_tool_set_brush),
+                        paint_tool);
       g_signal_connect_after (paint_tool->core, "set-brush",
                               G_CALLBACK (gimp_paint_tool_set_brush_after),
                               paint_tool);
@@ -269,38 +267,16 @@ gimp_paint_tool_control (GimpTool       *tool,
 
   switch (action)
     {
-    case HALT:
+    case GIMP_TOOL_ACTION_PAUSE:
+    case GIMP_TOOL_ACTION_RESUME:
+      break;
+
+    case GIMP_TOOL_ACTION_HALT:
       gimp_paint_core_paint (paint_tool->core,
                              drawable,
                              GIMP_PAINT_OPTIONS (tool->tool_info->tool_options),
                              GIMP_PAINT_STATE_FINISH, 0);
       gimp_paint_core_cleanup (paint_tool->core);
-
-#if 0
-      /*  evil hack i'm thinking about...  --mitch  */
-      {
-        /*  HALT means the current display is going to go away (TM),
-         *  so try to find another display of the same image to make
-         *  straight line drawing continue to work...
-         */
-
-        GSList *list;
-
-        for (list = display_list; list; list = g_slist_next (list))
-          {
-            GimpDisplay *tmp_disp = list->data;
-
-            if (tmp_disp != display && tmp_disp->image == display->image)
-              {
-                tool->display = tmp_disp;
-                break;
-              }
-          }
-      }
-#endif
-      break;
-
-    default:
       break;
     }
 
@@ -842,32 +818,14 @@ gimp_paint_tool_cursor_update (GimpTool        *tool,
 }
 
 static void
-gimp_paint_tool_color_picked (GimpColorTool      *color_tool,
-                              GimpColorPickState  pick_state,
-                              GimpImageType       sample_type,
-                              GimpRGB            *color,
-                              gint                color_index)
+gimp_paint_tool_brush_changed (GimpContext   *context,
+                               GimpBrush     *brush,
+                               GimpPaintTool *paint_tool)
 {
-  GimpTool *tool = GIMP_TOOL (color_tool);
+  GimpBrushCore *brush_core = GIMP_BRUSH_CORE (paint_tool->core);
 
-  if (tool->display)
-    {
-      GimpContext *context = gimp_get_user_context (tool->display->image->gimp);
-
-      switch (color_tool->pick_mode)
-        {
-        case GIMP_COLOR_PICK_MODE_FOREGROUND:
-          gimp_context_set_foreground (context, color);
-          break;
-
-        case GIMP_COLOR_PICK_MODE_BACKGROUND:
-          gimp_context_set_background (context, color);
-          break;
-
-        default:
-          break;
-        }
-    }
+  if (brush_core->main_brush != brush)
+    gimp_brush_core_set_brush (brush_core, brush);
 }
 
 static void

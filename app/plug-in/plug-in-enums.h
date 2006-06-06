@@ -20,15 +20,23 @@
 #define __PLUG_IN_ENUMS_H__
 
 
-typedef enum /*< pdb-skip >*/ /*< skip >*/
+typedef enum /*< pdb-skip >*/
 {
-  PLUG_IN_RGB_IMAGE      = 1 << 0,
-  PLUG_IN_GRAY_IMAGE     = 1 << 1,
-  PLUG_IN_INDEXED_IMAGE  = 1 << 2,
-  PLUG_IN_RGBA_IMAGE     = 1 << 3,
-  PLUG_IN_GRAYA_IMAGE    = 1 << 4,
-  PLUG_IN_INDEXEDA_IMAGE = 1 << 5
-} PlugInImageType;
+  GIMP_PLUG_IN_RGB_IMAGE      = 1 << 0,
+  GIMP_PLUG_IN_GRAY_IMAGE     = 1 << 1,
+  GIMP_PLUG_IN_INDEXED_IMAGE  = 1 << 2,
+  GIMP_PLUG_IN_RGBA_IMAGE     = 1 << 3,
+  GIMP_PLUG_IN_GRAYA_IMAGE    = 1 << 4,
+  GIMP_PLUG_IN_INDEXEDA_IMAGE = 1 << 5
+} GimpPlugInImageType;
+
+typedef enum /*< pdb-skip >*/
+{
+  GIMP_PLUG_IN_CALL_NONE,
+  GIMP_PLUG_IN_CALL_RUN,
+  GIMP_PLUG_IN_CALL_QUERY,
+  GIMP_PLUG_IN_CALL_INIT
+} GimpPlugInCallMode;
 
 
 #endif /* __PLUG_IN_ENUMS_H__ */

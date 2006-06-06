@@ -1,5 +1,5 @@
 /*
- * "$Id: png.c,v 1.132 2005/10/24 15:09:49 neo Exp $"
+ * "$Id: png.c,v 1.137 2006/06/05 03:40:15 sjburges Exp $"
  *
  *   Portable Network Graphics (PNG) plug-in for The GIMP -- an image
  *   manipulation program
@@ -70,9 +70,6 @@
 #define SCALE_WIDTH            125
 
 #define DEFAULT_GAMMA          2.20
-
-#define RESPONSE_LOAD_DEFAULTS 1
-#define RESPONSE_SAVE_DEFAULTS 2
 
 #define PNG_DEFAULTS_PARASITE  "png-save-defaults"
 
@@ -157,7 +154,7 @@ static void      load_gui_defaults         (PngSaveGui       *pg);
  * Globals...
  */
 
-GimpPlugInInfo PLUG_IN_INFO =
+const GimpPlugInInfo PLUG_IN_INFO =
 {
   NULL,
   NULL,
@@ -192,13 +189,13 @@ MAIN ()
 static void
 query (void)
 {
-  static GimpParamDef load_args[] =
+  static const GimpParamDef load_args[] =
   {
     { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name of the file to load" }
   };
-  static GimpParamDef load_return_vals[] =
+  static const GimpParamDef load_return_vals[] =
   {
     { GIMP_PDB_IMAGE, "image", "Output image" }
   };
@@ -224,29 +221,29 @@ query (void)
     { GIMP_PDB_INT32, "comment", "Write comment?"                        }, \
     { GIMP_PDB_INT32, "svtrans", "Preserve color of transparent pixels?" }
 
-  static GimpParamDef save_args[] =
+  static const GimpParamDef save_args[] =
   {
     COMMON_SAVE_ARGS,
     OLD_CONFIG_ARGS
   };
 
-  static GimpParamDef save_args2[] =
+  static const GimpParamDef save_args2[] =
   {
     COMMON_SAVE_ARGS,
     FULL_CONFIG_ARGS
   };
 
-  static GimpParamDef save_args_defaults[] =
+  static const GimpParamDef save_args_defaults[] =
   {
     COMMON_SAVE_ARGS
   };
 
-  static GimpParamDef save_get_defaults_return_vals[] =
+  static const GimpParamDef save_get_defaults_return_vals[] =
   {
     FULL_CONFIG_ARGS
   };
 
-  static GimpParamDef save_args_set_defaults[] =
+  static const GimpParamDef save_args_set_defaults[] =
   {
     FULL_CONFIG_ARGS
   };
@@ -548,7 +545,7 @@ run (const gchar      *name,
     {
       load_defaults ();
 
-      *nreturn_vals = 9;
+      *nreturn_vals = 10;
 
 #define SET_VALUE(index, field)        G_STMT_START { \
  values[(index)].type = GIMP_PDB_INT32;        \
@@ -567,19 +564,19 @@ run (const gchar      *name,
 
 #undef SET_VALUE
     }
-  else if (strcmp (name, GET_DEFAULTS_PROC) == 0)
+  else if (strcmp (name, SET_DEFAULTS_PROC) == 0)
     {
-      if (nparams == 10)
+      if (nparams == 9)
         {
-          pngvals.interlaced          = param[1].data.d_int32;
-          pngvals.compression_level   = param[2].data.d_int32;
-          pngvals.bkgd                = param[3].data.d_int32;
-          pngvals.gama                = param[4].data.d_int32;
-          pngvals.offs                = param[5].data.d_int32;
-          pngvals.phys                = param[6].data.d_int32;
-          pngvals.time                = param[7].data.d_int32;
-          pngvals.comment             = param[8].data.d_int32;
-          pngvals.save_transp_pixels  = param[9].data.d_int32;
+          pngvals.interlaced          = param[0].data.d_int32;
+          pngvals.compression_level   = param[1].data.d_int32;
+          pngvals.bkgd                = param[2].data.d_int32;
+          pngvals.gama                = param[3].data.d_int32;
+          pngvals.offs                = param[4].data.d_int32;
+          pngvals.phys                = param[5].data.d_int32;
+          pngvals.time                = param[6].data.d_int32;
+          pngvals.comment             = param[7].data.d_int32;
+          pngvals.save_transp_pixels  = param[8].data.d_int32;
 
           save_defaults ();
         }
@@ -683,20 +680,8 @@ load_image (const gchar *filename,
   png_textp  text;
   gint       num_texts;
 
-  /*
-   * PNG 0.89 and newer have a sane, forwards compatible constructor.
-   * Some SGI IRIX users will not have a new enough version though
-   */
-
-#if PNG_LIBPNG_VER > 88
   pp = png_create_read_struct (PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
   info = png_create_info_struct (pp);
-#else
-  pp = (png_structp) calloc (sizeof (png_struct), 1);
-  png_read_init (pp);
-
-  info = (png_infop) calloc (sizeof (png_info), 1);
-#endif /* PNG_LIBPNG_VER > 88 */
 
   if (setjmp (pp->jmpbuf))
     {
@@ -773,7 +758,6 @@ load_image (const gchar *filename,
    * Special handling for INDEXED + tRNS (transparency palette)
    */
 
-#if PNG_LIBPNG_VER > 99
   if (png_get_valid (pp, info, PNG_INFO_tRNS) &&
       info->color_type == PNG_COLOR_TYPE_PALETTE)
     {
@@ -790,9 +774,6 @@ load_image (const gchar *filename,
     {
       trns = 0;
     }
-#else
-  trns = 0;
-#endif /* PNG_LIBPNG_VER > 99 */
 
   /*
    * Update the info structures after the transformations take effect
@@ -859,7 +840,6 @@ load_image (const gchar *filename,
    * due to a bug in libpng-1.0.6, see png-implement for details
    */
 
-#if PNG_LIBPNG_VER > 99
   if (png_get_valid (pp, info, PNG_INFO_gAMA))
     {
       GimpParasite *parasite;
@@ -929,7 +909,6 @@ load_image (const gchar *filename,
         }
 
     }
-#endif /* PNG_LIBPNG_VER > 99 */
 
   gimp_image_set_filename (image, filename);
 
@@ -942,7 +921,6 @@ load_image (const gchar *filename,
   if (info->color_type & PNG_COLOR_MASK_PALETTE)
     {
 
-#if PNG_LIBPNG_VER > 99
       if (png_get_valid (pp, info, PNG_INFO_tRNS))
         {
           for (empty = 0; empty < 256 && alpha[empty] == 0; ++empty)
@@ -959,11 +937,6 @@ load_image (const gchar *filename,
           gimp_image_set_colormap (image, (guchar *) info->palette,
                                    info->num_palette);
         }
-#else
-      gimp_image_set_colormap (image, (guchar *) info->palette,
-                               info->num_palette);
-#endif /* PNG_LIBPNG_VER > 99 */
-
     }
 
   /*
@@ -1095,7 +1068,7 @@ load_image (const gchar *filename,
    * Done with the file...
    */
 
-  png_read_destroy (pp, info, NULL);
+  png_destroy_read_struct (&pp, &info, NULL);
 
   g_free (pixel);
   g_free (pixels);
@@ -1225,20 +1198,8 @@ save_image (const gchar *filename,
         }
     }
 
-  /*
-   * PNG 0.89 and newer have a sane, forwards compatible constructor.
-   * Some SGI IRIX users will not have a new enough version though
-   */
-
-#if PNG_LIBPNG_VER > 88
   pp = png_create_write_struct (PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
   info = png_create_info_struct (pp);
-#else
-  pp = (png_structp) calloc (sizeof (png_struct), 1);
-  png_write_init (pp);
-
-  info = (png_infop) calloc (sizeof (png_info), 1);
-#endif /* PNG_LIBPNG_VER > 88 */
 
   if (setjmp (pp->jmpbuf))
     {
@@ -1356,7 +1317,6 @@ save_image (const gchar *filename,
   /* All this stuff is optional extras, if the user is aiming for smallest
      possible file size she can turn them all off */
 
-#if PNG_LIBPNG_VER > 99
   if (pngvals.bkgd)
     {
       GimpRGB color;
@@ -1421,8 +1381,6 @@ save_image (const gchar *filename,
       mod_time.second = gmt->tm_sec;
       png_set_tIME (pp, info, &mod_time);
     }
-
-#endif /* PNG_LIBPNG_VER > 99 */
 
 #if defined(PNG_iCCP_SUPPORTED)
   {
@@ -1519,13 +1477,18 @@ save_image (const gchar *filename,
            * transparency set, write out the remapped palette */
           if (info->valid & PNG_INFO_tRNS)
             {
+              guchar inverse_remap[256];
+
+              for (i = 0; i < 256; i++)
+                inverse_remap[ remap[i] ] = i;
+
               for (i = 0; i < num; ++i)
                 {
                   fixed = pixels[i];
                   for (k = 0; k < drawable->width; ++k)
                     {
                       fixed[k] = (fixed[k*2+1] > 127) ?
-                                 remap[fixed[k*2]] :
+                                 inverse_remap[ fixed[k*2] ] :
                                  0;
                     }
                 }
@@ -1553,7 +1516,7 @@ save_image (const gchar *filename,
     }
 
   png_write_end (pp, info);
-  png_write_destroy (pp);
+  png_destroy_write_struct (&pp, &info);
 
   g_free (pixel);
   g_free (pixels);
@@ -1618,8 +1581,6 @@ respin_cmap (png_structp   pp,
       colors = 1;
     }
 
-#if PNG_LIBPNG_VER > 99
-
   cols      = drawable->width;
   rows      = drawable->height;
   numpixels = cols * rows;
@@ -1654,7 +1615,8 @@ respin_cmap (png_structp   pp,
            * due to png_set_tRNS() */
 
           remap[0] = transparent;
-          remap[transparent] = 0;
+          for (i = 1; i <= transparent; i++)
+            remap[i] = i - 1;
 
           /* Copy from index 0 to index transparent - 1 to index 1 to
            * transparent of after, then from transparent+1 to colors-1
@@ -1684,12 +1646,6 @@ respin_cmap (png_structp   pp,
     }
 
   g_free (pixels);
-
-#else
-  info->valid |= PNG_INFO_PLTE;
-  info->palette = (png_colorp) before;
-  info->num_palette = colors;
-#endif /* PNG_LIBPNG_VER > 99 */
 }
 
 static gboolean
@@ -1701,22 +1657,20 @@ save_dialog (gint32    image_ID,
   GtkWidget    *table;
   GtkWidget    *toggle;
   GtkObject    *scale;
+  GtkWidget    *hbox;
+  GtkWidget    *button;
   GimpParasite *parasite;
 
   dialog = gimp_dialog_new (_("Save as PNG"), PLUG_IN_BINARY,
                             NULL, 0,
                             gimp_standard_help_func, SAVE_PROC,
 
-                            _("_Load defaults"), RESPONSE_LOAD_DEFAULTS,
-                            _("_Save defaults"), RESPONSE_SAVE_DEFAULTS,
-                            GTK_STOCK_CANCEL,    GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_SAVE,      GTK_RESPONSE_OK,
+                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
 
                             NULL);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           RESPONSE_LOAD_DEFAULTS,
-                                           RESPONSE_SAVE_DEFAULTS,
                                            GTK_RESPONSE_OK,
                                            GTK_RESPONSE_CANCEL,
                                            -1);
@@ -1730,7 +1684,7 @@ save_dialog (gint32    image_ID,
                     G_CALLBACK (gtk_main_quit),
                     NULL);
 
-  table = gtk_table_new (9, 3, FALSE);
+  table = gtk_table_new (10, 3, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
@@ -1763,7 +1717,8 @@ save_dialog (gint32    image_ID,
   gtk_widget_show (toggle);
 
   g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update), &pngvals.gama);
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &pngvals.gama);
 
   pg.offs = toggle =
     gtk_check_button_new_with_mnemonic (_("Save layer o_ffset"));
@@ -1781,7 +1736,8 @@ save_dialog (gint32    image_ID,
   gtk_widget_show (toggle);
 
   g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update), &pngvals.phys);
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &pngvals.phys);
 
   pg.time = toggle =
     gtk_check_button_new_with_mnemonic (_("Save creation _time"));
@@ -1790,7 +1746,8 @@ save_dialog (gint32    image_ID,
   gtk_widget_show (toggle);
 
   g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update), &pngvals.time);
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &pngvals.time);
 
   pg.comment = toggle = gtk_check_button_new_with_mnemonic (_("Save comme_nt"));
   gtk_table_attach (GTK_TABLE (table), toggle, 0, 3, 6, 7, GTK_FILL, 0, 0, 0);
@@ -1804,10 +1761,12 @@ save_dialog (gint32    image_ID,
   gimp_parasite_free (parasite);
 
   g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update), &pngvals.comment);
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &pngvals.comment);
 
   pg.save_transp_pixels = toggle =
-    gtk_check_button_new_with_mnemonic (_("Save color _values from transparent pixels"));
+    gtk_check_button_new_with_mnemonic (_("Save color _values from "
+                                          "transparent pixels"));
   gtk_table_attach (GTK_TABLE (table), toggle, 0, 3, 7, 8, GTK_FILL, 0, 0, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
                                 alpha && pngvals.save_transp_pixels);
@@ -1831,6 +1790,29 @@ save_dialog (gint32    image_ID,
                     G_CALLBACK (gimp_int_adjustment_update),
                     &pngvals.compression_level);
 
+  hbox = gtk_hbutton_box_new ();
+  gtk_box_set_spacing (GTK_BOX (hbox), 6);
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_START);
+  gtk_table_attach (GTK_TABLE (table), hbox, 0, 3, 9, 10,
+                    GTK_FILL | GTK_EXPAND, 0, 0, 0);
+  gtk_widget_show (hbox);
+
+  button = gtk_button_new_with_mnemonic (_("_Load Defaults"));
+  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+  gtk_widget_show (button);
+
+  g_signal_connect_swapped (button, "clicked",
+                            G_CALLBACK (load_gui_defaults),
+                            &pg);
+
+  button = gtk_button_new_with_mnemonic (_("S_ave Defaults"));
+  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+  gtk_widget_show (button);
+
+  g_signal_connect_swapped (button, "clicked",
+                            G_CALLBACK (save_defaults),
+                            &pg);
+
   gtk_widget_show (dialog);
 
   pg.run = FALSE;
@@ -1849,14 +1831,6 @@ save_dialog_response (GtkWidget *widget,
 
   switch (response_id)
     {
-    case RESPONSE_LOAD_DEFAULTS:
-      load_gui_defaults (pg);
-      break;
-
-    case RESPONSE_SAVE_DEFAULTS:
-      save_defaults ();
-      break;
-
     case GTK_RESPONSE_OK:
       pg->run = TRUE;
 

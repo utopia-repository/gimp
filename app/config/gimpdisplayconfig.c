@@ -23,7 +23,6 @@
 
 #include <glib-object.h>
 
-#include "libgimpcolor/gimpcolor.h"
 #include "libgimpbase/gimpbase.h"
 #include "libgimpconfig/gimpconfig.h"
 
@@ -88,7 +87,7 @@ static void  gimp_display_config_fullscreen_notify (GObject      *object,
                                                     gpointer      data);
 
 
-G_DEFINE_TYPE (GimpDisplayConfig, gimp_display_config, GIMP_TYPE_CORE_CONFIG);
+G_DEFINE_TYPE (GimpDisplayConfig, gimp_display_config, GIMP_TYPE_CORE_CONFIG)
 
 #define parent_class gimp_display_config_parent_class
 
@@ -97,15 +96,10 @@ static void
 gimp_display_config_class_init (GimpDisplayConfigClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GimpRGB       white;
-  GimpRGB       black;
 
   object_class->finalize     = gimp_display_config_finalize;
   object_class->set_property = gimp_display_config_set_property;
   object_class->get_property = gimp_display_config_get_property;
-
-  gimp_rgba_set (&white, 1.0, 1.0, 1.0, 1.0);
-  gimp_rgba_set (&black, 0.0, 0.0, 0.0, 1.0);
 
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_TRANSPARENCY_SIZE,
                                  "transparency-size", TRANSPARENCY_SIZE_BLURB,

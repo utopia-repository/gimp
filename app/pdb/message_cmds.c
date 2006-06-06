@@ -25,14 +25,15 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "gimp-pdb.h"
+#include "gimppdb.h"
 #include "gimpprocedure.h"
 #include "core/gimpparamspecs.h"
 
 #include "core/gimp.h"
 #include "gimp-intl.h"
-#include "plug-in/plug-in-progress.h"
-#include "plug-in/plug-in.h"
+#include "plug-in/gimpplugin-progress.h"
+#include "plug-in/gimpplugin.h"
+#include "plug-in/gimppluginmanager.h"
 
 
 static GValueArray *
@@ -49,8 +50,9 @@ message_invoker (GimpProcedure     *procedure,
 
   if (success)
     {
-      if (gimp->current_plug_in)
-        plug_in_progress_message (gimp->current_plug_in, message);
+      if (gimp->plug_in_manager->current_plug_in)
+        gimp_plug_in_progress_message (gimp->plug_in_manager->current_plug_in,
+                                       message);
       else
         gimp_message (gimp, NULL, message);
     }
@@ -97,7 +99,7 @@ message_set_handler_invoker (GimpProcedure     *procedure,
 }
 
 void
-register_message_procs (Gimp *gimp)
+register_message_procs (GimpPDB *pdb)
 {
   GimpProcedure *procedure;
 
@@ -114,7 +116,6 @@ register_message_procs (Gimp *gimp)
                                      "Manish Singh",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("message",
                                                        "message",
@@ -122,7 +123,7 @@ register_message_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -138,15 +139,14 @@ register_message_procs (Gimp *gimp)
                                      "Manish Singh",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_enum ("handler",
                                                       "handler",
-                                                      "The current handler type: { GIMP_MESSAGE_BOX (0), GIMP_CONSOLE (1), GIMP_ERROR_CONSOLE (2) }",
+                                                      "The current handler type",
                                                       GIMP_TYPE_MESSAGE_HANDLER_TYPE,
                                                       GIMP_MESSAGE_BOX,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -162,15 +162,13 @@ register_message_procs (Gimp *gimp)
                                      "Manish Singh",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("handler",
                                                   "handler",
-                                                  "The new handler type: { GIMP_MESSAGE_BOX (0), GIMP_CONSOLE (1), GIMP_ERROR_CONSOLE (2) }",
+                                                  "The new handler type",
                                                   GIMP_TYPE_MESSAGE_HANDLER_TYPE,
                                                   GIMP_MESSAGE_BOX,
                                                   GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
-
 }

@@ -335,8 +335,8 @@ gimp_composite_init (gboolean  be_verbose,
       gimp_composite_options.bits = strtoul(p, NULL, 16);
     }
 
-  if (!use_cpu_accel)
-    gimp_composite_options.bits |=  GIMP_COMPOSITE_OPTION_NOEXTENSIONS;
+  if (! use_cpu_accel)
+    gimp_composite_options.bits |= GIMP_COMPOSITE_OPTION_NOEXTENSIONS;
 
   if (be_verbose)
     g_printerr ("gimp_composite: use=%s, verbose=%s\n",
@@ -383,4 +383,10 @@ gimp_composite_init (gboolean  be_verbose,
                     can_use_altivec ? '+' : '-',
                     can_use_vis     ? '+' : '-');
     }
+}
+
+gboolean
+gimp_composite_use_cpu_accel (void)
+{
+  return ! (gimp_composite_options.bits & GIMP_COMPOSITE_OPTION_NOEXTENSIONS);
 }

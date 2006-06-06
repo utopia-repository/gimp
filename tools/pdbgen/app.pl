@@ -98,31 +98,6 @@ sub declare_args {
     $result;
 }
 
-sub make_desc {
-    my $arg = shift;
-    my ($type, $name, @remove) = &arg_parse($arg->{type});
-    my $desc = $arg->{desc};
-    my $info = $arg->{type};
-
-    for ($type) {
-	/array/     && do { 				     last };
-	/boolean/   && do { $info = '(TRUE or FALSE)';	     last };
-	/int|float/ && do { $info =~ s/$type/$arg->{name}/e;
-			    $info = '('. $info . ')';        last };
-	/enum/      && do { my $enum = $enums{$name};
-			    $info = '{ ' . $enum->{info};
-			    foreach (@remove) {
-				$info =~ s/$_ \(.*?\)(, )?//
-			    }				 
-			    $info =~ s/, $//;
-			    $info .= ' }';                   last };
-    }
-
-    $desc =~ s/%%desc%%/$info/eg;
-
-    $desc;
-}
-
 sub marshal_inargs {
     my ($proc, $argc) = @_;
 
@@ -212,7 +187,7 @@ sub generate_pspec {
     my ($pdbtype, @typeinfo) = &arg_parse($arg->{type});
     my $name = $arg->{canonical_name};
     my $nick = $arg->{canonical_name};
-    my $blurb = &make_desc($arg);
+    my $blurb = exists $arg->{desc} ? $arg->{desc} : "";
     my $min;
     my $max;
     my $default;
@@ -227,74 +202,82 @@ sub generate_pspec {
     }
 
     if ($pdbtype eq 'image') {
+	$none_ok = exists $arg->{none_ok} ? 'TRUE' : 'FALSE';
 	$pspec = <<CODE;
 gimp_param_spec_image_id ("$name",
                           "$nick",
                           "$blurb",
-                          gimp,
+                          pdb->gimp, $none_ok,
                           GIMP_PARAM_READWRITE)
 CODE
     }
     elsif ($pdbtype eq 'drawable') {
+	$none_ok = exists $arg->{none_ok} ? 'TRUE' : 'FALSE';
 	$pspec = <<CODE;
 gimp_param_spec_drawable_id ("$name",
                              "$nick",
                              "$blurb",
-                             gimp,
+                             pdb->gimp, $none_ok,
                              $flags)
 CODE
     }
     elsif ($pdbtype eq 'layer') {
+	$none_ok = exists $arg->{none_ok} ? 'TRUE' : 'FALSE';
 	$pspec = <<CODE;
 gimp_param_spec_layer_id ("$name",
                           "$nick",
                           "$blurb",
-                          gimp,
+                          pdb->gimp, $none_ok,
                           $flags)
 CODE
     }
     elsif ($pdbtype eq 'channel') {
+	$none_ok = exists $arg->{none_ok} ? 'TRUE' : 'FALSE';
 	$pspec = <<CODE;
 gimp_param_spec_channel_id ("$name",
                             "$nick",
                             "$blurb",
-                            gimp,
+                            pdb->gimp, $none_ok,
                             $flags)
 CODE
     }
     elsif ($pdbtype eq 'layer_mask') {
+	$none_ok = exists $arg->{none_ok} ? 'TRUE' : 'FALSE';
 	$pspec = <<CODE;
 gimp_param_spec_layer_mask_id ("$name",
                                "$nick",
                                "$blurb",
-                               gimp,
+                               pdb->gimp, $none_ok,
                                $flags)
 CODE
     }
     elsif ($pdbtype eq 'selection') {
+	$none_ok = exists $arg->{none_ok} ? 'TRUE' : 'FALSE';
 	$pspec = <<CODE;
 gimp_param_spec_selection_id ("$name",
                               "$nick",
                               "$blurb",
-                              gimp,
+                              pdb->gimp, $none_ok,
                               $flags)
 CODE
     }
     elsif ($pdbtype eq 'vectors') {
+	$none_ok = exists $arg->{none_ok} ? 'TRUE' : 'FALSE';
 	$pspec = <<CODE;
 gimp_param_spec_vectors_id ("$name",
                             "$nick",
                             "$blurb",
-                            gimp,
+                            pdb->gimp, $none_ok,
                             $flags)
 CODE
     }
     elsif ($pdbtype eq 'display') {
+	$none_ok = exists $arg->{none_ok} ? 'TRUE' : 'FALSE';
 	$pspec = <<CODE;
 gimp_param_spec_display_id ("$name",
                             "$nick",
                             "$blurb",
-                            gimp,
+                            pdb->gimp, $none_ok,
                             $flags)
 CODE
     }
@@ -439,11 +422,13 @@ gimp_param_spec_unit ("$name",
 CODE
     }
     elsif ($pdbtype eq 'color') {
+	$has_alpha = exists $arg->{has_alpha} ? TRUE : FALSE;
 	$default = exists $arg->{default} ? $arg->{default} : NULL;
 	$pspec = <<CODE;
 gimp_param_spec_rgb ("$name",
                      "$nick",
                      "$blurb",
+                     $has_alpha,
                      $default,
                      $flags)
 CODE
@@ -506,6 +491,10 @@ CODE
     return ($pspec, $postproc);
 }
 
+sub canonicalize {
+    $_ = shift; s/_/-/g; return $_;
+}
+
 sub generate {
     my @procs = @{(shift)};
     my %out;
@@ -518,12 +507,17 @@ sub generate {
 
 	my @inargs = @{$proc->{inargs}} if exists $proc->{inargs};
 	my @outargs = @{$proc->{outargs}} if exists $proc->{outargs};
-	
+
+	my $help = $proc->{help};
+
 	local $success = 0;
+
+	$help =~ s/gimp(\w+)\(\s*\)/"'gimp".canonicalize($1)."'"/ge;
 
 	$out->{pcount}++; $total++;
 
 	$out->{register} .= <<CODE;
+
   /*
    * gimp-$proc->{canonical_name}
    */
@@ -532,12 +526,11 @@ sub generate {
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-$proc->{canonical_name}",
                                      @{[ &quotewrap($proc->{blurb}, 2) ]},
-                                     @{[ &quotewrap($proc->{help},  2) ]},
+                                     @{[ &quotewrap($help,  2) ]},
                                      "$proc->{author}",
                                      "$proc->{copyright}",
                                      "$proc->{date}",
                                      @{[$proc->{deprecated} ? "\"$proc->{deprecated}\"" : 'NULL']});
-
 CODE
 
         $argc = 0;
@@ -584,9 +577,8 @@ CODE
 	}
 
 	$out->{register} .= <<CODE;
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
-
 CODE
 
 	if (exists $proc->{invoke}->{headers}) {
@@ -727,7 +719,7 @@ GPL
 
 		    $headers .= '#include "pdb-types.h"';
 		    $headers .= "\n";
-		    $headers .= '#include "gimp-pdb.h"';
+		    $headers .= '#include "gimppdb.h"';
 		    $headers .= "\n";
 		    $headers .= '#include "gimpprocedure.h"';
 		    $headers .= "\n";
@@ -778,8 +770,8 @@ GPL
 	print CFILE $extra->{decls}, "\n" if exists $extra->{decls};
 	print CFILE "\n", $extra->{code} if exists $extra->{code};
 	print CFILE $out->{code};
-	print CFILE "\nvoid\nregister_${group}_procs (Gimp *gimp)\n";
-	print CFILE "{\n  GimpProcedure *procedure;\n\n$out->{register}}\n";
+	print CFILE "\nvoid\nregister_${group}_procs (GimpPDB *pdb)\n";
+	print CFILE "{\n  GimpProcedure *procedure;\n$out->{register}}\n";
 	close CFILE;
 	&write_file($cfile);
 
@@ -787,7 +779,7 @@ GPL
 	push @group_decls, $decl;
 	$longest = length $decl if $longest < length $decl;
 
-	$group_procs .=  ' ' x 2 . "register_${group}_procs (gimp);\n";
+	$group_procs .=  ' ' x 2 . "register_${group}_procs (pdb);\n";
 	$pcount += $out->{pcount};
     }
 
@@ -800,7 +792,7 @@ GPL
 #ifndef $guard
 #define $guard
 
-void internal_procs_init (Gimp *gimp);
+void internal_procs_init (GimpPDB *pdb);
 
 #endif /* $guard */
 HEADER
@@ -813,18 +805,18 @@ HEADER
 	print IFILE qq@#include "config.h"\n\n@;
 	print IFILE qq@#include <glib-object.h>\n\n@;
 	print IFILE qq@#include "pdb-types.h"\n\n@;
-	print IFILE qq@#include "core/gimp.h"\n\n@;
+	print IFILE qq@#include "gimppdb.h"\n\n@;
 	print IFILE "/* Forward declarations for registering PDB procs */\n\n";
 	foreach (@group_decls) {
-	    print IFILE "void $_" . ' ' x ($longest - length $_) . " (Gimp *gimp);\n";
+	    print IFILE "void $_" . ' ' x ($longest - length $_) . " (GimpPDB *pdb);\n";
 	}
 	chop $group_procs;
 	print IFILE "\n/* $total procedures registered total */\n\n";
 	print IFILE <<BODY;
 void
-internal_procs_init (Gimp *gimp)
+internal_procs_init (GimpPDB *pdb)
 {
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (GIMP_IS_PDB (pdb));
 
 $group_procs
 }

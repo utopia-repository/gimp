@@ -37,9 +37,10 @@
 
 #include "file/file-utils.h"
 
-#include "plug-in/plug-in-locale-domain.h"
+#include "plug-in/gimppluginmanager.h"
+#include "plug-in/gimppluginmanager-locale-domain.h"
 
-#include "pdb/gimp-pdb.h"
+#include "pdb/gimppdb.h"
 #include "pdb/gimppluginprocedure.h"
 
 #include "gimpfiledialog.h"
@@ -104,7 +105,7 @@ static gchar  * gimp_file_dialog_pattern_from_extension (const gchar  *extension
 G_DEFINE_TYPE_WITH_CODE (GimpFileDialog, gimp_file_dialog,
                          GTK_TYPE_FILE_CHOOSER_DIALOG,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_PROGRESS,
-                                                gimp_file_dialog_progress_iface_init));
+                                                gimp_file_dialog_progress_iface_init))
 
 #define parent_class gimp_file_dialog_parent_class
 
@@ -263,21 +264,23 @@ gimp_file_dialog_new (Gimp                 *gimp,
   switch (action)
     {
     case GTK_FILE_CHOOSER_ACTION_OPEN:
-      file_procs = gimp->load_procs;
+      file_procs = gimp->plug_in_manager->load_procs;
       automatic  = _("Automatically Detected");
       automatic_help_id = GIMP_HELP_FILE_OPEN_BY_EXTENSION;
 
       /* FIXME */
-      local_only = (gimp_pdb_lookup (gimp, "file-uri-load") == NULL);
+      local_only = (gimp_pdb_lookup_procedure (gimp->pdb,
+                                               "file-uri-load") == NULL);
       break;
 
     case GTK_FILE_CHOOSER_ACTION_SAVE:
-      file_procs = gimp->save_procs;
+      file_procs = gimp->plug_in_manager->save_procs;
       automatic  = _("By Extension");
       automatic_help_id = GIMP_HELP_FILE_SAVE_BY_EXTENSION;
 
       /* FIXME */
-      local_only = (gimp_pdb_lookup (gimp, "file-uri-save") == NULL);
+      local_only = (gimp_pdb_lookup_procedure (gimp->pdb,
+                                               "file-uri-save") == NULL);
       break;
 
     default:
@@ -299,6 +302,10 @@ gimp_file_dialog_new (Gimp                 *gimp,
                           NULL);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   gimp_help_connect (GTK_WIDGET (dialog),
                      gimp_file_dialog_help_func, help_id, dialog);
@@ -460,7 +467,9 @@ gimp_file_dialog_add_filters (GimpFileDialog *dialog,
           GSList        *ext;
           gint           i;
 
-          domain = plug_in_locale_domain (gimp, file_proc->prog, NULL);
+          domain = gimp_plug_in_manager_get_locale_domain (gimp->plug_in_manager,
+                                                           file_proc->prog,
+                                                           NULL);
 
           label = gimp_plug_in_procedure_get_label (file_proc, domain);
 

@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimpimage">
 <refmeta>
-<refentrytitle>gimpimage</refentrytitle>
+<refentrytitle id="top_of_page">gimpimage</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpimage</refname><refpurpose>Operations on complete images.</refpurpose>
+<refname>gimpimage</refname>
+<refpurpose>Operations on complete images.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -196,8 +199,8 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Operations on complete images: creation, resizing/rescaling,
 and operations involving multiple layers.
@@ -205,10 +208,10 @@ and operations involving multiple layers.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-image-list"/>gimp_image_list ()</title>
+<title><anchor id="gimp-image-list" role="function"/>gimp_image_list ()</title>
 <indexterm><primary>gimp_image_list</primary></indexterm><programlisting><link linkend="gint">gint</link>*       gimp_image_list                 (<link linkend="gint">gint</link> *num_images);</programlisting>
 <para>
 Returns the list of images currently open.
@@ -226,7 +229,7 @@ GIMP.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-new"/>gimp_image_new ()</title>
+<title><anchor id="gimp-image-new" role="function"/>gimp_image_new ()</title>
 <indexterm><primary>gimp_image_new</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_new                  (<link linkend="gint">gint</link> width,
                                              <link linkend="gint">gint</link> height,
                                              <link linkend="GimpImageBaseType">GimpImageBaseType</link> type);</programlisting>
@@ -256,7 +259,7 @@ as an argument will fail. Layers can be created using the
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-duplicate"/>gimp_image_duplicate ()</title>
+<title><anchor id="gimp-image-duplicate" role="function"/>gimp_image_duplicate ()</title>
 <indexterm><primary>gimp_image_duplicate</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_duplicate            (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Duplicate the specified image
@@ -274,7 +277,7 @@ channels, and image information.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-delete"/>gimp_image_delete ()</title>
+<title><anchor id="gimp-image-delete" role="function"/>gimp_image_delete ()</title>
 <indexterm><primary>gimp_image_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_delete               (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Delete the specified image.
@@ -296,7 +299,7 @@ the image.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-base-type"/>gimp_image_base_type ()</title>
+<title><anchor id="gimp-image-base-type" role="function"/>gimp_image_base_type ()</title>
 <indexterm><primary>gimp_image_base_type</primary></indexterm><programlisting><link linkend="GimpImageBaseType">GimpImageBaseType</link> gimp_image_base_type      (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Get the base type of the image.
@@ -314,7 +317,7 @@ must be of this subtype, but can have an optional alpha channel.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-width"/>gimp_image_width ()</title>
+<title><anchor id="gimp-image-width" role="function"/>gimp_image_width ()</title>
 <indexterm><primary>gimp_image_width</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_image_width                (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Return the width of the image
@@ -332,7 +335,7 @@ of any of the layers in this image. This is the \"canvas\" width.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-height"/>gimp_image_height ()</title>
+<title><anchor id="gimp-image-height" role="function"/>gimp_image_height ()</title>
 <indexterm><primary>gimp_image_height</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_image_height               (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Return the height of the image
@@ -350,7 +353,7 @@ of any of the layers in this image. This is the \"canvas\" height.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-free-shadow"/>gimp_image_free_shadow ()</title>
+<title><anchor id="gimp-image-free-shadow" role="function"/>gimp_image_free_shadow ()</title>
 <indexterm><primary>gimp_image_free_shadow</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_free_shadow          (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Free the specified image's shadow data (if it exists).
@@ -369,7 +372,7 @@ to 'gimp_image_delete'.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-flip"/>gimp_image_flip ()</title>
+<title><anchor id="gimp-image-flip" role="function"/>gimp_image_flip ()</title>
 <indexterm><primary>gimp_image_flip</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_flip                 (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="GimpOrientationType">GimpOrientationType</link> flip_type);</programlisting>
 <para>
@@ -390,7 +393,7 @@ This procedure flips (mirrors) the image.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-rotate"/>gimp_image_rotate ()</title>
+<title><anchor id="gimp-image-rotate" role="function"/>gimp_image_rotate ()</title>
 <indexterm><primary>gimp_image_rotate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_rotate               (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="GimpRotationType">GimpRotationType</link> rotate_type);</programlisting>
 <para>
@@ -411,7 +414,7 @@ This procedure rotates the image.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-resize"/>gimp_image_resize ()</title>
+<title><anchor id="gimp-image-resize" role="function"/>gimp_image_resize ()</title>
 <indexterm><primary>gimp_image_resize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_resize               (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint">gint</link> new_width,
                                              <link linkend="gint">gint</link> new_height,
@@ -451,7 +454,7 @@ according to the specified offsets.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-resize-to-layers"/>gimp_image_resize_to_layers ()</title>
+<title><anchor id="gimp-image-resize-to-layers" role="function" condition="since:GIMP 2.2"/>gimp_image_resize_to_layers ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_image_resize_to_layers</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_resize_to_layers     (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Resize the image to fit all layers.
@@ -473,7 +476,7 @@ image are repositioned to the new image area.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-scale"/>gimp_image_scale ()</title>
+<title><anchor id="gimp-image-scale" role="function"/>gimp_image_scale ()</title>
 <indexterm><primary>gimp_image_scale</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_scale                (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint">gint</link> new_width,
                                              <link linkend="gint">gint</link> new_height);</programlisting>
@@ -505,7 +508,7 @@ specified offsets.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-crop"/>gimp_image_crop ()</title>
+<title><anchor id="gimp-image-crop" role="function"/>gimp_image_crop ()</title>
 <indexterm><primary>gimp_image_crop</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_crop                 (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint">gint</link> new_width,
                                              <link linkend="gint">gint</link> new_height,
@@ -543,7 +546,7 @@ range, an error is returned.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-layers"/>gimp_image_get_layers ()</title>
+<title><anchor id="gimp-image-get-layers" role="function"/>gimp_image_get_layers ()</title>
 <indexterm><primary>gimp_image_get_layers</primary></indexterm><programlisting><link linkend="gint">gint</link>*       gimp_image_get_layers           (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint">gint</link> *num_layers);</programlisting>
 <para>
@@ -565,7 +568,7 @@ image. The order of layers is from topmost to bottommost.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-channels"/>gimp_image_get_channels ()</title>
+<title><anchor id="gimp-image-get-channels" role="function"/>gimp_image_get_channels ()</title>
 <indexterm><primary>gimp_image_get_channels</primary></indexterm><programlisting><link linkend="gint">gint</link>*       gimp_image_get_channels         (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint">gint</link> *num_channels);</programlisting>
 <para>
@@ -588,7 +591,7 @@ masks. The order is from topmost to bottommost.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-active-drawable"/>gimp_image_get_active_drawable ()</title>
+<title><anchor id="gimp-image-get-active-drawable" role="function"/>gimp_image_get_active_drawable ()</title>
 <indexterm><primary>gimp_image_get_active_drawable</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_get_active_drawable  (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Get the image's active drawable
@@ -610,7 +613,7 @@ is the active drawable.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-unset-active-channel"/>gimp_image_unset_active_channel ()</title>
+<title><anchor id="gimp-image-unset-active-channel" role="function"/>gimp_image_unset_active_channel ()</title>
 <indexterm><primary>gimp_image_unset_active_channel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_unset_active_channel (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Unsets the active channel in the specified image.
@@ -630,7 +633,7 @@ existing active channel.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-floating-sel"/>gimp_image_get_floating_sel ()</title>
+<title><anchor id="gimp-image-get-floating-sel" role="function"/>gimp_image_get_floating_sel ()</title>
 <indexterm><primary>gimp_image_get_floating_sel</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_get_floating_sel     (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Return the floating selection of the image.
@@ -648,7 +651,7 @@ If it doesn't exist, -1 is returned as the layer ID.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-floating-sel-attached-to"/>gimp_image_floating_sel_attached_to ()</title>
+<title><anchor id="gimp-image-floating-sel-attached-to" role="function"/>gimp_image_floating_sel_attached_to ()</title>
 <indexterm><primary>gimp_image_floating_sel_attached_to</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_floating_sel_attached_to
                                             (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
@@ -668,7 +671,7 @@ the drawable ID.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-pick-color"/>gimp_image_pick_color ()</title>
+<title><anchor id="gimp-image-pick-color" role="function"/>gimp_image_pick_color ()</title>
 <indexterm><primary>gimp_image_pick_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_pick_color           (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> x,
@@ -723,7 +726,7 @@ a merged sampling, the supplied drawable is ignored.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-pick-correlate-layer"/>gimp_image_pick_correlate_layer ()</title>
+<title><anchor id="gimp-image-pick-correlate-layer" role="function"/>gimp_image_pick_correlate_layer ()</title>
 <indexterm><primary>gimp_image_pick_correlate_layer</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_pick_correlate_layer (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint">gint</link> x,
                                              <link linkend="gint">gint</link> y);</programlisting>
@@ -752,7 +755,7 @@ layer is found.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-add-layer"/>gimp_image_add_layer ()</title>
+<title><anchor id="gimp-image-add-layer" role="function"/>gimp_image_add_layer ()</title>
 <indexterm><primary>gimp_image_add_layer</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_add_layer            (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> layer_ID,
                                              <link linkend="gint">gint</link> position);</programlisting>
@@ -781,7 +784,7 @@ must be compatible with the image base type.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-remove-layer"/>gimp_image_remove_layer ()</title>
+<title><anchor id="gimp-image-remove-layer" role="function"/>gimp_image_remove_layer ()</title>
 <indexterm><primary>gimp_image_remove_layer</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_remove_layer         (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
@@ -806,7 +809,7 @@ layer.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-raise-layer"/>gimp_image_raise_layer ()</title>
+<title><anchor id="gimp-image-raise-layer" role="function"/>gimp_image_raise_layer ()</title>
 <indexterm><primary>gimp_image_raise_layer</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_raise_layer          (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
@@ -829,7 +832,7 @@ it.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-lower-layer"/>gimp_image_lower_layer ()</title>
+<title><anchor id="gimp-image-lower-layer" role="function"/>gimp_image_lower_layer ()</title>
 <indexterm><primary>gimp_image_lower_layer</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_lower_layer          (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
@@ -852,7 +855,7 @@ it.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-raise-layer-to-top"/>gimp_image_raise_layer_to_top ()</title>
+<title><anchor id="gimp-image-raise-layer-to-top" role="function"/>gimp_image_raise_layer_to_top ()</title>
 <indexterm><primary>gimp_image_raise_layer_to_top</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_raise_layer_to_top   (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
@@ -875,7 +878,7 @@ it.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-lower-layer-to-bottom"/>gimp_image_lower_layer_to_bottom ()</title>
+<title><anchor id="gimp-image-lower-layer-to-bottom" role="function"/>gimp_image_lower_layer_to_bottom ()</title>
 <indexterm><primary>gimp_image_lower_layer_to_bottom</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_lower_layer_to_bottom
                                             (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> layer_ID);</programlisting>
@@ -900,7 +903,7 @@ it.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-add-channel"/>gimp_image_add_channel ()</title>
+<title><anchor id="gimp-image-add-channel" role="function"/>gimp_image_add_channel ()</title>
 <indexterm><primary>gimp_image_add_channel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_add_channel          (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> channel_ID,
                                              <link linkend="gint">gint</link> position);</programlisting>
@@ -927,7 +930,7 @@ the top of the channel stack.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-remove-channel"/>gimp_image_remove_channel ()</title>
+<title><anchor id="gimp-image-remove-channel" role="function"/>gimp_image_remove_channel ()</title>
 <indexterm><primary>gimp_image_remove_channel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_remove_channel       (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> channel_ID);</programlisting>
 <para>
@@ -949,7 +952,7 @@ channel doesn't exist, an error is returned.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-raise-channel"/>gimp_image_raise_channel ()</title>
+<title><anchor id="gimp-image-raise-channel" role="function"/>gimp_image_raise_channel ()</title>
 <indexterm><primary>gimp_image_raise_channel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_raise_channel        (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> channel_ID);</programlisting>
 <para>
@@ -972,7 +975,7 @@ above it.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-lower-channel"/>gimp_image_lower_channel ()</title>
+<title><anchor id="gimp-image-lower-channel" role="function"/>gimp_image_lower_channel ()</title>
 <indexterm><primary>gimp_image_lower_channel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_lower_channel        (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> channel_ID);</programlisting>
 <para>
@@ -995,7 +998,7 @@ below it.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-flatten"/>gimp_image_flatten ()</title>
+<title><anchor id="gimp-image-flatten" role="function"/>gimp_image_flatten ()</title>
 <indexterm><primary>gimp_image_flatten</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_flatten              (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Flatten all visible layers into a single layer. Discard all
@@ -1015,7 +1018,7 @@ discarded, and the resulting image is stripped of its alpha channel.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-merge-visible-layers"/>gimp_image_merge_visible_layers ()</title>
+<title><anchor id="gimp-image-merge-visible-layers" role="function"/>gimp_image_merge_visible_layers ()</title>
 <indexterm><primary>gimp_image_merge_visible_layers</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_merge_visible_layers (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="GimpMergeType">GimpMergeType</link> merge_type);</programlisting>
 <para>
@@ -1041,7 +1044,7 @@ final layer to the size of the bottommost layer.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-merge-down"/>gimp_image_merge_down ()</title>
+<title><anchor id="gimp-image-merge-down" role="function"/>gimp_image_merge_down ()</title>
 <indexterm><primary>gimp_image_merge_down</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_merge_down           (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> merge_layer_ID,
                                              <link linkend="GimpMergeType">GimpMergeType</link> merge_type);</programlisting>
@@ -1072,7 +1075,7 @@ bottommost layer.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-clean-all"/>gimp_image_clean_all ()</title>
+<title><anchor id="gimp-image-clean-all" role="function"/>gimp_image_clean_all ()</title>
 <indexterm><primary>gimp_image_clean_all</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_clean_all            (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Set the image dirty count to 0.
@@ -1094,7 +1097,7 @@ call this function themselves after saving the image.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-is-dirty"/>gimp_image_is_dirty ()</title>
+<title><anchor id="gimp-image-is-dirty" role="function"/>gimp_image_is_dirty ()</title>
 <indexterm><primary>gimp_image_is_dirty</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_is_dirty             (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Checks if the image has unsaved changes.
@@ -1114,7 +1117,7 @@ after calling a save procedure to make the image clean.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-active-layer"/>gimp_image_get_active_layer ()</title>
+<title><anchor id="gimp-image-get-active-layer" role="function"/>gimp_image_get_active_layer ()</title>
 <indexterm><primary>gimp_image_get_active_layer</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_get_active_layer     (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Returns the specified image's active layer.
@@ -1133,7 +1136,7 @@ mask is active, then this will return the associated layer.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-set-active-layer"/>gimp_image_set_active_layer ()</title>
+<title><anchor id="gimp-image-set-active-layer" role="function"/>gimp_image_set_active_layer ()</title>
 <indexterm><primary>gimp_image_set_active_layer</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_set_active_layer     (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> active_layer_ID);</programlisting>
 <para>
@@ -1157,7 +1160,7 @@ procedure will return an execution error.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-active-channel"/>gimp_image_get_active_channel ()</title>
+<title><anchor id="gimp-image-get-active-channel" role="function"/>gimp_image_get_active_channel ()</title>
 <indexterm><primary>gimp_image_get_active_channel</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_get_active_channel   (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Returns the specified image's active channel.
@@ -1175,7 +1178,7 @@ otherwise, -1.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-set-active-channel"/>gimp_image_set_active_channel ()</title>
+<title><anchor id="gimp-image-set-active-channel" role="function"/>gimp_image_set_active_channel ()</title>
 <indexterm><primary>gimp_image_set_active_channel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_set_active_channel   (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> active_channel_ID);</programlisting>
 <para>
@@ -1199,7 +1202,7 @@ this procedure will return an execution error.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-selection"/>gimp_image_get_selection ()</title>
+<title><anchor id="gimp-image-get-selection" role="function"/>gimp_image_get_selection ()</title>
 <indexterm><primary>gimp_image_get_selection</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_get_selection        (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Returns the specified image's selection.
@@ -1217,7 +1220,7 @@ represented as a channel internally.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-component-active"/>gimp_image_get_component_active ()</title>
+<title><anchor id="gimp-image-get-component-active" role="function"/>gimp_image_get_component_active ()</title>
 <indexterm><primary>gimp_image_get_component_active</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_get_component_active (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="GimpChannelType">GimpChannelType</link> component);</programlisting>
 <para>
@@ -1241,7 +1244,7 @@ component is not valid for the image type, an error is returned.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-set-component-active"/>gimp_image_set_component_active ()</title>
+<title><anchor id="gimp-image-set-component-active" role="function"/>gimp_image_set_component_active ()</title>
 <indexterm><primary>gimp_image_set_component_active</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_set_component_active (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="GimpChannelType">GimpChannelType</link> component,
                                              <link linkend="gboolean">gboolean</link> active);</programlisting>
@@ -1269,7 +1272,7 @@ component is not valid for the image type, an error is returned.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-component-visible"/>gimp_image_get_component_visible ()</title>
+<title><anchor id="gimp-image-get-component-visible" role="function"/>gimp_image_get_component_visible ()</title>
 <indexterm><primary>gimp_image_get_component_visible</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_get_component_visible
                                             (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="GimpChannelType">GimpChannelType</link> component);</programlisting>
@@ -1295,7 +1298,7 @@ returned.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-set-component-visible"/>gimp_image_set_component_visible ()</title>
+<title><anchor id="gimp-image-set-component-visible" role="function"/>gimp_image_set_component_visible ()</title>
 <indexterm><primary>gimp_image_set_component_visible</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_set_component_visible
                                             (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="GimpChannelType">GimpChannelType</link> component,
@@ -1324,7 +1327,7 @@ component is not valid for the image type, an error is returned.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-filename"/>gimp_image_get_filename ()</title>
+<title><anchor id="gimp-image-get-filename" role="function"/>gimp_image_get_filename ()</title>
 <indexterm><primary>gimp_image_get_filename</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_image_get_filename         (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Returns the specified image's filename.
@@ -1332,7 +1335,7 @@ Returns the specified image's filename.
 <para>
 This procedure returns the specified image's filename in the
 filesystem encoding. The image has a filename only if it was loaded
-or has since been saved. Otherwise, this function returns <literal>NULL</literal>.</para>
+or has since been saved. Otherwise, this function returns <link linkend="NULL:CAPS"><literal>NULL</literal></link>.</para>
 <para>
 
 </para><variablelist role="params">
@@ -1343,7 +1346,7 @@ or has since been saved. Otherwise, this function returns <literal>NULL</literal
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-set-filename"/>gimp_image_set_filename ()</title>
+<title><anchor id="gimp-image-set-filename" role="function"/>gimp_image_set_filename ()</title>
 <indexterm><primary>gimp_image_set_filename</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_set_filename         (<link linkend="gint32">gint32</link> image_ID,
                                              const <link linkend="gchar">gchar</link> *filename);</programlisting>
 <para>
@@ -1365,7 +1368,7 @@ should be in the filesystem encoding.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-name"/>gimp_image_get_name ()</title>
+<title><anchor id="gimp-image-get-name" role="function"/>gimp_image_get_name ()</title>
 <indexterm><primary>gimp_image_get_name</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_image_get_name             (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Returns the specified image's name.
@@ -1382,7 +1385,7 @@ This procedure returns the specified image's name.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-resolution"/>gimp_image_get_resolution ()</title>
+<title><anchor id="gimp-image-get-resolution" role="function"/>gimp_image_get_resolution ()</title>
 <indexterm><primary>gimp_image_get_resolution</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_get_resolution       (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gdouble">gdouble</link> *xresolution,
                                              <link linkend="gdouble">gdouble</link> *yresolution);</programlisting>
@@ -1408,7 +1411,7 @@ inch. This value is independent of any of the layers in this image.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-set-resolution"/>gimp_image_set_resolution ()</title>
+<title><anchor id="gimp-image-set-resolution" role="function"/>gimp_image_set_resolution ()</title>
 <indexterm><primary>gimp_image_set_resolution</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_set_resolution       (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gdouble">gdouble</link> xresolution,
                                              <link linkend="gdouble">gdouble</link> yresolution);</programlisting>
@@ -1435,7 +1438,7 @@ No scaling or resizing is performed.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-unit"/>gimp_image_get_unit ()</title>
+<title><anchor id="gimp-image-get-unit" role="function"/>gimp_image_get_unit ()</title>
 <indexterm><primary>gimp_image_get_unit</primary></indexterm><programlisting><link linkend="GimpUnit">GimpUnit</link>    gimp_image_get_unit             (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Returns the specified image's unit.
@@ -1455,7 +1458,7 @@ description of the unit system.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-set-unit"/>gimp_image_set_unit ()</title>
+<title><anchor id="gimp-image-set-unit" role="function"/>gimp_image_set_unit ()</title>
 <indexterm><primary>gimp_image_set_unit</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_set_unit             (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="GimpUnit">GimpUnit</link> unit);</programlisting>
 <para>
@@ -1479,7 +1482,7 @@ the valid range of unit IDs and a description of the unit system.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-set-tattoo-state"/>gimp_image_set_tattoo_state ()</title>
+<title><anchor id="gimp-image-set-tattoo-state" role="function"/>gimp_image_set_tattoo_state ()</title>
 <indexterm><primary>gimp_image_set_tattoo_state</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_set_tattoo_state     (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint">gint</link> tattoo_state);</programlisting>
 <para>
@@ -1511,7 +1514,7 @@ that all is OK.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-tattoo-state"/>gimp_image_get_tattoo_state ()</title>
+<title><anchor id="gimp-image-get-tattoo-state" role="function"/>gimp_image_get_tattoo_state ()</title>
 <indexterm><primary>gimp_image_get_tattoo_state</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_image_get_tattoo_state     (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Returns the tattoo state associated with the image.
@@ -1530,7 +1533,7 @@ Using this function at other times will produce unexpected results.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-layer-by-tattoo"/>gimp_image_get_layer_by_tattoo ()</title>
+<title><anchor id="gimp-image-get-layer-by-tattoo" role="function"/>gimp_image_get_layer_by_tattoo ()</title>
 <indexterm><primary>gimp_image_get_layer_by_tattoo</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_get_layer_by_tattoo  (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint">gint</link> tattoo);</programlisting>
 <para>
@@ -1552,7 +1555,7 @@ specified image.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-channel-by-tattoo"/>gimp_image_get_channel_by_tattoo ()</title>
+<title><anchor id="gimp-image-get-channel-by-tattoo" role="function"/>gimp_image_get_channel_by_tattoo ()</title>
 <indexterm><primary>gimp_image_get_channel_by_tattoo</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_get_channel_by_tattoo
                                             (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint">gint</link> tattoo);</programlisting>
@@ -1575,7 +1578,7 @@ specified image.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-cmap"/>gimp_image_get_cmap ()</title>
+<title><anchor id="gimp-image-get-cmap" role="function" condition="deprecated:"/>gimp_image_get_cmap ()</title>
 <indexterm role="deprecated"><primary>gimp_image_get_cmap</primary></indexterm><programlisting><link linkend="guchar">guchar</link>*     gimp_image_get_cmap             (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint">gint</link> *num_colors);</programlisting>
 <warning><para><literal>gimp_image_get_cmap</literal> is deprecated and should not be used in newly-written code.</para></warning>
@@ -1594,7 +1597,7 @@ This procedure is deprecated! Use <link linkend="gimp-image-get-colormap"><funct
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-set-cmap"/>gimp_image_set_cmap ()</title>
+<title><anchor id="gimp-image-set-cmap" role="function" condition="deprecated:"/>gimp_image_set_cmap ()</title>
 <indexterm role="deprecated"><primary>gimp_image_set_cmap</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_set_cmap             (<link linkend="gint32">gint32</link> image_ID,
                                              const <link linkend="guchar">guchar</link> *cmap,
                                              <link linkend="gint">gint</link> num_colors);</programlisting>
@@ -1617,7 +1620,7 @@ This procedure is deprecated! Use <link linkend="gimp-image-set-colormap"><funct
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-colormap"/>gimp_image_get_colormap ()</title>
+<title><anchor id="gimp-image-get-colormap" role="function"/>gimp_image_get_colormap ()</title>
 <indexterm><primary>gimp_image_get_colormap</primary></indexterm><programlisting><link linkend="guchar">guchar</link>*     gimp_image_get_colormap         (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint">gint</link> *num_colors);</programlisting>
 <para>
@@ -1640,7 +1643,7 @@ is not of base type INDEXED, this pointer will be NULL.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-set-colormap"/>gimp_image_set_colormap ()</title>
+<title><anchor id="gimp-image-set-colormap" role="function"/>gimp_image_set_colormap ()</title>
 <indexterm><primary>gimp_image_set_colormap</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_set_colormap         (<link linkend="gint32">gint32</link> image_ID,
                                              const <link linkend="guchar">guchar</link> *colormap,
                                              <link linkend="gint">gint</link> num_colors);</programlisting>
@@ -1668,7 +1671,7 @@ in the \"cmap\" array.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-vectors"/>gimp_image_get_vectors ()</title>
+<title><anchor id="gimp-image-get-vectors" role="function" condition="since:GIMP 2.4"/>gimp_image_get_vectors ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_image_get_vectors</primary></indexterm><programlisting><link linkend="gint">gint</link>*       gimp_image_get_vectors          (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint">gint</link> *num_vectors);</programlisting>
 <para>
@@ -1692,7 +1695,7 @@ specified image.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-thumbnail-data"/>gimp_image_get_thumbnail_data ()</title>
+<title><anchor id="gimp-image-get-thumbnail-data" role="function"/>gimp_image_get_thumbnail_data ()</title>
 <indexterm><primary>gimp_image_get_thumbnail_data</primary></indexterm><programlisting><link linkend="guchar">guchar</link>*     gimp_image_get_thumbnail_data   (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint">gint</link> *width,
                                              <link linkend="gint">gint</link> *height,
@@ -1718,7 +1721,7 @@ specified image.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-parasite-find"/>gimp_image_parasite_find ()</title>
+<title><anchor id="gimp-image-parasite-find" role="function"/>gimp_image_parasite_find ()</title>
 <indexterm><primary>gimp_image_parasite_find</primary></indexterm><programlisting><link linkend="GimpParasite">GimpParasite</link>* gimp_image_parasite_find      (<link linkend="gint32">gint32</link> image_ID,
                                              const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
@@ -1740,7 +1743,7 @@ an image.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-parasite-list"/>gimp_image_parasite_list ()</title>
+<title><anchor id="gimp-image-parasite-list" role="function"/>gimp_image_parasite_list ()</title>
 <indexterm><primary>gimp_image_parasite_list</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_parasite_list        (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint">gint</link> *num_parasites,
                                              <link linkend="gchar">gchar</link> ***parasites);</programlisting>
@@ -1765,7 +1768,7 @@ Returns a list of all currently attached parasites.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-parasite-attach"/>gimp_image_parasite_attach ()</title>
+<title><anchor id="gimp-image-parasite-attach" role="function"/>gimp_image_parasite_attach ()</title>
 <indexterm><primary>gimp_image_parasite_attach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_parasite_attach      (<link linkend="gint32">gint32</link> image_ID,
                                              const <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
 <para>
@@ -1787,7 +1790,7 @@ values.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-parasite-detach"/>gimp_image_parasite_detach ()</title>
+<title><anchor id="gimp-image-parasite-detach" role="function"/>gimp_image_parasite_detach ()</title>
 <indexterm><primary>gimp_image_parasite_detach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_parasite_detach      (<link linkend="gint32">gint32</link> image_ID,
                                              const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
@@ -1809,7 +1812,7 @@ values.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-attach-new-parasite"/>gimp_image_attach_new_parasite ()</title>
+<title><anchor id="gimp-image-attach-new-parasite" role="function"/>gimp_image_attach_new_parasite ()</title>
 <indexterm><primary>gimp_image_attach_new_parasite</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_attach_new_parasite  (<link linkend="gint32">gint32</link> image_ID,
                                              const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> flags,
@@ -1843,7 +1846,7 @@ See Also: <link linkend="gimp-image-parasite-attach"><function>gimp_image_parasi
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-add-vectors"/>gimp_image_add_vectors ()</title>
+<title><anchor id="gimp-image-add-vectors" role="function"/>gimp_image_add_vectors ()</title>
 <indexterm><primary>gimp_image_add_vectors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_add_vectors          (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> vectors_ID,
                                              <link linkend="gint">gint</link> position);</programlisting>
@@ -1870,7 +1873,7 @@ object is inserted at the top of the vectors stack.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-remove-vectors"/>gimp_image_remove_vectors ()</title>
+<title><anchor id="gimp-image-remove-vectors" role="function" condition="since:GIMP 2.4"/>gimp_image_remove_vectors ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_image_remove_vectors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_remove_vectors       (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> vectors_ID);</programlisting>
 <para>
@@ -1894,7 +1897,7 @@ path doesn't exist, an error is returned.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-active-vectors"/>gimp_image_get_active_vectors ()</title>
+<title><anchor id="gimp-image-get-active-vectors" role="function"/>gimp_image_get_active_vectors ()</title>
 <indexterm><primary>gimp_image_get_active_vectors</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_get_active_vectors   (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Returns the specified image's active vectors.
@@ -1911,7 +1914,7 @@ If there is an active path, its ID will be returned, otherwise, -1.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-set-active-vectors"/>gimp_image_set_active_vectors ()</title>
+<title><anchor id="gimp-image-set-active-vectors" role="function"/>gimp_image_set_active_vectors ()</title>
 <indexterm><primary>gimp_image_set_active_vectors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_set_active_vectors   (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> active_vectors_ID);</programlisting>
 <para>
@@ -1932,7 +1935,7 @@ If the path exists, it is set as the active path in the image.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-lower-vectors"/>gimp_image_lower_vectors ()</title>
+<title><anchor id="gimp-image-lower-vectors" role="function" condition="since:GIMP 2.4"/>gimp_image_lower_vectors ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_image_lower_vectors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_lower_vectors        (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> vectors_ID);</programlisting>
 <para>
@@ -1957,7 +1960,7 @@ below it.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-raise-vectors"/>gimp_image_raise_vectors ()</title>
+<title><anchor id="gimp-image-raise-vectors" role="function" condition="since:GIMP 2.4"/>gimp_image_raise_vectors ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_image_raise_vectors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_raise_vectors        (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> vectors_ID);</programlisting>
 <para>
@@ -1982,7 +1985,7 @@ above it.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-lower-vectors-to-bottom"/>gimp_image_lower_vectors_to_bottom ()</title>
+<title><anchor id="gimp-image-lower-vectors-to-bottom" role="function" condition="since:GIMP 2.4"/>gimp_image_lower_vectors_to_bottom ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_image_lower_vectors_to_bottom</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_lower_vectors_to_bottom
                                             (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> vectors_ID);</programlisting>
@@ -2009,7 +2012,7 @@ vectors below it.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-raise-vectors-to-top"/>gimp_image_raise_vectors_to_top ()</title>
+<title><anchor id="gimp-image-raise-vectors-to-top" role="function" condition="since:GIMP 2.4"/>gimp_image_raise_vectors_to_top ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_image_raise_vectors_to_top</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_raise_vectors_to_top (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> vectors_ID);</programlisting>
 <para>

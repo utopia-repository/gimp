@@ -33,6 +33,8 @@
 
 #include "pdb/gimppluginprocedure.h"
 
+#include "plug-in/gimppluginmanager.h"
+
 #include "file/file-save.h"
 #include "file/file-utils.h"
 
@@ -82,11 +84,6 @@ file_save_dialog_new (Gimp *gimp)
                                  GTK_STOCK_SAVE,
                                  GIMP_HELP_FILE_SAVE);
 
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
   uri = g_object_get_data (G_OBJECT (gimp), "gimp-file-save-last-uri");
 
   if (uri)
@@ -126,6 +123,7 @@ file_save_dialog_response (GtkWidget *save_dialog,
   gchar               *uri;
   gchar               *basename;
   GimpPlugInProcedure *save_proc;
+  gulong               handler_id;
 
   if (response_id != GTK_RESPONSE_OK)
     {
@@ -136,6 +134,9 @@ file_save_dialog_response (GtkWidget *save_dialog,
     }
 
   gimp_file_dialog_set_sensitive (dialog, FALSE);
+  handler_id = g_signal_connect (dialog, "destroy",
+                                 G_CALLBACK (gtk_widget_destroyed),
+                                 &dialog);
 
   if (file_save_dialog_check_uri (save_dialog, gimp,
                                   &uri, &basename, &save_proc))
@@ -146,14 +147,20 @@ file_save_dialog_response (GtkWidget *save_dialog,
                                        save_proc,
                                        dialog->save_a_copy))
         {
-          gtk_widget_hide (save_dialog);
+          if (dialog)
+            gtk_widget_hide (save_dialog);
         }
 
       g_free (uri);
       g_free (basename);
     }
 
-  gimp_file_dialog_set_sensitive (dialog, TRUE);
+  /* dialog may have been destroyed while save plugin was running */
+  if (dialog)
+    {
+      gimp_file_dialog_set_sensitive (dialog, TRUE);
+      g_signal_handler_disconnect (dialog, handler_id);
+    }
 }
 
 static gboolean
@@ -178,8 +185,10 @@ file_save_dialog_check_uri (GtkWidget            *save_dialog,
   basename = g_path_get_basename (uri);
 
   save_proc     = dialog->file_proc;
-  uri_proc      = file_utils_find_proc (gimp->save_procs, uri);
-  basename_proc = file_utils_find_proc (gimp->save_procs, basename);
+  uri_proc      = file_utils_find_proc (gimp->plug_in_manager->save_procs,
+                                        uri);
+  basename_proc = file_utils_find_proc (gimp->plug_in_manager->save_procs,
+                                        basename);
 
   g_print ("\n\n%s: URI = %s\n",
            G_STRFUNC, uri);
@@ -230,8 +239,10 @@ file_save_dialog_check_uri (GtkWidget            *save_dialog,
               uri      = ext_uri;
               basename = ext_basename;
 
-              uri_proc      = file_utils_find_proc (gimp->save_procs, uri);
-              basename_proc = file_utils_find_proc (gimp->save_procs, basename);
+              uri_proc      = file_utils_find_proc (gimp->plug_in_manager->save_procs,
+                                                    uri);
+              basename_proc = file_utils_find_proc (gimp->plug_in_manager->save_procs,
+                                                    basename);
 
               utf8 = g_filename_to_utf8 (basename, -1, NULL, NULL, NULL);
               gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (save_dialog),

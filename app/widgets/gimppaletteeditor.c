@@ -56,6 +56,7 @@
 #define PREVIEW_WIDTH  ((ENTRY_WIDTH  + SPACING) * COLUMNS + 1)
 #define PREVIEW_HEIGHT ((ENTRY_HEIGHT + SPACING) * ROWS    + 1)
 
+#define EPSILON 1e-10
 
 /*  local function prototypes  */
 
@@ -128,7 +129,7 @@ static void   palette_editor_scroll_top_left       (GimpPaletteEditor *editor);
 G_DEFINE_TYPE_WITH_CODE (GimpPaletteEditor, gimp_palette_editor,
                          GIMP_TYPE_DATA_EDITOR,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_DOCKED,
-                                                gimp_palette_editor_docked_iface_init));
+                                                gimp_palette_editor_docked_iface_init))
 
 #define parent_class gimp_palette_editor_parent_class
 
@@ -542,6 +543,89 @@ gimp_palette_editor_zoom (GimpPaletteEditor  *editor,
   palette_editor_resize (editor, editor->last_width, zoom_factor);
 
   palette_editor_scroll_top_left (editor);
+}
+
+gint
+gimp_palette_editor_get_index (GimpPaletteEditor *editor,
+                               const GimpRGB     *search)
+{
+  GimpPalette *palette;
+  gint         index = 0;
+
+  g_return_val_if_fail (GIMP_IS_PALETTE_EDITOR (editor), -1);
+
+  palette = GIMP_PALETTE (GIMP_DATA_EDITOR (editor)->data);
+
+  if (! palette)
+    return -1;
+
+  if (editor->color)
+    index = editor->color->position;
+
+  if (search)
+    {
+      if (! editor->color ||
+          gimp_rgb_distance (&editor->color->color, search) > EPSILON)
+        {
+          GList *list;
+
+          for (list = palette->colors; list; list = g_list_next (list))
+            {
+              GimpPaletteEntry *entry = list->data;
+
+              if (gimp_rgb_distance (&entry->color, search) < EPSILON)
+                {
+                  index = entry->position;
+                  break;
+                }
+            }
+        }
+    }
+
+  return index;
+}
+
+gboolean
+gimp_palette_editor_set_index (GimpPaletteEditor *editor,
+                               gint               index,
+                               GimpRGB           *color)
+{
+  GimpPalette *palette;
+  GList       *list;
+
+  g_return_val_if_fail (GIMP_IS_PALETTE_EDITOR (editor), FALSE);
+
+  palette = GIMP_PALETTE (GIMP_DATA_EDITOR (editor)->data);
+
+  if (! palette)
+    return FALSE;
+
+  index = CLAMP (index, 0, palette->n_colors - 1);
+
+  list = g_list_nth (palette->colors, index);
+
+  gimp_palette_view_select_entry (GIMP_PALETTE_VIEW (editor->view),
+                                  list->data);
+
+  if (color)
+    *color = editor->color->color;
+
+  return TRUE;
+}
+
+gint
+gimp_palette_editor_max_index (GimpPaletteEditor *editor)
+{
+  GimpPalette *palette;
+
+  g_return_val_if_fail (GIMP_IS_PALETTE_EDITOR (editor), -1);
+
+  palette = GIMP_PALETTE (GIMP_DATA_EDITOR (editor)->data);
+
+  if (! palette)
+    return -1;
+
+  return MAX (0, palette->n_colors - 1);
 }
 
 

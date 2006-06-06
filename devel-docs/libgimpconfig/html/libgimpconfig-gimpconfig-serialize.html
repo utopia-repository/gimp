@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="prev" href="libgimpconfig-gimpconfig-deserialize.html" title="gimpconfig-deserialize">
 <link rel="next" href="libgimpconfig-GimpConfigError.html" title="gimpconfig-error">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="chapter" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
@@ -16,24 +17,29 @@
 <link rel="index" href="ix03.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimpconfig-gimpconfig-deserialize.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpconfig.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpconfig-GimpConfigError.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimpconfig-gimpconfig-serialize"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpconfig-serialize</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpconfig-serialize</span></h2>
 <p>gimpconfig-serialize &#8212; Serializing for libgimpconfig.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -53,18 +59,18 @@ gboolean    <a href="libgimpconfig-gimpconfig-serialize.html#gimp-config-seriali
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2527213"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 Serializing interface for libgimpconfig.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2527224"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2527230"></a><h3>
+<a name="id2522658"></a><h3>
 <a name="gimp-config-serialize-properties"></a>gimp_config_serialize_properties ()</h3>
-<a class="indexterm" name="id2527239"></a><pre class="programlisting">gboolean    gimp_config_serialize_properties
+<a class="indexterm" name="id2522671"></a><pre class="programlisting">gboolean    gimp_config_serialize_properties
                                             (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
                                              <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
 <p>
@@ -101,9 +107,9 @@ This function serializes a single object property to the <em class="parameter"><
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2538427"></a><h3>
+<a name="id2540004"></a><h3>
 <a name="gimp-config-serialize-changed-properties"></a>gimp_config_serialize_changed_properties ()</h3>
-<a class="indexterm" name="id2538436"></a><pre class="programlisting">gboolean    gimp_config_serialize_changed_properties
+<a class="indexterm" name="id2540019"></a><pre class="programlisting">gboolean    gimp_config_serialize_changed_properties
                                             (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
                                              <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
 <p>
@@ -141,9 +147,9 @@ their default values to the <em class="parameter"><code>writer</code></em>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2549951"></a><h3>
+<a name="id2540148"></a><h3>
 <a name="gimp-config-serialize-property"></a>gimp_config_serialize_property ()</h3>
-<a class="indexterm" name="id2549962"></a><pre class="programlisting">gboolean    gimp_config_serialize_property  (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
+<a class="indexterm" name="id2494379"></a><pre class="programlisting">gboolean    gimp_config_serialize_property  (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
                                              GParamSpec *param_spec,
                                              <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
 <p>
@@ -183,9 +189,9 @@ their default values to the <em class="parameter"><code>writer</code></em>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2550062"></a><h3>
+<a name="id2494478"></a><h3>
 <a name="gimp-config-serialize-value"></a>gimp_config_serialize_value ()</h3>
-<a class="indexterm" name="id2543082"></a><pre class="programlisting">gboolean    gimp_config_serialize_value     (const GValue *value,
+<a class="indexterm" name="id2494492"></a><pre class="programlisting">gboolean    gimp_config_serialize_value     (const GValue *value,
                                              GString *str,
                                              gboolean escaped);</pre>
 <p>
@@ -228,9 +234,5 @@ This utility function appends a string representation of <span class="type">GVal
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimpconfig-gimpconfig-deserialize.html"><b>&lt;&lt;&#160;gimpconfig-deserialize</b></a></td>
-<td align="right"><a accesskey="n" href="libgimpconfig-GimpConfigError.html"><b>gimpconfig-error&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

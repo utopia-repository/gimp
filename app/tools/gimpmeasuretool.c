@@ -100,7 +100,7 @@ static void        gimp_measure_tool_dialog_update (GimpMeasureTool *mtool,
                                                     GimpDisplay     *display);
 
 
-G_DEFINE_TYPE (GimpMeasureTool, gimp_measure_tool, GIMP_TYPE_DRAW_TOOL);
+G_DEFINE_TYPE (GimpMeasureTool, gimp_measure_tool, GIMP_TYPE_DRAW_TOOL)
 
 #define parent_class gimp_measure_tool_parent_class
 
@@ -155,15 +155,12 @@ gimp_measure_tool_control (GimpTool       *tool,
 {
   switch (action)
     {
-    case PAUSE:
-    case RESUME:
+    case GIMP_TOOL_ACTION_PAUSE:
+    case GIMP_TOOL_ACTION_RESUME:
       break;
 
-    case HALT:
+    case GIMP_TOOL_ACTION_HALT:
       gimp_measure_tool_halt (GIMP_MEASURE_TOOL (tool));
-      break;
-
-    default:
       break;
     }
 

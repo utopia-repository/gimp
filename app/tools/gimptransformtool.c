@@ -115,6 +115,8 @@ static void     gimp_transform_tool_cursor_update  (GimpTool          *tool,
 
 static void     gimp_transform_tool_draw           (GimpDrawTool      *draw_tool);
 
+static void     gimp_transform_tool_dialog_update  (GimpTransformTool *tr_tool);
+
 static TileManager *
                 gimp_transform_tool_real_transform (GimpTransformTool *tr_tool,
                                                     GimpItem          *item,
@@ -146,7 +148,7 @@ static void     gimp_transform_tool_notify_preview (GimpTransformOptions *option
                                                     GimpTransformTool    *tr_tool);
 
 
-G_DEFINE_TYPE (GimpTransformTool, gimp_transform_tool, GIMP_TYPE_DRAW_TOOL);
+G_DEFINE_TYPE (GimpTransformTool, gimp_transform_tool, GIMP_TYPE_DRAW_TOOL)
 
 #define parent_class gimp_transform_tool_parent_class
 
@@ -253,6 +255,7 @@ gimp_transform_tool_constructor (GType                  type,
                                "notify::type",
                                G_CALLBACK (gimp_transform_tool_notify_preview),
                                tr_tool, 0);
+
       g_signal_connect_object (tool->tool_info->tool_options,
                                "notify::direction",
                                G_CALLBACK (gimp_transform_tool_notify_type),
@@ -261,6 +264,7 @@ gimp_transform_tool_constructor (GType                  type,
                                "notify::direction",
                                G_CALLBACK (gimp_transform_tool_notify_preview),
                                tr_tool, 0);
+
       g_signal_connect_object (tool->tool_info->tool_options,
                                "notify::preview-type",
                                G_CALLBACK (gimp_transform_tool_notify_preview),
@@ -274,6 +278,11 @@ gimp_transform_tool_constructor (GType                  type,
                                G_CALLBACK (gimp_transform_tool_notify_preview),
                                tr_tool, 0);
     }
+
+  g_signal_connect_object (tool->tool_info->tool_options,
+                           "notify::constrain",
+                           G_CALLBACK (gimp_transform_tool_dialog_update),
+                           tr_tool, G_CONNECT_SWAPPED);
 
   return object;
 }
@@ -361,20 +370,17 @@ gimp_transform_tool_control (GimpTool       *tool,
 
   switch (action)
     {
-    case PAUSE:
+    case GIMP_TOOL_ACTION_PAUSE:
       break;
 
-    case RESUME:
+    case GIMP_TOOL_ACTION_RESUME:
       gimp_transform_tool_bounds (tr_tool, display);
       gimp_transform_tool_recalc (tr_tool, display);
       break;
 
-    case HALT:
+    case GIMP_TOOL_ACTION_HALT:
       gimp_transform_tool_halt (tr_tool);
       return; /* don't upchain */
-      break;
-
-    default:
       break;
     }
 
@@ -528,17 +534,9 @@ gimp_transform_tool_modifier_key (GimpTool        *tool,
   options = GIMP_TRANSFORM_OPTIONS (tool->tool_info->tool_options);
 
   if (key == GDK_CONTROL_MASK)
-    {
-      g_object_set (options,
-                    "constrain-1", ! options->constrain_1,
-                    NULL);
-    }
-  else if (key == GDK_MOD1_MASK)
-    {
-      g_object_set (options,
-                    "constrain-2", ! options->constrain_2,
-                    NULL);
-    }
+    g_object_set (options,
+                  "constrain", ! options->constrain,
+                  NULL);
 }
 
 static void
@@ -624,14 +622,10 @@ gimp_transform_tool_cursor_update (GimpTool        *tool,
       switch (options->type)
         {
         case GIMP_TRANSFORM_TYPE_LAYER:
-          if (gimp_image_coords_in_active_drawable (display->image, coords))
+          if (gimp_image_coords_in_active_pickable (display->image, coords,
+                                                    FALSE, TRUE))
             {
-              if (gimp_channel_is_empty (selection) ||
-                  gimp_pickable_get_opacity_at (GIMP_PICKABLE (selection),
-                                                coords->x, coords->y))
-                {
-                  cursor = GIMP_CURSOR_MOUSE;
-                }
+              cursor = GIMP_CURSOR_MOUSE;
             }
           break;
 
@@ -645,16 +639,15 @@ gimp_transform_tool_cursor_update (GimpTool        *tool,
           break;
 
         case GIMP_TRANSFORM_TYPE_PATH:
-          if (gimp_image_get_active_vectors (display->image))
-            cursor = GIMP_CURSOR_MOUSE;
-          else
-            cursor = GIMP_CURSOR_BAD;
+          if (! gimp_image_get_active_vectors (display->image))
+            modifier = GIMP_CURSOR_MODIFIER_BAD;
           break;
         }
 
       if (tr_tool->use_center && tr_tool->function == TRANSFORM_HANDLE_CENTER)
         {
-          modifier = GIMP_CURSOR_MODIFIER_MOVE;
+          if (modifier != GIMP_CURSOR_MODIFIER_BAD)
+            modifier = GIMP_CURSOR_MODIFIER_MOVE;
         }
 
       gimp_tool_control_set_cursor          (tool->control, cursor);
@@ -812,6 +805,14 @@ gimp_transform_tool_draw (GimpDrawTool *draw_tool)
             }
         }
     }
+}
+
+static void
+gimp_transform_tool_dialog_update (GimpTransformTool *tr_tool)
+{
+  if (tr_tool->dialog &&
+      GIMP_TRANSFORM_TOOL_GET_CLASS (tr_tool)->dialog_update)
+    GIMP_TRANSFORM_TOOL_GET_CLASS (tr_tool)->dialog_update (tr_tool);
 }
 
 static TileManager *
@@ -1457,8 +1458,10 @@ gimp_transform_tool_recalc (GimpTransformTool *tr_tool,
 
   gimp_transform_tool_transform_bounding_box (tr_tool);
 
-  if (GIMP_TRANSFORM_TOOL_GET_CLASS (tr_tool)->dialog_update)
-    GIMP_TRANSFORM_TOOL_GET_CLASS (tr_tool)->dialog_update (tr_tool);
+  gimp_transform_tool_dialog_update (tr_tool);
+
+  if (tr_tool->dialog)
+    gtk_widget_show (tr_tool->dialog);
 }
 
 static void

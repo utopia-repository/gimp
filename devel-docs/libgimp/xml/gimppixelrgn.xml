@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimppixelrgn">
 <refmeta>
-<refentrytitle>gimppixelrgn</refentrytitle>
+<refentrytitle id="top_of_page">gimppixelrgn</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimppixelrgn</refname><refpurpose>Functions for operating on pixel regions.</refpurpose>
+<refname>gimppixelrgn</refname>
+<refpurpose>Functions for operating on pixel regions.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -89,8 +92,8 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Functions for operating on pixel regions.  These functions provide
 fast ways of accessing and modifying portions of a drawable.
@@ -98,10 +101,10 @@ fast ways of accessing and modifying portions of a drawable.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpPixelRgn"/>GimpPixelRgn</title>
+<title><anchor id="GimpPixelRgn" role="struct"/>GimpPixelRgn</title>
 <indexterm><primary>GimpPixelRgn</primary></indexterm><programlisting>typedef struct {
   guchar       *data;          /* pointer to region data */
   GimpDrawable *drawable;      /* pointer to drawable */
@@ -118,7 +121,7 @@ fast ways of accessing and modifying portions of a drawable.
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-pixel-rgn-init"/>gimp_pixel_rgn_init ()</title>
+<title><anchor id="gimp-pixel-rgn-init" role="function"/>gimp_pixel_rgn_init ()</title>
 <indexterm><primary>gimp_pixel_rgn_init</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_init             (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
                                              <link linkend="GimpDrawable">GimpDrawable</link> *drawable,
                                              <link linkend="gint">gint</link> x,
@@ -199,7 +202,7 @@ The <parameter>dirty</parameter> and <parameter>shadow</parameter> flags can be 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-pixel-rgn-resize"/>gimp_pixel_rgn_resize ()</title>
+<title><anchor id="gimp-pixel-rgn-resize" role="function"/>gimp_pixel_rgn_resize ()</title>
 <indexterm><primary>gimp_pixel_rgn_resize</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_resize           (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
                                              <link linkend="gint">gint</link> x,
                                              <link linkend="gint">gint</link> y,
@@ -229,7 +232,7 @@ Change the position and size of a previously initialized pixel region.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-pixel-rgn-get-pixel"/>gimp_pixel_rgn_get_pixel ()</title>
+<title><anchor id="gimp-pixel-rgn-get-pixel" role="function"/>gimp_pixel_rgn_get_pixel ()</title>
 <indexterm><primary>gimp_pixel_rgn_get_pixel</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_get_pixel        (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
                                              <link linkend="guchar">guchar</link> *buf,
                                              <link linkend="gint">gint</link> x,
@@ -257,7 +260,7 @@ rgb drawable and 4 <link linkend="guchar"><type>guchar</type></link> for rgb wit
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-pixel-rgn-get-row"/>gimp_pixel_rgn_get_row ()</title>
+<title><anchor id="gimp-pixel-rgn-get-row" role="function"/>gimp_pixel_rgn_get_row ()</title>
 <indexterm><primary>gimp_pixel_rgn_get_row</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_get_row          (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
                                              <link linkend="guchar">guchar</link> *buf,
                                              <link linkend="gint">gint</link> x,
@@ -287,7 +290,7 @@ Get several pixels of a region in a row. This function fills the buffer
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-pixel-rgn-get-col"/>gimp_pixel_rgn_get_col ()</title>
+<title><anchor id="gimp-pixel-rgn-get-col" role="function"/>gimp_pixel_rgn_get_col ()</title>
 <indexterm><primary>gimp_pixel_rgn_get_col</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_get_col          (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
                                              <link linkend="guchar">guchar</link> *buf,
                                              <link linkend="gint">gint</link> x,
@@ -317,7 +320,7 @@ Get several pixels of a region's column. This function fills the buffer
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-pixel-rgn-get-rect"/>gimp_pixel_rgn_get_rect ()</title>
+<title><anchor id="gimp-pixel-rgn-get-rect" role="function"/>gimp_pixel_rgn_get_rect ()</title>
 <indexterm><primary>gimp_pixel_rgn_get_rect</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_get_rect         (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
                                              <link linkend="guchar">guchar</link> *buf,
                                              <link linkend="gint">gint</link> x,
@@ -352,7 +355,7 @@ from (<parameter>x</parameter>, <parameter>y</parameter>) to (<parameter>x</para
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-pixel-rgn-set-pixel"/>gimp_pixel_rgn_set_pixel ()</title>
+<title><anchor id="gimp-pixel-rgn-set-pixel" role="function"/>gimp_pixel_rgn_set_pixel ()</title>
 <indexterm><primary>gimp_pixel_rgn_set_pixel</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_set_pixel        (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
                                              const <link linkend="guchar">guchar</link> *buf,
                                              <link linkend="gint">gint</link> x,
@@ -376,7 +379,7 @@ Set the pixel at (<parameter>x</parameter>, <parameter>y</parameter>) to the val
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-pixel-rgn-set-row"/>gimp_pixel_rgn_set_row ()</title>
+<title><anchor id="gimp-pixel-rgn-set-row" role="function"/>gimp_pixel_rgn_set_row ()</title>
 <indexterm><primary>gimp_pixel_rgn_set_row</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_set_row          (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
                                              const <link linkend="guchar">guchar</link> *buf,
                                              <link linkend="gint">gint</link> x,
@@ -406,7 +409,7 @@ from (<parameter>x</parameter>, <parameter>y</parameter>) to (<parameter>x</para
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-pixel-rgn-set-col"/>gimp_pixel_rgn_set_col ()</title>
+<title><anchor id="gimp-pixel-rgn-set-col" role="function"/>gimp_pixel_rgn_set_col ()</title>
 <indexterm><primary>gimp_pixel_rgn_set_col</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_set_col          (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
                                              const <link linkend="guchar">guchar</link> *buf,
                                              <link linkend="gint">gint</link> x,
@@ -436,7 +439,7 @@ from (<parameter>x</parameter>, <parameter>y</parameter>) to (<parameter>x</para
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-pixel-rgn-set-rect"/>gimp_pixel_rgn_set_rect ()</title>
+<title><anchor id="gimp-pixel-rgn-set-rect" role="function"/>gimp_pixel_rgn_set_rect ()</title>
 <indexterm><primary>gimp_pixel_rgn_set_rect</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_set_rect         (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
                                              const <link linkend="guchar">guchar</link> *buf,
                                              <link linkend="gint">gint</link> x,
@@ -471,7 +474,7 @@ Set all the pixel of the rectangle defined by <parameter>x</parameter>, <paramet
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-pixel-rgns-register"/>gimp_pixel_rgns_register ()</title>
+<title><anchor id="gimp-pixel-rgns-register" role="function"/>gimp_pixel_rgns_register ()</title>
 <indexterm><primary>gimp_pixel_rgns_register</primary></indexterm><programlisting><link linkend="gpointer">gpointer</link>    gimp_pixel_rgns_register        (<link linkend="gint">gint</link> nrgns,
                                              ...);</programlisting>
 <para>
@@ -489,7 +492,7 @@ This is the varargs version of <link linkend="gimp-pixel-rgns-register2"><type>g
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-pixel-rgns-register2"/>gimp_pixel_rgns_register2 ()</title>
+<title><anchor id="gimp-pixel-rgns-register2" role="function"/>gimp_pixel_rgns_register2 ()</title>
 <indexterm><primary>gimp_pixel_rgns_register2</primary></indexterm><programlisting><link linkend="gpointer">gpointer</link>    gimp_pixel_rgns_register2       (<link linkend="gint">gint</link> nrgns,
                                              <link linkend="GimpPixelRgn">GimpPixelRgn</link> **prs);</programlisting>
 <para>
@@ -518,7 +521,7 @@ This function has to be used together with gimp_pixel_rgns_process in a loop.</p
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-pixel-rgns-process"/>gimp_pixel_rgns_process ()</title>
+<title><anchor id="gimp-pixel-rgns-process" role="function"/>gimp_pixel_rgns_process ()</title>
 <indexterm><primary>gimp_pixel_rgns_process</primary></indexterm><programlisting><link linkend="gpointer">gpointer</link>    gimp_pixel_rgns_process         (<link linkend="gpointer">gpointer</link> pri_ptr);</programlisting>
 <para>
 This function update the regions registered previously with one of the

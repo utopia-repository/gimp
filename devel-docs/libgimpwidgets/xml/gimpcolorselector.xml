@@ -4,16 +4,19 @@
 
 <refentry id="GimpColorSelector">
 <refmeta>
-<refentrytitle>GimpColorSelector</refentrytitle>
+<refentrytitle id="top_of_page">GimpColorSelector</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpColorSelector</refname><refpurpose>Pluggable GIMP color selector modules.</refpurpose>
+<refname>GimpColorSelector</refname>
+<refpurpose>Pluggable GIMP color selector modules.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -49,8 +52,8 @@ enum        <link linkend="GimpColorSelectorChannel">GimpColorSelectorChannel</l
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 id="object_hierarchy">
+<title id="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -70,8 +73,8 @@ enum        <link linkend="GimpColorSelectorChannel">GimpColorSelectorChannel</l
 
 
 
-<refsect1>
-<title>Implemented Interfaces</title>
+<refsect1 id="impl_interfaces">
+<title id="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpColorSelector implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -80,55 +83,55 @@ GimpColorSelector implements
 
 
 
-<refsect1>
-<title>Signal Prototypes</title>
+<refsect1 id="signal_proto">
+<title id="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpColorSelector-channel-changed">channel-changed</link>&quot;
             <link linkend="void">void</link>        user_function      (<link linkend="GimpColorSelector">GimpColorSelector</link> *gimpcolorselector,
-                                            <link linkend="gint">gint</link> arg1,
-                                            <link linkend="gpointer">gpointer</link> user_data);
+                                            <link linkend="gint">gint</link>               arg1,
+                                            <link linkend="gpointer">gpointer</link>           user_data)              : Run first
 &quot;<link linkend="GimpColorSelector-color-changed">color-changed</link>&quot;
             <link linkend="void">void</link>        user_function      (<link linkend="GimpColorSelector">GimpColorSelector</link> *gimpcolorselector,
-                                            <link linkend="gpointer">gpointer</link> arg1,
-                                            <link linkend="gpointer">gpointer</link> arg2,
-                                            <link linkend="gpointer">gpointer</link> user_data);
+                                            <link linkend="gpointer">gpointer</link>           arg1,
+                                            <link linkend="gpointer">gpointer</link>           arg2,
+                                            <link linkend="gpointer">gpointer</link>           user_data)              : Run first
 </synopsis>
 </refsect1>
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Functions and definitions for creating pluggable GIMP color
 selector modules.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpColorSelector-struct"/>GimpColorSelector</title>
+<title><anchor id="GimpColorSelector-struct" role="struct"/>GimpColorSelector</title>
 <indexterm><primary>GimpColorSelector</primary></indexterm><programlisting>typedef struct _GimpColorSelector GimpColorSelector;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-COLOR-SELECTOR-SIZE:CAPS"/>GIMP_COLOR_SELECTOR_SIZE</title>
+<title><anchor id="GIMP-COLOR-SELECTOR-SIZE:CAPS" role="macro"/>GIMP_COLOR_SELECTOR_SIZE</title>
 <indexterm><primary>GIMP_COLOR_SELECTOR_SIZE</primary></indexterm><programlisting>#define GIMP_COLOR_SELECTOR_SIZE      150
 </programlisting>
 <para>
 The suggested size for a color area in a <link linkend="GimpColorSelector"><type>GimpColorSelector</type></link> implementation.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-COLOR-SELECTOR-BAR-SIZE:CAPS"/>GIMP_COLOR_SELECTOR_BAR_SIZE</title>
+<title><anchor id="GIMP-COLOR-SELECTOR-BAR-SIZE:CAPS" role="macro"/>GIMP_COLOR_SELECTOR_BAR_SIZE</title>
 <indexterm><primary>GIMP_COLOR_SELECTOR_BAR_SIZE</primary></indexterm><programlisting>#define GIMP_COLOR_SELECTOR_BAR_SIZE  15
 </programlisting>
 <para>
 The suggested width for a color bar in a <link linkend="GimpColorSelector"><type>GimpColorSelector</type></link> implementation.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpColorSelectorChannel"/>enum GimpColorSelectorChannel</title>
+<title><anchor id="GimpColorSelectorChannel" role="enum"/>enum GimpColorSelectorChannel</title>
 <indexterm><primary>GimpColorSelectorChannel</primary></indexterm><programlisting>typedef enum
 {
   GIMP_COLOR_SELECTOR_HUE,        /*&lt; desc="_H", help="Hue"        &gt;*/
@@ -144,44 +147,44 @@ The suggested width for a color bar in a <link linkend="GimpColorSelector"><type
 
 </para><variablelist role="enum">
 <varlistentry>
-<term><literal>GIMP_COLOR_SELECTOR_HUE</literal></term>
+<term><anchor id="GIMP-COLOR-SELECTOR-HUE:CAPS" role="constant"/><literal>GIMP_COLOR_SELECTOR_HUE</literal></term>
 <listitem><simpara>the hue channel
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><literal>GIMP_COLOR_SELECTOR_SATURATION</literal></term>
+<term><anchor id="GIMP-COLOR-SELECTOR-SATURATION:CAPS" role="constant"/><literal>GIMP_COLOR_SELECTOR_SATURATION</literal></term>
 <listitem><simpara>the saturation channel
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><literal>GIMP_COLOR_SELECTOR_VALUE</literal></term>
+<term><anchor id="GIMP-COLOR-SELECTOR-VALUE:CAPS" role="constant"/><literal>GIMP_COLOR_SELECTOR_VALUE</literal></term>
 <listitem><simpara>the value channel
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><literal>GIMP_COLOR_SELECTOR_RED</literal></term>
+<term><anchor id="GIMP-COLOR-SELECTOR-RED:CAPS" role="constant"/><literal>GIMP_COLOR_SELECTOR_RED</literal></term>
 <listitem><simpara>the red channel
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><literal>GIMP_COLOR_SELECTOR_GREEN</literal></term>
+<term><anchor id="GIMP-COLOR-SELECTOR-GREEN:CAPS" role="constant"/><literal>GIMP_COLOR_SELECTOR_GREEN</literal></term>
 <listitem><simpara>the green channel
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><literal>GIMP_COLOR_SELECTOR_BLUE</literal></term>
+<term><anchor id="GIMP-COLOR-SELECTOR-BLUE:CAPS" role="constant"/><literal>GIMP_COLOR_SELECTOR_BLUE</literal></term>
 <listitem><simpara>the blue channel
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><literal>GIMP_COLOR_SELECTOR_ALPHA</literal></term>
+<term><anchor id="GIMP-COLOR-SELECTOR-ALPHA:CAPS" role="constant"/><literal>GIMP_COLOR_SELECTOR_ALPHA</literal></term>
 <listitem><simpara>the alpha channel
 
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-selector-new"/>gimp_color_selector_new ()</title>
+<title><anchor id="gimp-color-selector-new" role="function"/>gimp_color_selector_new ()</title>
 <indexterm><primary>gimp_color_selector_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_color_selector_new         (<link linkend="GType">GType</link> selector_type,
                                              const <link linkend="GimpRGB">GimpRGB</link> *rgb,
                                              const <link linkend="GimpHSV">GimpHSV</link> *hsv,
@@ -207,7 +210,7 @@ The suggested width for a color bar in a <link linkend="GimpColorSelector"><type
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-selector-set-toggles-visible"/>gimp_color_selector_set_toggles_visible ()</title>
+<title><anchor id="gimp-color-selector-set-toggles-visible" role="function"/>gimp_color_selector_set_toggles_visible ()</title>
 <indexterm><primary>gimp_color_selector_set_toggles_visible</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_selector_set_toggles_visible
                                             (<link linkend="GimpColorSelector">GimpColorSelector</link> *selector,
                                              <link linkend="gboolean">gboolean</link> visible);</programlisting>
@@ -224,7 +227,7 @@ The suggested width for a color bar in a <link linkend="GimpColorSelector"><type
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-selector-set-toggles-sensitive"/>gimp_color_selector_set_toggles_sensitive ()</title>
+<title><anchor id="gimp-color-selector-set-toggles-sensitive" role="function"/>gimp_color_selector_set_toggles_sensitive ()</title>
 <indexterm><primary>gimp_color_selector_set_toggles_sensitive</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_selector_set_toggles_sensitive
                                             (<link linkend="GimpColorSelector">GimpColorSelector</link> *selector,
                                              <link linkend="gboolean">gboolean</link> sensitive);</programlisting>
@@ -241,7 +244,7 @@ The suggested width for a color bar in a <link linkend="GimpColorSelector"><type
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-selector-set-show-alpha"/>gimp_color_selector_set_show_alpha ()</title>
+<title><anchor id="gimp-color-selector-set-show-alpha" role="function"/>gimp_color_selector_set_show_alpha ()</title>
 <indexterm><primary>gimp_color_selector_set_show_alpha</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_selector_set_show_alpha
                                             (<link linkend="GimpColorSelector">GimpColorSelector</link> *selector,
                                              <link linkend="gboolean">gboolean</link> show_alpha);</programlisting>
@@ -258,7 +261,7 @@ The suggested width for a color bar in a <link linkend="GimpColorSelector"><type
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-selector-set-color"/>gimp_color_selector_set_color ()</title>
+<title><anchor id="gimp-color-selector-set-color" role="function"/>gimp_color_selector_set_color ()</title>
 <indexterm><primary>gimp_color_selector_set_color</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_selector_set_color   (<link linkend="GimpColorSelector">GimpColorSelector</link> *selector,
                                              const <link linkend="GimpRGB">GimpRGB</link> *rgb,
                                              const <link linkend="GimpHSV">GimpHSV</link> *hsv);</programlisting>
@@ -278,7 +281,7 @@ The suggested width for a color bar in a <link linkend="GimpColorSelector"><type
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-selector-set-channel"/>gimp_color_selector_set_channel ()</title>
+<title><anchor id="gimp-color-selector-set-channel" role="function"/>gimp_color_selector_set_channel ()</title>
 <indexterm><primary>gimp_color_selector_set_channel</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_selector_set_channel (<link linkend="GimpColorSelector">GimpColorSelector</link> *selector,
                                              <link linkend="GimpColorSelectorChannel">GimpColorSelectorChannel</link> channel);</programlisting>
 <para>
@@ -294,7 +297,7 @@ The suggested width for a color bar in a <link linkend="GimpColorSelector"><type
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-selector-color-changed"/>gimp_color_selector_color_changed ()</title>
+<title><anchor id="gimp-color-selector-color-changed" role="function"/>gimp_color_selector_color_changed ()</title>
 <indexterm><primary>gimp_color_selector_color_changed</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_selector_color_changed
                                             (<link linkend="GimpColorSelector">GimpColorSelector</link> *selector);</programlisting>
 <para>
@@ -307,7 +310,7 @@ The suggested width for a color bar in a <link linkend="GimpColorSelector"><type
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-selector-channel-changed"/>gimp_color_selector_channel_changed ()</title>
+<title><anchor id="gimp-color-selector-channel-changed" role="function"/>gimp_color_selector_channel_changed ()</title>
 <indexterm><primary>gimp_color_selector_channel_changed</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_selector_channel_changed
                                             (<link linkend="GimpColorSelector">GimpColorSelector</link> *selector);</programlisting>
 <para>
@@ -322,12 +325,12 @@ The suggested width for a color bar in a <link linkend="GimpColorSelector"><type
 
 </refsect1>
 
-<refsect1>
-<title>Signals</title>
+<refsect1 id="signals">
+<title id="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpColorSelector-channel-changed"/>The &quot;channel-changed&quot; signal</title>
-<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpColorSelector">GimpColorSelector</link> *gimpcolorselector,
-                                            <link linkend="gint">gint</link> arg1,
-                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>GimpColorSelector::channel-changed</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpColorSelector">GimpColorSelector</link> *gimpcolorselector,
+                                            <link linkend="gint">gint</link>               arg1,
+                                            <link linkend="gpointer">gpointer</link>           user_data)              : Run first</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -341,10 +344,10 @@ The suggested width for a color bar in a <link linkend="GimpColorSelector"><type
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
 </variablelist></refsect2><refsect2><title><anchor id="GimpColorSelector-color-changed"/>The &quot;color-changed&quot; signal</title>
-<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpColorSelector">GimpColorSelector</link> *gimpcolorselector,
-                                            <link linkend="gpointer">gpointer</link> arg1,
-                                            <link linkend="gpointer">gpointer</link> arg2,
-                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>GimpColorSelector::color-changed</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpColorSelector">GimpColorSelector</link> *gimpcolorselector,
+                                            <link linkend="gpointer">gpointer</link>           arg1,
+                                            <link linkend="gpointer">gpointer</link>           arg2,
+                                            <link linkend="gpointer">gpointer</link>           user_data)              : Run first</programlisting>
 <para>
 
 </para><variablelist role="params">

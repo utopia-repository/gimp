@@ -20,18 +20,6 @@
 #define __GIMP_ITEM_LINKED_H__
 
 
-typedef enum
-{
-  GIMP_ITEM_LINKED_LAYERS   = 1 << 0,
-  GIMP_ITEM_LINKED_CHANNELS = 1 << 1,
-  GIMP_ITEM_LINKED_VECTORS  = 1 << 2,
-
-  GIMP_ITEM_LINKED_ALL      = (GIMP_ITEM_LINKED_LAYERS   |
-                               GIMP_ITEM_LINKED_CHANNELS |
-                               GIMP_ITEM_LINKED_VECTORS)
-} GimpItemLinkedMask;
-
-
 void   gimp_item_linked_translate (GimpItem               *item,
                                    gint                    offset_x,
                                    gint                    offset_y,
@@ -56,9 +44,6 @@ void   gimp_item_linked_transform (GimpItem               *item,
                                    gint                    recursion_level,
                                    gboolean                clip_result,
                                    GimpProgress           *progress);
-
-GList * gimp_item_linked_get_list (GimpItem               *item,
-                                   GimpItemLinkedMask      which);
 
 
 #endif /* __GIMP_ITEM_LINKED_H__ */

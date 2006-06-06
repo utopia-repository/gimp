@@ -1,5 +1,5 @@
 /*
- * "$Id: sharpen.c,v 1.64 2006/03/17 10:55:22 neo Exp $"
+ * "$Id: sharpen.c,v 1.65 2006/05/16 12:26:06 neo Exp $"
  *
  *   Sharpen filters for The GIMP -- an image manipulation program
  *
@@ -74,7 +74,7 @@ static void     rgba_filter  (int width, guchar *src, guchar *dst, intneg *neg0,
  * Globals...
  */
 
-GimpPlugInInfo PLUG_IN_INFO =
+const GimpPlugInInfo PLUG_IN_INFO =
 {
   NULL,  /* init_proc  */
   NULL,  /* quit_proc  */
@@ -103,7 +103,7 @@ MAIN ()
 static void
 query (void)
 {
-  static GimpParamDef   args[] =
+  static const GimpParamDef   args[] =
   {
     { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive"      },
     { GIMP_PDB_IMAGE,    "image",    "Input image"                       },

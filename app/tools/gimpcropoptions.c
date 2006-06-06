@@ -57,7 +57,7 @@ static void   gimp_crop_options_get_property (GObject      *object,
 G_DEFINE_TYPE_WITH_CODE (GimpCropOptions, gimp_crop_options,
                          GIMP_TYPE_TOOL_OPTIONS,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_RECTANGLE_OPTIONS,
-                                                gimp_crop_options_rectangle_options_iface_init));
+                                                gimp_crop_options_rectangle_options_iface_init))
 
 
 static void
@@ -102,6 +102,7 @@ gimp_crop_options_set_property (GObject      *object,
   switch (property_id)
     {
     case GIMP_RECTANGLE_OPTIONS_PROP_HIGHLIGHT:
+    case GIMP_RECTANGLE_OPTIONS_PROP_GUIDE:
     case GIMP_RECTANGLE_OPTIONS_PROP_FIXED_WIDTH:
     case GIMP_RECTANGLE_OPTIONS_PROP_WIDTH:
     case GIMP_RECTANGLE_OPTIONS_PROP_FIXED_HEIGHT:
@@ -138,6 +139,7 @@ gimp_crop_options_get_property (GObject    *object,
   switch (property_id)
     {
     case GIMP_RECTANGLE_OPTIONS_PROP_HIGHLIGHT:
+    case GIMP_RECTANGLE_OPTIONS_PROP_GUIDE:
     case GIMP_RECTANGLE_OPTIONS_PROP_FIXED_WIDTH:
     case GIMP_RECTANGLE_OPTIONS_PROP_WIDTH:
     case GIMP_RECTANGLE_OPTIONS_PROP_FIXED_HEIGHT:

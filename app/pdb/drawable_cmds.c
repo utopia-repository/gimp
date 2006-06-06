@@ -24,7 +24,7 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "gimp-pdb.h"
+#include "gimppdb.h"
 #include "gimpprocedure.h"
 #include "core/gimpparamspecs.h"
 
@@ -41,7 +41,8 @@
 #include "core/gimplayer.h"
 #include "core/gimplayermask.h"
 #include "gimp-intl.h"
-#include "plug-in/plug-in.h"
+#include "plug-in/gimpplugin.h"
+#include "plug-in/gimppluginmanager.h"
 
 
 static GValueArray *
@@ -762,8 +763,8 @@ drawable_merge_shadow_invoker (GimpProcedure     *procedure,
         {
           gchar *undo_desc = NULL;
 
-          if (gimp->current_plug_in)
-            undo_desc = plug_in_get_undo_desc (gimp->current_plug_in);
+          if (gimp->plug_in_manager->current_plug_in)
+            undo_desc = gimp_plug_in_get_undo_desc (gimp->plug_in_manager->current_plug_in);
 
           if (! undo_desc)
             undo_desc = g_strdup (_("Plug-In"));
@@ -1154,7 +1155,7 @@ drawable_foreground_extract_invoker (GimpProcedure     *procedure,
 }
 
 void
-register_drawable_procs (Gimp *gimp)
+register_drawable_procs (GimpPDB *pdb)
 {
   GimpProcedure *procedure;
 
@@ -1171,14 +1172,13 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable to delete",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1194,12 +1194,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("layer",
@@ -1207,7 +1206,7 @@ register_drawable_procs (Gimp *gimp)
                                                          "TRUE if the drawable is a layer",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1223,12 +1222,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("layer-mask",
@@ -1236,7 +1234,7 @@ register_drawable_procs (Gimp *gimp)
                                                          "TRUE if the drawable is a layer mask",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1252,12 +1250,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("channel",
@@ -1265,7 +1262,7 @@ register_drawable_procs (Gimp *gimp)
                                                          "TRUE if the drawable is a channel",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1281,21 +1278,20 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_enum ("type",
                                                       "type",
-                                                      "The drawable's type: { GIMP_RGB_IMAGE (0), GIMP_RGBA_IMAGE (1), GIMP_GRAY_IMAGE (2), GIMP_GRAYA_IMAGE (3), GIMP_INDEXED_IMAGE (4), GIMP_INDEXEDA_IMAGE (5) }",
+                                                      "The drawable's type",
                                                       GIMP_TYPE_IMAGE_TYPE,
                                                       GIMP_RGB_IMAGE,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1311,17 +1307,16 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_enum ("type-with-alpha",
                                                          "type with alpha",
-                                                         "The drawable's type with alpha: { GIMP_RGBA_IMAGE (1), GIMP_GRAYA_IMAGE (3), GIMP_INDEXEDA_IMAGE (5) }",
+                                                         "The drawable's type with alpha",
                                                          GIMP_TYPE_IMAGE_TYPE,
                                                          GIMP_RGB_IMAGE,
                                                          GIMP_PARAM_READWRITE));
@@ -1331,7 +1326,7 @@ register_drawable_procs (Gimp *gimp)
                                       GIMP_GRAY_IMAGE);
   gimp_param_spec_enum_exclude_value (GIMP_PARAM_SPEC_ENUM (procedure->values[0]),
                                       GIMP_INDEXED_IMAGE);
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1347,12 +1342,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("has-alpha",
@@ -1360,7 +1354,7 @@ register_drawable_procs (Gimp *gimp)
                                                          "Does the drawable have an alpha channel?",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1376,12 +1370,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("is-rgb",
@@ -1389,7 +1382,7 @@ register_drawable_procs (Gimp *gimp)
                                                          "TRUE if the drawable is an RGB type",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1405,12 +1398,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("is-gray",
@@ -1418,7 +1410,7 @@ register_drawable_procs (Gimp *gimp)
                                                          "TRUE if the drawable is a grayscale type",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1434,12 +1426,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("is-indexed",
@@ -1447,7 +1438,7 @@ register_drawable_procs (Gimp *gimp)
                                                          "TRUE if the drawable is an indexed type",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1463,12 +1454,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("bpp",
@@ -1476,7 +1466,7 @@ register_drawable_procs (Gimp *gimp)
                                                           "Bytes per pixel",
                                                           G_MININT32, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1492,12 +1482,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("width",
@@ -1505,7 +1494,7 @@ register_drawable_procs (Gimp *gimp)
                                                           "Width of drawable",
                                                           G_MININT32, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1521,12 +1510,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("height",
@@ -1534,7 +1522,7 @@ register_drawable_procs (Gimp *gimp)
                                                           "Height of drawable",
                                                           G_MININT32, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1550,12 +1538,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("offset-x",
@@ -1569,7 +1556,7 @@ register_drawable_procs (Gimp *gimp)
                                                           "y offset of drawable",
                                                           G_MININT32, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1585,20 +1572,19 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_image_id ("image",
                                                              "image",
                                                              "The drawable's image",
-                                                             gimp,
+                                                             pdb->gimp, FALSE,
                                                              GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1614,20 +1600,19 @@ register_drawable_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "NONE");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1643,12 +1628,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string ("name",
@@ -1657,7 +1641,7 @@ register_drawable_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1673,12 +1657,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
@@ -1687,7 +1670,7 @@ register_drawable_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1703,12 +1686,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("visible",
@@ -1716,7 +1698,7 @@ register_drawable_procs (Gimp *gimp)
                                                          "The drawable visibility",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1732,12 +1714,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_boolean ("visible",
@@ -1745,7 +1726,7 @@ register_drawable_procs (Gimp *gimp)
                                                      "The new drawable visibility",
                                                      FALSE,
                                                      GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1761,12 +1742,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Wolfgang Hofer",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("linked",
@@ -1774,7 +1754,7 @@ register_drawable_procs (Gimp *gimp)
                                                          "The drawable linked state (for moves)",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1790,12 +1770,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Wolfgang Hofer",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_boolean ("linked",
@@ -1803,7 +1782,7 @@ register_drawable_procs (Gimp *gimp)
                                                      "The new drawable linked state",
                                                      FALSE,
                                                      GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1819,12 +1798,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Jay Cox",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_uint ("tattoo",
@@ -1832,7 +1810,7 @@ register_drawable_procs (Gimp *gimp)
                                                       "The drawable tattoo",
                                                       1, G_MAXUINT32, 1,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1848,12 +1826,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Jay Cox",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_uint ("tattoo",
@@ -1861,7 +1838,7 @@ register_drawable_procs (Gimp *gimp)
                                                   "The new drawable tattoo",
                                                   1, G_MAXUINT32, 1,
                                                   GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1872,17 +1849,16 @@ register_drawable_procs (Gimp *gimp)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-drawable-mask-bounds",
                                      "Find the bounding box of the current selection in relation to the specified drawable.",
-                                     "This procedure returns whether there is a selection. If there is one, the upper left and lower righthand corners of its bounding box are returned. These coordinates are specified relative to the drawable's origin, and bounded by the drawable's extents. Please note that the pixel specified by the lower righthand coordinate of the bounding box is not part of the selection. The selection ends at the upper left corner of this pixel. This means the width of the selection can be calculated as (x2 - x1), its height as (y2 - y1). Note that the returned boolean does NOT correspond with the returned region being empty or not, it always returns whether the selection is non_empty. See gimp_drawable_mask_intersect() for a boolean return value which is more useful in most cases.",
+                                     "This procedure returns whether there is a selection. If there is one, the upper left and lower righthand corners of its bounding box are returned. These coordinates are specified relative to the drawable's origin, and bounded by the drawable's extents. Please note that the pixel specified by the lower righthand coordinate of the bounding box is not part of the selection. The selection ends at the upper left corner of this pixel. This means the width of the selection can be calculated as (x2 - x1), its height as (y2 - y1). Note that the returned boolean does NOT correspond with the returned region being empty or not, it always returns whether the selection is non_empty. See 'gimp-drawable-mask-intersect' for a boolean return value which is more useful in most cases.",
                                      "Spencer Kimball & Peter Mattis",
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("non-empty",
@@ -1914,7 +1890,7 @@ register_drawable_procs (Gimp *gimp)
                                                           "y coordinate of the lower right corner of selection bounds",
                                                           G_MININT32, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1925,17 +1901,16 @@ register_drawable_procs (Gimp *gimp)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-drawable-mask-intersect",
                                      "Find the bounding box of the current selection in relation to the specified drawable.",
-                                     "This procedure returns whether there is an intersection between the drawable and the selection. Unlike gimp_drawable_mask_bounds(), the intersection's bounds are returned as x, y, width, height. If there is no selection this function returns TRUE and the returned bounds are the extents of the whole drawable.",
+                                     "This procedure returns whether there is an intersection between the drawable and the selection. Unlike 'gimp-drawable-mask-bounds', the intersection's bounds are returned as x, y, width, height. If there is no selection this function returns TRUE and the returned bounds are the extents of the whole drawable.",
                                      "Michael Natterer <mitch@gimp.org>",
                                      "Michael Natterer",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("non-empty",
@@ -1967,7 +1942,7 @@ register_drawable_procs (Gimp *gimp)
                                                           "height of the intersection",
                                                           G_MININT32, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1983,12 +1958,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_boolean ("undo",
@@ -1996,7 +1970,7 @@ register_drawable_procs (Gimp *gimp)
                                                      "Push merge to undo stack?",
                                                      FALSE,
                                                      GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2012,12 +1986,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("x",
@@ -2043,7 +2016,7 @@ register_drawable_procs (Gimp *gimp)
                                                       "Height of update region",
                                                       G_MININT32, G_MAXINT32, 0,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2059,12 +2032,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1997",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("x-coord",
@@ -2089,7 +2061,7 @@ register_drawable_procs (Gimp *gimp)
                                                                "pixel",
                                                                "The pixel value",
                                                                GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2105,12 +2077,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1997",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("x-coord",
@@ -2135,7 +2106,7 @@ register_drawable_procs (Gimp *gimp)
                                                            "pixel",
                                                            "The pixel value",
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2151,21 +2122,20 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("fill-type",
                                                   "fill type",
-                                                  "The type of fill: { GIMP_FOREGROUND_FILL (0), GIMP_BACKGROUND_FILL (1), GIMP_WHITE_FILL (2), GIMP_TRANSPARENT_FILL (3), GIMP_PATTERN_FILL (4) }",
+                                                  "The type of fill",
                                                   GIMP_TYPE_FILL_TYPE,
                                                   GIMP_FOREGROUND_FILL,
                                                   GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2181,12 +2151,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1997",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable to offset",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_boolean ("wrap-around",
@@ -2197,7 +2166,7 @@ register_drawable_procs (Gimp *gimp)
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("fill-type",
                                                   "fill type",
-                                                  "fill vacated regions of drawable with background or transparent: { GIMP_OFFSET_BACKGROUND (0), GIMP_OFFSET_TRANSPARENT (1) }",
+                                                  "fill vacated regions of drawable with background or transparent",
                                                   GIMP_TYPE_OFFSET_TYPE,
                                                   GIMP_OFFSET_BACKGROUND,
                                                   GIMP_PARAM_READWRITE));
@@ -2213,7 +2182,7 @@ register_drawable_procs (Gimp *gimp)
                                                       "offset by this amount in Y direction",
                                                       G_MININT32, G_MAXINT32, 0,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2229,12 +2198,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Andy Thomas",
                                      "1999",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("width",
@@ -2277,7 +2245,7 @@ register_drawable_procs (Gimp *gimp)
                                                                "thumbnail data",
                                                                "The thumbnail data",
                                                                GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2293,12 +2261,11 @@ register_drawable_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("src-x",
@@ -2365,7 +2332,7 @@ register_drawable_procs (Gimp *gimp)
                                                                "thumbnail data",
                                                                "The thumbnail data",
                                                                GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2381,17 +2348,16 @@ register_drawable_procs (Gimp *gimp)
                                      "Gerald Friedland",
                                      "2005",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("mode",
                                                   "mode",
-                                                  "The algorithm to use: { GIMP_FOREGROUND_EXTRACT_SIOX (0) }",
+                                                  "The algorithm to use",
                                                   GIMP_TYPE_FOREGROUND_EXTRACT_MODE,
                                                   GIMP_FOREGROUND_EXTRACT_SIOX,
                                                   GIMP_PARAM_READWRITE));
@@ -2399,9 +2365,8 @@ register_drawable_procs (Gimp *gimp)
                                gimp_param_spec_drawable_id ("mask",
                                                             "mask",
                                                             "Tri-Map",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
-
 }

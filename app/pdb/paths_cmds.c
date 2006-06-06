@@ -25,7 +25,7 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "gimp-pdb.h"
+#include "gimppdb.h"
 #include "gimpprocedure.h"
 #include "core/gimpparamspecs.h"
 
@@ -675,7 +675,7 @@ path_import_string_invoker (GimpProcedure     *procedure,
 }
 
 void
-register_paths_procs (Gimp *gimp)
+register_paths_procs (GimpPDB *pdb)
 {
   GimpProcedure *procedure;
 
@@ -692,12 +692,11 @@ register_paths_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-image-get-vectors");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image to list the paths from",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("num-paths",
@@ -710,7 +709,7 @@ register_paths_procs (Gimp *gimp)
                                                                  "path list",
                                                                  "List of the paths belonging to this image.",
                                                                  GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -726,12 +725,11 @@ register_paths_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-image-get-active-vectors");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image to get the current path from",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string ("name",
@@ -740,7 +738,7 @@ register_paths_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -756,12 +754,11 @@ register_paths_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-image-set-active-vectors");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image in which a path will become current",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
@@ -770,7 +767,7 @@ register_paths_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -786,12 +783,11 @@ register_paths_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-image-remove-vectors");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image to delete the path from",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
@@ -800,7 +796,7 @@ register_paths_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -816,12 +812,11 @@ register_paths_procs (Gimp *gimp)
                                      "Andy Thomas",
                                      "1999",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image to list the paths from",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
@@ -853,7 +848,7 @@ register_paths_procs (Gimp *gimp)
                                                                 "points pairs",
                                                                 "The points in the path represented as 3 floats. The first is the x pos, next is the y pos, last is the type of the pnt. The type field is dependant on the path type. For beziers (type 1 paths) the type can either be (1.0 = BEZIER_ANCHOR, 2.0 = BEZIER_CONTROL, 3.0 = BEZIER_MOVE). Note all points are returned in pixel resolution.",
                                                                 GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -869,12 +864,11 @@ register_paths_procs (Gimp *gimp)
                                      "Andy Thomas",
                                      "1999",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image to set the paths in",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
@@ -900,7 +894,7 @@ register_paths_procs (Gimp *gimp)
                                                             "points pairs",
                                                             "The points in the path represented as 3 floats. The first is the x pos, next is the y pos, last is the type of the pnt. The type field is dependant on the path type. For beziers (type 1 paths) the type can either be (1.0 = BEZIER_ANCHOR, 2.0 = BEZIER_CONTROL, 3.0= BEZIER_MOVE). Note all points are returned in pixel resolution.",
                                                             GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -916,14 +910,13 @@ register_paths_procs (Gimp *gimp)
                                      "Andy Thomas",
                                      "1999",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image which contains the path to stroke",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -934,17 +927,16 @@ register_paths_procs (Gimp *gimp)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-path-get-point-at-dist",
                                      "This procedure is deprecated! Use 'gimp-vectors-stroke-get-point-at-dist' instead.",
-                                     "This will return the x,y position of a point at a given distance along the bezier curve. The distance will be obtained by first digitizing the curve internally and then walking along the curve. For a closed curve the start of the path is the first point on the path that was created. This might not be obvious. Note the current path is used.",
-                                     "Andy Thomas",
-                                     "Andy Thomas",
-                                     "1999",
+                                     "This procedure is deprecated! Use 'gimp-vectors-stroke-get-point-at-dist' instead.",
+                                     "",
+                                     "",
+                                     "",
                                      "gimp-vectors-stroke-get-point-at-dist");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image the paths belongs to",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_double ("distance",
@@ -970,7 +962,7 @@ register_paths_procs (Gimp *gimp)
                                                         "The slope (dy / dx) at the specified point.",
                                                         -G_MAXDOUBLE, G_MAXDOUBLE, 0,
                                                         GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -986,12 +978,11 @@ register_paths_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-vectors-get-tattoo");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
@@ -1006,7 +997,7 @@ register_paths_procs (Gimp *gimp)
                                                           "The tattoo associated with the named path.",
                                                           G_MININT32, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1022,12 +1013,11 @@ register_paths_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-vectors-set-tattoo");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
@@ -1042,7 +1032,7 @@ register_paths_procs (Gimp *gimp)
                                                       "The tattoo associated with the name path. Only values returned from 'path_get_tattoo' should be used here",
                                                       G_MININT32, G_MAXINT32, 0,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1058,12 +1048,11 @@ register_paths_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-image-get-vectors-by-tattoo");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("tattoo",
@@ -1078,7 +1067,7 @@ register_paths_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1094,12 +1083,11 @@ register_paths_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-vectors-get-linked");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
@@ -1114,7 +1102,7 @@ register_paths_procs (Gimp *gimp)
                                                          "TRUE if the path is locked, FALSE otherwise",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1130,12 +1118,11 @@ register_paths_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-vectors-set-linked");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
@@ -1150,7 +1137,7 @@ register_paths_procs (Gimp *gimp)
                                                      "Whether the path is locked",
                                                      FALSE,
                                                      GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1166,12 +1153,11 @@ register_paths_procs (Gimp *gimp)
                                      "Jo\xc3\xa3o S. O. Bueno Calligaris",
                                      "2003",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
@@ -1183,7 +1169,7 @@ register_paths_procs (Gimp *gimp)
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("op",
                                                   "op",
-                                                  "The desired operation with current selection: { GIMP_CHANNEL_OP_ADD (0), GIMP_CHANNEL_OP_SUBTRACT (1), GIMP_CHANNEL_OP_REPLACE (2), GIMP_CHANNEL_OP_INTERSECT (3) }",
+                                                  "The desired operation with current selection",
                                                   GIMP_TYPE_CHANNEL_OPS,
                                                   GIMP_CHANNEL_OP_ADD,
                                                   GIMP_PARAM_READWRITE));
@@ -1211,7 +1197,7 @@ register_paths_procs (Gimp *gimp)
                                                     "Feather radius y.",
                                                     -G_MAXDOUBLE, G_MAXDOUBLE, 0,
                                                     GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1227,12 +1213,11 @@ register_paths_procs (Gimp *gimp)
                                      "Sven Neumann",
                                      "2003",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("filename",
@@ -1253,7 +1238,7 @@ register_paths_procs (Gimp *gimp)
                                                      "Scale the SVG to image dimensions.",
                                                      FALSE,
                                                      GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1264,17 +1249,16 @@ register_paths_procs (Gimp *gimp)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-path-import-string",
                                      "Import paths from an SVG string.",
-                                     "This procedure works like gimp_path_import() but takes a string rather than reading the SVG from a file. This allows you to write scripts that generate SVG and feed it to GIMP.",
+                                     "This procedure works like 'gimp-path-import' but takes a string rather than reading the SVG from a file. This allows you to write scripts that generate SVG and feed it to GIMP.",
                                      "Sven Neumann <sven@gimp.org>",
                                      "Sven Neumann",
                                      "2005",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("string",
@@ -1301,7 +1285,6 @@ register_paths_procs (Gimp *gimp)
                                                      "Scale the SVG to image dimensions.",
                                                      FALSE,
                                                      GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
-
 }

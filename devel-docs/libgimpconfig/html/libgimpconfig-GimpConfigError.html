@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="prev" href="libgimpconfig-gimpconfig-serialize.html" title="gimpconfig-serialize">
 <link rel="next" href="libgimpconfig-gimpconfig-params.html" title="gimpconfig-params">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="chapter" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
@@ -16,24 +17,29 @@
 <link rel="index" href="ix03.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimpconfig-gimpconfig-serialize.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpconfig.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpconfig-gimpconfig-params.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimpconfig-GimpConfigError"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpconfig-error</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpconfig-error</span></h2>
 <p>gimpconfig-error &#8212; </p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -44,17 +50,17 @@ GQuark      <a href="libgimpconfig-GimpConfigError.html#gimp-config-error-quark"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2525450"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2533340"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2533346"></a><h3>
+<a name="id2558224"></a><h3>
 <a name="GimpConfigError"></a>enum GimpConfigError</h3>
-<a class="indexterm" name="id2551415"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2558240"></a><pre class="programlisting">typedef enum
 {
   GIMP_CONFIG_ERROR_OPEN,         /*  open failed                            */
   GIMP_CONFIG_ERROR_OPEN_ENOENT,  /*  file does not exist                    */
@@ -69,9 +75,9 @@ GQuark      <a href="libgimpconfig-GimpConfigError.html#gimp-config-error-quark"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2551441"></a><h3>
+<a name="id2558262"></a><h3>
 <a name="GIMP-CONFIG-ERROR:CAPS"></a>GIMP_CONFIG_ERROR</h3>
-<a class="indexterm" name="id2551450"></a><pre class="programlisting">#define GIMP_CONFIG_ERROR (gimp_config_error_quark ())
+<a class="indexterm" name="id2558274"></a><pre class="programlisting">#define GIMP_CONFIG_ERROR (gimp_config_error_quark ())
 </pre>
 <p>
 
@@ -79,9 +85,9 @@ GQuark      <a href="libgimpconfig-GimpConfigError.html#gimp-config-error-quark"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2551467"></a><h3>
+<a name="id2558290"></a><h3>
 <a name="gimp-config-error-quark"></a>gimp_config_error_quark ()</h3>
-<a class="indexterm" name="id2551476"></a><pre class="programlisting">GQuark      gimp_config_error_quark         (void);</pre>
+<a class="indexterm" name="id2558304"></a><pre class="programlisting">GQuark      gimp_config_error_quark         (void);</pre>
 <p>
 This function is never called directly. Use <a href="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR:CAPS"><code class="function">GIMP_CONFIG_ERROR()</code></a> instead.</p>
 <p>
@@ -102,9 +108,5 @@ This function is never called directly. Use <a href="libgimpconfig-GimpConfigErr
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimpconfig-gimpconfig-serialize.html"><b>&lt;&lt;&#160;gimpconfig-serialize</b></a></td>
-<td align="right"><a accesskey="n" href="libgimpconfig-gimpconfig-params.html"><b>gimpconfig-params&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

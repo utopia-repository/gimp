@@ -4,16 +4,19 @@
 
 <refentry id="GimpEnumStore">
 <refmeta>
-<refentrytitle>GimpEnumStore</refentrytitle>
+<refentrytitle id="top_of_page">GimpEnumStore</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpEnumStore</refname><refpurpose></refpurpose>
+<refname>GimpEnumStore</refname>
+<refpurpose></refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -40,8 +43,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 id="object_hierarchy">
+<title id="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -54,8 +57,8 @@
 
 
 
-<refsect1>
-<title>Implemented Interfaces</title>
+<refsect1 id="impl_interfaces">
+<title id="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpEnumStore implements
  <link linkend="GtkTreeModel">GtkTreeModel</link>,  <link linkend="GtkTreeDragSource">GtkTreeDragSource</link>,  <link linkend="GtkTreeDragDest">GtkTreeDragDest</link> and  <link linkend="GtkTreeSortable">GtkTreeSortable</link>.</para>
@@ -66,23 +69,23 @@ GimpEnumStore implements
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpEnumStore-struct"/>GimpEnumStore</title>
+<title><anchor id="GimpEnumStore-struct" role="struct"/>GimpEnumStore</title>
 <indexterm><primary>GimpEnumStore</primary></indexterm><programlisting>typedef struct _GimpEnumStore GimpEnumStore;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-enum-store-new"/>gimp_enum_store_new ()</title>
+<title><anchor id="gimp-enum-store-new" role="function" condition="since:GIMP 2.4"/>gimp_enum_store_new ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_enum_store_new</primary></indexterm><programlisting><link linkend="GtkListStore">GtkListStore</link>* gimp_enum_store_new           (<link linkend="GType">GType</link> enum_type);</programlisting>
 <para>
 Creates a new <link linkend="GimpEnumStore"><type>GimpEnumStore</type></link>, derived from <link linkend="GtkListStore"><type>GtkListStore</type></link> and fills
@@ -100,7 +103,7 @@ system and should have translatable value names.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-enum-store-new-with-range"/>gimp_enum_store_new_with_range ()</title>
+<title><anchor id="gimp-enum-store-new-with-range" role="function" condition="since:GIMP 2.4"/>gimp_enum_store_new_with_range ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_enum_store_new_with_range</primary></indexterm><programlisting><link linkend="GtkListStore">GtkListStore</link>* gimp_enum_store_new_with_range
                                             (<link linkend="GType">GType</link> enum_type,
                                              <link linkend="gint">gint</link> minimum,
@@ -127,7 +130,7 @@ to limit the enum values to a certain range. Values smaller than
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-enum-store-new-with-values"/>gimp_enum_store_new_with_values ()</title>
+<title><anchor id="gimp-enum-store-new-with-values" role="function" condition="since:GIMP 2.4"/>gimp_enum_store_new_with_values ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_enum_store_new_with_values</primary></indexterm><programlisting><link linkend="GtkListStore">GtkListStore</link>* gimp_enum_store_new_with_values
                                             (<link linkend="GType">GType</link> enum_type,
                                              <link linkend="gint">gint</link> n_values,
@@ -154,7 +157,7 @@ store.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-enum-store-new-with-values-valist"/>gimp_enum_store_new_with_values_valist ()</title>
+<title><anchor id="gimp-enum-store-new-with-values-valist" role="function" condition="since:GIMP 2.4"/>gimp_enum_store_new_with_values_valist ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_enum_store_new_with_values_valist</primary></indexterm><programlisting><link linkend="GtkListStore">GtkListStore</link>* gimp_enum_store_new_with_values_valist
                                             (<link linkend="GType">GType</link> enum_type,
                                              <link linkend="gint">gint</link> n_values,
@@ -179,7 +182,7 @@ See <link linkend="gimp-enum-store-new-with-values"><function>gimp_enum_store_ne
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-enum-store-set-stock-prefix"/>gimp_enum_store_set_stock_prefix ()</title>
+<title><anchor id="gimp-enum-store-set-stock-prefix" role="function" condition="since:GIMP 2.4"/>gimp_enum_store_set_stock_prefix ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_enum_store_set_stock_prefix</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_enum_store_set_stock_prefix
                                             (<link linkend="GimpEnumStore">GimpEnumStore</link> *store,
                                              const <link linkend="gchar">gchar</link> *stock_prefix);</programlisting>

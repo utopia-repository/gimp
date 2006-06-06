@@ -4,16 +4,19 @@
 
 <refentry id="GimpProcBrowserDialog">
 <refmeta>
-<refentrytitle>GimpProcBrowserDialog</refentrytitle>
+<refentrytitle id="top_of_page">GimpProcBrowserDialog</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpProcBrowserDialog</refname><refpurpose></refpurpose>
+<refname>GimpProcBrowserDialog</refname>
+<refpurpose></refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -31,8 +34,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 id="object_hierarchy">
+<title id="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -51,8 +54,8 @@
 
 
 
-<refsect1>
-<title>Implemented Interfaces</title>
+<refsect1 id="impl_interfaces">
+<title id="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpProcBrowserDialog implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -61,37 +64,37 @@ GimpProcBrowserDialog implements
 
 
 
-<refsect1>
-<title>Signal Prototypes</title>
+<refsect1 id="signal_proto">
+<title id="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpProcBrowserDialog-row-activated">row-activated</link>&quot;
             <link linkend="void">void</link>        user_function      (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog,
-                                            <link linkend="gpointer">gpointer</link> user_data);
+                                            <link linkend="gpointer">gpointer</link>               user_data)      : Run last
 &quot;<link linkend="GimpProcBrowserDialog-selection-changed">selection-changed</link>&quot;
             <link linkend="void">void</link>        user_function      (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog,
-                                            <link linkend="gpointer">gpointer</link> user_data);
+                                            <link linkend="gpointer">gpointer</link>               user_data)      : Run last
 </synopsis>
 </refsect1>
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpProcBrowserDialog-struct"/>GimpProcBrowserDialog</title>
+<title><anchor id="GimpProcBrowserDialog-struct" role="struct"/>GimpProcBrowserDialog</title>
 <indexterm><primary>GimpProcBrowserDialog</primary></indexterm><programlisting>typedef struct _GimpProcBrowserDialog GimpProcBrowserDialog;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-proc-browser-dialog-new"/>gimp_proc_browser_dialog_new ()</title>
+<title><anchor id="gimp-proc-browser-dialog-new" role="function" condition="since:GIMP 2.4"/>gimp_proc_browser_dialog_new ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_proc_browser_dialog_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_proc_browser_dialog_new    (const <link linkend="gchar">gchar</link> *title,
                                              const <link linkend="gchar">gchar</link> *role,
                                              <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
@@ -115,7 +118,7 @@ Create a new <link linkend="GimpProcBrowserDialog"><type>GimpProcBrowserDialog</
 <listitem><simpara>   The help_id which will be passed to <parameter>help_func</parameter>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>...</parameter>&nbsp;:</term>
-<listitem><simpara>       A <literal>NULL</literal>-terminated list destribing the action_area buttons.
+<listitem><simpara>       A <link linkend="NULL:CAPS"><literal>NULL</literal></link>-terminated list destribing the action_area buttons.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a newly created <link linkend="GimpProcBrowserDialog"><type>GimpProcBrowserDialog</type></link>.
 
@@ -123,7 +126,7 @@ Create a new <link linkend="GimpProcBrowserDialog"><type>GimpProcBrowserDialog</
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-proc-browser-dialog-get-selected"/>gimp_proc_browser_dialog_get_selected ()</title>
+<title><anchor id="gimp-proc-browser-dialog-get-selected" role="function" condition="since:GIMP 2.4"/>gimp_proc_browser_dialog_get_selected ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_proc_browser_dialog_get_selected</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_proc_browser_dialog_get_selected
                                             (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog);</programlisting>
 <para>
@@ -134,7 +137,7 @@ Retrieves the name of the currently selected procedure.</para>
 <varlistentry><term><parameter>dialog</parameter>&nbsp;:</term>
 <listitem><simpara> a <link linkend="GimpProcBrowserDialog"><type>GimpProcBrowserDialog</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The name of the selected procedure of <literal>NULL</literal> if no
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The name of the selected procedure of <link linkend="NULL:CAPS"><literal>NULL</literal></link> if no
               procedure is selected.
 
 </simpara></listitem></varlistentry>
@@ -143,11 +146,11 @@ Retrieves the name of the currently selected procedure.</para>
 
 </refsect1>
 
-<refsect1>
-<title>Signals</title>
+<refsect1 id="signals">
+<title id="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpProcBrowserDialog-row-activated"/>The &quot;row-activated&quot; signal</title>
-<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog,
-                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>GimpProcBrowserDialog::row-activated</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog,
+                                            <link linkend="gpointer">gpointer</link>               user_data)      : Run last</programlisting>
 <para>
 Emitted when one of the rows in the contained <link linkend="GtkTreeView"><type>GtkTreeView</type></link> is activated.</para>
 <para>
@@ -159,8 +162,8 @@ Emitted when one of the rows in the contained <link linkend="GtkTreeView"><type>
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
 </variablelist></refsect2><refsect2><title><anchor id="GimpProcBrowserDialog-selection-changed"/>The &quot;selection-changed&quot; signal</title>
-<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog,
-                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>GimpProcBrowserDialog::selection-changed</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog,
+                                            <link linkend="gpointer">gpointer</link>               user_data)      : Run last</programlisting>
 <para>
 Emitted when the selection in the contained <link linkend="GtkTreeView"><type>GtkTreeView</type></link> changes.</para>
 <para>

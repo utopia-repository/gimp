@@ -26,7 +26,7 @@
 #include "libgimpcolor/gimpcolor.h"
 
 #include "pdb-types.h"
-#include "gimp-pdb.h"
+#include "gimppdb.h"
 #include "gimpprocedure.h"
 #include "core/gimpparamspecs.h"
 
@@ -34,8 +34,9 @@
 #include "core/gimpcontainer.h"
 #include "core/gimpcontext.h"
 #include "core/gimpdatafactory.h"
-#include "plug-in/plug-in-context.h"
-#include "plug-in/plug-in.h"
+#include "plug-in/gimpplugin-context.h"
+#include "plug-in/gimpplugin.h"
+#include "plug-in/gimppluginmanager.h"
 
 
 static GValueArray *
@@ -46,10 +47,13 @@ context_push_invoker (GimpProcedure     *procedure,
                       const GValueArray *args)
 {
   gboolean success = TRUE;
-  if (gimp->current_plug_in && gimp->current_plug_in->open)
-    success = plug_in_context_push (gimp->current_plug_in);
+  GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
+
+  if (plug_in && plug_in->open)
+    success = gimp_plug_in_context_push (plug_in);
   else
     success = FALSE;
+
   return gimp_procedure_get_return_values (procedure, success);
 }
 
@@ -61,10 +65,13 @@ context_pop_invoker (GimpProcedure     *procedure,
                      const GValueArray *args)
 {
   gboolean success = TRUE;
-  if (gimp->current_plug_in && gimp->current_plug_in->open)
-    success = plug_in_context_pop (gimp->current_plug_in);
+  GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
+
+  if (plug_in && plug_in->open)
+    success = gimp_plug_in_context_pop (plug_in);
   else
     success = FALSE;
+
   return gimp_procedure_get_return_values (procedure, success);
 }
 
@@ -131,6 +138,7 @@ context_get_foreground_invoker (GimpProcedure     *procedure,
   GimpRGB foreground = { 0.0, 0.0, 0.0, 1.0 };
 
   gimp_context_get_foreground (context, &foreground);
+  gimp_rgb_set_alpha (&foreground, 1.0);
 
   return_vals = gimp_procedure_get_return_values (procedure, TRUE);
   gimp_value_set_rgb (&return_vals->values[1], &foreground);
@@ -170,6 +178,7 @@ context_get_background_invoker (GimpProcedure     *procedure,
   GimpRGB background = { 0.0, 0.0, 0.0, 1.0 };
 
   gimp_context_get_background (context, &background);
+  gimp_rgb_set_alpha (&background, 1.0);
 
   return_vals = gimp_procedure_get_return_values (procedure, TRUE);
   gimp_value_set_rgb (&return_vals->values[1], &background);
@@ -557,7 +566,7 @@ context_set_font_invoker (GimpProcedure     *procedure,
 }
 
 void
-register_context_procs (Gimp *gimp)
+register_context_procs (GimpPDB *pdb)
 {
   GimpProcedure *procedure;
 
@@ -574,8 +583,7 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -591,8 +599,7 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -608,7 +615,6 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2005",
                                      NULL);
-
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string ("name",
                                                            "name",
@@ -616,7 +622,7 @@ register_context_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -632,7 +638,6 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2005",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -640,7 +645,7 @@ register_context_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -656,14 +661,14 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_rgb ("foreground",
                                                         "foreground",
                                                         "The foreground color",
+                                                        FALSE,
                                                         NULL,
                                                         GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -679,14 +684,14 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_rgb ("foreground",
                                                     "foreground",
                                                     "The foreground color",
+                                                    FALSE,
                                                     NULL,
                                                     GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -702,14 +707,14 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_rgb ("background",
                                                         "background",
                                                         "The background color",
+                                                        FALSE,
                                                         NULL,
                                                         GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -725,14 +730,14 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_rgb ("background",
                                                     "background",
                                                     "The background color",
+                                                    FALSE,
                                                     NULL,
                                                     GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -748,8 +753,7 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -765,8 +769,7 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -782,14 +785,13 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_double ("opacity",
                                                         "opacity",
-                                                        "The opacity (0 <= opacity <= 100)",
+                                                        "The opacity",
                                                         0, 100, 0,
                                                         GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -805,14 +807,13 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                g_param_spec_double ("opacity",
                                                     "opacity",
-                                                    "The opacity (0 <= opacity <= 100)",
+                                                    "The opacity",
                                                     0, 100, 0,
                                                     GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -828,15 +829,14 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_enum ("paint-mode",
                                                       "paint mode",
-                                                      "The paint mode: { GIMP_NORMAL_MODE (0), GIMP_DISSOLVE_MODE (1), GIMP_BEHIND_MODE (2), GIMP_MULTIPLY_MODE (3), GIMP_SCREEN_MODE (4), GIMP_OVERLAY_MODE (5), GIMP_DIFFERENCE_MODE (6), GIMP_ADDITION_MODE (7), GIMP_SUBTRACT_MODE (8), GIMP_DARKEN_ONLY_MODE (9), GIMP_LIGHTEN_ONLY_MODE (10), GIMP_HUE_MODE (11), GIMP_SATURATION_MODE (12), GIMP_COLOR_MODE (13), GIMP_VALUE_MODE (14), GIMP_DIVIDE_MODE (15), GIMP_DODGE_MODE (16), GIMP_BURN_MODE (17), GIMP_HARDLIGHT_MODE (18), GIMP_SOFTLIGHT_MODE (19), GIMP_GRAIN_EXTRACT_MODE (20), GIMP_GRAIN_MERGE_MODE (21), GIMP_COLOR_ERASE_MODE (22) }",
+                                                      "The paint mode",
                                                       GIMP_TYPE_LAYER_MODE_EFFECTS,
                                                       GIMP_NORMAL_MODE,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -852,15 +852,14 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("paint-mode",
                                                   "paint mode",
-                                                  "The paint mode: { GIMP_NORMAL_MODE (0), GIMP_DISSOLVE_MODE (1), GIMP_BEHIND_MODE (2), GIMP_MULTIPLY_MODE (3), GIMP_SCREEN_MODE (4), GIMP_OVERLAY_MODE (5), GIMP_DIFFERENCE_MODE (6), GIMP_ADDITION_MODE (7), GIMP_SUBTRACT_MODE (8), GIMP_DARKEN_ONLY_MODE (9), GIMP_LIGHTEN_ONLY_MODE (10), GIMP_HUE_MODE (11), GIMP_SATURATION_MODE (12), GIMP_COLOR_MODE (13), GIMP_VALUE_MODE (14), GIMP_DIVIDE_MODE (15), GIMP_DODGE_MODE (16), GIMP_BURN_MODE (17), GIMP_HARDLIGHT_MODE (18), GIMP_SOFTLIGHT_MODE (19), GIMP_GRAIN_EXTRACT_MODE (20), GIMP_GRAIN_MERGE_MODE (21), GIMP_COLOR_ERASE_MODE (22) }",
+                                                  "The paint mode",
                                                   GIMP_TYPE_LAYER_MODE_EFFECTS,
                                                   GIMP_NORMAL_MODE,
                                                   GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -876,7 +875,6 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string ("name",
                                                            "name",
@@ -884,7 +882,7 @@ register_context_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -900,7 +898,6 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -908,7 +905,7 @@ register_context_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -924,7 +921,6 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string ("name",
                                                            "name",
@@ -932,7 +928,7 @@ register_context_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -948,7 +944,6 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -956,7 +951,7 @@ register_context_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -972,7 +967,6 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string ("name",
                                                            "name",
@@ -980,7 +974,7 @@ register_context_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -996,7 +990,6 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -1004,7 +997,7 @@ register_context_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1020,7 +1013,6 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string ("name",
                                                            "name",
@@ -1028,7 +1020,7 @@ register_context_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1044,7 +1036,6 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -1052,7 +1043,7 @@ register_context_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1068,7 +1059,6 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string ("name",
                                                            "name",
@@ -1076,7 +1066,7 @@ register_context_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1092,7 +1082,6 @@ register_context_procs (Gimp *gimp)
                                      "Michael Natterer & Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -1100,7 +1089,6 @@ register_context_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
-
 }

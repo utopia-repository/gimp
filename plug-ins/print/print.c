@@ -1,5 +1,5 @@
 /*
- * "$Id: print.c,v 1.74 2006/03/28 12:58:48 neo Exp $"
+ * "$Id: print.c,v 1.75 2006/05/16 12:26:17 neo Exp $"
  *
  *   Print plug-in for the GIMP.
  *
@@ -70,7 +70,7 @@ static int	do_print_dialog (const gchar      *proc_name);
  * Globals...
  */
 
-GimpPlugInInfo	PLUG_IN_INFO =		/* Plug-in information */
+const GimpPlugInInfo	PLUG_IN_INFO =		/* Plug-in information */
 {
   NULL,  /* init_proc  */
   NULL,  /* quit_proc  */
@@ -128,7 +128,7 @@ static int print_finished = 0;
 static void
 query (void)
 {
-  static GimpParamDef args[] =
+  static const GimpParamDef args[] =
   {
     { GIMP_PDB_INT32,	"run_mode",	"Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,	"image",	"Input image" },
@@ -1247,5 +1247,5 @@ get_system_printers (void)
 }
 
 /*
- * End of "$Id: print.c,v 1.74 2006/03/28 12:58:48 neo Exp $".
+ * End of "$Id: print.c,v 1.75 2006/05/16 12:26:17 neo Exp $".
  */

@@ -38,14 +38,14 @@ sub brushes_popup {
 	  desc => 'The initial spacing of the brush (if < 0 then use brush
                    default spacing)' },
 	{ name => 'paint_mode', type => 'enum GimpLayerModeEffects',
-	  desc => 'The initial paint mode: %%desc%%' }
+	  desc => 'The initial paint mode' }
     );
 
     %invoke = (
 	code => <<'CODE'
 {
   if (gimp->no_interface ||
-      ! gimp_pdb_lookup (gimp, brush_callback) ||
+      ! gimp_pdb_lookup_procedure (gimp->pdb, brush_callback) ||
       ! gimp_pdb_dialog_new (gimp, context, gimp->brush_factory->container,
                              popup_title, brush_callback, initial_brush,
                              "opacity",    opacity / 100.0,
@@ -73,7 +73,7 @@ sub brushes_close_popup {
 	code => <<'CODE'
 {
   if (gimp->no_interface ||
-      ! gimp_pdb_lookup (gimp, brush_callback) ||
+      ! gimp_pdb_lookup_procedure (gimp->pdb, brush_callback) ||
       ! gimp_pdb_dialog_close (gimp, gimp->brush_factory->container,
                                brush_callback))
     success = FALSE;
@@ -99,14 +99,14 @@ sub brushes_set_popup {
 	  desc => 'The initial spacing of the brush (if < 0 then use brush
                    default spacing)' },
 	{ name => 'paint_mode', type => 'enum GimpLayerModeEffects',
-	  desc => 'The initial paint mode: %%desc%%' }
+	  desc => 'The initial paint mode' }
     );
 
     %invoke = (
 	code => <<'CODE'
 {
   if (gimp->no_interface ||
-      ! gimp_pdb_lookup (gimp, brush_callback) ||
+      ! gimp_pdb_lookup_procedure (gimp->pdb, brush_callback) ||
       ! gimp_pdb_dialog_set (gimp, gimp->brush_factory->container,
                              brush_callback, brush_name,
                              "opacity",    opacity / 100.0,

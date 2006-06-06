@@ -68,7 +68,7 @@ static void   gimp_display_options_get_property (GObject      *object,
 G_DEFINE_TYPE_WITH_CODE (GimpDisplayOptions,
                          gimp_display_options,
                          G_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG, NULL));
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG, NULL))
 
 typedef struct _GimpDisplayOptions      GimpDisplayOptionsFullscreen;
 typedef struct _GimpDisplayOptionsClass GimpDisplayOptionsFullscreenClass;
@@ -78,7 +78,7 @@ typedef struct _GimpDisplayOptionsClass GimpDisplayOptionsFullscreenClass;
 G_DEFINE_TYPE_WITH_CODE (GimpDisplayOptionsFullscreen,
                          gimp_display_options_fullscreen,
                          GIMP_TYPE_DISPLAY_OPTIONS,
-                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG, NULL));
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG, NULL))
 
 
 static void
@@ -135,7 +135,7 @@ gimp_display_options_class_init (GimpDisplayOptionsClass *klass)
                                  GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_RGB (object_class, PROP_PADDING_COLOR,
                                 "padding-color", CANVAS_PADDING_COLOR_BLURB,
-                                &white,
+                                FALSE, &white,
                                 GIMP_PARAM_STATIC_STRINGS);
 }
 
@@ -193,7 +193,7 @@ gimp_display_options_fullscreen_class_init (GimpDisplayOptionsFullscreenClass *k
                                  GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_RGB (object_class, PROP_PADDING_COLOR,
                                 "padding-color", CANVAS_PADDING_COLOR_BLURB,
-                                &black,
+                                FALSE, &black,
                                 GIMP_PARAM_STATIC_STRINGS);
 }
 

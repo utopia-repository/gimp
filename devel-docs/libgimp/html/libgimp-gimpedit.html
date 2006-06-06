@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
 <link rel="prev" href="libgimp-gimpdrawabletransform.html" title="gimpdrawabletransform">
 <link rel="next" href="libgimp-gimpfileops.html" title="gimpfileops">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -23,24 +24,29 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimpdrawabletransform.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpfileops.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpedit"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpedit</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpedit</span></h2>
 <p>gimpedit &#8212; Edit menu functions (cut, copy, paste, clear, etc.)</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -100,18 +106,18 @@ gboolean    <a href="libgimp-gimpedit.html#gimp-edit-stroke">gimp_edit_stroke</a
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578712"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 Edit menu functions (cut, copy, paste, clear, etc.)
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578724"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2578731"></a><h3>
+<a name="id2581471"></a><h3>
 <a name="gimp-edit-cut"></a>gimp_edit_cut ()</h3>
-<a class="indexterm" name="id2578741"></a><pre class="programlisting">gboolean    gimp_edit_cut                   (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2581483"></a><pre class="programlisting">gboolean    gimp_edit_cut                   (gint32 drawable_ID);</pre>
 <p>
 Cut from the specified drawable.
 </p>
@@ -145,9 +151,9 @@ internal GIMP edit buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2578811"></a><h3>
+<a name="id2581553"></a><h3>
 <a name="gimp-edit-copy"></a>gimp_edit_copy ()</h3>
-<a class="indexterm" name="id2578821"></a><pre class="programlisting">gboolean    gimp_edit_copy                  (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2581565"></a><pre class="programlisting">gboolean    gimp_edit_copy                  (gint32 drawable_ID);</pre>
 <p>
 Copy from the specified drawable.
 </p>
@@ -181,9 +187,9 @@ edit buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2580138"></a><h3>
+<a name="id2582958"></a><h3>
 <a name="gimp-edit-copy-visible"></a>gimp_edit_copy_visible ()</h3>
-<a class="indexterm" name="id2580147"></a><pre class="programlisting">gboolean    gimp_edit_copy_visible          (gint32 image_ID);</pre>
+<a class="indexterm" name="id2582972"></a><pre class="programlisting">gboolean    gimp_edit_copy_visible          (gint32 image_ID);</pre>
 <p>
 Copy from the projection.
 </p>
@@ -220,9 +226,9 @@ buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2580221"></a><h3>
+<a name="id2583045"></a><h3>
 <a name="gimp-edit-paste"></a>gimp_edit_paste ()</h3>
-<a class="indexterm" name="id2580231"></a><pre class="programlisting">gint32      gimp_edit_paste                 (gint32 drawable_ID,
+<a class="indexterm" name="id2583058"></a><pre class="programlisting">gint32      gimp_edit_paste                 (gint32 drawable_ID,
                                              gboolean paste_into);</pre>
 <p>
 Paste buffer to the specified drawable.
@@ -272,9 +278,9 @@ not needed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2580330"></a><h3>
+<a name="id2583152"></a><h3>
 <a name="gimp-edit-paste-as-new"></a>gimp_edit_paste_as_new ()</h3>
-<a class="indexterm" name="id2580339"></a><pre class="programlisting">gint32      gimp_edit_paste_as_new          (void);</pre>
+<a class="indexterm" name="id2583165"></a><pre class="programlisting">gint32      gimp_edit_paste_as_new          (void);</pre>
 <p>
 Paste buffer to a new image.
 </p>
@@ -301,9 +307,9 @@ procedure returns the new image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2580391"></a><h3>
+<a name="id2584442"></a><h3>
 <a name="gimp-edit-named-cut"></a>gimp_edit_named_cut ()</h3>
-<a class="indexterm" name="id2588904"></a><pre class="programlisting">gchar*      gimp_edit_named_cut             (gint32 drawable_ID,
+<a class="indexterm" name="id2584457"></a><pre class="programlisting">gchar*      gimp_edit_named_cut             (gint32 drawable_ID,
                                              const gchar *buffer_name);</pre>
 <p>
 Cut into a named buffer.
@@ -344,9 +350,9 @@ pasting, regardless of any intermediate copy or cut operations.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2588997"></a><h3>
+<a name="id2584550"></a><h3>
 <a name="gimp-edit-named-copy"></a>gimp_edit_named_copy ()</h3>
-<a class="indexterm" name="id2589006"></a><pre class="programlisting">gchar*      gimp_edit_named_copy            (gint32 drawable_ID,
+<a class="indexterm" name="id2584564"></a><pre class="programlisting">gchar*      gimp_edit_named_copy            (gint32 drawable_ID,
                                              const gchar *buffer_name);</pre>
 <p>
 Copy into a named buffer.
@@ -388,9 +394,9 @@ operations.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2589098"></a><h3>
+<a name="id2584656"></a><h3>
 <a name="gimp-edit-named-copy-visible"></a>gimp_edit_named_copy_visible ()</h3>
-<a class="indexterm" name="id2589107"></a><pre class="programlisting">gchar*      gimp_edit_named_copy_visible    (gint32 image_ID,
+<a class="indexterm" name="id2584670"></a><pre class="programlisting">gchar*      gimp_edit_named_copy_visible    (gint32 image_ID,
                                              const gchar *buffer_name);</pre>
 <p>
 Copy from the projection into a named buffer.
@@ -432,9 +438,9 @@ cut operations.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2589200"></a><h3>
+<a name="id2584762"></a><h3>
 <a name="gimp-edit-named-paste"></a>gimp_edit_named_paste ()</h3>
-<a class="indexterm" name="id2589209"></a><pre class="programlisting">gint32      gimp_edit_named_paste           (gint32 drawable_ID,
+<a class="indexterm" name="id2584776"></a><pre class="programlisting">gint32      gimp_edit_named_paste           (gint32 drawable_ID,
                                              const gchar *buffer_name,
                                              gboolean paste_into);</pre>
 <p>
@@ -481,9 +487,9 @@ instead of the global buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2589322"></a><h3>
+<a name="id2584888"></a><h3>
 <a name="gimp-edit-named-paste-as-new"></a>gimp_edit_named_paste_as_new ()</h3>
-<a class="indexterm" name="id2589333"></a><pre class="programlisting">gint32      gimp_edit_named_paste_as_new    (const gchar *buffer_name);</pre>
+<a class="indexterm" name="id2584903"></a><pre class="programlisting">gint32      gimp_edit_named_paste_as_new    (const gchar *buffer_name);</pre>
 <p>
 Paste named buffer to a new image.
 </p>
@@ -516,9 +522,9 @@ buffer instead of the global buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2589404"></a><h3>
+<a name="id2584975"></a><h3>
 <a name="gimp-edit-clear"></a>gimp_edit_clear ()</h3>
-<a class="indexterm" name="id2589414"></a><pre class="programlisting">gboolean    gimp_edit_clear                 (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2584987"></a><pre class="programlisting">gboolean    gimp_edit_clear                 (gint32 drawable_ID);</pre>
 <p>
 Clear selected area of drawable.
 </p>
@@ -551,9 +557,9 @@ a selection if there is a selection active.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2582155"></a><h3>
+<a name="id2585057"></a><h3>
 <a name="gimp-edit-fill"></a>gimp_edit_fill ()</h3>
-<a class="indexterm" name="id2582165"></a><pre class="programlisting">gboolean    gimp_edit_fill                  (gint32 drawable_ID,
+<a class="indexterm" name="id2585070"></a><pre class="programlisting">gboolean    gimp_edit_fill                  (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpFillType">GimpFillType</a> fill_type);</pre>
 <p>
 Fill selected area of drawable.
@@ -595,9 +601,9 @@ use <a href="libgimp-gimpdrawable.html#gimp-drawable-fill"><code class="function
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2582266"></a><h3>
+<a name="id2585171"></a><h3>
 <a name="gimp-edit-bucket-fill"></a>gimp_edit_bucket_fill ()</h3>
-<a class="indexterm" name="id2582275"></a><pre class="programlisting">gboolean    gimp_edit_bucket_fill           (gint32 drawable_ID,
+<a class="indexterm" name="id2585182"></a><pre class="programlisting">gboolean    gimp_edit_bucket_fill           (gint32 drawable_ID,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBucketFillMode"
 >GimpBucketFillMode</a> fill_mode,
@@ -689,9 +695,9 @@ relative to the drawable's origin.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2582508"></a><h3>
+<a name="id2585417"></a><h3>
 <a name="gimp-edit-blend"></a>gimp_edit_blend ()</h3>
-<a class="indexterm" name="id2582518"></a><pre class="programlisting">gboolean    gimp_edit_blend                 (gint32 drawable_ID,
+<a class="indexterm" name="id2585429"></a><pre class="programlisting">gboolean    gimp_edit_blend                 (gint32 drawable_ID,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBlendMode"
 >GimpBlendMode</a> blend_mode,
@@ -835,9 +841,9 @@ each gradient type.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2582909"></a><h3>
+<a name="id2585820"></a><h3>
 <a name="gimp-edit-stroke"></a>gimp_edit_stroke ()</h3>
-<a class="indexterm" name="id2582919"></a><pre class="programlisting">gboolean    gimp_edit_stroke                (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2585833"></a><pre class="programlisting">gboolean    gimp_edit_stroke                (gint32 drawable_ID);</pre>
 <p>
 Stroke the current selection
 </p>
@@ -869,9 +875,5 @@ selection.</p>
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimp-gimpdrawabletransform.html"><b>&lt;&lt;&#160;gimpdrawabletransform</b></a></td>
-<td align="right"><a accesskey="n" href="libgimp-gimpfileops.html"><b>gimpfileops&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimpproceduraldb">
 <refmeta>
-<refentrytitle>gimpproceduraldb</refentrytitle>
+<refentrytitle id="top_of_page">gimpproceduraldb</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpproceduraldb</refname><refpurpose>Functions for querying and changing procedural database (PDB) entries.</refpurpose>
+<refname>gimpproceduraldb</refname>
+<refpurpose>Functions for querying and changing procedural database (PDB) entries.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -34,7 +37,7 @@
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-procedural-db-get-data">gimp_procedural_db_get_data</link>     (const <link linkend="gchar">gchar</link> *identifier,
                                              <link linkend="gpointer">gpointer</link> data);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-procedural-db-set-data">gimp_procedural_db_set_data</link>     (const <link linkend="gchar">gchar</link> *identifier,
-                                             <link linkend="gpointer">gpointer</link> data,
+                                             <link linkend="gconstpointer">gconstpointer</link> data,
                                              <link linkend="guint32">guint32</link> bytes);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-procedural-db-dump">gimp_procedural_db_dump</link>         (const <link linkend="gchar">gchar</link> *filename);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-procedural-db-query">gimp_procedural_db_query</link>        (const <link linkend="gchar">gchar</link> *name,
@@ -69,18 +72,18 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Functions for querying and changing procedural database (PDB) entries.
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-procedural-db-temp-name"/>gimp_procedural_db_temp_name ()</title>
+<title><anchor id="gimp-procedural-db-temp-name" role="function"/>gimp_procedural_db_temp_name ()</title>
 <indexterm><primary>gimp_procedural_db_temp_name</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_procedural_db_temp_name    (void);</programlisting>
 <para>
 Generates a unique temporary PDB name.
@@ -96,7 +99,7 @@ dialogs to generate a PDB entry name.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-procedural-db-proc-info"/>gimp_procedural_db_proc_info ()</title>
+<title><anchor id="gimp-procedural-db-proc-info" role="function"/>gimp_procedural_db_proc_info ()</title>
 <indexterm><primary>gimp_procedural_db_proc_info</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_procedural_db_proc_info    (const <link linkend="gchar">gchar</link> *procedure,
                                              <link linkend="gchar">gchar</link> **blurb,
                                              <link linkend="gchar">gchar</link> **help,
@@ -158,7 +161,7 @@ about each input argument and return value.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-procedural-db-get-data"/>gimp_procedural_db_get_data ()</title>
+<title><anchor id="gimp-procedural-db-get-data" role="function"/>gimp_procedural_db_get_data ()</title>
 <indexterm><primary>gimp_procedural_db_get_data</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_procedural_db_get_data     (const <link linkend="gchar">gchar</link> *identifier,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
@@ -182,9 +185,9 @@ the identifier
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-procedural-db-set-data"/>gimp_procedural_db_set_data ()</title>
+<title><anchor id="gimp-procedural-db-set-data" role="function"/>gimp_procedural_db_set_data ()</title>
 <indexterm><primary>gimp_procedural_db_set_data</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_procedural_db_set_data     (const <link linkend="gchar">gchar</link> *identifier,
-                                             <link linkend="gpointer">gpointer</link> data,
+                                             <link linkend="gconstpointer">gconstpointer</link> data,
                                              <link linkend="guint32">guint32</link> bytes);</programlisting>
 <para>
 Associates the specified identifier with the supplied data.
@@ -209,7 +212,7 @@ identifier. The data may be subsequently retrieved by a call to
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-procedural-db-dump"/>gimp_procedural_db_dump ()</title>
+<title><anchor id="gimp-procedural-db-dump" role="function"/>gimp_procedural_db_dump ()</title>
 <indexterm><primary>gimp_procedural_db_dump</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_procedural_db_dump         (const <link linkend="gchar">gchar</link> *filename);</programlisting>
 <para>
 Dumps the current contents of the procedural database
@@ -230,7 +233,7 @@ script, which generates a texinfo document.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-procedural-db-query"/>gimp_procedural_db_query ()</title>
+<title><anchor id="gimp-procedural-db-query" role="function"/>gimp_procedural_db_query ()</title>
 <indexterm><primary>gimp_procedural_db_query</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_procedural_db_query        (const <link linkend="gchar">gchar</link> *name,
                                              const <link linkend="gchar">gchar</link> *blurb,
                                              const <link linkend="gchar">gchar</link> *help,
@@ -291,7 +294,7 @@ entries is 0.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-procedural-db-proc-arg"/>gimp_procedural_db_proc_arg ()</title>
+<title><anchor id="gimp-procedural-db-proc-arg" role="function"/>gimp_procedural_db_proc_arg ()</title>
 <indexterm><primary>gimp_procedural_db_proc_arg</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_procedural_db_proc_arg     (const <link linkend="gchar">gchar</link> *procedure_name,
                                              <link linkend="gint">gint</link> arg_num,
                                              <link linkend="GimpPDBArgType">GimpPDBArgType</link> *arg_type,
@@ -326,7 +329,7 @@ argument. The argument type, name, and a description are retrieved.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-procedural-db-proc-val"/>gimp_procedural_db_proc_val ()</title>
+<title><anchor id="gimp-procedural-db-proc-val" role="function"/>gimp_procedural_db_proc_val ()</title>
 <indexterm><primary>gimp_procedural_db_proc_val</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_procedural_db_proc_val     (const <link linkend="gchar">gchar</link> *procedure_name,
                                              <link linkend="gint">gint</link> val_num,
                                              <link linkend="GimpPDBArgType">GimpPDBArgType</link> *val_type,
@@ -362,7 +365,7 @@ retrieved.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-procedural-db-get-data-size"/>gimp_procedural_db_get_data_size ()</title>
+<title><anchor id="gimp-procedural-db-get-data-size" role="function"/>gimp_procedural_db_get_data_size ()</title>
 <indexterm><primary>gimp_procedural_db_get_data_size</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_procedural_db_get_data_size
                                             (const <link linkend="gchar">gchar</link> *identifier);</programlisting>
 <para>

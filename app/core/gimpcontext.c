@@ -279,7 +279,7 @@ enum
   LAST_SIGNAL
 };
 
-static const gchar *gimp_context_prop_names[] =
+static const gchar * const gimp_context_prop_names[] =
 {
   NULL, /* PROP_0 */
   "gimp",
@@ -326,7 +326,7 @@ static GType gimp_context_prop_types[] =
 
 G_DEFINE_TYPE_WITH_CODE (GimpContext, gimp_context, GIMP_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG,
-                                                gimp_context_config_iface_init));
+                                                gimp_context_config_iface_init))
 
 #define parent_class gimp_context_parent_class
 
@@ -581,13 +581,13 @@ gimp_context_class_init (GimpContextClass *klass)
   GIMP_CONFIG_INSTALL_PROP_RGB (object_class, GIMP_CONTEXT_PROP_FOREGROUND,
                                 gimp_context_prop_names[GIMP_CONTEXT_PROP_FOREGROUND],
                                 NULL,
-                                &black,
+                                FALSE, &black,
                                 GIMP_PARAM_STATIC_STRINGS);
 
   GIMP_CONFIG_INSTALL_PROP_RGB (object_class, GIMP_CONTEXT_PROP_BACKGROUND,
                                 gimp_context_prop_names[GIMP_CONTEXT_PROP_BACKGROUND],
                                 NULL,
-                                &white,
+                                FALSE, &white,
                                 GIMP_PARAM_STATIC_STRINGS);
 
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, GIMP_CONTEXT_PROP_OPACITY,
@@ -1854,7 +1854,7 @@ gimp_context_tool_list_thaw (GimpContainer *container,
   GimpToolInfo *tool_info;
 
   if (! context->tool_name)
-    context->tool_name = g_strdup ("gimp-rect-select-tool");
+    context->tool_name = g_strdup ("gimp-paintbrush-tool");
 
   tool_info = gimp_context_find_object (context, container,
                                         context->tool_name,

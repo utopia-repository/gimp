@@ -4,16 +4,19 @@
 
 <refentry id="libgimpcolor-GimpAdaptiveSupersample">
 <refmeta>
-<refentrytitle>GimpAdaptiveSupersample</refentrytitle>
+<refentrytitle id="top_of_page">GimpAdaptiveSupersample</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCOLOR Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpAdaptiveSupersample</refname><refpurpose>Functions to perform adaptive supersampling on an area.</refpurpose>
+<refname>GimpAdaptiveSupersample</refname>
+<refpurpose>Functions to perform adaptive supersampling on an area.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -54,17 +57,17 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Functions to perform adaptive supersampling on an area.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpProgressFunc"/>GimpProgressFunc ()</title>
+<title><anchor id="GimpProgressFunc" role="function"/>GimpProgressFunc ()</title>
 <indexterm><primary>GimpProgressFunc</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpProgressFunc)             (<link linkend="gint">gint</link> min,
                                              <link linkend="gint">gint</link> max,
                                              <link linkend="gint">gint</link> current,
@@ -88,7 +91,7 @@ Functions to perform adaptive supersampling on an area.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GimpPutPixelFunc"/>GimpPutPixelFunc ()</title>
+<title><anchor id="GimpPutPixelFunc" role="function"/>GimpPutPixelFunc ()</title>
 <indexterm><primary>GimpPutPixelFunc</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpPutPixelFunc)             (<link linkend="gint">gint</link> x,
                                              <link linkend="gint">gint</link> y,
                                              <link linkend="GimpRGB">GimpRGB</link> *color,
@@ -112,7 +115,7 @@ Functions to perform adaptive supersampling on an area.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GimpRenderFunc"/>GimpRenderFunc ()</title>
+<title><anchor id="GimpRenderFunc" role="function"/>GimpRenderFunc ()</title>
 <indexterm><primary>GimpRenderFunc</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpRenderFunc)               (<link linkend="gdouble">gdouble</link> x,
                                              <link linkend="gdouble">gdouble</link> y,
                                              <link linkend="GimpRGB">GimpRGB</link> *color,
@@ -136,7 +139,7 @@ Functions to perform adaptive supersampling on an area.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-adaptive-supersample-area"/>gimp_adaptive_supersample_area ()</title>
+<title><anchor id="gimp-adaptive-supersample-area" role="function"/>gimp_adaptive_supersample_area ()</title>
 <indexterm><primary>gimp_adaptive_supersample_area</primary></indexterm><programlisting><link linkend="gulong">gulong</link>      gimp_adaptive_supersample_area  (<link linkend="gint">gint</link> x1,
                                              <link linkend="gint">gint</link> y1,
                                              <link linkend="gint">gint</link> x2,

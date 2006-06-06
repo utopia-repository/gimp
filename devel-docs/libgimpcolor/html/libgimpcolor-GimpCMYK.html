@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
 <link rel="prev" href="libgimpcolor-GimpHSV.html" title="GimpHSV">
 <link rel="next" href="libgimpcolor-GimpColorSpace.html" title="GimpColorSpace">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
 <link rel="index" href="ix01.html" title="Index">
@@ -16,24 +17,29 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimpcolor-GimpHSV.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpcolor.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Color Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpcolor-GimpColorSpace.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimpcolor-GimpCMYK"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">GimpCMYK</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpCMYK</span></h2>
 <p>GimpCMYK &#8212; Definitions and Functions relating to CMYK colors.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -75,17 +81,17 @@ void        <a href="libgimpcolor-GimpCMYK.html#gimp-cmyka-get-uchar">gimp_cmyka
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2558068"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 Definitions and Functions relating to CMYK colors.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2558080"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2558086"></a><h3>
+<a name="id2527075"></a><h3>
 <a name="GimpCMYK"></a>GimpCMYK</h3>
-<a class="indexterm" name="id2558096"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2562606"></a><pre class="programlisting">typedef struct {
   gdouble c, m, y, k, a;
 } GimpCMYK;
 </pre>
@@ -95,9 +101,9 @@ Definitions and Functions relating to CMYK colors.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2547559"></a><h3>
+<a name="id2562622"></a><h3>
 <a name="gimp-cmyk-set"></a>gimp_cmyk_set ()</h3>
-<a class="indexterm" name="id2547569"></a><pre class="programlisting">void        gimp_cmyk_set                   (<a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk,
+<a class="indexterm" name="id2562634"></a><pre class="programlisting">void        gimp_cmyk_set                   (<a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk,
                                              gdouble cyan,
                                              gdouble magenta,
                                              gdouble yellow,
@@ -146,9 +152,9 @@ values are doubles in the range 0 to 1.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2547716"></a><h3>
+<a name="id2562782"></a><h3>
 <a name="gimp-cmyk-set-uchar"></a>gimp_cmyk_set_uchar ()</h3>
-<a class="indexterm" name="id2547726"></a><pre class="programlisting">void        gimp_cmyk_set_uchar             (<a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk,
+<a class="indexterm" name="id2562794"></a><pre class="programlisting">void        gimp_cmyk_set_uchar             (<a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk,
                                              guchar cyan,
                                              guchar magenta,
                                              guchar yellow,
@@ -197,9 +203,9 @@ unsigned chars in the range 0 to 255.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2469296"></a><h3>
+<a name="id2524185"></a><h3>
 <a name="gimp-cmyk-get-uchar"></a>gimp_cmyk_get_uchar ()</h3>
-<a class="indexterm" name="id2469306"></a><pre class="programlisting">void        gimp_cmyk_get_uchar             (const <a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk,
+<a class="indexterm" name="id2524197"></a><pre class="programlisting">void        gimp_cmyk_get_uchar             (const <a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk,
                                              guchar *cyan,
                                              guchar *magenta,
                                              guchar *yellow,
@@ -248,9 +254,9 @@ values are pointers to unsigned chars in the range 0 to 255.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2469456"></a><h3>
+<a name="id2524347"></a><h3>
 <a name="gimp-cmyka-set"></a>gimp_cmyka_set ()</h3>
-<a class="indexterm" name="id2469466"></a><pre class="programlisting">void        gimp_cmyka_set                  (<a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyka,
+<a class="indexterm" name="id2524360"></a><pre class="programlisting">void        gimp_cmyka_set                  (<a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyka,
                                              gdouble cyan,
                                              gdouble magenta,
                                              gdouble yellow,
@@ -306,9 +312,9 @@ doubles in the range 0 to 1.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2519871"></a><h3>
+<a name="id2522044"></a><h3>
 <a name="gimp-cmyka-set-uchar"></a>gimp_cmyka_set_uchar ()</h3>
-<a class="indexterm" name="id2519880"></a><pre class="programlisting">void        gimp_cmyka_set_uchar            (<a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyka,
+<a class="indexterm" name="id2522055"></a><pre class="programlisting">void        gimp_cmyka_set_uchar            (<a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyka,
                                              guchar cyan,
                                              guchar magenta,
                                              guchar yellow,
@@ -364,9 +370,9 @@ unsigned chars in the range 0 to 255.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2520052"></a><h3>
+<a name="id2522228"></a><h3>
 <a name="gimp-cmyka-get-uchar"></a>gimp_cmyka_get_uchar ()</h3>
-<a class="indexterm" name="id2520061"></a><pre class="programlisting">void        gimp_cmyka_get_uchar            (const <a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyka,
+<a class="indexterm" name="id2522239"></a><pre class="programlisting">void        gimp_cmyka_get_uchar            (const <a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyka,
                                              guchar *cyan,
                                              guchar *magenta,
                                              guchar *yellow,
@@ -422,9 +428,5 @@ Channel values are pointers to unsigned chars in the range 0 to 255.</p>
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimpcolor-GimpHSV.html"><b>&lt;&lt;&#160;GimpHSV</b></a></td>
-<td align="right"><a accesskey="n" href="libgimpcolor-GimpColorSpace.html"><b>GimpColorSpace&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

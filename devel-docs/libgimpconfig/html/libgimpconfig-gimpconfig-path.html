@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="prev" href="libgimpconfig-gimpconfig-params.html" title="gimpconfig-params">
 <link rel="next" href="libgimpconfig-gimpconfig-utils.html" title="gimpconfig-utils">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="chapter" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
@@ -16,24 +17,29 @@
 <link rel="index" href="ix03.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimpconfig-gimpconfig-params.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpconfig.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpconfig-gimpconfig-utils.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimpconfig-gimpconfig-path"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpconfig-path</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpconfig-path</span></h2>
 <p>gimpconfig-path &#8212; </p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -58,17 +64,17 @@ gchar*      <a href="libgimpconfig-gimpconfig-path.html#gimp-config-build-plug-i
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2542856"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2542867"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2542873"></a><h3>
+<a name="id2553747"></a><h3>
 <a name="GimpConfigPathType"></a>enum GimpConfigPathType</h3>
-<a class="indexterm" name="id2542883"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2553758"></a><pre class="programlisting">typedef enum
 {
   GIMP_CONFIG_PATH_FILE,
   GIMP_CONFIG_PATH_FILE_LIST,
@@ -82,9 +88,9 @@ gchar*      <a href="libgimpconfig-gimpconfig-path.html#gimp-config-build-plug-i
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2542901"></a><h3>
+<a name="id2553776"></a><h3>
 <a name="gimp-param-spec-config-path"></a>gimp_param_spec_config_path ()</h3>
-<a class="indexterm" name="id2536614"></a><pre class="programlisting">GParamSpec* gimp_param_spec_config_path     (const gchar *name,
+<a class="indexterm" name="id2553790"></a><pre class="programlisting">GParamSpec* gimp_param_spec_config_path     (const gchar *name,
                                              const gchar *nick,
                                              const gchar *blurb,
                                              <a href="libgimpconfig-gimpconfig-path.html#GimpConfigPathType">GimpConfigPathType</a> type,
@@ -150,9 +156,9 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2532096"></a><h3>
+<a name="id2556280"></a><h3>
 <a name="gimp-param-spec-config-path-type"></a>gimp_param_spec_config_path_type ()</h3>
-<a class="indexterm" name="id2532107"></a><pre class="programlisting"><a href="libgimpconfig-gimpconfig-path.html#GimpConfigPathType">GimpConfigPathType</a> gimp_param_spec_config_path_type
+<a class="indexterm" name="id2556295"></a><pre class="programlisting"><a href="libgimpconfig-gimpconfig-path.html#GimpConfigPathType">GimpConfigPathType</a> gimp_param_spec_config_path_type
                                             (GParamSpec *pspec);</pre>
 <p>
 Tells whether the path param encodes a filename,
@@ -183,9 +189,9 @@ dir name, or list of file or dir names.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2532189"></a><h3>
+<a name="id2556377"></a><h3>
 <a name="gimp-config-path-expand"></a>gimp_config_path_expand ()</h3>
-<a class="indexterm" name="id2532198"></a><pre class="programlisting">gchar*      gimp_config_path_expand         (const gchar *path,
+<a class="indexterm" name="id2556391"></a><pre class="programlisting">gchar*      gimp_config_path_expand         (const gchar *path,
                                              gboolean recode,
                                              GError **error);</pre>
 <p>
@@ -234,9 +240,9 @@ filesystem encoding.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2537141"></a><h3>
+<a name="id2537941"></a><h3>
 <a name="gimp-config-build-data-path"></a>gimp_config_build_data_path ()</h3>
-<a class="indexterm" name="id2537150"></a><pre class="programlisting">gchar*      gimp_config_build_data_path     (const gchar *name);</pre>
+<a class="indexterm" name="id2537955"></a><pre class="programlisting">gchar*      gimp_config_build_data_path     (const gchar *name);</pre>
 <p>
 Creates a search path as it is used in the gimprc file.  The path
 returned by <a href="libgimpconfig-gimpconfig-path.html#gimp-config-build-data-path"><code class="function">gimp_config_build_data_path()</code></a> includes a directory
@@ -275,9 +281,9 @@ recode it using <a href="libgimpconfig-gimpconfig-path.html#gimp-config-path-exp
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2537251"></a><h3>
+<a name="id2538055"></a><h3>
 <a name="gimp-config-build-writable-path"></a>gimp_config_build_writable_path ()</h3>
-<a class="indexterm" name="id2537262"></a><pre class="programlisting">gchar*      gimp_config_build_writable_path (const gchar *name);</pre>
+<a class="indexterm" name="id2538071"></a><pre class="programlisting">gchar*      gimp_config_build_writable_path (const gchar *name);</pre>
 <p>
 Creates a search path as it is used in the gimprc file.  The path
 returned by <a href="libgimpconfig-gimpconfig-path.html#gimp-config-build-writable-path"><code class="function">gimp_config_build_writable_path()</code></a> is just the writable
@@ -315,9 +321,9 @@ recode it using <a href="libgimpconfig-gimpconfig-path.html#gimp-config-path-exp
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2537373"></a><h3>
+<a name="id2565126"></a><h3>
 <a name="gimp-config-build-plug-in-path"></a>gimp_config_build_plug_in_path ()</h3>
-<a class="indexterm" name="id2537384"></a><pre class="programlisting">gchar*      gimp_config_build_plug_in_path  (const gchar *name);</pre>
+<a class="indexterm" name="id2565140"></a><pre class="programlisting">gchar*      gimp_config_build_plug_in_path  (const gchar *name);</pre>
 <p>
 Creates a search path as it is used in the gimprc file.  The path
 returned by <a href="libgimpconfig-gimpconfig-path.html#gimp-config-build-plug-in-path"><code class="function">gimp_config_build_plug_in_path()</code></a> includes a directory
@@ -356,9 +362,9 @@ recode it using <a href="libgimpconfig-gimpconfig-path.html#gimp-config-path-exp
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562911"></a><h3>
+<a name="id2565235"></a><h3>
 <a name="GIMP-VALUE-HOLDS-CONFIG-PATH:CAPS"></a>GIMP_VALUE_HOLDS_CONFIG_PATH()</h3>
-<a class="indexterm" name="id2562922"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_CONFIG_PATH(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_CONFIG_PATH))
+<a class="indexterm" name="id2565248"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_CONFIG_PATH(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_CONFIG_PATH))
 </pre>
 <p>
 
@@ -377,9 +383,5 @@ recode it using <a href="libgimpconfig-gimpconfig-path.html#gimp-config-path-exp
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimpconfig-gimpconfig-params.html"><b>&lt;&lt;&#160;gimpconfig-params</b></a></td>
-<td align="right"><a accesskey="n" href="libgimpconfig-gimpconfig-utils.html"><b>gimpconfig-utils&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

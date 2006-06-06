@@ -56,31 +56,31 @@ ARFLAGS = cru
 libapppdb_a_AR = $(AR) $(ARFLAGS)
 libapppdb_a_LIBADD =
 am_libapppdb_a_OBJECTS = gimp-pdb.$(OBJEXT) gimp-pdb-compat.$(OBJEXT) \
-	gimp-pdb-query.$(OBJEXT) gimpprocedure.$(OBJEXT) \
-	gimppluginprocedure.$(OBJEXT) gimptemporaryprocedure.$(OBJEXT) \
-	internal_procs.$(OBJEXT) brush_cmds.$(OBJEXT) \
-	brush_select_cmds.$(OBJEXT) brushes_cmds.$(OBJEXT) \
-	buffer_cmds.$(OBJEXT) channel_cmds.$(OBJEXT) \
-	color_cmds.$(OBJEXT) context_cmds.$(OBJEXT) \
-	convert_cmds.$(OBJEXT) display_cmds.$(OBJEXT) \
-	drawable_cmds.$(OBJEXT) drawable_transform_cmds.$(OBJEXT) \
-	edit_cmds.$(OBJEXT) fileops_cmds.$(OBJEXT) \
-	floating_sel_cmds.$(OBJEXT) font_select_cmds.$(OBJEXT) \
-	fonts_cmds.$(OBJEXT) gimprc_cmds.$(OBJEXT) \
-	gradient_cmds.$(OBJEXT) gradient_select_cmds.$(OBJEXT) \
-	gradients_cmds.$(OBJEXT) grid_cmds.$(OBJEXT) \
-	guides_cmds.$(OBJEXT) help_cmds.$(OBJEXT) image_cmds.$(OBJEXT) \
-	layer_cmds.$(OBJEXT) message_cmds.$(OBJEXT) \
-	misc_cmds.$(OBJEXT) paint_tools_cmds.$(OBJEXT) \
-	palette_cmds.$(OBJEXT) palette_select_cmds.$(OBJEXT) \
-	palettes_cmds.$(OBJEXT) parasite_cmds.$(OBJEXT) \
-	paths_cmds.$(OBJEXT) pattern_cmds.$(OBJEXT) \
-	pattern_select_cmds.$(OBJEXT) patterns_cmds.$(OBJEXT) \
-	plug_in_cmds.$(OBJEXT) procedural_db_cmds.$(OBJEXT) \
-	progress_cmds.$(OBJEXT) selection_cmds.$(OBJEXT) \
-	selection_tools_cmds.$(OBJEXT) text_tool_cmds.$(OBJEXT) \
-	transform_tools_cmds.$(OBJEXT) undo_cmds.$(OBJEXT) \
-	unit_cmds.$(OBJEXT) vectors_cmds.$(OBJEXT)
+	gimppdb.$(OBJEXT) gimppdb-query.$(OBJEXT) \
+	gimpprocedure.$(OBJEXT) gimppluginprocedure.$(OBJEXT) \
+	gimptemporaryprocedure.$(OBJEXT) internal_procs.$(OBJEXT) \
+	brush_cmds.$(OBJEXT) brush_select_cmds.$(OBJEXT) \
+	brushes_cmds.$(OBJEXT) buffer_cmds.$(OBJEXT) \
+	channel_cmds.$(OBJEXT) color_cmds.$(OBJEXT) \
+	context_cmds.$(OBJEXT) convert_cmds.$(OBJEXT) \
+	display_cmds.$(OBJEXT) drawable_cmds.$(OBJEXT) \
+	drawable_transform_cmds.$(OBJEXT) edit_cmds.$(OBJEXT) \
+	fileops_cmds.$(OBJEXT) floating_sel_cmds.$(OBJEXT) \
+	font_select_cmds.$(OBJEXT) fonts_cmds.$(OBJEXT) \
+	gimprc_cmds.$(OBJEXT) gradient_cmds.$(OBJEXT) \
+	gradient_select_cmds.$(OBJEXT) gradients_cmds.$(OBJEXT) \
+	grid_cmds.$(OBJEXT) guides_cmds.$(OBJEXT) help_cmds.$(OBJEXT) \
+	image_cmds.$(OBJEXT) layer_cmds.$(OBJEXT) \
+	message_cmds.$(OBJEXT) misc_cmds.$(OBJEXT) \
+	paint_tools_cmds.$(OBJEXT) palette_cmds.$(OBJEXT) \
+	palette_select_cmds.$(OBJEXT) palettes_cmds.$(OBJEXT) \
+	parasite_cmds.$(OBJEXT) paths_cmds.$(OBJEXT) \
+	pattern_cmds.$(OBJEXT) pattern_select_cmds.$(OBJEXT) \
+	patterns_cmds.$(OBJEXT) plug_in_cmds.$(OBJEXT) \
+	procedural_db_cmds.$(OBJEXT) progress_cmds.$(OBJEXT) \
+	selection_cmds.$(OBJEXT) selection_tools_cmds.$(OBJEXT) \
+	text_tool_cmds.$(OBJEXT) transform_tools_cmds.$(OBJEXT) \
+	undo_cmds.$(OBJEXT) unit_cmds.$(OBJEXT) vectors_cmds.$(OBJEXT)
 libapppdb_a_OBJECTS = $(am_libapppdb_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -205,14 +205,15 @@ GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
 GLIB_LIBS = @GLIB_LIBS@
 GLIB_MKENUMS = @GLIB_MKENUMS@
 GLIB_REQUIRED_VERSION = @GLIB_REQUIRED_VERSION@
-GMODULE_CFLAGS = @GMODULE_CFLAGS@
-GMODULE_LIBS = @GMODULE_LIBS@
+GMODULE_NO_EXPORT_CFLAGS = @GMODULE_NO_EXPORT_CFLAGS@
+GMODULE_NO_EXPORT_LIBS = @GMODULE_NO_EXPORT_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
 GNOMEPRINT = @GNOMEPRINT@
 GNOMEPRINT_CFLAGS = @GNOMEPRINT_CFLAGS@
 GNOMEPRINT_LIBS = @GNOMEPRINT_LIBS@
 GOBJECT_QUERY = @GOBJECT_QUERY@
+GREP = @GREP@
 GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
 GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
@@ -336,6 +337,8 @@ PKG_CONFIG = @PKG_CONFIG@
 PLATFORM_WIN32_FALSE = @PLATFORM_WIN32_FALSE@
 PLATFORM_WIN32_TRUE = @PLATFORM_WIN32_TRUE@
 PNG = @PNG@
+PNG_CFLAGS = @PNG_CFLAGS@
+PNG_LIBS = @PNG_LIBS@
 POFILES = @POFILES@
 POPPLER = @POPPLER@
 POPPLER_CFLAGS = @POPPLER_CFLAGS@
@@ -390,6 +393,7 @@ WMF_CFLAGS = @WMF_CFLAGS@
 WMF_CONFIG = @WMF_CONFIG@
 WMF_REQUIRED_VERSION = @WMF_REQUIRED_VERSION@
 XGETTEXT = @XGETTEXT@
+XMKMF = @XMKMF@
 XMLLINT = @XMLLINT@
 XPM = @XPM@
 XSLTPROC = @XSLTPROC@
@@ -397,17 +401,9 @@ X_CFLAGS = @X_CFLAGS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
-ac_ct_AR = @ac_ct_AR@
-ac_ct_AS = @ac_ct_AS@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
-ac_ct_DLLTOOL = @ac_ct_DLLTOOL@
 ac_ct_F77 = @ac_ct_F77@
-ac_ct_OBJDUMP = @ac_ct_OBJDUMP@
-ac_ct_RANLIB = @ac_ct_RANLIB@
-ac_ct_STRIP = @ac_ct_STRIP@
-ac_ct_WINDRES = @ac_ct_WINDRES@
-ac_pt_PKG_CONFIG = @ac_pt_PKG_CONFIG@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
 am__fastdepCXX_FALSE = @am__fastdepCXX_FALSE@
@@ -424,6 +420,9 @@ build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
+datarootdir = @datarootdir@
+docdir = @docdir@
+dvidir = @dvidir@
 exec_prefix = @exec_prefix@
 gimpdatadir = @gimpdatadir@
 gimpdir = @gimpdir@
@@ -435,20 +434,24 @@ host_alias = @host_alias@
 host_cpu = @host_cpu@
 host_os = @host_os@
 host_vendor = @host_vendor@
+htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = @libexecdir@
+localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
 oldincludedir = @oldincludedir@
+pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
 pkgpythondir = @pkgpythondir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
+psdir = @psdir@
 pyexecdir = @pyexecdir@
 pythondir = @pythondir@
 sbindir = @sbindir@
@@ -463,8 +466,10 @@ libapppdb_a_SOURCES = \
 	gimp-pdb.h			\
 	gimp-pdb-compat.c		\
 	gimp-pdb-compat.h		\
-	gimp-pdb-query.c		\
-	gimp-pdb-query.h		\
+	gimppdb.c			\
+	gimppdb.h			\
+	gimppdb-query.c			\
+	gimppdb-query.h			\
 	gimpprocedure.c			\
 	gimpprocedure.h			\
 	gimppluginprocedure.c		\
@@ -598,8 +603,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/font_select_cmds.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fonts_cmds.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-pdb-compat.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-pdb-query.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-pdb.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppdb-query.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppdb.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginprocedure.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprocedure.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprc_cmds.Po@am__quote@

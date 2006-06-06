@@ -26,13 +26,14 @@
 #include "libgimpcolor/gimpcolor.h"
 
 #include "pdb-types.h"
-#include "gimp-pdb.h"
+#include "gimppdb.h"
 #include "gimpprocedure.h"
 #include "core/gimpparamspecs.h"
 
 #include "core/gimpchannel-combine.h"
 #include "core/gimpchannel.h"
 #include "core/gimpimage.h"
+#include "gimp-intl.h"
 
 
 static GValueArray *
@@ -169,6 +170,7 @@ channel_combine_masks_invoker (GimpProcedure     *procedure,
 
   if (success)
     {
+      gimp_channel_push_undo (channel1, _("Combine Masks"));
       gimp_channel_combine_mask (channel1, channel2, operation, offx, offy);
     }
 
@@ -290,6 +292,7 @@ channel_get_color_invoker (GimpProcedure     *procedure,
   if (success)
     {
       gimp_channel_get_color (channel, &color);
+      gimp_rgb_set_alpha (&color, 1.0);
     }
 
   return_vals = gimp_procedure_get_return_values (procedure, success);
@@ -326,7 +329,7 @@ channel_set_color_invoker (GimpProcedure     *procedure,
 }
 
 void
-register_channel_procs (Gimp *gimp)
+register_channel_procs (GimpPDB *pdb)
 {
   GimpProcedure *procedure;
 
@@ -343,23 +346,22 @@ register_channel_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image to which to add the channel",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("width",
                                                       "width",
-                                                      "The channel width (1 <= width)",
+                                                      "The channel width",
                                                       1, G_MAXINT32, 1,
                                                       GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("height",
                                                       "height",
-                                                      "The channel height (1 <= height)",
+                                                      "The channel height",
                                                       1, G_MAXINT32, 1,
                                                       GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
@@ -372,22 +374,23 @@ register_channel_procs (Gimp *gimp)
   gimp_procedure_add_argument (procedure,
                                g_param_spec_double ("opacity",
                                                     "opacity",
-                                                    "The channel opacity (0 <= opacity <= 100)",
+                                                    "The channel opacity",
                                                     0, 100, 0,
                                                     GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_rgb ("color",
                                                     "color",
                                                     "The channel compositing color",
+                                                    FALSE,
                                                     NULL,
                                                     GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_channel_id ("channel",
                                                                "channel",
                                                                "The newly created channel",
-                                                               gimp,
+                                                               pdb->gimp, FALSE,
                                                                GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -403,17 +406,16 @@ register_channel_procs (Gimp *gimp)
                                      "Shlomi Fish",
                                      "2005",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image to which to add the channel",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("component",
                                                   "component",
-                                                  "The image component: { GIMP_RED_CHANNEL (0), GIMP_GREEN_CHANNEL (1), GIMP_BLUE_CHANNEL (2), GIMP_GRAY_CHANNEL (3), GIMP_INDEXED_CHANNEL (4), GIMP_ALPHA_CHANNEL (5) }",
+                                                  "The image component",
                                                   GIMP_TYPE_CHANNEL_TYPE,
                                                   GIMP_RED_CHANNEL,
                                                   GIMP_PARAM_READWRITE));
@@ -428,9 +430,9 @@ register_channel_procs (Gimp *gimp)
                                    gimp_param_spec_channel_id ("channel",
                                                                "channel",
                                                                "The newly created channel",
-                                                               gimp,
+                                                               pdb->gimp, FALSE,
                                                                GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -446,20 +448,19 @@ register_channel_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_channel_id ("channel",
                                                            "channel",
                                                            "The channel to copy",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_channel_id ("channel-copy",
                                                                "channel copy",
                                                                "The newly copied channel",
-                                                               gimp,
+                                                               pdb->gimp, FALSE,
                                                                GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -475,23 +476,22 @@ register_channel_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_channel_id ("channel1",
                                                            "channel1",
                                                            "The channel1",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_channel_id ("channel2",
                                                            "channel2",
                                                            "The channel2",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("operation",
                                                   "operation",
-                                                  "The selection operation: { GIMP_CHANNEL_OP_ADD (0), GIMP_CHANNEL_OP_SUBTRACT (1), GIMP_CHANNEL_OP_REPLACE (2), GIMP_CHANNEL_OP_INTERSECT (3) }",
+                                                  "The selection operation",
                                                   GIMP_TYPE_CHANNEL_OPS,
                                                   GIMP_CHANNEL_OP_ADD,
                                                   GIMP_PARAM_READWRITE));
@@ -507,7 +507,7 @@ register_channel_procs (Gimp *gimp)
                                                       "y offset between upper left corner of channels: (second - first)",
                                                       G_MININT32, G_MAXINT32, 0,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -523,12 +523,11 @@ register_channel_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_channel_id ("channel",
                                                            "channel",
                                                            "The channel",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("show-masked",
@@ -536,7 +535,7 @@ register_channel_procs (Gimp *gimp)
                                                          "The channel composite method",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -552,12 +551,11 @@ register_channel_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_channel_id ("channel",
                                                            "channel",
                                                            "The channel",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_boolean ("show-masked",
@@ -565,7 +563,7 @@ register_channel_procs (Gimp *gimp)
                                                      "The new channel composite method",
                                                      FALSE,
                                                      GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -581,12 +579,11 @@ register_channel_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_channel_id ("channel",
                                                            "channel",
                                                            "The channel",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_double ("opacity",
@@ -594,7 +591,7 @@ register_channel_procs (Gimp *gimp)
                                                         "The channel opacity",
                                                         0, 100, 0,
                                                         GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -610,20 +607,19 @@ register_channel_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_channel_id ("channel",
                                                            "channel",
                                                            "The channel",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_double ("opacity",
                                                     "opacity",
-                                                    "The new channel opacity (0 <= opacity <= 100)",
+                                                    "The new channel opacity",
                                                     0, 100, 0,
                                                     GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -639,20 +635,20 @@ register_channel_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_channel_id ("channel",
                                                            "channel",
                                                            "The channel",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_rgb ("color",
                                                         "color",
                                                         "The channel compositing color",
+                                                        FALSE,
                                                         NULL,
                                                         GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -668,20 +664,19 @@ register_channel_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_channel_id ("channel",
                                                            "channel",
                                                            "The channel",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_rgb ("color",
                                                     "color",
                                                     "The new channel compositing color",
+                                                    FALSE,
                                                     NULL,
                                                     GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
-
 }

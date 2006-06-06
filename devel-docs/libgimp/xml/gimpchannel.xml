@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimpchannel">
 <refmeta>
-<refentrytitle>gimpchannel</refentrytitle>
+<refentrytitle id="top_of_page">gimpchannel</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpchannel</refname><refpurpose>Functions for manipulating channels.</refpurpose>
+<refname>gimpchannel</refname>
+<refpurpose>Functions for manipulating channels.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -55,17 +58,17 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Functions for manipulating channels.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-channel-new"/>gimp_channel_new ()</title>
+<title><anchor id="gimp-channel-new" role="function"/>gimp_channel_new ()</title>
 <indexterm><primary>gimp_channel_new</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_channel_new                (<link linkend="gint32">gint32</link> image_ID,
                                              const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="guint">guint</link> width,
@@ -108,7 +111,7 @@ initially.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-channel-new-from-component"/>gimp_channel_new_from_component ()</title>
+<title><anchor id="gimp-channel-new-from-component" role="function" condition="since:GIMP 2.4"/>gimp_channel_new_from_component ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_channel_new_from_component</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_channel_new_from_component (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="GimpChannelType">GimpChannelType</link> component,
                                              const <link linkend="gchar">gchar</link> *name);</programlisting>
@@ -135,7 +138,7 @@ This procedure creates a new channel from a color component.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-channel-copy"/>gimp_channel_copy ()</title>
+<title><anchor id="gimp-channel-copy" role="function"/>gimp_channel_copy ()</title>
 <indexterm><primary>gimp_channel_copy</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_channel_copy               (<link linkend="gint32">gint32</link> channel_ID);</programlisting>
 <para>
 Copy a channel.
@@ -152,7 +155,7 @@ This procedure copies the specified channel and returns the copy.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-channel-get-show-masked"/>gimp_channel_get_show_masked ()</title>
+<title><anchor id="gimp-channel-get-show-masked" role="function"/>gimp_channel_get_show_masked ()</title>
 <indexterm><primary>gimp_channel_get_show_masked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_channel_get_show_masked    (<link linkend="gint32">gint32</link> channel_ID);</programlisting>
 <para>
 Get the composite method of the specified channel.
@@ -171,7 +174,7 @@ masked regions are shown. Otherwise, selected regions are shown.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-channel-set-show-masked"/>gimp_channel_set_show_masked ()</title>
+<title><anchor id="gimp-channel-set-show-masked" role="function"/>gimp_channel_set_show_masked ()</title>
 <indexterm><primary>gimp_channel_set_show_masked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_channel_set_show_masked    (<link linkend="gint32">gint32</link> channel_ID,
                                              <link linkend="gboolean">gboolean</link> show_masked);</programlisting>
 <para>
@@ -194,7 +197,7 @@ masked regions are shown. Otherwise, selected regions are shown.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-channel-get-opacity"/>gimp_channel_get_opacity ()</title>
+<title><anchor id="gimp-channel-get-opacity" role="function"/>gimp_channel_get_opacity ()</title>
 <indexterm><primary>gimp_channel_get_opacity</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_channel_get_opacity        (<link linkend="gint32">gint32</link> channel_ID);</programlisting>
 <para>
 Get the opacity of the specified channel.
@@ -211,7 +214,7 @@ This procedure returns the specified channel's opacity.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-channel-set-opacity"/>gimp_channel_set_opacity ()</title>
+<title><anchor id="gimp-channel-set-opacity" role="function"/>gimp_channel_set_opacity ()</title>
 <indexterm><primary>gimp_channel_set_opacity</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_channel_set_opacity        (<link linkend="gint32">gint32</link> channel_ID,
                                              <link linkend="gdouble">gdouble</link> opacity);</programlisting>
 <para>
@@ -232,7 +235,7 @@ This procedure sets the specified channel's opacity.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-channel-get-color"/>gimp_channel_get_color ()</title>
+<title><anchor id="gimp-channel-get-color" role="function"/>gimp_channel_get_color ()</title>
 <indexterm><primary>gimp_channel_get_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_channel_get_color          (<link linkend="gint32">gint32</link> channel_ID,
                                              <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <para>
@@ -253,7 +256,7 @@ This procedure returns the specified channel's compositing color.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-channel-set-color"/>gimp_channel_set_color ()</title>
+<title><anchor id="gimp-channel-set-color" role="function"/>gimp_channel_set_color ()</title>
 <indexterm><primary>gimp_channel_set_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_channel_set_color          (<link linkend="gint32">gint32</link> channel_ID,
                                              const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <para>
@@ -274,7 +277,7 @@ This procedure sets the specified channel's compositing color.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-channel-combine-masks"/>gimp_channel_combine_masks ()</title>
+<title><anchor id="gimp-channel-combine-masks" role="function"/>gimp_channel_combine_masks ()</title>
 <indexterm><primary>gimp_channel_combine_masks</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_channel_combine_masks      (<link linkend="gint32">gint32</link> channel1_ID,
                                              <link linkend="gint32">gint32</link> channel2_ID,
                                              <link linkend="GimpChannelOps">GimpChannelOps</link> operation,

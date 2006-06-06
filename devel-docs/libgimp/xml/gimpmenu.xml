@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimpmenu">
 <refmeta>
-<refentrytitle>gimpmenu</refentrytitle>
+<refentrytitle id="top_of_page">gimpmenu</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpmenu</refname><refpurpose>Menus for selecting images, layers, channels and drawables</refpurpose>
+<refname>gimpmenu</refname>
+<refpurpose>Menus for selecting images, layers, channels and drawables</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -51,17 +54,17 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpConstraintFunc"/>GimpConstraintFunc ()</title>
+<title><anchor id="GimpConstraintFunc" role="function" condition="deprecated:"/>GimpConstraintFunc ()</title>
 <indexterm role="deprecated"><primary>GimpConstraintFunc</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    (*GimpConstraintFunc)           (<link linkend="gint32">gint32</link> image_id,
                                              <link linkend="gint32">gint32</link> drawable_id,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
@@ -84,7 +87,7 @@
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GimpMenuCallback"/>GimpMenuCallback ()</title>
+<title><anchor id="GimpMenuCallback" role="function" condition="deprecated:"/>GimpMenuCallback ()</title>
 <indexterm role="deprecated"><primary>GimpMenuCallback</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpMenuCallback)             (<link linkend="gint32">gint32</link> any_id,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <warning><para><literal>GimpMenuCallback</literal> is deprecated and should not be used in newly-written code.</para></warning>
@@ -101,7 +104,7 @@
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-menu-new"/>gimp_image_menu_new ()</title>
+<title><anchor id="gimp-image-menu-new" role="function" condition="deprecated:"/>gimp_image_menu_new ()</title>
 <indexterm role="deprecated"><primary>gimp_image_menu_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_image_menu_new             (<link linkend="GimpConstraintFunc">GimpConstraintFunc</link> constraint,
                                              <link linkend="GimpMenuCallback">GimpMenuCallback</link> callback,
                                              <link linkend="gpointer">gpointer</link> data,
@@ -128,7 +131,7 @@ Use <link linkend="gimp-image-combo-box-new"><function>gimp_image_combo_box_new(
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-layer-menu-new"/>gimp_layer_menu_new ()</title>
+<title><anchor id="gimp-layer-menu-new" role="function" condition="deprecated:"/>gimp_layer_menu_new ()</title>
 <indexterm role="deprecated"><primary>gimp_layer_menu_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_layer_menu_new             (<link linkend="GimpConstraintFunc">GimpConstraintFunc</link> constraint,
                                              <link linkend="GimpMenuCallback">GimpMenuCallback</link> callback,
                                              <link linkend="gpointer">gpointer</link> data,
@@ -155,7 +158,7 @@ Use <link linkend="gimp-layer-combo-box-new"><function>gimp_layer_combo_box_new(
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-channel-menu-new"/>gimp_channel_menu_new ()</title>
+<title><anchor id="gimp-channel-menu-new" role="function" condition="deprecated:"/>gimp_channel_menu_new ()</title>
 <indexterm role="deprecated"><primary>gimp_channel_menu_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_channel_menu_new           (<link linkend="GimpConstraintFunc">GimpConstraintFunc</link> constraint,
                                              <link linkend="GimpMenuCallback">GimpMenuCallback</link> callback,
                                              <link linkend="gpointer">gpointer</link> data,
@@ -182,7 +185,7 @@ Use <link linkend="gimp-channel-combo-box-new"><function>gimp_channel_combo_box_
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-drawable-menu-new"/>gimp_drawable_menu_new ()</title>
+<title><anchor id="gimp-drawable-menu-new" role="function" condition="deprecated:"/>gimp_drawable_menu_new ()</title>
 <indexterm role="deprecated"><primary>gimp_drawable_menu_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_drawable_menu_new          (<link linkend="GimpConstraintFunc">GimpConstraintFunc</link> constraint,
                                              <link linkend="GimpMenuCallback">GimpMenuCallback</link> callback,
                                              <link linkend="gpointer">gpointer</link> data,

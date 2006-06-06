@@ -1,3 +1,19 @@
+2006-05-25  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2006-05-24  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2006-05-11  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2006-05-03  Funda Wang  <fundawang@linux.net.cn>
+
+	* zh_CN.po: Updated Simplified Chinese translation.
+
 2006-04-10  Clytie Siddall <clytie@riverland.net.au>
 
 	* vi.po: Updated Vietnamese translation.
@@ -12,7 +28,7 @@
 
 2006-04-05  Marco Ciampa <ciampix@libero.it>
 
-        * it.po: updated italian translation.
+	* it.po: updated italian translation.
 
 2006-04-03  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
 

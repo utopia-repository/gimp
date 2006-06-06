@@ -51,12 +51,10 @@ N_("When enabled, this will ensure that each pixel of an image gets " \
    "mapped to a pixel on the screen.")
 
 #define DEFAULT_FONT_BLURB \
-"Specify a default font.  The font is searched for in the " \
-"fontconfig font path."
+"Specify a default font."
 
 #define DEFAULT_GRADIENT_BLURB \
-"Specify a default gradient.  The gradient is searched for in the " \
-"specified gradient path."
+"Specify a default gradient."
 
 #define DEFAULT_GRID_BLURB \
 "Specify a default image grid."
@@ -65,12 +63,10 @@ N_("When enabled, this will ensure that each pixel of an image gets " \
 "Sets the default image in the \"File/New\" dialog."
 
 #define DEFAULT_PATTERN_BLURB \
-"Specify a default pattern. The pattern is searched for in the " \
-"specified pattern path."
+"Specify a default pattern."
 
 #define DEFAULT_PALETTE_BLURB \
-"Specify a default palette.  The palette is searched for in the " \
-"specified palette path."
+"Specify a default palette."
 
 #define DEFAULT_SNAP_DISTANCE_BLURB \
 N_("This is the distance in pixels where Guide and Grid snapping " \
@@ -141,7 +137,7 @@ N_("When enabled, the selected pattern will be used for all tools.")
 #define GRADIENT_PATH_WRITABLE_BLURB ""
 
 #define FONT_PATH_BLURB \
-"Where to look for fonts."
+"Where to look for fonts in addition to the system-wide installed fonts."
 
 #define HELP_BROWSER_BLURB \
 N_("Sets the browser used by the help system.")
@@ -342,8 +338,8 @@ N_("Sets the swap file location. GIMP uses a tile based memory allocation " \
    "disk and back in. Be aware that the swap file can easily get very large " \
    "if GIMP is used with large images. " \
    "Also, things can get horribly slow if the swap file is created on " \
-   "a directory that is mounted over NFS.  For these reasons, it may " \
-   "be desirable to put your swap file in \"/tmp\".")
+   "a folder that is mounted over NFS.  For these reasons, it may be " \
+   "desirable to put your swap file in \"/tmp\".")
 
 #define TEAROFF_MENUS_BLURB \
 N_("When enabled, menus can be torn off.")
@@ -365,10 +361,10 @@ N_("Save changed keyboard shortcuts when the GIMP exits.")
 N_("Restore saved keyboard shortcuts on each GIMP startup.")
 
 #define TEMP_PATH_BLURB \
-N_("Sets the temporary storage directory. Files will appear here " \
+N_("Sets the folder for temporary storage. Files will appear here " \
    "during the course of running the GIMP.  Most files will disappear " \
    "when the GIMP exits, but some files are likely to remain, so it is " \
-   "best if this directory not be one that is shared by other users.")
+   "best if this folder not be one that is shared by other users.")
 
 #define THEME_BLURB \
 "The name of the theme to use."

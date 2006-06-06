@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
 <link rel="prev" href="libgimpwidgets-GimpStock.html" title="GimpStock">
 <link rel="next" href="libgimpwidgets-GimpWidgets.html" title="GimpWidgets">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -24,126 +25,93 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimpwidgets-GimpStock.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-utils.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpwidgets-GimpWidgets.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimpwidgets-GimpEnumWidgets"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">GimpEnumWidgets</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpEnumWidgets</span></h2>
 <p>GimpEnumWidgets &#8212; </p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
 
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new">gimp_enum_radio_box_new</a>         (GType enum_type,
+GtkWidget*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new">gimp_enum_radio_box_new</a>         (GType enum_type,
                                              GCallback callback,
                                              gpointer callback_data,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> **first_button);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new-with-range">gimp_enum_radio_box_new_with_range</a>
+                                             GtkWidget **first_button);
+GtkWidget*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new-with-range">gimp_enum_radio_box_new_with_range</a>
                                             (GType enum_type,
                                              gint minimum,
                                              gint maximum,
                                              GCallback callback,
                                              gpointer callback_data,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> **first_button);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-frame-new">gimp_enum_radio_frame_new</a>       (GType enum_type,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *label_widget,
+                                             GtkWidget **first_button);
+GtkWidget*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-frame-new">gimp_enum_radio_frame_new</a>       (GType enum_type,
+                                             GtkWidget *label_widget,
                                              GCallback callback,
                                              gpointer callback_data,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> **first_button);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-frame-new-with-range">gimp_enum_radio_frame_new_with_range</a>
+                                             GtkWidget **first_button);
+GtkWidget*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-frame-new-with-range">gimp_enum_radio_frame_new_with_range</a>
                                             (GType enum_type,
                                              gint minimum,
                                              gint maximum,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *label_widget,
+                                             GtkWidget *label_widget,
                                              GCallback callback,
                                              gpointer callback_data,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> **first_button);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new">gimp_enum_stock_box_new</a>         (GType enum_type,
+                                             GtkWidget **first_button);
+GtkWidget*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new">gimp_enum_stock_box_new</a>         (GType enum_type,
                                              const gchar *stock_prefix,
-                                             <a
-href="../gtk/gtk-Themeable-Stock-Images.html#GtkIconSize"
->GtkIconSize</a> icon_size,
+                                             GtkIconSize icon_size,
                                              GCallback callback,
                                              gpointer callback_data,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> **first_button);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new-with-range">gimp_enum_stock_box_new_with_range</a>
+                                             GtkWidget **first_button);
+GtkWidget*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new-with-range">gimp_enum_stock_box_new_with_range</a>
                                             (GType enum_type,
                                              gint minimum,
                                              gint maximum,
                                              const gchar *stock_prefix,
-                                             <a
-href="../gtk/gtk-Themeable-Stock-Images.html#GtkIconSize"
->GtkIconSize</a> icon_size,
+                                             GtkIconSize icon_size,
                                              GCallback callback,
                                              gpointer callback_data,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> **first_button);
+                                             GtkWidget **first_button);
 void        <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-set-child-padding">gimp_enum_stock_box_set_child_padding</a>
-                                            (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *stock_box,
+                                            (GtkWidget *stock_box,
                                              gint xpad,
                                              gint ypad);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2602558"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2602569"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2602575"></a><h3>
+<a name="id2607303"></a><h3>
 <a name="gimp-enum-radio-box-new"></a>gimp_enum_radio_box_new ()</h3>
-<a class="indexterm" name="id2602584"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_enum_radio_box_new         (GType enum_type,
+<a class="indexterm" name="id2607317"></a><pre class="programlisting">GtkWidget*  gimp_enum_radio_box_new         (GType enum_type,
                                              GCallback callback,
                                              gpointer callback_data,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> **first_button);</pre>
+                                             GtkWidget **first_button);</pre>
 <p>
 Creates a new group of <span class="type">GtkRadioButtons</span> representing the enum
 values.  A group of radiobuttons is a good way to represent enums
@@ -165,9 +133,7 @@ with up to three or four values. Often it is better to use a
 <td>
 <span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
 <td> a callback to connect to the "toggled" signal of each
-           <a
-href="../gtk/GtkRadioButton.html"
-><span class="type">GtkRadioButton</span></a> that is created.
+           <span class="type">GtkRadioButton</span> that is created.
 </td>
 </tr>
 <tr>
@@ -185,9 +151,7 @@ href="../gtk/GtkRadioButton.html"
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> a new <a
-href="../gtk/GtkVBox.html"
-><span class="type">GtkVBox</span></a> holding a group of <span class="type">GtkRadioButtons</span>.
+<td> a new <span class="type">GtkVBox</span> holding a group of <span class="type">GtkRadioButtons</span>.
 
 </td>
 </tr>
@@ -198,19 +162,15 @@ href="../gtk/GtkVBox.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602764"></a><h3>
+<a name="id2612316"></a><h3>
 <a name="gimp-enum-radio-box-new-with-range"></a>gimp_enum_radio_box_new_with_range ()</h3>
-<a class="indexterm" name="id2602773"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_enum_radio_box_new_with_range
+<a class="indexterm" name="id2612330"></a><pre class="programlisting">GtkWidget*  gimp_enum_radio_box_new_with_range
                                             (GType enum_type,
                                              gint minimum,
                                              gint maximum,
                                              GCallback callback,
                                              gpointer callback_data,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> **first_button);</pre>
+                                             GtkWidget **first_button);</pre>
 <p>
 Just like <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new"><code class="function">gimp_enum_radio_box_new()</code></a>, this function creates a group
 of radio buttons, but it allows to limit the range of available
@@ -243,9 +203,7 @@ enum values.</p>
 <td>
 <span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
 <td> a callback to connect to the "toggled" signal of each
-           <a
-href="../gtk/GtkRadioButton.html"
-><span class="type">GtkRadioButton</span></a> that is created.
+           <span class="type">GtkRadioButton</span> that is created.
 </td>
 </tr>
 <tr>
@@ -263,9 +221,7 @@ href="../gtk/GtkRadioButton.html"
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> a new <a
-href="../gtk/GtkVBox.html"
-><span class="type">GtkVBox</span></a> holding a group of <span class="type">GtkRadioButtons</span>.
+<td> a new <span class="type">GtkVBox</span> holding a group of <span class="type">GtkRadioButtons</span>.
 
 </td>
 </tr>
@@ -276,24 +232,16 @@ href="../gtk/GtkVBox.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607535"></a><h3>
+<a name="id2612548"></a><h3>
 <a name="gimp-enum-radio-frame-new"></a>gimp_enum_radio_frame_new ()</h3>
-<a class="indexterm" name="id2607544"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_enum_radio_frame_new       (GType enum_type,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *label_widget,
+<a class="indexterm" name="id2612562"></a><pre class="programlisting">GtkWidget*  gimp_enum_radio_frame_new       (GType enum_type,
+                                             GtkWidget *label_widget,
                                              GCallback callback,
                                              gpointer callback_data,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> **first_button);</pre>
+                                             GtkWidget **first_button);</pre>
 <p>
 Calls <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new"><code class="function">gimp_enum_radio_box_new()</code></a> and puts the resulting vbox into a
-<a
-href="../gtk/GtkFrame.html"
-><span class="type">GtkFrame</span></a>.</p>
+<span class="type">GtkFrame</span>.</p>
 <p>
 
 </p>
@@ -317,9 +265,7 @@ href="../gtk/GtkFrame.html"
 <td>
 <span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
 <td> a callback to connect to the "toggled" signal of each
-           <a
-href="../gtk/GtkRadioButton.html"
-><span class="type">GtkRadioButton</span></a> that is created.
+           <span class="type">GtkRadioButton</span> that is created.
 </td>
 </tr>
 <tr>
@@ -337,9 +283,7 @@ href="../gtk/GtkRadioButton.html"
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> a new <a
-href="../gtk/GtkFrame.html"
-><span class="type">GtkFrame</span></a> holding a group of <span class="type">GtkRadioButtons</span>.
+<td> a new <span class="type">GtkFrame</span> holding a group of <span class="type">GtkRadioButtons</span>.
 
 </td>
 </tr>
@@ -350,27 +294,19 @@ href="../gtk/GtkFrame.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600835"></a><h3>
+<a name="id2605582"></a><h3>
 <a name="gimp-enum-radio-frame-new-with-range"></a>gimp_enum_radio_frame_new_with_range ()</h3>
-<a class="indexterm" name="id2600846"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_enum_radio_frame_new_with_range
+<a class="indexterm" name="id2605598"></a><pre class="programlisting">GtkWidget*  gimp_enum_radio_frame_new_with_range
                                             (GType enum_type,
                                              gint minimum,
                                              gint maximum,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *label_widget,
+                                             GtkWidget *label_widget,
                                              GCallback callback,
                                              gpointer callback_data,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> **first_button);</pre>
+                                             GtkWidget **first_button);</pre>
 <p>
 Calls <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new-with-range"><code class="function">gimp_enum_radio_box_new_with_range()</code></a> and puts the resulting
-vbox into a <a
-href="../gtk/GtkFrame.html"
-><span class="type">GtkFrame</span></a>.</p>
+vbox into a <span class="type">GtkFrame</span>.</p>
 <p>
 
 </p>
@@ -405,9 +341,7 @@ href="../gtk/GtkFrame.html"
 <td>
 <span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
 <td> a callback to connect to the "toggled" signal of each
-           <a
-href="../gtk/GtkRadioButton.html"
-><span class="type">GtkRadioButton</span></a> that is created.
+           <span class="type">GtkRadioButton</span> that is created.
 </td>
 </tr>
 <tr>
@@ -425,9 +359,7 @@ href="../gtk/GtkRadioButton.html"
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> a new <a
-href="../gtk/GtkFrame.html"
-><span class="type">GtkFrame</span></a> holding a group of <span class="type">GtkRadioButtons</span>.
+<td> a new <span class="type">GtkFrame</span> holding a group of <span class="type">GtkRadioButtons</span>.
 
 </td>
 </tr>
@@ -438,20 +370,14 @@ href="../gtk/GtkFrame.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601094"></a><h3>
+<a name="id2605846"></a><h3>
 <a name="gimp-enum-stock-box-new"></a>gimp_enum_stock_box_new ()</h3>
-<a class="indexterm" name="id2601103"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_enum_stock_box_new         (GType enum_type,
+<a class="indexterm" name="id2605859"></a><pre class="programlisting">GtkWidget*  gimp_enum_stock_box_new         (GType enum_type,
                                              const gchar *stock_prefix,
-                                             <a
-href="../gtk/gtk-Themeable-Stock-Images.html#GtkIconSize"
->GtkIconSize</a> icon_size,
+                                             GtkIconSize icon_size,
                                              GCallback callback,
                                              gpointer callback_data,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> **first_button);</pre>
+                                             GtkWidget **first_button);</pre>
 <p>
 Creates a horizontal box of radio buttons with stock icons.  The
 stock_id for each icon is created by appending the enum_value's
@@ -484,9 +410,7 @@ nick to the given <em class="parameter"><code>stock_prefix</code></em>.</p>
 <td>
 <span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
 <td> a callback to connect to the "toggled" signal of each
-           <a
-href="../gtk/GtkRadioButton.html"
-><span class="type">GtkRadioButton</span></a> that is created.
+           <span class="type">GtkRadioButton</span> that is created.
 </td>
 </tr>
 <tr>
@@ -515,23 +439,17 @@ href="../gtk/GtkRadioButton.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601319"></a><h3>
+<a name="id2606076"></a><h3>
 <a name="gimp-enum-stock-box-new-with-range"></a>gimp_enum_stock_box_new_with_range ()</h3>
-<a class="indexterm" name="id2601329"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_enum_stock_box_new_with_range
+<a class="indexterm" name="id2606090"></a><pre class="programlisting">GtkWidget*  gimp_enum_stock_box_new_with_range
                                             (GType enum_type,
                                              gint minimum,
                                              gint maximum,
                                              const gchar *stock_prefix,
-                                             <a
-href="../gtk/gtk-Themeable-Stock-Images.html#GtkIconSize"
->GtkIconSize</a> icon_size,
+                                             GtkIconSize icon_size,
                                              GCallback callback,
                                              gpointer callback_data,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> **first_button);</pre>
+                                             GtkWidget **first_button);</pre>
 <p>
 Just like <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new"><code class="function">gimp_enum_stock_box_new()</code></a>, this function creates a group
 of radio buttons, but it allows to limit the range of available
@@ -576,9 +494,7 @@ enum values.</p>
 <td>
 <span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
 <td> a callback to connect to the "toggled" signal of each
-           <a
-href="../gtk/GtkRadioButton.html"
-><span class="type">GtkRadioButton</span></a> that is created.
+           <span class="type">GtkRadioButton</span> that is created.
 </td>
 </tr>
 <tr>
@@ -607,12 +523,10 @@ href="../gtk/GtkRadioButton.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2612928"></a><h3>
+<a name="id2622364"></a><h3>
 <a name="gimp-enum-stock-box-set-child-padding"></a>gimp_enum_stock_box_set_child_padding ()</h3>
-<a class="indexterm" name="id2612940"></a><pre class="programlisting">void        gimp_enum_stock_box_set_child_padding
-                                            (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *stock_box,
+<a class="indexterm" name="id2622380"></a><pre class="programlisting">void        gimp_enum_stock_box_set_child_padding
+                                            (GtkWidget *stock_box,
                                              gint xpad,
                                              gint ypad);</pre>
 <p>
@@ -649,9 +563,5 @@ Sets the padding of all buttons in a box created by
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimpwidgets-GimpStock.html"><b>&lt;&lt;&#160;GimpStock</b></a></td>
-<td align="right"><a accesskey="n" href="libgimpwidgets-GimpWidgets.html"><b>GimpWidgets&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

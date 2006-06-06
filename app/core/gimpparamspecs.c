@@ -25,7 +25,6 @@
 #include "core-types.h"
 
 #include "gimp.h"
-#include "gimp.h"
 #include "gimpimage.h"
 #include "gimplayer.h"
 #include "gimplayermask.h"
@@ -614,7 +613,8 @@ gimp_param_image_id_init (GParamSpec *pspec)
 {
   GimpParamSpecImageID *ispec = GIMP_PARAM_SPEC_IMAGE_ID (pspec);
 
-  ispec->gimp = NULL;
+  ispec->gimp    = NULL;
+  ispec->none_ok = FALSE;
 }
 
 static void
@@ -631,6 +631,9 @@ gimp_param_image_id_validate (GParamSpec *pspec,
   GimpParamSpecImageID *ispec    = GIMP_PARAM_SPEC_IMAGE_ID (pspec);
   gint                  image_id = value->data[0].v_int;
   GimpImage            *image;
+
+  if (ispec->none_ok && (image_id == 0 || image_id == -1))
+    return FALSE;
 
   image = gimp_image_get_by_ID (ispec->gimp, image_id);
 
@@ -666,6 +669,7 @@ gimp_param_spec_image_id (const gchar *name,
                           const gchar *nick,
                           const gchar *blurb,
                           Gimp        *gimp,
+                          gboolean     none_ok,
                           GParamFlags  flags)
 {
   GimpParamSpecImageID *ispec;
@@ -675,8 +679,8 @@ gimp_param_spec_image_id (const gchar *name,
   ispec = g_param_spec_internal (GIMP_TYPE_PARAM_IMAGE_ID,
                                  name, nick, blurb, flags);
 
-  if (ispec)
-    ispec->gimp = gimp;
+  ispec->gimp    = gimp;
+  ispec->none_ok = none_ok ? TRUE : FALSE;
 
   return G_PARAM_SPEC (ispec);
 }
@@ -777,22 +781,26 @@ gimp_param_item_id_init (GParamSpec *pspec)
 
   ispec->gimp      = NULL;
   ispec->item_type = GIMP_TYPE_ITEM;
+  ispec->none_ok   = FALSE;
 }
 
 static void
 gimp_param_item_id_set_default (GParamSpec *pspec,
-                                 GValue     *value)
+                                GValue     *value)
 {
   value->data[0].v_int = -1;
 }
 
 static gboolean
 gimp_param_item_id_validate (GParamSpec *pspec,
-                              GValue     *value)
+                             GValue     *value)
 {
   GimpParamSpecItemID *ispec   = GIMP_PARAM_SPEC_ITEM_ID (pspec);
   gint                 item_id = value->data[0].v_int;
   GimpItem            *item;
+
+  if (ispec->none_ok && (item_id == 0 || item_id == -1))
+    return FALSE;
 
   item = gimp_item_get_by_ID (ispec->gimp, item_id);
 
@@ -834,6 +842,7 @@ gimp_param_spec_item_id (const gchar *name,
                          const gchar *blurb,
                          Gimp        *gimp,
                          GType        item_type,
+                         gboolean     none_ok,
                          GParamFlags  flags)
 {
   GimpParamSpecItemID *ispec;
@@ -844,11 +853,9 @@ gimp_param_spec_item_id (const gchar *name,
   ispec = g_param_spec_internal (GIMP_TYPE_PARAM_ITEM_ID,
                                  name, nick, blurb, flags);
 
-  if (ispec)
-    {
-      ispec->gimp      = gimp;
-      ispec->item_type = item_type;
-    }
+  ispec->gimp      = gimp;
+  ispec->item_type = item_type;
+  ispec->none_ok   = none_ok;
 
   return G_PARAM_SPEC (ispec);
 }
@@ -954,6 +961,7 @@ gimp_param_spec_drawable_id (const gchar *name,
                              const gchar *nick,
                              const gchar *blurb,
                              Gimp        *gimp,
+                             gboolean     none_ok,
                              GParamFlags  flags)
 {
   GimpParamSpecItemID *ispec;
@@ -963,7 +971,8 @@ gimp_param_spec_drawable_id (const gchar *name,
   ispec = g_param_spec_internal (GIMP_TYPE_PARAM_DRAWABLE_ID,
                                  name, nick, blurb, flags);
 
-  ispec->gimp = gimp;
+  ispec->gimp    = gimp;
+  ispec->none_ok = none_ok ? TRUE : FALSE;
 
   return G_PARAM_SPEC (ispec);
 }
@@ -1067,6 +1076,7 @@ gimp_param_spec_layer_id (const gchar *name,
                           const gchar *nick,
                           const gchar *blurb,
                           Gimp        *gimp,
+                          gboolean     none_ok,
                           GParamFlags  flags)
 {
   GimpParamSpecItemID *ispec;
@@ -1076,7 +1086,8 @@ gimp_param_spec_layer_id (const gchar *name,
   ispec = g_param_spec_internal (GIMP_TYPE_PARAM_LAYER_ID,
                                  name, nick, blurb, flags);
 
-  ispec->gimp = gimp;
+  ispec->gimp    = gimp;
+  ispec->none_ok = none_ok ? TRUE : FALSE;
 
   return G_PARAM_SPEC (ispec);
 }
@@ -1180,6 +1191,7 @@ gimp_param_spec_channel_id (const gchar *name,
                             const gchar *nick,
                             const gchar *blurb,
                             Gimp        *gimp,
+                            gboolean     none_ok,
                             GParamFlags  flags)
 {
   GimpParamSpecItemID *ispec;
@@ -1189,7 +1201,8 @@ gimp_param_spec_channel_id (const gchar *name,
   ispec = g_param_spec_internal (GIMP_TYPE_PARAM_CHANNEL_ID,
                                  name, nick, blurb, flags);
 
-  ispec->gimp = gimp;
+  ispec->gimp    = gimp;
+  ispec->none_ok = none_ok ? TRUE : FALSE;
 
   return G_PARAM_SPEC (ispec);
 }
@@ -1293,6 +1306,7 @@ gimp_param_spec_layer_mask_id (const gchar *name,
                                const gchar *nick,
                                const gchar *blurb,
                                Gimp        *gimp,
+                               gboolean     none_ok,
                                GParamFlags  flags)
 {
   GimpParamSpecItemID *ispec;
@@ -1302,7 +1316,8 @@ gimp_param_spec_layer_mask_id (const gchar *name,
   ispec = g_param_spec_internal (GIMP_TYPE_PARAM_LAYER_MASK_ID,
                                  name, nick, blurb, flags);
 
-  ispec->gimp = gimp;
+  ispec->gimp    = gimp;
+  ispec->none_ok = none_ok ? TRUE : FALSE;
 
   return G_PARAM_SPEC (ispec);
 }
@@ -1406,6 +1421,7 @@ gimp_param_spec_selection_id (const gchar *name,
                               const gchar *nick,
                               const gchar *blurb,
                               Gimp        *gimp,
+                              gboolean     none_ok,
                               GParamFlags  flags)
 {
   GimpParamSpecItemID *ispec;
@@ -1415,7 +1431,8 @@ gimp_param_spec_selection_id (const gchar *name,
   ispec = g_param_spec_internal (GIMP_TYPE_PARAM_SELECTION_ID,
                                  name, nick, blurb, flags);
 
-  ispec->gimp = gimp;
+  ispec->gimp    = gimp;
+  ispec->none_ok = none_ok ? TRUE : FALSE;
 
   return G_PARAM_SPEC (ispec);
 }
@@ -1519,6 +1536,7 @@ gimp_param_spec_vectors_id (const gchar *name,
                             const gchar *nick,
                             const gchar *blurb,
                             Gimp        *gimp,
+                            gboolean     none_ok,
                             GParamFlags  flags)
 {
   GimpParamSpecItemID *ispec;
@@ -1528,7 +1546,8 @@ gimp_param_spec_vectors_id (const gchar *name,
   ispec = g_param_spec_internal (GIMP_TYPE_PARAM_VECTORS_ID,
                                  name, nick, blurb, flags);
 
-  ispec->gimp = gimp;
+  ispec->gimp    = gimp;
+  ispec->none_ok = none_ok ? TRUE : FALSE;
 
   return G_PARAM_SPEC (ispec);
 }
@@ -1634,7 +1653,8 @@ gimp_param_display_id_init (GParamSpec *pspec)
 {
   GimpParamSpecDisplayID *ispec = GIMP_PARAM_SPEC_DISPLAY_ID (pspec);
 
-  ispec->gimp = NULL;
+  ispec->gimp    = NULL;
+  ispec->none_ok = FALSE;
 }
 
 static void
@@ -1651,6 +1671,9 @@ gimp_param_display_id_validate (GParamSpec *pspec,
   GimpParamSpecDisplayID *ispec      = GIMP_PARAM_SPEC_DISPLAY_ID (pspec);
   gint                    display_id = value->data[0].v_int;
   GimpObject             *display;
+
+  if (ispec->none_ok && (display_id == 0 || display_id == -1))
+    return FALSE;
 
   display = gimp_get_display_by_ID (ispec->gimp, display_id);
 
@@ -1686,6 +1709,7 @@ gimp_param_spec_display_id (const gchar *name,
                             const gchar *nick,
                             const gchar *blurb,
                             Gimp        *gimp,
+                            gboolean     none_ok,
                             GParamFlags  flags)
 {
   GimpParamSpecDisplayID *ispec;
@@ -1695,8 +1719,8 @@ gimp_param_spec_display_id (const gchar *name,
   ispec = g_param_spec_internal (GIMP_TYPE_PARAM_DISPLAY_ID,
                                  name, nick, blurb, flags);
 
-  if (ispec)
-    ispec->gimp = gimp;
+  ispec->gimp    = gimp;
+  ispec->none_ok = none_ok ? TRUE : FALSE;
 
   return G_PARAM_SPEC (ispec);
 }
@@ -2165,8 +2189,8 @@ gimp_value_set_int16array (GValue       *value,
 {
   g_return_if_fail (GIMP_VALUE_HOLDS_INT16_ARRAY (value));
 
-  return gimp_value_set_array (value, (const guint8 *) data,
-                               length * sizeof (gint16));
+  gimp_value_set_array (value, (const guint8 *) data,
+                        length * sizeof (gint16));
 }
 
 void
@@ -2176,8 +2200,8 @@ gimp_value_set_static_int16array (GValue       *value,
 {
   g_return_if_fail (GIMP_VALUE_HOLDS_INT16_ARRAY (value));
 
-  return gimp_value_set_static_array (value, (const guint8 *) data,
-                                      length * sizeof (gint16));
+  gimp_value_set_static_array (value, (const guint8 *) data,
+                               length * sizeof (gint16));
 }
 
 void
@@ -2187,8 +2211,8 @@ gimp_value_take_int16array (GValue *value,
 {
   g_return_if_fail (GIMP_VALUE_HOLDS_INT16_ARRAY (value));
 
-  return gimp_value_take_array (value, (guint8 *) data,
-                                length * sizeof (gint16));
+  gimp_value_take_array (value, (guint8 *) data,
+                         length * sizeof (gint16));
 }
 
 
@@ -2290,8 +2314,8 @@ gimp_value_set_int32array (GValue       *value,
 {
   g_return_if_fail (GIMP_VALUE_HOLDS_INT32_ARRAY (value));
 
-  return gimp_value_set_array (value, (const guint8 *) data,
-                               length * sizeof (gint32));
+  gimp_value_set_array (value, (const guint8 *) data,
+                        length * sizeof (gint32));
 }
 
 void
@@ -2301,8 +2325,8 @@ gimp_value_set_static_int32array (GValue       *value,
 {
   g_return_if_fail (GIMP_VALUE_HOLDS_INT32_ARRAY (value));
 
-  return gimp_value_set_static_array (value, (const guint8 *) data,
-                                      length * sizeof (gint32));
+  gimp_value_set_static_array (value, (const guint8 *) data,
+                               length * sizeof (gint32));
 }
 
 void
@@ -2312,8 +2336,8 @@ gimp_value_take_int32array (GValue *value,
 {
   g_return_if_fail (GIMP_VALUE_HOLDS_INT32_ARRAY (value));
 
-  return gimp_value_take_array (value, (guint8 *) data,
-                                length * sizeof (gint32));
+  gimp_value_take_array (value, (guint8 *) data,
+                         length * sizeof (gint32));
 }
 
 
@@ -2415,8 +2439,8 @@ gimp_value_set_floatarray (GValue        *value,
 {
   g_return_if_fail (GIMP_VALUE_HOLDS_FLOAT_ARRAY (value));
 
-  return gimp_value_set_array (value, (const guint8 *) data,
-                               length * sizeof (gdouble));
+  gimp_value_set_array (value, (const guint8 *) data,
+                        length * sizeof (gdouble));
 }
 
 void
@@ -2426,8 +2450,8 @@ gimp_value_set_static_floatarray (GValue        *value,
 {
   g_return_if_fail (GIMP_VALUE_HOLDS_FLOAT_ARRAY (value));
 
-  return gimp_value_set_static_array (value, (const guint8 *) data,
-                                      length * sizeof (gdouble));
+  gimp_value_set_static_array (value, (const guint8 *) data,
+                               length * sizeof (gdouble));
 }
 
 void
@@ -2437,8 +2461,8 @@ gimp_value_take_floatarray (GValue  *value,
 {
   g_return_if_fail (GIMP_VALUE_HOLDS_FLOAT_ARRAY (value));
 
-  return gimp_value_take_array (value, (guint8 *) data,
-                                length * sizeof (gdouble));
+  gimp_value_take_array (value, (guint8 *) data,
+                         length * sizeof (gdouble));
 }
 
 

@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimppatterns">
 <refmeta>
-<refentrytitle>gimppatterns</refentrytitle>
+<refentrytitle id="top_of_page">gimppatterns</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimppatterns</refname><refpurpose>Functions relating to patterns.</refpurpose>
+<refname>gimppatterns</refname>
+<refpurpose>Functions relating to patterns.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -42,18 +45,18 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Functions relating to patterns.
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-patterns-refresh"/>gimp_patterns_refresh ()</title>
+<title><anchor id="gimp-patterns-refresh" role="function"/>gimp_patterns_refresh ()</title>
 <indexterm><primary>gimp_patterns_refresh</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_patterns_refresh           (void);</programlisting>
 <para>
 Refresh current patterns. This function always succeeds.
@@ -68,7 +71,7 @@ pattern path and updates all pattern dialogs accordingly.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-patterns-get-list"/>gimp_patterns_get_list ()</title>
+<title><anchor id="gimp-patterns-get-list" role="function"/>gimp_patterns_get_list ()</title>
 <indexterm><primary>gimp_patterns_get_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**     gimp_patterns_get_list          (const <link linkend="gchar">gchar</link> *filter,
                                              <link linkend="gint">gint</link> *num_patterns);</programlisting>
 <para>
@@ -91,7 +94,7 @@ patterns. Each name returned can be used as input to the
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-patterns-get-pattern"/>gimp_patterns_get_pattern ()</title>
+<title><anchor id="gimp-patterns-get-pattern" role="function" condition="deprecated:"/>gimp_patterns_get_pattern ()</title>
 <indexterm role="deprecated"><primary>gimp_patterns_get_pattern</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_patterns_get_pattern       (<link linkend="gint">gint</link> *width,
                                              <link linkend="gint">gint</link> *height);</programlisting>
 <warning><para><literal>gimp_patterns_get_pattern</literal> is deprecated and should not be used in newly-written code.</para></warning>
@@ -111,7 +114,7 @@ instead.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-patterns-set-pattern"/>gimp_patterns_set_pattern ()</title>
+<title><anchor id="gimp-patterns-set-pattern" role="function" condition="deprecated:"/>gimp_patterns_set_pattern ()</title>
 <indexterm role="deprecated"><primary>gimp_patterns_set_pattern</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_patterns_set_pattern       (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <warning><para><literal>gimp_patterns_set_pattern</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -126,7 +129,7 @@ This procedure is deprecated! Use <link linkend="gimp-context-set-pattern"><func
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-patterns-get-pattern-data"/>gimp_patterns_get_pattern_data ()</title>
+<title><anchor id="gimp-patterns-get-pattern-data" role="function" condition="deprecated:"/>gimp_patterns_get_pattern_data ()</title>
 <indexterm role="deprecated"><primary>gimp_patterns_get_pattern_data</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_patterns_get_pattern_data  (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> *width,
                                              <link linkend="gint">gint</link> *height,

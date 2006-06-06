@@ -31,7 +31,7 @@
 
 #include "batch.h"
 
-#include "pdb/gimp-pdb.h"
+#include "pdb/gimppdb.h"
 #include "pdb/gimpprocedure.h"
 
 #include "gimp-intl.h"
@@ -65,10 +65,15 @@ batch_run (Gimp         *gimp,
 
   if (! batch_interpreter)
     {
-      batch_interpreter = BATCH_DEFAULT_EVAL_PROC;
+      batch_interpreter = g_getenv ("GIMP_BATCH_INTERPRETER");
 
-      g_printerr ("No batch interpreter specified, using the default '%s'.\n",
-                  batch_interpreter);
+      if (! batch_interpreter)
+        {
+          batch_interpreter = BATCH_DEFAULT_EVAL_PROC;
+
+          g_printerr (_("No batch interpreter specified, using the default "
+                        "'%s'.\n"), batch_interpreter);
+        }
     }
 
   /*  script-fu text console, hardcoded for backward compatibility  */
@@ -77,7 +82,8 @@ batch_run (Gimp         *gimp,
       strcmp (batch_commands[0], "-") == 0)
     {
       const gchar   *proc_name = "plug-in-script-fu-text-console";
-      GimpProcedure *procedure = gimp_pdb_lookup (gimp, proc_name);
+      GimpProcedure *procedure = gimp_pdb_lookup_procedure (gimp->pdb,
+                                                            proc_name);
 
       if (procedure)
         batch_run_cmd (gimp, proc_name, procedure,
@@ -88,7 +94,8 @@ batch_run (Gimp         *gimp,
     }
   else
     {
-      GimpProcedure *eval_proc = gimp_pdb_lookup (gimp, batch_interpreter);
+      GimpProcedure *eval_proc = gimp_pdb_lookup_procedure (gimp->pdb,
+                                                            batch_interpreter);
 
       if (eval_proc)
         {
@@ -140,8 +147,10 @@ batch_run_cmd (Gimp          *gimp,
   if (procedure->num_args > 1)
     g_value_set_static_string (&args->values[1], cmd);
 
-  return_vals = gimp_pdb_execute (gimp, gimp_get_user_context (gimp), NULL,
-                                  proc_name, args);
+  return_vals = gimp_pdb_execute_procedure_by_name_args (gimp->pdb,
+                                                         gimp_get_user_context (gimp),
+                                                         NULL,
+                                                         proc_name, args);
 
   switch (g_value_get_enum (&return_vals->values[0]))
     {

@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
 <link rel="prev" href="libgimpcolor-GimpColorSpace.html" title="GimpColorSpace">
 <link rel="next" href="libgimpcolor-GimpBilinear.html" title="GimpBilinear">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
 <link rel="index" href="ix01.html" title="Index">
@@ -16,24 +17,29 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimpcolor-GimpColorSpace.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpcolor.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Color Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpcolor-GimpBilinear.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimpcolor-GimpAdaptiveSupersample"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">GimpAdaptiveSupersample</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpAdaptiveSupersample</span></h2>
 <p>GimpAdaptiveSupersample &#8212; Functions to perform adaptive supersampling on an area.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -65,17 +71,17 @@ gulong      <a href="libgimpcolor-GimpAdaptiveSupersample.html#gimp-adaptive-sup
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2523472"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 Functions to perform adaptive supersampling on an area.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2523484"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2523491"></a><h3>
+<a name="id2471233"></a><h3>
 <a name="GimpProgressFunc"></a>GimpProgressFunc ()</h3>
-<a class="indexterm" name="id2523501"></a><pre class="programlisting">void        (*GimpProgressFunc)             (gint min,
+<a class="indexterm" name="id2471245"></a><pre class="programlisting">void        (*GimpProgressFunc)             (gint min,
                                              gint max,
                                              gint current,
                                              gpointer data);</pre>
@@ -116,9 +122,9 @@ Functions to perform adaptive supersampling on an area.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2524963"></a><h3>
+<a name="id2567183"></a><h3>
 <a name="GimpPutPixelFunc"></a>GimpPutPixelFunc ()</h3>
-<a class="indexterm" name="id2524974"></a><pre class="programlisting">void        (*GimpPutPixelFunc)             (gint x,
+<a class="indexterm" name="id2567195"></a><pre class="programlisting">void        (*GimpPutPixelFunc)             (gint x,
                                              gint y,
                                              <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color,
                                              gpointer data);</pre>
@@ -159,9 +165,9 @@ Functions to perform adaptive supersampling on an area.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2525082"></a><h3>
+<a name="id2567303"></a><h3>
 <a name="GimpRenderFunc"></a>GimpRenderFunc ()</h3>
-<a class="indexterm" name="id2525092"></a><pre class="programlisting">void        (*GimpRenderFunc)               (gdouble x,
+<a class="indexterm" name="id2567315"></a><pre class="programlisting">void        (*GimpRenderFunc)               (gdouble x,
                                              gdouble y,
                                              <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color,
                                              gpointer data);</pre>
@@ -202,9 +208,9 @@ Functions to perform adaptive supersampling on an area.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2525200"></a><h3>
+<a name="id2567580"></a><h3>
 <a name="gimp-adaptive-supersample-area"></a>gimp_adaptive_supersample_area ()</h3>
-<a class="indexterm" name="id2525209"></a><pre class="programlisting">gulong      gimp_adaptive_supersample_area  (gint x1,
+<a class="indexterm" name="id2567591"></a><pre class="programlisting">gulong      gimp_adaptive_supersample_area  (gint x1,
                                              gint y1,
                                              gint x2,
                                              gint y2,
@@ -307,9 +313,5 @@ Functions to perform adaptive supersampling on an area.
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimpcolor-GimpColorSpace.html"><b>&lt;&lt;&#160;GimpColorSpace</b></a></td>
-<td align="right"><a accesskey="n" href="libgimpcolor-GimpBilinear.html"><b>GimpBilinear&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

@@ -26,7 +26,7 @@
 #include "libgimpmath/gimpmath.h"
 
 #include "pdb-types.h"
-#include "gimp-pdb.h"
+#include "gimppdb.h"
 #include "gimpprocedure.h"
 #include "core/gimpparamspecs.h"
 
@@ -119,15 +119,19 @@ perspective_invoker (GimpProcedure     *procedure,
         {
           GimpMatrix3           matrix;
           GimpInterpolationType interpolation_type = GIMP_INTERPOLATION_NONE;
+          gint                  off_x, off_y;
+
+          gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
+
+          x += off_x;
+          y += off_y;
 
           /* Assemble the transformation matrix */
           gimp_matrix3_identity (&matrix);
           gimp_transform_matrix_perspective (&matrix,
                                              x, y, width, height,
-                                             x0, y0,
-                                             x1, y1,
-                                             x2, y2,
-                                             x3, y3);
+                                             x0, y0, x1, y1,
+                                             x2, y2, x3, y3);
 
           if (interpolation)
             interpolation_type = gimp->config->interpolation_type;
@@ -183,11 +187,18 @@ rotate_invoker (GimpProcedure     *procedure,
         {
           GimpMatrix3           matrix;
           GimpInterpolationType interpolation_type = GIMP_INTERPOLATION_NONE;
+          gint                  off_x, off_y;
+
+          gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
+
+          x += off_x;
+          y += off_y;
 
           /* Assemble the transformation matrix */
           gimp_matrix3_identity (&matrix);
           gimp_transform_matrix_rotate_rect (&matrix,
-                                             x, y, width, height, angle);
+                                             x, y, width, height,
+                                             angle);
 
           if (interpolation)
             interpolation_type = gimp->config->interpolation_type;
@@ -250,14 +261,18 @@ scale_invoker (GimpProcedure     *procedure,
         {
           GimpMatrix3           matrix;
           GimpInterpolationType interpolation_type = GIMP_INTERPOLATION_NONE;
+          gint                  off_x, off_y;
+
+          gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
+
+          x += off_x;
+          y += off_y;
 
           /* Assemble the transformation matrix */
           gimp_matrix3_identity (&matrix);
           gimp_transform_matrix_scale (&matrix,
                                        x, y, width, height,
-                                       x0, y0,
-                                       x1 - x0,
-                                       y1 - y0);
+                                       x0, y0, x1 - x0, y1 - y0);
 
           if (interpolation)
             interpolation_type = gimp->config->interpolation_type;
@@ -315,6 +330,12 @@ shear_invoker (GimpProcedure     *procedure,
         {
           GimpMatrix3           matrix;
           GimpInterpolationType interpolation_type = GIMP_INTERPOLATION_NONE;
+          gint                  off_x, off_y;
+
+          gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
+
+          x += off_x;
+          y += off_y;
 
           /* Assemble the transformation matrix */
           gimp_matrix3_identity (&matrix);
@@ -422,7 +443,7 @@ transform_2d_invoker (GimpProcedure     *procedure,
 }
 
 void
-register_transform_tools_procs (Gimp *gimp)
+register_transform_tools_procs (GimpPDB *pdb)
 {
   GimpProcedure *procedure;
 
@@ -439,17 +460,16 @@ register_transform_tools_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-drawable-transform-flip-simple");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The affected drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_enum ("flip-type",
                                                      "flip type",
-                                                     "Type of flip: { GIMP_ORIENTATION_HORIZONTAL (0), GIMP_ORIENTATION_VERTICAL (1) }",
+                                                     "Type of flip",
                                                      GIMP_TYPE_ORIENTATION_TYPE,
                                                      GIMP_ORIENTATION_HORIZONTAL,
                                                      GIMP_PARAM_READWRITE));
@@ -459,9 +479,9 @@ register_transform_tools_procs (Gimp *gimp)
                                    gimp_param_spec_drawable_id ("drawable",
                                                                 "drawable",
                                                                 "The flipped drawable",
-                                                                gimp,
+                                                                pdb->gimp, FALSE,
                                                                 GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -477,12 +497,11 @@ register_transform_tools_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-drawable-transform-perspective-default");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The affected drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_boolean ("interpolation",
@@ -542,9 +561,9 @@ register_transform_tools_procs (Gimp *gimp)
                                    gimp_param_spec_drawable_id ("drawable",
                                                                 "drawable",
                                                                 "The newly mapped drawable",
-                                                                gimp,
+                                                                pdb->gimp, FALSE,
                                                                 GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -560,12 +579,11 @@ register_transform_tools_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-drawable-transform-rotate-default");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The affected drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_boolean ("interpolation",
@@ -583,9 +601,9 @@ register_transform_tools_procs (Gimp *gimp)
                                    gimp_param_spec_drawable_id ("drawable",
                                                                 "drawable",
                                                                 "The rotated drawable",
-                                                                gimp,
+                                                                pdb->gimp, FALSE,
                                                                 GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -601,12 +619,11 @@ register_transform_tools_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-drawable-transform-scale-default");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The affected drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_boolean ("interpolation",
@@ -642,9 +659,9 @@ register_transform_tools_procs (Gimp *gimp)
                                    gimp_param_spec_drawable_id ("drawable",
                                                                 "drawable",
                                                                 "The scaled drawable",
-                                                                gimp,
+                                                                pdb->gimp, FALSE,
                                                                 GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -660,12 +677,11 @@ register_transform_tools_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-drawable-transform-shear-default");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The affected drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_boolean ("interpolation",
@@ -676,7 +692,7 @@ register_transform_tools_procs (Gimp *gimp)
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_enum ("shear-type",
                                                      "shear type",
-                                                     "Type of shear: { GIMP_ORIENTATION_HORIZONTAL (0), GIMP_ORIENTATION_VERTICAL (1) }",
+                                                     "Type of shear",
                                                      GIMP_TYPE_ORIENTATION_TYPE,
                                                      GIMP_ORIENTATION_HORIZONTAL,
                                                      GIMP_PARAM_READWRITE));
@@ -692,9 +708,9 @@ register_transform_tools_procs (Gimp *gimp)
                                    gimp_param_spec_drawable_id ("drawable",
                                                                 "drawable",
                                                                 "The sheared drawable",
-                                                                gimp,
+                                                                pdb->gimp, FALSE,
                                                                 GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -710,12 +726,11 @@ register_transform_tools_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-drawable-transform-2d-default");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The affected drawable",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_boolean ("interpolation",
@@ -769,9 +784,8 @@ register_transform_tools_procs (Gimp *gimp)
                                    gimp_param_spec_drawable_id ("drawable",
                                                                 "drawable",
                                                                 "The transformed drawable",
-                                                                gimp,
+                                                                pdb->gimp, FALSE,
                                                                 GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
-
 }

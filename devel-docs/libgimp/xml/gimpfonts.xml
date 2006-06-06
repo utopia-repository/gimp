@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimpfonts">
 <refmeta>
-<refentrytitle>gimpfonts</refentrytitle>
+<refentrytitle id="top_of_page">gimpfonts</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpfonts</refname><refpurpose>Operations related to fonts.</refpurpose>
+<refname>gimpfonts</refname>
+<refpurpose>Operations related to fonts.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -33,17 +36,17 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-fonts-refresh"/>gimp_fonts_refresh ()</title>
+<title><anchor id="gimp-fonts-refresh" role="function"/>gimp_fonts_refresh ()</title>
 <indexterm><primary>gimp_fonts_refresh</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_fonts_refresh              (void);</programlisting>
 <para>
 Refresh current fonts. This function always succeeds.
@@ -58,7 +61,7 @@ and updates the font dialogs accordingly.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-fonts-get-list"/>gimp_fonts_get_list ()</title>
+<title><anchor id="gimp-fonts-get-list" role="function"/>gimp_fonts_get_list ()</title>
 <indexterm><primary>gimp_fonts_get_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**     gimp_fonts_get_list             (const <link linkend="gchar">gchar</link> *filter,
                                              <link linkend="gint">gint</link> *num_fonts);</programlisting>
 <para>

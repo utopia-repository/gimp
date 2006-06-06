@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpplugin.html" title="gimpplugin">
 <link rel="next" href="libgimp-gimpprogress.html" title="gimpprogress">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -23,24 +24,29 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimpplugin.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-general.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpprogress.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpproceduraldb"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpproceduraldb</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpproceduraldb</span></h2>
 <p>gimpproceduraldb &#8212; Functions for querying and changing procedural database (PDB) entries.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -62,7 +68,7 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBProcType"
 gboolean    <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data">gimp_procedural_db_get_data</a>     (const gchar *identifier,
                                              gpointer data);
 gboolean    <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-set-data">gimp_procedural_db_set_data</a>     (const gchar *identifier,
-                                             gpointer data,
+                                             gconstpointer data,
                                              guint32 bytes);
 gboolean    <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-dump">gimp_procedural_db_dump</a>         (const gchar *filename);
 gboolean    <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-query">gimp_procedural_db_query</a>        (const gchar *name,
@@ -93,18 +99,18 @@ gint        <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data-s
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2551712"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 Functions for querying and changing procedural database (PDB) entries.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2551724"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2568063"></a><h3>
+<a name="id2569508"></a><h3>
 <a name="gimp-procedural-db-temp-name"></a>gimp_procedural_db_temp_name ()</h3>
-<a class="indexterm" name="id2568072"></a><pre class="programlisting">gchar*      gimp_procedural_db_temp_name    (void);</pre>
+<a class="indexterm" name="id2569519"></a><pre class="programlisting">gchar*      gimp_procedural_db_temp_name    (void);</pre>
 <p>
 Generates a unique temporary PDB name.
 </p>
@@ -127,9 +133,9 @@ dialogs to generate a PDB entry name.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2568119"></a><h3>
+<a name="id2569565"></a><h3>
 <a name="gimp-procedural-db-proc-info"></a>gimp_procedural_db_proc_info ()</h3>
-<a class="indexterm" name="id2568128"></a><pre class="programlisting">gboolean    gimp_procedural_db_proc_info    (const gchar *procedure,
+<a class="indexterm" name="id2569577"></a><pre class="programlisting">gboolean    gimp_procedural_db_proc_info    (const gchar *procedure,
                                              gchar **blurb,
                                              gchar **help,
                                              gchar **author,
@@ -235,9 +241,9 @@ about each input argument and return value.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2559750"></a><h3>
+<a name="id2517395"></a><h3>
 <a name="gimp-procedural-db-get-data"></a>gimp_procedural_db_get_data ()</h3>
-<a class="indexterm" name="id2559759"></a><pre class="programlisting">gboolean    gimp_procedural_db_get_data     (const gchar *identifier,
+<a class="indexterm" name="id2517407"></a><pre class="programlisting">gboolean    gimp_procedural_db_get_data     (const gchar *identifier,
                                              gpointer data);</pre>
 <p>
 Returns data associated with the specified identifier.
@@ -276,10 +282,10 @@ the identifier
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2559846"></a><h3>
+<a name="id2517495"></a><h3>
 <a name="gimp-procedural-db-set-data"></a>gimp_procedural_db_set_data ()</h3>
-<a class="indexterm" name="id2559855"></a><pre class="programlisting">gboolean    gimp_procedural_db_set_data     (const gchar *identifier,
-                                             gpointer data,
+<a class="indexterm" name="id2517507"></a><pre class="programlisting">gboolean    gimp_procedural_db_set_data     (const gchar *identifier,
+                                             gconstpointer data,
                                              guint32 bytes);</pre>
 <p>
 Associates the specified identifier with the supplied data.
@@ -323,9 +329,9 @@ identifier. The data may be subsequently retrieved by a call to
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569623"></a><h3>
+<a name="id2572087"></a><h3>
 <a name="gimp-procedural-db-dump"></a>gimp_procedural_db_dump ()</h3>
-<a class="indexterm" name="id2569631"></a><pre class="programlisting">gboolean    gimp_procedural_db_dump         (const gchar *filename);</pre>
+<a class="indexterm" name="id2572097"></a><pre class="programlisting">gboolean    gimp_procedural_db_dump         (const gchar *filename);</pre>
 <p>
 Dumps the current contents of the procedural database
 </p>
@@ -358,9 +364,9 @@ script, which generates a texinfo document.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569693"></a><h3>
+<a name="id2572160"></a><h3>
 <a name="gimp-procedural-db-query"></a>gimp_procedural_db_query ()</h3>
-<a class="indexterm" name="id2569701"></a><pre class="programlisting">gboolean    gimp_procedural_db_query        (const gchar *name,
+<a class="indexterm" name="id2572170"></a><pre class="programlisting">gboolean    gimp_procedural_db_query        (const gchar *name,
                                              const gchar *blurb,
                                              const gchar *help,
                                              const gchar *author,
@@ -457,9 +463,9 @@ entries is 0.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569930"></a><h3>
+<a name="id2572400"></a><h3>
 <a name="gimp-procedural-db-proc-arg"></a>gimp_procedural_db_proc_arg ()</h3>
-<a class="indexterm" name="id2569939"></a><pre class="programlisting">gboolean    gimp_procedural_db_proc_arg     (const gchar *procedure_name,
+<a class="indexterm" name="id2572412"></a><pre class="programlisting">gboolean    gimp_procedural_db_proc_arg     (const gchar *procedure_name,
                                              gint arg_num,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBArgType"
@@ -520,9 +526,9 @@ argument. The argument type, name, and a description are retrieved.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570076"></a><h3>
+<a name="id2572549"></a><h3>
 <a name="gimp-procedural-db-proc-val"></a>gimp_procedural_db_proc_val ()</h3>
-<a class="indexterm" name="id2570085"></a><pre class="programlisting">gboolean    gimp_procedural_db_proc_val     (const gchar *procedure_name,
+<a class="indexterm" name="id2572560"></a><pre class="programlisting">gboolean    gimp_procedural_db_proc_val     (const gchar *procedure_name,
                                              gint val_num,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBArgType"
@@ -584,9 +590,9 @@ retrieved.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570223"></a><h3>
+<a name="id2572698"></a><h3>
 <a name="gimp-procedural-db-get-data-size"></a>gimp_procedural_db_get_data_size ()</h3>
-<a class="indexterm" name="id2570234"></a><pre class="programlisting">gint        gimp_procedural_db_get_data_size
+<a class="indexterm" name="id2572710"></a><pre class="programlisting">gint        gimp_procedural_db_get_data_size
                                             (const gchar *identifier);</pre>
 <p>
 Returns size of data associated with the specified identifier.
@@ -618,9 +624,5 @@ associated with the identifier, an error is returned.</p>
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimp-gimpplugin.html"><b>&lt;&lt;&#160;gimpplugin</b></a></td>
-<td align="right"><a accesskey="n" href="libgimp-gimpprogress.html"><b>gimpprogress&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

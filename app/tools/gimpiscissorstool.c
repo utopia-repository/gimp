@@ -200,7 +200,7 @@ static GPtrArray   * plot_pixels               (GimpIscissorsTool *iscissors,
 
 
 G_DEFINE_TYPE (GimpIscissorsTool, gimp_iscissors_tool,
-               GIMP_TYPE_SELECTION_TOOL);
+               GIMP_TYPE_SELECTION_TOOL)
 
 #define parent_class gimp_iscissors_tool_parent_class
 
@@ -237,25 +237,25 @@ static guchar  maxgrad_conv1[TILE_WIDTH * TILE_HEIGHT * 4] = "";
 static guchar  maxgrad_conv2[TILE_WIDTH * TILE_HEIGHT * 4] = "";
 
 
-static gfloat horz_deriv[9] =
+static const gfloat horz_deriv[9] =
 {
-  1, 0, -1,
-  2, 0, -2,
-  1, 0, -1,
+   1,  0, -1,
+   2,  0, -2,
+   1,  0, -1,
 };
 
-static gfloat vert_deriv[9] =
+static const gfloat vert_deriv[9] =
 {
-  1, 2, 1,
-  0, 0, 0,
+   1,  2,  1,
+   0,  0,  0,
   -1, -2, -1,
 };
 
-static gfloat blur_32[9] =
+static const gfloat blur_32[9] =
 {
-  1, 1, 1,
-  1, 24, 1,
-  1, 1, 1,
+   1,  1,  1,
+   1, 24,  1,
+   1,  1,  1,
 };
 
 static gfloat    distance_weights[GRADIENT_SEARCH * GRADIENT_SEARCH];
@@ -365,17 +365,12 @@ gimp_iscissors_tool_control (GimpTool       *tool,
 
   switch (action)
     {
-    case PAUSE:
+    case GIMP_TOOL_ACTION_PAUSE:
+    case GIMP_TOOL_ACTION_RESUME:
       break;
 
-    case RESUME:
-      break;
-
-    case HALT:
+    case GIMP_TOOL_ACTION_HALT:
       gimp_iscissors_tool_reset (iscissors);
-      break;
-
-    default:
       break;
     }
 }
@@ -984,29 +979,35 @@ gimp_iscissors_tool_cursor_update (GimpTool        *tool,
                                    GimpDisplay     *display)
 {
   GimpIscissorsTool  *iscissors = GIMP_ISCISSORS_TOOL (tool);
-  GimpCursorType      cursor    = GIMP_CURSOR_MOUSE;
   GimpCursorModifier  modifier  = GIMP_CURSOR_MODIFIER_NONE;
 
   switch (iscissors->op)
     {
     case ISCISSORS_OP_SELECT:
-      GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state, display);
+      GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords,
+                                                     state, display);
       return;
+
     case ISCISSORS_OP_MOVE_POINT:
       modifier = GIMP_CURSOR_MODIFIER_MOVE;
       break;
+
     case ISCISSORS_OP_ADD_POINT:
       modifier = GIMP_CURSOR_MODIFIER_PLUS;
       break;
+
     case ISCISSORS_OP_IMPOSSIBLE:
-      cursor = GIMP_CURSOR_BAD;
+      modifier = GIMP_CURSOR_MODIFIER_BAD;
       break;
+
     default:
       break;
     }
 
   gimp_tool_set_cursor (tool, display,
-                        cursor, GIMP_TOOL_CURSOR_ISCISSORS, modifier);
+                        GIMP_CURSOR_MOUSE,
+                        GIMP_TOOL_CURSOR_ISCISSORS,
+                        modifier);
 }
 
 
@@ -1677,6 +1678,10 @@ gradmap_tile_validate (TileManager *tm,
 {
   static gboolean first_gradient = TRUE;
 
+  GimpImage    *image = tile_manager_get_user_data (tm);
+  GimpPickable *pickable;
+  Tile         *srctile;
+  PixelRegion   srcPR, destPR;
   gint          x, y;
   gint          dw, dh;
   gint          sw, sh;
@@ -1687,12 +1692,6 @@ gradmap_tile_validate (TileManager *tm,
   guint8       *tiledata;
   guint8       *datah, *datav;
   gint8         hmax, vmax;
-  GimpPickable *pickable;
-  Tile         *srctile;
-  PixelRegion   srcPR, destPR;
-  GimpImage    *image;
-
-  image = (GimpImage *) tile_manager_get_user_data (tm);
 
   if (first_gradient)
     {

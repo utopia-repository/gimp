@@ -132,8 +132,10 @@ static void
 gimp_crop_tool_init (GimpCropTool *crop_tool)
 {
   GimpTool           *tool      = GIMP_TOOL (crop_tool);
+  GimpRectangleTool  *rect_tool = GIMP_RECTANGLE_TOOL (crop_tool);
 
   gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_CROP);
+  gimp_rectangle_tool_set_constrain (rect_tool, TRUE);
 }
 
 static void
@@ -167,25 +169,7 @@ gimp_crop_tool_control (GimpTool       *tool,
                         GimpToolAction  action,
                         GimpDisplay    *display)
 {
-  GimpRectangleTool *rectangle = GIMP_RECTANGLE_TOOL (tool);
-
-  switch (action)
-    {
-    case PAUSE:
-      break;
-
-    case RESUME:
-      gimp_rectangle_tool_configure (rectangle);
-      break;
-
-    case HALT:
-      gimp_rectangle_tool_response (NULL, GTK_RESPONSE_CANCEL,
-                                    rectangle);
-      break;
-
-    default:
-      break;
-    }
+  gimp_rectangle_tool_control (tool, action, display);
 
   GIMP_TOOL_CLASS (parent_class)->control (tool, action, display);
 }
@@ -198,8 +182,7 @@ gimp_crop_tool_button_press (GimpTool        *tool,
                              GimpDisplay     *display)
 {
   if (tool->display && display != tool->display)
-    gimp_rectangle_tool_response (NULL, GTK_RESPONSE_CANCEL,
-                                  GIMP_RECTANGLE_TOOL (tool));
+    gimp_rectangle_tool_cancel (GIMP_RECTANGLE_TOOL (tool));
 
   gimp_rectangle_tool_button_press (tool, coords, time, state, display);
 }

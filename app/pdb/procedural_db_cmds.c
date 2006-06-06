@@ -26,14 +26,15 @@
 #include "libgimpbase/gimpbase.h"
 
 #include "pdb-types.h"
-#include "gimp-pdb.h"
+#include "gimppdb.h"
 #include "gimpprocedure.h"
 #include "core/gimpparamspecs.h"
 
 #include "core/gimp.h"
+#include "core/gimpparamspecs-desc.h"
 #include "gimp-pdb-compat.h"
-#include "gimp-pdb-query.h"
-#include "plug-in/plug-in-data.h"
+#include "gimppdb-query.h"
+#include "plug-in/gimppluginmanager-data.h"
 
 
 static GValueArray *
@@ -70,7 +71,7 @@ procedural_db_dump_invoker (GimpProcedure     *procedure,
 
   if (success)
     {
-      success = gimp_pdb_dump (gimp, filename);
+      success = gimp_pdb_dump (gimp->pdb, filename);
     }
 
   return gimp_procedure_get_return_values (procedure, success);
@@ -105,7 +106,7 @@ procedural_db_query_invoker (GimpProcedure     *procedure,
 
   if (success)
     {
-      success = gimp_pdb_query (gimp,
+      success = gimp_pdb_query (gimp->pdb,
                                 name, blurb, help, author,
                                 copyright, date, proc_type,
                                 &num_matches, &procedure_names);
@@ -150,7 +151,7 @@ procedural_db_proc_info_invoker (GimpProcedure     *procedure,
 
       canonical = gimp_canonicalize_identifier (procedure_name);
 
-      success = gimp_pdb_proc_info (gimp, canonical,
+      success = gimp_pdb_proc_info (gimp->pdb, canonical,
                                     &blurb, &help, &author,
                                     &copyright, &date, &ptype,
                                     &num_args, &num_values);
@@ -201,16 +202,16 @@ procedural_db_proc_arg_invoker (GimpProcedure     *procedure,
 
       canonical = gimp_canonicalize_identifier (procedure_name);
 
-      proc = gimp_pdb_lookup (gimp, canonical);
+      proc = gimp_pdb_lookup_procedure (gimp->pdb, canonical);
 
       if (! proc)
         {
           const gchar *compat_name;
 
-          compat_name = g_hash_table_lookup (gimp->procedural_compat_ht, canonical);
+          compat_name = gimp_pdb_lookup_compat_proc_name (gimp->pdb, canonical);
 
           if (compat_name)
-            proc = gimp_pdb_lookup (gimp, compat_name);
+            proc = gimp_pdb_lookup_procedure (gimp->pdb, compat_name);
         }
 
       g_free (canonical);
@@ -221,7 +222,7 @@ procedural_db_proc_arg_invoker (GimpProcedure     *procedure,
 
           arg_type = gimp_pdb_compat_arg_type_from_gtype (G_PARAM_SPEC_VALUE_TYPE (pspec));
           arg_name = g_strdup (g_param_spec_get_name (pspec));
-          arg_desc = g_strdup (g_param_spec_get_blurb (pspec));
+          arg_desc = gimp_param_spec_get_desc (pspec);
         }
       else
         success = FALSE;
@@ -264,16 +265,16 @@ procedural_db_proc_val_invoker (GimpProcedure     *procedure,
 
       canonical = gimp_canonicalize_identifier (procedure_name);
 
-      proc = gimp_pdb_lookup (gimp, canonical);
+      proc = gimp_pdb_lookup_procedure (gimp->pdb, canonical);
 
       if (! proc)
         {
           const gchar *compat_name;
 
-          compat_name = g_hash_table_lookup (gimp->procedural_compat_ht, canonical);
+          compat_name = gimp_pdb_lookup_compat_proc_name (gimp->pdb, canonical);
 
           if (compat_name)
-            proc = gimp_pdb_lookup (gimp, compat_name);
+            proc = gimp_pdb_lookup_procedure (gimp->pdb, compat_name);
         }
 
       g_free (canonical);
@@ -284,7 +285,7 @@ procedural_db_proc_val_invoker (GimpProcedure     *procedure,
 
           val_type = gimp_pdb_compat_arg_type_from_gtype (G_PARAM_SPEC_VALUE_TYPE (pspec));
           val_name = g_strdup (g_param_spec_get_name (pspec));
-          val_desc = g_strdup (g_param_spec_get_blurb (pspec));
+          val_desc = gimp_param_spec_get_desc (pspec);
         }
       else
         success = FALSE;
@@ -322,7 +323,8 @@ procedural_db_get_data_invoker (GimpProcedure     *procedure,
       gchar        *canonical = gimp_canonicalize_identifier (identifier);
       const guint8 *orig_data;
 
-      orig_data = plug_in_data_get (gimp, canonical, &bytes);
+      orig_data = gimp_plug_in_manager_get_data (gimp->plug_in_manager,
+                                                 canonical, &bytes);
 
       g_free (canonical);
 
@@ -361,7 +363,8 @@ procedural_db_get_data_size_invoker (GimpProcedure     *procedure,
     {
       gchar *canonical = gimp_canonicalize_identifier (identifier);
 
-      if (! plug_in_data_get (gimp, canonical, &bytes))
+      if (! gimp_plug_in_manager_get_data (gimp->plug_in_manager,
+                                           canonical, &bytes))
         success = FALSE;
 
       g_free (canonical);
@@ -395,7 +398,8 @@ procedural_db_set_data_invoker (GimpProcedure     *procedure,
     {
       gchar *canonical = gimp_canonicalize_identifier (identifier);
 
-      plug_in_data_set (gimp, canonical, bytes, data);
+      gimp_plug_in_manager_set_data (gimp->plug_in_manager,
+                                     canonical, bytes, data);
 
       g_free (canonical);
     }
@@ -404,7 +408,7 @@ procedural_db_set_data_invoker (GimpProcedure     *procedure,
 }
 
 void
-register_procedural_db_procs (Gimp *gimp)
+register_procedural_db_procs (GimpPDB *pdb)
 {
   GimpProcedure *procedure;
 
@@ -421,7 +425,6 @@ register_procedural_db_procs (Gimp *gimp)
                                      "Andy Thomas",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string ("temp-name",
                                                            "temp name",
@@ -429,7 +432,7 @@ register_procedural_db_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -445,7 +448,6 @@ register_procedural_db_procs (Gimp *gimp)
                                      "Spencer Kimball & Josh MacDonald & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("filename",
                                                        "filename",
@@ -453,7 +455,7 @@ register_procedural_db_procs (Gimp *gimp)
                                                        TRUE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -469,7 +471,6 @@ register_procedural_db_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -530,7 +531,7 @@ register_procedural_db_procs (Gimp *gimp)
                                                                  "procedure names",
                                                                  "The list of procedure names",
                                                                  GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -546,7 +547,6 @@ register_procedural_db_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1997",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("procedure-name",
                                                        "procedure name",
@@ -592,7 +592,7 @@ register_procedural_db_procs (Gimp *gimp)
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_enum ("proc-type",
                                                       "proc type",
-                                                      "The procedure type: { GIMP_INTERNAL (0), GIMP_PLUGIN (1), GIMP_EXTENSION (2), GIMP_TEMPORARY (3) }",
+                                                      "The procedure type",
                                                       GIMP_TYPE_PDB_PROC_TYPE,
                                                       GIMP_INTERNAL,
                                                       GIMP_PARAM_READWRITE));
@@ -608,7 +608,7 @@ register_procedural_db_procs (Gimp *gimp)
                                                           "The number of return values",
                                                           G_MININT32, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -624,7 +624,6 @@ register_procedural_db_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1997",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("procedure-name",
                                                        "procedure name",
@@ -641,7 +640,7 @@ register_procedural_db_procs (Gimp *gimp)
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_enum ("arg-type",
                                                          "arg type",
-                                                         "The type of argument: { GIMP_PDB_INT32 (0), GIMP_PDB_INT16 (1), GIMP_PDB_INT8 (2), GIMP_PDB_FLOAT (3), GIMP_PDB_STRING (4), GIMP_PDB_INT32ARRAY (5), GIMP_PDB_INT16ARRAY (6), GIMP_PDB_INT8ARRAY (7), GIMP_PDB_FLOATARRAY (8), GIMP_PDB_STRINGARRAY (9), GIMP_PDB_COLOR (10), GIMP_PDB_REGION (11), GIMP_PDB_DISPLAY (12), GIMP_PDB_IMAGE (13), GIMP_PDB_LAYER (14), GIMP_PDB_CHANNEL (15), GIMP_PDB_DRAWABLE (16), GIMP_PDB_SELECTION (17), GIMP_PDB_BOUNDARY (18), GIMP_PDB_VECTORS (19), GIMP_PDB_PARASITE (20), GIMP_PDB_STATUS (21), GIMP_PDB_PATH (GIMP_PDB_VECTORS) }",
+                                                         "The type of argument",
                                                          GIMP_TYPE_PDB_ARG_TYPE,
                                                          GIMP_PDB_INT32,
                                                          GIMP_PARAM_READWRITE));
@@ -661,7 +660,7 @@ register_procedural_db_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -677,7 +676,6 @@ register_procedural_db_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1997",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("procedure-name",
                                                        "procedure name",
@@ -694,7 +692,7 @@ register_procedural_db_procs (Gimp *gimp)
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_enum ("val-type",
                                                          "val type",
-                                                         "The type of return value: { GIMP_PDB_INT32 (0), GIMP_PDB_INT16 (1), GIMP_PDB_INT8 (2), GIMP_PDB_FLOAT (3), GIMP_PDB_STRING (4), GIMP_PDB_INT32ARRAY (5), GIMP_PDB_INT16ARRAY (6), GIMP_PDB_INT8ARRAY (7), GIMP_PDB_FLOATARRAY (8), GIMP_PDB_STRINGARRAY (9), GIMP_PDB_COLOR (10), GIMP_PDB_REGION (11), GIMP_PDB_DISPLAY (12), GIMP_PDB_IMAGE (13), GIMP_PDB_LAYER (14), GIMP_PDB_CHANNEL (15), GIMP_PDB_DRAWABLE (16), GIMP_PDB_SELECTION (17), GIMP_PDB_BOUNDARY (18), GIMP_PDB_VECTORS (19), GIMP_PDB_PARASITE (20), GIMP_PDB_STATUS (21), GIMP_PDB_PATH (GIMP_PDB_VECTORS) }",
+                                                         "The type of return value",
                                                          GIMP_TYPE_PDB_ARG_TYPE,
                                                          GIMP_PDB_INT32,
                                                          GIMP_PARAM_READWRITE));
@@ -714,7 +712,7 @@ register_procedural_db_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -730,7 +728,6 @@ register_procedural_db_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1997",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("identifier",
                                                        "identifier",
@@ -749,7 +746,7 @@ register_procedural_db_procs (Gimp *gimp)
                                                                "data",
                                                                "A byte array containing data",
                                                                GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -765,7 +762,6 @@ register_procedural_db_procs (Gimp *gimp)
                                      "Nick Lamb",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("identifier",
                                                        "identifier",
@@ -779,7 +775,7 @@ register_procedural_db_procs (Gimp *gimp)
                                                           "The number of bytes in the data",
                                                           1, G_MAXINT32, 1,
                                                           GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -795,7 +791,6 @@ register_procedural_db_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1997",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("identifier",
                                                        "identifier",
@@ -814,7 +809,6 @@ register_procedural_db_procs (Gimp *gimp)
                                                            "data",
                                                            "A byte array containing data",
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
-
 }

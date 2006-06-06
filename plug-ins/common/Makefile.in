@@ -68,8 +68,8 @@ libexec_PROGRAMS = AlienMap2$(EXEEXT) CEL$(EXEEXT) \
 	pnm$(EXEEXT) polar$(EXEEXT) $(am__EXEEXT_6) \
 	postscript$(EXEEXT) procedure-browser$(EXEEXT) psd$(EXEEXT) \
 	psd_save$(EXEEXT) $(am__EXEEXT_7) randomize$(EXEEXT) \
-	raw$(EXEEXT) retinex$(EXEEXT) ripple$(EXEEXT) rotate$(EXEEXT) \
-	sample_colorize$(EXEEXT) scatter_hsv$(EXEEXT) \
+	raw$(EXEEXT) redeye$(EXEEXT) retinex$(EXEEXT) ripple$(EXEEXT) \
+	rotate$(EXEEXT) sample_colorize$(EXEEXT) scatter_hsv$(EXEEXT) \
 	screenshot$(EXEEXT) sel_gauss$(EXEEXT) semiflatten$(EXEEXT) \
 	sharpen$(EXEEXT) shift$(EXEEXT) sinus$(EXEEXT) \
 	smooth_palette$(EXEEXT) snoise$(EXEEXT) sobel$(EXEEXT) \
@@ -745,7 +745,7 @@ plugin_browser_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
 	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
 	$(am__DEPENDENCIES_8)
-am_png_OBJECTS = png.$(OBJEXT)
+am_png_OBJECTS = png-png.$(OBJEXT)
 png_OBJECTS = $(am_png_OBJECTS)
 png_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
@@ -825,6 +825,13 @@ raw_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
 	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
 	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
+am_redeye_OBJECTS = redeye.$(OBJEXT)
+redeye_OBJECTS = $(am_redeye_OBJECTS)
+redeye_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
+	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_retinex_OBJECTS = retinex.$(OBJEXT)
 retinex_OBJECTS = $(am_retinex_OBJECTS)
 retinex_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
@@ -868,7 +875,7 @@ screenshot_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
 	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
 	$(am__DEPENDENCIES_8)
-am_sel_gauss_OBJECTS = sel_gauss.$(OBJEXT)
+am_sel_gauss_OBJECTS = sel_gauss-sel_gauss.$(OBJEXT)
 sel_gauss_OBJECTS = $(am_sel_gauss_OBJECTS)
 sel_gauss_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
@@ -1175,8 +1182,8 @@ SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) $(CML_explorer_SOURCES) \
 	$(polar_SOURCES) $(poppler_SOURCES) $(postscript_SOURCES) \
 	$(procedure_browser_SOURCES) $(psd_SOURCES) \
 	$(psd_save_SOURCES) $(psp_SOURCES) $(randomize_SOURCES) \
-	$(raw_SOURCES) $(retinex_SOURCES) $(ripple_SOURCES) \
-	$(rotate_SOURCES) $(sample_colorize_SOURCES) \
+	$(raw_SOURCES) $(redeye_SOURCES) $(retinex_SOURCES) \
+	$(ripple_SOURCES) $(rotate_SOURCES) $(sample_colorize_SOURCES) \
 	$(scatter_hsv_SOURCES) $(screenshot_SOURCES) \
 	$(sel_gauss_SOURCES) $(semiflatten_SOURCES) $(sharpen_SOURCES) \
 	$(shift_SOURCES) $(sinus_SOURCES) $(smooth_palette_SOURCES) \
@@ -1227,8 +1234,8 @@ DIST_SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) \
 	$(polar_SOURCES) $(poppler_SOURCES) $(postscript_SOURCES) \
 	$(procedure_browser_SOURCES) $(psd_SOURCES) \
 	$(psd_save_SOURCES) $(psp_SOURCES) $(randomize_SOURCES) \
-	$(raw_SOURCES) $(retinex_SOURCES) $(ripple_SOURCES) \
-	$(rotate_SOURCES) $(sample_colorize_SOURCES) \
+	$(raw_SOURCES) $(redeye_SOURCES) $(retinex_SOURCES) \
+	$(ripple_SOURCES) $(rotate_SOURCES) $(sample_colorize_SOURCES) \
 	$(scatter_hsv_SOURCES) $(screenshot_SOURCES) \
 	$(sel_gauss_SOURCES) $(semiflatten_SOURCES) $(sharpen_SOURCES) \
 	$(shift_SOURCES) $(sinus_SOURCES) $(smooth_palette_SOURCES) \
@@ -1353,14 +1360,15 @@ GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
 GLIB_LIBS = @GLIB_LIBS@
 GLIB_MKENUMS = @GLIB_MKENUMS@
 GLIB_REQUIRED_VERSION = @GLIB_REQUIRED_VERSION@
-GMODULE_CFLAGS = @GMODULE_CFLAGS@
-GMODULE_LIBS = @GMODULE_LIBS@
+GMODULE_NO_EXPORT_CFLAGS = @GMODULE_NO_EXPORT_CFLAGS@
+GMODULE_NO_EXPORT_LIBS = @GMODULE_NO_EXPORT_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
 GNOMEPRINT = @GNOMEPRINT@
 GNOMEPRINT_CFLAGS = @GNOMEPRINT_CFLAGS@
 GNOMEPRINT_LIBS = @GNOMEPRINT_LIBS@
 GOBJECT_QUERY = @GOBJECT_QUERY@
+GREP = @GREP@
 GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
 GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
@@ -1484,6 +1492,8 @@ PKG_CONFIG = @PKG_CONFIG@
 PLATFORM_WIN32_FALSE = @PLATFORM_WIN32_FALSE@
 PLATFORM_WIN32_TRUE = @PLATFORM_WIN32_TRUE@
 PNG = @PNG@
+PNG_CFLAGS = @PNG_CFLAGS@
+PNG_LIBS = @PNG_LIBS@
 POFILES = @POFILES@
 POPPLER = @POPPLER@
 POPPLER_CFLAGS = @POPPLER_CFLAGS@
@@ -1538,6 +1548,7 @@ WMF_CFLAGS = @WMF_CFLAGS@
 WMF_CONFIG = @WMF_CONFIG@
 WMF_REQUIRED_VERSION = @WMF_REQUIRED_VERSION@
 XGETTEXT = @XGETTEXT@
+XMKMF = @XMKMF@
 XMLLINT = @XMLLINT@
 XPM = @XPM@
 XSLTPROC = @XSLTPROC@
@@ -1545,17 +1556,9 @@ X_CFLAGS = @X_CFLAGS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
-ac_ct_AR = @ac_ct_AR@
-ac_ct_AS = @ac_ct_AS@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
-ac_ct_DLLTOOL = @ac_ct_DLLTOOL@
 ac_ct_F77 = @ac_ct_F77@
-ac_ct_OBJDUMP = @ac_ct_OBJDUMP@
-ac_ct_RANLIB = @ac_ct_RANLIB@
-ac_ct_STRIP = @ac_ct_STRIP@
-ac_ct_WINDRES = @ac_ct_WINDRES@
-ac_pt_PKG_CONFIG = @ac_pt_PKG_CONFIG@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
 am__fastdepCXX_FALSE = @am__fastdepCXX_FALSE@
@@ -1572,6 +1575,9 @@ build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
+datarootdir = @datarootdir@
+docdir = @docdir@
+dvidir = @dvidir@
 exec_prefix = @exec_prefix@
 gimpdatadir = @gimpdatadir@
 gimpdir = @gimpdir@
@@ -1583,20 +1589,24 @@ host_alias = @host_alias@
 host_cpu = @host_cpu@
 host_os = @host_os@
 host_vendor = @host_vendor@
+htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = $(gimpplugindir)/plug-ins
+localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
 oldincludedir = @oldincludedir@
+pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
 pkgpythondir = @pkgpythondir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
+psdir = @psdir@
 pyexecdir = @pyexecdir@
 pythondir = @pythondir@
 sbindir = @sbindir@
@@ -2916,6 +2926,7 @@ plugin_browser_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
+png_CFLAGS = $(PNG_CFLAGS)
 png_SOURCES = \
 	png.c
 
@@ -3082,6 +3093,21 @@ raw_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
+redeye_SOURCES = \
+	redeye.c
+
+redeye_LDADD = \
+	$(libgimpui)		\
+	$(libgimpconfig)	\
+	$(libgimpwidgets)	\
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpmath)		\
+	$(libgimpbase)		\
+	$(GTK_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)
+
 retinex_SOURCES = \
 	retinex.c
 
@@ -3170,6 +3196,7 @@ screenshot_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
+sel_gauss_CFLAGS = $(MMX_EXTRA_CFLAGS)
 sel_gauss_SOURCES = \
 	sel_gauss.c
 
@@ -4075,6 +4102,9 @@ randomize$(EXEEXT): $(randomize_OBJECTS) $(randomize_DEPENDENCIES)
 raw$(EXEEXT): $(raw_OBJECTS) $(raw_DEPENDENCIES) 
 	@rm -f raw$(EXEEXT)
 	$(LINK) $(raw_LDFLAGS) $(raw_OBJECTS) $(raw_LDADD) $(LIBS)
+redeye$(EXEEXT): $(redeye_OBJECTS) $(redeye_DEPENDENCIES) 
+	@rm -f redeye$(EXEEXT)
+	$(LINK) $(redeye_LDFLAGS) $(redeye_OBJECTS) $(redeye_LDADD) $(LIBS)
 retinex$(EXEEXT): $(retinex_OBJECTS) $(retinex_DEPENDENCIES) 
 	@rm -f retinex$(EXEEXT)
 	$(LINK) $(retinex_LDFLAGS) $(retinex_OBJECTS) $(retinex_LDADD) $(LIBS)
@@ -4299,7 +4329,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pixelize.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plasma.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugin-browser.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/png.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/png-png.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pnm.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/polar.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/poppler-poppler.Po@am__quote@
@@ -4310,13 +4340,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/psp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/randomize.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/raw.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/redeye.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/retinex.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ripple.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rotate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sample_colorize.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scatter_hsv.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/screenshot.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sel_gauss.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sel_gauss-sel_gauss.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/semiflatten.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sharpen.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shift.Po@am__quote@
@@ -4389,6 +4420,20 @@ gnomeprint-gnomeprint.obj: gnomeprint.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gnomeprint_CFLAGS) $(CFLAGS) -c -o gnomeprint-gnomeprint.obj `if test -f 'gnomeprint.c'; then $(CYGPATH_W) 'gnomeprint.c'; else $(CYGPATH_W) '$(srcdir)/gnomeprint.c'; fi`
 
+png-png.o: png.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(png_CFLAGS) $(CFLAGS) -MT png-png.o -MD -MP -MF "$(DEPDIR)/png-png.Tpo" -c -o png-png.o `test -f 'png.c' || echo '$(srcdir)/'`png.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/png-png.Tpo" "$(DEPDIR)/png-png.Po"; else rm -f "$(DEPDIR)/png-png.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='png.c' object='png-png.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(png_CFLAGS) $(CFLAGS) -c -o png-png.o `test -f 'png.c' || echo '$(srcdir)/'`png.c
+
+png-png.obj: png.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(png_CFLAGS) $(CFLAGS) -MT png-png.obj -MD -MP -MF "$(DEPDIR)/png-png.Tpo" -c -o png-png.obj `if test -f 'png.c'; then $(CYGPATH_W) 'png.c'; else $(CYGPATH_W) '$(srcdir)/png.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/png-png.Tpo" "$(DEPDIR)/png-png.Po"; else rm -f "$(DEPDIR)/png-png.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='png.c' object='png-png.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(png_CFLAGS) $(CFLAGS) -c -o png-png.obj `if test -f 'png.c'; then $(CYGPATH_W) 'png.c'; else $(CYGPATH_W) '$(srcdir)/png.c'; fi`
+
 poppler-poppler.o: poppler.c
 @am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(poppler_CFLAGS) $(CFLAGS) -MT poppler-poppler.o -MD -MP -MF "$(DEPDIR)/poppler-poppler.Tpo" -c -o poppler-poppler.o `test -f 'poppler.c' || echo '$(srcdir)/'`poppler.c; \
 @am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/poppler-poppler.Tpo" "$(DEPDIR)/poppler-poppler.Po"; else rm -f "$(DEPDIR)/poppler-poppler.Tpo"; exit 1; fi
@@ -4402,6 +4447,20 @@ poppler-poppler.obj: poppler.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='poppler.c' object='poppler-poppler.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(poppler_CFLAGS) $(CFLAGS) -c -o poppler-poppler.obj `if test -f 'poppler.c'; then $(CYGPATH_W) 'poppler.c'; else $(CYGPATH_W) '$(srcdir)/poppler.c'; fi`
+
+sel_gauss-sel_gauss.o: sel_gauss.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sel_gauss_CFLAGS) $(CFLAGS) -MT sel_gauss-sel_gauss.o -MD -MP -MF "$(DEPDIR)/sel_gauss-sel_gauss.Tpo" -c -o sel_gauss-sel_gauss.o `test -f 'sel_gauss.c' || echo '$(srcdir)/'`sel_gauss.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/sel_gauss-sel_gauss.Tpo" "$(DEPDIR)/sel_gauss-sel_gauss.Po"; else rm -f "$(DEPDIR)/sel_gauss-sel_gauss.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='sel_gauss.c' object='sel_gauss-sel_gauss.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sel_gauss_CFLAGS) $(CFLAGS) -c -o sel_gauss-sel_gauss.o `test -f 'sel_gauss.c' || echo '$(srcdir)/'`sel_gauss.c
+
+sel_gauss-sel_gauss.obj: sel_gauss.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sel_gauss_CFLAGS) $(CFLAGS) -MT sel_gauss-sel_gauss.obj -MD -MP -MF "$(DEPDIR)/sel_gauss-sel_gauss.Tpo" -c -o sel_gauss-sel_gauss.obj `if test -f 'sel_gauss.c'; then $(CYGPATH_W) 'sel_gauss.c'; else $(CYGPATH_W) '$(srcdir)/sel_gauss.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/sel_gauss-sel_gauss.Tpo" "$(DEPDIR)/sel_gauss-sel_gauss.Po"; else rm -f "$(DEPDIR)/sel_gauss-sel_gauss.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='sel_gauss.c' object='sel_gauss-sel_gauss.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sel_gauss_CFLAGS) $(CFLAGS) -c -o sel_gauss-sel_gauss.obj `if test -f 'sel_gauss.c'; then $(CYGPATH_W) 'sel_gauss.c'; else $(CYGPATH_W) '$(srcdir)/sel_gauss.c'; fi`
 
 svg-svg.o: svg.c
 @am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(svg_CFLAGS) $(CFLAGS) -MT svg-svg.o -MD -MP -MF "$(DEPDIR)/svg-svg.Tpo" -c -o svg-svg.o `test -f 'svg.c' || echo '$(srcdir)/'`svg.c; \

@@ -75,7 +75,7 @@ static gchar    * gimp_brush_generated_get_extension (GimpData     *data);
 static GimpData * gimp_brush_generated_duplicate     (GimpData     *data);
 
 
-G_DEFINE_TYPE (GimpBrushGenerated, gimp_brush_generated, GIMP_TYPE_BRUSH);
+G_DEFINE_TYPE (GimpBrushGenerated, gimp_brush_generated, GIMP_TYPE_BRUSH)
 
 #define parent_class gimp_brush_generated_parent_class
 
@@ -211,9 +211,12 @@ gimp_brush_generated_save (GimpData  *data,
                            GError   **error)
 {
   GimpBrushGenerated *brush = GIMP_BRUSH_GENERATED (data);
+  const gchar        *name  = gimp_object_get_name (GIMP_OBJECT (data));
   FILE               *file;
   gchar               buf[G_ASCII_DTOSTR_BUF_SIZE];
   gboolean            have_shape = FALSE;
+
+  g_return_val_if_fail (name != NULL && *name != '\0', FALSE);
 
   file = g_fopen (data->filename, "wb");
 
@@ -241,7 +244,7 @@ gimp_brush_generated_save (GimpData  *data,
     }
 
   /* write name */
-  fprintf (file, "%.255s\n", GIMP_OBJECT (brush)->name);
+  fprintf (file, "%.255s\n", name);
 
   if (have_shape)
     {
@@ -497,8 +500,7 @@ gimp_brush_generated_dirty (GimpData *data)
 
   g_free (lookup);
 
-  if (GIMP_DATA_CLASS (parent_class)->dirty)
-    GIMP_DATA_CLASS (parent_class)->dirty (data);
+  GIMP_DATA_CLASS (parent_class)->dirty (data);
 }
 
 GimpData *
@@ -603,6 +605,11 @@ gimp_brush_generated_load (const gchar  *filename,
     goto failed;
 
   g_strstrip (string);
+
+  /* the empty string is not an allowed name */
+  if (strlen (string) < 1)
+    g_strlcpy (string, _("Untitled"), sizeof (string));
+
   name = gimp_any_to_utf8 (string, -1,
                            _("Invalid UTF-8 string in brush file '%s'."),
                            gimp_filename_to_utf8 (filename));

@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="prev" href="libgimpconfig-GimpConfigWriter.html" title="gimpconfigwriter">
 <link rel="next" href="GimpColorConfig.html" title="GimpColorConfig">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="chapter" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
@@ -16,24 +17,29 @@
 <link rel="index" href="ix03.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimpconfig-GimpConfigWriter.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpconfig.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="GimpColorConfig.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimpconfig-GimpScanner"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpscanner</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpscanner</span></h2>
 <p>gimpscanner &#8212; </p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -71,17 +77,17 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2563991"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2564002"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2564009"></a><h3>
+<a name="id2545969"></a><h3>
 <a name="gimp-scanner-new-file"></a>gimp_scanner_new_file ()</h3>
-<a class="indexterm" name="id2564018"></a><pre class="programlisting">GScanner*   gimp_scanner_new_file           (const gchar *filename,
+<a class="indexterm" name="id2546802"></a><pre class="programlisting">GScanner*   gimp_scanner_new_file           (const gchar *filename,
                                              GError **error);</pre>
 <p>
 </p>
@@ -117,9 +123,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2552582"></a><h3>
+<a name="id2546887"></a><h3>
 <a name="gimp-scanner-new-string"></a>gimp_scanner_new_string ()</h3>
-<a class="indexterm" name="id2552590"></a><pre class="programlisting">GScanner*   gimp_scanner_new_string         (const gchar *text,
+<a class="indexterm" name="id2546900"></a><pre class="programlisting">GScanner*   gimp_scanner_new_string         (const gchar *text,
                                              gint text_len,
                                              GError **error);</pre>
 <p>
@@ -162,9 +168,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2552696"></a><h3>
+<a name="id2547006"></a><h3>
 <a name="gimp-scanner-destroy"></a>gimp_scanner_destroy ()</h3>
-<a class="indexterm" name="id2552705"></a><pre class="programlisting">void        gimp_scanner_destroy            (GScanner *scanner);</pre>
+<a class="indexterm" name="id2547020"></a><pre class="programlisting">void        gimp_scanner_destroy            (GScanner *scanner);</pre>
 <p>
 </p>
 <p>
@@ -184,9 +190,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2552759"></a><h3>
+<a name="id2524438"></a><h3>
 <a name="gimp-scanner-parse-token"></a>gimp_scanner_parse_token ()</h3>
-<a class="indexterm" name="id2522950"></a><pre class="programlisting">gboolean    gimp_scanner_parse_token        (GScanner *scanner,
+<a class="indexterm" name="id2524451"></a><pre class="programlisting">gboolean    gimp_scanner_parse_token        (GScanner *scanner,
                                              GTokenType token);</pre>
 <p>
 </p>
@@ -222,9 +228,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2523036"></a><h3>
+<a name="id2524537"></a><h3>
 <a name="gimp-scanner-parse-identifier"></a>gimp_scanner_parse_identifier ()</h3>
-<a class="indexterm" name="id2523045"></a><pre class="programlisting">gboolean    gimp_scanner_parse_identifier   (GScanner *scanner,
+<a class="indexterm" name="id2524551"></a><pre class="programlisting">gboolean    gimp_scanner_parse_identifier   (GScanner *scanner,
                                              const gchar *identifier);</pre>
 <p>
 </p>
@@ -260,9 +266,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2523129"></a><h3>
+<a name="id2524636"></a><h3>
 <a name="gimp-scanner-parse-string"></a>gimp_scanner_parse_string ()</h3>
-<a class="indexterm" name="id2523138"></a><pre class="programlisting">gboolean    gimp_scanner_parse_string       (GScanner *scanner,
+<a class="indexterm" name="id2524649"></a><pre class="programlisting">gboolean    gimp_scanner_parse_string       (GScanner *scanner,
                                              gchar **dest);</pre>
 <p>
 </p>
@@ -298,9 +304,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567504"></a><h3>
+<a name="id2570081"></a><h3>
 <a name="gimp-scanner-parse-string-no-validate"></a>gimp_scanner_parse_string_no_validate ()</h3>
-<a class="indexterm" name="id2567514"></a><pre class="programlisting">gboolean    gimp_scanner_parse_string_no_validate
+<a class="indexterm" name="id2570096"></a><pre class="programlisting">gboolean    gimp_scanner_parse_string_no_validate
                                             (GScanner *scanner,
                                              gchar **dest);</pre>
 <p>
@@ -337,9 +343,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567592"></a><h3>
+<a name="id2570174"></a><h3>
 <a name="gimp-scanner-parse-data"></a>gimp_scanner_parse_data ()</h3>
-<a class="indexterm" name="id2567600"></a><pre class="programlisting">gboolean    gimp_scanner_parse_data         (GScanner *scanner,
+<a class="indexterm" name="id2570186"></a><pre class="programlisting">gboolean    gimp_scanner_parse_data         (GScanner *scanner,
                                              gint length,
                                              guint8 **dest);</pre>
 <p>
@@ -382,9 +388,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567698"></a><h3>
+<a name="id2570292"></a><h3>
 <a name="gimp-scanner-parse-int"></a>gimp_scanner_parse_int ()</h3>
-<a class="indexterm" name="id2567707"></a><pre class="programlisting">gboolean    gimp_scanner_parse_int          (GScanner *scanner,
+<a class="indexterm" name="id2570306"></a><pre class="programlisting">gboolean    gimp_scanner_parse_int          (GScanner *scanner,
                                              gint *dest);</pre>
 <p>
 </p>
@@ -420,9 +426,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567793"></a><h3>
+<a name="id2570391"></a><h3>
 <a name="gimp-scanner-parse-float"></a>gimp_scanner_parse_float ()</h3>
-<a class="indexterm" name="id2567802"></a><pre class="programlisting">gboolean    gimp_scanner_parse_float        (GScanner *scanner,
+<a class="indexterm" name="id2570405"></a><pre class="programlisting">gboolean    gimp_scanner_parse_float        (GScanner *scanner,
                                              gdouble *dest);</pre>
 <p>
 </p>
@@ -458,9 +464,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567866"></a><h3>
+<a name="id2570491"></a><h3>
 <a name="gimp-scanner-parse-color"></a>gimp_scanner_parse_color ()</h3>
-<a class="indexterm" name="id2567874"></a><pre class="programlisting">gboolean    gimp_scanner_parse_color        (GScanner *scanner,
+<a class="indexterm" name="id2570504"></a><pre class="programlisting">gboolean    gimp_scanner_parse_color        (GScanner *scanner,
                                              <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *dest);</pre>
@@ -498,9 +504,9 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567951"></a><h3>
+<a name="id2570590"></a><h3>
 <a name="gimp-scanner-parse-matrix2"></a>gimp_scanner_parse_matrix2 ()</h3>
-<a class="indexterm" name="id2567960"></a><pre class="programlisting">gboolean    gimp_scanner_parse_matrix2      (GScanner *scanner,
+<a class="indexterm" name="id2570604"></a><pre class="programlisting">gboolean    gimp_scanner_parse_matrix2      (GScanner *scanner,
                                              <a
 href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 >GimpMatrix2</a> *dest);</pre>
@@ -538,9 +544,5 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimpconfig-GimpConfigWriter.html"><b>&lt;&lt;&#160;gimpconfigwriter</b></a></td>
-<td align="right"><a accesskey="n" href="GimpColorConfig.html"><b>GimpColorConfig&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

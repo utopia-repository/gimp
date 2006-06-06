@@ -1,3 +1,10 @@
+gimp (2.3.9-1) experimental; urgency=low
+
+  * New upstream release
+    - fixes resizing the main toolbox (Closes: #345526)
+
+ -- Ari Pollak <ari@debian.org>  Tue,  6 Jun 2006 19:27:58 -0400
+
 gimp (2.3.8-4) experimental; urgency=low
 
   * Change libgtk2.0-0 dependency to >= 2.3.8 (Closes: #365023)

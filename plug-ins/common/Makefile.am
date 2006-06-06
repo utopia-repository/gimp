@@ -133,6 +133,7 @@ libexec_PROGRAMS = \
 	$(PSP) \
 	randomize \
 	raw \
+	redeye \
 	retinex \
 	ripple \
 	rotate \
@@ -1499,6 +1500,8 @@ plugin_browser_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
+png_CFLAGS = $(PNG_CFLAGS)
+
 png_SOURCES = \
 	png.c
 
@@ -1666,6 +1669,21 @@ raw_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
+redeye_SOURCES = \
+	redeye.c
+
+redeye_LDADD = \
+	$(libgimpui)		\
+	$(libgimpconfig)	\
+	$(libgimpwidgets)	\
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpmath)		\
+	$(libgimpbase)		\
+	$(GTK_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)
+
 retinex_SOURCES = \
 	retinex.c
 
@@ -1753,6 +1771,8 @@ screenshot_LDADD = \
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
+
+sel_gauss_CFLAGS = $(MMX_EXTRA_CFLAGS)
 
 sel_gauss_SOURCES = \
 	sel_gauss.c

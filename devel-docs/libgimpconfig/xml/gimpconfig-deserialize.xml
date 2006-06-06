@@ -4,16 +4,19 @@
 
 <refentry id="libgimpconfig-gimpconfig-deserialize">
 <refmeta>
-<refentrytitle>gimpconfig-deserialize</refentrytitle>
+<refentrytitle id="top_of_page">gimpconfig-deserialize</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCONFIG Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpconfig-deserialize</refname><refpurpose>Deserializing code for libgimpconfig.</refpurpose>
+<refname>gimpconfig-deserialize</refname>
+<refpurpose>Deserializing code for libgimpconfig.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -38,18 +41,18 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Deserializing code for libgimpconfig.
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-config-deserialize-properties"/>gimp_config_deserialize_properties ()</title>
+<title><anchor id="gimp-config-deserialize-properties" role="function" condition="since:GIMP 2.4"/>gimp_config_deserialize_properties ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_config_deserialize_properties</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_config_deserialize_properties
                                             (<link linkend="GimpConfig">GimpConfig</link> *config,
                                              <link linkend="GScanner">GScanner</link> *scanner,
@@ -68,13 +71,13 @@ This function uses the <parameter>scanner</parameter> to configure the propertie
 <varlistentry><term><parameter>nest_level</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> on success, <literal>FALSE</literal> otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> on success, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-config-deserialize-property"/>gimp_config_deserialize_property ()</title>
+<title><anchor id="gimp-config-deserialize-property" role="function" condition="since:GIMP 2.4"/>gimp_config_deserialize_property ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_config_deserialize_property</primary></indexterm><programlisting><link linkend="GTokenType">GTokenType</link>  gimp_config_deserialize_property
                                             (<link linkend="GimpConfig">GimpConfig</link> *config,
                                              <link linkend="GScanner">GScanner</link> *scanner,
@@ -95,8 +98,8 @@ shouldn't need to call this function directly. If possible, use
 <varlistentry><term><parameter>nest_level</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>G_TOKEN_RIGHT_PAREN</literal> on success, otherwise the
-expected <link linkend="GTokenType"><type>GTokenType</type></link> or <literal>G_TOKEN_NONE</literal> if the expected token was
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="G-TOKEN-RIGHT-PAREN:CAPS"><literal>G_TOKEN_RIGHT_PAREN</literal></link> on success, otherwise the
+expected <link linkend="GTokenType"><type>GTokenType</type></link> or <link linkend="G-TOKEN-NONE:CAPS"><literal>G_TOKEN_NONE</literal></link> if the expected token was
 found but couldn't be parsed.
 
 </simpara></listitem></varlistentry>

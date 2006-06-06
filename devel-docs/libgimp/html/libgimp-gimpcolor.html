@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
 <link rel="prev" href="libgimp-gimpchannel.html" title="gimpchannel">
 <link rel="next" href="libgimp-gimpconvert.html" title="gimpconvert">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -23,24 +24,29 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimpchannel.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpconvert.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpcolor"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpcolor</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpcolor</span></h2>
 <p>gimpcolor &#8212; Functions for manipulating color.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -108,18 +114,18 @@ gboolean    <a href="libgimp-gimpcolor.html#gimp-threshold">gimp_threshold</a>  
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2568960"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 Functions for manipulating color, including curves and histograms.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2568972"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2568978"></a><h3>
+<a name="id2563518"></a><h3>
 <a name="gimp-brightness-contrast"></a>gimp_brightness_contrast ()</h3>
-<a class="indexterm" name="id2568987"></a><pre class="programlisting">gboolean    gimp_brightness_contrast        (gint32 drawable_ID,
+<a class="indexterm" name="id2563529"></a><pre class="programlisting">gboolean    gimp_brightness_contrast        (gint32 drawable_ID,
                                              gint brightness,
                                              gint contrast);</pre>
 <p>
@@ -164,9 +170,9 @@ are defined between -127 and 127.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567237"></a><h3>
+<a name="id2563637"></a><h3>
 <a name="gimp-levels"></a>gimp_levels ()</h3>
-<a class="indexterm" name="id2567247"></a><pre class="programlisting">gboolean    gimp_levels                     (gint32 drawable_ID,
+<a class="indexterm" name="id2563649"></a><pre class="programlisting">gboolean    gimp_levels                     (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHistogramChannel">GimpHistogramChannel</a> channel,
                                              gint low_input,
                                              gint high_input,
@@ -248,9 +254,9 @@ grayscale images. It will not operate on indexed drawables.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2575920"></a><h3>
+<a name="id2578603"></a><h3>
 <a name="gimp-levels-auto"></a>gimp_levels_auto ()</h3>
-<a class="indexterm" name="id2575928"></a><pre class="programlisting">gboolean    gimp_levels_auto                (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2578616"></a><pre class="programlisting">gboolean    gimp_levels_auto                (gint32 drawable_ID);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_levels_auto</code> is deprecated and should not be used in newly-written code.</p>
@@ -280,9 +286,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpcolor.html#gimp-levels-st
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576000"></a><h3>
+<a name="id2578688"></a><h3>
 <a name="gimp-levels-stretch"></a>gimp_levels_stretch ()</h3>
-<a class="indexterm" name="id2576008"></a><pre class="programlisting">gboolean    gimp_levels_stretch             (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2578698"></a><pre class="programlisting">gboolean    gimp_levels_stretch             (gint32 drawable_ID);</pre>
 <p>
 Automatically modifies intensity levels in the specified drawable.
 </p>
@@ -315,9 +321,9 @@ not operate on indexed drawables.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576070"></a><h3>
+<a name="id2578761"></a><h3>
 <a name="gimp-posterize"></a>gimp_posterize ()</h3>
-<a class="indexterm" name="id2576079"></a><pre class="programlisting">gboolean    gimp_posterize                  (gint32 drawable_ID,
+<a class="indexterm" name="id2578771"></a><pre class="programlisting">gboolean    gimp_posterize                  (gint32 drawable_ID,
                                              gint levels);</pre>
 <p>
 Posterize the specified drawable.
@@ -354,9 +360,9 @@ intensity channel to the specified 'levels' parameter.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576156"></a><h3>
+<a name="id2578848"></a><h3>
 <a name="gimp-desaturate"></a>gimp_desaturate ()</h3>
-<a class="indexterm" name="id2576164"></a><pre class="programlisting">gboolean    gimp_desaturate                 (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2578858"></a><pre class="programlisting">gboolean    gimp_desaturate                 (gint32 drawable_ID);</pre>
 <p>
 Desaturate the contents of the specified drawable.
 </p>
@@ -386,9 +392,9 @@ This procedure only works on drawables of type RGB color.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576223"></a><h3>
+<a name="id2578917"></a><h3>
 <a name="gimp-desaturate-full"></a>gimp_desaturate_full ()</h3>
-<a class="indexterm" name="id2576231"></a><pre class="programlisting">gboolean    gimp_desaturate_full            (gint32 drawable_ID,
+<a class="indexterm" name="id2578930"></a><pre class="programlisting">gboolean    gimp_desaturate_full            (gint32 drawable_ID,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpDesaturateMode"
 >GimpDesaturateMode</a> desaturate_mode);</pre>
@@ -432,9 +438,9 @@ of type RGB color.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576314"></a><h3>
+<a name="id2579012"></a><h3>
 <a name="gimp-equalize"></a>gimp_equalize ()</h3>
-<a class="indexterm" name="id2576323"></a><pre class="programlisting">gboolean    gimp_equalize                   (gint32 drawable_ID,
+<a class="indexterm" name="id2579023"></a><pre class="programlisting">gboolean    gimp_equalize                   (gint32 drawable_ID,
                                              gboolean mask_only);</pre>
 <p>
 Equalize the contents of the specified drawable.
@@ -477,9 +483,9 @@ adjusted based on the histogram for the entire image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576407"></a><h3>
+<a name="id2579107"></a><h3>
 <a name="gimp-invert"></a>gimp_invert ()</h3>
-<a class="indexterm" name="id2576415"></a><pre class="programlisting">gboolean    gimp_invert                     (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2579117"></a><pre class="programlisting">gboolean    gimp_invert                     (gint32 drawable_ID);</pre>
 <p>
 Invert the contents of the specified drawable.
 </p>
@@ -511,9 +517,9 @@ valid for this operation.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576476"></a><h3>
+<a name="id2579178"></a><h3>
 <a name="gimp-curves-spline"></a>gimp_curves_spline ()</h3>
-<a class="indexterm" name="id2576484"></a><pre class="programlisting">gboolean    gimp_curves_spline              (gint32 drawable_ID,
+<a class="indexterm" name="id2579188"></a><pre class="programlisting">gboolean    gimp_curves_spline              (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHistogramChannel">GimpHistogramChannel</a> channel,
                                              gint num_points,
                                              const guint8 *control_pts);</pre>
@@ -569,9 +575,9 @@ to explicitly modify intensity levels.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576608"></a><h3>
+<a name="id2579312"></a><h3>
 <a name="gimp-curves-explicit"></a>gimp_curves_explicit ()</h3>
-<a class="indexterm" name="id2576616"></a><pre class="programlisting">gboolean    gimp_curves_explicit            (gint32 drawable_ID,
+<a class="indexterm" name="id2579322"></a><pre class="programlisting">gboolean    gimp_curves_explicit            (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHistogramChannel">GimpHistogramChannel</a> channel,
                                              gint num_bytes,
                                              const guint8 *curve);</pre>
@@ -627,9 +633,9 @@ Catmull Rom splines.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576738"></a><h3>
+<a name="id2579444"></a><h3>
 <a name="gimp-color-balance"></a>gimp_color_balance ()</h3>
-<a class="indexterm" name="id2576746"></a><pre class="programlisting">gboolean    gimp_color_balance              (gint32 drawable_ID,
+<a class="indexterm" name="id2579454"></a><pre class="programlisting">gboolean    gimp_color_balance              (gint32 drawable_ID,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode"
 >GimpTransferMode</a> transfer_mode,
@@ -702,9 +708,9 @@ luminosity of each pixel remains fixed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576906"></a><h3>
+<a name="id2579616"></a><h3>
 <a name="gimp-colorize"></a>gimp_colorize ()</h3>
-<a class="indexterm" name="id2576914"></a><pre class="programlisting">gboolean    gimp_colorize                   (gint32 drawable_ID,
+<a class="indexterm" name="id2579628"></a><pre class="programlisting">gboolean    gimp_colorize                   (gint32 drawable_ID,
                                              gdouble hue,
                                              gdouble saturation,
                                              gdouble lightness);</pre>
@@ -760,9 +766,9 @@ grayscale or indexed drawables.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2577035"></a><h3>
+<a name="id2579750"></a><h3>
 <a name="gimp-histogram"></a>gimp_histogram ()</h3>
-<a class="indexterm" name="id2577044"></a><pre class="programlisting">gboolean    gimp_histogram                  (gint32 drawable_ID,
+<a class="indexterm" name="id2579760"></a><pre class="programlisting">gboolean    gimp_histogram                  (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHistogramChannel">GimpHistogramChannel</a> channel,
                                              gint start_range,
                                              gint end_range,
@@ -867,9 +873,9 @@ pixels with transparent alpha values will not be counted.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2577291"></a><h3>
+<a name="id2580008"></a><h3>
 <a name="gimp-hue-saturation"></a>gimp_hue_saturation ()</h3>
-<a class="indexterm" name="id2577300"></a><pre class="programlisting">gboolean    gimp_hue_saturation             (gint32 drawable_ID,
+<a class="indexterm" name="id2580018"></a><pre class="programlisting">gboolean    gimp_hue_saturation             (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpHueRange">GimpHueRange</a> hue_range,
                                              gdouble hue_offset,
                                              gdouble lightness,
@@ -928,9 +934,9 @@ provides the capability to limit range of affected hues.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2577436"></a><h3>
+<a name="id2580155"></a><h3>
 <a name="gimp-threshold"></a>gimp_threshold ()</h3>
-<a class="indexterm" name="id2577445"></a><pre class="programlisting">gboolean    gimp_threshold                  (gint32 drawable_ID,
+<a class="indexterm" name="id2580165"></a><pre class="programlisting">gboolean    gimp_threshold                  (gint32 drawable_ID,
                                              gint low_threshold,
                                              gint high_threshold);</pre>
 <p>
@@ -976,9 +982,5 @@ black.</p>
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimp-gimpchannel.html"><b>&lt;&lt;&#160;gimpchannel</b></a></td>
-<td align="right"><a accesskey="n" href="libgimp-gimpconvert.html"><b>gimpconvert&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

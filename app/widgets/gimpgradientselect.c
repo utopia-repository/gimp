@@ -32,7 +32,7 @@
 #include "core/gimpgradient.h"
 #include "core/gimpparamspecs.h"
 
-#include "pdb/gimp-pdb.h"
+#include "pdb/gimppdb.h"
 
 #include "gimpcontainerbox.h"
 #include "gimpdatafactoryview.h"
@@ -60,7 +60,7 @@ static GValueArray * gimp_gradient_select_run_callback (GimpPdbDialog *dialog,
 
 
 G_DEFINE_TYPE (GimpGradientSelect, gimp_gradient_select,
-               GIMP_TYPE_PDB_DIALOG);
+               GIMP_TYPE_PDB_DIALOG)
 
 #define parent_class gimp_gradient_select_parent_class
 
@@ -160,15 +160,15 @@ gimp_gradient_select_run_callback (GimpPdbDialog *dialog,
   array->static_data = FALSE;
 
   return_vals =
-    gimp_pdb_run_proc (dialog->caller_context->gimp,
-                       dialog->caller_context,
-                       NULL,
-                       dialog->callback_name,
-                       G_TYPE_STRING,         GIMP_OBJECT (gradient)->name,
-                       GIMP_TYPE_INT32,       array->length / sizeof (gdouble),
-                       GIMP_TYPE_FLOAT_ARRAY, array,
-                       GIMP_TYPE_INT32,       closing,
-                       G_TYPE_NONE);
+    gimp_pdb_execute_procedure_by_name (dialog->pdb,
+                                        dialog->caller_context,
+                                        NULL,
+                                        dialog->callback_name,
+                                        G_TYPE_STRING,         object->name,
+                                        GIMP_TYPE_INT32,       array->length / sizeof (gdouble),
+                                        GIMP_TYPE_FLOAT_ARRAY, array,
+                                        GIMP_TYPE_INT32,       closing,
+                                        G_TYPE_NONE);
 
   gimp_array_free (array);
 

@@ -28,7 +28,7 @@
 #include "libgimpmath/gimpmath.h"
 
 #include "pdb-types.h"
-#include "gimp-pdb.h"
+#include "gimppdb.h"
 #include "gimpprocedure.h"
 #include "core/gimpparamspecs.h"
 
@@ -2141,7 +2141,7 @@ image_get_vectors_by_tattoo_invoker (GimpProcedure     *procedure,
 }
 
 void
-register_image_procs (Gimp *gimp)
+register_image_procs (GimpPDB *pdb)
 {
   GimpProcedure *procedure;
 
@@ -2158,7 +2158,6 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("num-images",
                                                           "num images",
@@ -2170,7 +2169,7 @@ register_image_procs (Gimp *gimp)
                                                                 "image ids",
                                                                 "The list of images currently open",
                                                                 GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2186,7 +2185,6 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("width",
                                                       "width",
@@ -2202,7 +2200,7 @@ register_image_procs (Gimp *gimp)
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("type",
                                                   "type",
-                                                  "The type of image: { GIMP_RGB (0), GIMP_GRAY (1), GIMP_INDEXED (2) }",
+                                                  "The type of image",
                                                   GIMP_TYPE_IMAGE_BASE_TYPE,
                                                   GIMP_RGB,
                                                   GIMP_PARAM_READWRITE));
@@ -2210,9 +2208,9 @@ register_image_procs (Gimp *gimp)
                                    gimp_param_spec_image_id ("image",
                                                              "image",
                                                              "The ID of the newly created image",
-                                                             gimp,
+                                                             pdb->gimp, FALSE,
                                                              GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2228,20 +2226,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1997",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_image_id ("new-image",
                                                              "new image",
                                                              "The new, duplicated image",
-                                                             gimp,
+                                                             pdb->gimp, FALSE,
                                                              GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2257,14 +2254,13 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2280,21 +2276,20 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_enum ("base-type",
                                                       "base type",
-                                                      "The image's base type: { GIMP_RGB (0), GIMP_GRAY (1), GIMP_INDEXED (2) }",
+                                                      "The image's base type",
                                                       GIMP_TYPE_IMAGE_BASE_TYPE,
                                                       GIMP_RGB,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2310,12 +2305,11 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("width",
@@ -2323,7 +2317,7 @@ register_image_procs (Gimp *gimp)
                                                           "The image's width",
                                                           G_MININT32, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2339,12 +2333,11 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("height",
@@ -2352,7 +2345,7 @@ register_image_procs (Gimp *gimp)
                                                           "The image's height",
                                                           G_MININT32, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2368,14 +2361,13 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2391,23 +2383,22 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("new-width",
                                                       "new width",
-                                                      "New image width (1 <= new_width)",
+                                                      "New image width",
                                                       1, G_MAXINT32, 1,
                                                       GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("new-height",
                                                       "new height",
-                                                      "New image height (1 <= new_height)",
+                                                      "New image height",
                                                       1, G_MAXINT32, 1,
                                                       GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
@@ -2422,7 +2413,7 @@ register_image_procs (Gimp *gimp)
                                                       "y offset between upper left corner of old and new images: (new - old)",
                                                       G_MININT32, G_MAXINT32, 0,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2438,14 +2429,13 @@ register_image_procs (Gimp *gimp)
                                      "Simon Budig",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2461,26 +2451,25 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("new-width",
                                                       "new width",
-                                                      "New image width (1 <= new_width)",
+                                                      "New image width",
                                                       1, G_MAXINT32, 1,
                                                       GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("new-height",
                                                       "new height",
-                                                      "New image height (1 <= new_height)",
+                                                      "New image height",
                                                       1, G_MAXINT32, 1,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2496,12 +2485,11 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("new-width",
@@ -2527,7 +2515,7 @@ register_image_procs (Gimp *gimp)
                                                       "y offset: (0 <= offy <= (height - new_height))",
                                                       0, G_MAXINT32, 0,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2543,23 +2531,22 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_enum ("flip-type",
                                                      "flip type",
-                                                     "Type of flip: { GIMP_ORIENTATION_HORIZONTAL (0), GIMP_ORIENTATION_VERTICAL (1) }",
+                                                     "Type of flip",
                                                      GIMP_TYPE_ORIENTATION_TYPE,
                                                      GIMP_ORIENTATION_HORIZONTAL,
                                                      GIMP_PARAM_READWRITE));
   gimp_param_spec_enum_exclude_value (GIMP_PARAM_SPEC_ENUM (procedure->args[1]),
                                       GIMP_ORIENTATION_UNKNOWN);
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2575,21 +2562,20 @@ register_image_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2003",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("rotate-type",
                                                   "rotate type",
-                                                  "Angle of rotation: { GIMP_ROTATE_90 (0), GIMP_ROTATE_180 (1), GIMP_ROTATE_270 (2) }",
+                                                  "Angle of rotation",
                                                   GIMP_TYPE_ROTATION_TYPE,
                                                   GIMP_ROTATE_90,
                                                   GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2605,12 +2591,11 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("num-layers",
@@ -2623,7 +2608,7 @@ register_image_procs (Gimp *gimp)
                                                                 "layer ids",
                                                                 "The list of layers contained in the image",
                                                                 GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2639,12 +2624,11 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("num-channels",
@@ -2657,7 +2641,7 @@ register_image_procs (Gimp *gimp)
                                                                 "channel ids",
                                                                 "The list of channels contained in the image",
                                                                 GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2673,12 +2657,11 @@ register_image_procs (Gimp *gimp)
                                      "Simon Budig",
                                      "2005",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("num-vectors",
@@ -2691,7 +2674,7 @@ register_image_procs (Gimp *gimp)
                                                                 "vector ids",
                                                                 "The list of vectors contained in the image",
                                                                 GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2707,20 +2690,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_drawable_id ("drawable",
                                                                 "drawable",
                                                                 "The active drawable",
-                                                                gimp,
+                                                                pdb->gimp, FALSE,
                                                                 GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2736,14 +2718,13 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2759,20 +2740,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_layer_id ("floating-sel",
                                                              "floating sel",
                                                              "The image's floating selection",
-                                                             gimp,
+                                                             pdb->gimp, FALSE,
                                                              GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2788,20 +2768,19 @@ register_image_procs (Gimp *gimp)
                                      "Wolfgang Hofer",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_drawable_id ("drawable",
                                                                 "drawable",
                                                                 "The drawable the floating selection is attached to",
-                                                                gimp,
+                                                                pdb->gimp, FALSE,
                                                                 GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2817,19 +2796,18 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "The drawable to pick from",
-                                                            gimp,
-                                                            GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
+                                                            pdb->gimp, TRUE,
+                                                            GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_double ("x",
                                                     "x",
@@ -2864,9 +2842,10 @@ register_image_procs (Gimp *gimp)
                                    gimp_param_spec_rgb ("color",
                                                         "color",
                                                         "The return color",
+                                                        TRUE,
                                                         NULL,
                                                         GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2882,12 +2861,11 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("x",
@@ -2905,9 +2883,9 @@ register_image_procs (Gimp *gimp)
                                    gimp_param_spec_layer_id ("layer",
                                                              "layer",
                                                              "The layer found at the specified coordinates",
-                                                             gimp,
+                                                             pdb->gimp, FALSE,
                                                              GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2923,18 +2901,17 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_layer_id ("layer",
                                                          "layer",
                                                          "The layer",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("position",
@@ -2942,7 +2919,7 @@ register_image_procs (Gimp *gimp)
                                                       "The layer position",
                                                       G_MININT32, G_MAXINT32, 0,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2958,20 +2935,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_layer_id ("layer",
                                                          "layer",
                                                          "The layer",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -2987,20 +2963,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_layer_id ("layer",
                                                          "layer",
                                                          "The layer to raise",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3016,20 +2991,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_layer_id ("layer",
                                                          "layer",
                                                          "The layer to lower",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3045,20 +3019,19 @@ register_image_procs (Gimp *gimp)
                                      "Wolfgang Hofer",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_layer_id ("layer",
                                                          "layer",
                                                          "The layer to raise to top",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3074,20 +3047,19 @@ register_image_procs (Gimp *gimp)
                                      "Wolfgang Hofer",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_layer_id ("layer",
                                                          "layer",
                                                          "The layer to lower to bottom",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3103,18 +3075,17 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_channel_id ("channel",
                                                            "channel",
                                                            "The channel",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("position",
@@ -3122,7 +3093,7 @@ register_image_procs (Gimp *gimp)
                                                       "The channel position",
                                                       G_MININT32, G_MAXINT32, 0,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3138,20 +3109,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_channel_id ("channel",
                                                            "channel",
                                                            "The channel",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3167,20 +3137,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_channel_id ("channel",
                                                            "channel",
                                                            "The channel to raise",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3196,20 +3165,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_channel_id ("channel",
                                                            "channel",
                                                            "The channel to lower",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3225,18 +3193,17 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_vectors_id ("vectors",
                                                            "vectors",
                                                            "The vectors object",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("position",
@@ -3244,7 +3211,7 @@ register_image_procs (Gimp *gimp)
                                                       "The vectors objects position",
                                                       G_MININT32, G_MAXINT32, 0,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3260,20 +3227,19 @@ register_image_procs (Gimp *gimp)
                                      "Simon Budig",
                                      "2005",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_vectors_id ("vectors",
                                                            "vectors",
                                                            "The vectors object",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3289,20 +3255,19 @@ register_image_procs (Gimp *gimp)
                                      "Simon Budig",
                                      "2005",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_vectors_id ("vectors",
                                                            "vectors",
                                                            "The vectors object to raise",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3318,20 +3283,19 @@ register_image_procs (Gimp *gimp)
                                      "Simon Budig",
                                      "2005",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_vectors_id ("vectors",
                                                            "vectors",
                                                            "The vectors object to lower",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3347,20 +3311,19 @@ register_image_procs (Gimp *gimp)
                                      "Simon Budig",
                                      "2005",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_vectors_id ("vectors",
                                                            "vectors",
                                                            "The vectors object to raise to top",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3376,20 +3339,19 @@ register_image_procs (Gimp *gimp)
                                      "Simon Budig",
                                      "2005",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_vectors_id ("vectors",
                                                            "vectors",
                                                            "The vectors object to lower to bottom",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3405,20 +3367,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_layer_id ("layer",
                                                              "layer",
                                                              "The resulting layer",
-                                                             gimp,
+                                                             pdb->gimp, FALSE,
                                                              GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3434,17 +3395,16 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_enum ("merge-type",
                                                      "merge type",
-                                                     "The type of merge: { GIMP_EXPAND_AS_NECESSARY (0), GIMP_CLIP_TO_IMAGE (1), GIMP_CLIP_TO_BOTTOM_LAYER (2) }",
+                                                     "The type of merge",
                                                      GIMP_TYPE_MERGE_TYPE,
                                                      GIMP_EXPAND_AS_NECESSARY,
                                                      GIMP_PARAM_READWRITE));
@@ -3454,9 +3414,9 @@ register_image_procs (Gimp *gimp)
                                    gimp_param_spec_layer_id ("layer",
                                                              "layer",
                                                              "The resulting layer",
-                                                             gimp,
+                                                             pdb->gimp, FALSE,
                                                              GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3472,23 +3432,22 @@ register_image_procs (Gimp *gimp)
                                      "Larry Ewing",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_layer_id ("merge-layer",
                                                          "merge layer",
                                                          "The layer to merge down from",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_enum ("merge-type",
                                                      "merge type",
-                                                     "The type of merge: { GIMP_EXPAND_AS_NECESSARY (0), GIMP_CLIP_TO_IMAGE (1), GIMP_CLIP_TO_BOTTOM_LAYER (2) }",
+                                                     "The type of merge",
                                                      GIMP_TYPE_MERGE_TYPE,
                                                      GIMP_EXPAND_AS_NECESSARY,
                                                      GIMP_PARAM_READWRITE));
@@ -3498,9 +3457,9 @@ register_image_procs (Gimp *gimp)
                                    gimp_param_spec_layer_id ("layer",
                                                              "layer",
                                                              "The resulting layer",
-                                                             gimp,
+                                                             pdb->gimp, FALSE,
                                                              GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3516,26 +3475,25 @@ register_image_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-layer-add-mask");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_layer_id ("layer",
                                                          "layer",
                                                          "The layer to receive the mask",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_layer_mask_id ("mask",
                                                               "mask",
                                                               "The mask to add to the layer",
-                                                              gimp,
+                                                              pdb->gimp, FALSE,
                                                               GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3551,27 +3509,26 @@ register_image_procs (Gimp *gimp)
                                      "",
                                      "",
                                      "gimp-layer-remove-mask");
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_layer_id ("layer",
                                                          "layer",
                                                          "The layer from which to remove mask",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("mode",
                                                   "mode",
-                                                  "Removal mode: { GIMP_MASK_APPLY (0), GIMP_MASK_DISCARD (1) }",
+                                                  "Removal mode",
                                                   GIMP_TYPE_MASK_APPLY_MODE,
                                                   GIMP_MASK_APPLY,
                                                   GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3582,22 +3539,21 @@ register_image_procs (Gimp *gimp)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-image-get-colormap",
                                      "Returns the image's colormap",
-                                     "This procedure returns an actual pointer to the image's colormap, as well as the number of bytes contained in the colormap. The actual number of colors in the transmitted colormap will be \"num_bytes\" / 3. If the image is not of base type GIMP_INDEXED, this pointer will be NULL.",
+                                     "This procedure returns an actual pointer to the image's colormap, as well as the number of bytes contained in the colormap. The actual number of colors in the transmitted colormap will be \"num_bytes\" / 3. If the image is not in Indexed color mode, no colormap is returned.",
                                      "Spencer Kimball & Peter Mattis",
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("num-bytes",
                                                           "num bytes",
-                                                          "Number of bytes in the colormap array (0 < num_bytes)",
+                                                          "Number of bytes in the colormap array",
                                                           0, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
@@ -3605,7 +3561,7 @@ register_image_procs (Gimp *gimp)
                                                                "colormap",
                                                                "The image's colormap",
                                                                GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3621,17 +3577,16 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("num-bytes",
                                                       "num bytes",
-                                                      "Number of bytes in the colormap array (0 <= num_bytes <= 768)",
+                                                      "Number of bytes in the colormap array",
                                                       0, 768, 0,
                                                       GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
@@ -3639,7 +3594,7 @@ register_image_procs (Gimp *gimp)
                                                            "colormap",
                                                            "The new colormap values",
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3655,14 +3610,13 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3678,12 +3632,11 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("dirty",
@@ -3691,7 +3644,7 @@ register_image_procs (Gimp *gimp)
                                                          "TRUE if the image has unsaved changes.",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3707,12 +3660,11 @@ register_image_procs (Gimp *gimp)
                                      "Andy Thomas",
                                      "1999",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("width",
@@ -3755,7 +3707,7 @@ register_image_procs (Gimp *gimp)
                                                                "thumbnail data",
                                                                "The thumbnail data",
                                                                GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3771,20 +3723,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_layer_id ("active-layer",
                                                              "active layer",
                                                              "The active layer",
-                                                             gimp,
+                                                             pdb->gimp, FALSE,
                                                              GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3800,20 +3751,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_layer_id ("active-layer",
                                                          "active layer",
                                                          "The new image active layer",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3829,20 +3779,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_channel_id ("active-channel",
                                                                "active channel",
                                                                "The active channel",
-                                                               gimp,
+                                                               pdb->gimp, FALSE,
                                                                GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3858,20 +3807,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_channel_id ("active-channel",
                                                            "active channel",
                                                            "The new image active channel",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3887,20 +3835,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_vectors_id ("active-vectors",
                                                                "active vectors",
                                                                "The active vectors",
-                                                               gimp,
+                                                               pdb->gimp, FALSE,
                                                                GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3916,20 +3863,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_vectors_id ("active-vectors",
                                                            "active vectors",
                                                            "The new image active vectors",
-                                                           gimp,
+                                                           pdb->gimp, FALSE,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3945,20 +3891,19 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_selection_id ("selection",
                                                                  "selection",
                                                                  "The selection channel",
-                                                                 gimp,
+                                                                 pdb->gimp, FALSE,
                                                                  GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -3974,27 +3919,26 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("component",
                                                   "component",
-                                                  "The image component: { GIMP_RED_CHANNEL (0), GIMP_GREEN_CHANNEL (1), GIMP_BLUE_CHANNEL (2), GIMP_GRAY_CHANNEL (3), GIMP_INDEXED_CHANNEL (4), GIMP_ALPHA_CHANNEL (5) }",
+                                                  "The image component",
                                                   GIMP_TYPE_CHANNEL_TYPE,
                                                   GIMP_RED_CHANNEL,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("active",
                                                          "active",
-                                                         "Component is active (TRUE or FALSE)",
+                                                         "Component is active",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -4010,27 +3954,26 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("component",
                                                   "component",
-                                                  "The image component: { GIMP_RED_CHANNEL (0), GIMP_GREEN_CHANNEL (1), GIMP_BLUE_CHANNEL (2), GIMP_GRAY_CHANNEL (3), GIMP_INDEXED_CHANNEL (4), GIMP_ALPHA_CHANNEL (5) }",
+                                                  "The image component",
                                                   GIMP_TYPE_CHANNEL_TYPE,
                                                   GIMP_RED_CHANNEL,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_boolean ("active",
                                                      "active",
-                                                     "Component is active (TRUE or FALSE)",
+                                                     "Component is active",
                                                      FALSE,
                                                      GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -4046,27 +3989,26 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("component",
                                                   "component",
-                                                  "The image component: { GIMP_RED_CHANNEL (0), GIMP_GREEN_CHANNEL (1), GIMP_BLUE_CHANNEL (2), GIMP_GRAY_CHANNEL (3), GIMP_INDEXED_CHANNEL (4), GIMP_ALPHA_CHANNEL (5) }",
+                                                  "The image component",
                                                   GIMP_TYPE_CHANNEL_TYPE,
                                                   GIMP_RED_CHANNEL,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("visible",
                                                          "visible",
-                                                         "Component is visible (TRUE or FALSE)",
+                                                         "Component is visible",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -4082,27 +4024,26 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("component",
                                                   "component",
-                                                  "The image component: { GIMP_RED_CHANNEL (0), GIMP_GREEN_CHANNEL (1), GIMP_BLUE_CHANNEL (2), GIMP_GRAY_CHANNEL (3), GIMP_INDEXED_CHANNEL (4), GIMP_ALPHA_CHANNEL (5) }",
+                                                  "The image component",
                                                   GIMP_TYPE_CHANNEL_TYPE,
                                                   GIMP_RED_CHANNEL,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_boolean ("visible",
                                                      "visible",
-                                                     "Component is visible (TRUE or FALSE)",
+                                                     "Component is visible",
                                                      FALSE,
                                                      GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -4118,12 +4059,11 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string ("filename",
@@ -4132,7 +4072,7 @@ register_image_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -4148,12 +4088,11 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("filename",
@@ -4162,7 +4101,7 @@ register_image_procs (Gimp *gimp)
                                                        TRUE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -4178,12 +4117,11 @@ register_image_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string ("name",
@@ -4192,7 +4130,7 @@ register_image_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -4208,12 +4146,11 @@ register_image_procs (Gimp *gimp)
                                      "Austin Donnelly",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_double ("xresolution",
@@ -4227,7 +4164,7 @@ register_image_procs (Gimp *gimp)
                                                         "The resolution in the y-axis, in dots per inch",
                                                         -G_MAXDOUBLE, G_MAXDOUBLE, 0,
                                                         GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -4243,12 +4180,11 @@ register_image_procs (Gimp *gimp)
                                      "Austin Donnelly",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_double ("xresolution",
@@ -4262,7 +4198,7 @@ register_image_procs (Gimp *gimp)
                                                     "The new image resolution in the y-axis, in dots per inch",
                                                     -G_MAXDOUBLE, G_MAXDOUBLE, 0,
                                                     GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -4278,12 +4214,11 @@ register_image_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_unit ("unit",
@@ -4293,7 +4228,7 @@ register_image_procs (Gimp *gimp)
                                                          FALSE,
                                                          GIMP_UNIT_PIXEL,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -4309,12 +4244,11 @@ register_image_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_unit ("unit",
@@ -4324,7 +4258,7 @@ register_image_procs (Gimp *gimp)
                                                      FALSE,
                                                      GIMP_UNIT_INCH,
                                                      GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -4340,12 +4274,11 @@ register_image_procs (Gimp *gimp)
                                      "Andy Thomas",
                                      "2000",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_uint ("tattoo-state",
@@ -4353,7 +4286,7 @@ register_image_procs (Gimp *gimp)
                                                       "The tattoo state",
                                                       1, G_MAXUINT32, 1,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -4369,12 +4302,11 @@ register_image_procs (Gimp *gimp)
                                      "Andy Thomas",
                                      "2000",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_uint ("tattoo-state",
@@ -4382,7 +4314,7 @@ register_image_procs (Gimp *gimp)
                                                   "The new image tattoo state",
                                                   1, G_MAXUINT32, 1,
                                                   GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -4398,12 +4330,11 @@ register_image_procs (Gimp *gimp)
                                      "Jay Cox",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_uint ("tattoo",
@@ -4415,9 +4346,9 @@ register_image_procs (Gimp *gimp)
                                    gimp_param_spec_layer_id ("layer",
                                                              "layer",
                                                              "The layer with the specified tattoo",
-                                                             gimp,
+                                                             pdb->gimp, FALSE,
                                                              GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -4433,12 +4364,11 @@ register_image_procs (Gimp *gimp)
                                      "Jay Cox",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_uint ("tattoo",
@@ -4450,9 +4380,9 @@ register_image_procs (Gimp *gimp)
                                    gimp_param_spec_channel_id ("channel",
                                                                "channel",
                                                                "The channel with the specified tattoo",
-                                                               gimp,
+                                                               pdb->gimp, FALSE,
                                                                GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -4468,12 +4398,11 @@ register_image_procs (Gimp *gimp)
                                      "Jay Cox",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_uint ("tattoo",
@@ -4485,9 +4414,8 @@ register_image_procs (Gimp *gimp)
                                    gimp_param_spec_vectors_id ("vectors",
                                                                "vectors",
                                                                "The vectors with the specified tattoo",
-                                                               gimp,
+                                                               pdb->gimp, FALSE,
                                                                GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
-
 }

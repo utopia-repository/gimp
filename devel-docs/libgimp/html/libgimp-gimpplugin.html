@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpmessage.html" title="gimpmessage">
 <link rel="next" href="libgimp-gimpproceduraldb.html" title="gimpproceduraldb">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -23,24 +24,29 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimpmessage.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-general.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpproceduraldb.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpplugin"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpplugin</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpplugin</span></h2>
 <p>gimpplugin &#8212; Functions useful for plugins, e.g. registration and progress indicators.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -62,18 +68,18 @@ gboolean    <a href="libgimp-gimpplugin.html#gimp-plugin-menu-branch-register">g
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2544362"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 Functions useful for plugins, e.g. registration and progress indicators.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2531241"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2538232"></a><h3>
+<a name="id2539497"></a><h3>
 <a name="gimp-plugin-domain-register"></a>gimp_plugin_domain_register ()</h3>
-<a class="indexterm" name="id2543173"></a><pre class="programlisting">gboolean    gimp_plugin_domain_register     (const gchar *domain_name,
+<a class="indexterm" name="id2541976"></a><pre class="programlisting">gboolean    gimp_plugin_domain_register     (const gchar *domain_name,
                                              const gchar *domain_path);</pre>
 <p>
 Registers a textdomain for localisation.
@@ -116,9 +122,9 @@ called before any procedure is installed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2544615"></a><h3>
+<a name="id2539924"></a><h3>
 <a name="gimp-plugin-help-register"></a>gimp_plugin_help_register ()</h3>
-<a class="indexterm" name="id2544624"></a><pre class="programlisting">gboolean    gimp_plugin_help_register       (const gchar *domain_name,
+<a class="indexterm" name="id2539935"></a><pre class="programlisting">gboolean    gimp_plugin_help_register       (const gchar *domain_name,
                                              const gchar *domain_uri);</pre>
 <p>
 Register a help path for a plug-in.
@@ -156,9 +162,9 @@ interpreted relative to this rootdir.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2534350"></a><h3>
+<a name="id2547753"></a><h3>
 <a name="gimp-plugin-icon-register"></a>gimp_plugin_icon_register ()</h3>
-<a class="indexterm" name="id2534359"></a><pre class="programlisting">gboolean    gimp_plugin_icon_register       (const gchar *procedure_name,
+<a class="indexterm" name="id2547764"></a><pre class="programlisting">gboolean    gimp_plugin_icon_register       (const gchar *procedure_name,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpIconType"
 >GimpIconType</a> icon_type,
@@ -200,9 +206,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpIconType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2534458"></a><h3>
+<a name="id2547862"></a><h3>
 <a name="gimp-plugin-menu-register"></a>gimp_plugin_menu_register ()</h3>
-<a class="indexterm" name="id2534467"></a><pre class="programlisting">gboolean    gimp_plugin_menu_register       (const gchar *procedure_name,
+<a class="indexterm" name="id2547876"></a><pre class="programlisting">gboolean    gimp_plugin_menu_register       (const gchar *procedure_name,
                                              const gchar *menu_path);</pre>
 <p>
 Register an additional menu path for a plug-in procedure.
@@ -242,9 +248,9 @@ procedure.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2524601"></a><h3>
+<a name="id2540082"></a><h3>
 <a name="gimp-plugin-menu-branch-register"></a>gimp_plugin_menu_branch_register ()</h3>
-<a class="indexterm" name="id2524610"></a><pre class="programlisting">gboolean    gimp_plugin_menu_branch_register
+<a class="indexterm" name="id2540096"></a><pre class="programlisting">gboolean    gimp_plugin_menu_branch_register
                                             (const gchar *menu_path,
                                              const gchar *menu_name);</pre>
 <p>
@@ -285,9 +291,5 @@ procedure.</p>
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimp-gimpmessage.html"><b>&lt;&lt;&#160;gimpmessage</b></a></td>
-<td align="right"><a accesskey="n" href="libgimp-gimpproceduraldb.html"><b>gimpproceduraldb&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

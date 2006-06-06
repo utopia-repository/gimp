@@ -30,6 +30,7 @@
 #include "pdb-types.h"
 
 #include "core/gimp.h"
+#include "core/gimp-utils.h"
 #include "core/gimpcontext.h"
 #include "core/gimpchannel.h"
 #include "core/gimplayer.h"
@@ -45,6 +46,9 @@
 
 static void          gimp_procedure_finalize      (GObject       *object);
 
+static gint64        gimp_procedure_get_memsize   (GimpObject    *object,
+                                                   gint64        *gui_size);
+
 static GValueArray * gimp_procedure_real_execute  (GimpProcedure *procedure,
                                                    Gimp          *gimp,
                                                    GimpContext   *context,
@@ -55,14 +59,14 @@ static void    gimp_procedure_real_execute_async  (GimpProcedure *procedure,
                                                    GimpContext   *context,
                                                    GimpProgress  *progress,
                                                    GValueArray   *args,
-                                                   gint32         display_ID);
+                                                   GimpObject    *display);
 
 static void          gimp_procedure_free_strings  (GimpProcedure *procedure);
 static gboolean      gimp_procedure_validate_args (GimpProcedure *procedure,
                                                    GValueArray   *args);
 
 
-G_DEFINE_TYPE (GimpProcedure, gimp_procedure, GIMP_TYPE_OBJECT);
+G_DEFINE_TYPE (GimpProcedure, gimp_procedure, GIMP_TYPE_OBJECT)
 
 #define parent_class gimp_procedure_parent_class
 
@@ -70,12 +74,15 @@ G_DEFINE_TYPE (GimpProcedure, gimp_procedure, GIMP_TYPE_OBJECT);
 static void
 gimp_procedure_class_init (GimpProcedureClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GObjectClass    *object_class      = G_OBJECT_CLASS (klass);
+  GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
 
-  object_class->finalize = gimp_procedure_finalize;
+  object_class->finalize         = gimp_procedure_finalize;
 
-  klass->execute         = gimp_procedure_real_execute;
-  klass->execute_async   = gimp_procedure_real_execute_async;
+  gimp_object_class->get_memsize = gimp_procedure_get_memsize;
+
+  klass->execute                 = gimp_procedure_real_execute;
+  klass->execute_async           = gimp_procedure_real_execute_async;
 }
 
 static void
@@ -113,6 +120,52 @@ gimp_procedure_finalize (GObject *object)
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
+static gint64
+gimp_procedure_get_memsize (GimpObject *object,
+                            gint64     *gui_size)
+{
+  GimpProcedure *procedure = GIMP_PROCEDURE (object);
+  gint64         memsize   = 0;
+  gint           i;
+
+  if (! procedure->static_strings)
+    {
+      if (procedure->original_name)
+        memsize += strlen (procedure->original_name) + 1;
+
+      if (procedure->blurb)
+        memsize += strlen (procedure->blurb) + 1;
+
+      if (procedure->help)
+        memsize += strlen (procedure->help) + 1;
+
+      if (procedure->author)
+        memsize += strlen (procedure->author) + 1;
+
+      if (procedure->copyright)
+        memsize += strlen (procedure->copyright) + 1;
+
+      if (procedure->date)
+        memsize += strlen (procedure->date) + 1;
+
+      if (procedure->deprecated)
+        memsize += strlen (procedure->deprecated) + 1;
+    }
+
+  memsize += procedure->num_args * sizeof (GParamSpec *);
+
+  for (i = 0; i < procedure->num_args; i++)
+    memsize += gimp_g_param_spec_get_memsize (procedure->args[i]);
+
+  memsize += procedure->num_values * sizeof (GParamSpec *);
+
+  for (i = 0; i < procedure->num_values; i++)
+    memsize += gimp_g_param_spec_get_memsize (procedure->values[i]);
+
+  return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
+                                                                  gui_size);
+}
+
 static GValueArray *
 gimp_procedure_real_execute (GimpProcedure *procedure,
                              Gimp          *gimp,
@@ -133,7 +186,7 @@ gimp_procedure_real_execute_async (GimpProcedure *procedure,
                                    GimpContext   *context,
                                    GimpProgress  *progress,
                                    GValueArray   *args,
-                                   gint32         display_ID)
+                                   GimpObject    *display)
 {
   GValueArray *return_vals;
 
@@ -288,18 +341,19 @@ gimp_procedure_execute_async (GimpProcedure *procedure,
                               GimpContext   *context,
                               GimpProgress  *progress,
                               GValueArray   *args,
-                              gint32         display_ID)
+                              GimpObject    *display)
 {
   g_return_if_fail (GIMP_IS_PROCEDURE (procedure));
   g_return_if_fail (GIMP_IS_GIMP (gimp));
   g_return_if_fail (GIMP_IS_CONTEXT (context));
   g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
   g_return_if_fail (args != NULL);
+  g_return_if_fail (display == NULL || GIMP_IS_OBJECT (display));
 
   if (gimp_procedure_validate_args (procedure, args))
     GIMP_PROCEDURE_GET_CLASS (procedure)->execute_async (procedure, gimp,
                                                          context, progress,
-                                                         args, display_ID);
+                                                         args, display);
 }
 
 GValueArray *

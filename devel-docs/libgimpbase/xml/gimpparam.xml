@@ -4,16 +4,19 @@
 
 <refentry id="libgimpbase-gimpparam">
 <refmeta>
-<refentrytitle>gimpparam</refentrytitle>
+<refentrytitle id="top_of_page">gimpparam</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpparam</refname><refpurpose>Definitions of useful <link linkend="GParamFlags"><type>GParamFlags</type></link>.</refpurpose>
+<refname>gimpparam</refname>
+<refpurpose>Definitions of useful <link linkend="GParamFlags"><type>GParamFlags</type></link>.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -34,35 +37,35 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GIMP-PARAM-STATIC-STRINGS:CAPS"/>GIMP_PARAM_STATIC_STRINGS</title>
+<title><anchor id="GIMP-PARAM-STATIC-STRINGS:CAPS" role="macro"/>GIMP_PARAM_STATIC_STRINGS</title>
 <indexterm><primary>GIMP_PARAM_STATIC_STRINGS</primary></indexterm><programlisting>#define     GIMP_PARAM_STATIC_STRINGS</programlisting>
 <para>
 Since: GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-PARAM-READABLE:CAPS"/>GIMP_PARAM_READABLE</title>
+<title><anchor id="GIMP-PARAM-READABLE:CAPS" role="macro"/>GIMP_PARAM_READABLE</title>
 <indexterm><primary>GIMP_PARAM_READABLE</primary></indexterm><programlisting>#define     GIMP_PARAM_READABLE</programlisting>
 <para>
 Since: GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-PARAM-WRITABLE:CAPS"/>GIMP_PARAM_WRITABLE</title>
+<title><anchor id="GIMP-PARAM-WRITABLE:CAPS" role="macro"/>GIMP_PARAM_WRITABLE</title>
 <indexterm><primary>GIMP_PARAM_WRITABLE</primary></indexterm><programlisting>#define     GIMP_PARAM_WRITABLE</programlisting>
 <para>
 Since: GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-PARAM-READWRITE:CAPS"/>GIMP_PARAM_READWRITE</title>
+<title><anchor id="GIMP-PARAM-READWRITE:CAPS" role="macro"/>GIMP_PARAM_READWRITE</title>
 <indexterm><primary>GIMP_PARAM_READWRITE</primary></indexterm><programlisting>#define     GIMP_PARAM_READWRITE</programlisting>
 <para>
 Since: GIMP 2.4

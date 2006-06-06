@@ -4,16 +4,19 @@
 
 <refentry id="libgimpthumb-gimpthumb-error">
 <refmeta>
-<refentrytitle>gimpthumb-error</refentrytitle>
+<refentrytitle id="top_of_page">gimpthumb-error</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPTHUMB Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpthumb-error</refname><refpurpose>Error codes used by libgimpthumb</refpurpose>
+<refname>gimpthumb-error</refname>
+<refpurpose>Error codes used by libgimpthumb</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -33,17 +36,17 @@ enum        <link linkend="GimpThumbError">GimpThumbError</link>;
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpThumbError"/>enum GimpThumbError</title>
+<title><anchor id="GimpThumbError" role="enum"/>enum GimpThumbError</title>
 <indexterm><primary>GimpThumbError</primary></indexterm><programlisting>typedef enum
 {
   GIMP_THUMB_ERROR_OPEN,         /*  open failed                            */
@@ -56,31 +59,31 @@ These are the possible error codes used when a <link linkend="GError"><type>GErr
 libgimpthumb.
 </para><variablelist role="enum">
 <varlistentry>
-<term><literal>GIMP_THUMB_ERROR_OPEN</literal></term>
+<term><anchor id="GIMP-THUMB-ERROR-OPEN:CAPS" role="constant"/><literal>GIMP_THUMB_ERROR_OPEN</literal></term>
 <listitem><simpara>        there was a problem opening the file
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><literal>GIMP_THUMB_ERROR_OPEN_ENOENT</literal></term>
+<term><anchor id="GIMP-THUMB-ERROR-OPEN-ENOENT:CAPS" role="constant"/><literal>GIMP_THUMB_ERROR_OPEN_ENOENT</literal></term>
 <listitem><simpara> the file doesn't exist
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><literal>GIMP_THUMB_ERROR_MKDIR</literal></term>
+<term><anchor id="GIMP-THUMB-ERROR-MKDIR:CAPS" role="constant"/><literal>GIMP_THUMB_ERROR_MKDIR</literal></term>
 <listitem><simpara>       there was a problem creating a directory
 
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-THUMB-ERROR:CAPS"/>GIMP_THUMB_ERROR</title>
+<title><anchor id="GIMP-THUMB-ERROR:CAPS" role="macro"/>GIMP_THUMB_ERROR</title>
 <indexterm><primary>GIMP_THUMB_ERROR</primary></indexterm><programlisting>#define GIMP_THUMB_ERROR (gimp_thumb_error_quark ())
 </programlisting>
 <para>
 Identifier for the libgimpthumb error domain.
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-thumb-error-quark"/>gimp_thumb_error_quark ()</title>
+<title><anchor id="gimp-thumb-error-quark" role="function"/>gimp_thumb_error_quark ()</title>
 <indexterm><primary>gimp_thumb_error_quark</primary></indexterm><programlisting><link linkend="GQuark">GQuark</link>      gimp_thumb_error_quark          (void);</programlisting>
 <para>
 This function is never called directly. Use <link linkend="GIMP-THUMB-ERROR:CAPS"><function>GIMP_THUMB_ERROR()</function></link> instead.</para>

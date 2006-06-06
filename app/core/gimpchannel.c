@@ -193,6 +193,7 @@ static void       gimp_channel_real_invert   (GimpChannel      *channel,
 static void       gimp_channel_real_border   (GimpChannel      *channel,
                                               gint              radius_x,
                                               gint              radius_y,
+                                              gboolean          feather,
                                               gboolean          push_undo);
 static void       gimp_channel_real_grow     (GimpChannel      *channel,
                                               gint              radius_x,
@@ -210,7 +211,7 @@ static void       gimp_channel_validate      (TileManager      *tm,
 
 G_DEFINE_TYPE_WITH_CODE (GimpChannel, gimp_channel, GIMP_TYPE_DRAWABLE,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_PICKABLE,
-                                                gimp_channel_pickable_iface_init));
+                                                gimp_channel_pickable_iface_init))
 
 #define parent_class gimp_channel_parent_class
 
@@ -1284,6 +1285,7 @@ static void
 gimp_channel_real_border (GimpChannel *channel,
                           gint         radius_x,
                           gint         radius_y,
+                          gboolean     feather,
                           gboolean     push_undo)
 {
   PixelRegion bPR;
@@ -1302,6 +1304,7 @@ gimp_channel_real_border (GimpChannel *channel,
     x1 = 0;
   else
     x1 -= radius_x;
+
   if (x2 + radius_x > GIMP_ITEM (channel)->width)
     x2 = GIMP_ITEM (channel)->width;
   else
@@ -1311,6 +1314,7 @@ gimp_channel_real_border (GimpChannel *channel,
     y1 = 0;
   else
     y1 -= radius_y;
+
   if (y2 + radius_y > GIMP_ITEM (channel)->height)
     y2 = GIMP_ITEM (channel)->height;
   else
@@ -1322,10 +1326,10 @@ gimp_channel_real_border (GimpChannel *channel,
   else
     gimp_drawable_invalidate_boundary (GIMP_DRAWABLE (channel));
 
-  pixel_region_init (&bPR, GIMP_DRAWABLE (channel)->tiles, x1, y1,
-                     (x2-x1), (y2-y1), TRUE);
+  pixel_region_init (&bPR, GIMP_DRAWABLE (channel)->tiles,
+                     x1, y1, x2 - x1, y2 - y1, TRUE);
 
-  border_region (&bPR, radius_x, radius_y);
+  border_region (&bPR, radius_x, radius_y, feather);
 
   channel->bounds_known = FALSE;
 
@@ -1820,6 +1824,7 @@ void
 gimp_channel_border (GimpChannel *channel,
                      gint         radius_x,
                      gint         radius_y,
+                     gboolean     feather,
                      gboolean     push_undo)
 {
   g_return_if_fail (GIMP_IS_CHANNEL (channel));
@@ -1827,8 +1832,9 @@ gimp_channel_border (GimpChannel *channel,
   if (! gimp_item_is_attached (GIMP_ITEM (channel)))
     push_undo = FALSE;
 
-  GIMP_CHANNEL_GET_CLASS (channel)->border (channel, radius_x, radius_y,
-                                            push_undo);
+  GIMP_CHANNEL_GET_CLASS (channel)->border (channel,
+					    radius_x, radius_y, feather,
+					    push_undo);
 }
 
 void

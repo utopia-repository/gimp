@@ -44,6 +44,8 @@
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimpgrideditor.h"
 #include "widgets/gimphelp-ids.h"
+#include "widgets/gimpmessagebox.h"
+#include "widgets/gimpmessagedialog.h"
 #include "widgets/gimppropwidgets.h"
 #include "widgets/gimptemplateeditor.h"
 #include "widgets/gimpwidgets-utils.h"
@@ -58,6 +60,9 @@
 #include "resolution-calibrate-dialog.h"
 
 #include "gimp-intl.h"
+
+
+#define RESPONSE_RESET 1
 
 
 /*  preferences local functions  */
@@ -90,6 +95,8 @@ static void   prefs_input_dialog_able_callback    (GtkWidget  *widget,
 static void   prefs_menus_save_callback           (GtkWidget  *widget,
                                                    Gimp       *gimp);
 static void   prefs_menus_clear_callback          (GtkWidget  *widget,
+                                                   Gimp       *gimp);
+static void   prefs_menus_remove_callback         (GtkWidget  *widget,
                                                    Gimp       *gimp);
 static void   prefs_session_save_callback         (GtkWidget  *widget,
                                                    Gimp       *gimp);
@@ -240,113 +247,158 @@ prefs_response (GtkWidget *widget,
 {
   Gimp *gimp = g_object_get_data (G_OBJECT (dialog), "gimp");
 
-  if (response_id == GTK_RESPONSE_OK)
+  switch (response_id)
     {
-      GObject *config_copy;
-      GList   *restart_diff;
-      GList   *confirm_diff;
-      GList   *list;
+    case RESPONSE_RESET:
+      {
+        GtkWidget *confirm;
 
-      config_copy = g_object_get_data (G_OBJECT (dialog), "config-copy");
+        confirm = gimp_message_dialog_new (_("Reset All Preferences"),
+                                           GIMP_STOCK_QUESTION,
+                                           dialog,
+                                           GTK_DIALOG_MODAL |
+                                           GTK_DIALOG_DESTROY_WITH_PARENT,
+                                           gimp_standard_help_func, NULL,
 
-      /*  destroy config_orig  */
-      g_object_set_data (G_OBJECT (dialog), "config-orig", NULL);
+                                           GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                           GIMP_STOCK_RESET, GTK_RESPONSE_OK,
 
-      gtk_widget_set_sensitive (GTK_WIDGET (dialog), FALSE);
+                                           NULL);
 
-      confirm_diff = gimp_config_diff (G_OBJECT (gimp->edit_config),
-                                       config_copy,
-                                       GIMP_CONFIG_PARAM_CONFIRM);
+        gtk_dialog_set_alternative_button_order (GTK_DIALOG (confirm),
+                                                 GTK_RESPONSE_OK,
+                                                 GTK_RESPONSE_CANCEL,
+                                                 -1);
 
-      g_object_freeze_notify (G_OBJECT (gimp->edit_config));
+        gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (confirm)->box,
+                                           _("Do you really want to reset all "
+                                             "preferences to default values?"));
 
-      for (list = confirm_diff; list; list = g_list_next (list))
-        {
-          GParamSpec *param_spec = list->data;
-          GValue      value      = { 0, };
+        if (gimp_dialog_run (GIMP_DIALOG (confirm)) == GTK_RESPONSE_OK)
+          {
+            GimpConfig *config_copy;
 
-          g_value_init (&value, param_spec->value_type);
+            config_copy = g_object_get_data (G_OBJECT (dialog), "config-copy");
 
-          g_object_get_property (config_copy,
-                                 param_spec->name, &value);
-          g_object_set_property (G_OBJECT (gimp->edit_config),
-                                 param_spec->name, &value);
+            gimp_config_reset (config_copy);
+          }
 
-          g_value_unset (&value);
-        }
+        gtk_widget_destroy (confirm);
 
-      g_object_thaw_notify (G_OBJECT (gimp->edit_config));
+        return;
+      }
+      break;
 
-      g_list_free (confirm_diff);
+    case GTK_RESPONSE_OK:
+      {
+        GObject *config_copy;
+        GList   *restart_diff;
+        GList   *confirm_diff;
+        GList   *list;
 
-      gimp_rc_save (GIMP_RC (gimp->edit_config));
+        config_copy = g_object_get_data (G_OBJECT (dialog), "config-copy");
 
-      /*  spit out a solely informational warning about changed values
-       *  which need restart
-       */
-      restart_diff = gimp_config_diff (G_OBJECT (gimp->edit_config),
-                                       G_OBJECT (gimp->config),
-                                       GIMP_CONFIG_PARAM_RESTART);
+        /*  destroy config_orig  */
+        g_object_set_data (G_OBJECT (dialog), "config-orig", NULL);
 
-      if (restart_diff)
-        {
-          GString *string;
+        gtk_widget_set_sensitive (GTK_WIDGET (dialog), FALSE);
 
-          string = g_string_new (_("You will have to restart GIMP for "
-                                   "the following changes to take effect:"));
-          g_string_append (string, "\n\n");
+        confirm_diff = gimp_config_diff (G_OBJECT (gimp->edit_config),
+                                         config_copy,
+                                         GIMP_CONFIG_PARAM_CONFIRM);
 
-          for (list = restart_diff; list; list = g_list_next (list))
-            {
-              GParamSpec *param_spec = list->data;
+        g_object_freeze_notify (G_OBJECT (gimp->edit_config));
 
-              g_string_append_printf (string, "%s\n", param_spec->name);
-            }
+        for (list = confirm_diff; list; list = g_list_next (list))
+          {
+            GParamSpec *param_spec = list->data;
+            GValue      value      = { 0, };
 
-          g_message (string->str);
+            g_value_init (&value, param_spec->value_type);
 
-          g_string_free (string, TRUE);
-        }
+            g_object_get_property (config_copy,
+                                   param_spec->name, &value);
+            g_object_set_property (G_OBJECT (gimp->edit_config),
+                                   param_spec->name, &value);
 
-      g_list_free (restart_diff);
-    }
-  else  /* cancel */
-    {
-      GObject *config_orig;
-      GList   *diff;
-      GList   *list;
+            g_value_unset (&value);
+          }
 
-      config_orig = g_object_get_data (G_OBJECT (dialog), "config-orig");
+        g_object_thaw_notify (G_OBJECT (gimp->edit_config));
 
-      /*  destroy config_copy  */
-      g_object_set_data (G_OBJECT (dialog), "config-copy", NULL);
+        g_list_free (confirm_diff);
 
-      gtk_widget_set_sensitive (GTK_WIDGET (dialog), FALSE);
+        gimp_rc_save (GIMP_RC (gimp->edit_config));
 
-      diff = gimp_config_diff (G_OBJECT (gimp->edit_config),
-                               config_orig,
-                               GIMP_CONFIG_PARAM_SERIALIZE);
+        /*  spit out a solely informational warning about changed values
+         *  which need restart
+         */
+        restart_diff = gimp_config_diff (G_OBJECT (gimp->edit_config),
+                                         G_OBJECT (gimp->config),
+                                         GIMP_CONFIG_PARAM_RESTART);
 
-      g_object_freeze_notify (G_OBJECT (gimp->edit_config));
+        if (restart_diff)
+          {
+            GString *string;
 
-      for (list = diff; list; list = g_list_next (list))
-        {
-          GParamSpec *param_spec = list->data;
-          GValue      value      = { 0, };
+            string = g_string_new (_("You will have to restart GIMP for "
+                                     "the following changes to take effect:"));
+            g_string_append (string, "\n\n");
 
-          g_value_init (&value, param_spec->value_type);
+            for (list = restart_diff; list; list = g_list_next (list))
+              {
+                GParamSpec *param_spec = list->data;
 
-          g_object_get_property (config_orig,
-                                 param_spec->name, &value);
-          g_object_set_property (G_OBJECT (gimp->edit_config),
-                                 param_spec->name, &value);
+                g_string_append_printf (string, "%s\n", param_spec->name);
+              }
 
-          g_value_unset (&value);
-        }
+            g_message (string->str);
 
-      g_object_thaw_notify (G_OBJECT (gimp->edit_config));
+            g_string_free (string, TRUE);
+          }
 
-      g_list_free (diff);
+        g_list_free (restart_diff);
+      }
+      break;
+
+    default:
+      {
+        GObject *config_orig;
+        GList   *diff;
+        GList   *list;
+
+        config_orig = g_object_get_data (G_OBJECT (dialog), "config-orig");
+
+        /*  destroy config_copy  */
+        g_object_set_data (G_OBJECT (dialog), "config-copy", NULL);
+
+        gtk_widget_set_sensitive (GTK_WIDGET (dialog), FALSE);
+
+        diff = gimp_config_diff (G_OBJECT (gimp->edit_config),
+                                 config_orig,
+                                 GIMP_CONFIG_PARAM_SERIALIZE);
+
+        g_object_freeze_notify (G_OBJECT (gimp->edit_config));
+
+        for (list = diff; list; list = g_list_next (list))
+          {
+            GParamSpec *param_spec = list->data;
+            GValue      value      = { 0, };
+
+            g_value_init (&value, param_spec->value_type);
+
+            g_object_get_property (config_orig,
+                                   param_spec->name, &value);
+            g_object_set_property (G_OBJECT (gimp->edit_config),
+                                   param_spec->name, &value);
+
+            g_value_unset (&value);
+          }
+
+        g_object_thaw_notify (G_OBJECT (gimp->edit_config));
+
+        g_list_free (diff);
+      }
     }
 
   /*  enable autosaving again  */
@@ -507,6 +559,45 @@ prefs_menus_clear_callback (GtkWidget *widget,
       g_message (_("Your keyboard shortcuts will be reset to default values "
                    "the next time you start GIMP."));
     }
+}
+
+static void
+prefs_menus_remove_callback (GtkWidget *widget,
+                             Gimp      *gimp)
+{
+  GtkWidget *dialog;
+
+  dialog = gimp_message_dialog_new (_("Remove all Keyboard Shortcuts"),
+                                    GIMP_STOCK_QUESTION,
+                                    gtk_widget_get_toplevel (widget),
+                                    GTK_DIALOG_MODAL |
+                                    GTK_DIALOG_DESTROY_WITH_PARENT,
+                                    gimp_standard_help_func, NULL,
+
+                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                    GTK_STOCK_CLEAR,  GTK_RESPONSE_OK,
+
+                                    NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  g_signal_connect_object (gtk_widget_get_toplevel (widget), "unmap",
+                           G_CALLBACK (gtk_widget_destroy),
+                           dialog, G_CONNECT_SWAPPED);
+
+  gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+                                     _("Do you really want to remove all "
+                                       "keyboard shortcuts from all menus?"));
+
+  if (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK)
+    {
+      menus_remove (gimp);
+    }
+
+  gtk_widget_destroy (dialog);
 }
 
 static void
@@ -1200,19 +1291,21 @@ prefs_dialog_new (Gimp       *gimp,
                             prefs_help_func,
                             GIMP_HELP_PREFS_DIALOG,
 
+                            GIMP_STOCK_RESET, RESPONSE_RESET,
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
 
-  g_signal_connect (dialog, "response",
-                    G_CALLBACK (prefs_response),
-                    dialog);
-
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           RESPONSE_RESET,
                                            GTK_RESPONSE_OK,
                                            GTK_RESPONSE_CANCEL,
                                            -1);
+
+  g_signal_connect (dialog, "response",
+                    G_CALLBACK (prefs_response),
+                    dialog);
 
   /* The main hbox */
   hbox = gtk_hbox_new (FALSE, 12);
@@ -1451,6 +1544,13 @@ prefs_dialog_new (Gimp       *gimp,
 
   g_object_set_data (G_OBJECT (button), "clear-button", button2);
 
+  button = prefs_button_add (GTK_STOCK_CLEAR,
+                             _("Remove _All Keyboard Shortcuts"),
+                             GTK_BOX (vbox2));
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (prefs_menus_remove_callback),
+                    gimp);
+
 
   /***********/
   /*  Theme  */
@@ -1597,11 +1697,8 @@ prefs_dialog_new (Gimp       *gimp,
   vbox2 = prefs_frame_new (_("Web Browser"), GTK_CONTAINER (vbox), FALSE);
   table = prefs_table_new (1, GTK_CONTAINER (vbox2));
 
-  entry = gimp_prop_file_entry_new (object, "web-browser",
-                                    _("Select Web Browser"),
-                                    FALSE, FALSE);
-
-  prefs_widget_add_aligned (entry, _("_Web browser to use:"),
+  prefs_widget_add_aligned (gimp_prop_entry_new (object, "web-browser", 0),
+                            _("_Web browser to use:"),
                             GTK_TABLE (table), 0, FALSE, size_group);
 #endif
 
@@ -2189,18 +2286,11 @@ prefs_dialog_new (Gimp       *gimp,
 
     for (i = 0, row = 3; i < G_N_ELEMENTS (profiles); i++, row++)
       {
-#if 0
-        button = gimp_prop_file_entry_new (color_config,
-                                           profiles[i].property_name,
-                                           gettext (profiles[i].fs_label),
-                                           FALSE, TRUE);
-#else
         button =
           gimp_prop_file_chooser_button_new (color_config,
                                              profiles[i].property_name,
                                              gettext (profiles[i].fs_label),
                                              GTK_FILE_CHOOSER_ACTION_OPEN);
-#endif
 
         gimp_table_attach_aligned (GTK_TABLE (table), 0, row,
                                    gettext (profiles[i].label), 0.0, 0.5,
@@ -2374,26 +2464,35 @@ prefs_dialog_new (Gimp       *gimp,
   {
     static const struct
     {
+      const gchar *property_name;
       const gchar *label;
       const gchar *fs_label;
-      const gchar *property_name;
     }
     dirs[] =
     {
-      { N_("Temp folder:"), N_("Select Temp Folder"), "temp-path" },
-      { N_("Swap folder:"), N_("Select Swap Folder"), "swap-path" },
+      {
+        "temp-path",
+        N_("Temporary folder:"),
+        N_("Select Folder for Temporary Files")
+      },
+      {
+        "swap-path",
+        N_("Swap folder:"),
+        N_("Select Swap Folder")
+      }
     };
 
     table = prefs_table_new (G_N_ELEMENTS (dirs) + 1, GTK_CONTAINER (vbox));
 
     for (i = 0; i < G_N_ELEMENTS (dirs); i++)
       {
-        entry = gimp_prop_file_entry_new (object, dirs[i].property_name,
-                                          gettext (dirs[i].fs_label),
-                                          TRUE, TRUE);
+        button = gimp_prop_file_chooser_button_new (object,
+                                                    dirs[i].property_name,
+                                                    gettext (dirs[i].fs_label),
+                                                    GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
         gimp_table_attach_aligned (GTK_TABLE (table), 0, i,
                                    gettext (dirs[i].label), 0.0, 0.5,
-                                   entry, 1, FALSE);
+                                   button, 1, FALSE);
       }
   }
 

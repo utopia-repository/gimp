@@ -24,8 +24,6 @@
 
 #include "core-types.h"
 
-#include "pdb/gimppluginprocedure.h"
-
 #include "gimp.h"
 #include "gimp-gui.h"
 #include "gimpcontainer.h"
@@ -58,15 +56,10 @@ gimp_gui_init (Gimp *gimp)
   gimp->gui.display_create      = NULL;
   gimp->gui.display_delete      = NULL;
   gimp->gui.displays_reconnect  = NULL;
-  gimp->gui.menus_init          = NULL;
-  gimp->gui.menus_create_item   = NULL;
-  gimp->gui.menus_delete_item   = NULL;
-  gimp->gui.menus_create_branch = NULL;
   gimp->gui.progress_new        = NULL;
   gimp->gui.progress_free       = NULL;
   gimp->gui.pdb_dialog_set      = NULL;
   gimp->gui.pdb_dialog_close    = NULL;
-  gimp->gui.pdb_dialogs_check   = NULL;
 }
 
 void
@@ -259,19 +252,13 @@ gimp_create_display (Gimp      *gimp,
                      GimpUnit   unit,
                      gdouble    scale)
 {
-  GimpObject *display = NULL;
-
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
   if (gimp->gui.display_create)
-    {
-      display = gimp->gui.display_create (image, unit, scale);
+    return gimp->gui.display_create (image, unit, scale);
 
-      gimp_container_add (gimp->displays, display);
-    }
-
-  return display;
+  return NULL;
 }
 
 void
@@ -296,55 +283,6 @@ gimp_reconnect_displays (Gimp      *gimp,
 
   if (gimp->gui.displays_reconnect)
     gimp->gui.displays_reconnect (gimp, old_image, new_image);
-}
-
-void
-gimp_menus_init (Gimp        *gimp,
-                 GSList      *plug_in_defs,
-                 const gchar *std_plugins_domain)
-{
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (std_plugins_domain != NULL);
-
-  if (gimp->gui.menus_init)
-    gimp->gui.menus_init (gimp, plug_in_defs, std_plugins_domain);
-}
-
-void
-gimp_menus_create_item (Gimp                *gimp,
-                        GimpPlugInProcedure *proc,
-                        const gchar         *menu_path)
-{
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc));
-
-  if (gimp->gui.menus_create_item)
-    gimp->gui.menus_create_item (gimp, proc, menu_path);
-}
-
-void
-gimp_menus_delete_item (Gimp                *gimp,
-                        GimpPlugInProcedure *proc)
-{
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc));
-
-  if (gimp->gui.menus_delete_item)
-    gimp->gui.menus_delete_item (gimp, proc);
-}
-
-void
-gimp_menus_create_branch (Gimp        *gimp,
-                          const gchar *progname,
-                          const gchar *menu_path,
-                          const gchar *menu_label)
-{
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (menu_path != NULL);
-  g_return_if_fail (menu_label != NULL);
-
-  if (gimp->gui.menus_create_branch)
-    gimp->gui.menus_create_branch (gimp, progname, menu_path, menu_label);
 }
 
 GimpProgress *
@@ -446,13 +384,4 @@ gimp_pdb_dialog_close (Gimp          *gimp,
     return gimp->gui.pdb_dialog_close (gimp, container, callback_name);
 
   return FALSE;
-}
-
-void
-gimp_pdb_dialogs_check (Gimp *gimp)
-{
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
-
-  if (gimp->gui.pdb_dialogs_check)
-    gimp->gui.pdb_dialogs_check (gimp);
 }

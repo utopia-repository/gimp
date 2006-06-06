@@ -107,7 +107,8 @@ am_gimp_composite_3dnow_test_OBJECTS =  \
 gimp_composite_3dnow_test_OBJECTS =  \
 	$(am_gimp_composite_3dnow_test_OBJECTS)
 am__DEPENDENCIES_1 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_2 =
+am__DEPENDENCIES_2 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_3 =
 am_gimp_composite_altivec_test_OBJECTS =  \
 	gimp-composite-regression.$(OBJEXT) \
 	gimp-composite-altivec-test.$(OBJEXT)
@@ -280,14 +281,15 @@ GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
 GLIB_LIBS = @GLIB_LIBS@
 GLIB_MKENUMS = @GLIB_MKENUMS@
 GLIB_REQUIRED_VERSION = @GLIB_REQUIRED_VERSION@
-GMODULE_CFLAGS = @GMODULE_CFLAGS@
-GMODULE_LIBS = @GMODULE_LIBS@
+GMODULE_NO_EXPORT_CFLAGS = @GMODULE_NO_EXPORT_CFLAGS@
+GMODULE_NO_EXPORT_LIBS = @GMODULE_NO_EXPORT_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
 GNOMEPRINT = @GNOMEPRINT@
 GNOMEPRINT_CFLAGS = @GNOMEPRINT_CFLAGS@
 GNOMEPRINT_LIBS = @GNOMEPRINT_LIBS@
 GOBJECT_QUERY = @GOBJECT_QUERY@
+GREP = @GREP@
 GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
 GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
@@ -411,6 +413,8 @@ PKG_CONFIG = @PKG_CONFIG@
 PLATFORM_WIN32_FALSE = @PLATFORM_WIN32_FALSE@
 PLATFORM_WIN32_TRUE = @PLATFORM_WIN32_TRUE@
 PNG = @PNG@
+PNG_CFLAGS = @PNG_CFLAGS@
+PNG_LIBS = @PNG_LIBS@
 POFILES = @POFILES@
 POPPLER = @POPPLER@
 POPPLER_CFLAGS = @POPPLER_CFLAGS@
@@ -465,6 +469,7 @@ WMF_CFLAGS = @WMF_CFLAGS@
 WMF_CONFIG = @WMF_CONFIG@
 WMF_REQUIRED_VERSION = @WMF_REQUIRED_VERSION@
 XGETTEXT = @XGETTEXT@
+XMKMF = @XMKMF@
 XMLLINT = @XMLLINT@
 XPM = @XPM@
 XSLTPROC = @XSLTPROC@
@@ -472,17 +477,9 @@ X_CFLAGS = @X_CFLAGS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
-ac_ct_AR = @ac_ct_AR@
-ac_ct_AS = @ac_ct_AS@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
-ac_ct_DLLTOOL = @ac_ct_DLLTOOL@
 ac_ct_F77 = @ac_ct_F77@
-ac_ct_OBJDUMP = @ac_ct_OBJDUMP@
-ac_ct_RANLIB = @ac_ct_RANLIB@
-ac_ct_STRIP = @ac_ct_STRIP@
-ac_ct_WINDRES = @ac_ct_WINDRES@
-ac_pt_PKG_CONFIG = @ac_pt_PKG_CONFIG@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
 am__fastdepCXX_FALSE = @am__fastdepCXX_FALSE@
@@ -499,6 +496,9 @@ build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
+datarootdir = @datarootdir@
+docdir = @docdir@
+dvidir = @dvidir@
 exec_prefix = @exec_prefix@
 gimpdatadir = @gimpdatadir@
 gimpdir = @gimpdir@
@@ -510,26 +510,31 @@ host_alias = @host_alias@
 host_cpu = @host_cpu@
 host_os = @host_os@
 host_vendor = @host_vendor@
+htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = @libexecdir@
+localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
 oldincludedir = @oldincludedir@
+pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
 pkgpythondir = @pkgpythondir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
+psdir = @psdir@
 pyexecdir = @pyexecdir@
 pythondir = @pythondir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
+libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-Composite\"	\
@@ -628,8 +633,8 @@ gimp_composite_test_SOURCES = \
 gimp_composite_test_DEPENDENCIES = $(gimpcomposite_dependencies)
 gimp_composite_test_LDADD = \
 	libappcomposite.a	\
-	../base/libappbase.a	\
 	$(libgimpcolor)		\
+	$(libgimpbase)		\
 	$(GLIB_LIBS)
 
 gimp_composite_mmx_test_SOURCES = \
@@ -640,8 +645,8 @@ gimp_composite_mmx_test_SOURCES = \
 gimp_composite_mmx_test_DEPENDENCIES = $(gimpcomposite_dependencies)
 gimp_composite_mmx_test_LDADD = \
 	libappcomposite.a	\
-	../base/libappbase.a	\
 	$(libgimpcolor)		\
+	$(libgimpbase)		\
 	$(GLIB_LIBS)
 
 gimp_composite_sse_test_SOURCES = \
@@ -652,8 +657,8 @@ gimp_composite_sse_test_SOURCES = \
 gimp_composite_sse_test_DEPENDENCIES = $(gimpcomposite_dependencies)
 gimp_composite_sse_test_LDADD = \
 	libappcomposite.a	\
-	../base/libappbase.a	\
 	$(libgimpcolor)		\
+	$(libgimpbase)		\
 	$(GLIB_LIBS)
 
 gimp_composite_sse2_test_SOURCES = \
@@ -664,8 +669,8 @@ gimp_composite_sse2_test_SOURCES = \
 gimp_composite_sse2_test_DEPENDENCIES = $(gimpcomposite_dependencies)
 gimp_composite_sse2_test_LDADD = \
 	libappcomposite.a	\
-	../base/libappbase.a	\
 	$(libgimpcolor)		\
+	$(libgimpbase)		\
 	$(GLIB_LIBS)
 
 gimp_composite_3dnow_test_SOURCES = \
@@ -676,8 +681,8 @@ gimp_composite_3dnow_test_SOURCES = \
 gimp_composite_3dnow_test_DEPENDENCIES = $(gimpcomposite_dependencies)
 gimp_composite_3dnow_test_LDADD = \
 	libappcomposite.a	\
-	../base/libappbase.a	\
 	$(libgimpcolor)		\
+	$(libgimpbase)		\
 	$(GLIB_LIBS)
 
 gimp_composite_altivec_test_SOURCES = \
@@ -688,8 +693,8 @@ gimp_composite_altivec_test_SOURCES = \
 gimp_composite_altivec_test_DEPENDENCIES = $(gimpcomposite_dependencies)
 gimp_composite_altivec_test_LDADD = \
 	libappcomposite.a	\
-	../base/libappbase.a	\
 	$(libgimpcolor)		\
+	$(libgimpbase)		\
 	$(GLIB_LIBS)
 
 gimp_composite_vis_test_SOURCES = \
@@ -700,8 +705,8 @@ gimp_composite_vis_test_SOURCES = \
 gimp_composite_vis_test_DEPENDENCIES = $(gimpcomposite_dependencies)
 gimp_composite_vis_test_LDADD = \
 	libappcomposite.a	\
-	../base/libappbase.a	\
 	$(libgimpcolor)		\
+	$(libgimpbase)		\
 	$(GLIB_LIBS)
 
 all: all-am

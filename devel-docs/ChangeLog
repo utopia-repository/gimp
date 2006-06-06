@@ -1,3 +1,45 @@
+2006-06-02  Sven Neumann  <sven@gimp.org>
+
+	* libgimpbase/libgimpbase-docs.sgml
+	* libgimpbase/libgimpbase-sections.txt
+	* libgimpbase/tmpl/gimpcpuaccel.sgml: added docs for cpu accel API.
+
+	* libgimpbase/tmpl/gimpbaseenums.sgml
+	* libgimpwidgets/tmpl/gimppatheditor.sgml: regenerated.
+
+2006-05-15  Michael Natterer  <mitch@gimp.org>
+
+	* libgimpmodule/Makefile.am (GTKDOC_LIBS): use
+	GMODULE_NO_EXPORT_CFLAGS/LIBS.
+
+2006-04-28  Sven Neumann  <sven@gimp.org>
+
+	* libgimpcolor/libgimpcolor-sections.txt: add
+	gimp_param_spec_rgb_has_alpha().
+
+	* libgimpcolor/tmpl/gimprgb.sgml
+	* libgimpconfig/tmpl/gimpconfig-params.sgml: regenerated.
+
+2006-04-22  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/tmpl/gimpproceduraldb.sgml
+	* libgimp/tmpl/gimpprogress.sgml
+	* libgimpbase/tmpl/gimpenv.sgml
+	* libgimpwidgets/tmpl/gimppropwidgets.sgml
+	* libgimpwidgets/tmpl/gimpzoommodel.sgml: regenerated (removed
+	unused parameters).
+
+2006-04-20  Simon Budig  <simon@gimp.org>
+
+        * debug-plug-ins.txt: Added hint how to run a plugin in the gdb
+	when GIMP_PLUGIN_DEBUG is active.
+
+2006-04-15  Michael Natterer  <mitch@gimp.org>
+
+	* app/app-docs.sgml
+	* app/app-sections.txt
+	* app/app.types: lots of updates.
+
 2006-04-12  Sven Neumann  <sven@gimp.org>
 
 	* libgimpwidgets/libgimpwidgets-sections.txt: added GIMP_STOCK_DETACH.

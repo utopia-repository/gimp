@@ -22,7 +22,6 @@
 #include "config.h"
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 #include <glib-object.h>
@@ -185,13 +184,7 @@ gimp_config_path_expand_only (const gchar  *path,
 
           substs[2*n_substs]     = token;
           substs[2*n_substs + 1] = (gchar *) gimp_filename_to_utf8 (s);
-		  
-		  if(substs[2*n_substs + 1] == NULL) {
-              /* Something very bad happened during encoding
-                 (should be an incompatible G_FILENAME_ENCODING), bail out */
-		      exit(EXIT_FAILURE);
-		  }
-        
+
           length += strlen (substs[2*n_substs + 1]);
 
           n_substs++;

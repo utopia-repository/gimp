@@ -1,3 +1,16 @@
+gimp (2.2.11-2) unstable; urgency=low
+
+  * Switch build system to cdbs + simple-patchsys
+  * Remove build-depends on gcc-3.4 (Closes: #371864)
+  * Update gimp-python package description
+  * Put gimp.desktop, gimp.keys, and gimp.applications in gimp package instead
+    of gimp-data, and make gimp-data Recommends: gimp (Closes: #363469)
+  * Add more Wilber samples to /usr/share/doc
+  * Re-add patch from Red Hat to fix MMX/SSE compile error
+    (Closes: #374271)
+
+ -- Ari Pollak <ari@debian.org>  Sun, 18 Jun 2006 11:48:06 -0400
+
 gimp (2.2.11-1) unstable; urgency=low
 
   * New upstream release

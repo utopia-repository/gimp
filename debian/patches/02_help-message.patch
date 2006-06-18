@@ -1,0 +1,11 @@
+--- gimp-2.2.11.orig/plug-ins/help/domain.c
++++ gimp-2.2.11/plug-ins/help/domain.c
+@@ -174,7 +174,7 @@
+           const gchar *msg;
+ 
+           if (error->code == G_FILE_ERROR_NOENT)
+-            msg = _("The GIMP help files are not installed.");
++            msg = _("The GIMP help files are not installed. Please make sure gimp-help-en is installed, or the appropriate gimp-help package for your language.");
+           else
+             msg = _("There is a problem with the GIMP help files.");
+ 

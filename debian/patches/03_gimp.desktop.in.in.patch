@@ -1,0 +1,11 @@
+--- gimp-2.2.11.orig/data/misc/gimp.desktop.in.in
++++ gimp-2.2.11/data/misc/gimp.desktop.in.in
+@@ -2,7 +2,7 @@
+ Version=1.0
+ Encoding=UTF-8
+ Type=Application
+-_Name=The GIMP
++_Name=GIMP Image Editor
+ _GenericName=Image Editor
+ _Comment=Create and edit images or photographs
+ Exec=gimp-remote-@GIMP_APP_VERSION@ %U

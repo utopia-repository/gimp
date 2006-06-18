@@ -3,14 +3,12 @@ Priority: optional
 Section: graphics
 Maintainer: Ari Pollak <ari@debian.org>
 Standards-Version: 3.6.1
-Build-Depends: debhelper (>= 5), binutils (>= 2.12.90.0.9), gettext, intltool, libx11-dev | xlibs-dev, libice-dev | xlibs-dev, libsm-dev | xlibs-dev, libxmu-dev | xlibs-dev, libxpm-dev | xlibs-dev, libxt-dev | xlibs-dev, libaa1-dev, libgtk2.0-dev (>= 2.4.4-1), libgtkhtml2-dev (>= 2.0.0), libjpeg62-dev, libart-2.0-dev, libpng-dev, zlib1g-dev, libtiff4-dev, python-dev, python-gtk2-dev, libexif-dev (>= 0.6.12), libmng-dev, librsvg2-dev (>= 2.7.2-2), libfontconfig1-dev (>= 2.2.0), libwmf-dev (>= 0.2.8-1.1), sed (>= 3.95), libfreetype6-dev, libasound2-dev (>= 1.0.0) [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386], gcc-3.4 [arm]
+Build-Depends: debhelper (>= 5), cdbs (>= 0.4.37), autotools-dev, patchutils, gettext, intltool, libx11-dev | xlibs-dev, libice-dev | xlibs-dev, libsm-dev | xlibs-dev, libxmu-dev | xlibs-dev, libxpm-dev | xlibs-dev, libxt-dev | xlibs-dev, libaa1-dev, libgtk2.0-dev (>= 2.4.4-1), libgtkhtml2-dev (>= 2.0.0), libjpeg62-dev, libart-2.0-dev, libpng-dev, zlib1g-dev, libtiff4-dev, python-dev, python-gtk2-dev, libexif-dev (>= 0.6.12), libmng-dev, librsvg2-dev (>= 2.7.2-2), libfontconfig1-dev (>= 2.2.0), libwmf-dev (>= 0.2.8-1.1), sed (>= 3.95), libfreetype6-dev (>= 2.2), libasound2-dev (>= 1.0.0) [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386]
 
 Package: libgimp2.0
 Architecture: any
 Section: libs
 Depends: ${shlibs:Depends}
-Replaces: libgimp1.3, gimp1.3-data, gimp-data (<< 2.0.0-6)
-Conflicts: libgimp1.3, gimp1.3-data, gimp-data (<< 2.0.0-6)
 Description: Libraries necessary to Run the GIMP
  This package includes the libgimp libraries, which are
  necessary to run The GIMP.
@@ -23,8 +21,6 @@ Description: Libraries necessary to Run the GIMP
 Package: gimp-helpbrowser
 Architecture: any
 Section: graphics
-Conflicts: gimp (<< 2.0.2-6)
-Replaces: gimp (<< 2.0.2-6)
 Depends: gimp (= ${Source-Version}), ${shlibs:Depends}
 Description: Built-in Help Browser plugin for The GIMP
  This package includes the browser for reading documentation for The GIMP,
@@ -33,13 +29,19 @@ Description: Built-in Help Browser plugin for The GIMP
 Package: gimp-python
 Architecture: any
 Section: graphics
-Conflicts: gimp (<< 2.0.2-6)
-Replaces: gimp (<< 2.0.2-6)
 Depends: python-gtk2 (>= 1.99.12), ${shlibs:Depends}, ${python:Depends}
 Description: Python support and plugins for The GIMP
  This package includes the Python modules necessary to write Python-based
  plugins for The GIMP. It includes several plugins with various useful
- features.
+ features:
+  * Clothify: Make the specified layer look like it's printed on cloth
+  * ColorXHTML: Save the image as colored XHTML text
+  * Console: Python interactive interpreter with Gimp extensions
+  * Drop Shadow and Bevel - Add a drop shadow and/or bevel to a layer
+  * Foggify: Add a layer of fog to an image
+  * Py-Slice: Cuts an image along its guides and saves subimages + HTML
+  * Sphere: Generate simple spheres with drop shadows
+  * Whirl and Pinch: Distorts an image by whirling and pinching
 
 Package: gimp-svg
 Architecture: any
@@ -53,9 +55,8 @@ Package: gimp
 Architecture: any
 Section: graphics
 Depends: wget, gimp-data (= ${Source-Version}), ${shlibs:Depends}
-Conflicts: gimp1.2 (<< 1.2.5-1), gimp1.3, gimp-nonfree, gimp-data (<< 2.0.2-4), libgimp2.0 (>= 2.3.0)
-Replaces: gimp1.2 (<< 1.2.5-1), gimp1.3, gimp-nonfree, gimp-data (<< 2.0.2-4)
-Provides: gimp2.0, gimp-nonfree
+Conflicts: gimp-data (<< 2.2.11-2), libgimp2.0 (>= 2.3.0)
+Replaces: gimp-data (<< 2.2.11-2)
 Recommends: gimp-svg, gimp-print
 Suggests: gimp-help-en | gimp-help, gimp-python, libgimp-perl, gimp-data-extras, libasound2 (>= 1.0.0)
 Description: The GNU Image Manipulation Program
@@ -69,8 +70,7 @@ Description: The GNU Image Manipulation Program
 Package: gimp-data
 Architecture: all
 Section: graphics
-Conflicts: gimp1.3-data, gimp (<< 2.0.2-4)
-Replaces: gimp1.3-data, gimp (<< 2.0.2-4)
+Recommends: gimp
 Description: Data files for The GIMP
  This package contains architecture-independent supporting data files
  for use with The GIMP.
@@ -79,8 +79,7 @@ Package: libgimp2.0-dev
 Architecture: any
 Section: libdevel
 Depends: libgimp2.0 (= ${Source-Version}), libgtk2.0-dev (>= 2.4.4-1), pkg-config
-Conflicts: libgimp1.3-dev
-Replaces: libgimp1.3-dev
+Suggests: libgimp2.0-doc
 Description: Headers and other files for compiling plugins for The GIMP
  This package contains the header files for the GNU Image Manipulation
  Program, along with the static versions of libgimp.

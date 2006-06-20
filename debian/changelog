@@ -1,3 +1,13 @@
+gimp (2.2.11-3) unstable; urgency=low
+
+  * Revert MMX/SSE fix, it didn't make a difference. Instead,
+    apply patch from CVS HEAD to disable MMX/SSE-accelerated burn function,
+    and replace it with generic C function.
+    Really closes: #374271
+  * Fix incorrect watch file
+
+ -- Ari Pollak <ari@debian.org>  Tue, 20 Jun 2006 10:32:20 -0400
+
 gimp (2.2.11-2) unstable; urgency=low
 
   * Switch build system to cdbs + simple-patchsys

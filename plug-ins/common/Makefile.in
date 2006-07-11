@@ -44,48 +44,48 @@ libexec_PROGRAMS = AlienMap2$(EXEEXT) CEL$(EXEEXT) \
 	bumpmap$(EXEEXT) c_astretch$(EXEEXT) cartoon$(EXEEXT) \
 	ccanalyze$(EXEEXT) channel_mixer$(EXEEXT) \
 	checkerboard$(EXEEXT) color_enhance$(EXEEXT) colorify$(EXEEXT) \
-	colortoalpha$(EXEEXT) compose$(EXEEXT) compressor$(EXEEXT) \
-	convmatrix$(EXEEXT) csource$(EXEEXT) cubism$(EXEEXT) \
-	curve_bend$(EXEEXT) decompose$(EXEEXT) deinterlace$(EXEEXT) \
-	depthmerge$(EXEEXT) despeckle$(EXEEXT) destripe$(EXEEXT) \
-	dicom$(EXEEXT) diffraction$(EXEEXT) displace$(EXEEXT) \
-	dog$(EXEEXT) edge$(EXEEXT) emboss$(EXEEXT) engrave$(EXEEXT) \
+	colormap-remap$(EXEEXT) colortoalpha$(EXEEXT) compose$(EXEEXT) \
+	compressor$(EXEEXT) convmatrix$(EXEEXT) csource$(EXEEXT) \
+	cubism$(EXEEXT) curve_bend$(EXEEXT) decompose$(EXEEXT) \
+	deinterlace$(EXEEXT) depthmerge$(EXEEXT) desktop-link$(EXEEXT) \
+	despeckle$(EXEEXT) destripe$(EXEEXT) dicom$(EXEEXT) \
+	diffraction$(EXEEXT) displace$(EXEEXT) dog$(EXEEXT) \
+	edge$(EXEEXT) emboss$(EXEEXT) engrave$(EXEEXT) \
 	exchange$(EXEEXT) film$(EXEEXT) flarefx$(EXEEXT) fp$(EXEEXT) \
 	fractaltrace$(EXEEXT) gauss$(EXEEXT) gbr$(EXEEXT) gee$(EXEEXT) \
 	gee_zoom$(EXEEXT) gif$(EXEEXT) gifload$(EXEEXT) gih$(EXEEXT) \
-	glasstile$(EXEEXT) glob$(EXEEXT) $(am__EXEEXT_2) \
-	gqbist$(EXEEXT) gradmap$(EXEEXT) grid$(EXEEXT) gtm$(EXEEXT) \
+	glasstile$(EXEEXT) glob$(EXEEXT) gqbist$(EXEEXT) \
+	gradmap$(EXEEXT) grid$(EXEEXT) gtm$(EXEEXT) \
 	guillotine$(EXEEXT) header$(EXEEXT) hot$(EXEEXT) \
 	illusion$(EXEEXT) iwarp$(EXEEXT) jigsaw$(EXEEXT) \
-	laplace$(EXEEXT) lic$(EXEEXT) $(am__EXEEXT_3) \
+	laplace$(EXEEXT) lic$(EXEEXT) $(am__EXEEXT_2) \
 	mapcolor$(EXEEXT) max_rgb$(EXEEXT) mblur$(EXEEXT) \
-	$(am__EXEEXT_4) mosaic$(EXEEXT) neon$(EXEEXT) \
+	$(am__EXEEXT_3) mosaic$(EXEEXT) neon$(EXEEXT) \
 	newsprint$(EXEEXT) nlfilt$(EXEEXT) noisify$(EXEEXT) \
 	normalize$(EXEEXT) nova$(EXEEXT) oilify$(EXEEXT) \
 	papertile$(EXEEXT) pat$(EXEEXT) pcx$(EXEEXT) \
 	photocopy$(EXEEXT) pix$(EXEEXT) pixelize$(EXEEXT) \
-	plasma$(EXEEXT) plugin-browser$(EXEEXT) $(am__EXEEXT_5) \
-	pnm$(EXEEXT) polar$(EXEEXT) $(am__EXEEXT_6) \
+	plasma$(EXEEXT) plugin-browser$(EXEEXT) $(am__EXEEXT_4) \
+	pnm$(EXEEXT) polar$(EXEEXT) $(am__EXEEXT_5) \
 	postscript$(EXEEXT) procedure-browser$(EXEEXT) psd$(EXEEXT) \
-	psd_save$(EXEEXT) $(am__EXEEXT_7) randomize$(EXEEXT) \
+	psd_save$(EXEEXT) $(am__EXEEXT_6) randomize$(EXEEXT) \
 	raw$(EXEEXT) redeye$(EXEEXT) retinex$(EXEEXT) ripple$(EXEEXT) \
 	rotate$(EXEEXT) sample_colorize$(EXEEXT) scatter_hsv$(EXEEXT) \
 	screenshot$(EXEEXT) sel_gauss$(EXEEXT) semiflatten$(EXEEXT) \
 	sharpen$(EXEEXT) shift$(EXEEXT) sinus$(EXEEXT) \
 	smooth_palette$(EXEEXT) snoise$(EXEEXT) sobel$(EXEEXT) \
 	softglow$(EXEEXT) sparkle$(EXEEXT) spheredesigner$(EXEEXT) \
-	spread$(EXEEXT) struc$(EXEEXT) sunras$(EXEEXT) $(am__EXEEXT_8) \
-	tga$(EXEEXT) threshold_alpha$(EXEEXT) $(am__EXEEXT_9) \
+	spread$(EXEEXT) struc$(EXEEXT) sunras$(EXEEXT) $(am__EXEEXT_7) \
+	tga$(EXEEXT) threshold_alpha$(EXEEXT) $(am__EXEEXT_8) \
 	tile$(EXEEXT) tileit$(EXEEXT) tiler$(EXEEXT) \
 	uniteditor$(EXEEXT) unsharp$(EXEEXT) video$(EXEEXT) \
 	vinvert$(EXEEXT) vpropagate$(EXEEXT) warp$(EXEEXT) \
 	waves$(EXEEXT) webbrowser$(EXEEXT) whirlpinch$(EXEEXT) \
-	wind$(EXEEXT) $(am__EXEEXT_10) $(am__EXEEXT_11) xbm$(EXEEXT) \
-	$(am__EXEEXT_12) xwd$(EXEEXT) zealouscrop$(EXEEXT)
-EXTRA_PROGRAMS = aa$(EXEEXT) gnomeprint$(EXEEXT) mail$(EXEEXT) \
-	mng$(EXEEXT) png$(EXEEXT) poppler$(EXEEXT) psp$(EXEEXT) \
-	svg$(EXEEXT) tiff$(EXEEXT) winprint$(EXEEXT) wmf$(EXEEXT) \
-	xpm$(EXEEXT)
+	wind$(EXEEXT) $(am__EXEEXT_9) xbm$(EXEEXT) $(am__EXEEXT_10) \
+	xwd$(EXEEXT) zealouscrop$(EXEEXT)
+EXTRA_PROGRAMS = aa$(EXEEXT) mail$(EXEEXT) mng$(EXEEXT) png$(EXEEXT) \
+	poppler$(EXEEXT) psp$(EXEEXT) svg$(EXEEXT) tiff$(EXEEXT) \
+	wmf$(EXEEXT) xpm$(EXEEXT)
 subdir = plug-ins/common
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -102,17 +102,15 @@ mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 am__EXEEXT_1 = @AA@
-am__EXEEXT_2 = @GNOMEPRINT@
-am__EXEEXT_3 = @MAIL@
-am__EXEEXT_4 = @MNG@
-am__EXEEXT_5 = @PNG@
-am__EXEEXT_6 = @POPPLER@
-am__EXEEXT_7 = @PSP@
-am__EXEEXT_8 = @SVG@
-am__EXEEXT_9 = @TIFF@
-am__EXEEXT_10 = @WINPRINT@
-am__EXEEXT_11 = @WMF@
-am__EXEEXT_12 = @XPM@
+am__EXEEXT_2 = @MAIL@
+am__EXEEXT_3 = @MNG@
+am__EXEEXT_4 = @PNG@
+am__EXEEXT_5 = @POPPLER@
+am__EXEEXT_6 = @PSP@
+am__EXEEXT_7 = @SVG@
+am__EXEEXT_8 = @TIFF@
+am__EXEEXT_9 = @WMF@
+am__EXEEXT_10 = @XPM@
 am__installdirs = "$(DESTDIR)$(libexecdir)"
 libexecPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(libexec_PROGRAMS)
@@ -276,6 +274,14 @@ colorify_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
 	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
 	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
+am_colormap_remap_OBJECTS = colormap-remap.$(OBJEXT)
+colormap_remap_OBJECTS = $(am_colormap_remap_OBJECTS)
+colormap_remap_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_colortoalpha_OBJECTS = colortoalpha.$(OBJEXT)
 colortoalpha_OBJECTS = $(am_colortoalpha_OBJECTS)
 colortoalpha_DEPENDENCIES = $(am__DEPENDENCIES_1) \
@@ -343,6 +349,12 @@ am_depthmerge_OBJECTS = depthmerge.$(OBJEXT)
 depthmerge_OBJECTS = $(am_depthmerge_OBJECTS)
 depthmerge_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
+	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
+am_desktop_link_OBJECTS = desktop-link.$(OBJEXT)
+desktop_link_OBJECTS = $(am_desktop_link_OBJECTS)
+desktop_link_DEPENDENCIES = $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
 	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
 	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
@@ -504,14 +516,6 @@ am_glob_OBJECTS = glob.$(OBJEXT)
 glob_OBJECTS = $(am_glob_OBJECTS)
 glob_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
 	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
-	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
-	$(am__DEPENDENCIES_8)
-am_gnomeprint_OBJECTS = gnomeprint-gnomeprint.$(OBJEXT)
-gnomeprint_OBJECTS = $(am_gnomeprint_OBJECTS)
-gnomeprint_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
-	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
 	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
 	$(am__DEPENDENCIES_8)
 am_gqbist_OBJECTS = gqbist.$(OBJEXT)
@@ -1093,13 +1097,6 @@ wind_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
 	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
 	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
-am_winprint_OBJECTS = winprint.$(OBJEXT)
-winprint_OBJECTS = $(am_winprint_OBJECTS)
-winprint_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
-	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
-	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_wmf_OBJECTS = wmf-wmf.$(OBJEXT)
 wmf_OBJECTS = $(am_wmf_OBJECTS)
 wmf_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
@@ -1155,29 +1152,30 @@ SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) $(CML_explorer_SOURCES) \
 	$(bumpmap_SOURCES) $(c_astretch_SOURCES) $(cartoon_SOURCES) \
 	$(ccanalyze_SOURCES) $(channel_mixer_SOURCES) \
 	$(checkerboard_SOURCES) $(color_enhance_SOURCES) \
-	$(colorify_SOURCES) $(colortoalpha_SOURCES) $(compose_SOURCES) \
+	$(colorify_SOURCES) $(colormap_remap_SOURCES) \
+	$(colortoalpha_SOURCES) $(compose_SOURCES) \
 	$(compressor_SOURCES) $(convmatrix_SOURCES) $(csource_SOURCES) \
 	$(cubism_SOURCES) $(curve_bend_SOURCES) $(decompose_SOURCES) \
 	$(deinterlace_SOURCES) $(depthmerge_SOURCES) \
-	$(despeckle_SOURCES) $(destripe_SOURCES) $(dicom_SOURCES) \
-	$(diffraction_SOURCES) $(displace_SOURCES) $(dog_SOURCES) \
-	$(edge_SOURCES) $(emboss_SOURCES) $(engrave_SOURCES) \
-	$(exchange_SOURCES) $(film_SOURCES) $(flarefx_SOURCES) \
-	$(fp_SOURCES) $(fractaltrace_SOURCES) $(gauss_SOURCES) \
-	$(gbr_SOURCES) $(gee_SOURCES) $(gee_zoom_SOURCES) \
-	$(gif_SOURCES) $(gifload_SOURCES) $(gih_SOURCES) \
-	$(glasstile_SOURCES) $(glob_SOURCES) $(gnomeprint_SOURCES) \
-	$(gqbist_SOURCES) $(gradmap_SOURCES) $(grid_SOURCES) \
-	$(gtm_SOURCES) $(guillotine_SOURCES) $(header_SOURCES) \
-	$(hot_SOURCES) $(illusion_SOURCES) $(iwarp_SOURCES) \
-	$(jigsaw_SOURCES) $(laplace_SOURCES) $(lic_SOURCES) \
-	$(mail_SOURCES) $(mapcolor_SOURCES) $(max_rgb_SOURCES) \
-	$(mblur_SOURCES) $(mng_SOURCES) $(mosaic_SOURCES) \
-	$(neon_SOURCES) $(newsprint_SOURCES) $(nlfilt_SOURCES) \
-	$(noisify_SOURCES) $(normalize_SOURCES) $(nova_SOURCES) \
-	$(oilify_SOURCES) $(papertile_SOURCES) $(pat_SOURCES) \
-	$(pcx_SOURCES) $(photocopy_SOURCES) $(pix_SOURCES) \
-	$(pixelize_SOURCES) $(plasma_SOURCES) \
+	$(desktop_link_SOURCES) $(despeckle_SOURCES) \
+	$(destripe_SOURCES) $(dicom_SOURCES) $(diffraction_SOURCES) \
+	$(displace_SOURCES) $(dog_SOURCES) $(edge_SOURCES) \
+	$(emboss_SOURCES) $(engrave_SOURCES) $(exchange_SOURCES) \
+	$(film_SOURCES) $(flarefx_SOURCES) $(fp_SOURCES) \
+	$(fractaltrace_SOURCES) $(gauss_SOURCES) $(gbr_SOURCES) \
+	$(gee_SOURCES) $(gee_zoom_SOURCES) $(gif_SOURCES) \
+	$(gifload_SOURCES) $(gih_SOURCES) $(glasstile_SOURCES) \
+	$(glob_SOURCES) $(gqbist_SOURCES) $(gradmap_SOURCES) \
+	$(grid_SOURCES) $(gtm_SOURCES) $(guillotine_SOURCES) \
+	$(header_SOURCES) $(hot_SOURCES) $(illusion_SOURCES) \
+	$(iwarp_SOURCES) $(jigsaw_SOURCES) $(laplace_SOURCES) \
+	$(lic_SOURCES) $(mail_SOURCES) $(mapcolor_SOURCES) \
+	$(max_rgb_SOURCES) $(mblur_SOURCES) $(mng_SOURCES) \
+	$(mosaic_SOURCES) $(neon_SOURCES) $(newsprint_SOURCES) \
+	$(nlfilt_SOURCES) $(noisify_SOURCES) $(normalize_SOURCES) \
+	$(nova_SOURCES) $(oilify_SOURCES) $(papertile_SOURCES) \
+	$(pat_SOURCES) $(pcx_SOURCES) $(photocopy_SOURCES) \
+	$(pix_SOURCES) $(pixelize_SOURCES) $(plasma_SOURCES) \
 	$(plugin_browser_SOURCES) $(png_SOURCES) $(pnm_SOURCES) \
 	$(polar_SOURCES) $(poppler_SOURCES) $(postscript_SOURCES) \
 	$(procedure_browser_SOURCES) $(psd_SOURCES) \
@@ -1195,9 +1193,8 @@ SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) $(CML_explorer_SOURCES) \
 	$(uniteditor_SOURCES) $(unsharp_SOURCES) $(video_SOURCES) \
 	$(vinvert_SOURCES) $(vpropagate_SOURCES) $(warp_SOURCES) \
 	$(waves_SOURCES) $(webbrowser_SOURCES) $(whirlpinch_SOURCES) \
-	$(wind_SOURCES) $(winprint_SOURCES) $(wmf_SOURCES) \
-	$(xbm_SOURCES) $(xpm_SOURCES) $(xwd_SOURCES) \
-	$(zealouscrop_SOURCES)
+	$(wind_SOURCES) $(wmf_SOURCES) $(xbm_SOURCES) $(xpm_SOURCES) \
+	$(xwd_SOURCES) $(zealouscrop_SOURCES)
 DIST_SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) \
 	$(CML_explorer_SOURCES) $(aa_SOURCES) $(align_layers_SOURCES) \
 	$(animationplay_SOURCES) $(animoptimize_SOURCES) \
@@ -1207,10 +1204,11 @@ DIST_SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) \
 	$(c_astretch_SOURCES) $(cartoon_SOURCES) $(ccanalyze_SOURCES) \
 	$(channel_mixer_SOURCES) $(checkerboard_SOURCES) \
 	$(color_enhance_SOURCES) $(colorify_SOURCES) \
-	$(colortoalpha_SOURCES) $(compose_SOURCES) \
-	$(compressor_SOURCES) $(convmatrix_SOURCES) $(csource_SOURCES) \
-	$(cubism_SOURCES) $(curve_bend_SOURCES) $(decompose_SOURCES) \
-	$(deinterlace_SOURCES) $(depthmerge_SOURCES) \
+	$(colormap_remap_SOURCES) $(colortoalpha_SOURCES) \
+	$(compose_SOURCES) $(compressor_SOURCES) $(convmatrix_SOURCES) \
+	$(csource_SOURCES) $(cubism_SOURCES) $(curve_bend_SOURCES) \
+	$(decompose_SOURCES) $(deinterlace_SOURCES) \
+	$(depthmerge_SOURCES) $(desktop_link_SOURCES) \
 	$(despeckle_SOURCES) $(destripe_SOURCES) $(dicom_SOURCES) \
 	$(diffraction_SOURCES) $(displace_SOURCES) $(dog_SOURCES) \
 	$(edge_SOURCES) $(emboss_SOURCES) $(engrave_SOURCES) \
@@ -1218,37 +1216,36 @@ DIST_SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) \
 	$(fp_SOURCES) $(fractaltrace_SOURCES) $(gauss_SOURCES) \
 	$(gbr_SOURCES) $(gee_SOURCES) $(gee_zoom_SOURCES) \
 	$(gif_SOURCES) $(gifload_SOURCES) $(gih_SOURCES) \
-	$(glasstile_SOURCES) $(glob_SOURCES) $(gnomeprint_SOURCES) \
-	$(gqbist_SOURCES) $(gradmap_SOURCES) $(grid_SOURCES) \
-	$(gtm_SOURCES) $(guillotine_SOURCES) $(header_SOURCES) \
-	$(hot_SOURCES) $(illusion_SOURCES) $(iwarp_SOURCES) \
-	$(jigsaw_SOURCES) $(laplace_SOURCES) $(lic_SOURCES) \
-	$(mail_SOURCES) $(mapcolor_SOURCES) $(max_rgb_SOURCES) \
-	$(mblur_SOURCES) $(mng_SOURCES) $(mosaic_SOURCES) \
-	$(neon_SOURCES) $(newsprint_SOURCES) $(nlfilt_SOURCES) \
-	$(noisify_SOURCES) $(normalize_SOURCES) $(nova_SOURCES) \
-	$(oilify_SOURCES) $(papertile_SOURCES) $(pat_SOURCES) \
-	$(pcx_SOURCES) $(photocopy_SOURCES) $(pix_SOURCES) \
-	$(pixelize_SOURCES) $(plasma_SOURCES) \
-	$(plugin_browser_SOURCES) $(png_SOURCES) $(pnm_SOURCES) \
-	$(polar_SOURCES) $(poppler_SOURCES) $(postscript_SOURCES) \
-	$(procedure_browser_SOURCES) $(psd_SOURCES) \
-	$(psd_save_SOURCES) $(psp_SOURCES) $(randomize_SOURCES) \
-	$(raw_SOURCES) $(redeye_SOURCES) $(retinex_SOURCES) \
-	$(ripple_SOURCES) $(rotate_SOURCES) $(sample_colorize_SOURCES) \
-	$(scatter_hsv_SOURCES) $(screenshot_SOURCES) \
-	$(sel_gauss_SOURCES) $(semiflatten_SOURCES) $(sharpen_SOURCES) \
-	$(shift_SOURCES) $(sinus_SOURCES) $(smooth_palette_SOURCES) \
-	$(snoise_SOURCES) $(sobel_SOURCES) $(softglow_SOURCES) \
-	$(sparkle_SOURCES) $(spheredesigner_SOURCES) $(spread_SOURCES) \
-	$(struc_SOURCES) $(sunras_SOURCES) $(svg_SOURCES) \
-	$(tga_SOURCES) $(threshold_alpha_SOURCES) $(tiff_SOURCES) \
-	$(tile_SOURCES) $(tileit_SOURCES) $(tiler_SOURCES) \
-	$(uniteditor_SOURCES) $(unsharp_SOURCES) $(video_SOURCES) \
-	$(vinvert_SOURCES) $(vpropagate_SOURCES) $(warp_SOURCES) \
-	$(waves_SOURCES) $(webbrowser_SOURCES) $(whirlpinch_SOURCES) \
-	$(wind_SOURCES) $(winprint_SOURCES) $(wmf_SOURCES) \
-	$(xbm_SOURCES) $(xpm_SOURCES) $(xwd_SOURCES) \
+	$(glasstile_SOURCES) $(glob_SOURCES) $(gqbist_SOURCES) \
+	$(gradmap_SOURCES) $(grid_SOURCES) $(gtm_SOURCES) \
+	$(guillotine_SOURCES) $(header_SOURCES) $(hot_SOURCES) \
+	$(illusion_SOURCES) $(iwarp_SOURCES) $(jigsaw_SOURCES) \
+	$(laplace_SOURCES) $(lic_SOURCES) $(mail_SOURCES) \
+	$(mapcolor_SOURCES) $(max_rgb_SOURCES) $(mblur_SOURCES) \
+	$(mng_SOURCES) $(mosaic_SOURCES) $(neon_SOURCES) \
+	$(newsprint_SOURCES) $(nlfilt_SOURCES) $(noisify_SOURCES) \
+	$(normalize_SOURCES) $(nova_SOURCES) $(oilify_SOURCES) \
+	$(papertile_SOURCES) $(pat_SOURCES) $(pcx_SOURCES) \
+	$(photocopy_SOURCES) $(pix_SOURCES) $(pixelize_SOURCES) \
+	$(plasma_SOURCES) $(plugin_browser_SOURCES) $(png_SOURCES) \
+	$(pnm_SOURCES) $(polar_SOURCES) $(poppler_SOURCES) \
+	$(postscript_SOURCES) $(procedure_browser_SOURCES) \
+	$(psd_SOURCES) $(psd_save_SOURCES) $(psp_SOURCES) \
+	$(randomize_SOURCES) $(raw_SOURCES) $(redeye_SOURCES) \
+	$(retinex_SOURCES) $(ripple_SOURCES) $(rotate_SOURCES) \
+	$(sample_colorize_SOURCES) $(scatter_hsv_SOURCES) \
+	$(screenshot_SOURCES) $(sel_gauss_SOURCES) \
+	$(semiflatten_SOURCES) $(sharpen_SOURCES) $(shift_SOURCES) \
+	$(sinus_SOURCES) $(smooth_palette_SOURCES) $(snoise_SOURCES) \
+	$(sobel_SOURCES) $(softglow_SOURCES) $(sparkle_SOURCES) \
+	$(spheredesigner_SOURCES) $(spread_SOURCES) $(struc_SOURCES) \
+	$(sunras_SOURCES) $(svg_SOURCES) $(tga_SOURCES) \
+	$(threshold_alpha_SOURCES) $(tiff_SOURCES) $(tile_SOURCES) \
+	$(tileit_SOURCES) $(tiler_SOURCES) $(uniteditor_SOURCES) \
+	$(unsharp_SOURCES) $(video_SOURCES) $(vinvert_SOURCES) \
+	$(vpropagate_SOURCES) $(warp_SOURCES) $(waves_SOURCES) \
+	$(webbrowser_SOURCES) $(whirlpinch_SOURCES) $(wind_SOURCES) \
+	$(wmf_SOURCES) $(xbm_SOURCES) $(xpm_SOURCES) $(xwd_SOURCES) \
 	$(zealouscrop_SOURCES)
 ETAGS = etags
 CTAGS = ctags
@@ -1256,6 +1253,7 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 AA = @AA@
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
+ALL_LINGUAS = @ALL_LINGUAS@
 ALSA_CFLAGS = @ALSA_CFLAGS@
 ALSA_LIBS = @ALSA_LIBS@
 ALTIVEC_EXTRA_CFLAGS = @ALTIVEC_EXTRA_CFLAGS@
@@ -1327,11 +1325,6 @@ GDK_PIXBUF_LIBS = @GDK_PIXBUF_LIBS@
 GDK_PIXBUF_REQUIRED_VERSION = @GDK_PIXBUF_REQUIRED_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GIMPINSTALL = @GIMPINSTALL@
-GIMPPRINT_CFLAGS = @GIMPPRINT_CFLAGS@
-GIMPPRINT_CONFIG = @GIMPPRINT_CONFIG@
-GIMPPRINT_LIBS = @GIMPPRINT_LIBS@
-GIMPPRINT_REQUIRED_VERSION = @GIMPPRINT_REQUIRED_VERSION@
-GIMPPRINT_TOONEW_VERSION = @GIMPPRINT_TOONEW_VERSION@
 GIMP_API_VERSION = @GIMP_API_VERSION@
 GIMP_APP_VERSION = @GIMP_APP_VERSION@
 GIMP_BINARY_AGE = @GIMP_BINARY_AGE@
@@ -1364,9 +1357,6 @@ GMODULE_NO_EXPORT_CFLAGS = @GMODULE_NO_EXPORT_CFLAGS@
 GMODULE_NO_EXPORT_LIBS = @GMODULE_NO_EXPORT_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GNOMEPRINT = @GNOMEPRINT@
-GNOMEPRINT_CFLAGS = @GNOMEPRINT_CFLAGS@
-GNOMEPRINT_LIBS = @GNOMEPRINT_LIBS@
 GOBJECT_QUERY = @GOBJECT_QUERY@
 GREP = @GREP@
 GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
@@ -1384,8 +1374,6 @@ HAVE_FINITE = @HAVE_FINITE@
 HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_GLIBC_REGEX_FALSE = @HAVE_GLIBC_REGEX_FALSE@
 HAVE_GLIBC_REGEX_TRUE = @HAVE_GLIBC_REGEX_TRUE@
-HAVE_GNOMEPRINT_FALSE = @HAVE_GNOMEPRINT_FALSE@
-HAVE_GNOMEPRINT_TRUE = @HAVE_GNOMEPRINT_TRUE@
 HAVE_GNOMEVFS_FALSE = @HAVE_GNOMEVFS_FALSE@
 HAVE_GNOMEVFS_TRUE = @HAVE_GNOMEVFS_TRUE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
@@ -1440,7 +1428,6 @@ LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
-LIBGNOMEPRINT = @LIBGNOMEPRINT@
 LIBJPEG = @LIBJPEG@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
@@ -1540,7 +1527,6 @@ USE_BINRELOC_TRUE = @USE_BINRELOC_TRUE@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WINDRES = @WINDRES@
-WINPRINT = @WINPRINT@
 WITH_PDBGEN_FALSE = @WITH_PDBGEN_FALSE@
 WITH_PDBGEN_TRUE = @WITH_PDBGEN_TRUE@
 WMF = @WMF@
@@ -1932,6 +1918,21 @@ colorify_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
+colormap_remap_SOURCES = \
+	colormap-remap.c
+
+colormap_remap_LDADD = \
+	$(libgimpui)		\
+	$(libgimpconfig)	\
+	$(libgimpwidgets)	\
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpmath)		\
+	$(libgimpbase)		\
+	$(GTK_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)
+
 colortoalpha_SOURCES = \
 	colortoalpha.c
 
@@ -2076,6 +2077,18 @@ depthmerge_LDADD = \
 	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)
+
+desktop_link_SOURCES = \
+	desktop-link.c
+
+desktop_link_LDADD = \
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpmath)		\
+	$(libgimpbase)		\
+	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
@@ -2415,23 +2428,6 @@ glob_LDADD = \
 	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)
-
-gnomeprint_CFLAGS = $(GNOMEPRINT_CFLAGS)
-gnomeprint_SOURCES = \
-	gnomeprint.c
-
-gnomeprint_LDADD = \
-	$(libgimpui)		\
-	$(libgimpconfig)	\
-	$(libgimpwidgets)	\
-	$(libgimp)		\
-	$(libgimpcolor)		\
-	$(libgimpmath)		\
-	$(libgimpbase)		\
-	$(LIBGNOMEPRINT)		\
-	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
@@ -3653,22 +3649,6 @@ wind_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
-winprint_SOURCES = \
-	winprint.c
-
-winprint_LDADD = \
-	$(libgimpui)		\
-	$(libgimpconfig)	\
-	$(libgimpwidgets)	\
-	$(libgimp)		\
-	$(libgimpcolor)		\
-	$(libgimpmath)		\
-	$(libgimpbase)		\
-	$(LIBWINPRINT)		\
-	$(GLIB_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)
-
 wmf_CFLAGS = $(WMF_CFLAGS)
 wmf_SOURCES = \
 	wmf.c
@@ -3868,6 +3848,9 @@ color_enhance$(EXEEXT): $(color_enhance_OBJECTS) $(color_enhance_DEPENDENCIES)
 colorify$(EXEEXT): $(colorify_OBJECTS) $(colorify_DEPENDENCIES) 
 	@rm -f colorify$(EXEEXT)
 	$(LINK) $(colorify_LDFLAGS) $(colorify_OBJECTS) $(colorify_LDADD) $(LIBS)
+colormap-remap$(EXEEXT): $(colormap_remap_OBJECTS) $(colormap_remap_DEPENDENCIES) 
+	@rm -f colormap-remap$(EXEEXT)
+	$(LINK) $(colormap_remap_LDFLAGS) $(colormap_remap_OBJECTS) $(colormap_remap_LDADD) $(LIBS)
 colortoalpha$(EXEEXT): $(colortoalpha_OBJECTS) $(colortoalpha_DEPENDENCIES) 
 	@rm -f colortoalpha$(EXEEXT)
 	$(LINK) $(colortoalpha_LDFLAGS) $(colortoalpha_OBJECTS) $(colortoalpha_LDADD) $(LIBS)
@@ -3898,6 +3881,9 @@ deinterlace$(EXEEXT): $(deinterlace_OBJECTS) $(deinterlace_DEPENDENCIES)
 depthmerge$(EXEEXT): $(depthmerge_OBJECTS) $(depthmerge_DEPENDENCIES) 
 	@rm -f depthmerge$(EXEEXT)
 	$(LINK) $(depthmerge_LDFLAGS) $(depthmerge_OBJECTS) $(depthmerge_LDADD) $(LIBS)
+desktop-link$(EXEEXT): $(desktop_link_OBJECTS) $(desktop_link_DEPENDENCIES) 
+	@rm -f desktop-link$(EXEEXT)
+	$(LINK) $(desktop_link_LDFLAGS) $(desktop_link_OBJECTS) $(desktop_link_LDADD) $(LIBS)
 despeckle$(EXEEXT): $(despeckle_OBJECTS) $(despeckle_DEPENDENCIES) 
 	@rm -f despeckle$(EXEEXT)
 	$(LINK) $(despeckle_LDFLAGS) $(despeckle_OBJECTS) $(despeckle_LDADD) $(LIBS)
@@ -3967,9 +3953,6 @@ glasstile$(EXEEXT): $(glasstile_OBJECTS) $(glasstile_DEPENDENCIES)
 glob$(EXEEXT): $(glob_OBJECTS) $(glob_DEPENDENCIES) 
 	@rm -f glob$(EXEEXT)
 	$(LINK) $(glob_LDFLAGS) $(glob_OBJECTS) $(glob_LDADD) $(LIBS)
-gnomeprint$(EXEEXT): $(gnomeprint_OBJECTS) $(gnomeprint_DEPENDENCIES) 
-	@rm -f gnomeprint$(EXEEXT)
-	$(LINK) $(gnomeprint_LDFLAGS) $(gnomeprint_OBJECTS) $(gnomeprint_LDADD) $(LIBS)
 gqbist$(EXEEXT): $(gqbist_OBJECTS) $(gqbist_DEPENDENCIES) 
 	@rm -f gqbist$(EXEEXT)
 	$(LINK) $(gqbist_LDFLAGS) $(gqbist_OBJECTS) $(gqbist_LDADD) $(LIBS)
@@ -4216,9 +4199,6 @@ whirlpinch$(EXEEXT): $(whirlpinch_OBJECTS) $(whirlpinch_DEPENDENCIES)
 wind$(EXEEXT): $(wind_OBJECTS) $(wind_DEPENDENCIES) 
 	@rm -f wind$(EXEEXT)
 	$(LINK) $(wind_LDFLAGS) $(wind_OBJECTS) $(wind_LDADD) $(LIBS)
-winprint$(EXEEXT): $(winprint_OBJECTS) $(winprint_DEPENDENCIES) 
-	@rm -f winprint$(EXEEXT)
-	$(LINK) $(winprint_LDFLAGS) $(winprint_OBJECTS) $(winprint_LDADD) $(LIBS)
 wmf$(EXEEXT): $(wmf_OBJECTS) $(wmf_DEPENDENCIES) 
 	@rm -f wmf$(EXEEXT)
 	$(LINK) $(wmf_LDFLAGS) $(wmf_OBJECTS) $(wmf_LDADD) $(LIBS)
@@ -4262,6 +4242,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/checkerboard.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/color_enhance.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colorify.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colormap-remap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colortoalpha.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/compose.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/compressor.Po@am__quote@
@@ -4272,6 +4253,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/decompose.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/deinterlace.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/depthmerge.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/desktop-link.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/despeckle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/destripe.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dicom.Po@am__quote@
@@ -4295,7 +4277,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gih.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glasstile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glob.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gnomeprint-gnomeprint.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gqbist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gradmap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/grid.Po@am__quote@
@@ -4378,7 +4359,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/webbrowser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/whirlpinch.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wind.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/winprint.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wmf-wmf.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xbm.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xpm.Po@am__quote@
@@ -4405,20 +4385,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
-
-gnomeprint-gnomeprint.o: gnomeprint.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gnomeprint_CFLAGS) $(CFLAGS) -MT gnomeprint-gnomeprint.o -MD -MP -MF "$(DEPDIR)/gnomeprint-gnomeprint.Tpo" -c -o gnomeprint-gnomeprint.o `test -f 'gnomeprint.c' || echo '$(srcdir)/'`gnomeprint.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gnomeprint-gnomeprint.Tpo" "$(DEPDIR)/gnomeprint-gnomeprint.Po"; else rm -f "$(DEPDIR)/gnomeprint-gnomeprint.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='gnomeprint.c' object='gnomeprint-gnomeprint.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gnomeprint_CFLAGS) $(CFLAGS) -c -o gnomeprint-gnomeprint.o `test -f 'gnomeprint.c' || echo '$(srcdir)/'`gnomeprint.c
-
-gnomeprint-gnomeprint.obj: gnomeprint.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gnomeprint_CFLAGS) $(CFLAGS) -MT gnomeprint-gnomeprint.obj -MD -MP -MF "$(DEPDIR)/gnomeprint-gnomeprint.Tpo" -c -o gnomeprint-gnomeprint.obj `if test -f 'gnomeprint.c'; then $(CYGPATH_W) 'gnomeprint.c'; else $(CYGPATH_W) '$(srcdir)/gnomeprint.c'; fi`; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gnomeprint-gnomeprint.Tpo" "$(DEPDIR)/gnomeprint-gnomeprint.Po"; else rm -f "$(DEPDIR)/gnomeprint-gnomeprint.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='gnomeprint.c' object='gnomeprint-gnomeprint.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gnomeprint_CFLAGS) $(CFLAGS) -c -o gnomeprint-gnomeprint.obj `if test -f 'gnomeprint.c'; then $(CYGPATH_W) 'gnomeprint.c'; else $(CYGPATH_W) '$(srcdir)/gnomeprint.c'; fi`
 
 png-png.o: png.c
 @am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(png_CFLAGS) $(CFLAGS) -MT png-png.o -MD -MP -MF "$(DEPDIR)/png-png.Tpo" -c -o png-png.o `test -f 'png.c' || echo '$(srcdir)/'`png.c; \

@@ -60,6 +60,8 @@
     <keyword type="function" name="gimp_param_spec_rgb ()" link="libgimpcolor-GimpRGB.html#gimp-param-spec-rgb" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_param_spec_rgb_has_alpha ()" link="libgimpcolor-GimpRGB.html#gimp-param-spec-rgb-has-alpha"/>
     <keyword type="macro" name="GIMP_VALUE_HOLDS_RGB()" link="libgimpcolor-GimpRGB.html#GIMP-VALUE-HOLDS-RGB:CAPS"/>
+    <keyword type="function" name="gimp_value_get_rgb ()" link="libgimpcolor-GimpRGB.html#gimp-value-get-rgb"/>
+    <keyword type="function" name="gimp_value_set_rgb ()" link="libgimpcolor-GimpRGB.html#gimp-value-set-rgb"/>
     <keyword type="struct" name="GimpHSV" link="libgimpcolor-GimpHSV.html#GimpHSV"/>
     <keyword type="function" name="gimp_hsv_set ()" link="libgimpcolor-GimpHSV.html#gimp-hsv-set"/>
     <keyword type="function" name="gimp_hsv_clamp ()" link="libgimpcolor-GimpHSV.html#gimp-hsv-clamp"/>

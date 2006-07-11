@@ -95,8 +95,13 @@ gimp_perspective_tool_init (GimpPerspectiveTool *perspective_tool)
   gimp_tool_control_set_tool_cursor (tool->control,
                                      GIMP_TOOL_CURSOR_PERSPECTIVE);
 
+  tr_tool->undo_desc     = Q_("command|Perspective");
   tr_tool->shell_desc    = _("Perspective Transform Information");
   tr_tool->progress_text = _("Perspective");
+
+  tr_tool->use_grid      = TRUE;
+  tr_tool->use_handles   = TRUE;
+  tr_tool->use_center    = TRUE;
 }
 
 static void
@@ -177,19 +182,19 @@ gimp_perspective_tool_motion (GimpTransformTool *transform_tool,
 
   switch (transform_tool->function)
     {
-    case TRANSFORM_HANDLE_1:
+    case TRANSFORM_HANDLE_NW:
       transform_tool->trans_info[X0] += diff_x;
       transform_tool->trans_info[Y0] += diff_y;
       break;
-    case TRANSFORM_HANDLE_2:
+    case TRANSFORM_HANDLE_NE:
       transform_tool->trans_info[X1] += diff_x;
       transform_tool->trans_info[Y1] += diff_y;
       break;
-    case TRANSFORM_HANDLE_3:
+    case TRANSFORM_HANDLE_SW:
       transform_tool->trans_info[X2] += diff_x;
       transform_tool->trans_info[Y2] += diff_y;
       break;
-    case TRANSFORM_HANDLE_4:
+    case TRANSFORM_HANDLE_SE:
       transform_tool->trans_info[X3] += diff_x;
       transform_tool->trans_info[Y3] += diff_y;
       break;

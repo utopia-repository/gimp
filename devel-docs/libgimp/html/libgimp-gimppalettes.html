@@ -73,9 +73,9 @@ Operations related to palettes.
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2649494"></a><h3>
+<a name="id2653058"></a><h3>
 <a name="gimp-palettes-refresh"></a>gimp_palettes_refresh ()</h3>
-<a class="indexterm" name="id2649506"></a><pre class="programlisting">gboolean    gimp_palettes_refresh           (void);</pre>
+<a class="indexterm" name="id2653069"></a><pre class="programlisting">gboolean    gimp_palettes_refresh           (void);</pre>
 <p>
 Refreshes current palettes. This function always succeeds.
 </p>
@@ -97,9 +97,9 @@ palette path and updates the palette dialogs accordingly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628653"></a><h3>
+<a name="id2653112"></a><h3>
 <a name="gimp-palettes-get-list"></a>gimp_palettes_get_list ()</h3>
-<a class="indexterm" name="id2628665"></a><pre class="programlisting">gchar**     gimp_palettes_get_list          (const gchar *filter,
+<a class="indexterm" name="id2653123"></a><pre class="programlisting">gchar**     gimp_palettes_get_list          (const gchar *filter,
                                              gint *num_palettes);</pre>
 <p>
 Retrieves a list of all of the available palettes
@@ -107,7 +107,7 @@ Retrieves a list of all of the available palettes
 <p>
 This procedure returns a complete listing of available palettes.
 Each name returned can be used as input to the command
-'gimp-context-set-palette'.</p>
+<a href="libgimp-gimpcontext.html#gimp-context-set-palette"><code class="function">gimp_context_set_palette()</code></a>.</p>
 <p>
 
 </p>
@@ -137,9 +137,9 @@ Each name returned can be used as input to the command
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628752"></a><h3>
+<a name="id2629566"></a><h3>
 <a name="gimp-palettes-get-palette"></a>gimp_palettes_get_palette ()</h3>
-<a class="indexterm" name="id2628765"></a><pre class="programlisting">gchar*      gimp_palettes_get_palette       (gint *num_colors);</pre>
+<a class="indexterm" name="id2629580"></a><pre class="programlisting">gchar*      gimp_palettes_get_palette       (gint *num_colors);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_palettes_get_palette</code> is deprecated and should not be used in newly-written code.</p>
@@ -170,9 +170,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646507"></a><h3>
+<a name="id2629659"></a><h3>
 <a name="gimp-palettes-set-palette"></a>gimp_palettes_set_palette ()</h3>
-<a class="indexterm" name="id2646521"></a><pre class="programlisting">gboolean    gimp_palettes_set_palette       (const gchar *name);</pre>
+<a class="indexterm" name="id2629672"></a><pre class="programlisting">gboolean    gimp_palettes_set_palette       (const gchar *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_palettes_set_palette</code> is deprecated and should not be used in newly-written code.</p>
@@ -202,9 +202,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646600"></a><h3>
+<a name="id2629751"></a><h3>
 <a name="gimp-palettes-get-palette-entry"></a>gimp_palettes_get_palette_entry ()</h3>
-<a class="indexterm" name="id2631618"></a><pre class="programlisting">gchar*      gimp_palettes_get_palette_entry (const gchar *name,
+<a class="indexterm" name="id2629765"></a><pre class="programlisting">gchar*      gimp_palettes_get_palette_entry (const gchar *name,
                                              gint entry_num,
                                              gint *num_colors,
                                              <a

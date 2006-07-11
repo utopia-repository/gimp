@@ -70,12 +70,16 @@ A widget for selecting gradients.
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2671140"></a><h3>
+<a name="id2676724"></a><h3>
 <a name="gimp-gradient-select-widget-new"></a>gimp_gradient_select_widget_new ()</h3>
-<a class="indexterm" name="id2671151"></a><pre class="programlisting">GtkWidget*  gimp_gradient_select_widget_new (const gchar *title,
+<a class="indexterm" name="id2676737"></a><a class="indexterm" name="id2676745"></a><pre class="programlisting">GtkWidget*  gimp_gradient_select_widget_new (const gchar *title,
                                              const gchar *gradient_name,
                                              <a href="libgimp-gimpgradientselect.html#GimpRunGradientCallback">GimpRunGradientCallback</a> callback,
                                              gpointer data);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_gradient_select_widget_new</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
 Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
 a gradient.  This widget is suitable for placement in a table in a
@@ -95,7 +99,7 @@ plug-in dialog.</p>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>gradient_name</code></em>&#160;:</span></td>
-<td> Initial gradient name or <code class="literal">NULL</code> to use current selection.
+<td> Initial gradient name.
 </td>
 </tr>
 <tr>
@@ -107,25 +111,31 @@ plug-in dialog.</p>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
-<td>          A pointer to arbitary data to be used in the call to
-                <em class="parameter"><code>callback</code></em>.
+<td>          A pointer to arbitary data to be used in the call to <em class="parameter"><code>callback</code></em>.
 </td>
 </tr>
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> A <span class="type">GtkWidget</span> that you can use in your UI.
+
 </td>
 </tr>
 </tbody>
 </table></div>
+<p>Since  GIMP 2.2
+</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671314"></a><h3>
+<a name="id2682282"></a><h3>
 <a name="gimp-gradient-select-widget-close"></a>gimp_gradient_select_widget_close ()</h3>
-<a class="indexterm" name="id2671325"></a><pre class="programlisting">void        gimp_gradient_select_widget_close
+<a class="indexterm" name="id2682296"></a><pre class="programlisting">void        gimp_gradient_select_widget_close
                                             (GtkWidget *widget);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_gradient_select_widget_close</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
 Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p>
 <p>
@@ -143,13 +153,17 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2668863"></a><h3>
+<a name="id2682363"></a><h3>
 <a name="gimp-gradient-select-widget-set"></a>gimp_gradient_select_widget_set ()</h3>
-<a class="indexterm" name="id2668875"></a><pre class="programlisting">void        gimp_gradient_select_widget_set (GtkWidget *widget,
+<a class="indexterm" name="id2682377"></a><pre class="programlisting">void        gimp_gradient_select_widget_set (GtkWidget *widget,
                                              const gchar *gradient_name);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_gradient_select_widget_set</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
-Sets the current gradient for the gradient select widget.  Calls
-the callback function if one was supplied in the call to
+Sets the current gradient for the gradient select widget.  Calls the
+callback function if one was supplied in the call to
 <a href="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-new"><code class="function">gimp_gradient_select_widget_new()</code></a>.</p>
 <p>
 

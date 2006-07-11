@@ -146,32 +146,62 @@ image_new_from_image_cmd_callback (GtkAction *action,
     }
 }
 
+static void
+image_convert_dialog_unset (GtkWidget *widget)
+{
+  g_object_set_data (G_OBJECT (widget), "image-convert-dialog", NULL);
+}
+
 void
 image_convert_cmd_callback (GtkAction *action,
-                            gint       value,
+                            GtkAction *current,
                             gpointer   data)
 {
-  GimpImage   *image;
-  GtkWidget   *widget;
-  GimpDisplay *display;
+  GimpImage         *image;
+  GtkWidget         *widget;
+  GimpDisplay       *display;
+  GimpImageBaseType  value;
   return_if_no_image (image, data);
   return_if_no_widget (widget, data);
   return_if_no_display (display, data);
 
-  switch ((GimpImageBaseType) value)
+  value = gtk_radio_action_get_current_value (GTK_RADIO_ACTION (action));
+
+  if (value == gimp_image_base_type (image))
+    return;
+
+  switch (value)
     {
     case GIMP_RGB:
     case GIMP_GRAY:
-      gimp_image_convert (image, (GimpImageBaseType) value,
-                          0, 0, FALSE, FALSE, 0, NULL, NULL);
-      gimp_image_flush (image);
+      gimp_image_convert (image, value, 0, 0, FALSE, FALSE, 0, NULL, NULL);
       break;
 
     case GIMP_INDEXED:
-      gtk_widget_show (convert_dialog_new (image, widget,
-                                           GIMP_PROGRESS (display)));
+      {
+        GtkWidget *dialog;
+
+        dialog = g_object_get_data (G_OBJECT (widget), "image-convert-dialog");
+
+        if (! dialog)
+          {
+            dialog = convert_dialog_new (image, widget,
+                                         GIMP_PROGRESS (display));
+
+            g_object_set_data (G_OBJECT (widget),
+                               "image-convert-dialog", dialog);
+
+            g_signal_connect_object (dialog, "destroy",
+                                     G_CALLBACK (image_convert_dialog_unset),
+                                     widget, G_CONNECT_SWAPPED);
+          }
+
+        gtk_window_present (GTK_WINDOW (dialog));
+      }
       break;
     }
+
+  gimp_image_flush (image);
 }
 
 void
@@ -424,7 +454,7 @@ image_configure_grid_cmd_callback (GtkAction *action,
                                           TRUE);
 
       g_object_add_weak_pointer (G_OBJECT (shell->grid_dialog),
-                                 (gpointer *) &shell->grid_dialog);
+                                 (gpointer) &shell->grid_dialog);
     }
 
   gtk_window_present (GTK_WINDOW (shell->grid_dialog));

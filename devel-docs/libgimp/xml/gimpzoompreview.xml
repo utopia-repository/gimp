@@ -132,10 +132,10 @@ This function also allow to get the current width, height and bpp of the
          will be put.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>bpp</parameter>&nbsp;:</term>
-<listitem><simpara> a pointer to an int where the bpp of the current drawable the zoom
-      widget is using will be put.
+<listitem><simpara> return location for the number of bytes per pixel
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> newly allocated data that should be released using <link linkend="g-free"><function>g_free()</function></link>
+              when it is not any longer needed
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4

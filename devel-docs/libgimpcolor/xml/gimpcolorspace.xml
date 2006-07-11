@@ -67,7 +67,7 @@
 <link linkend="void">void</link>        <link linkend="gimp-hsl-to-rgb-int">gimp_hsl_to_rgb_int</link>             (<link linkend="gint">gint</link> *hue,
                                              <link linkend="gint">gint</link> *saturation,
                                              <link linkend="gint">gint</link> *lightness);
-<link linkend="void">void</link>        <link linkend="gimp-rgb-to-hsv4">gimp_rgb_to_hsv4</link>                (<link linkend="guchar">guchar</link> *rgb,
+<link linkend="void">void</link>        <link linkend="gimp-rgb-to-hsv4">gimp_rgb_to_hsv4</link>                (const <link linkend="guchar">guchar</link> *rgb,
                                              <link linkend="gdouble">gdouble</link> *hue,
                                              <link linkend="gdouble">gdouble</link> *saturation,
                                              <link linkend="gdouble">gdouble</link> *value);
@@ -453,7 +453,7 @@ corresponding, with the returned values all in the range [0, 255].</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-to-hsv4" role="function"/>gimp_rgb_to_hsv4 ()</title>
-<indexterm><primary>gimp_rgb_to_hsv4</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_to_hsv4                (<link linkend="guchar">guchar</link> *rgb,
+<indexterm><primary>gimp_rgb_to_hsv4</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_to_hsv4                (const <link linkend="guchar">guchar</link> *rgb,
                                              <link linkend="gdouble">gdouble</link> *hue,
                                              <link linkend="gdouble">gdouble</link> *saturation,
                                              <link linkend="gdouble">gdouble</link> *value);</programlisting>

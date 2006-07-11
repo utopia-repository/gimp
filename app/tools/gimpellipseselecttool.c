@@ -37,23 +37,24 @@
 
 #include "gimprectangletool.h"
 #include "gimpellipseselecttool.h"
-#include "gimpnewrectselectoptions.h"
+#include "gimprectangleselectoptions.h"
 #include "gimptoolcontrol.h"
 
 #include "gimp-intl.h"
 
 
-static void   gimp_ellipse_select_tool_draw        (GimpDrawTool       *draw_tool);
+static void   gimp_ellipse_select_tool_draw   (GimpDrawTool       *draw_tool);
 
-static void   gimp_ellipse_select_tool_rect_select (GimpNewRectSelectTool *rect_tool,
-                                                    gint                   x,
-                                                    gint                   y,
-                                                    gint                   w,
-                                                    gint                   h);
+static void   gimp_ellipse_select_tool_select (GimpRectSelectTool *rect_tool,
+                                               SelectOps           operation,
+                                               gint                x,
+                                               gint                y,
+                                               gint                w,
+                                               gint                h);
 
 
 G_DEFINE_TYPE (GimpEllipseSelectTool, gimp_ellipse_select_tool,
-               GIMP_TYPE_NEW_RECT_SELECT_TOOL)
+               GIMP_TYPE_RECT_SELECT_TOOL)
 
 #define parent_class gimp_ellipse_select_tool_parent_class
 
@@ -65,8 +66,8 @@ gimp_ellipse_select_tool_register (GimpToolRegisterCallback  callback,
                                    gpointer                  data)
 {
   (* callback) (GIMP_TYPE_ELLIPSE_SELECT_TOOL,
-                GIMP_TYPE_NEW_RECT_SELECT_OPTIONS,
-                gimp_new_rect_select_options_gui,
+                GIMP_TYPE_RECT_SELECT_OPTIONS,
+                gimp_rect_select_options_gui,
                 0,
                 "gimp-ellipse-select-tool",
                 _("Ellipse Select"),
@@ -83,15 +84,15 @@ gimp_ellipse_select_tool_register (GimpToolRegisterCallback  callback,
 static void
 gimp_ellipse_select_tool_class_init (GimpEllipseSelectToolClass *klass)
 {
-  GimpDrawToolClass          *draw_tool_class;
-  GimpNewRectSelectToolClass *rect_tool_class;
+  GimpDrawToolClass       *draw_tool_class;
+  GimpRectSelectToolClass *rect_tool_class;
 
   draw_tool_class = GIMP_DRAW_TOOL_CLASS (klass);
-  rect_tool_class = GIMP_NEW_RECT_SELECT_TOOL_CLASS (klass);
+  rect_tool_class = GIMP_RECT_SELECT_TOOL_CLASS (klass);
 
-  draw_tool_class->draw        = gimp_ellipse_select_tool_draw;
+  draw_tool_class->draw   = gimp_ellipse_select_tool_draw;
 
-  rect_tool_class->rect_select = gimp_ellipse_select_tool_rect_select;
+  rect_tool_class->select = gimp_ellipse_select_tool_select;
 }
 
 static void
@@ -108,7 +109,7 @@ gimp_ellipse_select_tool_init (GimpEllipseSelectTool *ellipse_select)
 static void
 gimp_ellipse_select_tool_draw (GimpDrawTool *draw_tool)
 {
-  GimpNewRectSelectTool *rect_sel = GIMP_NEW_RECT_SELECT_TOOL (draw_tool);
+  GimpRectSelectTool *rect_sel = GIMP_RECT_SELECT_TOOL (draw_tool);
   gint x1, y1;
   gint x2, y2;
 
@@ -125,14 +126,17 @@ gimp_ellipse_select_tool_draw (GimpDrawTool *draw_tool)
                            x2 - x1, y2 - y1,
                            0, 23040,
                            FALSE);
+
+  gimp_rectangle_tool_draw (draw_tool);
 }
 
 static void
-gimp_ellipse_select_tool_rect_select (GimpNewRectSelectTool *rect_tool,
-                                      gint                   x,
-                                      gint                   y,
-                                      gint                   w,
-                                      gint                   h)
+gimp_ellipse_select_tool_select (GimpRectSelectTool *rect_tool,
+                                 SelectOps           operation,
+                                 gint                x,
+                                 gint                y,
+                                 gint                w,
+                                 gint                h)
 {
   GimpTool             *tool;
   GimpSelectionOptions *options;
@@ -142,7 +146,7 @@ gimp_ellipse_select_tool_rect_select (GimpNewRectSelectTool *rect_tool,
 
   gimp_channel_select_ellipse (gimp_image_get_mask (tool->display->image),
                                x, y, w, h,
-                               options->operation,
+                               operation,
                                options->antialias,
                                options->feather,
                                options->feather_radius,

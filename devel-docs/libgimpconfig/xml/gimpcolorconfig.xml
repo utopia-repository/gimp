@@ -102,7 +102,7 @@ GimpColorConfig implements
 {
   GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,            /*&lt; desc="Perceptual"            &gt;*/
   GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC, /*&lt; desc="Relative colorimetric" &gt;*/
-  GIMP_COLOR_RENDERING_INTENT_SATURATION,            /*&lt; desc="Saturation"            &gt;*/
+  GIMP_COLOR_RENDERING_INTENT_SATURATION,            /*&lt; desc="intent|Saturation"            &gt;*/
   GIMP_COLOR_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC  /*&lt; desc="Absolute colorimetric" &gt;*/
 } GimpColorRenderingIntent;
 </programlisting>

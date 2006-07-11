@@ -28,6 +28,7 @@
 
 #include "gimp.h"
 #include "gimpcontext.h"
+#include "gimpguide.h"
 #include "gimpimage.h"
 #include "gimpimage-crop.h"
 #include "gimpimage-guides.h"
@@ -121,7 +122,7 @@ gimp_image_crop (GimpImage   *image,
 
       if (crop_layers)
         gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_CROP,
-                                     _("Crop Image"));
+                                     Q_("command|Crop Image"));
       else
         gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_RESIZE,
                                      _("Resize Image"));
@@ -202,22 +203,24 @@ gimp_image_crop (GimpImage   *image,
         {
           GimpGuide *guide        = list->data;
           gboolean   remove_guide = FALSE;
-          gint       new_position = guide->position;
+          gint       position     = gimp_guide_get_position (guide);
 
           list = g_list_next (list);
 
-          switch (guide->orientation)
+          switch (gimp_guide_get_orientation (guide))
             {
             case GIMP_ORIENTATION_HORIZONTAL:
-              new_position -= y1;
-              if ((guide->position < y1) || (guide->position > y2))
+              if ((position < y1) || (position > y2))
                 remove_guide = TRUE;
+              else
+                position -= y1;
               break;
 
             case GIMP_ORIENTATION_VERTICAL:
-              new_position -= x1;
-              if ((guide->position < x1) || (guide->position > x2))
+              if ((position < x1) || (position > x2))
                 remove_guide = TRUE;
+              else
+                position -= x1;
               break;
 
             default:
@@ -226,8 +229,8 @@ gimp_image_crop (GimpImage   *image,
 
           if (remove_guide)
             gimp_image_remove_guide (image, guide, TRUE);
-          else if (new_position != guide->position)
-            gimp_image_move_guide (image, guide, new_position, TRUE);
+          else if (position != gimp_guide_get_position (guide))
+            gimp_image_move_guide (image, guide, position, TRUE);
         }
 
       /*  Reposition or remove sample points  */

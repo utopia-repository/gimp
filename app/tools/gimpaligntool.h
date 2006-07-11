@@ -30,30 +30,31 @@
 #define GIMP_IS_ALIGN_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_ALIGN_TOOL))
 #define GIMP_ALIGN_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ALIGN_TOOL, GimpAlignToolClass))
 
-#define ALIGN_TOOL_NUM_BUTTONS 6
+#define ALIGN_TOOL_NUM_BUTTONS 12
 
 typedef struct _GimpAlignTool      GimpAlignTool;
 typedef struct _GimpAlignToolClass GimpAlignToolClass;
 
 struct _GimpAlignTool
 {
-  GimpDrawTool         parent_instance;
+  GimpDrawTool           parent_instance;
 
-  GtkWidget           *controls;
-  GtkWidget           *button[ALIGN_TOOL_NUM_BUTTONS];
+  GtkWidget             *controls;
+  GtkWidget             *button[ALIGN_TOOL_NUM_BUTTONS];
 
-  GList               *selected_items;
+  GList                 *selected_objects;
 
-  GimpAlignmentType    horz_align_type;
-  GimpAlignmentType    vert_align_type;
+  GimpAlignmentType      align_type;
+  GimpAlignReferenceType align_reference_type;
+  gdouble                horz_offset;
+  gdouble                vert_offset;
 
-  gdouble              horz_offset;
-  gdouble              vert_offset;
+  GtkObject             *horz_offset_adjustment;
+  GtkObject             *vert_offset_adjustment;
 
-  GtkObject           *horz_offset_adjustment;
-  GtkObject           *vert_offset_adjustment;
+  gint                   x0, y0, x1, y1;   /* rubber-band rectangle */
 
-  gint                 x0, y0, x1, y1;   /* rubber-band rectangle */
+  gboolean               set_reference;
 };
 
 struct _GimpAlignToolClass

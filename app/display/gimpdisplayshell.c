@@ -36,6 +36,7 @@
 #include "core/gimp.h"
 #include "core/gimpchannel.h"
 #include "core/gimpcontext.h"
+#include "core/gimpguide.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-guides.h"
 #include "core/gimpimage-sample-points.h"
@@ -62,6 +63,7 @@
 #include "gimpdisplayshell-draw.h"
 #include "gimpdisplayshell-filter.h"
 #include "gimpdisplayshell-handlers.h"
+#include "gimpdisplayshell-progress.h"
 #include "gimpdisplayshell-scale.h"
 #include "gimpdisplayshell-selection.h"
 #include "gimpdisplayshell-title.h"
@@ -120,7 +122,9 @@ static void      gimp_display_shell_hide_tooltip   (GimpUIManager    *manager,
                                                     GimpDisplayShell *shell);
 
 
-G_DEFINE_TYPE (GimpDisplayShell, gimp_display_shell, GTK_TYPE_WINDOW)
+G_DEFINE_TYPE_WITH_CODE (GimpDisplayShell, gimp_display_shell, GTK_TYPE_WINDOW,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_PROGRESS,
+                                                gimp_display_shell_progress_iface_init))
 
 #define parent_class gimp_display_shell_parent_class
 
@@ -1282,22 +1286,23 @@ void
 gimp_display_shell_expose_guide (GimpDisplayShell *shell,
                                  GimpGuide        *guide)
 {
-  gint x;
-  gint y;
+  gint position;
+  gint x, y;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-  g_return_if_fail (guide != NULL);
+  g_return_if_fail (GIMP_IS_GUIDE (guide));
 
-  if (guide->position < 0)
+  position = gimp_guide_get_position (guide);
+
+  if (position < 0)
     return;
 
   gimp_display_shell_transform_xy (shell,
-                                   guide->position,
-                                   guide->position,
+                                   position, position,
                                    &x, &y,
                                    FALSE);
 
-  switch (guide->orientation)
+  switch (gimp_guide_get_orientation (guide))
     {
     case GIMP_ORIENTATION_HORIZONTAL:
       gimp_display_shell_expose_area (shell, 0, y, shell->disp_width, 1);

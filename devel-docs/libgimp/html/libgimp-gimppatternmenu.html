@@ -70,12 +70,16 @@ A widget for selecting patterns.
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2672218"></a><h3>
+<a name="id2676871"></a><h3>
 <a name="gimp-pattern-select-widget-new"></a>gimp_pattern_select_widget_new ()</h3>
-<a class="indexterm" name="id2672229"></a><pre class="programlisting">GtkWidget*  gimp_pattern_select_widget_new  (const gchar *title,
+<a class="indexterm" name="id2676885"></a><pre class="programlisting">GtkWidget*  gimp_pattern_select_widget_new  (const gchar *title,
                                              const gchar *pattern_name,
                                              <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
                                              gpointer data);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_pattern_select_widget_new</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
 Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
 a pattern. This widget is suitable for placement in a table in a
@@ -121,10 +125,14 @@ plug-in dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2672391"></a><h3>
+<a name="id2677219"></a><h3>
 <a name="gimp-pattern-select-widget-close"></a>gimp_pattern_select_widget_close ()</h3>
-<a class="indexterm" name="id2672402"></a><pre class="programlisting">void        gimp_pattern_select_widget_close
+<a class="indexterm" name="id2677232"></a><pre class="programlisting">void        gimp_pattern_select_widget_close
                                             (GtkWidget *widget);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_pattern_select_widget_close</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
 Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p>
 <p>
@@ -142,10 +150,14 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2667316"></a><h3>
+<a name="id2683426"></a><h3>
 <a name="gimp-pattern-select-widget-set"></a>gimp_pattern_select_widget_set ()</h3>
-<a class="indexterm" name="id2667328"></a><pre class="programlisting">void        gimp_pattern_select_widget_set  (GtkWidget *widget,
+<a class="indexterm" name="id2683440"></a><pre class="programlisting">void        gimp_pattern_select_widget_set  (GtkWidget *widget,
                                              const gchar *pattern_name);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_pattern_select_widget_set</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
 Sets the current pattern for the pattern select widget.  Calls the
 callback function if one was supplied in the call to

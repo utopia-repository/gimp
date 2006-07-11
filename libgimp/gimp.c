@@ -21,8 +21,7 @@
 
 #include "config.h"
 
-#define _POSIX_SOURCE  /* all the sigaction stuff is POSIX */
-#define _SVID_SOURCE   /* except for SA_RESTART, it seems  */
+#define _GNU_SOURCE  /* for the sigaction stuff */
 
 #include <errno.h>
 #include <stdarg.h>
@@ -799,7 +798,7 @@ gimp_run_procedure (const gchar *name,
           params[i].data.d_int16 = (gint16) va_arg (args, gint);
           break;
         case GIMP_PDB_INT8:
-          params[i].data.d_int8 = (gint8) va_arg (args, gint);
+          params[i].data.d_int8 = (guint8) va_arg (args, gint);
           break;
         case GIMP_PDB_FLOAT:
           params[i].data.d_float = (gdouble) va_arg (args, gdouble);
@@ -814,7 +813,7 @@ gimp_run_procedure (const gchar *name,
           params[i].data.d_int16array = va_arg (args, gint16 *);
           break;
         case GIMP_PDB_INT8ARRAY:
-          params[i].data.d_int8array = va_arg (args, gint8 *);
+          params[i].data.d_int8array = va_arg (args, guint8 *);
           break;
         case GIMP_PDB_FLOATARRAY:
           params[i].data.d_floatarray = va_arg (args, gdouble *);
@@ -1064,7 +1063,7 @@ gimp_shm_ID (void)
  *
  * Return value: the shared memory address
  **/
-guchar *
+const guchar *
 gimp_shm_addr (void)
 {
   return _shm_addr;
@@ -1421,7 +1420,7 @@ gimp_close (void)
 #if defined(USE_SYSV_SHM)
 
   if ((_shm_ID != -1) && _shm_addr)
-    shmdt ((char*) _shm_addr);
+    shmdt ((char *) _shm_addr);
 
 #elif defined(USE_WIN32_SHM)
 
@@ -1455,7 +1454,7 @@ gimp_message_func (const gchar    *log_domain,
                    const gchar    *message,
                    gpointer        data)
 {
-  gimp_message ((gchar *) message);
+  gimp_message (message);
 }
 
 #ifndef G_OS_WIN32

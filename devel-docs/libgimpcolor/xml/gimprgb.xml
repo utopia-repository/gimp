@@ -113,6 +113,10 @@ enum        <link linkend="GimpRGBCompositeMode">GimpRGBCompositeMode</link>;
                                              <link linkend="GParamFlags">GParamFlags</link> flags);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-param-spec-rgb-has-alpha">gimp_param_spec_rgb_has_alpha</link>   (<link linkend="GParamSpec">GParamSpec</link> *pspec);
 #define     <link linkend="GIMP-VALUE-HOLDS-RGB:CAPS">GIMP_VALUE_HOLDS_RGB</link>            (value)
+<link linkend="void">void</link>        <link linkend="gimp-value-get-rgb">gimp_value_get_rgb</link>              (const <link linkend="GValue">GValue</link> *value,
+                                             <link linkend="GimpRGB">GimpRGB</link> *rgb);
+<link linkend="void">void</link>        <link linkend="gimp-value-set-rgb">gimp_value_set_rgb</link>              (<link linkend="GValue">GValue</link> *value,
+                                             const <link linkend="GimpRGB">GimpRGB</link> *rgb);
 
 </synopsis>
 </refsynopsisdiv>
@@ -906,6 +910,38 @@ coefficients taken from the NTSC analog television standard.
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-value-get-rgb" role="function"/>gimp_value_get_rgb ()</title>
+<indexterm><primary>gimp_value_get_rgb</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_value_get_rgb              (const <link linkend="GValue">GValue</link> *value,
+                                             <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>rgb</parameter>&nbsp;:</term>
+<listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-value-set-rgb" role="function"/>gimp_value_set_rgb ()</title>
+<indexterm><primary>gimp_value_set_rgb</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_value_set_rgb              (<link linkend="GValue">GValue</link> *value,
+                                             const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>rgb</parameter>&nbsp;:</term>
 <listitem><simpara>
 
 

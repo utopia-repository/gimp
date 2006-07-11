@@ -1,3 +1,14 @@
+gimp (2.3.10-1) experimental; urgency=low
+
+  * New upstream release
+  * Switch build system to cdbs + simple-patchsys
+  * Include stuff in /usr/share/icons in the gimp package
+    (Closes: #372758)
+  * Apply patch to fix buffer overflow in XCF handling code, CVE-2006-3404
+    (Closes: #377049)
+
+ -- Ari Pollak <ari@debian.org>  Tue, 11 Jul 2006 16:41:06 -0400
+
 gimp (2.3.9-1) experimental; urgency=low
 
   * New upstream release

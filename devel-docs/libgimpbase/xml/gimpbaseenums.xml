@@ -216,7 +216,7 @@ Basic GIMP enumeration data types.
 <title><anchor id="GimpGradientType" role="enum"/>enum GimpGradientType</title>
 <indexterm><primary>GimpGradientType</primary></indexterm><programlisting>typedef enum
 {
-  GIMP_GRADIENT_LINEAR,                /*&lt; desc="Linear"            &gt;*/
+  GIMP_GRADIENT_LINEAR,                /*&lt; desc="gradient|Linear"   &gt;*/
   GIMP_GRADIENT_BILINEAR,              /*&lt; desc="Bi-linear"         &gt;*/
   GIMP_GRADIENT_RADIAL,                /*&lt; desc="Radial"            &gt;*/
   GIMP_GRADIENT_SQUARE,                /*&lt; desc="Square"            &gt;*/
@@ -289,10 +289,10 @@ Basic GIMP enumeration data types.
 <title><anchor id="GimpInterpolationType" role="enum"/>enum GimpInterpolationType</title>
 <indexterm><primary>GimpInterpolationType</primary></indexterm><programlisting>typedef enum
 {
-  GIMP_INTERPOLATION_NONE,   /*&lt; desc="None (Fastest)" &gt;*/
-  GIMP_INTERPOLATION_LINEAR, /*&lt; desc="Linear"         &gt;*/
-  GIMP_INTERPOLATION_CUBIC,  /*&lt; desc="Cubic"          &gt;*/
-  GIMP_INTERPOLATION_LANCZOS /*&lt; desc="Lanczos (Best)" &gt;*/
+  GIMP_INTERPOLATION_NONE,   /*&lt; desc="None (Fastest)"       &gt;*/
+  GIMP_INTERPOLATION_LINEAR, /*&lt; desc="interpolation|Linear" &gt;*/
+  GIMP_INTERPOLATION_CUBIC,  /*&lt; desc="Cubic"                &gt;*/
+  GIMP_INTERPOLATION_LANCZOS /*&lt; desc="Lanczos (Best)"       &gt;*/
 } GimpInterpolationType;
 </programlisting>
 <para>

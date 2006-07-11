@@ -3,6 +3,6 @@ usr/share/gimp/
 usr/share/locale/*/LC_MESSAGES/gimp??.mo
 usr/share/locale/*/LC_MESSAGES/gimp??-std-plug-ins.mo
 usr/share/locale/*/LC_MESSAGES/gimp??-script-fu.mo
-usr/share/man/man5/gimprc-?.?.5
+usr/share/locale/*/LC_MESSAGES/gimp??-tips.mo
 usr/share/man/man5/gimprc.5
-usr/share/pixmaps
+usr/share/man/man5/gimprc-?.?.5

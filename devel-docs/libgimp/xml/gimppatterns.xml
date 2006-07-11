@@ -80,7 +80,7 @@ Retrieve a complete listing of the available patterns.
 <para>
 This procedure returns a complete listing of available GIMP
 patterns. Each name returned can be used as input to the
-'gimp-context-set-pattern'.</para>
+<link linkend="gimp-context-set-pattern"><function>gimp_context_set_pattern()</function></link>.</para>
 <para>
 
 </para><variablelist role="params">

@@ -1,3 +1,1402 @@
+2006-07-05  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.3.10 development release.
+
+2006-07-05  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/gimp.def
+	* libgimp/gimpui.def: updated lists of exported symbols.
+
+2006-07-05  Sven Neumann  <sven@gimp.org>
+
+	* data/images/gimp-splash.png: new splash image contributed by
+	Philip Lafleur (bug #346096).
+
+2006-07-05  Sven Neumann  <sven@gimp.org>
+
+	* app/widgets/gimpthumbbox.c: ellipsize the filename label.
+
+2006-07-03  Michael Natterer  <mitch@gimp.org>
+
+	* app/gui/splash.[ch]: added "be_verbose" parameters and be
+	verbose about which splash image is actually loaded.
+
+	* app/gui/gui.c (gui_init): pass gimp->be_verbose to
+	splash_create().
+
+2006-06-30  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/screenshot.c (select_window_x11): don't leak X
+	resources.
+
+2006-06-30  Simon Budig  <simon@gimp.org>
+
+	* app/widgets/gimpstrokeeditor.c: unref the old StrokeOptions
+	when new ones get set as a property. Spotted by Henk Boom.
+
+2006-06-29  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* plug-ins/print/print.[ch]
+	* plug-ins/print/print-draw-page.[ch]
+	* plug-ins/print/print-page-layout.c
+	* plug-ins/print/print-settings.c: implement preview internally,
+	assorted other small changes.
+
+2006-06-29  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/screenshot.c: use macros in an attempt to make
+	the key grabbing code more readable.
+
+2006-06-29  Sven Neumann  <sven@gimp.org>
+
+	* app/display/Makefile.am
+	* app/display/gimpdisplayshell-progress.[ch]: new files,
+	implementing the GimpProgress interface by delegation to
+	GimpStatusbar.
+
+	* app/display/gimpdisplayshell.c (G_DEFINE_TYPE): call
+	gimp_display_shell_progress_iface_init().
+
+	* app/display/gimpdisplay.c: delegate progress calls to
+	GimpDisplayShell instead of shell->statusbar.
+	
+2006-06-29  Raphaël Quinet  <raphael@gimp.org>
+
+	* plug-ins/common/screenshot.c (select_window_x11): allow the
+	usage of Escape together with CapsLock, NumLock and ScrollLock.
+
+2006-06-29  Raphaël Quinet  <raphael@gimp.org>
+
+	* plug-ins/common/screenshot.c (select_window_x11): use 0 instead
+	of AnyModifer in the call to XGrabKey.  This prevented the
+	cancellation of the screenshot with Escape in some environments.
+
+2006-06-29  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/screenshot.c: added an else that we lost somehow.
+
+2006-06-28  Sven Neumann  <sven@gimp.org>
+
+	* app/gui/splash.c: improved calculation of text color based on
+	the splash image (bug #165760).
+
+2006-06-28  Sven Neumann  <sven@gimp.org>
+
+	* app/menus/plug-in-menus.c (plug_in_menus_setup): generate unique
+	keys so that two procedures can be installed to the same menu entry.
+	Addresses bug #346001.
+
+2006-06-28  Sven Neumann  <sven@gimp.org>
+
+	* app/config/gimprc-blurbs.h: fixed typo spotted by Jakub Friedl.
+
+2006-06-28  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/mail.c
+	* plug-ins/common/screenshot.c: updated inlined icons from Tango
+	Icon library.
+
+2006-06-28  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/gimpfontselectbutton.[ch]
+	* libgimp/gimpgradientselectbutton.[ch]
+	* libgimp/gimppaletteselectbutton.[ch]
+	* libgimp/gimppatternselectbutton.[ch]: for consistency with
+	GimpBrushSelectButton dropped the _name suffix from the getter
+	and setter API.
+
+	* libgimp/gimpfontmenu.c
+	* libgimp/gimpgradientmenu.c
+	* libgimp/gimppalettemenu.c
+	* libgimp/gimppatternmenu.c
+	* plug-ins/gfig/gfig-style.c
+	* plug-ins/script-fu/script-fu-interface.c: changed accordingly.
+
+	* libgimp/gimpbrushmenu.c
+	* libgimp/gimpbrushselectbutton.[ch]
+	* libgimp/gimpselectbutton.c: cleanup for consistency.
+
+2006-06-28  Sven Neumann  <sven@gimp.org>
+
+	* tools/pdbgen/pdb/text_tool.pdb: applied a (slightly modified)
+	patch from Joao that improves PDB documentation (bug #345926).
+
+	* app/pdb/text_tool_cmds.c
+	* libgimp/gimptexttool_pdb.c: regenerated.
+
+2006-06-28  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpstrokedesc.[ch]: removed broken implementation of
+	gimp_stroke_desc_duplicate() and reimplement it by overriding the
+	duplicate() method of the GimpConfig interface.
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	Applied patch from Zbigniew Chyla (bug 345982):
+
+	* app/widgets/gimpactiongroup.c (gimp_action_group_add_string_actions)
+	strip translation context from translated entries[i].label.
+
+	* app/tools/gimpmagnifytool.c: added translation context.
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	Applied patch from Zbigniew Chyla (bug 345982):
+
+	* app/tools/gimptransformtool.[ch]: added undo_desc field for
+	storing undo string and use that, not tool_info->blurb.
+
+	* app/tools/gimpfliptool.c
+	* app/tools/gimpperspectivetool.c
+	* app/tools/gimprotatetool.c
+	* app/tools/gimpscaletool.c
+	* app/tools/gimpsheartool.c: set undo_desc.
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	* modules/cdisplay_proof.c: use the GimpColorRenderingIntent enum
+	from libgimpconfig instead of duplicating it.
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	Changes based on a patch from Zbigniew Chyla (bug #345982):
+	
+	* libgimpbase/gimputils.c: strip translation context from enum
+	descriptions.
+
+	* libgimpbase/gimpbaseenums.h
+	* libgimpconfig/gimpcolorconfig-enums.h: added translation context
+	to some enums.
+
+	* libgimpbase/gimpbaseenums.c
+	* libgimpconfig/gimpcolorconfig-enums.c: regenerated.
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpunit.c: applied patch from Zbigniew Chyla that adds
+	translation context to some problematic strings (bug #345982).
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpchannel-select.c
+	* app/core/gimpdrawable-bucket-fill.c
+	* app/core/gimpdrawable-transform.c
+	* app/core/gimpimage-crop.c
+	* app/dialogs/image-scale-dialog.c
+	* app/tools/gimpforegroundselecttool.c
+	* app/tools/gimpfreeselecttool.c
+	* app/tools/gimpfuzzyselecttool.c
+	* app/tools/gimpmovetool.c
+	* plug-ins/gfig/gfig-dialog.c: applied patch from Zbigniew Chyla
+	that adds translation context to some problematic strings
+	(bug #345982).
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/pygimp/gimpui.py: applied patch from Joao S. O. Bueno
+	Calligaris that makes PF_FILE use a GtkFileChooserButton. Fixes
+	bug #326986.
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimptransformtool.c (gimp_transform_tool_notify_type):
+	do not call bounds() and recalc() with a NULL display.  Added
+	sanity checks for the display parameter to both functions.
+	Fixes bug #345791.
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/imagemap/imap_menu.c: commented out the non-functional
+	Zoom menu.
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/imagemap/imap_preview.c: improved dialog layout.
+
+2006-06-27  Michael Natterer  <mitch@gimp.org>
+
+	* plug-ins/print/print-draw-page.c: s/uft8/utf8/ makes it compile.
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/FractalExplorer/FractalExplorer.c
+	* plug-ins/common/colortoalpha.c
+	* plug-ins/common/depthmerge.c
+	* plug-ins/common/illusion.c
+	* plug-ins/script-fu/script-fu.c some more canonical procedure
+	names that we missed earlier.
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/CML_explorer.c
+	* plug-ins/common/curve_bend.c
+	* plug-ins/common/depthmerge.c
+	* plug-ins/common/despeckle.c
+	* plug-ins/common/fractaltrace.c
+	* plug-ins/common/mapcolor.c
+	* plug-ins/common/mblur.c
+	* plug-ins/common/png.c
+	* plug-ins/common/sample_colorize.c
+	* plug-ins/common/tga.c
+	* plug-ins/common/threshold_alpha.c
+	* plug-ins/common/tiler.c
+	* plug-ins/common/unsharp.c
+	* plug-ins/gfig/gfig.c
+	* plug-ins/gfli/gfli.c
+	* plug-ins/gimpressionist/gimp.c
+	* plug-ins/imagemap/imap_main.c
+	* plug-ins/pagecurl/pagecurl.c
+	* plug-ins/script-fu/script-fu.c
+	* plug-ins/twain/twain.c
+	* plug-ins/winsnap/winsnap.c: use canonical parameter names.
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/FractalExplorer/FractalExplorer.c
+	* plug-ins/Lighting/lighting_main.c
+	* plug-ins/MapObject/mapobject_main.c: use canonical procedure and
+	parameter names. Marked procedure blurbs for translation.
+
+	* plug-ins/winicon/main.c: use canonical procedure and parameter
+	names.
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimpalignoptions.c: removed unused includes and stubs.
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	* app/config/gimprc-blurbs.h (NUM_PROCESSORS_BLURB): simplified.
+
+	* app/config/gimpguiconfig.c: changed default window hints back to
+	"normal". Fixes bug #344242.
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/gfig/gfig-dialog.[ch]
+	* plug-ins/gfig/gfig-dobject.h
+	* plug-ins/gfig/gfig.[ch]: put extern variables where they belong.
+	Patch from Daniel Richard G. (bug #342455).
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	Based on a patch from Zbigniew Chyla:
+
+	* app/core/gimpunit.c (_gimp_unit_get_singular, _gimp_unit_get_plural):
+	don't call gettext() on strings returned by _gimp_unit_get_user_unit().
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	Applied patch from Zbigniew Chyla (bug 345982):
+
+	* app/gimp-intl.h
+	* libgimp/stdplugins-intl.h: removed most content and include
+	<glib/gi18n.h> instead.
+
+	* libgimp/libgimp-intl.h: define ngettext() macro as wrapper around
+	dngettext().
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	I18n improvements based on a patch from Zbigniew Chyla:
+
+	* app/main.c:
+	* modules/controller_midi.c
+	* plug-ins/script-fu/scripts/guides-new.scm: marked strings for
+	translation.
+
+	* app/widgets/gimpdock.c
+	* libgimpwidgets/gimppageselector.c
+	* plug-ins/common/plugin-browser.c: use ngettext() for plural forms.
+
+2006-06-27  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/gimpexport.c (gimp_export_image): use NULL as the
+	special value, not "silent".
+
+	* plug-ins/print/print-draw-page.c: changed accordingly.  Also
+	fixed handling of filename encoding.
+
+2006-06-26  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* libgimp/gimpexport.c: if format arg is "silent", export
+	without popping a dialog -- saves duplicating code.
+
+	* plug-ins/print/print-draw-page.c
+	* plug-ins/print/print-draw-page.h
+	* plug-ins/print/print-page-layout.c
+	* plug-ins/print/print-page-layout.h
+	* plug-ins/print/print-settings.c
+	* plug-ins/print/print-settings.h
+	* plug-ins/print/print.h:         new files	
+
+	* plug-ins/print/Makefile.am
+	* plug-ins/print/print.c:  modified
+
+	Progress toward GtkPrintOperation plug-in.  Should already
+	be usable, but very ugly.
+
+2006-06-26  Sven Neumann  <sven@gimp.org>
+
+	* app/gui/gui-vtable.c (gui_pdb_dialog_new): hide the button-bar.
+
+2006-06-26  Sven Neumann  <sven@gimp.org>
+
+	* app/dialogs/quit-dialog.c: use STOCK_WARNING instead of
+	STOCK_WILBER_EEK for the quit dialog.
+
+2006-06-25  Manish Singh  <yosh@gimp.org>
+
+	* plug-ins/pygimp/pygimp-pdb.c: quick fix so colors in the PDB work
+	again.
+
+2006-06-25  Manish Singh  <yosh@gimp.org>
+
+	* libgimp/gimpuitypes.h
+	* libgimp/gimpselectbutton.[ch]: abstract class for resource selection
+	buttons.
+
+	* libgimp/gimpfontselectbutton.[ch]: derive from GimpSelectButton.
+
+	* libgimp/gimpbrushselectbutton.[ch]
+	* libgimp/gimpgradientselectbutton.[ch]
+	* libgimp/gimppaletteselectbutton.[ch]
+	* libgimp/gimppatternselectbutton.[ch]: replacements for
+	gimp_foo_select widgets, akin to GimpFontSelectButton.
+
+	* libgimp/gimpbrushmenu.[ch]
+	* libgimp/gimpgradientmenu.[ch]
+	* libgimp/gimppalettemenu.[ch]
+	* libgimp/gimppatternmenu.[ch]: deprecate old API, and reimplement
+	in terms of GimpFooSelectButton.
+
+	* libgimp/gimpfontmenu.[ch]: change to use the GimpSelectButton API.
+
+	* libgimp/gimpuimarshal.list: new marshallers for the above new
+	widgets.
+
+	* libgimp/gimpui.h: add new headers.
+
+	* libgimp/Makefile.am: add new files.
+
+	* plug-ins/FractalExplorer/Dialogs.c
+	* plug-ins/gfig/gfig-dialog.c
+	* plug-ins/gfig/gfig-style.[ch]
+	* plug-ins/script-fu/script-fu-interface.c: use new API.
+
+2006-06-25  Manish Singh  <yosh@gimp.org>
+
+	* libgimp/gimpbrushes.c
+	* modules/cdisplay_colorblind.c: fix some ytpos.
+
+2006-06-25  Manish Singh  <yosh@gimp.org>
+
+	* app/plug-in/plug-in-params.c
+	* libgimp/gimp.[ch]
+	* libgimpbase/gimpprotocol.[ch]
+	* plug-ins/common/colormap-remap.c
+	* plug-ins/common/curve_bend.c
+	* plug-ins/common/grid.c
+	* plug-ins/pygimp/pygimp-pdb.c
+	* plug-ins/script-fu/siod-wrapper.c
+	* tools/pdbgen/pdb.pl: turn d_int8 and d_int8array into guint8.
+	Fixes bug #344431.
+
+2006-06-25  DindinX  <dindinx@gimp.org>
+
+	* plug-ins/common/tga.c: untabified.
+
+2006-06-23  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/script-fu/script-fu-interface.c (script_fu_interface):
+	ellipsize the progress label to avoid dialog resizing.
+
+2006-06-23  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/imagemap/imap_preview.[ch]: moved rulers out of the
+	scrolled window and update them when the scroll adjustments
+	change. Fixes bug #341149.
+
+	* plug-ins/imagemap/imap_about.c
+	* plug-ins/imagemap/imap_menu.c: unrelated cleanups.
+
+2006-06-23  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/print/print.c: the name of the binary is "print".
+
+2006-06-23  Sven Neumann  <sven@gimp.org>
+
+	* tools/gimp-remote.c: applied patch from Eric Lamarque that adds
+	a new function to check for a valid URI. Fixes bug #332835.
+
+2006-06-22  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* configure.in: adjust requirements for building gtk-print plug-in
+	-- requires gtk+ 2.9.3.
+
+	* plug-ins/print/Makefile.am
+	* plug-ins/print/print.c: new plug-in using GtkPrintOperation.
+	Mainly infrastructure at this point -- output is wildly
+	incorrect.
+
+2006-06-22  Sven Neumann  <sven@gimp.org>
+
+	* menus/toolbox-menu.xml.in: moved separator.
+
+2006-06-22  Michael Natterer  <mitch@gimp.org>
+
+	* app/tools/gimptransformtool.c: (gimp_transform_tool_control):
+	always upchain.
+
+	(gimp_transform_tool_cursor_update): use the small crosshair
+	instead of GIMP_CURSOR_MOUSE as default cursor to avoid hotspot
+	jumping.
+
+	(gimp_transform_tool_doit): call prepare() after bounds().
+
+2006-06-22  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/animationplay.c
+	* plug-ins/common/colormap-remap.c
+	* plug-ins/helpbrowser/dialog.c: popup the menu on Shift-F10.
+
+2006-06-22  Michael Natterer  <mitch@gimp.org>
+
+	* app/dialogs/preferences-dialog.c (prefs_dialog_new): pack the
+	page icon with 6px padding too, just as the page label.
+
+2006-06-21  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimp-tools.c (gimp_tools_restore): don't attempt to
+	reorder to a position >= container->num_children.
+
+2006-06-21  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/tools/gimprectangleselecttool.c: Always use crosshair cursor
+	if shift or ctrl are down; fixes bug #345551.
+
+2006-06-21  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/colormap-remap.c: moved hints to the bottom.
+
+2006-06-21  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/colormap-remap.c: applied patch from Mukund
+	Sivaraman that adds a "Reverse Order" option in favor of having
+	ascending and descending sort functions.
+
+2006-06-21  Sven Neumann  <sven@gimp.org>
+
+	* docs/Makefile.am (EXTRA_DIST): stop distributing Wilber.svg.
+
+	* libgimpcolor/gimpcolorspace.h: formatting.
+
+2006-06-21  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/tools/gimprectangleselecttool.c: if there is a floating
+	selection and mouse is clicked outside it without movement, anchor it.
+
+	* app/tools/gimprectangletool.c: corner handle area was scaling
+	improperly when image was zoomed.
+
+2006-06-21  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/dialogs/authors.h: autogenerated file; committing changes
+	caused by Roman's previous commit.
+
+2006-06-21  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/colormap-remap.c: added a right-click menu that
+	allows to sort the colormap by hue, saturation or value.
+
+2006-06-21  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/colormap-remap.c: added a Reset button and
+	prepared for colormap sorting.
+
+2006-06-21  Roman Joost  <romanofski@gimp.org>
+
+	* AUTHORS
+	* authors.xml: sorted previously added names alphabetically
+
+2006-06-21  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/gimp.[ch] (gimp_shm_addr): return a const pointer.
+	(gimp_message_func): removed wrong cast.
+
+2006-06-21  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/warp.c: minor code cleanup.
+
+2006-06-21  Roman Joost  <romanofski@gimp.org>
+
+	* AUTHORS
+	* authors.xml: added active docwriters from the GIMP manual
+
+2006-06-20  Sven Neumann  <sven@gimp.org>
+
+	* INSTALL
+	* configure.in
+	* plug-ins/Makefile.am
+	* plug-ins/print/Makefile.am: added build infrastructure for new
+	print plug-in.
+
+2006-06-20  Sven Neumann  <sven@gimp.org>
+
+	* INSTALL
+	* configure.in
+	* plug-ins/common/plugin-defs.pl
+	* plug-ins/common/Makefile.am
+	* plug-ins/common/gnomeprint.c
+	* plug-ins/common/winprint.c: removed gnomeprint and winprint
+	plug-ins. We will have a plug-in based on GtkPrint for GIMP 2.4.
+
+2006-06-20  Sven Neumann  <sven@gimp.org>
+
+	* INSTALL
+	* configure.in
+	* plug-ins/Makefile.am
+	* plug-ins/print: removed the gimp-print plug-in. gutenprint comes
+	with a GIMP plug-in, so there is no point in supporting this any
+	longer.
+
+2006-06-20  Sven Neumann  <sven@gimp.org>
+
+	* authors.xml: only use the "artist" role for the newly added
+	contributors.
+
+2006-06-20  Michael Natterer  <mitch@gimp.org>
+
+	* app/widgets/gimpfiledialog.c (gimp_file_dialog_set_image): don't
+	try to set "." as current_folder_uri.
+
+2006-06-20  Sven Neumann  <sven@gimp.org>
+
+	* app/dialogs/tips-dialog.c: use GIMP_STOCK_INFO for the tips dialog.
+
+	* data/images/Makefile.am: do not install unused wilber icons.
+
+2006-06-20  Jakub Steiner <jimmac@ximian.com>
+
+	* themes/Default/images/stock-wilber-*: tweak shape a bit
+	* data/images/wilber-icon.png, gimp-logo.png: reflect the changes
+	  here as well.
+
+2006-06-20  Jakub Steiner <jimmac@ximian.com>
+
+	* authors.xml: add Andreas, Lapo and Bill as artists.
+
+2006-06-20  Sven Neumann  <sven@gimp.org>
+
+	* themes/Default/images/preferences/Makefile.am: install icons at
+	22x22 pixel size.
+
+	* app/dialogs/preferences-dialog.c (prefs_notebook_append_page):
+	try to load icons at 22x22 instead of scaling down the large one.
+
+2006-06-20  Sven Neumann  <sven@gimp.org>
+
+	* themes/Default/Makefile.am
+	* themes/Default/imagerc: removed imagerc, it was outdated anyway.
+
+	* themes/Default/images/Makefile.am: don't install the icons that
+	are compiled in.
+
+2006-06-20  Jakub Steiner <jimmac@ximian.com>
+
+	* themes/Default/images/tools/*xcf: forgot the source xcfs
+
+2006-06-20  Jakub Steiner <jimmac@ximian.com>
+
+	* themes/Default/*: apply Tango style on the default iconset.
+	A teamwork of Andreas Nilsson, Lapo Calamandrei, William
+	Szilvester and myself.
+
+2006-06-20  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/Makefile.am
+	* plug-ins/common/plugin-defs.pl
+
+	* plug-ins/common/desktop-link.c: new load plug-in that parses a
+	.desktop file and if it is a link, asks GIMP to open the file the
+	link points to (bug #326956).
+
+2006-06-20  Sven Neumann  <sven@gimp.org>
+
+	* app/dialogs/about-dialog.c (about_dialog_create): only unref the
+	logo pixmap if it is not NULL; loading it may fail.
+
+2006-06-20  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/tools-enums.h: added TRANSFORM_HANDLE_NONE (will get
+	rid of TRANSFORM_CREATING later).
+
+	* app/tools/gimptransformtool.[ch]: added member "use_handles" and
+	default to FALSE for all "use_foo" variables.  Only deal with the
+	handles the specific transform tool asks for.  Set cursors
+	according to the active handle.
+
+	* app/tools/gimpfliptool.c
+	* app/tools/gimpperspectivetool.c
+	* app/tools/gimprotatetool.c
+	* app/tools/gimpscaletool.c
+	* app/tools/gimpsheartool.c: changed accordingly.
+
+2006-06-19  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/error-console-commands.c
+	* app/display/gimpdisplayshell-draw.c
+	* app/display/gimpdisplayshell-scale.c
+	* app/tools/gimpmeasuretool.c
+	* app/tools/gimptexttool.c
+	* app/widgets/gimpcellrendereraccel.c
+	* app/widgets/gimpviewabledialog.c
+	* app/widgets/gimpviewrenderer.c: changed casts in calls to
+	g_object_add_weak_pointer() to silence compiler warnings.
+
+2006-06-19  Sven Neumann  <sven@gimp.org>
+
+	* app/config/gimpguiconfig.c (DEFAULT_WEB_BROWSER): changed to
+	"firefox", most distributions seem to have renamed the binary.
+
+2006-06-19  Sven Neumann  <sven@gimp.org>
+
+	* data/images/gimp-logo.png: replaced with the application logo
+	(bug #343948).
+
+	* data/images/gimp2_2_logo.png: the old logo, as a reference.
+
+	* app/dialogs/about-dialog.c: let GtkAboutDialog deal with the logo.
+	Moved the text animation below the copyright notice and draw it on
+in <Layers>, <Channels>, <Vectors> and
+	<ColormapEditor>:
+
+	* app/pdb/gimppluginprocedure.c
+	(gimp_plug_in_procedure_add_menu_path): added the argument type
+	checks for the new locations. Factored out duplicated code.
+
+	* app/menus/menus.c (menus_init): add the "plug-in" action
+	group to the resp. UI managers.
+
+	* app/menus/plug-in-menus.c (plug_in_menus_menu_path_added):
+	support them here too.
+
+	* app/widgets/gimpimageeditor.[ch]
+	* app/widgets/gimpitemtreeview.[ch]: added get_image() functions.
+
+	* app/actions/plug-in-commands.c: added new utility functions
+	which collect plug-in arguments from GimpImageEditor and
+	GimpItemTreeView widgets.
+
+	* menus/channels-menu.xml
+	* menus/colormap-editor-menu.xml
+	* menus/layers-menu.xml
+	* menus/vectors-menu.xml: added separators.
+
+	* menus/image-menu.xml.in: added a "Colormap" placeholder in
+	Colors/Map
+
+	* plug-ins/common/colormap-remap.c (query): register a menu
+	entry in <ColormapEditor> and moved the existing one to the
+	"Colormap" placeholder. Also register an icon to make this
+	menu item clearly distinct from the others in that menu.
+
+	Unrelated:
+
+	* plug-ins/common/colormap-remap.c (run): cleaned up quite a
+	bit. Fixed last-vals code and simplified map handling.
+
+	(remap_swap): removed, folded into run().
+
+	(remap_dialog): use the passed map to initialize the dialog so it
+	starts with the last-vals. Tweaked layout to have 16 columns
+	and simplified cell renderer creation.
+
+2006-06-16  Manish Singh  <yosh@gimp.org>
+
+	* app/errors.c
+	* app/main.c
+	* app/file/gimprecentlist.c
+	* libgimpbase/gimpsignal.c
+	* libgimp/gimp.c
+	* modules/controller_midi.c
+	* plug-ins/common/gqbist.c: use _GNU_SOURCE instead of the other
+	_FOO_SOURCE variables to support -ansi -pedantic on glibc systems,
+	since anything else breaks compilation of otherwise working code.
+	Fixes bug #344203.
+
+2006-06-16  Sven Neumann  <neumann@jpk.com>
+
+	* themes/Default/images/Makefile.am
+	* themes/Default/images/stock-colormap-*.png
+	* themes/Default/images/stock-indexed-palette-*.png: renamed
+	stock-indexed-palette to stock-colormap.
+
+	* libgimpwidgets/gimpstock.[ch]: deprecated
+	GIMP_STOCK_INDEXED_PALETTE in favor of GIMP_STOCK_COLORMAP.
+
+	* app/actions/actions.c
+	* app/actions/colormap-editor-actions.c
+	* app/actions/colormap-editor-commands.c
+	* app/actions/context-actions.c
+	* app/actions/dialogs-actions.c
+	* app/dialogs/dialogs.c: use the new stock-id.
+
+2006-06-16  Sven Neumann  <neumann@jpk.com>
+
+	* app/pdb/gimppluginprocedure.c (gimp_plug_in_procedure_get_label):
+	* plug-ins/script-fu/script-fu-interface.c (script_fu_interface):
+	when cutting away ellipsis, also look for U+2026 HORIZONTAL ELLIPSIS.
+
+2006-06-16  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/psd_save.c: improved error message.
+
+2006-06-16  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/script-fu/convert-script: removed; it's barely useful
+	nowadays.
+
+2006-06-16  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/script-fu/script-fu-interface.c: removed the About
+	dialog.  That information is available from the Procedure Browser
+	and scripts should look and feel as much like plug-ins as
+	possible.
+
+2006-06-16  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/script-fu/script-fu-types.h (struct SFScript): renamed
+	member "help" to "blurb" since that's what it is being used for
+	when the script procedure is registered.
+
+	* plug-ins/script-fu/script-fu-interface.c
+	* plug-ins/script-fu/script-fu-scripts.c: changed accordingly.
+
+2006-06-16  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/script-fu/script-fu-scripts.c (script_fu_add_script):
+	use a canonical name for the automatically added run-mode parameter.
+	Untabbified.
+
+2006-06-16  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimplist.c (gimp_list_new, gimp_list_new_weak): for
+	debugging purposes, set the children type as the name of the list.
+
+2006-06-16  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/debug-actions.c: no need to be extra concise here.
+
+2006-06-16  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/image-commands.c (image_convert_cmd_callback):
+	always call gimp_image_flush() so that the image mode radio
+	buttons reflect the image state.  Attach the indexed conversion
+	dialog to the shell to avoid multiple instances.
+
+2006-06-16  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/mapcolor.c (query): marked blurb for translation.
+
+2006-06-16  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/colormap-remap.c: renamed to "Rearrange Colormap".
+
+2006-06-16  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/rcm/rcm.c
+	* plug-ins/rcm/rcm_dialog.c: renamed to "Rotate Colors"; it
+	doesn't actually work on indexed images at all.
+
+2006-06-15  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/Makefile.am
+	* plug-ins/common/plugin-defs.pl
+
+	* plug-ins/common/colormap-remap.c: added new plug-in for colormap
+	manipulation written by Mukund Sivaraman.
+
+2006-06-15  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpimage-convert.c (gimp_image_convert): remove
+	duplicate colors for all palette types (except for MAKE_PALETTE
+	since there shouldn't be any unused colors then).  That's what
+	the PDB documentation claims the function would be doing.
+
+	* app/dialogs/convert-dialog.c: allow use of the "Remove unused
+	colors" toggle for all but the optimized palette.
+
+2006-06-15  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/image-actions.c (image_actions_update): improved
+	code to set the image mode radio actions; set their sensitivity
+	also.
+
+	* app/actions/image-commands.c (image_configure_grid_cmd_callback):
+	fixed cast to silence compiler warning.
+
+2006-06-15  Michael Natterer  <mitch@gimp.org>
+
+	* app/widgets/gimpdockbook.c (gimp_dockbook_get_tab_widget): set
+	the event box' window invisible so we get the right background
+	with all themes.
+
+2006-06-14  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/tools/gimprectangleselecttool.c: Fix sporadic crash
+	resulting from previous change.
+
+2006-06-14  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/tools/gimprectangleselecttool.c: As suggested by Joao,
+	halt tool on changes to selection or image size.
+
+2006-06-14  Michael Natterer  <mitch@gimp.org>
+
+	* plug-ins/common/vinvert.c: another patch from Mukund that cleans
+	up i18n initialization.
+
+2006-06-14  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/tools/gimpbycolorselect.c: fix crash when changing
+	threshold with no display active.
+
+2006-06-14  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/image-actions.c: use radio items for the Image mode
+	as suggested in bug #344871.
+
+	* app/actions/image-commands.[ch] (image_convert_cmd_callback):
+	changed accordingly.
+
+2006-06-14  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/[many].pdb: in help texts, refer to other
+	procedures using_c_syntax(). This way gtk-doc can cross-reference
+	them correctly in libgimp, and app.pl will transform them
+	'to-canonical-names' for PDB registering.
+
+	* app/pdb/[many]_cmds.c
+	* libgimp/[many]_pdb.c: regenerated.
+
+2006-06-13  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/tools/gimpbycolorselect.[ch]: allow modifying threshold
+	without having to re-click on image each time.  Fixes
+	bug #126748.
+
+2006-06-13  Tor Lillqvist  <tml@novell.com>
+
+	* app/plug-in/gimpenvirontable.c (gimp_environ_table_populate):
+	Free the string vector returned by g_listenv().
+
+	* libgimpwidgets/gimpwidgets.def: Remove deprecated
+	gimp_prop_file_entry_new.
+
+2006-06-13  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* menus/image-menu.xml.in: remove strong/weak undo from menu;
+	still available using Shift-Ctrl-[ZY].  See bug #144854.
+
+2006-06-13  Michael Natterer  <mitch@gimp.org>
+
+	* plug-ins/common/vinvert.c: applied patch from Mukund Sivaraman
+	which speeds up the plug-in significantly by using an optimized
+	RGB <-> HSV conversion and proper region iterating. Did some more
+	cleanups.
+
+2006-06-13  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/FractalExplorer/Dialogs.c
+	* plug-ins/FractalExplorer/FractalExplorer.h: doubled the size of
+	the preview and adapted the dialog layout to the larger preview.
+
+2006-06-12  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Finally implemented the suggestion in bug #144854, of
+	"strong" undo/redo commands that continue undoing so long
+	as they only encounter visibility changes.
+
+	* app/actions/edit-actions.c
+	* app/actions/edit-commands.c
+	* app/actions/edit-commands.h: added "strong undo"
+	and "strong redo" commands/actions.
+
+	* app/core/gimpimage-undo.[ch]: added functions
+	gimp_image_strong_undo() and gimp_image_strong_redo().
+
+	* app/core/gimpundo.[ch]: added utility function
+	gimp_undo_is_weak().
+
+	* app/widgets/gimphelp-ids.h:added id's.
+
+	* menus/image-menu.xml.in: added to edit menu, bound to C-S-z and
+	C-S-y.
+
+	This will no doubt need tweaking, but I will consider it
+	to fix bug #144854.
+
+2006-06-12  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* plug-ins/common/gnomeprint.c: try not to distort
+	image when printing.  Fixes bug #344547 but this
+	plug-in needs a lot more work to be useful.
+
+2006-06-12  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/tools/gimprectangleselecttool.c: don't autoshrink when
+	there is no display; fixes crash reported by Carol.
+
+2006-06-12  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/tools/gimprectangleselecttool.c
+	* app/tools/gimprectangletool.c: fix three issues identified by
+	jimmac: (1) when shift or ctrl are pressed, should start a new
+	rect regardless of pointer loc; (2) zoom was incorrectly affecting
+	width of sensitive areas; (3) must emit "rectangle-changed" after
+	keyboard-driven rectangle movement.
+
+2006-06-12  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/FractalExplorer/Dialogs.c
+	* plug-ins/FractalExplorer/FractalExplorer.[ch]: applied patch from
+	Joao S. O. Bueno Calligaris that makes the plug-in work on grayscale
+	images and makes it override the alpha channel (bug #340771).
+
+2006-06-12  Tor Lillqvist  <tml@novell.com>
+
+	* app/plug-in/gimpenvirontable.c (gimp_environ_table_populate):
+	Use g_listenv() and g_getenv() instead of looking at environ
+	directly. Fixes breakage on Win32 when any (!) environment
+	variable has a non-ASCII value, as environ is in system codepage,
+	while we want UTF-8.
+
+2006-06-12  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/redeye.c (remove_redeye): cleanup, use
+	gimp_drawable_mask_intersect(), reduced number of progress updates.
+
+2006-06-12  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/snoise.c (solid_noise): cleanup, use
+	gimp_drawable_mask_intersect(), reduced number of progress updates.
+
+2006-06-12  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/gimpzoompreview.c (gimp_zoom_preview_get_source):
+	documentation.
+
+	* plug-ins/common/channel_mixer.c: minor cleanup and loop unrolling.
+	Introduced an inline function to avoid code duplication.
+
+2006-06-12  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/script-fu/siod-wrapper.c (marshall_proc_db_call):
+	removed check for success again; it is being checked in the for()
+	loop already.
+
+2006-06-11  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/tools/gimpellipseselecttool.c (gimp_ellipse_select_tool_draw):
+	Call gimp_rectangle_tool_draw.
+
+2006-06-11  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/tools/gimprectangleselecttool.c: handle situations
+	where the user "flips" the rectangle while modifying it.
+	This solution is not perfect, but better than before.
+
+	* app/tools/gimprectangletool.c: remove unneeded variable.
+
+2006-06-11  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/tools/gimprectangleselecttool.c
+	* app/tools/gimprectangletool.c: make auto-shrink work.  Does
+	the wrong thing for ellipse-select, though.
+
+2006-06-10  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Following up on previous commit, with assist from yosh.
+
+	* app/tools/gimpnewrectselectoptions.[ch]
+	* app/tools/gimpnewrectselecttool.[ch]: removed
+
+	* app/tools/gimprectangleselectoptions.[ch]: magic-moved
+	from gimpnewrectselectoptions.[ch]
+
+	* app/tools/gimprectangleselecttool.[ch]: magic-moved
+	from gimpnewrectselecttool.[ch]
+
+	* app/tools/Makefile.am
+	* app/tools/gimp-tools.c
+	* app/tools/gimpellipseselecttool.c
+	* app/tools/gimpellipseselecttool.h
+	* app/tools/gimpselectionoptions.c: change file names to
+	refer to moved files.
+
+2006-06-10  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Here is the big change-over, finally.
+
+	* app/tools/gimprectselecttool.[ch]: removed.
+
+	* app/tools/Makefile.am
+	* app/tools/gimp-tools.c
+	* app/tools/gimpellipseselecttool.c
+	* app/tools/gimpellipseselecttool.h
+	* app/tools/gimpnewrectselectoptions.c
+	* app/tools/gimpnewrectselectoptions.h
+	* app/tools/gimpnewrectselecttool.c
+	* app/tools/gimpnewrectselecttool.h
+	* app/tools/gimpselectionoptions.c
+	* app/widgets/gimptoolbox.c
+	* menus/image-menu.xml.in: get rid of the "new" in everything
+	referring to the new rect select tool, except filenames.  This
+	will wait for yosh to perform cvs-magic-foo.
+
+	* app/tools/gimprectangleoptions.[ch]
+	* app/tools/gimprectangletool.[ch]: fix a couple of minor
+	problems that popped up during testing.
+
+2006-06-10  Michael Natterer  <mitch@gimp.org>
+
+	* app/widgets/gimpeditor.c (gimp_editor_add_action_button): simply
+	use gimp_button_new() instead of g_object_new(). Don't set the
+	"use-stock" property and reordered some code. Keeps GtkButton from
+	thinking that is has constructed the button's child itself and
+	thus makes the function more rubust against changes in GtkButton.
+
+2006-06-10  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/tools/gimpcroptool.c
+	* app/tools/gimpellipseselecttool.c
+	* app/tools/gimprectangletool.[ch]: code cleanups
+
+	* app/tools/gimpnewrectselecttool.[ch]: try to do what
+	the user intuitively expects when deciding which selection
+	operation to perform.  When modifying an existing rectangle,
+	always use the operation with which it was created.
+
+2006-06-10  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	* plug-ins/script-fu/siod-wrapper.c (marshall_proc_db_call):
+	Additional simplifications for return values by using the same
+	code for all INT32 PDB types. Wrong member name was being used
+	for INT16 and INT8 return types. Added back if statement that
+	was removed but is needed.
+
+2006-06-09  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/tools/gimpcropoptions.c: clean up code.
+
+	* app/tools/gimpnewrectselecttool.c: really remove some
+	commented-out code.
+
+	* app/tools/gimprectangleoptions.[ch]: add "aspect-square"
+	and "controls-expanded" properties.  Show "Make square" and
+	"Expand from center" in options so that we don't need modifier
+	keys to do this.  Place numerical entries inside an expander
+	and hide them by default.
+
+2006-06-09  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/core/core-enums.[ch]: add GimpAlignReferenceType enum
+
+	* app/core/gimpimage-arrange.c: support using a channel as
+	reference for alignment.
+
+	* app/tools/gimpaligntool.[ch]: support aligning with a list item,
+	image, selection, active layer, active channel, or active path.
+	Now similar in form and function to Inkscape Align/Distribute
+	dialog.
+
+2006-06-09  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/gimpfileentry.[ch]: deprecate the GimpFileEntry
+	widget, use GtkFileChooserButton instead.
+
+	* libgimpwidgets/gimppatheditor.c: undef GIMP_DISABLE_DEPRECATED
+	as long as we are still using GimpFileEntry here.
+
+	* libgimpwidgets/gimppropwidgets.[ch]: removed
+	gimp_prop_file_entry_new(); use gimp_prop_file_chooser_button_new()
+	instead.
+
+2006-06-09  Sven Neumann  <sven@gimp.org>
+
+	* app/batch.c (batch_run_cmd): formatting.
+
+2006-06-08  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* plug-ins/common/png.c
+	* po/Makefile.in.in: revert changes inintentionally included
+	in previous commit.
+
+2006-06-08  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/core/core-enums.[ch]: add GIMP_ARRANGE_FOO values
+	to GimpAlignmentType, and change CENTER to HCENTER,
+	MIDDLE to VCENTER.
+
+	* app/core/gimpimage-arrange.c: extensively rewritten
+	to handle arrangement of objects, and to do the
+	required sorting of lists by offset.
+
+	* app/tools/gimpaligntool.[ch]: added ability to arrange
+	groups of layers etc with constant spacing.  Also try
+	to change things so that the tool aligns with the
+	object that users expect intuitively.
+
+2006-06-08  Simon Budig  <simon@gimp.org>
+
+	* plug-ins/common/sel_gauss.c: fix the EXPAND macro to make
+	picky compilers happy. Fixes bug #344326, spotted by
+	Eric Lamarque.
+
+2006-06-08  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/script-fu/siod-wrapper.c (marshall_proc_db_call):
+	simplified quite a bit by using the same code for all INT32 PDB
+	types.
+
+2006-06-08  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/script-fu/script-fu-console.c (script_fu_eval_run):
+	in case of an error, output the SIOD error message to stderr.
+
+	* plug-ins/script-fu/siod-wrapper.c: minor cleanup.
+
+2006-06-08  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/script-fu/script-fu-scripts.c
+	* plug-ins/script-fu/siod-wrapper.c: allow CSS color keywords to
+	be used in place of the '(r g b) color notation.
+
+	* plug-ins/script-fu/scripts/test-sphere.scm: documented this new
+	feature.
+
+	* plug-ins/script-fu/scripts/*.scm: replaced some colors with
+	color names.
+
+2006-06-08  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/animationplay.c (menu_popup): do not use
+	gtk_menu_attach_to_widget() but gtk_menu_set_screen(). Menus don't
+	like to be attached multiple times.
+
+2006-06-07  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/core/gimpimage-arrange.[ch]: added, utility function for
+	aligning and arranging things in an image.
+
+	* app/core/gimpitem-align.[ch}: removed, no longer needed.
+
+	* app/core/gimpimage-item-list.[ch] (gimp_image_item_list_align):
+	removed this function, no longer used.
+
+	* app/core/Makefile.am: changes described above.
+
+	* app/core/gimpguide.c: remove bit of cruft left accidentally.
+
+	* app/tools/gimpalignoptions.[ch]: remove "alignment type"
+	option, not needed at this point.
+
+	* app/tools/gimpaligntool.[ch]: numerous changes, most
+	importantly ability to align guides, and use them for
+	alignment.  More work coming on this tool.
+
+2006-06-07  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/core/gimpguide.[ch]: add "removed" signal and associated
+	paraphernalia.
+
+	* app/core/gimpimage-guides.c (gimp_image_remove_guide): call
+	gimp_guide_removed() to cause signal emission.
+
+2006-06-07  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimpnewrectselecttool.c: removed extra semicolon to
+	fix build on Solaris (bug #344203).
+
+2006-06-07  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/display/gimpdisplayshell.c (gimp_display_shell_expose_guide):
+	fix typo, s/get_position/get_orientation/.
+
+2006-06-07  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpguide.c: removed unused includes and property blurbs;
+	fixed registration of the "id" property, it is not a GIMP_CONFIG
+	property.
+
+2006-06-07  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpguide.[ch]: added gimp_guide_get_ID().
+
+	* app/core/gimpimage-crop.c
+	* app/core/gimpimage-duplicate.c
+	* app/core/gimpimage-flip.c
+	* app/core/gimpimage-guides.c
+	* app/core/gimpimage-resize.c
+	* app/core/gimpimage-rotate.c
+	* app/core/gimpimage-scale.c
+	* app/core/gimpimage-snap.c
+	* app/core/gimpimage-undo-push.c
+	* app/display/gimpdisplayshell-draw.c
+	* app/display/gimpdisplayshell.c
+	* app/tools/gimpmovetool.c
+	* app/xcf/xcf-save.c
+	* tools/pdbgen/pdb/guides.pdb: use accessors instead of accessing
+	GimpGuide's struct members directly.
+
+	* app/pdb/guides_cmds.c: regenerated.
+
+2006-06-07  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/error-console-actions.c:
+	* app/actions/error-console-commands.[ch]
+	* app/widgets/gimphelp-ids.h
+	* menus/error-console-menu.xml: added "select-all" action as
+	suggested in bug #328838.
+
+2006-06-07  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpguide.[ch]: added a setter for "orientation".
+
+	* app/core/gimpimage-resize.c (gimp_image_resize_with_layers):
+	removed unused variable; use for() loops to iterate over guides
+	and sample points.
+
+2006-06-07  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpguide.[ch]: derive from GObject, we don't need any
+	GimpObject functionality here.  Declare "orientation" and "id"
+	properties CONSTRUCT_ONLY, added a gimp_guide_new() function and
+	emit notify on position changes.
+
+	* app/core/gimpimage-guides.c: use gimp_guide_new() to instantiate
+	guides.
+
+	* app/core/gimpimage.c (gimp_image_get_memsize): formatting.
+
+2006-06-07  Michael Natterer  <mitch@gimp.org>
+
+	* app/actions/context-commands.c: cosmetic cleanup.
+
+	* app/core/core-types.h: move the GimpGuide typedef to the
+	"misc objects" section.
+
+	* app/tools/gimpforegroundselecttool.c: cosmetic cleanup.
+
+	* app/tools/gimpmeasuretool.c (gimp_measure_tool_cursor_update):
+	use the new corner and side cursors instead of using X cursors.
+
+	* app/display/gimpdisplayshell-callbacks.c
+	(gimp_display_shell_canvas_tool_events): renamed local variable
+	"update_cursor" to "update_sw_cursor", it has confused me too
+	often...
+
+2006-06-07  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/core/gimpguide.[ch]: new files, implementing GimpGuide as a
+	GimpObject
+
+	* app/core/Makefile.am: add new files as sources
+
+	* app/core/gimpimage-guides.[ch]: use the new object instead of
+	defining GimpGuide here as a struct.
+
+	* app/core/gimpimage-crop.c
+	* app/core/gimpimage-duplicate.c
+	* app/core/gimpimage-flip.c
+	* app/core/gimpimage-resize.c
+	* app/core/gimpimage-rotate.c
+	* app/core/gimpimage-scale.c
+	* app/core/gimpimage-snap.c
+	* app/core/gimpimage-undo-push.c
+	* app/core/gimpimage.c
+	* app/display/gimpdisplayshell-draw.c
+	* app/display/gimpdisplayshell.c
+	* app/tools/gimpmovetool.c
+	* app/xcf/xcf-save.c
+	* tools/pdbgen/pdb/guides.pdb: include "core/gimpguide.h", and use
+	g_object_ref/unref instead of gimp_image_guide_ref/unref.
+
+	* app/pdb/guides_cmds.c: regenerated.
+
+2006-06-07  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimprectangletool.c (gimp_rectangle_tool_initialize):
+	initialize guide with the option's guide value.
+	(gimp_rectangle_tool_notify_guide): always sync with the option's
+	guide value, even when tool->display is NULL.
+
+2006-06-06  Karine Delvare  <edhel@gimp.org>
+
+	* app/tools/gimprectangle.c: added guide notification.
+
+2006-06-06  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimprectangletool.c (gimp_rectangle_tool_draw): removed
+	unused variable; other cleanups.
+
+2006-06-06  Karine Delvare  <edhel@gimp.org>
+
+	* app/tools/gimprectangletool.c: cleanup, moved the guide drawing
+	to a utility function.
+
+2006-06-06  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/script-fu/script-fu-scripts.c: minor cleanup, plugged a
+	tiny memleak in script_fu_find_scripts().
+
+2006-06-06  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimprectangletool.c
+	(gimp_rectangle_tool_notify_highlight): minor cleanup.
+
+2006-06-06  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/script-fu/script-fu-interface.[ch]
+	* plug-ins/script-fu/script-fu.c (script_fu_refresh_proc): applied
+	a modified patch from Kevin Cozens.  Fixes bug #330981.
+
+2006-06-06  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/decompose.c: applied a modified patch from
+	Clarence Risher that adds support for a registration color
+	(bug #338049).
+
+2006-06-06  Sven Neumann  <sven@gimp.org>
+
+	* libgimpcolor/gimpcolorspace.[ch] (gimp_rgb_to_hsv4): added a
+	const qualifier.
+
+2006-06-06  Michael Natterer  <mitch@gimp.org>
+
+	* app/tools/gimpnewrectselecttool.c
+	(gimp_new_rect_select_tool_cancel)
+	(gimp_new_rect_select_tool_rectangle_changed): flush the image
+	after changing it.
+
+	* app/tools/gimprectangletool.c (gimp_rectangle_tool_halt): don't
+	flush it here.
+
+2006-06-06  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/select-commands.c: minor cleanup.
+
+2006-06-05  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/paint-funcs/scale-funcs.c (scale_region_lanczos):
+	fix variable declarations accidentally changed from gdouble
+	to gint in revision 1.7; fixes bug #343804.
+
+2006-06-06  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.3.10.
+
 2006-06-05  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.3.9 development release.
@@ -102,7 +1501,7 @@
 	* app/tools/gimprectangletool.c: formatting.
 
 2006-06-04  Seth Burgess <sjburges@gimp.org>
-	
+
 	* plug-ins/common/png.c: fixed file_png_set_defaults; wrong # of
 	  return values, missing "set" if/else set, wrong set param count,
 	  and off by one error in the parameter indexes.  Thanks to Kevin
@@ -111,7 +1510,7 @@
 2006-06-04  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* app/tools/gimprectangletool.c:
-	* app/tools/gimpnewrectselecttool.c: enable canceling of 
+	* app/tools/gimpnewrectselecttool.c: enable canceling of
 	current action by holding down mouse button 3.
 
 2006-06-04  Michael Natterer  <mitch@gimp.org>
@@ -129,7 +1528,7 @@
 
 	* app/tools/gimpnewrectselectoptions.c: turn highlighting off by
 	default.
-	
+
 2006-06-04  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* app/tools/gimprectangletool.c (gimp_rectangle_tool_draw):
@@ -137,7 +1536,7 @@
 
 	* app/tools/gimpnewrectselecttool.c: actually remove some code
 	previously commented out.
-	
+
 2006-06-04  Michael Natterer  <mitch@gimp.org>
 
 	* libgimpwidgets/gimppropwidgets.c
@@ -152,7 +1551,7 @@
 	* app/tools/gimprectangletool.[ch]: add new signal
 	"rectangle-changed" and method rectangle_changed.
 	Emit them on button release and when dimensions are
-	changed in controls.  
+	changed in controls.
 
 	* app/tools/gimpnewrectselecttool.c: use rectangle_changed
 	method to change selection, undoing previous change if
@@ -239,12 +1638,12 @@
 
 	* app/tools/gimprectangletool.c: move statically declared
 	variables into "private" struct.
-	
+
 2006-06-02  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* libgimpbase/Makefile.am: include gimpcpuaccel.h in
 	libgimpbaseinclude_HEADERS; missed in Sven's changes.
-	
+
 2006-06-02  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* app/tools/gimpnewrectselecttool.[ch]: use RECT_INACTIVE state,
@@ -262,7 +1661,7 @@
 
 	* app/tools/gimprectangletool.c (gimp_rectangle_tool_button_press):
 	if function is RECT_CREATING, start a new rectangle.
-	
+
 	* app/tools/gimpnewrectselecttool.c: remove g_printerr statement that
 	mitch added for debugging.
 
@@ -456,10 +1855,10 @@
 
 	* app/tools/gimprectangletool.[ch]: add "constrain" property to
 	specify whether to clip at image bounds when computing dimensions.
-	
+
 	* app/tools/gimpcroptool.c
 	* app/tools/gimpnewrectselecttool.c: set "constrain" to TRUE.
-	
+
 	* app/tools/gimpellipseselecttool.c: set "constrain" to FALSE.
 
 	Hopefully fixes bug #329817.
@@ -678,7 +2077,7 @@
 
 2006-05-26  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
-	* plug-ins/common/dicom.c: applied patch from Dov Grobgeld 
+	* plug-ins/common/dicom.c: applied patch from Dov Grobgeld
 	with several fixes for dicom loading, fixes bug #163256.
 
 2006-05-26  Michael Natterer  <mitch@gimp.org>
@@ -733,7 +2132,7 @@
 2006-05-24  Sven Neumann  <sven@gimp.org>
 
 	* plug-ins/common/raw.c (load_dialog): use a GtkFileChooserButton
-	instead of a GimpFileEntry widget. 
+	instead of a GimpFileEntry widget.
 
 	* plug-ins/script-fu/script-fu-interface.c
 	* plug-ins/script-fu/script-fu-scripts.c
@@ -765,7 +2164,7 @@
 	instead of g_hash_table_insert() and make sure the used key is
 	always the name of the first procedure in the list.
 	Fixes bug #342578.
-	
+
 	(It's actually a miracle that only the PDB browser crashed, and
 	not GIMP, since we were using pointers to g_free()'d memory as
 	keys when different plug-ins registered procedures with the same
@@ -879,7 +2278,7 @@
 
 	* plug-ins/common/png.c: fix remapping of colors when
 	saving IndexedA images; fixes bug #303864.
-	
+
 2006-05-22  Sven Neumann  <sven@gimp.org>
 
 	* app/actions/plug-in-commands.c (plug_in_collect_image_args):
@@ -1017,10 +2416,10 @@
 
 2006-05-19  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
-	* libgimpwidgets/gimpwidgets.c (gimp_coordinates_callback): 
+	* libgimpwidgets/gimpwidgets.c (gimp_coordinates_callback):
 	use ROUND() to prevent incorrect chainbutton logic.  Fixes
 	bug #336259.
-	
+
 2006-05-19  Sven Neumann  <sven@gimp.org>
 
 	* app/tools/gimpscaletool.c (gimp_scale_tool_dialog_update,
@@ -1106,7 +2505,7 @@
 2006-05-18  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* app/dialogs/file-save-dialog.c: make sure dialog has
-	not been destroyed when setting sensitive; fixes 
+	not been destroyed when setting sensitive; fixes
 	bug #322978.
 
 2006-05-18  Sven Neumann  <sven@gimp.org>
@@ -1174,10 +2573,10 @@
 	* libgimpwidgets/gimpstock.h
 	* themes/Default/images/Makefile.am: add new (ugly) icon
 	for alignment tool.
-	
+
 	* app/tools/gimpaligntool.c: use the new icon; change
 	"pressed" to "clicked" for buttons.
-	
+
 2006-05-17  Michael Natterer  <mitch@gimp.org>
 
 	* app/tools/gimpvectortool.c (gimp_vector_tool_set_vectors): use
@@ -1318,7 +2717,7 @@
 
 	* app/app_procs.c (app_run): indentation.
 
-	* app/core/gimp.c (gimp_real_initialize) 
+	* app/core/gimp.c (gimp_real_initialize)
 	* app/plug-in/gimppluginmanager.c (gimp_plug_in_manager_restore):
 	moved a call to status_callback() to the plug-in manager.
 
@@ -1335,7 +2734,7 @@
 	* libgimpmodule/Makefile.am: added missing GLIB_LIBS to
 	LIBADD. The recent changes to the gmodule check in configure.in
 	had broken the build.
-	
+
 2006-05-15  Sven Neumann  <sven@gimp.org>
 
 	* app/plug-in/gimpplugin.c: removed debugging output.
@@ -1416,7 +2815,7 @@
 
 	* **/makefile.msc app/gimpcore.def : updated
 	* app/core/gimp-util.c : dont include "config/gimpbaseconfig.c", it
-	gives an redefinition error with msvc. Instead include 
+	gives an redefinition error with msvc. Instead include
 	config/gimpbaseconfig.h and libgimpconfig/gimpconfig-path.h
 
 	* plug-ins/common/psd_save.c : fix c99isms (declarations only at the
@@ -2365,7 +3764,7 @@
 	* app/base/gimphistogram.[ch]: added new function
 	gimp_histogram_get_threshold() that returns an optimal
 	binarization threshold.
-	
+
 	* app/tools/gimpthresholdtool.c: use the new function to
 	initialize the Threshold tool.
 
@@ -2529,7 +3928,7 @@
 
 2006-04-12  Sven Neumann  <sven@gimp.org>
 
-	* configure.in:  bumped version to 2.3.9.
+	* configure.in: bumped version to 2.3.9.
 
 2006-04-12  Sven Neumann  <sven@gimp.org>
 
@@ -3142,7 +4541,7 @@
 	* plug-ins/common/plugin-defs.pl: introduced a new parameter
 	'extralibs' and changed mkgen.pl to treat this equally to
 	'optional' for non-optional plug-ins that needs different libs on
-	different platforms 
+	different platforms
 
 	* plug-ins/common/Makefile.am: regenerated
 
@@ -4437,7 +5836,7 @@
 	* tools/pdbgen/pdb/progress.pdb (progress_init): remove it without
 	replacement, the generated function on the libgimp side is
 	internal anyway.
-	
+
 	* libgimp/gimpprogress_pdb.[ch] (_gimp_progress_init): regenerated
 	with a display_ID parameter.
 
@@ -5139,7 +6538,7 @@
 	accessible plugins, and mark them for translation.  Probably there
 	is room for improvement in some of them.  Still needs to be done for
 	plug-ins not in "common".
-	
+
 2006-03-15  Michael Natterer  <mitch@gimp.org>
 
 	* tools/pdbgen/pdb/channel.pdb
@@ -5459,7 +6858,7 @@
 
 2006-03-03  Sven Neumann  <sven@gimp.org>
 
-	* tools/pdbgen/pdb/fileops.pdb: 
+	* tools/pdbgen/pdb/fileops.pdb:
 	* app/dialogs/file-open-dialog.c
 	* app/display/gimpdisplayshell-dnd.c
 	* app/file/file-open.[ch]
@@ -5598,7 +6997,7 @@
 2005-06-26  Hans Breuer  <hans@breuer.org>
 
 	* **/makefile.msc app/gimpcore.def : updated
-	
+
 2006-02-26  Sven Neumann  <sven@gimp.org>
 
 	* libgimp/gimpzoompreview.c: added "drawable" as construct-only
@@ -5928,7 +7327,7 @@
 2006-02-07  Sven Neumann  <sven@gimp.org>
 
 	* plug-ins/common/raw.c
-	* plug-ins/gfig/gfig-dialog.c 
+	* plug-ins/gfig/gfig-dialog.c
 	* plug-ins/helpbrowser/dialog.c
 	* plug-ins/imagemap/imap_browse.c
 	* plug-ins/print/gimp_main_window.c: use canonical signal names.
@@ -5990,7 +7389,7 @@
 2006-02-03  Carol Spears  <carol@gimp.org>
 
 	* app/tools/gimprectangletool.c: Applied patch from Joao S. O. Bueno
-	Calligaris that corrects status bar coordinate display.  Fixes bug 
+	Calligaris that corrects status bar coordinate display.  Fixes bug
         #329817
 
 2006-02-04  DindinX  <dindinx@gimp.org>
@@ -6049,7 +7448,7 @@
 
 	* app/tools/gimpmeasuretool.c: use the closest corner of the
 	current pixel as origin. Fixes bug #329000.
-	
+
 2006-01-30  Sven Neumann  <sven@gimp.org>
 
 	* app/config/config-types.h: moved GIMP_PARAM defines from here ...
@@ -6497,14 +7896,14 @@
 
 2005-12-29  Simon Budig  <simon@gimp.org>
 
-	* tools/pdbgen/pdb/image.pdb: new function: 
+	* tools/pdbgen/pdb/image.pdb: new function:
 	    image_add_vectors
 
-	* tools/pdbgen/pdb/vectors.pdb: new functions: 
+	* tools/pdbgen/pdb/vectors.pdb: new functions:
 	    vectors_get_strokes
 	    vectors_stroke_get_point_at_dist
 	    vectors_stroke_close
-	
+
 	removed nonfunctional undo code (that does not belong here anyways)
 	and fixed a bug in [...]_cubicto.
 
@@ -6547,7 +7946,7 @@
 	      vectors_bezier_stroke_conicto
 	      vectors_bezier_stroke_cubicto
 	      vectors_bezier_stroke_new_ellipse
-	
+
 	Undo does not work properly yet.
 
 	* app/pdb/internal_procs.c
@@ -6626,7 +8025,7 @@
 
 2005-12-29  Simon Budig  <simon@gimp.org>
 
-	* tools/pdbgen/pdb/vectors.pdb: 
+	* tools/pdbgen/pdb/vectors.pdb:
 	   gimp_vectors_[gs]et_locked  renamed to _linked for consistency.
 
 	   gimp_vectors_[gs]et_tattoo, gimp_vectors_get_image: new.
@@ -6929,7 +8328,7 @@
 
 	* plug-ins/script-fu/siod/slib.c: added a fix for the script-fu
 	crash in chinese (and maybe other) locales. Applied to both
-	branches. Fixes bug #163212. 
+	branches. Fixes bug #163212.
 
 2005-12-11  Michael Natterer  <mitch@gimp.org>
 
@@ -6966,7 +8365,7 @@
 	* app/paint/gimpclone.c
 	* app/paint/paint-enums.c
 	* app/paint/paint-enums.h: added alignment mode for cloning from a
-	fixed location source as suggested in bug #322791. 
+	fixed location source as suggested in bug #322791.
 
 2005-12-06  Manish Singh  <yosh@gimp.org>
 
@@ -7026,10 +8425,10 @@
 
 	* app/tools/gimprectangletool.c: handle fixed_width,
 	fixed_height, and fixed_aspect in a reasonable way.
-	Also don't crash when user modifies aspect of a 
-	nonexistent rectangle, and disconnect notify 
+	Also don't crash when user modifies aspect of a
+	nonexistent rectangle, and disconnect notify
 	handler in dispose.
-	
+
 2005-11-30  Michael Natterer  <mitch@gimp.org>
 
 	* app/widgets/gimpeditor.c (gimp_editor_add_button)
@@ -7354,7 +8753,7 @@
 
 2005-11-09  Simos Xenitellis  <simos@gnome.org>
 
-	* configure.in: (Re)Added tt (Tatarish) to ALL_LINGUAS, 
+	* configure.in: (Re)Added tt (Tatarish) to ALL_LINGUAS,
 	added stubs for missing PO files.
 
 2005-11-09  Michael Natterer  <mitch@gimp.org>
@@ -7813,7 +9212,7 @@
 
 2005-10-28  Carol Spears  <carol@gimp.org>
 
-	* app/actions/image-actions.c: Changed colors-modify-menu to 
+	* app/actions/image-actions.c: Changed colors-modify-menu to
         colors-transform-menu
 
 	* menus/image-menu.xml.in: moved Desaturate and Invert into the tools
@@ -7878,14 +9277,14 @@
 
 2005-10-26  Carol Spears  <carol@gimp.org>
 
-	* app/actions/image-actions.c: added colors-info-menu and 
+	* app/actions/image-actions.c: added colors-info-menu and
         colors-modify-menu as children of colors-menu
 
-	* menus/image-menu.xml.in: changed Modify placeholder to 
-        colors-modify-menu menuaction and added color-info-menu action to 
+	* menus/image-menu.xml.in: changed Modify placeholder to
+        colors-modify-menu menuaction and added color-info-menu action to
         colors-menu
 
-        * plug-ins/common/colortoalpha.c: moved to Colors/Modify in the 
+        * plug-ins/common/colortoalpha.c: moved to Colors/Modify in the
         registration part.
 
 2005-10-26  Sven Neumann  <sven@gimp.org>
@@ -8034,15 +9433,15 @@
 
 2005-10-20  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
-	* app/tools/gimprectangletool.c: 
-	* app/tools/gimpnewrectselecttool.c Make clicking inside an existing 
+	* app/tools/gimprectangletool.c:
+	* app/tools/gimpnewrectselecttool.c Make clicking inside an existing
 	selection create rect matching the marching ants.
 
 2005-10-20  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* app/tools/gimprectangleoptions.c: remove fixed-center stuff
 	from options gui in order to simplify it.
-	
+
 2005-10-20  Sven Neumann  <sven@gimp.org>
 
 	* plug-ins/twain/twain.c: renamed menu entry to "Scanner/Camera"
@@ -8114,10 +9513,10 @@
 2005-10-18  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* app/tools/gimpaligntool.c: Remove bogus stuff about
-	weak pointers, and disconnect properly in dispose 
+	weak pointers, and disconnect properly in dispose
 	callback instead of finalize, as suggested by mitch.
 	Fixes bug #314880.
-	
+
 2005-10-18  Sven Neumann  <sven@gimp.org>
 
 	* app/display/gimpdisplayshell-selection.c: formatting.
@@ -8234,12 +9633,12 @@
 	Move the script categories that were in Xtns->Script-Fu
         directly into Xtns. Language specific tools (e.g. Refresh,
         Console) remain in language-specific menus. Bug 145507.
-	
+
 2005-10-15  Karine Delvare  <kdelvare@nerim.net>
 
 	* app/tools/gimpnewrectselecttool.c
 	* app/tools/gimpselectiontool.c: let status info be pushed.
-	
+
 2005-10-14  Sven Neumann  <sven@gimp.org>
 
 	* plug-ins/common/channel_mixer.c: indentation and other cleanups.
@@ -8268,7 +9667,7 @@
 
 	* data/palettes/Tango.gpl: Added the tango icon palette
 	  (http://www.tango-project.org)
-	
+
 2005-10-12  Sven Neumann  <sven@gimp.org>
 
 	* plug-ins/common/displace.c: check that displacement maps have
@@ -8603,7 +10002,7 @@
 
 2005-09-30  Carol Spears  <carol@gimp.org>
 
-	* plug-ins/pygimp/plug-ins/clothify.py  
+	* plug-ins/pygimp/plug-ins/clothify.py
 	* plug-ins/pygimp/plug-ins/foggify.py: Added run_mode parameter.
 
 2005-10-01  Simon Budig  <simon@gimp.org>
@@ -8647,7 +10046,7 @@
 
 2005-09-30  Carol Spears  <carol@gimp.org>
 
-	* plug-ins/pygimp/gimpfu.py: removed code that limited plug-in 
+	* plug-ins/pygimp/gimpfu.py: removed code that limited plug-in
         registration.
 
 2005-09-30  Michael Natterer  <mitch@gimp.org>
@@ -8771,7 +10170,7 @@
 
 	* plug-ins/*/*.c: use gimp_progress_init_printf() instead of
 	init(NULL) plus set_text(foo) and changed users of set_text() to
-	use set_text_printf().	
+	use set_text_printf().
 
 2005-09-29  Sven Neumann  <sven@gimp.org>
 
@@ -9267,25 +10666,25 @@
 2005-09-24  Hans Breuer  <hans@breuer.org>
 
 	* **makefile.msc : updated
-	
+
 	* app/dialogs/user-install-dialog.c : only add the migrate page if
 	there is something to migrate from. Avoids on version being NULL.
-	
+
 	* app/dialogs/file-save-dialog.c : the g_print() output was crashing
 	on the assumption that ->menu_label != NULL. It is for colorhtml.py.
-	
-	* app/widgets/gimpselectiondata.c : use HAVE_UNISTD_H and move 
+
+	* app/widgets/gimpselectiondata.c : use HAVE_UNISTD_H and move
 	* process.h definition by G_OS_WIN32 below it being defined
 	* app/widgets/gimpwidgets-utils.c(gimp_window_get_native) : cast
 	return value to (GdkNativeWindow) it is not necessary an int.
-	
+
 	* libgimpwidgets/gimpwidgets.def : added gimp_zoom_type_get_type
-	
+
 	* plug-ins/help/gimp-help-lookup.c : dynamic lookup of help_root
 	instead of hard-coding DATADIR/GIMP_HELP_PREFIX
-	
+
 	* plug-ins/xjt/xjt.c : there is no pid_t with msvc, typedef one.
-	
+
 2005-09-25  Michael Natterer  <mitch@gimp.org>
 
 	* app/actions/plug-in-actions.c
@@ -9382,7 +10781,7 @@
 	* app/actions/view-commands.c (view_zoom_cmd_callback) use the new
 	values.
 
-	* app/display/gimpdisplayshell.c (gimp_display_shell_new): cosmetics. 
+	* app/display/gimpdisplayshell.c (gimp_display_shell_new): cosmetics.
 
 2005-09-25  Sven Neumann  <sven@gimp.org>
 
@@ -9550,7 +10949,7 @@
 	specified in px/cm.
 	* plug-ins/common/psd_save.c: Save the resolution of the image in
 	the file.  Fixes bug #310426
-	
+
 2005-09-21  Sven Neumann  <sven@gimp.org>
 
 	* HACKING: minor update.
@@ -9633,7 +11032,7 @@
 
 	* app/paint-funcs/paint-funcs.c (erode_region, dilate_region):
 	fixed bug in buffer initialization, spotted by Tobias Lenz.
-	
+
 2005-09-20  Sven Neumann  <sven@gimp.org>
 
 	* plug-ins/common/svg.c: corrected version check (bug #314400).
@@ -9833,7 +11232,7 @@
 
 2005-09-18  Sven Neumann  <sven@gimp.org>
 
-	* app/actions/view-actions.c (view_zoom_actions): 
+	* app/actions/view-actions.c (view_zoom_actions):
 	* menus/image-menu.xml.in: added extra Zoom In/Out actions and
 	bind them to the Add/Subtract keys on the keypad (bug #316555).
 
@@ -10243,10 +11642,10 @@
 
 2005-09-06  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
-	* app/paint-funcs/paint-funcs-generic.h (blend_pixels): change 
+	* app/paint-funcs/paint-funcs-generic.h (blend_pixels): change
 	variables from unsigned to signed -- fixes problem described
 	in comment 17 of bug #163721.
-	
+
 2005-09-06  Sven Neumann  <sven@gimp.org>
 
 	* app/dialogs/stroke-dialog.c (stroke_dialog_new): use
@@ -10451,13 +11850,13 @@
 	* app/tools/gimptextoptions.c: minor string changes.
 
 2005-09-03  Seth Burgess <sjburges@gimp.org>
-	
+
 	* app/tools/gimpbrightnesscontrasttool.c
 	* app/tools/gimpcolorbalancetool.c
 	* app/tools/gimpcolorizetool.c
-	* app/tools/gimphuesaturationtool.c: change the update policy to 
+	* app/tools/gimphuesaturationtool.c: change the update policy to
 	GTK_UPDATE_CONTINUOUS for considerably better responsiveness
-	
+
 2005-09-03  Michael Natterer  <mitch@gimp.org>
 
 	* app/core/gimp-edit.[ch] (gimp_edit_paste_as_new): don't create a
@@ -10733,7 +12132,7 @@
 2005-08-25  Sven Neumann  <sven@gimp.org>
 
 	* plug-ins/sel2path/curve.c (new_curve_list)
-	* plug-ins/sel2path/fit.c (split_at_corners) 
+	* plug-ins/sel2path/fit.c (split_at_corners)
 	* plug-ins/winicon/icosave.c (ico_init_data): initialize variables.
 
 2005-08-25  Michael Natterer  <mitch@gimp.org>
@@ -10748,7 +12147,7 @@
 
 2005-08-25  Michael Natterer  <mitch@gimp.org>
 
-	* app/widgets/gimpview.[ch]: minor code and formatting cleanup. 
+	* app/widgets/gimpview.[ch]: minor code and formatting cleanup.
 
 2005-08-25  Sven Neumann  <sven@gimp.org>
 
@@ -11214,8 +12613,8 @@
 
 	* app/core/gimpscanconvert.c: added missing include.
 
-	* app/text/gimp-fonts.c 
-	* libgimp/gimp.c 
+	* app/text/gimp-fonts.c
+	* libgimp/gimp.c
 	* libgimpwidgets/gimpcolornotebook.c
 	* plug-ins/helpbrowser/dialog.c: fixed signedness warnings.
 
@@ -11302,14 +12701,14 @@
 
 	* app/tools/gimprectangletool.[ch]
 	* app/tools/gimprectangleoptions.[ch]: transform into an interface.
-	
+
 	* app/tools/gimpcroptool.[ch]
 	* app/tools/gimpnewrectselecttool.[ch]: use the rectangletool interface.
-	
+
 	* app/tools/gimpcropoptions.[ch]
 	* app/tools/gimpnewrectselectoptions.[ch]: use the rectangleoptions
 	interface.
-	
+
 	* app/tools/Makefile.am: added gimpnewrectselectionoptions.[ch]
 
 2005-08-15  Sven Neumann  <sven@gimp.org>
@@ -11774,7 +13173,7 @@
 
 	* plug-ins/dbbrowser/plugin-browser.c
 	* plug-ins/dbbrowser/procedure-browser.c: removed these files...
-	
+
 	* plug-ins/common/plugin-browser.c
 	* plug-ins/common/procedure-browser.c: ...and added them here.
 
@@ -12347,11 +13746,11 @@
 	* app/base/gimphistogram.c (gimp_histogram_calculate_sub_region):
 	loop unrolling.
 
-	* app/dialogs/about-dialog.c 
+	* app/dialogs/about-dialog.c
 	* app/widgets/gimpselectiondata.c
 	* plug-ins/bmp/bmpread.c (ReadBMP)
 	* plug-ins/gfig/gfig.c (gfig_load)
-	* plug-ins/imagemap/imap_preview.c 
+	* plug-ins/imagemap/imap_preview.c
 	* plug-ins/imagemap/imap_selection.c
 	* plug-ins/jpeg/jpeg-exif.c
 	* plug-ins/common/dicom.c
@@ -12394,7 +13793,7 @@
 	* app/widgets/gimpclipboard.[ch] (gimp_clipboard_get_svg): return
 	a signed char pointer.
 
-	* app/actions/edit-commands.c 
+	* app/actions/edit-commands.c
 	* app/tools/gimpinkoptions-gui.c: fixed signedness issues.
 
 2005-07-29  Sven Neumann  <sven@gimp.org>
@@ -12504,7 +13903,7 @@
 
 	* app/core/Makefile.am
 	* app/core/cpercep.[ch]: moved cpercep from here ...
-	
+
 	* app/base/Makefile.am
 	* app/base/cpercep.[ch]: ... to here.
 
@@ -12609,7 +14008,7 @@
 2005-07-22  Michael Schumacher  <schumaml@cvs.gnome.org>
 
 	* libgimpwidgets/gimpwidgets.def: added missing
-	gimp_page_selector_[get|set]_target 
+	gimp_page_selector_[get|set]_target
 
 2005-07-22  Michael Natterer  <mitch@gimp.org>
 
@@ -12696,7 +14095,7 @@
 
 2005-07-19  Sven Neumann  <sven@gimp.org>
 
-	* app/actions/edit-actions.c 
+	* app/actions/edit-actions.c
 	* etc/ps-menurc: changed the default keybinding for Edit->Clear
 	from Ctrl-K to Delete (bug #118115).
 
@@ -12761,9 +14160,9 @@
 	a physical size, displays that size in an arbitrary unit, and lets
 	you select a resolution via changing either the corresponding width
 	and height or specifying it directly in pixels per your chosen unit.
-	
+
 	* libgimpwidgets/Makefile.am
-	* libgimpwidgets/gimpwidgets.def 
+	* libgimpwidgets/gimpwidgets.def
 	* libgimpwidgets/gimpwidgets.h
 	* libgimpwidgets/gimpwidgetstypes.h: added appropriate files, function,
 	headers, and types, respectively
@@ -12771,7 +14170,7 @@
 	* devel-docs/libgimpwidgets/libgimpwidgets.types: added
 	gimp_resolution_entry_get_type.  A section still needs to be created
 	for it.
-	
+
 	* plug-ins/common/poppler.c (run): bugfix that accidentally wasn't
 	merged in previous commit.
 
@@ -12784,10 +14183,10 @@
 
 2005-07-16  Nathan Summers  <rock@gimp.org>
 
-	* plug-ins/common/poppler.c: merged in all the changes in my 
+	* plug-ins/common/poppler.c: merged in all the changes in my
 	current gimp-poppler tree that don't need c++ or cause regressions.
 	Insignificant code cleanups.
-	
+
 	* plug-ins/common/poppler.c (load_dialog): display title of pdf
 	at the top of the dialog, and show the page labels in the page
 	selector.  The loop for the page labels might be profitably moved
@@ -12797,11 +14196,11 @@
 2005-07-16  Nathan Summers  <rock@gimp.org>
 
 	* plug-ins/common/plugin-defs.pl: added poppler
-	
-	* plug-ins/common/mkgen.pl: add poppler's CFLAGS, and make the 
+
+	* plug-ins/common/mkgen.pl: add poppler's CFLAGS, and make the
 	comment about how plug-ins/common/Makefile.am is autogenerated
 	more prominent
-	
+
 	* plug-ins/common/.cvsignore
 	* plug-ins/common/Makefile.am: regenerated
 
@@ -12815,7 +14214,7 @@
 	plugins become available, this probably should be moved.
 
 	Also removed the HAVE_POPPLER am conditional; it wasn't needed.
-	
+
 	* plug-ins/common/Makefile.am: added poppler to the build process
 
 2005-07-16  Sven Neumann  <sven@gimp.org>
@@ -12902,7 +14301,7 @@
 	* plug-ins/gfig/gfig-grid.c
 	* plug-ins/gfig/gfig.h: applied a patch by Ted Shaneyfelt that
 	addresses parts of bug 151092: less sectors on inner, more sectors
-	on outer tracks. 
+	on outer tracks.
 
 2005-07-13  Sven Neumann  <sven@gimp.org>
 
@@ -13120,8 +14519,8 @@
 2005-07-10  Hans Breuer  <hans@breuer.org>
 
 	* **/makefile.msc app/gimpcore.def : updated
-	* app/widgets/gimpcontrollerlist.c : dont include 
-	"gimpmessagedialog.c" to avoid redefinitions. 
+	* app/widgets/gimpcontrollerlist.c : dont include
+	"gimpmessagedialog.c" to avoid redefinitions.
 	Instead include gimpmessagebox.h and gimpmessagedialog.h
 
 	* plug-ins/common/raw.c : include <io.h>
@@ -13471,8 +14870,8 @@
 	text doesn't wrap for pages smaller than 1000.
 
 2005-06-27  Michael Schumacher  <schumaml@cvs.gnome.org>
-	
-	* libgimpwidgets/gimppageselector.c: fixed a typo: 
+
+	* libgimpwidgets/gimppageselector.c: fixed a typo:
 	thmbnail -> thumbnail
 
 2005-06-27  Michael Natterer  <mitch@gimp.org>
@@ -13683,7 +15082,7 @@
 
 	* authors.xml: added Akkana Peck to contributors and updated my
 	last name.
-	
+
 	* po/fr.po: fixed typo.
 
 2005-06-25  Karine Delvare  <kdelvare@cvs.gimp.org>
@@ -13757,7 +15156,7 @@
 	softproofing to "Print simulation profile".
 
 	* libgimpconfig/gimpcolorconfig.c: improved blurb.
-	
+
 	* modules/cdisplay_lcms.c (cdisplay_lcms_configure): show filenames
 	of profiles; will be replaced by real profile information.
 
@@ -13847,11 +15246,11 @@
 
 2005-06-24  Sven Neumann  <sven@gimp.org>
 
-	* plug-ins/common/png.c: some code cleanup, no real changes. 
+	* plug-ins/common/png.c: some code cleanup, no real changes.
 
 2005-06-24  Sven Neumann  <sven@gimp.org>
 
-	* plug-ins/common/png.c (save_image): 
+	* plug-ins/common/png.c (save_image):
 	* app/dialogs/preferences-dialog.c: added a check button to control
 	the "display-profile-from-gdk" option.
 
@@ -13863,7 +15262,7 @@
 
 	Added basic support for the proposed ICC Profiles In X Specification
 	(http://burtonini.com/temp/xicc-specification-0.1.html).
-	
+
 	* libgimpconfig/gimpcolorconfig.[ch]: added a configuration option
 	"display-profile-from-gdk", default to TRUE.
 
@@ -13947,7 +15346,7 @@
 	* plug-ins/FractalExplorer/Makefile.am
 	* plug-ins/FractalExplorer/logo.h: removed logo now that the About
 	dialog is gone.
-	
+
 2005-06-22  Michael Natterer  <mitch@gimp.org>
 
 	* libgimpconfig/gimpconfig-deserialize.h
@@ -13975,7 +15374,7 @@
 
 	* plug-ins/common/mblur.c: add option of blurring inward
 	or outward for zoom, should fix bug #142968.
-	
+
 2005-06-22  Sven Neumann  <sven@gimp.org>
 
 	* plug-ins/FractalExplorer/Dialogs.c
@@ -13986,7 +15385,7 @@
 
 	* plug-ins/common/newsprint.c: remove "optimization" that interacts
 	badly with preview; fixes bug #161573.
-	
+
 2005-06-21  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* plug-ins/common/retinex.c:  initialize memory before using.
@@ -14169,7 +15568,7 @@
 
 2005-06-15  Sven Neumann  <sven@gimp.org>
 
-	* app/core/gimpimagefile.c (gimp_imagefile_load_thumb): 
+	* app/core/gimpimagefile.c (gimp_imagefile_load_thumb):
 	* app/widgets/gimpthumbbox.c (gimp_thumb_box_auto_thumbnail):
 	don't display a preview and don't attempt to create one if the
 	image file does not exist any longer (bug #307672).
@@ -14315,7 +15714,7 @@
 	swapping temp-bufs to disk.
 
 	* app/base/base.c: made base_config a static variable.
-	
+
 	* app/core/gimpdata.[ch]
 	* app/core/gimpdatafactory.[ch]: removed stingy_memory_use
 	parameter from data construction methods.
@@ -14338,7 +15737,7 @@
 	radio buttons allowing selection of reference layer without
 	using Ctrl modifier.  Handle removal of target or reference
 	layers from image more correctly.  More to come.
-	
+
 2005-06-07  Sven Neumann  <sven@gimp.org>
 
 	* plug-ins/bmp/bmp.c
@@ -14585,7 +15984,7 @@
 
 	* app/widgets/gimpsamplepointeditor.c: explicitly add a color
 	area to the color frames.
-	
+
 2005-06-04  Sven Neumann  <sven@gimp.org>
 
 	* app/widgets/gimpdnd.c (gimp_dnd_get_viewable_icon): show the
@@ -14614,7 +16013,7 @@
 
 2005-06-03  Manish Singh  <yosh@gimp.org>
 
-	* tools/pdbgen/enumcode.pl: make _gimp_enums_init public, so 
+	* tools/pdbgen/enumcode.pl: make _gimp_enums_init public, so
 	language bindings can do early enum registration if needed.
 
 	* libgimp/gimpenums.h
@@ -14626,7 +16025,7 @@
 
 2005-06-03  Manish Singh  <yosh@gimp.org>
 
-	* configure.in: require python 2.2.1, so True and False are always 
+	* configure.in: require python 2.2.1, so True and False are always
 	there. Check for pygtk codegen stuff, we'll be using that in the
 	future.
 
@@ -14655,12 +16054,12 @@
 	hold code for gimp_item_align().
 
 	* app/core/Makefile.am: add new files
-	
+
 	* app/core/gimpitem.[ch]: remove code from here.
 
 	* app/tools/gimpaligntool.c: fix includes and remove
 	unneeded includes.
-	
+
 2005-06-03  Michael Natterer  <mitch@gimp.org>
 
 	* app/widgets/gimpcolorframe.c (gimp_color_frame_init): pack the
@@ -14698,14 +16097,14 @@
 	* app/tools/gimprectangletool.c (gimp_rectangle_tool_motion):
 	Don't change function before creating new rectangle;
 	cause of problem identified by Karine Delvare.
-	
+
 2005-06-02  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* plug-ins/common/screenshot.c: trap errors when running
 	XGrabKey, to prevent bail-out on BadAccess error as
 	reported by Jean-Luc Coulon on developers list; solution
 	suggested by Simon Budig.
-	
+
 2005-06-02  Raphaël Quinet  <raphael@gimp.org>
 
 	* data/images/gimp-splash.png: New splash.  A twist on the
@@ -14713,9 +16112,9 @@
 
 2005-06-01  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
-	* app/widgets/gimpcolorframe.[ch]: add a color area, to make 
+	* app/widgets/gimpcolorframe.[ch]: add a color area, to make
 	sample points dialog show a swatch of color for each point.
-	
+
 2005-06-01  Simon Budig  <simon@gimp.org>
 
 	* app/vectors/gimpvectors.c: cosmetic change: Make the stroke IDs
@@ -14731,7 +16130,7 @@
 
 2005-05-31  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
-	* app/tools/gimpbrightnesscontrasttool.[ch]: Allow tool to be 
+	* app/tools/gimpbrightnesscontrasttool.[ch]: Allow tool to be
 	operating by clicking and dragging inside the image, as
 	described in bug #165330.
 
@@ -14830,13 +16229,13 @@
 	* plug-ins/imagemap/imap_about.c: use gtk_about_dialog instead of
 	home-brewn stuff.
 
-	* plug-ins/imagemap/imap_main.c 	
+	* plug-ins/imagemap/imap_main.c
 	* plug-ins/imagemap/imap_menu.c: minor clean-up.
 
 2005-05-27  Sven Neumann  <sven@gimp.org>
 
 	* (lots of files): Use the canonical form for signal names.
-	
+
 2005-05-27  Sven Neumann  <sven@gimp.org>
 
 	* app/widgets/gimphistogrameditor.[ch]: connect to "name-changed"
@@ -15083,7 +16482,7 @@
 	and to free a dash pattern.
 
 	* app/widgets/Makefile.am
-	* app/widgets/widgets-types.h 
+	* app/widgets/widgets-types.h
 	* app/widgets/gimpcellrendererdashes.[ch]: added a simple cell
 	renderer to visualize a dash pattern.
 
@@ -15105,7 +16504,7 @@
 
 	* app/actions/edit-commands.c (edit_paste_cmd_callback): forward
 	to "edit-paste-as-new" if we are being called from the toolbox.
-	
+
 2005-05-21  Sven Neumann  <sven@gimp.org>
 
 	* app/widgets/gimpuimanager.c: improved reporting of errors while
@@ -15113,7 +16512,7 @@
 
 2005-05-21  Sven Neumann  <sven@gimp.org>
 
-	* app/dialogs/convert-dialog.c: 
+	* app/dialogs/convert-dialog.c:
 	* libgimp/gimpexport.c (export_convert_indexed): changed default
 	dithering to GIMP_NO_DITHER (bug #303063).
 
@@ -15349,7 +16748,7 @@
 
 	* plug-ins/jpeg/jpeg-load.c: Don't detach from drawable if
 	it belongs to a preview layer.  Fixes bug #304352.
-	
+
 2005-05-16  Michael Natterer  <mitch@gimp.org>
 
 	* tools/pdbgen/pdb/procedural_db.pdb: fixed typo in API docs.
@@ -15394,7 +16793,7 @@
 
 	* app/composite/gimp-composite-generic.c:
 	Fixed signedness problems is calls to gimp_rgb_to_hsv_int() and the like.
-	
+
 	* app/composite/gimp-composite-mmx.[ch]:
 	Small fixes to register clobber lists.
 	Added gimp_composite_subtract_va8_va8_va8_mmx.
@@ -15523,7 +16922,7 @@
 	* app/config/gimpguiconfig.[ch]
 	* app/config/gimprc-blurbs.h: added new gimprc option
 	"transient-docks".
-	
+
 	* app/widgets/gimpimagedock.c (gimp_image_dock_display_changed):
 	as an experiment, obey the "transient-docks" preference and set
 	the dock window transient to the active display shell. Please
@@ -16158,7 +17557,7 @@
 2005-04-21  Nathan Summers  <rock@gimp.org>
 
 	* data/images/gimp-splash.png: removed flare effect
-	
+
 2005-04-20  Nathan Summers  <rock@gimp.org>
 
 	* data/images/gimp-splash.png: new splash
@@ -16476,7 +17875,7 @@
 
 2005-04-14  Maurits Rijk  <m.rijk@chello.nl>
 
-	* plug-ins/imagemap/imap_cmd_unselect_all.c 
+	* plug-ins/imagemap/imap_cmd_unselect_all.c
 	* plug-ins/imagemap/imap_main.c
 	* plug-ins/imagemap/imap_object_popup.c: removed bunch of
 	compilation warnings (spotted by Sven Neumann).
@@ -16524,7 +17923,7 @@
 
 2005-04-14  Sven Neumann  <sven@gimp.org>
 
-	* app/display/gimpdisplayshell-scale.c (gimp_display_shell_scale_to): 
+	* app/display/gimpdisplayshell-scale.c (gimp_display_shell_scale_to):
 	changed to keep the point under the mouse at the same location,
 	rather than to center it. Also added API docs.
 
@@ -16535,7 +17934,7 @@
 
 	* app/vectors/gimpstroke.[ch]
 	* app/vectors/gimpvectors.[ch]: Added IDs to the strokes
-	
+
 	* tools/pdbgen/pdb.pl: corrected "vectors" type, deleted "path" type.
 	* tools/pdbgen/pdb/image.pdb: added gimp_image_get_vectors()
 	* tools/pdbgen/pdb/vectors.pdb: New file for the vectors API
@@ -16548,7 +17947,7 @@
 
 	* libgimp/gimpvectors_pdb.[ch]
 	* app/pdb/vectors_cmds.c: new autogenerated files.
-	
+
 	* libgimp/Makefile.am
 	* app/pdb/Makefile.am: Added new autogenerated file.
 
@@ -16705,7 +18104,7 @@
 	* plug-ins/metadata/base64.h
 	* plug-ins/metadata/base64.c: Added base64 decoder, needed for
 	reading the thumbnail images (base64 encoded inside XML element).
-	
+
 	* plug-ins/metadata/xmp-parse.h
 	* plug-ins/metadata/xmp-parse.c: Added XMP_PTYPE_ALT_THUMBS for
 	parsing a list of thumbnail images.  Decode and store the base64
@@ -16789,7 +18188,7 @@
 	* app/tools/gimpnewrectselecttool.[ch]
 	* app/tools/gimprectangletool.[ch]: more work on rectangle
 	tool ui.
-	
+
 2005-04-09  Michael Natterer  <mitch@gimp.org>
 
 	Implement dragging and dropping in any GdkPixbuf supported format.
@@ -16949,7 +18348,7 @@
 	* app/text/gimptextlayer.c
 	* app/text/gimptextundo.c
 	* app/tools/gimptextoptions.c
-	* app/tools/gimptexttool.c: 
+	* app/tools/gimptexttool.c:
 	* libgimpconfig/gimpconfig-iface.c: changed accordingly.
 
 2005-04-07  Sven Neumann  <sven@gimp.org>
@@ -17115,7 +18514,7 @@
 2005-04-04  Sven Neumann  <sven@gimp.org>
 
 	* app/tools/gimppainttool.[ch] export paint tool statusbar API.
-	
+
 	* app/tools/gimpclonetool.c: added statusbar hint.
 
 2005-04-04  Sven Neumann  <sven@gimp.org>
@@ -17131,10 +18530,10 @@
 	icons
 
 	* plug-ins/imagemap/images/Makefile.am: changed accordingly
-	
+
 	* plug-ins/imagemap/images/stock-arrow.png
 	* plug-ins/imagemap/images/stock-link.png: removed accordingly
-	
+
 2005-04-04  Sven Neumann  <sven@gimp.org>
 
 	* app/core/gimpdata.c (gimp_data_create_filename): return early if
@@ -17510,11 +18909,11 @@
 2005-03-24  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* app/core/gimpimage-undo-push.[ch]
-	* app/core/gimplayermask.c: fix compile warnings. 
+	* app/core/gimplayermask.c: fix compile warnings.
 
 2005-03-24  Sven Neumann  <sven@gimp.org>
 
-	* app/display/gimpstatusbar.c (gimp_statusbar_push_coords) 
+	* app/display/gimpstatusbar.c (gimp_statusbar_push_coords)
 	(gimp_statusbar_set_cursor): use RINT() instead of ROUND() to get
 	proper rounding of negative values. Fixes bug #171497.
 
@@ -17522,11 +18921,11 @@
 
 	* app/core/core-enums.[ch]
 	* app/core/gimpimage-undo-push.[ch]
-	* app/core/gimplayermask.[ch]: 
+	* app/core/gimplayermask.[ch]:
 	* app/pdb/pdb_glue.h
 	* app/actions/layers-commands.c: try again from clean tree;
 	hopefully will work this time.  (bug #148852)
-	
+
 2005-03-24  Sven Neumann  <sven@gimp.org>
 
 	* plug-ins/script-fu/scripts/*.scm: don't mark menu branches for
@@ -17616,7 +19015,7 @@
 	* app/actions/layers-commands.c: make layer mask property changes
 	undoable, should fix bug #148852.  Note that a little shape-layer
 	stuff is in core-enums, will be needed shortly.
-	
+
 2005-03-24  Sven Neumann  <sven@gimp.org>
 
 	* plug-ins/common/screenshot.c: seperated platform specific code into
@@ -17718,7 +19117,7 @@
 
 	* plug-ins/common/screenshot.c: always derive image from root
 	window, fixes bug #144788.
-	
+
 2005-03-22  Sven Neumann  <sven@gimp.org>
 
 	* app/widgets/gimpactiongroup.c
@@ -17731,7 +19130,7 @@
 	* configure.in: raise required librsvg version to 2.8.0
 	* plug-ins/common/svg.c: change deprecated librsvg api,
 	fixes bug #147662.
-	
+
 2005-03-21  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* plug-ins/common/sparkle.c
@@ -17749,7 +19148,7 @@
 	* app/tools/gimpfliptool.c
 	* app/core/gimpdrawabletransform.c: avoid messages and critical
 	error when transforming a drawable that does not intersect
-	the selection.  
+	the selection.
 
 2005-03-21  Sven Neumann  <sven@gimp.org>
 
@@ -17819,7 +19218,7 @@
 
 	* libgimpwidgets/gimpcolorscales.c (gimp_color_scales_update_scales):
 	Block callback when updating hex entry, fixes bug #169882.
-	
+
 2005-03-20  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* app/core/gimpimage-convert.c: check for non-empty palette
@@ -17893,9 +19292,9 @@
 2005-03-18  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* plug-ins/common/fp.c: use callbacks to handle
-	"size-allocate" for preview size changes, fixes 
+	"size-allocate" for preview size changes, fixes
 	bug #160032.
-	
+
 2005-03-18  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* app/core/gimpimage-convert.c:  when converting grayscale
@@ -17981,10 +19380,10 @@
 
 2005-03-12  Michael Schumacher  <schumaml@cvs.gnome.org>
 
-	* plug-ins/common/winclipboard.c: applied a patch from 
+	* plug-ins/common/winclipboard.c: applied a patch from
 	Sven Neumann that removes the paste functionality from the
-	plug-in. Since GTK+ 2.6.x, this isn't needed anymore. 
-	Fixes bug #168488.  
+	plug-in. Since GTK+ 2.6.x, this isn't needed anymore.
+	Fixes bug #168488.
 
 2005-03-12  Sven Neumann  <sven@gimp.org>
 
@@ -18006,7 +19405,7 @@
 	* app/core/gimpstrokedesc.h
 	* app/core/gimpstrokedesc.c (gimp_stroke_desc_duplicate):
 	New function, will be needed for shape layers.
-	
+
 2005-03-11  Sven Neumann  <sven@gimp.org>
 
 	* plug-ins/common/deinterlace.c
@@ -18030,7 +19429,7 @@
 
 	* app/tools/gimprectangletool.c: lots of code for dealing
 	with constraints.  Almost functional now ...
-	
+
 2005-03-10  Sven Neumann  <sven@gimp.org>
 
 	* app/composite/gimp-composite-altivec.c: delete trailing whitespace.
@@ -18039,7 +19438,7 @@
 
 	* app/tools/gimptexttool.c (gimp_text_tool_create_vectors_warped):
 	make created path visible and active.
-	
+
 2005-03-09  Manish Singh  <yosh@gimp.org>
 
 	* plug-ins/pygimp/gimpfu.py: initialize button variable before using
@@ -18059,8 +19458,8 @@
 	gimp_size_entry_show_unit_menu() for convenience.
 
 	* app/tools/gimprectangleoptions.[ch]
-	* app/tools/gimprectangletool.[ch]:  more work on 
-	controls in Tool Options.  Can now resize rectangle 
+	* app/tools/gimprectangletool.[ch]:  more work on
+	controls in Tool Options.  Can now resize rectangle
 	by dragging any corner or edge -- move rectangle by
 	clicking inside and dragging.
 
@@ -18082,7 +19481,7 @@
 	"path along a path" functionality.
 
 	* app/vectors/Makefile.am: new stuff added
-	
+
 	* gimp/app/vectors/gimpvectors.[ch]: actually implement
 	gimp_vectors_real_stroke_get_length().
 
@@ -18143,13 +19542,13 @@
 
 	* plug-ins/metadata/interface.c: fix spelling error
 	noted in bug #169656.
-	
+
 2005-03-08  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* app/tools/gimprectangletool.[ch]
 	* app/tools/gimprectangleoptions.[ch]: add size entry in
 	options to control dimensions.  Still work in progress.
-	
+
 2005-03-09  Sven Neumann  <sven@gimp.org>
 
 	* app/display/gimpdisplayshell.[ch]: added
@@ -18164,10 +19563,10 @@
 
 	* app/widgets/gimpviewrenderergradient.c: revert previous
 	change.  Didn't read the code carefully enough.
-	
+
 2005-03-08  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
-	* app/widgets/gimpviewrenderergradient.c: 
+	* app/widgets/gimpviewrenderergradient.c:
 	(gimp_view_renderer_gradient_render): Make sure specified
 	point lies within specified gradient segment; should
 	fix bug #167604.
@@ -18236,14 +19635,14 @@
 	* configure.in
 	* plug-ins/Makefile.am (SUBDIRS): Enable build of metadata plug-in.
 
-	* plug-ins/metadata/xmp-gen.c 
-	* plug-ins/metadata/xmp-gen.h 
-	* plug-ins/metadata/xmp-encode.c 
+	* plug-ins/metadata/xmp-gen.c
+	* plug-ins/metadata/xmp-gen.h
+	* plug-ins/metadata/xmp-encode.c
 	* plug-ins/metadata/xmp-encode.h: Renamed xmp-gen.[ch] to
 	xmp-encode.[ch].
 
-	* plug-ins/metadata/Makefile.am 
-	* plug-ins/metadata/metadata.c 
+	* plug-ins/metadata/Makefile.am
+	* plug-ins/metadata/metadata.c
 	* plug-ins/metadata/interface.c: Updated accordingly + minor fixes.
 
 2005-03-07  Michael Natterer  <mitch@gimp.org>
@@ -18267,7 +19666,7 @@
 	* app/composite/gimp-composite-altivec-installer.c
 	* app/composite/gimp-composite-altivec-test.c: regenerated so the new
 	implementation is actually used.
-	
+
 2005-03-06  Manish Singh  <yosh@gimp.org>
 
 	* configure.in: revised tests for AltiVec. Define ALTIVEC_EXTRA_CFLAGS
@@ -18498,9 +19897,9 @@
 2005-03-04  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* app/core/gimpimage.c
-	* app/display/gimpdisplayoptions.c: re-order code so 
+	* app/display/gimpdisplayoptions.c: re-order code so
 	sample-point stuff comes directly after guide stuff.
-	
+
 2005-03-04  Sven Neumann  <sven@gimp.org>
 
 	* plug-ins/script-fu/siod/slib.c (vload) (fopen_c): ported to
@@ -18631,8 +20030,8 @@
 	starox-gimp@starox.org (Frederic Leroy) which fixed the parser of
 	the nm programme output to understand the output on 64bit
 	machines.  Fixes bug #168529
-	
-	* app/composite/ns.py: 
+
+	* app/composite/ns.py:
 	Applied patch from starox-gimp@starox.org (Frederic Leroy) which
 	fixed a bug that would appear when only one compositing function
 	was implemented.  Fixes bug #168529
@@ -18722,7 +20121,7 @@
 
 	* libgimp/gimpdrawablecombobox.c
 	* libgimp/gimpimagecombobox.c: set a width request on the combo boxes.
-	
+
 	* plug-ins/common/bumpmap.c (SCALE_WIDTH): set a minimum width on
 	the scales.
 
@@ -18742,9 +20141,9 @@
 
 2005-03-02  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
-	* app/tools/tools-enums.[ch]: oops, missed in previous 
+	* app/tools/tools-enums.[ch]: oops, missed in previous
 	commit.
-	
+
 2005-03-02  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* app/tools/gimprectangletool.c
@@ -18762,7 +20161,7 @@
 	no longer needed by new rect select tool.
 
 	This is work in progress.
-	
+
 2005-03-02  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* app/widgets/gimpgradienteditor.c: allow dnd of colors
@@ -18803,7 +20202,7 @@
 
 2005-03-01  Sven Neumann  <sven@gimp.org>
 
-	* libgimpwidgets/gimpenumcombobox.[ch]: removed 
+	* libgimpwidgets/gimpenumcombobox.[ch]: removed
 	gimp_enum_combo_box_set_visible().
 
 	* libgimpwidgets/gimpintcombobox.[ch]: added
@@ -19011,7 +20410,7 @@
 
 2005-02-22  Shlomi Fish  <shlomif@iglu.org.il>
 
-	* tools/pdbgen/pdb/channel.pdb: add the 
+	* tools/pdbgen/pdb/channel.pdb: add the
 	gimp_channel_new_from_component() PDB function.
 
 	* libgimp/gimpchannel_pdb.[ch]
@@ -19231,7 +20630,7 @@
 	no script-fu server on win32, make respective function calls conditional
 
 	* libgimpconfig/makefile.msc : new file
-	* **/makefile.msc app/gimpcore.def : updated, gimp builds 
+	* **/makefile.msc app/gimpcore.def : updated, gimp builds
 	and runs once more with ms toolchain
 
 2005-02-18  Sven Neumann  <sven@gimp.org>
@@ -19255,7 +20654,7 @@
 2005-02-18  Sven Neumann  <sven@gimp.org>
 
 	* app/core/Makefile.am
-	* app/core/gimpdrawable-convert.[ch]: new files holding 
+	* app/core/gimpdrawable-convert.[ch]: new files holding
 	gimp_drawable_convert_rgb() and gimp_drawable_convert_grayscale()
 	moved out of gimpimage-convert.[ch].
 
@@ -19310,7 +20709,7 @@
 	* app/plug-ins/script-fu/scripts/guides-new.scm:  committted
 	slightly modified patch from  Joao S. O. Bueno Calligaris
 	to raise guide position limit to 262144.
-	
+
 2005-02-16  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* app/tools/gimpclonetool.[ch]: make sure clone source is
@@ -19787,7 +21186,7 @@
 
 2005-02-09  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
-	* app/display/gimpdisplayshell-callbacks.c 
+	* app/display/gimpdisplayshell-callbacks.c
 	(gimp_display_shell_canvas_tool_events):  For testing, apply
 	patch switching display-wide grab to app-wide grab while
 	handling button-release event, see bug #162823.
@@ -20163,8 +21562,8 @@
 
 2005-02-06  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
-	* plug-ins/common/unsharp.c:  apply speedup proposed 
-	by Peter Heckert in bug #166406.  
+	* plug-ins/common/unsharp.c:  apply speedup proposed
+	by Peter Heckert in bug #166406.
 
 2005-02-06  Sven Neumann  <sven@gimp.org>
 
@@ -20319,7 +21718,7 @@
 
 	added dependencies in wrong spot, fixed.  Same list of
 	files as for previous commit.
-	
+
 2005-02-04  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* libgimpwidgets/Makefile.am
@@ -20358,12 +21757,12 @@
 2005-02-04  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* libgimpwidgets/gimppropwidgets.[ch]: oops, use libgimp header.
-	
+
 2005-02-04  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* libgimpwidgets/gimppropwidgets.[ch]: magic-copied from app/widgets
 	and un-movable things then removed.
-	
+
 	* libgimpwidgets/Makefile.am
 	* libgimpwidgets/gimpwidgets.def
 	* libgimpwidgets/gimpwidgets.h: corresponding changes
@@ -20413,12 +21812,12 @@
 
 	* plug-ins/jpeg/jpeg-exif.c: check validity of orientation
 	value before using, see bug #166248.
-	
+
 2005-02-03  Sven Neumann  <sven@gimp.org>
 
 	* app/file/file-utils.[ch]: added new utility function
 	file_utils_filename_from_uri().
-	
+
 	* app/file/file-open.c (file_open_image)
 	* app/file/file-save.c (file_save_as):
 	* app/file/file-utils.c (file_utils_find_proc)
@@ -20427,7 +21826,7 @@
 
 2005-02-03  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
-	* app/widgets/gimppropwidgets.c:  add gtk-doc comments to 
+	* app/widgets/gimppropwidgets.c:  add gtk-doc comments to
 	public functions in prep for moving to libgimpwidgets.
 
 2005-02-03  Michael Natterer  <mitch@gimp.org>
@@ -20533,11 +21932,11 @@
 	* app/tools/gimp-tools.c: add it to toolbox
 
 	* app/tools/gimpselectionoptions.[ch]: set its options
-	
+
 	* themes/Default/images/tools/stock-tool-new-rect-select-16.png
 	* themes/Default/images/tools/stock-tool-new-rect-select-22.png:
 	toolbox icon
-	
+
 	* libgimpwidgets/gimpstock.[ch]
 	* themes/Default/images/Makefile.am: add the toolbox icon
 
@@ -20575,7 +21974,7 @@
 
 2005-01-29  Michael Schumacher  <schumaml@cvs.gnome.org>
 
-	* libgimpbase/gimpbase.def: added gimp_path_parse 
+	* libgimpbase/gimpbase.def: added gimp_path_parse
 	* libgimpmath/gimpmath.def: added gimp_param_spec_matrix2
 
 2005-01-29  Sven Neumann  <sven@gimp.org>
@@ -20650,9 +22049,9 @@
 2005-01-28  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* libgimp/gimpdrawablepreview.c: set preview bounds correctly
-	when previewed drawable extends beyond image edges, 
+	when previewed drawable extends beyond image edges,
 	fixes bug #165372.
-	
+
 2005-01-27  Manish Singh  <yosh@gimp.org>
 
 	* README: update ancient IRC info.
@@ -20672,10 +22071,10 @@
 
 	* plug-ins/jpeg/jpeg-exif.c:  libexif can return a result
 	even for files without exif, need to validate it.
-	
+
 2005-01-26  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
-	* libgimpconfig/Makefile.am: add necessary stuff to 
+	* libgimpconfig/Makefile.am: add necessary stuff to
 	LIBADD -- reported by schumaml, fix explained by yosh.
 
 2005-01-26  Michael Natterer  <mitch@gimp.org>
@@ -20744,7 +22143,7 @@
 2005-01-25  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* libgimpconfig/gimpconfig.def: added
-	
+
 2005-01-25  Michael Natterer  <mitch@gimp.org>
 
 	* libgimpconfig/gimpconfigtypes.h: new file holding the opaque
@@ -20817,7 +22216,7 @@
 	by yosh.
 
 	* libgimpconfig/.cvsignore: added
-	
+
 	* libgimpconfig/Makefile.am: modified
 
 	* Makefile.am
@@ -20935,7 +22334,7 @@
 
 	* libgimpconfig/Makefile.am
 	* libgimpconfig/gimpconfig.h: setting up for libgimpconfig
-	
+
 2005-01-24  Sven Neumann  <sven@gimp.org>
 
 	* app/config/Makefile.am
@@ -20997,8 +22396,8 @@
 
 2005-01-23  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
-	* app/tools/gimpcroptool.c (crop_aspect_changed): don't 
-	accept aspect ratios that make image less than 1 byte high, 
+	* app/tools/gimpcroptool.c (crop_aspect_changed): don't
+	accept aspect ratios that make image less than 1 byte high,
 	fixes bug #164827.
 
 2005-01-23  Sven Neumann  <sven@gimp.org>
@@ -21142,11 +22541,11 @@
 
 2005-01-22  Maurits Rijk  <m.rijk@chello.nl>
 
-	* plug-ins/imagemap/imap_file.c 
-	* plug-ins/imagemap/imap_main.c 
-	* plug-ins/imagemap/imap_menu.c 
+	* plug-ins/imagemap/imap_file.c
+	* plug-ins/imagemap/imap_main.c
+	* plug-ins/imagemap/imap_menu.c
 	* plug-ins/imagemap/imap_menu_funcs.[ch]
-	* plug-ins/imagemap/imap_misc.[ch] 
+	* plug-ins/imagemap/imap_misc.[ch]
 	* plug-ins/imagemap/imap_object.[ch]
 	* plug-ins/imagemap/imap_selection.c: cleaning up code, mostly
 	replacing homebrewn stuff that is now in either GTK or one of the
@@ -21192,14 +22591,14 @@
 	* libgimpbase/gimputils.c (gimp_enum_value_get_help): same fix here.
 
 2005-01-21  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
-	
+
 	* app/config/gimpconfig-types.c
 	* app/config/gimpconfig-types.h: removed...
 
 	* libgimpbase/gimpbasetypes.c
 	* libgimpbase/gimpbasetypes.h: and contents merged
 	into here.
-	
+
 	* app/config/gimpconfig-params.c: removed...
 
 	* libgimpbase/gimpbaseparams.c
@@ -21340,7 +22739,7 @@
 
 	* plug-ins/common/bumpmap.c: make sure bumpmap_init_params()
 	is called when necessary, fixes bug #162285.
-	
+
 2005-01-18  Michael Natterer  <mitch@gimp.org>
 
 	* app/core/gimpparasitelist.c (parasite_serialize): use
@@ -21378,14 +22777,14 @@
 
 	* libgimpwidgets/gimpwidgets.c (gimp_coordinates_callback):
 	Make sure last_x and last_y are set to values that match
-	those returned by gimp_size_entry_get_refval(), 
+	those returned by gimp_size_entry_get_refval(),
 	fixes bug #163951.
-	
+
 2005-01-18  Bill Skaggs <weskaggs@primate.ucdavis.edu>
 
 	* app/dialogs/info-dialog.c: disconnect callbacks to prevent crash
 	when destroying dialog, fixes bug #163617.
-	
+
 2005-01-18  Michael Natterer  <mitch@gimp.org>
 
 	* app/widgets/gimpdockable.[ch]: added new function
@@ -21403,7 +22802,7 @@
 
 	* plug-ins/xjt/xjt.c: use gimp_temp_name instead of trying to
 	create temp dir at loc of file, fixes bug #164116.
-	
+
 2005-01-17  Bill Skaggs <weskaggs@primate.ucdavis.edu>
 
 	* plug-ins/common/spheredesigner.c: add basic validity check
@@ -21655,13 +23054,13 @@
 	* plug-ins/Lighting/lighting_shade.c: remove artifacts
 	when light strikes underside of bumpmapped surface;
 	should fix bug #163877.
-	
+
 2005-01-13  Bill Skaggs <weskaggs@primate.ucdavis.edu>
 
 	* plug-ins/bmp/bmp.h
 	* plug-ins/bmp/bmpread.c: handle negative height values
 	as per spec, fixes bug #158033
-	
+
 2005-01-13  Michael Natterer  <mitch@gimp.org>
 
 	Allow to easily open brushes and patterns as images.
@@ -21895,7 +23294,7 @@
 2005-01-06  Michael Schumacher <schumaml@cvs.gnome.org>
 
 	* libgimpwidgets/gimpwidgets.def: added
-	gimp_scrolled_preview_set_position 
+	gimp_scrolled_preview_set_position
 
 2005-01-06  Sven Neumann  <sven@gimp.org>
 
@@ -21925,11 +23324,11 @@
 
 	* configure.in: add check for libexif version >= 0.6.0,
 	necessary because of nasty incompatible api change.
-	
+
 	* plug-ins/jpeg/exif-handling.txt: removed from here...
 
 	* devel-docs/exif-handling.txt: ...and added here
-	
+
 	* plug-ins/jpeg/jpeg-exif.c
 	* plug-ins/jpeg/Makefile.am
 	* plug-ins/jpeg/jpeg-load.c
@@ -21937,7 +23336,7 @@
 	* plug-ins/jpeg/jpeg.h: extract info from exif on loading,
 	and add info to exif on saving, addresses bug #56433,
 	bug #61499, and bug #121810.
-	
+
 2005-01-04  Sven Neumann  <sven@gimp.org>
 
 	* app/display/gimpdisplayshell-close.c
@@ -22066,7 +23465,7 @@
 
 	* plug-ins/jpeg/exif-handling.txt:  added summary of how Gimp should
 	handle each exif field according to the specs.
-	
+
 2005-01-02  Sven Neumann  <sven@gimp.org>
 
 	* app/widgets/gimpsizebox.c
@@ -22103,7 +23502,7 @@
 	* plug-ins/imagemap/imap_toolbar.[ch]
 	* plug-ins/imagemap/imap_tools.[ch]: first set of changes to fix
 	#138841 (Use action based menus in Imagemap plug-in).
-	
+
 2005-01-02  Sven Neumann  <sven@gimp.org>
 
 	* app/gui/splash.c (splash_update): fixed display of progress
@@ -22130,7 +23529,7 @@
 	* plug-ins/jpeg/jpeg_load.h
 	* plug-ins/jpeg/jpeg_save.c
 	* plug-ins/jpeg/jpeg_save.h: removed
-	
+
 	* plug-ins/jpeg/jpeg-load.c
 	* plug-ins/jpeg/jpeg-load.h
 	* plug-ins/jpeg/jpeg-save.c
@@ -22164,9 +23563,9 @@
 	* plug-ins/jpeg/jpeg_load.h
 	* plug-ins/jpeg/jpeg_save.c
 	* plug-ins/jpeg/jpeg_save.h: moved jpeg code into new
-	dir and split up, already too large and a good bit more 
+	dir and split up, already too large and a good bit more
 	will be needed for proper exif handling.
-	
+
 	* plug-ins/common/jpeg.c: removed
 
 	* configure.in
@@ -22183,7 +23582,7 @@
 	* plug-ins/common/gradmap.c: added procedure plug_in_palettemap
 	that does the same thing as gradmap except using the current
 	palette; should resolve bug #68879.
-	
+
 2005-01-02  Manish Singh  <yosh@gimp.org>
 
 	* plug-ins/common/tiff.c: Special case 1-bit black & white indexed
@@ -22221,7 +23620,7 @@
 	* app/paint/gimpbrushcore.c: make previously committed change
 	in pressure-size relationship apply only to airbrush, as
 	intended.
-	
+
 2004-12-31  Michael Natterer  <mitch@gimp.org>
 
 	* app/actions/plug-in-actions.c: use the orininal string if
@@ -22263,7 +23662,7 @@
 
 	* app/paint/gimpbrushcore.c: invert dependence of brush size on
 	pressure, using formula from Dave Ahlswede in bug #149576.
-	
+
 2004-12-31  Michael Natterer  <mitch@gimp.org>
 
 	Applied modified patch from Ben Campbell which adds drop
@@ -22322,7 +23721,7 @@
 	* app/widgets/gimpsizebox.c: give correct arguments to
 	gimp_coordinates_new().  Fixes problem described in
 	comment 6 of bug #162387.
-	
+
 2004-12-31  Sven Neumann  <sven@gimp.org>
 
 	* configure.in: bumped gimp_app_version and gimp_user_version to 2.3.
@@ -22334,7 +23733,7 @@
 
 	* tools/pdbgen/pdb/brush.pdb: added api for changing properties
 	of generated brushes.
-	
+
 	* tools/pdbgen/pdb/palette.pdb: added palette_is_editable().
 
 	* app/pdb/brush_cmds.c
@@ -22384,11 +23783,11 @@
 
 2004-12-28  Bill Skaggs <weskaggs@primate.ucdavis.edu>
 
-	* plug-ins/common/compose.c: Recompose did not properly 
+	* plug-ins/common/compose.c: Recompose did not properly
 	handle case where layer with alpha is decomposed into
 	something that does not encode alpha -- now does.
 
-	
+
 2004-12-28  Michael Natterer  <mitch@gimp.org>
 
 	* app/core/gimp-edit.c (gimp_edit_set_buffer): new utility
@@ -22402,13 +23801,13 @@
 
 2004-12-28  Bill Skaggs <weskaggs@primate.ucdavis.edu>
 
-	* plug-ins/common/compose.c: add "Recompose" (plug_in_recompose) 
+	* plug-ins/common/compose.c: add "Recompose" (plug_in_recompose)
 	as described on dev mailing list.
 
 	* plug-ins/common/decompose.c: add "decompose-data" parasite
-	when decomposing, to support Recompose.  Also add missing 
+	when decomposing, to support Recompose.  Also add missing
 	alpha channels to newly produced layers
-	
+
 2004-12-28  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.2.1 release.
@@ -22434,7 +23833,7 @@
 	* app/paint/gimpbrushcore.c (gimp_brush_core_subsample_mask):
 	don't set array outside its bounds.  Should fix bug #161323.
 	Credit to Robert Ögren for figuring out what was wrong.
-	
+
 2004-12-27  Sven Neumann  <sven@gimp.org>
 
 	* plug-ins/common/colortoalpha.c: if possible, use
@@ -22501,7 +23900,7 @@
 	* app/display/gimpdisplayshell-dnd.c
 	* app/widgets/gimplayertreeview.c
 	* app/widgets/gimptoolbox-dnd.c: replace % with space
-	in file name before showing error message, 
+	in file name before showing error message,
 	fixes bug #162147.
 
 	* app/core/gimp-gui.c
@@ -22512,7 +23911,7 @@
 
 	* gimp/app/widgets/gimpsizebox.c: fix incorrect Update
 	Policy for size entry as pointed out by mitch.
-	
+
 2004-12-23  Bill Skaggs <weskaggs@primate.ucdavis.edu>
 
 	* plug-ins/common/cartoon.c
@@ -22540,7 +23939,7 @@
 
 	* plug-ins/common/sel_gauss.c: give it a tile cache (didn't
 	have one).  Still very slow but a little better.
-	
+
 2004-12-24  Sven Neumann  <sven@gimp.org>
 
 	* plug-ins/common/despeckle.c (despeckle_median): don't call
@@ -22553,13 +23952,13 @@
 
 	* plug-ins/common/mblur.c: set up tile cache before
 	creating dialog -- major speedup in preview.
-	
+
 2004-12-23  Bill Skaggs <weskaggs@primate.ucdavis.edu>
 
 	* gimp/app/widgets/gimpsizebox.c: use gimp_coordinates_new()
 	instead of duplicating a lot of code.  Fixes bug #161756.
-	
-	* gimp/app/widgets/gimppropwidgets.c: small change in 
+
+	* gimp/app/widgets/gimppropwidgets.c: small change in
 	chainbutton handling to make above work.
 
 2004-12-23  Sven Neumann  <sven@gimp.org>
@@ -22603,7 +24002,7 @@
 
 	* Makefile.am
 	* NEWS.pre-2.2: moved old NEWS here.
-	
+
 2004-12-21  Sven Neumann  <sven@gimp.org>
 
 	* plug-ins/common/unsharp.c (blur_line): fixed the degenerate case

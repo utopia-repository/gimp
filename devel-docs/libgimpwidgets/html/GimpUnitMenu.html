@@ -133,18 +133,18 @@ Whenever the user selects a unit from the menu or the dialog, the
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2592315"></a><h3>
+<a name="id2597744"></a><h3>
 <a name="GimpUnitMenu-struct"></a>GimpUnitMenu</h3>
-<a class="indexterm" name="id2592326"></a><pre class="programlisting">typedef struct _GimpUnitMenu GimpUnitMenu;</pre>
+<a class="indexterm" name="id2597756"></a><pre class="programlisting">typedef struct _GimpUnitMenu GimpUnitMenu;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2592342"></a><h3>
+<a name="id2597772"></a><h3>
 <a name="gimp-unit-menu-new"></a>gimp_unit_menu_new ()</h3>
-<a class="indexterm" name="id2592354"></a><pre class="programlisting">GtkWidget*  gimp_unit_menu_new              (const gchar *format,
+<a class="indexterm" name="id2597784"></a><pre class="programlisting">GtkWidget*  gimp_unit_menu_new              (const gchar *format,
                                              <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a> unit,
@@ -242,9 +242,9 @@ The <em class="parameter"><code>format</code></em> string supports the following
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2592670"></a><h3>
+<a name="id2597537"></a><h3>
 <a name="gimp-unit-menu-set-unit"></a>gimp_unit_menu_set_unit ()</h3>
-<a class="indexterm" name="id2592681"></a><pre class="programlisting">void        gimp_unit_menu_set_unit         (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *menu,
+<a class="indexterm" name="id2597548"></a><pre class="programlisting">void        gimp_unit_menu_set_unit         (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *menu,
                                              <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a> unit);</pre>
@@ -275,9 +275,9 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2592767"></a><h3>
+<a name="id2597634"></a><h3>
 <a name="gimp-unit-menu-get-unit"></a>gimp_unit_menu_get_unit ()</h3>
-<a class="indexterm" name="id2592778"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2597645"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a>    gimp_unit_menu_get_unit         (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *menu);</pre>
 <p>
@@ -307,9 +307,9 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2592853"></a><h3>
+<a name="id2588802"></a><h3>
 <a name="gimp-unit-menu-get-pixel-digits"></a>gimp_unit_menu_get_pixel_digits ()</h3>
-<a class="indexterm" name="id2592864"></a><pre class="programlisting">gint        gimp_unit_menu_get_pixel_digits (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *menu);</pre>
+<a class="indexterm" name="id2588813"></a><pre class="programlisting">gint        gimp_unit_menu_get_pixel_digits (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *menu);</pre>
 <p>
 Retrieve the number of digits for a pixel size as set by
 <code class="function">gimp_unit_set_pixel_digits()</code>.</p>
@@ -336,9 +336,9 @@ Retrieve the number of digits for a pixel size as set by
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2592942"></a><h3>
+<a name="id2588890"></a><h3>
 <a name="gimp-unit-menu-set-pixel-digits"></a>gimp_unit_menu_set_pixel_digits ()</h3>
-<a class="indexterm" name="id2592953"></a><pre class="programlisting">void        gimp_unit_menu_set_pixel_digits (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *menu,
+<a class="indexterm" name="id2588902"></a><pre class="programlisting">void        gimp_unit_menu_set_pixel_digits (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *menu,
                                              gint digits);</pre>
 <p>
 A GimpUnitMenu can be setup to control the number of digits shown
@@ -376,9 +376,9 @@ here. You should do this after attaching your spinbuttons.</p>
 <div class="refsect1" lang="en">
 <a name="signals"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2589491"></a><h3>
+<a name="id2589012"></a><h3>
 <a name="GimpUnitMenu-unit-changed"></a>The "unit-changed" signal</h3>
-<a class="indexterm" name="id2589499"></a><pre class="programlisting">void        user_function                  (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *arg0,
+<a class="indexterm" name="id2589020"></a><pre class="programlisting">void        user_function                  (<a href="GimpUnitMenu.html" title="GimpUnitMenu">GimpUnitMenu</a> *arg0,
                                             gpointer      user_data)      : Run first</pre>
 <p>
 This signal is emitted whenever the user selects a <a
@@ -399,7 +399,7 @@ the <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnit
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2589572"></a><h2>See Also</h2>
+<a name="id2589093"></a><h2>See Also</h2>
 <p>
 <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"

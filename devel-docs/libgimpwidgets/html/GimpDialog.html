@@ -117,18 +117,18 @@ GimpDialog implements
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2565473"></a><h3>
+<a name="id2567483"></a><h3>
 <a name="GimpDialog-struct"></a>GimpDialog</h3>
-<a class="indexterm" name="id2565485"></a><pre class="programlisting">typedef struct _GimpDialog GimpDialog;</pre>
+<a class="indexterm" name="id2567495"></a><pre class="programlisting">typedef struct _GimpDialog GimpDialog;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2565500"></a><h3>
+<a name="id2567510"></a><h3>
 <a name="gimp-dialog-new"></a>gimp_dialog_new ()</h3>
-<a class="indexterm" name="id2565512"></a><pre class="programlisting">GtkWidget*  gimp_dialog_new                 (const gchar *title,
+<a class="indexterm" name="id2567523"></a><pre class="programlisting">GtkWidget*  gimp_dialog_new                 (const gchar *title,
                                              const gchar *role,
                                              GtkWidget *parent,
                                              GtkDialogFlags flags,
@@ -207,9 +207,9 @@ action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</co
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2556344"></a><h3>
+<a name="id2533522"></a><h3>
 <a name="gimp-dialog-new-valist"></a>gimp_dialog_new_valist ()</h3>
-<a class="indexterm" name="id2556356"></a><pre class="programlisting">GtkWidget*  gimp_dialog_new_valist          (const gchar *title,
+<a class="indexterm" name="id2533533"></a><pre class="programlisting">GtkWidget*  gimp_dialog_new_valist          (const gchar *title,
                                              const gchar *role,
                                              GtkWidget *parent,
                                              GtkDialogFlags flags,
@@ -284,9 +284,9 @@ action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</co
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569082"></a><h3>
+<a name="id2574282"></a><h3>
 <a name="gimp-dialog-add-buttons-valist"></a>gimp_dialog_add_buttons_valist ()</h3>
-<a class="indexterm" name="id2569092"></a><pre class="programlisting">void        gimp_dialog_add_buttons_valist  (<a href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
+<a class="indexterm" name="id2574294"></a><pre class="programlisting">void        gimp_dialog_add_buttons_valist  (<a href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
                                              va_list args);</pre>
 <p>
 This function is essentially the same as <code class="function">gtk_dialog_add_buttons()</code>
@@ -314,9 +314,9 @@ except it takes a va_list instead of '...'</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569175"></a><h3>
+<a name="id2574381"></a><h3>
 <a name="gimp-dialog-run"></a>gimp_dialog_run ()</h3>
-<a class="indexterm" name="id2569188"></a><pre class="programlisting">gint        gimp_dialog_run                 (<a href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog);</pre>
+<a class="indexterm" name="id2574393"></a><pre class="programlisting">gint        gimp_dialog_run                 (<a href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog);</pre>
 <p>
 This function does exactly the same as <code class="function">gtk_dialog_run()</code> except it
 does not make the dialog modal while the <span class="type">GMainLoop</span> is running.</p>
@@ -343,9 +343,9 @@ does not make the dialog modal while the <span class="type">GMainLoop</span> is 
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569273"></a><h3>
+<a name="id2574479"></a><h3>
 <a name="gimp-dialogs-show-help-button"></a>gimp_dialogs_show_help_button ()</h3>
-<a class="indexterm" name="id2569289"></a><pre class="programlisting">void        gimp_dialogs_show_help_button   (gboolean show);</pre>
+<a class="indexterm" name="id2574494"></a><pre class="programlisting">void        gimp_dialogs_show_help_button   (gboolean show);</pre>
 <p>
 This function is for internal use only.</p>
 <p>
@@ -367,16 +367,16 @@ This function is for internal use only.</p>
 <div class="refsect1" lang="en">
 <a name="property_details"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2569357"></a><h3>
+<a name="id2574563"></a><h3>
 <a name="GimpDialog--help-func"></a>The "<code class="literal">help-func</code>" property</h3>
-<a class="indexterm" name="id2569371"></a><pre class="programlisting">  "help-func"            gpointer              : Read / Write / Construct Only</pre>
+<a class="indexterm" name="id2574577"></a><pre class="programlisting">  "help-func"            gpointer              : Read / Write / Construct Only</pre>
 <p></p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569391"></a><h3>
+<a name="id2574597"></a><h3>
 <a name="GimpDialog--help-id"></a>The "<code class="literal">help-id</code>" property</h3>
-<a class="indexterm" name="id2569406"></a><pre class="programlisting">  "help-id"              gchararray            : Read / Write / Construct Only</pre>
+<a class="indexterm" name="id2574612"></a><pre class="programlisting">  "help-id"              gchararray            : Read / Write / Construct Only</pre>
 <p></p>
 <p>Default value: NULL</p>
 </div>

@@ -70,12 +70,16 @@ A widget for selecting palettes.
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2669007"></a><h3>
+<a name="id2680836"></a><h3>
 <a name="gimp-palette-select-widget-new"></a>gimp_palette_select_widget_new ()</h3>
-<a class="indexterm" name="id2669020"></a><pre class="programlisting">GtkWidget*  gimp_palette_select_widget_new  (const gchar *title,
+<a class="indexterm" name="id2680850"></a><a class="indexterm" name="id2680857"></a><pre class="programlisting">GtkWidget*  gimp_palette_select_widget_new  (const gchar *title,
                                              const gchar *palette_name,
                                              <a href="libgimp-gimppaletteselect.html#GimpRunPaletteCallback">GimpRunPaletteCallback</a> callback,
                                              gpointer data);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_palette_select_widget_new</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
 Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
 a palette.  This widget is suitable for placement in a table in a
@@ -89,8 +93,7 @@ plug-in dialog.</p>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
-<td>        Title of the dialog to use or <code class="literal">NULL</code> means to use the default
-               title.
+<td>        Title of the dialog to use or <code class="literal">NULL</code> to use the default title.
 </td>
 </tr>
 <tr>
@@ -125,10 +128,14 @@ plug-in dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2667669"></a><h3>
+<a name="id2677073"></a><h3>
 <a name="gimp-palette-select-widget-close"></a>gimp_palette_select_widget_close ()</h3>
-<a class="indexterm" name="id2667683"></a><pre class="programlisting">void        gimp_palette_select_widget_close
+<a class="indexterm" name="id2677086"></a><a class="indexterm" name="id2677094"></a><pre class="programlisting">void        gimp_palette_select_widget_close
                                             (GtkWidget *widget);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_palette_select_widget_close</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
 Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p>
 <p>
@@ -148,10 +155,14 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2667742"></a><h3>
+<a name="id2680234"></a><h3>
 <a name="gimp-palette-select-widget-set"></a>gimp_palette_select_widget_set ()</h3>
-<a class="indexterm" name="id2667755"></a><pre class="programlisting">void        gimp_palette_select_widget_set  (GtkWidget *widget,
+<a class="indexterm" name="id2680247"></a><a class="indexterm" name="id2680255"></a><pre class="programlisting">void        gimp_palette_select_widget_set  (GtkWidget *widget,
                                              const gchar *palette_name);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_palette_select_widget_set</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
 Sets the current palette for the palette select widget.  Calls the
 callback function if one was supplied in the call to

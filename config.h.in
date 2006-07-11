@@ -97,9 +97,6 @@
 /* Define to 1 if gnome-keyring is available */
 #undef HAVE_GNOME_KEYRING
 
-/* Define to 1 if libgnomeprintui is available */
-#undef HAVE_GNOME_PRINT
-
 /* Define to 1 if you have the <ieeefp.h> header file. */
 #undef HAVE_IEEEFP_H
 

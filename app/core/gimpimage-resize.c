@@ -24,6 +24,7 @@
 
 #include "gimp.h"
 #include "gimpcontext.h"
+#include "gimpguide.h"
 #include "gimpimage.h"
 #include "gimpimage-guides.h"
 #include "gimpimage-item-list.h"
@@ -145,7 +146,6 @@ gimp_image_resize_with_layers (GimpImage    *image,
       GimpItem *item = list->data;
       gint      old_offset_x;
       gint      old_offset_y;
-      gboolean  resize;
 
       gimp_item_offsets (item, &old_offset_x, &old_offset_y);
 
@@ -163,16 +163,13 @@ gimp_image_resize_with_layers (GimpImage    *image,
   g_list_free (resize_layers);
 
   /*  Reposition or remove all guides  */
-  list = image->guides;
-  while (list)
+  for (list = image->guides; list; list = g_list_next (list))
     {
       GimpGuide *guide        = list->data;
       gboolean   remove_guide = FALSE;
-      gint       new_position = guide->position;
+      gint       new_position = gimp_guide_get_position (guide);
 
-      list = g_list_next (list);
-
-      switch (guide->orientation)
+      switch (gimp_guide_get_orientation (guide))
         {
         case GIMP_ORIENTATION_HORIZONTAL:
           new_position += offset_y;
@@ -192,20 +189,17 @@ gimp_image_resize_with_layers (GimpImage    *image,
 
       if (remove_guide)
         gimp_image_remove_guide (image, guide, TRUE);
-      else if (new_position != guide->position)
+      else if (new_position != gimp_guide_get_position (guide))
         gimp_image_move_guide (image, guide, new_position, TRUE);
     }
 
   /*  Reposition or remove sample points  */
-  list = image->sample_points;
-  while (list)
+  for (list = image->sample_points; list; list = g_list_next (list))
     {
       GimpSamplePoint *sample_point        = list->data;
       gboolean         remove_sample_point = FALSE;
       gint             new_x               = sample_point->x;
       gint             new_y               = sample_point->y;
-
-      list = g_list_next (list);
 
       new_y += offset_y;
       if ((sample_point->y < 0) || (sample_point->y > new_height))

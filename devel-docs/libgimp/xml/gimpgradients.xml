@@ -83,7 +83,7 @@ Retrieve the list of loaded gradients.
 </para>
 <para>
 This procedure returns a list of the gradients that are currently
-loaded. You can later use the 'gimp-context-set-gradient' function
+loaded. You can later use the <link linkend="gimp-context-set-gradient"><function>gimp_context_set_gradient()</function></link> function
 to set the active gradient.</para>
 <para>
 

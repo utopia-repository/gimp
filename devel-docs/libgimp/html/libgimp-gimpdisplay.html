@@ -69,9 +69,9 @@ Functions to create, delete and flush new displays (views) on an image.
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2572830"></a><h3>
+<a name="id2583781"></a><h3>
 <a name="gimp-display-new"></a>gimp_display_new ()</h3>
-<a class="indexterm" name="id2572842"></a><pre class="programlisting">gint32      gimp_display_new                (gint32 image_ID);</pre>
+<a class="indexterm" name="id2583793"></a><pre class="programlisting">gint32      gimp_display_new                (gint32 image_ID);</pre>
 <p>
 Create a new display for the specified image.
 </p>
@@ -79,7 +79,7 @@ Create a new display for the specified image.
 Creates a new display for the specified image. If the image already
 has a display, another is added. Multiple displays are handled
 transparently by the GIMP. The newly created display is returned and
-can be subsequently destroyed with a call to 'gimp-display-delete'.
+can be subsequently destroyed with a call to <a href="libgimp-gimpdisplay.html#gimp-display-delete"><code class="function">gimp_display_delete()</code></a>.
 This procedure only makes sense for use with the GIMP UI.</p>
 <p>
 
@@ -104,9 +104,9 @@ This procedure only makes sense for use with the GIMP UI.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572912"></a><h3>
+<a name="id2583871"></a><h3>
 <a name="gimp-display-delete"></a>gimp_display_delete ()</h3>
-<a class="indexterm" name="id2576932"></a><pre class="programlisting">gboolean    gimp_display_delete             (gint32 display_ID);</pre>
+<a class="indexterm" name="id2580364"></a><pre class="programlisting">gboolean    gimp_display_delete             (gint32 display_ID);</pre>
 <p>
 Delete the specified display.
 </p>
@@ -137,9 +137,9 @@ deleted also.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576997"></a><h3>
+<a name="id2580429"></a><h3>
 <a name="gimp-display-get-window-handle"></a>gimp_display_get_window_handle ()</h3>
-<a class="indexterm" name="id2577011"></a><pre class="programlisting">gint        gimp_display_get_window_handle  (gint32 display_ID);</pre>
+<a class="indexterm" name="id2580443"></a><pre class="programlisting">gint        gimp_display_get_window_handle  (gint32 display_ID);</pre>
 <p>
 Get a handle to the native window for an image display.
 </p>
@@ -175,9 +175,9 @@ system that is being used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2577084"></a><h3>
+<a name="id2580516"></a><h3>
 <a name="gimp-displays-flush"></a>gimp_displays_flush ()</h3>
-<a class="indexterm" name="id2577097"></a><pre class="programlisting">gboolean    gimp_displays_flush             (void);</pre>
+<a class="indexterm" name="id2580529"></a><pre class="programlisting">gboolean    gimp_displays_flush             (void);</pre>
 <p>
 Flush all internal changes to the user interface
 </p>
@@ -201,9 +201,9 @@ appropriate.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2577143"></a><h3>
+<a name="id2580575"></a><h3>
 <a name="gimp-displays-reconnect"></a>gimp_displays_reconnect ()</h3>
-<a class="indexterm" name="id2577154"></a><pre class="programlisting">gboolean    gimp_displays_reconnect         (gint32 old_image_ID,
+<a class="indexterm" name="id2580587"></a><pre class="programlisting">gboolean    gimp_displays_reconnect         (gint32 old_image_ID,
                                              gint32 new_image_ID);</pre>
 <p>
 Reconnect displays from one image to another image.

@@ -468,7 +468,10 @@
         <menuitem action="drawable-levels-stretch"/>
       </menu>
       <menu action="colors-components-menu" name="Components"/>
-      <menu action="colors-map-menu" name="Map"/>
+      <menu action="colors-map-menu" name="Map">
+        <placeholder name="Colormap"/>
+        <separator/>
+      </menu>
       <menu action="colors-info-menu" name="Info">
         <menuitem action="dialogs-histogram"/>
       </menu>
@@ -478,7 +481,7 @@
 
     <menu action="tools-menu" name="Tools">
       <menu action="tools-select-menu" name="Selection Tools">
-	<menuitem action="tools-new-rect-select"/>
+	<menuitem action="tools-rect-select"/>
 	<menuitem action="tools-ellipse-select"/>
 	<menuitem action="tools-free-select"/>
 	<menuitem action="tools-foreground-select"/>
@@ -1070,7 +1073,10 @@
         <menuitem action="drawable-levels-stretch"/>
       </menu>
       <menu action="colors-components-menu" name="Components"/>
-      <menu action="colors-map-menu" name="Map"/>
+      <menu action="colors-map-menu" name="Map">
+        <placeholder name="Colormap"/>
+        <separator/>
+      </menu>
       <menu action="colors-info-menu" name="Info">
         <menuitem action="dialogs-histogram"/>
       </menu>
@@ -1080,7 +1086,7 @@
 
     <menu action="tools-menu" name="Tools">
       <menu action="tools-select-menu" name="Selection Tools">
-	<menuitem action="tools-new-rect-select"/>
+	<menuitem action="tools-rect-select"/>
 	<menuitem action="tools-ellipse-select"/>
 	<menuitem action="tools-free-select"/>
 	<menuitem action="tools-foreground-select"/>

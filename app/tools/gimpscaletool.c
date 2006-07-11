@@ -105,8 +105,13 @@ gimp_scale_tool_init (GimpScaleTool *scale_tool)
 
   gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_RESIZE);
 
+  tr_tool->undo_desc     = Q_("command|Scale");
   tr_tool->shell_desc    = _("Scaling Information");
   tr_tool->progress_text = _("Scaling");
+
+  tr_tool->use_grid      = TRUE;
+  tr_tool->use_handles   = TRUE;
+  tr_tool->use_center    = TRUE;
 }
 
 static void
@@ -186,19 +191,14 @@ gimp_scale_tool_motion (GimpTransformTool *tr_tool,
   gdouble              *y1;
   gdouble              *x2;
   gdouble              *y2;
-  gdouble               mag;
-  gdouble               dot;
-  gint                  dir_x, dir_y;
-  gdouble               diff_x, diff_y;
-
-  options = GIMP_TRANSFORM_OPTIONS (GIMP_TOOL (tr_tool)->tool_info->tool_options);
-
-  diff_x = tr_tool->curx - tr_tool->lastx;
-  diff_y = tr_tool->cury - tr_tool->lasty;
+  gint                  dir_x;
+  gint                  dir_y;
+  gdouble               diff_x = tr_tool->curx - tr_tool->lastx;
+  gdouble               diff_y = tr_tool->cury - tr_tool->lasty;
 
   switch (tr_tool->function)
     {
-    case TRANSFORM_HANDLE_1:
+    case TRANSFORM_HANDLE_NW:
       x1 = &tr_tool->trans_info[X0];
       y1 = &tr_tool->trans_info[Y0];
       x2 = &tr_tool->trans_info[X1];
@@ -206,7 +206,7 @@ gimp_scale_tool_motion (GimpTransformTool *tr_tool,
       dir_x = dir_y = 1;
       break;
 
-    case TRANSFORM_HANDLE_2:
+    case TRANSFORM_HANDLE_NE:
       x1 = &tr_tool->trans_info[X1];
       y1 = &tr_tool->trans_info[Y0];
       x2 = &tr_tool->trans_info[X0];
@@ -215,7 +215,7 @@ gimp_scale_tool_motion (GimpTransformTool *tr_tool,
       dir_y = 1;
       break;
 
-    case TRANSFORM_HANDLE_3:
+    case TRANSFORM_HANDLE_SW:
       x1 = &tr_tool->trans_info[X0];
       y1 = &tr_tool->trans_info[Y1];
       x2 = &tr_tool->trans_info[X1];
@@ -224,7 +224,7 @@ gimp_scale_tool_motion (GimpTransformTool *tr_tool,
       dir_y = -1;
       break;
 
-    case TRANSFORM_HANDLE_4:
+    case TRANSFORM_HANDLE_SE:
       x1 = &tr_tool->trans_info[X1];
       y1 = &tr_tool->trans_info[Y1];
       x2 = &tr_tool->trans_info[X0];
@@ -241,7 +241,6 @@ gimp_scale_tool_motion (GimpTransformTool *tr_tool,
       tr_tool->trans_info[Y2] += diff_y;
       tr_tool->trans_info[X3] += diff_x;
       tr_tool->trans_info[Y3] += diff_y;
-
       return;
 
     default:
@@ -249,8 +248,14 @@ gimp_scale_tool_motion (GimpTransformTool *tr_tool,
     }
 
   /*  if control is being held, constrain the aspect ratio  */
+  options =
+    GIMP_TRANSFORM_OPTIONS (GIMP_TOOL (tr_tool)->tool_info->tool_options);
+
   if (options->constrain)
     {
+      gdouble mag;
+      gdouble dot;
+
       mag = hypot ((gdouble) (tr_tool->x2 - tr_tool->x1),
                    (gdouble) (tr_tool->y2 - tr_tool->y1));
 
@@ -273,20 +278,24 @@ gimp_scale_tool_motion (GimpTransformTool *tr_tool,
 
   if (dir_x > 0)
     {
-      if (*x1 >= *x2) *x1 = *x2 - 1;
+      if (*x1 >= *x2)
+        *x1 = *x2 - 1;
     }
   else
     {
-      if (*x1 <= *x2) *x1 = *x2 + 1;
+      if (*x1 <= *x2)
+        *x1 = *x2 + 1;
     }
 
   if (dir_y > 0)
     {
-      if (*y1 >= *y2) *y1 = *y2 - 1;
+      if (*y1 >= *y2)
+        *y1 = *y2 - 1;
     }
   else
     {
-      if (*y1 <= *y2) *y1 = *y2 + 1;
+      if (*y1 <= *y2)
+        *y1 = *y2 + 1;
     }
 }
 

@@ -18,8 +18,7 @@
 
 #include "config.h"
 
-#define _POSIX_SOURCE  /* all the sigaction stuff is POSIX */
-#define _SVID_SOURCE   /* except for SA_RESTART, it seems  */
+#define _GNU_SOURCE  /* for the sigaction stuff */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -285,7 +284,7 @@ main (int    argc,
   no_interface = TRUE;
 #endif
 
-  context = g_option_context_new ("[FILE|URI...]");
+  context = g_option_context_new (_("[FILE|URI...]"));
   g_option_context_add_main_entries (context, main_entries, GETTEXT_PACKAGE);
 
   app_libs_init (context, no_interface);

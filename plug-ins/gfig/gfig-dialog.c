@@ -85,6 +85,10 @@
 #define OBJ_SELECT_LT 2
 #define OBJ_SELECT_EQ 4
 
+/* Globals */
+gint   undo_level;  /* Last slot filled in -1 = no undo */
+GList *undo_table[MAX_UNDO];
+
 /* Values when first invoked */
 SelectItVals selvals =
 {
@@ -396,11 +400,11 @@ gfig_dialog (void)
 
   /* brush selector in Stroke frame */
   gfig_context->brush_select
-    = gimp_brush_select_widget_new ("Brush",
+    = gimp_brush_select_button_new ("Brush",
                                     gfig_context->default_style.brush_name,
-                                    -1, -1, -1,
-                                    gfig_brush_changed_callback,
-                                    NULL);
+                                    -1.0, -1, -1);
+  g_signal_connect (gfig_context->brush_select, "brush-set",
+                    G_CALLBACK (gfig_brush_changed_callback), NULL);
   gtk_box_pack_start (GTK_BOX (vbox), gfig_context->brush_select,
                       FALSE, FALSE, 0);
   gtk_widget_show (gfig_context->brush_select);
@@ -463,18 +467,18 @@ gfig_dialog (void)
 
   /* A page for the pattern selector */
   gfig_context->pattern_select
-    = gimp_pattern_select_widget_new ("Pattern", gfig_context->default_style.pattern,
-                                      gfig_pattern_changed_callback,
-                                      NULL);
+    = gimp_pattern_select_button_new ("Pattern", gfig_context->default_style.pattern);
+  g_signal_connect (gfig_context->pattern_select, "pattern-set",
+                    G_CALLBACK (gfig_pattern_changed_callback), NULL);
   gtk_widget_show (gfig_context->pattern_select);
   gtk_notebook_append_page (GTK_NOTEBOOK (fill_type_notebook),
                             gfig_context->pattern_select, NULL);
 
   /* A page for the gradient selector */
   gfig_context->gradient_select
-    = gimp_gradient_select_widget_new ("Gradient", gfig_context->default_style.gradient,
-                                       gfig_gradient_changed_callback,
-                                       NULL);
+    = gimp_gradient_select_button_new ("Gradient", gfig_context->default_style.gradient);
+  g_signal_connect (gfig_context->gradient_select, "gradient-set",
+                    G_CALLBACK (gfig_gradient_changed_callback), NULL);
   gtk_widget_show (gfig_context->gradient_select);
   gtk_notebook_append_page (GTK_NOTEBOOK (fill_type_notebook),
                             gfig_context->gradient_select, NULL);
@@ -498,7 +502,7 @@ gfig_dialog (void)
   gtk_widget_show (toggle);
 
   /* "snap to grid" checkbutton at bottom of style frame */
-  toggle = gtk_check_button_new_with_label (_("Snap to grid"));
+  toggle = gtk_check_button_new_with_label (Q_("checkbutton|Snap to grid"));
   gtk_box_pack_end (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
   g_signal_connect (toggle, "toggled",
                     G_CALLBACK (gimp_toggle_button_update),

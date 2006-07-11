@@ -35,6 +35,7 @@ plug-ins/common/channel_mixer.c
 plug-ins/common/checkerboard.c
 plug-ins/common/color_enhance.c
 plug-ins/common/colorify.c
+plug-ins/common/colormap-remap.c
 plug-ins/common/colortoalpha.c
 plug-ins/common/compose.c
 plug-ins/common/compressor.c
@@ -45,6 +46,7 @@ plug-ins/common/curve_bend.c
 plug-ins/common/decompose.c
 plug-ins/common/deinterlace.c
 plug-ins/common/depthmerge.c
+plug-ins/common/desktop-link.c
 plug-ins/common/despeckle.c
 plug-ins/common/destripe.c
 plug-ins/common/dicom.c
@@ -68,7 +70,6 @@ plug-ins/common/gifload.c
 plug-ins/common/gih.c
 plug-ins/common/gih.c
 plug-ins/common/glasstile.c
-plug-ins/common/gnomeprint.c
 plug-ins/common/gqbist.c
 plug-ins/common/gradmap.c
 plug-ins/common/grid.c
@@ -151,7 +152,6 @@ plug-ins/common/waves.c
 plug-ins/common/webbrowser.c
 plug-ins/common/whirlpinch.c
 plug-ins/common/wind.c
-plug-ins/common/winprint.c
 plug-ins/common/wmf.c
 plug-ins/common/xbm.c
 plug-ins/common/xpm.c
@@ -237,10 +237,10 @@ plug-ins/imagemap/imap_selection.c
 plug-ins/imagemap/imap_settings.c
 plug-ins/imagemap/imap_source.c
 plug-ins/imagemap/imap_stock.c
-plug-ins/jpeg/jpeg.c
 plug-ins/jpeg/jpeg-exif.c
 plug-ins/jpeg/jpeg-load.c
 plug-ins/jpeg/jpeg-save.c
+plug-ins/jpeg/jpeg.c
 plug-ins/maze/algorithms.c
 plug-ins/maze/maze.c
 plug-ins/maze/maze.h
@@ -249,10 +249,6 @@ plug-ins/metadata/interface.c
 plug-ins/metadata/metadata.c
 plug-ins/metadata/xmp-parse.c
 plug-ins/pagecurl/pagecurl.c
-plug-ins/print/gimp_color_window.c
-plug-ins/print/gimp_main_window.c
-plug-ins/print/print-image-gimp.c
-plug-ins/print/print.c
 plug-ins/rcm/rcm.c
 plug-ins/rcm/rcm_dialog.c
 plug-ins/rcm/rcm_stock.c
@@ -260,9 +256,9 @@ plug-ins/sel2path/pxl-outline.c
 plug-ins/sel2path/sel2path.c
 plug-ins/sgi/sgi.c
 plug-ins/twain/twain.c
-plug-ins/uri/uri.c
 plug-ins/uri/uri-backend-gnomevfs.c
 plug-ins/uri/uri-backend-wget.c
+plug-ins/uri/uri.c
 plug-ins/winicon/icodialog.c
 plug-ins/winicon/icoload.c
 plug-ins/winicon/icosave.c

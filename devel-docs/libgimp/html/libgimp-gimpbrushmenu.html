@@ -75,15 +75,19 @@ A widget for selecting brushes.
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2669533"></a><h3>
+<a name="id2674174"></a><h3>
 <a name="gimp-brush-select-widget-new"></a>gimp_brush_select_widget_new ()</h3>
-<a class="indexterm" name="id2669544"></a><pre class="programlisting">GtkWidget*  gimp_brush_select_widget_new    (const gchar *title,
+<a class="indexterm" name="id2674188"></a><pre class="programlisting">GtkWidget*  gimp_brush_select_widget_new    (const gchar *title,
                                              const gchar *brush_name,
                                              gdouble opacity,
                                              gint spacing,
                                              <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
                                              <a href="libgimp-gimpbrushselect.html#GimpRunBrushCallback">GimpRunBrushCallback</a> callback,
                                              gpointer data);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_brush_select_widget_new</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
 Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
 a <a
@@ -149,9 +153,13 @@ a plug-in dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670078"></a><h3>
+<a name="id2681321"></a><h3>
 <a name="gimp-brush-select-widget-close"></a>gimp_brush_select_widget_close ()</h3>
-<a class="indexterm" name="id2670089"></a><pre class="programlisting">void        gimp_brush_select_widget_close  (GtkWidget *widget);</pre>
+<a class="indexterm" name="id2681335"></a><pre class="programlisting">void        gimp_brush_select_widget_close  (GtkWidget *widget);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_brush_select_widget_close</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
 Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p>
 <p>
@@ -169,13 +177,17 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670142"></a><h3>
+<a name="id2678931"></a><h3>
 <a name="gimp-brush-select-widget-set"></a>gimp_brush_select_widget_set ()</h3>
-<a class="indexterm" name="id2670153"></a><pre class="programlisting">void        gimp_brush_select_widget_set    (GtkWidget *widget,
+<a class="indexterm" name="id2678944"></a><pre class="programlisting">void        gimp_brush_select_widget_set    (GtkWidget *widget,
                                              const gchar *brush_name,
                                              gdouble opacity,
                                              gint spacing,
                                              <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_brush_select_widget_set</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
 Sets the current brush and other values for the brush select
 widget.  Calls the callback function if one was supplied in the

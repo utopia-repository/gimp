@@ -52,11 +52,7 @@ typedef struct
   GtkWidget     *progress_label;
   GtkWidget     *progress_bar;
 
-  GtkWidget     *about_dialog;
-
-  gchar         *short_title;
   gchar         *title;
-  gchar         *help_id;
   gchar         *last_command;
   gint           command_count;
   gint           consec_command_count;
@@ -74,39 +70,38 @@ static void   script_fu_response            (GtkWidget            *widget,
                                              SFScript             *script);
 static void   script_fu_ok                  (SFScript             *script);
 static void   script_fu_reset               (SFScript             *script);
-static void   script_fu_about               (SFScript             *script);
 
 static void   script_fu_file_callback       (GtkWidget            *widget,
                                              SFFilename           *file);
 static void   script_fu_combo_callback      (GtkWidget            *widget,
                                              SFOption             *option);
-static void   script_fu_pattern_callback    (const gchar          *name,
+static void   script_fu_pattern_callback    (gpointer              data,
+                                             const gchar          *name,
                                              gint                  width,
                                              gint                  height,
                                              gint                  bytes,
                                              const guchar         *mask_data,
-                                             gboolean              closing,
-                                             gpointer              data);
-static void   script_fu_gradient_callback   (const gchar          *name,
+                                             gboolean              closing);
+static void   script_fu_gradient_callback   (gpointer              data,
+                                             const gchar          *name,
                                              gint                  width,
                                              const gdouble        *mask_data,
-                                             gboolean              closing,
-                                             gpointer              data);
+                                             gboolean              closing);
 static void   script_fu_font_callback       (gpointer              data,
                                              const gchar          *name,
                                              gboolean              closing);
-static void   script_fu_palette_callback    (const gchar          *name,
-                                             gboolean              closing,
-                                             gpointer              data);
-static void   script_fu_brush_callback      (const gchar          *name,
+static void   script_fu_palette_callback    (gpointer              data,
+                                             const gchar          *name,
+                                             gboolean              closing);
+static void   script_fu_brush_callback      (gpointer              data,
+                                             const gchar          *name,
                                              gdouble               opacity,
                                              gint                  spacing,
                                              GimpLayerModeEffects  paint_mode,
                                              gint                  width,
                                              gint                  height,
                                              const guchar         *mask_data,
-                                             gboolean              closing,
-                                             gpointer              data);
+                                             gboolean              closing);
 
 
 /*
@@ -121,8 +116,14 @@ static SFInterface *sf_interface = NULL;  /*  there can only be at most one
  *  Function definitions
  */
 
+gboolean
+script_fu_interface_is_active (void)
+{
+  return (sf_interface != NULL);
+}
+
 void
-script_fu_interface_report_cc (gchar *command)
+script_fu_interface_report_cc (const gchar *command)
 {
   if (sf_interface == NULL)
     return;
@@ -137,13 +138,14 @@ script_fu_interface_report_cc (gchar *command)
       new_command = g_strdup_printf ("%s <%d>",
 				     command, sf_interface->command_count);
       gtk_label_set_text (GTK_LABEL (sf_interface->progress_label),
-                          new_command);
+			  new_command);
       g_free (new_command);
     }
   else
     {
       sf_interface->command_count = 1;
       gtk_label_set_text (GTK_LABEL (sf_interface->progress_label), command);
+
       g_free (sf_interface->last_command);
       sf_interface->last_command = g_strdup (command);
     }
@@ -154,13 +156,14 @@ script_fu_interface_report_cc (gchar *command)
 void
 script_fu_interface (SFScript *script)
 {
-  GtkWidget    *dlg;
+  GtkWidget    *dialog;
   GtkWidget    *menu;
   GtkWidget    *vbox;
   GtkWidget    *vbox2;
   GtkSizeGroup *group;
   GSList       *list;
   gchar        *tmp;
+  gchar        *title;
   gint          i;
 
   static gboolean gtk_initted = FALSE;
@@ -176,7 +179,7 @@ script_fu_interface (SFScript *script)
                            "at the same time."),
                          _("You are already running the \"%s\" script."));
 
-      g_message (message, sf_interface->short_title);
+      g_message (message, sf_interface->title);
       g_free (message);
 
       return;
@@ -199,56 +202,58 @@ script_fu_interface (SFScript *script)
   /* strip the first part of the menupath if it contains _("/Script-Fu/") */
   tmp = strstr (gettext (script->menu_path), _("/Script-Fu/"));
   if (tmp)
-    sf_interface->short_title = g_strdup (tmp + strlen (_("/Script-Fu/")));
+    sf_interface->title = g_strdup (tmp + strlen (_("/Script-Fu/")));
   else
-    sf_interface->short_title = g_strdup (gettext (script->menu_path));
+    sf_interface->title = g_strdup (gettext (script->menu_path));
 
   /* strip mnemonics from the menupath */
-  tmp = gimp_strip_uline (sf_interface->short_title);
-  g_free (sf_interface->short_title);
-  sf_interface->short_title = tmp;
+  tmp = gimp_strip_uline (sf_interface->title);
+  g_free (sf_interface->title);
+  sf_interface->title = tmp;
 
-  tmp = strstr (sf_interface->short_title, "...");
-  if (tmp)
+  /* cut off ellipsis */
+  tmp = (strstr (sf_interface->title, "..."));
+  if (! tmp)
+    /* U+2026 HORIZONTAL ELLIPSIS */
+    tmp = strstr (sf_interface->title, "\342\200\246");
+
+  if (tmp && tmp == (sf_interface->title + strlen (sf_interface->title) - 3))
     *tmp = '\0';
 
-  sf_interface->title = g_strdup_printf (_("Script-Fu: %s"),
-                                         sf_interface->short_title);
+  title = g_strdup_printf (_("Script-Fu: %s"), sf_interface->title);
 
-  sf_interface->help_id = g_strdup (script->script_name);
-
-  sf_interface->dialog = dlg =
-    gimp_dialog_new (sf_interface->title, "script-fu",
+  sf_interface->dialog = dialog =
+    gimp_dialog_new (title, "script-fu",
                      NULL, 0,
-                     gimp_standard_help_func, sf_interface->help_id,
+                     gimp_standard_help_func, script->name,
 
-                     GTK_STOCK_ABOUT,  GTK_RESPONSE_HELP,
                      GIMP_STOCK_RESET, RESPONSE_RESET,
                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                      GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                      NULL);
+  g_free (title);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (sf_interface->dialog),
-                                           GTK_RESPONSE_HELP,
                                            RESPONSE_RESET,
                                            GTK_RESPONSE_OK,
                                            GTK_RESPONSE_CANCEL,
                                            -1);
 
-  g_signal_connect (dlg, "response",
+  g_signal_connect (dialog, "response",
                     G_CALLBACK (script_fu_response),
                     script);
 
-  g_signal_connect_swapped (dlg, "destroy",
+  g_signal_connect_swapped (dialog, "destroy",
                             G_CALLBACK (script_fu_interface_quit),
                             script);
 
-  gtk_window_set_resizable (GTK_WINDOW (dlg), TRUE);
+  gtk_window_set_resizable (GTK_WINDOW (dialog), TRUE);
 
   vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), vbox, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+                      vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
   /*  The argument table  */
@@ -444,44 +449,49 @@ script_fu_interface (SFScript *script)
 	  break;
 
 	case SF_FONT:
-	  widget = gimp_font_select_button_new (_("Script-Fu Font Selection"),
+          widget = gimp_font_select_button_new (_("Script-Fu Font Selection"),
                                                 script->arg_values[i].sfa_font);
           g_signal_connect_swapped (widget, "font-set",
                                     G_CALLBACK (script_fu_font_callback),
                                     &script->arg_values[i].sfa_font);
-	  break;
+          break;
 
 	case SF_PALETTE:
-	  widget = gimp_palette_select_widget_new (_("Script-Fu Palette Selection"),
-                                                   script->arg_values[i].sfa_palette,
-                                                   script_fu_palette_callback,
-                                                   &script->arg_values[i].sfa_palette);
-	  break;
+          widget = gimp_palette_select_button_new (_("Script-Fu Palette Selection"),
+                                                   script->arg_values[i].sfa_palette);
+          g_signal_connect_swapped (widget, "palette-set",
+                                    G_CALLBACK (script_fu_palette_callback),
+                                    &script->arg_values[i].sfa_palette);
+          break;
 
 	case SF_PATTERN:
           left_align = TRUE;
-	  widget = gimp_pattern_select_widget_new (_("Script-fu Pattern Selection"),
-                                                   script->arg_values[i].sfa_pattern,
-                                                   script_fu_pattern_callback,
-                                                   &script->arg_values[i].sfa_pattern);
-	  break;
+          widget = gimp_pattern_select_button_new (_("Script-fu Pattern Selection"),
+                                                   script->arg_values[i].sfa_pattern);
+          g_signal_connect_swapped (widget, "pattern-set",
+                                    G_CALLBACK (script_fu_pattern_callback),
+                                    &script->arg_values[i].sfa_pattern);
+          break;
+
 	case SF_GRADIENT:
           left_align = TRUE;
-	  widget = gimp_gradient_select_widget_new (_("Script-Fu Gradient Selection"),
-                                                    script->arg_values[i].sfa_gradient,
-                                                    script_fu_gradient_callback,
-                                                    &script->arg_values[i].sfa_gradient);
-	  break;
+          widget = gimp_gradient_select_button_new (_("Script-Fu Gradient Selection"),
+                                                    script->arg_values[i].sfa_gradient);
+          g_signal_connect_swapped (widget, "gradient-set",
+                                    G_CALLBACK (script_fu_gradient_callback),
+                                    &script->arg_values[i].sfa_gradient);
+          break;
 
 	case SF_BRUSH:
           left_align = TRUE;
-	  widget = gimp_brush_select_widget_new (_("Script-Fu Brush Selection"),
+          widget = gimp_brush_select_button_new (_("Script-Fu Brush Selection"),
                                                  script->arg_values[i].sfa_brush.name,
                                                  script->arg_values[i].sfa_brush.opacity,
                                                  script->arg_values[i].sfa_brush.spacing,
-                                                 script->arg_values[i].sfa_brush.paint_mode,
-                                                 script_fu_brush_callback,
-                                                 &script->arg_values[i].sfa_brush);
+                                                 script->arg_values[i].sfa_brush.paint_mode);
+          g_signal_connect_swapped (widget, "brush-set",
+                                    G_CALLBACK (script_fu_brush_callback),
+                                    &script->arg_values[i].sfa_brush);
 	  break;
 
 	case SF_OPTION:
@@ -553,6 +563,8 @@ script_fu_interface (SFScript *script)
 
   sf_interface->progress_label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (sf_interface->progress_label), 0.0, 0.5);
+  gtk_label_set_ellipsize (GTK_LABEL (sf_interface->progress_label),
+                           PANGO_ELLIPSIZE_MIDDLE);
   gimp_label_set_attributes (GTK_LABEL (sf_interface->progress_label),
                              PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
                              -1);
@@ -560,7 +572,7 @@ script_fu_interface (SFScript *script)
                       FALSE, FALSE, 0);
   gtk_widget_show (sf_interface->progress_label);
 
-  gtk_widget_show (dlg);
+  gtk_widget_show (dialog);
 
   gtk_main ();
 }
@@ -573,35 +585,18 @@ script_fu_interface_quit (SFScript *script)
   g_return_if_fail (script != NULL);
   g_return_if_fail (sf_interface != NULL);
 
-  g_free (sf_interface->short_title);
   g_free (sf_interface->title);
-  g_free (sf_interface->help_id);
-
-  if (sf_interface->about_dialog)
-    gtk_widget_destroy (sf_interface->about_dialog);
 
   for (i = 0; i < script->num_args; i++)
     switch (script->arg_types[i])
       {
       case SF_FONT:
-  	gimp_font_select_button_close_popup
-          (GIMP_FONT_SELECT_BUTTON (sf_interface->widgets[i]));
-	break;
-
       case SF_PALETTE:
-  	gimp_palette_select_widget_close (sf_interface->widgets[i]);
-	break;
-
       case SF_PATTERN:
-  	gimp_pattern_select_widget_close (sf_interface->widgets[i]);
-	break;
-
       case SF_GRADIENT:
-  	gimp_gradient_select_widget_close (sf_interface->widgets[i]);
-	break;
-
       case SF_BRUSH:
-  	gimp_brush_select_widget_close (sf_interface->widgets[i]);
+  	gimp_select_button_close_popup
+          (GIMP_SELECT_BUTTON (sf_interface->widgets[i]));
 	break;
 
       default:
@@ -651,23 +646,23 @@ script_fu_string_update (gchar       **dest,
 }
 
 static void
-script_fu_pattern_callback (const gchar  *name,
+script_fu_pattern_callback (gpointer      data,
+                            const gchar  *name,
                             gint          width,
                             gint          height,
                             gint          bytes,
                             const guchar *mask_data,
-                            gboolean      closing,
-                            gpointer      data)
+                            gboolean      closing)
 {
   script_fu_string_update (data, name);
 }
 
 static void
-script_fu_gradient_callback (const gchar   *name,
+script_fu_gradient_callback (gpointer       data,
+                             const gchar   *name,
                              gint           width,
                              const gdouble *mask_data,
-                             gboolean       closing,
-                             gpointer       data)
+                             gboolean       closing)
 {
   script_fu_string_update (data, name);
 }
@@ -681,23 +676,23 @@ script_fu_font_callback (gpointer     data,
 }
 
 static void
-script_fu_palette_callback (const gchar *name,
-                            gboolean     closing,
-                            gpointer     data)
+script_fu_palette_callback (gpointer     data,
+                            const gchar *name,
+                            gboolean     closing)
 {
   script_fu_string_update (data, name);
 }
 
 static void
-script_fu_brush_callback (const gchar          *name,
+script_fu_brush_callback (gpointer              data,
+                          const gchar          *name,
                           gdouble               opacity,
                           gint                  spacing,
                           GimpLayerModeEffects  paint_mode,
                           gint                  width,
                           gint                  height,
                           const guchar         *mask_data,
-                          gboolean              closing,
-                          gpointer              data)
+                          gboolean              closing)
 {
   SFBrush *brush = data;
 
@@ -719,10 +714,6 @@ script_fu_response (GtkWidget *widget,
 
   switch (response_id)
     {
-    case GTK_RESPONSE_HELP:
-      script_fu_about (script);
-      break;
-
     case RESPONSE_RESET:
       script_fu_reset (script);
       break;
@@ -751,7 +742,7 @@ script_fu_ok (SFScript *script)
   gint     i;
 
   s = g_string_new ("(");
-  g_string_append (s, script->script_name);
+  g_string_append (s, script->name);
 
   for (i = 0; i < script->num_args; i++)
     {
@@ -947,32 +938,31 @@ script_fu_reset (SFScript *script)
           break;
 
         case SF_FONT:
-          gimp_font_select_button_set_font_name
-            (GIMP_FONT_SELECT_BUTTON (widget),
-             script->arg_defaults[i].sfa_font);
+          gimp_font_select_button_set_font (GIMP_FONT_SELECT_BUTTON (widget),
+                                            script->arg_defaults[i].sfa_font);
           break;
 
         case SF_PALETTE:
-          gimp_palette_select_widget_set (widget,
-                                          script->arg_defaults[i].sfa_palette);
+          gimp_palette_select_button_set_palette (GIMP_PALETTE_SELECT_BUTTON (widget),
+                                                  script->arg_defaults[i].sfa_palette);
           break;
 
         case SF_PATTERN:
-          gimp_pattern_select_widget_set (widget,
-                                          script->arg_defaults[i].sfa_pattern);
+	  gimp_pattern_select_button_set_pattern (GIMP_PATTERN_SELECT_BUTTON (widget),
+                                                  script->arg_defaults[i].sfa_pattern);
           break;
 
         case SF_GRADIENT:
-          gimp_gradient_select_widget_set (widget,
-                                           script->arg_defaults[i].sfa_gradient);
+          gimp_gradient_select_button_set_gradient (GIMP_GRADIENT_SELECT_BUTTON (widget),
+                                                    script->arg_defaults[i].sfa_gradient);
           break;
 
         case SF_BRUSH:
-          gimp_brush_select_widget_set (widget,
-                                        script->arg_defaults[i].sfa_brush.name,
-                                        script->arg_defaults[i].sfa_brush.opacity,
-                                        script->arg_defaults[i].sfa_brush.spacing,
-                                        script->arg_defaults[i].sfa_brush.paint_mode);
+          gimp_brush_select_button_set_brush (GIMP_BRUSH_SELECT_BUTTON (widget),
+                                              script->arg_defaults[i].sfa_brush.name,
+                                              script->arg_defaults[i].sfa_brush.opacity,
+                                              script->arg_defaults[i].sfa_brush.spacing,
+                                              script->arg_defaults[i].sfa_brush.paint_mode);
           break;
 
         case SF_OPTION:
@@ -986,116 +976,4 @@ script_fu_reset (SFScript *script)
           break;
         }
     }
-}
-
-static void
-script_fu_about (SFScript *script)
-{
-  GtkWidget     *dialog = sf_interface->about_dialog;
-  GtkWidget     *vbox;
-  GtkWidget     *label;
-  GtkWidget     *scrolled_window;
-  GtkWidget     *table;
-  GtkWidget     *text_view;
-  GtkTextBuffer *text_buffer;
-
-  if (! dialog)
-    {
-      gchar *title = g_strdup_printf (_("About %s"), sf_interface->title);
-
-      sf_interface->about_dialog = dialog =
-        gimp_dialog_new (title, "script-fu-about",
-                         sf_interface->dialog, 0,
-                         gimp_standard_help_func, sf_interface->help_id,
-
-                         GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
-
-                         NULL);
-      g_free (title);
-
-      g_signal_connect (dialog, "response",
-                        G_CALLBACK (gtk_widget_destroy),
-                        NULL);
-
-      g_signal_connect (dialog, "destroy",
-			G_CALLBACK (gtk_widget_destroyed),
-			&sf_interface->about_dialog);
-
-      vbox = gtk_vbox_new (FALSE, 12);
-      gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-      gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox,
-			  TRUE, TRUE, 0);
-      gtk_widget_show (vbox);
-
-      /* the name */
-      label = gtk_label_new (script->script_name);
-      gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-      gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-      gtk_widget_show (label);
-
-      /* the help display */
-      scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-      gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
-				      GTK_POLICY_AUTOMATIC,
-				      GTK_POLICY_AUTOMATIC);
-      gtk_box_pack_start (GTK_BOX (vbox), scrolled_window, TRUE, TRUE, 0);
-      gtk_widget_show (scrolled_window);
-
-      text_buffer = gtk_text_buffer_new (NULL);
-      text_view = gtk_text_view_new_with_buffer (text_buffer);
-      g_object_unref (text_buffer);
-
-      gtk_text_view_set_editable (GTK_TEXT_VIEW (text_view), FALSE);
-      gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (text_view), GTK_WRAP_WORD);
-      gtk_text_view_set_left_margin (GTK_TEXT_VIEW (text_view), 3);
-      gtk_text_view_set_right_margin (GTK_TEXT_VIEW (text_view), 3);
-      gtk_widget_set_size_request (text_view, 240, 120);
-      gtk_container_add (GTK_CONTAINER (scrolled_window), text_view);
-      gtk_widget_show (text_view);
-
-      gtk_text_buffer_set_text (text_buffer, script->help, -1);
-
-      /* author, copyright, etc. */
-      table = gtk_table_new (2, 4, FALSE);
-      gtk_table_set_col_spacings (GTK_TABLE (table), 6);
-      gtk_table_set_row_spacings (GTK_TABLE (table), 6);
-      gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 0);
-      gtk_widget_show (table);
-
-      label = gtk_label_new (script->author);
-      gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-      gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-      gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
-				 _("Author:"), 0.0, 0.0,
-				 label, 1, FALSE);
-
-      label = gtk_label_new (script->copyright);
-      gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-      gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-      gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
-				 _("Copyright:"), 0.0, 0.0,
-				 label, 1, FALSE);
-
-      label = gtk_label_new (script->date);
-      gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-      gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-      gimp_table_attach_aligned (GTK_TABLE (table), 0, 2,
-				 _("Date:"), 0.0, 0.0,
-				 label, 1, FALSE);
-
-      if (strlen (script->img_types) > 0)
-	{
-	  label = gtk_label_new (script->img_types);
-          gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-	  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-	  gimp_table_attach_aligned (GTK_TABLE (table), 0, 3,
-				     _("Image Types:"), 0.0, 0.0,
-				     label, 1, FALSE);
-	}
-    }
-
-  gtk_window_present (GTK_WINDOW (dialog));
-
-  /*  move focus from the text view to the Close button  */
-  gtk_widget_child_focus (dialog, GTK_DIR_TAB_FORWARD);
 }

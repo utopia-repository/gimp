@@ -55,6 +55,7 @@ libexec_PROGRAMS = \
 	checkerboard \
 	color_enhance \
 	colorify \
+	colormap-remap \
 	colortoalpha \
 	compose \
 	compressor \
@@ -65,6 +66,7 @@ libexec_PROGRAMS = \
 	decompose \
 	deinterlace \
 	depthmerge \
+	desktop-link \
 	despeckle \
 	destripe \
 	dicom \
@@ -88,7 +90,6 @@ libexec_PROGRAMS = \
 	gih \
 	glasstile \
 	glob \
-	$(GNOMEPRINT) \
 	gqbist \
 	gradmap \
 	grid \
@@ -171,7 +172,6 @@ libexec_PROGRAMS = \
 	webbrowser \
 	whirlpinch \
 	wind \
-	$(WINPRINT) \
 	$(WMF) \
 	xbm \
 	$(XPM) \
@@ -180,7 +180,6 @@ libexec_PROGRAMS = \
 
 EXTRA_PROGRAMS = \
 	aa \
-	gnomeprint \
 	mail \
 	mng \
 	png \
@@ -188,7 +187,6 @@ EXTRA_PROGRAMS = \
 	psp \
 	svg \
 	tiff \
-	winprint \
 	wmf \
 	xpm
 
@@ -505,6 +503,21 @@ colorify_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
+colormap_remap_SOURCES = \
+	colormap-remap.c
+
+colormap_remap_LDADD = \
+	$(libgimpui)		\
+	$(libgimpconfig)	\
+	$(libgimpwidgets)	\
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpmath)		\
+	$(libgimpbase)		\
+	$(GTK_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)
+
 colortoalpha_SOURCES = \
 	colortoalpha.c
 
@@ -649,6 +662,18 @@ depthmerge_LDADD = \
 	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)
+
+desktop_link_SOURCES = \
+	desktop-link.c
+
+desktop_link_LDADD = \
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpmath)		\
+	$(libgimpbase)		\
+	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
@@ -988,24 +1013,6 @@ glob_LDADD = \
 	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)
-
-gnomeprint_CFLAGS = $(GNOMEPRINT_CFLAGS)
-
-gnomeprint_SOURCES = \
-	gnomeprint.c
-
-gnomeprint_LDADD = \
-	$(libgimpui)		\
-	$(libgimpconfig)	\
-	$(libgimpwidgets)	\
-	$(libgimp)		\
-	$(libgimpcolor)		\
-	$(libgimpmath)		\
-	$(libgimpbase)		\
-	$(LIBGNOMEPRINT)		\
-	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
@@ -2228,22 +2235,6 @@ wind_LDADD = \
 	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)
-
-winprint_SOURCES = \
-	winprint.c
-
-winprint_LDADD = \
-	$(libgimpui)		\
-	$(libgimpconfig)	\
-	$(libgimpwidgets)	\
-	$(libgimp)		\
-	$(libgimpcolor)		\
-	$(libgimpmath)		\
-	$(libgimpbase)		\
-	$(LIBWINPRINT)		\
-	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 

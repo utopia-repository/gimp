@@ -229,7 +229,6 @@
 <ANCHOR id="gimp-prop-entry-new" href="libgimpwidgets/libgimpwidgets-GimpPropWidgets.html#gimp-prop-entry-new">
 <ANCHOR id="gimp-prop-text-buffer-new" href="libgimpwidgets/libgimpwidgets-GimpPropWidgets.html#gimp-prop-text-buffer-new">
 <ANCHOR id="gimp-prop-file-chooser-button-new" href="libgimpwidgets/libgimpwidgets-GimpPropWidgets.html#gimp-prop-file-chooser-button-new">
-<ANCHOR id="gimp-prop-file-entry-new" href="libgimpwidgets/libgimpwidgets-GimpPropWidgets.html#gimp-prop-file-entry-new">
 <ANCHOR id="gimp-prop-path-editor-new" href="libgimpwidgets/libgimpwidgets-GimpPropWidgets.html#gimp-prop-path-editor-new">
 <ANCHOR id="gimp-prop-size-entry-new" href="libgimpwidgets/libgimpwidgets-GimpPropWidgets.html#gimp-prop-size-entry-new">
 <ANCHOR id="gimp-prop-coordinates-new" href="libgimpwidgets/libgimpwidgets-GimpPropWidgets.html#gimp-prop-coordinates-new">
@@ -443,6 +442,7 @@
 <ANCHOR id="GIMP-STOCK-LAYERS:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-LAYERS:CAPS">
 <ANCHOR id="GIMP-STOCK-CHANNELS:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNELS:CAPS">
 <ANCHOR id="GIMP-STOCK-PATHS:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-PATHS:CAPS">
+<ANCHOR id="GIMP-STOCK-COLORMAP:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-COLORMAP:CAPS">
 <ANCHOR id="GIMP-STOCK-INDEXED-PALETTE:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-INDEXED-PALETTE:CAPS">
 <ANCHOR id="GIMP-STOCK-CURSOR:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-CURSOR:CAPS">
 <ANCHOR id="GIMP-STOCK-SAMPLE-POINT:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-SAMPLE-POINT:CAPS">
@@ -514,6 +514,7 @@
 <ANCHOR id="GIMP-STOCK-SWAP-COLORS:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-SWAP-COLORS:CAPS">
 <ANCHOR id="GIMP-STOCK-UNDO-HISTORY:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-UNDO-HISTORY:CAPS">
 <ANCHOR id="GIMP-STOCK-TOOL-AIRBRUSH:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-AIRBRUSH:CAPS">
+<ANCHOR id="GIMP-STOCK-TOOL-ALIGN:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ALIGN:CAPS">
 <ANCHOR id="GIMP-STOCK-TOOL-BLEND:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BLEND:CAPS">
 <ANCHOR id="GIMP-STOCK-TOOL-BLUR:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BLUR:CAPS">
 <ANCHOR id="GIMP-STOCK-TOOL-BRIGHTNESS-CONTRAST:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BRIGHTNESS-CONTRAST:CAPS">

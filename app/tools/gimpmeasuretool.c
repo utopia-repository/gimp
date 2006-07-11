@@ -324,7 +324,7 @@ gimp_measure_tool_button_press (GimpTool        *tool,
     {
       mtool->dialog = gimp_measure_tool_dialog_new (mtool);
       g_object_add_weak_pointer (G_OBJECT (mtool->dialog),
-                                 (gpointer *) &mtool->dialog);
+                                 (gpointer) &mtool->dialog);
     }
 
   if (mtool->dialog)
@@ -507,15 +507,15 @@ gimp_measure_tool_cursor_update (GimpTool        *tool,
               if (state & GDK_CONTROL_MASK)
                 {
                   if (state & GDK_MOD1_MASK)
-                    cursor = GDK_BOTTOM_RIGHT_CORNER;
+                    cursor = GIMP_CURSOR_CORNER_BOTTOM_RIGHT;
                   else
-                    cursor = GDK_BOTTOM_SIDE;
+                    cursor = GIMP_CURSOR_SIDE_BOTTOM;
                   break;
                 }
 
               if (state & GDK_MOD1_MASK)
                 {
-                  cursor = GDK_RIGHT_SIDE;
+                  cursor = GIMP_CURSOR_SIDE_RIGHT;
                   break;
                 }
 

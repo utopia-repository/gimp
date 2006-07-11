@@ -1,9 +1,5 @@
 #! /bin/sh
 
-if [ -z "${PKG_CONFIG}" ]; then
-	PKG_CONFIG=/usr/bin/pkg-config
-fi
-
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 exec_prefix_set=no
@@ -278,7 +274,6 @@ while test $# -gt 0; do
               test $donothing = "yes" || $cmd
               dest=`echo $1 | sed -e 's#.*/\([^/].*\)$#\1#'`
               cmd="$install_cmd $1 $DESTDIR$install_dir/$dest"
-			  mkdir -p $DESTDIR$install_dir
               test $quiet = "yes" || echo $cmd
               test $donothing = "yes" || exec $cmd
             else
@@ -331,7 +326,6 @@ while test $# -gt 0; do
             test $donothing = "yes" || $cmd
           fi
           dest=`echo $1 | sed -e 's#.*/\([^/].*\)$#\1#' -e 's/\.[^.]*$//'`
-		  mkdir -p $install_dir
           cmd="$cc $cflags $gimp_cflags -o $install_dir/$dest $1 $ldflags $gimp_libs $libs"
           test $quiet = "yes" || echo $cmd
           test $donothing = "yes" || exec $cmd

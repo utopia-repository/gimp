@@ -95,16 +95,16 @@ Functions to manipulate a plug-in's context.
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2517574"></a><h3>
+<a name="id2545073"></a><h3>
 <a name="gimp-context-push"></a>gimp_context_push ()</h3>
-<a class="indexterm" name="id2517588"></a><pre class="programlisting">gboolean    gimp_context_push               (void);</pre>
+<a class="indexterm" name="id2545087"></a><pre class="programlisting">gboolean    gimp_context_push               (void);</pre>
 <p>
 Pushes a context to the top of the plug-in's context stack.
 </p>
 <p>
 This procedure creates a new context by copying the current context.
 This copy becomes the new current context for the calling plug-in
-until it is popped again using gimp-context-pop.</p>
+until it is popped again using <a href="libgimp-gimpcontext.html#gimp-context-pop"><code class="function">gimp_context_pop()</code></a>.</p>
 <p>
 
 </p>
@@ -123,16 +123,16 @@ until it is popped again using gimp-context-pop.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2517638"></a><h3>
+<a name="id2545146"></a><h3>
 <a name="gimp-context-pop"></a>gimp_context_pop ()</h3>
-<a class="indexterm" name="id2517653"></a><pre class="programlisting">gboolean    gimp_context_pop                (void);</pre>
+<a class="indexterm" name="id2545161"></a><pre class="programlisting">gboolean    gimp_context_pop                (void);</pre>
 <p>
 Pops the topmost context from the plug-in's context stack.
 </p>
 <p>
 This procedure removes the topmost context from the plug-in's
 context stack. The context that was active before the corresponding
-call to gimp-context-push becomes the new current context of the
+call to <a href="libgimp-gimpcontext.html#gimp-context-push"><code class="function">gimp_context_push()</code></a> becomes the new current context of the
 plug-in.</p>
 <p>
 
@@ -152,9 +152,9 @@ plug-in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2517705"></a><h3>
+<a name="id2545222"></a><h3>
 <a name="gimp-context-get-foreground"></a>gimp_context_get_foreground ()</h3>
-<a class="indexterm" name="id2517719"></a><pre class="programlisting">gboolean    gimp_context_get_foreground     (<a
+<a class="indexterm" name="id2545236"></a><pre class="programlisting">gboolean    gimp_context_get_foreground     (<a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *foreground);</pre>
 <p>
@@ -190,9 +190,9 @@ blending, and bucket fill.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2517789"></a><h3>
+<a name="id2545306"></a><h3>
 <a name="gimp-context-set-foreground"></a>gimp_context_set_foreground ()</h3>
-<a class="indexterm" name="id2517802"></a><pre class="programlisting">gboolean    gimp_context_set_foreground     (const <a
+<a class="indexterm" name="id2565687"></a><pre class="programlisting">gboolean    gimp_context_set_foreground     (const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *foreground);</pre>
 <p>
@@ -228,9 +228,9 @@ and bucket fill will use the new value.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2560511"></a><h3>
+<a name="id2565757"></a><h3>
 <a name="gimp-context-get-background"></a>gimp_context_get_background ()</h3>
-<a class="indexterm" name="id2560525"></a><pre class="programlisting">gboolean    gimp_context_get_background     (<a
+<a class="indexterm" name="id2565771"></a><pre class="programlisting">gboolean    gimp_context_get_background     (<a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *background);</pre>
 <p>
@@ -266,9 +266,9 @@ erasing (with non-alpha images), and image filling.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2560595"></a><h3>
+<a name="id2565841"></a><h3>
 <a name="gimp-context-set-background"></a>gimp_context_set_background ()</h3>
-<a class="indexterm" name="id2560609"></a><pre class="programlisting">gboolean    gimp_context_set_background     (const <a
+<a class="indexterm" name="id2565854"></a><pre class="programlisting">gboolean    gimp_context_set_background     (const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *background);</pre>
 <p>
@@ -305,9 +305,9 @@ value.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2560679"></a><h3>
+<a name="id2565925"></a><h3>
 <a name="gimp-context-set-default-colors"></a>gimp_context_set_default_colors ()</h3>
-<a class="indexterm" name="id2560693"></a><pre class="programlisting">gboolean    gimp_context_set_default_colors (void);</pre>
+<a class="indexterm" name="id2565939"></a><pre class="programlisting">gboolean    gimp_context_set_default_colors (void);</pre>
 <p>
 Set the current GIMP foreground and background colors to black and
 white.
@@ -333,9 +333,9 @@ colors to their initial default values, black and white.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562072"></a><h3>
+<a name="id2567338"></a><h3>
 <a name="gimp-context-swap-colors"></a>gimp_context_swap_colors ()</h3>
-<a class="indexterm" name="id2562086"></a><pre class="programlisting">gboolean    gimp_context_swap_colors        (void);</pre>
+<a class="indexterm" name="id2567352"></a><pre class="programlisting">gboolean    gimp_context_swap_colors        (void);</pre>
 <p>
 Swap the current GIMP foreground and background colors.
 </p>
@@ -361,9 +361,9 @@ color and vice versa.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562137"></a><h3>
+<a name="id2567402"></a><h3>
 <a name="gimp-context-get-opacity"></a>gimp_context_get_opacity ()</h3>
-<a class="indexterm" name="id2562151"></a><pre class="programlisting">gdouble     gimp_context_get_opacity        (void);</pre>
+<a class="indexterm" name="id2567416"></a><pre class="programlisting">gdouble     gimp_context_get_opacity        (void);</pre>
 <p>
 Get the opacity.
 </p>
@@ -388,9 +388,9 @@ floating point number between 0 and 100.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562201"></a><h3>
+<a name="id2567466"></a><h3>
 <a name="gimp-context-set-opacity"></a>gimp_context_set_opacity ()</h3>
-<a class="indexterm" name="id2562215"></a><pre class="programlisting">gboolean    gimp_context_set_opacity        (gdouble opacity);</pre>
+<a class="indexterm" name="id2567480"></a><pre class="programlisting">gboolean    gimp_context_set_opacity        (gdouble opacity);</pre>
 <p>
 Set the opacity.
 </p>
@@ -423,9 +423,9 @@ floating point number between 0 and 100.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562285"></a><h3>
+<a name="id2567549"></a><h3>
 <a name="gimp-context-get-paint-mode"></a>gimp_context_get_paint_mode ()</h3>
-<a class="indexterm" name="id2562299"></a><pre class="programlisting"><a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> gimp_context_get_paint_mode
+<a class="indexterm" name="id2567564"></a><pre class="programlisting"><a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> gimp_context_get_paint_mode
                                             (void);</pre>
 <p>
 Get the paint mode.
@@ -452,9 +452,9 @@ description.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562349"></a><h3>
+<a name="id2567614"></a><h3>
 <a name="gimp-context-set-paint-mode"></a>gimp_context_set_paint_mode ()</h3>
-<a class="indexterm" name="id2562364"></a><pre class="programlisting">gboolean    gimp_context_set_paint_mode     (<a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);</pre>
+<a class="indexterm" name="id2567628"></a><pre class="programlisting">gboolean    gimp_context_set_paint_mode     (<a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);</pre>
 <p>
 Set the paint mode.
 </p>
@@ -486,9 +486,9 @@ This procedure modifies the paint_mode setting.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562432"></a><h3>
+<a name="id2567697"></a><h3>
 <a name="gimp-context-get-brush"></a>gimp_context_get_brush ()</h3>
-<a class="indexterm" name="id2562446"></a><pre class="programlisting">gchar*      gimp_context_get_brush          (void);</pre>
+<a class="indexterm" name="id2567710"></a><pre class="programlisting">gchar*      gimp_context_get_brush          (void);</pre>
 <p>
 Retrieve the currently active brush.
 </p>
@@ -514,9 +514,9 @@ application of paint to the image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562498"></a><h3>
+<a name="id2567762"></a><h3>
 <a name="gimp-context-set-brush"></a>gimp_context_set_brush ()</h3>
-<a class="indexterm" name="id2562511"></a><pre class="programlisting">gboolean    gimp_context_set_brush          (const gchar *name);</pre>
+<a class="indexterm" name="id2567776"></a><pre class="programlisting">gboolean    gimp_context_set_brush          (const gchar *name);</pre>
 <p>
 Set the specified brush as the active brush.
 </p>
@@ -552,9 +552,9 @@ becomes active and will be used in all subsequent paint operations.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562586"></a><h3>
+<a name="id2567850"></a><h3>
 <a name="gimp-context-get-pattern"></a>gimp_context_get_pattern ()</h3>
-<a class="indexterm" name="id2562599"></a><pre class="programlisting">gchar*      gimp_context_get_pattern        (void);</pre>
+<a class="indexterm" name="id2567864"></a><pre class="programlisting">gchar*      gimp_context_get_pattern        (void);</pre>
 <p>
 Retrieve the currently active pattern.
 </p>
@@ -580,9 +580,9 @@ to control the application of paint to the image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562652"></a><h3>
+<a name="id2567916"></a><h3>
 <a name="gimp-context-set-pattern"></a>gimp_context_set_pattern ()</h3>
-<a class="indexterm" name="id2562665"></a><pre class="programlisting">gboolean    gimp_context_set_pattern        (const gchar *name);</pre>
+<a class="indexterm" name="id2567930"></a><pre class="programlisting">gboolean    gimp_context_set_pattern        (const gchar *name);</pre>
 <p>
 Set the specified pattern as the active pattern.
 </p>
@@ -619,9 +619,9 @@ operations.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562740"></a><h3>
+<a name="id2568004"></a><h3>
 <a name="gimp-context-get-gradient"></a>gimp_context_get_gradient ()</h3>
-<a class="indexterm" name="id2562754"></a><pre class="programlisting">gchar*      gimp_context_get_gradient       (void);</pre>
+<a class="indexterm" name="id2568019"></a><pre class="programlisting">gchar*      gimp_context_get_gradient       (void);</pre>
 <p>
 Retrieve the currently active gradient.
 </p>
@@ -645,9 +645,9 @@ This procedure returns the name of the currently active gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562804"></a><h3>
+<a name="id2568069"></a><h3>
 <a name="gimp-context-set-gradient"></a>gimp_context_set_gradient ()</h3>
-<a class="indexterm" name="id2562818"></a><pre class="programlisting">gboolean    gimp_context_set_gradient       (const gchar *name);</pre>
+<a class="indexterm" name="id2568083"></a><pre class="programlisting">gboolean    gimp_context_set_gradient       (const gchar *name);</pre>
 <p>
 Sets the specified gradient as the active gradient.
 </p>
@@ -684,9 +684,9 @@ operations.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562893"></a><h3>
+<a name="id2568158"></a><h3>
 <a name="gimp-context-get-palette"></a>gimp_context_get_palette ()</h3>
-<a class="indexterm" name="id2562907"></a><pre class="programlisting">gchar*      gimp_context_get_palette        (void);</pre>
+<a class="indexterm" name="id2568171"></a><pre class="programlisting">gchar*      gimp_context_get_palette        (void);</pre>
 <p>
 Retrieve the currently active palette.
 </p>
@@ -710,9 +710,9 @@ This procedure returns the name of the the currently active palette.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562957"></a><h3>
+<a name="id2568222"></a><h3>
 <a name="gimp-context-set-palette"></a>gimp_context_set_palette ()</h3>
-<a class="indexterm" name="id2562970"></a><pre class="programlisting">gboolean    gimp_context_set_palette        (const gchar *name);</pre>
+<a class="indexterm" name="id2568235"></a><pre class="programlisting">gboolean    gimp_context_set_palette        (const gchar *name);</pre>
 <p>
 Set the specified palette as the active palette.
 </p>
@@ -749,9 +749,9 @@ operations.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569043"></a><h3>
+<a name="id2574309"></a><h3>
 <a name="gimp-context-get-font"></a>gimp_context_get_font ()</h3>
-<a class="indexterm" name="id2569056"></a><pre class="programlisting">gchar*      gimp_context_get_font           (void);</pre>
+<a class="indexterm" name="id2574321"></a><pre class="programlisting">gchar*      gimp_context_get_font           (void);</pre>
 <p>
 Retrieve the currently active font.
 </p>
@@ -775,9 +775,9 @@ This procedure returns the name of the currently active font.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569101"></a><h3>
+<a name="id2574366"></a><h3>
 <a name="gimp-context-set-font"></a>gimp_context_set_font ()</h3>
-<a class="indexterm" name="id2569114"></a><pre class="programlisting">gboolean    gimp_context_set_font           (const gchar *name);</pre>
+<a class="indexterm" name="id2574379"></a><pre class="programlisting">gboolean    gimp_context_set_font           (const gchar *name);</pre>
 <p>
 Set the specified font as the active font.
 </p>
@@ -813,9 +813,9 @@ becomes active and will be used in all subsequent font operations.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569181"></a><h3>
+<a name="id2574446"></a><h3>
 <a name="gimp-context-get-paint-method"></a>gimp_context_get_paint_method ()</h3>
-<a class="indexterm" name="id2569195"></a><pre class="programlisting">gchar*      gimp_context_get_paint_method   (void);</pre>
+<a class="indexterm" name="id2574460"></a><pre class="programlisting">gchar*      gimp_context_get_paint_method   (void);</pre>
 <p>
 Retrieve the currently active paint method.
 </p>
@@ -840,9 +840,9 @@ method.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569242"></a><h3>
+<a name="id2574507"></a><h3>
 <a name="gimp-context-set-paint-method"></a>gimp_context_set_paint_method ()</h3>
-<a class="indexterm" name="id2569256"></a><pre class="programlisting">gboolean    gimp_context_set_paint_method   (const gchar *name);</pre>
+<a class="indexterm" name="id2574521"></a><pre class="programlisting">gboolean    gimp_context_set_paint_method   (const gchar *name);</pre>
 <p>
 Set the specified paint method as the active paint method.
 </p>

@@ -64,8 +64,7 @@ plug-in dialog.</para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>title</parameter>&nbsp;:</term>
-<listitem><simpara>     Title of the dialog to use or <link linkend="NULL:CAPS"><literal>NULL</literal></link> means to use the default
-            title.
+<listitem><simpara>     Title of the dialog to use or <link linkend="NULL:CAPS"><literal>NULL</literal></link> to use the default title.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>font_name</parameter>&nbsp;:</term>
 <listitem><simpara> Initial font name.

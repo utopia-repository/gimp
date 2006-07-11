@@ -80,6 +80,7 @@
 #define     <link linkend="GIMP-STOCK-LAYERS:CAPS">GIMP_STOCK_LAYERS</link>
 #define     <link linkend="GIMP-STOCK-CHANNELS:CAPS">GIMP_STOCK_CHANNELS</link>
 #define     <link linkend="GIMP-STOCK-PATHS:CAPS">GIMP_STOCK_PATHS</link>
+#define     <link linkend="GIMP-STOCK-COLORMAP:CAPS">GIMP_STOCK_COLORMAP</link>
 #define     <link linkend="GIMP-STOCK-INDEXED-PALETTE:CAPS">GIMP_STOCK_INDEXED_PALETTE</link>
 #define     <link linkend="GIMP-STOCK-CURSOR:CAPS">GIMP_STOCK_CURSOR</link>
 #define     <link linkend="GIMP-STOCK-SAMPLE-POINT:CAPS">GIMP_STOCK_SAMPLE_POINT</link>
@@ -151,6 +152,7 @@
 #define     <link linkend="GIMP-STOCK-SWAP-COLORS:CAPS">GIMP_STOCK_SWAP_COLORS</link>
 #define     <link linkend="GIMP-STOCK-UNDO-HISTORY:CAPS">GIMP_STOCK_UNDO_HISTORY</link>
 #define     <link linkend="GIMP-STOCK-TOOL-AIRBRUSH:CAPS">GIMP_STOCK_TOOL_AIRBRUSH</link>
+#define     <link linkend="GIMP-STOCK-TOOL-ALIGN:CAPS">GIMP_STOCK_TOOL_ALIGN</link>
 #define     <link linkend="GIMP-STOCK-TOOL-BLEND:CAPS">GIMP_STOCK_TOOL_BLEND</link>
 #define     <link linkend="GIMP-STOCK-TOOL-BLUR:CAPS">GIMP_STOCK_TOOL_BLUR</link>
 #define     <link linkend="GIMP-STOCK-TOOL-BRIGHTNESS-CONTRAST:CAPS">GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST</link>
@@ -695,12 +697,20 @@ RTL variant
 <inlinegraphic fileref="stock-paths-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-INDEXED-PALETTE:CAPS" role="macro"/>GIMP_STOCK_INDEXED_PALETTE</title>
-<indexterm><primary>GIMP_STOCK_INDEXED_PALETTE</primary></indexterm><programlisting>#define GIMP_STOCK_INDEXED_PALETTE          "gimp-indexed-palette"
+<title><anchor id="GIMP-STOCK-COLORMAP:CAPS" role="macro"/>GIMP_STOCK_COLORMAP</title>
+<indexterm><primary>GIMP_STOCK_COLORMAP</primary></indexterm><programlisting>#define GIMP_STOCK_COLORMAP                 "gimp-colormap"
 </programlisting>
-<para xml:base="../gimpstock.xml">
-<inlinegraphic fileref="stock-indexed-palette-24.png" format="png"></inlinegraphic>
-<inlinegraphic fileref="stock-indexed-palette-16.png" format="png"></inlinegraphic>
+<para>
+<inlinegraphic fileref="stock-colormap-24.png" format="png"></inlinegraphic>
+<inlinegraphic fileref="stock-colormap-16.png" format="png"></inlinegraphic>
+</para></refsect2>
+<refsect2>
+<title><anchor id="GIMP-STOCK-INDEXED-PALETTE:CAPS" role="macro" condition="deprecated:"/>GIMP_STOCK_INDEXED_PALETTE</title>
+<indexterm role="deprecated"><primary>GIMP_STOCK_INDEXED_PALETTE</primary></indexterm><programlisting>#define GIMP_STOCK_INDEXED_PALETTE          "gimp-colormap"
+</programlisting>
+<warning><para><literal>GIMP_STOCK_INDEXED_PALETTE</literal> is deprecated and should not be used in newly-written code.</para></warning>
+<para>
+
 </para></refsect2>
 <refsect2>
 <title><anchor id="GIMP-STOCK-CURSOR:CAPS" role="macro"/>GIMP_STOCK_CURSOR</title>
@@ -1199,6 +1209,14 @@ RTL variant
 <para xml:base="../gimpstock.xml">
 <inlinegraphic fileref="stock-tool-airbrush-22.png" format="png"></inlinegraphic>
 <inlinegraphic fileref="stock-tool-airbrush-16.png" format="png"></inlinegraphic>
+</para></refsect2>
+<refsect2>
+<title><anchor id="GIMP-STOCK-TOOL-ALIGN:CAPS" role="macro"/>GIMP_STOCK_TOOL_ALIGN</title>
+<indexterm><primary>GIMP_STOCK_TOOL_ALIGN</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_ALIGN               "gimp-tool-align"
+</programlisting>
+<para xml:base="../gimpstock.xml">
+<inlinegraphic fileref="stock-tool-align-22.png" format="png"></inlinegraphic>
+<inlinegraphic fileref="stock-tool-align-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
 <title><anchor id="GIMP-STOCK-TOOL-BLEND:CAPS" role="macro"/>GIMP_STOCK_TOOL_BLEND</title>

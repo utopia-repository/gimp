@@ -1,0 +1,22 @@
+diff -rU6 gimp-2.2.6/app/xcf/xcf-load.c gimp-2.2.6.new/app/xcf/xcf-load.c
+--- gimp-2.2.6/app/xcf/xcf-load.c	2004-11-03 12:50:37.000000000 +0100
++++ gimp-2.2.6.new/app/xcf/xcf-load.c	2006-07-06 12:27:33.982404488 +0200
+@@ -1658,12 +1658,18 @@
+           xcf_seek_pos (info,
+                         info->cp + 4 * num_axes * num_control_points,
+                         NULL);
+           continue;
+         }
+ 
++      if (num_axes < 2 || num_axes > 6)
++        {
++          g_printerr ("bad number of axes in stroke description\n");
++          return FALSE;
++        }
++
+       control_points = g_value_array_new (num_control_points);
+ 
+       anchor.selected = FALSE;
+ 
+       for (j = 0; j < num_control_points; j++)
+         {

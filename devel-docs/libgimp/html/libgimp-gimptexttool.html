@@ -121,9 +121,9 @@ Functions for controlling the text tool.
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2625149"></a><h3>
+<a name="id2609726"></a><h3>
 <a name="gimp-text-fontname"></a>gimp_text_fontname ()</h3>
-<a class="indexterm" name="id2625160"></a><pre class="programlisting">gint32      gimp_text_fontname              (gint32 image_ID,
+<a class="indexterm" name="id2609737"></a><pre class="programlisting">gint32      gimp_text_fontname              (gint32 image_ID,
                                              gint32 drawable_ID,
                                              gdouble x,
                                              gdouble y,
@@ -149,7 +149,10 @@ specified drawable parameter is valid, the text will be created as a
 floating selection attached to the drawable. If the drawable
 parameter is not valid (-1), the text will appear as a new layer.
 Finally, a border can be specified around the final rendered text.
-The border is measured in pixels.</p>
+The border is measured in pixels. Parameter size-type is not used
+and is currently ignored. If you need to display a font in points,
+divide the size in points by 72.0 and multiply it by the image's
+vertical resolution.</p>
 <p>
 
 </p>
@@ -227,9 +230,9 @@ The border is measured in pixels.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607836"></a><h3>
+<a name="id2609128"></a><h3>
 <a name="gimp-text-get-extents-fontname"></a>gimp_text_get_extents_fontname ()</h3>
-<a class="indexterm" name="id2607848"></a><pre class="programlisting">gboolean    gimp_text_get_extents_fontname  (const gchar *text,
+<a class="indexterm" name="id2609140"></a><pre class="programlisting">gboolean    gimp_text_get_extents_fontname  (const gchar *text,
                                              gdouble size,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
@@ -245,7 +248,11 @@ Get extents of the bounding box for the specified text.
 <p>
 This tool returns the width and height of a bounding box for the
 specified text string with the specified font information. Ascent
-and descent for the specified font are returned as well.</p>
+and descent for the specified font are returned as well. Parameter
+size-type is not used and is currently ignored. If you need to
+display a font in points, divide the size in points by 72.0 and
+multiply it by the vertical resolution of the image you are taking
+into account.</p>
 <p>
 
 </p>
@@ -311,9 +318,9 @@ and descent for the specified font are returned as well.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2608060"></a><h3>
+<a name="id2625175"></a><h3>
 <a name="gimp-text"></a>gimp_text ()</h3>
-<a class="indexterm" name="id2608074"></a><pre class="programlisting">gint32      gimp_text                       (gint32 image_ID,
+<a class="indexterm" name="id2625189"></a><pre class="programlisting">gint32      gimp_text                       (gint32 image_ID,
                                              gint32 drawable_ID,
                                              gdouble x,
                                              gdouble y,
@@ -457,9 +464,9 @@ This procedure is deprecated! Use <a href="libgimp-gimptexttool.html#gimp-text-f
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627870"></a><h3>
+<a name="id2633390"></a><h3>
 <a name="gimp-text-get-extents"></a>gimp_text_get_extents ()</h3>
-<a class="indexterm" name="id2627882"></a><pre class="programlisting">gboolean    gimp_text_get_extents           (const gchar *text,
+<a class="indexterm" name="id2633403"></a><pre class="programlisting">gboolean    gimp_text_get_extents           (const gchar *text,
                                              gdouble size,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"

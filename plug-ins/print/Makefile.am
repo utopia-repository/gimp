@@ -8,32 +8,41 @@ libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 
-libexecdir = $(gimpplugindir)/plug-ins
+if OS_WIN32
+mwindows = -mwindows
+endif
 
-libexec_PROGRAMS = print
-
-print_SOURCES = \
-        print.c			\
-        print-image-gimp.c	\
-        gimp_color_window.c	\
-        gimp_main_window.c	\
-        print_gimp.h
+AM_LDFLAGS = $(mwindows)
 
 INCLUDES = \
 	-I$(top_srcdir)		\
-	$(GTK_CFLAGS)		\
-	$(GIMPPRINT_CFLAGS)	\
+	$(PRINT_CFLAGS)		\
 	-I$(includedir)
 
 LDADD = \
 	$(libgimpui)		\
 	$(libgimpwidgets)	\
 	$(libgimpconfig)	\
-	$(libgimpmath)		\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(GIMPPRINT_LIBS)	\
+	$(PRINT_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
+
+libexecdir = $(gimpplugindir)/plug-ins
+
+libexec_PROGRAMS = print
+
+EXTRA_PROGRAMS = print
+
+print_SOURCES = \
+	print.c			\
+	print.h			\
+	print-draw-page.c	\
+	print-draw-page.h	\
+	print-page-layout.c	\
+	print-page-layout.h	\
+	print-settings.c	\
+	print-settings.h

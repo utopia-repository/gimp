@@ -1661,6 +1661,12 @@ xcf_load_vector (XcfInfo   *info,
           continue;
         }
 
+      if (num_axes < 2 || num_axes > 6)
+        {
+          g_printerr ("bad number of axes in stroke description\n");
+          return FALSE;
+        }
+
       control_points = g_value_array_new (num_control_points);
 
       anchor.selected = FALSE;

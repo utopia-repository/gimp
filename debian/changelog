@@ -1,3 +1,11 @@
+gimp (2.2.6-1sarge1) stable-security; urgency=high
+
+  * Non-maintainer upload by the Security Team:
+    Fix buffer overflow in XCF parser, discovered by Henning Makholm.
+    [CVE-2006-3404]
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Thu, 13 Jul 2006 21:31:08 +0200
+
 gimp (2.2.6-1) unstable; urgency=low
 
   * New upstream release

@@ -1,3 +1,147 @@
+2006-07-06  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.2.12 release.
+	
+2006-07-06  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/xcf/xcf-save.c (xcf_save_image_props): removed redundant
+	call to xcf_save_prop() for PROP_PARASITES. Spotted by Henning
+	Makholm (bug #346754).
+
+2006-07-06  Sven Neumann  <sven@gimp.org>
+
+	* app/xcf/xcf-load.c (xcf_load_vector): applied a patch from
+	Henning Makholm that introduces a sanity check on the number of
+	axes (bug #346742).
+
+2006-06-22  Michael Natterer  <mitch@gimp.org>
+
+	Merge from HEAD:
+
+	* app/widgets/gimpfiledialog.c (gimp_file_dialog_set_image): don't
+	try to set "." as current_folder_uri.
+
+2006-06-22  Sven Neumann  <sven@gimp.org>
+
+	* app/composite/gimp-composite-generic.c
+	* app/composite/gimp-composite-mmx-installer.c
+	* app/composite/gimp-composite-mmx-test.c
+	* app/composite/gimp-composite-mmx.[ch]
+	* app/composite/gimp-composite-sse-installer.c
+	* app/composite/gimp-composite-sse-test.c
+	* app/composite/gimp-composite-sse.[ch]: backported changes to burn
+	compositing function from the HEAD branch because the MMX/SSE code
+	broke compilation on GCC 4.1 (bug #345473).
+
+2006-06-17  Michael Natterer  <mitch@gimp.org>
+
+	Merge from HEAD:
+
+	* app/widgets/gimpfiledialog.c (gimp_file_dialog_set_image):
+	always call gtk_file_chooser_set_current_folder_uri() and
+	gtk_file_chooser_set_current_name() instead of
+	gtk_file_chooser_set_uri(), since the latter only works if the
+	file exists and its return value is bogus. Fixes bug #343284.
+
+2006-06-04  Kevin Cozens <kcozens@cvs.gnome.org>
+
+	Merge from HEAD:
+
+	* plug-ins/common/png.c: Fixed file_png_get_defaults; wrong # of
+	return values. Fixed file_png_set_defaults; wrong set param count,
+	and off by one error in the parameter indexes. Thanks to Seth for
+	helping track these down.
+
+2006-05-29  Michael Natterer  <mitch@gimp.org>
+
+	Merge from HEAD:
+
+	* app/widgets/gimpdock.c (gimp_dock_key_press_event): make sure
+	text widgets get all key events first. Fixes bug #301006.
+
+2006-05-28  Manish Singh  <yosh@gimp.org>
+
+	* gimp.pc.in: define datarootdir, so we work with newer autoconf.
+
+2006-05-26  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merge from HEAD:
+
+	* plug-ins/common/dicom.c: applied patch from Dov Grobgeld with
+	several fixes for dicom loading, fixes bug #163256.
+
+2006-05-23  Michael Natterer  <mitch@gimp.org>
+
+	Merge from HEAD:
+
+	* tools/pdbgen/pdb/drawable_transform.pdb
+	* tools/pdbgen/pdb/transform_tools.pdb: add the drawable's offset
+	to the x and y returned by gimp_drawable_mask_intersect() because
+	all transform functions expect image coordinates.
+	Fixes bug #342548.
+
+	* app/pdb/drawable_transform_cmds.c
+	* app/pdb/transform_tools_cmds.c: regenerated.
+
+2006-5-22  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merge from Head:
+	
+	* libgimpwidgets/gimpwidgets.c (gimp_coordinates_callback): use
+	ROUND() to prevent incorrect chainbutton logic.  Fixes bug #336259.
+
+2006-05-21  Michael Natterer  <mitch@gimp.org>
+
+	Merge from HEAD:
+
+	* app/tools/tool_manager.c (tool_manager_image_clean_dirty): don't
+	try to reset the active tool by destroying and re-creating it
+	because this doesn't work while gimp->busy is TRUE. Call
+	tool_manager_control_active(HALT) instead, which is the right way
+	to do it anyway. Fixes bug #330083.
+
+2006-5-19  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merge from Head:
+	
+	* app/dialogs/file-save-dialog.c: make sure dialog has not been
+	destroyed when setting sensitive; fixes bug #322978.
+
+2006-04-23  Manish Singh  <yosh@gimp.org>
+
+	* plug-ins/common/png.c: don't use long deprecated libpng API.
+	Fixes bug #339402.
+
+2006-04-20  Tor Lillqvist  <tml@novell.com>
+
+	Merge from HEAD:
+
+	* app/widgets/gimpsessioninfo.c (get_appropriate_monitor): New
+	helper function. Same functionality as
+	gdk_screen_get_monitor_at_window(), except that it takes a window
+	geometry as parameter and not the window itself.
+	(gimp_session_info_set_geometry): Make sure the window is
+	completely inside a monitor. (#339099, #324254)
+
+2006-04-19  Tor Lillqvist  <tml@novell.com>
+
+	* app/dialogs/user-install-dialog.c (user_install_dialog_run):
+	Remove unnecessary call to gtk_widget_realize() which exposed
+	obscure misbehaviour in gdk/win32. Merge from HEAD. (#324254)
+
+2006-04-19  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/animationplay.c: fixed bug in range calculation
+	that caused display errors in the last row (bug #338378).
+
+2006-04-13  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.2.12, interface_age 12.
+
 2006-04-13  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.2.11 release.

@@ -1,10 +1,27 @@
+gimp (2.2.12-0bpo1) sarge-backports; urgency=low
+
+  * Rebuilt for sarge.
+  * Removed version from cdbs, libexif-dev and libfreetype6-dev build-deps.
+  * Removed libaa1-dev from build-dependencies.
+
+ -- Norbert Tretkowski <nobse@backports.org>  Sat, 15 Jul 2006 12:45:33 +0200
+
+gimp (2.2.12-1) unstable; urgency=low
+
+  * New upstream release
+    - Fixes segfault when closing image while saving it (Closes: #339115)
+  * Acknowledge NMU (Closes: #377049), revert patch which has been applied
+    upstream
+
+ -- Ari Pollak <ari@debian.org>  Tue, 11 Jul 2006 14:30:03 -0400
+
 gimp (2.2.11-3.1) unstable; urgency=low
 
   * Non-maintainer upload.
   * Apply fix from #377049 to fix buffer overflow, CVE-2006-3404.
     (closes: #377049)
 
- -- James Vega <jamessan@debian.org>  Fri,  7 Jul 2006 12:55:41 -0400
+ -- James Vega <jamessan@debian.org>  Fri, 7 Jul 2006 12:55:41 -0400 
 
 gimp (2.2.11-3) unstable; urgency=low
 
@@ -63,7 +80,7 @@ gimp (2.2.9-8) unstable; urgency=low
     - Define PKG_CONFIG at the beginning of the gimptool script
       so the GTK/Glib cflags & libs are checked at runtime instead
       of gimp package compile-time. This was breaking gimp plugins
-      built with gimptool with GTK+ 2.8 installed, since
+      built with gimptool with GTK+ 2.8 installed, since 
       extra library/include dependencies on Cairo were added.
       An upstream bug has been filed about this (GNOME #324761).
 
@@ -97,7 +114,7 @@ gimp (2.2.9-5) unstable; urgency=low
 gimp (2.2.9-4) unstable; urgency=low
 
   * I found out from Manish Singh that gcc 3.3 generates incredibly
-    bloated debugging symbols. So I've switched to building
+    bloated debugging symbols. So I've switched to building 
     gimp with gcc 4.0 on all arches except arm (which FTBFSs with gcc-4.0),
     which now builds with gcc 3.4.
 
@@ -198,7 +215,7 @@ gimp (2.2.8-3) unstable; urgency=low
 
 gimp (2.2.8-2) unstable; urgency=low
 
-  * Remove unnecessary build-dep on slang
+  * Remove unnecessary build-dep on slang 
 
  -- Ari Pollak <ari@debian.org>  Wed, 29 Jun 2005 10:03:13 -0400
 
@@ -293,7 +310,7 @@ gimp (2.2.2-1) unstable; urgency=low
 
 gimp (2.2.1-2) unstable; urgency=low
 
-  * Remove the python dependency sections from non-python packages
+  * Remove the python dependency sections from non-python packages 
   * Bump required libgtk2.0-dev version for the libgimp2.0-dev package
   * Really remove the pygimp logo from the debian/ directory
   * Apply patch from Andreas Jochens to fix building on amd64/gcc-4.0
@@ -440,7 +457,7 @@ gimp (2.0.3-1) unstable; urgency=low
 
 gimp (2.0.2-7) unstable; urgency=low
 
-  * Duh, add conflicts & replaces to -svg and -helpbrowser (Closes: #259599)
+  * Duh, add conflicts & replaces to -svg and -helpbrowser (Closes: #259599) 
 
  -- Ari Pollak <ari@debian.org>  Thu, 15 Jul 2004 13:47:07 -0400
 
@@ -452,13 +469,13 @@ gimp (2.0.2-6) unstable; urgency=low
 
 gimp (2.0.2-5) unstable; urgency=low
 
-  * Don't install gnome-gimp.png.
+  * Don't install gnome-gimp.png. 
 
  -- Ari Pollak <ari@debian.org>  Thu,  8 Jul 2004 16:56:07 -0400
 
 gimp (2.0.2-4) unstable; urgency=low
 
-  * The "I'm tired of waiting for migration to sarge" or
+  * The "I'm tired of waiting for migration to sarge" or 
     "patents suck" release
   * Rebuild against librsvg >= 2.7 to get rid of mistaken libcroco dep
     (Closes: #257990)
@@ -468,7 +485,7 @@ gimp (2.0.2-4) unstable; urgency=low
   * Make better error message in helpbrowser for missing gimp-help
     ("Please install the appropriate gimp-help package for your language)
   * Move more arch-indep stuff into gimp-data
-
+  
  -- Ari Pollak <ari@debian.org>  Sat, 26 Jun 2004 23:12:10 -0400
 
 gimp (2.0.2-3) unstable; urgency=low
@@ -476,7 +493,7 @@ gimp (2.0.2-3) unstable; urgency=low
   * Wow, I'm a dope. Really rebuild gimp with libexif10 this time.
   * Remove Build-Conflicts: libgimp2.0, it's no longer necessary for
     the stable version since the soname doesn't change.
-  * Remove the explicit versioning on gtk 2.2.2 or above,
+  * Remove the explicit versioning on gtk 2.2.2 or above, 
     gtk 2.4 provides shlibs that are more than sufficient.
 
  -- Ari Pollak <ari@debian.org>  Thu, 24 Jun 2004 20:33:58 -0400
@@ -502,7 +519,7 @@ gimp (2.0.2-1) unstable; urgency=low
 gimp (2.0.1-2) unstable; urgency=low
 
   * Add replaces & conflicts on gimp1.3-data to libgimp2.0.
-  * Incorporate patch from Daniel Kobras to fix a bug saving XCFs
+  * Incorporate patch from Daniel Kobras to fix a bug saving XCFs 
     (Closes: #248042)
   * This should also force a rebuild on s390, which is holding up gimp in
     sarge.
@@ -543,7 +560,7 @@ gimp (2.0.0-5) unstable; urgency=low
     gimp-perl. Whomever packages gimp-perl can choose whether to provide
     a gimp1.2-perl package, which I'm not sure is a good idea since the
     API may have changed. (Closes: #241349)
-  * Don't remove runtime fontconfig checking, just change the wording of
+  * Don't remove runtime fontconfig checking, just change the wording of 
     it so people can know how to solve the problem. (src/app/app.c)
   * Correct the spelling errors in gimptool.1.in. The rest of the spelling
     errors no longer exist in the gimp source. (Closes: #125783)
@@ -559,7 +576,7 @@ gimp (2.0.0-4) unstable; urgency=low
 
 gimp (2.0.0-3) unstable; urgency=low
 
-  * Remove the gimp-1.2 alternative from previous versions on
+  * Remove the gimp-1.2 alternative from previous versions on 
     installation
 
  -- Ari Pollak <ari@debian.org>  Thu, 25 Mar 2004 22:50:59 -0500
@@ -713,7 +730,7 @@ gimp1.3 (1.3.22-2) unstable; urgency=low
 
 gimp1.3 (1.3.22-1) unstable; urgency=low
 
-  * New upstream release (Closes: #208857, #206048, #206838, #215072,
+  * New upstream release (Closes: #208857, #206048, #206838, #215072, 
     #215504, #215735, #216069, #200149)
   * Fix build-deps (Closes: #217535)
 
@@ -851,16 +868,16 @@ gimp1.3 (1.3.13-1) unstable; urgency=low
 
 gimp1.3 (1.3.12-5) unstable; urgency=low
 
-  * Don't stupidly depend on "<< next.version.number." This is what I
-    get for looking at 2-year-old comments in the rules file and
+  * Don't stupidly depend on "<< next.version.number." This is what I 
+    get for looking at 2-year-old comments in the rules file and 
     thinking they're sane.
 
  -- Ari Pollak <ari@debian.org>  Mon,  3 Mar 2003 12:35:45 -0500
 
 gimp1.3 (1.3.12-4) unstable; urgency=low
 
-  * Work around weird gimpprint problem with default dither algorithm
-    not being set correctly. Submitted fix upstream, hopefully this is the
+  * Work around weird gimpprint problem with default dither algorithm 
+    not being set correctly. Submitted fix upstream, hopefully this is the 
     right way to do it. (Closes: #175068)
 
  -- Ari Pollak <ari@debian.org>  Sun,  2 Mar 2003 14:29:39 -0500
@@ -899,7 +916,7 @@ gimp1.3 (1.3.12-1) unstable; urgency=low
 
 gimp1.3 (1.3.11-3) unstable; urgency=low
 
-  * Remove recommends of xfonts-75dpi. Looks like it was leftover from
+  * Remove recommends of xfonts-75dpi. Looks like it was leftover from 
     GIMP 1.2. (Closes; #180747)
   * Apply patch from CVS to fix compilation on Alpha:
      2003-01-29 Sven Neumann <sven@gimp.org>
@@ -930,7 +947,7 @@ gimp1.3 (1.3.11-1) unstable; urgency=low
 
 gimp1.3 (1.3.10-4) unstable; urgency=low
 
-  * Don't have to mark files in /etc explicitly as conffiles, debhelper
+  * Don't have to mark files in /etc explicitly as conffiles, debhelper 
     does that automatically.
 
  -- Ari Pollak <ari@debian.org>  Sun, 17 Nov 2002 22:08:21 -0500
@@ -950,7 +967,7 @@ gimp1.3 (1.3.10-2) unstable; urgency=low
  -- Ari Pollak <ari@debian.org>  Thu, 14 Nov 2002 14:46:17 -0500
 
 gimp1.3 (1.3.10-1) unstable; urgency=low
-
+ 
   * New upstream release (Closes: #163371, #161781)
     - These bugs should be fixed now. If not, please reopen the bug.
 	  (Closes: #166410, #160986, #167995)
@@ -1111,11 +1128,11 @@ gimp1.2 (1.2.1-1) unstable; urgency=low
 
   * New upstream version. (Closes: #87912)
   * Updated to use new Perl building policy; we're using dh_perl for
-    some of this, so add Build-Depends on perl (>= 5.6.0-16) and
+    some of this, so add Build-Depends on perl (>= 5.6.0-16) and 
     debhelper (>= 3.0.5).
-  * Update Build-Depends to specify libglib1.2/libgtk1.2 >= 1.2.8.
+  * Update Build-Depends to specify libglib1.2/libgtk1.2 >= 1.2.8. 
     (Closes: #87046)
-  * In README.Debian, mention that gimptool is in libgimp1.2-dev.
+  * In README.Debian, mention that gimptool is in libgimp1.2-dev. 
     (Closes: #83501)
   * GIMP saves gif just fine. (Closes: #82369)
   * Evidently large numbers of open files bug fixed upstream.
@@ -1153,7 +1170,7 @@ gimp1.1 (1.1.29-1) unstable; urgency=low
   * Bugs fixed previously that I forgot to close:
   * Select / By Color doesn't crash. Closes: #62560
   * libgimp1.1-dev Conflicts: with gimp. Closes: #75331
-
+  
  -- Ben Gertzfield <che@debian.org>  Wed,  1 Nov 2000 14:35:01 -0800
 
 gimp1.1 (1.1.28-1) unstable; urgency=low
@@ -1186,12 +1203,12 @@ gimp1.1 (1.1.27-1) unstable; urgency=low
   * script-fu breakage due to not having fonts installed documented
     in README.Debian and dependancies. Closes: #48840, #49003
   * gimp1.1-perl split out long ago. Closes: #53873
-  * some Perl bug, fixed upstream long ago: Closes: #54502, #54666, #54668, #54687
+  * some Perl bug, fixed upstream long ago: Closes: #54502, #54666, #54668, #54687 
   * Can't reproduce big swapfile loading two pngs in a row. Probably
     fixed upstream. Closes: #56240
   * Can't reproduce crash on 'gimp --no-data -n -b "(gimp-quit 1)"' call,
     there is no -n flag! Closes: #60941
-  * No problems loading EPS files whatsoever. Closes: #61536
+  * No problems loading EPS files whatsoever. Closes: #61536 
   * Old libgimp1.1.x lying around problem cured with new naming
     scheme. Closes: #62532
   * Selection -> By Color does not segfault any more. Closes: #62659
@@ -1212,7 +1229,7 @@ gimp1.1 (1.1.27-1) unstable; urgency=low
     /usr/share/gimp/1.1/ . Sent patch upstream. Closes: #72161
   * GIMP seems to have no problems parsing lpc's output when using
     lprng for me. Closes: #72448
-  * gimp-python is maintained separately. Closes: #58548
+  * gimp-python is maintained separately. Closes: #58548 
   * Moved gimp binary to /usr/bin. This is to follow policy, and
     also fixes a problem with the GIMP Perl module. Closes: #66469
   * Um. Control+mouse button 1 doesn't select; it deselects. This
@@ -1231,7 +1248,7 @@ gimp1.1 (1.1.24-1) unstable; urgency=low
     so I'm satisfied. Closes: #52634
 
  -- Ben Gertzfield <che@debian.org>  Thu, 10 Aug 2000 11:15:10 -0700
-
+  
 gimp1.1 (1.1.19-1) unstable; urgency=low
 
   * New upstream version. Please don't let there be any i18n breakage
@@ -1251,11 +1268,11 @@ gimp1.1 (1.1.18-1) unstable; urgency=low
 
 gimp1.1 (1.1.17-2) frozen unstable; urgency=low
 
-  * Move gimp-tool into libgimp1.1.17-dev, and make libgimp1.1.17-dev
+  * Move gimp-tool into libgimp1.1.17-dev, and make libgimp1.1.17-dev 
     Depend: on libgtk1.2-dev and libglib1.2-dev. Closes: #59057
   * Fixes locale brokenness for it_IT, ru_RU, de_DE. (Updated the po
     files from CVS gimp current as of 27 Feb 2000.) Closes: #58796, #56503,
-    #57498, #57403,
+    #57498, #57403, 
 
  -- Ben Gertzfield <che@debian.org>  Sun, 27 Feb 2000 10:39:36 -0800
 
@@ -1271,7 +1288,7 @@ gimp1.1 (1.1.15-3) frozen unstable; urgency=MEDIUM
     gimp1.1 package into gimp1.1-perl. Closes: #56237
     (Yes, this must make it into frozen, otherwise gimp1.1 doesn't
      work.)
-  * As a consequence of the above, gimp1.1-perl Replaces: gimp1.1
+  * As a consequence of the above, gimp1.1-perl Replaces: gimp1.1 
     (<< 1.1.15-3).
   * Make sure libgimp1.1.15 doesn't include any Perl directories.
 
@@ -1284,7 +1301,7 @@ gimp1.1 (1.1.15-2) frozen unstable; urgency=MEDIUM
   * Make gimp1.1-perl Depend: on gimp1.1 (>= ${Source-Version}) so
     people don't try to install it with a mismatching gimp package.
   * Add Suggests: from gimp1.1 to gimp1.1-perl.
-  * To make slink -> potato upgrade easier (read: possible), sprinkle
+  * To make slink -> potato upgrade easier (read: possible), sprinkle 
     Replaces: liberally around.
 
  -- Ben Gertzfield <che@debian.org>  Sat, 22 Jan 2000 14:14:56 -0800
@@ -1329,13 +1346,13 @@ gimp1.1 (1.1.14-2) unstable; urgency=low
 gimp1.1 (1.1.14-1) unstable; urgency=low
 
   * New upstream version.
-  * Now includes gimp-perl and the related Perl plugins in the main
+  * Now includes gimp-perl and the related Perl plugins in the main 
     gimp package. Closes: #34392
   * Still no gimp help browser, as libgtkxmhtml-dev depends on a whole
     slew of GNOME libraries which I am not willing to foist on
     unsuspecting GIMP users.
   * Fixed in earlier releases: Closes: #42096, #42699
-
+   
  -- Ben Gertzfield <che@debian.org>  Fri, 17 Dec 1999 15:03:36 -0800
 
 gimp1.1 (1.1.13-1) unstable; urgency=low
@@ -1372,7 +1389,7 @@ gimp1.1 (1.1.8-1) unstable; urgency=low
   * Change Recommends: of xfnts-100dpi to a Suggests, as it seems GIMP will
     work without it nowadays.
   * Upstream has restructured /usr/share/gimp and I missed it; that's
-    why the help files and tips of the day were missing.
+    why the help files and tips of the day were missing. 
     (Fixes: #42699, #42096)
   * libgimp1.1.8-dev Depends: on Source-Version of libgimp1.1.8 now.
 
@@ -1573,7 +1590,7 @@ gimp (0.99.22-1) unstable; urgency=low
  -- Ben Gertzfield <che@debian.org>  Thu, 19 Mar 1998 23:43:57 -0800
 
 gimp (0.99.21-2) frozen unstable; urgency=medium
-
+  
   * Somehow GIMP didn't get linked with libXi, which MAJORLY broke things.
     Fixed.
 
@@ -1683,7 +1700,7 @@ gimp (0.99.10pre11-1) unstable; urgency=low
 gimp (0.99.10-3) unstable; urgency=low
 
   * Applied more patches. GIMP now has XInput (tablet pressure/tilt)
-    extensions!
+    extensions! 
 
  -- Ben Gertzfield <che@debian.org>  Sat, 16 Aug 1997 17:55:10 -0500
 
@@ -1694,7 +1711,7 @@ gimp (0.99.10-2) unstable; urgency=low
     -dev packages)
   * Changed shlibs for libgtk to use = instead of >=; fixes bug #11492
   * Applied patches from http://copper.ucs.indiana.edu/~sgoehrin/gimp/patches/
-
+  
  -- Ben Gertzfield <che@imsa.edu>  Tue, 29 Jul 1997 19:33:41 -0500
 
 gimp (0.99.10-1) unstable; urgency=low
@@ -1718,7 +1735,7 @@ gimp (0.54.1-6) unstable; urgency=low
 gimp (0.54.1-5) unstable; urgency=low
 
   * added new gimprc parsing.
-  * moved /etc/gimprc to /etc/gimp/gimprc
+  * moved /etc/gimprc to /etc/gimp/gimprc 
 
  -- Rob Browning <osiris@cs.utexas.edu>  Sun, 2 Feb 1997 03:08:03 -0600
 

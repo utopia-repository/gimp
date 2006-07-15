@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
 <link rel="prev" href="libgimpwidgets-GimpHelpUI.html" title="GimpHelpUI">
 <link rel="next" href="GimpSizeEntry.html" title="GimpSizeEntry">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -19,62 +20,53 @@
 <link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimpwidgets-GimpHelpUI.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-utils.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpSizeEntry.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimpwidgets-GimpQueryBox"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">GimpQueryBox</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpQueryBox</span></h2>
 <p>GimpQueryBox &#8212; Some simple dialogs to enter a single int, double, string or boolean value.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
 
-void        (<a href="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback">*GimpQueryStringCallback</a>)      (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *query_box,
+void        (<a href="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback">*GimpQueryStringCallback</a>)      (GtkWidget *query_box,
                                              const gchar *string,
                                              gpointer data);
-void        (<a href="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback">*GimpQueryIntCallback</a>)         (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *query_box,
+void        (<a href="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback">*GimpQueryIntCallback</a>)         (GtkWidget *query_box,
                                              gint value,
                                              gpointer data);
-void        (<a href="libgimpwidgets-GimpQueryBox.html#GimpQueryDoubleCallback">*GimpQueryDoubleCallback</a>)      (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *query_box,
+void        (<a href="libgimpwidgets-GimpQueryBox.html#GimpQueryDoubleCallback">*GimpQueryDoubleCallback</a>)      (GtkWidget *query_box,
                                              gdouble value,
                                              gpointer data);
-void        (<a href="libgimpwidgets-GimpQueryBox.html#GimpQuerySizeCallback">*GimpQuerySizeCallback</a>)        (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *query_box,
+void        (<a href="libgimpwidgets-GimpQueryBox.html#GimpQuerySizeCallback">*GimpQuerySizeCallback</a>)        (GtkWidget *query_box,
                                              gdouble size,
                                              <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a> unit,
                                              gpointer data);
-void        (<a href="libgimpwidgets-GimpQueryBox.html#GimpQueryBooleanCallback">*GimpQueryBooleanCallback</a>)     (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *query_box,
+void        (<a href="libgimpwidgets-GimpQueryBox.html#GimpQueryBooleanCallback">*GimpQueryBooleanCallback</a>)     (GtkWidget *query_box,
                                              gboolean value,
                                              gpointer data);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimpwidgets-GimpQueryBox.html#gimp-query-string-box">gimp_query_string_box</a>           (const gchar *title,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *parent,
+GtkWidget*  <a href="libgimpwidgets-GimpQueryBox.html#gimp-query-string-box">gimp_query_string_box</a>           (const gchar *title,
+                                             GtkWidget *parent,
                                              <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
                                              const gchar *help_id,
                                              const gchar *message,
@@ -83,12 +75,8 @@ href="../gtk/GtkWidget.html"
                                              const gchar *signal,
                                              <a href="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback">GimpQueryStringCallback</a> callback,
                                              gpointer data);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimpwidgets-GimpQueryBox.html#gimp-query-int-box">gimp_query_int_box</a>              (const gchar *title,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *parent,
+GtkWidget*  <a href="libgimpwidgets-GimpQueryBox.html#gimp-query-int-box">gimp_query_int_box</a>              (const gchar *title,
+                                             GtkWidget *parent,
                                              <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
                                              const gchar *help_id,
                                              const gchar *message,
@@ -99,12 +87,8 @@ href="../gtk/GtkWidget.html"
                                              const gchar *signal,
                                              <a href="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback">GimpQueryIntCallback</a> callback,
                                              gpointer data);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimpwidgets-GimpQueryBox.html#gimp-query-double-box">gimp_query_double_box</a>           (const gchar *title,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *parent,
+GtkWidget*  <a href="libgimpwidgets-GimpQueryBox.html#gimp-query-double-box">gimp_query_double_box</a>           (const gchar *title,
+                                             GtkWidget *parent,
                                              <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
                                              const gchar *help_id,
                                              const gchar *message,
@@ -116,12 +100,8 @@ href="../gtk/GtkWidget.html"
                                              const gchar *signal,
                                              <a href="libgimpwidgets-GimpQueryBox.html#GimpQueryDoubleCallback">GimpQueryDoubleCallback</a> callback,
                                              gpointer data);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimpwidgets-GimpQueryBox.html#gimp-query-size-box">gimp_query_size_box</a>             (const gchar *title,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *parent,
+GtkWidget*  <a href="libgimpwidgets-GimpQueryBox.html#gimp-query-size-box">gimp_query_size_box</a>             (const gchar *title,
+                                             GtkWidget *parent,
                                              <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
                                              const gchar *help_id,
                                              const gchar *message,
@@ -138,12 +118,8 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
                                              const gchar *signal,
                                              <a href="libgimpwidgets-GimpQueryBox.html#GimpQuerySizeCallback">GimpQuerySizeCallback</a> callback,
                                              gpointer data);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimpwidgets-GimpQueryBox.html#gimp-query-boolean-box">gimp_query_boolean_box</a>          (const gchar *title,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *parent,
+GtkWidget*  <a href="libgimpwidgets-GimpQueryBox.html#gimp-query-boolean-box">gimp_query_boolean_box</a>          (const gchar *title,
+                                             GtkWidget *parent,
                                              <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
                                              const gchar *help_id,
                                              const gchar *stock_id,
@@ -158,18 +134,14 @@ href="../gtk/GtkWidget.html"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2583496"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 These functions provide simple dialogs for entering a single string,
 integer, double, boolean or pixel size value.
 </p>
 <p>
-They return a pointer to a <a
-href="../gtk/GtkDialog.html"
-><span class="type">GtkDialog</span></a> which has to be shown with
-<a
-href="../gtk/GtkWidget.html#gtk-widget-show"
-><code class="function">gtk_widget_show()</code></a> by the caller.
+They return a pointer to a <span class="type">GtkDialog</span> which has to be shown with
+<code class="function">gtk_widget_show()</code> by the caller.
 </p>
 <p>
 The dialogs contain an entry widget for the kind of value they ask for
@@ -179,13 +151,11 @@ callback function is called and returns the entered value.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2583538"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2583544"></a><h3>
+<a name="id2594443"></a><h3>
 <a name="GimpQueryStringCallback"></a>GimpQueryStringCallback ()</h3>
-<a class="indexterm" name="id2583553"></a><pre class="programlisting">void        (*GimpQueryStringCallback)      (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *query_box,
+<a class="indexterm" name="id2594454"></a><pre class="programlisting">void        (*GimpQueryStringCallback)      (GtkWidget *query_box,
                                              const gchar *string,
                                              gpointer data);</pre>
 <p>
@@ -219,11 +189,9 @@ Note that you have to <code class="function">g_free()</code> the returned string
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2583648"></a><h3>
+<a name="id2594549"></a><h3>
 <a name="GimpQueryIntCallback"></a>GimpQueryIntCallback ()</h3>
-<a class="indexterm" name="id2583657"></a><pre class="programlisting">void        (*GimpQueryIntCallback)         (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *query_box,
+<a class="indexterm" name="id2594560"></a><pre class="programlisting">void        (*GimpQueryIntCallback)         (GtkWidget *query_box,
                                              gint value,
                                              gpointer data);</pre>
 <p>
@@ -257,11 +225,9 @@ href="../gtk/GtkWidget.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2589185"></a><h3>
+<a name="id2599096"></a><h3>
 <a name="GimpQueryDoubleCallback"></a>GimpQueryDoubleCallback ()</h3>
-<a class="indexterm" name="id2589194"></a><pre class="programlisting">void        (*GimpQueryDoubleCallback)      (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *query_box,
+<a class="indexterm" name="id2599106"></a><pre class="programlisting">void        (*GimpQueryDoubleCallback)      (GtkWidget *query_box,
                                              gdouble value,
                                              gpointer data);</pre>
 <p>
@@ -295,11 +261,9 @@ href="../gtk/GtkWidget.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2589271"></a><h3>
+<a name="id2599184"></a><h3>
 <a name="GimpQuerySizeCallback"></a>GimpQuerySizeCallback ()</h3>
-<a class="indexterm" name="id2589280"></a><pre class="programlisting">void        (*GimpQuerySizeCallback)        (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *query_box,
+<a class="indexterm" name="id2599194"></a><pre class="programlisting">void        (*GimpQuerySizeCallback)        (GtkWidget *query_box,
                                              gdouble size,
                                              <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
@@ -342,11 +306,9 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2589387"></a><h3>
+<a name="id2599307"></a><h3>
 <a name="GimpQueryBooleanCallback"></a>GimpQueryBooleanCallback ()</h3>
-<a class="indexterm" name="id2589396"></a><pre class="programlisting">void        (*GimpQueryBooleanCallback)     (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *query_box,
+<a class="indexterm" name="id2599318"></a><pre class="programlisting">void        (*GimpQueryBooleanCallback)     (GtkWidget *query_box,
                                              gboolean value,
                                              gpointer data);</pre>
 <p>
@@ -380,14 +342,10 @@ href="../gtk/GtkWidget.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2589483"></a><h3>
+<a name="id2599406"></a><h3>
 <a name="gimp-query-string-box"></a>gimp_query_string_box ()</h3>
-<a class="indexterm" name="id2589492"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_query_string_box           (const gchar *title,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *parent,
+<a class="indexterm" name="id2599417"></a><pre class="programlisting">GtkWidget*  gimp_query_string_box           (const gchar *title,
+                                             GtkWidget *parent,
                                              <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
                                              const gchar *help_id,
                                              const gchar *message,
@@ -397,9 +355,7 @@ href="../gtk/GtkWidget.html"
                                              <a href="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback">GimpQueryStringCallback</a> callback,
                                              gpointer data);</pre>
 <p>
-Creates a new <a
-href="../gtk/GtkDialog.html"
-><span class="type">GtkDialog</span></a> that queries the user for a string value.</p>
+Creates a new <span class="type">GtkDialog</span> that queries the user for a string value.</p>
 <p>
 
 </p>
@@ -469,9 +425,7 @@ href="../gtk/GtkDialog.html"
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A pointer to the new <a
-href="../gtk/GtkDialog.html"
-><span class="type">GtkDialog</span></a>.
+<td> A pointer to the new <span class="type">GtkDialog</span>.
 </td>
 </tr>
 </tbody>
@@ -479,14 +433,10 @@ href="../gtk/GtkDialog.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2589761"></a><h3>
+<a name="id2599686"></a><h3>
 <a name="gimp-query-int-box"></a>gimp_query_int_box ()</h3>
-<a class="indexterm" name="id2589771"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_query_int_box              (const gchar *title,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *parent,
+<a class="indexterm" name="id2599698"></a><pre class="programlisting">GtkWidget*  gimp_query_int_box              (const gchar *title,
+                                             GtkWidget *parent,
                                              <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
                                              const gchar *help_id,
                                              const gchar *message,
@@ -498,9 +448,7 @@ href="../gtk/GtkWidget.html"
                                              <a href="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback">GimpQueryIntCallback</a> callback,
                                              gpointer data);</pre>
 <p>
-Creates a new <a
-href="../gtk/GtkDialog.html"
-><span class="type">GtkDialog</span></a> that queries the user for an integer value.</p>
+Creates a new <span class="type">GtkDialog</span> that queries the user for an integer value.</p>
 <p>
 
 </p>
@@ -582,9 +530,7 @@ href="../gtk/GtkDialog.html"
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A pointer to the new <a
-href="../gtk/GtkDialog.html"
-><span class="type">GtkDialog</span></a>.
+<td> A pointer to the new <span class="type">GtkDialog</span>.
 </td>
 </tr>
 </tbody>
@@ -592,14 +538,10 @@ href="../gtk/GtkDialog.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2590041"></a><h3>
+<a name="id2600012"></a><h3>
 <a name="gimp-query-double-box"></a>gimp_query_double_box ()</h3>
-<a class="indexterm" name="id2590049"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_query_double_box           (const gchar *title,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *parent,
+<a class="indexterm" name="id2600023"></a><pre class="programlisting">GtkWidget*  gimp_query_double_box           (const gchar *title,
+                                             GtkWidget *parent,
                                              <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
                                              const gchar *help_id,
                                              const gchar *message,
@@ -612,9 +554,7 @@ href="../gtk/GtkWidget.html"
                                              <a href="libgimpwidgets-GimpQueryBox.html#GimpQueryDoubleCallback">GimpQueryDoubleCallback</a> callback,
                                              gpointer data);</pre>
 <p>
-Creates a new <a
-href="../gtk/GtkDialog.html"
-><span class="type">GtkDialog</span></a> that queries the user for a double value.</p>
+Creates a new <span class="type">GtkDialog</span> that queries the user for a double value.</p>
 <p>
 
 </p>
@@ -672,9 +612,7 @@ href="../gtk/GtkDialog.html"
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>digits</code></em>&#160;:</span></td>
-<td>    The number of decimal digits the <a
-href="../gtk/GtkSpinButton.html"
-><span class="type">GtkSpinButton</span></a> will provide.
+<td>    The number of decimal digits the <span class="type">GtkSpinButton</span> will provide.
 </td>
 </tr>
 <tr>
@@ -704,9 +642,7 @@ href="../gtk/GtkSpinButton.html"
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A pointer to the new <a
-href="../gtk/GtkDialog.html"
-><span class="type">GtkDialog</span></a>.
+<td> A pointer to the new <span class="type">GtkDialog</span>.
 </td>
 </tr>
 </tbody>
@@ -714,14 +650,10 @@ href="../gtk/GtkDialog.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2590360"></a><h3>
+<a name="id2600366"></a><h3>
 <a name="gimp-query-size-box"></a>gimp_query_size_box ()</h3>
-<a class="indexterm" name="id2590368"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_query_size_box             (const gchar *title,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *parent,
+<a class="indexterm" name="id2600378"></a><pre class="programlisting">GtkWidget*  gimp_query_size_box             (const gchar *title,
+                                             GtkWidget *parent,
                                              <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
                                              const gchar *help_id,
                                              const gchar *message,
@@ -739,9 +671,7 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
                                              <a href="libgimpwidgets-GimpQueryBox.html#GimpQuerySizeCallback">GimpQuerySizeCallback</a> callback,
                                              gpointer data);</pre>
 <p>
-Creates a new <a
-href="../gtk/GtkDialog.html"
-><span class="type">GtkDialog</span></a> that queries the user for a size using a
+Creates a new <span class="type">GtkDialog</span> that queries the user for a size using a
 <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.</p>
 <p>
 
@@ -851,9 +781,7 @@ href="../gtk/GtkDialog.html"
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A pointer to the new <a
-href="../gtk/GtkDialog.html"
-><span class="type">GtkDialog</span></a>.
+<td> A pointer to the new <span class="type">GtkDialog</span>.
 </td>
 </tr>
 </tbody>
@@ -861,14 +789,10 @@ href="../gtk/GtkDialog.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2590765"></a><h3>
+<a name="id2600819"></a><h3>
 <a name="gimp-query-boolean-box"></a>gimp_query_boolean_box ()</h3>
-<a class="indexterm" name="id2590774"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_query_boolean_box          (const gchar *title,
-                                             <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *parent,
+<a class="indexterm" name="id2600830"></a><pre class="programlisting">GtkWidget*  gimp_query_boolean_box          (const gchar *title,
+                                             GtkWidget *parent,
                                              <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
                                              const gchar *help_id,
                                              const gchar *stock_id,
@@ -880,9 +804,7 @@ href="../gtk/GtkWidget.html"
                                              <a href="libgimpwidgets-GimpQueryBox.html#GimpQueryBooleanCallback">GimpQueryBooleanCallback</a> callback,
                                              gpointer data);</pre>
 <p>
-Creates a new <a
-href="../gtk/GtkDialog.html"
-><span class="type">GtkDialog</span></a> that asks the user to do a boolean decision.</p>
+Creates a new <span class="type">GtkDialog</span> that asks the user to do a boolean decision.</p>
 <p>
 
 </p>
@@ -967,9 +889,7 @@ href="../gtk/GtkDialog.html"
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A pointer to the new <a
-href="../gtk/GtkDialog.html"
-><span class="type">GtkDialog</span></a>.
+<td> A pointer to the new <span class="type">GtkDialog</span>.
 </td>
 </tr>
 </tbody>
@@ -977,13 +897,11 @@ href="../gtk/GtkDialog.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2591063"></a><h3>
+<a name="id2601116"></a><h3>
 <a name="GIMP-QUERY-BOX-VBOX:CAPS"></a>GIMP_QUERY_BOX_VBOX()</h3>
-<a class="indexterm" name="id2591072"></a><pre class="programlisting">#define     GIMP_QUERY_BOX_VBOX(qbox)</pre>
+<a class="indexterm" name="id2601126"></a><pre class="programlisting">#define     GIMP_QUERY_BOX_VBOX(qbox)</pre>
 <p>
-A macro to access the <a
-href="../gtk/GtkVBox.html"
-><span class="type">GtkVBox</span></a> in a <span class="type">GimpQueryBox</span>. Useful if you want to add
+A macro to access the <span class="type">GtkVBox</span> in a <span class="type">GimpQueryBox</span>. Useful if you want to add
 more widgets.
 </p>
 <div class="variablelist"><table border="0">
@@ -1000,7 +918,7 @@ more widgets.
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2591117"></a><h2>See Also</h2>
+<a name="id2601172"></a><h2>See Also</h2>
 <p>
 GimpSizeEntry
 </p>
@@ -1009,9 +927,5 @@ GimpUnitMenu
 </p>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimpwidgets-GimpHelpUI.html"><b>&lt;&lt;&#160;GimpHelpUI</b></a></td>
-<td align="right"><a accesskey="n" href="GimpSizeEntry.html"><b>GimpSizeEntry&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

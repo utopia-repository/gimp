@@ -4,16 +4,19 @@
 
 <refentry id="GimpColorButton">
 <refmeta>
-<refentrytitle>GimpColorButton</refentrytitle>
+<refentrytitle id="top_of_page">GimpColorButton</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpColorButton</refname><refpurpose>Widget for selecting a color from a simple button.</refpurpose>
+<refname>GimpColorButton</refname>
+<refpurpose>Widget for selecting a color from a simple button.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -39,26 +42,27 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 id="object_hierarchy">
+<title id="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkWidget">GtkWidget</link>
-               +----<link linkend="GtkContainer">GtkContainer</link>
-                     +----<link linkend="GtkBin">GtkBin</link>
-                           +----<link linkend="GtkButton">GtkButton</link>
-                                 +----<link linkend="GimpButton">GimpButton</link>
-                                       +----GimpColorButton
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkWidget">GtkWidget</link>
+                     +----<link linkend="GtkContainer">GtkContainer</link>
+                           +----<link linkend="GtkBin">GtkBin</link>
+                                 +----<link linkend="GtkButton">GtkButton</link>
+                                       +----<link linkend="GimpButton">GimpButton</link>
+                                             +----GimpColorButton
 </synopsis>
 
 </refsect1>
 
 
 
-<refsect1>
-<title>Implemented Interfaces</title>
+<refsect1 id="impl_interfaces">
+<title id="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpColorButton implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -67,19 +71,19 @@ GimpColorButton implements
 
 
 
-<refsect1>
-<title>Signal Prototypes</title>
+<refsect1 id="signal_proto">
+<title id="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpColorButton-color-changed">color-changed</link>&quot;
             <link linkend="void">void</link>        user_function      (<link linkend="GimpColorButton">GimpColorButton</link> *gimpcolorbutton,
-                                            <link linkend="gpointer">gpointer</link> user_data);
+                                            <link linkend="gpointer">gpointer</link>         user_data)            : Run first
 </synopsis>
 </refsect1>
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 This widget provides a simple button with a preview showing the
 color.
@@ -92,16 +96,16 @@ color, the "color_changed" signal is emitted.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpColorButton-struct"/>GimpColorButton</title>
+<title><anchor id="GimpColorButton-struct" role="struct"/>GimpColorButton</title>
 <indexterm><primary>GimpColorButton</primary></indexterm><programlisting>typedef struct _GimpColorButton GimpColorButton;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-button-new"/>gimp_color_button_new ()</title>
+<title><anchor id="gimp-color-button-new" role="function"/>gimp_color_button_new ()</title>
 <indexterm><primary>gimp_color_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_color_button_new           (const <link linkend="gchar">gchar</link> *title,
                                              <link linkend="gint">gint</link> width,
                                              <link linkend="gint">gint</link> height,
@@ -138,7 +142,7 @@ signal is emitted.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-button-set-color"/>gimp_color_button_set_color ()</title>
+<title><anchor id="gimp-color-button-set-color" role="function"/>gimp_color_button_set_color ()</title>
 <indexterm><primary>gimp_color_button_set_color</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_button_set_color     (<link linkend="GimpColorButton">GimpColorButton</link> *button,
                                              const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <para>
@@ -154,7 +158,7 @@ Sets the <parameter>button</parameter> to the given <parameter>color</parameter>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-button-get-color"/>gimp_color_button_get_color ()</title>
+<title><anchor id="gimp-color-button-get-color" role="function"/>gimp_color_button_get_color ()</title>
 <indexterm><primary>gimp_color_button_get_color</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_button_get_color     (<link linkend="GimpColorButton">GimpColorButton</link> *button,
                                              <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <para>
@@ -170,7 +174,7 @@ Retrieves the currently set color from the <parameter>button</parameter>.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-button-set-update"/>gimp_color_button_set_update ()</title>
+<title><anchor id="gimp-color-button-set-update" role="function"/>gimp_color_button_set_update ()</title>
 <indexterm><primary>gimp_color_button_set_update</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_button_set_update    (<link linkend="GimpColorButton">GimpColorButton</link> *button,
                                              <link linkend="gboolean">gboolean</link> continuous);</programlisting>
 <para>
@@ -188,7 +192,7 @@ dialog.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-button-get-update"/>gimp_color_button_get_update ()</title>
+<title><anchor id="gimp-color-button-get-update" role="function"/>gimp_color_button_get_update ()</title>
 <indexterm><primary>gimp_color_button_get_update</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_color_button_get_update    (<link linkend="GimpColorButton">GimpColorButton</link> *button);</programlisting>
 <para>
 Returns the color button's <parameter>continuous_update</parameter> property.</para>
@@ -202,7 +206,7 @@ Returns the color button's <parameter>continuous_update</parameter> property.</p
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-button-has-alpha"/>gimp_color_button_has_alpha ()</title>
+<title><anchor id="gimp-color-button-has-alpha" role="function"/>gimp_color_button_has_alpha ()</title>
 <indexterm><primary>gimp_color_button_has_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_color_button_has_alpha     (<link linkend="GimpColorButton">GimpColorButton</link> *button);</programlisting>
 <para>
 Checks whether the <parameter>buttons</parameter> shows transparency information.</para>
@@ -212,12 +216,12 @@ Checks whether the <parameter>buttons</parameter> shows transparency information
 <varlistentry><term><parameter>button</parameter>&nbsp;:</term>
 <listitem><simpara> Pointer to a <link linkend="GimpColorButton"><type>GimpColorButton</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if the <parameter>button</parameter> shows transparency information, <literal>FALSE</literal>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the <parameter>button</parameter> shows transparency information, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link>
 otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-button-set-type"/>gimp_color_button_set_type ()</title>
+<title><anchor id="gimp-color-button-set-type" role="function"/>gimp_color_button_set_type ()</title>
 <indexterm><primary>gimp_color_button_set_type</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_button_set_type      (<link linkend="GimpColorButton">GimpColorButton</link> *button,
                                              <link linkend="GimpColorAreaType">GimpColorAreaType</link> type);</programlisting>
 <para>
@@ -235,11 +239,11 @@ Sets the <parameter>button</parameter> to the given <parameter>type</parameter>.
 
 </refsect1>
 
-<refsect1>
-<title>Signals</title>
+<refsect1 id="signals">
+<title id="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpColorButton-color-changed"/>The &quot;color-changed&quot; signal</title>
-<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpColorButton">GimpColorButton</link> *gimpcolorbutton,
-                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>GimpColorButton::color-changed</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpColorButton">GimpColorButton</link> *gimpcolorbutton,
+                                            <link linkend="gpointer">gpointer</link>         user_data)            : Run first</programlisting>
 <para>
 
 </para><variablelist role="params">

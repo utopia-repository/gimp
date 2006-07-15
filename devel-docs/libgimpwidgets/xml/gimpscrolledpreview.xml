@@ -4,16 +4,19 @@
 
 <refentry id="libgimpwidgets-GimpScrolledPreview">
 <refmeta>
-<refentrytitle>GimpScrolledPreview</refentrytitle>
+<refentrytitle id="top_of_page">GimpScrolledPreview</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpScrolledPreview</refname><refpurpose>A widget providing a <link linkend="GimpPreview"><type>GimpPreview</type></link> enhanced by scrolling capabilities.</refpurpose>
+<refname>GimpScrolledPreview</refname>
+<refpurpose>A widget providing a <link linkend="GimpPreview"><type>GimpPreview</type></link> enhanced by scrolling capabilities.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -32,17 +35,17 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 A widget providing a <link linkend="GimpPreview"><type>GimpPreview</type></link> enhanced by scrolling capabilities.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpScrolledPreview"/>GimpScrolledPreview</title>
+<title><anchor id="GimpScrolledPreview" role="struct"/>GimpScrolledPreview</title>
 <indexterm><primary>GimpScrolledPreview</primary></indexterm><programlisting>typedef struct {
   GimpPreview   parent_instance;
 } GimpScrolledPreview;

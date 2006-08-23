@@ -1,3 +1,13 @@
+gimp (2.2.12-2) unstable; urgency=low
+
+  * debian/patches/06_gradient-fix.patch:
+    - Add patch to fix crash on malformed gradient (Closes: #381440)
+  * debian/patches/07_autoconf2.60-fix.patch:
+    - Add patch to fix breakage with new autoconf, which resulted in
+      a broken .desktop file. (Closes: #383391)
+
+ -- Ari Pollak <ari@debian.org>  Tue, 22 Aug 2006 22:19:01 -0400
+
 gimp (2.2.12-1) unstable; urgency=low
 
   * New upstream release

@@ -133,13 +133,13 @@ GIMPPRINT_REQUIRED_VERSION = 4.2.0
 GIMPPRINT_TOONEW_VERSION = 4.3.0
 GIMP_API_VERSION = 2.0
 GIMP_APP_VERSION = 2.2
-GIMP_BINARY_AGE = 212
+GIMP_BINARY_AGE = 213
 GIMP_DATA_VERSION = 2.0
 GIMP_DESKTOP_ICON = wilber-icon.png
 GIMP_FULL_NAME = The GIMP
-GIMP_INTERFACE_AGE = 12
+GIMP_INTERFACE_AGE = 13
 GIMP_MAJOR_VERSION = 2
-GIMP_MICRO_VERSION = 12
+GIMP_MICRO_VERSION = 13
 GIMP_MINOR_VERSION = 2
 GIMP_MKENUMS = $(PERL) $(top_srcdir)/tools/gimp-mkenums
 GIMP_MODULES = modules
@@ -148,7 +148,7 @@ GIMP_MP_LIBS =
 GIMP_PKGCONFIG_VERSION = 2.0
 GIMP_PLUGINS = plug-ins
 GIMP_PLUGIN_VERSION = 2.0
-GIMP_REAL_VERSION = 2.2.12
+GIMP_REAL_VERSION = 2.2.13
 GIMP_REMOTE = gimp-remote-2.2$(EXEEXT)
 GIMP_SYSCONF_VERSION = 2.0
 GIMP_THREAD_FLAGS = 
@@ -156,7 +156,7 @@ GIMP_THREAD_LIBS =
 GIMP_TOOL_VERSION = 2.0
 GIMP_UNSTABLE = no
 GIMP_USER_VERSION = 2.2
-GIMP_VERSION = 2.2.12
+GIMP_VERSION = 2.2.13
 GLIB_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GLIB_GENMARSHAL = glib-genmarshal
 GLIB_LIBS = -lgobject-2.0 -lglib-2.0  
@@ -170,7 +170,7 @@ GOBJECT_QUERY = gobject-query
 GREP = /bin/grep
 GTKDOC_REQUIRED_VERSION = 1.0
 GTKHTML2_CFLAGS = -I/usr/include/gtkhtml-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libxml2 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
-GTKHTML2_LIBS = -lgtkhtml-2 -lgtk-x11-2.0 -lxml2 -lz -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
+GTKHTML2_LIBS = -lgtkhtml-2 -lgtk-x11-2.0 -lxml2 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 GTKHTML2_REQUIRED_VERSION = 2.0.0
 GTK_CFLAGS = -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GTK_DOC_USE_LIBTOOL_FALSE = #
@@ -242,14 +242,14 @@ LIBSCREENSHOT =  -lX11
 LIBSVG = -lrsvg-2 -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 LIBTIFF = -ltiff
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
-LIBWMF = -L/usr/lib -lwmf -lwmflite -lfreetype -lz -L/usr/X11R6/lib -lSM -lICE -lX11 -lexpat -ljpeg -lpng -lz -lm
+LIBWMF = -L/usr/lib -lwmf -lwmflite -lfreetype -lz -lX11 -lexpat -ljpeg -lpng -lz -lm
 LIBXMU =   -lSM -lICE -lX11 -lXmu -lXt
 LIBXPM =   -lSM -lICE -lX11 -lXpm
 LIBZ = -lz
 LN_S = ln -s
 LTLIBOBJS = 
 LT_CURRENT_MINUS_AGE = 0
-LT_VERSION_INFO = 200:12:200
+LT_VERSION_INFO = 200:13:200
 MAIL = mail$(EXEEXT)
 MAINT = 
 MAINTAINER_MODE_FALSE = #
@@ -270,9 +270,9 @@ OS_WIN32_TRUE = #
 PACKAGE = gimp
 PACKAGE_BUGREPORT = http://bugzilla.gnome.org/enter_bug.cgi?product=GIMP
 PACKAGE_NAME = GIMP
-PACKAGE_STRING = GIMP 2.2.12
+PACKAGE_STRING = GIMP 2.2.13
 PACKAGE_TARNAME = gimp
-PACKAGE_VERSION = 2.2.12
+PACKAGE_VERSION = 2.2.13
 PANGOFT2_CFLAGS = -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 PANGOFT2_LIBS = -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 PANGOFT2_REQUIRED_VERSION = 1.4.0
@@ -318,7 +318,7 @@ SYMPREFIX =
 TIFF = tiff$(EXEEXT)
 URL = url$(EXEEXT)
 USE_NLS = yes
-VERSION = 2.2.12
+VERSION = 2.2.13
 WINCLIPBOARD = 
 WINDRES = :
 WINPRINT = 
@@ -697,6 +697,9 @@ uninstall-am: uninstall-info-am uninstall-local
 
 
 all-local: html-build.stamp
+#all-local:
+
+docs: html-build.stamp
 
 #### scan ####
 
@@ -731,7 +734,7 @@ tmpl.stamp: tmpl-build.stamp
 
 #### xml ####
 
-sgml-build.stamp: tmpl.stamp $(CFILE_GLOB) $(srcdir)/tmpl/*.sgml $(expand_content_files)
+sgml-build.stamp: tmpl.stamp $(HFILE_GLOB) $(CFILE_GLOB) $(DOC_MODULE)-sections.txt $(srcdir)/tmpl/*.sgml $(expand_content_files)
 	@echo 'gtk-doc: Building XML'
 	@-chmod -R u+w $(srcdir)
 	cd $(srcdir) && \
@@ -753,7 +756,6 @@ html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
 	@echo 'gtk-doc: Fixing cross-references' 
 	cd $(srcdir) && gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)
 	touch html-build.stamp
-#all-local:
 
 ##############
 
@@ -800,7 +802,7 @@ dist-hook: dist-check-gtkdoc dist-hook-local
 	  cp $(srcdir)/$(DOC_MODULE).types $(distdir)/$(DOC_MODULE).types; \
 	fi
 
-.PHONY : dist-hook-local
+.PHONY : dist-hook-local docs
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

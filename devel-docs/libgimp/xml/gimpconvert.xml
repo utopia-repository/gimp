@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimpconvert">
 <refmeta>
-<refentrytitle>gimpconvert</refentrytitle>
+<refentrytitle role="top_of_page">gimpconvert</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpconvert</refname><refpurpose>Conversions between RGB, indexed, and grayscale modes.</refpurpose>
+<refname>gimpconvert</refname>
+<refpurpose>Conversions between RGB, indexed, and grayscale modes.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -39,18 +42,18 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Conversions between RGB, indexed, and grayscale modes.
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-image-convert-rgb"/>gimp_image_convert_rgb ()</title>
+<title><anchor id="gimp-image-convert-rgb" role="function"/>gimp_image_convert_rgb ()</title>
 <indexterm><primary>gimp_image_convert_rgb</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_convert_rgb          (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Convert specified image to RGB color
@@ -70,7 +73,7 @@ indexed image.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-convert-grayscale"/>gimp_image_convert_grayscale ()</title>
+<title><anchor id="gimp-image-convert-grayscale" role="function"/>gimp_image_convert_grayscale ()</title>
 <indexterm><primary>gimp_image_convert_grayscale</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_convert_grayscale    (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Convert specified image to grayscale (256 intensity levels)
@@ -89,7 +92,7 @@ type GIMP_RGB or GIMP_INDEXED.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-convert-indexed"/>gimp_image_convert_indexed ()</title>
+<title><anchor id="gimp-image-convert-indexed" role="function"/>gimp_image_convert_indexed ()</title>
 <indexterm><primary>gimp_image_convert_indexed</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_convert_indexed      (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="GimpConvertDitherType">GimpConvertDitherType</link> dither_type,
                                              <link linkend="GimpConvertPaletteType">GimpConvertPaletteType</link> palette_type,

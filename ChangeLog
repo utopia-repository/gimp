@@ -1,3 +1,142 @@
+2006-08-24  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.2.13 release.
+
+2006-08-24  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* data/misc/gimp.desktop.in.in (Categories): removed "Application"
+	which is not any longer in the Desktop Menu spec.
+
+2006-08-24  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/winicon/icodialog.c
+	* plug-ins/winicon/icosave.c: fixed handling of indexed images
+	(bug #342883).
+
+2006-08-24  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* docs/gimp.1.in: explain ${datarootdir}.
+
+2006-08-24  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/display/gimpdisplayshell-preview.c
+	(gimp_display_shell_draw_tri): just return if gdk_drawable_get_size()
+	returns 0 for width or height (bug #340056).
+
+2006-08-23  Sven Neumann  <sven@gimp.org>
+
+	* data/misc/Makefile.am: also substitute ${datarootdir} to work
+	with newer autoconf.
+
+	Merged from HEAD branch:
+
+	* gimptool-2.0.in
+	* gimptool-win32.c.in: add reference to datarootdir.
+
+2006-08-23  Sven Neumann  <sven@gimp.org>
+
+	Merged a fix from the HEAD branch to fix bug #164061:
+
+	* app/composite/gimp-composite-sse2.c: Repaired a latent bug in
+	gimp_composite_lighten_rgba8_rgba8_rgba8_sse2 where setting up
+	the alpha masks were not done correctly.
+
+	Use movntq instructions to avoid processor cache pollution.
+
+	Some adjustments to register allocation specifications.
+
+2006-08-23  Sven Neumann  <sven@gimp.org>
+
+	* app/dialogs/file-save-dialog.c (file_save_overwrite): set the
+	GTK_DIALOG_DESTROY_WITH_PARENT flag. Fixes bug #329001.
+
+2006-08-22  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimplayer.c (gimp_layer_convert): backport the fix for
+	bug #321855 from the HEAD branch. Fixes bug #345051.
+
+2006-08-22  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/gauss.c: reverted change from bug #331051 that
+	shouldn't have been backported to the stable branch (bug #343047).
+
+2006-08-22  Sven Neumann  <sven@gimp.org>
+
+	* app/composite/gimp-composite-regression.[ch]: use gulong instead
+	of u_long. Should fix bug #352221.
+
+2006-08-16  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/autocrop.c: merged changes from HEAD branch.
+	Fixes bug #337888 and other problems.
+
+2006-08-14  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/winicon/icoload.c: open the file in binary mode.
+	Pointed out by Aurimas Juska; fixes bug #172503.
+
+2006-08-14  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD branch:
+
+	* libgimp/gimpdrawablepreview.c (gimp_drawable_preview_draw_area):
+	draw only within the intersection of the the passed coordinates
+	and the selection to avoid access to non-existant (out-of-image)
+	selction tiles. Fixes bug #350760.
+
+2006-08-08  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/warp.c (diff_prepare_row): applied patch from
+	Robert Ögren to fix a segfault on 64bit architectures (bug #327479).
+
+2006-08-05  Raphaël Quinet  <raphael@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/core/gimpgradient-load.c (gimp_gradient_load): Do not crash
+	when loading corrupt gradient files.  Ensure that error messages
+	are correctly reported with g_set_error() instead of g_message().
+	Fixes bug #349996.
+
+2006-07-26  Michael Natterer  <mitch@gimp.org>
+
+	* app/widgets/gimpcontainertreeview.c
+	(gimp_container_tree_view_button_press): added runtime version
+	check and adjust the coords for RTL only for GTK+ < 2.7.0 because
+	gtk_tree_view_get_path_at_pos() does the right thing by itself
+	after this version. Fixes bug #348347.
+
+2006-07-18  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/widgets/gimpfiledialog.c (gimp_file_dialog_set_image):  use
+	file_utils_uri_to_utf8_basename() instead of g_path_get_basename()
+	to get an uri's basename. Fixes bug #347544.
+
+2006-07-10  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.2.13, interface_age 13.
+
+	Merged from HEAD branch:
+
+        * app/xcf/xcf-load.c: use a signed variable when attempting to
+        skip over unknown properties and check for EOF.  Fixes bug #345802.
+
+	* app/xcf/xcf-read.c: cleanup, nothing really changed
+
 2006-07-06  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.2.12 release.

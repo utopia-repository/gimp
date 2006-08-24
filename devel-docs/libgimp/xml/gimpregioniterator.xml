@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimpregioniterator">
 <refmeta>
-<refentrytitle>gimpregioniterator</refentrytitle>
+<refentrytitle role="top_of_page">gimpregioniterator</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpregioniterator</refname><refpurpose>Functions to traverse a pixel regions.</refpurpose>
+<refname>gimpregioniterator</refname>
+<refpurpose>Functions to traverse a pixel regions.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -74,8 +77,8 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 The GimpRgnIterator functions provide a variety
 of common ways to traverse a PixelRegion,
@@ -83,16 +86,16 @@ using a pre-defined function pointer per pixel.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpRgnIterator"/>GimpRgnIterator</title>
+<title><anchor id="GimpRgnIterator" role="struct"/>GimpRgnIterator</title>
 <indexterm><primary>GimpRgnIterator</primary></indexterm><programlisting>typedef struct _GimpRgnIterator GimpRgnIterator;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpRgnFunc1"/>GimpRgnFunc1 ()</title>
+<title><anchor id="GimpRgnFunc1" role="function"/>GimpRgnFunc1 ()</title>
 <indexterm><primary>GimpRgnFunc1</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpRgnFunc1)                 (const <link linkend="guchar">guchar</link> *src,
                                              <link linkend="gint">gint</link> bpp,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
@@ -112,7 +115,7 @@ using a pre-defined function pointer per pixel.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GimpRgnFunc2"/>GimpRgnFunc2 ()</title>
+<title><anchor id="GimpRgnFunc2" role="function"/>GimpRgnFunc2 ()</title>
 <indexterm><primary>GimpRgnFunc2</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpRgnFunc2)                 (const <link linkend="guchar">guchar</link> *src,
                                              <link linkend="guchar">guchar</link> *dest,
                                              <link linkend="gint">gint</link> bpp,
@@ -136,7 +139,7 @@ using a pre-defined function pointer per pixel.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GimpRgnFuncSrc"/>GimpRgnFuncSrc ()</title>
+<title><anchor id="GimpRgnFuncSrc" role="function"/>GimpRgnFuncSrc ()</title>
 <indexterm><primary>GimpRgnFuncSrc</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpRgnFuncSrc)               (<link linkend="gint">gint</link> x,
                                              <link linkend="gint">gint</link> y,
                                              const <link linkend="guchar">guchar</link> *src,
@@ -164,7 +167,7 @@ using a pre-defined function pointer per pixel.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GimpRgnFuncDest"/>GimpRgnFuncDest ()</title>
+<title><anchor id="GimpRgnFuncDest" role="function"/>GimpRgnFuncDest ()</title>
 <indexterm><primary>GimpRgnFuncDest</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpRgnFuncDest)              (<link linkend="gint">gint</link> x,
                                              <link linkend="gint">gint</link> y,
                                              <link linkend="guchar">guchar</link> *dest,
@@ -192,7 +195,7 @@ using a pre-defined function pointer per pixel.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GimpRgnFuncSrcDest"/>GimpRgnFuncSrcDest ()</title>
+<title><anchor id="GimpRgnFuncSrcDest" role="function"/>GimpRgnFuncSrcDest ()</title>
 <indexterm><primary>GimpRgnFuncSrcDest</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpRgnFuncSrcDest)           (<link linkend="gint">gint</link> x,
                                              <link linkend="gint">gint</link> y,
                                              const <link linkend="guchar">guchar</link> *src,
@@ -224,7 +227,7 @@ using a pre-defined function pointer per pixel.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgn-iterator-new"/>gimp_rgn_iterator_new ()</title>
+<title><anchor id="gimp-rgn-iterator-new" role="function"/>gimp_rgn_iterator_new ()</title>
 <indexterm><primary>gimp_rgn_iterator_new</primary></indexterm><programlisting><link linkend="GimpRgnIterator">GimpRgnIterator</link>* gimp_rgn_iterator_new      (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
                                              <link linkend="GimpRunMode">GimpRunMode</link> unused);</programlisting>
 <para>
@@ -243,7 +246,7 @@ parameter is ignored.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgn-iterator-free"/>gimp_rgn_iterator_free ()</title>
+<title><anchor id="gimp-rgn-iterator-free" role="function"/>gimp_rgn_iterator_free ()</title>
 <indexterm><primary>gimp_rgn_iterator_free</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgn_iterator_free          (<link linkend="GimpRgnIterator">GimpRgnIterator</link> *iter);</programlisting>
 <para>
 Frees the resources allocated for <parameter>iter</parameter>.</para>
@@ -255,7 +258,7 @@ Frees the resources allocated for <parameter>iter</parameter>.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgn-iterator-src"/>gimp_rgn_iterator_src ()</title>
+<title><anchor id="gimp-rgn-iterator-src" role="function"/>gimp_rgn_iterator_src ()</title>
 <indexterm><primary>gimp_rgn_iterator_src</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgn_iterator_src           (<link linkend="GimpRgnIterator">GimpRgnIterator</link> *iter,
                                              <link linkend="GimpRgnFuncSrc">GimpRgnFuncSrc</link> func,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
@@ -275,7 +278,7 @@ Frees the resources allocated for <parameter>iter</parameter>.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgn-iterator-dest"/>gimp_rgn_iterator_dest ()</title>
+<title><anchor id="gimp-rgn-iterator-dest" role="function"/>gimp_rgn_iterator_dest ()</title>
 <indexterm><primary>gimp_rgn_iterator_dest</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgn_iterator_dest          (<link linkend="GimpRgnIterator">GimpRgnIterator</link> *iter,
                                              <link linkend="GimpRgnFuncDest">GimpRgnFuncDest</link> func,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
@@ -295,7 +298,7 @@ Frees the resources allocated for <parameter>iter</parameter>.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgn-iterator-src-dest"/>gimp_rgn_iterator_src_dest ()</title>
+<title><anchor id="gimp-rgn-iterator-src-dest" role="function"/>gimp_rgn_iterator_src_dest ()</title>
 <indexterm><primary>gimp_rgn_iterator_src_dest</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgn_iterator_src_dest      (<link linkend="GimpRgnIterator">GimpRgnIterator</link> *iter,
                                              <link linkend="GimpRgnFuncSrcDest">GimpRgnFuncSrcDest</link> func,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
@@ -315,7 +318,7 @@ Frees the resources allocated for <parameter>iter</parameter>.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgn-iterate1"/>gimp_rgn_iterate1 ()</title>
+<title><anchor id="gimp-rgn-iterate1" role="function"/>gimp_rgn_iterate1 ()</title>
 <indexterm><primary>gimp_rgn_iterate1</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgn_iterate1               (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
                                              <link linkend="GimpRunMode">GimpRunMode</link> unused,
                                              <link linkend="GimpRgnFunc1">GimpRgnFunc1</link> func,
@@ -339,7 +342,7 @@ Frees the resources allocated for <parameter>iter</parameter>.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgn-iterate2"/>gimp_rgn_iterate2 ()</title>
+<title><anchor id="gimp-rgn-iterate2" role="function"/>gimp_rgn_iterate2 ()</title>
 <indexterm><primary>gimp_rgn_iterate2</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgn_iterate2               (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
                                              <link linkend="GimpRunMode">GimpRunMode</link> unused,
                                              <link linkend="GimpRgnFunc2">GimpRgnFunc2</link> func,

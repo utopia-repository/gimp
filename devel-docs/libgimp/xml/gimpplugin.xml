@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimpplugin">
 <refmeta>
-<refentrytitle>gimpplugin</refentrytitle>
+<refentrytitle role="top_of_page">gimpplugin</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpplugin</refname><refpurpose>Functions useful for plugins, e.g. registration and progress indicators.</refpurpose>
+<refname>gimpplugin</refname>
+<refpurpose>Functions useful for plugins, e.g. registration and progress indicators.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -39,18 +42,18 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Functions useful for plugins, e.g. registration and progress indicators.
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-plugin-domain-register"/>gimp_plugin_domain_register ()</title>
+<title><anchor id="gimp-plugin-domain-register" role="function"/>gimp_plugin_domain_register ()</title>
 <indexterm><primary>gimp_plugin_domain_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_plugin_domain_register     (const <link linkend="gchar">gchar</link> *domain_name,
                                              const <link linkend="gchar">gchar</link> *domain_path);</programlisting>
 <para>
@@ -78,7 +81,7 @@ called before any procedure is installed.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-plugin-help-register"/>gimp_plugin_help_register ()</title>
+<title><anchor id="gimp-plugin-help-register" role="function"/>gimp_plugin_help_register ()</title>
 <indexterm><primary>gimp_plugin_help_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_plugin_help_register       (const <link linkend="gchar">gchar</link> *domain_name,
                                              const <link linkend="gchar">gchar</link> *domain_uri);</programlisting>
 <para>
@@ -101,7 +104,7 @@ interpreted relative to this rootdir.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-plugin-icon-register"/>gimp_plugin_icon_register ()</title>
+<title><anchor id="gimp-plugin-icon-register" role="function"/>gimp_plugin_icon_register ()</title>
 <indexterm><primary>gimp_plugin_icon_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_plugin_icon_register       (const <link linkend="gchar">gchar</link> *procedure_name,
                                              <link linkend="GimpIconType">GimpIconType</link> icon_type,
                                              const <link linkend="guint8">guint8</link> *icon_data);</programlisting>
@@ -123,7 +126,7 @@ interpreted relative to this rootdir.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-plugin-menu-register"/>gimp_plugin_menu_register ()</title>
+<title><anchor id="gimp-plugin-menu-register" role="function" condition="since:GIMP 2.2"/>gimp_plugin_menu_register ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_plugin_menu_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_plugin_menu_register       (const <link linkend="gchar">gchar</link> *procedure_name,
                                              const <link linkend="gchar">gchar</link> *menu_path);</programlisting>
 <para>

@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimpcolor">
 <refmeta>
-<refentrytitle>gimpcolor</refentrytitle>
+<refentrytitle role="top_of_page">gimpcolor</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpcolor</refname><refpurpose>Functions for manipulating color.</refpurpose>
+<refname>gimpcolor</refname>
+<refpurpose>Functions for manipulating color.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -84,18 +87,18 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Functions for manipulating color, including curves and histograms.
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-brightness-contrast"/>gimp_brightness_contrast ()</title>
+<title><anchor id="gimp-brightness-contrast" role="function"/>gimp_brightness_contrast ()</title>
 <indexterm><primary>gimp_brightness_contrast</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brightness_contrast        (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gint">gint</link> brightness,
                                              <link linkend="gint">gint</link> contrast);</programlisting>
@@ -122,7 +125,7 @@ are defined between -127 and 127.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-levels"/>gimp_levels ()</title>
+<title><anchor id="gimp-levels" role="function"/>gimp_levels ()</title>
 <indexterm><primary>gimp_levels</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_levels                     (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="GimpHistogramChannel">GimpHistogramChannel</link> channel,
                                              <link linkend="gint">gint</link> low_input,
@@ -174,7 +177,7 @@ grayscale images. It will not operate on indexed drawables.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-levels-auto"/>gimp_levels_auto ()</title>
+<title><anchor id="gimp-levels-auto" role="function" condition="deprecated:"/>gimp_levels_auto ()</title>
 <indexterm role="deprecated"><primary>gimp_levels_auto</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_levels_auto                (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <warning><para><literal>gimp_levels_auto</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -189,7 +192,7 @@ This procedure is deprecated! Use <link linkend="gimp-levels-stretch"><function>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-levels-stretch"/>gimp_levels_stretch ()</title>
+<title><anchor id="gimp-levels-stretch" role="function"/>gimp_levels_stretch ()</title>
 <indexterm><primary>gimp_levels_stretch</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_levels_stretch             (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Automatically modifies intensity levels in the specified drawable.
@@ -210,7 +213,7 @@ not operate on indexed drawables.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-posterize"/>gimp_posterize ()</title>
+<title><anchor id="gimp-posterize" role="function"/>gimp_posterize ()</title>
 <indexterm><primary>gimp_posterize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_posterize                  (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gint">gint</link> levels);</programlisting>
 <para>
@@ -232,7 +235,7 @@ intensity channel to the specified 'levels' parameter.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-desaturate"/>gimp_desaturate ()</title>
+<title><anchor id="gimp-desaturate" role="function"/>gimp_desaturate ()</title>
 <indexterm><primary>gimp_desaturate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_desaturate                 (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Desaturate the contents of the specified drawable.
@@ -250,7 +253,7 @@ This procedure only works on drawables of type RGB color.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-equalize"/>gimp_equalize ()</title>
+<title><anchor id="gimp-equalize" role="function"/>gimp_equalize ()</title>
 <indexterm><primary>gimp_equalize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_equalize                   (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gboolean">gboolean</link> mask_only);</programlisting>
 <para>
@@ -278,7 +281,7 @@ adjusted based on the histogram for the entire image.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-invert"/>gimp_invert ()</title>
+<title><anchor id="gimp-invert" role="function"/>gimp_invert ()</title>
 <indexterm><primary>gimp_invert</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_invert                     (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Invert the contents of the specified drawable.
@@ -298,7 +301,7 @@ valid for this operation.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-curves-spline"/>gimp_curves_spline ()</title>
+<title><anchor id="gimp-curves-spline" role="function"/>gimp_curves_spline ()</title>
 <indexterm><primary>gimp_curves_spline</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_curves_spline              (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="GimpHistogramChannel">GimpHistogramChannel</link> channel,
                                              <link linkend="gint">gint</link> num_points,
@@ -333,7 +336,7 @@ to explicitly modify intensity levels.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-curves-explicit"/>gimp_curves_explicit ()</title>
+<title><anchor id="gimp-curves-explicit" role="function"/>gimp_curves_explicit ()</title>
 <indexterm><primary>gimp_curves_explicit</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_curves_explicit            (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="GimpHistogramChannel">GimpHistogramChannel</link> channel,
                                              <link linkend="gint">gint</link> num_bytes,
@@ -368,7 +371,7 @@ Catmull Rom splines.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-balance"/>gimp_color_balance ()</title>
+<title><anchor id="gimp-color-balance" role="function"/>gimp_color_balance ()</title>
 <indexterm><primary>gimp_color_balance</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_color_balance              (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="GimpTransferMode">GimpTransferMode</link> transfer_mode,
                                              <link linkend="gboolean">gboolean</link> preserve_lum,
@@ -412,7 +415,7 @@ the luminosity of each pixel remains fixed.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-colorize"/>gimp_colorize ()</title>
+<title><anchor id="gimp-colorize" role="function" condition="since:GIMP 2.2"/>gimp_colorize ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_colorize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_colorize                   (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> hue,
                                              <link linkend="gdouble">gdouble</link> saturation,
@@ -446,7 +449,7 @@ grayscale or indexed drawables.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-histogram"/>gimp_histogram ()</title>
+<title><anchor id="gimp-histogram" role="function"/>gimp_histogram ()</title>
 <indexterm><primary>gimp_histogram</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_histogram                  (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="GimpHistogramChannel">GimpHistogramChannel</link> channel,
                                              <link linkend="gint">gint</link> start_range,
@@ -512,7 +515,7 @@ pixels with transparent alpha values will not be counted.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-hue-saturation"/>gimp_hue_saturation ()</title>
+<title><anchor id="gimp-hue-saturation" role="function"/>gimp_hue_saturation ()</title>
 <indexterm><primary>gimp_hue_saturation</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_hue_saturation             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="GimpHueRange">GimpHueRange</link> hue_range,
                                              <link linkend="gdouble">gdouble</link> hue_offset,
@@ -547,7 +550,7 @@ provides the capability to limit range of affected hues.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-threshold"/>gimp_threshold ()</title>
+<title><anchor id="gimp-threshold" role="function"/>gimp_threshold ()</title>
 <indexterm><primary>gimp_threshold</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_threshold                  (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gint">gint</link> low_threshold,
                                              <link linkend="gint">gint</link> high_threshold);</programlisting>

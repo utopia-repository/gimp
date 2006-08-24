@@ -4,17 +4,20 @@
 
 <refentry id="libgimp-gimpui">
 <refmeta>
-<refentrytitle>gimpui</refentrytitle>
+<refentrytitle role="top_of_page">gimpui</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpui</refname><refpurpose>Common user interface functions. This header includes all other GIMP User
+<refname>gimpui</refname>
+<refpurpose>Common user interface functions. This header includes all other GIMP User
 Interface Library headers.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -33,8 +36,8 @@ Interface Library headers.</refpurpose>
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Common user interface functions. This header includes all other GIMP User
 Interface Library headers.
@@ -42,10 +45,10 @@ Interface Library headers.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-ui-init"/>gimp_ui_init ()</title>
+<title><anchor id="gimp-ui-init" role="function"/>gimp_ui_init ()</title>
 <indexterm><primary>gimp_ui_init</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_ui_init                    (const <link linkend="gchar">gchar</link> *prog_name,
                                              <link linkend="gboolean">gboolean</link> preview);</programlisting>
 <para>

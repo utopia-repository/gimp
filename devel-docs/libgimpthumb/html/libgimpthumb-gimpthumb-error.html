@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -6,22 +7,30 @@
 <link rel="start" href="index.html" title="GIMP Thumbnail Library Reference Manual">
 <link rel="up" href="libgimpthumb.html" title="Part&#160;I.&#160;GIMP Thumbnail Library">
 <link rel="prev" href="libgimpthumb-gimpthumb-enums.html" title="gimpthumb-enums">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpthumb.html" title="Part&#160;I.&#160;GIMP Thumbnail Library">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimpthumb-gimpthumb-enums.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpthumb.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Thumbnail Library Reference Manual</th>
-</tr></table>
+<td>&#160;</td>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2535572" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#id2538305" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimpthumb-gimpthumb-error"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpthumb-error</span></h2>
+<h2>
+<a name="id2535572"></a><span class="refentrytitle">gimpthumb-error</span>
+</h2>
 <p>gimpthumb-error &#8212; Error codes used by libgimpthumb</p>
 </td>
 <td valign="top" align="right"></td>
@@ -38,17 +47,17 @@ GQuark      <a href="libgimpthumb-gimpthumb-error.html#gimp-thumb-error-quark">g
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2470165"></a><h2>Description</h2>
+<a name="id2538305"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2531825"></a><h2>Details</h2>
+<a name="id2565413"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2524174"></a><h3>
+<a name="id2565424"></a><h3>
 <a name="GimpThumbError"></a>enum GimpThumbError</h3>
-<a class="indexterm" name="id2515331"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2543374"></a><pre class="programlisting">typedef enum
 {
   GIMP_THUMB_ERROR_OPEN,         /*  open failed                            */
   GIMP_THUMB_ERROR_OPEN_ENOENT,  /*  file does not exist                    */
@@ -64,19 +73,19 @@ libgimpthumb.
 <tbody>
 <tr>
 <td>
-<span class="term"><code class="literal">GIMP_THUMB_ERROR_OPEN</code></span></td>
+<span class="term"><a name="GIMP-THUMB-ERROR-OPEN:CAPS"></a><code class="literal">GIMP_THUMB_ERROR_OPEN</code></span></td>
 <td>        there was a problem opening the file
 </td>
 </tr>
 <tr>
 <td>
-<span class="term"><code class="literal">GIMP_THUMB_ERROR_OPEN_ENOENT</code></span></td>
+<span class="term"><a name="GIMP-THUMB-ERROR-OPEN-ENOENT:CAPS"></a><code class="literal">GIMP_THUMB_ERROR_OPEN_ENOENT</code></span></td>
 <td> the file doesn't exist
 </td>
 </tr>
 <tr>
 <td>
-<span class="term"><code class="literal">GIMP_THUMB_ERROR_MKDIR</code></span></td>
+<span class="term"><a name="GIMP-THUMB-ERROR-MKDIR:CAPS"></a><code class="literal">GIMP_THUMB_ERROR_MKDIR</code></span></td>
 <td>       there was a problem creating a directory
 
 </td>
@@ -86,9 +95,9 @@ libgimpthumb.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2518241"></a><h3>
+<a name="id2543469"></a><h3>
 <a name="GIMP-THUMB-ERROR:CAPS"></a>GIMP_THUMB_ERROR</h3>
-<a class="indexterm" name="id2518250"></a><pre class="programlisting">#define GIMP_THUMB_ERROR (gimp_thumb_error_quark ())
+<a class="indexterm" name="id2543481"></a><pre class="programlisting">#define GIMP_THUMB_ERROR (gimp_thumb_error_quark ())
 </pre>
 <p>
 Identifier for the libgimpthumb error domain.
@@ -96,9 +105,9 @@ Identifier for the libgimpthumb error domain.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2518267"></a><h3>
+<a name="id2543498"></a><h3>
 <a name="gimp-thumb-error-quark"></a>gimp_thumb_error_quark ()</h3>
-<a class="indexterm" name="id2518276"></a><pre class="programlisting">GQuark      gimp_thumb_error_quark          (void);</pre>
+<a class="indexterm" name="id2545756"></a><pre class="programlisting">GQuark      gimp_thumb_error_quark          (void);</pre>
 <p>
 This function is never called directly. Use <a href="libgimpthumb-gimpthumb-error.html#GIMP-THUMB-ERROR:CAPS"><code class="function">GIMP_THUMB_ERROR()</code></a> instead.</p>
 <p>
@@ -116,9 +125,5 @@ This function is never called directly. Use <a href="libgimpthumb-gimpthumb-erro
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimpthumb-gimpthumb-enums.html"><b>&lt;&lt;&#160;gimpthumb-enums</b></a></td>
-<td align="right"></td>
-</tr></table>
 </body>
 </html>

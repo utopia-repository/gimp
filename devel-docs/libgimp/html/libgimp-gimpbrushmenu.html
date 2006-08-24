@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimpmenu.html" title="gimpmenu">
 <link rel="next" href="libgimp-gimpfontmenu.html" title="gimpfontmenu">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -19,18 +20,25 @@
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimpmenu.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpfontmenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2527580" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#id2653512" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpbrushmenu"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpbrushmenu</span></h2>
+<h2>
+<a name="id2527580"></a><span class="refentrytitle">gimpbrushmenu</span>
+</h2>
 <p>gimpbrushmenu &#8212; A widget for selecting brushes.</p>
 </td>
 <td valign="top" align="right"></td>
@@ -41,21 +49,15 @@
 
 
 
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-new">gimp_brush_select_widget_new</a>    (const gchar *title,
+GtkWidget*  <a href="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-new">gimp_brush_select_widget_new</a>    (const gchar *title,
                                              const gchar *brush_name,
                                              gdouble opacity,
                                              gint spacing,
                                              <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
                                              <a href="libgimp-gimpbrushselect.html#GimpRunBrushCallback">GimpRunBrushCallback</a> callback,
                                              gpointer data);
-void        <a href="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-close">gimp_brush_select_widget_close</a>  (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget);
-void        <a href="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-set">gimp_brush_select_widget_set</a>    (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget,
+void        <a href="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-close">gimp_brush_select_widget_close</a>  (GtkWidget *widget);
+void        <a href="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-set">gimp_brush_select_widget_set</a>    (GtkWidget *widget,
                                              const gchar *brush_name,
                                              gdouble opacity,
                                              gint spacing,
@@ -63,19 +65,17 @@ href="../gtk/GtkWidget.html"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2642892"></a><h2>Description</h2>
+<a name="id2653512"></a><h2>Description</h2>
 <p>
 A widget for selecting brushes.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2642903"></a><h2>Details</h2>
+<a name="id2653527"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2642909"></a><h3>
+<a name="id2653538"></a><h3>
 <a name="gimp-brush-select-widget-new"></a>gimp_brush_select_widget_new ()</h3>
-<a class="indexterm" name="id2642918"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_brush_select_widget_new    (const gchar *title,
+<a class="indexterm" name="id2653549"></a><pre class="programlisting">GtkWidget*  gimp_brush_select_widget_new    (const gchar *title,
                                              const gchar *brush_name,
                                              gdouble opacity,
                                              gint spacing,
@@ -83,9 +83,7 @@ href="../gtk/GtkWidget.html"
                                              <a href="libgimp-gimpbrushselect.html#GimpRunBrushCallback">GimpRunBrushCallback</a> callback,
                                              gpointer data);</pre>
 <p>
-Creates a new <a
-href="../gtk/GtkWidget.html"
-><span class="type">GtkWidget</span></a> that completely controls the selection of
+Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
 a <a
 href="../app/GimpBrush.html"
 ><span class="type">GimpBrush</span></a>. This widget is suitable for placement in a table in
@@ -141,9 +139,7 @@ a plug-in dialog.</p>
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A <a
-href="../gtk/GtkWidget.html"
-><span class="type">GtkWidget</span></a> that you can use in your UI.
+<td> A <span class="type">GtkWidget</span> that you can use in your UI.
 </td>
 </tr>
 </tbody>
@@ -151,11 +147,9 @@ href="../gtk/GtkWidget.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646640"></a><h3>
+<a name="id2659139"></a><h3>
 <a name="gimp-brush-select-widget-close"></a>gimp_brush_select_widget_close ()</h3>
-<a class="indexterm" name="id2646649"></a><pre class="programlisting">void        gimp_brush_select_widget_close  (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget);</pre>
+<a class="indexterm" name="id2659150"></a><pre class="programlisting">void        gimp_brush_select_widget_close  (GtkWidget *widget);</pre>
 <p>
 Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p>
 <p>
@@ -173,11 +167,9 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646703"></a><h3>
+<a name="id2656735"></a><h3>
 <a name="gimp-brush-select-widget-set"></a>gimp_brush_select_widget_set ()</h3>
-<a class="indexterm" name="id2646712"></a><pre class="programlisting">void        gimp_brush_select_widget_set    (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget,
+<a class="indexterm" name="id2656746"></a><pre class="programlisting">void        gimp_brush_select_widget_set    (GtkWidget *widget,
                                              const gchar *brush_name,
                                              gdouble opacity,
                                              gint spacing,
@@ -227,9 +219,5 @@ call to <a href="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-new"><code 
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimp-gimpmenu.html"><b>&lt;&lt;&#160;gimpmenu</b></a></td>
-<td align="right"><a accesskey="n" href="libgimp-gimpfontmenu.html"><b>gimpfontmenu&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimppalettes">
 <refmeta>
-<refentrytitle>gimppalettes</refentrytitle>
+<refentrytitle role="top_of_page">gimppalettes</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimppalettes</refname><refpurpose>Operations related to palettes.</refpurpose>
+<refname>gimppalettes</refname>
+<refpurpose>Operations related to palettes.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -39,17 +42,17 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Operations related to palettes.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-palettes-refresh"/>gimp_palettes_refresh ()</title>
+<title><anchor id="gimp-palettes-refresh" role="function"/>gimp_palettes_refresh ()</title>
 <indexterm><primary>gimp_palettes_refresh</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palettes_refresh           (void);</programlisting>
 <para>
 Refreshes current palettes. This function always succeeds.
@@ -64,7 +67,7 @@ palette path and updates the palette dialogs accordingly.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-palettes-get-list"/>gimp_palettes_get_list ()</title>
+<title><anchor id="gimp-palettes-get-list" role="function"/>gimp_palettes_get_list ()</title>
 <indexterm><primary>gimp_palettes_get_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**     gimp_palettes_get_list          (const <link linkend="gchar">gchar</link> *filter,
                                              <link linkend="gint">gint</link> *num_palettes);</programlisting>
 <para>
@@ -87,7 +90,7 @@ Each name returned can be used as input to the command
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-palettes-get-palette"/>gimp_palettes_get_palette ()</title>
+<title><anchor id="gimp-palettes-get-palette" role="function" condition="deprecated:"/>gimp_palettes_get_palette ()</title>
 <indexterm role="deprecated"><primary>gimp_palettes_get_palette</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_palettes_get_palette       (<link linkend="gint">gint</link> *num_colors);</programlisting>
 <warning><para><literal>gimp_palettes_get_palette</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -103,7 +106,7 @@ instead.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-palettes-set-palette"/>gimp_palettes_set_palette ()</title>
+<title><anchor id="gimp-palettes-set-palette" role="function" condition="deprecated:"/>gimp_palettes_set_palette ()</title>
 <indexterm role="deprecated"><primary>gimp_palettes_set_palette</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palettes_set_palette       (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <warning><para><literal>gimp_palettes_set_palette</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -118,7 +121,7 @@ This procedure is deprecated! Use <link linkend="gimp-context-set-palette"><func
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-palettes-get-palette-entry"/>gimp_palettes_get_palette_entry ()</title>
+<title><anchor id="gimp-palettes-get-palette-entry" role="function" condition="deprecated:"/>gimp_palettes_get_palette_entry ()</title>
 <indexterm role="deprecated"><primary>gimp_palettes_get_palette_entry</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_palettes_get_palette_entry (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> entry_num,
                                              <link linkend="gint">gint</link> *num_colors,

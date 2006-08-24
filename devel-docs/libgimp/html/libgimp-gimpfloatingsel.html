@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
 <link rel="prev" href="libgimp-gimpfileops.html" title="gimpfileops">
 <link rel="next" href="libgimp-gimpguides.html" title="gimpguides">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -19,18 +20,25 @@
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimpfileops.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpguides.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2563838" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#id2587221" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpfloatingsel"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpfloatingsel</span></h2>
+<h2>
+<a name="id2563838"></a><span class="refentrytitle">gimpfloatingsel</span>
+</h2>
 <p>gimpfloatingsel &#8212; Functions for removing or attaching floating selections.</p>
 </td>
 <td valign="top" align="right"></td>
@@ -53,18 +61,18 @@ gboolean    <a href="libgimp-gimpfloatingsel.html#gimp-floating-sel-relax">gimp_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2586516"></a><h2>Description</h2>
+<a name="id2587221"></a><h2>Description</h2>
 <p>
 Functions for removing or attaching floating selections.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2586528"></a><h2>Details</h2>
+<a name="id2587237"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2586535"></a><h3>
+<a name="id2587248"></a><h3>
 <a name="gimp-floating-sel-remove"></a>gimp_floating_sel_remove ()</h3>
-<a class="indexterm" name="id2586544"></a><pre class="programlisting">gboolean    gimp_floating_sel_remove        (gint32 floating_sel_ID);</pre>
+<a class="indexterm" name="id2587259"></a><pre class="programlisting">gboolean    gimp_floating_sel_remove        (gint32 floating_sel_ID);</pre>
 <p>
 Remove the specified floating selection from its associated
 drawable.
@@ -95,9 +103,9 @@ any side effects. The associated drawable is then set to active.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2580605"></a><h3>
+<a name="id2587855"></a><h3>
 <a name="gimp-floating-sel-anchor"></a>gimp_floating_sel_anchor ()</h3>
-<a class="indexterm" name="id2580614"></a><pre class="programlisting">gboolean    gimp_floating_sel_anchor        (gint32 floating_sel_ID);</pre>
+<a class="indexterm" name="id2587866"></a><pre class="programlisting">gboolean    gimp_floating_sel_anchor        (gint32 floating_sel_ID);</pre>
 <p>
 Anchor the specified floating selection to its associated drawable.
 </p>
@@ -129,9 +137,9 @@ after this operation.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2580681"></a><h3>
+<a name="id2587933"></a><h3>
 <a name="gimp-floating-sel-to-layer"></a>gimp_floating_sel_to_layer ()</h3>
-<a class="indexterm" name="id2580690"></a><pre class="programlisting">gboolean    gimp_floating_sel_to_layer      (gint32 floating_sel_ID);</pre>
+<a class="indexterm" name="id2587944"></a><pre class="programlisting">gboolean    gimp_floating_sel_to_layer      (gint32 floating_sel_ID);</pre>
 <p>
 Transforms the specified floating selection into a layer.
 </p>
@@ -167,9 +175,9 @@ selection is above an auxillary channel or a layer mask.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2528315"></a><h3>
+<a name="id2556880"></a><h3>
 <a name="gimp-floating-sel-attach"></a>gimp_floating_sel_attach ()</h3>
-<a class="indexterm" name="id2522954"></a><pre class="programlisting">gboolean    gimp_floating_sel_attach        (gint32 layer_ID,
+<a class="indexterm" name="id2586336"></a><pre class="programlisting">gboolean    gimp_floating_sel_attach        (gint32 layer_ID,
                                              gint32 drawable_ID);</pre>
 <p>
 Attach the specified layer as floating to the specified drawable.
@@ -206,9 +214,9 @@ drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2575806"></a><h3>
+<a name="id2586424"></a><h3>
 <a name="gimp-floating-sel-rigor"></a>gimp_floating_sel_rigor ()</h3>
-<a class="indexterm" name="id2575814"></a><pre class="programlisting">gboolean    gimp_floating_sel_rigor         (gint32 floating_sel_ID,
+<a class="indexterm" name="id2586435"></a><pre class="programlisting">gboolean    gimp_floating_sel_rigor         (gint32 floating_sel_ID,
                                              gboolean undo);</pre>
 <p>
 Rigor the floating selection.
@@ -244,9 +252,9 @@ This procedure rigors the floating selection.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2575905"></a><h3>
+<a name="id2588568"></a><h3>
 <a name="gimp-floating-sel-relax"></a>gimp_floating_sel_relax ()</h3>
-<a class="indexterm" name="id2575914"></a><pre class="programlisting">gboolean    gimp_floating_sel_relax         (gint32 floating_sel_ID,
+<a class="indexterm" name="id2588579"></a><pre class="programlisting">gboolean    gimp_floating_sel_relax         (gint32 floating_sel_ID,
                                              gboolean undo);</pre>
 <p>
 Relax the floating selection.
@@ -282,9 +290,5 @@ This procedure relaxes the floating selection.</p>
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimp-gimpfileops.html"><b>&lt;&lt;&#160;gimpfileops</b></a></td>
-<td align="right"><a accesskey="n" href="libgimp-gimpguides.html"><b>gimpguides&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

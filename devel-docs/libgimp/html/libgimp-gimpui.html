@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 <link rel="next" href="libgimp-gimpexport.html" title="gimpexport">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -19,18 +20,25 @@
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimpui-hierarchy.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpexport.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2555096" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#id2587044" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpui"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpui</span></h2>
+<h2>
+<a name="id2555096"></a><span class="refentrytitle">gimpui</span>
+</h2>
 <p>gimpui &#8212; Common user interface functions. This header includes all other GIMP User
 Interface Library headers.</p>
 </td>
@@ -47,7 +55,7 @@ void        <a href="libgimp-gimpui.html#gimp-ui-init">gimp_ui_init</a>         
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2579819"></a><h2>Description</h2>
+<a name="id2587044"></a><h2>Description</h2>
 <p>
 Common user interface functions. This header includes all other GIMP User
 Interface Library headers.
@@ -55,16 +63,14 @@ Interface Library headers.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2515824"></a><h2>Details</h2>
+<a name="id2651878"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2641131"></a><h3>
+<a name="id2650752"></a><h3>
 <a name="gimp-ui-init"></a>gimp_ui_init ()</h3>
-<a class="indexterm" name="id2641139"></a><pre class="programlisting">void        gimp_ui_init                    (const gchar *prog_name,
+<a class="indexterm" name="id2650763"></a><pre class="programlisting">void        gimp_ui_init                    (const gchar *prog_name,
                                              gboolean preview);</pre>
 <p>
-This function initializes GTK+ with <a
-href="../gtk/gtk-General.html#gtk-init"
-><code class="function">gtk_init()</code></a> and initializes GDK's
+This function initializes GTK+ with <code class="function">gtk_init()</code> and initializes GDK's
 image rendering subsystem (GdkRGB) to follow the GIMP main program's
 colormap allocation/installation policy.
 </p>
@@ -81,9 +87,7 @@ gimprc variables <em class="parameter"><code>min_colors</code></em> and <em clas
 <td>
 <span class="term"><em class="parameter"><code>prog_name</code></em>&#160;:</span></td>
 <td> The name of the plug-in which will be passed as argv[0] to
-            <a
-href="../gtk/gtk-General.html#gtk-init"
-><code class="function">gtk_init()</code></a>. It's a convention to use the name of the
+            <code class="function">gtk_init()</code>. It's a convention to use the name of the
             executable and _not_ the PDB procedure name or something.
 </td>
 </tr>
@@ -99,36 +103,14 @@ href="../gtk/gtk-General.html#gtk-init"
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2628633"></a><h2>See Also</h2>
+<a name="id2650875"></a><h2>See Also</h2>
 <p>
-<a
-href="../gtk/gtk-General.html#gtk-init"
-><code class="function">gtk_init()</code></a>, <a
-href="../gdk/gdk-General.html#gdk-set-use-xshm"
-><code class="function">gdk_set_use_xshm()</code></a>, <a
-href="../gdk/gdk-GdkRGB.html#gdk-rgb-set-min-colors"
-><code class="function">gdk_rgb_set_min_colors()</code></a>,
-<a
-href="../gdk/gdk-GdkRGB.html#gdk-rgb-set-install"
-><code class="function">gdk_rgb_set_install()</code></a>, <a
-href="../gdk/gdk-GdkRGB.html#gdk-rgb-get-visual"
-><code class="function">gdk_rgb_get_visual()</code></a>, <a
-href="../gdk/gdk-GdkRGB.html#gdk-rgb-get-cmap"
-><code class="function">gdk_rgb_get_cmap()</code></a>,
-<a
-href="../gtk/GtkWidget.html#gtk-widget-set-default-visual"
-><code class="function">gtk_widget_set_default_visual()</code></a>, <a
-href="../gtk/GtkWidget.html#gtk-widget-set-default-colormap"
-><code class="function">gtk_widget_set_default_colormap()</code></a>,
-<a
-href="../gtk/GtkPreview.html#gtk-preview-set-gamma"
-><code class="function">gtk_preview_set_gamma()</code></a>.
+<code class="function">gtk_init()</code>, <code class="function">gdk_set_use_xshm()</code>, <code class="function">gdk_rgb_set_min_colors()</code>,
+<code class="function">gdk_rgb_set_install()</code>, <code class="function">gdk_rgb_get_visual()</code>, <code class="function">gdk_rgb_get_cmap()</code>,
+<code class="function">gtk_widget_set_default_visual()</code>, <code class="function">gtk_widget_set_default_colormap()</code>,
+<code class="function">gtk_preview_set_gamma()</code>.
 </p>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimpui-hierarchy.html"><b>&lt;&lt;&#160;Object Hierarchy</b></a></td>
-<td align="right"><a accesskey="n" href="libgimp-gimpexport.html"><b>gimpexport&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

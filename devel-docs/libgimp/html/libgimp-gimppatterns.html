@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimp-data.html" title="Data Objects">
 <link rel="prev" href="libgimp-gimppattern.html" title="gimppattern">
 <link rel="next" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -19,18 +20,25 @@
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimppattern.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-data.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-selectors.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2625655" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#id2639864" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppatterns"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimppatterns</span></h2>
+<h2>
+<a name="id2625655"></a><span class="refentrytitle">gimppatterns</span>
+</h2>
 <p>gimppatterns &#8212; Functions relating to patterns.</p>
 </td>
 <td valign="top" align="right"></td>
@@ -56,18 +64,18 @@ gchar*      <a href="libgimp-gimppatterns.html#gimp-patterns-get-pattern-data">g
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2631287"></a><h2>Description</h2>
+<a name="id2639864"></a><h2>Description</h2>
 <p>
 Functions relating to patterns.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2631298"></a><h2>Details</h2>
+<a name="id2639880"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2631304"></a><h3>
+<a name="id2639890"></a><h3>
 <a name="gimp-patterns-refresh"></a>gimp_patterns_refresh ()</h3>
-<a class="indexterm" name="id2631313"></a><pre class="programlisting">gboolean    gimp_patterns_refresh           (void);</pre>
+<a class="indexterm" name="id2639901"></a><pre class="programlisting">gboolean    gimp_patterns_refresh           (void);</pre>
 <p>
 Refresh current patterns. This function always succeeds.
 </p>
@@ -89,9 +97,9 @@ pattern path and updates all pattern dialogs accordingly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623287"></a><h3>
+<a name="id2639537"></a><h3>
 <a name="gimp-patterns-get-list"></a>gimp_patterns_get_list ()</h3>
-<a class="indexterm" name="id2623296"></a><pre class="programlisting">gchar**     gimp_patterns_get_list          (const gchar *filter,
+<a class="indexterm" name="id2639548"></a><pre class="programlisting">gchar**     gimp_patterns_get_list          (const gchar *filter,
                                              gint *num_patterns);</pre>
 <p>
 Retrieve a complete listing of the available patterns.
@@ -129,9 +137,9 @@ patterns. Each name returned can be used as input to the
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623384"></a><h3>
+<a name="id2639636"></a><h3>
 <a name="gimp-patterns-get-pattern"></a>gimp_patterns_get_pattern ()</h3>
-<a class="indexterm" name="id2623393"></a><pre class="programlisting">gchar*      gimp_patterns_get_pattern       (gint *width,
+<a class="indexterm" name="id2639649"></a><pre class="programlisting">gchar*      gimp_patterns_get_pattern       (gint *width,
                                              gint *height);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -169,9 +177,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2630492"></a><h3>
+<a name="id2640192"></a><h3>
 <a name="gimp-patterns-set-pattern"></a>gimp_patterns_set_pattern ()</h3>
-<a class="indexterm" name="id2630501"></a><pre class="programlisting">gboolean    gimp_patterns_set_pattern       (const gchar *name);</pre>
+<a class="indexterm" name="id2640206"></a><pre class="programlisting">gboolean    gimp_patterns_set_pattern       (const gchar *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_patterns_set_pattern</code> is deprecated and should not be used in newly-written code.</p>
@@ -201,9 +209,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2630580"></a><h3>
+<a name="id2640285"></a><h3>
 <a name="gimp-patterns-get-pattern-data"></a>gimp_patterns_get_pattern_data ()</h3>
-<a class="indexterm" name="id2630589"></a><pre class="programlisting">gchar*      gimp_patterns_get_pattern_data  (const gchar *name,
+<a class="indexterm" name="id2640298"></a><pre class="programlisting">gchar*      gimp_patterns_get_pattern_data  (const gchar *name,
                                              gint *width,
                                              gint *height,
                                              gint *mask_bpp,
@@ -268,9 +276,5 @@ This procedure is deprecated! Use <a href="libgimp-gimppattern.html#gimp-pattern
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimp-gimppattern.html"><b>&lt;&lt;&#160;gimppattern</b></a></td>
-<td align="right"><a accesskey="n" href="libgimp-selectors.html"><b>Controlling the Core's Selection Dialogs&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

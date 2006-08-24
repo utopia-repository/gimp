@@ -4,16 +4,19 @@
 
 <refentry id="libgimpbase-gimpmemsize">
 <refmeta>
-<refentrytitle>gimpmemsize</refentrytitle>
+<refentrytitle role="top_of_page">gimpmemsize</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpmemsize</refname><refpurpose>Functions to (de)serialize a given memory size.</refpurpose>
+<refname>gimpmemsize</refname>
+<refpurpose>Functions to (de)serialize a given memory size.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -37,17 +40,17 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Functions to (de)serialize a given memory size.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-memsize-serialize"/>gimp_memsize_serialize ()</title>
+<title><anchor id="gimp-memsize-serialize" role="function" condition="since:GIMP 2.2"/>gimp_memsize_serialize ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_memsize_serialize</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_memsize_serialize          (<link linkend="guint64">guint64</link> memsize);</programlisting>
 <para>
 Creates a string representation of a given memory size. This string
@@ -66,7 +69,7 @@ nice human-readable string please use <link linkend="gimp-memsize-to-string"><fu
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-memsize-deserialize"/>gimp_memsize_deserialize ()</title>
+<title><anchor id="gimp-memsize-deserialize" role="function" condition="since:GIMP 2.2"/>gimp_memsize_deserialize ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_memsize_deserialize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_memsize_deserialize        (const <link linkend="gchar">gchar</link> *string,
                                              <link linkend="guint64">guint64</link> *memsize);</programlisting>
 <para>
@@ -81,14 +84,14 @@ Parses a string representation of a memory size as returned by
 <varlistentry><term><parameter>memsize</parameter>&nbsp;:</term>
 <listitem><simpara> return location for memory size in bytes
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if the <parameter>string</parameter> was successfully parsed and
-              <parameter>memsize</parameter> has been set, <literal>FALSE</literal> otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the <parameter>string</parameter> was successfully parsed and
+              <parameter>memsize</parameter> has been set, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-memsize-to-string"/>gimp_memsize_to_string ()</title>
+<title><anchor id="gimp-memsize-to-string" role="function"/>gimp_memsize_to_string ()</title>
 <indexterm><primary>gimp_memsize_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_memsize_to_string          (<link linkend="guint64">guint64</link> memsize);</programlisting>
 <para>
 This function returns a human readable, translated representation
@@ -105,14 +108,14 @@ becomes "4.4 KB" and so on.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-TYPE-MEMSIZE:CAPS"/>GIMP_TYPE_MEMSIZE</title>
+<title><anchor id="GIMP-TYPE-MEMSIZE:CAPS" role="macro"/>GIMP_TYPE_MEMSIZE</title>
 <indexterm><primary>GIMP_TYPE_MEMSIZE</primary></indexterm><programlisting>#define GIMP_TYPE_MEMSIZE               (gimp_memsize_get_type ())
 </programlisting>
 <para>
 <link linkend="GIMP-TYPE-MEMSIZE:CAPS"><type>GIMP_TYPE_MEMSIZE</type></link> is a <link linkend="GType"><type>GType</type></link> derived from <link linkend="G-TYPE-UINT64:CAPS"><type>G_TYPE_UINT64</type></link>.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-VALUE-HOLDS-MEMSIZE:CAPS"/>GIMP_VALUE_HOLDS_MEMSIZE()</title>
+<title><anchor id="GIMP-VALUE-HOLDS-MEMSIZE:CAPS" role="macro"/>GIMP_VALUE_HOLDS_MEMSIZE()</title>
 <indexterm><primary>GIMP_VALUE_HOLDS_MEMSIZE</primary></indexterm><programlisting>#define GIMP_VALUE_HOLDS_MEMSIZE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_MEMSIZE))
 </programlisting>
 <para>

@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
 <link rel="prev" href="libgimp-gimpdrawabletransform.html" title="gimpdrawabletransform">
 <link rel="next" href="libgimp-gimpfileops.html" title="gimpfileops">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -19,18 +20,25 @@
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimpdrawabletransform.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpfileops.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2549755" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#id2586071" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpedit"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpedit</span></h2>
+<h2>
+<a name="id2549755"></a><span class="refentrytitle">gimpedit</span>
+</h2>
 <p>gimpedit &#8212; Edit menu functions (cut, copy, paste, clear, etc.)</p>
 </td>
 <td valign="top" align="right"></td>
@@ -77,18 +85,18 @@ gboolean    <a href="libgimp-gimpedit.html#gimp-edit-stroke">gimp_edit_stroke</a
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2586715"></a><h2>Description</h2>
+<a name="id2586071"></a><h2>Description</h2>
 <p>
 Edit menu functions (cut, copy, paste, clear, etc.)
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2586727"></a><h2>Details</h2>
+<a name="id2586087"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2586733"></a><h3>
+<a name="id2586098"></a><h3>
 <a name="gimp-edit-cut"></a>gimp_edit_cut ()</h3>
-<a class="indexterm" name="id2586743"></a><pre class="programlisting">gboolean    gimp_edit_cut                   (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2586110"></a><pre class="programlisting">gboolean    gimp_edit_cut                   (gint32 drawable_ID);</pre>
 <p>
 Cut from the specified drawable.
 </p>
@@ -122,9 +130,9 @@ internal GIMP edit buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2586813"></a><h3>
+<a name="id2586180"></a><h3>
 <a name="gimp-edit-copy"></a>gimp_edit_copy ()</h3>
-<a class="indexterm" name="id2586824"></a><pre class="programlisting">gboolean    gimp_edit_copy                  (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2586193"></a><pre class="programlisting">gboolean    gimp_edit_copy                  (gint32 drawable_ID);</pre>
 <p>
 Copy from the specified drawable.
 </p>
@@ -158,9 +166,9 @@ edit buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2578349"></a><h3>
+<a name="id2581521"></a><h3>
 <a name="gimp-edit-copy-visible"></a>gimp_edit_copy_visible ()</h3>
-<a class="indexterm" name="id2578358"></a><pre class="programlisting">gboolean    gimp_edit_copy_visible          (gint32 image_ID);</pre>
+<a class="indexterm" name="id2581534"></a><pre class="programlisting">gboolean    gimp_edit_copy_visible          (gint32 image_ID);</pre>
 <p>
 Copy from the projection.
 </p>
@@ -197,9 +205,9 @@ buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2578432"></a><h3>
+<a name="id2581608"></a><h3>
 <a name="gimp-edit-paste"></a>gimp_edit_paste ()</h3>
-<a class="indexterm" name="id2578442"></a><pre class="programlisting">gint32      gimp_edit_paste                 (gint32 drawable_ID,
+<a class="indexterm" name="id2581620"></a><pre class="programlisting">gint32      gimp_edit_paste                 (gint32 drawable_ID,
                                              gboolean paste_into);</pre>
 <p>
 Paste buffer to the specified drawable.
@@ -249,9 +257,9 @@ not needed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2578499"></a><h3>
+<a name="id2581680"></a><h3>
 <a name="gimp-edit-clear"></a>gimp_edit_clear ()</h3>
-<a class="indexterm" name="id2578508"></a><pre class="programlisting">gboolean    gimp_edit_clear                 (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2581692"></a><pre class="programlisting">gboolean    gimp_edit_clear                 (gint32 drawable_ID);</pre>
 <p>
 Clear selected area of drawable.
 </p>
@@ -284,9 +292,9 @@ a selection if there is a selection active.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570122"></a><h3>
+<a name="id2581760"></a><h3>
 <a name="gimp-edit-fill"></a>gimp_edit_fill ()</h3>
-<a class="indexterm" name="id2570132"></a><pre class="programlisting">gboolean    gimp_edit_fill                  (gint32 drawable_ID,
+<a class="indexterm" name="id2581773"></a><pre class="programlisting">gboolean    gimp_edit_fill                  (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpFillType">GimpFillType</a> fill_type);</pre>
 <p>
 Fill selected area of drawable.
@@ -328,9 +336,9 @@ use <a href="libgimp-gimpdrawable.html#gimp-drawable-fill"><code class="function
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570233"></a><h3>
+<a name="id2595074"></a><h3>
 <a name="gimp-edit-bucket-fill"></a>gimp_edit_bucket_fill ()</h3>
-<a class="indexterm" name="id2570242"></a><pre class="programlisting">gboolean    gimp_edit_bucket_fill           (gint32 drawable_ID,
+<a class="indexterm" name="id2595086"></a><pre class="programlisting">gboolean    gimp_edit_bucket_fill           (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpBucketFillMode">GimpBucketFillMode</a> fill_mode,
                                              <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
                                              gdouble opacity,
@@ -420,9 +428,9 @@ relative to the drawable's origin.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2581035"></a><h3>
+<a name="id2595320"></a><h3>
 <a name="gimp-edit-blend"></a>gimp_edit_blend ()</h3>
-<a class="indexterm" name="id2581045"></a><pre class="programlisting">gboolean    gimp_edit_blend                 (gint32 drawable_ID,
+<a class="indexterm" name="id2595332"></a><pre class="programlisting">gboolean    gimp_edit_blend                 (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpBlendMode">GimpBlendMode</a> blend_mode,
                                              <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
                                              <a href="libgimp-gimpenums.html#GimpGradientType">GimpGradientType</a> gradient_type,
@@ -560,9 +568,9 @@ each gradient type.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2575656"></a><h3>
+<a name="id2588272"></a><h3>
 <a name="gimp-edit-stroke"></a>gimp_edit_stroke ()</h3>
-<a class="indexterm" name="id2575666"></a><pre class="programlisting">gboolean    gimp_edit_stroke                (gint32 drawable_ID);</pre>
+<a class="indexterm" name="id2588284"></a><pre class="programlisting">gboolean    gimp_edit_stroke                (gint32 drawable_ID);</pre>
 <p>
 Stroke the current selection
 </p>
@@ -594,9 +602,5 @@ selection.</p>
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimp-gimpdrawabletransform.html"><b>&lt;&lt;&#160;gimpdrawabletransform</b></a></td>
-<td align="right"><a accesskey="n" href="libgimp-gimpfileops.html"><b>gimpfileops&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

@@ -1,3 +1,9 @@
+gimp (2.2.13-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Ari Pollak <ari@debian.org>  Thu, 24 Aug 2006 17:46:19 -0400
+
 gimp (2.2.12-2) unstable; urgency=low
 
   * debian/patches/06_gradient-fix.patch:

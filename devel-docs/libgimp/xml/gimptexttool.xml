@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimptexttool">
 <refmeta>
-<refentrytitle>gimptexttool</refentrytitle>
+<refentrytitle role="top_of_page">gimptexttool</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimptexttool</refname><refpurpose>Functions for controlling the text tool.</refpurpose>
+<refname>gimptexttool</refname>
+<refpurpose>Functions for controlling the text tool.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -80,18 +83,18 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Functions for controlling the text tool.
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-text-fontname"/>gimp_text_fontname ()</title>
+<title><anchor id="gimp-text-fontname" role="function"/>gimp_text_fontname ()</title>
 <indexterm><primary>gimp_text_fontname</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_text_fontname              (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> x,
@@ -154,7 +157,7 @@ The border is measured in pixels.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-text-get-extents-fontname"/>gimp_text_get_extents_fontname ()</title>
+<title><anchor id="gimp-text-get-extents-fontname" role="function"/>gimp_text_get_extents_fontname ()</title>
 <indexterm><primary>gimp_text_get_extents_fontname</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_text_get_extents_fontname  (const <link linkend="gchar">gchar</link> *text,
                                              <link linkend="gdouble">gdouble</link> size,
                                              <link linkend="GimpSizeType">GimpSizeType</link> size_type,
@@ -201,7 +204,7 @@ and descent for the specified font are returned as well.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-text"/>gimp_text ()</title>
+<title><anchor id="gimp-text" role="function" condition="deprecated:"/>gimp_text ()</title>
 <indexterm role="deprecated"><primary>gimp_text</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_text                       (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> x,
@@ -280,7 +283,7 @@ This procedure is deprecated! Use <link linkend="gimp-text-fontname"><function>g
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-text-get-extents"/>gimp_text_get_extents ()</title>
+<title><anchor id="gimp-text-get-extents" role="function" condition="deprecated:"/>gimp_text_get_extents ()</title>
 <indexterm role="deprecated"><primary>gimp_text_get_extents</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_text_get_extents           (const <link linkend="gchar">gchar</link> *text,
                                              <link linkend="gdouble">gdouble</link> size,
                                              <link linkend="GimpSizeType">GimpSizeType</link> size_type,

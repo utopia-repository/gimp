@@ -4,17 +4,20 @@
 
 <refentry id="libgimpbase-gimpwire">
 <refmeta>
-<refentrytitle>gimpwire</refentrytitle>
+<refentrytitle role="top_of_page">gimpwire</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpwire</refname><refpurpose>The lowlevel I/O protocol used for communication between GIMP and
+<refname>gimpwire</refname>
+<refpurpose>The lowlevel I/O protocol used for communication between GIMP and
 it's plug-ins.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -111,8 +114,8 @@ it's plug-ins.</refpurpose>
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 The lowlevel I/O protocol used for communication between GIMP and
 it's plug-ins.
@@ -120,10 +123,10 @@ it's plug-ins.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="WireMessage"/>WireMessage</title>
+<title><anchor id="WireMessage" role="struct"/>WireMessage</title>
 <indexterm><primary>WireMessage</primary></indexterm><programlisting>typedef struct {
   guint32  type;
   gpointer data;
@@ -133,7 +136,7 @@ it's plug-ins.
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="WireReadFunc"/>WireReadFunc ()</title>
+<title><anchor id="WireReadFunc" role="function"/>WireReadFunc ()</title>
 <indexterm><primary>WireReadFunc</primary></indexterm><programlisting><link linkend="void">void</link>        (*WireReadFunc)                 (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="WireMessage">WireMessage</link> *msg,
                                              <link linkend="gpointer">gpointer</link> user_data);</programlisting>
@@ -153,7 +156,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="WireWriteFunc"/>WireWriteFunc ()</title>
+<title><anchor id="WireWriteFunc" role="function"/>WireWriteFunc ()</title>
 <indexterm><primary>WireWriteFunc</primary></indexterm><programlisting><link linkend="void">void</link>        (*WireWriteFunc)                (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="WireMessage">WireMessage</link> *msg,
                                              <link linkend="gpointer">gpointer</link> user_data);</programlisting>
@@ -173,7 +176,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="WireDestroyFunc"/>WireDestroyFunc ()</title>
+<title><anchor id="WireDestroyFunc" role="function"/>WireDestroyFunc ()</title>
 <indexterm><primary>WireDestroyFunc</primary></indexterm><programlisting><link linkend="void">void</link>        (*WireDestroyFunc)              (<link linkend="WireMessage">WireMessage</link> *msg);</programlisting>
 <para>
 
@@ -185,7 +188,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="WireIOFunc"/>WireIOFunc ()</title>
+<title><anchor id="WireIOFunc" role="function"/>WireIOFunc ()</title>
 <indexterm><primary>WireIOFunc</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    (*WireIOFunc)                   (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="guint8">guint8</link> *buf,
                                              <link linkend="gulong">gulong</link> count,
@@ -211,7 +214,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="WireFlushFunc"/>WireFlushFunc ()</title>
+<title><anchor id="WireFlushFunc" role="function"/>WireFlushFunc ()</title>
 <indexterm><primary>WireFlushFunc</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    (*WireFlushFunc)                (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
@@ -229,7 +232,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-register"/>wire_register ()</title>
+<title><anchor id="wire-register" role="function"/>wire_register ()</title>
 <indexterm><primary>wire_register</primary></indexterm><programlisting><link linkend="void">void</link>        wire_register                   (<link linkend="guint32">guint32</link> type,
                                              <link linkend="WireReadFunc">WireReadFunc</link> read_func,
                                              <link linkend="WireWriteFunc">WireWriteFunc</link> write_func,
@@ -253,7 +256,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-set-reader"/>wire_set_reader ()</title>
+<title><anchor id="wire-set-reader" role="function"/>wire_set_reader ()</title>
 <indexterm><primary>wire_set_reader</primary></indexterm><programlisting><link linkend="void">void</link>        wire_set_reader                 (<link linkend="WireIOFunc">WireIOFunc</link> read_func);</programlisting>
 <para>
 
@@ -265,7 +268,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-set-writer"/>wire_set_writer ()</title>
+<title><anchor id="wire-set-writer" role="function"/>wire_set_writer ()</title>
 <indexterm><primary>wire_set_writer</primary></indexterm><programlisting><link linkend="void">void</link>        wire_set_writer                 (<link linkend="WireIOFunc">WireIOFunc</link> write_func);</programlisting>
 <para>
 
@@ -277,7 +280,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-set-flusher"/>wire_set_flusher ()</title>
+<title><anchor id="wire-set-flusher" role="function"/>wire_set_flusher ()</title>
 <indexterm><primary>wire_set_flusher</primary></indexterm><programlisting><link linkend="void">void</link>        wire_set_flusher                (<link linkend="WireFlushFunc">WireFlushFunc</link> flush_func);</programlisting>
 <para>
 
@@ -289,7 +292,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-read"/>wire_read ()</title>
+<title><anchor id="wire-read" role="function"/>wire_read ()</title>
 <indexterm><primary>wire_read</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    wire_read                       (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="guint8">guint8</link> *buf,
                                              <link linkend="gsize">gsize</link> count,
@@ -315,7 +318,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-write"/>wire_write ()</title>
+<title><anchor id="wire-write" role="function"/>wire_write ()</title>
 <indexterm><primary>wire_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    wire_write                      (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="guint8">guint8</link> *buf,
                                              <link linkend="gsize">gsize</link> count,
@@ -341,7 +344,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-flush"/>wire_flush ()</title>
+<title><anchor id="wire-flush" role="function"/>wire_flush ()</title>
 <indexterm><primary>wire_flush</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    wire_flush                      (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
@@ -359,7 +362,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-error"/>wire_error ()</title>
+<title><anchor id="wire-error" role="function"/>wire_error ()</title>
 <indexterm><primary>wire_error</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    wire_error                      (void);</programlisting>
 <para>
 
@@ -370,13 +373,13 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-clear-error"/>wire_clear_error ()</title>
+<title><anchor id="wire-clear-error" role="function"/>wire_clear_error ()</title>
 <indexterm><primary>wire_clear_error</primary></indexterm><programlisting><link linkend="void">void</link>        wire_clear_error                (void);</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="wire-read-msg"/>wire_read_msg ()</title>
+<title><anchor id="wire-read-msg" role="function"/>wire_read_msg ()</title>
 <indexterm><primary>wire_read_msg</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    wire_read_msg                   (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="WireMessage">WireMessage</link> *msg,
                                              <link linkend="gpointer">gpointer</link> user_data);</programlisting>
@@ -398,7 +401,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-write-msg"/>wire_write_msg ()</title>
+<title><anchor id="wire-write-msg" role="function"/>wire_write_msg ()</title>
 <indexterm><primary>wire_write_msg</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    wire_write_msg                  (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="WireMessage">WireMessage</link> *msg,
                                              <link linkend="gpointer">gpointer</link> user_data);</programlisting>
@@ -420,7 +423,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-destroy"/>wire_destroy ()</title>
+<title><anchor id="wire-destroy" role="function"/>wire_destroy ()</title>
 <indexterm><primary>wire_destroy</primary></indexterm><programlisting><link linkend="void">void</link>        wire_destroy                    (<link linkend="WireMessage">WireMessage</link> *msg);</programlisting>
 <para>
 
@@ -432,7 +435,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-read-int32"/>wire_read_int32 ()</title>
+<title><anchor id="wire-read-int32" role="function"/>wire_read_int32 ()</title>
 <indexterm><primary>wire_read_int32</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    wire_read_int32                 (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="guint32">guint32</link> *data,
                                              <link linkend="gint">gint</link> count,
@@ -458,7 +461,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-read-int16"/>wire_read_int16 ()</title>
+<title><anchor id="wire-read-int16" role="function"/>wire_read_int16 ()</title>
 <indexterm><primary>wire_read_int16</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    wire_read_int16                 (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="guint16">guint16</link> *data,
                                              <link linkend="gint">gint</link> count,
@@ -484,7 +487,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-read-int8"/>wire_read_int8 ()</title>
+<title><anchor id="wire-read-int8" role="function"/>wire_read_int8 ()</title>
 <indexterm><primary>wire_read_int8</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    wire_read_int8                  (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="guint8">guint8</link> *data,
                                              <link linkend="gint">gint</link> count,
@@ -510,7 +513,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-read-double"/>wire_read_double ()</title>
+<title><anchor id="wire-read-double" role="function"/>wire_read_double ()</title>
 <indexterm><primary>wire_read_double</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    wire_read_double                (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="gdouble">gdouble</link> *data,
                                              <link linkend="gint">gint</link> count,
@@ -536,7 +539,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-read-string"/>wire_read_string ()</title>
+<title><anchor id="wire-read-string" role="function"/>wire_read_string ()</title>
 <indexterm><primary>wire_read_string</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    wire_read_string                (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="gchar">gchar</link> **data,
                                              <link linkend="gint">gint</link> count,
@@ -562,7 +565,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-write-int32"/>wire_write_int32 ()</title>
+<title><anchor id="wire-write-int32" role="function"/>wire_write_int32 ()</title>
 <indexterm><primary>wire_write_int32</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    wire_write_int32                (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="guint32">guint32</link> *data,
                                              <link linkend="gint">gint</link> count,
@@ -588,7 +591,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-write-int16"/>wire_write_int16 ()</title>
+<title><anchor id="wire-write-int16" role="function"/>wire_write_int16 ()</title>
 <indexterm><primary>wire_write_int16</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    wire_write_int16                (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="guint16">guint16</link> *data,
                                              <link linkend="gint">gint</link> count,
@@ -614,7 +617,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-write-int8"/>wire_write_int8 ()</title>
+<title><anchor id="wire-write-int8" role="function"/>wire_write_int8 ()</title>
 <indexterm><primary>wire_write_int8</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    wire_write_int8                 (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="guint8">guint8</link> *data,
                                              <link linkend="gint">gint</link> count,
@@ -640,7 +643,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-write-double"/>wire_write_double ()</title>
+<title><anchor id="wire-write-double" role="function"/>wire_write_double ()</title>
 <indexterm><primary>wire_write_double</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    wire_write_double               (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="gdouble">gdouble</link> *data,
                                              <link linkend="gint">gint</link> count,
@@ -666,7 +669,7 @@ it's plug-ins.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="wire-write-string"/>wire_write_string ()</title>
+<title><anchor id="wire-write-string" role="function"/>wire_write_string ()</title>
 <indexterm><primary>wire_write_string</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    wire_write_string               (<link linkend="GIOChannel">GIOChannel</link> *channel,
                                              <link linkend="gchar">gchar</link> **data,
                                              <link linkend="gint">gint</link> count,

@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimphelp">
 <refmeta>
-<refentrytitle>gimphelp</refentrytitle>
+<refentrytitle role="top_of_page">gimphelp</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimphelp</refname><refpurpose>Loading help pages using gimp_help.</refpurpose>
+<refname>gimphelp</refname>
+<refpurpose>Loading help pages using gimp_help.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -32,18 +35,18 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Loading help pages using gimp_help.
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-help"/>gimp_help ()</title>
+<title><anchor id="gimp-help" role="function"/>gimp_help ()</title>
 <indexterm><primary>gimp_help</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_help                       (const <link linkend="gchar">gchar</link> *help_domain,
                                              const <link linkend="gchar">gchar</link> *help_id);</programlisting>
 <para>

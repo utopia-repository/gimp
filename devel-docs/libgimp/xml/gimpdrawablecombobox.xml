@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimpdrawablecombobox">
 <refmeta>
-<refentrytitle>gimpdrawablecombobox</refentrytitle>
+<refentrytitle role="top_of_page">gimpdrawablecombobox</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpdrawablecombobox</refname><refpurpose>A widget providing a popup menu of drawables.</refpurpose>
+<refname>gimpdrawablecombobox</refname>
+<refpurpose>A widget providing a popup menu of drawables.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -39,17 +42,17 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 A widget providing a popup menu of drawables.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpDrawableConstraintFunc"/>GimpDrawableConstraintFunc ()</title>
+<title><anchor id="GimpDrawableConstraintFunc" role="function"/>GimpDrawableConstraintFunc ()</title>
 <indexterm><primary>GimpDrawableConstraintFunc</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    (*GimpDrawableConstraintFunc)   (<link linkend="gint32">gint32</link> image_id,
                                              <link linkend="gint32">gint32</link> drawable_id,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
@@ -71,13 +74,13 @@ A widget providing a popup menu of drawables.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-drawable-combo-box-new"/>gimp_drawable_combo_box_new ()</title>
+<title><anchor id="gimp-drawable-combo-box-new" role="function" condition="since:GIMP 2.2"/>gimp_drawable_combo_box_new ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_drawable_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_drawable_combo_box_new     (<link linkend="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</link> constraint,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 Creates a new <link linkend="GimpIntComboBox"><type>GimpIntComboBox</type></link> filled with all currently opened
 drawables. If a <parameter>constraint</parameter> function is specified, it is called for
-each drawable and only if the function returns <literal>TRUE</literal>, the drawable
+each drawable and only if the function returns <link linkend="TRUE:CAPS"><literal>TRUE</literal></link>, the drawable
 is added to the combobox.
 </para>
 <para>
@@ -89,7 +92,7 @@ of the selected drawable.</para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>constraint</parameter>&nbsp;:</term>
-<listitem><simpara> a <link linkend="GimpDrawableConstraintFunc"><type>GimpDrawableConstraintFunc</type></link> or <literal>NULL</literal>
+<listitem><simpara> a <link linkend="GimpDrawableConstraintFunc"><type>GimpDrawableConstraintFunc</type></link> or <link linkend="NULL:CAPS"><literal>NULL</literal></link>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&nbsp;:</term>
 <listitem><simpara>       a pointer that is passed to <parameter>constraint</parameter>
@@ -100,7 +103,7 @@ of the selected drawable.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-channel-combo-box-new"/>gimp_channel_combo_box_new ()</title>
+<title><anchor id="gimp-channel-combo-box-new" role="function" condition="since:GIMP 2.2"/>gimp_channel_combo_box_new ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_channel_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_channel_combo_box_new      (<link linkend="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</link> constraint,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
@@ -110,7 +113,7 @@ channels. See <link linkend="gimp-drawable-combo-box"><function>gimp_drawable_co
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>constraint</parameter>&nbsp;:</term>
-<listitem><simpara> a <link linkend="GimpDrawableConstraintFunc"><type>GimpDrawableConstraintFunc</type></link> or <literal>NULL</literal>
+<listitem><simpara> a <link linkend="GimpDrawableConstraintFunc"><type>GimpDrawableConstraintFunc</type></link> or <link linkend="NULL:CAPS"><literal>NULL</literal></link>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&nbsp;:</term>
 <listitem><simpara>       a pointer that is passed to <parameter>constraint</parameter>
@@ -121,7 +124,7 @@ channels. See <link linkend="gimp-drawable-combo-box"><function>gimp_drawable_co
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-layer-combo-box-new"/>gimp_layer_combo_box_new ()</title>
+<title><anchor id="gimp-layer-combo-box-new" role="function" condition="since:GIMP 2.2"/>gimp_layer_combo_box_new ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_layer_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_layer_combo_box_new        (<link linkend="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</link> constraint,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
@@ -131,7 +134,7 @@ layers. See <link linkend="gimp-drawable-combo-box"><function>gimp_drawable_comb
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>constraint</parameter>&nbsp;:</term>
-<listitem><simpara> a <link linkend="GimpDrawableConstraintFunc"><type>GimpDrawableConstraintFunc</type></link> or <literal>NULL</literal>
+<listitem><simpara> a <link linkend="GimpDrawableConstraintFunc"><type>GimpDrawableConstraintFunc</type></link> or <link linkend="NULL:CAPS"><literal>NULL</literal></link>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&nbsp;:</term>
 <listitem><simpara>       a pointer that is passed to <parameter>constraint</parameter>

@@ -4,7 +4,7 @@
 
 <refentry id="libgimpcolor-GimpCMYK">
 <refmeta>
-<refentrytitle id="top_of_page">GimpCMYK</refentrytitle>
+<refentrytitle role="top_of_page">GimpCMYK</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCOLOR Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -56,6 +56,8 @@
                                              <link linkend="guchar">guchar</link> *yellow,
                                              <link linkend="guchar">guchar</link> *black,
                                              <link linkend="guchar">guchar</link> *alpha);
+#define     <link linkend="GIMP-TYPE-CMYK:CAPS">GIMP_TYPE_CMYK</link>
+
 </synopsis>
 </refsynopsisdiv>
 
@@ -67,15 +69,15 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Definitions and Functions relating to CMYK colors.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpCMYK" role="struct"/>GimpCMYK</title>
 <indexterm><primary>GimpCMYK</primary></indexterm><programlisting>typedef struct {
@@ -271,6 +273,13 @@ Channel values are pointers to unsigned chars in the range 0 to 255.</para>
 <listitem><simpara>   The Alpha channel
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2>
+<title><anchor id="GIMP-TYPE-CMYK:CAPS" role="macro"/>GIMP_TYPE_CMYK</title>
+<indexterm><primary>GIMP_TYPE_CMYK</primary></indexterm><programlisting>#define GIMP_TYPE_CMYK       (gimp_cmyk_get_type ())
+</programlisting>
+<para>
+
+</para></refsect2>
 
 </refsect1>
 

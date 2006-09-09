@@ -26,6 +26,7 @@
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
@@ -39,7 +40,7 @@
 #include "core/gimpdrawable-histogram.h"
 #include "core/gimpimage.h"
 #include "core/gimpimagemap.h"
-#include "core/gimptoolinfo.h"
+#include "core/gimpprogress.h"
 
 #include "widgets/gimpcolorbar.h"
 #include "widgets/gimphelp-ids.h"
@@ -77,24 +78,25 @@
 
 /*  local function prototypes  */
 
-static void     gimp_levels_tool_finalize       (GObject          *object);
+static void     gimp_levels_tool_finalize       (GObject           *object);
 
-static gboolean gimp_levels_tool_initialize     (GimpTool         *tool,
-                                                 GimpDisplay      *display);
+static gboolean gimp_levels_tool_initialize     (GimpTool          *tool,
+                                                 GimpDisplay       *display);
 
-static void     gimp_levels_tool_color_picked   (GimpColorTool    *color_tool,
+static void     gimp_levels_tool_color_picked   (GimpColorTool     *color_tool,
                                                  GimpColorPickState pick_state,
-                                                 GimpImageType     sample_type,
-                                                 GimpRGB          *color,
-                                                 gint              color_index);
+                                                 GimpImageType      sample_type,
+                                                 GimpRGB           *color,
+                                                 gint               color_index);
 
-static void     gimp_levels_tool_map            (GimpImageMapTool *image_map_tool);
-static void     gimp_levels_tool_dialog         (GimpImageMapTool *image_map_tool);
-static void     gimp_levels_tool_reset          (GimpImageMapTool *image_map_tool);
-static gboolean gimp_levels_tool_settings_load  (GimpImageMapTool *image_mao_tool,
-                                                 gpointer          fp);
-static gboolean gimp_levels_tool_settings_save  (GimpImageMapTool *image_map_tool,
-                                                 gpointer          fp);
+static void     gimp_levels_tool_map            (GimpImageMapTool  *image_map_tool);
+static void     gimp_levels_tool_dialog         (GimpImageMapTool  *image_map_tool);
+static void     gimp_levels_tool_reset          (GimpImageMapTool  *image_map_tool);
+static gboolean gimp_levels_tool_settings_load  (GimpImageMapTool  *image_mao_tool,
+                                                 gpointer           fp,
+                                                 GError           **error);
+static gboolean gimp_levels_tool_settings_save  (GimpImageMapTool  *image_map_tool,
+                                                 gpointer           fp);
 
 static void     levels_update                        (GimpLevelsTool *tool,
                                                       guint           update);
@@ -236,7 +238,8 @@ gimp_levels_tool_initialize (GimpTool    *tool,
 
   if (gimp_drawable_is_indexed (drawable))
     {
-      g_message (_("Levels for indexed layers cannot be adjusted."));
+      gimp_message (display->image->gimp, GIMP_PROGRESS (display),
+                    _("Levels for indexed layers cannot be adjusted."));
       return FALSE;
     }
 
@@ -340,8 +343,8 @@ gimp_levels_tool_color_picker_new (GimpLevelsTool *tool,
 static void
 gimp_levels_tool_dialog (GimpImageMapTool *image_map_tool)
 {
-  GimpLevelsTool  *tool = GIMP_LEVELS_TOOL (image_map_tool);
-  GimpToolOptions *tool_options;
+  GimpLevelsTool  *tool         = GIMP_LEVELS_TOOL (image_map_tool);
+  GimpToolOptions *tool_options = GIMP_TOOL_GET_OPTIONS (image_map_tool);
   GtkListStore    *store;
   GtkWidget       *vbox;
   GtkWidget       *vbox2;
@@ -357,8 +360,6 @@ gimp_levels_tool_dialog (GimpImageMapTool *image_map_tool)
   GtkWidget       *bar;
   GtkObject       *data;
   gint             border;
-
-  tool_options = GIMP_TOOL (tool)->tool_info->tool_options;
 
   vbox = image_map_tool->main_vbox;
 
@@ -642,8 +643,9 @@ gimp_levels_tool_reset (GimpImageMapTool *image_map_tool)
 }
 
 static gboolean
-gimp_levels_tool_settings_load (GimpImageMapTool *image_map_tool,
-                                gpointer          fp)
+gimp_levels_tool_settings_load (GimpImageMapTool  *image_map_tool,
+                                gpointer           fp,
+                                GError           **error)
 {
   GimpLevelsTool *tool = GIMP_LEVELS_TOOL (image_map_tool);
   FILE           *file = fp;
@@ -656,11 +658,13 @@ gimp_levels_tool_settings_load (GimpImageMapTool *image_map_tool,
   gchar           buf[50];
   gchar          *nptr;
 
-  if (! fgets (buf, sizeof (buf), file))
-    return FALSE;
-
-  if (strcmp (buf, "# GIMP Levels File\n") != 0)
-    return FALSE;
+  if (! fgets (buf, sizeof (buf), file) ||
+      strcmp (buf, "# GIMP Levels File\n") != 0)
+    {
+      g_set_error (error, GIMP_CONFIG_ERROR, GIMP_CONFIG_ERROR_PARSE,
+                   _("not a GIMP Levels file"));
+      return FALSE;
+    }
 
   for (i = 0; i < 5; i++)
     {
@@ -671,15 +675,15 @@ gimp_levels_tool_settings_load (GimpImageMapTool *image_map_tool,
                        &high_output[i]);
 
       if (fields != 4)
-        return FALSE;
+        goto error;
 
       if (! fgets (buf, 50, file))
-        return FALSE;
+        goto error;
 
       gamma[i] = g_ascii_strtod (buf, &nptr);
 
       if (buf == nptr || errno == ERANGE)
-        return FALSE;
+        goto error;
     }
 
   for (i = 0; i < 5; i++)
@@ -694,6 +698,11 @@ gimp_levels_tool_settings_load (GimpImageMapTool *image_map_tool,
   levels_update (tool, ALL);
 
   return TRUE;
+
+ error:
+  g_set_error (error, GIMP_CONFIG_ERROR, GIMP_CONFIG_ERROR_PARSE,
+               _("parse error"));
+  return FALSE;
 }
 
 static gboolean
@@ -1006,7 +1015,7 @@ levels_input_picker_toggled (GtkWidget      *widget,
       tool->active_picker = widget;
 
       gimp_color_tool_enable (GIMP_COLOR_TOOL (tool),
-                              GIMP_COLOR_OPTIONS (GIMP_TOOL (tool)->tool_info->tool_options));
+                              GIMP_COLOR_TOOL_GET_OPTIONS (tool));
     }
   else if (tool->active_picker == widget)
     {
@@ -1022,7 +1031,6 @@ levels_input_area_event (GtkWidget      *widget,
 {
   GdkEventButton *bevent;
   GdkEventMotion *mevent;
-  gchar           text[12];
   gint            x, distance;
   gint            i;
   gboolean        update = FALSE;
@@ -1105,8 +1113,8 @@ levels_input_area_event (GtkWidget      *widget,
           tool->levels->gamma[tool->channel] = 1.0 / pow (10, tmp);
 
           /*  round the gamma value to the nearest 1/100th  */
-          sprintf (text, "%2.2f", tool->levels->gamma[tool->channel]);
-          tool->levels->gamma[tool->channel] = atof (text);
+          tool->levels->gamma[tool->channel] =
+            floor (tool->levels->gamma[tool->channel] * 100 + 0.5) / 100.0;
           break;
 
         case 2:  /*  high input  */

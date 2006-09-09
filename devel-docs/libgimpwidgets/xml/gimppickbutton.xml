@@ -4,7 +4,7 @@
 
 <refentry id="GimpPickButton">
 <refmeta>
-<refentrytitle id="top_of_page">GimpPickButton</refentrytitle>
+<refentrytitle role="top_of_page">GimpPickButton</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -28,8 +28,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -46,8 +46,8 @@
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpPickButton implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -56,8 +56,8 @@ GimpPickButton implements
 
 
 
-<refsect1 id="signal_proto">
-<title id="signal_proto.title">Signals</title>
+<refsect1 role="signal_proto">
+<title role="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpPickButton-color-picked">color-picked</link>&quot;
@@ -68,8 +68,8 @@ GimpPickButton implements
 </refsect1>
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 <link linkend="GimpPickButton"><type>GimpPickButton</type></link> is a specialized button. When clicked, it changes the
 cursor to a color-picker pipette and allows the user to pick a color
@@ -77,8 +77,8 @@ from any point on the screen.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpPickButton-struct" role="struct"/>GimpPickButton</title>
 <indexterm><primary>GimpPickButton</primary></indexterm><programlisting>typedef struct _GimpPickButton GimpPickButton;</programlisting>
@@ -99,8 +99,8 @@ Creates a new <link linkend="GimpPickButton"><type>GimpPickButton</type></link> 
 
 </refsect1>
 
-<refsect1 id="signals">
-<title id="signals.title">Signal Details</title>
+<refsect1 role="signals">
+<title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpPickButton-color-picked"/>The &quot;color-picked&quot; signal</title>
 <indexterm><primary>GimpPickButton::color-picked</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpPickButton">GimpPickButton</link> *gimppickbutton,
                                             <link linkend="gpointer">gpointer</link>        arg1,

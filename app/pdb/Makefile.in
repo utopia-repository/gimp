@@ -53,12 +53,9 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 ARFLAGS = cru
-libapppdb_a_AR = $(AR) $(ARFLAGS)
-libapppdb_a_LIBADD =
-am_libapppdb_a_OBJECTS = gimp-pdb.$(OBJEXT) gimp-pdb-compat.$(OBJEXT) \
-	gimppdb.$(OBJEXT) gimppdb-query.$(OBJEXT) \
-	gimpprocedure.$(OBJEXT) gimppluginprocedure.$(OBJEXT) \
-	gimptemporaryprocedure.$(OBJEXT) internal_procs.$(OBJEXT) \
+libappinternal_procs_a_AR = $(AR) $(ARFLAGS)
+libappinternal_procs_a_LIBADD =
+am_libappinternal_procs_a_OBJECTS = internal_procs.$(OBJEXT) \
 	brush_cmds.$(OBJEXT) brush_select_cmds.$(OBJEXT) \
 	brushes_cmds.$(OBJEXT) buffer_cmds.$(OBJEXT) \
 	channel_cmds.$(OBJEXT) color_cmds.$(OBJEXT) \
@@ -81,6 +78,11 @@ am_libapppdb_a_OBJECTS = gimp-pdb.$(OBJEXT) gimp-pdb-compat.$(OBJEXT) \
 	selection_cmds.$(OBJEXT) selection_tools_cmds.$(OBJEXT) \
 	text_tool_cmds.$(OBJEXT) transform_tools_cmds.$(OBJEXT) \
 	undo_cmds.$(OBJEXT) unit_cmds.$(OBJEXT) vectors_cmds.$(OBJEXT)
+libappinternal_procs_a_OBJECTS = $(am_libappinternal_procs_a_OBJECTS)
+libapppdb_a_AR = $(AR) $(ARFLAGS)
+libapppdb_a_LIBADD =
+am_libapppdb_a_OBJECTS = gimp-pdb-compat.$(OBJEXT) gimppdb.$(OBJEXT) \
+	gimppdb-query.$(OBJEXT) gimpprocedure.$(OBJEXT)
 libapppdb_a_OBJECTS = $(am_libapppdb_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -93,8 +95,9 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(libapppdb_a_SOURCES)
-DIST_SOURCES = $(libapppdb_a_SOURCES)
+SOURCES = $(libappinternal_procs_a_SOURCES) $(libapppdb_a_SOURCES)
+DIST_SOURCES = $(libappinternal_procs_a_SOURCES) \
+	$(libapppdb_a_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -122,6 +125,8 @@ BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
 BUILD_PRINT_TRUE = @BUILD_PRINT_TRUE@
 BUILD_PYTHON_FALSE = @BUILD_PYTHON_FALSE@
 BUILD_PYTHON_TRUE = @BUILD_PYTHON_TRUE@
+BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
+BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
 CATALOGS = @CATALOGS@
@@ -447,12 +452,10 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-noinst_LIBRARIES = libapppdb.a
+noinst_LIBRARIES = libapppdb.a libappinternal-procs.a
 libapppdb_a_SOURCES = \
 	pdb-types.h			\
 	\
-	gimp-pdb.c			\
-	gimp-pdb.h			\
 	gimp-pdb-compat.c		\
 	gimp-pdb-compat.h		\
 	gimppdb.c			\
@@ -460,12 +463,9 @@ libapppdb_a_SOURCES = \
 	gimppdb-query.c			\
 	gimppdb-query.h			\
 	gimpprocedure.c			\
-	gimpprocedure.h			\
-	gimppluginprocedure.c		\
-	gimppluginprocedure.h		\
-	gimptemporaryprocedure.c	\
-	gimptemporaryprocedure.h	\
-	\
+	gimpprocedure.h
+
+libappinternal_procs_a_SOURCES = \
 	internal_procs.c		\
 	internal_procs.h		\
 	brush_cmds.c			\
@@ -564,6 +564,10 @@ $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 
 clean-noinstLIBRARIES:
 	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+libappinternal-procs.a: $(libappinternal_procs_a_OBJECTS) $(libappinternal_procs_a_DEPENDENCIES) 
+	-rm -f libappinternal-procs.a
+	$(libappinternal_procs_a_AR) libappinternal-procs.a $(libappinternal_procs_a_OBJECTS) $(libappinternal_procs_a_LIBADD)
+	$(RANLIB) libappinternal-procs.a
 libapppdb.a: $(libapppdb_a_OBJECTS) $(libapppdb_a_DEPENDENCIES) 
 	-rm -f libapppdb.a
 	$(libapppdb_a_AR) libapppdb.a $(libapppdb_a_OBJECTS) $(libapppdb_a_LIBADD)
@@ -592,13 +596,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/font_select_cmds.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fonts_cmds.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-pdb-compat.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-pdb.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppdb-query.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppdb.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginprocedure.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprocedure.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprc_cmds.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptemporaryprocedure.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gradient_cmds.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gradient_select_cmds.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gradients_cmds.Po@am__quote@

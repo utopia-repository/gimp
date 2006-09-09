@@ -25,17 +25,25 @@ G_BEGIN_DECLS
 /* For information look into the C source or the html documentation */
 
 
-void      gimp_hsv_set        (GimpHSV       *hsv,
-                               gdouble        hue,
-                               gdouble        saturation,
-                               gdouble        value);
-void      gimp_hsv_clamp      (GimpHSV       *hsv);
+/*
+ * GIMP_TYPE_HSV
+ */
 
-void      gimp_hsva_set       (GimpHSV       *hsva,
-                               gdouble        hue,
-                               gdouble        saturation,
-                               gdouble        value,
-                               gdouble        alpha);
+#define GIMP_TYPE_HSV       (gimp_hsv_get_type ())
+
+GType   gimp_hsv_get_type   (void) G_GNUC_CONST;
+
+void    gimp_hsv_set        (GimpHSV       *hsv,
+                             gdouble        hue,
+                             gdouble        saturation,
+                             gdouble        value);
+void    gimp_hsv_clamp      (GimpHSV       *hsv);
+
+void    gimp_hsva_set       (GimpHSV       *hsva,
+                             gdouble        hue,
+                             gdouble        saturation,
+                             gdouble        value,
+                             gdouble        alpha);
 
 
 G_END_DECLS

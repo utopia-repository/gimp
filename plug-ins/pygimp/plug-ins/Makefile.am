@@ -2,7 +2,6 @@ pluginexecdir = $(gimpplugindir)/plug-ins
 
 scripts = \
 	colorxhtml.py		\
-	clothify.py		\
 	foggify.py		\
 	gimpcons.py		\
 	happy-valley-relief.py	\
@@ -11,12 +10,13 @@ scripts = \
 	palette-to-gradient.py	\
 	pdbbrowse.py		\
 	py-slice.py		\
-	shadow_bevel.py		\
-	whirlpinch.py
+	shadow_bevel.py
 
 test_scripts = \
 	benchmark-foreground-extract.py	\
-	sphere.py
+	clothify.py		\
+	sphere.py		\
+	whirlpinch.py
 
 if GIMP_UNSTABLE
 pluginexec_SCRIPTS = $(scripts) $(test_scripts)

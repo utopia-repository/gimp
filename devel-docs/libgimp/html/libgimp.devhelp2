@@ -111,6 +111,7 @@
     <keyword type="enum" name="enum GimpOffsetType" link="libgimp-gimpenums.html#GimpOffsetType"/>
     <keyword type="enum" name="enum GimpOrientationType" link="libgimp-gimpenums.html#GimpOrientationType"/>
     <keyword type="enum" name="enum GimpRotationType" link="libgimp-gimpenums.html#GimpRotationType"/>
+    <keyword type="enum" name="enum GimpSelectCriterion" link="libgimp-gimpenums.html#GimpSelectCriterion"/>
     <keyword type="function" name="gimp_enums_get_type_names ()" link="libgimp-gimpenums.html#gimp-enums-get-type-names" since="GIMP 2.2"/>
     <keyword type="macro" name="GIMPVAR" link="libgimp-gimp.html#GIMPVAR:CAPS"/>
     <keyword type="function" name="gimp_version ()" link="libgimp-gimp.html#gimp-version"/>
@@ -265,6 +266,7 @@
     <keyword type="function" name="gimp_image_convert_rgb ()" link="libgimp-gimpconvert.html#gimp-image-convert-rgb"/>
     <keyword type="function" name="gimp_image_convert_grayscale ()" link="libgimp-gimpconvert.html#gimp-image-convert-grayscale"/>
     <keyword type="function" name="gimp_image_convert_indexed ()" link="libgimp-gimpconvert.html#gimp-image-convert-indexed"/>
+    <keyword type="function" name="gimp_image_convert_set_dither_matrix ()" link="libgimp-gimpconvert.html#gimp-image-convert-set-dither-matrix" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_display_new ()" link="libgimp-gimpdisplay.html#gimp-display-new"/>
     <keyword type="function" name="gimp_display_delete ()" link="libgimp-gimpdisplay.html#gimp-display-delete"/>
     <keyword type="function" name="gimp_display_get_window_handle ()" link="libgimp-gimpdisplay.html#gimp-display-get-window-handle" since="GIMP 2.4"/>
@@ -497,7 +499,7 @@
     <keyword type="function" name="gimp_path_get_locked ()" link="libgimp-gimppaths.html#gimp-path-get-locked" deprecated=""/>
     <keyword type="function" name="gimp_path_set_locked ()" link="libgimp-gimppaths.html#gimp-path-set-locked" deprecated=""/>
     <keyword type="function" name="gimp_path_set_tattoo ()" link="libgimp-gimppaths.html#gimp-path-set-tattoo" deprecated=""/>
-    <keyword type="function" name="gimp_path_to_selection ()" link="libgimp-gimppaths.html#gimp-path-to-selection"/>
+    <keyword type="function" name="gimp_path_to_selection ()" link="libgimp-gimppaths.html#gimp-path-to-selection" deprecated=""/>
     <keyword type="function" name="gimp_path_import ()" link="libgimp-gimppaths.html#gimp-path-import"/>
     <keyword type="function" name="gimp_path_import_string ()" link="libgimp-gimppaths.html#gimp-path-import-string" since="GIMP 2.4"/>
     <keyword type="enum" name="enum GimpPixelFetcherEdgeMode" link="libgimp-gimppixelfetcher.html#GimpPixelFetcherEdgeMode"/>
@@ -567,18 +569,21 @@
     <keyword type="function" name="gimp_airbrush ()" link="libgimp-gimptools.html#gimp-airbrush"/>
     <keyword type="function" name="gimp_airbrush_default ()" link="libgimp-gimptools.html#gimp-airbrush-default"/>
     <keyword type="function" name="gimp_by_color_select ()" link="libgimp-gimptools.html#gimp-by-color-select"/>
+    <keyword type="function" name="gimp_by_color_select_full ()" link="libgimp-gimptools.html#gimp-by-color-select-full" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_clone ()" link="libgimp-gimptools.html#gimp-clone"/>
     <keyword type="function" name="gimp_clone_default ()" link="libgimp-gimptools.html#gimp-clone-default"/>
     <keyword type="function" name="gimp_convolve ()" link="libgimp-gimptools.html#gimp-convolve"/>
     <keyword type="function" name="gimp_convolve_default ()" link="libgimp-gimptools.html#gimp-convolve-default"/>
     <keyword type="function" name="gimp_dodgeburn ()" link="libgimp-gimptools.html#gimp-dodgeburn"/>
     <keyword type="function" name="gimp_dodgeburn_default ()" link="libgimp-gimptools.html#gimp-dodgeburn-default"/>
+    <keyword type="function" name="gimp_edit_bucket_fill_full ()" link="libgimp-gimptools.html#gimp-edit-bucket-fill-full" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_ellipse_select ()" link="libgimp-gimptools.html#gimp-ellipse-select"/>
     <keyword type="function" name="gimp_eraser ()" link="libgimp-gimptools.html#gimp-eraser"/>
     <keyword type="function" name="gimp_eraser_default ()" link="libgimp-gimptools.html#gimp-eraser-default"/>
     <keyword type="function" name="gimp_flip ()" link="libgimp-gimptools.html#gimp-flip" deprecated=""/>
     <keyword type="function" name="gimp_free_select ()" link="libgimp-gimptools.html#gimp-free-select"/>
     <keyword type="function" name="gimp_fuzzy_select ()" link="libgimp-gimptools.html#gimp-fuzzy-select"/>
+    <keyword type="function" name="gimp_fuzzy_select_full ()" link="libgimp-gimptools.html#gimp-fuzzy-select-full" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_paintbrush ()" link="libgimp-gimptools.html#gimp-paintbrush"/>
     <keyword type="function" name="gimp_paintbrush_default ()" link="libgimp-gimptools.html#gimp-paintbrush-default"/>
     <keyword type="function" name="gimp_pencil ()" link="libgimp-gimptools.html#gimp-pencil"/>
@@ -608,6 +613,7 @@
     <keyword type="function" name="gimp_vectors_set_tattoo ()" link="libgimp-gimpvectors.html#gimp-vectors-set-tattoo" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_set_visible ()" link="libgimp-gimpvectors.html#gimp-vectors-set-visible" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_get_strokes ()" link="libgimp-gimpvectors.html#gimp-vectors-get-strokes" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_vectors_to_selection ()" link="libgimp-gimpvectors.html#gimp-vectors-to-selection" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_parasite_attach ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-attach" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_parasite_detach ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-detach" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_parasite_find ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-find" since="GIMP 2.4"/>
@@ -752,7 +758,7 @@
     <keyword type="" name="The &quot;font-set&quot; signal" link="GimpFontSelectButton.html#GimpFontSelectButton-font-set"/>
     <keyword type="struct" name="GimpGradientSelectButton" link="GimpGradientSelectButton.html#GimpGradientSelectButton-struct"/>
     <keyword type="function" name="gimp_gradient_select_button_new ()" link="GimpGradientSelectButton.html#gimp-gradient-select-button-new" since="GIMP 2.4"/>
-    <keyword type="function" name="gimp_gradient_select_button_get_gradient ()" link="GimpGradientSelectButton.html#gimp-gradient-select-button-get-gradient"/>
+    <keyword type="function" name="gimp_gradient_select_button_get_gradient ()" link="GimpGradientSelectButton.html#gimp-gradient-select-button-get-gradient" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_gradient_select_button_set_gradient ()" link="GimpGradientSelectButton.html#gimp-gradient-select-button-set-gradient" since="GIMP 2.4"/>
     <keyword type="" name="The &quot;gradient-name&quot; property" link="GimpGradientSelectButton.html#GimpGradientSelectButton--gradient-name"/>
     <keyword type="" name="The &quot;title&quot; property" link="GimpGradientSelectButton.html#GimpGradientSelectButton--title"/>
@@ -767,7 +773,7 @@
     <keyword type="struct" name="GimpPatternSelectButton" link="GimpPatternSelectButton.html#GimpPatternSelectButton-struct"/>
     <keyword type="function" name="gimp_pattern_select_button_new ()" link="GimpPatternSelectButton.html#gimp-pattern-select-button-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_pattern_select_button_get_pattern ()" link="GimpPatternSelectButton.html#gimp-pattern-select-button-get-pattern" since="GIMP 2.4"/>
-    <keyword type="function" name="gimp_pattern_select_button_set_pattern ()" link="GimpPatternSelectButton.html#gimp-pattern-select-button-set-pattern"/>
+    <keyword type="function" name="gimp_pattern_select_button_set_pattern ()" link="GimpPatternSelectButton.html#gimp-pattern-select-button-set-pattern" since="GIMP 2.4"/>
     <keyword type="" name="The &quot;pattern-name&quot; property" link="GimpPatternSelectButton.html#GimpPatternSelectButton--pattern-name"/>
     <keyword type="" name="The &quot;title&quot; property" link="GimpPatternSelectButton.html#GimpPatternSelectButton--title"/>
     <keyword type="" name="The &quot;pattern-set&quot; signal" link="GimpPatternSelectButton.html#GimpPatternSelectButton-pattern-set"/>
@@ -819,10 +825,13 @@
     <keyword type="" name="The &quot;drawable&quot; property" link="GimpAspectPreview.html#GimpAspectPreview--drawable"/>
     <keyword type="struct" name="GimpZoomPreview" link="GimpZoomPreview.html#GimpZoomPreview-struct"/>
     <keyword type="function" name="gimp_zoom_preview_new ()" link="GimpZoomPreview.html#gimp-zoom-preview-new" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_zoom_preview_new_with_model ()" link="GimpZoomPreview.html#gimp-zoom-preview-new-with-model" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_zoom_preview_get_source ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-source" since="GIMP 2.4"/>
-    <keyword type="function" name="gimp_zoom_preview_get_drawable ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-drawable"/>
-    <keyword type="function" name="gimp_zoom_preview_get_factor ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-factor"/>
+    <keyword type="function" name="gimp_zoom_preview_get_drawable ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-drawable" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_zoom_preview_get_factor ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-factor" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_zoom_preview_get_model ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-model" since="GIMP 2.4"/>
     <keyword type="" name="The &quot;drawable&quot; property" link="GimpZoomPreview.html#GimpZoomPreview--drawable"/>
+    <keyword type="" name="The &quot;model&quot; property" link="GimpZoomPreview.html#GimpZoomPreview--model"/>
     <keyword type="struct" name="GimpDrawableComboBox" link="GimpDrawableComboBox.html#GimpDrawableComboBox-struct"/>
     <keyword type="function" name="GimpDrawableConstraintFunc ()" link="GimpDrawableComboBox.html#GimpDrawableConstraintFunc"/>
     <keyword type="function" name="gimp_drawable_combo_box_new ()" link="GimpDrawableComboBox.html#gimp-drawable-combo-box-new" since="GIMP 2.2"/>
@@ -837,6 +846,7 @@
     <keyword type="function" name="gimp_image_get_thumbnail ()" link="libgimp-gimppixbuf.html#gimp-image-get-thumbnail" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_drawable_get_thumbnail ()" link="libgimp-gimppixbuf.html#gimp-drawable-get-thumbnail" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_drawable_get_sub_thumbnail ()" link="libgimp-gimppixbuf.html#gimp-drawable-get-sub-thumbnail" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_layer_new_from_pixbuf ()" link="libgimp-gimppixbuf.html#gimp-layer-new-from-pixbuf" since="GIMP 2.4"/>
     <keyword type="struct" name="GimpProgressBar" link="GimpProgressBar.html#GimpProgressBar-struct"/>
     <keyword type="function" name="gimp_progress_bar_new ()" link="GimpProgressBar.html#gimp-progress-bar-new" since="GIMP 2.2"/>
     <keyword type="function" name="GimpConstraintFunc ()" link="libgimp-gimpmenu.html#GimpConstraintFunc" deprecated=""/>

@@ -3,10 +3,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GIMP Widgets Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="next" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
-<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -27,171 +27,173 @@
 <div>
 <div><table class="navigation" id="top" width="100%" cellpadding="2" cellspacing="0"><tr><th valign="middle"><p class="title">GIMP Widgets Library Reference Manual</p></th></tr></table></div>
 <div><p class="releaseinfo">
-      for GIMP 2.3.10
+      for GIMP 2.3.11
 
     </p></div>
 </div>
 <hr>
 </div>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
+<div class="toc"><dl>
 <dt><span class="part"><a href="libgimpwidgets-widgets.html">I. GIMP Widgets</a></span></dt>
 <dd><dl>
 <dt><span class="chapter"><a href="libgimpwidgets-hierarchy.html">Object Hierarchy</a></span></dt>
 <dt><span class="chapter"><a href="libgimpwidgets-gallery.html">Widget Gallery</a></span></dt>
 <dt>
-<span class="refentrytitle"><a href="GimpBrowser.html">GimpBrowser</a></span><span class="refpurpose"> - </span>
+<span class="refentrytitle"><a href="GimpBrowser.html">GimpBrowser</a></span><span class="refpurpose"> &#8212; </span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpButton.html">GimpButton</a></span><span class="refpurpose"> - A GtkButton with a little extra functionality.</span>
+<span class="refentrytitle"><a href="GimpButton.html">GimpButton</a></span><span class="refpurpose"> &#8212; A <span class="type">GtkButton</span> with a little extra functionality.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpChainButton.html">GimpChainButton</a></span><span class="refpurpose"> - Widget to visually connect two entry widgets.</span>
+<span class="refentrytitle"><a href="GimpChainButton.html">GimpChainButton</a></span><span class="refpurpose"> &#8212; Widget to visually connect two entry widgets.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpColorArea.html">GimpColorArea</a></span><span class="refpurpose"> - Displays a GimpRGB color, optionally with alpha-channel.</span>
+<span class="refentrytitle"><a href="GimpColorArea.html">GimpColorArea</a></span><span class="refpurpose"> &#8212; Displays a GimpRGB color, optionally with alpha-channel.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpColorButton.html">GimpColorButton</a></span><span class="refpurpose"> - Widget for selecting a color from a simple button.</span>
+<span class="refentrytitle"><a href="GimpColorButton.html">GimpColorButton</a></span><span class="refpurpose"> &#8212; Widget for selecting a color from a simple button.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpColorHexEntry.html">GimpColorHexEntry</a></span><span class="refpurpose"> - Widget for entering a color's hex triplet.</span>
+<span class="refentrytitle"><a href="GimpColorHexEntry.html">GimpColorHexEntry</a></span><span class="refpurpose"> &#8212; Widget for entering a color's hex triplet.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpColorScale.html">GimpColorScale</a></span><span class="refpurpose"> - Fancy colored sliders.</span>
+<span class="refentrytitle"><a href="GimpColorScale.html">GimpColorScale</a></span><span class="refpurpose"> &#8212; Fancy colored sliders.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpColorSelection.html">GimpColorSelection</a></span><span class="refpurpose"> - Widget for doing a color selection.</span>
+<span class="refentrytitle"><a href="GimpColorSelection.html">GimpColorSelection</a></span><span class="refpurpose"> &#8212; Widget for doing a color selection.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpDialog.html">GimpDialog</a></span><span class="refpurpose"> - Constructors for GtkDialog's and action_areas as well as other
+<span class="refentrytitle"><a href="GimpDialog.html">GimpDialog</a></span><span class="refpurpose"> &#8212; Constructors for <span class="type">GtkDialog</span>'s and action_areas as well as other
 dialog-related stuff.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpEnumStore.html">GimpEnumStore</a></span><span class="refpurpose"> - </span>
+<span class="refentrytitle"><a href="GimpEnumStore.html">GimpEnumStore</a></span><span class="refpurpose"> &#8212; </span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpEnumComboBox.html">GimpEnumComboBox</a></span><span class="refpurpose"> - </span>
+<span class="refentrytitle"><a href="GimpEnumComboBox.html">GimpEnumComboBox</a></span><span class="refpurpose"> &#8212; </span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpEnumLabel.html">GimpEnumLabel</a></span><span class="refpurpose"> - </span>
+<span class="refentrytitle"><a href="GimpEnumLabel.html">GimpEnumLabel</a></span><span class="refpurpose"> &#8212; </span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpFileEntry.html">GimpFileEntry</a></span><span class="refpurpose"> - Widget for entering a filename.</span>
+<span class="refentrytitle"><a href="GimpFileEntry.html">GimpFileEntry</a></span><span class="refpurpose"> &#8212; Widget for entering a filename.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpFrame.html">GimpFrame</a></span><span class="refpurpose"> - A widget providing a HIG-compliant subclass of GtkFrame.</span>
+<span class="refentrytitle"><a href="GimpFrame.html">GimpFrame</a></span><span class="refpurpose"> &#8212; A widget providing a HIG-compliant subclass of <span class="type">GtkFrame</span>.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpIntComboBox.html">GimpIntComboBox</a></span><span class="refpurpose"> - A widget providing a popup menu of integer values (e.g. enums).</span>
+<span class="refentrytitle"><a href="libgimpwidgets-GimpHintBox.html">GimpHintBox</a></span><span class="refpurpose"> &#8212; </span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpIntStore.html">GimpIntStore</a></span><span class="refpurpose"> - A model for integer based name-value pairs (e.g. enums)</span>
+<span class="refentrytitle"><a href="GimpIntComboBox.html">GimpIntComboBox</a></span><span class="refpurpose"> &#8212; A widget providing a popup menu of integer values (e.g. enums).</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpMemsizeEntry.html">GimpMemsizeEntry</a></span><span class="refpurpose"> - A composite widget that allows to enter a memory size.</span>
+<span class="refentrytitle"><a href="GimpIntStore.html">GimpIntStore</a></span><span class="refpurpose"> &#8212; A model for integer based name-value pairs (e.g. enums)</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpOffsetArea.html">GimpOffsetArea</a></span><span class="refpurpose"> - Widget to control image offsets.</span>
+<span class="refentrytitle"><a href="GimpMemsizeEntry.html">GimpMemsizeEntry</a></span><span class="refpurpose"> &#8212; A composite widget that allows to enter a memory size.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpPageSelector.html">GimpPageSelector</a></span><span class="refpurpose"> - </span>
+<span class="refentrytitle"><a href="GimpOffsetArea.html">GimpOffsetArea</a></span><span class="refpurpose"> &#8212; Widget to control image offsets.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpPathEditor.html">GimpPathEditor</a></span><span class="refpurpose"> - Widget for editing a file search path.</span>
+<span class="refentrytitle"><a href="GimpPageSelector.html">GimpPageSelector</a></span><span class="refpurpose"> &#8212; </span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpPickButton.html">GimpPickButton</a></span><span class="refpurpose"> - Widget to pick a color from screen.</span>
+<span class="refentrytitle"><a href="GimpPathEditor.html">GimpPathEditor</a></span><span class="refpurpose"> &#8212; Widget for editing a file search path.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpPixmap.html">GimpPixmap</a></span><span class="refpurpose"> - Widget which creates a GtkPixmap from XPM data.</span>
+<span class="refentrytitle"><a href="GimpPickButton.html">GimpPickButton</a></span><span class="refpurpose"> &#8212; Widget to pick a color from screen.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpPreviewArea.html">GimpPreviewArea</a></span><span class="refpurpose"> - A general purpose preview widget which caches its pixel data.</span>
+<span class="refentrytitle"><a href="GimpPixmap.html">GimpPixmap</a></span><span class="refpurpose"> &#8212; Widget which creates a <span class="type">GtkPixmap</span> from XPM data.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpPreview.html">GimpPreview</a></span><span class="refpurpose"> - A widget providing a GimpPreviewArea plus framework to update the preview.</span>
+<span class="refentrytitle"><a href="GimpPreviewArea.html">GimpPreviewArea</a></span><span class="refpurpose"> &#8212; A general purpose preview widget which caches its pixel data.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="libgimpwidgets-GimpPropWidgets.html">GimpPropWidgets</a></span><span class="refpurpose"> - </span>
+<span class="refentrytitle"><a href="GimpPreview.html">GimpPreview</a></span><span class="refpurpose"> &#8212; A widget providing a <a href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> plus framework to update the preview.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpScrolledPreview.html">GimpScrolledPreview</a></span><span class="refpurpose"> - A widget providing a GimpPreview enhanced by scrolling capabilities.</span>
+<span class="refentrytitle"><a href="libgimpwidgets-GimpPropWidgets.html">GimpPropWidgets</a></span><span class="refpurpose"> &#8212; </span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpUnitMenu.html">GimpUnitMenu</a></span><span class="refpurpose"> - Widget for selecting a GimpUnit.</span>
+<span class="refentrytitle"><a href="GimpScrolledPreview.html">GimpScrolledPreview</a></span><span class="refpurpose"> &#8212; A widget providing a <a href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> enhanced by scrolling capabilities.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="GimpUnitMenu.html">GimpUnitMenu</a></span><span class="refpurpose"> &#8212; Widget for selecting a <a
+href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
+><span class="type">GimpUnit</span></a>.</span>
 </dt>
 </dl></dd>
 <dt><span class="chapter"><a href="libgimpwidgets-cell-renderers.html">Cell Renderers for GtkTreeView</a></span></dt>
 <dd><dl>
 <dt>
-<span class="refentrytitle"><a href="GimpCellRendererColor.html">GimpCellRendererColor</a></span><span class="refpurpose"> - </span>
+<span class="refentrytitle"><a href="GimpCellRendererColor.html">GimpCellRendererColor</a></span><span class="refpurpose"> &#8212; </span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpCellRendererToggle.html">GimpCellRendererToggle</a></span><span class="refpurpose"> - </span>
+<span class="refentrytitle"><a href="GimpCellRendererToggle.html">GimpCellRendererToggle</a></span><span class="refpurpose"> &#8212; </span>
 </dt>
 </dl></dd>
 <dt><span class="part"><a href="libgimpwidgets-colordisplay.html">II. GIMP Display Filters</a></span></dt>
 <dd><dl>
 <dt>
-<span class="refentrytitle"><a href="GimpColorDisplay.html">GimpColorDisplay</a></span><span class="refpurpose"> - Pluggable GIMP display color correction modules.</span>
+<span class="refentrytitle"><a href="GimpColorDisplay.html">GimpColorDisplay</a></span><span class="refpurpose"> &#8212; Pluggable GIMP display color correction modules.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpColorDisplayStack.html">GimpColorDisplayStack</a></span><span class="refpurpose"> - </span>
+<span class="refentrytitle"><a href="GimpColorDisplayStack.html">GimpColorDisplayStack</a></span><span class="refpurpose"> &#8212; </span>
 </dt>
 </dl></dd>
 <dt><span class="part"><a href="libgimpwidgets-colorselector.html">III. GIMP Color Selectors</a></span></dt>
 <dd><dl>
 <dt>
-<span class="refentrytitle"><a href="GimpColorSelector.html">GimpColorSelector</a></span><span class="refpurpose"> - Pluggable GIMP color selector modules.</span>
+<span class="refentrytitle"><a href="GimpColorSelector.html">GimpColorSelector</a></span><span class="refpurpose"> &#8212; Pluggable GIMP color selector modules.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpColorNotebook.html">GimpColorNotebook</a></span><span class="refpurpose"> - A GimpColorSelector implementation.</span>
+<span class="refentrytitle"><a href="GimpColorNotebook.html">GimpColorNotebook</a></span><span class="refpurpose"> &#8212; A <a href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> implementation.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpColorScales.html">GimpColorScales</a></span><span class="refpurpose"> - A GimpColorSelector implementation.</span>
+<span class="refentrytitle"><a href="GimpColorScales.html">GimpColorScales</a></span><span class="refpurpose"> &#8212; A <a href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> implementation.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpColorSelect.html">GimpColorSelect</a></span><span class="refpurpose"> - A GimpColorSelector implementation.</span>
+<span class="refentrytitle"><a href="GimpColorSelect.html">GimpColorSelect</a></span><span class="refpurpose"> &#8212; A <a href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> implementation.</span>
 </dt>
 </dl></dd>
 <dt><span class="part"><a href="libgimpwidgets-controller.html">IV. GIMP Controllers</a></span></dt>
 <dd><dl><dt>
-<span class="refentrytitle"><a href="GimpController.html">GimpController</a></span><span class="refpurpose"> - Pluggable GIMP input controller modules.</span>
+<span class="refentrytitle"><a href="GimpController.html">GimpController</a></span><span class="refpurpose"> &#8212; Pluggable GIMP input controller modules.</span>
 </dt></dl></dd>
 <dt><span class="part"><a href="libgimpwidgets-utils.html">V. GIMP Widgets Utilities</a></span></dt>
 <dd><dl>
 <dt>
-<span class="refentrytitle"><a href="libgimpwidgets-GimpHelpUI.html">GimpHelpUI</a></span><span class="refpurpose"> - Functions for setting GtkTooltips and help identifier used by GIMP help
+<span class="refentrytitle"><a href="libgimpwidgets-GimpHelpUI.html">GimpHelpUI</a></span><span class="refpurpose"> &#8212; Functions for setting <span class="type">GtkTooltips</span> and help identifier used by GIMP help
 system.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="libgimpwidgets-GimpQueryBox.html">GimpQueryBox</a></span><span class="refpurpose"> - Some simple dialogs to enter a single int, double, string or boolean value.</span>
+<span class="refentrytitle"><a href="libgimpwidgets-GimpQueryBox.html">GimpQueryBox</a></span><span class="refpurpose"> &#8212; Some simple dialogs to enter a single int, double, string or boolean value.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="GimpSizeEntry.html">GimpSizeEntry</a></span><span class="refpurpose"> - Widget for entering pixel values and resolutions.</span>
+<span class="refentrytitle"><a href="GimpSizeEntry.html">GimpSizeEntry</a></span><span class="refpurpose"> &#8212; Widget for entering pixel values and resolutions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="libgimpwidgets-GimpStock.html">GimpStock</a></span><span class="refpurpose"> - Prebuilt common menu/toolbar items and corresponding icons</span>
+<span class="refentrytitle"><a href="libgimpwidgets-GimpStock.html">GimpStock</a></span><span class="refpurpose"> &#8212; Prebuilt common menu/toolbar items and corresponding icons</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="libgimpwidgets-GimpEnumWidgets.html">GimpEnumWidgets</a></span><span class="refpurpose"> - </span>
+<span class="refentrytitle"><a href="libgimpwidgets-GimpEnumWidgets.html">GimpEnumWidgets</a></span><span class="refpurpose"> &#8212; </span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="libgimpwidgets-GimpWidgets.html">GimpWidgets</a></span><span class="refpurpose"> - A collection of convenient widget constructors, standard callbacks and
+<span class="refentrytitle"><a href="libgimpwidgets-GimpWidgets.html">GimpWidgets</a></span><span class="refpurpose"> &#8212; A collection of convenient widget constructors, standard callbacks and
 helper functions.</span>
 </dt>
 </dl></dd>
 <dt><span class="part"><a href="libgimpwidgets-deprecated.html">VI. Deprecated API</a></span></dt>
 <dd><dl><dt>
-<span class="refentrytitle"><a href="libgimpwidgets-gimpoldwidgets.html">gimpoldwidgets</a></span><span class="refpurpose"> - Old API that is still available but declared as deprecated.</span>
+<span class="refentrytitle"><a href="libgimpwidgets-gimpoldwidgets.html">gimpoldwidgets</a></span><span class="refpurpose"> &#8212; Old API that is still available but declared as deprecated.</span>
 </dt></dl></dd>
 <dt><span class="index"><a href="ix01.html">Index</a></span></dt>
 <dt><span class="index"><a href="ix02.html">Index of new symbols in GIMP 2.2</a></span></dt>
 <dt><span class="index"><a href="ix03.html">Index of new symbols in GIMP 2.4</a></span></dt>
 <dt><span class="index"><a href="ix04.html">Index of deprecated symbols</a></span></dt>
-</dl>
-</div>
+</dl></div>
 </div></body>
 </html>

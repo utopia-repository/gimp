@@ -26,7 +26,6 @@
 
 #include "core/gimpimage.h"
 #include "core/gimpimage-crop.h"
-#include "core/gimptoolinfo.h"
 
 #include "widgets/gimphelp-ids.h"
 
@@ -47,8 +46,10 @@ static GObject *
                 gimp_crop_tool_constructor    (GType           type,
                                                guint           n_params,
                                                GObjectConstructParam *params);
+static void     gimp_crop_tool_dispose        (GObject        *object);
 static void     gimp_crop_tool_finalize       (GObject        *object);
-
+static gboolean gimp_crop_tool_initialize     (GimpTool       *tool,
+                                               GimpDisplay    *display);
 static void     gimp_crop_tool_control        (GimpTool       *tool,
                                                GimpToolAction  action,
                                                GimpDisplay    *display);
@@ -63,17 +64,23 @@ static void     gimp_crop_tool_button_release (GimpTool       *tool,
                                                guint32         time,
                                                GdkModifierType state,
                                                GimpDisplay    *display);
+static void     gimp_crop_tool_modifier_key   (GimpTool       *tool,
+                                               GdkModifierType key,
+                                               gboolean        press,
+                                               GdkModifierType state,
+                                               GimpDisplay    *display);
 static void     gimp_crop_tool_cursor_update  (GimpTool       *tool,
                                                GimpCoords     *coords,
                                                GdkModifierType state,
                                                GimpDisplay    *display);
-
 static gboolean gimp_crop_tool_execute        (GimpRectangleTool *rectangle,
                                                gint            x,
                                                gint            y,
                                                gint            w,
                                                gint            h);
-
+static void     gimp_crop_tool_notify_layer_only (GimpCropOptions *options,
+                                                  GParamSpec      *pspec,
+                                                  GimpTool        *tool);
 
 G_DEFINE_TYPE_WITH_CODE (GimpCropTool, gimp_crop_tool, GIMP_TYPE_DRAW_TOOL,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_RECTANGLE_TOOL,
@@ -109,18 +116,19 @@ gimp_crop_tool_class_init (GimpCropToolClass *klass)
   GimpDrawToolClass *draw_tool_class = GIMP_DRAW_TOOL_CLASS (klass);
 
   object_class->constructor  = gimp_crop_tool_constructor;
-  object_class->dispose      = gimp_rectangle_tool_dispose;
+  object_class->dispose      = gimp_crop_tool_dispose;
   object_class->finalize     = gimp_crop_tool_finalize;
   object_class->set_property = gimp_rectangle_tool_set_property;
   object_class->get_property = gimp_rectangle_tool_get_property;
   gimp_rectangle_tool_install_properties (object_class);
 
-  tool_class->initialize     = gimp_rectangle_tool_initialize;
+  tool_class->initialize     = gimp_crop_tool_initialize;
   tool_class->control        = gimp_crop_tool_control;
   tool_class->button_press   = gimp_crop_tool_button_press;
   tool_class->button_release = gimp_crop_tool_button_release;
   tool_class->motion         = gimp_rectangle_tool_motion;
   tool_class->key_press      = gimp_rectangle_tool_key_press;
+  tool_class->modifier_key   = gimp_crop_tool_modifier_key;
   tool_class->oper_update    = gimp_rectangle_tool_oper_update;
   tool_class->cursor_update  = gimp_crop_tool_cursor_update;
 
@@ -134,7 +142,7 @@ gimp_crop_tool_init (GimpCropTool *crop_tool)
   GimpRectangleTool  *rect_tool = GIMP_RECTANGLE_TOOL (crop_tool);
 
   gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_CROP);
-  gimp_rectangle_tool_set_constrain (rect_tool, TRUE);
+  gimp_rectangle_tool_set_constraint (rect_tool, TRUE);
 }
 
 static void
@@ -157,10 +165,47 @@ gimp_crop_tool_constructor (GType                  type,
   return object;
 }
 
+static gboolean
+gimp_crop_tool_initialize (GimpTool    *tool,
+                           GimpDisplay *display)
+{
+  GimpRectangleTool *rectangle = GIMP_RECTANGLE_TOOL (tool);
+  GObject           *options    = G_OBJECT (gimp_tool_get_options (tool));
+  gboolean           layer_only;
+
+  g_object_get (options,
+                "layer-only", &layer_only,
+                NULL);
+
+  g_signal_connect_object (options, "notify::layer-only",
+                           G_CALLBACK (gimp_crop_tool_notify_layer_only),
+                           tool, 0);
+
+  if (layer_only)
+    gimp_rectangle_tool_set_constraint (rectangle, GIMP_RECTANGLE_CONSTRAIN_DRAWABLE);
+  else
+    gimp_rectangle_tool_set_constraint (rectangle, GIMP_RECTANGLE_CONSTRAIN_IMAGE);
+
+  return gimp_rectangle_tool_initialize (tool, display);
+}
+
 static void
 gimp_crop_tool_finalize (GObject *object)
 {
   G_OBJECT_CLASS (parent_class)->finalize (object);
+}
+
+static void
+gimp_crop_tool_dispose (GObject *object)
+{
+  GimpTool          *tool      = GIMP_TOOL (object);
+  GObject           *options   = G_OBJECT (gimp_tool_get_options (tool));
+
+  gimp_rectangle_tool_dispose (object);
+
+  g_signal_handlers_disconnect_by_func (options,
+                                        G_CALLBACK (gimp_crop_tool_notify_layer_only),
+                                        tool);
 }
 
 static void
@@ -193,16 +238,23 @@ gimp_crop_tool_button_release (GimpTool        *tool,
                                GdkModifierType  state,
                                GimpDisplay     *display)
 {
-  GimpCropOptions *options = GIMP_CROP_OPTIONS (tool->tool_info->tool_options);
-
-  if (options->crop_mode == GIMP_CROP_MODE_CROP)
-    gimp_tool_push_status (tool, display,
-                           _("Click or press enter to crop."));
-  else
-    gimp_tool_push_status (tool, display,
-                           _("Click or press enter to resize."));
+  gimp_tool_push_status (tool, display,
+                         _("Click or press enter to crop."));
 
   gimp_rectangle_tool_button_release (tool, coords, time, state, display);
+}
+
+static void
+gimp_crop_tool_modifier_key (GimpTool        *tool,
+                             GdkModifierType  key,
+                             gboolean         press,
+                             GdkModifierType  state,
+                             GimpDisplay     *display)
+{
+  GIMP_TOOL_CLASS (parent_class)->modifier_key (tool, key, press, state,
+                                                display);
+
+  gimp_rectangle_tool_modifier_key (tool, key, press, state, display);
 }
 
 static void
@@ -224,13 +276,11 @@ gimp_crop_tool_execute (GimpRectangleTool  *rectangle,
                         gint                w,
                         gint                h)
 {
-  GimpTool        *tool      = GIMP_TOOL (rectangle);
-  GimpCropOptions *options;
+  GimpTool        *tool    = GIMP_TOOL (rectangle);
+  GimpCropOptions *options = GIMP_CROP_TOOL_GET_OPTIONS (tool);
   GimpImage       *image;
   gint             max_x, max_y;
   gboolean         rectangle_exists;
-
-  options = GIMP_CROP_OPTIONS (tool->tool_info->tool_options);
 
   gimp_tool_pop_status (tool, tool->display);
 
@@ -266,7 +316,7 @@ gimp_crop_tool_execute (GimpRectangleTool  *rectangle,
       gimp_image_crop (image, GIMP_CONTEXT (options),
                        x, y, w + x, h + y,
                        options->layer_only,
-                       options->crop_mode == GIMP_CROP_MODE_CROP);
+                       TRUE);
 
       gimp_image_flush (image);
 
@@ -276,3 +326,20 @@ gimp_crop_tool_execute (GimpRectangleTool  *rectangle,
   return TRUE;
 }
 
+static void
+gimp_crop_tool_notify_layer_only (GimpCropOptions *options,
+                                  GParamSpec      *pspec,
+                                  GimpTool        *tool)
+{
+  GimpRectangleTool *rectangle   = GIMP_RECTANGLE_TOOL (tool);
+  gboolean           layer_only;
+
+  g_object_get (options,
+                "layer-only", &layer_only,
+                NULL);
+
+  if (layer_only)
+    gimp_rectangle_tool_set_constraint (rectangle, GIMP_RECTANGLE_CONSTRAIN_DRAWABLE);
+  else
+    gimp_rectangle_tool_set_constraint (rectangle, GIMP_RECTANGLE_CONSTRAIN_IMAGE);
+}

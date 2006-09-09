@@ -4,7 +4,7 @@
 
 <refentry id="libgimpwidgets-GimpStock">
 <refmeta>
-<refentrytitle id="top_of_page">GimpStock</refentrytitle>
+<refentrytitle role="top_of_page">GimpStock</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -171,6 +171,7 @@
 #define     <link linkend="GIMP-STOCK-TOOL-FOREGROUND-SELECT:CAPS">GIMP_STOCK_TOOL_FOREGROUND_SELECT</link>
 #define     <link linkend="GIMP-STOCK-TOOL-FREE-SELECT:CAPS">GIMP_STOCK_TOOL_FREE_SELECT</link>
 #define     <link linkend="GIMP-STOCK-TOOL-FUZZY-SELECT:CAPS">GIMP_STOCK_TOOL_FUZZY_SELECT</link>
+#define     <link linkend="GIMP-STOCK-TOOL-HEAL:CAPS">GIMP_STOCK_TOOL_HEAL</link>
 #define     <link linkend="GIMP-STOCK-TOOL-HUE-SATURATION:CAPS">GIMP_STOCK_TOOL_HUE_SATURATION</link>
 #define     <link linkend="GIMP-STOCK-TOOL-INK:CAPS">GIMP_STOCK_TOOL_INK</link>
 #define     <link linkend="GIMP-STOCK-TOOL-ISCISSORS:CAPS">GIMP_STOCK_TOOL_ISCISSORS</link>
@@ -223,8 +224,8 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 GIMP registers a set of menu/toolbar items and corresponding icons in
 addition to the standard GTK+ stock items. These can be used just like
@@ -237,8 +238,8 @@ locales.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-stock-init" role="function"/>gimp_stock_init ()</title>
 <indexterm><primary>gimp_stock_init</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_stock_init                 (void);</programlisting>
@@ -1361,6 +1362,14 @@ RTL variant
 <para xml:base="../gimpstock.xml">
 <inlinegraphic fileref="stock-tool-fuzzy-select-22.png" format="png"></inlinegraphic>
 <inlinegraphic fileref="stock-tool-fuzzy-select-16.png" format="png"></inlinegraphic>
+</para></refsect2>
+<refsect2>
+<title><anchor id="GIMP-STOCK-TOOL-HEAL:CAPS" role="macro"/>GIMP_STOCK_TOOL_HEAL</title>
+<indexterm><primary>GIMP_STOCK_TOOL_HEAL</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_HEAL                "gimp-tool-heal"
+</programlisting>
+<para xml:base="../gimpstock.xml">
+<inlinegraphic fileref="stock-tool-heal-22.png" format="png"></inlinegraphic>
+<inlinegraphic fileref="stock-tool-heal-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
 <title><anchor id="GIMP-STOCK-TOOL-HUE-SATURATION:CAPS" role="macro"/>GIMP_STOCK_TOOL_HUE_SATURATION</title>

@@ -67,8 +67,8 @@ libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 am_libgimpcolor_2_0_la_OBJECTS = gimpadaptivesupersample.lo \
-	gimpbilinear.lo gimpcmyk.lo gimpcolorspace.lo gimphsv.lo \
-	gimprgb.lo gimprgb-parse.lo
+	gimpbilinear.lo gimpcmyk.lo gimpcolorspace.lo gimphsl.lo \
+	gimphsv.lo gimprgb.lo gimprgb-parse.lo
 libgimpcolor_2_0_la_OBJECTS = $(am_libgimpcolor_2_0_la_OBJECTS)
 test_color_parser_SOURCES = test-color-parser.c
 test_color_parser_OBJECTS = test-color-parser.$(OBJEXT)
@@ -116,6 +116,8 @@ BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
 BUILD_PRINT_TRUE = @BUILD_PRINT_TRUE@
 BUILD_PYTHON_FALSE = @BUILD_PYTHON_FALSE@
 BUILD_PYTHON_TRUE = @BUILD_PYTHON_TRUE@
+BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
+BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
 CATALOGS = @CATALOGS@
@@ -473,6 +475,8 @@ libgimpcolor_2_0_la_SOURCES = \
 	gimpcmyk.h			\
 	gimpcolorspace.c		\
 	gimpcolorspace.h		\
+	gimphsl.c			\
+	gimphsl.h			\
 	gimphsv.c			\
 	gimphsv.h			\
 	gimprgb.c			\
@@ -486,6 +490,7 @@ libgimpcolorinclude_HEADERS = \
 	gimpbilinear.h			\
 	gimpcmyk.h			\
 	gimpcolorspace.h		\
+	gimphsl.h			\
 	gimphsv.h			\
 	gimprgb.h
 
@@ -585,6 +590,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbilinear.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcmyk.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcolorspace.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphsl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphsv.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprgb-parse.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprgb.Plo@am__quote@

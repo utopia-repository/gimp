@@ -41,10 +41,12 @@
 #include "core/gimpimage.h"
 #include "core/gimpimage-grid.h"
 #include "core/gimpimage-guides.h"
+#include "core/gimpimage-sample-points.h"
 #include "core/gimplayer.h"
 #include "core/gimplayer-floating-sel.h"
 #include "core/gimplayermask.h"
 #include "core/gimpparasitelist.h"
+#include "core/gimpprogress.h"
 #include "core/gimpselection.h"
 #include "core/gimptemplate.h"
 #include "core/gimpunit.h"
@@ -64,6 +66,7 @@
 #include "xcf-seek.h"
 
 #include "gimp-intl.h"
+
 
 /* #define GIMP_XCF_PATH_DEBUG */
 
@@ -115,6 +118,13 @@ static gboolean        xcf_swap_func          (gint          fd,
 #endif
 
 
+#define xcf_progress_update(info) G_STMT_START  \
+  {                                             \
+    if (info->progress)                         \
+      gimp_progress_pulse (info->progress);     \
+  } G_STMT_END
+
+
 GimpImage *
 xcf_load_image (Gimp    *gimp,
                 XcfInfo *info)
@@ -135,12 +145,11 @@ xcf_load_image (Gimp    *gimp,
   info->cp += xcf_read_int32 (info->fp, (guint32 *) &height, 1);
   info->cp += xcf_read_int32 (info->fp, (guint32 *) &image_type, 1);
 
-  image = gimp_create_image (gimp,
-                              width, height,
-                              image_type,
-                              FALSE);
+  image = gimp_create_image (gimp, width, height, image_type, FALSE);
 
   gimp_image_undo_disable (image);
+
+  xcf_progress_update (info);
 
   /* read the image properties */
   if (! xcf_load_image_props (info, image))
@@ -161,6 +170,8 @@ xcf_load_image (Gimp    *gimp,
           gimp_image_set_grid (GIMP_IMAGE (image), grid, FALSE);
         }
     }
+
+  xcf_progress_update (info);
 
   while (TRUE)
     {
@@ -188,6 +199,8 @@ xcf_load_image (Gimp    *gimp,
         goto error;
 
       num_successful_elements++;
+
+      xcf_progress_update (info);
 
       /* add the layer to the image if its not the floating selection */
       if (layer != info->floating_sel)
@@ -228,6 +241,8 @@ xcf_load_image (Gimp    *gimp,
 
       num_successful_elements++;
 
+      xcf_progress_update (info);
+
       /* add the channel to the image if its not the selection */
       if (channel != image->selection_mask)
         gimp_image_add_channel (image, channel, -1);
@@ -261,16 +276,18 @@ xcf_load_image (Gimp    *gimp,
   if (num_successful_elements == 0)
     goto hard_error;
 
-  g_message ("XCF: This file is corrupt!  I have loaded as much\n"
-             "of it as I can, but it is incomplete.");
+  gimp_message (gimp, info->progress,
+                "XCF: This file is corrupt!  I have loaded as much\n"
+                "of it as I can, but it is incomplete.");
 
   gimp_image_undo_enable (image);
 
   return image;
 
  hard_error:
-  g_message ("XCF: This file is corrupt!  I could not even\n"
-             "salvage any partial image data from it.");
+  gimp_message (gimp, info->progress,
+                "XCF: This file is corrupt!  I could not even\n"
+                "salvage any partial image data from it.");
 
   g_object_unref (image);
 
@@ -299,9 +316,10 @@ xcf_load_image_props (XcfInfo   *info,
             {
               gint i;
 
-              g_message (_("XCF warning: version 0 of XCF file format\n"
-                           "did not save indexed colormaps correctly.\n"
-                           "Substituting grayscale map."));
+              gimp_message (info->gimp, info->progress,
+                            _("XCF warning: version 0 of XCF file format\n"
+                              "did not save indexed colormaps correctly.\n"
+                              "Substituting grayscale map."));
               info->cp +=
                 xcf_read_int32 (info->fp, (guint32 *) &image->num_cols, 1);
               image->cmap = g_new (guchar, image->num_cols * 3);
@@ -348,7 +366,9 @@ xcf_load_image_props (XcfInfo   *info,
                 (compression != COMPRESS_ZLIB) &&
                 (compression != COMPRESS_FRACTAL))
               {
-                g_message ("unknown compression type: %d", (int) compression);
+                gimp_message (info->gimp, info->progress,
+                              "unknown compression type: %d",
+                              (int) compression);
                 return FALSE;
               }
 
@@ -383,7 +403,8 @@ xcf_load_image_props (XcfInfo   *info,
                     break;
 
                   default:
-                    g_message ("guide orientation out of range in XCF file");
+                    gimp_message (info->gimp, info->progress,
+                                  "guide orientation out of range in XCF file");
                     continue;
                   }
               }
@@ -396,6 +417,22 @@ xcf_load_image_props (XcfInfo   *info,
           }
           break;
 
+        case PROP_SAMPLE_POINTS:
+          {
+            gint32 x, y;
+            gint   i, n_sample_points;
+
+            n_sample_points = prop_size / (4 + 4);
+            for (i = 0; i < n_sample_points; i++)
+              {
+                info->cp += xcf_read_int32 (info->fp, (guint32 *) &x, 1);
+                info->cp += xcf_read_int32 (info->fp, (guint32 *) &y, 1);
+
+                gimp_image_add_sample_point_at_pos (image, x, y, FALSE);
+              }
+          }
+          break;
+
         case PROP_RESOLUTION:
           {
             gfloat xres, yres;
@@ -405,7 +442,8 @@ xcf_load_image_props (XcfInfo   *info,
             if (xres < GIMP_MIN_RESOLUTION || xres > GIMP_MAX_RESOLUTION ||
                 yres < GIMP_MIN_RESOLUTION || yres > GIMP_MAX_RESOLUTION)
               {
-                g_message ("Warning, resolution out of range in XCF file");
+                gimp_message (info->gimp, info->progress,
+                              "Warning, resolution out of range in XCF file");
                 xres = image->gimp->config->default_image->xresolution;
                 yres = image->gimp->config->default_image->yresolution;
               }
@@ -432,7 +470,8 @@ xcf_load_image_props (XcfInfo   *info,
                 gimp_parasite_free (p);
               }
             if (info->cp - base != prop_size)
-              g_message ("Error while loading an image's parasites");
+              gimp_message (info->gimp, info->progress,
+                            "Error while loading an image's parasites");
           }
           break;
 
@@ -445,8 +484,9 @@ xcf_load_image_props (XcfInfo   *info,
             if ((unit <= GIMP_UNIT_PIXEL) ||
                 (unit >= _gimp_unit_get_number_of_built_in_units (image->gimp)))
               {
-                g_message ("Warning, unit out of range in XCF file, "
-                           "falling back to inches");
+                gimp_message (info->gimp, info->progress,
+                              "Warning, unit out of range in XCF file, "
+                              "falling back to inches");
                 unit = GIMP_UNIT_INCH;
               }
 
@@ -519,8 +559,9 @@ xcf_load_image_props (XcfInfo   *info,
               {
                 if (base + prop_size != info->cp)
                   {
-                    g_warning ("Mismatch in PROP_VECTORS size: skipping %d bytes.",
-                               base + prop_size - info->cp);
+                    g_printerr ("Mismatch in PROP_VECTORS size: "
+                                "skipping %d bytes.\n",
+                                base + prop_size - info->cp);
                     xcf_seek_pos (info, base + prop_size, NULL);
                   }
               }
@@ -536,18 +577,22 @@ xcf_load_image_props (XcfInfo   *info,
 
         default:
 #ifdef GIMP_UNSTABLE
-          g_printerr ("unexpected/unknown image property: %d (skipping)",
+          g_printerr ("unexpected/unknown image property: %d (skipping)\n",
                       prop_type);
 #endif
           {
+            gsize  size = prop_size;
             guint8 buf[16];
             guint  amount;
 
-            while (prop_size > 0)
+            while (size > 0)
               {
-                amount = MIN (16, prop_size);
+                if (feof (info->fp))
+                  return FALSE;
+
+                amount = MIN (16, size);
                 info->cp += xcf_read_int8 (info->fp, buf, amount);
-                prop_size -= MIN (16, amount);
+                size -= MIN (16, amount);
               }
           }
           break;
@@ -669,7 +714,8 @@ xcf_load_layer_props (XcfInfo   *info,
                 gimp_parasite_free (p);
               }
             if (info->cp - base != prop_size)
-              g_message ("Error while loading a layer's parasites");
+              gimp_message (info->gimp, info->progress,
+                            "Error while loading a layer's parasites");
           }
           break;
 
@@ -678,19 +724,23 @@ xcf_load_layer_props (XcfInfo   *info,
           break;
 
         default:
+#ifdef GIMP_UNSTABLE
+          g_printerr ("unexpected/unknown layer property: %d (skipping)\n",
+                      prop_type);
+#endif
           {
+            gsize  size = prop_size;
             guint8 buf[16];
             guint  amount;
 
-#ifdef GIMP_UNSTABLE
-            g_printerr ("unexpected/unknown layer property: %d (skipping)",
-                        prop_type);
-#endif
-            while (prop_size > 0)
+            while (size > 0)
               {
-                amount = MIN (16, prop_size);
+                if (feof (info->fp))
+                  return FALSE;
+
+                amount = MIN (16, size);
                 info->cp += xcf_read_int8 (info->fp, buf, amount);
-                prop_size -= MIN (16, amount);
+                size -= MIN (16, amount);
               }
           }
           break;
@@ -806,25 +856,29 @@ xcf_load_channel_props (XcfInfo      *info,
                 gimp_parasite_free (p);
               }
             if (info->cp - base != prop_size)
-              g_message ("Error while loading a channel's parasites");
+              gimp_message (info->gimp, info->progress,
+                            "Error while loading a channel's parasites");
           }
           break;
 
         default:
 #ifdef GIMP_UNSTABLE
-          g_printerr ("unexpected/unknown channel property: %d (skipping)",
+          g_printerr ("unexpected/unknown channel property: %d (skipping)\n",
                       prop_type);
 #endif
-
           {
+            gsize  size = prop_size;
             guint8 buf[16];
-            guint amount;
+            guint  amount;
 
-            while (prop_size > 0)
+            while (size > 0)
               {
-                amount = MIN (16, prop_size);
+                if (feof (info->fp))
+                  return FALSE;
+
+                amount = MIN (16, size);
                 info->cp += xcf_read_int8 (info->fp, buf, amount);
-                prop_size -= MIN (16, amount);
+                size -= MIN (16, amount);
               }
           }
           break;
@@ -888,6 +942,8 @@ xcf_load_layer (XcfInfo   *info,
                               &text_layer_flags))
     goto error;
 
+  xcf_progress_update (info);
+
   /* call the evil text layer hack that might change our layer pointer */
   active   = (info->active_layer == layer);
   floating = (info->floating_sel == layer);
@@ -914,6 +970,8 @@ xcf_load_layer (XcfInfo   *info,
   if (! xcf_load_hierarchy (info, GIMP_DRAWABLE (layer)->tiles))
     goto error;
 
+  xcf_progress_update (info);
+
   /* read in the layer mask */
   if (layer_mask_offset != 0)
     {
@@ -923,6 +981,8 @@ xcf_load_layer (XcfInfo   *info,
       layer_mask = xcf_load_layer_mask (info, image);
       if (! layer_mask)
         goto error;
+
+      xcf_progress_update (info);
 
       layer_mask->apply_mask = apply_mask;
       layer_mask->edit_mask  = edit_mask;
@@ -974,6 +1034,8 @@ xcf_load_channel (XcfInfo   *info,
   if (!xcf_load_channel_props (info, image, &channel))
     goto error;
 
+  xcf_progress_update (info);
+
   /* read the hierarchy and layer mask offsets */
   info->cp += xcf_read_int32 (info->fp, &hierarchy_offset, 1);
 
@@ -983,6 +1045,8 @@ xcf_load_channel (XcfInfo   *info,
 
   if (!xcf_load_hierarchy (info, GIMP_DRAWABLE (channel)->tiles))
     goto error;
+
+  xcf_progress_update (info);
 
   if (is_fs_drawable)
     info->floating_sel_drawable = GIMP_DRAWABLE (channel);
@@ -1028,6 +1092,8 @@ xcf_load_layer_mask (XcfInfo   *info,
   if (!xcf_load_channel_props (info, image, &channel))
     goto error;
 
+  xcf_progress_update (info);
+
   /* read the hierarchy and layer mask offsets */
   info->cp += xcf_read_int32 (info->fp, &hierarchy_offset, 1);
 
@@ -1037,6 +1103,8 @@ xcf_load_layer_mask (XcfInfo   *info,
 
   if (!xcf_load_hierarchy (info, GIMP_DRAWABLE (layer_mask)->tiles))
     goto error;
+
+  xcf_progress_update (info);
 
   /* attach the floating selection... */
   if (is_fs_drawable)
@@ -1117,10 +1185,10 @@ xcf_load_level (XcfInfo     *info,
   guint32 saved_pos;
   guint32 offset, offset2;
   guint ntiles;
-  gint width;
-  gint height;
-  gint i;
-  gint fail;
+  gint  width;
+  gint  height;
+  gint  i;
+  gint  fail;
   Tile *previous;
   Tile *tile;
 
@@ -1150,7 +1218,8 @@ xcf_load_level (XcfInfo     *info,
 
       if (offset == 0)
         {
-          g_message ("not enough tiles found in level");
+          gimp_message (info->gimp, info->progress,
+                        "not enough tiles found in level");
           return FALSE;
         }
 
@@ -1236,7 +1305,8 @@ xcf_load_level (XcfInfo     *info,
 
   if (offset != 0)
     {
-      g_message ("encountered garbage after reading level: %d", offset);
+      gimp_message (info->gimp, info->progress,
+                    "encountered garbage after reading level: %d", offset);
       return FALSE;
     }
 
@@ -1546,7 +1616,8 @@ xcf_load_vectors (XcfInfo   *info,
 
   if (version != 1)
     {
-      g_message ("Unknown vectors version: %d (skipping)", version);
+      gimp_message (info->gimp, info->progress,
+                    "Unknown vectors version: %d (skipping)", version);
       return FALSE;
     }
 
@@ -1598,8 +1669,8 @@ xcf_load_vector (XcfInfo   *info,
   info->cp += xcf_read_int32  (info->fp, &num_strokes,   1);
 
 #ifdef GIMP_XCF_PATH_DEBUG
-  g_printerr ("name: %s, tattoo: %d, visible: %d, linked: %d, num_parasites %d, "
-              "num_strokes %d\n",
+  g_printerr ("name: %s, tattoo: %d, visible: %d, linked: %d, "
+              "num_parasites %d, num_strokes %d\n",
               name, tattoo, visible, linked, num_parasites, num_strokes);
 #endif
 
@@ -1613,9 +1684,7 @@ xcf_load_vector (XcfInfo   *info,
 
   for (i = 0; i < num_parasites; i++)
     {
-      GimpParasite *parasite;
-
-      parasite = xcf_load_parasite (info);
+      GimpParasite *parasite = xcf_load_parasite (info);
 
       if (! parasite)
         return FALSE;
@@ -1664,6 +1733,12 @@ xcf_load_vector (XcfInfo   *info,
                         info->cp + 4 * num_axes * num_control_points,
                         NULL);
           continue;
+        }
+
+      if (num_axes < 2 || num_axes > 6)
+        {
+          g_printerr ("bad number of axes in stroke description\n");
+          return FALSE;
         }
 
       control_points = g_value_array_new (num_control_points);
@@ -1717,9 +1792,9 @@ xcf_swap_func (gint      fd,
                gint      cmd,
                gpointer  user_data)
 {
-  gint bytes;
-  gint err;
-  gint nleft;
+  gint  bytes;
+  gint  err;
+  gint  nleft;
   gint *ref_count;
 
   switch (cmd)
@@ -1739,7 +1814,7 @@ xcf_swap_func (gint      fd,
 
           if (err <= 0)
             {
-              g_message ("unable to read tile data from xcf file: "
+              g_message ("unable to read tile data from XCF file: "
                          "%d ( %d ) bytes read", err, nleft);
               return FALSE;
             }

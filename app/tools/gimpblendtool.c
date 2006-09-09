@@ -33,7 +33,6 @@
 #include "core/gimpgradient.h"
 #include "core/gimpimage.h"
 #include "core/gimpprogress.h"
-#include "core/gimptoolinfo.h"
 
 #include "widgets/gimphelp-ids.h"
 
@@ -146,8 +145,10 @@ gimp_blend_tool_button_press (GimpTool        *tool,
 
   switch (gimp_drawable_type (drawable))
     {
-    case GIMP_INDEXED_IMAGE: case GIMP_INDEXEDA_IMAGE:
-      g_message (_("Blend: Invalid for indexed images."));
+    case GIMP_INDEXED_IMAGE:
+    case GIMP_INDEXEDA_IMAGE:
+      gimp_message (display->image->gimp, GIMP_PROGRESS (display),
+                    _("Blend: Invalid for indexed images."));
       return;
 
       break;
@@ -178,17 +179,11 @@ gimp_blend_tool_button_release (GimpTool        *tool,
                                 GdkModifierType  state,
                                 GimpDisplay     *display)
 {
-  GimpBlendTool    *blend_tool = GIMP_BLEND_TOOL (tool);
-  GimpPaintOptions *paint_options;
-  GimpBlendOptions *options;
-  GimpContext      *context;
-  GimpImage        *image;
-
-  paint_options = GIMP_PAINT_OPTIONS (tool->tool_info->tool_options);
-  options       = GIMP_BLEND_OPTIONS (paint_options);
-  context       = GIMP_CONTEXT (options);
-
-  image = display->image;
+  GimpBlendTool    *blend_tool    = GIMP_BLEND_TOOL (tool);
+  GimpBlendOptions *options       = GIMP_BLEND_TOOL_GET_OPTIONS (tool);
+  GimpPaintOptions *paint_options = GIMP_PAINT_OPTIONS (options);
+  GimpContext      *context       = GIMP_CONTEXT (options);
+  GimpImage        *image         = display->image;
 
   gimp_tool_pop_status (tool, display);
 

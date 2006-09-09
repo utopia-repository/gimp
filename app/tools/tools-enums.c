@@ -74,19 +74,21 @@ gimp_rectangle_guide_get_type (void)
 }
 
 GType
-gimp_crop_mode_get_type (void)
+gimp_rectangle_constraint_get_type (void)
 {
   static const GEnumValue values[] =
   {
-    { GIMP_CROP_MODE_CROP, "GIMP_CROP_MODE_CROP", "crop" },
-    { GIMP_CROP_MODE_RESIZE, "GIMP_CROP_MODE_RESIZE", "resize" },
+    { GIMP_RECTANGLE_CONSTRAIN_NONE, "GIMP_RECTANGLE_CONSTRAIN_NONE", "none" },
+    { GIMP_RECTANGLE_CONSTRAIN_IMAGE, "GIMP_RECTANGLE_CONSTRAIN_IMAGE", "image" },
+    { GIMP_RECTANGLE_CONSTRAIN_DRAWABLE, "GIMP_RECTANGLE_CONSTRAIN_DRAWABLE", "drawable" },
     { 0, NULL, NULL }
   };
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_CROP_MODE_CROP, N_("Crop"), NULL },
-    { GIMP_CROP_MODE_RESIZE, N_("Resize"), NULL },
+    { GIMP_RECTANGLE_CONSTRAIN_NONE, N_("No constraint"), NULL },
+    { GIMP_RECTANGLE_CONSTRAIN_IMAGE, N_("Image bounds"), NULL },
+    { GIMP_RECTANGLE_CONSTRAIN_DRAWABLE, N_("Drawable bounds"), NULL },
     { 0, NULL, NULL }
   };
 
@@ -94,7 +96,7 @@ gimp_crop_mode_get_type (void)
 
   if (! type)
     {
-      type = g_enum_register_static ("GimpCropMode", values);
+      type = g_enum_register_static ("GimpRectangleConstraint", values);
       gimp_enum_set_value_descriptions (type, descs);
     }
 

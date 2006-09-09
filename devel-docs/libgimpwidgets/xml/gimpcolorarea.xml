@@ -4,7 +4,7 @@
 
 <refentry id="GimpColorArea">
 <refmeta>
-<refentrytitle id="top_of_page">GimpColorArea</refentrytitle>
+<refentrytitle role="top_of_page">GimpColorArea</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -40,8 +40,8 @@ enum        <link linkend="GimpColorAreaType">GimpColorAreaType</link>;
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -56,8 +56,8 @@ enum        <link linkend="GimpColorAreaType">GimpColorAreaType</link>;
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpColorArea implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -65,8 +65,8 @@ GimpColorArea implements
 </refsect1>
 
 
-<refsect1 id="properties">
-<title id="properties.title">Properties</title>
+<refsect1 role="properties">
+<title role="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpColorArea--color">color</link>&quot;                <link linkend="GimpRGB">GimpRGB</link>               : Read / Write / Construct
@@ -76,8 +76,8 @@ GimpColorArea implements
 </synopsis>
 </refsect1>
 
-<refsect1 id="signal_proto">
-<title id="signal_proto.title">Signals</title>
+<refsect1 role="signal_proto">
+<title role="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpColorArea-color-changed">color-changed</link>&quot;
@@ -87,15 +87,15 @@ GimpColorArea implements
 </refsect1>
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpColorArea-struct" role="struct"/>GimpColorArea</title>
 <indexterm><primary>GimpColorArea</primary></indexterm><programlisting>typedef struct _GimpColorArea GimpColorArea;</programlisting>
@@ -225,8 +225,8 @@ off. The default is not draw a border.</para>
 </variablelist></refsect2>
 
 </refsect1>
-<refsect1 id="property_details">
-<title id="property_details.title">Property Details</title>
+<refsect1 role="property_details">
+<title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpColorArea--color"/>The &quot;<literal>color</literal>&quot; property</title>
 <indexterm role="GIMP 2.4"><primary>GimpColorArea:color</primary></indexterm><programlisting>  &quot;color&quot;                <link linkend="GimpRGB">GimpRGB</link>               : Read / Write / Construct</programlisting>
 <para>
@@ -262,8 +262,8 @@ The type of the color area.</para>
 
 </refsect1>
 
-<refsect1 id="signals">
-<title id="signals.title">Signal Details</title>
+<refsect1 role="signals">
+<title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpColorArea-color-changed"/>The &quot;color-changed&quot; signal</title>
 <indexterm><primary>GimpColorArea::color-changed</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpColorArea">GimpColorArea</link> *gimpcolorarea,
                                             <link linkend="gpointer">gpointer</link>       user_data)          : Run first</programlisting>

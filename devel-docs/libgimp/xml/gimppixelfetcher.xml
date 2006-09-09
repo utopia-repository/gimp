@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimppixelfetcher">
 <refmeta>
-<refentrytitle id="top_of_page">gimppixelfetcher</refentrytitle>
+<refentrytitle role="top_of_page">gimppixelfetcher</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -51,8 +51,8 @@ enum        <link linkend="GimpPixelFetcherEdgeMode">GimpPixelFetcherEdgeMode</l
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 These functions provide neighbourhood-based algorithms which get
 dramatically slower on region boundaries, to the point where a special
@@ -62,8 +62,8 @@ plug-in code more readable and shorter.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpPixelFetcherEdgeMode" role="enum"/>enum GimpPixelFetcherEdgeMode</title>
 <indexterm><primary>GimpPixelFetcherEdgeMode</primary></indexterm><programlisting>typedef enum

@@ -4,7 +4,7 @@
 
 <refentry id="GimpDialog">
 <refmeta>
-<refentrytitle id="top_of_page">GimpDialog</refentrytitle>
+<refentrytitle role="top_of_page">GimpDialog</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -16,8 +16,8 @@ dialog-related stuff.</refpurpose>
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -38,6 +38,11 @@ dialog-related stuff.</refpurpose>
                                              <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
                                              const <link linkend="gchar">gchar</link> *help_id,
                                              <link linkend="va-list">va_list</link> args);
+<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-dialog-add-button">gimp_dialog_add_button</link>          (<link linkend="GimpDialog">GimpDialog</link> *dialog,
+                                             const <link linkend="gchar">gchar</link> *button_text,
+                                             <link linkend="gint">gint</link> response_id);
+<link linkend="void">void</link>        <link linkend="gimp-dialog-add-buttons">gimp_dialog_add_buttons</link>         (<link linkend="GimpDialog">GimpDialog</link> *dialog,
+                                             ...);
 <link linkend="void">void</link>        <link linkend="gimp-dialog-add-buttons-valist">gimp_dialog_add_buttons_valist</link>  (<link linkend="GimpDialog">GimpDialog</link> *dialog,
                                              <link linkend="va-list">va_list</link> args);
 <link linkend="gint">gint</link>        <link linkend="gimp-dialog-run">gimp_dialog_run</link>                 (<link linkend="GimpDialog">GimpDialog</link> *dialog);
@@ -46,8 +51,8 @@ dialog-related stuff.</refpurpose>
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -65,8 +70,8 @@ dialog-related stuff.</refpurpose>
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpDialog implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -74,8 +79,8 @@ GimpDialog implements
 </refsect1>
 
 
-<refsect1 id="properties">
-<title id="properties.title">Properties</title>
+<refsect1 role="properties">
+<title role="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpDialog--help-func">help-func</link>&quot;            <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only
@@ -85,15 +90,15 @@ GimpDialog implements
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpDialog-struct" role="struct"/>GimpDialog</title>
 <indexterm><primary>GimpDialog</primary></indexterm><programlisting>typedef struct _GimpDialog GimpDialog;</programlisting>
@@ -195,11 +200,52 @@ action_area buttons see <link linkend="gtk-dialog-new-with-buttons"><function>gt
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="gimp-dialog-add-button" role="function"/>gimp_dialog_add_button ()</title>
+<indexterm><primary>gimp_dialog_add_button</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_dialog_add_button          (<link linkend="GimpDialog">GimpDialog</link> *dialog,
+                                             const <link linkend="gchar">gchar</link> *button_text,
+                                             <link linkend="gint">gint</link> response_id);</programlisting>
+<para>
+This function is essentially the same as <link linkend="gtk-dialog-add-button"><function>gtk_dialog_add_button()</function></link>
+except it ensures there is only one help button and automatically
+sets the RESPONSE_OK widget as the default response.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>dialog</parameter>&nbsp;:</term>
+<listitem><simpara> The <parameter>dialog</parameter> to add a button to.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>button_text</parameter>&nbsp;:</term>
+<listitem><simpara> text of button, or stock ID.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>response_id</parameter>&nbsp;:</term>
+<listitem><simpara> response ID for the button.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the button widget that was added.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-dialog-add-buttons" role="function"/>gimp_dialog_add_buttons ()</title>
+<indexterm><primary>gimp_dialog_add_buttons</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_dialog_add_buttons         (<link linkend="GimpDialog">GimpDialog</link> *dialog,
+                                             ...);</programlisting>
+<para>
+This function is essentially the same as <link linkend="gtk-dialog-add-buttons"><function>gtk_dialog_add_buttons()</function></link>
+except it calls <link linkend="gimp-dialog-add-button"><function>gimp_dialog_add_button()</function></link> instead of <link linkend="gtk-dialog-add-button"><function>gtk_dialog_add_button()</function></link></para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>dialog</parameter>&nbsp;:</term>
+<listitem><simpara> The <parameter>dialog</parameter> to add buttons to.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>...</parameter>&nbsp;:</term>
+<listitem><simpara> button_text-response_id pairs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="gimp-dialog-add-buttons-valist" role="function"/>gimp_dialog_add_buttons_valist ()</title>
 <indexterm><primary>gimp_dialog_add_buttons_valist</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_dialog_add_buttons_valist  (<link linkend="GimpDialog">GimpDialog</link> *dialog,
                                              <link linkend="va-list">va_list</link> args);</programlisting>
 <para>
-This function is essentially the same as <link linkend="gtk-dialog-add-buttons"><function>gtk_dialog_add_buttons()</function></link>
+This function is essentially the same as <link linkend="gimp-dialog-add-buttons"><function>gimp_dialog_add_buttons()</function></link>
 except it takes a va_list instead of '...'</para>
 <para>
 
@@ -241,8 +287,8 @@ This function is for internal use only.</para>
 </para></refsect2>
 
 </refsect1>
-<refsect1 id="property_details">
-<title id="property_details.title">Property Details</title>
+<refsect1 role="property_details">
+<title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpDialog--help-func"/>The &quot;<literal>help-func</literal>&quot; property</title>
 <indexterm><primary>GimpDialog:help-func</primary></indexterm><programlisting>  &quot;help-func&quot;            <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only</programlisting>
 <para></para></refsect2>

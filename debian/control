@@ -3,21 +3,20 @@ Priority: optional
 Section: graphics
 Maintainer: Ari Pollak <ari@debian.org>
 Standards-Version: 3.6.1
-Build-Depends: debhelper (>= 5), cdbs (>= 0.4.37),
-#debhelper (>= 5.0.37.2), cdbs (>= 0.4.43), python-central (>= 0.4.17),
- autotools-dev,
+Build-Depends: debhelper (>= 5), cdbs (>= 0.4.37), autotools-dev,
  patchutils, gettext, intltool, libx11-dev, libice-dev, libsm-dev,
  libxmu-dev, libxpm-dev, libxt-dev,
- libaa1-dev, libgtk2.0-dev (>= 2.8.8), libgtkhtml2-dev (>= 2.0.0),
- libjpeg62-dev, libart-2.0-dev, libpng-dev, zlib1g-dev, libtiff4-dev,
- python-dev, python-gtk2-dev, libexif-dev (>= 0.6.12), libmng-dev,
+ libaa1-dev, libgtk2.0-dev (>= 2.8.17), libglib2.0-dev (>= 2.10.2),
+ libpango1.0-dev (>= 1.12.2), libgtkhtml2-dev (>= 2.0.0), libjpeg62-dev,
+ libart-2.0-dev, libpng-dev,
+ zlib1g-dev, libtiff4-dev, python-dev (>= 2.3.5), python-gtk2-dev (>= 2.8.0),
+ python-support (>= 0.4), libexif-dev (>= 0.6.12), libmng-dev,
  librsvg2-dev (>= 2.7.2-2), libfontconfig1-dev (>= 2.2.0),
  libwmf-dev (>= 0.2.8-1.1), libfreetype6-dev (>= 2.2),
  libpoppler-glib-dev (>= 0.3.1), libgnomevfs2-dev (>= 2.10.0),
  libgnomeui-dev (>=	2.10.0), 
  libasound2-dev (>= 1.0.0) [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386]
 Build-Conflicts: libgimp2.0
-#XS-Python-Version: current
 
 Package: libgimp2.0
 Architecture: any
@@ -43,8 +42,7 @@ Description: Built-in Help Browser plugin for The GIMP
 Package: gimp-python
 Architecture: any
 Section: graphics
-Depends: python-gtk2 (>= 1.99.12), ${shlibs:Depends}, ${python:Depends}
-#XB-Python-Version: ${python:Versions}
+Depends: python-gtk2 (>= 2.8.0), ${shlibs:Depends}, ${python:Depends}
 Description: Python support and plugins for The GIMP
  This package includes the Python modules necessary to write Python-based
  plugins for The GIMP. It includes several plugins with various useful

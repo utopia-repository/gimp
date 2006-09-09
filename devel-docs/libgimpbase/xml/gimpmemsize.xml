@@ -4,7 +4,7 @@
 
 <refentry id="libgimpbase-gimpmemsize">
 <refmeta>
-<refentrytitle id="top_of_page">gimpmemsize</refentrytitle>
+<refentrytitle role="top_of_page">gimpmemsize</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -49,15 +49,15 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Functions to (de)serialize a given memory size.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-memsize-serialize" role="function" condition="since:GIMP 2.2"/>gimp_memsize_serialize ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_memsize_serialize</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_memsize_serialize          (<link linkend="guint64">guint64</link> memsize);</programlisting>

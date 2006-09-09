@@ -32,10 +32,10 @@
 #include "core/gimp.h"
 #include "core/gimpimage.h"
 #include "core/gimpparamspecs.h"
-
-#include "pdb/gimppluginprocedure.h"
+#include "core/gimpprogress.h"
 
 #include "plug-in/gimppluginmanager.h"
+#include "plug-in/gimppluginprocedure.h"
 
 #include "xcf.h"
 #include "xcf-private.h"
@@ -60,55 +60,6 @@ static GValueArray * xcf_save_invoker (GimpProcedure     *procedure,
                                        GimpContext       *context,
                                        GimpProgress      *progress,
                                        const GValueArray *args);
-
-
-#if 0
-static PlugInProcDef xcf_plug_in_load_proc =
-{
-  "gimp-xcf-load",
-  N_("GIMP XCF image"),
-  NULL,
-  GIMP_ICON_TYPE_STOCK_ID,
-  -1,
-  (guint8 *) "gimp-wilber",
-  NULL, /* ignored for load */
-  0,    /* ignored for load */
-  0,
-  FALSE,
-  NULL,
-  TRUE,
-  "xcf",
-  "",
-  "0,string,gimp\\040xcf\\040",
-  "image/x-xcf",
-  NULL, /* fill me in at runtime */
-  NULL, /* fill me in at runtime */
-  NULL  /* fill me in at runtime */
-};
-
-static PlugInProcDef xcf_plug_in_save_proc =
-{
-  "gimp-xcf-save",
-  N_("GIMP XCF image"),
-  NULL,
-  GIMP_ICON_TYPE_STOCK_ID,
-  -1,
-  (guint8 *) "gimp-wilber",
-  "RGB*, GRAY*, INDEXED*",
-  0, /* fill me in at runtime */
-  0,
-  FALSE,
-  NULL,
-  TRUE,
-  "xcf",
-  "",
-  NULL,
-  "image/x-xcf",
-  NULL, /* fill me in at runtime */
-  NULL, /* fill me in at runtime */
-  NULL  /* fill me in at runtime */
-};
-#endif
 
 
 static GimpXcfLoaderFunc * const xcf_loaders[] =
@@ -153,8 +104,8 @@ xcf_init (Gimp *gimp)
   gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-xcf-save");
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-xcf-save",
-                                     "saves file in the .xcf file format",
-                                     "The xcf file format has been designed "
+                                     "Saves file in the .xcf file format",
+                                     "The XCF file format has been designed "
                                      "specifically for loading and saving "
                                      "tiled and layered images in the GIMP. "
                                      "This procedure will save the specified "
@@ -220,8 +171,8 @@ xcf_init (Gimp *gimp)
   gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-xcf-load");
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-xcf-load",
-                                     "loads file saved in the .xcf file format",
-                                     "The xcf file format has been designed "
+                                     "Loads file saved in the .xcf file format",
+                                     "The XCF file format has been designed "
                                      "specifically for loading and saving "
                                      "tiled and layered images in the GIMP. "
                                      "This procedure will load the specified "
@@ -292,6 +243,8 @@ xcf_load_invoker (GimpProcedure     *procedure,
 
   if (info.fp)
     {
+      info.gimp                  = gimp;
+      info.progress              = progress;
       info.cp                    = 0;
       info.filename              = filename;
       info.tattoo_state          = 0;
@@ -304,15 +257,26 @@ xcf_load_invoker (GimpProcedure     *procedure,
       info.ref_count             = NULL;
       info.compression           = COMPRESS_NONE;
 
+      if (progress)
+        {
+          gchar *name = g_filename_display_name (filename);
+          gchar *msg  = g_strdup_printf (_("Opening '%s'"), name);
+
+          gimp_progress_start (progress, msg, FALSE);
+
+          g_free (msg);
+          g_free (name);
+        }
+
       success = TRUE;
 
-      info.cp += xcf_read_int8 (info.fp, (guint8*) id, 14);
+      info.cp += xcf_read_int8 (info.fp, (guint8 *) id, 14);
 
       if (strncmp (id, "gimp xcf ", 9) != 0)
         {
           success = FALSE;
         }
-      else if (strcmp (id+9, "file") == 0)
+      else if (strcmp (id + 9, "file") == 0)
         {
           info.file_version = 0;
         }
@@ -327,7 +291,8 @@ xcf_load_invoker (GimpProcedure     *procedure,
 
       if (success)
         {
-          if (info.file_version < G_N_ELEMENTS (xcf_loaders))
+          if (info.file_version >= 0 &&
+              info.file_version < G_N_ELEMENTS (xcf_loaders))
             {
               image = (*(xcf_loaders[info.file_version])) (gimp, &info);
 
@@ -336,17 +301,24 @@ xcf_load_invoker (GimpProcedure     *procedure,
             }
           else
             {
-              g_message (_("XCF error: unsupported XCF file version %d "
-                           "encountered"), info.file_version);
+              gimp_message (gimp, progress,
+                            _("XCF error: unsupported XCF file version %d "
+                              "encountered"), info.file_version);
               success = FALSE;
             }
         }
 
       fclose (info.fp);
+
+      if (progress)
+        gimp_progress_end (progress);
     }
   else
-    g_message (_("Could not open '%s' for reading: %s"),
-               gimp_filename_to_utf8 (filename), g_strerror (errno));
+    {
+      gimp_message (gimp, progress,
+                    _("Could not open '%s' for reading: %s"),
+                    gimp_filename_to_utf8 (filename), g_strerror (errno));
+    }
 
   return_vals = gimp_procedure_get_return_values (procedure, success);
 
@@ -380,6 +352,8 @@ xcf_save_invoker (GimpProcedure     *procedure,
 
   if (info.fp)
     {
+      info.gimp                  = gimp;
+      info.progress              = progress;
       info.cp                    = 0;
       info.filename              = filename;
       info.active_layer          = NULL;
@@ -391,19 +365,38 @@ xcf_save_invoker (GimpProcedure     *procedure,
       info.ref_count             = NULL;
       info.compression           = COMPRESS_RLE;
 
+      if (progress)
+        {
+          gchar *name = g_filename_display_name (filename);
+          gchar *msg  = g_strdup_printf (_("Saving '%s'"), name);
+
+          gimp_progress_start (progress, msg, FALSE);
+
+          g_free (msg);
+          g_free (name);
+        }
+
       xcf_save_choose_format (&info, image);
 
       success = xcf_save_image (&info, image);
+
       if (fclose (info.fp) == EOF)
         {
-          g_message (_("Error saving XCF file: %s"), g_strerror (errno));
+          gimp_message (gimp, progress,
+                        _("Error saving XCF file: %s"), g_strerror (errno));
 
           success = FALSE;
         }
+
+      if (progress)
+        gimp_progress_end (progress);
     }
   else
-    g_message (_("Could not open '%s' for writing: %s"),
-               gimp_filename_to_utf8 (filename), g_strerror (errno));
+    {
+      gimp_message (gimp, progress,
+                    _("Could not open '%s' for writing: %s"),
+                    gimp_filename_to_utf8 (filename), g_strerror (errno));
+    }
 
   return_vals = gimp_procedure_get_return_values (procedure, success);
 

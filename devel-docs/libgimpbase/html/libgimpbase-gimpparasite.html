@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpparasite</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
 <link rel="start" href="index.html" title="GIMP Base Library Reference Manual">
 <link rel="up" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
-<link rel="prev" href="libgimpbase-gimpmemsize.html" title="gimpmemsize">
+<link rel="prev" href="libgimpbase-gimprectangle.html" title="gimprectangle">
 <link rel="next" href="libgimpbase-gimpparasiteio.html" title="gimpparasiteio">
-<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
 <link rel="index" href="ix01.html" title="Index">
@@ -19,27 +19,29 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="libgimpbase-gimpmemsize.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="libgimpbase-gimprectangle.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpbase.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimpparasiteio.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2565768" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2561091" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpparasite"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpparasite</span></h2>
+<h2>
+<a name="id2565768"></a><span class="refentrytitle">gimpparasite</span>
+</h2>
 <p>gimpparasite &#8212; Arbitrary pieces of data which can be attached to various GIMP objects.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<a name="synopsis"></a><h2>Synopsis</h2>
+<h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -83,18 +85,18 @@ GParamSpec* <a href="libgimpbase-gimpparasite.html#gimp-param-spec-parasite">gim
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="desc"></a><h2>Description</h2>
+<a name="id2561091"></a><h2>Description</h2>
 <p>
 Arbitrary pieces of data which can be attached to various GIMP objects.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="details"></a><h2>Details</h2>
+<a name="id2561108"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2569758"></a><h3>
+<a name="id2561118"></a><h3>
 <a name="GimpParasite"></a>GimpParasite</h3>
-<a class="indexterm" name="id2569770"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2561131"></a><pre class="programlisting">typedef struct {
   gchar    *name;   /* The name of the parasite. USE A UNIQUE PREFIX! */
   guint32   flags;  /* save Parasite in XCF file, etc.                */
   guint32   size;   /* amount of data                                 */
@@ -108,9 +110,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569792"></a><h3>
+<a name="id2561153"></a><h3>
 <a name="gimp-parasite-new"></a>gimp_parasite_new ()</h3>
-<a class="indexterm" name="id2569805"></a><pre class="programlisting"><a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a>* gimp_parasite_new             (const gchar *name,
+<a class="indexterm" name="id2561166"></a><pre class="programlisting"><a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a>* gimp_parasite_new             (const gchar *name,
                                              guint32 flags,
                                              guint32 size,
                                              gconstpointer data);</pre>
@@ -157,9 +159,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569924"></a><h3>
+<a name="id2561285"></a><h3>
 <a name="gimp-parasite-free"></a>gimp_parasite_free ()</h3>
-<a class="indexterm" name="id2569937"></a><pre class="programlisting">void        gimp_parasite_free              (<a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite);</pre>
+<a class="indexterm" name="id2561298"></a><pre class="programlisting">void        gimp_parasite_free              (<a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite);</pre>
 <p>
 
 </p>
@@ -177,9 +179,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569395"></a><h3>
+<a name="id2585183"></a><h3>
 <a name="gimp-parasite-copy"></a>gimp_parasite_copy ()</h3>
-<a class="indexterm" name="id2569407"></a><pre class="programlisting"><a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a>* gimp_parasite_copy            (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite);</pre>
+<a class="indexterm" name="id2585195"></a><pre class="programlisting"><a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a>* gimp_parasite_copy            (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite);</pre>
 <p>
 
 </p>
@@ -205,9 +207,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569464"></a><h3>
+<a name="id2585252"></a><h3>
 <a name="gimp-parasite-compare"></a>gimp_parasite_compare ()</h3>
-<a class="indexterm" name="id2569475"></a><pre class="programlisting">gboolean    gimp_parasite_compare           (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *a,
+<a class="indexterm" name="id2585263"></a><pre class="programlisting">gboolean    gimp_parasite_compare           (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *a,
                                              const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *b);</pre>
 <p>
 
@@ -240,9 +242,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569553"></a><h3>
+<a name="id2585341"></a><h3>
 <a name="gimp-parasite-is-type"></a>gimp_parasite_is_type ()</h3>
-<a class="indexterm" name="id2569564"></a><pre class="programlisting">gboolean    gimp_parasite_is_type           (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite,
+<a class="indexterm" name="id2585352"></a><pre class="programlisting">gboolean    gimp_parasite_is_type           (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite,
                                              const gchar *name);</pre>
 <p>
 
@@ -275,9 +277,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572101"></a><h3>
+<a name="id2605695"></a><h3>
 <a name="gimp-parasite-is-persistent"></a>gimp_parasite_is_persistent ()</h3>
-<a class="indexterm" name="id2572111"></a><pre class="programlisting">gboolean    gimp_parasite_is_persistent     (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite);</pre>
+<a class="indexterm" name="id2605706"></a><pre class="programlisting">gboolean    gimp_parasite_is_persistent     (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite);</pre>
 <p>
 
 </p>
@@ -303,9 +305,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572161"></a><h3>
+<a name="id2605756"></a><h3>
 <a name="gimp-parasite-is-undoable"></a>gimp_parasite_is_undoable ()</h3>
-<a class="indexterm" name="id2572171"></a><pre class="programlisting">gboolean    gimp_parasite_is_undoable       (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite);</pre>
+<a class="indexterm" name="id2605766"></a><pre class="programlisting">gboolean    gimp_parasite_is_undoable       (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite);</pre>
 <p>
 
 </p>
@@ -331,9 +333,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572223"></a><h3>
+<a name="id2605816"></a><h3>
 <a name="gimp-parasite-has-flag"></a>gimp_parasite_has_flag ()</h3>
-<a class="indexterm" name="id2572234"></a><pre class="programlisting">gboolean    gimp_parasite_has_flag          (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite,
+<a class="indexterm" name="id2605827"></a><pre class="programlisting">gboolean    gimp_parasite_has_flag          (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite,
                                              gulong flag);</pre>
 <p>
 
@@ -366,9 +368,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572312"></a><h3>
+<a name="id2605905"></a><h3>
 <a name="gimp-parasite-flags"></a>gimp_parasite_flags ()</h3>
-<a class="indexterm" name="id2572324"></a><pre class="programlisting">gulong      gimp_parasite_flags             (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite);</pre>
+<a class="indexterm" name="id2605917"></a><pre class="programlisting">gulong      gimp_parasite_flags             (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite);</pre>
 <p>
 
 </p>
@@ -394,9 +396,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572381"></a><h3>
+<a name="id2605974"></a><h3>
 <a name="gimp-parasite-name"></a>gimp_parasite_name ()</h3>
-<a class="indexterm" name="id2572393"></a><pre class="programlisting">const gchar* gimp_parasite_name             (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite);</pre>
+<a class="indexterm" name="id2605986"></a><pre class="programlisting">const gchar* gimp_parasite_name             (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite);</pre>
 <p>
 
 </p>
@@ -422,9 +424,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572451"></a><h3>
+<a name="id2606044"></a><h3>
 <a name="gimp-parasite-data"></a>gimp_parasite_data ()</h3>
-<a class="indexterm" name="id2572463"></a><pre class="programlisting">gconstpointer gimp_parasite_data            (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite);</pre>
+<a class="indexterm" name="id2606057"></a><pre class="programlisting">gconstpointer gimp_parasite_data            (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite);</pre>
 <p>
 
 </p>
@@ -450,9 +452,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572520"></a><h3>
+<a name="id2606113"></a><h3>
 <a name="gimp-parasite-data-size"></a>gimp_parasite_data_size ()</h3>
-<a class="indexterm" name="id2572531"></a><pre class="programlisting">glong       gimp_parasite_data_size         (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite);</pre>
+<a class="indexterm" name="id2606125"></a><pre class="programlisting">glong       gimp_parasite_data_size         (const <a href="libgimpbase-gimpparasite.html#GimpParasite">GimpParasite</a> *parasite);</pre>
 <p>
 
 </p>
@@ -478,9 +480,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572588"></a><h3>
+<a name="id2606181"></a><h3>
 <a name="GIMP-PARASITE-PERSISTENT:CAPS"></a>GIMP_PARASITE_PERSISTENT</h3>
-<a class="indexterm" name="id2572601"></a><pre class="programlisting">#define GIMP_PARASITE_PERSISTENT 1
+<a class="indexterm" name="id2606194"></a><pre class="programlisting">#define GIMP_PARASITE_PERSISTENT 1
 </pre>
 <p>
 
@@ -488,9 +490,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572616"></a><h3>
+<a name="id2606210"></a><h3>
 <a name="GIMP-PARASITE-UNDOABLE:CAPS"></a>GIMP_PARASITE_UNDOABLE</h3>
-<a class="indexterm" name="id2572627"></a><pre class="programlisting">#define GIMP_PARASITE_UNDOABLE   2
+<a class="indexterm" name="id2606221"></a><pre class="programlisting">#define GIMP_PARASITE_UNDOABLE   2
 </pre>
 <p>
 
@@ -498,9 +500,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572643"></a><h3>
+<a name="id2606236"></a><h3>
 <a name="GIMP-PARASITE-ATTACH-PARENT:CAPS"></a>GIMP_PARASITE_ATTACH_PARENT</h3>
-<a class="indexterm" name="id2572656"></a><pre class="programlisting">#define GIMP_PARASITE_ATTACH_PARENT     (0x80 &lt;&lt; 8)
+<a class="indexterm" name="id2606250"></a><pre class="programlisting">#define GIMP_PARASITE_ATTACH_PARENT     (0x80 &lt;&lt; 8)
 </pre>
 <p>
 
@@ -508,9 +510,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572672"></a><h3>
+<a name="id2606266"></a><h3>
 <a name="GIMP-PARASITE-PARENT-PERSISTENT:CAPS"></a>GIMP_PARASITE_PARENT_PERSISTENT</h3>
-<a class="indexterm" name="id2572686"></a><pre class="programlisting">#define GIMP_PARASITE_PARENT_PERSISTENT (GIMP_PARASITE_PERSISTENT &lt;&lt; 8)
+<a class="indexterm" name="id2606279"></a><pre class="programlisting">#define GIMP_PARASITE_PARENT_PERSISTENT (GIMP_PARASITE_PERSISTENT &lt;&lt; 8)
 </pre>
 <p>
 
@@ -518,9 +520,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572703"></a><h3>
+<a name="id2606296"></a><h3>
 <a name="GIMP-PARASITE-PARENT-UNDOABLE:CAPS"></a>GIMP_PARASITE_PARENT_UNDOABLE</h3>
-<a class="indexterm" name="id2572716"></a><pre class="programlisting">#define GIMP_PARASITE_PARENT_UNDOABLE   (GIMP_PARASITE_UNDOABLE &lt;&lt; 8)
+<a class="indexterm" name="id2606310"></a><pre class="programlisting">#define GIMP_PARASITE_PARENT_UNDOABLE   (GIMP_PARASITE_UNDOABLE &lt;&lt; 8)
 </pre>
 <p>
 
@@ -528,9 +530,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572733"></a><h3>
+<a name="id2606327"></a><h3>
 <a name="GIMP-PARASITE-ATTACH-GRANDPARENT:CAPS"></a>GIMP_PARASITE_ATTACH_GRANDPARENT</h3>
-<a class="indexterm" name="id2572747"></a><pre class="programlisting">#define GIMP_PARASITE_ATTACH_GRANDPARENT     (0x80 &lt;&lt; 16)
+<a class="indexterm" name="id2606340"></a><pre class="programlisting">#define GIMP_PARASITE_ATTACH_GRANDPARENT     (0x80 &lt;&lt; 16)
 </pre>
 <p>
 
@@ -538,9 +540,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572764"></a><h3>
+<a name="id2606357"></a><h3>
 <a name="GIMP-PARASITE-GRANDPARENT-PERSISTENT:CAPS"></a>GIMP_PARASITE_GRANDPARENT_PERSISTENT</h3>
-<a class="indexterm" name="id2572776"></a><pre class="programlisting">#define GIMP_PARASITE_GRANDPARENT_PERSISTENT (GIMP_PARASITE_PERSISTENT &lt;&lt; 16)
+<a class="indexterm" name="id2606370"></a><pre class="programlisting">#define GIMP_PARASITE_GRANDPARENT_PERSISTENT (GIMP_PARASITE_PERSISTENT &lt;&lt; 16)
 </pre>
 <p>
 
@@ -548,9 +550,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572794"></a><h3>
+<a name="id2606387"></a><h3>
 <a name="GIMP-PARASITE-GRANDPARENT-UNDOABLE:CAPS"></a>GIMP_PARASITE_GRANDPARENT_UNDOABLE</h3>
-<a class="indexterm" name="id2572808"></a><pre class="programlisting">#define GIMP_PARASITE_GRANDPARENT_UNDOABLE   (GIMP_PARASITE_UNDOABLE &lt;&lt; 16)
+<a class="indexterm" name="id2606401"></a><pre class="programlisting">#define GIMP_PARASITE_GRANDPARENT_UNDOABLE   (GIMP_PARASITE_UNDOABLE &lt;&lt; 16)
 </pre>
 <p>
 
@@ -558,9 +560,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572825"></a><h3>
+<a name="id2606419"></a><h3>
 <a name="GIMP-TYPE-PARASITE:CAPS"></a>GIMP_TYPE_PARASITE</h3>
-<a class="indexterm" name="id2572837"></a><pre class="programlisting">#define GIMP_TYPE_PARASITE               (gimp_parasite_get_type ())
+<a class="indexterm" name="id2606430"></a><pre class="programlisting">#define GIMP_TYPE_PARASITE               (gimp_parasite_get_type ())
 </pre>
 <p>
 
@@ -568,9 +570,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572854"></a><h3>
+<a name="id2606447"></a><h3>
 <a name="GIMP-TYPE-PARAM-PARASITE:CAPS"></a>GIMP_TYPE_PARAM_PARASITE</h3>
-<a class="indexterm" name="id2572867"></a><pre class="programlisting">#define GIMP_TYPE_PARAM_PARASITE           (gimp_param_parasite_get_type ())
+<a class="indexterm" name="id2606460"></a><pre class="programlisting">#define GIMP_TYPE_PARAM_PARASITE           (gimp_param_parasite_get_type ())
 </pre>
 <p>
 
@@ -578,9 +580,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572883"></a><h3>
+<a name="id2606477"></a><h3>
 <a name="GIMP-IS-PARAM-SPEC-PARASITE:CAPS"></a>GIMP_IS_PARAM_SPEC_PARASITE()</h3>
-<a class="indexterm" name="id2572896"></a><pre class="programlisting">#define GIMP_IS_PARAM_SPEC_PARASITE(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_PARASITE))
+<a class="indexterm" name="id2606489"></a><pre class="programlisting">#define GIMP_IS_PARAM_SPEC_PARASITE(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_PARASITE))
 </pre>
 <p>
 
@@ -599,9 +601,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572932"></a><h3>
+<a name="id2606525"></a><h3>
 <a name="gimp-param-spec-parasite"></a>gimp_param_spec_parasite ()</h3>
-<a class="indexterm" name="id2572943"></a><pre class="programlisting">GParamSpec* gimp_param_spec_parasite        (const gchar *name,
+<a class="indexterm" name="id2606536"></a><pre class="programlisting">GParamSpec* gimp_param_spec_parasite        (const gchar *name,
                                              const gchar *nick,
                                              const gchar *blurb,
                                              GParamFlags flags);</pre>
@@ -648,9 +650,9 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2573062"></a><h3>
+<a name="id2606655"></a><h3>
 <a name="GIMP-VALUE-HOLDS-PARASITE:CAPS"></a>GIMP_VALUE_HOLDS_PARASITE()</h3>
-<a class="indexterm" name="id2573075"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_PARASITE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_PARASITE))
+<a class="indexterm" name="id2606668"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_PARASITE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_PARASITE))
 </pre>
 <p>
 
@@ -669,7 +671,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2573112"></a><h2>See Also</h2>
+<a name="id2606705"></a><h2>See Also</h2>
 <p>
 <a
 href="../app/GimpImage.html#gimp-image-parasite-attach"

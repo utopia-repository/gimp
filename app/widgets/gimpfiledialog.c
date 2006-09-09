@@ -37,11 +37,11 @@
 
 #include "file/file-utils.h"
 
+#include "pdb/gimppdb.h"
+
 #include "plug-in/gimppluginmanager.h"
 #include "plug-in/gimppluginmanager-locale-domain.h"
-
-#include "pdb/gimppdb.h"
-#include "pdb/gimppluginprocedure.h"
+#include "plug-in/gimppluginprocedure.h"
 
 #include "gimpfiledialog.h"
 #include "gimpfileprocview.h"
@@ -392,11 +392,20 @@ gimp_file_dialog_set_image (GimpFileDialog *dialog,
   gimp_file_dialog_set_file_proc (dialog, NULL);
 
   dirname  = g_path_get_dirname (uri);
-  basename = g_path_get_basename (uri);
+  basename = file_utils_uri_display_basename (uri);
 
   if (dirname && strlen (dirname) && strcmp (dirname, "."))
-    gtk_file_chooser_set_current_folder_uri (GTK_FILE_CHOOSER (dialog),
-                                             dirname);
+    {
+      gtk_file_chooser_set_current_folder_uri (GTK_FILE_CHOOSER (dialog),
+                                               dirname);
+    }
+  else if (g_object_get_data (G_OBJECT (image), "gimp-image-dirname"))
+    {
+      gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog),
+                                           g_object_get_data (G_OBJECT (image),
+                                                              "gimp-image-dirname"));
+    }
+
 
   gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), basename);
 
@@ -423,7 +432,7 @@ gimp_file_dialog_add_preview (GimpFileDialog *dialog,
                     G_CALLBACK (gimp_file_dialog_update_preview),
                     dialog);
 
-  dialog->thumb_box = gimp_thumb_box_new (gimp);
+  dialog->thumb_box = gimp_thumb_box_new (gimp_get_user_context (gimp));
   gtk_widget_set_sensitive (GTK_WIDGET (dialog->thumb_box), FALSE);
   gtk_file_chooser_set_preview_widget (GTK_FILE_CHOOSER (dialog),
                                        dialog->thumb_box);

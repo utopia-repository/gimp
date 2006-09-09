@@ -151,7 +151,7 @@ file_actions_setup (GimpActionGroup *group)
       entries[i].name           = g_strdup_printf ("file-open-recent-%02d",
                                                    i + 1);
       entries[i].stock_id       = GTK_STOCK_OPEN;
-      entries[i].label          = "";
+      entries[i].label          = entries[i].name;
       entries[i].tooltip        = NULL;
       entries[i].value          = i;
       entries[i].value_variable = FALSE;
@@ -170,10 +170,17 @@ file_actions_setup (GimpActionGroup *group)
 
   for (i = 0; i < n_entries; i++)
     {
+      GtkAction *action;
+
       gimp_action_group_set_action_visible (group, entries[i].name, FALSE);
 
-      g_free ((gchar *) entries[i].name);
+      action = gtk_action_group_get_action (GTK_ACTION_GROUP (group),
+                                            entries[i].name);
+      g_object_set (action,
+                    "context", gimp_get_user_context (group->gimp),
+                    NULL);
 
+      g_free ((gchar *) entries[i].name);
       if (i < 9)
         g_free ((gchar *) entries[i].accelerator);
     }
@@ -206,7 +213,7 @@ void
 file_actions_update (GimpActionGroup *group,
                      gpointer         data)
 {
-  GimpImage    *image   = action_data_get_image (data);
+  GimpImage    *image    = action_data_get_image (data);
   GimpDrawable *drawable = NULL;
 
   if (image)
@@ -281,6 +288,8 @@ file_actions_last_opened_update (GimpContainer   *container,
       else
         {
           g_object_set (action,
+                        "label",    name,
+                        "tooltip",  NULL,
                         "visible",  FALSE,
                         "viewable", NULL,
                         NULL);

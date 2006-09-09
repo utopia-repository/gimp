@@ -45,7 +45,7 @@ gimp_gui_init (Gimp *gimp)
   gimp->gui.threads_leave       = NULL;
   gimp->gui.set_busy            = NULL;
   gimp->gui.unset_busy          = NULL;
-  gimp->gui.message             = NULL;
+  gimp->gui.show_message        = NULL;
   gimp->gui.help                = NULL;
   gimp->gui.get_program_class   = NULL;
   gimp->gui.get_display_name    = NULL;
@@ -139,24 +139,31 @@ gimp_unset_busy (Gimp *gimp)
 }
 
 void
-gimp_message (Gimp        *gimp,
-              const gchar *domain,
-              const gchar *message)
+gimp_show_message (Gimp         *gimp,
+                   GimpProgress *progress,
+                   const gchar  *domain,
+                   const gchar  *message)
 {
-  gchar *message2 = gimp_any_to_utf8 (message, -1,
-                                      "Cannot convert message to utf8.");
-
   g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+  g_return_if_fail (message != NULL);
 
   if (! domain)
     domain = GIMP_ACRONYM;
 
-  if (! gimp->console_messages && gimp->gui.message)
-    gimp->gui.message (gimp, domain, message2);
+  if (progress &&
+      gimp_progress_message (progress, gimp, domain, message))
+    {
+      /* message has already been handled by GimpProgress */
+    }
+  else if (gimp->gui.show_message && ! gimp->console_messages)
+    {
+      gimp->gui.show_message (gimp, progress, domain, message);
+    }
   else
-    g_printerr ("%s: %s\n\n", domain, message2);
-
-  g_free (message2);
+    {
+      g_printerr ("%s: %s\n\n", domain, message);
+    }
 }
 
 void

@@ -74,8 +74,6 @@
 #include "core/gimpcontext.h"
 #include "core/gimpprogress.h"
 
-#include "pdb/gimptemporaryprocedure.h"
-
 #include "gimpenvirontable.h"
 #include "gimpinterpreterdb.h"
 #include "gimpplugin.h"
@@ -84,6 +82,7 @@
 #include "gimpplugindebug.h"
 #include "gimppluginmanager.h"
 #include "gimppluginmanager-locale-domain.h"
+#include "gimptemporaryprocedure.h"
 #include "plug-in-def.h"
 #include "plug-in-params.h"
 
@@ -507,8 +506,9 @@ gimp_plug_in_close (GimpPlugIn *plug_in,
       GimpPlugInProcFrame *proc_frame = list->data;
 
 #ifdef GIMP_UNSTABLE
-      g_printerr ("plug_in_close: plug-in aborted before sending its "
-                  "temporary procedure return values\n");
+      g_printerr ("plug-in '%s' aborted before sending its "
+                  "temporary procedure return values\n",
+                  gimp_object_get_name (GIMP_OBJECT (plug_in)));
 #endif
 
       if (proc_frame->main_loop &&
@@ -522,8 +522,9 @@ gimp_plug_in_close (GimpPlugIn *plug_in,
       g_main_loop_is_running (plug_in->main_proc_frame.main_loop))
     {
 #ifdef GIMP_UNSTABLE
-      g_printerr ("plug_in_close: plug-in aborted before sending its "
-                  "procedure return values\n");
+      g_printerr ("plug-in '%s' aborted before sending its "
+                  "procedure return values\n",
+                  gimp_object_get_name (GIMP_OBJECT (plug_in)));
 #endif
 
       g_main_loop_quit (plug_in->main_proc_frame.main_loop);
@@ -533,8 +534,9 @@ gimp_plug_in_close (GimpPlugIn *plug_in,
       g_main_loop_is_running (plug_in->ext_main_loop))
     {
 #ifdef GIMP_UNSTABLE
-      g_printerr ("plug_in_close: extension aborted before sending its "
-                  "extension_ack message\n");
+      g_printerr ("extension '%s' aborted before sending its "
+                  "extension_ack message\n",
+                  gimp_object_get_name (GIMP_OBJECT (plug_in)));
 #endif
 
       g_main_loop_quit (plug_in->ext_main_loop);
@@ -593,12 +595,18 @@ gimp_plug_in_recv_message (GIOChannel   *channel,
     }
 
   if (! got_message)
-    g_message (_("Plug-in crashed: \"%s\"\n(%s)\n\n"
-                 "The dying plug-in may have messed up GIMP's internal state. "
-                 "You may want to save your images and restart GIMP "
-                 "to be on the safe side."),
-               gimp_object_get_name (GIMP_OBJECT (plug_in)),
-               gimp_filename_to_utf8 (plug_in->prog));
+    {
+      GimpPlugInProcFrame *frame    = gimp_plug_in_get_proc_frame (plug_in);
+      GimpProgress        *progress = frame ? frame->progress : NULL;
+
+      gimp_message (plug_in->manager->gimp, progress,
+                    _("Plug-in crashed: \"%s\"\n(%s)\n\n"
+                      "The dying plug-in may have messed up GIMP's internal "
+                      "state. You may want to save your images and restart "
+                      "GIMP to be on the safe side."),
+                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_filename_to_utf8 (plug_in->prog));
+    }
 
   g_object_unref (plug_in);
 
@@ -921,8 +929,8 @@ gimp_plug_in_remove_temp_proc (GimpPlugIn             *plug_in,
   g_return_if_fail (GIMP_IS_PLUG_IN (plug_in));
   g_return_if_fail (GIMP_IS_TEMPORARY_PROCEDURE (proc));
 
-  plug_in->temp_procedures = g_slist_remove (plug_in->temp_procedures,
-                                             proc);
+  plug_in->temp_procedures = g_slist_remove (plug_in->temp_procedures, proc);
+
   gimp_plug_in_manager_remove_temp_proc (plug_in->manager, proc);
   g_object_unref (proc);
 }

@@ -4,7 +4,7 @@
 
 <refentry id="GimpThumbnail">
 <refmeta>
-<refentrytitle id="top_of_page">GimpThumbnail</refentrytitle>
+<refentrytitle role="top_of_page">GimpThumbnail</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPTHUMB Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -59,8 +59,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -73,8 +73,8 @@
 
 
 
-<refsect1 id="properties">
-<title id="properties.title">Properties</title>
+<refsect1 role="properties">
+<title role="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpThumbnail--image-filesize">image-filesize</link>&quot;       <link linkend="gint64">gint64</link>                : Read / Write
@@ -92,15 +92,15 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpThumbnail-struct" role="struct"/>GimpThumbnail</title>
 <indexterm><primary>GimpThumbnail</primary></indexterm><programlisting>typedef struct _GimpThumbnail GimpThumbnail;</programlisting>
@@ -449,8 +449,8 @@ valid failure thumbnail exists.</para>
 </para></refsect2>
 
 </refsect1>
-<refsect1 id="property_details">
-<title id="property_details.title">Property Details</title>
+<refsect1 role="property_details">
+<title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpThumbnail--image-filesize"/>The &quot;<literal>image-filesize</literal>&quot; property</title>
 <indexterm><primary>GimpThumbnail:image-filesize</primary></indexterm><programlisting>  &quot;image-filesize&quot;       <link linkend="gint64">gint64</link>                : Read / Write</programlisting>
 <para>Size of the image file in bytes.</para><para>Allowed values: &gt;= 0</para>

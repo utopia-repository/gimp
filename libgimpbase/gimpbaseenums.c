@@ -559,10 +559,10 @@ gimp_interpolation_type_get_type (void)
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_INTERPOLATION_NONE, N_("None (Fastest)"), NULL },
+    { GIMP_INTERPOLATION_NONE, N_("interpolation|None"), NULL },
     { GIMP_INTERPOLATION_LINEAR, N_("interpolation|Linear"), NULL },
     { GIMP_INTERPOLATION_CUBIC, N_("Cubic"), NULL },
-    { GIMP_INTERPOLATION_LANCZOS, N_("Lanczos (Best)"), NULL },
+    { GIMP_INTERPOLATION_LANCZOS, N_("Lanczos"), NULL },
     { 0, NULL, NULL }
   };
 

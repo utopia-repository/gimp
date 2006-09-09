@@ -4,7 +4,7 @@
 
 <refentry id="libgimpcolor-GimpRGB">
 <refmeta>
-<refentrytitle id="top_of_page">GimpRGB</refentrytitle>
+<refentrytitle role="top_of_page">GimpRGB</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCOLOR Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -129,15 +129,15 @@ enum        <link linkend="GimpRGBCompositeMode">GimpRGBCompositeMode</link>;
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Definitions and Functions relating to RGB colors.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpRGB" role="struct"/>GimpRGB</title>
 <indexterm><primary>GimpRGB</primary></indexterm><programlisting>typedef struct {
@@ -861,47 +861,50 @@ coefficients taken from the NTSC analog television standard.
                                              const <link linkend="GimpRGB">GimpRGB</link> *default_value,
                                              <link linkend="GParamFlags">GParamFlags</link> flags);</programlisting>
 <para>
-</para>
+Creates a param spec to hold an <link linkend="GimpRGB"><type>GimpRGB</type></link> value.
+See <link linkend="g-param-spec-internal"><function>g_param_spec_internal()</function></link> for more information.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>name</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>          Canonical name of the param
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>nick</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>          Nickname of the param
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>blurb</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>         Brief desciption of param.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>has_alpha</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>     <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the alpha channel has relevance.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>default_value</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> Value to use if none is assigned.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>flags</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>         a combination of <link linkend="GParamFlags"><type>GParamFlags</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a newly allocated <link linkend="GParamSpec"><type>GParamSpec</type></link> instance
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-param-spec-rgb-has-alpha" role="function" condition="since:GIMP 2.4"/>gimp_param_spec_rgb_has_alpha ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_param_spec_rgb_has_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_param_spec_rgb_has_alpha   (<link linkend="GParamSpec">GParamSpec</link> *pspec);</programlisting>
+<para>
+</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>pspec</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GParamSpec"><type>GParamSpec</type></link> to hold an <link linkend="GimpRGB"><type>GimpRGB</type></link> value.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the alpha channel is relevant.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-param-spec-rgb-has-alpha" role="function"/>gimp_param_spec_rgb_has_alpha ()</title>
-<indexterm><primary>gimp_param_spec_rgb_has_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_param_spec_rgb_has_alpha   (<link linkend="GParamSpec">GParamSpec</link> *pspec);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>pspec</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
 <refsect2>
 <title><anchor id="GIMP-VALUE-HOLDS-RGB:CAPS" role="macro"/>GIMP_VALUE_HOLDS_RGB()</title>
 <indexterm><primary>GIMP_VALUE_HOLDS_RGB</primary></indexterm><programlisting>#define GIMP_VALUE_HOLDS_RGB(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_RGB))

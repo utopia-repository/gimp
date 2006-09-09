@@ -1,3 +1,193 @@
+2006-09-07  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation
+
+2006-09-05  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+	Joaquim Perez <noguer@gmail.com>, et al.
+
+2006-09-04  Sven Neumann  <sven@gimp.org>
+
+	* POTFILES.in: added files for the new heal tool.
+
+2006-09-03  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation
+
+2006-09-02  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2006-08-30  Nickolay V. Shmyrev  <nshmyrev@yandex.ru>
+	
+	* ru.po: Updated Russian translation by
+	Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+
+2006-08-29  Jovan Naumovski  <jovan@lugola.net>
+
+	* mk.po: Updated Macedonian translation.
+
+2006-08-27  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2006-08-22  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2006-08-21  Ilkka Tuohela  <hile@iki.fi>
+
+	* fi.po: Updated Finnish translation.
+
+2006-08-20  Roman Joost  <romanofski@gimp.org>
+
+	* de.po: fix for an incorrect translation, spotted by Sally C.
+	Barry
+
+2006-08-20  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: small fix in italian translation
+
+2006-08-18  Jovan Naumovski  <jovan@lugola.net>
+
+	* mk.po: Updated Macedonian translation.
+
+2006-08-15  Ilkka Tuohela  <hile@iki.fi>
+
+	* fi.po: Updated Finnish translation.
+
+2006-08-15  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: small fix in italian translation
+
+2006-08-14  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation
+
+2006-08-11  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation
+
+2006-08-09  Sven Neumann  <sven@gimp.org>
+
+	* de.po: fixed wrong translation.
+
+2006-08-08  Inaki Larranaga  <dooteo@euskalgnu.org>
+
+	* eu.po: Fixed some typos.
+
+2006-08-08  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation
+
+2006-08-08  Sven Neumann  <sven@gimp.org>
+
+	* POTFILES.in: added missing file.
+
+2006-08-06  Michael Natterer  <mitch@gimp.org>
+
+	* POTFILES.in: updated after pdb -> plug-in file moving.
+
+2006-08-05  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation
+
+2006-08-04  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Fixed Czech translation.
+
+2006-08-04  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Fixed wrong Czech strings
+
+2006-08-04  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation
+
+2006-08-03  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation
+
+2006-08-02  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation
+
+2006-08-01  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Fixes in Czech translation
+
+2006-08-01  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation
+
+2006-07-31  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Fixes in Czech translation
+
+2006-07-31  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation
+
+2006-07-30  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: small fix in italian translation
+	
+2006-07-29  Francisco Javier F. Serrador  <serrador@openshine.com>
+
+	* es.po: Updated Spanish translation.
+
+2006-07-27  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Fixed Czech translation
+
+2006-07-27  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: small fix in italian translation
+
+2006-07-26  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation
+
+2006-07-21  Francisco Javier F. Serrador  <serrador@openshine.com>
+
+	* es.po: Updated Spanish translation.
+
+2006-07-18  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation
+
+2006-07-18  Inaki Larranaga  <dooteo@euskalgnu.org>
+
+	* eu.po: Updated Basque translation.
+
+2006-07-18  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Czech update
+
+2006-07-17  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: fixed a bug in translation
+
+2006-07-17  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: a fix in Czech translation
+
+2006-07-14  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: minor fix in Czech translation
+
+2006-07-10  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: minor fix in Czech translation
+
+2006-07-10  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation
+	and changed translation of "tab" to
+	the standard GNOME translation. No more
+	"odrážky"
+
 2006-06-29  Ilkka Tuohela  <hile@iki.fi>
 
 	* fi.po: Updated Finnish translation.
@@ -178,7 +368,7 @@
 
 2006-03-29  Vladimer Sichinava  <vlsichinava@gmail.com>
 
-        * ka.po: Added Georgian translation by
+	* ka.po: Added Georgian translation by
 	  George Machitidze  <giomac@security.gov.ge>
 
 2006-03-20  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>

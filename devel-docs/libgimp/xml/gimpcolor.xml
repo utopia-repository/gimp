@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpcolor">
 <refmeta>
-<refentrytitle id="top_of_page">gimpcolor</refentrytitle>
+<refentrytitle role="top_of_page">gimpcolor</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -89,16 +89,16 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Functions for manipulating color, including curves and histograms.
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-brightness-contrast" role="function"/>gimp_brightness_contrast ()</title>
 <indexterm><primary>gimp_brightness_contrast</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brightness_contrast        (<link linkend="gint32">gint32</link> drawable_ID,

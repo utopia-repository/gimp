@@ -4,7 +4,7 @@
 
 <refentry id="libgimpcolor-GimpColorSpace">
 <refmeta>
-<refentrytitle id="top_of_page">GimpColorSpace</refentrytitle>
+<refentrytitle role="top_of_page">GimpColorSpace</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCOLOR Library</refmiscinfo>
 </refmeta>
@@ -15,14 +15,13 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
 
 
-            <link linkend="GimpHSL">GimpHSL</link>;
 <link linkend="void">void</link>        <link linkend="gimp-rgb-to-hsv">gimp_rgb_to_hsv</link>                 (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
                                              <link linkend="GimpHSV">GimpHSV</link> *hsv);
 <link linkend="void">void</link>        <link linkend="gimp-rgb-to-hsl">gimp_rgb_to_hsl</link>                 (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
@@ -86,8 +85,8 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 When programming pixel data manipulation functions you will often use
 algorithms operating on a color model different from the one GIMP
@@ -96,17 +95,8 @@ different color spaces.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpHSL" role="struct"/>GimpHSL</title>
-<indexterm><primary>GimpHSL</primary></indexterm><programlisting>typedef struct {
-  gdouble h, s, l, a;
-} GimpHSL;
-</programlisting>
-<para>
-
-</para></refsect2>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-rgb-to-hsv" role="function"/>gimp_rgb_to_hsv ()</title>
 <indexterm><primary>gimp_rgb_to_hsv</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_to_hsv                 (const <link linkend="GimpRGB">GimpRGB</link> *rgb,

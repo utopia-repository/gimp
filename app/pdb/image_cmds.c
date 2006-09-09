@@ -1434,7 +1434,7 @@ image_thumbnail_invoker (GimpProcedure     *procedure,
         width  = MAX (1, (height * dwidth) / dheight);
 
       if (image->gimp->config->layer_previews)
-        buf = gimp_viewable_get_new_preview (GIMP_VIEWABLE (image),
+        buf = gimp_viewable_get_new_preview (GIMP_VIEWABLE (image), context,
                                              width, height);
       else
         buf = gimp_viewable_get_dummy_preview (GIMP_VIEWABLE (image),
@@ -1942,8 +1942,9 @@ image_set_resolution_invoker (GimpProcedure     *procedure,
           ! FINITE (yresolution) ||
           yresolution < GIMP_MIN_RESOLUTION || yresolution > GIMP_MAX_RESOLUTION)
         {
-          g_message (_("Image resolution is out of bounds, "
-                       "using the default resolution instead."));
+          gimp_message (gimp, progress,
+                        _("Image resolution is out of bounds, "
+                          "using the default resolution instead."));
           success = FALSE;
         }
       else
@@ -2896,7 +2897,7 @@ register_image_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-image-add-layer",
                                      "Add the specified layer to the image.",
-                                     "This procedure adds the specified layer to the image at the given position. If the position is specified as -1, then the layer is inserted at the top of the layer stack. If the layer to be added has no alpha channel, it must be added at position 0. The layer type must be compatible with the image base type.",
+                                     "This procedure adds the specified layer to the image at the given position. If the position is specified as -1, then the layer is inserted above the active layer. The layer type must be compatible with the image base type.",
                                      "Spencer Kimball & Peter Mattis",
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",

@@ -47,9 +47,12 @@
 <ANCHOR id="gimp-value-set-rgb" href="libgimpcolor/libgimpcolor-GimpRGB.html#gimp-value-set-rgb">
 <ANCHOR id="libgimpcolor-GimpHSV" href="libgimpcolor/libgimpcolor-GimpHSV.html">
 <ANCHOR id="GimpHSV" href="libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV">
+<ANCHOR id="GimpHSL" href="libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSL">
 <ANCHOR id="gimp-hsv-set" href="libgimpcolor/libgimpcolor-GimpHSV.html#gimp-hsv-set">
 <ANCHOR id="gimp-hsv-clamp" href="libgimpcolor/libgimpcolor-GimpHSV.html#gimp-hsv-clamp">
 <ANCHOR id="gimp-hsva-set" href="libgimpcolor/libgimpcolor-GimpHSV.html#gimp-hsva-set">
+<ANCHOR id="GIMP-TYPE-HSV:CAPS" href="libgimpcolor/libgimpcolor-GimpHSV.html#GIMP-TYPE-HSV:CAPS">
+<ANCHOR id="GIMP-TYPE-HSL:CAPS" href="libgimpcolor/libgimpcolor-GimpHSV.html#GIMP-TYPE-HSL:CAPS">
 <ANCHOR id="libgimpcolor-GimpCMYK" href="libgimpcolor/libgimpcolor-GimpCMYK.html">
 <ANCHOR id="GimpCMYK" href="libgimpcolor/libgimpcolor-GimpCMYK.html#GimpCMYK">
 <ANCHOR id="gimp-cmyk-set" href="libgimpcolor/libgimpcolor-GimpCMYK.html#gimp-cmyk-set">
@@ -58,8 +61,8 @@
 <ANCHOR id="gimp-cmyka-set" href="libgimpcolor/libgimpcolor-GimpCMYK.html#gimp-cmyka-set">
 <ANCHOR id="gimp-cmyka-set-uchar" href="libgimpcolor/libgimpcolor-GimpCMYK.html#gimp-cmyka-set-uchar">
 <ANCHOR id="gimp-cmyka-get-uchar" href="libgimpcolor/libgimpcolor-GimpCMYK.html#gimp-cmyka-get-uchar">
+<ANCHOR id="GIMP-TYPE-CMYK:CAPS" href="libgimpcolor/libgimpcolor-GimpCMYK.html#GIMP-TYPE-CMYK:CAPS">
 <ANCHOR id="libgimpcolor-GimpColorSpace" href="libgimpcolor/libgimpcolor-GimpColorSpace.html">
-<ANCHOR id="GimpHSL" href="libgimpcolor/libgimpcolor-GimpColorSpace.html#GimpHSL">
 <ANCHOR id="gimp-rgb-to-hsv" href="libgimpcolor/libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsv">
 <ANCHOR id="gimp-rgb-to-hsl" href="libgimpcolor/libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsl">
 <ANCHOR id="gimp-rgb-to-cmyk" href="libgimpcolor/libgimpcolor-GimpColorSpace.html#gimp-rgb-to-cmyk">

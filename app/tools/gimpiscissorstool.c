@@ -92,8 +92,6 @@
 #define  FIXED             5   /* additional fixed size to expand cost map */
 #define  MIN_GRADIENT      63  /* gradients < this are directionless */
 
-#define  MAX_POINTS        2048
-
 #define  COST_WIDTH         2  /* number of bytes for each pixel in cost map  */
 #define  BLOCK_WIDTH       64
 #define  BLOCK_HEIGHT      64
@@ -177,18 +175,20 @@ static void          calculate_curve           (GimpTool          *tool,
 static void          iscissors_draw_curve      (GimpDrawTool      *draw_tool,
                                                 ICurve            *curve);
 static void          iscissors_free_icurves    (GSList            *list);
-static void          iscissors_free_buffers    (GimpIscissorsTool *iscissors);
 
 static gint          mouse_over_vertex         (GimpIscissorsTool *iscissors,
                                                 gdouble            x,
                                                 gdouble            y);
-static gboolean      clicked_on_vertex         (GimpTool          *tool);
+static gboolean      clicked_on_vertex         (GimpIscissorsTool *iscissors,
+                                                gdouble            x,
+                                                gdouble            y);
 static GSList      * mouse_over_curve          (GimpIscissorsTool *iscissors,
                                                 gdouble            x,
                                                 gdouble            y);
-static gboolean      clicked_on_curve          (GimpTool          *tool);
+static gboolean      clicked_on_curve          (GimpIscissorsTool *iscissors,
+                                                gdouble            x,
+                                                gdouble            y);
 
-static void          precalculate_arrays       (void);
 static GPtrArray   * plot_pixels               (GimpIscissorsTool *iscissors,
                                                 TempBuf           *dp_buf,
                                                 gint               x1,
@@ -258,12 +258,11 @@ static const gfloat blur_32[9] =
    1,  1,  1,
 };
 
-static gfloat    distance_weights[GRADIENT_SEARCH * GRADIENT_SEARCH];
+static gfloat  distance_weights[GRADIENT_SEARCH * GRADIENT_SEARCH];
 
-static gint      diagonal_weight[256];
-static gint      direction_value[256][4];
-static gboolean  initialized = FALSE;
-static Tile     *cur_tile = NULL;
+static gint    diagonal_weight[256];
+static gint    direction_value[256][4];
+static Tile   *cur_tile    = NULL;
 
 
 void
@@ -290,6 +289,7 @@ gimp_iscissors_tool_class_init (GimpIscissorsToolClass *klass)
   GObjectClass      *object_class    = G_OBJECT_CLASS (klass);
   GimpToolClass     *tool_class      = GIMP_TOOL_CLASS (klass);
   GimpDrawToolClass *draw_tool_class = GIMP_DRAW_TOOL_CLASS (klass);
+  gint               i;
 
   object_class->finalize     = gimp_iscissors_tool_finalize;
 
@@ -301,6 +301,24 @@ gimp_iscissors_tool_class_init (GimpIscissorsToolClass *klass)
   tool_class->cursor_update  = gimp_iscissors_tool_cursor_update;
 
   draw_tool_class->draw      = gimp_iscissors_tool_draw;
+
+  for (i = 0; i < 256; i++)
+    {
+      /*  The diagonal weight array  */
+      diagonal_weight[i] = (int) (i * G_SQRT2);
+
+      /*  The direction value array  */
+      direction_value[i][0] = (127 - abs (127 - i)) * 2;
+      direction_value[i][1] = abs (127 - i) * 2;
+      direction_value[i][2] = abs (191 - i) * 2;
+      direction_value[i][3] = abs (63 - i) * 2;
+    }
+
+  /*  set the 256th index of the direction_values to the hightest cost  */
+  direction_value[255][0] = 255;
+  direction_value[255][1] = 255;
+  direction_value[255][2] = 255;
+  direction_value[255][3] = 255;
 }
 
 static void
@@ -383,12 +401,10 @@ gimp_iscissors_tool_button_press (GimpTool        *tool,
                                   GimpDisplay     *display)
 {
   GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (tool);
-  GimpSelectionOptions *options;
+  GimpSelectionOptions *options   = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
 
-  options = GIMP_SELECTION_OPTIONS (tool->tool_info->tool_options);
-
-  iscissors->x = coords->x;
-  iscissors->y = coords->y;
+  iscissors->x = RINT (coords->x);
+  iscissors->y = RINT (coords->y);
 
   /*  If the tool was being used in another image...reset it  */
 
@@ -432,7 +448,7 @@ gimp_iscissors_tool_button_press (GimpTool        *tool,
 
     default:
       /*  Check if the mouse click occurred on a vertex or the curve itself  */
-      if (clicked_on_vertex (tool))
+      if (clicked_on_vertex (iscissors, coords->x, coords->y))
         {
           iscissors->nx    = iscissors->x;
           iscissors->ny    = iscissors->y;
@@ -491,18 +507,14 @@ static void
 iscissors_convert (GimpIscissorsTool *iscissors,
                    GimpDisplay       *display)
 {
-  GimpSelectionOptions *options;
+  GimpSelectionOptions *options = GIMP_SELECTION_TOOL_GET_OPTIONS (iscissors);
   GimpScanConvert      *sc;
   GimpVector2          *points;
   guint                 n_points;
   GSList               *list;
   ICurve               *icurve;
-  guint                 packed;
   gint                  i;
   gint                  index;
-
-  options =
-    GIMP_SELECTION_OPTIONS (GIMP_TOOL (iscissors)->tool_info->tool_options);
 
   sc = gimp_scan_convert_new ();
 
@@ -519,7 +531,9 @@ iscissors_convert (GimpIscissorsTool *iscissors,
 
       for (i = 0; i < n_points; i ++)
         {
-          packed = GPOINTER_TO_INT (g_ptr_array_index (icurve->points, i));
+          guint32  packed = GPOINTER_TO_INT (g_ptr_array_index (icurve->points,
+                                                                i));
+
           points[i].x = packed & 0x0000ffff;
           points[i].y = packed >> 16;
         }
@@ -547,10 +561,8 @@ gimp_iscissors_tool_button_release (GimpTool        *tool,
                                     GimpDisplay     *display)
 {
   GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (tool);
-  GimpSelectionOptions *options;
+  GimpSelectionOptions *options   = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
   ICurve               *curve;
-
-  options = GIMP_SELECTION_OPTIONS (tool->tool_info->tool_options);
 
   /* Make sure X didn't skip the button release event -- as it's known
    * to do
@@ -665,9 +677,7 @@ gimp_iscissors_tool_motion (GimpTool        *tool,
                             GimpDisplay     *display)
 {
   GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (tool);
-  GimpSelectionOptions *options;
-
-  options = GIMP_SELECTION_OPTIONS (tool->tool_info->tool_options);
+  GimpSelectionOptions *options   = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
 
   if (iscissors->state == NO_ACTION)
     return;
@@ -686,8 +696,8 @@ gimp_iscissors_tool_motion (GimpTool        *tool,
 
   gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
-  iscissors->x = coords->x;
-  iscissors->y = coords->y;
+  iscissors->x = RINT (coords->x);
+  iscissors->y = RINT (coords->y);
 
   switch (iscissors->state)
     {
@@ -884,43 +894,27 @@ static void
 iscissors_draw_curve (GimpDrawTool *draw_tool,
                       ICurve       *curve)
 {
+  gdouble  *points;
   gpointer *point;
-  guint     len;
-  gint      npts = 0;
-  guint32   coords;
-  guint32   coords_2;
+  gint      i, len;
 
-  /* Uh, this shouldn't happen, but it does.  So we ignore it.
-   * Quality code, baby.
-   */
   if (! curve->points)
     return;
 
-  point = curve->points->pdata + 1;
-  len   = curve->points->len - 1;
+  len = curve->points->len;
 
-  while (len--)
+  points = g_new (gdouble, 2 * len);
+
+  for (i = 0, point = curve->points->pdata; i < len; i++, point++)
     {
-      coords   = GPOINTER_TO_INT (*point);
-      coords_2 = GPOINTER_TO_INT (*(point - 1));
-      point++;
+      guint32 coords = GPOINTER_TO_INT (*point);
 
-      if (npts < MAX_POINTS)
-        {
-          gimp_draw_tool_draw_line (draw_tool,
-                                    (coords & 0x0000ffff),
-                                    (coords >> 16),
-                                    (coords_2 & 0x0000ffff),
-                                    (coords_2 >> 16),
-                                    FALSE);
-          npts++;
-        }
-      else
-        {
-          g_warning ("too many points in ICurve segment!");
-          return;
-        }
+      points[i * 2]     = (coords & 0x0000ffff);
+      points[i * 2 + 1] = (coords >> 16);
     }
+
+  gimp_draw_tool_draw_lines (draw_tool, points, len, FALSE, FALSE);
+  g_free (points);
 }
 
 static void
@@ -935,7 +929,7 @@ gimp_iscissors_tool_oper_update (GimpTool        *tool,
   GIMP_TOOL_CLASS (parent_class)->oper_update (tool, coords, state, proximity,
                                                display);
 
-  if (mouse_over_vertex (iscissors, coords->x, coords->y))
+  if (mouse_over_vertex (iscissors, coords->x, coords->y) > 1)
     {
       iscissors->op = ISCISSORS_OP_MOVE_POINT;
     }
@@ -946,7 +940,8 @@ gimp_iscissors_tool_oper_update (GimpTool        *tool,
   else if (iscissors->connected && iscissors->mask)
     {
       if (gimp_pickable_get_opacity_at (GIMP_PICKABLE (iscissors->mask),
-                                        coords->x, coords->y))
+                                        RINT (coords->x),
+                                        RINT (coords->y)))
         {
           iscissors->op = ISCISSORS_OP_SELECT;
         }
@@ -1051,15 +1046,10 @@ gimp_iscissors_tool_reset (GimpIscissorsTool *iscissors)
   iscissors->state       = NO_ACTION;
 
   /*  Reset the dp buffers  */
-  iscissors_free_buffers (iscissors);
-
-  /*  If they haven't already been initialized, precalculate the diagonal
-   *  weight and direction value arrays
-   */
-  if (!initialized)
+  if (iscissors->dp_buf)
     {
-      precalculate_arrays ();
-      initialized = TRUE;
+      temp_buf_free (iscissors->dp_buf);
+      iscissors->dp_buf = NULL;
     }
 }
 
@@ -1081,16 +1071,6 @@ iscissors_free_icurves (GSList *list)
 }
 
 
-static void
-iscissors_free_buffers (GimpIscissorsTool *iscissors)
-{
-  if (iscissors->dp_buf)
-    temp_buf_free (iscissors->dp_buf);
-
-  iscissors->dp_buf = NULL;
-}
-
-
 /* XXX need some scan-conversion routines from somewhere.  maybe. ? */
 
 static gint
@@ -1099,7 +1079,6 @@ mouse_over_vertex (GimpIscissorsTool *iscissors,
                    gdouble            y)
 {
   GSList *list;
-  ICurve *curve;
   gint    curves_found = 0;
 
   /*  traverse through the list, returning non-zero if the current cursor
@@ -1113,7 +1092,7 @@ mouse_over_vertex (GimpIscissorsTool *iscissors,
 
   while (list && curves_found < 2)
     {
-      curve = (ICurve *) list->data;
+      ICurve *curve = list->data;
 
       if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (iscissors),
                                     GIMP_TOOL (iscissors)->display,
@@ -1151,18 +1130,19 @@ mouse_over_vertex (GimpIscissorsTool *iscissors,
 }
 
 static gboolean
-clicked_on_vertex (GimpTool *tool)
+clicked_on_vertex (GimpIscissorsTool *iscissors,
+                   gdouble            x,
+                   gdouble            y)
 {
-  GimpIscissorsTool *iscissors    = GIMP_ISCISSORS_TOOL (tool);
-  gint               curves_found = 0;
+  gint curves_found = 0;
 
-  curves_found = mouse_over_vertex (iscissors, iscissors->x, iscissors->y);
+  curves_found = mouse_over_vertex (iscissors, x, y);
 
   if (curves_found > 1)
     {
       /*  undraw the curve  */
       iscissors->draw = DRAW_CURVE;
-      gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
+      gimp_draw_tool_pause (GIMP_DRAW_TOOL (iscissors));
 
       return TRUE;
     }
@@ -1174,7 +1154,7 @@ clicked_on_vertex (GimpTool *tool)
   if (curves_found == 1)
     return FALSE;
 
-  return clicked_on_curve (tool);
+  return clicked_on_curve (iscissors, x, y);
 }
 
 
@@ -1183,26 +1163,25 @@ mouse_over_curve (GimpIscissorsTool *iscissors,
                   gdouble            x,
                   gdouble            y)
 {
-  GSList   *list;
-  gpointer *pt;
-  gint      len;
-  ICurve   *curve;
-  guint32   coords;
-  gint      tx, ty;
+  GSList *list;
 
   /*  traverse through the list, returning the curve segment's list element
    *  if the current cursor position is on a curve...
    */
-
   for (list = iscissors->curves; list; list = g_slist_next (list))
     {
-      curve = (ICurve *) list->data;
+      ICurve   *curve = list->data;
+      gpointer *pt;
+      gint      len;
 
       pt = curve->points->pdata;
       len = curve->points->len;
+
       while (len--)
         {
-          coords = GPOINTER_TO_INT (*pt);
+          guint32 coords = GPOINTER_TO_INT (*pt);
+          gint    tx, ty;
+
           pt++;
           tx = coords & 0x0000ffff;
           ty = coords >> 16;
@@ -1223,30 +1202,28 @@ mouse_over_curve (GimpIscissorsTool *iscissors,
 }
 
 static gboolean
-clicked_on_curve (GimpTool *tool)
+clicked_on_curve (GimpIscissorsTool *iscissors,
+                  gdouble            x,
+                  gdouble            y)
 {
-  GimpIscissorsTool    *iscissors;
-  GimpSelectionOptions *options;
-  GSList               *list, *new_link;
-  ICurve               *curve, *new_curve;
-
-  iscissors = GIMP_ISCISSORS_TOOL (tool);
-  options   = GIMP_SELECTION_OPTIONS (tool->tool_info->tool_options);
+  GSList *list;
 
   /*  traverse through the list, getting back the curve segment's list
    *  element if the current cursor position is on a curve...
    *  If this occurs, replace the curve with two new curves,
    *  separated by a new vertex.
    */
-  list = mouse_over_curve (iscissors, iscissors->x, iscissors->y);
+  list = mouse_over_curve (iscissors, x, y);
 
   if (list)
     {
-      curve = (ICurve *) list->data;
+      ICurve *curve = list->data;
+      ICurve *new_curve;
+      GSList *new_link;
 
       /*  undraw the curve  */
       iscissors->draw = DRAW_CURVE;
-      gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
+      gimp_draw_tool_pause (GIMP_DRAW_TOOL (iscissors));
 
       /*  Create the new curve  */
       new_curve = g_new (ICurve, 1);
@@ -1272,31 +1249,6 @@ clicked_on_curve (GimpTool *tool)
     }
 
   return FALSE;
-}
-
-
-static void
-precalculate_arrays (void)
-{
-  gint i;
-
-  for (i = 0; i < 256; i++)
-    {
-      /*  The diagonal weight array  */
-      diagonal_weight[i] = (int) (i * G_SQRT2);
-
-      /*  The direction value array  */
-      direction_value[i][0] = (127 - abs (127 - i)) * 2;
-      direction_value[i][1] = abs (127 - i) * 2;
-      direction_value[i][2] = abs (191 - i) * 2;
-      direction_value[i][3] = abs (63 - i) * 2;
-    }
-
-  /*  set the 256th index of the direction_values to the hightest cost  */
-  direction_value[255][0] = 255;
-  direction_value[255][1] = 255;
-  direction_value[255][2] = 255;
-  direction_value[255][3] = 255;
 }
 
 
@@ -1798,7 +1750,7 @@ gradmap_tile_validate (TileManager *tm,
           else
             gradmap[j*COST_WIDTH + 1] = 255; /* reserved for weak gradient */
 
-contin:
+        contin:
           datah += srcPR.bytes;
           datav += srcPR.bytes;
         }

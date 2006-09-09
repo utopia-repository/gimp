@@ -4,7 +4,7 @@
 
 <refentry id="libgimpcolor-GimpHSV">
 <refmeta>
-<refentrytitle id="top_of_page">GimpHSV</refentrytitle>
+<refentrytitle role="top_of_page">GimpHSV</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCOLOR Library</refmiscinfo>
 </refmeta>
@@ -15,14 +15,15 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
 
 
             <link linkend="GimpHSV">GimpHSV</link>;
+            <link linkend="GimpHSL">GimpHSL</link>;
 <link linkend="void">void</link>        <link linkend="gimp-hsv-set">gimp_hsv_set</link>                    (<link linkend="GimpHSV">GimpHSV</link> *hsv,
                                              <link linkend="gdouble">gdouble</link> hue,
                                              <link linkend="gdouble">gdouble</link> saturation,
@@ -33,6 +34,9 @@
                                              <link linkend="gdouble">gdouble</link> saturation,
                                              <link linkend="gdouble">gdouble</link> value,
                                              <link linkend="gdouble">gdouble</link> alpha);
+#define     <link linkend="GIMP-TYPE-HSV:CAPS">GIMP_TYPE_HSV</link>
+#define     <link linkend="GIMP-TYPE-HSL:CAPS">GIMP_TYPE_HSL</link>
+
 </synopsis>
 </refsynopsisdiv>
 
@@ -44,20 +48,29 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Definitions and Functions relating to HSV colors.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpHSV" role="struct"/>GimpHSV</title>
 <indexterm><primary>GimpHSV</primary></indexterm><programlisting>typedef struct {
   gdouble h, s, v, a;
 } GimpHSV;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpHSL" role="struct"/>GimpHSL</title>
+<indexterm><primary>GimpHSL</primary></indexterm><programlisting>typedef struct {
+  gdouble h, s, l, a;
+} GimpHSL;
 </programlisting>
 <para>
 
@@ -126,6 +139,20 @@ Definitions and Functions relating to HSV colors.
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2>
+<title><anchor id="GIMP-TYPE-HSV:CAPS" role="macro"/>GIMP_TYPE_HSV</title>
+<indexterm><primary>GIMP_TYPE_HSV</primary></indexterm><programlisting>#define GIMP_TYPE_HSV       (gimp_hsv_get_type ())
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GIMP-TYPE-HSL:CAPS" role="macro"/>GIMP_TYPE_HSL</title>
+<indexterm><primary>GIMP_TYPE_HSL</primary></indexterm><programlisting>#define GIMP_TYPE_HSL       (gimp_hsl_get_type ())
+</programlisting>
+<para>
+
+</para></refsect2>
 
 </refsect1>
 

@@ -792,7 +792,8 @@ gimp_image_convert (GimpImage              *image,
 
       if (custom_palette->n_colors < 1)
         {
-          g_message (_("Cannot convert image: palette is empty."));
+          gimp_message (image->gimp, progress,
+                        _("Cannot convert image: palette is empty."));
           return;
         }
     }
@@ -4003,6 +4004,50 @@ delete_median_cut (QuantizeObj *quantobj)
 {
   g_free (quantobj->histogram);
   g_free (quantobj);
+}
+
+
+void
+gimp_image_convert_set_dither_matrix (gint       width,
+                                      gint       height,
+                                      guchar    *source)
+{
+  gint   x;
+  gint   y;
+  gint   high_value;
+  gint   tmp;
+  gfloat scale;
+
+  /* if source is invalid, restore the default matrix */
+  if (source == NULL || width == 0 || height == 0)
+    {
+      source = (guchar *) (&DM_ORIGINAL);
+      width = DM_WIDTH;
+      height = DM_HEIGHT;
+    }
+
+  g_return_if_fail ((DM_WIDTH % width) == 0);
+  g_return_if_fail ((DM_HEIGHT % height) == 0);
+
+  /* find maximum value in input */
+  high_value = 0;
+
+  for (x = 0; x < (width * height); x++)
+    {
+      if (source[x] > high_value)
+        high_value = source[x];
+    }
+
+  scale = 255.0 / (float)high_value;
+
+  for (y = 0; y < DM_HEIGHT; y++)
+    {
+      for (x = 0; x < DM_WIDTH; x++)
+        {
+          tmp = source[((x % width) * height) + (y % height)];
+          DM[x][y] = (guchar) (ROUND((float)tmp * scale));
+       }
+    }
 }
 
 

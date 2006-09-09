@@ -4,7 +4,7 @@
 
 <refentry id="GimpPaletteSelectButton">
 <refmeta>
-<refentrytitle id="top_of_page">GimpPaletteSelectButton</refentrytitle>
+<refentrytitle role="top_of_page">GimpPaletteSelectButton</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -34,8 +34,8 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-palette-select-but
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -53,8 +53,8 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-palette-select-but
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpPaletteSelectButton implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -62,8 +62,8 @@ GimpPaletteSelectButton implements
 </refsect1>
 
 
-<refsect1 id="properties">
-<title id="properties.title">Properties</title>
+<refsect1 role="properties">
+<title role="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpPaletteSelectButton--palette-name">palette-name</link>&quot;         <link linkend="gchararray">gchararray</link>            : Read / Write
@@ -71,8 +71,8 @@ GimpPaletteSelectButton implements
 </synopsis>
 </refsect1>
 
-<refsect1 id="signal_proto">
-<title id="signal_proto.title">Signals</title>
+<refsect1 role="signal_proto">
+<title role="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpPaletteSelectButton-palette-set">palette-set</link>&quot;
@@ -84,15 +84,15 @@ GimpPaletteSelectButton implements
 </refsect1>
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpPaletteSelectButton-struct" role="struct"/>GimpPaletteSelectButton</title>
 <indexterm><primary>GimpPaletteSelectButton</primary></indexterm><programlisting>typedef struct _GimpPaletteSelectButton GimpPaletteSelectButton;</programlisting>
@@ -158,8 +158,8 @@ Sets the current palette for the palette select button.</para>
 </para></refsect2>
 
 </refsect1>
-<refsect1 id="property_details">
-<title id="property_details.title">Property Details</title>
+<refsect1 role="property_details">
+<title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpPaletteSelectButton--palette-name"/>The &quot;<literal>palette-name</literal>&quot; property</title>
 <indexterm role="GIMP 2.4"><primary>GimpPaletteSelectButton:palette-name</primary></indexterm><programlisting>  &quot;palette-name&quot;         <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
 <para>
@@ -183,8 +183,8 @@ The title to be used for the palette selection popup dialog.</para>
 
 </refsect1>
 
-<refsect1 id="signals">
-<title id="signals.title">Signal Details</title>
+<refsect1 role="signals">
+<title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpPaletteSelectButton-palette-set"/>The &quot;palette-set&quot; signal</title>
 <indexterm role="GIMP 2.4"><primary>GimpPaletteSelectButton::palette-set</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpPaletteSelectButton">GimpPaletteSelectButton</link> *widget,
                                             <link linkend="gchar">gchar</link>                   *palette_name,

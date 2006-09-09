@@ -268,7 +268,7 @@ gimp_pattern_select_button_new (const gchar *title,
  *
  * Since: GIMP 2.4
  */
-G_CONST_RETURN gchar *
+const gchar *
 gimp_pattern_select_button_get_pattern (GimpPatternSelectButton *button)
 {
   GimpPatternSelectButtonPrivate *priv;
@@ -280,7 +280,7 @@ gimp_pattern_select_button_get_pattern (GimpPatternSelectButton *button)
 }
 
 /**
- * gimp_pattern_select_button_set_pattern_name:
+ * gimp_pattern_select_button_set_pattern:
  * @button: A #GimpPatternSelectButton
  * @pattern_name: Pattern name to set; %NULL means no change.
  *

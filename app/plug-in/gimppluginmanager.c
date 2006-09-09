@@ -37,7 +37,6 @@
 #include "core/gimpmarshal.h"
 
 #include "pdb/gimppdb.h"
-#include "pdb/gimptemporaryprocedure.h"
 
 #include "gimpenvirontable.h"
 #include "gimpinterpreterdb.h"
@@ -48,9 +47,11 @@
 #include "gimppluginmanager-call.h"
 #include "gimppluginmanager-data.h"
 #include "gimppluginmanager-help-domain.h"
+#include "gimppluginmanager-history.h"
 #include "gimppluginmanager-locale-domain.h"
 #include "gimppluginmanager-menu-branch.h"
 #include "gimppluginshm.h"
+#include "gimptemporaryprocedure.h"
 #include "plug-in-def.h"
 #include "plug-in-rc.h"
 
@@ -62,11 +63,12 @@ enum
   PLUG_IN_OPENED,
   PLUG_IN_CLOSED,
   MENU_BRANCH_ADDED,
-  LAST_PLUG_INS_CHANGED,
+  HISTORY_CHANGED,
   LAST_SIGNAL
 };
 
 
+static void     gimp_plug_in_manager_dispose     (GObject    *object);
 static void     gimp_plug_in_manager_finalize    (GObject    *object);
 
 static gint64   gimp_plug_in_manager_get_memsize (GimpObject *object,
@@ -132,16 +134,17 @@ gimp_plug_in_manager_class_init (GimpPlugInManagerClass *klass)
                   G_TYPE_STRING,
                   G_TYPE_STRING);
 
-  manager_signals[LAST_PLUG_INS_CHANGED] =
-    g_signal_new ("last-plug-ins-changed",
+  manager_signals[HISTORY_CHANGED] =
+    g_signal_new ("history-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GimpPlugInManagerClass,
-                                   last_plug_ins_changed),
+                                   history_changed),
                   NULL, NULL,
                   gimp_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  object_class->dispose          = gimp_plug_in_manager_dispose;
   object_class->finalize         = gimp_plug_in_manager_finalize;
 
   gimp_object_class->get_memsize = gimp_plug_in_manager_get_memsize;
@@ -162,13 +165,23 @@ gimp_plug_in_manager_init (GimpPlugInManager *manager)
   manager->current_plug_in    = NULL;
   manager->open_plug_ins      = NULL;
   manager->plug_in_stack      = NULL;
-  manager->last_plug_ins      = NULL;
+  manager->history            = NULL;
 
   manager->shm                = NULL;
   manager->interpreter_db     = gimp_interpreter_db_new ();
   manager->environ_table      = gimp_environ_table_new ();
   manager->debug              = NULL;
   manager->data_list          = NULL;
+}
+
+static void
+gimp_plug_in_manager_dispose (GObject *object)
+{
+  GimpPlugInManager *manager = GIMP_PLUG_IN_MANAGER (object);
+
+  gimp_plug_in_manager_history_clear (manager);
+
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -194,12 +207,6 @@ gimp_plug_in_manager_finalize (GObject *object)
                        (GFunc) g_object_unref, NULL);
       g_slist_free (manager->plug_in_procedures);
       manager->plug_in_procedures = NULL;
-    }
-
-  if (manager->last_plug_ins)
-    {
-      g_slist_free (manager->last_plug_ins);
-      manager->last_plug_ins = NULL;
     }
 
   if (manager->shm)
@@ -511,41 +518,42 @@ gimp_plug_in_manager_restore (GimpPlugInManager  *manager,
   g_slist_free (manager->plug_in_defs);
   manager->plug_in_defs = NULL;
 
-  if (! gimp->no_interface)
-    {
-      gchar **locale_domains;
-      gchar **locale_paths;
-      gint    n_domains;
-      gint    i;
+  /* bind plug-in text domains  */
+  {
+    gchar **locale_domains;
+    gchar **locale_paths;
+    gint    n_domains;
+    gint    i;
 
-      manager->load_procs = g_slist_sort_with_data (manager->load_procs,
-                                                    gimp_plug_in_manager_file_proc_compare,
-                                                    manager);
-      manager->save_procs = g_slist_sort_with_data (manager->save_procs,
-                                                    gimp_plug_in_manager_file_proc_compare,
-                                                    manager);
+    n_domains = gimp_plug_in_manager_get_locale_domains (manager,
+                                                         &locale_domains,
+                                                         &locale_paths);
 
-      n_domains = gimp_plug_in_manager_get_locale_domains (manager,
-                                                           &locale_domains,
-                                                           &locale_paths);
-
-      for (i = 0; i < n_domains; i++)
-        {
-          bindtextdomain (locale_domains[i], locale_paths[i]);
+    for (i = 0; i < n_domains; i++)
+      {
+        bindtextdomain (locale_domains[i], locale_paths[i]);
 #ifdef HAVE_BIND_TEXTDOMAIN_CODESET
-          bind_textdomain_codeset (locale_domains[i], "UTF-8");
+        bind_textdomain_codeset (locale_domains[i], "UTF-8");
 #endif
-        }
+      }
 
-      g_strfreev (locale_domains);
-      g_strfreev (locale_paths);
-    }
+    g_strfreev (locale_domains);
+    g_strfreev (locale_paths);
+  }
 
   /* add the plug-in procs to the procedure database */
   for (list = manager->plug_in_procedures; list; list = list->next)
     {
       gimp_plug_in_manager_add_to_db (manager, context, list->data);
     }
+
+  /* sort the load and save procedures  */
+  manager->load_procs =
+    g_slist_sort_with_data (manager->load_procs,
+                            gimp_plug_in_manager_file_proc_compare, manager);
+  manager->save_procs =
+    g_slist_sort_with_data (manager->save_procs,
+                            gimp_plug_in_manager_file_proc_compare, manager);
 
   /* run automatically started extensions */
   {
@@ -651,6 +659,9 @@ gimp_plug_in_manager_add_procedure (GimpPlugInManager   *manager,
           manager->load_procs = g_slist_remove (manager->load_procs, tmp_proc);
           manager->save_procs = g_slist_remove (manager->save_procs, tmp_proc);
 
+          /* and from the history */
+          gimp_plug_in_manager_history_remove (manager, tmp_proc);
+
           g_object_unref (tmp_proc);
 
           return;
@@ -684,35 +695,13 @@ gimp_plug_in_manager_remove_temp_proc (GimpPlugInManager      *manager,
   manager->plug_in_procedures = g_slist_remove (manager->plug_in_procedures,
                                                 procedure);
 
-  gimp_pdb_unregister_procedure (manager->gimp->pdb, GIMP_PROCEDURE (procedure));
+  gimp_plug_in_manager_history_remove (manager,
+                                       GIMP_PLUG_IN_PROCEDURE (procedure));
+
+  gimp_pdb_unregister_procedure (manager->gimp->pdb,
+                                 GIMP_PROCEDURE (procedure));
 
   g_object_unref (procedure);
-}
-
-void
-gimp_plug_in_manager_set_last_plug_in (GimpPlugInManager   *manager,
-                                       GimpPlugInProcedure *procedure)
-{
-  GSList *list;
-  gint    history_size;
-
-  g_return_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager));
-
-  history_size = MAX (1, manager->gimp->config->plug_in_history_size);
-
-  manager->last_plug_ins = g_slist_remove (manager->last_plug_ins, procedure);
-  manager->last_plug_ins = g_slist_prepend (manager->last_plug_ins, procedure);
-
-  list = g_slist_nth (manager->last_plug_ins, history_size);
-
-  if (list)
-    {
-      manager->last_plug_ins = g_slist_remove_link (manager->last_plug_ins,
-                                                    list);
-      g_slist_free (list);
-    }
-
-  g_signal_emit (manager, manager_signals[LAST_PLUG_INS_CHANGED], 0);
 }
 
 void
@@ -770,6 +759,14 @@ gimp_plug_in_manager_plug_in_pop (GimpPlugInManager *manager)
     manager->current_plug_in = manager->plug_in_stack->data;
   else
     manager->current_plug_in = NULL;
+}
+
+void
+gimp_plug_in_manager_history_changed (GimpPlugInManager *manager)
+{
+  g_return_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager));
+
+  g_signal_emit (manager, manager_signals[HISTORY_CHANGED], 0);
 }
 
 
@@ -833,10 +830,9 @@ gimp_plug_in_manager_add_from_rc (GimpPlugInManager *manager,
 
   /*  If this is a file load or save plugin, make sure we have
    *  something for one of the extensions, prefixes, or magic number.
-   *  Other bits of code rely on detecting file plugins by the presence
-   *  of one of these things, but Nick Lamb's alien/unknown format
-   *  loader needs to be able to register no extensions, prefixes or
-   *  magics. -- austin 13/Feb/99
+   *  Other bits of code rely on detecting file plugins by the
+   *  presence of one of these things, but the raw plug-in needs to be
+   *  able to register no extensions, prefixes or magics.
    */
   for (list = plug_in_def->procedures; list; list = list->next)
     {

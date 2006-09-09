@@ -4,7 +4,7 @@
 
 <refentry id="GimpEnumComboBox">
 <refmeta>
-<refentrytitle id="top_of_page">GimpEnumComboBox</refentrytitle>
+<refentrytitle role="top_of_page">GimpEnumComboBox</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -33,8 +33,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -52,8 +52,8 @@
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpEnumComboBox implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>,  <link linkend="GtkCellEditable">GtkCellEditable</link> and  <link linkend="GtkCellLayout">GtkCellLayout</link>.</para>
@@ -61,8 +61,8 @@ GimpEnumComboBox implements
 </refsect1>
 
 
-<refsect1 id="properties">
-<title id="properties.title">Properties</title>
+<refsect1 role="properties">
+<title role="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpEnumComboBox--model">model</link>&quot;                <link linkend="GimpEnumStore">GimpEnumStore</link>         : Read / Write
@@ -71,15 +71,15 @@ GimpEnumComboBox implements
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpEnumComboBox-struct" role="struct"/>GimpEnumComboBox</title>
 <indexterm><primary>GimpEnumComboBox</primary></indexterm><programlisting>typedef struct _GimpEnumComboBox GimpEnumComboBox;</programlisting>
@@ -149,8 +149,8 @@ Attempts to create stock icons for all items in the <parameter>combo_box</parame
 </para></refsect2>
 
 </refsect1>
-<refsect1 id="property_details">
-<title id="property_details.title">Property Details</title>
+<refsect1 role="property_details">
+<title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpEnumComboBox--model"/>The &quot;<literal>model</literal>&quot; property</title>
 <indexterm><primary>GimpEnumComboBox:model</primary></indexterm><programlisting>  &quot;model&quot;                <link linkend="GimpEnumStore">GimpEnumStore</link>         : Read / Write</programlisting>
 <para></para></refsect2>

@@ -60,7 +60,7 @@ am__objects_2 = gimp-tools.$(OBJEXT) tools-utils.$(OBJEXT) \
 	tool_manager.$(OBJEXT) gimpairbrushtool.$(OBJEXT) \
 	gimpalignoptions.$(OBJEXT) gimpaligntool.$(OBJEXT) \
 	gimpblendoptions.$(OBJEXT) gimpblendtool.$(OBJEXT) \
-	gimpbrightnesscontrasttool.$(OBJEXT) \
+	gimpbrightnesscontrasttool.$(OBJEXT) gimpbrushtool.$(OBJEXT) \
 	gimpbucketfilloptions.$(OBJEXT) gimpbucketfilltool.$(OBJEXT) \
 	gimpbycolorselecttool.$(OBJEXT) gimpclonetool.$(OBJEXT) \
 	gimpcoloroptions.$(OBJEXT) gimpcolortool.$(OBJEXT) \
@@ -76,22 +76,24 @@ am__objects_2 = gimp-tools.$(OBJEXT) tools-utils.$(OBJEXT) \
 	gimpforegroundselectoptions.$(OBJEXT) \
 	gimpforegroundselecttool.$(OBJEXT) \
 	gimpforegroundselecttool-undo.$(OBJEXT) \
-	gimpfuzzyselecttool.$(OBJEXT) gimphistogramoptions.$(OBJEXT) \
-	gimphuesaturationtool.$(OBJEXT) gimpimagemapoptions.$(OBJEXT) \
-	gimpimagemaptool.$(OBJEXT) gimpinkoptions-gui.$(OBJEXT) \
-	gimpinktool.$(OBJEXT) gimpiscissorstool.$(OBJEXT) \
-	gimplevelstool.$(OBJEXT) gimpmagnifyoptions.$(OBJEXT) \
-	gimpmagnifytool.$(OBJEXT) gimpmeasureoptions.$(OBJEXT) \
-	gimpmeasuretool.$(OBJEXT) gimpmoveoptions.$(OBJEXT) \
-	gimpmovetool.$(OBJEXT) gimppaintbrushtool.$(OBJEXT) \
-	gimppaintoptions-gui.$(OBJEXT) gimppainttool.$(OBJEXT) \
-	gimppenciltool.$(OBJEXT) gimpperspectivetool.$(OBJEXT) \
-	gimpposterizetool.$(OBJEXT) gimprectangleselecttool.$(OBJEXT) \
+	gimpfuzzyselecttool.$(OBJEXT) gimphealtool.$(OBJEXT) \
+	gimphistogramoptions.$(OBJEXT) gimphuesaturationtool.$(OBJEXT) \
+	gimpimagemapoptions.$(OBJEXT) gimpimagemaptool.$(OBJEXT) \
+	gimpinkoptions-gui.$(OBJEXT) gimpinktool.$(OBJEXT) \
+	gimpiscissorstool.$(OBJEXT) gimplevelstool.$(OBJEXT) \
+	gimpmagnifyoptions.$(OBJEXT) gimpmagnifytool.$(OBJEXT) \
+	gimpmeasureoptions.$(OBJEXT) gimpmeasuretool.$(OBJEXT) \
+	gimpmoveoptions.$(OBJEXT) gimpmovetool.$(OBJEXT) \
+	gimppaintbrushtool.$(OBJEXT) gimppaintoptions-gui.$(OBJEXT) \
+	gimppainttool.$(OBJEXT) gimppenciltool.$(OBJEXT) \
+	gimpperspectivetool.$(OBJEXT) gimpposterizetool.$(OBJEXT) \
+	gimprectangleselecttool.$(OBJEXT) \
 	gimprectangleselectoptions.$(OBJEXT) \
 	gimprectangletool.$(OBJEXT) gimprectangleoptions.$(OBJEXT) \
-	gimprotatetool.$(OBJEXT) gimpscaletool.$(OBJEXT) \
-	gimpselectionoptions.$(OBJEXT) gimpselectiontool.$(OBJEXT) \
-	gimpsheartool.$(OBJEXT) gimpsmudgetool.$(OBJEXT) \
+	gimpregionselecttool.$(OBJEXT) gimprotatetool.$(OBJEXT) \
+	gimpscaletool.$(OBJEXT) gimpselectionoptions.$(OBJEXT) \
+	gimpselectiontool.$(OBJEXT) gimpsheartool.$(OBJEXT) \
+	gimpsmudgetool.$(OBJEXT) gimpsourcetool.$(OBJEXT) \
 	gimptextoptions.$(OBJEXT) gimptexttool.$(OBJEXT) \
 	gimpthresholdtool.$(OBJEXT) gimptool.$(OBJEXT) \
 	gimptoolcontrol.$(OBJEXT) gimptooloptions-gui.$(OBJEXT) \
@@ -140,6 +142,8 @@ BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
 BUILD_PRINT_TRUE = @BUILD_PRINT_TRUE@
 BUILD_PYTHON_FALSE = @BUILD_PYTHON_FALSE@
 BUILD_PYTHON_TRUE = @BUILD_PYTHON_TRUE@
+BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
+BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
 CATALOGS = @CATALOGS@
@@ -488,6 +492,8 @@ libapptools_a_sources = \
 	gimpblendtool.h			\
 	gimpbrightnesscontrasttool.c	\
 	gimpbrightnesscontrasttool.h	\
+	gimpbrushtool.c			\
+	gimpbrushtool.h			\
 	gimpbucketfilloptions.c		\
 	gimpbucketfilloptions.h		\
 	gimpbucketfilltool.c		\
@@ -540,6 +546,8 @@ libapptools_a_sources = \
 	gimpforegroundselecttool-undo.h	\
 	gimpfuzzyselecttool.c		\
 	gimpfuzzyselecttool.h		\
+	gimphealtool.c			\
+	gimphealtool.h			\
 	gimphistogramoptions.c		\
 	gimphistogramoptions.h		\
 	gimphuesaturationtool.c		\
@@ -588,6 +596,8 @@ libapptools_a_sources = \
 	gimprectangletool.h		\
 	gimprectangleoptions.c		\
 	gimprectangleoptions.h		\
+	gimpregionselecttool.c		\
+	gimpregionselecttool.h		\
 	gimprotatetool.c		\
 	gimprotatetool.h		\
 	gimpscaletool.c			\
@@ -600,6 +610,8 @@ libapptools_a_sources = \
 	gimpsheartool.h			\
 	gimpsmudgetool.c		\
 	gimpsmudgetool.h		\
+	gimpsourcetool.c		\
+	gimpsourcetool.h		\
 	gimptextoptions.c		\
 	gimptextoptions.h		\
 	gimptexttool.c			\
@@ -699,6 +711,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpblendoptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpblendtool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrightnesscontrasttool.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushtool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbucketfilloptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbucketfilltool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbycolorselecttool.Po@am__quote@
@@ -725,6 +738,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpforegroundselecttool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfreeselecttool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfuzzyselecttool.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphealtool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphistogramoptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphuesaturationtool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimagemapoptions.Po@am__quote@
@@ -749,12 +763,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprectangleselectoptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprectangleselecttool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprectangletool.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpregionselecttool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprotatetool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpscaletool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpselectionoptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpselectiontool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsheartool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsmudgetool.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsourcetool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptextoptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptexttool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpthresholdtool.Po@am__quote@

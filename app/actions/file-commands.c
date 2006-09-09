@@ -164,9 +164,9 @@ file_last_opened_cmd_callback (GtkAction *action,
       GError            *error = NULL;
 
       image = file_open_with_display (gimp, action_data_get_context (data),
-                                       NULL,
-                                       GIMP_OBJECT (imagefile)->name,
-                                       &status, &error);
+                                      NULL,
+                                      GIMP_OBJECT (imagefile)->name,
+                                      &status, &error);
 
       if (! image && status != GIMP_PDB_CANCEL)
         {
@@ -206,8 +206,9 @@ file_save_cmd_callback (GtkAction *action,
       save_proc = gimp_image_get_save_proc (image);
 
       if (uri && ! save_proc)
-        save_proc = file_utils_find_proc (image->gimp->plug_in_manager->save_procs,
-                                          uri);
+        save_proc =
+          file_utils_find_proc (image->gimp->plug_in_manager->save_procs,
+                                uri, NULL);
 
       if (! (uri && save_proc))
         {
@@ -237,8 +238,9 @@ file_save_cmd_callback (GtkAction *action,
             {
               gchar *filename = file_utils_uri_display_name (uri);
 
-              g_message (_("Saving '%s' failed:\n\n%s"),
-                         filename, error->message);
+              gimp_message (image->gimp, GIMP_PROGRESS (display),
+                            _("Saving '%s' failed:\n\n%s"),
+                            filename, error->message);
               g_clear_error (&error);
 
               g_free (filename);
@@ -311,17 +313,22 @@ file_revert_cmd_callback (GtkAction *action,
                           gpointer   data)
 {
   GimpDisplay *display;
+  GimpImage   *image;
   GtkWidget   *dialog;
   const gchar *uri;
   return_if_no_display (display, data);
 
-  uri = gimp_object_get_name (GIMP_OBJECT (display->image));
+  image = display->image;
 
-  dialog = g_object_get_data (G_OBJECT (display->image), REVERT_DATA_KEY);
+  uri = gimp_object_get_name (GIMP_OBJECT (image));
+
+  dialog = g_object_get_data (G_OBJECT (image), REVERT_DATA_KEY);
 
   if (! uri)
     {
-      g_message (_("Revert failed. No file name associated with this image."));
+      gimp_message (image->gimp, GIMP_PROGRESS (display),
+                    _("Revert failed. "
+                      "No file name associated with this image."));
     }
   else if (dialog)
     {
@@ -369,7 +376,7 @@ file_revert_cmd_callback (GtkAction *action,
                                    "on disk, you will lose all changes, "
                                    "including all undo information."));
 
-      g_object_set_data (G_OBJECT (display->image), REVERT_DATA_KEY, dialog);
+      g_object_set_data (G_OBJECT (image), REVERT_DATA_KEY, dialog);
 
       gtk_widget_show (dialog);
     }
@@ -543,10 +550,10 @@ file_revert_confirm_response (GtkWidget   *dialog,
       uri = gimp_object_get_name (GIMP_OBJECT (old_image));
 
       new_image = file_open_image (gimp, gimp_get_user_context (gimp),
-                                    GIMP_PROGRESS (display),
-                                    uri, uri, NULL,
-                                    GIMP_RUN_INTERACTIVE,
-                                    &status, NULL, &error);
+                                   GIMP_PROGRESS (display),
+                                   uri, uri, NULL,
+                                   GIMP_RUN_INTERACTIVE,
+                                   &status, NULL, &error);
 
       if (new_image)
         {
@@ -560,8 +567,9 @@ file_revert_confirm_response (GtkWidget   *dialog,
         {
           gchar *filename = file_utils_uri_display_name (uri);
 
-          g_message (_("Reverting to '%s' failed:\n\n%s"),
-                     filename, error->message);
+          gimp_message (gimp, GIMP_PROGRESS (display),
+                        _("Reverting to '%s' failed:\n\n%s"),
+                        filename, error->message);
           g_clear_error (&error);
 
           g_free (filename);

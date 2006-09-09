@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimppixelrgn</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
 <link rel="prev" href="libgimp-gimppixelfetcher.html" title="gimppixelfetcher">
 <link rel="next" href="libgimp-gimpregioniterator.html" title="gimpregioniterator">
-<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -32,21 +32,23 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpregioniterator.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2596592" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2648402" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppixelrgn"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle"><a name="top_of_page"></a>gimppixelrgn</span></h2>
+<h2>
+<a name="id2596592"></a><span class="refentrytitle">gimppixelrgn</span>
+</h2>
 <p>gimppixelrgn &#8212; Functions for operating on pixel regions.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<a name="synopsis"></a><h2>Synopsis</h2>
+<h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -113,7 +115,7 @@ gpointer    <a href="libgimp-gimppixelrgn.html#gimp-pixel-rgns-process">gimp_pix
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="desc"></a><h2>Description</h2>
+<a name="id2648402"></a><h2>Description</h2>
 <p>
 Functions for operating on pixel regions.  These functions provide
 fast ways of accessing and modifying portions of a drawable.
@@ -121,11 +123,11 @@ fast ways of accessing and modifying portions of a drawable.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="details"></a><h2>Details</h2>
+<a name="id2648419"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2608071"></a><h3>
+<a name="id2648430"></a><h3>
 <a name="GimpPixelRgn"></a>GimpPixelRgn</h3>
-<a class="indexterm" name="id2608082"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2648443"></a><pre class="programlisting">typedef struct {
   guchar       *data;          /* pointer to region data */
   GimpDrawable *drawable;      /* pointer to drawable */
   guint         bpp;           /* bytes per pixel */
@@ -143,9 +145,9 @@ fast ways of accessing and modifying portions of a drawable.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615063"></a><h3>
+<a name="id2648466"></a><h3>
 <a name="gimp-pixel-rgn-init"></a>gimp_pixel_rgn_init ()</h3>
-<a class="indexterm" name="id2615074"></a><pre class="programlisting">void        gimp_pixel_rgn_init             (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
+<a class="indexterm" name="id2648479"></a><pre class="programlisting">void        gimp_pixel_rgn_init             (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
                                              <a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
                                              gint x,
                                              gint y,
@@ -255,9 +257,9 @@ The <em class="parameter"><code>dirty</code></em> and <em class="parameter"><cod
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615443"></a><h3>
+<a name="id2641497"></a><h3>
 <a name="gimp-pixel-rgn-resize"></a>gimp_pixel_rgn_resize ()</h3>
-<a class="indexterm" name="id2615454"></a><pre class="programlisting">void        gimp_pixel_rgn_resize           (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
+<a class="indexterm" name="id2641508"></a><pre class="programlisting">void        gimp_pixel_rgn_resize           (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
                                              gint x,
                                              gint y,
                                              gint width,
@@ -307,9 +309,9 @@ Change the position and size of a previously initialized pixel region.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626836"></a><h3>
+<a name="id2660109"></a><h3>
 <a name="gimp-pixel-rgn-get-pixel"></a>gimp_pixel_rgn_get_pixel ()</h3>
-<a class="indexterm" name="id2626847"></a><pre class="programlisting">void        gimp_pixel_rgn_get_pixel        (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
+<a class="indexterm" name="id2660120"></a><pre class="programlisting">void        gimp_pixel_rgn_get_pixel        (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
                                              guchar *buf,
                                              gint x,
                                              gint y);</pre>
@@ -354,9 +356,9 @@ rgb drawable and 4 <span class="type">guchar</span> for rgb with alpha drawable.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627015"></a><h3>
+<a name="id2660288"></a><h3>
 <a name="gimp-pixel-rgn-get-row"></a>gimp_pixel_rgn_get_row ()</h3>
-<a class="indexterm" name="id2627025"></a><pre class="programlisting">void        gimp_pixel_rgn_get_row          (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
+<a class="indexterm" name="id2660298"></a><pre class="programlisting">void        gimp_pixel_rgn_get_row          (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
                                              guchar *buf,
                                              gint x,
                                              gint y,
@@ -406,9 +408,9 @@ Get several pixels of a region in a row. This function fills the buffer
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627198"></a><h3>
+<a name="id2660470"></a><h3>
 <a name="gimp-pixel-rgn-get-col"></a>gimp_pixel_rgn_get_col ()</h3>
-<a class="indexterm" name="id2627208"></a><pre class="programlisting">void        gimp_pixel_rgn_get_col          (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
+<a class="indexterm" name="id2660480"></a><pre class="programlisting">void        gimp_pixel_rgn_get_col          (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
                                              guchar *buf,
                                              gint x,
                                              gint y,
@@ -458,9 +460,9 @@ Get several pixels of a region's column. This function fills the buffer
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627383"></a><h3>
+<a name="id2660653"></a><h3>
 <a name="gimp-pixel-rgn-get-rect"></a>gimp_pixel_rgn_get_rect ()</h3>
-<a class="indexterm" name="id2627393"></a><pre class="programlisting">void        gimp_pixel_rgn_get_rect         (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
+<a class="indexterm" name="id2660664"></a><pre class="programlisting">void        gimp_pixel_rgn_get_rect         (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
                                              guchar *buf,
                                              gint x,
                                              gint y,
@@ -518,9 +520,9 @@ from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627623"></a><h3>
+<a name="id2660893"></a><h3>
 <a name="gimp-pixel-rgn-set-pixel"></a>gimp_pixel_rgn_set_pixel ()</h3>
-<a class="indexterm" name="id2627633"></a><pre class="programlisting">void        gimp_pixel_rgn_set_pixel        (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
+<a class="indexterm" name="id2660904"></a><pre class="programlisting">void        gimp_pixel_rgn_set_pixel        (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
                                              const guchar *buf,
                                              gint x,
                                              gint y);</pre>
@@ -561,9 +563,9 @@ Set the pixel at (<em class="parameter"><code>x</code></em>, <em class="paramete
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627765"></a><h3>
+<a name="id2661036"></a><h3>
 <a name="gimp-pixel-rgn-set-row"></a>gimp_pixel_rgn_set_row ()</h3>
-<a class="indexterm" name="id2627776"></a><pre class="programlisting">void        gimp_pixel_rgn_set_row          (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
+<a class="indexterm" name="id2661046"></a><pre class="programlisting">void        gimp_pixel_rgn_set_row          (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
                                              const guchar *buf,
                                              gint x,
                                              gint y,
@@ -613,9 +615,9 @@ from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627950"></a><h3>
+<a name="id2661220"></a><h3>
 <a name="gimp-pixel-rgn-set-col"></a>gimp_pixel_rgn_set_col ()</h3>
-<a class="indexterm" name="id2627960"></a><pre class="programlisting">void        gimp_pixel_rgn_set_col          (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
+<a class="indexterm" name="id2661230"></a><pre class="programlisting">void        gimp_pixel_rgn_set_col          (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
                                              const guchar *buf,
                                              gint x,
                                              gint y,
@@ -665,9 +667,9 @@ from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628135"></a><h3>
+<a name="id2661405"></a><h3>
 <a name="gimp-pixel-rgn-set-rect"></a>gimp_pixel_rgn_set_rect ()</h3>
-<a class="indexterm" name="id2628145"></a><pre class="programlisting">void        gimp_pixel_rgn_set_rect         (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
+<a class="indexterm" name="id2661416"></a><pre class="programlisting">void        gimp_pixel_rgn_set_rect         (<a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *pr,
                                              const guchar *buf,
                                              gint x,
                                              gint y,
@@ -725,9 +727,9 @@ Set all the pixel of the rectangle defined by <em class="parameter"><code>x</cod
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628376"></a><h3>
+<a name="id2661646"></a><h3>
 <a name="gimp-pixel-rgns-register"></a>gimp_pixel_rgns_register ()</h3>
-<a class="indexterm" name="id2628386"></a><pre class="programlisting">gpointer    gimp_pixel_rgns_register        (gint nrgns,
+<a class="indexterm" name="id2661656"></a><pre class="programlisting">gpointer    gimp_pixel_rgns_register        (gint nrgns,
                                              ...);</pre>
 <p>
 This is the varargs version of <a href="libgimp-gimppixelrgn.html#gimp-pixel-rgns-register2"><span class="type">gimp_pixel_rgns_register2</span></a>.</p>
@@ -760,9 +762,9 @@ This is the varargs version of <a href="libgimp-gimppixelrgn.html#gimp-pixel-rgn
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628478"></a><h3>
+<a name="id2661748"></a><h3>
 <a name="gimp-pixel-rgns-register2"></a>gimp_pixel_rgns_register2 ()</h3>
-<a class="indexterm" name="id2628488"></a><pre class="programlisting">gpointer    gimp_pixel_rgns_register2       (gint nrgns,
+<a class="indexterm" name="id2661759"></a><pre class="programlisting">gpointer    gimp_pixel_rgns_register2       (gint nrgns,
                                              <a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> **prs);</pre>
 <p>
 It takes a number of initialized regions of the same size and provides a
@@ -806,9 +808,9 @@ This function has to be used together with gimp_pixel_rgns_process in a loop.</p
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628594"></a><h3>
+<a name="id2661865"></a><h3>
 <a name="gimp-pixel-rgns-process"></a>gimp_pixel_rgns_process ()</h3>
-<a class="indexterm" name="id2628605"></a><pre class="programlisting">gpointer    gimp_pixel_rgns_process         (gpointer pri_ptr);</pre>
+<a class="indexterm" name="id2661875"></a><pre class="programlisting">gpointer    gimp_pixel_rgns_process         (gpointer pri_ptr);</pre>
 <p>
 This function update the regions registered previously with one of the
 <a href="libgimp-gimppixelrgn.html#gimp-pixel-rgns-register"><span class="type">gimp_pixel_rgns_register</span></a>* functions to their next tile.</p>

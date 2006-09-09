@@ -31,6 +31,7 @@
     <welcome xml:lang="es"><big>¡Bienvenido al programa de manipulación de imágenes de GNU!</big></welcome>
     <welcome xml:lang="et"><big>Tere tulemast GIMP'i !</big></welcome>
     <welcome xml:lang="eu"><big>Ongi etorri GNU Irudiak Manipulatzeko Programara!</big></welcome>
+    <welcome xml:lang="fi"><big>Tervetuloa käyttämään GIMPiä!</big></welcome>
     <welcome xml:lang="fr"><big>Bienvenue sur le « GNU Image Manipulation Program » !</big></welcome>
     <welcome xml:lang="gu"><big>GNU ચિત્ર જાળવણી કાર્યક્રમમાં તમારું સ્વાગત છે!</big></welcome>
     <welcome xml:lang="it"><big>Benvenuti in GIMP il programma di elaborazione immagini del progetto GNU!</big></welcome>
@@ -47,13 +48,14 @@
     <welcome xml:lang="vi"><big>Chúc mừng bạn dùng Chương trình Thao tác Ảnh GNU!</big></welcome>
     <thetip>GIMP allows you to undo most changes to the image, so feel free to experiment.</thetip>
     <thetip xml:lang="bg">GIMP позволява да се отменят повечето промени по изображението, така че можете спокойно да експериментирате.</thetip>
-    <thetip xml:lang="ca">El GIMP us permet desfer la majoria de canvis en la imatge, així que podeu experimentar sense patir.</thetip>
+    <thetip xml:lang="ca">El GIMP us permet desfer la majoria de canvis a la imatge, així que podeu experimentar sense patir.</thetip>
     <thetip xml:lang="cs">GIMP vám umožňuje vrátit zpět většinu změn obrázku, takže se nebojte experimentovat.</thetip>
     <thetip xml:lang="de">The GIMP kann die meisten Änderungen an einem Bild rückgängig machen - Sie können also frei nach Belieben experimentieren.</thetip>
     <thetip xml:lang="en_CA">GIMP allows you to undo most changes to the image, so feel free to experiment.</thetip>
     <thetip xml:lang="es">GIMP le permite deshacer la mayoría de los cambios a la imagen, así que siéntase libre para experimentar.</thetip>
     <thetip xml:lang="et">GIMP suudab tagasi võtta enamuse pildiga tehtud muudatusi, nii et võid end eksperimenteerides vabalt tunda.</thetip>
     <thetip xml:lang="eu">GIMP-ek irudiaren aldaketa gehienak desegin ditzakenez, jolastu irudiekin.</thetip>
+    <thetip xml:lang="fi">GIMP antaa mahdollisuuden perua suurimman osan kuviin tehdyistä muutoksista, joten kokeile vapaasti eri vaihtoehtoja.</thetip>
     <thetip xml:lang="fr">Gimp peut presque annuler tous les changements faits dans l'image, n'hésitez donc pas à expérimenter.</thetip>
     <thetip xml:lang="gu">GIMP તમને ચિત્રના મોટા ભાગના ફેરફારો રદ કરવા માટે પરવાનગી આપે છે, તેથી પરીક્ષણ કરવામાં મુક્તિ અનુભવો.</thetip>
     <thetip xml:lang="it">Con GIMP si può annullare la maggior parte dei cambiamenti effettuati alle immagini perciò sentitevi liberi di fare esperimenti!</thetip>
@@ -122,6 +124,7 @@
     <thetip xml:lang="es">GIMP utiliza capas para permitirle organizar su imagen. Piense en ellas como una pila de diapositivas o filtros, de modo que al mirar a través de ellos se ve una composición de su contenido.</thetip>
     <thetip xml:lang="et">GIMP kasutab pildiga töötamiseks kihte. Mõtle neist kui hulgast üksteise taha asetatud slaidist või filtrist, milledest korraga läbi vaadates moodustub tervikpilt.</thetip>
     <thetip xml:lang="eu">GIMPek geruzak erabiltzen ditu irudia antolatzen laguntzeko. Imajinatu diapositiba- edo iragazki-multzoak direla eta haietan barrena begiratuta haien edukia ikusten duzula.</thetip>
+    <thetip xml:lang="fi">GIMP käyttää tasoja joilla voit järjestellä kuvan sisällön. Voit ajatella tasoja pinona dioja tai suodattimia, joiden läpi katsottaessa näet niiden yhdessä tuottaman kuvan.</thetip>
     <thetip xml:lang="fr">GIMP utilise des calques pour vous aider à organiser votre image. Pensez à une pile de calques ou de transparents, de telle façon qu'en regardant à travers eux vous verriez une image composée de leurs contenus.</thetip>
     <thetip xml:lang="gu">GIMP તમને તમારું ચિત્ર આયોજિત કરવા માટે સ્તરો વાપરે છે. તેમના વિસે તકતીઓ અથવા ગાળકોના સ્ટેકની જેમ વિચારો, જેમ કે તેમના મારફતે જોવાનું તમને તેમના સમાવિષ્ટોનું જોડાણ બતાવે છે.</thetip>
     <thetip xml:lang="it">GIMP usa i livelli per organizzare l'immagine. Pensateli come una pila di diapositive o filtri, in modo che guardando attraverso di loro è possibile vedere una composizione del loro contenuto.</thetip>
@@ -176,7 +179,7 @@
   <tip level="beginner">
     <thetip>When you save an image to work on it again later, try using XCF, GIMP's native file format (use the file extension <tt>.xcf</tt>). This preserves the layers and every aspect of your work-in-progress. Once a project is completed, you can save it as JPEG, PNG, GIF, ...</thetip>
     <thetip xml:lang="bg">Когато запазвате изображение, над което ще работите отново по-късно, можете да изберете XCF - формата на GIMP (използвайки разширение <tt>.xcf</tt>). Това запазва слоевете и всичко от вашата работа. След като веднъж проекта е завършен, можете да го запазите като JPEG, PNG, GIF...</thetip>
-    <thetip xml:lang="ca">Quan deseu una imatge per tornar-hi a treballar més tard, feu servir el format XCF, el format de fitxer natiu del GIMP (utilitzeu la extensió de fitxer <tt>.xcf</tt>). Aquest format preserva totes les capes i elements de vostre feina. Un cop acabat el projecte, deseu-ho com a JPEG, PNG, GIF...</thetip>
+    <thetip xml:lang="ca">Quan deseu una imatge per tornar-hi a treballar més tard, feu servir el format XCF, el format de fitxer natiu del GIMP (utilitzeu l'extensió de fitxer <tt>.xcf</tt>). Aquest format preserva totes les capes i elements de vostre feina. Un cop acabat el projecte, deseu-ho com a JPEG, PNG, GIF...</thetip>
     <thetip xml:lang="cs">Když obrázek ukládáte pro pozdější práce, zkuste použít XCF, nativní formát souborů GIMPu (použijte příponu souboru <tt>.xcf</tt>). Tím zachováte vrstvy a každé aspekt své probíhající práce. Až je projekt hotov, můžete jej uložit jako JPEG, PNG, GIF, ...</thetip>
     <thetip xml:lang="de">Die meisten Bildformate können nicht mit mehreren Ebenen umgehen und speichern daher nur die aktive Ebene. Um alle Bildinformationen wie Ebenen, Kanäle und Hilfslinien abzuspeichern, steht das GIMP-eigene Format XCF (mit der Endung <tt>.xcf</tt>) zur Verfügung. Wenn Sie ein Projekt abgeschlossen haben können Sie es dann als JPEG, PNG, GIF usw. abspeichern.</thetip>
     <thetip xml:lang="en_CA">When you save an image to work on it again later, try using XCF, GIMP's native file format (use the file extension <tt>.xcf</tt>). This preserves the layers and every aspect of your work-in-progress. Once a project is completed, you can save it as JPEG, PNG, GIF, ...</thetip>
@@ -313,8 +316,8 @@
   <tip level="intermediate">
     <thetip>When using a drawing tool (Paintbrush, Airbrush, or Pencil), <tt>Shift</tt>-click will draw a straight line from your last drawing point to your current cursor position. If you also press <tt>Ctrl</tt>, the line will be constrained to 15 degree angles.</thetip>
     <thetip xml:lang="bg">Когато използвате инструмент за рисуване (Четка, Спрей или Молив), можете да натиснете със задържан <tt>Shift</tt> за да нарисувате права линия от последната точка на рисуване до новата позиция на показалеца. Ако също така задържите <tt>Ctrl</tt> линията ще бъде ограничена до ъгли от 15 градуса.</thetip>
-    <thetip xml:lang="ca">Quan utilitzeu una eina de dibuix (pincell, vaporitzador o llapis), <tt>majúscules</tt>-clic dibuixarà una línia recta des del darrer punt dibuixat fins la posició actual del cursor. Si, a més, premeu <tt>Ctrl</tt>, forçareu la línia en angles de 15 graus.</thetip>
-    <thetip xml:lang="cs">Při použití kreslicího nástroje (Štětec, Vzdušný štětec nebo Tužka), kliknutí se <tt>Shift</tt> nakreslí rovnou čáru z vašeho předchozího bodu kreslení na aktuální pozici kurzoru. Stisknete-li také <tt>Ctrl</tt>, bude čára omezena na násobky 15 stupňů.</thetip>
+    <thetip xml:lang="ca">Quan utilitzeu una eina de dibuix (pinzell, vaporitzador o llapis), <tt>majúscules</tt>-clic dibuixarà una línia recta des del darrer punt dibuixat fins la posició actual del cursor. Si, a més, premeu <tt>Ctrl</tt>, forçareu la línia en angles de 15 graus.</thetip>
+    <thetip xml:lang="cs">Při použití kreslicího nástroje (Štětec, Rozprašovač nebo Tužka), kliknutí se <tt>Shift</tt> nakreslí rovnou čáru z vašeho předchozího bodu kreslení na aktuální pozici kurzoru. Stisknete-li také <tt>Ctrl</tt>, bude čára omezena na násobky 15 stupňů.</thetip>
     <thetip xml:lang="da">Ved brug af et tegneværktøj (malerpensel, sprøjtepensel eller blyant) vil et klik med skiftetasten holdt nede tegne en ret linje fra det sidste tegnepunkt til den nuværende markørposition. Hvis du også trykker på <tt>Ctrl</tt>, tvinges linjen til at følge 15 graders vinkler.</thetip>
     <thetip xml:lang="de">Mit den Malwerkzeugen (Pinsel, Sprühpistole und Bleistift) kann eine gerade Linie zum letzten gezeichneten Punkt gezogen werden, indem beim Klicken die <tt>Umschalt</tt>-Taste gedrückt wird. Wird außerdem <tt>Strg</tt> gedrückt, wird der Winkel auf Vielfache von 15 Grad beschränkt.</thetip>
     <thetip xml:lang="en_CA">When using a drawing tool (Paintbrush, Airbrush, or Pencil), <tt>Shift</tt>-click will draw a straight line from your last drawing point to your current cursor position. If you also press <tt>Ctrl</tt>, the line will be constrained to 15 degree angles.</thetip>
@@ -352,7 +355,7 @@
   <tip level="intermediate">
     <thetip>You can use the middle mouse button to pan around the image, if it's larger than its display window.</thetip>
     <thetip xml:lang="bg">Можете да използвате средния бутон на мишката за да се движите по изображението, ако то не се събира в прозореца.</thetip>
-    <thetip xml:lang="ca">Podeu utilitzar el botó central del ratolí per a enquadrar la imatge, si aquesta és més gran que la finesta on es veu.</thetip>
+    <thetip xml:lang="ca">Podeu utilitzar el botó central del ratolí per a enquadrar la imatge, si aquesta és més gran que la finestra on es veu.</thetip>
     <thetip xml:lang="cs">Je-li obrázek větší než okno, ve kterém se zobrazuje, můžete se v obrázku posunovat pomocí prostředního tlačítka myši.</thetip>
     <thetip xml:lang="da">Du kan bruge den midterste museknap til at flytte rundt i billedet hvis det er større end dets fremvisningsvindue.</thetip>
     <thetip xml:lang="de">Passt das Bild nicht vollständig in das Fenster, kann der Ausschnitt mit der mittleren Maustaste verschoben werden.</thetip>
@@ -458,7 +461,7 @@
   <tip level="intermediate">
     <thetip>A floating selection must be anchored to a new layer or to the last active layer before doing other operations on the image. Click on the &quot;New Layer&quot; or the &quot;Anchor Layer&quot; button in the Layers dialog, or use the menus to do the same.</thetip>
     <thetip xml:lang="bg">Плаващата селекция трябва да бъде прикрепена към нов слой или последният активен такъв преди да се прави друго с изображението. Може да се използва щракване върху бутоните „Нов слой“ или „Фиксиране на плаващ слой“; в прозореца със слоевете или менютата.</thetip>
-    <thetip xml:lang="ca">Cal ancorar una selecció flotant en una nova capa o a l'última capa activa abans de fer altres operacions en la imatge. Cliqueu els botons &quot;Nova capa&quot; o &quot;Ancora la capa&quot; en el diàleg capes, o utilitzeu els menús per fer el mateix.</thetip>
+    <thetip xml:lang="ca">Cal ancorar una selecció flotant en una nova capa o a l'última capa activa abans de fer altres operacions a la imatge. Cliqueu els botons &quot;Nova capa&quot; o &quot;Ancora la capa&quot; en el diàleg capes, o utilitzeu els menús per fer el mateix.</thetip>
     <thetip xml:lang="cs">Plovoucí výběr musí být před prováděním jiných operací na obrázku ukotven k nové vrstvě nebo k poslední aktivní vrstvě. Klikněte na tlačítko &quot;Nová vrstva&quot; nebo &quot;Ukotvit vrstvu&quot; v dialogu Vrstvy, nebo to proveďte pomocí menu.</thetip>
     <thetip xml:lang="da">En flydende markering skal forankres til et nyt lag eller det sidste aktive lag før der kan foretages andre operationer på billedet. Klik på &quot;Nyt lag&quot;- eller &quot;Forankr lag&quot;-knappen i lagvinduet eller brug menuerne til at gøre det samme.</thetip>
     <thetip xml:lang="de">Eine schwebende Auswahl muss mit einer neuen Ebene oder der zuletzt aktiven  Ebene verankert werden, bevor Sie andere Funktionen auf das Bild anwenden können. Klicken Sie dazu auf die Schaltfläche »Neue Ebene« oder »Ebene verankern« im Ebenendialog, oder verwenden Sie dafür die Menüs.</thetip>
@@ -466,6 +469,7 @@
     <thetip xml:lang="en_GB">A floating selection must be anchored to a new layer or to the last active layer before doing other operations on the image. Click on the &quot;New Layer&quot; or the &quot;Anchor Layer&quot; button in the Layers dialogue, or use the menus to do the same.</thetip>
     <thetip xml:lang="es">Una selección flotante debe anclarse a una capa nueva o a la última capa activa antes de realizar otras operaciones sobre la imagen. Pulse sobre los botones «Capa nueva» o en el botón «Anclar capa» en el diálogo de «Capas» o utilice los menús para hacer lo mismo.</thetip>
     <thetip xml:lang="eu">Hautapen mugikorra geruza berri batean edo azken geruza aktiboan ainguratu behar da, irudian beste eragiketarik egin baino lehen. Sakatu &quot;Geruza berria&quot; edo &quot;Ainguratu geruza&quot; botoietan &quot;Geruzak&quot; elkarrizketa-koadroan, edo erabili menuak gauza bera egiteko.</thetip>
+    <thetip xml:lang="fi">Kelluva valinta täytyy ankkuroida joko uuteen tasoon tai viimeisimpään aktiiviseen tasoon ennen kuin muita toimintoja voidaan tehdä kuvalle Napsauta joko "Uusi taso"- tai "Ankkuroi taso"-painiketta tasoikkunassa tai tee sama toimenpide valikosta.</thetip>
     <thetip xml:lang="fr">Une sélection flottante doit être ancrée comme un nouveau calque ou au dernier calque actif avant de procéder à de nouvelles opérations sur l'image. Cliquez sur les boutons &quot; Nouveau calque &quot; ou &quot; Ancrer le calque &quot; dans la boite de dialogue des calques, ou utilisez le menu pour faire de même.</thetip>
     <thetip xml:lang="gu">ફ્લોટીંગ પસંદગી નવા સ્તરમાં અથવા છેલ્લા સક્રિય સ્તરમાં એન્કર થયેલ હોવી જ જોઈએ ચિત્ર પર અન્ય પ્રક્રિયાઓ કર્યા પહેલાં. સ્તરો સંવાદમાં &quot;નવું સ્તર&quot; અથવા &quot;એન્કર સ્તર&quot; પર ક્લિક કરો, અથવા એવું જ કરવા માટે મેનુઓ વાપરો.</thetip>
     <thetip xml:lang="hu">A lebegő kijelölést rögzíteni kell egy új rétegre vagy a legutóbbi aktív rétegre ahhoz, hogy további műveleteket végre lehessen hajtani a képen. Ez végrehajtható a Rétegek párbeszédablakban az &quot;Új réteg&quot; illetve a &quot;Réteg rögzítése&quot; gomb használatával vagy a menükkel.</thetip>
@@ -495,6 +499,7 @@
     <thetip xml:lang="es">GIMP soporta la compresión gzip al vuelo. Sólo añada <tt>.gz</tt> (o <tt>.bz2</tt>, si tiene instalado bzip2) al nombre de archivo y su imagen se guardará comprimida. Por supuesto la carga de imágenes comprimidas también funciona.</thetip>
     <thetip xml:lang="et">GIMP toetab gzip pakkimist lennult. Salvestamisel lisa faili nimele <tt>.gz</tt> (või <tt>.bz2</tt>, kui bzip2 on installitud) ja sinu pilt salvestatakse pakitult. Loomulikult GIMP ka avab pakitud pilte lennult.</thetip>
     <thetip xml:lang="eu">GIMPek gzip konprimatzea unean onartzen du. Fitxategi-izenari <tt>.gz</tt>  gehitu besterik ez duzu egin behar (edo <tt>.bz2</tt>, bzip2 instalatuta baduzu) eta irudia konprimituta gordeko da. Noski, konprimitutako irudiak ere karga daitezke.</thetip>
+    <thetip xml:lang="fi">GIMP tukee gzip-pakkausta lennosta. Lisää joko <tt>.gz</tt> tai <tt>.bz2</tt> tiedostonimeen ja kuva tallennetaan pakattuna. Toki GIMP myös avaa pakatut kuvat yhtä helposti.</thetip>
     <thetip xml:lang="fr">GIMP supporte la compresion gzip à la volée. Ajouter simplement l'extension <tt>.gz</tt> (ou <tt>.bz2</tt> si vous avez bzip2 d'installé) au nom de fichier et votre image sera compressée et sauvegardée. Bien sûr charger des images compressées fonctionne également.</thetip>
     <thetip xml:lang="gu">GIMP એ મુક્ત રીતે gzip સંકોચનને આધાર આપે છે. ફાઈલનામમાં ખાલી <tt>.gz</tt> (અથવા <tt>.bz2</tt>, જો તમે bzip2 સ્થાપિત કરેલ હોય) ઉમેરો અને તમારું ચિત્ર સંકોચાઈને સંગ્રહાશે. ખરેખર સંકુચિત ચિત્ર લાવવાનું કામ પણ કરશે.</thetip>
     <thetip xml:lang="it">GIMP supporta la compressione gzip al volo. Basta aggiungere <tt>.gz</tt> (o <tt>.bz2</tt>, se si è installato bzip2) al nome del file e la tua immagine sarà salvata compressa. Ovviamente funzionerà anche il caricamento di immagini compresse.</thetip>
@@ -578,7 +583,7 @@
   <tip level="intermediate">
     <thetip>You can adjust or move a selection by using <tt>Alt</tt>-drag. If this makes the window move, your window manager uses the <tt>Alt</tt> key already. Try pressing <tt>Shift</tt> at the same time.</thetip>
     <thetip xml:lang="bg">Можете да прецизирате или преместите селекция със <tt>Alt</tt> и влачене. Ако така се мести целият прозорец, мениджъра на прозорци вече използва клавиша<tt>Alt</tt>. Опитайте да задържите <tt>Shift</tt> едновременно.</thetip>
-    <thetip xml:lang="ca">Podeu ajustar i remplaçar una selecció utilitzant <tt>Alt</tt>-arrossega. Si això fa que es mogui la finestra, el vostre gestor de finestres ja utilitza la tecla <tt>Alt</tt>. Proveu de prémer <tt>majúscules</tt> al mateix temps.</thetip>
+    <thetip xml:lang="ca">Podeu ajustar i reemplaçar una selecció utilitzant <tt>Alt</tt>-arrossega. Si això fa que es mogui la finestra, el vostre gestor de finestres ja utilitza la tecla <tt>Alt</tt>. Proveu de prémer <tt>majúscules</tt> al mateix temps.</thetip>
     <thetip xml:lang="cs">Výběr můžete upravit a nahradit pomocí tažení s <tt>Alt</tt>. Pokud to hýbe oknem, klávesu <tt>Alt</tt> již používá váš manažer oken. Zkuste zároveň stisknout <tt>Shift</tt>.</thetip>
     <thetip xml:lang="da">Du kan justere og genplacere en markering ved at bruge <tt>Alt</tt>-træk. Hvis dette får vinduet til at flytte sig, bruger din vindueshåndtering allerede <tt>Alt</tt>-tasten. Prøv at trykke på skiftetasten på samme tid.</thetip>
     <thetip xml:lang="de">Sie können eine Auswahl anpassen oder verschieben, indem Sie beim Ziehen die <tt>Alt</tt>-Taste drücken. Falls dies dazu führt, dass sich Ihr Fenster bewegt, ist die  <tt>Alt</tt>-Taste bereits von Ihrem Fenster-Manager belegt. Versuchen Sie dann gleichzeitig die <tt>Umschalt</tt>-Taste zu drücken.</thetip>
@@ -823,6 +828,7 @@
     <thetip xml:lang="es">Si su pantalla está demasiado desordenada puede presionar <tt>Tab</tt> varias veces en la ventana de una imagen para ocultar o mostrar la barra de herramientas y otros diálogos.</thetip>
     <thetip xml:lang="et">Kui sinu ekraan on liiga segi paisatud, võid pildiaknas Tab klahvi vajutada. See peidab või toob esile tööriistakasti ja teised dialoogid.</thetip>
     <thetip xml:lang="eu">Pantaila beteegia badago, Tab tekla behin baino gehiagotan sakatu irudi-leihoan, tresna-laukia edo beste elkarrizketa-koadroak ezkutatzeko edo agertzeko.</thetip>
+    <thetip xml:lang="fi">Jos näytöllä on liikaa ikkunoita, voit painaa <tt>Sarkainta</tt> useita kertoja kuvaikkunassa, jolloin työkalulaatikko ja muut ikkunat suljetaan tai näytetään.</thetip>
     <thetip xml:lang="fr">Si votre écran est trop encombré, vous pouvez appuyer plusieurs fois sur la touche <tt>Tab</tt> dans une fenêtre d'image pour cacher ou montrer la boite d'outils et les autres dialogues.</thetip>
     <thetip xml:lang="gu">જો તમારી સ્ક્રીન ખૂબ ક્લટરવાળી હોય, તો તમે <tt>ટેબ</tt> ઘણી વખતે ચિત્ર વિન્ડોમાં દબાવી શકો સાધનબોક્સ અને અન્ય સંવાદો છુપાવવા અથવા બતાવવા માટે.</thetip>
     <thetip xml:lang="he">אם המסך עמוס מדי, יש באפשרותך ללחוץ על מקש <tt>Tab</tt> מספר פעמים בתוך חלון תמונה בכדי להסתיר או להציג את את תיבת הכלים וחלונות צפים אחרים.</thetip>
@@ -883,14 +889,14 @@
     <thetip xml:lang="sr@Latn">Možete prilagoditi oblast selekcije za nejasnu selekciju ako kliknete i prevlačite kursor levo i desno.</thetip>
     <thetip xml:lang="sv">Du kan justera markeringsintervallet för luddig markering genom att klicka och dra vänster och höger.</thetip>
     <thetip xml:lang="uk">Можна скорегувати ділянку вільного виділення шляхом натискання лівої клавіші миші та переміщенням вправо та вліво.</thetip>
-    <thetip xml:lang="vi">Bạn có thể điều chỉnh phạm vị lựa chọn cho tính năng chọn mờ bằng cách nhắp và kéo phía trái và phía phải.</thetip>
+    <thetip xml:lang="vi">Bạn có thể điều chỉnh phạm vi lựa chọn cho tính năng chọn mờ bằng cách nhắp và kéo phía trái và phía phải.</thetip>
     <thetip xml:lang="zh_CN">您可以点击并左右拖动鼠标来调整模糊选择的选区范围。</thetip>
     <thetip xml:lang="zh_TW">您可以調整模糊選擇區域的範圍，方法是按下滑鼠按鈕後向左或右拖曳。</thetip>
   </tip>
   <tip level="advanced">
     <thetip><tt>Shift</tt>-click on the eye icon in the Layers dialog to hide all layers but that one. <tt>Shift</tt>-click again to show all layers.</thetip>
     <thetip xml:lang="bg"><tt>Shift</tt>-щракване върху иконката с око в прозореца със слоевете ще скрие всички слоеве освен този. <tt>Shift</tt>-отново ще ги визуализира пак.</thetip>
-    <thetip xml:lang="ca">Premeu <tt>majúscules</tt>-clic en la icona ull del diàleg de capes per a amagar totes les capes menys una. Premeu <tt>majúscules</tt>-clic de nou per a mostrar-les totes.</thetip>
+    <thetip xml:lang="ca">Premeu <tt>majúscules</tt>-clic a la icona ull del diàleg de capes per a amagar totes les capes menys una. Premeu <tt>majúscules</tt>-clic de nou per a mostrar-les totes.</thetip>
     <thetip xml:lang="cs">Kliknutím se <tt>Shift</tt> na ikonu oka v dialogu Vrstvy skryjete všechny vrstvy kromě této. Opětovným kliknutím se <tt>Shift</tt> zobrazíte všechny vrstvy.</thetip>
     <thetip xml:lang="da">Hold skiftetasten nede og klik på øjeikonet i "Lag"-vinduet for at skjule alle lag pånær dette. Et klik igen viser alle lag.</thetip>
     <thetip xml:lang="de">Im Ebenendialog werden durch Mausklick auf das Augensymbol bei gedrückter <tt>Umschalt</tt>-Taste alle anderen Ebenen unsichtbar gemacht. Ein weiterer Klick bei gedrückter <tt>Umschalt</tt>-Taste lässt alle Ebenen wieder sichtbar werden.</thetip>
@@ -899,6 +905,7 @@
     <thetip xml:lang="es">Presione <tt>Mayús.</tt> y pulse sobre el icono del ojo en el diálogo de «Capas» para ocultar todas las capas menos la seleccionada. Presione <tt>Mayús.</tt> y pulse otra vez en él para mostrar todas las capas.</thetip>
     <thetip xml:lang="et"><tt>Shift</tt>-klõps silma ikoonil Kihtide dialoogis peidab kõik teised kihid peale selle kihi, mille silmakesel klõpsasid. Uuesti <tt>Shift</tt>-klõps ja näidatakse jälle kõiki kihte.</thetip>
     <thetip xml:lang="eu">Egin klik <tt>Shift</tt> tekla sakatuta "Geruzak" elkarrizketa-koadroko begiaren ikonoan, geruza hori ez beste guztiak ezkutatzeko.  Egin klik berriro <tt>Maius</tt> tekla sakatuta, geruza guztiak agertzeko.</thetip>
+    <thetip xml:lang="fi"><tt>Shift</tt>-napsautus silmänkuvaan tasoikkunassa piilottaa kaikki muut tasot paitsi napsautetun, ja <tt>Shift</tt>-napsautus uudestaan näyttää jälleen muutkin tasot.</thetip>
     <thetip xml:lang="fr"><tt>Maj</tt>-cliquez sur l'icone ½il dans le dialogue des calques pour cacher tous les calques sauf celui-là. <tt>Maj</tt>-cliquez à nouveau pour afficher tous les calques.</thetip>
     <thetip xml:lang="gu">સ્તરો સંવાદમાં આંખ ચિહ્ન પર <tt>Shift</tt>-ક્લિક બધા સ્તરોને છુપાવશે પરંતુ એકને નહિં. બધા સ્તરો ફરીથી બતાવવા માટે <tt>Shift</tt>-ક્લિક કરો.</thetip>
     <thetip xml:lang="hr"><tt>Shift</tt>-kliknite na sličicu oka u dijalogu sloja kako bi sakrili sve slojeve osim tog sloja. <tt>Shift</tt>-kliknite ponovno kako bi prikazali sve slojeve.</thetip>
@@ -936,6 +943,7 @@
     <thetip xml:lang="en_GB"><tt>Ctrl</tt>-click on the layer mask's preview in the Layers dialogue toggles the effect of the layer mask.</thetip>
     <thetip xml:lang="es">Presionando <tt>Ctrl</tt> y pulsando sobre la vista previa de la máscara de la capa en el diálogo de capas activa el efecto de la máscara de la capa.</thetip>
     <thetip xml:lang="eu">Egin klik <tt>Ctrl</tt> sakatuta, "Geruzak" elkarrizketa-koadroko geruza-maskararen aurrebistan geruza-maskararen efektua txandakatzeko.</thetip>
+    <thetip xml:lang="fi"><tt>Ctrl</tt>-napsautus tasoikkunan tasomaskin esikatselussa piilottaa ja näyttää tasomaskin efektin.</thetip>
     <thetip xml:lang="fr">Un <tt>Ctrl</tt>-clic sur l'aperçu d'un masque de calque dans le dialogue des calques active/désactive l'effet du masque de calque.</thetip>
     <thetip xml:lang="gu">સ્તરો સંવાદમાં સ્તર માસ્કનું પૂર્વદર્શન પર <tt>Ctrl</tt>-ક્લિક કરવાનું સ્તર માસ્કની અસર બદલે છે.</thetip>
     <thetip xml:lang="hr"><tt>Ctrl</tt>-kliknite na pregled maske sloja (layera) u dijalogu slojeva pod efekti maske sloja.</thetip>
@@ -973,6 +981,7 @@
     <thetip xml:lang="en_GB"><tt>Alt</tt>-click on the layer mask's preview in the Layers dialogue toggles viewing the mask directly.</thetip>
     <thetip xml:lang="es">Presionando <tt>Alt</tt> y pulsando sobre la vista previa de la máscara en el diálogo de capas activa la vista de la máscara directamente.</thetip>
     <thetip xml:lang="eu">Egin klik <tt>Alt</tt> sakatuta "Geruzak" elkarrizketa-koadroko geruza-maskararen aurrebistan, zuzenean maskara ikustea bai/ez jartzeko.</thetip>
+    <thetip xml:lang="fi"><tt>Alt</tt>-napsautus tasoikkunan tasomaskin esikatselussa piilottaa ja näyttää maskin.</thetip>
     <thetip xml:lang="fr">Un <tt>Alt</tt>-clic sur l'aperçu d'un masque de calque dans le dialogue des calques active/désactive l'affichage direct du masque.</thetip>
     <thetip xml:lang="gu">સ્તરોના સંવાદમાં સ્તર માસ્કના પૂર્વદર્શન પર <tt>Alt</tt>-ક્લિક કરવાનું માસ્કને સીધું જ બતાવવાનું બદલે છે.</thetip>
     <thetip xml:lang="hr"><tt>Alt</tt>-kliknite na pregled maske sloja (layera) u dijalogu slojeva gledajući direktno na masku.</thetip>
@@ -1049,6 +1058,7 @@
     <thetip xml:lang="es">Presionando <tt>Ctrl</tt> y pulsando con la herramienta de «Cubo de Relleno» para que ésta utilice el color de fondo en lugar del color de frente.</thetip>
     <thetip xml:lang="et"><tt>Ctrl</tt>-klõps ämbriga värvimise tööriistaga kasutab värvimiseks esiplaanivärvi asemel hoopis tagapõhjavärvi.</thetip>
     <thetip xml:lang="eu">Egin klik <tt>Ctrl</tt> sakatuta Bete tresnarekin, aurreko planoaren kolorearen ordez atzeko planoaren kolorea erabil dezan.</thetip>
+    <thetip xml:lang="fi"><tt>Ctrl</tt>-napsauta ämpäritäyttötyökalua, jos haluat täyttää taustavärillä edustavärin sijasta.</thetip>
     <thetip xml:lang="fr">Un <tt>Ctrl</tt>-clic avec l'outil remplissage et il utilisera la couleur d'arrière-plan au lieu de la couleur de premier-plan.</thetip>
     <thetip xml:lang="gu">બાલદીથી ભરો સાધન સાથે <tt>Ctrl</tt>-ક્લિક તેને અગ્ર ભાગના રંગની જગ્યાએ પાશ્વ ભાગનો રંગ વાપરે છે.</thetip>
     <thetip xml:lang="hr"><tt>Ctrl</tt>-kliknite s alatom Bucket Fill kako bi koristio boju pozadine umjesto boje prednjeg plana.</thetip>
@@ -1087,6 +1097,7 @@
     <thetip xml:lang="es">Presionando <tt>Ctrl</tt> mientras arrastra con la herramienta de «Rotación» limitará la rotación a ángulos de 15 grados.</thetip>
     <thetip xml:lang="et"><tt>Ctrl</tt>-lohistamine pööramise tööriistaga pöörab objekti 15 kraadiste nurkade kaupa.</thetip>
     <thetip xml:lang="eu">Biratze-moduan eraldatze-tresnarekin <tt>Ctrl</tt> sakatuta arrastatzen baduzu, 15 gradu biratuko da.</thetip>
+    <thetip xml:lang="fi"><tt>Ctrl</tt>-raahaus kiertotyökalulla rajaa kierron 15 asteen kulmiin.</thetip>
     <thetip xml:lang="fr">Un <tt>Ctrl</tt>-glissé avec l'outil rotation contraindra la rotation à des angles multiples de 15 degrés.</thetip>
     <thetip xml:lang="gu">ફેરવો સાધન સાથે <tt>Ctrl</tt>-ખેંચો ફેરવવાની ક્રિયાને ૧૫ ડિગ્રીના કોણે પરિમાણિત કરશે.</thetip>
     <thetip xml:lang="hu">Az elforgatási szög korlátozása 15 fokos lépcsőkben a Forgatás eszköz használatakor: húzás közben tartsa nyomva a <tt>Ctrl</tt> billentyűt.</thetip>
@@ -1144,7 +1155,7 @@
   <tip level="advanced">
     <thetip>If some of your scanned photos do not look colorful enough, you can easily improve their tonal range with the &quot;Auto&quot; button in the Levels tool (Layer-&gt;Colors-&gt;Levels). If there are any color casts, you can correct them with the Curves tool (Layer-&gt;Colors-&gt;Curves).</thetip>
     <thetip xml:lang="bg">Ако някои от сканираните изображения не изглеждат достатъчно цветни, можете лесно подобрите тоналността им с бутона „Автоматично“ на инструмента за нива (Слой-&gt;Цветове-&gt;Нива). Ако все още не ви харесва, можете да го коригирате със инструмента за криви (Слой-&gt;Цветове-&gt;Криви).</thetip>
-    <thetip xml:lang="ca">Si algunes de les fotos escanejades no tenen prou color, podeu millorar fàcilment el seu to amb el botó &quot;Automàtic&quot; en l'eina nivells (Capes-&gt;Colors-&gt;Nivells). Si hi ha algun color buit, el podeu corregir amb l'eina corbes (Capes-&gt;Colors-&gt;Corbes).</thetip>
+    <thetip xml:lang="ca">Si algunes de les fotos escanejades no tenen prou color, podeu millorar-ne fàcilment el to amb el botó &quot;Automàtic&quot; de l'eina nivells (Capes-&gt;Colors-&gt;Nivells). Si hi ha algun color buit, el podeu corregir amb l'eina corbes (Capes-&gt;Colors-&gt;Corbes).</thetip>
     <thetip xml:lang="cs">Jestliže některé vaše naskenované fotky nevypadají dost barevně, můžete jejich rozsah tónů snadno vylepšit tlačítkem &quot;Automaticky&quot; v nástroji Úrovně (Vrstva-&gt;Barvy-&gt;Úrovně). Případné barevné stíny můžete opravit nástrojem Křivky (Vrstva-&gt;Barvy-&gt;Křivky).</thetip>
     <thetip xml:lang="da">Hvis nogle af din indskannede fotografier ikke ser farverige nok ud, kan du let forbedre deres farvetoneinterval med &quot;Auto&quot;-knappen i niveauværktøjet (Lag-&gt;Farver-&gt;Niveauer). Hvis der er farveudblødninger, kan du rette dem med kurveværktøjet (Lag-&gt;Farver-&gt;Kurver).</thetip>
     <thetip xml:lang="de">Wenn einige Ihrer eingescannten Fotos nicht farbenfroh genug aussehen, können Sie einfach einen Farbtonabgleich mit der Schaltfläche »Automatisch« des Farbwerte-Werkzeugs ausführen (Ebene-&gt;Farben-&gt;Farbwerte). Falls es irgendwelche Farbstiche gibt, können Sie diese mit dem Farbkurven-Werkzeug korrigiert werden (Ebene-&gt;Farben-&gt;Farbkurven).</thetip>
@@ -1168,7 +1179,7 @@
     <thetip xml:lang="sk">Ak niektoré vaše naskenované fotografie sa vám nezdajú dostatočne farebné,môžete zlepšiť ich tonálny rozsah tlačítkom &quot;Automaticky&quot; v dialógu Úrovne (Nástroje-&gt;Farby-&gt;Úrovne). Prípadné farebné nádychy môžete opraviť nástrojom Krivky (Nástroje-&gt;Farby-&gt;Krivky).</thetip>
     <thetip xml:lang="sv">Om en del av dina inlästa bilder inte ser ut att vara tillräckligt färggranna kan du enkelt förbättra deras färgtonsintervall med knappen &quot;Auto&quot; i nivåverktyget (Lager-&gt;Färger-&gt;Nivåer). Om det finns några färgskiftningar kan du korrigera dem med kurvverktyget (Lager-&gt;Färger-&gt;Kurvor).</thetip>
     <thetip xml:lang="uk">Якщо відскановані зображення виглядають недостатньо кольоровими, їх тональний діапазон можна виправити за допомогою кнопки &quot;Авто&quot; у діалоговому вікні &quot;Рівні&quot; (Шар-&gt;Кольори-&gt;Рівні). Відтінки кольору можна скорегувати інструментом &quot;Криві&quot; (Шар-&gt;Кольори-&gt;Криві).</thetip>
-    <thetip xml:lang="vi">Nếu một số ảnh chụp đã quét của bạn không hình có đủ màu, bạn dễ dàng có thể tiến bộ phạm vị sắc màu với cái nút « Tự động » trong công cụ Cấp (Lớp → Màu → Cấp) Nếu có lỗi màu nào, có thể sửa nó dùng công cụ Cong (Lớp → Màu → Cong).</thetip>
+    <thetip xml:lang="vi">Nếu một số ảnh chụp đã quét của bạn không hình có đủ màu, bạn dễ dàng có thể tiến bộ phạm vi sắc màu với cái nút « Tự động » trong công cụ Cấp (Lớp → Màu → Cấp) Nếu có lỗi màu nào, có thể sửa nó dùng công cụ Cong (Lớp → Màu → Cong).</thetip>
     <thetip xml:lang="zh_CN">如果您扫描的一些照片看起来色彩不足，您可以使用色阶工具(图层-&gt;颜色-&gt;色阶)中的“自动”按钮轻松改进它们的色彩效果。如果有什么颜色损失，您可以用曲线工具(图层-&gt;颜色-&gt;曲线)把它们纠正回来。</thetip>
   </tip>
 

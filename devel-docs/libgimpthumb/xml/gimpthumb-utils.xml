@@ -4,7 +4,7 @@
 
 <refentry id="libgimpthumb-gimpthumb-utils">
 <refmeta>
-<refentrytitle id="top_of_page">gimpthumb-utils</refentrytitle>
+<refentrytitle role="top_of_page">gimpthumb-utils</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPTHUMB Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -57,15 +57,15 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-thumb-get-thumb-di
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-thumb-init" role="function"/>gimp_thumb_init ()</title>
 <indexterm><primary>gimp_thumb_init</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_thumb_init                 (const <link linkend="gchar">gchar</link> *creator,

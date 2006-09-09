@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpbrushselect">
 <refmeta>
-<refentrytitle id="top_of_page">gimpbrushselect</refentrytitle>
+<refentrytitle role="top_of_page">gimpbrushselect</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -62,15 +62,15 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-brush-select-new">
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Functions providing a brush selection dialog.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpRunBrushCallback" role="function"/>GimpRunBrushCallback ()</title>
 <indexterm><primary>GimpRunBrushCallback</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpRunBrushCallback)         (const <link linkend="gchar">gchar</link> *brush_name,

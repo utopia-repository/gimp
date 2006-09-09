@@ -20,9 +20,10 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
+
 #include "display-types.h"
 
-#include "core/gimp-utils.h"
 #include "core/gimpcontext.h"
 #include "core/gimpgrid.h"
 #include "core/gimpguide.h"
@@ -309,7 +310,6 @@ gimp_display_shell_draw_pen (GimpDisplayShell  *shell,
   GdkGC       *gc;
   GdkGCValues  values;
   GdkPoint    *coords;
-  gint         i;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
   g_return_if_fail (GIMP_IS_CONTEXT (context));
@@ -319,11 +319,9 @@ gimp_display_shell_draw_pen (GimpDisplayShell  *shell,
 
   coords = g_new (GdkPoint, MAX (2, num_points));
 
-  for (i = 0; i < num_points ; i++)
-    gimp_display_shell_transform_xy (shell,
-                                     points[i].x, points[i].y,
-                                     &coords[i].x, &coords[i].y,
-                                     FALSE);
+  gimp_display_shell_transform_points (shell,
+                                       (const gdouble *) points, coords,
+                                       num_points, FALSE);
 
   if (num_points == 1)
     {
@@ -445,26 +443,16 @@ gimp_display_shell_draw_vector (GimpDisplayShell *shell,
 
       coords = gimp_stroke_interpolate (stroke, 1.0, &closed);
 
-      if (coords && coords->len)
+      if (coords && coords->len > 0)
         {
-          GimpCoords *coord;
-          GdkPoint   *gdk_coords;
-          gint        i;
-          gint        sx, sy;
+          GdkPoint *gdk_coords = g_new (GdkPoint, coords->len);
 
-          gdk_coords = g_new (GdkPoint, coords->len);
-
-          for (i = 0; i < coords->len; i++)
-            {
-              coord = &g_array_index (coords, GimpCoords, i);
-
-              gimp_display_shell_transform_xy (shell,
-                                               coord->x, coord->y,
-                                               &sx, &sy,
+          gimp_display_shell_transform_coords (shell,
+                                               &g_array_index (coords,
+                                                               GimpCoords, 0),
+                                               gdk_coords,
+                                               coords->len,
                                                FALSE);
-              gdk_coords[i].x = sx;
-              gdk_coords[i].y = sy;
-            }
 
           gimp_canvas_draw_lines (GIMP_CANVAS (shell->canvas),
                                   GIMP_CANVAS_STYLE_XOR,

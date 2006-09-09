@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimplayer">
 <refmeta>
-<refentrytitle id="top_of_page">gimplayer</refentrytitle>
+<refentrytitle role="top_of_page">gimplayer</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -90,16 +90,16 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Operations on a single layer.
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-layer-new" role="function"/>gimp_layer_new ()</title>
 <indexterm><primary>gimp_layer_new</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_layer_new                  (<link linkend="gint32">gint32</link> image_ID,

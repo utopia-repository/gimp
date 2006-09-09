@@ -17,6 +17,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#define LOAD_PROC "file-bmp-load"
+#define SAVE_PROC "file-bmp-save"
+
 #define MAXCOLORS   256
 
 #define BitSet(byte, bit)        (((byte) & (bit)) == (bit))
@@ -30,15 +33,16 @@ GimpPDBStatusType  WriteBMP  (const gchar *filename,
                               gint32       image,
                               gint32       drawable_ID);
 
-extern       gboolean  interactive_bmp;
+extern       gboolean  interactive;
+extern       gboolean  lastvals;
 extern const gchar    *filename;
 
 extern struct Bitmap_File_Head_Struct
 {
-  gchar    zzMagic[2];	/* 00 "BM" */
+  gchar    zzMagic[2];  /* 00 "BM" */
   gulong   bfSize;      /* 02 */
-  gushort  zzHotX;	/* 06 */
-  gushort  zzHotY;	/* 08 */
+  gushort  zzHotX;      /* 06 */
+  gushort  zzHotY;      /* 08 */
   gulong   bfOffs;      /* 0A */
   gulong   biSize;      /* 0E */
 } Bitmap_File_Head;
@@ -55,12 +59,12 @@ extern struct Bitmap_Head_Struct
   gulong   biYPels;     /* 2A */
   gulong   biClrUsed;   /* 2E */
   gulong   biClrImp;    /* 32 */
-                        /* 36 */
+  guint32  masks[4];    /* 36 */
 } Bitmap_Head;
 
 typedef struct _Bitmap_Channel
 {
   guint32 mask;
   guint32 shiftin;
-  guint32 shiftout;
+  gfloat  max_value;
 } Bitmap_Channel;

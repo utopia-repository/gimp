@@ -569,6 +569,79 @@ gimp_get_accel_string (guint           key,
   return g_string_free (gstring, FALSE);
 }
 
+#define BUF_SIZE 100
+/**
+ * gimp_suggest_modifiers:
+ * @message: initial text for the message
+ * @modifiers: bit mask of modifiers that should be suggested
+ * @shift_format: optional format string for the Shift modifier
+ * @control_format: optional format string for the Ctrl modifier
+ * @alt_format: optional format string for the Alt modifier
+ *
+ * Utility function to build a message suggesting to use some
+ * modifiers for performing different actions (only Shift, Ctrl and
+ * Alt are currently supported).  If some of these modifiers are
+ * already active, they will not be suggested.  The optional format
+ * strings #shift_format, #control_format and #alt_format may be used
+ * to describe what the modifier will do.  They must contain a single
+ * '%%s' which will be replaced by the name of the modifier.  They
+ * can also be %NULL if the modifier name should be left alone.
+ *
+ * Return value: a newly allocated string containing the message.
+ **/
+gchar *
+gimp_suggest_modifiers (const gchar     *message,
+                        GdkModifierType  modifiers,
+                        const gchar     *shift_format,
+                        const gchar     *control_format,
+                        const gchar     *alt_format)
+{
+  gchar msg_buf[3][BUF_SIZE];
+  gint  num_msgs = 0;
+
+  if (modifiers & GDK_SHIFT_MASK)
+    {
+      if (shift_format && *shift_format)
+        g_snprintf (msg_buf[num_msgs], BUF_SIZE, shift_format,
+                    gimp_get_mod_name_shift ());
+      else
+        g_strlcpy (msg_buf[num_msgs], gimp_get_mod_name_shift (), BUF_SIZE);
+      num_msgs++;
+    }
+  if (modifiers & GDK_CONTROL_MASK)
+    {
+      if (control_format && *control_format)
+        g_snprintf (msg_buf[num_msgs], BUF_SIZE, control_format,
+                    gimp_get_mod_name_control ());
+      else
+        g_strlcpy (msg_buf[num_msgs], gimp_get_mod_name_control (), BUF_SIZE);
+      num_msgs++;
+    }
+  if (modifiers & GDK_MOD1_MASK)
+    {
+      if (alt_format && *alt_format)
+        g_snprintf (msg_buf[num_msgs], BUF_SIZE, alt_format,
+                    gimp_get_mod_name_alt ());
+      else
+        g_strlcpy (msg_buf[num_msgs], gimp_get_mod_name_alt (), BUF_SIZE);
+      num_msgs++;
+    }
+  /* This convoluted way to build the message using multiple format strings
+   * tries to make the messages easier to translate to other languages.
+   */
+  if (num_msgs == 1)
+    return g_strdup_printf (_("%s (try %s)"), message,
+                            msg_buf[0]);
+  else if (num_msgs == 2)
+    return g_strdup_printf (_("%s (try %s, %s)"), message,
+                            msg_buf[0], msg_buf[1]);
+  else if (num_msgs == 3)
+    return g_strdup_printf (_("%s (try %s, %s, %s)"), message,
+                            msg_buf[0], msg_buf[1], msg_buf[2]);
+  else
+    return g_strdup (message);
+}
+#undef BUF_SIZE
 
 /**
  * gimp_get_screen_resolution:
@@ -830,7 +903,7 @@ gimp_text_buffer_save (GtkTextBuffer  *buffer,
   GtkTextIter  start_iter;
   GtkTextIter  end_iter;
   gint         fd;
-  gchar              *text_contents;
+  gchar       *text_contents;
 
   g_return_val_if_fail (GTK_IS_TEXT_BUFFER (buffer), FALSE);
   g_return_val_if_fail (filename != NULL, FALSE);
@@ -993,4 +1066,35 @@ gimp_widget_set_accel_help (GtkWidget *widget,
 
       g_free (tooltip);
     }
+}
+
+void
+gimp_show_message_dialog (GtkWidget       *parent,
+                          GtkMessageType   type,
+                          const gchar     *format,
+                          ...)
+{
+  GtkWidget *dialog;
+  gchar     *message;
+  va_list    args;
+
+  g_return_if_fail (GTK_IS_WIDGET (parent));
+  g_return_if_fail (format != NULL);
+
+  va_start (args, format);
+  message = g_strdup_vprintf (format, args);
+  va_end (args);
+
+  dialog =
+    gtk_message_dialog_new (GTK_WINDOW (gtk_widget_get_toplevel (parent)),
+                            GTK_DIALOG_DESTROY_WITH_PARENT,
+                            type, GTK_BUTTONS_OK,
+                            message);
+  g_free (message);
+
+  g_signal_connect (dialog, "response",
+                    G_CALLBACK (gtk_widget_destroy),
+                    NULL);
+
+  gtk_widget_show (dialog);
 }

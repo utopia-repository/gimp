@@ -4,7 +4,7 @@
 
 <refentry id="GimpIntComboBox">
 <refmeta>
-<refentrytitle id="top_of_page">GimpIntComboBox</refentrytitle>
+<refentrytitle role="top_of_page">GimpIntComboBox</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -54,8 +54,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -73,8 +73,8 @@
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpIntComboBox implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>,  <link linkend="GtkCellEditable">GtkCellEditable</link> and  <link linkend="GtkCellLayout">GtkCellLayout</link>.</para>
@@ -82,8 +82,8 @@ GimpIntComboBox implements
 </refsect1>
 
 
-<refsect1 id="properties">
-<title id="properties.title">Properties</title>
+<refsect1 role="properties">
+<title role="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpIntComboBox--ellipsize">ellipsize</link>&quot;            <link linkend="PangoEllipsizeMode">PangoEllipsizeMode</link>    : Read / Write
@@ -92,15 +92,15 @@ GimpIntComboBox implements
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 A widget providing a popup menu of integer values (e.g. enums).
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpIntComboBox-struct" role="struct"/>GimpIntComboBox</title>
 <indexterm><primary>GimpIntComboBox</primary></indexterm><programlisting>typedef struct _GimpIntComboBox GimpIntComboBox;</programlisting>
@@ -359,8 +359,8 @@ sensitivity to be updated.</para>
 </para></refsect2>
 
 </refsect1>
-<refsect1 id="property_details">
-<title id="property_details.title">Property Details</title>
+<refsect1 role="property_details">
+<title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpIntComboBox--ellipsize"/>The &quot;<literal>ellipsize</literal>&quot; property</title>
 <indexterm role="GIMP 2.4"><primary>GimpIntComboBox:ellipsize</primary></indexterm><programlisting>  &quot;ellipsize&quot;            <link linkend="PangoEllipsizeMode">PangoEllipsizeMode</link>    : Read / Write</programlisting>
 <para>

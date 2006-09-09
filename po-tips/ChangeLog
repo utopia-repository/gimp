@@ -1,3 +1,21 @@
+2006-09-06  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+	Joaquim Perez <noguer@gmail.com>.
+
+2006-08-30  Nickolay V. Shmyrev  <nshmyrev@yandex.ru>
+	
+	* ru.po: Updated Russian translation by
+	Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+
+2006-08-17  Ilkka Tuohela  <hile@iki.fi>
+
+	* fi.po: Updated Finnish translation.
+
+2006-07-27  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: exterminating "Vzdušný štětec".
+
 2006-06-10  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
 
 	* mk.po: change erroneous "&qt"s to "&gt".

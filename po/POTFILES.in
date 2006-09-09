@@ -196,6 +196,7 @@ app/file/file-save.c
 app/file/file-utils.c
 
 app/gui/gui.c
+app/gui/gui-message.c
 app/gui/session.c
 app/gui/splash.c
 app/gui/themes.c
@@ -207,6 +208,7 @@ app/paint/gimpbrushcore.c
 app/paint/gimpclone.c
 app/paint/gimpconvolve.c
 app/paint/gimpdodgeburn.c
+app/paint/gimpheal.c
 app/paint/gimperaser.c
 app/paint/gimpink.c
 app/paint/gimppaintbrush.c
@@ -220,12 +222,9 @@ app/pdb/color_cmds.c
 app/pdb/drawable_cmds.c
 app/pdb/drawable_transform_cmds.c
 app/pdb/edit_cmds.c
-app/pdb/gimp-pdb.c
 app/pdb/gimppdb-query.c
 app/pdb/gimppdb.c
-app/pdb/gimppluginprocedure.c
 app/pdb/gimpprocedure.c
-app/pdb/gimptemporaryprocedure.c
 app/pdb/guides_cmds.c
 app/pdb/image_cmds.c
 app/pdb/layer_cmds.c
@@ -239,9 +238,11 @@ app/pdb/vectors_cmds.c
 
 app/plug-in/gimpenvirontable.c
 app/plug-in/gimpinterpreterdb.c
-app/plug-in/gimppluginmanager.c
-app/plug-in/gimppluginmanager-call.c
 app/plug-in/gimpplugin.c
+app/plug-in/gimppluginmanager-call.c
+app/plug-in/gimppluginmanager.c
+app/plug-in/gimppluginprocedure.c
+app/plug-in/gimptemporaryprocedure.c
 app/plug-in/plug-in-enums.c
 app/plug-in/plug-in-rc.c
 
@@ -283,6 +284,7 @@ app/tools/gimpforegroundselectoptions.c
 app/tools/gimpforegroundselecttool.c
 app/tools/gimpfreeselecttool.c
 app/tools/gimpfuzzyselecttool.c
+app/tools/gimphealtool.c
 app/tools/gimphistogramoptions.c
 app/tools/gimphuesaturationtool.c
 app/tools/gimpimagemaptool.c
@@ -306,6 +308,7 @@ app/tools/gimprectangleoptions.c
 app/tools/gimprectangleselectoptions.c
 app/tools/gimprectangleselecttool.c
 app/tools/gimprectangletool.c
+app/tools/gimpregionselecttool.c
 app/tools/gimprotatetool.c
 app/tools/gimpscaletool.c
 app/tools/gimpselectionoptions.c

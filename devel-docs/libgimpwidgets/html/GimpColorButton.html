@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpColorButton</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="prev" href="GimpColorArea.html" title="GimpColorArea">
 <link rel="next" href="GimpColorHexEntry.html" title="GimpColorHexEntry">
-<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -33,27 +33,31 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpColorHexEntry.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2565487" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#desc" class="shortcut">Description</a>
+                  <a href="#id2598272" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#object_hierarchy" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2599935" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#properties" class="shortcut">Properties</a>
+                  <a href="#id2600002" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#signal_proto" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id2600023" class="shortcut">Properties</a>
+                  &#160;|&#160;
+                  <a href="#id2598229" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpColorButton"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpColorButton</span></h2>
+<h2>
+<a name="id2565487"></a><span class="refentrytitle">GimpColorButton</span>
+</h2>
 <p>GimpColorButton &#8212; Widget for selecting a color from a simple button.</p>
 </td>
 <td valign="top" align="right"><img src="gimp-color-button.png"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<a name="synopsis"></a><h2>Synopsis</h2>
+<h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -84,7 +88,7 @@ void        <a href="GimpColorButton.html#gimp-color-button-set-type">gimp_color
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="object_hierarchy"></a><h2>Object Hierarchy</h2>
+<a name="id2599935"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -99,13 +103,13 @@ void        <a href="GimpColorButton.html#gimp-color-button-set-type">gimp_color
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="impl_interfaces"></a><h2>Implemented Interfaces</h2>
+<a name="id2600002"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorButton implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="properties"></a><h2>Properties</h2>
+<a name="id2600023"></a><h2>Properties</h2>
 <pre class="synopsis">
 
   "<a href="GimpColorButton.html#GimpColorButton--color">color</a>"                <a
@@ -117,7 +121,7 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="signal_proto"></a><h2>Signals</h2>
+<a name="id2598229"></a><h2>Signals</h2>
 <pre class="synopsis">
 
 "<a href="GimpColorButton.html#GimpColorButton-color-changed">color-changed</a>"
@@ -126,7 +130,7 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="desc"></a><h2>Description</h2>
+<a name="id2598272"></a><h2>Description</h2>
 <p>
 This widget provides a simple button with a preview showing the
 color.
@@ -139,20 +143,20 @@ color, the "color_changed" signal is emitted.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="details"></a><h2>Details</h2>
+<a name="id2598297"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2528641"></a><h3>
+<a name="id2598308"></a><h3>
 <a name="GimpColorButton-struct"></a>GimpColorButton</h3>
-<a class="indexterm" name="id2528652"></a><pre class="programlisting">typedef struct _GimpColorButton GimpColorButton;</pre>
+<a class="indexterm" name="id2598319"></a><pre class="programlisting">typedef struct _GimpColorButton GimpColorButton;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2528668"></a><h3>
+<a name="id2598336"></a><h3>
 <a name="gimp-color-button-new"></a>gimp_color_button_new ()</h3>
-<a class="indexterm" name="id2528680"></a><pre class="programlisting">GtkWidget*  gimp_color_button_new           (const gchar *title,
+<a class="indexterm" name="id2598347"></a><pre class="programlisting">GtkWidget*  gimp_color_button_new           (const gchar *title,
                                              gint width,
                                              gint height,
                                              const <a
@@ -217,9 +221,9 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2565360"></a><h3>
+<a name="id2592906"></a><h3>
 <a name="gimp-color-button-set-color"></a>gimp_color_button_set_color ()</h3>
-<a class="indexterm" name="id2565371"></a><pre class="programlisting">void        gimp_color_button_set_color     (<a href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a> *button,
+<a class="indexterm" name="id2592917"></a><pre class="programlisting">void        gimp_color_button_set_color     (<a href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a> *button,
                                              const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
@@ -250,9 +254,9 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2565468"></a><h3>
+<a name="id2593014"></a><h3>
 <a name="gimp-color-button-get-color"></a>gimp_color_button_get_color ()</h3>
-<a class="indexterm" name="id2565480"></a><pre class="programlisting">void        gimp_color_button_get_color     (<a href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a> *button,
+<a class="indexterm" name="id2593025"></a><pre class="programlisting">void        gimp_color_button_get_color     (<a href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a> *button,
                                              <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
@@ -283,9 +287,9 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2565572"></a><h3>
+<a name="id2593117"></a><h3>
 <a name="gimp-color-button-set-update"></a>gimp_color_button_set_update ()</h3>
-<a class="indexterm" name="id2569926"></a><pre class="programlisting">void        gimp_color_button_set_update    (<a href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a> *button,
+<a class="indexterm" name="id2603024"></a><pre class="programlisting">void        gimp_color_button_set_update    (<a href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a> *button,
                                              gboolean continuous);</pre>
 <p>
 When set to <span class="type">TRUE</span>, the <em class="parameter"><code>button</code></em> will emit the "color-changed"
@@ -314,9 +318,9 @@ dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570014"></a><h3>
+<a name="id2603112"></a><h3>
 <a name="gimp-color-button-get-update"></a>gimp_color_button_get_update ()</h3>
-<a class="indexterm" name="id2570026"></a><pre class="programlisting">gboolean    gimp_color_button_get_update    (<a href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a> *button);</pre>
+<a class="indexterm" name="id2603124"></a><pre class="programlisting">gboolean    gimp_color_button_get_update    (<a href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a> *button);</pre>
 <p>
 Returns the color button's <em class="parameter"><code>continuous_update</code></em> property.</p>
 <p>
@@ -342,9 +346,9 @@ Returns the color button's <em class="parameter"><code>continuous_update</code><
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570105"></a><h3>
+<a name="id2603204"></a><h3>
 <a name="gimp-color-button-has-alpha"></a>gimp_color_button_has_alpha ()</h3>
-<a class="indexterm" name="id2570117"></a><pre class="programlisting">gboolean    gimp_color_button_has_alpha     (<a href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a> *button);</pre>
+<a class="indexterm" name="id2603215"></a><pre class="programlisting">gboolean    gimp_color_button_has_alpha     (<a href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a> *button);</pre>
 <p>
 Checks whether the <em class="parameter"><code>buttons</code></em> shows transparency information.</p>
 <p>
@@ -371,9 +375,9 @@ otherwise.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570216"></a><h3>
+<a name="id2603314"></a><h3>
 <a name="gimp-color-button-set-type"></a>gimp_color_button_set_type ()</h3>
-<a class="indexterm" name="id2570228"></a><pre class="programlisting">void        gimp_color_button_set_type      (<a href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a> *button,
+<a class="indexterm" name="id2603326"></a><pre class="programlisting">void        gimp_color_button_set_type      (<a href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a> *button,
                                              <a href="GimpColorArea.html#GimpColorAreaType">GimpColorAreaType</a> type);</pre>
 <p>
 Sets the <em class="parameter"><code>button</code></em> to the given <em class="parameter"><code>type</code></em>. See also <a href="GimpColorArea.html#gimp-color-area-set-type"><code class="function">gimp_color_area_set_type()</code></a>.</p>
@@ -400,11 +404,11 @@ Sets the <em class="parameter"><code>button</code></em> to the given <em class="
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="property_details"></a><h2>Property Details</h2>
+<a name="id2603434"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2570346"></a><h3>
+<a name="id2603445"></a><h3>
 <a name="GimpColorButton--color"></a>The "<code class="literal">color</code>" property</h3>
-<a class="indexterm" name="id2570360"></a><pre class="programlisting">  "color"                <a
+<a class="indexterm" name="id2603459"></a><pre class="programlisting">  "color"                <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a>               : Read / Write / Construct</pre>
 <p>
@@ -417,9 +421,9 @@ The color displayed in the button's color area.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570392"></a><h3>
+<a name="id2603491"></a><h3>
 <a name="GimpColorButton--continuous-update"></a>The "<code class="literal">continuous-update</code>" property</h3>
-<a class="indexterm" name="id2570408"></a><pre class="programlisting">  "continuous-update"    gboolean              : Read / Write / Construct</pre>
+<a class="indexterm" name="id2603507"></a><pre class="programlisting">  "continuous-update"    gboolean              : Read / Write / Construct</pre>
 <p>
 The update policy of the color button.</p>
 <p>
@@ -431,9 +435,9 @@ The update policy of the color button.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570444"></a><h3>
+<a name="id2603542"></a><h3>
 <a name="GimpColorButton--title"></a>The "<code class="literal">title</code>" property</h3>
-<a class="indexterm" name="id2570457"></a><pre class="programlisting">  "title"                gchararray            : Read / Write / Construct Only</pre>
+<a class="indexterm" name="id2603556"></a><pre class="programlisting">  "title"                gchararray            : Read / Write / Construct Only</pre>
 <p>
 The title to be used for the color selection dialog.</p>
 <p>
@@ -445,9 +449,9 @@ The title to be used for the color selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570494"></a><h3>
+<a name="id2603592"></a><h3>
 <a name="GimpColorButton--type"></a>The "<code class="literal">type</code>" property</h3>
-<a class="indexterm" name="id2570507"></a><pre class="programlisting">  "type"                 <a href="GimpColorArea.html#GimpColorAreaType">GimpColorAreaType</a>     : Read / Write / Construct</pre>
+<a class="indexterm" name="id2603606"></a><pre class="programlisting">  "type"                 <a href="GimpColorArea.html#GimpColorAreaType">GimpColorAreaType</a>     : Read / Write / Construct</pre>
 <p>
 The type of the button's color area.</p>
 <p>
@@ -459,11 +463,11 @@ The type of the button's color area.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="signals"></a><h2>Signal Details</h2>
+<a name="id2603644"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2570556"></a><h3>
+<a name="id2603655"></a><h3>
 <a name="GimpColorButton-color-changed"></a>The "color-changed" signal</h3>
-<a class="indexterm" name="id2570566"></a><pre class="programlisting">void        user_function                  (<a href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a> *gimpcolorbutton,
+<a class="indexterm" name="id2603664"></a><pre class="programlisting">void        user_function                  (<a href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a> *gimpcolorbutton,
                                             gpointer         user_data)            : Run first</pre>
 <p>
 
@@ -488,7 +492,7 @@ The type of the button's color area.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2570636"></a><h2>See Also</h2>
+<a name="id2603734"></a><h2>See Also</h2>
 <p>
 <span class="type">libgimpcolor-gimpcolorspace</span>
 </p>

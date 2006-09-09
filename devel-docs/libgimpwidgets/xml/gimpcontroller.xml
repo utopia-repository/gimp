@@ -4,7 +4,7 @@
 
 <refentry id="GimpController">
 <refmeta>
-<refentrytitle id="top_of_page">GimpController</refentrytitle>
+<refentrytitle role="top_of_page">GimpController</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -41,8 +41,8 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-controller-get-eve
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -53,8 +53,8 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-controller-get-eve
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpController implements
  <link linkend="GimpConfigInterface">GimpConfigInterface</link>.</para>
@@ -62,8 +62,8 @@ GimpController implements
 </refsect1>
 
 
-<refsect1 id="properties">
-<title id="properties.title">Properties</title>
+<refsect1 role="properties">
+<title role="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpController--name">name</link>&quot;                 <link linkend="gchararray">gchararray</link>            : Read / Write / Construct
@@ -71,8 +71,8 @@ GimpController implements
 </synopsis>
 </refsect1>
 
-<refsect1 id="signal_proto">
-<title id="signal_proto.title">Signals</title>
+<refsect1 role="signal_proto">
+<title role="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpController-event">event</link>&quot;     <link linkend="gboolean">gboolean</link>    user_function      (<link linkend="GimpController">GimpController</link> *gimpcontroller,
@@ -82,15 +82,15 @@ GimpController implements
 </refsect1>
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 An abstract interface for implementing arbitrary input controllers.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpControllerEventType" role="enum"/>enum GimpControllerEventType</title>
 <indexterm><primary>GimpControllerEventType</primary></indexterm><programlisting>typedef enum
@@ -240,8 +240,8 @@ An abstract interface for implementing arbitrary input controllers.
 </variablelist></refsect2>
 
 </refsect1>
-<refsect1 id="property_details">
-<title id="property_details.title">Property Details</title>
+<refsect1 role="property_details">
+<title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpController--name"/>The &quot;<literal>name</literal>&quot; property</title>
 <indexterm><primary>GimpController:name</primary></indexterm><programlisting>  &quot;name&quot;                 <link linkend="gchararray">gchararray</link>            : Read / Write / Construct</programlisting>
 <para></para><para>Default value: "Unnamed Controller"</para>
@@ -253,8 +253,8 @@ An abstract interface for implementing arbitrary input controllers.
 
 </refsect1>
 
-<refsect1 id="signals">
-<title id="signals.title">Signal Details</title>
+<refsect1 role="signals">
+<title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpController-event"/>The &quot;event&quot; signal</title>
 <indexterm><primary>GimpController::event</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    user_function                  (<link linkend="GimpController">GimpController</link> *gimpcontroller,
                                             <link linkend="gpointer">gpointer</link>        arg1,

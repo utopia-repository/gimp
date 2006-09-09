@@ -1,5 +1,5 @@
-/* The GIMP -- an image manipulation program
- * Copyright (C) 1995 Spencer Kimball and Peter Mattis
+/* The GIMP -- an image manipulation program Copyright (C) 1995
+ * Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ struct _GimpStatusbarMsg
 
 static void     gimp_statusbar_progress_iface_init (GimpProgressInterface *iface);
 
-static void     gimp_statusbar_destroy            (GtkObject         *object);
+static void     gimp_statusbar_finalize           (GObject           *object);
 
 static GimpProgress *
                 gimp_statusbar_progress_start     (GimpProgress      *progress,
@@ -97,10 +97,10 @@ G_DEFINE_TYPE_WITH_CODE (GimpStatusbar, gimp_statusbar, GTK_TYPE_HBOX,
 static void
 gimp_statusbar_class_init (GimpStatusbarClass *klass)
 {
-  GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
+  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  object_class->destroy = gimp_statusbar_destroy;
+  object_class->finalize = gimp_statusbar_finalize;
 
   gtk_widget_class_install_style_property (widget_class,
                                            g_param_spec_enum ("shadow-type",
@@ -205,12 +205,12 @@ gimp_statusbar_init (GimpStatusbar *statusbar)
    *  next call the resize doesn't seem to happen any longer.
    */
 
-  gtk_progress_bar_set_text (GTK_PROGRESS_BAR (statusbar->progressbar),
-                             "GIMP");
+  gtk_progress_bar_set_text (GTK_PROGRESS_BAR (statusbar->progressbar), "GIMP");
 
+  statusbar->context_ids    = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                     g_free, NULL);
   statusbar->seq_context_id = 1;
   statusbar->messages       = NULL;
-  statusbar->keys           = NULL;
 }
 
 static void
@@ -226,7 +226,7 @@ gimp_statusbar_progress_iface_init (GimpProgressInterface *iface)
 }
 
 static void
-gimp_statusbar_destroy (GtkObject *object)
+gimp_statusbar_finalize (GObject *object)
 {
   GimpStatusbar *statusbar = GIMP_STATUSBAR (object);
   GSList        *list;
@@ -242,13 +242,10 @@ gimp_statusbar_destroy (GtkObject *object)
   g_slist_free (statusbar->messages);
   statusbar->messages = NULL;
 
-  for (list = statusbar->keys; list; list = list->next)
-    g_free (list->data);
+  g_hash_table_destroy (statusbar->context_ids);
+  statusbar->context_ids = NULL;
 
-  g_slist_free (statusbar->keys);
-  statusbar->keys = NULL;
-
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
+  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static GimpProgress *
@@ -378,7 +375,7 @@ gimp_statusbar_progress_canceled (GtkWidget     *button,
 static void
 gimp_statusbar_update (GimpStatusbar *statusbar)
 {
-  gchar *text = NULL;
+  const gchar *text = NULL;
 
   if (statusbar->messages)
     {
@@ -430,6 +427,7 @@ gimp_statusbar_push (GimpStatusbar *statusbar,
   GSList           *list;
 
   g_return_if_fail (GIMP_IS_STATUSBAR (statusbar));
+  g_return_if_fail (context != NULL);
   g_return_if_fail (message != NULL);
 
   context_id = gimp_statusbar_get_context_id (statusbar, context);
@@ -562,10 +560,11 @@ gimp_statusbar_replace (GimpStatusbar *statusbar,
                         const gchar   *message)
 {
   GimpStatusbarMsg *msg;
-  guint             context_id;
   GSList           *list;
+  guint             context_id;
 
   g_return_if_fail (GIMP_IS_STATUSBAR (statusbar));
+  g_return_if_fail (context != NULL);
   g_return_if_fail (message != NULL);
 
   if (! statusbar->messages)
@@ -613,10 +612,11 @@ void
 gimp_statusbar_pop (GimpStatusbar *statusbar,
                     const gchar   *context)
 {
-  guint   context_id;
   GSList *list;
+  guint   context_id;
 
   g_return_if_fail (GIMP_IS_STATUSBAR (statusbar));
+  g_return_if_fail (context != NULL);
 
   context_id = gimp_statusbar_get_context_id (statusbar, context);
 
@@ -651,6 +651,18 @@ gimp_statusbar_set_cursor (GimpStatusbar *statusbar,
 
   shell = statusbar->shell;
 
+  if (x <  0 ||
+      y <  0 ||
+      x >= shell->display->image->width ||
+      y >= shell->display->image->height)
+    {
+      gtk_widget_set_sensitive (statusbar->cursor_label, FALSE);
+    }
+  else
+    {
+      gtk_widget_set_sensitive (statusbar->cursor_label, TRUE);
+    }
+
   model = gtk_combo_box_get_model (GTK_COMBO_BOX (statusbar->unit_combo));
   store = GIMP_UNIT_STORE (model);
 
@@ -672,18 +684,6 @@ gimp_statusbar_set_cursor (GimpStatusbar *statusbar,
     }
 
   gtk_label_set_text (GTK_LABEL (statusbar->cursor_label), buffer);
-
-  if (x <  0 ||
-      y <  0 ||
-      x >= statusbar->shell->display->image->width ||
-      y >= statusbar->shell->display->image->height)
-    {
-      gtk_widget_set_sensitive (statusbar->cursor_label, FALSE);
-    }
-  else
-    {
-      gtk_widget_set_sensitive (statusbar->cursor_label, TRUE);
-    }
 }
 
 void
@@ -793,27 +793,16 @@ static guint
 gimp_statusbar_get_context_id (GimpStatusbar *statusbar,
                                const gchar   *context)
 {
-  gchar *string;
-  guint *id;
+  guint id = GPOINTER_TO_UINT (g_hash_table_lookup (statusbar->context_ids,
+                                                    context));
 
-  g_return_val_if_fail (GIMP_IS_STATUSBAR (statusbar), 0);
-  g_return_val_if_fail (context != NULL, 0);
-
-  /* we need to preserve namespaces on object datas */
-  string = g_strconcat ("gimp-status-bar-context:", context, NULL);
-
-  id = g_object_get_data (G_OBJECT (statusbar), string);
-  if (!id)
+  if (! id)
     {
-      id = g_new (guint, 1);
-      *id = statusbar->seq_context_id++;
-      g_object_set_data_full (G_OBJECT (statusbar), string, id, g_free);
-      statusbar->keys = g_slist_prepend (statusbar->keys, string);
-    }
-  else
-    {
-      g_free (string);
+      id = statusbar->seq_context_id++;
+
+      g_hash_table_insert (statusbar->context_ids,
+                           g_strdup (context), GUINT_TO_POINTER (id));
     }
 
-  return *id;
+  return id;
 }

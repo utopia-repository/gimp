@@ -120,12 +120,20 @@ gimp_display_shell_events (GtkWidget        *widget,
         if (gimp->busy)
           return TRUE;
 
-        /*  do not process any key events while BUTTON1 is down. We do this
-         *  so tools keep the modifier state they were in when BUTTON1 was
-         *  pressed and to prevent accelerators from being invoked.
+        /*  do not process any key events while BUTTON1 is down, except modifier
+         *  key events. We do this so that tools don't get interrupted between
+         *  button press and button release.
          */
         if (kevent->state & GDK_BUTTON1_MASK)
           {
+            if (kevent->keyval == GDK_Shift_L   ||
+                kevent->keyval == GDK_Shift_R   ||
+                kevent->keyval == GDK_Control_L ||
+                kevent->keyval == GDK_Control_R   )
+              {
+                return FALSE;
+              }
+
             if (event->type == GDK_KEY_PRESS)
               {
                 if (kevent->keyval == GDK_space && shell->space_release_pending)
@@ -426,7 +434,7 @@ gimp_display_shell_canvas_expose (GtkWidget        *widget,
   gimp_display_shell_draw_cursor (shell);
 
   /* restart (and recalculate) the selection boundaries */
-  gimp_display_shell_selection_start (shell->select, TRUE);
+  gimp_display_shell_selection_control (shell, GIMP_SELECTION_ON);
 
   gimp_display_shell_resume (shell);
 
@@ -493,9 +501,9 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
   time = gdk_event_get_time (event);
 
   /*  GimpCoords passed to tools are ALWAYS in image coordinates  */
-  gimp_display_shell_untransform_coords (shell,
-                                         &display_coords,
-                                         &image_coords);
+  gimp_display_shell_untransform_coordinate (shell,
+                                             &display_coords,
+                                             &image_coords);
 
   active_tool = tool_manager_get_active (gimp);
 
@@ -935,9 +943,9 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
           }
 
         /*  GimpCoords passed to tools are ALWAYS in image coordinates  */
-        gimp_display_shell_untransform_coords (shell,
-                                               &display_coords,
-                                               &image_coords);
+        gimp_display_shell_untransform_coordinate (shell,
+                                                   &display_coords,
+                                                   &image_coords);
 
         active_tool = tool_manager_get_active (gimp);
 
@@ -995,9 +1003,9 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
             time = gdk_event_get_time (event);
 
             /*  GimpCoords passed to tools are ALWAYS in image coordinates  */
-            gimp_display_shell_untransform_coords (shell,
-                                                   &display_coords,
-                                                   &image_coords);
+            gimp_display_shell_untransform_coordinate (shell,
+                                                       &display_coords,
+                                                       &image_coords);
 
             if (active_tool &&
                 gimp_tool_control_get_snap_to (active_tool->control))
@@ -1074,9 +1082,9 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                         /*  GimpCoords passed to tools are ALWAYS in
                          *  image coordinates
                          */
-                        gimp_display_shell_untransform_coords (shell,
-                                                               &display_coords,
-                                                               &image_coords);
+                        gimp_display_shell_untransform_coordinate (shell,
+                                                                   &display_coords,
+                                                                   &image_coords);
 
                         if (gimp_tool_control_get_snap_to (active_tool->control))
                           {

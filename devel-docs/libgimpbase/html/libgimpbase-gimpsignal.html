@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpsignal</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
 <link rel="start" href="index.html" title="GIMP Base Library Reference Manual">
 <link rel="up" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpparasiteio.html" title="gimpparasiteio">
 <link rel="next" href="libgimpbase-gimpunit.html" title="gimpunit">
-<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
 <link rel="index" href="ix01.html" title="Index">
@@ -25,21 +25,23 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimpunit.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2587732" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2569979" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpsignal"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpsignal</span></h2>
+<h2>
+<a name="id2587732"></a><span class="refentrytitle">gimpsignal</span>
+</h2>
 <p>gimpsignal &#8212; Portable signal handling.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<a name="synopsis"></a><h2>Synopsis</h2>
+<h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -51,18 +53,18 @@ void        (<a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">*GimpSi
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="desc"></a><h2>Description</h2>
+<a name="id2569979"></a><h2>Description</h2>
 <p>
 Portable signal handling.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="details"></a><h2>Details</h2>
+<a name="id2569995"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2567977"></a><h3>
+<a name="id2570006"></a><h3>
 <a name="GimpSignalHandlerFunc"></a>GimpSignalHandlerFunc ()</h3>
-<a class="indexterm" name="id2567988"></a><pre class="programlisting">void        (*GimpSignalHandlerFunc)        (gint signum);</pre>
+<a class="indexterm" name="id2570017"></a><pre class="programlisting">void        (*GimpSignalHandlerFunc)        (gint signum);</pre>
 <p>
 A prototype for signal handler functions. Note that each function which
 takes or returns a variable of this type also accepts or may return
@@ -84,9 +86,9 @@ special values defined by your system's signal.h header file (like
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2568049"></a><h3>
+<a name="id2570078"></a><h3>
 <a name="gimp-signal-private"></a>gimp_signal_private ()</h3>
-<a class="indexterm" name="id2568061"></a><pre class="programlisting"><a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> gimp_signal_private   (gint signum,
+<a class="indexterm" name="id2570091"></a><pre class="programlisting"><a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> gimp_signal_private   (gint signum,
                                              <a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> handler,
                                              gint flags);</pre>
 <p>
@@ -142,7 +144,7 @@ exactly what we want. [austin 06.04.2000]</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2531587"></a><h2>See Also</h2>
+<a name="id2603996"></a><h2>See Also</h2>
 <p>
 signal(2), signal(5 or 7), sigaction(2).
 </p>

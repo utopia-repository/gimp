@@ -16,14 +16,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIMP__PDB_H__
-#define __GIMP__PDB_H__
+#ifndef __GUI_MESSAGE_H__
+#define __GUI_MESSAGE_H__
 
 
-void   gimp_pdb_initialize (Gimp *gimp);
-void   gimp_pdb_exit       (Gimp *gimp);
+void gui_message (Gimp         *gimp,
+                  GimpProgress *progress,
+                  const gchar  *domain,
+                  const gchar  *message);
 
-void   gimp_pdb_init_procs (Gimp *gimp);
 
-
-#endif  /*  __GIMP__PDB_H__  */
+#endif /* __GUI_VTABLE_H__ */

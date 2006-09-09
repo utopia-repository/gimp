@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpHSV</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
 <link rel="start" href="index.html" title="GIMP Color Library Reference Manual">
 <link rel="up" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
 <link rel="prev" href="libgimpcolor-GimpRGB.html" title="GimpRGB">
 <link rel="next" href="libgimpcolor-GimpCMYK.html" title="GimpCMYK">
-<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
 <link rel="index" href="ix01.html" title="Index">
@@ -25,26 +25,29 @@
 <th width="100%" align="center">GIMP Color Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpcolor-GimpCMYK.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2581077" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2564790" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpcolor-GimpHSV"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpHSV</span></h2>
+<h2>
+<a name="id2581077"></a><span class="refentrytitle">GimpHSV</span>
+</h2>
 <p>GimpHSV &#8212; Definitions and Functions relating to HSV colors.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<a name="synopsis"></a><h2>Synopsis</h2>
+<h2>Synopsis</h2>
 <pre class="synopsis">
 
 
 
             <a href="libgimpcolor-GimpHSV.html#GimpHSV">GimpHSV</a>;
+            <a href="libgimpcolor-GimpHSV.html#GimpHSL">GimpHSL</a>;
 void        <a href="libgimpcolor-GimpHSV.html#gimp-hsv-set">gimp_hsv_set</a>                    (<a href="libgimpcolor-GimpHSV.html#GimpHSV">GimpHSV</a> *hsv,
                                              gdouble hue,
                                              gdouble saturation,
@@ -55,20 +58,23 @@ void        <a href="libgimpcolor-GimpHSV.html#gimp-hsva-set">gimp_hsva_set</a> 
                                              gdouble saturation,
                                              gdouble value,
                                              gdouble alpha);
+#define     <a href="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSV:CAPS">GIMP_TYPE_HSV</a>
+#define     <a href="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSL:CAPS">GIMP_TYPE_HSL</a>
+
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="desc"></a><h2>Description</h2>
+<a name="id2564790"></a><h2>Description</h2>
 <p>
 Definitions and Functions relating to HSV colors.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="details"></a><h2>Details</h2>
+<a name="id2564807"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2531671"></a><h3>
+<a name="id2564818"></a><h3>
 <a name="GimpHSV"></a>GimpHSV</h3>
-<a class="indexterm" name="id2531683"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2564830"></a><pre class="programlisting">typedef struct {
   gdouble h, s, v, a;
 } GimpHSV;
 </pre>
@@ -78,9 +84,21 @@ Definitions and Functions relating to HSV colors.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2531699"></a><h3>
+<a name="id2566412"></a><h3>
+<a name="GimpHSL"></a>GimpHSL</h3>
+<a class="indexterm" name="id2566424"></a><pre class="programlisting">typedef struct {
+  gdouble h, s, l, a;
+} GimpHSL;
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2566441"></a><h3>
 <a name="gimp-hsv-set"></a>gimp_hsv_set ()</h3>
-<a class="indexterm" name="id2531711"></a><pre class="programlisting">void        gimp_hsv_set                    (<a href="libgimpcolor-GimpHSV.html#GimpHSV">GimpHSV</a> *hsv,
+<a class="indexterm" name="id2566453"></a><pre class="programlisting">void        gimp_hsv_set                    (<a href="libgimpcolor-GimpHSV.html#GimpHSV">GimpHSV</a> *hsv,
                                              gdouble hue,
                                              gdouble saturation,
                                              gdouble value);</pre>
@@ -121,9 +139,9 @@ Definitions and Functions relating to HSV colors.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2533386"></a><h3>
+<a name="id2588328"></a><h3>
 <a name="gimp-hsv-clamp"></a>gimp_hsv_clamp ()</h3>
-<a class="indexterm" name="id2533398"></a><pre class="programlisting">void        gimp_hsv_clamp                  (<a href="libgimpcolor-GimpHSV.html#GimpHSV">GimpHSV</a> *hsv);</pre>
+<a class="indexterm" name="id2588340"></a><pre class="programlisting">void        gimp_hsv_clamp                  (<a href="libgimpcolor-GimpHSV.html#GimpHSV">GimpHSV</a> *hsv);</pre>
 <p>
 
 </p>
@@ -141,9 +159,9 @@ Definitions and Functions relating to HSV colors.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2533443"></a><h3>
+<a name="id2588385"></a><h3>
 <a name="gimp-hsva-set"></a>gimp_hsva_set ()</h3>
-<a class="indexterm" name="id2533455"></a><pre class="programlisting">void        gimp_hsva_set                   (<a href="libgimpcolor-GimpHSV.html#GimpHSV">GimpHSV</a> *hsva,
+<a class="indexterm" name="id2588398"></a><pre class="programlisting">void        gimp_hsva_set                   (<a href="libgimpcolor-GimpHSV.html#GimpHSV">GimpHSV</a> *hsva,
                                              gdouble hue,
                                              gdouble saturation,
                                              gdouble value,
@@ -188,6 +206,26 @@ Definitions and Functions relating to HSV colors.
 </tr>
 </tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2588527"></a><h3>
+<a name="GIMP-TYPE-HSV:CAPS"></a>GIMP_TYPE_HSV</h3>
+<a class="indexterm" name="id2588539"></a><pre class="programlisting">#define GIMP_TYPE_HSV       (gimp_hsv_get_type ())
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2588556"></a><h3>
+<a name="GIMP-TYPE-HSL:CAPS"></a>GIMP_TYPE_HSL</h3>
+<a class="indexterm" name="id2588568"></a><pre class="programlisting">#define GIMP_TYPE_HSL       (gimp_hsl_get_type ())
+</pre>
+<p>
+
+</p>
 </div>
 </div>
 </div>

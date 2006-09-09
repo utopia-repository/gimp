@@ -4,7 +4,7 @@
 
 <refentry id="GimpPageSelector">
 <refmeta>
-<refentrytitle id="top_of_page">GimpPageSelector</refentrytitle>
+<refentrytitle role="top_of_page">GimpPageSelector</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -67,8 +67,8 @@ enum        <link linkend="GimpPageSelectorTarget">GimpPageSelectorTarget</link>
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -85,8 +85,8 @@ enum        <link linkend="GimpPageSelectorTarget">GimpPageSelectorTarget</link>
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpPageSelector implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -94,8 +94,8 @@ GimpPageSelector implements
 </refsect1>
 
 
-<refsect1 id="properties">
-<title id="properties.title">Properties</title>
+<refsect1 role="properties">
+<title role="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpPageSelector--n-pages">n-pages</link>&quot;              <link linkend="gint">gint</link>                  : Read / Write
@@ -103,8 +103,8 @@ GimpPageSelector implements
 </synopsis>
 </refsect1>
 
-<refsect1 id="signal_proto">
-<title id="signal_proto.title">Signals</title>
+<refsect1 role="signal_proto">
+<title role="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpPageSelector-activate">activate</link>&quot;  <link linkend="void">void</link>        user_function      (<link linkend="GimpPageSelector">GimpPageSelector</link> *widget,
@@ -116,15 +116,15 @@ GimpPageSelector implements
 </refsect1>
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpPageSelector-struct" role="struct"/>GimpPageSelector</title>
 <indexterm><primary>GimpPageSelector</primary></indexterm><programlisting>typedef struct _GimpPageSelector GimpPageSelector;</programlisting>
@@ -462,8 +462,8 @@ overlapping pages and ranges will be merged.</para>
 </para></refsect2>
 
 </refsect1>
-<refsect1 id="property_details">
-<title id="property_details.title">Property Details</title>
+<refsect1 role="property_details">
+<title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpPageSelector--n-pages"/>The &quot;<literal>n-pages</literal>&quot; property</title>
 <indexterm role="GIMP 2.4"><primary>GimpPageSelector:n-pages</primary></indexterm><programlisting>  &quot;n-pages&quot;              <link linkend="gint">gint</link>                  : Read / Write</programlisting>
 <para>
@@ -488,8 +488,8 @@ The target to open the document to.</para>
 
 </refsect1>
 
-<refsect1 id="signals">
-<title id="signals.title">Signal Details</title>
+<refsect1 role="signals">
+<title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpPageSelector-activate"/>The &quot;activate&quot; signal</title>
 <indexterm role="GIMP 2.4"><primary>GimpPageSelector::activate</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpPageSelector">GimpPageSelector</link> *widget,
                                             <link linkend="gpointer">gpointer</link>          user_data)      : Run first / Action</programlisting>

@@ -68,6 +68,9 @@ static void   gimp_color_editor_style_set       (GtkWidget         *widget,
 static void   gimp_color_editor_set_aux_info    (GimpDocked        *docked,
                                                  GList             *aux_info);
 static GList *gimp_color_editor_get_aux_info     (GimpDocked       *docked);
+static GtkWidget *gimp_color_editor_get_preview (GimpDocked        *docked,
+                                                 GimpContext       *context,
+                                                 GtkIconSize        size);
 static void   gimp_color_editor_set_context     (GimpDocked        *docked,
                                                  GimpContext       *context);
 
@@ -121,6 +124,20 @@ gimp_color_editor_class_init (GimpColorEditorClass* klass)
                                                         NULL, NULL,
                                                         GIMP_TYPE_CONTEXT,
                                                         GIMP_PARAM_READWRITE));
+}
+
+static void
+gimp_color_editor_docked_iface_init (GimpDockedInterface *iface)
+{
+  parent_docked_iface = g_type_interface_peek_parent (iface);
+
+  if (! parent_docked_iface)
+    parent_docked_iface = g_type_default_interface_peek (GIMP_TYPE_DOCKED);
+
+  iface->get_preview  = gimp_color_editor_get_preview;
+  iface->set_aux_info = gimp_color_editor_set_aux_info;
+  iface->get_aux_info = gimp_color_editor_get_aux_info;
+  iface->set_context  = gimp_color_editor_set_context;
 }
 
 static void
@@ -240,8 +257,9 @@ gimp_color_editor_init (GimpColorEditor *editor)
   /*  The hex triplet entry  */
   editor->hex_entry = gimp_color_hex_entry_new ();
   gimp_help_set_help_data (editor->hex_entry,
-                           _("Hexadecimal color notation "
-                             "as used in HTML and CSS"), NULL);
+                           _("Hexadecimal color notation as used in HTML and "
+                             "CSS.  This entry also accepts CSS color names."),
+                           NULL);
   gtk_box_pack_end (GTK_BOX (vbox), editor->hex_entry, FALSE, FALSE, 0);
   gtk_widget_show (editor->hex_entry);
 
@@ -314,20 +332,6 @@ gimp_color_editor_get_preview (GimpDocked  *docked,
     gtk_widget_set_size_request (preview, width, height);
 
   return preview;
-}
-
-static void
-gimp_color_editor_docked_iface_init (GimpDockedInterface *iface)
-{
-  parent_docked_iface = g_type_interface_peek_parent (iface);
-
-  if (! parent_docked_iface)
-    parent_docked_iface = g_type_default_interface_peek (GIMP_TYPE_DOCKED);
-
-  iface->get_preview  = gimp_color_editor_get_preview;
-  iface->set_aux_info = gimp_color_editor_set_aux_info;
-  iface->get_aux_info = gimp_color_editor_get_aux_info;
-  iface->set_context  = gimp_color_editor_set_context;
 }
 
 #define AUX_INFO_CURRENT_PAGE "current-page"
@@ -414,14 +418,15 @@ gimp_color_editor_set_context (GimpDocked  *docked,
                                             editor);
 
       g_object_unref (editor->context);
-      editor->context = NULL;
     }
 
-  if (context)
+  editor->context = context;
+
+  if (editor->context)
     {
       GimpRGB rgb;
 
-      editor->context = g_object_ref (context);
+      g_object_ref (editor->context);
 
       g_signal_connect (editor->context, "foreground-changed",
                         G_CALLBACK (gimp_color_editor_fg_changed),

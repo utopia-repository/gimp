@@ -13,6 +13,7 @@
       <sub name="gimpdatafiles" link="libgimpbase-gimpdatafiles.html"/>
       <sub name="gimpenv" link="libgimpbase-gimpenv.html"/>
       <sub name="gimpmemsize" link="libgimpbase-gimpmemsize.html"/>
+      <sub name="gimprectangle" link="libgimpbase-gimprectangle.html"/>
       <sub name="gimpparasite" link="libgimpbase-gimpparasite.html"/>
       <sub name="gimpparasiteio" link="libgimpbase-gimpparasiteio.html"/>
       <sub name="gimpsignal" link="libgimpbase-gimpsignal.html"/>
@@ -109,6 +110,7 @@
     <keyword type="macro" name="GIMP_IS_PARAM_SPEC_MEMSIZE()" link="libgimpbase-gimpmemsize.html#GIMP-IS-PARAM-SPEC-MEMSIZE:CAPS"/>
     <keyword type="function" name="gimp_param_spec_memsize ()" link="libgimpbase-gimpmemsize.html#gimp-param-spec-memsize" since="GIMP 2.4"/>
     <keyword type="macro" name="GIMP_VALUE_HOLDS_MEMSIZE()" link="libgimpbase-gimpmemsize.html#GIMP-VALUE-HOLDS-MEMSIZE:CAPS"/>
+    <keyword type="function" name="gimp_rectangle_intersect ()" link="libgimpbase-gimprectangle.html#gimp-rectangle-intersect" since="GIMP 2.4"/>
     <keyword type="struct" name="GimpParasite" link="libgimpbase-gimpparasite.html#GimpParasite"/>
     <keyword type="function" name="gimp_parasite_new ()" link="libgimpbase-gimpparasite.html#gimp-parasite-new"/>
     <keyword type="function" name="gimp_parasite_free ()" link="libgimpbase-gimpparasite.html#gimp-parasite-free"/>

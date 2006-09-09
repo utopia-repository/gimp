@@ -1,3 +1,13 @@
+gimp (2.3.11-1) experimental; urgency=low
+
+  * New upstream release
+    - Bump dependencies on python-gtk2, gtk, glib, and pango to match new
+      requirements
+  * Upgrade to new python policy by using dh_pysupport instead of dh_python
+    (Closes: #380816)
+
+ -- Ari Pollak <ari@debian.org>  Sat,  9 Sep 2006 00:36:24 -0400
+
 gimp (2.3.10-1) experimental; urgency=low
 
   * New upstream release

@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpimagecombobox</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="prev" href="GimpDrawableComboBox.html" title="gimpdrawablecombobox">
 <link rel="next" href="libgimp-gimppixbuf.html" title="gimppixbuf">
-<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -32,23 +32,27 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimppixbuf.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2560132" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#desc" class="shortcut">Description</a>
+                  <a href="#id2708273" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#object_hierarchy" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+                  <a href="#id2588513" class="shortcut">Object Hierarchy</a>
+                  &#160;|&#160;
+                  <a href="#id2708242" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpImageComboBox"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpimagecombobox</span></h2>
+<h2>
+<a name="id2560132"></a><span class="refentrytitle">gimpimagecombobox</span>
+</h2>
 <p>gimpimagecombobox &#8212; A widget providing a popup menu of images.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<a name="synopsis"></a><h2>Synopsis</h2>
+<h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -62,7 +66,7 @@ GtkWidget*  <a href="GimpImageComboBox.html#gimp-image-combo-box-new">gimp_image
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="object_hierarchy"></a><h2>Object Hierarchy</h2>
+<a name="id2588513"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -79,32 +83,32 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="impl_interfaces"></a><h2>Implemented Interfaces</h2>
+<a name="id2708242"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpImageComboBox implements
  AtkImplementorIface,  GtkCellLayout and  GtkCellEditable.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="desc"></a><h2>Description</h2>
+<a name="id2708273"></a><h2>Description</h2>
 <p>
 A widget providing a popup menu of images.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="details"></a><h2>Details</h2>
+<a name="id2708290"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2675108"></a><h3>
+<a name="id2708300"></a><h3>
 <a name="GimpImageComboBox-struct"></a>GimpImageComboBox</h3>
-<a class="indexterm" name="id2675119"></a><pre class="programlisting">typedef struct _GimpImageComboBox GimpImageComboBox;</pre>
+<a class="indexterm" name="id2708311"></a><pre class="programlisting">typedef struct _GimpImageComboBox GimpImageComboBox;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2675135"></a><h3>
+<a name="id2708327"></a><h3>
 <a name="GimpImageConstraintFunc"></a>GimpImageConstraintFunc ()</h3>
-<a class="indexterm" name="id2675146"></a><pre class="programlisting">gboolean    (*GimpImageConstraintFunc)      (gint32 image_id,
+<a class="indexterm" name="id2708338"></a><pre class="programlisting">gboolean    (*GimpImageConstraintFunc)      (gint32 image_id,
                                              gpointer data);</pre>
 <p>
 
@@ -137,9 +141,9 @@ A widget providing a popup menu of images.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676082"></a><h3>
+<a name="id2711191"></a><h3>
 <a name="gimp-image-combo-box-new"></a>gimp_image_combo_box_new ()</h3>
-<a class="indexterm" name="id2676095"></a><pre class="programlisting">GtkWidget*  gimp_image_combo_box_new        (<a href="GimpImageComboBox.html#GimpImageConstraintFunc">GimpImageConstraintFunc</a> constraint,
+<a class="indexterm" name="id2711204"></a><pre class="programlisting">GtkWidget*  gimp_image_combo_box_new        (<a href="GimpImageComboBox.html#GimpImageConstraintFunc">GimpImageConstraintFunc</a> constraint,
                                              gpointer data);</pre>
 <p>
 Creates a new <a

@@ -4,7 +4,7 @@
 
 <refentry id="GimpColorSelect">
 <refmeta>
-<refentrytitle id="top_of_page">GimpColorSelect</refentrytitle>
+<refentrytitle role="top_of_page">GimpColorSelect</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -27,8 +27,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -46,8 +46,8 @@
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpColorSelect implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -58,8 +58,8 @@ GimpColorSelect implements
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 The <link linkend="GimpColorSelect"><type>GimpColorSelect</type></link> widget is an implementation of a <link linkend="GimpColorSelector"><type>GimpColorSelector</type></link>.
 It shows a square area that allows to interactively change two color channels
@@ -69,8 +69,8 @@ will then change the other two channels accordingly.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpColorSelect-struct" role="struct"/>GimpColorSelect</title>
 <indexterm><primary>GimpColorSelect</primary></indexterm><programlisting>typedef struct _GimpColorSelect GimpColorSelect;</programlisting>

@@ -75,6 +75,19 @@ _gimpenums_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_4)
 am__gimpenums_la_OBJECTS = gimpenumsmodule.lo
 _gimpenums_la_OBJECTS = $(am__gimpenums_la_OBJECTS)
+am__DEPENDENCIES_5 =  \
+	$(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_6 = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_7 = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_8 = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
+_gimpui_la_DEPENDENCIES = $(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
+	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_4) \
+	$(am__DEPENDENCIES_4)
+am__gimpui_la_OBJECTS = gimpuimodule.lo gimpui.lo
+_gimpui_la_OBJECTS = $(am__gimpui_la_OBJECTS)
 gimp_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_4)
@@ -84,13 +97,8 @@ am_gimp_la_OBJECTS = gimpmodule.lo pygimp-display.lo \
 gimp_la_OBJECTS = $(am_gimp_la_OBJECTS)
 gimpcolor_la_DEPENDENCIES = $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_4)
-am_gimpcolor_la_OBJECTS = gimpcolormodule.lo pygimp-rgb.lo
+am_gimpcolor_la_OBJECTS = gimpcolormodule.lo pygimp-colors.lo
 gimpcolor_la_OBJECTS = $(am_gimpcolor_la_OBJECTS)
-am__DEPENDENCIES_5 =  \
-	$(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_6 = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_7 = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_8 = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 gimpprocbrowser_la_DEPENDENCIES = $(am__DEPENDENCIES_5) \
 	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
 	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_1) \
@@ -110,10 +118,12 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(_gimpenums_la_SOURCES) $(gimp_la_SOURCES) \
-	$(gimpcolor_la_SOURCES) $(gimpprocbrowser_la_SOURCES)
-DIST_SOURCES = $(_gimpenums_la_SOURCES) $(gimp_la_SOURCES) \
-	$(gimpcolor_la_SOURCES) $(gimpprocbrowser_la_SOURCES)
+SOURCES = $(_gimpenums_la_SOURCES) $(_gimpui_la_SOURCES) \
+	$(gimp_la_SOURCES) $(gimpcolor_la_SOURCES) \
+	$(gimpprocbrowser_la_SOURCES)
+DIST_SOURCES = $(_gimpenums_la_SOURCES) $(_gimpui_la_SOURCES) \
+	$(gimp_la_SOURCES) $(gimpcolor_la_SOURCES) \
+	$(gimpprocbrowser_la_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	html-recursive info-recursive install-data-recursive \
 	install-exec-recursive install-info-recursive \
@@ -152,6 +162,8 @@ BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
 BUILD_PRINT_TRUE = @BUILD_PRINT_TRUE@
 BUILD_PYTHON_FALSE = @BUILD_PYTHON_FALSE@
 BUILD_PYTHON_TRUE = @BUILD_PYTHON_TRUE@
+BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
+BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
 CATALOGS = @CATALOGS@
@@ -492,7 +504,9 @@ AM_CFLAGS = $(PYGIMP_EXTRA_CFLAGS)
 INCLUDES = -I$(top_srcdir) $(PYTHON_INCLUDES) $(PYGTK_CFLAGS) $(GTK_CFLAGS)
 pygimpbase = python
 pygimpdir = $(gimpplugindir)/$(pygimpbase)
-pygimp_LTLIBRARIES = gimp.la _gimpenums.la gimpcolor.la gimpprocbrowser.la
+pygimp_LTLIBRARIES = gimp.la _gimpenums.la gimpcolor.la _gimpui.la \
+	gimpprocbrowser.la
+
 gimp_la_SOURCES = \
 	gimpmodule.c		\
 	pygimp-display.c	\
@@ -532,16 +546,37 @@ _gimpenums_la_LIBADD = \
 
 gimpcolor_la_SOURCES = \
 	gimpcolormodule.c	\
-	pygimp-rgb.c		\
-	pygimpcolor.h
+	pygimp-colors.c		\
+	pygimpcolor.h		\
+	pygimpcolor-api.h
 
 gimpcolor_la_LDFLAGS = -module -avoid-version $(no_undefined) \
 	-export-symbols-regex initgimpcolor
 
 gimpcolor_la_LIBADD = \
-	$(libgimpcolor)	\
-	$(GLIB_LIBS)	\
+	$(libgimpcolor)		\
+	$(GLIB_LIBS)		\
 	$(PYLINK_LIBS)
+
+_gimpui_la_SOURCES = \
+	gimpuimodule.c		\
+	gimpui.c
+
+_gimpui_la_LDFLAGS = -module -avoid-version $(no_undefined) \
+	-export-symbols-regex init_gimpui
+
+_gimpui_la_LIBADD = \
+	$(libgimpui)		\
+	$(libgimpwidgets)	\
+	$(libgimpconfig)	\
+	$(libgimpmath)		\
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpbase)		\
+	$(GTK_LIBS)		\
+	$(PYLINK_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)
 
 gimpprocbrowser_la_SOURCES = \
 	procbrowser.c
@@ -563,25 +598,30 @@ gimpprocbrowser_la_LIBADD = \
 	$(INTLLIBS)
 
 pygimp_PYTHON = \
-	gimpplugin.py	\
 	gimpenums.py	\
+	gimpfu.py	\
+	gimpplugin.py	\
 	gimpshelf.py	\
-	gimpui.py	\
-	gimpfu.py
+	gimpui.py
 
 pygimp_DATA = pygimp-logo.png
+codegen_files = gimpcolor-types.defs gimpenums-types.defs \
+	gimpui.defs gimpui.override
+
 pyenvdir = $(gimpplugindir)/environ
 pyinterpdir = $(gimpplugindir)/interpreters
 pyenvfile = $(pyenvdir)/pygimp.env
 pyinterpfile = $(pyinterpdir)/pygimp.interp
 EXTRA_DIST = \
-	$(pygimp_DATA)	\
+	$(pygimp_DATA)		\
+	$(codegen_files)	\
 	makefile.msc
 
+CLEANFILES = gimpui.c
 all: all-recursive
 
 .SUFFIXES:
-.SUFFIXES: .c .lo .o .obj
+.SUFFIXES: .c .defs .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -640,6 +680,8 @@ clean-pygimpLTLIBRARIES:
 	done
 _gimpenums.la: $(_gimpenums_la_OBJECTS) $(_gimpenums_la_DEPENDENCIES) 
 	$(LINK) -rpath $(pygimpdir) $(_gimpenums_la_LDFLAGS) $(_gimpenums_la_OBJECTS) $(_gimpenums_la_LIBADD) $(LIBS)
+_gimpui.la: $(_gimpui_la_OBJECTS) $(_gimpui_la_DEPENDENCIES) 
+	$(LINK) -rpath $(pygimpdir) $(_gimpui_la_LDFLAGS) $(_gimpui_la_OBJECTS) $(_gimpui_la_LIBADD) $(LIBS)
 gimp.la: $(gimp_la_OBJECTS) $(gimp_la_DEPENDENCIES) 
 	$(LINK) -rpath $(pygimpdir) $(gimp_la_LDFLAGS) $(gimp_la_OBJECTS) $(gimp_la_LIBADD) $(LIBS)
 gimpcolor.la: $(gimpcolor_la_OBJECTS) $(gimpcolor_la_DEPENDENCIES) 
@@ -656,13 +698,15 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcolormodule.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpenumsmodule.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmodule.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpui.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpuimodule.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/procbrowser.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-colors.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-display.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-drawable.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-image.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-parasite.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-pdb.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-rgb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-tile.Plo@am__quote@
 
 .c.o:
@@ -940,6 +984,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -1035,6 +1080,20 @@ install-data-local: install-env-file install-interp-file
 
 uninstall-local:
 	rm -f '$(DESTDIR)$(pyenvfile)' '$(DESTDIR)$(pyinterpfile)'
+
+gimpui.c: gimpui.defs gimpui.override gimpcolor-types.defs gimpenums-types.defs
+
+.defs.c:
+	(cd $(srcdir) \
+	 && $(PYGTK_CODEGEN) \
+	    --override $*.override \
+	    --register $(PYGTK_DEFSDIR)/gdk-types.defs \
+	    --register $(PYGTK_DEFSDIR)/gtk-types.defs \
+	    --register $(srcdir)/gimpcolor-types.defs \
+	    --register $(srcdir)/gimpenums-types.defs \
+	    --prefix $* $*.defs) > gen-$*.c \
+	 && cp gen-$*.c $*.c \
+	 && rm -f gen-$*.c
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

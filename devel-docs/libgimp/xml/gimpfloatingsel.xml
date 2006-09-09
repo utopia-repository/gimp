@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpfloatingsel">
 <refmeta>
-<refentrytitle id="top_of_page">gimpfloatingsel</refentrytitle>
+<refentrytitle role="top_of_page">gimpfloatingsel</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -42,16 +42,16 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Functions for removing or attaching floating selections.
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-floating-sel-remove" role="function"/>gimp_floating_sel_remove ()</title>
 <indexterm><primary>gimp_floating_sel_remove</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_floating_sel_remove        (<link linkend="gint32">gint32</link> floating_sel_ID);</programlisting>

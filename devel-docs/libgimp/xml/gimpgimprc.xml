@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpgimprc">
 <refmeta>
-<refentrytitle id="top_of_page">gimpgimprc</refentrytitle>
+<refentrytitle role="top_of_page">gimpgimprc</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -43,16 +43,16 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Interactions with settings from .gimprc.
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-gimprc-query" role="function"/>gimp_gimprc_query ()</title>
 <indexterm><primary>gimp_gimprc_query</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_gimprc_query               (const <link linkend="gchar">gchar</link> *token);</programlisting>

@@ -1,3 +1,13 @@
+gimp (2.3.12-1) experimental; urgency=low
+
+  * New upstream release
+    - Don't build with GtkPrint for now since GTK+ 2.10 isn't in unstable
+  * Remove gimp-wget package, put curl URI plugin into main gimp package and
+    have gimp-gnomevfs just divert the uri plugin to use gnomevfs instead of
+    curl 
+
+ -- Ari Pollak <ari@debian.org>  Fri, 13 Oct 2006 21:49:55 -0400
+
 gimp (2.3.11-1) experimental; urgency=low
 
   * New upstream release

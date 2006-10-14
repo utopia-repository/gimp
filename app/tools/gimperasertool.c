@@ -64,7 +64,7 @@ gimp_eraser_tool_register (GimpToolRegisterCallback  callback,
                 GIMP_PAINT_OPTIONS_CONTEXT_MASK,
                 "gimp-eraser-tool",
                 _("Eraser"),
-                _("Erase to background or transparency"),
+                _("Eraser Tool: Erase to background or transparency using a brush"),
                 N_("_Eraser"), "<shift>E",
                 NULL, GIMP_HELP_TOOL_ERASER,
                 GIMP_STOCK_TOOL_ERASER,
@@ -94,8 +94,8 @@ gimp_eraser_tool_init (GimpEraserTool *eraser)
   gimp_paint_tool_enable_color_picker (paint_tool,
                                        GIMP_COLOR_PICK_MODE_BACKGROUND);
 
-  paint_tool->status      = _("Click to erase.");
-  paint_tool->status_line = _("Click to erase the line.");
+  paint_tool->status      = _("Click to erase");
+  paint_tool->status_line = _("Click to erase the line");
   paint_tool->status_ctrl = _("%s to pick a background color");
 }
 

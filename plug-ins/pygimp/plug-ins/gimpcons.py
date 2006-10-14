@@ -19,6 +19,8 @@
 
 from gimpfu import *
 
+gettext.install("gimp20-python", gimp.locale_directory, unicode=1)
+
 def console():
     import pygtk
     pygtk.require('2.0')
@@ -39,7 +41,7 @@ def console():
     def bye(*args):
         gtk.main_quit()
 
-    dialog = gtk.Dialog(title="Python Console",
+    dialog = gtk.Dialog(title=_("Python Console"),
                         buttons=(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
     dialog.set_has_separator(False)
     dialog.connect("response", bye)
@@ -71,7 +73,7 @@ def console():
         import gimpprocbrowser
         gimpprocbrowser.dialog_new(on_apply)
 
-    button = gtk.Button("_Browse...")
+    button = gtk.Button(_("_Browse..."))
     button.connect("clicked", browse, cons)
 
     cons.inputbox.pack_end(button, fill=False, expand=False, padding=2)
@@ -95,15 +97,17 @@ def console():
 
 register(
     "python-fu-console",
-    "Python interactive interpreter with gimp extensions",
+    N_("Interactive Gimp-Python interpreter"),
     "Type in commands and see results",
     "James Henstridge",
     "James Henstridge",
     "1997-1999",
-    "_Console",
+    N_("_Console"),
     "",
     [],
     [],
-    console, menu="<Toolbox>/Xtns/Languages/Python-Fu")
+    console,
+    menu="<Toolbox>/Xtns/Languages/Python-Fu",
+    domain=("gimp20-python", gimp.locale_directory))
 
 main()

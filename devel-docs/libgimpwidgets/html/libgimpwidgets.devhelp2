@@ -130,6 +130,8 @@
     <keyword type="function" name="gimp_color_selection_get_old_color ()" link="GimpColorSelection.html#gimp-color-selection-get-old-color"/>
     <keyword type="function" name="gimp_color_selection_reset ()" link="GimpColorSelection.html#gimp-color-selection-reset"/>
     <keyword type="function" name="gimp_color_selection_color_changed ()" link="GimpColorSelection.html#gimp-color-selection-color-changed"/>
+    <keyword type="function" name="gimp_color_selection_set_config ()" link="GimpColorSelection.html#gimp-color-selection-set-config" since="GIMP 2.4"/>
+    <keyword type="" name="The &quot;config&quot; property" link="GimpColorSelection.html#GimpColorSelection--config"/>
     <keyword type="" name="The &quot;color-changed&quot; signal" link="GimpColorSelection.html#GimpColorSelection-color-changed"/>
     <keyword type="struct" name="GimpDialog" link="GimpDialog.html#GimpDialog-struct"/>
     <keyword type="function" name="gimp_dialog_new ()" link="GimpDialog.html#gimp-dialog-new"/>
@@ -346,6 +348,7 @@
     <keyword type="function" name="gimp_color_selector_set_channel ()" link="GimpColorSelector.html#gimp-color-selector-set-channel"/>
     <keyword type="function" name="gimp_color_selector_color_changed ()" link="GimpColorSelector.html#gimp-color-selector-color-changed"/>
     <keyword type="function" name="gimp_color_selector_channel_changed ()" link="GimpColorSelector.html#gimp-color-selector-channel-changed"/>
+    <keyword type="function" name="gimp_color_selector_set_config ()" link="GimpColorSelector.html#gimp-color-selector-set-config" since="GIMP 2.4"/>
     <keyword type="" name="The &quot;channel-changed&quot; signal" link="GimpColorSelector.html#GimpColorSelector-channel-changed"/>
     <keyword type="" name="The &quot;color-changed&quot; signal" link="GimpColorSelector.html#GimpColorSelector-color-changed"/>
     <keyword type="struct" name="GimpColorNotebook" link="GimpColorNotebook.html#GimpColorNotebook-struct"/>
@@ -540,6 +543,19 @@
     <keyword type="macro" name="GIMP_STOCK_DEFAULT_COLORS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-DEFAULT-COLORS:CAPS"/>
     <keyword type="macro" name="GIMP_STOCK_SWAP_COLORS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SWAP-COLORS:CAPS"/>
     <keyword type="macro" name="GIMP_STOCK_UNDO_HISTORY" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-UNDO-HISTORY:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_HCHAIN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-HCHAIN:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_HCHAIN_BROKEN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-HCHAIN-BROKEN:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_VCHAIN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-VCHAIN:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_VCHAIN_BROKEN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-VCHAIN-BROKEN:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_TEXTURE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEXTURE:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_FRAME" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-FRAME:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_ERROR" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-ERROR:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_INFO" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-INFO:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_QUESTION" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-QUESTION:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_WARNING" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-WARNING:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_WILBER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-WILBER:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_WILBER_EEK" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-WILBER-EEK:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_ZOOM_FOLLOW_WINDOW" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-ZOOM-FOLLOW-WINDOW:CAPS"/>
     <keyword type="macro" name="GIMP_STOCK_TOOL_AIRBRUSH" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-AIRBRUSH:CAPS"/>
     <keyword type="macro" name="GIMP_STOCK_TOOL_ALIGN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ALIGN:CAPS"/>
     <keyword type="macro" name="GIMP_STOCK_TOOL_BLEND" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BLEND:CAPS"/>
@@ -571,6 +587,7 @@
     <keyword type="macro" name="GIMP_STOCK_TOOL_PATH" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PATH:CAPS"/>
     <keyword type="macro" name="GIMP_STOCK_TOOL_PENCIL" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PENCIL:CAPS"/>
     <keyword type="macro" name="GIMP_STOCK_TOOL_PERSPECTIVE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PERSPECTIVE:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_TOOL_PERSPECTIVE_CLONE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PERSPECTIVE-CLONE:CAPS"/>
     <keyword type="macro" name="GIMP_STOCK_TOOL_POSTERIZE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-POSTERIZE:CAPS"/>
     <keyword type="macro" name="GIMP_STOCK_TOOL_RECT_SELECT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-RECT-SELECT:CAPS"/>
     <keyword type="macro" name="GIMP_STOCK_TOOL_ROTATE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ROTATE:CAPS"/>
@@ -580,19 +597,16 @@
     <keyword type="macro" name="GIMP_STOCK_TOOL_TEXT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-TEXT:CAPS"/>
     <keyword type="macro" name="GIMP_STOCK_TOOL_THRESHOLD" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-THRESHOLD:CAPS"/>
     <keyword type="macro" name="GIMP_STOCK_TOOL_ZOOM" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ZOOM:CAPS"/>
-    <keyword type="macro" name="GIMP_STOCK_HCHAIN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-HCHAIN:CAPS"/>
-    <keyword type="macro" name="GIMP_STOCK_HCHAIN_BROKEN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-HCHAIN-BROKEN:CAPS"/>
-    <keyword type="macro" name="GIMP_STOCK_VCHAIN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-VCHAIN:CAPS"/>
-    <keyword type="macro" name="GIMP_STOCK_VCHAIN_BROKEN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-VCHAIN-BROKEN:CAPS"/>
-    <keyword type="macro" name="GIMP_STOCK_TEXTURE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEXTURE:CAPS"/>
-    <keyword type="macro" name="GIMP_STOCK_FRAME" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-FRAME:CAPS"/>
-    <keyword type="macro" name="GIMP_STOCK_ERROR" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-ERROR:CAPS"/>
-    <keyword type="macro" name="GIMP_STOCK_INFO" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-INFO:CAPS"/>
-    <keyword type="macro" name="GIMP_STOCK_QUESTION" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-QUESTION:CAPS"/>
-    <keyword type="macro" name="GIMP_STOCK_WARNING" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-WARNING:CAPS"/>
-    <keyword type="macro" name="GIMP_STOCK_WILBER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-WILBER:CAPS"/>
-    <keyword type="macro" name="GIMP_STOCK_WILBER_EEK" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-WILBER-EEK:CAPS"/>
-    <keyword type="macro" name="GIMP_STOCK_ZOOM_FOLLOW_WINDOW" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-ZOOM-FOLLOW-WINDOW:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_CONTROLLER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONTROLLER:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_CONTROLLER_KEYBOARD" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONTROLLER-KEYBOARD:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_CONTROLLER_LINUX_INPUT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONTROLLER-LINUX-INPUT:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_CONTROLLER_MIDI" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONTROLLER-MIDI:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_CONTROLLER_WHEEL" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONTROLLER-WHEEL:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_DISPLAY_FILTER_COLORBLIND" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER-COLORBLIND:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_DISPLAY_FILTER_CONTRAST" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER-CONTRAST:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_DISPLAY_FILTER_GAMMA" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER-GAMMA:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_DISPLAY_FILTER_LCMS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER-LCMS:CAPS"/>
+    <keyword type="macro" name="GIMP_STOCK_DISPLAY_FILTER_PROOF" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER-PROOF:CAPS"/>
     <keyword type="macro" name="GIMP_STOCK_QMASK_ON" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-QMASK-ON:CAPS" deprecated=""/>
     <keyword type="macro" name="GIMP_STOCK_QMASK_OFF" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-QMASK-OFF:CAPS" deprecated=""/>
     <keyword type="macro" name="GIMP_STOCK_BRUSH" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-BRUSH:CAPS"/>

@@ -70,9 +70,9 @@ gimp_dodge_burn_tool_register (GimpToolRegisterCallback  callback,
                 gimp_dodge_burn_options_gui,
                 GIMP_PAINT_OPTIONS_CONTEXT_MASK,
                 "gimp-dodge-burn-tool",
-                _("Dodge/Burn"),
-                _("Dodge or Burn strokes"),
-                N_("Dod_geBurn"), "<shift>D",
+                _("Dodge / Burn"),
+                _("Dodge / Burn Tool: Selectively lighten or darken using a brush"),
+                N_("Dod_ge / Burn"), "<shift>D",
                 NULL, GIMP_HELP_TOOL_DODGE_BURN,
                 GIMP_STOCK_TOOL_DODGE,
                 data);
@@ -170,14 +170,14 @@ gimp_dodge_burn_tool_status_update (GimpTool          *tool,
   switch (type)
     {
     case GIMP_DODGE:
-      paint_tool->status      = _("Click to dodge.");
-      paint_tool->status_line = _("Click to dodge the line.");
+      paint_tool->status      = _("Click to dodge");
+      paint_tool->status_line = _("Click to dodge the line");
       paint_tool->status_ctrl = _("%s to burn");
       break;
 
     case GIMP_BURN:
-      paint_tool->status      = _("Click to burn.");
-      paint_tool->status_line = _("Click to burn the line.");
+      paint_tool->status      = _("Click to burn");
+      paint_tool->status_line = _("Click to burn the line");
       paint_tool->status_ctrl = _("%s to dodge");
       break;
 

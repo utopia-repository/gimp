@@ -21,18 +21,30 @@
 
 #include "config.h"
 
+#include <sys/types.h>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
 #include <gtk/gtk.h>
+#include <glib/gstdio.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
 
+#include "core/gimp.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpimage.h"
 #include "core/gimpundostack.h"
 #include "core/gimpunit.h"
 #include "core/gimp-utils.h"
+
+#include "file/file-utils.h"
+
+#include "plug-in/gimppluginmanager.h"
 
 #include "gimpimagepropview.h"
 #include "gimppropwidgets.h"
@@ -47,26 +59,27 @@ enum
 };
 
 
-static GObject * gimp_image_prop_view_constructor  (GType              type,
-                                                    guint              n_params,
-                                                    GObjectConstructParam *params);
-static void      gimp_image_prop_view_set_property (GObject           *object,
-                                                    guint              property_id,
-                                                    const GValue      *value,
-                                                    GParamSpec        *pspec);
-static void      gimp_image_prop_view_get_property (GObject           *object,
-                                                    guint              property_id,
-                                                    GValue            *value,
-                                                    GParamSpec        *pspec);
+static GObject  * gimp_image_prop_view_constructor  (GType              type,
+                                                     guint              n_params,
+                                                     GObjectConstructParam *params);
+static void       gimp_image_prop_view_set_property (GObject           *object,
+                                                     guint              property_id,
+                                                     const GValue      *value,
+                                                     GParamSpec        *pspec);
+static void       gimp_image_prop_view_get_property (GObject           *object,
+                                                     guint              property_id,
+                                                     GValue            *value,
+                                                     GParamSpec        *pspec);
 
-static GtkWidget * gimp_image_prop_view_add_label  (GtkTable          *table,
-                                                    gint               row,
-                                                    const gchar       *text);
-static void        gimp_image_prop_view_undo_event (GimpImage         *image,
-                                                    GimpUndoEvent      event,
-                                                    GimpUndo          *undo,
-                                                    GimpImagePropView *view);
-static void        gimp_image_prop_view_update     (GimpImagePropView *view);
+static GtkWidget * gimp_image_prop_view_add_label   (GtkTable          *table,
+                                                     gint               row,
+                                                     const gchar       *text);
+static void        gimp_image_prop_view_undo_event  (GimpImage         *image,
+                                                     GimpUndoEvent      event,
+                                                     GimpUndo          *undo,
+                                                     GimpImagePropView *view);
+static void        gimp_image_prop_view_update      (GimpImagePropView *view);
+static void        gimp_image_prop_view_file_update (GimpImagePropView *view);
 
 
 G_DEFINE_TYPE (GimpImagePropView, gimp_image_prop_view, GTK_TYPE_TABLE)
@@ -93,6 +106,8 @@ gimp_image_prop_view_class_init (GimpImagePropViewClass *klass)
 static void
 gimp_image_prop_view_init (GimpImagePropView *view)
 {
+  gtk_table_resize (GTK_TABLE (view), 14, 2);
+
   gtk_table_set_col_spacings (GTK_TABLE (view), 6);
   gtk_table_set_row_spacings (GTK_TABLE (view), 3);
 }
@@ -166,6 +181,17 @@ gimp_image_prop_view_constructor (GType                  type,
 
   gtk_table_set_row_spacing (GTK_TABLE (view), row++, 12);
 
+  view->filename_label =
+    gimp_image_prop_view_add_label (table, row++, _("File Name:"));
+
+  view->filesize_label =
+    gimp_image_prop_view_add_label (table, row++, _("File Size:"));
+
+  view->filetype_label =
+    gimp_image_prop_view_add_label (table, row, _("File Type:"));
+
+  gtk_table_set_row_spacing (GTK_TABLE (view), row++, 12);
+
   view->memsize_label =
     gimp_image_prop_view_add_label (table, row++, _("Size in memory:"));
 
@@ -189,6 +215,11 @@ gimp_image_prop_view_constructor (GType                  type,
   view->vectors_label =
     gimp_image_prop_view_add_label (table, row++, _("Number of paths:"));
 
+  g_signal_connect_object (view->image, "name-changed",
+                           G_CALLBACK (gimp_image_prop_view_file_update),
+                           G_OBJECT (view),
+                           G_CONNECT_SWAPPED);
+
   g_signal_connect_object (view->image, "size-changed",
                            G_CALLBACK (gimp_image_prop_view_update),
                            G_OBJECT (view),
@@ -211,6 +242,7 @@ gimp_image_prop_view_constructor (GType                  type,
                            0);
 
   gimp_image_prop_view_update (view);
+  gimp_image_prop_view_file_update (view);
 
   return object;
 }
@@ -271,6 +303,78 @@ gimp_image_prop_view_label_set_memsize (GtkWidget  *label,
 
   gtk_label_set_text (GTK_LABEL (label), str);
   g_free (str);
+}
+
+static void
+gimp_image_prop_view_label_set_filename (GtkWidget *label,
+                                         GimpImage *image)
+{
+  const gchar *uri = gimp_object_get_name (GIMP_OBJECT (image));
+
+  if (uri)
+    {
+      gchar *name = file_utils_uri_display_basename (uri);
+
+      gtk_label_set_text (GTK_LABEL (label), name);
+      g_free (name);
+    }
+  else
+    {
+      gtk_label_set_text (GTK_LABEL (label), NULL);
+    }
+}
+
+static void
+gimp_image_prop_view_label_set_filesize (GtkWidget *label,
+                                         GimpImage *image)
+{
+  gchar *filename = gimp_image_get_filename (image);
+
+  if (filename)
+    {
+      struct stat  buf;
+
+      if (g_stat (filename, &buf) == 0)
+        {
+          gchar *str = gimp_memsize_to_string (buf.st_size);
+
+          gtk_label_set_text (GTK_LABEL (label), str);
+          g_free (str);
+        }
+      else
+        {
+          gtk_label_set_text (GTK_LABEL (label), NULL);
+        }
+
+      g_free (filename);
+    }
+  else
+    {
+      gtk_label_set_text (GTK_LABEL (label), NULL);
+    }
+}
+
+static void
+gimp_image_prop_view_label_set_filetype (GtkWidget *label,
+                                         GimpImage *image)
+{
+  GimpPlugInManager   *manager = image->gimp->plug_in_manager;
+  GimpPlugInProcedure *proc;
+  gchar               *text;
+
+  proc = gimp_image_get_save_proc (image);
+  if (! proc)
+    {
+      gchar *filename = gimp_image_get_filename (image);
+
+      proc = file_utils_find_proc (manager->load_procs, filename, NULL);
+      g_free (filename);
+    }
+
+  text = proc ? gimp_plug_in_manager_get_label (manager, proc) : NULL;
+
+  gtk_label_set_text (GTK_LABEL (label), text);
+  g_free (text);
 }
 
 static void
@@ -397,4 +501,19 @@ gimp_image_prop_view_update (GimpImagePropView *view)
   g_snprintf (buf, sizeof (buf), "%d",
               gimp_container_num_children (image->vectors));
   gtk_label_set_text (GTK_LABEL (view->vectors_label), buf);
+}
+
+static void
+gimp_image_prop_view_file_update (GimpImagePropView *view)
+{
+  GimpImage *image = view->image;
+
+  /*  filename  */
+  gimp_image_prop_view_label_set_filename (view->filename_label, image);
+
+  /*  filesize  */
+  gimp_image_prop_view_label_set_filesize (view->filesize_label, image);
+
+  /*  filetype  */
+  gimp_image_prop_view_label_set_filetype (view->filetype_label, image);
 }

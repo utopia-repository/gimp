@@ -49,9 +49,6 @@
 #include "gimp-intl.h"
 
 
-#define IMPORT_PREVIEW_SIZE 80
-
-
 typedef enum
 {
   GRADIENT_IMPORT,
@@ -849,8 +846,9 @@ palette_import_make_palette (ImportDialog *dialog)
 
         if (! palette)
           {
-            gimp_show_message_dialog (dialog->dialog, GTK_MESSAGE_ERROR,
-                                      error->message);
+            gimp_message (dialog->context->gimp, G_OBJECT (dialog->dialog),
+                          GIMP_MESSAGE_ERROR,
+                          "%s", error->message);
             g_error_free (error);
           }
       }

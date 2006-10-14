@@ -71,8 +71,9 @@
 
 #define PLUG_IN_PROC   "plug-in-nova"
 #define PLUG_IN_BINARY "nova"
-#define ENTRY_WIDTH     50
+
 #define SCALE_WIDTH    125
+
 
 typedef struct
 {
@@ -798,9 +799,11 @@ nova (GimpDrawable *drawable,
            for (col = 0, x = 0; col < x2; col++, x++)
              {
                u = (gdouble) (x - xc) /
-                          (pvals.radius * width / drawable->width * zoom);
+                          ((gdouble) pvals.radius * width /
+                              drawable->width * zoom);
                v = (gdouble) (y - yc) /
-                          (pvals.radius * height / drawable->height * zoom);
+                          ((gdouble) pvals.radius * height /
+                              drawable->height * zoom);
                l = sqrt (u * u + v * v);
 
                /* This algorithm is still under construction. */

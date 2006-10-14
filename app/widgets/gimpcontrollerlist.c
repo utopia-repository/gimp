@@ -173,7 +173,7 @@ gimp_controller_list_init (GimpControllerList *list)
   list->src = gtk_list_store_new (NUM_COLUMNS,
                                   G_TYPE_STRING,
                                   G_TYPE_STRING,
-                                  G_TYPE_POINTER);
+                                  G_TYPE_GTYPE);
   tv = gtk_tree_view_new_with_model (GTK_TREE_MODEL (list->src));
   g_object_unref (list->src);
 
@@ -223,7 +223,7 @@ gimp_controller_list_init (GimpControllerList *list)
 
       gtk_list_store_append (list->src, &iter);
       gtk_list_store_set (list->src, &iter,
-                          COLUMN_ICON, "gimp-info",
+                          COLUMN_ICON, controller_class->stock_id,
                           COLUMN_NAME, controller_class->name,
                           COLUMN_TYPE, controller_types[i],
                           -1);
@@ -509,21 +509,21 @@ gimp_controller_list_add_clicked (GtkWidget          *button,
   if (list->src_gtype == GIMP_TYPE_CONTROLLER_KEYBOARD &&
       gimp_controllers_get_keyboard (list->gimp) != NULL)
     {
-      gimp_show_message_dialog (button, GTK_MESSAGE_WARNING,
-                                _("There can only be one active keyboard "
-                                  "controller.\n\n"
-                                  "You already have a keyboard controller in "
-                                  "your list of active controllers."));
+      gimp_message (list->gimp, G_OBJECT (button), GIMP_MESSAGE_WARNING,
+                    _("There can only be one active keyboard "
+                      "controller.\n\n"
+                      "You already have a keyboard controller in "
+                      "your list of active controllers."));
       return;
     }
   else if (list->src_gtype == GIMP_TYPE_CONTROLLER_WHEEL &&
            gimp_controllers_get_wheel (list->gimp) != NULL)
     {
-      gimp_show_message_dialog (button, GTK_MESSAGE_WARNING,
-                                _("There can only be one active wheel "
-                                  "controller.\n\n"
-                                  "You already have a wheel controller in "
-                                  "your list of active controllers."));
+      gimp_message (list->gimp, G_OBJECT (button), GIMP_MESSAGE_WARNING,
+                    _("There can only be one active wheel "
+                      "controller.\n\n"
+                      "You already have a wheel controller in "
+                      "your list of active controllers."));
       return;
     }
 
@@ -629,7 +629,8 @@ gimp_controller_list_edit_clicked (GtkWidget          *button,
       return;
     }
 
-  dialog = gimp_viewable_dialog_new (GIMP_VIEWABLE (list->dest_info), NULL, /* FIXME */
+  dialog = gimp_viewable_dialog_new (GIMP_VIEWABLE (list->dest_info),
+                                     gimp_get_user_context (list->gimp),
                                      _("Configure Controller"),
                                      "gimp-controller-editor-dialog",
                                      GTK_STOCK_EDIT,
@@ -650,7 +651,8 @@ gimp_controller_list_edit_clicked (GtkWidget          *button,
                     G_CALLBACK (gtk_widget_destroy),
                     NULL);
 
-  editor = gimp_controller_editor_new (list->dest_info);
+  editor = gimp_controller_editor_new (list->dest_info,
+                                       gimp_get_user_context (list->gimp));
   gtk_container_set_border_width (GTK_CONTAINER (editor), 12);
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), editor);
   gtk_widget_show (editor);

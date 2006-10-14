@@ -58,34 +58,34 @@ libexec_PROGRAMS = AlienMap2$(EXEEXT) CEL$(EXEEXT) \
 	gradmap$(EXEEXT) grid$(EXEEXT) gtm$(EXEEXT) \
 	guillotine$(EXEEXT) header$(EXEEXT) hot$(EXEEXT) \
 	illusion$(EXEEXT) iwarp$(EXEEXT) jigsaw$(EXEEXT) \
-	laplace$(EXEEXT) lic$(EXEEXT) $(am__EXEEXT_2) \
-	mapcolor$(EXEEXT) max_rgb$(EXEEXT) mblur$(EXEEXT) \
-	$(am__EXEEXT_3) mosaic$(EXEEXT) neon$(EXEEXT) \
+	laplace$(EXEEXT) $(am__EXEEXT_2) lens$(EXEEXT) lic$(EXEEXT) \
+	$(am__EXEEXT_3) mapcolor$(EXEEXT) max_rgb$(EXEEXT) \
+	mblur$(EXEEXT) $(am__EXEEXT_4) mosaic$(EXEEXT) neon$(EXEEXT) \
 	newsprint$(EXEEXT) nlfilt$(EXEEXT) noisify$(EXEEXT) \
 	normalize$(EXEEXT) nova$(EXEEXT) oilify$(EXEEXT) \
 	papertile$(EXEEXT) pat$(EXEEXT) pcx$(EXEEXT) \
 	photocopy$(EXEEXT) pix$(EXEEXT) pixelize$(EXEEXT) \
-	plasma$(EXEEXT) plugin-browser$(EXEEXT) $(am__EXEEXT_4) \
-	pnm$(EXEEXT) polar$(EXEEXT) $(am__EXEEXT_5) \
+	plasma$(EXEEXT) plugin-browser$(EXEEXT) $(am__EXEEXT_5) \
+	pnm$(EXEEXT) polar$(EXEEXT) $(am__EXEEXT_6) \
 	postscript$(EXEEXT) procedure-browser$(EXEEXT) psd$(EXEEXT) \
-	psd_save$(EXEEXT) $(am__EXEEXT_6) randomize$(EXEEXT) \
+	psd_save$(EXEEXT) $(am__EXEEXT_7) randomize$(EXEEXT) \
 	raw$(EXEEXT) redeye$(EXEEXT) retinex$(EXEEXT) ripple$(EXEEXT) \
 	rotate$(EXEEXT) sample_colorize$(EXEEXT) scatter_hsv$(EXEEXT) \
 	screenshot$(EXEEXT) sel_gauss$(EXEEXT) semiflatten$(EXEEXT) \
 	sharpen$(EXEEXT) shift$(EXEEXT) sinus$(EXEEXT) \
 	smooth_palette$(EXEEXT) snoise$(EXEEXT) sobel$(EXEEXT) \
 	softglow$(EXEEXT) sparkle$(EXEEXT) spheredesigner$(EXEEXT) \
-	spread$(EXEEXT) struc$(EXEEXT) sunras$(EXEEXT) $(am__EXEEXT_7) \
-	tga$(EXEEXT) threshold_alpha$(EXEEXT) $(am__EXEEXT_8) \
+	spread$(EXEEXT) struc$(EXEEXT) sunras$(EXEEXT) $(am__EXEEXT_8) \
+	tga$(EXEEXT) threshold_alpha$(EXEEXT) $(am__EXEEXT_9) \
 	tile$(EXEEXT) tileit$(EXEEXT) tiler$(EXEEXT) \
 	uniteditor$(EXEEXT) unsharp$(EXEEXT) video$(EXEEXT) \
 	vinvert$(EXEEXT) vpropagate$(EXEEXT) warp$(EXEEXT) \
 	waves$(EXEEXT) webbrowser$(EXEEXT) whirlpinch$(EXEEXT) \
-	wind$(EXEEXT) $(am__EXEEXT_9) xbm$(EXEEXT) $(am__EXEEXT_10) \
+	wind$(EXEEXT) $(am__EXEEXT_10) xbm$(EXEEXT) $(am__EXEEXT_11) \
 	xwd$(EXEEXT) zealouscrop$(EXEEXT)
-EXTRA_PROGRAMS = aa$(EXEEXT) mail$(EXEEXT) mng$(EXEEXT) png$(EXEEXT) \
-	poppler$(EXEEXT) psp$(EXEEXT) svg$(EXEEXT) tiff$(EXEEXT) \
-	wmf$(EXEEXT) xpm$(EXEEXT)
+EXTRA_PROGRAMS = aa$(EXEEXT) lcms$(EXEEXT) mail$(EXEEXT) mng$(EXEEXT) \
+	png$(EXEEXT) poppler$(EXEEXT) psp$(EXEEXT) svg$(EXEEXT) \
+	tiff$(EXEEXT) wmf$(EXEEXT) xpm$(EXEEXT)
 subdir = plug-ins/common
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -102,15 +102,16 @@ mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 am__EXEEXT_1 = @AA@
-am__EXEEXT_2 = @MAIL@
-am__EXEEXT_3 = @MNG@
-am__EXEEXT_4 = @PNG@
-am__EXEEXT_5 = @POPPLER@
-am__EXEEXT_6 = @PSP@
-am__EXEEXT_7 = @SVG@
-am__EXEEXT_8 = @TIFF@
-am__EXEEXT_9 = @WMF@
-am__EXEEXT_10 = @XPM@
+am__EXEEXT_2 = @LCMS@
+am__EXEEXT_3 = @MAIL@
+am__EXEEXT_4 = @MNG@
+am__EXEEXT_5 = @PNG@
+am__EXEEXT_6 = @POPPLER@
+am__EXEEXT_7 = @PSP@
+am__EXEEXT_8 = @SVG@
+am__EXEEXT_9 = @TIFF@
+am__EXEEXT_10 = @WMF@
+am__EXEEXT_11 = @XPM@
 am__installdirs = "$(DESTDIR)$(libexecdir)"
 libexecPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(libexec_PROGRAMS)
@@ -590,6 +591,19 @@ jigsaw_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 am_laplace_OBJECTS = laplace.$(OBJEXT)
 laplace_OBJECTS = $(am_laplace_OBJECTS)
 laplace_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
+	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
+am_lcms_OBJECTS = lcms.$(OBJEXT)
+lcms_OBJECTS = $(am_lcms_OBJECTS)
+lcms_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
+am_lens_OBJECTS = lens.$(OBJEXT)
+lens_OBJECTS = $(am_lens_OBJECTS)
+lens_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
 	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
@@ -1169,58 +1183,7 @@ SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) $(CML_explorer_SOURCES) \
 	$(grid_SOURCES) $(gtm_SOURCES) $(guillotine_SOURCES) \
 	$(header_SOURCES) $(hot_SOURCES) $(illusion_SOURCES) \
 	$(iwarp_SOURCES) $(jigsaw_SOURCES) $(laplace_SOURCES) \
-	$(lic_SOURCES) $(mail_SOURCES) $(mapcolor_SOURCES) \
-	$(max_rgb_SOURCES) $(mblur_SOURCES) $(mng_SOURCES) \
-	$(mosaic_SOURCES) $(neon_SOURCES) $(newsprint_SOURCES) \
-	$(nlfilt_SOURCES) $(noisify_SOURCES) $(normalize_SOURCES) \
-	$(nova_SOURCES) $(oilify_SOURCES) $(papertile_SOURCES) \
-	$(pat_SOURCES) $(pcx_SOURCES) $(photocopy_SOURCES) \
-	$(pix_SOURCES) $(pixelize_SOURCES) $(plasma_SOURCES) \
-	$(plugin_browser_SOURCES) $(png_SOURCES) $(pnm_SOURCES) \
-	$(polar_SOURCES) $(poppler_SOURCES) $(postscript_SOURCES) \
-	$(procedure_browser_SOURCES) $(psd_SOURCES) \
-	$(psd_save_SOURCES) $(psp_SOURCES) $(randomize_SOURCES) \
-	$(raw_SOURCES) $(redeye_SOURCES) $(retinex_SOURCES) \
-	$(ripple_SOURCES) $(rotate_SOURCES) $(sample_colorize_SOURCES) \
-	$(scatter_hsv_SOURCES) $(screenshot_SOURCES) \
-	$(sel_gauss_SOURCES) $(semiflatten_SOURCES) $(sharpen_SOURCES) \
-	$(shift_SOURCES) $(sinus_SOURCES) $(smooth_palette_SOURCES) \
-	$(snoise_SOURCES) $(sobel_SOURCES) $(softglow_SOURCES) \
-	$(sparkle_SOURCES) $(spheredesigner_SOURCES) $(spread_SOURCES) \
-	$(struc_SOURCES) $(sunras_SOURCES) $(svg_SOURCES) \
-	$(tga_SOURCES) $(threshold_alpha_SOURCES) $(tiff_SOURCES) \
-	$(tile_SOURCES) $(tileit_SOURCES) $(tiler_SOURCES) \
-	$(uniteditor_SOURCES) $(unsharp_SOURCES) $(video_SOURCES) \
-	$(vinvert_SOURCES) $(vpropagate_SOURCES) $(warp_SOURCES) \
-	$(waves_SOURCES) $(webbrowser_SOURCES) $(whirlpinch_SOURCES) \
-	$(wind_SOURCES) $(wmf_SOURCES) $(xbm_SOURCES) $(xpm_SOURCES) \
-	$(xwd_SOURCES) $(zealouscrop_SOURCES)
-DIST_SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) \
-	$(CML_explorer_SOURCES) $(aa_SOURCES) $(align_layers_SOURCES) \
-	$(animationplay_SOURCES) $(animoptimize_SOURCES) \
-	$(apply_lens_SOURCES) $(autocrop_SOURCES) \
-	$(autostretch_hsv_SOURCES) $(blinds_SOURCES) $(blur_SOURCES) \
-	$(borderaverage_SOURCES) $(bumpmap_SOURCES) \
-	$(c_astretch_SOURCES) $(cartoon_SOURCES) $(ccanalyze_SOURCES) \
-	$(channel_mixer_SOURCES) $(checkerboard_SOURCES) \
-	$(color_enhance_SOURCES) $(colorify_SOURCES) \
-	$(colormap_remap_SOURCES) $(colortoalpha_SOURCES) \
-	$(compose_SOURCES) $(compressor_SOURCES) $(convmatrix_SOURCES) \
-	$(csource_SOURCES) $(cubism_SOURCES) $(curve_bend_SOURCES) \
-	$(decompose_SOURCES) $(deinterlace_SOURCES) \
-	$(depthmerge_SOURCES) $(desktop_link_SOURCES) \
-	$(despeckle_SOURCES) $(destripe_SOURCES) $(dicom_SOURCES) \
-	$(diffraction_SOURCES) $(displace_SOURCES) $(dog_SOURCES) \
-	$(edge_SOURCES) $(emboss_SOURCES) $(engrave_SOURCES) \
-	$(exchange_SOURCES) $(film_SOURCES) $(flarefx_SOURCES) \
-	$(fp_SOURCES) $(fractaltrace_SOURCES) $(gauss_SOURCES) \
-	$(gbr_SOURCES) $(gee_SOURCES) $(gee_zoom_SOURCES) \
-	$(gif_SOURCES) $(gifload_SOURCES) $(gih_SOURCES) \
-	$(glasstile_SOURCES) $(glob_SOURCES) $(gqbist_SOURCES) \
-	$(gradmap_SOURCES) $(grid_SOURCES) $(gtm_SOURCES) \
-	$(guillotine_SOURCES) $(header_SOURCES) $(hot_SOURCES) \
-	$(illusion_SOURCES) $(iwarp_SOURCES) $(jigsaw_SOURCES) \
-	$(laplace_SOURCES) $(lic_SOURCES) $(mail_SOURCES) \
+	$(lcms_SOURCES) $(lens_SOURCES) $(lic_SOURCES) $(mail_SOURCES) \
 	$(mapcolor_SOURCES) $(max_rgb_SOURCES) $(mblur_SOURCES) \
 	$(mng_SOURCES) $(mosaic_SOURCES) $(neon_SOURCES) \
 	$(newsprint_SOURCES) $(nlfilt_SOURCES) $(noisify_SOURCES) \
@@ -1247,6 +1210,58 @@ DIST_SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) \
 	$(webbrowser_SOURCES) $(whirlpinch_SOURCES) $(wind_SOURCES) \
 	$(wmf_SOURCES) $(xbm_SOURCES) $(xpm_SOURCES) $(xwd_SOURCES) \
 	$(zealouscrop_SOURCES)
+DIST_SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) \
+	$(CML_explorer_SOURCES) $(aa_SOURCES) $(align_layers_SOURCES) \
+	$(animationplay_SOURCES) $(animoptimize_SOURCES) \
+	$(apply_lens_SOURCES) $(autocrop_SOURCES) \
+	$(autostretch_hsv_SOURCES) $(blinds_SOURCES) $(blur_SOURCES) \
+	$(borderaverage_SOURCES) $(bumpmap_SOURCES) \
+	$(c_astretch_SOURCES) $(cartoon_SOURCES) $(ccanalyze_SOURCES) \
+	$(channel_mixer_SOURCES) $(checkerboard_SOURCES) \
+	$(color_enhance_SOURCES) $(colorify_SOURCES) \
+	$(colormap_remap_SOURCES) $(colortoalpha_SOURCES) \
+	$(compose_SOURCES) $(compressor_SOURCES) $(convmatrix_SOURCES) \
+	$(csource_SOURCES) $(cubism_SOURCES) $(curve_bend_SOURCES) \
+	$(decompose_SOURCES) $(deinterlace_SOURCES) \
+	$(depthmerge_SOURCES) $(desktop_link_SOURCES) \
+	$(despeckle_SOURCES) $(destripe_SOURCES) $(dicom_SOURCES) \
+	$(diffraction_SOURCES) $(displace_SOURCES) $(dog_SOURCES) \
+	$(edge_SOURCES) $(emboss_SOURCES) $(engrave_SOURCES) \
+	$(exchange_SOURCES) $(film_SOURCES) $(flarefx_SOURCES) \
+	$(fp_SOURCES) $(fractaltrace_SOURCES) $(gauss_SOURCES) \
+	$(gbr_SOURCES) $(gee_SOURCES) $(gee_zoom_SOURCES) \
+	$(gif_SOURCES) $(gifload_SOURCES) $(gih_SOURCES) \
+	$(glasstile_SOURCES) $(glob_SOURCES) $(gqbist_SOURCES) \
+	$(gradmap_SOURCES) $(grid_SOURCES) $(gtm_SOURCES) \
+	$(guillotine_SOURCES) $(header_SOURCES) $(hot_SOURCES) \
+	$(illusion_SOURCES) $(iwarp_SOURCES) $(jigsaw_SOURCES) \
+	$(laplace_SOURCES) $(lcms_SOURCES) $(lens_SOURCES) \
+	$(lic_SOURCES) $(mail_SOURCES) $(mapcolor_SOURCES) \
+	$(max_rgb_SOURCES) $(mblur_SOURCES) $(mng_SOURCES) \
+	$(mosaic_SOURCES) $(neon_SOURCES) $(newsprint_SOURCES) \
+	$(nlfilt_SOURCES) $(noisify_SOURCES) $(normalize_SOURCES) \
+	$(nova_SOURCES) $(oilify_SOURCES) $(papertile_SOURCES) \
+	$(pat_SOURCES) $(pcx_SOURCES) $(photocopy_SOURCES) \
+	$(pix_SOURCES) $(pixelize_SOURCES) $(plasma_SOURCES) \
+	$(plugin_browser_SOURCES) $(png_SOURCES) $(pnm_SOURCES) \
+	$(polar_SOURCES) $(poppler_SOURCES) $(postscript_SOURCES) \
+	$(procedure_browser_SOURCES) $(psd_SOURCES) \
+	$(psd_save_SOURCES) $(psp_SOURCES) $(randomize_SOURCES) \
+	$(raw_SOURCES) $(redeye_SOURCES) $(retinex_SOURCES) \
+	$(ripple_SOURCES) $(rotate_SOURCES) $(sample_colorize_SOURCES) \
+	$(scatter_hsv_SOURCES) $(screenshot_SOURCES) \
+	$(sel_gauss_SOURCES) $(semiflatten_SOURCES) $(sharpen_SOURCES) \
+	$(shift_SOURCES) $(sinus_SOURCES) $(smooth_palette_SOURCES) \
+	$(snoise_SOURCES) $(sobel_SOURCES) $(softglow_SOURCES) \
+	$(sparkle_SOURCES) $(spheredesigner_SOURCES) $(spread_SOURCES) \
+	$(struc_SOURCES) $(sunras_SOURCES) $(svg_SOURCES) \
+	$(tga_SOURCES) $(threshold_alpha_SOURCES) $(tiff_SOURCES) \
+	$(tile_SOURCES) $(tileit_SOURCES) $(tiler_SOURCES) \
+	$(uniteditor_SOURCES) $(unsharp_SOURCES) $(video_SOURCES) \
+	$(vinvert_SOURCES) $(vpropagate_SOURCES) $(warp_SOURCES) \
+	$(waves_SOURCES) $(webbrowser_SOURCES) $(whirlpinch_SOURCES) \
+	$(wind_SOURCES) $(wmf_SOURCES) $(xbm_SOURCES) $(xpm_SOURCES) \
+	$(xwd_SOURCES) $(zealouscrop_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -1381,6 +1396,8 @@ HAVE_GNOMEVFS_TRUE = @HAVE_GNOMEVFS_TRUE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_LCMS_FALSE = @HAVE_LCMS_FALSE@
 HAVE_LCMS_TRUE = @HAVE_LCMS_TRUE@
+HAVE_LIBCURL_FALSE = @HAVE_LIBCURL_FALSE@
+HAVE_LIBCURL_TRUE = @HAVE_LIBCURL_TRUE@
 HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
@@ -1425,6 +1442,7 @@ INTLTOOL_XGETTEXT = @INTLTOOL_XGETTEXT@
 INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
+LCMS = @LCMS@
 LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
@@ -1522,8 +1540,10 @@ SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
-URI_CFLAGS = @URI_CFLAGS@
-URI_LIBS = @URI_LIBS@
+URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
+URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
+URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
+URI_LIBCURL_LIBS = @URI_LIBCURL_LIBS@
 USE_BINRELOC_FALSE = @USE_BINRELOC_FALSE@
 USE_BINRELOC_TRUE = @USE_BINRELOC_TRUE@
 USE_NLS = @USE_NLS@
@@ -1601,13 +1621,13 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
+libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
+libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
+libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
 libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
-libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
-libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
-libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
-libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
-libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 @OS_WIN32_TRUE@mwindows = -mwindows
 AM_LDFLAGS = $(mwindows)
 EXTRA_DIST = \
@@ -2592,6 +2612,34 @@ laplace_LDADD = \
 	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)
+
+lcms_SOURCES = \
+	lcms.c
+
+lcms_LDADD = \
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpmath)		\
+	$(libgimpbase)		\
+	$(LIBLCMS)		\
+	$(GLIB_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)
+
+lens_SOURCES = \
+	lens.c
+
+lens_LDADD = \
+	$(libgimpui)		\
+	$(libgimpconfig)	\
+	$(libgimpwidgets)	\
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpmath)		\
+	$(libgimpbase)		\
+	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
@@ -3988,6 +4036,12 @@ jigsaw$(EXEEXT): $(jigsaw_OBJECTS) $(jigsaw_DEPENDENCIES)
 laplace$(EXEEXT): $(laplace_OBJECTS) $(laplace_DEPENDENCIES) 
 	@rm -f laplace$(EXEEXT)
 	$(LINK) $(laplace_LDFLAGS) $(laplace_OBJECTS) $(laplace_LDADD) $(LIBS)
+lcms$(EXEEXT): $(lcms_OBJECTS) $(lcms_DEPENDENCIES) 
+	@rm -f lcms$(EXEEXT)
+	$(LINK) $(lcms_LDFLAGS) $(lcms_OBJECTS) $(lcms_LDADD) $(LIBS)
+lens$(EXEEXT): $(lens_OBJECTS) $(lens_DEPENDENCIES) 
+	@rm -f lens$(EXEEXT)
+	$(LINK) $(lens_LDFLAGS) $(lens_OBJECTS) $(lens_LDADD) $(LIBS)
 lic$(EXEEXT): $(lic_OBJECTS) $(lic_DEPENDENCIES) 
 	@rm -f lic$(EXEEXT)
 	$(LINK) $(lic_LDFLAGS) $(lic_OBJECTS) $(lic_LDADD) $(LIBS)
@@ -4290,6 +4344,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/iwarp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jigsaw.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/laplace.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lcms.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lens.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lic.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mail.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mapcolor.Po@am__quote@

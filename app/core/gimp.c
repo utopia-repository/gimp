@@ -52,9 +52,9 @@
 #include "gimp-utils.h"
 #include "gimpbrush.h"
 #include "gimpbrush-load.h"
-#include "gimpbrushgenerated.h"
+#include "gimpbrushgenerated-load.h"
 #include "gimpbrushclipboard.h"
-#include "gimpbrushpipe.h"
+#include "gimpbrushpipe-load.h"
 #include "gimpbuffer.h"
 #include "gimpcontext.h"
 #include "gimpdatafactory.h"
@@ -66,7 +66,9 @@
 #include "gimplist.h"
 #include "gimpmarshal.h"
 #include "gimppalette.h"
+#include "gimppalette-load.h"
 #include "gimppattern.h"
+#include "gimppattern-load.h"
 #include "gimppatternclipboard.h"
 #include "gimpparasitelist.h"
 #include "gimpprogress.h"
@@ -655,7 +657,7 @@ gimp_new (const gchar       *name,
   g_return_val_if_fail (name != NULL, NULL);
 
   gimp = g_object_new (GIMP_TYPE_GIMP,
-                       "name",    name,
+                       "name", name,
                        NULL);
 
   gimp->session_name     = g_strdup (session_name);
@@ -977,21 +979,52 @@ gimp_get_user_context (Gimp *gimp)
   return gimp->user_context;
 }
 
+GimpToolInfo *
+gimp_get_tool_info (Gimp        *gimp,
+                    const gchar *tool_id)
+{
+  gpointer info;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+  g_return_val_if_fail (tool_id != NULL, NULL);
+
+  info = gimp_container_get_child_by_name (gimp->tool_info_list, tool_id);
+
+  return (GimpToolInfo *) info;
+}
+
 void
-gimp_message (Gimp         *gimp,
-              GimpProgress *progress,
-              const gchar  *format,
+gimp_message (Gimp                *gimp,
+              GObject             *handler,
+              GimpMessageSeverity  severity,
+              const gchar         *format,
               ...)
 {
-  va_list  args;
-  gchar   *message;
-
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+  va_list args;
 
   va_start (args, format);
-  message = g_strdup_vprintf (format, args);
-  va_end (args);
 
-  gimp_show_message (gimp, progress, NULL, message);
+  gimp_message_valist (gimp, handler, severity, format, args);
+
+  va_end (args);
+}
+
+void
+gimp_message_valist (Gimp                *gimp,
+                     GObject             *handler,
+                     GimpMessageSeverity  severity,
+                     const gchar         *format,
+                     va_list              args)
+{
+  gchar *message;
+
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (handler == NULL || G_IS_OBJECT (handler));
+  g_return_if_fail (format != NULL);
+
+  message = g_strdup_vprintf (format, args);
+
+  gimp_show_message (gimp, handler, severity, NULL, message);
+
+  g_free (message);
 }

@@ -42,7 +42,6 @@
 #include "core/gimpdrawable-histogram.h"
 #include "core/gimpimage.h"
 #include "core/gimpimagemap.h"
-#include "core/gimpprogress.h"
 #include "core/gimptoolinfo.h"
 
 #include "widgets/gimpcolorbar.h"
@@ -75,7 +74,8 @@
 static void     gimp_curves_tool_finalize       (GObject           *object);
 
 static gboolean gimp_curves_tool_initialize     (GimpTool          *tool,
-                                                 GimpDisplay       *display);
+                                                 GimpDisplay       *display,
+                                                 GError           **error);
 static void     gimp_curves_tool_button_release (GimpTool          *tool,
                                                  GimpCoords        *coords,
                                                  guint32            time,
@@ -146,7 +146,7 @@ gimp_curves_tool_register (GimpToolRegisterCallback  callback,
                 0,
                 "gimp-curves-tool",
                 _("Curves"),
-                _("Adjust color curves"),
+                _("Curves Tool: Adjust color curves"),
                 N_("_Curves..."), NULL,
                 NULL, GIMP_HELP_TOOL_CURVES,
                 GIMP_STOCK_TOOL_CURVES,
@@ -240,8 +240,9 @@ gimp_curves_tool_finalize (GObject *object)
 }
 
 static gboolean
-gimp_curves_tool_initialize (GimpTool    *tool,
-                             GimpDisplay *display)
+gimp_curves_tool_initialize (GimpTool     *tool,
+                             GimpDisplay  *display,
+                             GError      **error)
 {
   GimpCurvesTool *c_tool = GIMP_CURVES_TOOL (tool);
   GimpDrawable   *drawable;
@@ -253,8 +254,8 @@ gimp_curves_tool_initialize (GimpTool    *tool,
 
   if (gimp_drawable_is_indexed (drawable))
     {
-      gimp_message (display->image->gimp, GIMP_PROGRESS (display),
-                    _("Curves for indexed layers cannot be adjusted."));
+      g_set_error (error, 0, 0,
+                   _("Curves does not operate on indexed layers."));
       return FALSE;
     }
 
@@ -271,7 +272,7 @@ gimp_curves_tool_initialize (GimpTool    *tool,
   c_tool->grabbed  = FALSE;
   c_tool->last     = 0;
 
-  GIMP_TOOL_CLASS (parent_class)->initialize (tool, display);
+  GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error);
 
   /*  always pick colors  */
   gimp_color_tool_enable (GIMP_COLOR_TOOL (tool),
@@ -358,12 +359,12 @@ gimp_curves_tool_oper_update (GimpTool        *tool,
   if (state & GDK_SHIFT_MASK)
     {
       mode   = GIMP_COLOR_PICK_MODE_PALETTE;
-      status = _("Click to add a control point.");
+      status = _("Click to add a control point");
     }
   else if (state & GDK_CONTROL_MASK)
     {
       mode   = GIMP_COLOR_PICK_MODE_PALETTE;
-      status = _("Click to add control points to all channels.");
+      status = _("Click to add control points to all channels");
     }
 
   GIMP_COLOR_TOOL (tool)->pick_mode = mode;
@@ -1080,6 +1081,8 @@ curves_graph_events (GtkWidget      *widget,
           tool->selected = closest_point;
           tool->curves->points[tool->channel][tool->selected][0] = x;
           tool->curves->points[tool->channel][tool->selected][1] = 255 - y;
+
+          gimp_image_map_tool_preview (GIMP_IMAGE_MAP_TOOL (tool));
           break;
 
         case GIMP_CURVE_FREE:
@@ -1106,7 +1109,9 @@ curves_graph_events (GtkWidget      *widget,
       tool->grabbed = FALSE;
 
       curves_set_cursor (tool, GDK_FLEUR);
-      gimp_image_map_tool_preview (GIMP_IMAGE_MAP_TOOL (tool));
+
+      if (tool->curves->curve_type[tool->channel] == GIMP_CURVE_FREE)
+        gimp_image_map_tool_preview (GIMP_IMAGE_MAP_TOOL (tool));
 
       return TRUE;
 
@@ -1142,6 +1147,8 @@ curves_graph_events (GtkWidget      *widget,
                 }
 
               curves_calculate_curve (tool->curves, tool->channel);
+
+              gimp_image_map_tool_preview (GIMP_IMAGE_MAP_TOOL (tool));
             }
           break;
 

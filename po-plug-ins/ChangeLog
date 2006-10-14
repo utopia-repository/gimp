@@ -1,3 +1,51 @@
+2006-10-11  Žygimantas Beručka  <zygis@gnome.org>
+
+	* lt.po: Updated Lithuanian translation.
+
+2006-10-04  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation
+
+2006-10-02  Jakub Friedl <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation
+
+2006-09-24  Mukund Sivaraman  <muks@mukund.org>
+
+	* POTFILES.in: added a URI backed which uses the libcurl library
+
+2006-09-24  Pawan Chitrakar  <pchitrakar@gmail.com>
+
+	* ne.po: Updated Nepali Translation
+
+2006-09-20  Žygimantas Beručka  <zygis@gnome.org>
+
+	* lt.po: Updated Lithuanian translation.
+
+2006-09-18  Jakub Friedl <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation
+
+2006-09-14  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Updated English (British) translation
+
+2006-09-14  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Updated English (British) translation
+
+2006-09-13  Sven Neumann  <sven@gimp.org>
+
+	* POTFILES.in: added new lens-distortion plug-in.
+
+2006-09-13  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation
+
+2006-09-12  Pema Geyleg  <pgeyleg@gmail.com>
+
+	* dz.po: Added Dzongkha Translation.
+
 2006-09-05  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
 
 	* ca.po: Updated Catalan translation by

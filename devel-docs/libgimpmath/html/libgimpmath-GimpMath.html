@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpMath</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Math Library Reference Manual">
 <link rel="up" href="libgimpmath.html" title="Part&#160;I.&#160;GIMP Math Library">
 <link rel="prev" href="libgimpmath.html" title="Part&#160;I.&#160;GIMP Math Library">
@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Math Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpmath-GimpMatrix.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2583499" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2576037" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2555700" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2503167" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpmath-GimpMath"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2583499"></a><span class="refentrytitle">GimpMath</span>
+<a name="id2576037"></a><span class="refentrytitle">GimpMath</span>
 </h2>
 <p>GimpMath &#8212; Mathematical definitions and macros.</p>
 </td>
@@ -56,18 +56,18 @@
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2555700"></a><h2>Description</h2>
+<a name="id2503167"></a><h2>Description</h2>
 <p>
 Mathematical definitions and macros. These macros should be used
 rather than the ones from math.h for enhanced portability.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2555717"></a><h2>Details</h2>
+<a name="id2503185"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2555728"></a><h3>
+<a name="id2503196"></a><h3>
 <a name="RINT:CAPS"></a>RINT()</h3>
-<a class="indexterm" name="id2555740"></a><pre class="programlisting">#define     RINT(x)</pre>
+<a class="indexterm" name="id2503208"></a><pre class="programlisting">#define     RINT(x)</pre>
 <p>
 This macro rounds its argument <em class="parameter"><code>x</code></em> to an integer value in floating point
 format.
@@ -86,9 +86,9 @@ format.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2555781"></a><h3>
+<a name="id2503249"></a><h3>
 <a name="ROUND:CAPS"></a>ROUND()</h3>
-<a class="indexterm" name="id2555793"></a><pre class="programlisting">#define ROUND(x) ((int) ((x) + 0.5))
+<a class="indexterm" name="id2503261"></a><pre class="programlisting">#define ROUND(x) ((int) ((x) + 0.5))
 </pre>
 <p>
 This macro rounds its argument <em class="parameter"><code>x</code></em> to the nearest integer.
@@ -107,9 +107,9 @@ This macro rounds its argument <em class="parameter"><code>x</code></em> to the 
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2514873"></a><h3>
+<a name="id2502689"></a><h3>
 <a name="SQR:CAPS"></a>SQR()</h3>
-<a class="indexterm" name="id2514885"></a><pre class="programlisting">#define SQR(x) ((x) * (x))
+<a class="indexterm" name="id2502701"></a><pre class="programlisting">#define SQR(x) ((x) * (x))
 </pre>
 <p>
 This macro squares its argument <em class="parameter"><code>x</code></em>.
@@ -128,9 +128,9 @@ This macro squares its argument <em class="parameter"><code>x</code></em>.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2514925"></a><h3>
+<a name="id2502740"></a><h3>
 <a name="MAX255:CAPS"></a>MAX255()</h3>
-<a class="indexterm" name="id2514937"></a><pre class="programlisting">#define MAX255(a)  ((a) | (((a) &amp; 256) - (((a) &amp; 256) &gt;&gt; 8)))
+<a class="indexterm" name="id2502752"></a><pre class="programlisting">#define MAX255(a)  ((a) | (((a) &amp; 256) - (((a) &amp; 256) &gt;&gt; 8)))
 </pre>
 <p>
 This macro limits it argument <em class="parameter"><code>a</code></em>, an (0-511) int, to 255.
@@ -149,9 +149,9 @@ This macro limits it argument <em class="parameter"><code>a</code></em>, an (0-5
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2514976"></a><h3>
+<a name="id2502792"></a><h3>
 <a name="CLAMP0255:CAPS"></a>CLAMP0255()</h3>
-<a class="indexterm" name="id2532623"></a><pre class="programlisting">#define CLAMP0255(a)  CLAMP(a,0,255)
+<a class="indexterm" name="id2525161"></a><pre class="programlisting">#define CLAMP0255(a)  CLAMP(a,0,255)
 </pre>
 <p>
 This macro clamps its argument <em class="parameter"><code>a</code></em>, an int32-range int, between 0 and
@@ -171,9 +171,9 @@ This macro clamps its argument <em class="parameter"><code>a</code></em>, an int
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2532664"></a><h3>
+<a name="id2525201"></a><h3>
 <a name="gimp-deg-to-rad"></a>gimp_deg_to_rad()</h3>
-<a class="indexterm" name="id2532676"></a><pre class="programlisting">#define gimp_deg_to_rad(angle) ((angle) * (2.0 * G_PI) / 360.0)
+<a class="indexterm" name="id2525214"></a><pre class="programlisting">#define gimp_deg_to_rad(angle) ((angle) * (2.0 * G_PI) / 360.0)
 </pre>
 <p>
 This macro converts its argument <em class="parameter"><code>angle</code></em> from degree to radian.
@@ -192,9 +192,9 @@ This macro converts its argument <em class="parameter"><code>angle</code></em> f
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2532717"></a><h3>
+<a name="id2525255"></a><h3>
 <a name="gimp-rad-to-deg"></a>gimp_rad_to_deg()</h3>
-<a class="indexterm" name="id2532729"></a><pre class="programlisting">#define gimp_rad_to_deg(angle) ((angle) * 360.0 / (2.0 * G_PI))
+<a class="indexterm" name="id2525267"></a><pre class="programlisting">#define gimp_rad_to_deg(angle) ((angle) * 360.0 / (2.0 * G_PI))
 </pre>
 <p>
 This macro converts its argument <em class="parameter"><code>angle</code></em> from radian to degree.

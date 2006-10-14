@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpIntStore</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="prev" href="GimpIntComboBox.html" title="GimpIntComboBox">
@@ -33,20 +33,20 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpMemsizeEntry.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2590365" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2568275" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2611080" class="shortcut">Description</a>
+                  <a href="#id2603461" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2611002" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2603384" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2611039" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
+                  <a href="#id2603421" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpIntStore"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2590365"></a><span class="refentrytitle">GimpIntStore</span>
+<a name="id2568275"></a><span class="refentrytitle">GimpIntStore</span>
 </h2>
 <p>GimpIntStore &#8212; A model for integer based name-value pairs (e.g. enums)</p>
 </td>
@@ -68,7 +68,7 @@ gboolean    <a href="GimpIntStore.html#gimp-int-store-lookup-by-value">gimp_int_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2611002"></a><h2>Object Hierarchy</h2>
+<a name="id2603384"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -78,32 +78,32 @@ gboolean    <a href="GimpIntStore.html#gimp-int-store-lookup-by-value">gimp_int_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2611039"></a><h2>Implemented Interfaces</h2>
+<a name="id2603421"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpIntStore implements
  GtkTreeModel,  GtkTreeDragSource,  GtkTreeDragDest and  GtkTreeSortable.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2611080"></a><h2>Description</h2>
+<a name="id2603461"></a><h2>Description</h2>
 <p>
 A model for integer based name-value pairs (e.g. enums)
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2611096"></a><h2>Details</h2>
+<a name="id2556163"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2611107"></a><h3>
+<a name="id2556173"></a><h3>
 <a name="GimpIntStore-struct"></a>GimpIntStore</h3>
-<a class="indexterm" name="id2613316"></a><pre class="programlisting">typedef struct _GimpIntStore GimpIntStore;</pre>
+<a class="indexterm" name="id2556186"></a><pre class="programlisting">typedef struct _GimpIntStore GimpIntStore;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613332"></a><h3>
+<a name="id2556201"></a><h3>
 <a name="GimpIntStoreColumns"></a>enum GimpIntStoreColumns</h3>
-<a class="indexterm" name="id2613344"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2556213"></a><pre class="programlisting">typedef enum
 {
   GIMP_INT_STORE_VALUE,
   GIMP_INT_STORE_LABEL,
@@ -119,9 +119,9 @@ A model for integer based name-value pairs (e.g. enums)
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613362"></a><h3>
+<a name="id2556232"></a><h3>
 <a name="gimp-int-store-new"></a>gimp_int_store_new ()</h3>
-<a class="indexterm" name="id2613377"></a><pre class="programlisting">GtkListStore* gimp_int_store_new            (void);</pre>
+<a class="indexterm" name="id2556246"></a><pre class="programlisting">GtkListStore* gimp_int_store_new            (void);</pre>
 <p>
 Creates a <span class="type">GtkListStore</span> with a number of useful columns.
 <a href="GimpIntStore.html" title="GimpIntStore"><span class="type">GimpIntStore</span></a> is especially useful if the items you want to store
@@ -144,9 +144,9 @@ are identified using an integer value.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2563903"></a><h3>
+<a name="id2601923"></a><h3>
 <a name="gimp-int-store-lookup-by-value"></a>gimp_int_store_lookup_by_value ()</h3>
-<a class="indexterm" name="id2563916"></a><pre class="programlisting">gboolean    gimp_int_store_lookup_by_value  (GtkTreeModel *model,
+<a class="indexterm" name="id2601937"></a><pre class="programlisting">gboolean    gimp_int_store_lookup_by_value  (GtkTreeModel *model,
                                              gint value,
                                              GtkTreeIter *iter);</pre>
 <p>

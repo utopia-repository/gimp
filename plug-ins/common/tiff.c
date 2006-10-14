@@ -20,21 +20,27 @@
  */
 
 /*
-** tifftopnm.c - converts a Tagged Image File to a portable anymap
-**
-** Derived by Jef Poskanzer from tif2ras.c, which is:
-**
-** Copyright (c) 1990 by Sun Microsystems, Inc.
-**
-** Author: Patrick J. Naughton
-** naughton@wind.sun.com
-**
-** This file is provided AS IS with no warranties of any kind.  The author
-** shall have no liability with respect to the infringement of copyrights,
-** trade secrets or any patents by this file or any part thereof.  In no
-** event will the author be liable for any lost revenue or profits or
-** other special, indirect and consequential damages.
-*/
+ * tifftopnm.c - converts a Tagged Image File to a portable anymap
+ *
+ * Derived by Jef Poskanzer from tif2ras.c, which is:
+ *
+ * Copyright (c) 1990 by Sun Microsystems, Inc.
+ *
+ * Author: Patrick J. Naughton
+ * naughton@wind.sun.com
+ *
+ * Permission to use, copy, modify, and distribute this software and its
+ * documentation for any purpose and without fee is hereby granted,
+ * provided that the above copyright notice appear in all copies and that
+ * both that copyright notice and this permission notice appear in
+ * supporting documentation.
+ *
+ * This file is provided AS IS with no warranties of any kind.  The author
+ * shall have no liability with respect to the infringement of copyrights,
+ * trade secrets or any patents by this file or any part thereof.  In no
+ * event will the author be liable for any lost revenue or profits or
+ * other special, indirect and consequential damages.
+ */
 
 #include "config.h"
 
@@ -518,7 +524,6 @@ load_image (const gchar *filename)
   guchar       *icc_profile;
 #endif
 
-
   gimp_rgb_set (&color, 0.0, 0.0, 0.0);
 
   TIFFSetWarningHandler (tiff_warning);
@@ -701,7 +706,9 @@ load_image (const gchar *filename)
 
       /* attach a parasite containing the compression */
       if (!TIFFGetField (tif, TIFFTAG_COMPRESSION, &tmp))
-        save_vals.compression = COMPRESSION_NONE;
+        {
+          save_vals.compression = COMPRESSION_NONE;
+        }
       else
         {
           switch (tmp)
@@ -1025,6 +1032,8 @@ load_rgba (TIFF         *tif,
   TIFFGetField (tif, TIFFTAG_IMAGEWIDTH, &imageWidth);
   TIFFGetField (tif, TIFFTAG_IMAGELENGTH, &imageLength);
 
+  gimp_tile_cache_ntiles (1 + imageWidth / gimp_tile_width ());
+
   gimp_pixel_rgn_init (&(channel[0].pixel_rgn), channel[0].drawable,
                        0, 0, imageWidth, imageLength, TRUE, FALSE);
 
@@ -1076,6 +1085,12 @@ load_tiles (TIFF         *tif,
   TIFFGetField (tif, TIFFTAG_TILEWIDTH, &tileWidth);
   TIFFGetField (tif, TIFFTAG_TILELENGTH, &tileLength);
 
+  if (tileWidth > gimp_tile_width () || tileLength > gimp_tile_height ())
+    {
+      gimp_tile_cache_ntiles ((1 + tileWidth / gimp_tile_width ()) *
+                              (1 + tileLength / gimp_tile_width ()));
+    }
+
   one_row = (gdouble) tileLength / (gdouble) imageLength;
   buffer = g_malloc (TIFFTileSize (tif));
 
@@ -1118,6 +1133,7 @@ load_tiles (TIFF         *tif,
                             alpha, extra, tileWidth - cols);
             }
         }
+
       progress += one_row;
     }
 
@@ -1153,6 +1169,8 @@ load_lines (TIFF         *tif,
       channel[i].pixels = g_new (guchar,
                                  tile_height * cols * channel[i].drawable->bpp);
     }
+
+  gimp_tile_cache_ntiles (1 + cols / gimp_tile_width ());
 
   buffer = g_malloc (lineSize * tile_height);
 
@@ -1932,6 +1950,8 @@ save_image (const gchar *filename,
 
   cols = drawable->width;
   rows = drawable->height;
+
+  gimp_tile_cache_ntiles (1 + drawable->width / gimp_tile_width ());
 
   switch (drawable_type)
     {

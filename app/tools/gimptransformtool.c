@@ -76,7 +76,8 @@ static GObject * gimp_transform_tool_constructor   (GType              type,
 static void     gimp_transform_tool_finalize       (GObject           *object);
 
 static gboolean gimp_transform_tool_initialize     (GimpTool          *tool,
-                                                    GimpDisplay       *display);
+                                                    GimpDisplay       *display,
+                                                    GError           **error);
 static void     gimp_transform_tool_control        (GimpTool          *tool,
                                                     GimpToolAction     action,
                                                     GimpDisplay       *display);
@@ -314,8 +315,9 @@ gimp_transform_tool_finalize (GObject *object)
 }
 
 static gboolean
-gimp_transform_tool_initialize (GimpTool    *tool,
-                                GimpDisplay *display)
+gimp_transform_tool_initialize (GimpTool     *tool,
+                                GimpDisplay  *display,
+                                GError      **error)
 {
   GimpTransformTool *tr_tool = GIMP_TRANSFORM_TOOL (tool);
 
@@ -1047,7 +1049,8 @@ gimp_transform_tool_doit (GimpTransformTool *tr_tool,
 
     case GIMP_TRANSFORM_TYPE_SELECTION:
       active_item = (GimpItem *) gimp_image_get_mask (display->image);
-      message = _("There is no selection to transform.");
+      /* cannot happen, so don't translate this message */
+      message = "There is no selection to transform.";
       break;
 
     case GIMP_TRANSFORM_TYPE_PATH:
@@ -1058,7 +1061,7 @@ gimp_transform_tool_doit (GimpTransformTool *tr_tool,
 
   if (! active_item)
     {
-      gimp_message (display->image->gimp, GIMP_PROGRESS (display), message);
+      gimp_tool_message (tool, display, message);
       return;
     }
 

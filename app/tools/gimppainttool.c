@@ -24,7 +24,6 @@
 #include "tools-types.h"
 
 #include "core/gimp.h"
-#include "core/gimpcontainer.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
 #include "core/gimppaintinfo.h"
@@ -128,8 +127,8 @@ gimp_paint_tool_init (GimpPaintTool *paint_tool)
   paint_tool->pick_colors = FALSE;
   paint_tool->draw_line   = FALSE;
 
-  paint_tool->status      = _("Click to paint.");
-  paint_tool->status_line = _("Click to draw the line.");
+  paint_tool->status      = _("Click to paint");
+  paint_tool->status_line = _("Click to draw the line");
   paint_tool->status_ctrl = _("%s to pick a color");
 
   paint_tool->core        = NULL;
@@ -270,13 +269,19 @@ gimp_paint_tool_button_press (GimpTool        *tool,
   GimpDrawTool     *draw_tool     = GIMP_DRAW_TOOL (tool);
   GimpPaintTool    *paint_tool    = GIMP_PAINT_TOOL (tool);
   GimpPaintOptions *paint_options = GIMP_PAINT_TOOL_GET_OPTIONS (tool);
-  GimpPaintCore    *core;
+  GimpPaintCore    *core          = paint_tool->core;
   GimpDrawable     *drawable;
   GdkDisplay       *gdk_display;
   GimpCoords        curr_coords;
   gint              off_x, off_y;
+  GError           *error = NULL;
 
-  core = paint_tool->core;
+  if (gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (tool)))
+    {
+      GIMP_TOOL_CLASS (parent_class)->button_press (tool, coords, time, state,
+                                                    display);
+      return;
+    }
 
   drawable = gimp_image_active_drawable (display->image);
 
@@ -308,8 +313,13 @@ gimp_paint_tool_button_press (GimpTool        *tool,
   core->use_pressure = (gimp_devices_get_current (display->image->gimp) !=
                         gdk_display_get_core_pointer (gdk_display));
 
-  if (! gimp_paint_core_start (core, drawable, paint_options, &curr_coords))
-    return;
+  if (! gimp_paint_core_start (core, drawable, paint_options, &curr_coords,
+                               &error))
+    {
+      gimp_tool_message (tool, display, error->message);
+      g_clear_error (&error);
+      return;
+    }
 
   if ((display != tool->display) || ! paint_tool->draw_line)
     {
@@ -335,12 +345,9 @@ gimp_paint_tool_button_press (GimpTool        *tool,
       gimp_paint_tool_round_line (core, hard, state);
     }
 
-  /*  let the parent class activate the tool  */
-  GIMP_TOOL_CLASS (parent_class)->button_press (tool,
-                                                coords, time, state, display);
-
-  if (gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (tool)))
-    return;
+  /*  chain up to activate the tool  */
+  GIMP_TOOL_CLASS (parent_class)->button_press (tool, coords, time, state,
+                                                display);
 
   /*  pause the current selection  */
   gimp_image_selection_control (display->image, GIMP_SELECTION_PAUSE);
@@ -375,10 +382,15 @@ gimp_paint_tool_button_release (GimpTool        *tool,
 {
   GimpPaintTool    *paint_tool    = GIMP_PAINT_TOOL (tool);
   GimpPaintOptions *paint_options = GIMP_PAINT_TOOL_GET_OPTIONS (tool);
-  GimpPaintCore    *core;
+  GimpPaintCore    *core          = paint_tool->core;
   GimpDrawable     *drawable;
 
-  core = paint_tool->core;
+  if (gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (tool)))
+    {
+      GIMP_TOOL_CLASS (parent_class)->button_release (tool, coords, time,
+                                                      state, display);
+      return;
+    }
 
   drawable = gimp_image_active_drawable (display->image);
 
@@ -392,8 +404,8 @@ gimp_paint_tool_button_release (GimpTool        *tool,
   gimp_image_selection_control (display->image, GIMP_SELECTION_RESUME);
 
   /*  chain up to halt the tool */
-  GIMP_TOOL_CLASS (parent_class)->button_release (tool,
-                                                  coords, time, state, display);
+  GIMP_TOOL_CLASS (parent_class)->button_release (tool, coords, time, state,
+                                                  display);
 
   if (state & GDK_BUTTON3_MASK)
     gimp_paint_core_cancel (core, drawable);
@@ -414,11 +426,16 @@ gimp_paint_tool_motion (GimpTool        *tool,
 {
   GimpPaintTool    *paint_tool    = GIMP_PAINT_TOOL (tool);
   GimpPaintOptions *paint_options = GIMP_PAINT_TOOL_GET_OPTIONS (tool);
-  GimpPaintCore    *core;
+  GimpPaintCore    *core          = paint_tool->core;
   GimpDrawable     *drawable;
   gint              off_x, off_y;
 
-  core = paint_tool->core;
+  if (gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (tool)))
+    {
+      GIMP_TOOL_CLASS (parent_class)->motion (tool, coords, time, state,
+                                              display);
+      return;
+    }
 
   drawable = gimp_image_active_drawable (display->image);
 
@@ -429,10 +446,8 @@ gimp_paint_tool_motion (GimpTool        *tool,
   core->cur_coords.x -= off_x;
   core->cur_coords.y -= off_y;
 
-  GIMP_TOOL_CLASS (parent_class)->motion (tool, coords, time, state, display);
-
-  if (gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (tool)))
-    return;
+  GIMP_TOOL_CLASS (parent_class)->motion (tool, coords, time, state,
+                                          display);
 
   gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
@@ -454,9 +469,6 @@ gimp_paint_tool_modifier_key (GimpTool        *tool,
   GimpPaintTool *paint_tool = GIMP_PAINT_TOOL (tool);
   GimpDrawTool  *draw_tool  = GIMP_DRAW_TOOL (tool);
 
-  if (state & GDK_BUTTON1_MASK)
-    return;
-
   if (key != GDK_CONTROL_MASK)
     return;
 
@@ -464,14 +476,8 @@ gimp_paint_tool_modifier_key (GimpTool        *tool,
     {
       if (press)
         {
-          GimpContainer *tool_info_list;
-          GimpToolInfo  *info;
-
-          tool_info_list = display->image->gimp->tool_info_list;
-
-          info = (GimpToolInfo *)
-            gimp_container_get_child_by_name (tool_info_list,
-                                              "gimp-color-picker-tool");
+          GimpToolInfo *info = gimp_get_tool_info (display->image->gimp,
+                                                   "gimp-color-picker-tool");
 
           if (GIMP_IS_TOOL_INFO (info))
             {
@@ -486,13 +492,13 @@ gimp_paint_tool_modifier_key (GimpTool        *tool,
                 case GIMP_COLOR_PICK_MODE_FOREGROUND:
                   gimp_tool_push_status (tool, display,
                                          _("Click in any image to pick the "
-                                           "foreground color."));
+                                           "foreground color"));
                   break;
 
                 case GIMP_COLOR_PICK_MODE_BACKGROUND:
                   gimp_tool_push_status (tool, display,
                                          _("Click in any image to pick the "
-                                           "background color."));
+                                           "background color"));
                   break;
 
                 default:
@@ -521,20 +527,16 @@ gimp_paint_tool_oper_update (GimpTool        *tool,
   GimpPaintTool    *paint_tool    = GIMP_PAINT_TOOL (tool);
   GimpDrawTool     *draw_tool     = GIMP_DRAW_TOOL (tool);
   GimpPaintOptions *paint_options = GIMP_PAINT_TOOL_GET_OPTIONS (tool);
-  GimpPaintCore    *core;
-  GimpDisplayShell *shell;
+  GimpPaintCore    *core          = paint_tool->core;
+  GimpDisplayShell *shell         = GIMP_DISPLAY_SHELL (display->shell);
   GimpDrawable     *drawable;
 
-  if (gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (draw_tool)))
+  if (gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (tool)))
     {
       GIMP_TOOL_CLASS (parent_class)->oper_update (tool, coords, state,
                                                    proximity, display);
       return;
     }
-
-  core = paint_tool->core;
-
-  shell = GIMP_DISPLAY_SHELL (display->shell);
 
   if (gimp_draw_tool_is_active (draw_tool))
     gimp_draw_tool_stop (draw_tool);
@@ -564,11 +566,10 @@ gimp_paint_tool_oper_update (GimpTool        *tool,
            *  draw a line.
            */
 
-          gdouble      dx, dy, dist;
-          gchar        status_str[STATUSBAR_SIZE];
-          gchar       *status_help;
-          gint         off_x, off_y;
-          gboolean     hard;
+          gchar    *status_help;
+          gdouble   dx, dy, dist;
+          gint      off_x, off_y;
+          gboolean  hard;
 
           core->cur_coords = *coords;
 
@@ -595,8 +596,8 @@ gimp_paint_tool_oper_update (GimpTool        *tool,
             {
               dist = sqrt (SQR (dx) + SQR (dy));
 
-              g_snprintf (status_str, sizeof (status_str), "%.1f %s.  %s",
-                          dist, _("pixels"), status_help);
+              gimp_tool_push_status (tool, display, "%.1f %s.  %s",
+                                     dist, _("pixels"), status_help);
             }
           else
             {
@@ -611,11 +612,11 @@ gimp_paint_tool_oper_update (GimpTool        *tool,
                       sqrt (SQR (dx / image->xresolution) +
                             SQR (dy / image->yresolution)));
 
-              g_snprintf (status_str, sizeof (status_str), format_str, dist,
-                          status_help);
+              gimp_tool_push_status (tool, display, format_str,
+                                     dist, status_help);
             }
+
           g_free (status_help);
-          gimp_tool_push_status (tool, display, status_str);
 
           paint_tool->draw_line = TRUE;
         }
@@ -627,10 +628,13 @@ gimp_paint_tool_oper_update (GimpTool        *tool,
           /* HACK: A paint tool may set status_ctrl to NULL to indicate that
            * it ignores the Ctrl modifier (temporarily or permanently), so
            * it should not be suggested.  This is different from how
-           * gimp_suggest_modifiers() would interpret this parameter. */
+           * gimp_suggest_modifiers() would interpret this parameter.
+           */
           if (paint_tool->status_ctrl != NULL)
             modifiers |= GDK_CONTROL_MASK;
-          /* suggest drawing lines only after the first point is set */
+
+          /* suggest drawing lines only after the first point is set
+           */
           if (display == tool->display)
             modifiers |= GDK_SHIFT_MASK;
 

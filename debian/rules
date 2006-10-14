@@ -21,12 +21,12 @@ nextmicro=$(shell expr ${micro} + 1)
 
 
 DEB_CONFIGURE_EXTRA_FLAGS := \
-	--enable-python --without-gnomeprint --without-gimpprint \
-	--enable-default-binary
+	--enable-python --without-print --enable-default-binary
 DEB_BUILDDIR := $(DEB_SRCDIR)/build
 
 DEB_DH_SHLIBDEPS_ARGS_ALL := \
-	-Llibgimp2.0 -l$(CURDIR)/debian/libgimp2.0/usr/lib -Xlibcontroller_midi.so
+	-Llibgimp2.0 -l$(CURDIR)/debian/libgimp2.0/usr/lib
+DEB_DH_SHLIBDEPS_ARGS_gimp := -X/usr/lib/gimp/2.0/plug-ins/uri -Xlibcontroller_midi.so
 
 # For the stable branch:
 #DEB_DH_MAKESHLIBS_ARGS_libgimp2.0 := -V "libgimp2.0 (>= 2.4.0)"
@@ -44,24 +44,30 @@ common-install-impl::
 
 	dh_movefiles
 
-binary-install/gimp-wget::
-	mv $(CURDIR)/debian/gimp/usr/lib/gimp/2.0/plug-ins/uri \
-		$(CURDIR)/debian/gimp-gnomevfs/usr/lib/gimp/2.0/plug-ins/uri
-	rm $(DEB_BUILDDIR)/plug-ins/uri/uri
+binary-install/gimp::
+	# Build libcurl URI plugin
+	rm $(DEB_BUILDDIR)/plug-ins/uri/uri.o
 
-	# Build wget-only URI plugin
 	sed	-e 's/\(backend_sources.*gnome\)/#\1/' \
-		-e 's/#\(backend_sources.*wget\)/\1/' \
+		-e 's/#\(backend_sources.*libcurl\)/\1/' \
 		-e 's/\(am__objects.*gnome\)/#\1/' \
-		-e 's/#\(am__objects.*wget\)/\1/' \
-		-e '/^.*$$(URI_LIBS).*$$/d' \
+		-e 's/#\(am__objects.*libcurl\)/\1/' \
+		-e 's/$$(URI_GNOME_VFS/$$(URI_LIBCURL/g' \
 		$(DEB_BUILDDIR)/plug-ins/uri/Makefile > \
-			$(DEB_BUILDDIR)/plug-ins/uri/Makefile.wget
-	cd $(DEB_BUILDDIR)/plug-ins/uri && make -f Makefile.wget
+			$(DEB_BUILDDIR)/plug-ins/uri/Makefile.libcurl
+	cd $(DEB_BUILDDIR)/plug-ins/uri && make -f Makefile.libcurl
 
 	mv $(DEB_BUILDDIR)/plug-ins/uri/.libs/uri \
-		$(CURDIR)/debian/gimp-wget/usr/lib/gimp/2.0/plug-ins/uri
-	rm $(DEB_BUILDDIR)/plug-ins/uri/uri
+		$(CURDIR)/debian/gimp/usr/lib/gimp/2.0/plug-ins/uri
+
+binary-install/gimp-gnomevfs::
+	# Build gnomevfs URI plugin
+	rm $(DEB_BUILDDIR)/plug-ins/uri/uri.o
+
+	cd $(DEB_BUILDDIR)/plug-ins/uri && make
+
+	mv $(DEB_BUILDDIR)/plug-ins/uri/.libs/uri \
+		$(CURDIR)/debian/gimp-gnomevfs/usr/lib/gimp/2.0/plug-ins/uri
 
 binary-install/gimp-python::
 	dh_pysupport -pgimp-python /usr/lib/gimp/2.0/python

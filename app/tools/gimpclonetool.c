@@ -59,7 +59,7 @@ gimp_clone_tool_register (GimpToolRegisterCallback  callback,
                 GIMP_CONTEXT_PATTERN_MASK,
                 "gimp-clone-tool",
                 _("Clone"),
-                _("Paint using Patterns or Image Regions"),
+                _("Clone Tool: Selectively copy from an image or pattern, using a brush"),
                 N_("_Clone"), "C",
                 NULL, GIMP_HELP_TOOL_CLONE,
                 GIMP_STOCK_TOOL_CLONE,
@@ -86,7 +86,7 @@ gimp_clone_tool_init (GimpCloneTool *clone)
   paint_tool->status      = _("Click to clone");
   paint_tool->status_ctrl = _("%s to set a new clone source");
 
-  source_tool->status_paint           = _("Click to clone.");
+  source_tool->status_paint           = _("Click to clone");
   source_tool->status_set_source      = _("Click to set a new clone source");
   source_tool->status_set_source_ctrl = _("%s to set a new clone source");
 }

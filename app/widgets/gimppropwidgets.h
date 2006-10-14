@@ -48,4 +48,14 @@ GtkWidget * gimp_prop_view_new            (GObject     *config,
                                            gint         size);
 
 
+void        gimp_prop_aspect_ratio_new    (GObject     *config,
+                                           const gchar *numerator_property,
+                                           const gchar *denominator_property,
+                                           const gchar *fixed_aspect_property,
+                                           const gchar *width_property,
+                                           const gchar *height_property,
+                                           gint         digits,
+                                           GtkTable    *table,
+                                           gint         row0,
+                                           gint         col0);
 #endif /* __GIMP_APP_PROP_WIDGETS_H__ */

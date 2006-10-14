@@ -20,6 +20,8 @@
 
 #include "config.h"
 
+#define _GNU_SOURCE
+
 #include <errno.h>
 #include <signal.h>
 #include <stdlib.h>
@@ -227,10 +229,11 @@ gimp_plug_in_open (GimpPlugIn         *plug_in,
    */
   if ((pipe (my_read) == -1) || (pipe (my_write) == -1))
     {
-      g_message ("Unable to run plug-in \"%s\"\n(%s)\n\npipe() failed: %s",
-                 gimp_object_get_name (GIMP_OBJECT (plug_in)),
-                 gimp_filename_to_utf8 (plug_in->prog),
-                 g_strerror (errno));
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "Unable to run plug-in \"%s\"\n(%s)\n\npipe() failed: %s",
+                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_filename_to_utf8 (plug_in->prog),
+                    g_strerror (errno));
       return FALSE;
     }
 
@@ -341,10 +344,11 @@ gimp_plug_in_open (GimpPlugIn         *plug_in,
                        &plug_in->pid,
                        &error))
     {
-      g_message ("Unable to run plug-in \"%s\"\n(%s)\n\n%s",
-                 gimp_object_get_name (GIMP_OBJECT (plug_in)),
-                 gimp_filename_to_utf8 (plug_in->prog),
-                 error->message);
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "Unable to run plug-in \"%s\"\n(%s)\n\n%s",
+                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_filename_to_utf8 (plug_in->prog),
+                    error->message);
       g_error_free (error);
       goto cleanup;
     }
@@ -427,7 +431,13 @@ gimp_plug_in_close (GimpPlugIn *plug_in,
             g_print (_("Terminating plug-in: '%s'\n"),
                      gimp_filename_to_utf8 (plug_in->prog));
 
-          status = kill (plug_in->pid, SIGKILL);
+          /*  If the plug-in opened a process group, kill the group instead
+           *  of only the plug-in, so we kill the plug-in's children too
+           */
+          if (getpgid (0) != getpgid (plug_in->pid))
+            status = kill (- plug_in->pid, SIGKILL);
+          else
+            status = kill (plug_in->pid, SIGKILL);
         }
 
       /* Wait for the process to exit. This will happen
@@ -599,7 +609,8 @@ gimp_plug_in_recv_message (GIOChannel   *channel,
       GimpPlugInProcFrame *frame    = gimp_plug_in_get_proc_frame (plug_in);
       GimpProgress        *progress = frame ? frame->progress : NULL;
 
-      gimp_message (plug_in->manager->gimp, progress,
+      gimp_message (plug_in->manager->gimp, G_OBJECT (progress),
+                    GIMP_MESSAGE_ERROR,
                     _("Plug-in crashed: \"%s\"\n(%s)\n\n"
                       "The dying plug-in may have messed up GIMP's internal "
                       "state. You may want to save your images and restart "
@@ -856,14 +867,15 @@ gimp_plug_in_menu_register (GimpPlugIn  *plug_in,
 
   if (! proc)
     {
-      g_message ("Plug-in \"%s\"\n(%s)\n"
-                 "attempted to register the menu item \"%s\" "
-                 "for the procedure \"%s\".\n"
-                 "It has however not installed that procedure.  This "
-                 "is not allowed.",
-                 gimp_object_get_name (GIMP_OBJECT (plug_in)),
-                 gimp_filename_to_utf8 (plug_in->prog),
-                 menu_path, proc_name);
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "Plug-in \"%s\"\n(%s)\n"
+                    "attempted to register the menu item \"%s\" "
+                    "for the procedure \"%s\".\n"
+                    "It has however not installed that procedure.  This "
+                    "is not allowed.",
+                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_filename_to_utf8 (plug_in->prog),
+                    menu_path, proc_name);
 
       return FALSE;
     }
@@ -885,23 +897,25 @@ gimp_plug_in_menu_register (GimpPlugIn  *plug_in,
 
   if (! proc->menu_label)
     {
-      g_message ("Plug-in \"%s\"\n(%s)\n"
-                 "attempted to register the menu item \"%s\" "
-                 "for procedure \"%s\".\n"
-                 "The menu label given in gimp_install_procedure() "
-                 "already contained a path.  To make this work, "
-                 "pass just the menu's label to "
-                 "gimp_install_procedure().",
-                 gimp_object_get_name (GIMP_OBJECT (plug_in)),
-                 gimp_filename_to_utf8 (plug_in->prog),
-                 menu_path, proc_name);
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "Plug-in \"%s\"\n(%s)\n"
+                    "attempted to register the menu item \"%s\" "
+                    "for procedure \"%s\".\n"
+                    "The menu label given in gimp_install_procedure() "
+                    "already contained a path.  To make this work, "
+                    "pass just the menu's label to "
+                    "gimp_install_procedure().",
+                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_filename_to_utf8 (plug_in->prog),
+                    menu_path, proc_name);
 
       return FALSE;
     }
 
   if (! gimp_plug_in_procedure_add_menu_path (proc, menu_path, &error))
     {
-      g_message (error->message);
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "%s", error->message);
       g_clear_error (&error);
 
       return FALSE;

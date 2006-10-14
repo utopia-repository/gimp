@@ -203,6 +203,8 @@ HAVE_GNOMEVFS_TRUE = @HAVE_GNOMEVFS_TRUE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_LCMS_FALSE = @HAVE_LCMS_FALSE@
 HAVE_LCMS_TRUE = @HAVE_LCMS_TRUE@
+HAVE_LIBCURL_FALSE = @HAVE_LIBCURL_FALSE@
+HAVE_LIBCURL_TRUE = @HAVE_LIBCURL_TRUE@
 HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
@@ -247,6 +249,7 @@ INTLTOOL_XGETTEXT = @INTLTOOL_XGETTEXT@
 INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
+LCMS = @LCMS@
 LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
@@ -344,8 +347,10 @@ SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
-URI_CFLAGS = @URI_CFLAGS@
-URI_LIBS = @URI_LIBS@
+URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
+URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
+URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
+URI_LIBCURL_LIBS = @URI_LIBCURL_LIBS@
 USE_BINRELOC_FALSE = @USE_BINRELOC_FALSE@
 USE_BINRELOC_TRUE = @USE_BINRELOC_TRUE@
 USE_NLS = @USE_NLS@
@@ -446,6 +451,11 @@ STOCK_MENU_IMAGES = \
 	stock-channels-16.png				\
 	stock-close-12.png				\
 	stock-colormap-16.png				\
+	stock-controller-16.png				\
+	stock-controller-keyboard-16.png		\
+	stock-controller-linux-input-16.png		\
+	stock-controller-midi-16.png			\
+	stock-controller-wheel-16.png			\
 	stock-convert-grayscale-16.png			\
 	stock-convert-indexed-16.png			\
 	stock-convert-rgb-16.png			\
@@ -453,6 +463,11 @@ STOCK_MENU_IMAGES = \
 	stock-default-colors-12.png			\
 	stock-device-status-16.png			\
 	stock-display-filter-16.png			\
+	stock-display-filter-colorblind-16.png		\
+	stock-display-filter-contrast-16.png		\
+	stock-display-filter-gamma-16.png		\
+	stock-display-filter-lcms-16.png		\
+	stock-display-filter-proof-16.png		\
 	stock-eye-12.png				\
 	stock-flip-horizontal-16.png			\
 	stock-flip-vertical-16.png			\
@@ -545,11 +560,21 @@ STOCK_BUTTON_IMAGES = \
 	stock-color-pick-from-screen-16.png	\
 	stock-color-triangle-16.png		\
 	stock-colormap-24.png			\
+	stock-controller-24.png			\
+	stock-controller-keyboard-24.png	\
+	stock-controller-linux-input-24.png	\
+	stock-controller-midi-24.png		\
+	stock-controller-wheel-24.png		\
 	stock-cursor-24.png			\
 	stock-curve-free-16.png			\
 	stock-curve-smooth-16.png		\
 	stock-device-status-24.png		\
 	stock-display-filter-24.png		\
+	stock-display-filter-colorblind-24.png	\
+	stock-display-filter-contrast-24.png	\
+	stock-display-filter-gamma-24.png	\
+	stock-display-filter-lcms-24.png	\
+	stock-display-filter-proof-24.png	\
 	stock-duplicate-16.png			\
 	stock-edit-16.png			\
 	stock-eye-20.png			\
@@ -707,6 +732,8 @@ STOCK_TOOL_IMAGES = \
 	tools/stock-tool-pencil-22.png			\
 	tools/stock-tool-perspective-16.png		\
 	tools/stock-tool-perspective-22.png		\
+	tools/stock-tool-perspective-clone-16.png	\
+	tools/stock-tool-perspective-clone-22.png	\
 	tools/stock-tool-posterize-16.png		\
 	tools/stock-tool-posterize-22.png		\
 	tools/stock-tool-rect-select-16.png		\

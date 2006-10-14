@@ -81,6 +81,7 @@ plug-ins/common/illusion.c
 plug-ins/common/iwarp.c
 plug-ins/common/jigsaw.c
 plug-ins/common/laplace.c
+plug-ins/common/lens.c
 plug-ins/common/lic.c
 plug-ins/common/mail.c
 plug-ins/common/mapcolor.c
@@ -257,6 +258,7 @@ plug-ins/sel2path/sel2path.c
 plug-ins/sgi/sgi.c
 plug-ins/twain/twain.c
 plug-ins/uri/uri-backend-gnomevfs.c
+plug-ins/uri/uri-backend-libcurl.c
 plug-ins/uri/uri-backend-wget.c
 plug-ins/uri/uri.c
 plug-ins/winicon/icodialog.c

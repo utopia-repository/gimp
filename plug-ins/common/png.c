@@ -1,5 +1,5 @@
 /*
- * "$Id: png.c,v 1.144 2006/08/30 16:53:44 neo Exp $"
+ * "$Id: png.c,v 1.145 2006/09/19 14:26:48 neo Exp $"
  *
  *   Portable Network Graphics (PNG) plug-in for The GIMP -- an image
  *   manipulation program
@@ -649,7 +649,7 @@ load_image (const gchar *filename,
     {
       g_message (_("Could not open '%s' for reading: %s"),
                  gimp_filename_to_utf8 (filename), g_strerror (errno));
-      gimp_quit ();
+      return -1;
     }
 
   png_init_io (pp, fp);
@@ -768,7 +768,7 @@ load_image (const gchar *filename,
     {
       g_message ("Could not create new image for '%s'",
                  gimp_filename_to_utf8 (filename));
-      gimp_quit ();
+      return -1;
     }
 
   /*

@@ -48,6 +48,8 @@ enum        <link linkend="GimpColorSelectorChannel">GimpColorSelectorChannel</l
                                             (<link linkend="GimpColorSelector">GimpColorSelector</link> *selector);
 <link linkend="void">void</link>        <link linkend="gimp-color-selector-channel-changed">gimp_color_selector_channel_changed</link>
                                             (<link linkend="GimpColorSelector">GimpColorSelector</link> *selector);
+<link linkend="void">void</link>        <link linkend="gimp-color-selector-set-config">gimp_color_selector_set_config</link>  (<link linkend="GimpColorSelector">GimpColorSelector</link> *selector,
+                                             <link linkend="GimpColorConfig">GimpColorConfig</link> *config);
 
 </synopsis>
 </refsynopsisdiv>
@@ -322,6 +324,23 @@ The suggested width for a color bar in a <link linkend="GimpColorSelector"><type
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-color-selector-set-config" role="function" condition="since:GIMP 2.4"/>gimp_color_selector_set_config ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_color_selector_set_config</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_selector_set_config  (<link linkend="GimpColorSelector">GimpColorSelector</link> *selector,
+                                             <link linkend="GimpColorConfig">GimpColorConfig</link> *config);</programlisting>
+<para>
+Sets the color management configuration to use with this color selector.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>selector</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
 
 </refsect1>
 

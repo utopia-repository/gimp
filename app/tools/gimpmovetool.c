@@ -115,7 +115,7 @@ gimp_move_tool_register (GimpToolRegisterCallback  callback,
                 0,
                 "gimp-move-tool",
                 Q_("tool|Move"),
-                _("Move layers & selections"),
+                _("Move Tool: Move layers, selections, and other objects"),
                 N_("_Move"), "M",
                 NULL, GIMP_HELP_TOOL_MOVE,
                 GIMP_STOCK_TOOL_MOVE,
@@ -557,9 +557,6 @@ gimp_move_tool_modifier_key (GimpTool        *tool,
 {
   GimpMoveTool    *move    = GIMP_MOVE_TOOL (tool);
   GimpMoveOptions *options = GIMP_MOVE_TOOL_GET_OPTIONS (tool);
-
-  if (state & GDK_BUTTON1_MASK)
-    return;
 
   if (key == GDK_SHIFT_MASK)
     {

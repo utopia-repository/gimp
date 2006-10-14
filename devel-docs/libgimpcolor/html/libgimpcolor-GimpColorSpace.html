@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpColorSpace</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Color Library Reference Manual">
 <link rel="up" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
 <link rel="prev" href="libgimpcolor-GimpCMYK.html" title="GimpCMYK">
@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Color Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpcolor-GimpAdaptiveSupersample.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2566347" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2570739" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2570444" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2562633" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpcolor-GimpColorSpace"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2566347"></a><span class="refentrytitle">GimpColorSpace</span>
+<a name="id2570739"></a><span class="refentrytitle">GimpColorSpace</span>
 </h2>
 <p>GimpColorSpace &#8212; Utility functions which convert colors between different color models.</p>
 </td>
@@ -101,7 +101,7 @@ void        <a href="libgimpcolor-GimpColorSpace.html#gimp-hsv-to-rgb4">gimp_hsv
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2570444"></a><h2>Description</h2>
+<a name="id2562633"></a><h2>Description</h2>
 <p>
 When programming pixel data manipulation functions you will often use
 algorithms operating on a color model different from the one GIMP
@@ -110,11 +110,11 @@ different color spaces.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2570464"></a><h2>Details</h2>
+<a name="id2562653"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2570475"></a><h3>
+<a name="id2562663"></a><h3>
 <a name="gimp-rgb-to-hsv"></a>gimp_rgb_to_hsv ()</h3>
-<a class="indexterm" name="id2564866"></a><pre class="programlisting">void        gimp_rgb_to_hsv                 (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2557434"></a><pre class="programlisting">void        gimp_rgb_to_hsv                 (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                              <a href="libgimpcolor-GimpHSV.html#GimpHSV">GimpHSV</a> *hsv);</pre>
 <p>
 Does a conversion from RGB to HSV (Hue, Saturation,
@@ -142,9 +142,9 @@ Value) colorspace.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2564937"></a><h3>
+<a name="id2557505"></a><h3>
 <a name="gimp-rgb-to-hsl"></a>gimp_rgb_to_hsl ()</h3>
-<a class="indexterm" name="id2564950"></a><pre class="programlisting">void        gimp_rgb_to_hsl                 (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2557517"></a><pre class="programlisting">void        gimp_rgb_to_hsl                 (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                              <a href="libgimpcolor-GimpHSV.html#GimpHSL">GimpHSL</a> *hsl);</pre>
 <p>
 Convert an RGB color value to a HSL (Hue, Saturation, Lightness)
@@ -172,9 +172,9 @@ color value.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2565021"></a><h3>
+<a name="id2557589"></a><h3>
 <a name="gimp-rgb-to-cmyk"></a>gimp_rgb_to_cmyk ()</h3>
-<a class="indexterm" name="id2565033"></a><pre class="programlisting">void        gimp_rgb_to_cmyk                (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2557601"></a><pre class="programlisting">void        gimp_rgb_to_cmyk                (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                              gdouble pullout,
                                              <a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk);</pre>
 <p>
@@ -213,9 +213,9 @@ A value of 1 causes the maximum amount of black to be pulled out.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606498"></a><h3>
+<a name="id2599040"></a><h3>
 <a name="gimp-hsv-to-rgb"></a>gimp_hsv_to_rgb ()</h3>
-<a class="indexterm" name="id2606508"></a><pre class="programlisting">void        gimp_hsv_to_rgb                 (const <a href="libgimpcolor-GimpHSV.html#GimpHSV">GimpHSV</a> *hsv,
+<a class="indexterm" name="id2599049"></a><pre class="programlisting">void        gimp_hsv_to_rgb                 (const <a href="libgimpcolor-GimpHSV.html#GimpHSV">GimpHSV</a> *hsv,
                                              <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 Converts a color value from HSV to RGB colorspace</p>
@@ -242,9 +242,9 @@ Converts a color value from HSV to RGB colorspace</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606572"></a><h3>
+<a name="id2599114"></a><h3>
 <a name="gimp-hsl-to-rgb"></a>gimp_hsl_to_rgb ()</h3>
-<a class="indexterm" name="id2606582"></a><pre class="programlisting">void        gimp_hsl_to_rgb                 (const <a href="libgimpcolor-GimpHSV.html#GimpHSL">GimpHSL</a> *hsl,
+<a class="indexterm" name="id2599124"></a><pre class="programlisting">void        gimp_hsl_to_rgb                 (const <a href="libgimpcolor-GimpHSV.html#GimpHSL">GimpHSL</a> *hsl,
                                              <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 Convert a HSL color value to an RGB color value.</p>
@@ -271,9 +271,9 @@ Convert a HSL color value to an RGB color value.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606648"></a><h3>
+<a name="id2599192"></a><h3>
 <a name="gimp-cmyk-to-rgb"></a>gimp_cmyk_to_rgb ()</h3>
-<a class="indexterm" name="id2606661"></a><pre class="programlisting">void        gimp_cmyk_to_rgb                (const <a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk,
+<a class="indexterm" name="id2599204"></a><pre class="programlisting">void        gimp_cmyk_to_rgb                (const <a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk,
                                              <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 Does a simple transformation from the CMYK colorspace to the RGB
@@ -301,9 +301,9 @@ colorspace, without taking color profiles into account.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606734"></a><h3>
+<a name="id2599278"></a><h3>
 <a name="gimp-rgb-to-hwb"></a>gimp_rgb_to_hwb ()</h3>
-<a class="indexterm" name="id2606747"></a><pre class="programlisting">void        gimp_rgb_to_hwb                 (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2599290"></a><pre class="programlisting">void        gimp_rgb_to_hwb                 (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                              gdouble *hue,
                                              gdouble *whiteness,
                                              gdouble *blackness);</pre>
@@ -351,9 +351,9 @@ undefined.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606872"></a><h3>
+<a name="id2599415"></a><h3>
 <a name="gimp-hwb-to-rgb"></a>gimp_hwb_to_rgb ()</h3>
-<a class="indexterm" name="id2606884"></a><pre class="programlisting">void        gimp_hwb_to_rgb                 (gdouble hue,
+<a class="indexterm" name="id2599428"></a><pre class="programlisting">void        gimp_hwb_to_rgb                 (gdouble hue,
                                              gdouble whiteness,
                                              gdouble blackness,
                                              <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
@@ -395,9 +395,9 @@ range [0, 1]. The returned RGB values are all in the range [0, 1].</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607000"></a><h3>
+<a name="id2599544"></a><h3>
 <a name="gimp-rgb-to-hsv-int"></a>gimp_rgb_to_hsv_int ()</h3>
-<a class="indexterm" name="id2607013"></a><pre class="programlisting">void        gimp_rgb_to_hsv_int             (gint *red,
+<a class="indexterm" name="id2599556"></a><pre class="programlisting">void        gimp_rgb_to_hsv_int             (gint *red,
                                              gint *green,
                                              gint *blue);</pre>
 <p>
@@ -438,9 +438,9 @@ ranges: H [0, 360], S [0, 255], V [0, 255].</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607115"></a><h3>
+<a name="id2599658"></a><h3>
 <a name="gimp-hsv-to-rgb-int"></a>gimp_hsv_to_rgb_int ()</h3>
-<a class="indexterm" name="id2607127"></a><pre class="programlisting">void        gimp_hsv_to_rgb_int             (gint *hue,
+<a class="indexterm" name="id2599671"></a><pre class="programlisting">void        gimp_hsv_to_rgb_int             (gint *hue,
                                              gint *saturation,
                                              gint *value);</pre>
 <p>
@@ -479,9 +479,9 @@ corresponding, with the returned values all in the range [0, 255].</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607228"></a><h3>
+<a name="id2599772"></a><h3>
 <a name="gimp-rgb-to-hsl-int"></a>gimp_rgb_to_hsl_int ()</h3>
-<a class="indexterm" name="id2607240"></a><pre class="programlisting">void        gimp_rgb_to_hsl_int             (gint *red,
+<a class="indexterm" name="id2599784"></a><pre class="programlisting">void        gimp_rgb_to_hsl_int             (gint *red,
                                              gint *green,
                                              gint *blue);</pre>
 <p>
@@ -521,9 +521,9 @@ L [0, 255], S [0, 255].</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607341"></a><h3>
+<a name="id2599886"></a><h3>
 <a name="gimp-rgb-to-cmyk-int"></a>gimp_rgb_to_cmyk_int ()</h3>
-<a class="indexterm" name="id2607352"></a><pre class="programlisting">void        gimp_rgb_to_cmyk_int            (gint *red,
+<a class="indexterm" name="id2599897"></a><pre class="programlisting">void        gimp_rgb_to_cmyk_int            (gint *red,
                                              gint *green,
                                              gint *blue,
                                              gint *pullout);</pre>
@@ -569,9 +569,9 @@ A value of 100 causes the maximum amount of black to be pulled out.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607486"></a><h3>
+<a name="id2600030"></a><h3>
 <a name="gimp-cmyk-to-rgb-int"></a>gimp_cmyk_to_rgb_int ()</h3>
-<a class="indexterm" name="id2607497"></a><pre class="programlisting">void        gimp_cmyk_to_rgb_int            (gint *cyan,
+<a class="indexterm" name="id2600041"></a><pre class="programlisting">void        gimp_cmyk_to_rgb_int            (gint *cyan,
                                              gint *magenta,
                                              gint *yellow,
                                              gint *black);</pre>
@@ -613,9 +613,9 @@ formula that doesn't take any color-profiles into account is used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607614"></a><h3>
+<a name="id2600158"></a><h3>
 <a name="gimp-rgb-to-l-int"></a>gimp_rgb_to_l_int ()</h3>
-<a class="indexterm" name="id2607627"></a><pre class="programlisting">gint        gimp_rgb_to_l_int               (gint red,
+<a class="indexterm" name="id2600171"></a><pre class="programlisting">gint        gimp_rgb_to_l_int               (gint red,
                                              gint green,
                                              gint blue);</pre>
 <p>
@@ -656,9 +656,9 @@ L = (max(R, G, B) + min (R, G, B)) / 2</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607731"></a><h3>
+<a name="id2600276"></a><h3>
 <a name="gimp-hsl-to-rgb-int"></a>gimp_hsl_to_rgb_int ()</h3>
-<a class="indexterm" name="id2607744"></a><pre class="programlisting">void        gimp_hsl_to_rgb_int             (gint *hue,
+<a class="indexterm" name="id2583584"></a><pre class="programlisting">void        gimp_hsl_to_rgb_int             (gint *hue,
                                              gint *saturation,
                                              gint *lightness);</pre>
 <p>
@@ -697,9 +697,9 @@ corresponding, with the returned values all in the range [0, 255].</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607844"></a><h3>
+<a name="id2600358"></a><h3>
 <a name="gimp-rgb-to-hsv4"></a>gimp_rgb_to_hsv4 ()</h3>
-<a class="indexterm" name="id2572379"></a><pre class="programlisting">void        gimp_rgb_to_hsv4                (const guchar *rgb,
+<a class="indexterm" name="id2600368"></a><pre class="programlisting">void        gimp_rgb_to_hsv4                (const guchar *rgb,
                                              gdouble *hue,
                                              gdouble *saturation,
                                              gdouble *value);</pre>
@@ -741,9 +741,9 @@ corresponding, with the returned values all in the range [0, 255].</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607943"></a><h3>
+<a name="id2600473"></a><h3>
 <a name="gimp-hsv-to-rgb4"></a>gimp_hsv_to_rgb4 ()</h3>
-<a class="indexterm" name="id2607953"></a><pre class="programlisting">void        gimp_hsv_to_rgb4                (guchar *rgb,
+<a class="indexterm" name="id2600484"></a><pre class="programlisting">void        gimp_hsv_to_rgb4                (guchar *rgb,
                                              gdouble hue,
                                              gdouble saturation,
                                              gdouble value);</pre>

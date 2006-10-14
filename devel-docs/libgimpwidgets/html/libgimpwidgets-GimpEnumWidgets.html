@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpEnumWidgets</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
 <link rel="prev" href="libgimpwidgets-GimpStock.html" title="GimpStock">
@@ -33,18 +33,18 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpwidgets-GimpWidgets.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2575213" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2611411" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2645892" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2643789" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpwidgets-GimpEnumWidgets"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2575213"></a><span class="refentrytitle">GimpEnumWidgets</span>
+<a name="id2611411"></a><span class="refentrytitle">GimpEnumWidgets</span>
 </h2>
-<p>GimpEnumWidgets &#8212; </p>
+<p>GimpEnumWidgets</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
@@ -100,17 +100,17 @@ void        <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-set
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2645892"></a><h2>Description</h2>
+<a name="id2643789"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2645907"></a><h2>Details</h2>
+<a name="id2643805"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2645918"></a><h3>
+<a name="id2643816"></a><h3>
 <a name="gimp-enum-radio-box-new"></a>gimp_enum_radio_box_new ()</h3>
-<a class="indexterm" name="id2645932"></a><pre class="programlisting">GtkWidget*  gimp_enum_radio_box_new         (GType enum_type,
+<a class="indexterm" name="id2643830"></a><pre class="programlisting">GtkWidget*  gimp_enum_radio_box_new         (GType enum_type,
                                              GCallback callback,
                                              gpointer callback_data,
                                              GtkWidget **first_button);</pre>
@@ -164,9 +164,9 @@ with up to three or four values. Often it is better to use a
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2650905"></a><h3>
+<a name="id2644010"></a><h3>
 <a name="gimp-enum-radio-box-new-with-range"></a>gimp_enum_radio_box_new_with_range ()</h3>
-<a class="indexterm" name="id2650918"></a><pre class="programlisting">GtkWidget*  gimp_enum_radio_box_new_with_range
+<a class="indexterm" name="id2644024"></a><pre class="programlisting">GtkWidget*  gimp_enum_radio_box_new_with_range
                                             (GType enum_type,
                                              gint minimum,
                                              gint maximum,
@@ -234,9 +234,9 @@ enum values.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2651136"></a><h3>
+<a name="id2644315"></a><h3>
 <a name="gimp-enum-radio-frame-new"></a>gimp_enum_radio_frame_new ()</h3>
-<a class="indexterm" name="id2651150"></a><pre class="programlisting">GtkWidget*  gimp_enum_radio_frame_new       (GType enum_type,
+<a class="indexterm" name="id2644329"></a><pre class="programlisting">GtkWidget*  gimp_enum_radio_frame_new       (GType enum_type,
                                              GtkWidget *label_widget,
                                              GCallback callback,
                                              gpointer callback_data,
@@ -296,9 +296,9 @@ Calls <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new"><cod
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644152"></a><h3>
+<a name="id2644531"></a><h3>
 <a name="gimp-enum-radio-frame-new-with-range"></a>gimp_enum_radio_frame_new_with_range ()</h3>
-<a class="indexterm" name="id2644168"></a><pre class="programlisting">GtkWidget*  gimp_enum_radio_frame_new_with_range
+<a class="indexterm" name="id2644547"></a><pre class="programlisting">GtkWidget*  gimp_enum_radio_frame_new_with_range
                                             (GType enum_type,
                                              gint minimum,
                                              gint maximum,
@@ -372,9 +372,9 @@ vbox into a <span class="type">GtkFrame</span>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644416"></a><h3>
+<a name="id2636968"></a><h3>
 <a name="gimp-enum-stock-box-new"></a>gimp_enum_stock_box_new ()</h3>
-<a class="indexterm" name="id2644429"></a><pre class="programlisting">GtkWidget*  gimp_enum_stock_box_new         (GType enum_type,
+<a class="indexterm" name="id2636982"></a><pre class="programlisting">GtkWidget*  gimp_enum_stock_box_new         (GType enum_type,
                                              const gchar *stock_prefix,
                                              GtkIconSize icon_size,
                                              GCallback callback,
@@ -441,9 +441,9 @@ nick to the given <em class="parameter"><code>stock_prefix</code></em>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644646"></a><h3>
+<a name="id2637198"></a><h3>
 <a name="gimp-enum-stock-box-new-with-range"></a>gimp_enum_stock_box_new_with_range ()</h3>
-<a class="indexterm" name="id2644660"></a><pre class="programlisting">GtkWidget*  gimp_enum_stock_box_new_with_range
+<a class="indexterm" name="id2637212"></a><pre class="programlisting">GtkWidget*  gimp_enum_stock_box_new_with_range
                                             (GType enum_type,
                                              gint minimum,
                                              gint maximum,
@@ -525,9 +525,9 @@ enum values.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2656629"></a><h3>
+<a name="id2637473"></a><h3>
 <a name="gimp-enum-stock-box-set-child-padding"></a>gimp_enum_stock_box_set_child_padding ()</h3>
-<a class="indexterm" name="id2656645"></a><pre class="programlisting">void        gimp_enum_stock_box_set_child_padding
+<a class="indexterm" name="id2637489"></a><pre class="programlisting">void        gimp_enum_stock_box_set_child_padding
                                             (GtkWidget *stock_box,
                                              gint xpad,
                                              gint ypad);</pre>

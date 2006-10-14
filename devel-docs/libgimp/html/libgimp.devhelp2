@@ -584,6 +584,8 @@
     <keyword type="function" name="gimp_free_select ()" link="libgimp-gimptools.html#gimp-free-select"/>
     <keyword type="function" name="gimp_fuzzy_select ()" link="libgimp-gimptools.html#gimp-fuzzy-select"/>
     <keyword type="function" name="gimp_fuzzy_select_full ()" link="libgimp-gimptools.html#gimp-fuzzy-select-full" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_heal ()" link="libgimp-gimptools.html#gimp-heal" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_heal_default ()" link="libgimp-gimptools.html#gimp-heal-default" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_paintbrush ()" link="libgimp-gimptools.html#gimp-paintbrush"/>
     <keyword type="function" name="gimp_paintbrush_default ()" link="libgimp-gimptools.html#gimp-paintbrush-default"/>
     <keyword type="function" name="gimp_pencil ()" link="libgimp-gimptools.html#gimp-pencil"/>

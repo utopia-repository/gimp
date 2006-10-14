@@ -385,7 +385,7 @@ gimp_plug_in_manager_restore (GimpPlugInManager  *manager,
   else
     {
       if (error->code != GIMP_CONFIG_ERROR_OPEN_ENOENT)
-        g_message (error->message);
+        gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR, "%s", error->message);
 
       g_clear_error (&error);
     }
@@ -486,7 +486,7 @@ gimp_plug_in_manager_restore (GimpPlugInManager  *manager,
 
       if (! plug_in_rc_write (manager->plug_in_defs, pluginrc, &error))
         {
-          g_message ("%s", error->message);
+          gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR, "%s", error->message);
           g_clear_error (&error);
         }
 
@@ -767,6 +767,20 @@ gimp_plug_in_manager_history_changed (GimpPlugInManager *manager)
   g_return_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager));
 
   g_signal_emit (manager, manager_signals[HISTORY_CHANGED], 0);
+}
+
+gchar *
+gimp_plug_in_manager_get_label (GimpPlugInManager   *manager,
+                                GimpPlugInProcedure *proc)
+{
+  const gchar *domain;
+
+  g_return_val_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager), NULL);
+  g_return_val_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc), NULL);
+
+  domain = gimp_plug_in_manager_get_locale_domain (manager, proc->prog, NULL);
+
+  return gimp_plug_in_procedure_get_label (proc, domain);
 }
 
 

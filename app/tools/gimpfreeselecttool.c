@@ -93,7 +93,7 @@ gimp_free_select_tool_register (GimpToolRegisterCallback  callback,
                 0,
                 "gimp-free-select-tool",
                 _("Free Select"),
-                _("Select hand-drawn regions"),
+                _("Free Select Tool: Select a hand-drawn region"),
                 N_("_Free Select"), "F",
                 NULL, GIMP_HELP_TOOL_FREE_SELECT,
                 GIMP_STOCK_TOOL_FREE_SELECT,
@@ -124,7 +124,7 @@ gimp_free_select_tool_init (GimpFreeSelectTool *free_select)
 {
   GimpTool *tool = GIMP_TOOL (free_select);
 
-  gimp_tool_control_set_scroll_lock (tool->control, TRUE);
+  gimp_tool_control_set_scroll_lock (tool->control, FALSE);
   gimp_tool_control_set_tool_cursor (tool->control,
                                      GIMP_TOOL_CURSOR_FREE_SELECT);
 

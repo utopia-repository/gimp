@@ -1,3 +1,9 @@
+gimp (2.3.12-2) experimental; urgency=low
+
+  * Put gimp-libcurl into separate package
+
+ -- Ari Pollak <ari@debian.org>  Sun, 15 Oct 2006 14:57:32 -0400
+
 gimp (2.3.12-1) experimental; urgency=low
 
   * New upstream release

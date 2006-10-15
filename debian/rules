@@ -26,7 +26,7 @@ DEB_BUILDDIR := $(DEB_SRCDIR)/build
 
 DEB_DH_SHLIBDEPS_ARGS_ALL := \
 	-Llibgimp2.0 -l$(CURDIR)/debian/libgimp2.0/usr/lib
-DEB_DH_SHLIBDEPS_ARGS_gimp := -X/usr/lib/gimp/2.0/plug-ins/uri -Xlibcontroller_midi.so
+DEB_DH_SHLIBDEPS_ARGS_gimp := -Xlibcontroller_midi.so
 
 # For the stable branch:
 #DEB_DH_MAKESHLIBS_ARGS_libgimp2.0 := -V "libgimp2.0 (>= 2.4.0)"
@@ -44,7 +44,16 @@ common-install-impl::
 
 	dh_movefiles
 
-binary-install/gimp::
+binary-install/gimp-gnomevfs::
+	# Build gnomevfs URI plugin
+	rm $(DEB_BUILDDIR)/plug-ins/uri/uri.o
+
+	cd $(DEB_BUILDDIR)/plug-ins/uri && make
+
+	mv $(DEB_BUILDDIR)/plug-ins/uri/.libs/uri \
+		$(CURDIR)/debian/gimp-gnomevfs/usr/lib/gimp/2.0/plug-ins/uri
+
+binary-install/gimp-libcurl::
 	# Build libcurl URI plugin
 	rm $(DEB_BUILDDIR)/plug-ins/uri/uri.o
 
@@ -58,16 +67,7 @@ binary-install/gimp::
 	cd $(DEB_BUILDDIR)/plug-ins/uri && make -f Makefile.libcurl
 
 	mv $(DEB_BUILDDIR)/plug-ins/uri/.libs/uri \
-		$(CURDIR)/debian/gimp/usr/lib/gimp/2.0/plug-ins/uri
-
-binary-install/gimp-gnomevfs::
-	# Build gnomevfs URI plugin
-	rm $(DEB_BUILDDIR)/plug-ins/uri/uri.o
-
-	cd $(DEB_BUILDDIR)/plug-ins/uri && make
-
-	mv $(DEB_BUILDDIR)/plug-ins/uri/.libs/uri \
-		$(CURDIR)/debian/gimp-gnomevfs/usr/lib/gimp/2.0/plug-ins/uri
+		$(CURDIR)/debian/gimp-libcurl/usr/lib/gimp/2.0/plug-ins/uri
 
 binary-install/gimp-python::
 	dh_pysupport -pgimp-python /usr/lib/gimp/2.0/python

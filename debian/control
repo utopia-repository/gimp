@@ -68,9 +68,21 @@ Package: gimp-gnomevfs
 Architecture: any
 Section: graphics
 Depends: gimp (= ${Source-Version}), ${shlibs:Depends}
+Conflicts: gimp-libcurl
+Replaces: gimp-libcurl
 Description: GNOME-VFS URI plugin for The GIMP
  This package includes a plugin for The GIMP which will open URIs (e.g.
  ftp:, http:, smb:, and sftp:) using protocol handlers from GNOME-VFS.
+
+Package: gimp-libcurl
+Architecture: any
+Section: graphics
+Depends: gimp (= ${Source-Version}), ${shlibs:Depends}
+Conflicts: gimp-gnomevfs
+Replaces: gimp-gnomevfs
+Description: libcurl URI plugin for The GIMP
+ This package includes a plugin for The GIMP which will open URIs (e.g.
+ ftp: and http:) using protocol handlers from libcurl.
 
 Package: gimp
 Architecture: any
@@ -78,7 +90,7 @@ Section: graphics
 Depends: gimp-data (= ${Source-Version}), ${shlibs:Depends}
 Conflicts: gimp-data (<< 2.3.8-2), gimp-wget (<< 2.3.12-1)
 Replaces: gimp-data (<< 2.3.8-2), gimp-wget (<< 2.3.12-1)
-Recommends: libcurl3-gnutls | gimp-gnomevfs, gimp-svg, gimp-print
+Recommends: gimp-gnomevfs | gimp-libcurl, gimp-svg, gimp-print
 Suggests: gimp-help-en | gimp-help, gimp-python, libgimp-perl, gimp-data-extras, gimp-dbg
 Description: The GNU Image Manipulation Program - DEVELOPMENT VERSION
  The GIMP lets you draw, paint, edit images, and much more! GIMP

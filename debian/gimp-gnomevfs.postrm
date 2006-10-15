@@ -1,9 +1,0 @@
-#!/bin/sh -e
-
-if [ "$1" = "remove" ]; then
-	dpkg-divert --remove --rename --package gimp-gnomevfs \
-		--divert /usr/lib/gimp/2.0/plug-ins/uri.libcurl \
-		/usr/lib/gimp/2.0/plug-ins/uri > /dev/null
-fi
-
-#DEBHELPER#

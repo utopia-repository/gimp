@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GIMP 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-03 10:23+0300\n"
-"PO-Revision-Date: 2006-10-03 10:23+0300\n"
+"POT-Creation-Date: 2006-11-02 16:52+0300\n"
+"PO-Revision-Date: 2006-11-02 16:53+0300\n"
 "Last-Translator: Mikko Paananen <mikko at ipi.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -77,7 +77,7 @@ msgstr "%s käsittelee ainoastaan harmaasävykuvia"
 #: ../libgimp/gimpexport.c:290 ../libgimp/gimpexport.c:319
 #: ../libgimp/gimpexport.c:340
 msgid "Convert to Grayscale"
-msgstr "Muunna harmaasävyihin"
+msgstr "Muunna harmaasävyiksi"
 
 #: ../libgimp/gimpexport.c:298
 #, c-format
@@ -728,15 +728,15 @@ msgstr "Ensisijaisen näytön väriprofiili."
 #: ../libgimpconfig/gimpcolorconfig.c:44
 msgid ""
 "When enabled, the GIMP will try to use the display color profile from the "
-"windowing system. The configured monitor profile is then only used as a "
+"windowing system.  The configured monitor profile is then only used as a "
 "fallback."
 msgstr ""
 "Jos käytössä, GIMP yrittää käyttää näytön väriprofiilia "
-"ikkunointijärjestelmästä. Määritelty näyttöprofiili on tämän jälkeen "
-"käytetty varavaihtoehtona."
+"ikkunointijärjestelmästä. Määriteltyä näyttöprofiilia käytetään tällöin "
+"vain varavaihtoehtona."
 
 #: ../libgimpconfig/gimpcolorconfig.c:48
-msgid "The default RGB workspace color profile."
+msgid "The default RGB working space color profile."
 msgstr "Oletuksena käytettävä RGB-työtilan väriprofiili."
 
 #: ../libgimpconfig/gimpcolorconfig.c:50
@@ -753,9 +753,10 @@ msgstr "Määrittää, kuinka värit valitaan näytölläsi."
 
 #: ../libgimpconfig/gimpcolorconfig.c:56
 msgid ""
-"Sets how colors are converted from workspace to the print simulation device."
+"Sets how colors are converted from RGB working space to the print simulation "
+"device."
 msgstr ""
-"Määrittää kuinka värit muunnetaan työtilasta tulostuksen "
+"Määrittää, kuinka värit muunnetaan työtilasta tulostuksen "
 "simulointilaitteelle."
 
 #: ../libgimpconfig/gimpcolorconfig-enums.c:24
@@ -785,18 +786,6 @@ msgstr "Kylläisyys"
 #: ../libgimpconfig/gimpcolorconfig-enums.c:59
 msgid "Absolute colorimetric"
 msgstr "Absoluuttinen värimetriikka"
-
-#: ../libgimpconfig/gimpcolorconfig-enums.c:88
-msgid "Ask"
-msgstr "Kysy"
-
-#: ../libgimpconfig/gimpcolorconfig-enums.c:89
-msgid "Use embedded profile"
-msgstr "Käytä upotettua profiilia"
-
-#: ../libgimpconfig/gimpcolorconfig-enums.c:90
-msgid "Convert to RGB workspace"
-msgstr "Muunna RGB-työalueeksi"
 
 #: ../libgimpconfig/gimpconfig-deserialize.c:95
 #, c-format
@@ -1134,8 +1123,8 @@ msgid "_Scale"
 msgstr "_Skaalaa"
 
 #: ../libgimpwidgets/gimpstock.c:295
-msgid "Crop"
-msgstr "Rajaa"
+msgid "Cr_op"
+msgstr "_Rajaa"
 
 #: ../libgimpwidgets/gimpstock.c:314
 msgid "_Transform"
@@ -1601,43 +1590,11 @@ msgstr "Ohjain %03d"
 msgid "MIDI Events"
 msgstr "MIDI-tapahtumat"
 
-#~ msgid "None (Fastest)"
-#~ msgstr "Ei mitään (Nopein)"
+#~ msgid "Ask"
+#~ msgstr "Kysy"
 
-#~ msgid "All %d page selected"
-#~ msgid_plural "All %d pages selected"
-#~ msgstr[0] "Kaikki %d sivu valittu"
-#~ msgstr[1] "Kaikki %d sivua valittu"
+#~ msgid "Use embedded profile"
+#~ msgstr "Käytä upotettua profiilia"
 
-#~ msgid "Brush Selection"
-#~ msgstr "Siveltimen valinta"
-
-#~ msgid "_Browse..."
-#~ msgstr "Selaa..."
-
-#~ msgid "Gradient Selection"
-#~ msgstr "Väriliu'un valinta"
-
-#~ msgid "Palette Selection"
-#~ msgstr "Paletin valinta"
-
-#~ msgid "Pattern Selection"
-#~ msgstr "Kuvion valinta"
-
-#~ msgid "Linear"
-#~ msgstr "Lineaarinen"
-
-#~ msgid "Forward (traditional)"
-#~ msgstr "Normaali (perinteinen)"
-
-#~ msgid "Backward (corrective)"
-#~ msgstr "Käänteinen (korjaava)"
-
-#~ msgid "Could not open '%s' for reading: %s"
-#~ msgstr "Tiedoston \"%s\" avaaminen luettavaksi epäonnistui: %s"
-
-#~ msgid "Loading module: '%s'\n"
-#~ msgstr "Ladataan moduli: '%s'\n"
-
-#~ msgid "Skipping module: '%s'\n"
-#~ msgstr "Ohitetaan moduli '%s'\n"
+#~ msgid "Convert to RGB workspace"
+#~ msgstr "Muunna RGB-työalueeksi"

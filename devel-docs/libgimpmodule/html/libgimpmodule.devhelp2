@@ -6,10 +6,10 @@
       <sub name="GimpModule" link="GimpModule.html"/>
       <sub name="GimpModuleDB" link="GimpModuleDB.html"/>
     </sub>
-    <sub name="Index" link="ix01.html"/>
-    <sub name="Index of new symbols in GIMP 2.2" link="ix02.html"/>
-    <sub name="Index of new symbols in GIMP 2.4" link="ix03.html"/>
-    <sub name="Index of deprecated symbols" link="ix04.html"/>
+    <sub name="Index" link="libgimpmodule-index.html"/>
+    <sub name="Index of new symbols in GIMP 2.2" link="libgimpmodule-index-new-in-2-2.html"/>
+    <sub name="Index of new symbols in GIMP 2.4" link="libgimpmodule-index-new-in-2-4.html"/>
+    <sub name="Index of deprecated symbols" link="libgimpmodule-index-deprecated.html"/>
   </chapters>
   <functions>
     <keyword type="struct" name="GimpModule" link="GimpModule.html#GimpModule-struct"/>

@@ -11,10 +11,10 @@
 <meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimpbase-index.html" title="Index">
+<link rel="index" href="libgimpbase-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimpbase-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpbase-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimpparasite.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2502100" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2573506" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2552656" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2586796" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimprectangle"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2502100"></a><span class="refentrytitle">gimprectangle</span>
+<a name="id2573506"></a><span class="refentrytitle">gimprectangle</span>
 </h2>
 <p>gimprectangle</p>
 </td>
@@ -61,17 +61,17 @@ gboolean    <a href="libgimpbase-gimprectangle.html#gimp-rectangle-intersect">gi
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2552656"></a><h2>Description</h2>
+<a name="id2586796"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2595264"></a><h2>Details</h2>
+<a name="id2593770"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2595274"></a><h3>
+<a name="id2593780"></a><h3>
 <a name="gimp-rectangle-intersect"></a>gimp_rectangle_intersect ()</h3>
-<a class="indexterm" name="id2595288"></a><pre class="programlisting">gboolean    gimp_rectangle_intersect        (gint x1,
+<a class="indexterm" name="id2593794"></a><pre class="programlisting">gboolean    gimp_rectangle_intersect        (gint x1,
                                              gint y1,
                                              gint width1,
                                              gint height1,
@@ -92,80 +92,67 @@ Calculates the intersection of two rectangles.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
 <td>          origin of first rectangle
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
 <td>          origin of first rectangle
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>width1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>width1</code></em>&#160;:</span></td>
 <td>      width of first rectangle
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>height1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>height1</code></em>&#160;:</span></td>
 <td>     height of first rectangle
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x2</code></em>&#160;:</span></td>
 <td>          origin of second rectangle
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y2</code></em>&#160;:</span></td>
 <td>          origin of second rectangle
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>width2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>width2</code></em>&#160;:</span></td>
 <td>      width of second rectangle
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>height2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>height2</code></em>&#160;:</span></td>
 <td>     height of second rectangle
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>dest_x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>dest_x</code></em>&#160;:</span></td>
 <td>      return location for origin of intersection (may be <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>dest_y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>dest_y</code></em>&#160;:</span></td>
 <td>      return location for origin of intersection (may be <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>dest_width</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>dest_width</code></em>&#160;:</span></td>
 <td>  return location for width of intersection (may be <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>dest_height</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>dest_height</code></em>&#160;:</span></td>
 <td> return location for height of intersection (may be <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> <code class="literal">TRUE</code> if the intersection is non-empty, <code class="literal">FALSE</code> otherwise
 
 </td>

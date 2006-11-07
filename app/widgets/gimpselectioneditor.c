@@ -241,8 +241,8 @@ gimp_selection_editor_new (GimpMenuFactory *menu_factory)
 
   return g_object_new (GIMP_TYPE_SELECTION_EDITOR,
                        "menu-factory",    menu_factory,
-                       "menu-identifier", "<SelectionEditor>",
-                       "ui-path",         "/selection-editor-popup",
+                       "menu-identifier", "<Selection>",
+                       "ui-path",         "/selection-popup",
                        NULL);
 }
 
@@ -256,7 +256,7 @@ gimp_selection_view_button_press (GtkWidget           *widget,
   GimpToolInfo         *tool_info;
   GimpSelectionOptions *options;
   GimpDrawable         *drawable;
-  SelectOps             operation = SELECTION_REPLACE;
+  GimpChannelOps        operation = GIMP_CHANNEL_OP_REPLACE;
   gint                  x, y;
   GimpRGB               color;
 
@@ -282,16 +282,16 @@ gimp_selection_view_button_press (GtkWidget           *widget,
     {
       if (bevent->state & GDK_CONTROL_MASK)
         {
-          operation = SELECTION_INTERSECT;
+          operation = GIMP_CHANNEL_OP_INTERSECT;
         }
       else
         {
-          operation = SELECTION_ADD;
+          operation = GIMP_CHANNEL_OP_ADD;
         }
     }
   else if (bevent->state & GDK_CONTROL_MASK)
     {
-      operation = SELECTION_SUBTRACT;
+      operation = GIMP_CHANNEL_OP_SUBTRACT;
     }
 
   x = image_editor->image->width  * bevent->x / renderer->width;

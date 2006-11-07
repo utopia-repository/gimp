@@ -31,6 +31,7 @@
 
 #include "widgets-types.h"
 
+#include "core/gimp.h"
 #include "core/gimpcontainer.h"
 #include "core/gimplayer.h"
 #include "core/gimplayermask.h"
@@ -267,7 +268,7 @@ gimp_layer_tree_view_init (GimpLayerTreeView *view)
 
   /*  Paint mode menu  */
 
-  view->paint_mode_menu = gimp_paint_mode_menu_new (FALSE);
+  view->paint_mode_menu = gimp_paint_mode_menu_new (FALSE, FALSE);
   gimp_table_attach_aligned (GTK_TABLE (view->options_box), 0, 0,
                              _("Mode:"), 0.0, 0.5,
                              view->paint_mode_menu, 2, FALSE);
@@ -728,33 +729,28 @@ gimp_layer_tree_view_drop_uri_list (GimpContainerTreeView   *view,
   for (list = uri_list; list; list = g_list_next (list))
     {
       const gchar       *uri   = list->data;
-      GimpLayer         *new_layer;
+      GList             *new_layers;
       GimpPDBStatusType  status;
       GError            *error = NULL;
 
-      new_layer = file_open_layer (image->gimp,
-                                   gimp_container_view_get_context (cont_view),
-                                   NULL,
-                                   image, uri, GIMP_RUN_INTERACTIVE, NULL,
-                                   &status, &error);
+      new_layers = file_open_layers (image->gimp,
+                                     gimp_container_view_get_context (cont_view),
+                                     NULL,
+                                     image, FALSE,
+                                     uri, GIMP_RUN_INTERACTIVE, NULL,
+                                     &status, &error);
 
-      if (new_layer)
+      if (new_layers)
         {
-          GimpItem *new_item = GIMP_ITEM (new_layer);
-          gint      width, height;
-          gint      off_x, off_y;
+          gimp_image_add_layers (image, new_layers, index,
+                                 0, 0,
+                                 gimp_image_get_width (image),
+                                 gimp_image_get_height (image),
+                                 _("Drop layers"));
 
-          width  = gimp_image_get_width (image);
-          height = gimp_image_get_height (image);
+          index += g_list_length (new_layers);
 
-          gimp_item_offsets (new_item, &off_x, &off_y);
-
-          off_x = (width  - gimp_item_width  (new_item)) / 2 - off_x;
-          off_y = (height - gimp_item_height (new_item)) / 2 - off_y;
-
-          gimp_item_translate (new_item, off_x, off_y, FALSE);
-
-          gimp_image_add_layer (image, new_layer, index++);
+          g_list_free (new_layers);
         }
       else if (status != GIMP_PDB_CANCEL)
         {

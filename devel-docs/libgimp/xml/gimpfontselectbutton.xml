@@ -68,8 +68,6 @@ GimpFontSelectButton implements
 
   &quot;<link linkend="GimpFontSelectButton--font-name">font-name</link>&quot;            <link linkend="gchararray">gchararray</link>            : Read / Write
   &quot;<link linkend="GimpFontSelectButton--title">title</link>&quot;                <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only
-  &quot;<link linkend="GimpFontSelectButton--font-name">font-name</link>&quot;            <link linkend="gchararray">gchararray</link>            : Read / Write
-  &quot;<link linkend="GimpFontSelectButton--title">title</link>&quot;                <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only
 </synopsis>
 </refsect1>
 
@@ -77,10 +75,6 @@ GimpFontSelectButton implements
 <title role="signal_proto.title">Signals</title>
 <synopsis>
 
-&quot;<link linkend="GimpFontSelectButton-font-set">font-set</link>&quot;  <link linkend="void">void</link>        user_function      (<link linkend="GimpFontSelectButton">GimpFontSelectButton</link> *widget,
-                                            <link linkend="gchar">gchar</link>                *font_name,
-                                            <link linkend="gboolean">gboolean</link>              dialog_closing,
-                                            <link linkend="gpointer">gpointer</link>              user_data)           : Run first
 &quot;<link linkend="GimpFontSelectButton-font-set">font-set</link>&quot;  <link linkend="void">void</link>        user_function      (<link linkend="GimpFontSelectButton">GimpFontSelectButton</link> *widget,
                                             <link linkend="gchar">gchar</link>                *font_name,
                                             <link linkend="gboolean">gboolean</link>              dialog_closing,
@@ -185,54 +179,12 @@ The title to be used for the font selection popup dialog.</para>
 <para>Since  GIMP 2.4
 </para>
 </refsect2>
-<refsect2><title><anchor id="GimpFontSelectButton--font-name"/>The &quot;<literal>font-name</literal>&quot; property</title>
-<indexterm role="GIMP 2.4"><primary>GimpFontSelectButton:font-name</primary></indexterm><programlisting>  &quot;font-name&quot;            <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
-<para>
-The name of the currently selected font.</para>
-<para>
-
-</para><para>Default value: "Sans"</para>
-<para>Since  GIMP 2.4
-</para>
-</refsect2>
-<refsect2><title><anchor id="GimpFontSelectButton--title"/>The &quot;<literal>title</literal>&quot; property</title>
-<indexterm role="GIMP 2.4"><primary>GimpFontSelectButton:title</primary></indexterm><programlisting>  &quot;title&quot;                <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only</programlisting>
-<para>
-The title to be used for the font selection popup dialog.</para>
-<para>
-
-</para><para>Default value: "Font Selection"</para>
-<para>Since  GIMP 2.4
-</para>
-</refsect2>
 
 </refsect1>
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpFontSelectButton-font-set"/>The &quot;font-set&quot; signal</title>
-<indexterm role="GIMP 2.4"><primary>GimpFontSelectButton::font-set</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpFontSelectButton">GimpFontSelectButton</link> *widget,
-                                            <link linkend="gchar">gchar</link>                *font_name,
-                                            <link linkend="gboolean">gboolean</link>              dialog_closing,
-                                            <link linkend="gpointer">gpointer</link>              user_data)           : Run first</programlisting>
-<para>
-The ::font-set signal is emitted when the user selects a font.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
-<listitem><simpara> the object which received the signal.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>font_name</parameter>&nbsp;:</term>
-<listitem><simpara> the name of the currently selected font.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>dialog_closing</parameter>&nbsp;:</term>
-<listitem><simpara> whether the dialog was closed or not.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
-<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
-</para></refsect2><refsect2><title><anchor id="GimpFontSelectButton-font-set"/>The &quot;font-set&quot; signal</title>
 <indexterm role="GIMP 2.4"><primary>GimpFontSelectButton::font-set</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpFontSelectButton">GimpFontSelectButton</link> *widget,
                                             <link linkend="gchar">gchar</link>                *font_name,
                                             <link linkend="gboolean">gboolean</link>              dialog_closing,

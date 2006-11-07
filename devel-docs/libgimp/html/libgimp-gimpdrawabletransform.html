@@ -18,10 +18,10 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimp-index.html" title="Index">
+<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -32,16 +32,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpedit.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2556007" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2566725" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2623797" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2623164" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpdrawabletransform"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2556007"></a><span class="refentrytitle">gimpdrawabletransform</span>
+<a name="id2566725"></a><span class="refentrytitle">gimpdrawabletransform</span>
 </h2>
 <p>gimpdrawabletransform</p>
 </td>
@@ -244,17 +244,17 @@ gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2623797"></a><h2>Description</h2>
+<a name="id2623164"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2623810"></a><h2>Details</h2>
+<a name="id2623177"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2623820"></a><h3>
+<a name="id2623186"></a><h3>
 <a name="gimp-drawable-transform-flip-simple"></a>gimp_drawable_transform_flip_simple ()</h3>
-<a class="indexterm" name="id2623834"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip_simple
+<a class="indexterm" name="id2623200"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip_simple
                                             (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type,
                                              gboolean auto_center,
@@ -280,38 +280,32 @@ created and flipped drawable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>flip_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>flip_type</code></em>&#160;:</span></td>
 <td> Type of flip.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>auto_center</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>auto_center</code></em>&#160;:</span></td>
 <td> Whether to automatically position the axis in the selection center.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>axis</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>axis</code></em>&#160;:</span></td>
 <td> coord. of flip axis.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
 <td> Whether to clip results.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The flipped drawable.
 
 </td>
@@ -323,9 +317,9 @@ created and flipped drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623983"></a><h3>
+<a name="id2623350"></a><h3>
 <a name="gimp-drawable-transform-flip"></a>gimp_drawable_transform_flip ()</h3>
-<a class="indexterm" name="id2623997"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip    (gint32 drawable_ID,
+<a class="indexterm" name="id2623364"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip    (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
                                              gdouble x1,
@@ -360,68 +354,57 @@ transform.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
 <td> horz. coord. of one end of axis.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
 <td> vert. coord. of one end of axis.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
 <td> horz. coord. of other end of axis.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
 <td> vert. coord. of other end of axis.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
 <td> Direction of transformation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
 <td> Type of interpolation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>supersample</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>supersample</code></em>&#160;:</span></td>
 <td> Whether to perform supersample.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>recursion_level</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>recursion_level</code></em>&#160;:</span></td>
 <td> Level of recursion (3 is a nice default).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
 <td> Whether to clip results.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The flipped drawable.
 
 </td>
@@ -433,9 +416,9 @@ transform.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2624245"></a><h3>
+<a name="id2623612"></a><h3>
 <a name="gimp-drawable-transform-flip-default"></a>gimp_drawable_transform_flip_default ()</h3>
-<a class="indexterm" name="id2624260"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip_default
+<a class="indexterm" name="id2623627"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip_default
                                             (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
@@ -457,50 +440,42 @@ uses no interpolation/supersampling at all, or default values
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
 <td> horz. coord. of one end of axis.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
 <td> vert. coord. of one end of axis.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
 <td> horz. coord. of other end of axis.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
 <td> vert. coord. of other end of axis.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolate</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolate</code></em>&#160;:</span></td>
 <td> Whether to use interpolation and supersampling.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
 <td> Whether to clip results.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The flipped drawable.
 
 </td>
@@ -512,9 +487,9 @@ uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2624452"></a><h3>
+<a name="id2623819"></a><h3>
 <a name="gimp-drawable-transform-perspective"></a>gimp_drawable_transform_perspective ()</h3>
-<a class="indexterm" name="id2624468"></a><pre class="programlisting">gint32      gimp_drawable_transform_perspective
+<a class="indexterm" name="id2623834"></a><pre class="programlisting">gint32      gimp_drawable_transform_perspective
                                             (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
@@ -560,92 +535,77 @@ to have been projected via a perspective transform.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
 <td> The new x coordinate of upper-left corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
 <td> The new y coordinate of upper-left corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
 <td> The new x coordinate of upper-right corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
 <td> The new y coordinate of upper-right corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x2</code></em>&#160;:</span></td>
 <td> The new x coordinate of lower-left corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y2</code></em>&#160;:</span></td>
 <td> The new y coordinate of lower-left corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x3</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x3</code></em>&#160;:</span></td>
 <td> The new x coordinate of lower-right corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y3</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y3</code></em>&#160;:</span></td>
 <td> The new y coordinate of lower-right corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
 <td> Direction of transformation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
 <td> Type of interpolation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>supersample</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>supersample</code></em>&#160;:</span></td>
 <td> Whether to perform supersample.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>recursion_level</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>recursion_level</code></em>&#160;:</span></td>
 <td> Level of recursion (3 is a nice default).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
 <td> Whether to clip results.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The newly mapped drawable.
 
 </td>
@@ -657,9 +617,9 @@ to have been projected via a perspective transform.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2624806"></a><h3>
+<a name="id2624173"></a><h3>
 <a name="gimp-drawable-transform-perspective-default"></a>gimp_drawable_transform_perspective_default ()</h3>
-<a class="indexterm" name="id2624822"></a><pre class="programlisting">gint32      gimp_drawable_transform_perspective_default
+<a class="indexterm" name="id2624188"></a><pre class="programlisting">gint32      gimp_drawable_transform_perspective_default
                                             (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
@@ -686,74 +646,62 @@ which uses no interpolation/supersampling at all, or default values
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
 <td> The new x coordinate of upper-left corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
 <td> The new y coordinate of upper-left corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
 <td> The new x coordinate of upper-right corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
 <td> The new y coordinate of upper-right corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x2</code></em>&#160;:</span></td>
 <td> The new x coordinate of lower-left corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y2</code></em>&#160;:</span></td>
 <td> The new y coordinate of lower-left corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x3</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x3</code></em>&#160;:</span></td>
 <td> The new x coordinate of lower-right corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y3</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y3</code></em>&#160;:</span></td>
 <td> The new y coordinate of lower-right corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolate</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolate</code></em>&#160;:</span></td>
 <td> Whether to use interpolation and supersampling.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
 <td> Whether to clip results.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The newly mapped drawable.
 
 </td>
@@ -765,9 +713,9 @@ which uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2625098"></a><h3>
+<a name="id2624465"></a><h3>
 <a name="gimp-drawable-transform-rotate-simple"></a>gimp_drawable_transform_rotate_simple ()</h3>
-<a class="indexterm" name="id2625113"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate_simple
+<a class="indexterm" name="id2624480"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate_simple
                                             (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpRotationType">GimpRotationType</a> rotate_type,
                                              gboolean auto_center,
@@ -793,44 +741,37 @@ this will be the newly created and rotated drawable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rotate_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rotate_type</code></em>&#160;:</span></td>
 <td> Type of rotation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>auto_center</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>auto_center</code></em>&#160;:</span></td>
 <td> Whether to automatically rotate around the selection center.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>center_x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>center_x</code></em>&#160;:</span></td>
 <td> The hor. coordinate of the center of rotation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>center_y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>center_y</code></em>&#160;:</span></td>
 <td> The vert. coordinate of the center of rotation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
 <td> Whether to clip results.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The rotated drawable.
 
 </td>
@@ -842,9 +783,9 @@ this will be the newly created and rotated drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2625282"></a><h3>
+<a name="id2624649"></a><h3>
 <a name="gimp-drawable-transform-rotate"></a>gimp_drawable_transform_rotate ()</h3>
-<a class="indexterm" name="id2625297"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate  (gint32 drawable_ID,
+<a class="indexterm" name="id2624663"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate  (gint32 drawable_ID,
                                              gdouble angle,
                                              gboolean auto_center,
                                              gint center_x,
@@ -877,68 +818,57 @@ this will be the newly created and rotated drawable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></td>
 <td> The angle of rotation (radians).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>auto_center</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>auto_center</code></em>&#160;:</span></td>
 <td> Whether to automatically rotate around the selection center.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>center_x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>center_x</code></em>&#160;:</span></td>
 <td> The hor. coordinate of the center of rotation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>center_y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>center_y</code></em>&#160;:</span></td>
 <td> The vert. coordinate of the center of rotation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
 <td> Direction of transformation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
 <td> Type of interpolation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>supersample</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>supersample</code></em>&#160;:</span></td>
 <td> Whether to perform supersample.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>recursion_level</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>recursion_level</code></em>&#160;:</span></td>
 <td> Level of recursion (3 is a nice default).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
 <td> Whether to clip results.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The rotated drawable.
 
 </td>
@@ -950,9 +880,9 @@ this will be the newly created and rotated drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2625544"></a><h3>
+<a name="id2624911"></a><h3>
 <a name="gimp-drawable-transform-rotate-default"></a>gimp_drawable_transform_rotate_default ()</h3>
-<a class="indexterm" name="id2625559"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate_default
+<a class="indexterm" name="id2624925"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate_default
                                             (gint32 drawable_ID,
                                              gdouble angle,
                                              gboolean auto_center,
@@ -975,50 +905,42 @@ which uses no interpolation/supersampling at all, or default values
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></td>
 <td> The angle of rotation (radians).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>auto_center</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>auto_center</code></em>&#160;:</span></td>
 <td> Whether to automatically rotate around the selection center.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>center_x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>center_x</code></em>&#160;:</span></td>
 <td> The hor. coordinate of the center of rotation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>center_y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>center_y</code></em>&#160;:</span></td>
 <td> The vert. coordinate of the center of rotation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolate</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolate</code></em>&#160;:</span></td>
 <td> Whether to use interpolation and supersampling.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
 <td> Whether to clip results.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The rotated drawable.
 
 </td>
@@ -1030,9 +952,9 @@ which uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2625753"></a><h3>
+<a name="id2625120"></a><h3>
 <a name="gimp-drawable-transform-scale"></a>gimp_drawable_transform_scale ()</h3>
-<a class="indexterm" name="id2625768"></a><pre class="programlisting">gint32      gimp_drawable_transform_scale   (gint32 drawable_ID,
+<a class="indexterm" name="id2625134"></a><pre class="programlisting">gint32      gimp_drawable_transform_scale   (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
                                              gdouble x1,
@@ -1064,68 +986,57 @@ this will be the newly created and scaled drawable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
 <td> The new x coordinate of the upper-left corner of the scaled region.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
 <td> The new y coordinate of the upper-left corner of the scaled region.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
 <td> The new x coordinate of the lower-right corner of the scaled region.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
 <td> The new y coordinate of the lower-right corner of the scaled region.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
 <td> Direction of transformation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
 <td> Type of interpolation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>supersample</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>supersample</code></em>&#160;:</span></td>
 <td> Whether to perform supersample.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>recursion_level</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>recursion_level</code></em>&#160;:</span></td>
 <td> Level of recursion (3 is a nice default).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
 <td> Whether to clip results.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The scaled drawable.
 
 </td>
@@ -1137,9 +1048,9 @@ this will be the newly created and scaled drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626015"></a><h3>
+<a name="id2625382"></a><h3>
 <a name="gimp-drawable-transform-scale-default"></a>gimp_drawable_transform_scale_default ()</h3>
-<a class="indexterm" name="id2626030"></a><pre class="programlisting">gint32      gimp_drawable_transform_scale_default
+<a class="indexterm" name="id2625397"></a><pre class="programlisting">gint32      gimp_drawable_transform_scale_default
                                             (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
@@ -1161,50 +1072,42 @@ uses no interpolation/supersampling at all, or default values
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
 <td> The new x coordinate of the upper-left corner of the scaled region.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
 <td> The new y coordinate of the upper-left corner of the scaled region.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
 <td> The new x coordinate of the lower-right corner of the scaled region.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
 <td> The new y coordinate of the lower-right corner of the scaled region.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolate</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolate</code></em>&#160;:</span></td>
 <td> Whether to use interpolation and supersampling.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
 <td> Whether to clip results.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The scaled drawable.
 
 </td>
@@ -1216,9 +1119,9 @@ uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626225"></a><h3>
+<a name="id2625592"></a><h3>
 <a name="gimp-drawable-transform-shear"></a>gimp_drawable_transform_shear ()</h3>
-<a class="indexterm" name="id2626240"></a><pre class="programlisting">gint32      gimp_drawable_transform_shear   (gint32 drawable_ID,
+<a class="indexterm" name="id2625606"></a><pre class="programlisting">gint32      gimp_drawable_transform_shear   (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> shear_type,
                                              gdouble magnitude,
                                              <a
@@ -1252,56 +1155,47 @@ indicates the extent (in pixels) to shear by.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>shear_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>shear_type</code></em>&#160;:</span></td>
 <td> Type of shear.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>magnitude</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>magnitude</code></em>&#160;:</span></td>
 <td> The magnitude of the shear.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
 <td> Direction of transformation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
 <td> Type of interpolation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>supersample</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>supersample</code></em>&#160;:</span></td>
 <td> Whether to perform supersample.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>recursion_level</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>recursion_level</code></em>&#160;:</span></td>
 <td> Level of recursion (3 is a nice default).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
 <td> Whether to clip results.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The sheared drawable.
 
 </td>
@@ -1313,9 +1207,9 @@ indicates the extent (in pixels) to shear by.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626449"></a><h3>
+<a name="id2625816"></a><h3>
 <a name="gimp-drawable-transform-shear-default"></a>gimp_drawable_transform_shear_default ()</h3>
-<a class="indexterm" name="id2626464"></a><pre class="programlisting">gint32      gimp_drawable_transform_shear_default
+<a class="indexterm" name="id2625831"></a><pre class="programlisting">gint32      gimp_drawable_transform_shear_default
                                             (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> shear_type,
                                              gdouble magnitude,
@@ -1336,38 +1230,32 @@ uses no interpolation/supersampling at all, or default values
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>shear_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>shear_type</code></em>&#160;:</span></td>
 <td> Type of shear.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>magnitude</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>magnitude</code></em>&#160;:</span></td>
 <td> The magnitude of the shear.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolate</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolate</code></em>&#160;:</span></td>
 <td> Whether to use interpolation and supersampling.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
 <td> Whether to clip results.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The sheared drawable.
 
 </td>
@@ -1379,9 +1267,9 @@ uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626618"></a><h3>
+<a name="id2625984"></a><h3>
 <a name="gimp-drawable-transform-2d"></a>gimp_drawable_transform_2d ()</h3>
-<a class="indexterm" name="id2626631"></a><pre class="programlisting">gint32      gimp_drawable_transform_2d      (gint32 drawable_ID,
+<a class="indexterm" name="id2625997"></a><pre class="programlisting">gint32      gimp_drawable_transform_2d      (gint32 drawable_ID,
                                              gdouble source_x,
                                              gdouble source_y,
                                              gdouble scale_x,
@@ -1419,86 +1307,72 @@ Otherwise, this will be the newly created and transformed drawable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>source_x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>source_x</code></em>&#160;:</span></td>
 <td> X coordinate of the transformation center.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>source_y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>source_y</code></em>&#160;:</span></td>
 <td> Y coordinate of the transformation center.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scale_x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scale_x</code></em>&#160;:</span></td>
 <td> Amount to scale in x direction.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scale_y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scale_y</code></em>&#160;:</span></td>
 <td> Amount to scale in y direction.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></td>
 <td> The angle of rotation (radians).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>dest_x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>dest_x</code></em>&#160;:</span></td>
 <td> X coordinate of where the center goes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>dest_y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>dest_y</code></em>&#160;:</span></td>
 <td> Y coordinate of where the center goes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
 <td> Direction of transformation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
 <td> Type of interpolation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>supersample</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>supersample</code></em>&#160;:</span></td>
 <td> Whether to perform supersample.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>recursion_level</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>recursion_level</code></em>&#160;:</span></td>
 <td> Level of recursion (3 is a nice default).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
 <td> Whether to clip results.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The transformed drawable.
 
 </td>
@@ -1510,9 +1384,9 @@ Otherwise, this will be the newly created and transformed drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626952"></a><h3>
+<a name="id2626321"></a><h3>
 <a name="gimp-drawable-transform-2d-default"></a>gimp_drawable_transform_2d_default ()</h3>
-<a class="indexterm" name="id2626969"></a><pre class="programlisting">gint32      gimp_drawable_transform_2d_default
+<a class="indexterm" name="id2626338"></a><pre class="programlisting">gint32      gimp_drawable_transform_2d_default
                                             (gint32 drawable_ID,
                                              gdouble source_x,
                                              gdouble source_y,
@@ -1537,68 +1411,57 @@ uses no interpolation/supersampling at all, or default values
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>source_x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>source_x</code></em>&#160;:</span></td>
 <td> X coordinate of the transformation center.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>source_y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>source_y</code></em>&#160;:</span></td>
 <td> Y coordinate of the transformation center.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scale_x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scale_x</code></em>&#160;:</span></td>
 <td> Amount to scale in x direction.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scale_y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scale_y</code></em>&#160;:</span></td>
 <td> Amount to scale in y direction.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></td>
 <td> The angle of rotation (radians).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>dest_x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>dest_x</code></em>&#160;:</span></td>
 <td> X coordinate of where the center goes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>dest_y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>dest_y</code></em>&#160;:</span></td>
 <td> Y coordinate of where the center goes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolate</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolate</code></em>&#160;:</span></td>
 <td> Whether to use interpolation and supersampling.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
 <td> Whether to clip results.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The transformed drawable.
 
 </td>
@@ -1610,9 +1473,9 @@ uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627246"></a><h3>
+<a name="id2626615"></a><h3>
 <a name="gimp-drawable-transform-matrix"></a>gimp_drawable_transform_matrix ()</h3>
-<a class="indexterm" name="id2627262"></a><pre class="programlisting">gint32      gimp_drawable_transform_matrix  (gint32 drawable_ID,
+<a class="indexterm" name="id2626631"></a><pre class="programlisting">gint32      gimp_drawable_transform_matrix  (gint32 drawable_ID,
                                              gdouble coeff_0_0,
                                              gdouble coeff_0_1,
                                              gdouble coeff_0_2,
@@ -1650,98 +1513,82 @@ Otherwise, this will be the newly created and transformed drawable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_0_0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_0_0</code></em>&#160;:</span></td>
 <td> coefficient (0,0) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_0_1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_0_1</code></em>&#160;:</span></td>
 <td> coefficient (0,1) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_0_2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_0_2</code></em>&#160;:</span></td>
 <td> coefficient (0,2) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_1_0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_1_0</code></em>&#160;:</span></td>
 <td> coefficient (1,0) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_1_1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_1_1</code></em>&#160;:</span></td>
 <td> coefficient (1,1) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_1_2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_1_2</code></em>&#160;:</span></td>
 <td> coefficient (1,2) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_2_0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_2_0</code></em>&#160;:</span></td>
 <td> coefficient (2,0) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_2_1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_2_1</code></em>&#160;:</span></td>
 <td> coefficient (2,1) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_2_2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_2_2</code></em>&#160;:</span></td>
 <td> coefficient (2,2) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>transform_direction</code></em>&#160;:</span></td>
 <td> Direction of transformation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
 <td> Type of interpolation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>supersample</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>supersample</code></em>&#160;:</span></td>
 <td> Whether to perform supersample.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>recursion_level</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>recursion_level</code></em>&#160;:</span></td>
 <td> Level of recursion (3 is a nice default).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
 <td> Whether to clip results.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The transformed drawable.
 
 </td>
@@ -1753,9 +1600,9 @@ Otherwise, this will be the newly created and transformed drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627647"></a><h3>
+<a name="id2627015"></a><h3>
 <a name="gimp-drawable-transform-matrix-default"></a>gimp_drawable_transform_matrix_default ()</h3>
-<a class="indexterm" name="id2627663"></a><pre class="programlisting">gint32      gimp_drawable_transform_matrix_default
+<a class="indexterm" name="id2627032"></a><pre class="programlisting">gint32      gimp_drawable_transform_matrix_default
                                             (gint32 drawable_ID,
                                              gdouble coeff_0_0,
                                              gdouble coeff_0_1,
@@ -1782,80 +1629,67 @@ which uses no interpolation/supersampling at all, or default values
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_0_0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_0_0</code></em>&#160;:</span></td>
 <td> coefficient (0,0) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_0_1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_0_1</code></em>&#160;:</span></td>
 <td> coefficient (0,1) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_0_2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_0_2</code></em>&#160;:</span></td>
 <td> coefficient (0,2) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_1_0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_1_0</code></em>&#160;:</span></td>
 <td> coefficient (1,0) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_1_1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_1_1</code></em>&#160;:</span></td>
 <td> coefficient (1,1) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_1_2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_1_2</code></em>&#160;:</span></td>
 <td> coefficient (1,2) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_2_0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_2_0</code></em>&#160;:</span></td>
 <td> coefficient (2,0) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_2_1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_2_1</code></em>&#160;:</span></td>
 <td> coefficient (2,1) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coeff_2_2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coeff_2_2</code></em>&#160;:</span></td>
 <td> coefficient (2,2) of the transformation matrix.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolate</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolate</code></em>&#160;:</span></td>
 <td> Whether to use interpolation and supersampling.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
 <td> Whether to clip results.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The transformed drawable.
 
 </td>

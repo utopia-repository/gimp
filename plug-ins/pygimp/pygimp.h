@@ -34,7 +34,7 @@ extern PyObject *pygimp_error;
 
 PyObject *pygimp_param_to_tuple(int nparams, const GimpParam *params);
 GimpParam *pygimp_param_from_tuple(PyObject *args, const GimpParamDef *ptype,
-				   int nparams);
+                                   int nparams);
 
 
 extern PyTypeObject PyGimpPDB_Type;
@@ -44,12 +44,12 @@ PyObject *pygimp_pdb_new(void);
 extern PyTypeObject PyGimpPDBFunction_Type;
 #define pygimp_pdb_function_check(v) (PyObject_TypeCheck(v, &PyGimpPDBFunction_Type))
 PyObject *pygimp_pdb_function_new(const char *name, const char *blurb,
-				  const char *help, const char *author,
-				  const char *copyright, const char *date,
-				  GimpPDBProcType proc_type,
-				  int n_params, int n_return_vals,
-				  GimpParamDef *params,
-				  GimpParamDef *return_vals);
+                                  const char *help, const char *author,
+                                  const char *copyright, const char *date,
+                                  GimpPDBProcType proc_type,
+                                  int n_params, int n_return_vals,
+                                  GimpParamDef *params,
+                                  GimpParamDef *return_vals);
 
 typedef struct {
     PyObject_HEAD
@@ -107,7 +107,7 @@ typedef struct {
 extern PyTypeObject PyGimpPixelRgn_Type;
 #define pygimp_pixel_rgn_check(v) (PyObject_TypeCheck(v, &PyGimpPixelRgn_Type))
 PyObject *pygimp_pixel_rgn_new(PyGimpDrawable *drw, int x, int y,
-			       int w, int h, int dirty, int shadow);
+                               int w, int h, int dirty, int shadow);
 
 typedef struct {
     PyObject_HEAD
@@ -115,8 +115,20 @@ typedef struct {
 } PyGimpParasite;
 
 extern PyTypeObject PyGimpParasite_Type;
-#define pygimp_parasite_check(v) (PyObject_TypeCheck(v, &Paratype))
+#define pygimp_parasite_check(v) (PyObject_TypeCheck(v, &PyGimpParasite_Type))
 PyObject *pygimp_parasite_new(GimpParasite *para);
+
+typedef struct {
+    PyObject_HEAD
+    gint32 ID;
+} PyGimpVectors;
+
+extern PyTypeObject PyGimpVectors_Type;
+#define pygimp_vectors_check(v) (PyObject_TypeCheck(v, &PyGimpVectors_Type))
+PyObject *pygimp_vectors_new(gint32 vectors_ID);
+
+extern PyTypeObject PyGimpVectorsStroke_Type;
+extern PyTypeObject PyGimpVectorsBezierStroke_Type;
 
 G_END_DECLS
 

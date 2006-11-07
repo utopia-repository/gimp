@@ -1,13 +1,13 @@
-usr/lib/gimp/2.0/environ/
-usr/lib/gimp/2.0/modules/
-usr/lib/gimp/2.0/interpreters/default.interp
-usr/lib/gimp/2.0/plug-ins/
 usr/bin/gimp
 usr/bin/gimp-?.?
 usr/bin/gimp-console
 usr/bin/gimp-console-?.?
 usr/bin/gimp-remote
 usr/bin/gimp-remote-?.?
+usr/lib/gimp/2.0/environ/
+usr/lib/gimp/2.0/modules/
+usr/lib/gimp/2.0/interpreters/default.interp
+usr/lib/gimp/2.0/plug-ins/
 usr/share/applications
 usr/share/application-registry
 usr/share/icons

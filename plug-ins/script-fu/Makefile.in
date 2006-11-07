@@ -58,7 +58,7 @@ PROGRAMS = $(libexec_PROGRAMS)
 am_script_fu_OBJECTS = script-fu.$(OBJEXT) script-fu-console.$(OBJEXT) \
 	script-fu-interface.$(OBJEXT) script-fu-text-console.$(OBJEXT) \
 	script-fu-scripts.$(OBJEXT) script-fu-server.$(OBJEXT) \
-	siod-wrapper.$(OBJEXT)
+	scheme-wrapper.$(OBJEXT)
 script_fu_OBJECTS = $(am_script_fu_OBJECTS)
 script_fu_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =  \
@@ -70,16 +70,20 @@ am__DEPENDENCIES_5 =  \
 	$(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
 am__DEPENDENCIES_6 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 am__DEPENDENCIES_7 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
-@HAVE_GLIBC_REGEX_FALSE@am__DEPENDENCIES_8 =  \
+am__DEPENDENCIES_8 = tinyscheme/libtinyscheme.a
+am__DEPENDENCIES_9 = ftx/libftx.a
+am__DEPENDENCIES_10 = re/libre.a
+@HAVE_GLIBC_REGEX_FALSE@am__DEPENDENCIES_11 =  \
 @HAVE_GLIBC_REGEX_FALSE@	$(top_builddir)/regexrepl/libregex.a
-am__DEPENDENCIES_9 =
+am__DEPENDENCIES_12 =
 script_fu_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_7) siod/libsiod.a $(am__DEPENDENCIES_8) \
-	$(am__DEPENDENCIES_9) $(am__DEPENDENCIES_9) \
-	$(am__DEPENDENCIES_9) $(am__DEPENDENCIES_9) \
-	$(am__DEPENDENCIES_9)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_9) $(am__DEPENDENCIES_10) \
+	$(am__DEPENDENCIES_11) $(am__DEPENDENCIES_12) \
+	$(am__DEPENDENCIES_12) $(am__DEPENDENCIES_12) \
+	$(am__DEPENDENCIES_12) $(am__DEPENDENCIES_12)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -240,6 +244,8 @@ HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
 HAVE_MAC_TWAIN_TRUE = @HAVE_MAC_TWAIN_TRUE@
+HAVE_PNG_FALSE = @HAVE_PNG_FALSE@
+HAVE_PNG_TRUE = @HAVE_PNG_TRUE@
 HAVE_WINDRES_FALSE = @HAVE_WINDRES_FALSE@
 HAVE_WINDRES_TRUE = @HAVE_WINDRES_TRUE@
 HAVE_XMLLINT_FALSE = @HAVE_XMLLINT_FALSE@
@@ -281,12 +287,12 @@ INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
 LCMS = @LCMS@
-LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
 LIBJPEG = @LIBJPEG@
+LIBLCMS = @LIBLCMS@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
@@ -365,6 +371,7 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
+SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -466,10 +473,20 @@ libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
+libtinyscheme = tinyscheme/libtinyscheme.a
+libftx = ftx/libftx.a
+libre = re/libre.a
 @OS_WIN32_TRUE@mwindows = -mwindows
 @OS_WIN32_TRUE@WINSOCK_LIBS = -lws2_32
+AM_CFLAGS = \
+	-DUSE_INTERFACE=1  \
+	-DUSE_STRLWR=0     \
+	-I$(top_srcdir)    \
+	$(GTK_CFLAGS)      \
+	-I$(includedir)
+
 AM_LDFLAGS = $(mwindows)
-SUBDIRS = siod scripts
+SUBDIRS = tinyscheme ftx re scripts
 script_fu_SOURCES = \
 	script-fu.c			\
 	script-fu-console.c		\
@@ -485,13 +502,8 @@ script_fu_SOURCES = \
 	script-fu-server.h		\
 	script-fu-types.h		\
 	script-fu-enums.h		\
-	siod-wrapper.c			\
-	siod-wrapper.h
-
-INCLUDES = \
-	-I$(top_srcdir)	\
-	$(GTK_CFLAGS)	\
-	-I$(includedir)
+	scheme-wrapper.c		\
+	scheme-wrapper.h
 
 @HAVE_GLIBC_REGEX_FALSE@REGEXREPL = $(top_builddir)/regexrepl/libregex.a
 @HAVE_GLIBC_REGEX_TRUE@REGEXREPL = 
@@ -503,7 +515,9 @@ LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
-	siod/libsiod.a		\
+	$(libtinyscheme)	\
+	$(libftx)		\
+	$(libre)		\
 	$(REGEXREPL)		\
 	$(GTK_LIBS)		\
 	$(SOCKET_LIBS)		\
@@ -582,13 +596,13 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scheme-wrapper.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/script-fu-console.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/script-fu-interface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/script-fu-scripts.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/script-fu-server.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/script-fu-text-console.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/script-fu.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/siod-wrapper.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \

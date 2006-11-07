@@ -19,10 +19,10 @@
 <link rel="part" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
 <link rel="part" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
 <link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimpwidgets-index.html" title="Index">
+<link rel="index" href="libgimpwidgets-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimpwidgets-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpwidgets-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -33,22 +33,22 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpPageSelector.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2577493" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2564010" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2606162" class="shortcut">Description</a>
+                  <a href="#id2603252" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2605251" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2604934" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2606084" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2604983" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2606105" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id2603195" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpOffsetArea"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2577493"></a><span class="refentrytitle">GimpOffsetArea</span>
+<a name="id2564010"></a><span class="refentrytitle">GimpOffsetArea</span>
 </h2>
 <p>GimpOffsetArea &#8212; Widget to control image offsets.</p>
 </td>
@@ -75,7 +75,7 @@ void        <a href="GimpOffsetArea.html#gimp-offset-area-set-pixbuf">gimp_offse
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2605251"></a><h2>Object Hierarchy</h2>
+<a name="id2604934"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -87,13 +87,13 @@ void        <a href="GimpOffsetArea.html#gimp-offset-area-set-pixbuf">gimp_offse
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2606084"></a><h2>Implemented Interfaces</h2>
+<a name="id2604983"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpOffsetArea implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2606105"></a><h2>Signals</h2>
+<a name="id2603195"></a><h2>Signals</h2>
 <pre class="synopsis">
 
 "<a href="GimpOffsetArea.html#GimpOffsetArea-offsets-changed">offsets-changed</a>"
@@ -104,26 +104,26 @@ GimpOffsetArea implements
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2606162"></a><h2>Description</h2>
+<a name="id2603252"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2606177"></a><h2>Details</h2>
+<a name="id2603267"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2606188"></a><h3>
+<a name="id2603278"></a><h3>
 <a name="GimpOffsetArea-struct"></a>GimpOffsetArea</h3>
-<a class="indexterm" name="id2606200"></a><pre class="programlisting">typedef struct _GimpOffsetArea GimpOffsetArea;</pre>
+<a class="indexterm" name="id2603290"></a><pre class="programlisting">typedef struct _GimpOffsetArea GimpOffsetArea;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606216"></a><h3>
+<a name="id2603306"></a><h3>
 <a name="gimp-offset-area-new"></a>gimp_offset_area_new ()</h3>
-<a class="indexterm" name="id2606227"></a><pre class="programlisting">GtkWidget*  gimp_offset_area_new            (gint orig_width,
+<a class="indexterm" name="id2603317"></a><pre class="programlisting">GtkWidget*  gimp_offset_area_new            (gint orig_width,
                                              gint orig_height);</pre>
 <p>
 Creates a new <a href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a> widget. A <a href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a> can be used
@@ -136,20 +136,17 @@ specify the new offsets.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>orig_width</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>orig_width</code></em>&#160;:</span></td>
 <td> the original width
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>orig_height</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>orig_height</code></em>&#160;:</span></td>
 <td> the original height
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the new <a href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a> widget.
 </td>
 </tr>
@@ -158,9 +155,9 @@ specify the new offsets.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604501"></a><h3>
+<a name="id2607875"></a><h3>
 <a name="gimp-offset-area-set-size"></a>gimp_offset_area_set_size ()</h3>
-<a class="indexterm" name="id2604512"></a><pre class="programlisting">void        gimp_offset_area_set_size       (<a href="GimpOffsetArea.html" title="GimpOffsetArea">GimpOffsetArea</a> *offset_area,
+<a class="indexterm" name="id2607886"></a><pre class="programlisting">void        gimp_offset_area_set_size       (<a href="GimpOffsetArea.html" title="GimpOffsetArea">GimpOffsetArea</a> *offset_area,
                                              gint width,
                                              gint height);</pre>
 <p>
@@ -174,20 +171,17 @@ signal is emitted.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>offset_area</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>offset_area</code></em>&#160;:</span></td>
 <td> a <a href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td> the new width
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td> the new height
 </td>
 </tr>
@@ -196,9 +190,9 @@ signal is emitted.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604620"></a><h3>
+<a name="id2607994"></a><h3>
 <a name="gimp-offset-area-set-offsets"></a>gimp_offset_area_set_offsets ()</h3>
-<a class="indexterm" name="id2604631"></a><pre class="programlisting">void        gimp_offset_area_set_offsets    (<a href="GimpOffsetArea.html" title="GimpOffsetArea">GimpOffsetArea</a> *offset_area,
+<a class="indexterm" name="id2608005"></a><pre class="programlisting">void        gimp_offset_area_set_offsets    (<a href="GimpOffsetArea.html" title="GimpOffsetArea">GimpOffsetArea</a> *offset_area,
                                              gint offset_x,
                                              gint offset_y);</pre>
 <p>
@@ -211,20 +205,17 @@ It does not emit the "offsets-changed" signal.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>offset_area</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>offset_area</code></em>&#160;:</span></td>
 <td> a <a href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>offset_x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>offset_x</code></em>&#160;:</span></td>
 <td> the X offset
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>offset_y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>offset_y</code></em>&#160;:</span></td>
 <td> the Y offset
 </td>
 </tr>
@@ -233,9 +224,9 @@ It does not emit the "offsets-changed" signal.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2556440"></a><h3>
+<a name="id2602389"></a><h3>
 <a name="gimp-offset-area-set-pixbuf"></a>gimp_offset_area_set_pixbuf ()</h3>
-<a class="indexterm" name="id2556454"></a><pre class="programlisting">void        gimp_offset_area_set_pixbuf     (<a href="GimpOffsetArea.html" title="GimpOffsetArea">GimpOffsetArea</a> *offset_area,
+<a class="indexterm" name="id2602403"></a><pre class="programlisting">void        gimp_offset_area_set_pixbuf     (<a href="GimpOffsetArea.html" title="GimpOffsetArea">GimpOffsetArea</a> *offset_area,
                                              GdkPixbuf *pixbuf);</pre>
 <p>
 Sets the pixbuf which represents the original image/drawable which
@@ -247,14 +238,12 @@ is being offset.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>offset_area</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>offset_area</code></em>&#160;:</span></td>
 <td> a <a href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>pixbuf</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pixbuf</code></em>&#160;:</span></td>
 <td> a <span class="type">GdkPixbuf</span>.
 </td>
 </tr>
@@ -265,11 +254,11 @@ is being offset.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2556546"></a><h2>Signal Details</h2>
+<a name="id2602496"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2556557"></a><h3>
+<a name="id2602506"></a><h3>
 <a name="GimpOffsetArea-offsets-changed"></a>The "offsets-changed" signal</h3>
-<a class="indexterm" name="id2556564"></a><pre class="programlisting">void        user_function                  (<a href="GimpOffsetArea.html" title="GimpOffsetArea">GimpOffsetArea</a> *gimpoffsetarea,
+<a class="indexterm" name="id2602516"></a><pre class="programlisting">void        user_function                  (<a href="GimpOffsetArea.html" title="GimpOffsetArea">GimpOffsetArea</a> *gimpoffsetarea,
                                             gint            arg1,
                                             gint            arg2,
                                             gpointer        user_data)           : Run first</pre>
@@ -280,27 +269,23 @@ is being offset.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>gimpoffsetarea</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>gimpoffsetarea</code></em>&#160;:</span></td>
 <td>the object which received the signal.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>arg1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>arg1</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>arg2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>arg2</code></em>&#160;:</span></td>
 <td>
 
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>

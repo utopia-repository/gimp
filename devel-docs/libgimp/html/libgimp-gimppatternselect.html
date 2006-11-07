@@ -18,10 +18,10 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimp-index.html" title="Index">
+<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -32,16 +32,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpui.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2563576" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2574929" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2695569" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2699419" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppatternselect"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2563576"></a><span class="refentrytitle">gimppatternselect</span>
+<a name="id2574929"></a><span class="refentrytitle">gimppatternselect</span>
 </h2>
 <p>gimppatternselect &#8212; Functions providing a pattern selection dialog.</p>
 </td>
@@ -74,17 +74,17 @@ gboolean    <a href="libgimp-gimppatternselect.html#gimp-patterns-set-popup">gim
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2695569"></a><h2>Description</h2>
+<a name="id2699419"></a><h2>Description</h2>
 <p>
 Functions providing a pattern selection dialog.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2695586"></a><h2>Details</h2>
+<a name="id2699435"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2695596"></a><h3>
+<a name="id2700157"></a><h3>
 <a name="GimpRunPatternCallback"></a>GimpRunPatternCallback ()</h3>
-<a class="indexterm" name="id2695607"></a><pre class="programlisting">void        (*GimpRunPatternCallback)       (const gchar *pattern_name,
+<a class="indexterm" name="id2700168"></a><pre class="programlisting">void        (*GimpRunPatternCallback)       (const gchar *pattern_name,
                                              gint width,
                                              gint height,
                                              gint bpp,
@@ -98,44 +98,37 @@ Functions providing a pattern selection dialog.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>pattern_name</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pattern_name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>mask_data</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>dialog_closing</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>mask_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>dialog_closing</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -146,9 +139,9 @@ Functions providing a pattern selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2696444"></a><h3>
+<a name="id2694752"></a><h3>
 <a name="gimp-pattern-select-new"></a>gimp_pattern_select_new ()</h3>
-<a class="indexterm" name="id2696455"></a><pre class="programlisting">const gchar* gimp_pattern_select_new        (const gchar *title,
+<a class="indexterm" name="id2694763"></a><pre class="programlisting">const gchar* gimp_pattern_select_new        (const gchar *title,
                                              const gchar *pattern_name,
                                              <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
                                              gpointer data);</pre>
@@ -159,32 +152,27 @@ Functions providing a pattern selection dialog.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>pattern_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pattern_name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -195,17 +183,16 @@ Functions providing a pattern selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2697394"></a><h3>
+<a name="id2701786"></a><h3>
 <a name="gimp-pattern-select-destroy"></a>gimp_pattern_select_destroy ()</h3>
-<a class="indexterm" name="id2697405"></a><pre class="programlisting">void        gimp_pattern_select_destroy     (const gchar *pattern_callback);</pre>
+<a class="indexterm" name="id2701797"></a><pre class="programlisting">void        gimp_pattern_select_destroy     (const gchar *pattern_callback);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>pattern_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pattern_callback</code></em>&#160;:</span></td>
 <td>
 
 
@@ -215,9 +202,9 @@ Functions providing a pattern selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2697450"></a><h3>
+<a name="id2701841"></a><h3>
 <a name="gimp-patterns-popup"></a>gimp_patterns_popup ()</h3>
-<a class="indexterm" name="id2697461"></a><pre class="programlisting">gboolean    gimp_patterns_popup             (const gchar *pattern_callback,
+<a class="indexterm" name="id2701853"></a><pre class="programlisting">gboolean    gimp_patterns_popup             (const gchar *pattern_callback,
                                              const gchar *popup_title,
                                              const gchar *initial_pattern);</pre>
 <p>
@@ -232,26 +219,22 @@ This procedure popups the pattern selection dialog.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>pattern_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pattern_callback</code></em>&#160;:</span></td>
 <td> The callback PDB proc to call when pattern selection is made.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>popup_title</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>popup_title</code></em>&#160;:</span></td>
 <td> Title to give the pattern popup window.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>initial_pattern</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>initial_pattern</code></em>&#160;:</span></td>
 <td> The name of the pattern to set as the first selected.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -260,9 +243,9 @@ This procedure popups the pattern selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2697567"></a><h3>
+<a name="id2701958"></a><h3>
 <a name="gimp-patterns-close-popup"></a>gimp_patterns_close_popup ()</h3>
-<a class="indexterm" name="id2697578"></a><pre class="programlisting">gboolean    gimp_patterns_close_popup       (const gchar *pattern_callback);</pre>
+<a class="indexterm" name="id2701970"></a><pre class="programlisting">gboolean    gimp_patterns_close_popup       (const gchar *pattern_callback);</pre>
 <p>
 Popdown the Gimp pattern selection.
 </p>
@@ -275,14 +258,12 @@ This procedure closes an opened pattern selection dialog.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>pattern_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pattern_callback</code></em>&#160;:</span></td>
 <td> The name of the callback registered for this popup.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -291,9 +272,9 @@ This procedure closes an opened pattern selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2697641"></a><h3>
+<a name="id2696042"></a><h3>
 <a name="gimp-patterns-set-popup"></a>gimp_patterns_set_popup ()</h3>
-<a class="indexterm" name="id2697652"></a><pre class="programlisting">gboolean    gimp_patterns_set_popup         (const gchar *pattern_callback,
+<a class="indexterm" name="id2696053"></a><pre class="programlisting">gboolean    gimp_patterns_set_popup         (const gchar *pattern_callback,
                                              const gchar *pattern_name);</pre>
 <p>
 Sets the current pattern selection in a popup.
@@ -307,20 +288,17 @@ Sets the current pattern selection in a popup.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>pattern_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pattern_callback</code></em>&#160;:</span></td>
 <td> The name of the callback registered for this popup.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>pattern_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pattern_name</code></em>&#160;:</span></td>
 <td> The name of the pattern to set as selected.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>

@@ -8,10 +8,10 @@
       <sub name="gimpthumb-enums" link="libgimpthumb-gimpthumb-enums.html"/>
       <sub name="gimpthumb-error" link="libgimpthumb-gimpthumb-error.html"/>
     </sub>
-    <sub name="Index" link="ix01.html"/>
-    <sub name="Index of new symbols in GIMP 2.2" link="ix02.html"/>
-    <sub name="Index of new symbols in GIMP 2.4" link="ix03.html"/>
-    <sub name="Index of deprecated symbols" link="ix04.html"/>
+    <sub name="Index" link="libgimpthumb-index.html"/>
+    <sub name="Index of new symbols in GIMP 2.2" link="libgimpthumb-index-new-in-2-2.html"/>
+    <sub name="Index of new symbols in GIMP 2.4" link="libgimpthumb-index-new-in-2-4.html"/>
+    <sub name="Index of deprecated symbols" link="libgimpthumb-index-deprecated.html"/>
   </chapters>
   <functions>
     <keyword type="struct" name="GimpThumbnail" link="GimpThumbnail.html#GimpThumbnail-struct"/>

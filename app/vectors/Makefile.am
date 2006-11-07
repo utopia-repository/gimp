@@ -16,6 +16,7 @@ INCLUDES = \
 noinst_LIBRARIES = libappvectors.a
 
 libappvectors_a_SOURCES = \
+	vectors-enums.h		\
 	vectors-types.h		\
 	gimpanchor.c		\
 	gimpanchor.h		\
@@ -23,6 +24,8 @@ libappvectors_a_SOURCES = \
 	gimpbezierstroke.c	\
 	gimpstroke.h		\
 	gimpstroke.c		\
+	gimpstroke-new.h	\
+	gimpstroke-new.c	\
 	gimpvectors.c		\
 	gimpvectors.h		\
 	gimpvectors-compat.c	\
@@ -37,3 +40,4 @@ libappvectors_a_SOURCES = \
 	gimpvectors-warp.h
 
 EXTRA_DIST = makefile.msc
+

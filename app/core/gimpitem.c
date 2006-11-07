@@ -197,6 +197,8 @@ gimp_item_class_init (GimpItemClass *klass)
 static void
 gimp_item_init (GimpItem *item)
 {
+  g_object_force_floating (G_OBJECT (item));
+
   item->ID        = 0;
   item->tattoo    = 0;
   item->image     = NULL;
@@ -207,7 +209,6 @@ gimp_item_init (GimpItem *item)
   item->offset_y  = 0;
   item->visible   = TRUE;
   item->linked    = FALSE;
-  item->floating  = TRUE;
   item->removed   = FALSE;
 }
 
@@ -405,41 +406,6 @@ gimp_item_real_resize (GimpItem    *item,
 
   g_object_notify (G_OBJECT (item), "width");
   g_object_notify (G_OBJECT (item), "height");
-}
-
-/**
- * gimp_item_is_floating:
- * @item: the #GimpItem to check.
- *
- * Returns: #TRUE if the item is floating.
- */
-gboolean
-gimp_item_is_floating (const GimpItem *item)
-{
-  g_return_val_if_fail (GIMP_IS_ITEM (item), FALSE);
-
-  return item->floating;
-}
-
-/**
- * gimp_item_sink:
- * @item: the #GimpItem to sink.
- *
- * If @item is floating, this function sets it so that
- * it is not, and removes a reference to it.  If @item
- * is not floating, the function does nothing.
- */
-void
-gimp_item_sink (GimpItem *item)
-{
-  g_return_if_fail (GIMP_IS_ITEM (item));
-
-  if (item->floating)
-    {
-      item->floating = FALSE;
-
-      g_object_unref (item);
-    }
 }
 
 /**
@@ -705,7 +671,7 @@ gimp_item_translate (GimpItem *item,
   g_return_if_fail (GIMP_IS_ITEM (item));
 
   item_class = GIMP_ITEM_GET_CLASS (item);
-  image     = gimp_item_get_image (item);
+  image = gimp_item_get_image (item);
 
   if (! gimp_item_is_attached (item))
     push_undo = FALSE;
@@ -773,7 +739,7 @@ gimp_item_scale (GimpItem              *item,
     return;
 
   item_class = GIMP_ITEM_GET_CLASS (item);
-  image     = gimp_item_get_image (item);
+  image = gimp_item_get_image (item);
 
   if (gimp_item_is_attached (item))
     gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_ITEM_SCALE,
@@ -938,7 +904,7 @@ gimp_item_resize (GimpItem    *item,
     return;
 
   item_class = GIMP_ITEM_GET_CLASS (item);
-  image     = gimp_item_get_image (item);
+  image = gimp_item_get_image (item);
 
   if (gimp_item_is_attached (item))
     gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_ITEM_RESIZE,
@@ -965,7 +931,7 @@ gimp_item_flip (GimpItem            *item,
   g_return_if_fail (GIMP_IS_CONTEXT (context));
 
   item_class = GIMP_ITEM_GET_CLASS (item);
-  image     = gimp_item_get_image (item);
+  image = gimp_item_get_image (item);
 
   gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TRANSFORM,
                                item_class->flip_desc);
@@ -991,7 +957,7 @@ gimp_item_rotate (GimpItem         *item,
   g_return_if_fail (GIMP_IS_CONTEXT (context));
 
   item_class = GIMP_ITEM_GET_CLASS (item);
-  image     = gimp_item_get_image (item);
+  image = gimp_item_get_image (item);
 
   gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TRANSFORM,
                                item_class->rotate_desc);
@@ -1023,7 +989,7 @@ gimp_item_transform (GimpItem               *item,
   g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
 
   item_class = GIMP_ITEM_GET_CLASS (item);
-  image     = gimp_item_get_image (item);
+  image = gimp_item_get_image (item);
 
   gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TRANSFORM,
                                item_class->transform_desc);

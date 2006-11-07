@@ -1,3 +1,11 @@
+gimp (2.3.13-1) experimental; urgency=low
+
+  * New upstream version
+  * Remove gimptool alternative from libgimp2.0-dev package 
+  * Don't include gimp-gnomevfs plugin in main gimp package
+
+ -- Ari Pollak <ari@debian.org>  Mon,  6 Nov 2006 22:22:39 -0500
+
 gimp (2.3.12-2) experimental; urgency=low
 
   * Put gimp-libcurl into separate package

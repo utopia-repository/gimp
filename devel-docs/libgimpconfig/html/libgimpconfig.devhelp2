@@ -15,9 +15,9 @@
       <sub name="gimpscanner" link="libgimpconfig-GimpScanner.html"/>
       <sub name="GimpColorConfig" link="GimpColorConfig.html"/>
     </sub>
-    <sub name="Index" link="ix01.html"/>
-    <sub name="Index of new symbols in GIMP 2.4" link="ix02.html"/>
-    <sub name="Index of deprecated symbols" link="ix03.html"/>
+    <sub name="Index" link="libgimpconfig-index.html"/>
+    <sub name="Index of new symbols in GIMP 2.4" link="libgimpconfig-index-new-in-2-4.html"/>
+    <sub name="Index of deprecated symbols" link="libgimpconfig-index-deprecated.html"/>
   </chapters>
   <functions>
     <keyword type="struct" name="GimpConfig" link="libgimpconfig-GimpConfig.html#GimpConfig"/>
@@ -106,7 +106,6 @@
     <keyword type="struct" name="GimpColorConfig" link="GimpColorConfig.html#GimpColorConfig-struct"/>
     <keyword type="enum" name="enum GimpColorManagementMode" link="GimpColorConfig.html#GimpColorManagementMode"/>
     <keyword type="enum" name="enum GimpColorRenderingIntent" link="GimpColorConfig.html#GimpColorRenderingIntent"/>
-    <keyword type="enum" name="enum GimpColorFileOpenBehaviour" link="GimpColorConfig.html#GimpColorFileOpenBehaviour"/>
     <keyword type="" name="The &quot;cmyk-profile&quot; property" link="GimpColorConfig.html#GimpColorConfig--cmyk-profile"/>
     <keyword type="" name="The &quot;display-module&quot; property" link="GimpColorConfig.html#GimpColorConfig--display-module"/>
     <keyword type="" name="The &quot;display-profile&quot; property" link="GimpColorConfig.html#GimpColorConfig--display-profile"/>

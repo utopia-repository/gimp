@@ -25,7 +25,6 @@
             <link linkend="GimpColorConfig-struct">GimpColorConfig</link>;
 enum        <link linkend="GimpColorManagementMode">GimpColorManagementMode</link>;
 enum        <link linkend="GimpColorRenderingIntent">GimpColorRenderingIntent</link>;
-enum        <link linkend="GimpColorFileOpenBehaviour">GimpColorFileOpenBehaviour</link>;
 
 </synopsis>
 </refsynopsisdiv>
@@ -109,18 +108,6 @@ GimpColorConfig implements
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="GimpColorFileOpenBehaviour" role="enum"/>enum GimpColorFileOpenBehaviour</title>
-<indexterm><primary>GimpColorFileOpenBehaviour</primary></indexterm><programlisting>typedef enum
-{
-  GIMP_COLOR_FILE_OPEN_ASK,         /*&lt; desc="Ask"                       &gt;*/
-  GIMP_COLOR_FILE_OPEN_LEAVE,       /*&lt; desc="Use embedded profile"      &gt;*/
-  GIMP_COLOR_FILE_OPEN_CONVERT_RGB  /*&lt; desc="Convert to RGB workspace"  &gt;*/
-} GimpColorFileOpenBehaviour;
-</programlisting>
-<para>
-
-</para></refsect2>
 
 </refsect1>
 <refsect1 role="property_details">
@@ -139,7 +126,7 @@ GimpColorConfig implements
 </refsect2>
 <refsect2><title><anchor id="GimpColorConfig--display-profile-from-gdk"/>The &quot;<literal>display-profile-from-gdk</literal>&quot; property</title>
 <indexterm><primary>GimpColorConfig:display-profile-from-gdk</primary></indexterm><programlisting>  &quot;display-profile-from-gdk&quot; <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
-<para>When enabled, the GIMP will try to use the display color profile from the windowing system. The configured monitor profile is then only used as a fallback.</para><para>Default value: TRUE</para>
+<para>When enabled, the GIMP will try to use the display color profile from the windowing system.  The configured monitor profile is then only used as a fallback.</para><para>Default value: TRUE</para>
 </refsect2>
 <refsect2><title><anchor id="GimpColorConfig--display-rendering-intent"/>The &quot;<literal>display-rendering-intent</literal>&quot; property</title>
 <indexterm><primary>GimpColorConfig:display-rendering-intent</primary></indexterm><programlisting>  &quot;display-rendering-intent&quot; <link linkend="GimpColorRenderingIntent">GimpColorRenderingIntent</link>  : Read / Write / Construct</programlisting>
@@ -155,11 +142,11 @@ GimpColorConfig implements
 </refsect2>
 <refsect2><title><anchor id="GimpColorConfig--rgb-profile"/>The &quot;<literal>rgb-profile</literal>&quot; property</title>
 <indexterm><primary>GimpColorConfig:rgb-profile</primary></indexterm><programlisting>  &quot;rgb-profile&quot;          <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct</programlisting>
-<para>The default RGB workspace color profile.</para><para>Default value: NULL</para>
+<para>The default RGB working space color profile.</para><para>Default value: NULL</para>
 </refsect2>
 <refsect2><title><anchor id="GimpColorConfig--simulation-rendering-intent"/>The &quot;<literal>simulation-rendering-intent</literal>&quot; property</title>
 <indexterm><primary>GimpColorConfig:simulation-rendering-intent</primary></indexterm><programlisting>  &quot;simulation-rendering-intent&quot; <link linkend="GimpColorRenderingIntent">GimpColorRenderingIntent</link>  : Read / Write / Construct</programlisting>
-<para>Sets how colors are converted from workspace to the print simulation device.</para><para>Default value: GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL</para>
+<para>Sets how colors are converted from RGB working space to the print simulation device.</para><para>Default value: GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL</para>
 </refsect2>
 
 </refsect1>

@@ -43,7 +43,8 @@
                                              <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
                                              <link linkend="gboolean">gboolean</link> antialias,
                                              <link linkend="gboolean">gboolean</link> feather,
-                                             <link linkend="gdouble">gdouble</link> feather_radius,
+                                             <link linkend="gdouble">gdouble</link> feather_radius_x,
+                                             <link linkend="gdouble">gdouble</link> feather_radius_y,
                                              <link linkend="gboolean">gboolean</link> sample_merged,
                                              <link linkend="gboolean">gboolean</link> select_transparent,
                                              <link linkend="GimpSelectCriterion">GimpSelectCriterion</link> select_criterion);
@@ -126,7 +127,8 @@
                                              <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
                                              <link linkend="gboolean">gboolean</link> antialias,
                                              <link linkend="gboolean">gboolean</link> feather,
-                                             <link linkend="gdouble">gdouble</link> feather_radius,
+                                             <link linkend="gdouble">gdouble</link> feather_radius_x,
+                                             <link linkend="gdouble">gdouble</link> feather_radius_y,
                                              <link linkend="gboolean">gboolean</link> sample_merged,
                                              <link linkend="gboolean">gboolean</link> select_transparent,
                                              <link linkend="GimpSelectCriterion">GimpSelectCriterion</link> select_criterion);
@@ -169,6 +171,18 @@
                                              <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
                                              <link linkend="gboolean">gboolean</link> feather,
                                              <link linkend="gdouble">gdouble</link> feather_radius);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-round-rect-select">gimp_round_rect_select</link>          (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gdouble">gdouble</link> x,
+                                             <link linkend="gdouble">gdouble</link> y,
+                                             <link linkend="gdouble">gdouble</link> width,
+                                             <link linkend="gdouble">gdouble</link> height,
+                                             <link linkend="gdouble">gdouble</link> corner_radius_x,
+                                             <link linkend="gdouble">gdouble</link> corner_radius_y,
+                                             <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
+                                             <link linkend="gboolean">gboolean</link> antialias,
+                                             <link linkend="gboolean">gboolean</link> feather,
+                                             <link linkend="gdouble">gdouble</link> feather_radius_x,
+                                             <link linkend="gdouble">gdouble</link> feather_radius_y);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-rotate">gimp_rotate</link>                     (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gboolean">gboolean</link> interpolation,
                                              <link linkend="gdouble">gdouble</link> angle);
@@ -347,7 +361,8 @@ In the case of a merged sampling, the supplied drawable is ignored.</para>
                                              <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
                                              <link linkend="gboolean">gboolean</link> antialias,
                                              <link linkend="gboolean">gboolean</link> feather,
-                                             <link linkend="gdouble">gdouble</link> feather_radius,
+                                             <link linkend="gdouble">gdouble</link> feather_radius_x,
+                                             <link linkend="gdouble">gdouble</link> feather_radius_y,
                                              <link linkend="gboolean">gboolean</link> sample_merged,
                                              <link linkend="gboolean">gboolean</link> select_transparent,
                                              <link linkend="GimpSelectCriterion">GimpSelectCriterion</link> select_criterion);</programlisting>
@@ -391,8 +406,11 @@ In the case of a merged sampling, the supplied drawable is ignored.</para>
 <varlistentry><term><parameter>feather</parameter>&nbsp;:</term>
 <listitem><simpara> Feather option for selections.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>feather_radius</parameter>&nbsp;:</term>
-<listitem><simpara> Radius for feather operation.
+<varlistentry><term><parameter>feather_radius_x</parameter>&nbsp;:</term>
+<listitem><simpara> Radius for feather operation in X direction.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>feather_radius_y</parameter>&nbsp;:</term>
+<listitem><simpara> Radius for feather operation in Y direction.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>sample_merged</parameter>&nbsp;:</term>
 <listitem><simpara> Use the composite image, not the drawable.
@@ -957,7 +975,8 @@ drawable's origin.</para>
                                              <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
                                              <link linkend="gboolean">gboolean</link> antialias,
                                              <link linkend="gboolean">gboolean</link> feather,
-                                             <link linkend="gdouble">gdouble</link> feather_radius,
+                                             <link linkend="gdouble">gdouble</link> feather_radius_x,
+                                             <link linkend="gdouble">gdouble</link> feather_radius_y,
                                              <link linkend="gboolean">gboolean</link> sample_merged,
                                              <link linkend="gboolean">gboolean</link> select_transparent,
                                              <link linkend="GimpSelectCriterion">GimpSelectCriterion</link> select_criterion);</programlisting>
@@ -1008,8 +1027,11 @@ drawable's origin.</para>
 <varlistentry><term><parameter>feather</parameter>&nbsp;:</term>
 <listitem><simpara> Feather option for selections.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>feather_radius</parameter>&nbsp;:</term>
-<listitem><simpara> Radius for feather operation.
+<varlistentry><term><parameter>feather_radius_x</parameter>&nbsp;:</term>
+<listitem><simpara> Radius for feather operation in X direction.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>feather_radius_y</parameter>&nbsp;:</term>
+<listitem><simpara> Radius for feather operation in Y direction.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>sample_merged</parameter>&nbsp;:</term>
 <listitem><simpara> Use the composite image, not the drawable.
@@ -1317,6 +1339,75 @@ radius.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-round-rect-select" role="function" condition="since:GIMP 2.4"/>gimp_round_rect_select ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_round_rect_select</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_round_rect_select          (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gdouble">gdouble</link> x,
+                                             <link linkend="gdouble">gdouble</link> y,
+                                             <link linkend="gdouble">gdouble</link> width,
+                                             <link linkend="gdouble">gdouble</link> height,
+                                             <link linkend="gdouble">gdouble</link> corner_radius_x,
+                                             <link linkend="gdouble">gdouble</link> corner_radius_y,
+                                             <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
+                                             <link linkend="gboolean">gboolean</link> antialias,
+                                             <link linkend="gboolean">gboolean</link> feather,
+                                             <link linkend="gdouble">gdouble</link> feather_radius_x,
+                                             <link linkend="gdouble">gdouble</link> feather_radius_y);</programlisting>
+<para>
+Create a rectangular selection with round corners over the specified
+image;
+</para>
+<para>
+This tool creates a rectangular selection with round corners over
+the specified image. The rectangular region can be either added to,
+subtracted from, or replace the contents of the previous selection
+mask. If the feather option is enabled, the resulting selection is
+blurred before combining. The blur is a gaussian blur with the
+specified feather radius.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The image.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>x</parameter>&nbsp;:</term>
+<listitem><simpara> x coordinate of upper-left corner of rectangle.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>y</parameter>&nbsp;:</term>
+<listitem><simpara> y coordinate of upper-left corner of rectangle.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>width</parameter>&nbsp;:</term>
+<listitem><simpara> The width of the rectangle.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>height</parameter>&nbsp;:</term>
+<listitem><simpara> The height of the rectangle.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>corner_radius_x</parameter>&nbsp;:</term>
+<listitem><simpara> The corner radius in X direction.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>corner_radius_y</parameter>&nbsp;:</term>
+<listitem><simpara> The corner radius in Y direction.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>operation</parameter>&nbsp;:</term>
+<listitem><simpara> The selection operation.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>antialias</parameter>&nbsp;:</term>
+<listitem><simpara> Antialiasing.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>feather</parameter>&nbsp;:</term>
+<listitem><simpara> Feather option for selections.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>feather_radius_x</parameter>&nbsp;:</term>
+<listitem><simpara> Radius for feather operation in X direction.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>feather_radius_y</parameter>&nbsp;:</term>
+<listitem><simpara> Radius for feather operation in Y direction.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
 <refsect2>
 <title><anchor id="gimp-rotate" role="function" condition="deprecated:"/>gimp_rotate ()</title>
 <indexterm role="deprecated"><primary>gimp_rotate</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_rotate                     (<link linkend="gint32">gint32</link> drawable_ID,

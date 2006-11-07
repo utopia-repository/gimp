@@ -29,7 +29,6 @@
 #include "core/gimptooloptions.h"
 
 #include "widgets/gimppropwidgets.h"
-#include "widgets/gimpwidgets-utils.h"
 
 #include "gimprectangleoptions.h"
 #include "gimptooloptions-gui.h"
@@ -37,42 +36,43 @@
 #include "gimp-intl.h"
 
 
-#define GIMP_RECTANGLE_OPTIONS_GET_PRIVATE(obj) (gimp_rectangle_options_get_private ((GimpRectangleOptions *) (obj)))
+#define GIMP_RECTANGLE_OPTIONS_GET_PRIVATE(obj) \
+  (gimp_rectangle_options_get_private (GIMP_RECTANGLE_OPTIONS (obj)))
 
 typedef struct _GimpRectangleOptionsPrivate GimpRectangleOptionsPrivate;
 
 struct _GimpRectangleOptionsPrivate
 {
-  gboolean auto_shrink;
-  gboolean shrink_merged;
+  gboolean           auto_shrink;
+  gboolean           shrink_merged;
 
-  gboolean highlight;
+  gboolean           highlight;
   GimpRectangleGuide guide;
 
-  gdouble  x0;
-  gdouble  y0;
+  gdouble            x0;
+  gdouble            y0;
 
-  gboolean fixed_width;
-  gdouble  width;
+  gboolean           fixed_width;
+  gdouble            width;
 
-  gboolean fixed_height;
-  gdouble  height;
+  gboolean           fixed_height;
+  gdouble            height;
 
-  gboolean fixed_aspect;
-  gdouble  aspect_numerator;
-  gdouble  aspect_denominator;
+  gboolean           fixed_aspect;
+  gdouble            aspect_numerator;
+  gdouble            aspect_denominator;
 
-  gboolean fixed_center;
-  gdouble  center_x;
-  gdouble  center_y;
+  gboolean           fixed_center;
+  gdouble            center_x;
+  gdouble            center_y;
 
-  GimpUnit unit;
+  GimpUnit           unit;
 };
 
-static void gimp_rectangle_options_iface_base_init     (GimpRectangleOptionsInterface *rectangle_options_iface);
+static void gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *rectangle_options_iface);
 
 static GimpRectangleOptionsPrivate *
-            gimp_rectangle_options_get_private         (GimpRectangleOptions *options);
+            gimp_rectangle_options_get_private     (GimpRectangleOptions *options);
 
 
 GType
@@ -80,9 +80,9 @@ gimp_rectangle_options_interface_get_type (void)
 {
   static GType iface_type = 0;
 
-  if (!iface_type)
+  if (! iface_type)
     {
-      static const GTypeInfo iface_info =
+      const GTypeInfo iface_info =
       {
         sizeof (GimpRectangleOptionsInterface),
         (GBaseInitFunc)     gimp_rectangle_options_iface_base_init,
@@ -112,6 +112,7 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
                                                                  FALSE,
                                                                  GIMP_CONFIG_PARAM_FLAGS |
                                                                  GIMP_PARAM_STATIC_STRINGS));
+
       g_object_interface_install_property (iface,
                                            g_param_spec_boolean ("shrink-merged",
                                                                  NULL,
@@ -120,12 +121,14 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
                                                                  FALSE,
                                                                  GIMP_CONFIG_PARAM_FLAGS |
                                                                  GIMP_PARAM_STATIC_STRINGS));
+
       g_object_interface_install_property (iface,
                                            g_param_spec_boolean ("highlight",
                                                                  NULL, NULL,
                                                                  TRUE,
                                                                  GIMP_CONFIG_PARAM_FLAGS |
                                                                  GIMP_PARAM_STATIC_STRINGS));
+
       g_object_interface_install_property (iface,
                                            g_param_spec_enum ("guide",
                                                               NULL, NULL,
@@ -140,8 +143,8 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
                                                                 -GIMP_MAX_IMAGE_SIZE,
                                                                 GIMP_MAX_IMAGE_SIZE,
                                                                 0.0,
-                                                                GIMP_CONFIG_PARAM_FLAGS |
-                                                                GIMP_PARAM_STATIC_STRINGS));
+                                                                GIMP_PARAM_READWRITE |
+                                                                G_PARAM_CONSTRUCT));
 
       g_object_interface_install_property (iface,
                                            g_param_spec_double ("y0",
@@ -149,8 +152,8 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
                                                                 -GIMP_MAX_IMAGE_SIZE,
                                                                 GIMP_MAX_IMAGE_SIZE,
                                                                 0.0,
-                                                                GIMP_CONFIG_PARAM_FLAGS |
-                                                                GIMP_PARAM_STATIC_STRINGS));
+                                                                GIMP_PARAM_READWRITE |
+                                                                G_PARAM_CONSTRUCT));
 
       g_object_interface_install_property (iface,
                                            g_param_spec_boolean ("fixed-width",
@@ -158,13 +161,14 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
                                                                  FALSE,
                                                                  GIMP_CONFIG_PARAM_FLAGS |
                                                                  GIMP_PARAM_STATIC_STRINGS));
+
       g_object_interface_install_property (iface,
                                            g_param_spec_double ("width",
                                                                 NULL, NULL,
                                                                 0.0, GIMP_MAX_IMAGE_SIZE,
                                                                 0.0,
-                                                                GIMP_CONFIG_PARAM_FLAGS |
-                                                                GIMP_PARAM_STATIC_STRINGS));
+                                                                GIMP_PARAM_READWRITE |
+                                                                G_PARAM_CONSTRUCT));
 
       g_object_interface_install_property (iface,
                                            g_param_spec_boolean ("fixed-height",
@@ -178,8 +182,8 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
                                                                 NULL, NULL,
                                                                 0.0, GIMP_MAX_IMAGE_SIZE,
                                                                 0.0,
-                                                                GIMP_CONFIG_PARAM_FLAGS |
-                                                                GIMP_PARAM_STATIC_STRINGS));
+                                                                GIMP_PARAM_READWRITE |
+                                                                G_PARAM_CONSTRUCT));
 
       g_object_interface_install_property (iface,
                                            g_param_spec_boolean ("fixed-aspect",
@@ -226,16 +230,16 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
                                                                 -GIMP_MAX_IMAGE_SIZE,
                                                                 GIMP_MAX_IMAGE_SIZE,
                                                                 0.0,
-                                                                GIMP_CONFIG_PARAM_FLAGS |
-                                                                GIMP_PARAM_STATIC_STRINGS));
+                                                                GIMP_PARAM_READWRITE |
+                                                                G_PARAM_CONSTRUCT));
 
      g_object_interface_install_property (iface,
-                                           gimp_param_spec_unit ("unit",
-                                                                 NULL, NULL,
-                                                                 TRUE, TRUE,
-                                                                 GIMP_UNIT_PIXEL,
-                                                                 GIMP_CONFIG_PARAM_FLAGS |
-                                                                 GIMP_PARAM_STATIC_STRINGS));
+                                          gimp_param_spec_unit ("unit",
+                                                                NULL, NULL,
+                                                                TRUE, TRUE,
+                                                                GIMP_UNIT_PIXEL,
+                                                                GIMP_PARAM_READWRITE |
+                                                                G_PARAM_CONSTRUCT));
 
       initialized = TRUE;
     }
@@ -499,23 +503,13 @@ gimp_rectangle_options_gui (GimpToolOptions *tool_options)
 
   private = GIMP_RECTANGLE_OPTIONS_GET_PRIVATE (tool_options);
 
-  frame = gimp_frame_new (NULL);
+  vbox2 = gtk_vbox_new (FALSE, 0);
+
+  frame = gimp_prop_expanding_frame_new (config, "auto-shrink",
+                                         _("Auto shrink selection"),
+                                         vbox2, NULL);
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
-
-  button = gimp_prop_check_button_new (config, "auto-shrink",
-                                       _("Auto shrink selection"));
-  gtk_frame_set_label_widget (GTK_FRAME (frame), button);
-  gtk_widget_show (button);
-
-  vbox2 = gtk_vbox_new (FALSE, 0);
-  gtk_container_add (GTK_CONTAINER (frame), vbox2);
-  if (private->auto_shrink)
-    gtk_widget_show (vbox2);
-
-  g_signal_connect_object (button, "toggled",
-                           G_CALLBACK (gimp_toggle_button_set_visible),
-                           vbox2, 0);
 
   button = gimp_prop_check_button_new (config, "shrink-merged",
                                        _("Sample merged"));
@@ -632,4 +626,3 @@ gimp_rectangle_options_gui (GimpToolOptions *tool_options)
 
   return vbox;
 }
-

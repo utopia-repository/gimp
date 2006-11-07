@@ -48,6 +48,7 @@
 #include "widgets/gimpmessagedialog.h"
 
 #include "dialogs/dialogs.h"
+#include "dialogs/fade-dialog.h"
 
 #include "actions.h"
 #include "edit-commands.h"
@@ -291,6 +292,27 @@ edit_named_cut_cmd_callback (GtkAction *action,
 }
 
 void
+edit_fade_cmd_callback (GtkAction *action,
+                        gpointer   data)
+{
+  GimpImage *image;
+  GtkWidget *widget;
+  GtkWidget *dialog;
+  return_if_no_image (image, data);
+  return_if_no_widget (widget, data);
+
+  dialog = fade_dialog_new (image, widget);
+
+  if (dialog)
+    {
+      g_signal_connect_object (image, "disconnect",
+                               G_CALLBACK (gtk_widget_destroy),
+                               dialog, G_CONNECT_SWAPPED);
+      gtk_widget_show (dialog);
+    }
+}
+
+void
 edit_named_copy_cmd_callback (GtkAction *action,
                               gpointer   data)
 {
@@ -386,7 +408,7 @@ edit_paste (GimpDisplay *display,
   if (svg)
     {
       if (gimp_vectors_import_buffer (display->image, svg, svg_size,
-                                      TRUE, TRUE, -1, NULL))
+                                      TRUE, TRUE, -1, NULL, NULL))
         {
           gimp_image_flush (display->image);
         }

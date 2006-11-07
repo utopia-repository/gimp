@@ -10,10 +10,10 @@
       <sub name="GimpAdaptiveSupersample" link="libgimpcolor-GimpAdaptiveSupersample.html"/>
       <sub name="GimpBilinear" link="libgimpcolor-GimpBilinear.html"/>
     </sub>
-    <sub name="Index" link="ix01.html"/>
-    <sub name="Index of new symbols in GIMP 2.2" link="ix02.html"/>
-    <sub name="Index of new symbols in GIMP 2.4" link="ix03.html"/>
-    <sub name="Index of deprecated symbols" link="ix04.html"/>
+    <sub name="Index" link="libgimpcolor-index.html"/>
+    <sub name="Index of new symbols in GIMP 2.2" link="libgimpcolor-index-new-in-2-2.html"/>
+    <sub name="Index of new symbols in GIMP 2.4" link="libgimpcolor-index-new-in-2-4.html"/>
+    <sub name="Index of deprecated symbols" link="libgimpcolor-index-deprecated.html"/>
   </chapters>
   <functions>
     <function name="GimpRGB" link="libgimpcolor-GimpRGB.html#GimpRGB"/>

@@ -29,10 +29,13 @@
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
+#include <png.h>
+
 /* #define ICO_DBG */
 
 #include "main.h"
 #include "icoload.h"
+#include "icosave.h"
 #include "icodialog.h"
 
 #include "libgimp/stdplugins-intl.h"
@@ -164,6 +167,7 @@ ico_save_init (gint32 image_ID, IcoSaveInfo *info)
   info->layers = layers;
   info->depths = g_new (gint, info->num_icons);
   info->default_depths = g_new (gint, info->num_icons);
+  info->compress = g_new (gboolean, info->num_icons);
 
   /* Limit the color depths to values that don't cause any color loss --
      the user should pick these anyway, so we can save her some time.
@@ -190,11 +194,27 @@ ico_save_init (gint32 image_ID, IcoSaveInfo *info)
               /* Let's suggest 8bpp */
               info->default_depths [i] = 8;
             }
+          else
+            {
+              /* Let's suggest 24bpp */
+              info->default_depths [i] = 24;
+            }
         }
       else
         {
           /* Otherwise, or if real alpha levels are used, stick with 32bpp */
           info->default_depths [i] = 32;
+        }
+
+      // vista icons
+      if (gimp_drawable_width (layers[i]) > 255
+          || gimp_drawable_height (layers[i]) > 255 )
+        {
+          info->compress[i] = TRUE;
+        }
+      else
+        {
+          info->compress[i] = FALSE;
         }
     }
 
@@ -546,7 +566,7 @@ ico_image_get_reduced_buf (guint32   layer,
 
   buffer = g_new (guchar, w * h * 4);
 
-  if (bpp <= 8 || drawable->bpp != 4)
+  if (bpp <= 8 || bpp == 24 || drawable->bpp != 4)
     {
       gint32        image = gimp_drawable_get_image (layer);
       GimpDrawable *tmp;
@@ -630,6 +650,20 @@ ico_image_get_reduced_buf (guint32   layer,
 
           gimp_image_convert_rgb (tmp_image);
         }
+      else if (bpp == 24)
+        {
+          GimpParam    *return_vals;
+          gint          n_return_vals;
+
+          return_vals =
+            gimp_run_procedure ("plug-in-threshold-alpha", &n_return_vals,
+                                GIMP_PDB_INT32, GIMP_RUN_NONINTERACTIVE,
+                                GIMP_PDB_IMAGE, tmp_image,
+                                GIMP_PDB_DRAWABLE, tmp_layer,
+                                GIMP_PDB_INT32, ICO_ALPHA_THRESHOLD,
+                                GIMP_PDB_END);
+          gimp_destroy_params (return_vals, n_return_vals);
+        }
 
       gimp_layer_add_alpha (tmp_layer);
 
@@ -650,6 +684,81 @@ ico_image_get_reduced_buf (guint32   layer,
 
   *cmap_out = cmap;
   *buf_out = buffer;
+}
+
+static gboolean
+ico_write_png (FILE   *fp,
+               gint32  layer,
+               gint32  depth)
+{
+  png_structp png_ptr;
+  png_infop   info_ptr;
+  png_byte  **row_pointers;
+  gint        i, rowstride;
+  gint        width, height;
+  gint        num_colors_used;
+  guchar     *palette;
+  guchar     *buffer;
+
+  row_pointers = NULL;
+  palette = NULL;
+  buffer = NULL;
+
+  width = gimp_drawable_width (layer);
+  height = gimp_drawable_height (layer);
+
+  png_ptr = png_create_write_struct (PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+  if ( !png_ptr )
+    return FALSE;
+
+  info_ptr = png_create_info_struct (png_ptr);
+  if ( !info_ptr )
+    {
+      png_destroy_write_struct (&png_ptr, NULL);
+      return FALSE;
+    }
+
+  if (setjmp (png_jmpbuf (png_ptr)))
+    {
+      png_destroy_write_struct (&png_ptr, &info_ptr);
+      if ( row_pointers )
+        g_free (row_pointers);
+      if (palette)
+        g_free (palette);
+      if (buffer)
+        g_free (buffer);
+      return FALSE;
+    }
+
+  ico_image_get_reduced_buf (layer, depth, &num_colors_used,
+                             &palette, &buffer);
+
+  png_init_io (png_ptr, fp);
+  png_set_IHDR (png_ptr, info_ptr, width, height,
+                8,
+                PNG_COLOR_TYPE_RGBA,
+                PNG_INTERLACE_NONE,
+                PNG_COMPRESSION_TYPE_DEFAULT,
+                PNG_FILTER_TYPE_DEFAULT);
+  png_write_info (png_ptr, info_ptr);
+
+  rowstride = ico_rowstride (width, 32);
+  row_pointers = g_new (png_byte*, height);
+  for (i = 0; i < height; i++)
+    {
+      row_pointers[i] = buffer + rowstride * i;
+    }
+  png_write_image (png_ptr, row_pointers);
+
+  row_pointers = NULL;
+
+  png_write_end (png_ptr, info_ptr);
+  png_destroy_write_struct (&png_ptr, &info_ptr);
+
+  g_free (row_pointers);
+  g_free (palette);
+  g_free (buffer);
+  return TRUE;
 }
 
 static gboolean
@@ -716,7 +825,6 @@ ico_write_icon (FILE   *fp,
 
   /* Create and_map. It's padded out to 32 bits per line: */
   and_map = ico_alloc_map (width, height, 1, &and_len);
-  and_len = and_len;
 
   for (y = 0; y < height; y++)
     for (x = 0; x < width; x++)
@@ -724,12 +832,11 @@ ico_write_icon (FILE   *fp,
         pixel = (guint8 *) &buffer32[y * width + x];
 
         ico_set_bit_in_data (and_map, width,
-                             (height-y-1) * width + x,
+                             (height - y -1) * width + x,
                              (pixel[3] > ICO_ALPHA_THRESHOLD ? 0 : 1));
       }
 
   xor_map = ico_alloc_map (width, height, header.bpp, &xor_len);
-  xor_len = xor_len;
 
   /* Now fill in the xor map */
   switch (header.bpp)
@@ -743,16 +850,16 @@ ico_write_icon (FILE   *fp,
                                                    pixel[1], pixel[2]);
 
             if (ico_get_bit_from_data (and_map, width,
-                                       (height-y-1) * width + x))
+                                       (height - y - 1) * width + x))
               {
                 ico_set_bit_in_data (xor_map, width,
-                                     (height-y-1) * width + x,
+                                     (height - y -1) * width + x,
                                      black_index);
               }
             else
               {
                 ico_set_bit_in_data (xor_map, width,
-                                     (height-y-1) * width + x,
+                                     (height - y -1) * width + x,
                                      palette_index);
               }
           }
@@ -767,16 +874,16 @@ ico_write_icon (FILE   *fp,
                                                   pixel[1], pixel[2]);
 
             if (ico_get_bit_from_data (and_map, width,
-                                       (height-y-1) * width + x))
+                                       (height - y - 1) * width + x))
               {
                 ico_set_nibble_in_data (xor_map, width,
-                                        (height-y-1) * width + x,
+                                        (height - y -1) * width + x,
                                         black_index);
               }
             else
               {
                 ico_set_nibble_in_data (xor_map, width,
-                                        (height-y-1) * width + x,
+                                        (height - y - 1) * width + x,
                                         palette_index);
               }
           }
@@ -793,20 +900,38 @@ ico_write_icon (FILE   *fp,
                                                    pixel[2]);
 
             if (ico_get_bit_from_data (and_map, width,
-                                       (height-y-1) * width + x))
+                                       (height - y - 1) * width + x))
               {
                 ico_set_byte_in_data (xor_map, width,
-                                      (height-y-1) * width + x,
+                                      (height - y - 1) * width + x,
                                       black_index);
               }
             else
               {
                 ico_set_byte_in_data (xor_map, width,
-                                      (height-y-1) * width + x,
+                                      (height - y - 1) * width + x,
                                       palette_index);
               }
 
           }
+      break;
+
+    case 24:
+      for (y = 0; y < height; y++)
+        {
+          guchar *row = xor_map + (xor_len * (height - y - 1) / height);
+
+          for (x = 0; x < width; x++)
+            {
+              pixel = (guint8 *) &buffer32[y * width + x];
+
+              row[0] = pixel[2];
+              row[1] = pixel[1];
+              row[2] = pixel[0];
+
+              row += 3;
+            }
+        }
       break;
 
     default:
@@ -815,7 +940,7 @@ ico_write_icon (FILE   *fp,
           {
             pixel = (guint8 *) &buffer32[y * width + x];
 
-            ((guint32 *) xor_map)[(height-y-1) * width + x] =
+            ((guint32 *) xor_map)[(height - y -1) * width + x] =
               GUINT32_TO_LE ((pixel[0] << 16) |
                              (pixel[1] << 8)  |
                              (pixel[2])       |
@@ -832,8 +957,8 @@ ico_write_icon (FILE   *fp,
       g_hash_table_destroy (color_to_slot);
     }
 
-  g_free(palette);
-  g_free(buffer);
+  g_free (palette);
+  g_free (buffer);
 
   ico_write_int32 (fp, (guint32*) &header, 3);
   ico_write_int16 (fp, &header.planes, 2);
@@ -841,13 +966,14 @@ ico_write_icon (FILE   *fp,
 
   if (palette_len)
     ico_write_int8 (fp, (guint8 *) palette32, palette_len);
+
   ico_write_int8 (fp, xor_map, xor_len);
   ico_write_int8 (fp, and_map, and_len);
 
-  if (palette32)
-    g_free (palette32);
+  g_free (palette32);
   g_free (xor_map);
   g_free (and_map);
+
   return TRUE;
 }
 
@@ -856,6 +982,7 @@ ico_save_info_free (IcoSaveInfo  *info)
 {
   g_free (info->depths);
   g_free (info->default_depths);
+  g_free (info->compress);
   g_free (info->layers);
   memset (info, 0, sizeof (IcoSaveInfo));
 }
@@ -939,13 +1066,19 @@ ico_save_image (const gchar *filename,
       entries[i].planes = 1;
       entries[i].bpp = info.depths[i];
       entries[i].offset = ftell (fp);
-      saved = ico_write_icon (fp, info.layers[i], info.depths[i]);
+
+      if (info.compress[i])
+        saved = ico_write_png (fp, info.layers[i], info.depths[i]);
+      else
+        saved = ico_write_icon (fp, info.layers[i], info.depths[i]);
+
       if (!saved)
         {
           ico_save_info_free (&info);
           fclose (fp);
           return GIMP_PDB_EXECUTION_ERROR;
         }
+
       entries[i].size = ftell (fp) - entries[i].offset;
     }
 

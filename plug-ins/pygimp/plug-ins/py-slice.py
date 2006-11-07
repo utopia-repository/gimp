@@ -31,7 +31,7 @@ import os
 from gimpfu import *
 import os.path
 
-gettext.install("gimp20-python", gimp.locale_directory, unicode=1)
+gettext.install("gimp20-python", gimp.locale_directory, unicode=True)
 
 def pyslice(image, drawable, save_path, html_filename,
             image_basename, image_extension, separate,
@@ -430,16 +430,15 @@ register(
         (PF_DIRNAME, "save-path",     _("Path for HTML export"), os.getcwd()),
         (PF_STRING, "html-filename",  _("Filename for export"),  "slice.html"),
         (PF_STRING, "image-basename", _("Image name prefix"),    "slice"),
-        (PF_RADIO, "image-extension", _("Image format") + "{gif, jpg, png}",
-         "gif", (("gif", "gif"), ("jpg", "jpg"), ("png", "png"))),
-        (PF_TOGGLE, "separate-image-dir", _("Separate image folder"),
+        (PF_RADIO, "image-extension", _("Image format"),         "gif", (("gif", "gif"), ("jpg", "jpg"), ("png", "png"))),
+        (PF_TOGGLE, "separate-image-dir",  _("Separate image folder"),
          False),
-        (PF_STRING, "relative-image-path", _("Folder for image export"), "images/"),
+        (PF_STRING, "relative-image-path", _("Folder for image export"), "images"),
         (PF_SPINNER, "cellspacing", _("Space between table elements"), 0,
         (0,15,1)),
-        (PF_TOGGLE, "animate", _("Javascript for onmouseover and clicked)"),
+        (PF_TOGGLE, "animate",      _("Javascript for onmouseover and clicked"),
          False),
-        (PF_TOGGLE, "skip-caps", _("Skip animation for table caps"), True)
+        (PF_TOGGLE, "skip-caps",    _("Skip animation for table caps"), True)
     ],
     [],
     pyslice,

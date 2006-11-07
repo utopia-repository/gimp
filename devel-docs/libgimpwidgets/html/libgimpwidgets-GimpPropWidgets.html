@@ -19,10 +19,10 @@
 <link rel="part" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
 <link rel="part" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
 <link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimpwidgets-index.html" title="Index">
+<link rel="index" href="libgimpwidgets-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimpwidgets-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpwidgets-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -33,16 +33,16 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpScrolledPreview.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2588392" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2566227" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2625627" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2624998" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpwidgets-GimpPropWidgets"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2588392"></a><span class="refentrytitle">GimpPropWidgets</span>
+<a name="id2566227"></a><span class="refentrytitle">GimpPropWidgets</span>
 </h2>
 <p>GimpPropWidgets</p>
 </td>
@@ -182,17 +182,17 @@ GtkWidget*  <a href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-stock-image-n
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2625627"></a><h2>Description</h2>
+<a name="id2624998"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2625642"></a><h2>Details</h2>
+<a name="id2625014"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2625653"></a><h3>
+<a name="id2625025"></a><h3>
 <a name="gimp-prop-check-button-new"></a>gimp_prop_check_button_new ()</h3>
-<a class="indexterm" name="id2625665"></a><pre class="programlisting">GtkWidget*  gimp_prop_check_button_new      (GObject *config,
+<a class="indexterm" name="id2625037"></a><pre class="programlisting">GtkWidget*  gimp_prop_check_button_new      (GObject *config,
                                              const gchar *property_name,
                                              const gchar *label);</pre>
 <p>
@@ -205,26 +205,22 @@ boolean property.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of boolean property controlled by checkbutton.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
 <td>         Label to give checkbutton (including mnemonic).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The newly created <span class="type">GtkCheckButton</span> widget.
 
 Since GIMP 2.4
@@ -235,9 +231,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2625784"></a><h3>
+<a name="id2625156"></a><h3>
 <a name="gimp-prop-boolean-combo-box-new"></a>gimp_prop_boolean_combo_box_new ()</h3>
-<a class="indexterm" name="id2625798"></a><pre class="programlisting">GtkWidget*  gimp_prop_boolean_combo_box_new (GObject *config,
+<a class="indexterm" name="id2625169"></a><pre class="programlisting">GtkWidget*  gimp_prop_boolean_combo_box_new (GObject *config,
                                              const gchar *property_name,
                                              const gchar *true_text,
                                              const gchar *false_text);</pre>
@@ -253,32 +249,27 @@ displaying the <em class="parameter"><code>true_text</code></em> label, the othe
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of boolean property controlled by combo box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>true_text</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>true_text</code></em>&#160;:</span></td>
 <td>     Label used for entry corresponding to <code class="literal">TRUE</code> value.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>false_text</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>false_text</code></em>&#160;:</span></td>
 <td>    Label used for entry corresponding to <code class="literal">FALSE</code> value.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The newly created <span class="type">GtkComboBox</span> widget, optionally
               wrapped into a <span class="type">GtkEventBox</span>..
 
@@ -290,9 +281,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2625978"></a><h3>
+<a name="id2625351"></a><h3>
 <a name="gimp-prop-boolean-radio-frame-new"></a>gimp_prop_boolean_radio_frame_new ()</h3>
-<a class="indexterm" name="id2625992"></a><pre class="programlisting">GtkWidget*  gimp_prop_boolean_radio_frame_new
+<a class="indexterm" name="id2625365"></a><pre class="programlisting">GtkWidget*  gimp_prop_boolean_radio_frame_new
                                             (GObject *config,
                                              const gchar *property_name,
                                              const gchar *title,
@@ -308,38 +299,32 @@ the specified boolean property.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of boolean property controlled by the radio buttons.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
 <td>         Label for the frame.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>true_text</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>true_text</code></em>&#160;:</span></td>
 <td>     Label for the button corresponding to <code class="literal">TRUE</code>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>false_text</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>false_text</code></em>&#160;:</span></td>
 <td>    Label for the button corresponding to <code class="literal">FALSE</code>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> A <a href="GimpFrame.html" title="GimpFrame"><span class="type">GimpFrame</span></a> containing the radio buttons.
 
 Since GIMP 2.4
@@ -350,9 +335,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626168"></a><h3>
+<a name="id2625542"></a><h3>
 <a name="gimp-prop-expander-new"></a>gimp_prop_expander_new ()</h3>
-<a class="indexterm" name="id2626180"></a><pre class="programlisting">GtkWidget*  gimp_prop_expander_new          (GObject *config,
+<a class="indexterm" name="id2625553"></a><pre class="programlisting">GtkWidget*  gimp_prop_expander_new          (GObject *config,
                                              const gchar *property_name,
                                              const gchar *label);</pre>
 <p>
@@ -366,26 +351,22 @@ for the widget.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of boolean property.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
 <td>         Label for expander.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>  A new <span class="type">GtkExpander</span> widget.
 
 Since GIMP 2.4
@@ -396,9 +377,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626308"></a><h3>
+<a name="id2625681"></a><h3>
 <a name="gimp-prop-hscale-new"></a>gimp_prop_hscale_new ()</h3>
-<a class="indexterm" name="id2626319"></a><pre class="programlisting">GtkWidget*  gimp_prop_hscale_new            (GObject *config,
+<a class="indexterm" name="id2625692"></a><pre class="programlisting">GtkWidget*  gimp_prop_hscale_new            (GObject *config,
                                              const gchar *property_name,
                                              gdouble step_increment,
                                              gdouble page_increment,
@@ -413,38 +394,32 @@ integer or double property.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>         Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td>  Name of integer or double property controlled by the scale.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>step_increment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>step_increment</code></em>&#160;:</span></td>
 <td> Step size.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>page_increment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>page_increment</code></em>&#160;:</span></td>
 <td> Page size.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>digits</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>digits</code></em>&#160;:</span></td>
 <td>         Number of digits after decimal point to display.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> A new <span class="type">GtkScale</span>.
 
 Since GIMP 2.4
@@ -455,9 +430,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626476"></a><h3>
+<a name="id2625849"></a><h3>
 <a name="gimp-prop-int-combo-box-new"></a>gimp_prop_int_combo_box_new ()</h3>
-<a class="indexterm" name="id2626487"></a><pre class="programlisting">GtkWidget*  gimp_prop_int_combo_box_new     (GObject *config,
+<a class="indexterm" name="id2625861"></a><pre class="programlisting">GtkWidget*  gimp_prop_int_combo_box_new     (GObject *config,
                                              const gchar *property_name,
                                              <a href="GimpIntStore.html" title="GimpIntStore">GimpIntStore</a> *store);</pre>
 <p>
@@ -471,26 +446,22 @@ which should be created using <a href="GimpIntStore.html#gimp-int-store-new"><co
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of int property controlled by combo box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>store</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>store</code></em>&#160;:</span></td>
 <td>         <a href="GimpIntStore.html" title="GimpIntStore"><span class="type">GimpIntStore</span></a> holding list of labels, values, etc.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The newly created <a href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> widget, optionally
               wrapped into a <span class="type">GtkEventBox</span>.
 
@@ -502,9 +473,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626639"></a><h3>
+<a name="id2626012"></a><h3>
 <a name="gimp-prop-enum-combo-box-new"></a>gimp_prop_enum_combo_box_new ()</h3>
-<a class="indexterm" name="id2626652"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_combo_box_new    (GObject *config,
+<a class="indexterm" name="id2626026"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_combo_box_new    (GObject *config,
                                              const gchar *property_name,
                                              gint minimum,
                                              gint maximum);</pre>
@@ -521,32 +492,27 @@ range of the Enum is used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of enum property controlled by combo box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>minimum</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>minimum</code></em>&#160;:</span></td>
 <td>       Smallest allowed value of enum.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>maximum</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>maximum</code></em>&#160;:</span></td>
 <td>       Largest allowed value of enum.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The newly created <a href="GimpEnumComboBox.html" title="GimpEnumComboBox"><span class="type">GimpEnumComboBox</span></a> widget, optionally
               wrapped into a <span class="type">GtkEventBox</span>.
 
@@ -558,9 +524,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626817"></a><h3>
+<a name="id2626190"></a><h3>
 <a name="gimp-prop-enum-check-button-new"></a>gimp_prop_enum_check_button_new ()</h3>
-<a class="indexterm" name="id2626830"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_check_button_new (GObject *config,
+<a class="indexterm" name="id2626204"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_check_button_new (GObject *config,
                                              const gchar *property_name,
                                              const gchar *label,
                                              gint false_value,
@@ -577,38 +543,32 @@ other to the "unchecked" state.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of enum property controlled by checkbutton.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
 <td>         Label to give checkbutton (including mnemonic).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>false_value</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>false_value</code></em>&#160;:</span></td>
 <td>   Enum value corresponding to unchecked state.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>true_value</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>true_value</code></em>&#160;:</span></td>
 <td>    Enum value corresonding to checked state.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The newly created <span class="type">GtkCheckButton</span> widget.
 
 Since GIMP 2.4
@@ -619,9 +579,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626966"></a><h3>
+<a name="id2626339"></a><h3>
 <a name="gimp-prop-enum-label-new"></a>gimp_prop_enum_label_new ()</h3>
-<a class="indexterm" name="id2626977"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_label_new        (GObject *config,
+<a class="indexterm" name="id2626350"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_label_new        (GObject *config,
                                              const gchar *property_name);</pre>
 <p>
 </p>
@@ -632,20 +592,17 @@ Since GIMP 2.4
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>         Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td>  Name of enum property to be displayed.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The newly created <a href="GimpEnumLabel.html" title="GimpEnumLabel"><span class="type">GimpEnumLabel</span></a> widget.
 
 Since GIMP 2.4
@@ -656,9 +613,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627057"></a><h3>
+<a name="id2626430"></a><h3>
 <a name="gimp-prop-enum-radio-frame-new"></a>gimp_prop_enum_radio_frame_new ()</h3>
-<a class="indexterm" name="id2627070"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_radio_frame_new  (GObject *config,
+<a class="indexterm" name="id2626443"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_radio_frame_new  (GObject *config,
                                              const gchar *property_name,
                                              const gchar *title,
                                              gint minimum,
@@ -675,38 +632,32 @@ are equal (e.g., 0, 0), then the full range of the enum will be used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of enum property controlled by the radio buttons.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
 <td>         Label for the frame holding the buttons
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>minimum</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>minimum</code></em>&#160;:</span></td>
 <td>       Smallest value of enum to be included.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>maximum</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>maximum</code></em>&#160;:</span></td>
 <td>       Largest value of enum to be included.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> A <a href="GimpFrame.html" title="GimpFrame"><span class="type">GimpFrame</span></a> containing the radio buttons.
 
 Since GIMP 2.4
@@ -717,9 +668,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627226"></a><h3>
+<a name="id2626600"></a><h3>
 <a name="gimp-prop-enum-radio-box-new"></a>gimp_prop_enum_radio_box_new ()</h3>
-<a class="indexterm" name="id2627239"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_radio_box_new    (GObject *config,
+<a class="indexterm" name="id2626612"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_radio_box_new    (GObject *config,
                                              const gchar *property_name,
                                              gint minimum,
                                              gint maximum);</pre>
@@ -737,32 +688,27 @@ If you want to assign a label to the group of radio buttons, use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of enum property controlled by the radio buttons.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>minimum</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>minimum</code></em>&#160;:</span></td>
 <td>       Smallest value of enum to be included.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>maximum</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>maximum</code></em>&#160;:</span></td>
 <td>       Largest value of enum to be included.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> A <span class="type">GtkVBox</span> containing the radio buttons.
 
 Since GIMP 2.4
@@ -773,9 +719,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627387"></a><h3>
+<a name="id2626760"></a><h3>
 <a name="gimp-prop-enum-stock-box-new"></a>gimp_prop_enum_stock_box_new ()</h3>
-<a class="indexterm" name="id2627399"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_stock_box_new    (GObject *config,
+<a class="indexterm" name="id2626772"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_stock_box_new    (GObject *config,
                                              const gchar *property_name,
                                              const gchar *stock_prefix,
                                              gint minimum,
@@ -793,38 +739,32 @@ enum_value's nick to the given <em class="parameter"><code>stock_prefix</code></
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of enum property controlled by the radio buttons.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>stock_prefix</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>stock_prefix</code></em>&#160;:</span></td>
 <td>  The prefix of the group of stock ids to use.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>minimum</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>minimum</code></em>&#160;:</span></td>
 <td>       Smallest value of enum to be included.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>maximum</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>maximum</code></em>&#160;:</span></td>
 <td>       Largest value of enum to be included.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> A <span class="type">GimpEnumStockBox</span> containing the radio buttons.
 
 Since GIMP 2.4
@@ -835,9 +775,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627559"></a><h3>
+<a name="id2626932"></a><h3>
 <a name="gimp-prop-spin-button-new"></a>gimp_prop_spin_button_new ()</h3>
-<a class="indexterm" name="id2627570"></a><pre class="programlisting">GtkWidget*  gimp_prop_spin_button_new       (GObject *config,
+<a class="indexterm" name="id2626943"></a><pre class="programlisting">GtkWidget*  gimp_prop_spin_button_new       (GObject *config,
                                              const gchar *property_name,
                                              gdouble step_increment,
                                              gdouble page_increment,
@@ -852,38 +792,32 @@ specified double property.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>            Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td>     Name of double property controlled by the spin button.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>step_increment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>step_increment</code></em>&#160;:</span></td>
 <td>    Step size.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>page_increment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>page_increment</code></em>&#160;:</span></td>
 <td>    Page size.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>digits</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>digits</code></em>&#160;:</span></td>
 <td>            Number of digits after decimal point to display.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> A new <span class="type">GimpSpinButton</span>.
 
 Since GIMP 2.4
@@ -894,9 +828,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627710"></a><h3>
+<a name="id2627084"></a><h3>
 <a name="gimp-prop-scale-entry-new"></a>gimp_prop_scale_entry_new ()</h3>
-<a class="indexterm" name="id2627722"></a><pre class="programlisting">GtkObject*  gimp_prop_scale_entry_new       (GObject *config,
+<a class="indexterm" name="id2627095"></a><pre class="programlisting">GtkObject*  gimp_prop_scale_entry_new       (GObject *config,
                                              const gchar *property_name,
                                              GtkTable *table,
                                              gint column,
@@ -919,82 +853,69 @@ display the value of the specified double property.  See
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>         Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td>  Name of double property controlled by the spin button.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>table</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>table</code></em>&#160;:</span></td>
 <td>          The <span class="type">GtkTable</span> the widgets will be attached to.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>column</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>column</code></em>&#160;:</span></td>
 <td>         The column to start with.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>row</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>row</code></em>&#160;:</span></td>
 <td>            The row to attach the widgets.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
 <td>          The text for the <span class="type">GtkLabel</span> which will appear left of
                  the <span class="type">GtkHScale</span>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>step_increment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>step_increment</code></em>&#160;:</span></td>
 <td> Step size.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>page_increment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>page_increment</code></em>&#160;:</span></td>
 <td> Page size.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>digits</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>digits</code></em>&#160;:</span></td>
 <td>         Number of digits after decimal point to display.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>limit_scale</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>limit_scale</code></em>&#160;:</span></td>
 <td>    <code class="literal">TRUE</code> if the range of possible values of the
                  GtkSpinButton should be the same as of the GtkHScale.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>lower_limit</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>lower_limit</code></em>&#160;:</span></td>
 <td>    The spinbutton's lower boundary if <em class="parameter"><code>limit_scale</code></em> is <code class="literal">FALSE</code>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>upper_limit</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>upper_limit</code></em>&#160;:</span></td>
 <td>    The spinbutton's upper boundary if <em class="parameter"><code>limit_scale</code></em> is <code class="literal">FALSE</code>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The <span class="type">GtkSpinButton</span>'s <span class="type">GtkAdjustment</span>.
 
 Since GIMP 2.4
@@ -1005,9 +926,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628076"></a><h3>
+<a name="id2627449"></a><h3>
 <a name="gimp-prop-opacity-entry-new"></a>gimp_prop_opacity_entry_new ()</h3>
-<a class="indexterm" name="id2628087"></a><pre class="programlisting">GtkObject*  gimp_prop_opacity_entry_new     (GObject *config,
+<a class="indexterm" name="id2627460"></a><pre class="programlisting">GtkObject*  gimp_prop_opacity_entry_new     (GObject *config,
                                              const gchar *property_name,
                                              GtkTable *table,
                                              gint column,
@@ -1025,45 +946,38 @@ represent an "opacity" variable with range 0 to 100.  See
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of double property controlled by the spin button.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>table</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>table</code></em>&#160;:</span></td>
 <td>         The <span class="type">GtkTable</span> the widgets will be attached to.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>column</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>column</code></em>&#160;:</span></td>
 <td>        The column to start with.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>row</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>row</code></em>&#160;:</span></td>
 <td>           The row to attach the widgets.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
 <td>         The text for the <span class="type">GtkLabel</span> which will appear left of the
                 <span class="type">GtkHScale</span>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>  The <span class="type">GtkSpinButton</span>'s <span class="type">GtkAdjustment</span>.
 
 Since GIMP 2.4
@@ -1074,9 +988,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628289"></a><h3>
+<a name="id2627662"></a><h3>
 <a name="gimp-prop-memsize-entry-new"></a>gimp_prop_memsize_entry_new ()</h3>
-<a class="indexterm" name="id2628300"></a><pre class="programlisting">GtkWidget*  gimp_prop_memsize_entry_new     (GObject *config,
+<a class="indexterm" name="id2627673"></a><pre class="programlisting">GtkWidget*  gimp_prop_memsize_entry_new     (GObject *config,
                                              const gchar *property_name);</pre>
 <p>
 Creates a <a href="GimpMemsizeEntry.html" title="GimpMemsizeEntry"><span class="type">GimpMemsizeEntry</span></a> (spin button and option menu) to set
@@ -1089,20 +1003,17 @@ and display the value of the specified memsize property.  See
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of memsize property.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>  A new <a href="GimpMemsizeEntry.html" title="GimpMemsizeEntry"><span class="type">GimpMemsizeEntry</span></a>.
 
 Since GIMP 2.4
@@ -1113,9 +1024,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628396"></a><h3>
+<a name="id2627769"></a><h3>
 <a name="gimp-prop-label-new"></a>gimp_prop_label_new ()</h3>
-<a class="indexterm" name="id2628407"></a><pre class="programlisting">GtkWidget*  gimp_prop_label_new             (GObject *config,
+<a class="indexterm" name="id2627780"></a><pre class="programlisting">GtkWidget*  gimp_prop_label_new             (GObject *config,
                                              const gchar *property_name);</pre>
 <p>
 Creates a <span class="type">GtkLabel</span> to display the value of the specified String
@@ -1128,20 +1039,17 @@ property.  If the user should be able to edit the string, use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of string property.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>  A new <span class="type">GtkLabel</span> widget.
 
 Since GIMP 2.4
@@ -1152,9 +1060,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628503"></a><h3>
+<a name="id2627876"></a><h3>
 <a name="gimp-prop-entry-new"></a>gimp_prop_entry_new ()</h3>
-<a class="indexterm" name="id2628513"></a><pre class="programlisting">GtkWidget*  gimp_prop_entry_new             (GObject *config,
+<a class="indexterm" name="id2627886"></a><pre class="programlisting">GtkWidget*  gimp_prop_entry_new             (GObject *config,
                                              const gchar *property_name,
                                              gint max_len);</pre>
 <p>
@@ -1167,26 +1075,22 @@ string property.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of string property.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>max_len</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>max_len</code></em>&#160;:</span></td>
 <td>       Maximum allowed length of string.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>  A new <span class="type">GtkEntry</span> widget.
 
 Since GIMP 2.4
@@ -1197,9 +1101,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628620"></a><h3>
+<a name="id2627993"></a><h3>
 <a name="gimp-prop-text-buffer-new"></a>gimp_prop_text_buffer_new ()</h3>
-<a class="indexterm" name="id2628631"></a><pre class="programlisting">GtkTextBuffer* gimp_prop_text_buffer_new    (GObject *config,
+<a class="indexterm" name="id2628004"></a><pre class="programlisting">GtkTextBuffer* gimp_prop_text_buffer_new    (GObject *config,
                                              const gchar *property_name,
                                              gint max_len);</pre>
 <p>
@@ -1219,26 +1123,22 @@ number of characters to be entered.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of string property.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>max_len</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>max_len</code></em>&#160;:</span></td>
 <td>       Maximum allowed length of text (in characters).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>  A new <span class="type">GtkTextBuffer</span>.
 
 Since GIMP 2.4
@@ -1249,9 +1149,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628766"></a><h3>
+<a name="id2628139"></a><h3>
 <a name="gimp-prop-file-chooser-button-new"></a>gimp_prop_file_chooser_button_new ()</h3>
-<a class="indexterm" name="id2628779"></a><pre class="programlisting">GtkWidget*  gimp_prop_file_chooser_button_new
+<a class="indexterm" name="id2628152"></a><pre class="programlisting">GtkWidget*  gimp_prop_file_chooser_button_new
                                             (GObject *config,
                                              const gchar *property_name,
                                              const gchar *title,
@@ -1269,32 +1169,27 @@ interface; you can use the <span class="type">GtkFileChooser</span> API with it.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> name of path property.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
 <td>         the title of the browse dialog.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>action</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>action</code></em>&#160;:</span></td>
 <td>        the open mode for the widget.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>  A new <span class="type">GtkFileChooserButton</span>.
 
 Since GIMP 2.4
@@ -1305,9 +1200,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628929"></a><h3>
+<a name="id2628302"></a><h3>
 <a name="gimp-prop-path-editor-new"></a>gimp_prop_path_editor_new ()</h3>
-<a class="indexterm" name="id2628940"></a><pre class="programlisting">GtkWidget*  gimp_prop_path_editor_new       (GObject *config,
+<a class="indexterm" name="id2628313"></a><pre class="programlisting">GtkWidget*  gimp_prop_path_editor_new       (GObject *config,
                                              const gchar *path_property_name,
                                              const gchar *writable_property_name,
                                              const gchar *filesel_title);</pre>
@@ -1318,32 +1213,27 @@ Since GIMP 2.4
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>path_property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>writable_property_name</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>filesel_title</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>path_property_name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>writable_property_name</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>filesel_title</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1354,9 +1244,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2629047"></a><h3>
+<a name="id2628420"></a><h3>
 <a name="gimp-prop-size-entry-new"></a>gimp_prop_size_entry_new ()</h3>
-<a class="indexterm" name="id2629058"></a><pre class="programlisting">GtkWidget*  gimp_prop_size_entry_new        (GObject *config,
+<a class="indexterm" name="id2628431"></a><pre class="programlisting">GtkWidget*  gimp_prop_size_entry_new        (GObject *config,
                                              const gchar *property_name,
                                              const gchar *unit_property_name,
                                              const gchar *unit_format,
@@ -1375,46 +1265,39 @@ entry holding two values.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>             Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td>      Name of int or double property.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>unit_property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>unit_property_name</code></em>&#160;:</span></td>
 <td> Name of unit property.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>unit_format</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>unit_format</code></em>&#160;:</span></td>
 <td>        A printf-like unit-format string as is used with
                      <a href="GimpUnitMenu.html#gimp-unit-menu-new"><code class="function">gimp_unit_menu_new()</code></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>update_policy</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>update_policy</code></em>&#160;:</span></td>
 <td>      How the automatic pixel &lt;-&gt; real-world-unit
                      calculations should be done.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>resolution</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>resolution</code></em>&#160;:</span></td>
 <td>         The resolution (in dpi) for the field.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>  A new <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> widget.
 
 Since GIMP 2.4
@@ -1425,9 +1308,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2629246"></a><h3>
+<a name="id2628619"></a><h3>
 <a name="gimp-prop-coordinates-new"></a>gimp_prop_coordinates_new ()</h3>
-<a class="indexterm" name="id2629257"></a><pre class="programlisting">GtkWidget*  gimp_prop_coordinates_new       (GObject *config,
+<a class="indexterm" name="id2628630"></a><pre class="programlisting">GtkWidget*  gimp_prop_coordinates_new       (GObject *config,
                                              const gchar *x_property_name,
                                              const gchar *y_property_name,
                                              const gchar *unit_property_name,
@@ -1447,64 +1330,54 @@ their associated unit property.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>             Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x_property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x_property_name</code></em>&#160;:</span></td>
 <td>    Name of int or double property for X coordinate.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y_property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y_property_name</code></em>&#160;:</span></td>
 <td>    Name of int or double property for Y coordinate.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>unit_property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>unit_property_name</code></em>&#160;:</span></td>
 <td> Name of unit property.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>unit_format</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>unit_format</code></em>&#160;:</span></td>
 <td>        A printf-like unit-format string as is used with
                      <a href="GimpUnitMenu.html#gimp-unit-menu-new"><code class="function">gimp_unit_menu_new()</code></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>update_policy</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>update_policy</code></em>&#160;:</span></td>
 <td>      How the automatic pixel &lt;-&gt; real-world-unit
                      calculations should be done.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>xresolution</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>xresolution</code></em>&#160;:</span></td>
 <td>        The resolution (in dpi) for the X coordinate.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>yresolution</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>yresolution</code></em>&#160;:</span></td>
 <td>        The resolution (in dpi) for the Y coordinate.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>has_chainbutton</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>has_chainbutton</code></em>&#160;:</span></td>
 <td>    Whether to add a chainbutton to the size entry.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>  A new <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> widget.
 
 Since GIMP 2.4
@@ -1515,9 +1388,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2629500"></a><h3>
+<a name="id2628873"></a><h3>
 <a name="gimp-prop-coordinates-connect"></a>gimp_prop_coordinates_connect ()</h3>
-<a class="indexterm" name="id2629514"></a><pre class="programlisting">gboolean    gimp_prop_coordinates_connect   (GObject *config,
+<a class="indexterm" name="id2628888"></a><pre class="programlisting">gboolean    gimp_prop_coordinates_connect   (GObject *config,
                                              const gchar *x_property_name,
                                              const gchar *y_property_name,
                                              const gchar *unit_property_name,
@@ -1532,56 +1405,47 @@ Since GIMP 2.4
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>x_property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y_property_name</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>unit_property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x_property_name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>sizeentry</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>chainbutton</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y_property_name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>xresolution</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>yresolution</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>unit_property_name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>sizeentry</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>chainbutton</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>xresolution</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>yresolution</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1592,9 +1456,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2629720"></a><h3>
+<a name="id2629093"></a><h3>
 <a name="gimp-prop-color-area-new"></a>gimp_prop_color_area_new ()</h3>
-<a class="indexterm" name="id2629734"></a><pre class="programlisting">GtkWidget*  gimp_prop_color_area_new        (GObject *config,
+<a class="indexterm" name="id2629107"></a><pre class="programlisting">GtkWidget*  gimp_prop_color_area_new        (GObject *config,
                                              const gchar *property_name,
                                              gint width,
                                              gint height,
@@ -1609,38 +1473,32 @@ property.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of RGB property.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td>         Width of color area.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td>        Height of color area.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>type</code></em>&#160;:</span></td>
 <td>          How transparency is represented.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>  A new <a href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> widget.
 
 Since GIMP 2.4
@@ -1651,9 +1509,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2629897"></a><h3>
+<a name="id2629270"></a><h3>
 <a name="gimp-prop-unit-menu-new"></a>gimp_prop_unit_menu_new ()</h3>
-<a class="indexterm" name="id2629910"></a><pre class="programlisting">GtkWidget*  gimp_prop_unit_menu_new         (GObject *config,
+<a class="indexterm" name="id2629284"></a><pre class="programlisting">GtkWidget*  gimp_prop_unit_menu_new         (GObject *config,
                                              const gchar *property_name,
                                              const gchar *unit_format);</pre>
 <p>
@@ -1666,27 +1524,23 @@ property.  See <a href="GimpUnitMenu.html#gimp-unit-menu-new"><code class="funct
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of Unit property.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>unit_format</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>unit_format</code></em>&#160;:</span></td>
 <td>   A printf-like format string which is used to create
                 the unit strings.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>  A new <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a> widget.
 
 Since GIMP 2.4
@@ -1697,9 +1551,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2630042"></a><h3>
+<a name="id2629415"></a><h3>
 <a name="gimp-prop-stock-image-new"></a>gimp_prop_stock_image_new ()</h3>
-<a class="indexterm" name="id2630056"></a><pre class="programlisting">GtkWidget*  gimp_prop_stock_image_new       (GObject *config,
+<a class="indexterm" name="id2629429"></a><pre class="programlisting">GtkWidget*  gimp_prop_stock_image_new       (GObject *config,
                                              const gchar *property_name,
                                              GtkIconSize icon_size);</pre>
 <p>
@@ -1713,26 +1567,22 @@ See <code class="function">gtk_image_new_from_stock()</code> for more informatio
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td>        Object to which property is attached.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
 <td> Name of string property.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>icon_size</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>icon_size</code></em>&#160;:</span></td>
 <td>     Size of desired stock image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>  A new <span class="type">GtkImage</span> widget.
 
 Since GIMP 2.4

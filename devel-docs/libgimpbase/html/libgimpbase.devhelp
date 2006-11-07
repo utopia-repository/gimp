@@ -20,10 +20,10 @@
       <sub name="gimpunit" link="libgimpbase-gimpunit.html"/>
       <sub name="gimputils" link="libgimpbase-gimputils.html"/>
     </sub>
-    <sub name="Index" link="ix01.html"/>
-    <sub name="Index of new symbols in GIMP 2.2" link="ix02.html"/>
-    <sub name="Index of new symbols in GIMP 2.4" link="ix03.html"/>
-    <sub name="Index of deprecated symbols" link="ix04.html"/>
+    <sub name="Index" link="libgimpbase-index.html"/>
+    <sub name="Index of new symbols in GIMP 2.2" link="libgimpbase-index-new-in-2-2.html"/>
+    <sub name="Index of new symbols in GIMP 2.4" link="libgimpbase-index-new-in-2-4.html"/>
+    <sub name="Index of deprecated symbols" link="libgimpbase-index-deprecated.html"/>
   </chapters>
   <functions>
     <function name="enum GimpAddMaskType" link="libgimpbase-gimpbaseenums.html#GimpAddMaskType"/>
@@ -55,6 +55,7 @@
     <function name="enum GimpStackTraceMode" link="libgimpbase-gimpbaseenums.html#GimpStackTraceMode"/>
     <function name="enum GimpTransferMode" link="libgimpbase-gimpbaseenums.html#GimpTransferMode"/>
     <function name="enum GimpTransformDirection" link="libgimpbase-gimpbaseenums.html#GimpTransformDirection"/>
+    <function name="enum GimpVectorsStrokeType" link="libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType"/>
     <function name="GimpEnumDesc" link="libgimpbase-gimpbasetypes.html#GimpEnumDesc"/>
     <function name="GimpFlagsDesc" link="libgimpbase-gimpbasetypes.html#GimpFlagsDesc"/>
     <function name="gimp_type_set_translation_domain ()" link="libgimpbase-gimpbasetypes.html#gimp-type-set-translation-domain"/>

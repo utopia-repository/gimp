@@ -18,10 +18,10 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimp-index.html" title="Index">
+<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -32,16 +32,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpbrushes.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2578915" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2572258" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2666227" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2661961" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpbrush"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2578915"></a><span class="refentrytitle">gimpbrush</span>
+<a name="id2572258"></a><span class="refentrytitle">gimpbrush</span>
 </h2>
 <p>gimpbrush &#8212; Functions operating on a single brush.</p>
 </td>
@@ -101,17 +101,17 @@ gboolean    <a href="libgimp-gimpbrush.html#gimp-brush-is-editable">gimp_brush_i
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2666227"></a><h2>Description</h2>
+<a name="id2661961"></a><h2>Description</h2>
 <p>
 Functions operating on a single brush.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2666242"></a><h2>Details</h2>
+<a name="id2661977"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2666253"></a><h3>
+<a name="id2661987"></a><h3>
 <a name="gimp-brush-new"></a>gimp_brush_new ()</h3>
-<a class="indexterm" name="id2666266"></a><pre class="programlisting">gchar*      gimp_brush_new                  (const gchar *name);</pre>
+<a class="indexterm" name="id2662000"></a><pre class="programlisting">gchar*      gimp_brush_new                  (const gchar *name);</pre>
 <p>
 Creates a new brush
 </p>
@@ -124,14 +124,12 @@ This procedure creates a new, uninitialized brush</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The requested name of the new brush.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The actual new brush name.
 
 </td>
@@ -143,9 +141,9 @@ This procedure creates a new, uninitialized brush</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2666334"></a><h3>
+<a name="id2663237"></a><h3>
 <a name="gimp-brush-duplicate"></a>gimp_brush_duplicate ()</h3>
-<a class="indexterm" name="id2666347"></a><pre class="programlisting">gchar*      gimp_brush_duplicate            (const gchar *name);</pre>
+<a class="indexterm" name="id2663249"></a><pre class="programlisting">gchar*      gimp_brush_duplicate            (const gchar *name);</pre>
 <p>
 Duplicates a brush
 </p>
@@ -158,14 +156,12 @@ This procedure creates an identical brush by a different name</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The name of the brush's copy.
 
 </td>
@@ -177,9 +173,9 @@ This procedure creates an identical brush by a different name</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2666415"></a><h3>
+<a name="id2663317"></a><h3>
 <a name="gimp-brush-rename"></a>gimp_brush_rename ()</h3>
-<a class="indexterm" name="id2666428"></a><pre class="programlisting">gchar*      gimp_brush_rename               (const gchar *name,
+<a class="indexterm" name="id2663330"></a><pre class="programlisting">gchar*      gimp_brush_rename               (const gchar *name,
                                              const gchar *new_name);</pre>
 <p>
 Rename a brush
@@ -193,20 +189,17 @@ This procedure renames a brush</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>new_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>new_name</code></em>&#160;:</span></td>
 <td> The new name of the brush.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The actual new name of the brush.
 
 </td>
@@ -218,9 +211,9 @@ This procedure renames a brush</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2666515"></a><h3>
+<a name="id2663417"></a><h3>
 <a name="gimp-brush-delete"></a>gimp_brush_delete ()</h3>
-<a class="indexterm" name="id2660928"></a><pre class="programlisting">gboolean    gimp_brush_delete               (const gchar *name);</pre>
+<a class="indexterm" name="id2663430"></a><pre class="programlisting">gboolean    gimp_brush_delete               (const gchar *name);</pre>
 <p>
 Deletes a brush
 </p>
@@ -233,14 +226,12 @@ This procedure deletes a brush</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -252,9 +243,9 @@ This procedure deletes a brush</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2660994"></a><h3>
+<a name="id2663496"></a><h3>
 <a name="gimp-brush-get-info"></a>gimp_brush_get_info ()</h3>
-<a class="indexterm" name="id2661007"></a><pre class="programlisting">gboolean    gimp_brush_get_info             (const gchar *name,
+<a class="indexterm" name="id2666073"></a><pre class="programlisting">gboolean    gimp_brush_get_info             (const gchar *name,
                                              gint *width,
                                              gint *height,
                                              gint *mask_bpp,
@@ -272,38 +263,32 @@ includes the brush name, and the brush extents (width and height).</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td> The brush width.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td> The brush height.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>mask_bpp</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>mask_bpp</code></em>&#160;:</span></td>
 <td> The brush mask bpp.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>color_bpp</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>color_bpp</code></em>&#160;:</span></td>
 <td> The brush color bpp.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -315,9 +300,9 @@ includes the brush name, and the brush extents (width and height).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2661159"></a><h3>
+<a name="id2666225"></a><h3>
 <a name="gimp-brush-get-pixels"></a>gimp_brush_get_pixels ()</h3>
-<a class="indexterm" name="id2661172"></a><pre class="programlisting">gboolean    gimp_brush_get_pixels           (const gchar *name,
+<a class="indexterm" name="id2666238"></a><pre class="programlisting">gboolean    gimp_brush_get_pixels           (const gchar *name,
                                              gint *width,
                                              gint *height,
                                              gint *mask_bpp,
@@ -339,62 +324,52 @@ includes the brush extents (width and height) and its pixels data.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td> The brush width.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td> The brush height.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>mask_bpp</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>mask_bpp</code></em>&#160;:</span></td>
 <td> The brush mask bpp.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_mask_bytes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_mask_bytes</code></em>&#160;:</span></td>
 <td> Length of brush mask data.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>mask_bytes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>mask_bytes</code></em>&#160;:</span></td>
 <td> The brush mask data.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>color_bpp</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>color_bpp</code></em>&#160;:</span></td>
 <td> The brush color bpp.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_color_bytes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_color_bytes</code></em>&#160;:</span></td>
 <td> Length of brush color data.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>color_bytes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>color_bytes</code></em>&#160;:</span></td>
 <td> The brush color data.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -406,9 +381,9 @@ includes the brush extents (width and height) and its pixels data.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676371"></a><h3>
+<a name="id2666474"></a><h3>
 <a name="gimp-brush-get-spacing"></a>gimp_brush_get_spacing ()</h3>
-<a class="indexterm" name="id2676383"></a><pre class="programlisting">gboolean    gimp_brush_get_spacing          (const gchar *name,
+<a class="indexterm" name="id2666487"></a><pre class="programlisting">gboolean    gimp_brush_get_spacing          (const gchar *name,
                                              gint *spacing);</pre>
 <p>
 Get the brush spacing.
@@ -424,20 +399,17 @@ percentage of the maximum of the width and height of the mask.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
 <td> The brush spacing.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -449,9 +421,9 @@ percentage of the maximum of the width and height of the mask.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676465"></a><h3>
+<a name="id2666577"></a><h3>
 <a name="gimp-brush-set-spacing"></a>gimp_brush_set_spacing ()</h3>
-<a class="indexterm" name="id2676478"></a><pre class="programlisting">gboolean    gimp_brush_set_spacing          (const gchar *name,
+<a class="indexterm" name="id2666590"></a><pre class="programlisting">gboolean    gimp_brush_set_spacing          (const gchar *name,
                                              gint spacing);</pre>
 <p>
 Set the brush spacing.
@@ -466,20 +438,17 @@ The value should be a integer between 0 and 1000.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
 <td> The brush spacing.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -491,9 +460,9 @@ The value should be a integer between 0 and 1000.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676559"></a><h3>
+<a name="id2666679"></a><h3>
 <a name="gimp-brush-get-shape"></a>gimp_brush_get_shape ()</h3>
-<a class="indexterm" name="id2676571"></a><pre class="programlisting"><a href="libgimp-gimpenums.html#GimpBrushGeneratedShape">GimpBrushGeneratedShape</a> gimp_brush_get_shape
+<a class="indexterm" name="id2666692"></a><pre class="programlisting"><a href="libgimp-gimpenums.html#GimpBrushGeneratedShape">GimpBrushGeneratedShape</a> gimp_brush_get_shape
                                             (const gchar *name);</pre>
 <p>
 Get the shape of a generated brush.
@@ -512,14 +481,12 @@ in the future.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The brush shape.
 
 </td>
@@ -531,9 +498,9 @@ in the future.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676638"></a><h3>
+<a name="id2666764"></a><h3>
 <a name="gimp-brush-set-shape"></a>gimp_brush_set_shape ()</h3>
-<a class="indexterm" name="id2676650"></a><pre class="programlisting"><a href="libgimp-gimpenums.html#GimpBrushGeneratedShape">GimpBrushGeneratedShape</a> gimp_brush_set_shape
+<a class="indexterm" name="id2666777"></a><pre class="programlisting"><a href="libgimp-gimpenums.html#GimpBrushGeneratedShape">GimpBrushGeneratedShape</a> gimp_brush_set_shape
                                             (const gchar *name,
                                              <a href="libgimp-gimpenums.html#GimpBrushGeneratedShape">GimpBrushGeneratedShape</a> shape_in);</pre>
 <p>
@@ -553,20 +520,17 @@ in the future.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>shape_in</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>shape_in</code></em>&#160;:</span></td>
 <td> The brush shape.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The brush shape actually assigned.
 
 </td>
@@ -578,9 +542,9 @@ in the future.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676736"></a><h3>
+<a name="id2666870"></a><h3>
 <a name="gimp-brush-get-spikes"></a>gimp_brush_get_spikes ()</h3>
-<a class="indexterm" name="id2676748"></a><pre class="programlisting">gint        gimp_brush_get_spikes           (const gchar *name);</pre>
+<a class="indexterm" name="id2666884"></a><pre class="programlisting">gint        gimp_brush_get_spikes           (const gchar *name);</pre>
 <p>
 Get the number of spikes for a generated brush.
 </p>
@@ -594,14 +558,12 @@ called for any other type of brush, it does not succeed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The number of spikes on the brush.
 
 </td>
@@ -613,9 +575,9 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676812"></a><h3>
+<a name="id2666956"></a><h3>
 <a name="gimp-brush-set-spikes"></a>gimp_brush_set_spikes ()</h3>
-<a class="indexterm" name="id2676825"></a><pre class="programlisting">gint        gimp_brush_set_spikes           (const gchar *name,
+<a class="indexterm" name="id2666970"></a><pre class="programlisting">gint        gimp_brush_set_spikes           (const gchar *name,
                                              gint spikes_in);</pre>
 <p>
 Set the number of spikes for a generated brush.
@@ -630,20 +592,17 @@ called for any other type of brush, it does not succeed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>spikes_in</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>spikes_in</code></em>&#160;:</span></td>
 <td> The desired number of spikes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The number of spikes actually assigned.
 
 </td>
@@ -655,9 +614,9 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676908"></a><h3>
+<a name="id2667062"></a><h3>
 <a name="gimp-brush-get-angle"></a>gimp_brush_get_angle ()</h3>
-<a class="indexterm" name="id2676920"></a><pre class="programlisting">gdouble     gimp_brush_get_angle            (const gchar *name);</pre>
+<a class="indexterm" name="id2667076"></a><pre class="programlisting">gdouble     gimp_brush_get_angle            (const gchar *name);</pre>
 <p>
 Get the rotation angle of a generated brush.
 </p>
@@ -671,14 +630,12 @@ called for any other type of brush, it does not succeed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The rotation angle of the brush.
 
 </td>
@@ -690,9 +647,9 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676984"></a><h3>
+<a name="id2667147"></a><h3>
 <a name="gimp-brush-set-angle"></a>gimp_brush_set_angle ()</h3>
-<a class="indexterm" name="id2676996"></a><pre class="programlisting">gdouble     gimp_brush_set_angle            (const gchar *name,
+<a class="indexterm" name="id2667161"></a><pre class="programlisting">gdouble     gimp_brush_set_angle            (const gchar *name,
                                              gdouble angle_in);</pre>
 <p>
 Set the rotation angle of a generated brush.
@@ -707,20 +664,17 @@ called for any other type of brush, it does not succeed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>angle_in</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>angle_in</code></em>&#160;:</span></td>
 <td> The desired brush rotation angle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The brush rotation angle actually assigned.
 
 </td>
@@ -732,9 +686,9 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677080"></a><h3>
+<a name="id2667253"></a><h3>
 <a name="gimp-brush-get-radius"></a>gimp_brush_get_radius ()</h3>
-<a class="indexterm" name="id2677092"></a><pre class="programlisting">gdouble     gimp_brush_get_radius           (const gchar *name);</pre>
+<a class="indexterm" name="id2667267"></a><pre class="programlisting">gdouble     gimp_brush_get_radius           (const gchar *name);</pre>
 <p>
 Get the radius of a generated brush.
 </p>
@@ -748,14 +702,12 @@ called for any other type of brush, it does not succeed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The radius of the brush in pixels.
 
 </td>
@@ -767,9 +719,9 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677157"></a><h3>
+<a name="id2667338"></a><h3>
 <a name="gimp-brush-set-radius"></a>gimp_brush_set_radius ()</h3>
-<a class="indexterm" name="id2677169"></a><pre class="programlisting">gdouble     gimp_brush_set_radius           (const gchar *name,
+<a class="indexterm" name="id2667352"></a><pre class="programlisting">gdouble     gimp_brush_set_radius           (const gchar *name,
                                              gdouble radius_in);</pre>
 <p>
 Set the radius of a generated brush.
@@ -784,20 +736,17 @@ any other type of brush, it does not succeed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>radius_in</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>radius_in</code></em>&#160;:</span></td>
 <td> The desired brush radius.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The brush radius actually assigned.
 
 </td>
@@ -809,9 +758,9 @@ any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677253"></a><h3>
+<a name="id2667444"></a><h3>
 <a name="gimp-brush-get-aspect-ratio"></a>gimp_brush_get_aspect_ratio ()</h3>
-<a class="indexterm" name="id2677265"></a><pre class="programlisting">gdouble     gimp_brush_get_aspect_ratio     (const gchar *name);</pre>
+<a class="indexterm" name="id2667458"></a><pre class="programlisting">gdouble     gimp_brush_get_aspect_ratio     (const gchar *name);</pre>
 <p>
 Get the aspect ratio of a generated brush.
 </p>
@@ -825,14 +774,12 @@ for any other type of brush, it does not succeed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The aspect ratio of the brush.
 
 </td>
@@ -844,9 +791,9 @@ for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677329"></a><h3>
+<a name="id2667529"></a><h3>
 <a name="gimp-brush-set-aspect-ratio"></a>gimp_brush_set_aspect_ratio ()</h3>
-<a class="indexterm" name="id2677341"></a><pre class="programlisting">gdouble     gimp_brush_set_aspect_ratio     (const gchar *name,
+<a class="indexterm" name="id2667543"></a><pre class="programlisting">gdouble     gimp_brush_set_aspect_ratio     (const gchar *name,
                                              gdouble aspect_ratio_in);</pre>
 <p>
 Set the aspect ratio of a generated brush.
@@ -861,20 +808,17 @@ called for any other type of brush, it does not succeed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>aspect_ratio_in</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>aspect_ratio_in</code></em>&#160;:</span></td>
 <td> The desired brush aspect ratio.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The brush aspect ratio actually assigned.
 
 </td>
@@ -886,9 +830,9 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677425"></a><h3>
+<a name="id2667636"></a><h3>
 <a name="gimp-brush-get-hardness"></a>gimp_brush_get_hardness ()</h3>
-<a class="indexterm" name="id2677438"></a><pre class="programlisting">gdouble     gimp_brush_get_hardness         (const gchar *name);</pre>
+<a class="indexterm" name="id2667649"></a><pre class="programlisting">gdouble     gimp_brush_get_hardness         (const gchar *name);</pre>
 <p>
 Get the hardness of a generated brush.
 </p>
@@ -903,14 +847,12 @@ called for any other type of brush, the function does not succeed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The hardness of the brush.
 
 </td>
@@ -922,9 +864,9 @@ called for any other type of brush, the function does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677503"></a><h3>
+<a name="id2667721"></a><h3>
 <a name="gimp-brush-set-hardness"></a>gimp_brush_set_hardness ()</h3>
-<a class="indexterm" name="id2677515"></a><pre class="programlisting">gdouble     gimp_brush_set_hardness         (const gchar *name,
+<a class="indexterm" name="id2667735"></a><pre class="programlisting">gdouble     gimp_brush_set_hardness         (const gchar *name,
                                              gdouble hardness_in);</pre>
 <p>
 Set the hardness of a generated brush.
@@ -939,20 +881,17 @@ for any other type of brush, it does not succeed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>hardness_in</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>hardness_in</code></em>&#160;:</span></td>
 <td> The desired brush hardness.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The brush hardness actually assigned.
 
 </td>
@@ -964,9 +903,9 @@ for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677599"></a><h3>
+<a name="id2667828"></a><h3>
 <a name="gimp-brush-is-generated"></a>gimp_brush_is_generated ()</h3>
-<a class="indexterm" name="id2677611"></a><pre class="programlisting">gboolean    gimp_brush_is_generated         (const gchar *name);</pre>
+<a class="indexterm" name="id2667841"></a><pre class="programlisting">gboolean    gimp_brush_is_generated         (const gchar *name);</pre>
 <p>
 Tests if brush is generated
 </p>
@@ -979,14 +918,12 @@ Returns TRUE if this brush is parametric, FALSE for other types</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE if the brush is generated.
 
 </td>
@@ -998,9 +935,9 @@ Returns TRUE if this brush is parametric, FALSE for other types</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677673"></a><h3>
+<a name="id2667910"></a><h3>
 <a name="gimp-brush-is-editable"></a>gimp_brush_is_editable ()</h3>
-<a class="indexterm" name="id2677685"></a><pre class="programlisting">gboolean    gimp_brush_is_editable          (const gchar *name);</pre>
+<a class="indexterm" name="id2667924"></a><pre class="programlisting">gboolean    gimp_brush_is_editable          (const gchar *name);</pre>
 <p>
 Tests if brush can be edited
 </p>
@@ -1013,14 +950,12 @@ Returns TRUE if you have permission to change the brush</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The brush name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE if the brush can be edited.
 
 </td>

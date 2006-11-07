@@ -209,6 +209,8 @@ HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
 HAVE_MAC_TWAIN_TRUE = @HAVE_MAC_TWAIN_TRUE@
+HAVE_PNG_FALSE = @HAVE_PNG_FALSE@
+HAVE_PNG_TRUE = @HAVE_PNG_TRUE@
 HAVE_WINDRES_FALSE = @HAVE_WINDRES_FALSE@
 HAVE_WINDRES_TRUE = @HAVE_WINDRES_TRUE@
 HAVE_XMLLINT_FALSE = @HAVE_XMLLINT_FALSE@
@@ -250,12 +252,12 @@ INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
 LCMS = @LCMS@
-LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
 LIBJPEG = @LIBJPEG@
+LIBLCMS = @LIBLCMS@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
@@ -334,6 +336,7 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
+SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -431,6 +434,8 @@ target_alias = @target_alias@
 SUBDIRS = images
 scriptdatadir = $(gimpdatadir)/scripts
 scripts = \
+	script-fu.init			\
+	script-fu-compat.init		\
 	3d-outline.scm			\
 	3dTruchet.scm			\
 	add-bevel.scm			\
@@ -464,9 +469,11 @@ scripts = \
 	clothify.scm			\
 	coffee.scm			\
 	comic-logo.scm			\
+	contactsheet.scm		\
 	coolmetal-logo.scm		\
 	copy-visible.scm		\
 	crystal-logo.scm		\
+	difference-clouds.scm		\
 	distress-selection.scm		\
 	drop-shadow.scm			\
 	erase-rows.scm			\
@@ -491,10 +498,10 @@ scripts = \
 	land.scm			\
 	lava.scm			\
 	line-nova.scm			\
-	old-photo.scm			\
 	mkbrush.scm			\
 	neon-logo.scm			\
 	news-text.scm			\
+	old-photo.scm			\
 	paste-as-brush.scm		\
 	paste-as-pattern.scm		\
 	perspective-shadow.scm		\
@@ -504,6 +511,7 @@ scripts = \
 	reverse-layers.scm		\
 	ripply-anim.scm			\
 	round-corners.scm		\
+	script-fu-set-cmap.scm		\
 	script-fu-util.scm		\
 	select-to-brush.scm		\
 	select-to-image.scm		\
@@ -532,7 +540,8 @@ scripts = \
 	xach-effect.scm
 
 test_scripts = \
-	test-sphere.scm
+	test-sphere.scm		\
+	ts-helloworld.scm
 
 @GIMP_UNSTABLE_FALSE@scriptdata_DATA = $(scripts)
 @GIMP_UNSTABLE_TRUE@scriptdata_DATA = $(scripts) $(test_scripts)

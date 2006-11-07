@@ -1,3 +1,26 @@
+2006-11-18  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Added Arabic Translation.
+	* LINGUAS: Added ar.
+
+2006-11-06  Priit Laes  <plaes@cvs.gnome.org>
+
+	* et.po: Translation updated by "Last-Translator: Olle Niit\n".
+
+2006-10-28  Alexander Shopov  <ash@contact.bg>
+
+	* bg.po: Updated Bulgarian translation by
+	Victor Dachev <vdachev@gmail.com>
+
+2006-10-19  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+	Joaquim Perez <noguer@gmail.com>.
+
+2006-10-16  Ilkka Tuohela  <hile@iki.fi>
+
+	* fi.po: Updated Finnish translation.
+
 2006-10-03  Ilkka Tuohela  <hile@iki.fi>
 
 	* fi.po: Updated Finnish translation.

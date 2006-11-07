@@ -58,9 +58,9 @@ libappplug_in_a_LIBADD =
 am_libappplug_in_a_OBJECTS = plug-in-enums.$(OBJEXT) \
 	gimpenvirontable.$(OBJEXT) gimpinterpreterdb.$(OBJEXT) \
 	gimpplugindebug.$(OBJEXT) gimpplugin.$(OBJEXT) \
-	gimpplugin-context.$(OBJEXT) gimpplugin-message.$(OBJEXT) \
-	gimpplugin-progress.$(OBJEXT) gimppluginmanager.$(OBJEXT) \
-	gimppluginmanager-call.$(OBJEXT) \
+	gimpplugin-cleanup.$(OBJEXT) gimpplugin-context.$(OBJEXT) \
+	gimpplugin-message.$(OBJEXT) gimpplugin-progress.$(OBJEXT) \
+	gimppluginmanager.$(OBJEXT) gimppluginmanager-call.$(OBJEXT) \
 	gimppluginmanager-data.$(OBJEXT) \
 	gimppluginmanager-file.$(OBJEXT) \
 	gimppluginmanager-help-domain.$(OBJEXT) \
@@ -71,7 +71,7 @@ am_libappplug_in_a_OBJECTS = plug-in-enums.$(OBJEXT) \
 	gimppluginprocedure.$(OBJEXT) gimppluginprocframe.$(OBJEXT) \
 	gimppluginshm.$(OBJEXT) gimptemporaryprocedure.$(OBJEXT) \
 	plug-in-def.$(OBJEXT) plug-in-params.$(OBJEXT) \
-	plug-in-rc.$(OBJEXT)
+	plug-in-rc.$(OBJEXT) plug-in-icc-profile.$(OBJEXT)
 libappplug_in_a_OBJECTS = $(am_libappplug_in_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -226,6 +226,8 @@ HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
 HAVE_MAC_TWAIN_TRUE = @HAVE_MAC_TWAIN_TRUE@
+HAVE_PNG_FALSE = @HAVE_PNG_FALSE@
+HAVE_PNG_TRUE = @HAVE_PNG_TRUE@
 HAVE_WINDRES_FALSE = @HAVE_WINDRES_FALSE@
 HAVE_WINDRES_TRUE = @HAVE_WINDRES_TRUE@
 HAVE_XMLLINT_FALSE = @HAVE_XMLLINT_FALSE@
@@ -267,12 +269,12 @@ INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
 LCMS = @LCMS@
-LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
 LIBJPEG = @LIBJPEG@
+LIBLCMS = @LIBLCMS@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
@@ -351,6 +353,7 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
+SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -471,6 +474,8 @@ libappplug_in_a_SOURCES = \
 	gimpplugindebug.h			\
 	gimpplugin.c				\
 	gimpplugin.h				\
+	gimpplugin-cleanup.c			\
+	gimpplugin-cleanup.h			\
 	gimpplugin-context.c			\
 	gimpplugin-context.h			\
 	gimpplugin-message.c			\
@@ -509,7 +514,10 @@ libappplug_in_a_SOURCES = \
 	plug-in-params.c			\
 	plug-in-params.h			\
 	plug-in-rc.c				\
-	plug-in-rc.h
+	plug-in-rc.h				\
+	\
+	plug-in-icc-profile.c			\
+	plug-in-icc-profile.h
 
 EXTRA_DIST = makefile.msc
 
@@ -568,6 +576,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpenvirontable.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpinterpreterdb.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpplugin-cleanup.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpplugin-context.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpplugin-message.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpplugin-progress.Po@am__quote@
@@ -588,6 +597,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptemporaryprocedure.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-def.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-enums.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-icc-profile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-params.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-rc.Po@am__quote@
 

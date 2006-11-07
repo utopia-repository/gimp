@@ -83,6 +83,8 @@ gboolean                 gimp_image_add_layer                (gint32            
                                                               gint                  position);
 gboolean                 gimp_image_remove_layer             (gint32                image_ID,
                                                               gint32                layer_ID);
+gint                     gimp_image_get_layer_position       (gint32                image_ID,
+                                                              gint32                layer_ID);
 gboolean                 gimp_image_raise_layer              (gint32                image_ID,
                                                               gint32                layer_ID);
 gboolean                 gimp_image_lower_layer              (gint32                image_ID,
@@ -96,6 +98,8 @@ gboolean                 gimp_image_add_channel              (gint32            
                                                               gint                  position);
 gboolean                 gimp_image_remove_channel           (gint32                image_ID,
                                                               gint32                channel_ID);
+gint                     gimp_image_get_channel_position     (gint32                image_ID,
+                                                              gint32                channel_ID);
 gboolean                 gimp_image_raise_channel            (gint32                image_ID,
                                                               gint32                channel_ID);
 gboolean                 gimp_image_lower_channel            (gint32                image_ID,
@@ -104,6 +108,8 @@ gboolean                 gimp_image_add_vectors              (gint32            
                                                               gint32                vectors_ID,
                                                               gint                  position);
 gboolean                 gimp_image_remove_vectors           (gint32                image_ID,
+                                                              gint32                vectors_ID);
+gint                     gimp_image_get_vectors_position     (gint32                image_ID,
                                                               gint32                vectors_ID);
 gboolean                 gimp_image_raise_vectors            (gint32                image_ID,
                                                               gint32                vectors_ID);

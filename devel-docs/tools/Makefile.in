@@ -65,11 +65,10 @@ am__DEPENDENCIES_4 = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION)
 am__DEPENDENCIES_5 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 am__DEPENDENCIES_6 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 am__DEPENDENCIES_7 =
-am__DEPENDENCIES_8 = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
+doc_shooter_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
 	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_7)
-doc_shooter_DEPENDENCIES = $(am__DEPENDENCIES_8)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -223,6 +222,8 @@ HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
 HAVE_MAC_TWAIN_TRUE = @HAVE_MAC_TWAIN_TRUE@
+HAVE_PNG_FALSE = @HAVE_PNG_FALSE@
+HAVE_PNG_TRUE = @HAVE_PNG_TRUE@
 HAVE_WINDRES_FALSE = @HAVE_WINDRES_FALSE@
 HAVE_WINDRES_TRUE = @HAVE_WINDRES_TRUE@
 HAVE_XMLLINT_FALSE = @HAVE_XMLLINT_FALSE@
@@ -264,12 +265,12 @@ INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
 LCMS = @LCMS@
-LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
 LIBJPEG = @LIBJPEG@
+LIBLCMS = @LIBLCMS@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
@@ -348,6 +349,7 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
+SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -452,16 +454,6 @@ INCLUDES = \
 	-I$(top_srcdir)	\
 	$(GTK_CFLAGS)
 
-LDADDS = \
-	$(libgimpwidgets)	\
-	$(libgimpconfig)	\
-	$(libgimpmodule)	\
-	$(libgimpmath)		\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(X_LIBS) -lX11
-
 doc_shooter_SOURCES = \
 	shadow.c	\
 	shadow.h	\
@@ -471,7 +463,16 @@ doc_shooter_SOURCES = \
 	widgets.c	\
 	widgets.h
 
-doc_shooter_LDADD = $(LDADDS)
+doc_shooter_LDADD = \
+	$(libgimpwidgets)	\
+	$(libgimpconfig)	\
+	$(libgimpmodule)	\
+	$(libgimpmath)		\
+	$(libgimpcolor)		\
+	$(libgimpbase)		\
+	$(GTK_LIBS)		\
+	$(X_LIBS) -lX11 -lXext
+
 EXTRA_DIST = README.shooter
 all: all-am
 

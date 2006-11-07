@@ -62,10 +62,10 @@
     <sub name="Deprecated API" link="libgimpwidgets-deprecated.html">
       <sub name="gimpoldwidgets" link="libgimpwidgets-gimpoldwidgets.html"/>
     </sub>
-    <sub name="Index" link="ix01.html"/>
-    <sub name="Index of new symbols in GIMP 2.2" link="ix02.html"/>
-    <sub name="Index of new symbols in GIMP 2.4" link="ix03.html"/>
-    <sub name="Index of deprecated symbols" link="ix04.html"/>
+    <sub name="Index" link="libgimpwidgets-index.html"/>
+    <sub name="Index of new symbols in GIMP 2.2" link="libgimpwidgets-index-new-in-2-2.html"/>
+    <sub name="Index of new symbols in GIMP 2.4" link="libgimpwidgets-index-new-in-2-4.html"/>
+    <sub name="Index of deprecated symbols" link="libgimpwidgets-index-deprecated.html"/>
   </chapters>
   <functions>
     <function name="GimpBrowser" link="GimpBrowser.html#GimpBrowser-struct"/>

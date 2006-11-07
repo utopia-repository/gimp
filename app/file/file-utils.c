@@ -125,6 +125,30 @@ file_utils_filename_to_uri (GSList       *procs,
           return NULL;
         }
     }
+  else if (strstr (filename, "://"))
+    {
+      gchar *scheme;
+      gchar *canon;
+
+      scheme = g_strndup (filename, (strstr (filename, "://") - filename));
+      canon  = g_strdup (scheme);
+
+      g_strcanon (canon, G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "+-.", '-');
+
+      if (! strcmp (scheme, canon) && g_ascii_isgraph (canon[0]))
+        {
+          g_set_error (error, G_FILE_ERROR, 0,
+                       _("URI scheme '%s:' is not supported"), scheme);
+
+          g_free (scheme);
+          g_free (canon);
+
+          return NULL;
+        }
+
+      g_free (scheme);
+      g_free (canon);
+    }
 
   if (! g_path_is_absolute (filename))
     {
@@ -271,7 +295,15 @@ file_utils_find_proc (GSList       *procs,
         }
 
       if (ifp)
-        fclose (ifp);
+        {
+          if (ferror (ifp))
+            g_set_error (error,
+                         G_FILE_ERROR,
+                         g_file_error_from_errno (errno),
+                         g_strerror (errno));
+
+          fclose (ifp);
+        }
 
       g_free (filename);
 
@@ -494,8 +526,7 @@ file_utils_save_thumbnail (GimpImage   *image,
               GimpImagefile *imagefile;
 
               imagefile = gimp_imagefile_new (image->gimp, uri);
-              success = gimp_imagefile_save_thumbnail (imagefile, NULL,
-                                                       image);
+              success = gimp_imagefile_save_thumbnail (imagefile, NULL, image);
               g_object_unref (imagefile);
             }
 

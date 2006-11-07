@@ -51,6 +51,7 @@ enum        <link linkend="GimpSizeType">GimpSizeType</link>;
 enum        <link linkend="GimpStackTraceMode">GimpStackTraceMode</link>;
 enum        <link linkend="GimpTransferMode">GimpTransferMode</link>;
 enum        <link linkend="GimpTransformDirection">GimpTransformDirection</link>;
+enum        <link linkend="GimpVectorsStrokeType">GimpVectorsStrokeType</link>;
 
 </synopsis>
 </refsynopsisdiv>
@@ -463,6 +464,16 @@ Basic GIMP enumeration data types.
   GIMP_TRANSFORM_FORWARD,   /*&lt; desc="Forward" &gt;*/
   GIMP_TRANSFORM_BACKWARD   /*&lt; desc="Backward" &gt;*/
 } GimpTransformDirection;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpVectorsStrokeType" role="enum"/>enum GimpVectorsStrokeType</title>
+<indexterm><primary>GimpVectorsStrokeType</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_VECTORS_STROKE_TYPE_BEZIER
+} GimpVectorsStrokeType;
 </programlisting>
 <para>
 

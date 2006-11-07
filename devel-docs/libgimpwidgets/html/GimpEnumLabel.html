@@ -19,10 +19,10 @@
 <link rel="part" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
 <link rel="part" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
 <link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimpwidgets-index.html" title="Index">
+<link rel="index" href="libgimpwidgets-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimpwidgets-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpwidgets-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -33,20 +33,20 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpFileEntry.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2555340" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2548911" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2599984" class="shortcut">Description</a>
+                  <a href="#id2576932" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2599908" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2576856" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2599963" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
+                  <a href="#id2576911" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpEnumLabel"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2555340"></a><span class="refentrytitle">GimpEnumLabel</span>
+<a name="id2548911"></a><span class="refentrytitle">GimpEnumLabel</span>
 </h2>
 <p>GimpEnumLabel</p>
 </td>
@@ -67,7 +67,7 @@ void        <a href="GimpEnumLabel.html#gimp-enum-label-set-value">gimp_enum_lab
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2599908"></a><h2>Object Hierarchy</h2>
+<a name="id2576856"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -80,32 +80,32 @@ void        <a href="GimpEnumLabel.html#gimp-enum-label-set-value">gimp_enum_lab
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2599963"></a><h2>Implemented Interfaces</h2>
+<a name="id2576911"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpEnumLabel implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2599984"></a><h2>Description</h2>
+<a name="id2576932"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2600000"></a><h2>Details</h2>
+<a name="id2576948"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2600011"></a><h3>
+<a name="id2576958"></a><h3>
 <a name="GimpEnumLabel-struct"></a>GimpEnumLabel</h3>
-<a class="indexterm" name="id2559795"></a><pre class="programlisting">typedef struct _GimpEnumLabel GimpEnumLabel;</pre>
+<a class="indexterm" name="id2576970"></a><pre class="programlisting">typedef struct _GimpEnumLabel GimpEnumLabel;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2559811"></a><h3>
+<a name="id2556575"></a><h3>
 <a name="gimp-enum-label-new"></a>gimp_enum_label_new ()</h3>
-<a class="indexterm" name="id2559826"></a><pre class="programlisting">GtkWidget*  gimp_enum_label_new             (GType enum_type,
+<a class="indexterm" name="id2556590"></a><pre class="programlisting">GtkWidget*  gimp_enum_label_new             (GType enum_type,
                                              gint value);</pre>
 <p>
 </p>
@@ -116,20 +116,17 @@ GimpEnumLabel implements
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>enum_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>enum_type</code></em>&#160;:</span></td>
 <td> the <span class="type">GType</span> of an enum.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new <a href="GimpEnumLabel.html" title="GimpEnumLabel"><span class="type">GimpEnumLabel</span></a>.
 
 </td>
@@ -141,9 +138,9 @@ GimpEnumLabel implements
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2559926"></a><h3>
+<a name="id2556690"></a><h3>
 <a name="gimp-enum-label-set-value"></a>gimp_enum_label_set_value ()</h3>
-<a class="indexterm" name="id2559939"></a><pre class="programlisting">void        gimp_enum_label_set_value       (<a href="GimpEnumLabel.html" title="GimpEnumLabel">GimpEnumLabel</a> *label,
+<a class="indexterm" name="id2556703"></a><pre class="programlisting">void        gimp_enum_label_set_value       (<a href="GimpEnumLabel.html" title="GimpEnumLabel">GimpEnumLabel</a> *label,
                                              gint value);</pre>
 <p>
 </p>
@@ -154,14 +151,12 @@ GimpEnumLabel implements
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
 <td> a <a href="GimpEnumLabel.html" title="GimpEnumLabel"><span class="type">GimpEnumLabel</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>

@@ -55,7 +55,6 @@
 <link linkend="gint">gint</link>*       <link linkend="gimp-image-get-channels">gimp_image_get_channels</link>         (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint">gint</link> *num_channels);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-image-get-active-drawable">gimp_image_get_active_drawable</link>  (<link linkend="gint32">gint32</link> image_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-unset-active-channel">gimp_image_unset_active_channel</link> (<link linkend="gint32">gint32</link> image_ID);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-image-get-floating-sel">gimp_image_get_floating_sel</link>     (<link linkend="gint32">gint32</link> image_ID);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-image-floating-sel-attached-to">gimp_image_floating_sel_attached_to</link>
                                             (<link linkend="gint32">gint32</link> image_ID);
@@ -84,6 +83,8 @@
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-lower-layer-to-bottom">gimp_image_lower_layer_to_bottom</link>
                                             (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> layer_ID);
+<link linkend="gint">gint</link>        <link linkend="gimp-image-get-layer-position">gimp_image_get_layer_position</link>   (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> layer_ID);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-add-channel">gimp_image_add_channel</link>          (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> channel_ID,
                                              <link linkend="gint">gint</link> position);
@@ -92,6 +93,8 @@
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-raise-channel">gimp_image_raise_channel</link>        (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> channel_ID);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-lower-channel">gimp_image_lower_channel</link>        (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> channel_ID);
+<link linkend="gint">gint</link>        <link linkend="gimp-image-get-channel-position">gimp_image_get_channel_position</link> (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> channel_ID);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-image-flatten">gimp_image_flatten</link>              (<link linkend="gint32">gint32</link> image_ID);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-image-merge-visible-layers">gimp_image_merge_visible_layers</link> (<link linkend="gint32">gint32</link> image_ID,
@@ -107,6 +110,7 @@
 <link linkend="gint32">gint32</link>      <link linkend="gimp-image-get-active-channel">gimp_image_get_active_channel</link>   (<link linkend="gint32">gint32</link> image_ID);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-set-active-channel">gimp_image_set_active_channel</link>   (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> active_channel_ID);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-unset-active-channel">gimp_image_unset_active_channel</link> (<link linkend="gint32">gint32</link> image_ID);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-image-get-selection">gimp_image_get_selection</link>        (<link linkend="gint32">gint32</link> image_ID);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-get-component-active">gimp_image_get_component_active</link> (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="GimpChannelType">GimpChannelType</link> component);
@@ -187,6 +191,8 @@
                                             (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> vectors_ID);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-raise-vectors-to-top">gimp_image_raise_vectors_to_top</link> (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> vectors_ID);
+<link linkend="gint">gint</link>        <link linkend="gimp-image-get-vectors-position">gimp_image_get_vectors_position</link> (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> vectors_ID);
 </synopsis>
 </refsynopsisdiv>
@@ -613,26 +619,6 @@ is the active drawable.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-unset-active-channel" role="function"/>gimp_image_unset_active_channel ()</title>
-<indexterm><primary>gimp_image_unset_active_channel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_unset_active_channel (<link linkend="gint32">gint32</link> image_ID);</programlisting>
-<para>
-Unsets the active channel in the specified image.
-</para>
-<para>
-If an active channel exists, it is unset. There then exists no
-active channel, and if desired, one can be set through a call to
-'Set Active Channel'. No error is returned in the case of no
-existing active channel.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
-<listitem><simpara> The image.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
 <title><anchor id="gimp-image-get-floating-sel" role="function"/>gimp_image_get_floating_sel ()</title>
 <indexterm><primary>gimp_image_get_floating_sel</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_get_floating_sel     (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
@@ -902,6 +888,31 @@ it.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="gimp-image-get-layer-position" role="function" condition="since:GIMP 2.4"/>gimp_image_get_layer_position ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_image_get_layer_position</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_image_get_layer_position   (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> layer_ID);</programlisting>
+<para>
+Returns the position of the layer in the layer stack.
+</para>
+<para>
+This procedure determines the positioin of the specified layer in
+the images layer stack. If the layer doesn't exist in the image, an
+error is returned.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The image.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>layer_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The layer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The position of the layer in the layer stack.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
 <title><anchor id="gimp-image-add-channel" role="function"/>gimp_image_add_channel ()</title>
 <indexterm><primary>gimp_image_add_channel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_add_channel          (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> channel_ID,
@@ -996,6 +1007,31 @@ below it.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-image-get-channel-position" role="function" condition="since:GIMP 2.4"/>gimp_image_get_channel_position ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_image_get_channel_position</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_image_get_channel_position (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> channel_ID);</programlisting>
+<para>
+Returns the position of the channel in the channel stack.
+</para>
+<para>
+This procedure determines the positioin of the specified channel in
+the images channel stack. If the channel doesn't exist in the image,
+an error is returned.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The image.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>channel_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The channel.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The position of the channel in the channel stack.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
 <refsect2>
 <title><anchor id="gimp-image-flatten" role="function"/>gimp_image_flatten ()</title>
 <indexterm><primary>gimp_image_flatten</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_flatten              (<link linkend="gint32">gint32</link> image_ID);</programlisting>
@@ -1196,6 +1232,26 @@ this procedure will return an execution error.</para>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>active_channel_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The new image active channel.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-image-unset-active-channel" role="function"/>gimp_image_unset_active_channel ()</title>
+<indexterm><primary>gimp_image_unset_active_channel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_unset_active_channel (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<para>
+Unsets the active channel in the specified image.
+</para>
+<para>
+If an active channel exists, it is unset. There then exists no
+active channel, and if desired, one can be set through a call to
+'Set Active Channel'. No error is returned in the case of no
+existing active channel.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The image.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
@@ -2033,6 +2089,32 @@ above it.</para>
 <listitem><simpara> The vectors object to raise to top.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-image-get-vectors-position" role="function" condition="since:GIMP 2.4"/>gimp_image_get_vectors_position ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_image_get_vectors_position</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_image_get_vectors_position (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> vectors_ID);</programlisting>
+<para>
+Returns the position of the vectors object in the vectors objects
+stack.
+</para>
+<para>
+This procedure determines the positioin of the specified vectors
+object in the images vectors object stack. If the vectors object
+doesn't exist in the image, an error is returned.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The image.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>vectors_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The vectors object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The position of the vectors object in the vectors stack.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4

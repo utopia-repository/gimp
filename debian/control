@@ -68,8 +68,8 @@ Package: gimp-gnomevfs
 Architecture: any
 Section: graphics
 Depends: gimp (= ${Source-Version}), ${shlibs:Depends}
-Conflicts: gimp-libcurl
-Replaces: gimp-libcurl
+Conflicts: gimp-libcurl, gimp (<= 2.3.12-2)
+Replaces: gimp-libcurl, gimp (<= 2.3.12-2)
 Description: GNOME-VFS URI plugin for The GIMP
  This package includes a plugin for The GIMP which will open URIs (e.g.
  ftp:, http:, smb:, and sftp:) using protocol handlers from GNOME-VFS.
@@ -78,8 +78,8 @@ Package: gimp-libcurl
 Architecture: any
 Section: graphics
 Depends: gimp (= ${Source-Version}), ${shlibs:Depends}
-Conflicts: gimp-gnomevfs
-Replaces: gimp-gnomevfs
+Conflicts: gimp-gnomevfs, gimp (<= 2.3.12-2)
+Replaces: gimp-gnomevfs, gimp (<= 2.3.12-2)
 Description: libcurl URI plugin for The GIMP
  This package includes a plugin for The GIMP which will open URIs (e.g.
  ftp: and http:) using protocol handlers from libcurl.

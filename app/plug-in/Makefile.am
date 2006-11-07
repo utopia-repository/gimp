@@ -27,6 +27,8 @@ libappplug_in_a_SOURCES = \
 	gimpplugindebug.h			\
 	gimpplugin.c				\
 	gimpplugin.h				\
+	gimpplugin-cleanup.c			\
+	gimpplugin-cleanup.h			\
 	gimpplugin-context.c			\
 	gimpplugin-context.h			\
 	gimpplugin-message.c			\
@@ -65,7 +67,10 @@ libappplug_in_a_SOURCES = \
 	plug-in-params.c			\
 	plug-in-params.h			\
 	plug-in-rc.c				\
-	plug-in-rc.h
+	plug-in-rc.h				\
+	\
+	plug-in-icc-profile.c			\
+	plug-in-icc-profile.h
 
 EXTRA_DIST = makefile.msc
 

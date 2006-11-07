@@ -99,7 +99,7 @@ gimp_paint_options_gui (GimpToolOptions *tool_options)
   g_object_set_data (G_OBJECT (vbox), GIMP_PAINT_OPTIONS_TABLE_KEY, table);
 
   /*  the paint mode menu  */
-  menu = gimp_prop_paint_mode_menu_new (config, "paint-mode", TRUE);
+  menu = gimp_prop_paint_mode_menu_new (config, "paint-mode", TRUE, FALSE);
   label = gimp_table_attach_aligned (GTK_TABLE (table), 0, table_row++,
                                      _("Mode:"), 0.0, 0.5,
                                      menu, 2, FALSE);
@@ -119,15 +119,22 @@ gimp_paint_options_gui (GimpToolOptions *tool_options)
                                _("Opacity:"));
 
   /*  the brush  */
-  if (tool_type != GIMP_TYPE_BUCKET_FILL_TOOL &&
-      tool_type != GIMP_TYPE_BLEND_TOOL       &&
-      tool_type != GIMP_TYPE_INK_TOOL)
+  if (g_type_is_a (tool_type, GIMP_TYPE_BRUSH_TOOL))
     {
       button = gimp_prop_brush_box_new (NULL, GIMP_CONTEXT (tool_options), 2,
                                         "brush-view-type", "brush-view-size");
       gimp_table_attach_aligned (GTK_TABLE (table), 0, table_row++,
                                  _("Brush:"), 0.0, 0.5,
                                  button, 2, FALSE);
+
+      if (tool_type != GIMP_TYPE_SMUDGE_TOOL)
+        {
+          gimp_prop_scale_entry_new (config, "brush-scale",
+                                     GTK_TABLE (table), 0, table_row++,
+                                     _("Scale:"),
+                                     0.01, 0.1, 2,
+                                     FALSE, 0.0, 0.0);
+        }
     }
 
   /*  the gradient  */
@@ -328,25 +335,14 @@ fade_options_gui (GimpFadeOptions  *fade,
     {
       GtkWidget *table;
       GtkWidget *spinbutton;
-      GtkWidget *button;
       GtkWidget *menu;
-
-      frame = gimp_frame_new (NULL);
-
-      button = gimp_prop_check_button_new (config, "use-fade",
-                                           _("Fade out"));
-      gtk_frame_set_label_widget (GTK_FRAME (frame), button);
-      gtk_widget_show (button);
 
       table = gtk_table_new (1, 3, FALSE);
       gtk_table_set_col_spacings (GTK_TABLE (table), 2);
-      gtk_container_add (GTK_CONTAINER (frame), table);
-      if (fade->use_fade)
-        gtk_widget_show (table);
 
-      g_signal_connect_object (button, "toggled",
-                               G_CALLBACK (gimp_toggle_button_set_visible),
-                               table, 0);
+      frame = gimp_prop_expanding_frame_new (config, "use-fade",
+                                             _("Fade out"),
+                                             table, NULL);
 
       /*  the fade-out sizeentry  */
       spinbutton = gimp_prop_spin_button_new (config, "fade-length",
@@ -381,25 +377,13 @@ jitter_options_gui (GimpJitterOptions  *jitter,
   if (g_type_is_a (tool_type, GIMP_TYPE_BRUSH_TOOL))
     {
       GtkWidget *table;
-      GtkWidget *button;
-
-      frame = gimp_frame_new (NULL);
-
-      button = gimp_prop_check_button_new (config, "use-jitter",
-                                           _("Apply Jitter"));
-
-      gtk_frame_set_label_widget (GTK_FRAME (frame), button);
-      gtk_widget_show (button);
 
       table = gtk_table_new (1, 3, FALSE);
       gtk_table_set_col_spacings (GTK_TABLE (table), 2);
-      gtk_container_add (GTK_CONTAINER (frame), table);
-      if (jitter->use_jitter)
-        gtk_widget_show (table);
 
-      g_signal_connect_object (button, "toggled",
-                               G_CALLBACK (gimp_toggle_button_set_visible),
-                               table, 0);
+      frame = gimp_prop_expanding_frame_new (config, "use-jitter",
+                                             _("Apply Jitter"),
+                                             table, NULL);
 
       gimp_prop_scale_entry_new (config, "jitter-amount",
                                  GTK_TABLE (table), 0, 0,
@@ -428,23 +412,13 @@ gradient_options_gui (GimpGradientOptions *gradient,
       GtkWidget *menu;
       GtkWidget *combo;
 
-      frame = gimp_frame_new (NULL);
-
-      button = gimp_prop_check_button_new (config, "use-gradient",
-                                           _("Use color from gradient"));
-      gtk_frame_set_label_widget (GTK_FRAME (frame), button);
-      gtk_widget_show (button);
-
       table = gtk_table_new (3, 3, FALSE);
       gtk_table_set_col_spacings (GTK_TABLE (table), 2);
       gtk_table_set_row_spacings (GTK_TABLE (table), 2);
-      gtk_container_add (GTK_CONTAINER (frame), table);
-      if (gradient->use_gradient)
-        gtk_widget_show (table);
 
-      g_signal_connect_object (button, "toggled",
-                               G_CALLBACK (gimp_toggle_button_set_visible),
-                               table, 0);
+      frame = gimp_prop_expanding_frame_new (config, "use-gradient",
+                                             _("Use color from gradient"),
+                                             table, &button);
 
       if (incremental_toggle)
         {

@@ -18,10 +18,10 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimp-index.html" title="Index">
+<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -32,20 +32,20 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpmenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2591290" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2582518" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2704091" class="shortcut">Description</a>
+                  <a href="#id2708106" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2548797" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2683542" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2576983" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
+                  <a href="#id2565607" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpProgressBar"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2591290"></a><span class="refentrytitle">GimpProgressBar</span>
+<a name="id2582518"></a><span class="refentrytitle">GimpProgressBar</span>
 </h2>
 <p>GimpProgressBar &#8212; A widget providing a progress bar.</p>
 </td>
@@ -63,7 +63,7 @@ GtkWidget*  <a href="GimpProgressBar.html#gimp-progress-bar-new">gimp_progress_b
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2548797"></a><h2>Object Hierarchy</h2>
+<a name="id2683542"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -76,33 +76,33 @@ GtkWidget*  <a href="GimpProgressBar.html#gimp-progress-bar-new">gimp_progress_b
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2576983"></a><h2>Implemented Interfaces</h2>
+<a name="id2565607"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpProgressBar implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2704091"></a><h2>Description</h2>
+<a name="id2708106"></a><h2>Description</h2>
 <p>
 A widget providing a progress bar that automatically redirects any progress
 calls to itself.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2704107"></a><h2>Details</h2>
+<a name="id2708124"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2704116"></a><h3>
+<a name="id2708134"></a><h3>
 <a name="GimpProgressBar-struct"></a>GimpProgressBar</h3>
-<a class="indexterm" name="id2704127"></a><pre class="programlisting">typedef struct _GimpProgressBar GimpProgressBar;</pre>
+<a class="indexterm" name="id2708145"></a><pre class="programlisting">typedef struct _GimpProgressBar GimpProgressBar;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2704143"></a><h3>
+<a name="id2708161"></a><h3>
 <a name="gimp-progress-bar-new"></a>gimp_progress_bar_new ()</h3>
-<a class="indexterm" name="id2704156"></a><pre class="programlisting">GtkWidget*  gimp_progress_bar_new           (void);</pre>
+<a class="indexterm" name="id2708174"></a><pre class="programlisting">GtkWidget*  gimp_progress_bar_new           (void);</pre>
 <p>
 Creates a new <a href="GimpProgressBar.html" title="GimpProgressBar"><span class="type">GimpProgressBar</span></a> widget.</p>
 <p>
@@ -111,8 +111,7 @@ Creates a new <a href="GimpProgressBar.html" title="GimpProgressBar"><span class
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the new widget.
 
 </td>

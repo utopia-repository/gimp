@@ -12,9 +12,9 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="chapter" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix03.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimpconfig-index.html" title="Index">
+<link rel="index" href="libgimpconfig-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpconfig-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpconfig-gimpconfig-serialize.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2576527" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2575541" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2577618" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2548985" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpconfig-gimpconfig-deserialize"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2576527"></a><span class="refentrytitle">gimpconfig-deserialize</span>
+<a name="id2575541"></a><span class="refentrytitle">gimpconfig-deserialize</span>
 </h2>
 <p>gimpconfig-deserialize &#8212; Deserializing code for libgimpconfig.</p>
 </td>
@@ -57,18 +57,18 @@ GTokenType  <a href="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deser
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577618"></a><h2>Description</h2>
+<a name="id2548985"></a><h2>Description</h2>
 <p>
 Deserializing code for libgimpconfig.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577634"></a><h2>Details</h2>
+<a name="id2549001"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2577644"></a><h3>
+<a name="id2549011"></a><h3>
 <a name="gimp-config-deserialize-properties"></a>gimp_config_deserialize_properties ()</h3>
-<a class="indexterm" name="id2577657"></a><pre class="programlisting">gboolean    gimp_config_deserialize_properties
+<a class="indexterm" name="id2549024"></a><pre class="programlisting">gboolean    gimp_config_deserialize_properties
                                             (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
                                              GScanner *scanner,
                                              gint nest_level);</pre>
@@ -81,26 +81,22 @@ This function uses the <em class="parameter"><code>scanner</code></em> to config
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td> a <a href="libgimpconfig-GimpConfig.html#GimpConfig"><span class="type">GimpConfig</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
 <td> a <span class="type">GScanner</span>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>nest_level</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>nest_level</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> <code class="literal">TRUE</code> on success, <code class="literal">FALSE</code> otherwise.
 
 </td>
@@ -112,9 +108,9 @@ This function uses the <em class="parameter"><code>scanner</code></em> to config
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570925"></a><h3>
+<a name="id2576811"></a><h3>
 <a name="gimp-config-deserialize-property"></a>gimp_config_deserialize_property ()</h3>
-<a class="indexterm" name="id2570938"></a><pre class="programlisting">GTokenType  gimp_config_deserialize_property
+<a class="indexterm" name="id2576825"></a><pre class="programlisting">GTokenType  gimp_config_deserialize_property
                                             (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
                                              GScanner *scanner,
                                              gint nest_level);</pre>
@@ -129,26 +125,22 @@ shouldn't need to call this function directly. If possible, use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
 <td> a <a href="libgimpconfig-GimpConfig.html#GimpConfig"><span class="type">GimpConfig</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
 <td> a <span class="type">GScanner</span>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>nest_level</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>nest_level</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> <code class="literal">G_TOKEN_RIGHT_PAREN</code> on success, otherwise the
 expected <span class="type">GTokenType</span> or <code class="literal">G_TOKEN_NONE</code> if the expected token was
 found but couldn't be parsed.

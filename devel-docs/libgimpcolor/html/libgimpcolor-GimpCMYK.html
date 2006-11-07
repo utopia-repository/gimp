@@ -11,10 +11,10 @@
 <meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimpcolor-index.html" title="Index">
+<link rel="index" href="libgimpcolor-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimpcolor-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpcolor-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Color Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpcolor-GimpColorSpace.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2588263" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2574925" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2557841" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2558458" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpcolor-GimpCMYK"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2588263"></a><span class="refentrytitle">GimpCMYK</span>
+<a name="id2574925"></a><span class="refentrytitle">GimpCMYK</span>
 </h2>
 <p>GimpCMYK &#8212; Definitions and Functions relating to CMYK colors.</p>
 </td>
@@ -85,17 +85,17 @@ void        <a href="libgimpcolor-GimpCMYK.html#gimp-cmyka-get-uchar">gimp_cmyka
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2557841"></a><h2>Description</h2>
+<a name="id2558458"></a><h2>Description</h2>
 <p>
 Definitions and Functions relating to CMYK colors.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2557857"></a><h2>Details</h2>
+<a name="id2558475"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2562766"></a><h3>
+<a name="id2592824"></a><h3>
 <a name="GimpCMYK"></a>GimpCMYK</h3>
-<a class="indexterm" name="id2562778"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2592836"></a><pre class="programlisting">typedef struct {
   gdouble c, m, y, k, a;
 } GimpCMYK;
 </pre>
@@ -105,9 +105,9 @@ Definitions and Functions relating to CMYK colors.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562794"></a><h3>
+<a name="id2592852"></a><h3>
 <a name="gimp-cmyk-set"></a>gimp_cmyk_set ()</h3>
-<a class="indexterm" name="id2562806"></a><pre class="programlisting">void        gimp_cmyk_set                   (<a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk,
+<a class="indexterm" name="id2592864"></a><pre class="programlisting">void        gimp_cmyk_set                   (<a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk,
                                              gdouble cyan,
                                              gdouble magenta,
                                              gdouble yellow,
@@ -122,32 +122,27 @@ values are doubles in the range 0 to 1.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>cmyk</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>cmyk</code></em>&#160;:</span></td>
 <td>    A <a href="libgimpcolor-GimpCMYK.html#GimpCMYK"><span class="type">GimpCMYK</span></a> structure which will hold the specified CMYK value.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>cyan</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>cyan</code></em>&#160;:</span></td>
 <td>    The Cyan channel of the CMYK value
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>magenta</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>magenta</code></em>&#160;:</span></td>
 <td> The Magenta channel
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>yellow</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>yellow</code></em>&#160;:</span></td>
 <td>  The Yellow channel
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>black</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>black</code></em>&#160;:</span></td>
 <td>   The blacK channel
 </td>
 </tr>
@@ -156,9 +151,9 @@ values are doubles in the range 0 to 1.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562954"></a><h3>
+<a name="id2593012"></a><h3>
 <a name="gimp-cmyk-set-uchar"></a>gimp_cmyk_set_uchar ()</h3>
-<a class="indexterm" name="id2562966"></a><pre class="programlisting">void        gimp_cmyk_set_uchar             (<a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk,
+<a class="indexterm" name="id2593024"></a><pre class="programlisting">void        gimp_cmyk_set_uchar             (<a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk,
                                              guchar cyan,
                                              guchar magenta,
                                              guchar yellow,
@@ -173,32 +168,27 @@ unsigned chars in the range 0 to 255.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>cmyk</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>cmyk</code></em>&#160;:</span></td>
 <td>    A <a href="libgimpcolor-GimpCMYK.html#GimpCMYK"><span class="type">GimpCMYK</span></a> structure which will hold the specified CMYK value.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>cyan</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>cyan</code></em>&#160;:</span></td>
 <td>    The Cyan channel of the CMYK value
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>magenta</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>magenta</code></em>&#160;:</span></td>
 <td> The Magenta channel
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>yellow</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>yellow</code></em>&#160;:</span></td>
 <td>  The Yellow channel
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>black</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>black</code></em>&#160;:</span></td>
 <td>   The blacK channel
 </td>
 </tr>
@@ -207,9 +197,9 @@ unsigned chars in the range 0 to 255.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2559349"></a><h3>
+<a name="id2558756"></a><h3>
 <a name="gimp-cmyk-get-uchar"></a>gimp_cmyk_get_uchar ()</h3>
-<a class="indexterm" name="id2559361"></a><pre class="programlisting">void        gimp_cmyk_get_uchar             (const <a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk,
+<a class="indexterm" name="id2558768"></a><pre class="programlisting">void        gimp_cmyk_get_uchar             (const <a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyk,
                                              guchar *cyan,
                                              guchar *magenta,
                                              guchar *yellow,
@@ -224,32 +214,27 @@ values are pointers to unsigned chars in the range 0 to 255.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>cmyk</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>cmyk</code></em>&#160;:</span></td>
 <td>    A <a href="libgimpcolor-GimpCMYK.html#GimpCMYK"><span class="type">GimpCMYK</span></a> structure which will hold the specified CMYK value.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>cyan</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>cyan</code></em>&#160;:</span></td>
 <td>    The Cyan channel of the CMYK value
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>magenta</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>magenta</code></em>&#160;:</span></td>
 <td> The Magenta channel
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>yellow</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>yellow</code></em>&#160;:</span></td>
 <td>  The Yellow channel
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>black</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>black</code></em>&#160;:</span></td>
 <td>   The blacK channel
 </td>
 </tr>
@@ -258,9 +243,9 @@ values are pointers to unsigned chars in the range 0 to 255.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2559511"></a><h3>
+<a name="id2558918"></a><h3>
 <a name="gimp-cmyka-set"></a>gimp_cmyka_set ()</h3>
-<a class="indexterm" name="id2552687"></a><pre class="programlisting">void        gimp_cmyka_set                  (<a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyka,
+<a class="indexterm" name="id2552057"></a><pre class="programlisting">void        gimp_cmyka_set                  (<a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyka,
                                              gdouble cyan,
                                              gdouble magenta,
                                              gdouble yellow,
@@ -276,38 +261,32 @@ doubles in the range 0 to 1.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>cmyka</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>cmyka</code></em>&#160;:</span></td>
 <td>   A <a href="libgimpcolor-GimpCMYK.html#GimpCMYK"><span class="type">GimpCMYK</span></a> structure which will hold the specified CMYKA value.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>cyan</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>cyan</code></em>&#160;:</span></td>
 <td>    The Cyan channel of the CMYK value
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>magenta</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>magenta</code></em>&#160;:</span></td>
 <td> The Magenta channel
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>yellow</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>yellow</code></em>&#160;:</span></td>
 <td>  The Yellow channel
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>black</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>black</code></em>&#160;:</span></td>
 <td>   The blacK channel
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
 <td>   The Alpha channel
 </td>
 </tr>
@@ -316,9 +295,9 @@ doubles in the range 0 to 1.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2552857"></a><h3>
+<a name="id2552227"></a><h3>
 <a name="gimp-cmyka-set-uchar"></a>gimp_cmyka_set_uchar ()</h3>
-<a class="indexterm" name="id2552868"></a><pre class="programlisting">void        gimp_cmyka_set_uchar            (<a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyka,
+<a class="indexterm" name="id2552238"></a><pre class="programlisting">void        gimp_cmyka_set_uchar            (<a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyka,
                                              guchar cyan,
                                              guchar magenta,
                                              guchar yellow,
@@ -334,38 +313,32 @@ unsigned chars in the range 0 to 255.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>cmyka</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>cmyka</code></em>&#160;:</span></td>
 <td>   A <a href="libgimpcolor-GimpCMYK.html#GimpCMYK"><span class="type">GimpCMYK</span></a> structure which will hold the specified CMYKA value.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>cyan</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>cyan</code></em>&#160;:</span></td>
 <td>    The Cyan channel of the CMYK value
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>magenta</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>magenta</code></em>&#160;:</span></td>
 <td> The Magenta channel
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>yellow</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>yellow</code></em>&#160;:</span></td>
 <td>  The Yellow channel
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>black</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>black</code></em>&#160;:</span></td>
 <td>   The blacK channel
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
 <td>   The Alpha channel
 </td>
 </tr>
@@ -374,9 +347,9 @@ unsigned chars in the range 0 to 255.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2553040"></a><h3>
+<a name="id2552411"></a><h3>
 <a name="gimp-cmyka-get-uchar"></a>gimp_cmyka_get_uchar ()</h3>
-<a class="indexterm" name="id2553052"></a><pre class="programlisting">void        gimp_cmyka_get_uchar            (const <a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyka,
+<a class="indexterm" name="id2552422"></a><pre class="programlisting">void        gimp_cmyka_get_uchar            (const <a href="libgimpcolor-GimpCMYK.html#GimpCMYK">GimpCMYK</a> *cmyka,
                                              guchar *cyan,
                                              guchar *magenta,
                                              guchar *yellow,
@@ -392,38 +365,32 @@ Channel values are pointers to unsigned chars in the range 0 to 255.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>cmyka</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>cmyka</code></em>&#160;:</span></td>
 <td>   A <a href="libgimpcolor-GimpCMYK.html#GimpCMYK"><span class="type">GimpCMYK</span></a> structure which will hold the specified CMYKA value.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>cyan</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>cyan</code></em>&#160;:</span></td>
 <td>    The Cyan channel of the CMYK value
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>magenta</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>magenta</code></em>&#160;:</span></td>
 <td> The Magenta channel
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>yellow</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>yellow</code></em>&#160;:</span></td>
 <td>  The Yellow channel
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>black</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>black</code></em>&#160;:</span></td>
 <td>   The blacK channel
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
 <td>   The Alpha channel
 </td>
 </tr>
@@ -432,9 +399,9 @@ Channel values are pointers to unsigned chars in the range 0 to 255.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2553222"></a><h3>
+<a name="id2552593"></a><h3>
 <a name="GIMP-TYPE-CMYK:CAPS"></a>GIMP_TYPE_CMYK</h3>
-<a class="indexterm" name="id2553235"></a><pre class="programlisting">#define GIMP_TYPE_CMYK       (gimp_cmyk_get_type ())
+<a class="indexterm" name="id2552605"></a><pre class="programlisting">#define GIMP_TYPE_CMYK       (gimp_cmyk_get_type ())
 </pre>
 <p>
 

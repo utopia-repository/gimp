@@ -12,9 +12,9 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="chapter" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix03.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimpconfig-index.html" title="Index">
+<link rel="index" href="libgimpconfig-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpconfig-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="GimpColorConfig.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2586714" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2589128" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2597065" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2586819" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpconfig-GimpScanner"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2586714"></a><span class="refentrytitle">gimpscanner</span>
+<a name="id2589128"></a><span class="refentrytitle">gimpscanner</span>
 </h2>
 <p>gimpscanner</p>
 </td>
@@ -79,17 +79,17 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2597065"></a><h2>Description</h2>
+<a name="id2586819"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2597081"></a><h2>Details</h2>
+<a name="id2586834"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2597092"></a><h3>
+<a name="id2586845"></a><h3>
 <a name="gimp-scanner-new-file"></a>gimp_scanner_new_file ()</h3>
-<a class="indexterm" name="id2593536"></a><pre class="programlisting">GScanner*   gimp_scanner_new_file           (const gchar *filename,
+<a class="indexterm" name="id2596655"></a><pre class="programlisting">GScanner*   gimp_scanner_new_file           (const gchar *filename,
                                              GError **error);</pre>
 <p>
 </p>
@@ -100,20 +100,17 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>error</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>error</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 </td>
@@ -125,9 +122,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2593621"></a><h3>
+<a name="id2596740"></a><h3>
 <a name="gimp-scanner-new-string"></a>gimp_scanner_new_string ()</h3>
-<a class="indexterm" name="id2593635"></a><pre class="programlisting">GScanner*   gimp_scanner_new_string         (const gchar *text,
+<a class="indexterm" name="id2596754"></a><pre class="programlisting">GScanner*   gimp_scanner_new_string         (const gchar *text,
                                              gint text_len,
                                              GError **error);</pre>
 <p>
@@ -139,26 +136,22 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>text_len</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>error</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>text_len</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>error</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 </td>
@@ -170,9 +163,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2593741"></a><h3>
+<a name="id2596860"></a><h3>
 <a name="gimp-scanner-destroy"></a>gimp_scanner_destroy ()</h3>
-<a class="indexterm" name="id2593754"></a><pre class="programlisting">void        gimp_scanner_destroy            (GScanner *scanner);</pre>
+<a class="indexterm" name="id2596873"></a><pre class="programlisting">void        gimp_scanner_destroy            (GScanner *scanner);</pre>
 <p>
 </p>
 <p>
@@ -181,8 +174,7 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr></tbody>
@@ -192,9 +184,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572675"></a><h3>
+<a name="id2572710"></a><h3>
 <a name="gimp-scanner-parse-token"></a>gimp_scanner_parse_token ()</h3>
-<a class="indexterm" name="id2572689"></a><pre class="programlisting">gboolean    gimp_scanner_parse_token        (GScanner *scanner,
+<a class="indexterm" name="id2572723"></a><pre class="programlisting">gboolean    gimp_scanner_parse_token        (GScanner *scanner,
                                              GTokenType token);</pre>
 <p>
 </p>
@@ -205,20 +197,17 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>token</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>token</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 </td>
@@ -230,9 +219,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572774"></a><h3>
+<a name="id2572809"></a><h3>
 <a name="gimp-scanner-parse-identifier"></a>gimp_scanner_parse_identifier ()</h3>
-<a class="indexterm" name="id2572788"></a><pre class="programlisting">gboolean    gimp_scanner_parse_identifier   (GScanner *scanner,
+<a class="indexterm" name="id2572823"></a><pre class="programlisting">gboolean    gimp_scanner_parse_identifier   (GScanner *scanner,
                                              const gchar *identifier);</pre>
 <p>
 </p>
@@ -243,20 +232,17 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>identifier</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>identifier</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 </td>
@@ -268,9 +254,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572873"></a><h3>
+<a name="id2572909"></a><h3>
 <a name="gimp-scanner-parse-string"></a>gimp_scanner_parse_string ()</h3>
-<a class="indexterm" name="id2572886"></a><pre class="programlisting">gboolean    gimp_scanner_parse_string       (GScanner *scanner,
+<a class="indexterm" name="id2572922"></a><pre class="programlisting">gboolean    gimp_scanner_parse_string       (GScanner *scanner,
                                              gchar **dest);</pre>
 <p>
 </p>
@@ -281,20 +267,17 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 </td>
@@ -306,9 +289,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600967"></a><h3>
+<a name="id2600334"></a><h3>
 <a name="gimp-scanner-parse-string-no-validate"></a>gimp_scanner_parse_string_no_validate ()</h3>
-<a class="indexterm" name="id2600982"></a><pre class="programlisting">gboolean    gimp_scanner_parse_string_no_validate
+<a class="indexterm" name="id2600349"></a><pre class="programlisting">gboolean    gimp_scanner_parse_string_no_validate
                                             (GScanner *scanner,
                                              gchar **dest);</pre>
 <p>
@@ -320,20 +303,17 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 </td>
@@ -345,9 +325,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601060"></a><h3>
+<a name="id2600427"></a><h3>
 <a name="gimp-scanner-parse-data"></a>gimp_scanner_parse_data ()</h3>
-<a class="indexterm" name="id2601072"></a><pre class="programlisting">gboolean    gimp_scanner_parse_data         (GScanner *scanner,
+<a class="indexterm" name="id2600439"></a><pre class="programlisting">gboolean    gimp_scanner_parse_data         (GScanner *scanner,
                                              gint length,
                                              guint8 **dest);</pre>
 <p>
@@ -359,26 +339,22 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>length</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>length</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 </td>
@@ -390,9 +366,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601177"></a><h3>
+<a name="id2600546"></a><h3>
 <a name="gimp-scanner-parse-int"></a>gimp_scanner_parse_int ()</h3>
-<a class="indexterm" name="id2601191"></a><pre class="programlisting">gboolean    gimp_scanner_parse_int          (GScanner *scanner,
+<a class="indexterm" name="id2600559"></a><pre class="programlisting">gboolean    gimp_scanner_parse_int          (GScanner *scanner,
                                              gint *dest);</pre>
 <p>
 </p>
@@ -403,20 +379,17 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 </td>
@@ -428,9 +401,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601277"></a><h3>
+<a name="id2600645"></a><h3>
 <a name="gimp-scanner-parse-float"></a>gimp_scanner_parse_float ()</h3>
-<a class="indexterm" name="id2601290"></a><pre class="programlisting">gboolean    gimp_scanner_parse_float        (GScanner *scanner,
+<a class="indexterm" name="id2600659"></a><pre class="programlisting">gboolean    gimp_scanner_parse_float        (GScanner *scanner,
                                              gdouble *dest);</pre>
 <p>
 </p>
@@ -441,20 +414,17 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 </td>
@@ -466,9 +436,9 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601376"></a><h3>
+<a name="id2600744"></a><h3>
 <a name="gimp-scanner-parse-color"></a>gimp_scanner_parse_color ()</h3>
-<a class="indexterm" name="id2601390"></a><pre class="programlisting">gboolean    gimp_scanner_parse_color        (GScanner *scanner,
+<a class="indexterm" name="id2600758"></a><pre class="programlisting">gboolean    gimp_scanner_parse_color        (GScanner *scanner,
                                              <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *dest);</pre>
@@ -481,20 +451,17 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 </td>
@@ -506,9 +473,9 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601475"></a><h3>
+<a name="id2600844"></a><h3>
 <a name="gimp-scanner-parse-matrix2"></a>gimp_scanner_parse_matrix2 ()</h3>
-<a class="indexterm" name="id2601490"></a><pre class="programlisting">gboolean    gimp_scanner_parse_matrix2      (GScanner *scanner,
+<a class="indexterm" name="id2600858"></a><pre class="programlisting">gboolean    gimp_scanner_parse_matrix2      (GScanner *scanner,
                                              <a
 href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 >GimpMatrix2</a> *dest);</pre>
@@ -521,20 +488,17 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 </td>

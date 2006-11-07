@@ -19,7 +19,7 @@ major=$(shell echo ${version} | cut -d. -f1-2)
 micro=$(shell echo ${version} | cut -d. -f3 | cut -d+ -f1)
 nextmicro=$(shell expr ${micro} + 1)
 
-
+LDFLAGS = -Wl,--as-needed
 DEB_CONFIGURE_EXTRA_FLAGS := \
 	--enable-python --without-print --enable-default-binary
 DEB_BUILDDIR := $(DEB_SRCDIR)/build
@@ -42,6 +42,7 @@ common-install-impl::
 	# postrm
 	find $(CURDIR)/debian/tmp -name "*.py[co]" -exec xargs rm '{}' ';'
 
+	rm debian/tmp/usr/lib/gimp/2.0/plug-ins/uri
 	dh_movefiles
 
 binary-install/gimp-gnomevfs::
@@ -50,7 +51,7 @@ binary-install/gimp-gnomevfs::
 
 	cd $(DEB_BUILDDIR)/plug-ins/uri && make
 
-	mv $(DEB_BUILDDIR)/plug-ins/uri/.libs/uri \
+	cp $(DEB_BUILDDIR)/plug-ins/uri/.libs/uri \
 		$(CURDIR)/debian/gimp-gnomevfs/usr/lib/gimp/2.0/plug-ins/uri
 
 binary-install/gimp-libcurl::
@@ -66,14 +67,12 @@ binary-install/gimp-libcurl::
 			$(DEB_BUILDDIR)/plug-ins/uri/Makefile.libcurl
 	cd $(DEB_BUILDDIR)/plug-ins/uri && make -f Makefile.libcurl
 
-	mv $(DEB_BUILDDIR)/plug-ins/uri/.libs/uri \
+	cp $(DEB_BUILDDIR)/plug-ins/uri/.libs/uri \
 		$(CURDIR)/debian/gimp-libcurl/usr/lib/gimp/2.0/plug-ins/uri
 
 binary-install/gimp-python::
 	dh_pysupport -pgimp-python /usr/lib/gimp/2.0/python
 
 binary-predeb/gimp::
-	sed -i -e 's/libglib2.0-0 (>= 2.10.0)/libglib2.0-0 (>= 2.10.2)/' \
-		debian/gimp.substvars
-	sed -i -e 's/libgtk2.0-0 (>= 2.8.0-1)/libgtk2.0-0 (>= 2.8.8)/' \
+	sed -i -e 's/libgtk2.0-0 (>= 2.8.0)/libgtk2.0-0 (>= 2.8.17)/' \
 		debian/gimp.substvars

@@ -59,10 +59,11 @@ am__objects_1 =
 am__objects_2 = dialogs.$(OBJEXT) dialogs-constructors.$(OBJEXT) \
 	about-dialog.$(OBJEXT) channel-options-dialog.$(OBJEXT) \
 	convert-dialog.$(OBJEXT) desaturate-dialog.$(OBJEXT) \
-	file-open-dialog.$(OBJEXT) file-open-location-dialog.$(OBJEXT) \
-	file-save-dialog.$(OBJEXT) grid-dialog.$(OBJEXT) \
-	image-merge-layers-dialog.$(OBJEXT) image-new-dialog.$(OBJEXT) \
-	image-properties-dialog.$(OBJEXT) image-scale-dialog.$(OBJEXT) \
+	fade-dialog.$(OBJEXT) file-open-dialog.$(OBJEXT) \
+	file-open-location-dialog.$(OBJEXT) file-save-dialog.$(OBJEXT) \
+	grid-dialog.$(OBJEXT) image-merge-layers-dialog.$(OBJEXT) \
+	image-new-dialog.$(OBJEXT) image-properties-dialog.$(OBJEXT) \
+	image-scale-dialog.$(OBJEXT) \
 	keyboard-shortcuts-dialog.$(OBJEXT) \
 	layer-add-mask-dialog.$(OBJEXT) layer-options-dialog.$(OBJEXT) \
 	module-dialog.$(OBJEXT) offset-dialog.$(OBJEXT) \
@@ -230,6 +231,8 @@ HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
 HAVE_MAC_TWAIN_TRUE = @HAVE_MAC_TWAIN_TRUE@
+HAVE_PNG_FALSE = @HAVE_PNG_FALSE@
+HAVE_PNG_TRUE = @HAVE_PNG_TRUE@
 HAVE_WINDRES_FALSE = @HAVE_WINDRES_FALSE@
 HAVE_WINDRES_TRUE = @HAVE_WINDRES_TRUE@
 HAVE_XMLLINT_FALSE = @HAVE_XMLLINT_FALSE@
@@ -271,12 +274,12 @@ INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
 LCMS = @LCMS@
-LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
 LIBJPEG = @LIBJPEG@
+LIBLCMS = @LIBLCMS@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
@@ -355,6 +358,7 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
+SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -478,6 +482,8 @@ libappdialogs_a_sources = \
 	convert-dialog.h		\
 	desaturate-dialog.c		\
 	desaturate-dialog.h		\
+	fade-dialog.c			\
+	fade-dialog.h			\
 	file-open-dialog.c		\
 	file-open-dialog.h		\
 	file-open-location-dialog.c	\
@@ -598,6 +604,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/desaturate-dialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dialogs-constructors.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dialogs.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fade-dialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file-open-dialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file-open-location-dialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file-save-dialog.Po@am__quote@

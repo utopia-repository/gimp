@@ -18,10 +18,10 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimp-index.html" title="Index">
+<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -32,16 +32,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpbuffer.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2583324" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2570832" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2595780" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2595149" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimp"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2583324"></a><span class="refentrytitle">gimp</span>
+<a name="id2570832"></a><span class="refentrytitle">gimp</span>
 </h2>
 <p>gimp &#8212; Main functions needed for building a GIMP plug-in. This header includes
 all other GIMP Library headers.</p>
@@ -163,7 +163,7 @@ gboolean    <a href="libgimp-gimp.html#gimp-attach-new-parasite">gimp_attach_new
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2595780"></a><h2>Description</h2>
+<a name="id2595149"></a><h2>Description</h2>
 <p>
 Main functions needed for building a GIMP plug-in. This header includes
 all other GIMP Library headers.
@@ -171,20 +171,20 @@ all other GIMP Library headers.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2595796"></a><h2>Details</h2>
+<a name="id2595165"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2595805"></a><h3>
+<a name="id2595174"></a><h3>
 <a name="GIMPVAR:CAPS"></a>GIMPVAR</h3>
-<a class="indexterm" name="id2595816"></a><pre class="programlisting">#define     GIMPVAR</pre>
+<a class="indexterm" name="id2595184"></a><pre class="programlisting">#define     GIMPVAR</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2595829"></a><h3>
+<a name="id2595198"></a><h3>
 <a name="gimp-version"></a>gimp_version ()</h3>
-<a class="indexterm" name="id2595840"></a><pre class="programlisting">gchar*      gimp_version                    (void);</pre>
+<a class="indexterm" name="id2595208"></a><pre class="programlisting">gchar*      gimp_version                    (void);</pre>
 <p>
 Returns the host gimp version.
 </p>
@@ -197,8 +197,7 @@ gimp.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The gimp version.
 </td>
 </tr></tbody>
@@ -206,9 +205,9 @@ gimp.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2595880"></a><h3>
+<a name="id2595248"></a><h3>
 <a name="gimp-getpid"></a>gimp_getpid ()</h3>
-<a class="indexterm" name="id2595892"></a><pre class="programlisting">gint        gimp_getpid                     (void);</pre>
+<a class="indexterm" name="id2595261"></a><pre class="programlisting">gint        gimp_getpid                     (void);</pre>
 <p>
 Returns the PID of the host gimp process.
 </p>
@@ -220,8 +219,7 @@ This procedure returns the process ID of the currently running gimp.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The PID.
 
 </td>
@@ -232,9 +230,9 @@ This procedure returns the process ID of the currently running gimp.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2595936"></a><h3>
+<a name="id2595305"></a><h3>
 <a name="gimp-major-version"></a>gimp_major_version</h3>
-<a class="indexterm" name="id2595947"></a><pre class="programlisting">extern const guint gimp_major_version;
+<a class="indexterm" name="id2595316"></a><pre class="programlisting">extern const guint gimp_major_version;
 </pre>
 <p>
 
@@ -242,9 +240,9 @@ This procedure returns the process ID of the currently running gimp.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2595960"></a><h3>
+<a name="id2595329"></a><h3>
 <a name="gimp-minor-version"></a>gimp_minor_version</h3>
-<a class="indexterm" name="id2595971"></a><pre class="programlisting">extern const guint gimp_minor_version;
+<a class="indexterm" name="id2595340"></a><pre class="programlisting">extern const guint gimp_minor_version;
 </pre>
 <p>
 
@@ -252,9 +250,9 @@ This procedure returns the process ID of the currently running gimp.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2595984"></a><h3>
+<a name="id2595353"></a><h3>
 <a name="gimp-micro-version"></a>gimp_micro_version</h3>
-<a class="indexterm" name="id2595995"></a><pre class="programlisting">extern const guint gimp_micro_version;
+<a class="indexterm" name="id2595364"></a><pre class="programlisting">extern const guint gimp_micro_version;
 </pre>
 <p>
 
@@ -262,9 +260,9 @@ This procedure returns the process ID of the currently running gimp.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596008"></a><h3>
+<a name="id2595377"></a><h3>
 <a name="gimp-get-data"></a>gimp_get_data</h3>
-<a class="indexterm" name="id2596019"></a><pre class="programlisting">#define gimp_get_data         gimp_procedural_db_get_data
+<a class="indexterm" name="id2595388"></a><pre class="programlisting">#define gimp_get_data         gimp_procedural_db_get_data
 </pre>
 <p>
 
@@ -272,9 +270,9 @@ This procedure returns the process ID of the currently running gimp.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596033"></a><h3>
+<a name="id2595402"></a><h3>
 <a name="gimp-get-data-size"></a>gimp_get_data_size</h3>
-<a class="indexterm" name="id2596044"></a><pre class="programlisting">#define gimp_get_data_size    gimp_procedural_db_get_data_size
+<a class="indexterm" name="id2595413"></a><pre class="programlisting">#define gimp_get_data_size    gimp_procedural_db_get_data_size
 </pre>
 <p>
 
@@ -282,8 +280,7 @@ This procedure returns the process ID of the currently running gimp.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -293,9 +290,9 @@ This procedure returns the process ID of the currently running gimp.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596072"></a><h3>
+<a name="id2595441"></a><h3>
 <a name="gimp-set-data"></a>gimp_set_data</h3>
-<a class="indexterm" name="id2596083"></a><pre class="programlisting">#define gimp_set_data         gimp_procedural_db_set_data
+<a class="indexterm" name="id2595452"></a><pre class="programlisting">#define gimp_set_data         gimp_procedural_db_set_data
 </pre>
 <p>
 
@@ -303,36 +300,36 @@ This procedure returns the process ID of the currently running gimp.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596097"></a><h3>
+<a name="id2595466"></a><h3>
 <a name="GimpInitProc"></a>GimpInitProc ()</h3>
-<a class="indexterm" name="id2596108"></a><pre class="programlisting">void        (*GimpInitProc)                 (void);</pre>
+<a class="indexterm" name="id2595477"></a><pre class="programlisting">void        (*GimpInitProc)                 (void);</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596126"></a><h3>
+<a name="id2595495"></a><h3>
 <a name="GimpQuitProc"></a>GimpQuitProc ()</h3>
-<a class="indexterm" name="id2596137"></a><pre class="programlisting">void        (*GimpQuitProc)                 (void);</pre>
+<a class="indexterm" name="id2595506"></a><pre class="programlisting">void        (*GimpQuitProc)                 (void);</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596156"></a><h3>
+<a name="id2595524"></a><h3>
 <a name="GimpQueryProc"></a>GimpQueryProc ()</h3>
-<a class="indexterm" name="id2596166"></a><pre class="programlisting">void        (*GimpQueryProc)                (void);</pre>
+<a class="indexterm" name="id2595535"></a><pre class="programlisting">void        (*GimpQueryProc)                (void);</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596185"></a><h3>
+<a name="id2595553"></a><h3>
 <a name="GimpRunProc"></a>GimpRunProc ()</h3>
-<a class="indexterm" name="id2596195"></a><pre class="programlisting">void        (*GimpRunProc)                  (const gchar *name,
+<a class="indexterm" name="id2595564"></a><pre class="programlisting">void        (*GimpRunProc)                  (const gchar *name,
                                              gint n_params,
                                              const <a href="libgimp-gimp.html#GimpParam">GimpParam</a> *param,
                                              gint *n_return_vals,
@@ -344,32 +341,27 @@ This procedure returns the process ID of the currently running gimp.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>n_params</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>param</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>n_return_vals</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>n_params</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>param</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>return_vals</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>n_return_vals</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>return_vals</code></em>&#160;:</span></td>
 <td>
 
 
@@ -380,9 +372,9 @@ This procedure returns the process ID of the currently running gimp.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596312"></a><h3>
+<a name="id2595680"></a><h3>
 <a name="GimpPlugInInfo"></a>GimpPlugInInfo</h3>
-<a class="indexterm" name="id2596322"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2595691"></a><pre class="programlisting">typedef struct {
   /* called when the gimp application initially starts up */
   GimpInitProc  init_proc;
 
@@ -407,9 +399,9 @@ This procedure returns the process ID of the currently running gimp.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596344"></a><h3>
+<a name="id2595713"></a><h3>
 <a name="GimpParamDef"></a>GimpParamDef</h3>
-<a class="indexterm" name="id2596354"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2595723"></a><pre class="programlisting">typedef struct {
   GimpPDBArgType  type;
   gchar          *name;
   gchar          *description;
@@ -421,9 +413,9 @@ This procedure returns the process ID of the currently running gimp.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596370"></a><h3>
+<a name="id2595739"></a><h3>
 <a name="GimpParamRegion"></a>GimpParamRegion</h3>
-<a class="indexterm" name="id2596380"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2595749"></a><pre class="programlisting">typedef struct {
   gint32 x;
   gint32 y;
   gint32 width;
@@ -436,9 +428,9 @@ This procedure returns the process ID of the currently running gimp.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596396"></a><h3>
+<a name="id2595765"></a><h3>
 <a name="GimpParamData"></a>union GimpParamData</h3>
-<a class="indexterm" name="id2596406"></a><pre class="programlisting">union GimpParamData
+<a class="indexterm" name="id2595775"></a><pre class="programlisting">union GimpParamData
 {
   gint32            d_int32;
   gint16            d_int16;
@@ -474,9 +466,9 @@ This procedure returns the process ID of the currently running gimp.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596434"></a><h3>
+<a name="id2595803"></a><h3>
 <a name="GimpParam"></a>GimpParam</h3>
-<a class="indexterm" name="id2596444"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2595813"></a><pre class="programlisting">typedef struct {
   GimpPDBArgType type;
   GimpParamData  data;
 } GimpParam;
@@ -487,9 +479,9 @@ This procedure returns the process ID of the currently running gimp.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596460"></a><h3>
+<a name="id2595828"></a><h3>
 <a name="MAIN:CAPS"></a>MAIN()</h3>
-<a class="indexterm" name="id2596470"></a><pre class="programlisting">#define     MAIN()</pre>
+<a class="indexterm" name="id2595839"></a><pre class="programlisting">#define     MAIN()</pre>
 <p>
 A macro that expands to the appropriate <code class="function">main()</code> function for the
 platform being compiled for.
@@ -503,9 +495,9 @@ To use this macro, simply place a line that contains just the code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596510"></a><h3>
+<a name="id2595879"></a><h3>
 <a name="gimp-main"></a>gimp_main ()</h3>
-<a class="indexterm" name="id2596520"></a><pre class="programlisting">gint        gimp_main                       (const <a href="libgimp-gimp.html#GimpPlugInInfo">GimpPlugInInfo</a> *info,
+<a class="indexterm" name="id2595889"></a><pre class="programlisting">gint        gimp_main                       (const <a href="libgimp-gimp.html#GimpPlugInInfo">GimpPlugInInfo</a> *info,
                                              gint argc,
                                              gchar *argv[]);</pre>
 <p>
@@ -518,26 +510,22 @@ and the 'argc' and 'argv' that are passed to "main".</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>info</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>info</code></em>&#160;:</span></td>
 <td> the PLUG_IN_INFO structure
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>argc</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>argc</code></em>&#160;:</span></td>
 <td> the number of arguments
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>argv</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>argv</code></em>&#160;:</span></td>
 <td> the arguments
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 </td>
 </tr>
@@ -546,9 +534,9 @@ and the 'argc' and 'argv' that are passed to "main".</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596614"></a><h3>
+<a name="id2595983"></a><h3>
 <a name="gimp-quit"></a>gimp_quit ()</h3>
-<a class="indexterm" name="id2596624"></a><pre class="programlisting">void        gimp_quit                       (void);</pre>
+<a class="indexterm" name="id2595993"></a><pre class="programlisting">void        gimp_quit                       (void);</pre>
 <p>
 Forcefully causes the gimp library to exit and close down its
 connection to main gimp application. This function never returns.</p>
@@ -558,9 +546,9 @@ connection to main gimp application. This function never returns.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596648"></a><h3>
+<a name="id2596017"></a><h3>
 <a name="gimp-install-procedure"></a>gimp_install_procedure ()</h3>
-<a class="indexterm" name="id2596659"></a><pre class="programlisting">void        gimp_install_procedure          (const gchar *name,
+<a class="indexterm" name="id2596028"></a><pre class="programlisting">void        gimp_install_procedure          (const gchar *name,
                                              const gchar *blurb,
                                              const gchar *help,
                                              const gchar *author,
@@ -630,82 +618,69 @@ that will be automatically started on each GIMP startup.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>          the procedure's name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>         a short text describing what the procedure does.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>help</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>help</code></em>&#160;:</span></td>
 <td>          the help text for the procedure (usually considerably
                 longer than <em class="parameter"><code>blurb</code></em>).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>author</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>author</code></em>&#160;:</span></td>
 <td>        the procedure's author(s).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>copyright</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>copyright</code></em>&#160;:</span></td>
 <td>     the procedure's copyright.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>date</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>date</code></em>&#160;:</span></td>
 <td>          the date the procedure was added.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>menu_label</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>menu_label</code></em>&#160;:</span></td>
 <td>    the label to use for the procedure's menu entry,
                 or <span class="type">NULL</span> if the procedure has no menu entry.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>image_types</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>image_types</code></em>&#160;:</span></td>
 <td>   the drawable types the procedure can handle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>type</code></em>&#160;:</span></td>
 <td>          the type of the procedure.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>n_params</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>n_params</code></em>&#160;:</span></td>
 <td>      the number of parameters the procedure takes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>n_return_vals</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>n_return_vals</code></em>&#160;:</span></td>
 <td> the number of return values the procedure returns.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>params</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>params</code></em>&#160;:</span></td>
 <td>        the procedure's parameters.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>return_vals</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>return_vals</code></em>&#160;:</span></td>
 <td>   the procedure's return values.
 </td>
 </tr>
@@ -714,9 +689,9 @@ that will be automatically started on each GIMP startup.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597146"></a><h3>
+<a name="id2596515"></a><h3>
 <a name="gimp-install-temp-proc"></a>gimp_install_temp_proc ()</h3>
-<a class="indexterm" name="id2597156"></a><pre class="programlisting">void        gimp_install_temp_proc          (const gchar *name,
+<a class="indexterm" name="id2596525"></a><pre class="programlisting">void        gimp_install_temp_proc          (const gchar *name,
                                              const gchar *blurb,
                                              const gchar *help,
                                              const gchar *author,
@@ -764,88 +739,74 @@ details.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>          the procedure's name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>         a short text describing what the procedure does.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>help</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>help</code></em>&#160;:</span></td>
 <td>          the help text for the procedure (usually considerably
                 longer than <em class="parameter"><code>blurb</code></em>).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>author</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>author</code></em>&#160;:</span></td>
 <td>        the procedure's author(s).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>copyright</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>copyright</code></em>&#160;:</span></td>
 <td>     the procedure's copyright.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>date</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>date</code></em>&#160;:</span></td>
 <td>          the date the procedure was added.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>menu_label</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>menu_label</code></em>&#160;:</span></td>
 <td>    the procedure's menu label, or <span class="type">NULL</span> if the procedure has
                 no menu entry.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>image_types</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>image_types</code></em>&#160;:</span></td>
 <td>   the drawable types the procedure can handle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>type</code></em>&#160;:</span></td>
 <td>          the type of the procedure.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>n_params</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>n_params</code></em>&#160;:</span></td>
 <td>      the number of parameters the procedure takes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>n_return_vals</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>n_return_vals</code></em>&#160;:</span></td>
 <td> the number of return values the procedure returns.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>params</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>params</code></em>&#160;:</span></td>
 <td>        the procedure's parameters.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>return_vals</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>return_vals</code></em>&#160;:</span></td>
 <td>   the procedure's return values.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>run_proc</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>run_proc</code></em>&#160;:</span></td>
 <td>      the function to call for executing the procedure.
 </td>
 </tr>
@@ -854,9 +815,9 @@ details.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597538"></a><h3>
+<a name="id2596912"></a><h3>
 <a name="gimp-uninstall-temp-proc"></a>gimp_uninstall_temp_proc ()</h3>
-<a class="indexterm" name="id2597549"></a><pre class="programlisting">void        gimp_uninstall_temp_proc        (const gchar *name);</pre>
+<a class="indexterm" name="id2596922"></a><pre class="programlisting">void        gimp_uninstall_temp_proc        (const gchar *name);</pre>
 <p>
 Uninstalls a temporary procedure which has previously been
 installed using <a href="libgimp-gimp.html#gimp-install-temp-proc"><code class="function">gimp_install_temp_proc()</code></a>.</p>
@@ -866,8 +827,7 @@ installed using <a href="libgimp-gimp.html#gimp-install-temp-proc"><code class="
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> the procedure's name
 </td>
 </tr></tbody>
@@ -875,9 +835,9 @@ installed using <a href="libgimp-gimp.html#gimp-install-temp-proc"><code class="
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597602"></a><h3>
+<a name="id2596976"></a><h3>
 <a name="gimp-run-procedure"></a>gimp_run_procedure ()</h3>
-<a class="indexterm" name="id2597613"></a><pre class="programlisting"><a href="libgimp-gimp.html#GimpParam">GimpParam</a>*  gimp_run_procedure              (const gchar *name,
+<a class="indexterm" name="id2596986"></a><pre class="programlisting"><a href="libgimp-gimp.html#GimpParam">GimpParam</a>*  gimp_run_procedure              (const gchar *name,
                                              gint *n_return_vals,
                                              ...);</pre>
 <p>
@@ -898,26 +858,22 @@ information.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>          the name of the procedure to run
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>n_return_vals</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>n_return_vals</code></em>&#160;:</span></td>
 <td> return location for the number of return values
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
 <td>       list of procedure parameters
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the procedure's return values.
 </td>
 </tr>
@@ -926,9 +882,9 @@ information.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597729"></a><h3>
+<a name="id2597103"></a><h3>
 <a name="gimp-run-procedure2"></a>gimp_run_procedure2 ()</h3>
-<a class="indexterm" name="id2597739"></a><pre class="programlisting"><a href="libgimp-gimp.html#GimpParam">GimpParam</a>*  gimp_run_procedure2             (const gchar *name,
+<a class="indexterm" name="id2597113"></a><pre class="programlisting"><a href="libgimp-gimp.html#GimpParam">GimpParam</a>*  gimp_run_procedure2             (const gchar *name,
                                              gint *n_return_vals,
                                              gint n_params,
                                              const <a href="libgimp-gimp.html#GimpParam">GimpParam</a> *params);</pre>
@@ -948,32 +904,27 @@ free them using <a href="libgimp-gimp.html#gimp-destroy-params"><code class="fun
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>          the name of the procedure to run
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>n_return_vals</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>n_return_vals</code></em>&#160;:</span></td>
 <td> return location for the number of return values
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>n_params</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>n_params</code></em>&#160;:</span></td>
 <td>      the number of parameters the procedure takes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>params</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>params</code></em>&#160;:</span></td>
 <td>        the procedure's parameters array.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the procedure's return values.
 </td>
 </tr>
@@ -982,9 +933,9 @@ free them using <a href="libgimp-gimp.html#gimp-destroy-params"><code class="fun
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597871"></a><h3>
+<a name="id2597245"></a><h3>
 <a name="gimp-destroy-params"></a>gimp_destroy_params ()</h3>
-<a class="indexterm" name="id2597882"></a><pre class="programlisting">void        gimp_destroy_params             (<a href="libgimp-gimp.html#GimpParam">GimpParam</a> *params,
+<a class="indexterm" name="id2597255"></a><pre class="programlisting">void        gimp_destroy_params             (<a href="libgimp-gimp.html#GimpParam">GimpParam</a> *params,
                                              gint n_params);</pre>
 <p>
 Destroys a <a href="libgimp-gimp.html#GimpParam"><span class="type">GimpParam</span></a> array as returned by <a href="libgimp-gimp.html#gimp-run-procedure"><code class="function">gimp_run_procedure()</code></a> or
@@ -996,14 +947,12 @@ Destroys a <a href="libgimp-gimp.html#GimpParam"><span class="type">GimpParam</s
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>params</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>params</code></em>&#160;:</span></td>
 <td>   the <a href="libgimp-gimp.html#GimpParam"><span class="type">GimpParam</span></a> array to destroy
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>n_params</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>n_params</code></em>&#160;:</span></td>
 <td> the number of elements in the array
 </td>
 </tr>
@@ -1012,9 +961,9 @@ Destroys a <a href="libgimp-gimp.html#GimpParam"><span class="type">GimpParam</s
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597974"></a><h3>
+<a name="id2597348"></a><h3>
 <a name="gimp-destroy-paramdefs"></a>gimp_destroy_paramdefs ()</h3>
-<a class="indexterm" name="id2597985"></a><pre class="programlisting">void        gimp_destroy_paramdefs          (<a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> *paramdefs,
+<a class="indexterm" name="id2597358"></a><pre class="programlisting">void        gimp_destroy_paramdefs          (<a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> *paramdefs,
                                              gint n_params);</pre>
 <p>
 Destroys a <a href="libgimp-gimp.html#GimpParamDef"><span class="type">GimpParamDef</span></a> array as returned by <code class="function">gimp_query_procedure()</code></p>
@@ -1025,14 +974,12 @@ Destroys a <a href="libgimp-gimp.html#GimpParamDef"><span class="type">GimpParam
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>paramdefs</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>paramdefs</code></em>&#160;:</span></td>
 <td> the <a href="libgimp-gimp.html#GimpParamDef"><span class="type">GimpParamDef</span></a> array to destroy
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>n_params</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>n_params</code></em>&#160;:</span></td>
 <td>  the number of elements in the array
 </td>
 </tr>
@@ -1041,9 +988,9 @@ Destroys a <a href="libgimp-gimp.html#GimpParamDef"><span class="type">GimpParam
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598068"></a><h3>
+<a name="id2597442"></a><h3>
 <a name="gimp-tile-width"></a>gimp_tile_width ()</h3>
-<a class="indexterm" name="id2598078"></a><pre class="programlisting">guint       gimp_tile_width                 (void);</pre>
+<a class="indexterm" name="id2597452"></a><pre class="programlisting">guint       gimp_tile_width                 (void);</pre>
 <p>
 Returns the tile_width the GIMP is using. This is a constant value
 given at Plug-In config time.</p>
@@ -1053,8 +1000,7 @@ given at Plug-In config time.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the tile_width
 </td>
 </tr></tbody>
@@ -1062,9 +1008,9 @@ given at Plug-In config time.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598116"></a><h3>
+<a name="id2597489"></a><h3>
 <a name="gimp-tile-height"></a>gimp_tile_height ()</h3>
-<a class="indexterm" name="id2598126"></a><pre class="programlisting">guint       gimp_tile_height                (void);</pre>
+<a class="indexterm" name="id2597500"></a><pre class="programlisting">guint       gimp_tile_height                (void);</pre>
 <p>
 Returns the tile_height the GIMP is using. This is a constant value
 given at Plug-In config time.</p>
@@ -1074,8 +1020,7 @@ given at Plug-In config time.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the tile_height
 </td>
 </tr></tbody>
@@ -1083,9 +1028,9 @@ given at Plug-In config time.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598163"></a><h3>
+<a name="id2597537"></a><h3>
 <a name="gimp-shm-ID"></a>gimp_shm_ID ()</h3>
-<a class="indexterm" name="id2598174"></a><pre class="programlisting">gint        gimp_shm_ID                     (void);</pre>
+<a class="indexterm" name="id2597549"></a><pre class="programlisting">gint        gimp_shm_ID                     (void);</pre>
 <p>
 Returns the shared memory ID used for passing tile data between the GIMP
 core and the Plug-In. This is a constant value
@@ -1096,8 +1041,7 @@ given at Plug-In config time.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the shared memory ID
 </td>
 </tr></tbody>
@@ -1105,9 +1049,9 @@ given at Plug-In config time.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598217"></a><h3>
+<a name="id2597591"></a><h3>
 <a name="gimp-shm-addr"></a>gimp_shm_addr ()</h3>
-<a class="indexterm" name="id2598230"></a><pre class="programlisting">guchar*     gimp_shm_addr                   (void);</pre>
+<a class="indexterm" name="id2597604"></a><pre class="programlisting">guchar*     gimp_shm_addr                   (void);</pre>
 <p>
 Returns the address of the shared memory segment used for passing
 tile data between the GIMP core and the Plug-In. This is a constant
@@ -1118,8 +1062,7 @@ value given at Plug-In config time.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the shared memory address
 </td>
 </tr></tbody>
@@ -1127,9 +1070,9 @@ value given at Plug-In config time.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598273"></a><h3>
+<a name="id2597647"></a><h3>
 <a name="gimp-gamma"></a>gimp_gamma ()</h3>
-<a class="indexterm" name="id2598286"></a><pre class="programlisting">gdouble     gimp_gamma                      (void);</pre>
+<a class="indexterm" name="id2597660"></a><pre class="programlisting">gdouble     gimp_gamma                      (void);</pre>
 <p>
 Returns the global gamma value the GIMP and all its Plug-Ins should
 use. This is a constant value given at Plug-In config time.
@@ -1142,8 +1085,7 @@ NOTE: this feature is unimplemented.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the gamma value
 </td>
 </tr></tbody>
@@ -1151,9 +1093,9 @@ NOTE: this feature is unimplemented.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598333"></a><h3>
+<a name="id2597707"></a><h3>
 <a name="gimp-install-cmap"></a>gimp_install_cmap ()</h3>
-<a class="indexterm" name="id2598346"></a><pre class="programlisting">gboolean    gimp_install_cmap               (void);</pre>
+<a class="indexterm" name="id2597720"></a><pre class="programlisting">gboolean    gimp_install_cmap               (void);</pre>
 <p>
 Returns whether or not the Plug-In should allocate an own colormap
 when running on an 8 bit display. This is a constant value given at
@@ -1167,8 +1109,7 @@ See also: <a href="libgimp-gimp.html#gimp-min-colors"><code class="function">gim
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the install_cmap boolean
 </td>
 </tr></tbody>
@@ -1176,9 +1117,9 @@ See also: <a href="libgimp-gimp.html#gimp-min-colors"><code class="function">gim
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598400"></a><h3>
+<a name="id2597775"></a><h3>
 <a name="gimp-min-colors"></a>gimp_min_colors ()</h3>
-<a class="indexterm" name="id2598413"></a><pre class="programlisting">gint        gimp_min_colors                 (void);</pre>
+<a class="indexterm" name="id2597788"></a><pre class="programlisting">gint        gimp_min_colors                 (void);</pre>
 <p>
 Returns the minimum number of colors to use when allocating an own
 colormap on 8 bit displays. This is a constant value given at
@@ -1192,8 +1133,7 @@ See also: <a href="libgimp-gimp.html#gimp-install-cmap"><code class="function">g
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the minimum number of colors to allocate
 </td>
 </tr></tbody>
@@ -1201,9 +1141,9 @@ See also: <a href="libgimp-gimp.html#gimp-install-cmap"><code class="function">g
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598468"></a><h3>
+<a name="id2597843"></a><h3>
 <a name="gimp-show-tool-tips"></a>gimp_show_tool_tips ()</h3>
-<a class="indexterm" name="id2598482"></a><pre class="programlisting">gboolean    gimp_show_tool_tips             (void);</pre>
+<a class="indexterm" name="id2597856"></a><pre class="programlisting">gboolean    gimp_show_tool_tips             (void);</pre>
 <p>
 Returns whether or not the Plug-In should show tooltips. This is a
 constant value given at Plug-In config time.</p>
@@ -1213,8 +1153,7 @@ constant value given at Plug-In config time.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the show_tool_tips boolean
 </td>
 </tr></tbody>
@@ -1222,9 +1161,9 @@ constant value given at Plug-In config time.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598524"></a><h3>
+<a name="id2597898"></a><h3>
 <a name="gimp-show-help-button"></a>gimp_show_help_button ()</h3>
-<a class="indexterm" name="id2598539"></a><pre class="programlisting">gboolean    gimp_show_help_button           (void);</pre>
+<a class="indexterm" name="id2597914"></a><pre class="programlisting">gboolean    gimp_show_help_button           (void);</pre>
 <p>
 Returns whether or not GimpDialog should automatically add a help
 button if help_func and help_id are given.</p>
@@ -1234,8 +1173,7 @@ button if help_func and help_id are given.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the show_help_button boolean
 
 </td>
@@ -1246,9 +1184,9 @@ button if help_func and help_id are given.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598586"></a><h3>
+<a name="id2597961"></a><h3>
 <a name="gimp-check-size"></a>gimp_check_size ()</h3>
-<a class="indexterm" name="id2598602"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2597976"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckSize"
 >GimpCheckSize</a> gimp_check_size               (void);</pre>
 <p>
@@ -1260,8 +1198,7 @@ This is a constant value given at Plug-In config time.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the check_size value
 
 </td>
@@ -1272,9 +1209,9 @@ This is a constant value given at Plug-In config time.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598649"></a><h3>
+<a name="id2598023"></a><h3>
 <a name="gimp-check-type"></a>gimp_check_type ()</h3>
-<a class="indexterm" name="id2598664"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2598039"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckType"
 >GimpCheckType</a> gimp_check_type               (void);</pre>
 <p>
@@ -1286,8 +1223,7 @@ This is a constant value given at Plug-In config time.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the check_type value
 
 </td>
@@ -1298,9 +1234,9 @@ This is a constant value given at Plug-In config time.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598712"></a><h3>
+<a name="id2598086"></a><h3>
 <a name="gimp-default-display"></a>gimp_default_display ()</h3>
-<a class="indexterm" name="id2598725"></a><pre class="programlisting">gint32      gimp_default_display            (void);</pre>
+<a class="indexterm" name="id2598100"></a><pre class="programlisting">gint32      gimp_default_display            (void);</pre>
 <p>
 Returns the default display ID. This corresponds to the display the
 running procedure's menu entry was invoked from. This is a
@@ -1311,8 +1247,7 @@ constant value given at Plug-In config time.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the default display ID
 </td>
 </tr></tbody>
@@ -1320,9 +1255,9 @@ constant value given at Plug-In config time.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598769"></a><h3>
+<a name="id2598143"></a><h3>
 <a name="gimp-wm-class"></a>gimp_wm_class ()</h3>
-<a class="indexterm" name="id2598782"></a><pre class="programlisting">const gchar* gimp_wm_class                  (void);</pre>
+<a class="indexterm" name="id2598156"></a><pre class="programlisting">const gchar* gimp_wm_class                  (void);</pre>
 <p>
 Returns the window manager class to be used for plug-in windows.
 This is a constant value given at Plug-In config time.</p>
@@ -1332,8 +1267,7 @@ This is a constant value given at Plug-In config time.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the window manager class
 </td>
 </tr></tbody>
@@ -1341,9 +1275,9 @@ This is a constant value given at Plug-In config time.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598826"></a><h3>
+<a name="id2598200"></a><h3>
 <a name="gimp-display-name"></a>gimp_display_name ()</h3>
-<a class="indexterm" name="id2598839"></a><pre class="programlisting">const gchar* gimp_display_name              (void);</pre>
+<a class="indexterm" name="id2598213"></a><pre class="programlisting">const gchar* gimp_display_name              (void);</pre>
 <p>
 Returns the display to be used for plug-in windows.
 This is a constant value given at Plug-In config time.</p>
@@ -1353,8 +1287,7 @@ This is a constant value given at Plug-In config time.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the display name
 </td>
 </tr></tbody>
@@ -1362,9 +1295,9 @@ This is a constant value given at Plug-In config time.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598882"></a><h3>
+<a name="id2598256"></a><h3>
 <a name="gimp-monitor-number"></a>gimp_monitor_number ()</h3>
-<a class="indexterm" name="id2598896"></a><pre class="programlisting">gint        gimp_monitor_number             (void);</pre>
+<a class="indexterm" name="id2598270"></a><pre class="programlisting">gint        gimp_monitor_number             (void);</pre>
 <p>
 Returns the monitor number to be used for plug-in windows.
 This is a constant value given at Plug-In config time.</p>
@@ -1374,8 +1307,7 @@ This is a constant value given at Plug-In config time.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the monitor number
 </td>
 </tr></tbody>
@@ -1383,9 +1315,9 @@ This is a constant value given at Plug-In config time.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598938"></a><h3>
+<a name="id2598312"></a><h3>
 <a name="gimp-get-progname"></a>gimp_get_progname ()</h3>
-<a class="indexterm" name="id2598951"></a><pre class="programlisting">const gchar* gimp_get_progname              (void);</pre>
+<a class="indexterm" name="id2598325"></a><pre class="programlisting">const gchar* gimp_get_progname              (void);</pre>
 <p>
 Returns the Plug-In's executable name.</p>
 <p>
@@ -1394,8 +1326,7 @@ Returns the Plug-In's executable name.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the executable name
 </td>
 </tr></tbody>
@@ -1403,9 +1334,9 @@ Returns the Plug-In's executable name.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598993"></a><h3>
+<a name="id2598367"></a><h3>
 <a name="gimp-extension-enable"></a>gimp_extension_enable ()</h3>
-<a class="indexterm" name="id2599006"></a><pre class="programlisting">void        gimp_extension_enable           (void);</pre>
+<a class="indexterm" name="id2598380"></a><pre class="programlisting">void        gimp_extension_enable           (void);</pre>
 <p>
 Enables asnychronous processing of messages from the main GIMP
 application.
@@ -1439,9 +1370,9 @@ See also: <a href="libgimp-gimp.html#gimp-install-procedure"><code class="functi
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599132"></a><h3>
+<a name="id2598506"></a><h3>
 <a name="gimp-extension-ack"></a>gimp_extension_ack ()</h3>
-<a class="indexterm" name="id2599146"></a><pre class="programlisting">void        gimp_extension_ack              (void);</pre>
+<a class="indexterm" name="id2598520"></a><pre class="programlisting">void        gimp_extension_ack              (void);</pre>
 <p>
 Notify the main GIMP application that the extension has been properly
 initialized and is ready to run.
@@ -1463,9 +1394,9 @@ See also: <a href="libgimp-gimp.html#gimp-install-procedure"><code class="functi
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599234"></a><h3>
+<a name="id2598608"></a><h3>
 <a name="gimp-extension-process"></a>gimp_extension_process ()</h3>
-<a class="indexterm" name="id2599248"></a><pre class="programlisting">void        gimp_extension_process          (guint timeout);</pre>
+<a class="indexterm" name="id2598622"></a><pre class="programlisting">void        gimp_extension_process          (guint timeout);</pre>
 <p>
 Processes one message sent by the GIMP and returns.
 </p>
@@ -1486,8 +1417,7 @@ See also: <a href="libgimp-gimp.html#gimp-install-procedure"><code class="functi
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>timeout</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>timeout</code></em>&#160;:</span></td>
 <td> The timeout (in ms) to use for the <code class="function">select()</code> call.
 </td>
 </tr></tbody>
@@ -1495,9 +1425,9 @@ See also: <a href="libgimp-gimp.html#gimp-install-procedure"><code class="functi
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599360"></a><h3>
+<a name="id2598734"></a><h3>
 <a name="gimp-parasite-find"></a>gimp_parasite_find ()</h3>
-<a class="indexterm" name="id2599374"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2598748"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 >GimpParasite</a>* gimp_parasite_find            (const gchar *name);</pre>
 <p>
@@ -1513,14 +1443,12 @@ the gimp.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The name of the parasite to find.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The found parasite.
 </td>
 </tr>
@@ -1529,9 +1457,9 @@ the gimp.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599440"></a><h3>
+<a name="id2598814"></a><h3>
 <a name="gimp-parasite-list"></a>gimp_parasite_list ()</h3>
-<a class="indexterm" name="id2599454"></a><pre class="programlisting">gboolean    gimp_parasite_list              (gint *num_parasites,
+<a class="indexterm" name="id2598828"></a><pre class="programlisting">gboolean    gimp_parasite_list              (gint *num_parasites,
                                              gchar ***parasites);</pre>
 <p>
 List all parasites.
@@ -1545,20 +1473,17 @@ Returns a list of all currently attached parasites.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_parasites</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_parasites</code></em>&#160;:</span></td>
 <td> The number of attached parasites.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>parasites</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>parasites</code></em>&#160;:</span></td>
 <td> The names of currently attached parasites.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1567,9 +1492,9 @@ Returns a list of all currently attached parasites.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599541"></a><h3>
+<a name="id2598915"></a><h3>
 <a name="gimp-parasite-attach"></a>gimp_parasite_attach ()</h3>
-<a class="indexterm" name="id2599554"></a><pre class="programlisting">gboolean    gimp_parasite_attach            (const <a
+<a class="indexterm" name="id2598928"></a><pre class="programlisting">gboolean    gimp_parasite_attach            (const <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 >GimpParasite</a> *parasite);</pre>
 <p>
@@ -1585,14 +1510,12 @@ values.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>parasite</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>parasite</code></em>&#160;:</span></td>
 <td> The parasite to attach to the gimp.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1601,9 +1524,9 @@ values.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599621"></a><h3>
+<a name="id2598995"></a><h3>
 <a name="gimp-parasite-detach"></a>gimp_parasite_detach ()</h3>
-<a class="indexterm" name="id2599634"></a><pre class="programlisting">gboolean    gimp_parasite_detach            (const gchar *name);</pre>
+<a class="indexterm" name="id2599008"></a><pre class="programlisting">gboolean    gimp_parasite_detach            (const gchar *name);</pre>
 <p>
 Removes a parasite from the gimp.
 </p>
@@ -1617,14 +1540,12 @@ values.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The name of the parasite to detach from the gimp.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1633,9 +1554,9 @@ values.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599701"></a><h3>
+<a name="id2599075"></a><h3>
 <a name="gimp-attach-new-parasite"></a>gimp_attach_new_parasite ()</h3>
-<a class="indexterm" name="id2599714"></a><pre class="programlisting">gboolean    gimp_attach_new_parasite        (const gchar *name,
+<a class="indexterm" name="id2599088"></a><pre class="programlisting">gboolean    gimp_attach_new_parasite        (const gchar *name,
                                              gint flags,
                                              gint size,
                                              gconstpointer data);</pre>
@@ -1649,38 +1570,33 @@ to the GIMP.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> the name of the <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 ><span class="type">GimpParasite</span></a> to create and attach.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td> the flags set on the <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 ><span class="type">GimpParasite</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>size</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>size</code></em>&#160;:</span></td>
 <td> the size of the parasite data in bytes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td> a pointer to the data attached with the <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 ><span class="type">GimpParasite</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on successful creation and attachment of
 the new parasite.
 

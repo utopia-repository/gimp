@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -112,7 +112,7 @@ static void       gimp_drawable_transform          (GimpItem          *item,
                                                     GimpInterpolationType   interpolation_type,
                                                     gboolean           supersample,
                                                     gint               recursion_level,
-                                                    gboolean           clip_result,
+                                                    GimpTransformResize     clip_result,
                                                     GimpProgress      *progress);
 
 static guchar   * gimp_drawable_get_color_at       (GimpPickable      *pickable,
@@ -227,13 +227,15 @@ gimp_drawable_init (GimpDrawable *drawable)
   drawable->preview_valid = FALSE;
 }
 
+/* sorry for the evil casts */
+
 static void
 gimp_drawable_pickable_iface_init (GimpPickableInterface *iface)
 {
-  iface->get_image      = gimp_item_get_image;
-  iface->get_image_type = gimp_drawable_type;
-  iface->get_bytes      = gimp_drawable_bytes;
-  iface->get_tiles      = gimp_drawable_get_tiles;
+  iface->get_image      = (GimpImage     * (*) (GimpPickable *pickable)) gimp_item_get_image;
+  iface->get_image_type = (GimpImageType   (*) (GimpPickable *pickable)) gimp_drawable_type;
+  iface->get_bytes      = (gint            (*) (GimpPickable *pickable)) gimp_drawable_bytes;
+  iface->get_tiles      = (TileManager   * (*) (GimpPickable *pickable)) gimp_drawable_get_tiles;
   iface->get_color_at   = gimp_drawable_get_color_at;
 }
 
@@ -556,7 +558,7 @@ gimp_drawable_transform (GimpItem               *item,
                          GimpInterpolationType   interpolation_type,
                          gboolean                supersample,
                          gint                    recursion_level,
-                         gboolean                clip_result,
+                         GimpTransformResize     clip_result,
                          GimpProgress           *progress)
 {
   GimpDrawable *drawable = GIMP_DRAWABLE (item);

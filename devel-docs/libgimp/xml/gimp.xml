@@ -23,12 +23,8 @@ all other GIMP Library headers.</refpurpose>
 
 
 
-#define     <link linkend="GIMPVAR:CAPS">GIMPVAR</link>
 <link linkend="gchar">gchar</link>*      <link linkend="gimp-version">gimp_version</link>                    (void);
 <link linkend="gint">gint</link>        <link linkend="gimp-getpid">gimp_getpid</link>                     (void);
-extern      const guint <link linkend="gimp-major-version">gimp_major_version</link>;
-extern      const guint <link linkend="gimp-minor-version">gimp_minor_version</link>;
-extern      const guint <link linkend="gimp-micro-version">gimp_micro_version</link>;
 #define     <link linkend="gimp-get-data">gimp_get_data</link>
 #define     <link linkend="gimp-get-data-size">gimp_get_data_size</link>
 #define     <link linkend="gimp-set-data">gimp_set_data</link>
@@ -140,34 +136,28 @@ all other GIMP Library headers.
 <refsect1 role="details">
 <title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="GIMPVAR:CAPS" role="macro"/>GIMPVAR</title>
-<indexterm><primary>GIMPVAR</primary></indexterm><programlisting>#define     GIMPVAR</programlisting>
-<para>
-
-</para></refsect2>
-<refsect2>
 <title><anchor id="gimp-version" role="function"/>gimp_version ()</title>
 <indexterm><primary>gimp_version</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_version                    (void);</programlisting>
 <para>
-Returns the host gimp version.
+Returns the host GIMP version.
 </para>
 <para>
 This procedure returns the version number of the currently running
-gimp.</para>
+GIMP.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The gimp version.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> GIMP version number.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-getpid" role="function" condition="since:GIMP 2.4"/>gimp_getpid ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_getpid</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_getpid                     (void);</programlisting>
 <para>
-Returns the PID of the host gimp process.
+Returns the PID of the host GIMP process.
 </para>
 <para>
-This procedure returns the process ID of the currently running gimp.</para>
+This procedure returns the process ID of the currently running GIMP.</para>
 <para>
 
 </para><variablelist role="params">
@@ -175,27 +165,6 @@ This procedure returns the process ID of the currently running gimp.</para>
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
-</para></refsect2>
-<refsect2>
-<title><anchor id="gimp-major-version" role="variable"/>gimp_major_version</title>
-<indexterm><primary>gimp_major_version</primary></indexterm><programlisting>extern const guint gimp_major_version;
-</programlisting>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="gimp-minor-version" role="variable"/>gimp_minor_version</title>
-<indexterm><primary>gimp_minor_version</primary></indexterm><programlisting>extern const guint gimp_minor_version;
-</programlisting>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="gimp-micro-version" role="variable"/>gimp_micro_version</title>
-<indexterm><primary>gimp_micro_version</primary></indexterm><programlisting>extern const guint gimp_micro_version;
-</programlisting>
-<para>
-
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-get-data" role="macro"/>gimp_get_data</title>
@@ -442,7 +411,7 @@ documentation, should you.
 <parameter>menu_label</parameter> defines the label that should be used for the
 procedure's menu entry (use <link linkend="NULL:CAPS"><type>NULL</type></link> if the procedure shouldn't have a
 menu entry).  The position where to register in the menu hierarchy
-is choosen using <link linkend="gimp-plugin-menu-register"><function>gimp_plugin_menu_register()</function></link>.  This function also
+is chosen using <link linkend="gimp-plugin-menu-register"><function>gimp_plugin_menu_register()</function></link>.  This function also
 still accepts the old (pre-2.2) way of registering a menu entry and
 takes a string in the form "&lt;Domain&gt;/Path/To/My/Menu"
 (e.g. "&lt;Image&gt;/Filters/Render/Useless").
@@ -463,7 +432,7 @@ ready to run.
 </para>
 <para>
 <emphasis>Not calling <link linkend="gimp-extension-ack"><function>gimp_extension_ack()</function></link> from a <link linkend="GIMP-EXTENSION:CAPS"><type>GIMP_EXTENSION</type></link>
-procedure will cause th GIMP core to lock up.</emphasis>
+procedure will cause the GIMP core to lock up.</emphasis>
 </para>
 <para>
 Additionally, a <link linkend="GIMP-EXTENSION:CAPS"><type>GIMP_EXTENSION</type></link> procedure with no parameters
@@ -551,7 +520,7 @@ procedure.
 <para>
 NOTE: Normally, Plug-In communication is triggered by the Plug-In
 and the GIMP core only responds to the Plug-In's requests. You must
-explicitely enable receiving of temporary procedure run requests
+explicitly enable receiving of temporary procedure run requests
 using either <link linkend="gimp-extension-enable"><function>gimp_extension_enable()</function></link> or
 <link linkend="gimp-extension-process"><function>gimp_extension_process()</function></link>. See this functions' documentation for
 details.</para>
@@ -718,7 +687,7 @@ Destroys a <link linkend="GimpParamDef"><type>GimpParamDef</type></link> array a
 <indexterm><primary>gimp_tile_width</primary></indexterm><programlisting><link linkend="guint">guint</link>       gimp_tile_width                 (void);</programlisting>
 <para>
 Returns the tile_width the GIMP is using. This is a constant value
-given at Plug-In config time.</para>
+given at Plug-In configuration time.</para>
 <para>
 
 </para><variablelist role="params">
@@ -730,7 +699,7 @@ given at Plug-In config time.</para>
 <indexterm><primary>gimp_tile_height</primary></indexterm><programlisting><link linkend="guint">guint</link>       gimp_tile_height                (void);</programlisting>
 <para>
 Returns the tile_height the GIMP is using. This is a constant value
-given at Plug-In config time.</para>
+given at Plug-In configuration time.</para>
 <para>
 
 </para><variablelist role="params">
@@ -743,7 +712,7 @@ given at Plug-In config time.</para>
 <para>
 Returns the shared memory ID used for passing tile data between the GIMP
 core and the Plug-In. This is a constant value
-given at Plug-In config time.</para>
+given at Plug-In configuration time.</para>
 <para>
 
 </para><variablelist role="params">
@@ -756,7 +725,7 @@ given at Plug-In config time.</para>
 <para>
 Returns the address of the shared memory segment used for passing
 tile data between the GIMP core and the Plug-In. This is a constant
-value given at Plug-In config time.</para>
+value given at Plug-In configuration time.</para>
 <para>
 
 </para><variablelist role="params">
@@ -768,7 +737,7 @@ value given at Plug-In config time.</para>
 <indexterm><primary>gimp_gamma</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_gamma                      (void);</programlisting>
 <para>
 Returns the global gamma value the GIMP and all its Plug-Ins should
-use. This is a constant value given at Plug-In config time.
+use. This is a constant value given at Plug-In configuration time.
 </para>
 <para>
 NOTE: this feature is unimplemented.</para>
@@ -784,7 +753,7 @@ NOTE: this feature is unimplemented.</para>
 <para>
 Returns whether or not the Plug-In should allocate an own colormap
 when running on an 8 bit display. This is a constant value given at
-Plug-In config time.
+Plug-In configuration time.
 </para>
 <para>
 See also: <link linkend="gimp-min-colors"><function>gimp_min_colors()</function></link></para>
@@ -800,7 +769,7 @@ See also: <link linkend="gimp-min-colors"><function>gimp_min_colors()</function>
 <para>
 Returns the minimum number of colors to use when allocating an own
 colormap on 8 bit displays. This is a constant value given at
-Plug-In config time.
+Plug-In configuration time.
 </para>
 <para>
 See also: <link linkend="gimp-install-cmap"><function>gimp_install_cmap()</function></link></para>
@@ -814,8 +783,8 @@ See also: <link linkend="gimp-install-cmap"><function>gimp_install_cmap()</funct
 <title><anchor id="gimp-show-tool-tips" role="function"/>gimp_show_tool_tips ()</title>
 <indexterm><primary>gimp_show_tool_tips</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_show_tool_tips             (void);</programlisting>
 <para>
-Returns whether or not the Plug-In should show tooltips. This is a
-constant value given at Plug-In config time.</para>
+Returns whether or not the Plug-In should show tool-tips. This is a
+constant value given at Plug-In configuration time.</para>
 <para>
 
 </para><variablelist role="params">
@@ -841,7 +810,7 @@ button if help_func and help_id are given.</para>
 <indexterm role="GIMP 2.2"><primary>gimp_check_size</primary></indexterm><programlisting><link linkend="GimpCheckSize">GimpCheckSize</link> gimp_check_size               (void);</programlisting>
 <para>
 Returns the size of the checkerboard to be used in previews.
-This is a constant value given at Plug-In config time.</para>
+This is a constant value given at Plug-In configuration time.</para>
 <para>
 
 </para><variablelist role="params">
@@ -855,7 +824,7 @@ This is a constant value given at Plug-In config time.</para>
 <indexterm role="GIMP 2.2"><primary>gimp_check_type</primary></indexterm><programlisting><link linkend="GimpCheckType">GimpCheckType</link> gimp_check_type               (void);</programlisting>
 <para>
 Returns the type of the checkerboard to be used in previews.
-This is a constant value given at Plug-In config time.</para>
+This is a constant value given at Plug-In configuration time.</para>
 <para>
 
 </para><variablelist role="params">
@@ -870,7 +839,7 @@ This is a constant value given at Plug-In config time.</para>
 <para>
 Returns the default display ID. This corresponds to the display the
 running procedure's menu entry was invoked from. This is a
-constant value given at Plug-In config time.</para>
+constant value given at Plug-In configuration time.</para>
 <para>
 
 </para><variablelist role="params">
@@ -882,7 +851,7 @@ constant value given at Plug-In config time.</para>
 <indexterm><primary>gimp_wm_class</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_wm_class                  (void);</programlisting>
 <para>
 Returns the window manager class to be used for plug-in windows.
-This is a constant value given at Plug-In config time.</para>
+This is a constant value given at Plug-In configuration time.</para>
 <para>
 
 </para><variablelist role="params">
@@ -894,7 +863,7 @@ This is a constant value given at Plug-In config time.</para>
 <indexterm><primary>gimp_display_name</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_display_name              (void);</programlisting>
 <para>
 Returns the display to be used for plug-in windows.
-This is a constant value given at Plug-In config time.</para>
+This is a constant value given at Plug-In configuration time.</para>
 <para>
 
 </para><variablelist role="params">
@@ -906,7 +875,7 @@ This is a constant value given at Plug-In config time.</para>
 <indexterm><primary>gimp_monitor_number</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_monitor_number             (void);</programlisting>
 <para>
 Returns the monitor number to be used for plug-in windows.
-This is a constant value given at Plug-In config time.</para>
+This is a constant value given at Plug-In configuration time.</para>
 <para>
 
 </para><variablelist role="params">
@@ -928,7 +897,7 @@ Returns the Plug-In's executable name.</para>
 <title><anchor id="gimp-extension-enable" role="function"/>gimp_extension_enable ()</title>
 <indexterm><primary>gimp_extension_enable</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_extension_enable           (void);</programlisting>
 <para>
-Enables asnychronous processing of messages from the main GIMP
+Enables asynchronous processing of messages from the main GIMP
 application.
 </para>
 <para>
@@ -1006,11 +975,10 @@ See also: <link linkend="gimp-install-procedure"><function>gimp_install_procedur
 <title><anchor id="gimp-parasite-find" role="function"/>gimp_parasite_find ()</title>
 <indexterm><primary>gimp_parasite_find</primary></indexterm><programlisting><link linkend="GimpParasite">GimpParasite</link>* gimp_parasite_find            (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
-Finds the named parasite.
+Look up a global parasite.
 </para>
 <para>
-Finds and returns the named parasite that was previously attached to
-the gimp.</para>
+Finds and returns the global parasite that was previously attached.</para>
 <para>
 
 </para><variablelist role="params">
@@ -1028,7 +996,7 @@ the gimp.</para>
 List all parasites.
 </para>
 <para>
-Returns a list of all currently attached parasites.</para>
+Returns a list of all currently attached global parasites.</para>
 <para>
 
 </para><variablelist role="params">
@@ -1045,16 +1013,15 @@ Returns a list of all currently attached parasites.</para>
 <title><anchor id="gimp-parasite-attach" role="function"/>gimp_parasite_attach ()</title>
 <indexterm><primary>gimp_parasite_attach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_parasite_attach            (const <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
 <para>
-Add a parasite to the gimp.
+Add a global parasite.
 </para>
 <para>
-This procedure attaches a parasite to the gimp. It has no return
-values.</para>
+This procedure attaches a global parasite. It has no return values.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>parasite</parameter>&nbsp;:</term>
-<listitem><simpara> The parasite to attach to the gimp.
+<listitem><simpara> The parasite to attach.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
@@ -1063,16 +1030,16 @@ values.</para>
 <title><anchor id="gimp-parasite-detach" role="function"/>gimp_parasite_detach ()</title>
 <indexterm><primary>gimp_parasite_detach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_parasite_detach            (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
-Removes a parasite from the gimp.
+Removes a global parasite.
 </para>
 <para>
-This procedure detaches a parasite from the gimp. It has no return
+This procedure detaches a global parasite from. It has no return
 values.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>name</parameter>&nbsp;:</term>
-<listitem><simpara> The name of the parasite to detach from the gimp.
+<listitem><simpara> The name of the parasite to detach.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>

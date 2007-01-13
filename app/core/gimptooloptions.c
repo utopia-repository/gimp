@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-1999 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,9 +18,19 @@
 
 #include "config.h"
 
+#include <errno.h>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#include <glib/gstdio.h>
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#ifdef G_OS_WIN32
+#include "libgimpbase/gimpwin32-io.h" /* For S_IRGRP etc */
+#endif
 #include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
@@ -28,6 +38,8 @@
 #include "gimp.h"
 #include "gimptoolinfo.h"
 #include "gimptooloptions.h"
+
+#include "gimp-intl.h"
 
 
 enum
@@ -88,7 +100,7 @@ gimp_tool_options_set_property (GObject      *object,
     {
     case PROP_TOOL_INFO:
       {
-        GimpToolInfo *tool_info = GIMP_TOOL_INFO (g_value_get_object (value));
+        GimpToolInfo *tool_info = g_value_get_object (value);
 
         g_return_if_fail (options->tool_info == NULL ||
                           options->tool_info == tool_info);
@@ -138,41 +150,19 @@ gimp_tool_options_reset (GimpToolOptions *tool_options)
   GIMP_TOOL_OPTIONS_GET_CLASS (tool_options)->reset (tool_options);
 }
 
-gchar *
-gimp_tool_options_build_filename (GimpToolOptions *tool_options,
-                                  const gchar     *extension)
+
+static gchar *
+gimp_tool_options_build_filename (GimpToolOptions  *tool_options)
 {
-  gchar *filename;
+  const gchar *name;
 
-  g_return_val_if_fail (GIMP_IS_TOOL_OPTIONS (tool_options), NULL);
+  name = gimp_object_get_name (GIMP_OBJECT (tool_options->tool_info));
 
-  if (extension)
-    {
-      gchar *basename;
-
-      basename = g_strconcat (GIMP_OBJECT (tool_options->tool_info)->name,
-                              ".", extension, NULL);
-
-      filename = g_build_filename (gimp_directory (),
-                                   "tool-options",
-                                   basename,
-                                   NULL);
-      g_free (basename);
-    }
-  else
-    {
-      filename = g_build_filename (gimp_directory (),
-                                   "tool-options",
-                                   GIMP_OBJECT (tool_options->tool_info)->name,
-                                   NULL);
-    }
-
-  return filename;
+  return g_build_filename (gimp_directory (), "tool-options", name, NULL);
 }
 
 gboolean
 gimp_tool_options_serialize (GimpToolOptions  *tool_options,
-                             const gchar      *extension,
                              GError          **error)
 {
   gchar    *filename;
@@ -183,7 +173,7 @@ gimp_tool_options_serialize (GimpToolOptions  *tool_options,
   g_return_val_if_fail (GIMP_IS_TOOL_OPTIONS (tool_options), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  filename = gimp_tool_options_build_filename (tool_options, extension);
+  filename = gimp_tool_options_build_filename (tool_options);
 
   if (tool_options->tool_info->gimp->be_verbose)
     g_print ("Writing '%s'\n", gimp_filename_to_utf8 (filename));
@@ -208,7 +198,6 @@ gimp_tool_options_serialize (GimpToolOptions  *tool_options,
 
 gboolean
 gimp_tool_options_deserialize (GimpToolOptions  *tool_options,
-                               const gchar      *extension,
                                GError          **error)
 {
   gchar    *filename;
@@ -217,7 +206,7 @@ gimp_tool_options_deserialize (GimpToolOptions  *tool_options,
   g_return_val_if_fail (GIMP_IS_TOOL_OPTIONS (tool_options), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  filename = gimp_tool_options_build_filename (tool_options, extension);
+  filename = gimp_tool_options_build_filename (tool_options);
 
   if (tool_options->tool_info->gimp->be_verbose)
     g_print ("Parsing '%s'\n", gimp_filename_to_utf8 (filename));
@@ -230,4 +219,41 @@ gimp_tool_options_deserialize (GimpToolOptions  *tool_options,
   g_free (filename);
 
   return retval;
+}
+
+gboolean
+gimp_tool_options_delete (GimpToolOptions  *tool_options,
+                          GError          **error)
+{
+  gchar    *filename;
+  gboolean  retval = TRUE;
+
+  g_return_val_if_fail (GIMP_IS_TOOL_OPTIONS (tool_options), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  filename = gimp_tool_options_build_filename (tool_options);
+
+  if (g_unlink (filename) != 0 && errno != ENOENT)
+    {
+      retval = FALSE;
+      g_set_error (error, 0, 0, _("Deleting \"%s\" failed: %s"),
+                   gimp_filename_to_utf8 (filename), g_strerror (errno));
+    }
+
+  g_free (filename);
+
+  return retval;
+}
+
+void
+gimp_tool_options_create_folder (void)
+{
+  gchar *filename = g_build_filename (gimp_directory (), "tool-options", NULL);
+
+  g_mkdir (filename,
+           S_IRUSR | S_IWUSR | S_IXUSR |
+           S_IRGRP | S_IXGRP |
+           S_IROTH | S_IXOTH);
+
+  g_free (filename);
 }

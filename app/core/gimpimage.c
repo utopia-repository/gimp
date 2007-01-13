@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -62,8 +62,6 @@
 #include "gimptemplate.h"
 #include "gimpundostack.h"
 
-#include "plug-in/gimppluginmanager.h"
-
 #include "file/file-utils.h"
 
 #include "vectors/gimpvectors.h"
@@ -95,6 +93,7 @@ enum
   SELECTION_CONTROL,
   CLEAN,
   DIRTY,
+  SAVED,
   UPDATE,
   UPDATE_GUIDE,
   UPDATE_SAMPLE_POINT,
@@ -355,6 +354,16 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_TYPE_NONE, 1,
                   GIMP_TYPE_DIRTY_MASK);
 
+  gimp_image_signals[SAVED] =
+    g_signal_new ("saved",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpImageClass, saved),
+                  NULL, NULL,
+                  gimp_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_STRING);
+
   gimp_image_signals[UPDATE] =
     g_signal_new ("update",
                   G_TYPE_FROM_CLASS (klass),
@@ -489,6 +498,7 @@ gimp_image_class_init (GimpImageClass *klass)
 
   klass->clean                        = NULL;
   klass->dirty                        = NULL;
+  klass->saved                        = NULL;
   klass->update                       = NULL;
   klass->update_guide                 = NULL;
   klass->update_sample_point          = NULL;
@@ -1341,6 +1351,13 @@ gimp_image_set_uri (GimpImage   *image,
   gimp_object_set_name (GIMP_OBJECT (image), uri);
 }
 
+static void
+gimp_image_take_uri (GimpImage *image,
+                     gchar     *uri)
+{
+  gimp_object_take_name (GIMP_OBJECT (image), uri);
+}
+
 const gchar *
 gimp_image_get_uri (const GimpImage *image)
 {
@@ -1361,14 +1378,10 @@ gimp_image_set_filename (GimpImage   *image,
 
   if (filename && strlen (filename))
     {
-      gchar *uri;
-
-      uri = file_utils_filename_to_uri (image->gimp->plug_in_manager->load_procs,
-                                        filename, NULL);
-
-      gimp_image_set_uri (image, uri);
-
-      g_free (uri);
+      gimp_image_take_uri (image,
+                           file_utils_filename_to_uri (image->gimp,
+                                                       filename,
+                                                       NULL));
     }
   else
     {
@@ -1923,6 +1936,23 @@ gimp_image_clean_all (GimpImage *image)
   g_signal_emit (image, gimp_image_signals[CLEAN], 0);
 }
 
+/**
+ * gimp_image_saved:
+ * @image:
+ * @uri:
+ *
+ * Emits the "saved" signal, indicating that @image was saved to the
+ * location specified by @uri.
+ */
+void
+gimp_image_saved (GimpImage   *image,
+                  const gchar *uri)
+{
+  g_return_if_fail (GIMP_IS_IMAGE (image));
+  g_return_if_fail (uri != NULL);
+
+  g_signal_emit (image, gimp_image_signals[SAVED], 0, uri);
+}
 
 /*  flush this image's displays  */
 
@@ -2941,6 +2971,16 @@ gimp_image_add_layers (GimpImage   *image,
   g_return_if_fail (GIMP_IS_IMAGE (image));
   g_return_if_fail (layers != NULL);
 
+  if (position == -1)
+    {
+      GimpLayer *active_layer = gimp_image_get_active_layer (image);
+
+      if (active_layer)
+        position = gimp_image_get_layer_index (image, active_layer);
+      else
+        position = 0;
+    }
+
   for (list = layers; list; list = g_list_next (list))
     {
       GimpItem *item = GIMP_ITEM (list->data);
@@ -2969,9 +3009,7 @@ gimp_image_add_layers (GimpImage   *image,
       gimp_item_translate (new_item, offset_x, offset_y, FALSE);
 
       gimp_image_add_layer (image, GIMP_LAYER (new_item), position);
-
-      if (position != -1)
-        position++;
+      position++;
     }
 
   gimp_image_undo_group_end (image);

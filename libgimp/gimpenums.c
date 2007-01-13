@@ -686,6 +686,7 @@ static const GimpGetTypeFunc get_type_funcs[] =
   gimp_stack_trace_mode_get_type,
   gimp_transfer_mode_get_type,
   gimp_transform_direction_get_type,
+  gimp_transform_resize_get_type,
   gimp_vectors_stroke_type_get_type
 };
 
@@ -736,6 +737,7 @@ static const gchar * const type_names[] =
   "GimpStackTraceMode",
   "GimpTransferMode",
   "GimpTransformDirection",
+  "GimpTransformResize",
   "GimpVectorsStrokeType"
 };
 

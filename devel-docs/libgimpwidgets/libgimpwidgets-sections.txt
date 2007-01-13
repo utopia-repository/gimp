@@ -290,7 +290,6 @@ GIMP_FRAME_GET_CLASS
 <TITLE>GimpHintBox</TITLE>
 gimp_hint_box_new
 <SUBSECTION Standard>
-GimpHintBoxClass
 GIMP_TYPE_HINT_BOX
 gimp_hint_box_get_type
 </SECTION>
@@ -466,6 +465,26 @@ GIMP_IS_SIZE_ENTRY_CLASS
 GIMP_SIZE_ENTRY_GET_CLASS
 GIMP_TYPE_SIZE_ENTRY_UPDATE_POLICY
 gimp_size_entry_update_policy_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gimpratioentry</FILE>
+<TITLE>GimpRatioEntry</TITLE>
+GimpRatioEntry
+gimp_ratio_entry_new
+gimp_ratio_entry_set_fraction
+gimp_ratio_entry_get_fraction
+gimp_ratio_entry_set_ratio
+gimp_ratio_entry_get_ratio
+<SUBSECTION Standard>
+GIMP_RATIO_ENTRY
+GIMP_IS_RATIO_ENTRY
+GIMP_TYPE_RATIO_ENTRY
+gimp_ratio_entry_get_type
+GimpRatioEntryClass
+GIMP_RATIO_ENTRY_CLASS
+GIMP_IS_RATIO_ENTRY_CLASS
+GIMP_RATIO_ENTRY_GET_CLASS
 </SECTION>
 
 <SECTION>
@@ -840,6 +859,7 @@ gimp_prop_label_new
 gimp_prop_entry_new
 gimp_prop_text_buffer_new
 gimp_prop_file_chooser_button_new
+gimp_prop_file_chooser_button_new_with_dialog
 gimp_prop_path_editor_new
 gimp_prop_size_entry_new
 gimp_prop_coordinates_new
@@ -1013,6 +1033,8 @@ gimp_preview_set_update
 gimp_preview_set_bounds
 gimp_preview_get_size
 gimp_preview_get_position
+gimp_preview_transform
+gimp_preview_untransform
 gimp_preview_get_area
 gimp_preview_draw
 gimp_preview_draw_buffer

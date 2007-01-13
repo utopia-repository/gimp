@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -135,7 +135,7 @@ static void       gimp_layer_transform          (GimpItem           *item,
                                                  GimpInterpolationType  interpolation_type,
                                                  gboolean            supersample,
                                                  gint                recursion_level,
-                                                 gboolean            clip_result,
+                                                 GimpTransformResize    clip_result,
                                                  GimpProgress       *progress);
 static void    gimp_layer_invalidate_boundary   (GimpDrawable       *drawable);
 static void    gimp_layer_get_active_components (const GimpDrawable *drawable,
@@ -778,7 +778,7 @@ gimp_layer_transform (GimpItem               *item,
                       GimpInterpolationType   interpolation_type,
                       gboolean                supersample,
                       gint                    recursion_level,
-                      gboolean                clip_result,
+                      GimpTransformResize     clip_result,
                       GimpProgress           *progress)
 {
   GimpLayer *layer = GIMP_LAYER (item);

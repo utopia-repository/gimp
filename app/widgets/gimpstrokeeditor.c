@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-1999 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -85,6 +85,7 @@ gimp_stroke_editor_class_init (GimpStrokeEditorClass *klass)
                                                         GIMP_TYPE_STROKE_OPTIONS,
                                                         GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
+
   g_object_class_install_property (object_class, PROP_RESOLUTION,
                                    g_param_spec_double ("resolution", NULL, NULL,
                                                         GIMP_MIN_RESOLUTION,
@@ -112,7 +113,7 @@ gimp_stroke_editor_set_property (GObject      *object,
     case PROP_OPTIONS:
       if (editor->options)
         g_object_unref (editor->options);
-      editor->options = GIMP_STROKE_OPTIONS (g_value_dup_object (value));
+      editor->options = g_value_dup_object (value);
       break;
     case PROP_RESOLUTION:
       editor->resolution = g_value_get_double (value);
@@ -153,6 +154,8 @@ gimp_stroke_editor_constructor (GType                   type,
                                 GObjectConstructParam  *params)
 {
   GimpStrokeEditor *editor;
+  GimpEnumStore    *store;
+  GEnumValue       *value;
   GtkWidget        *box;
   GtkWidget        *size;
   GtkWidget        *label;
@@ -269,7 +272,28 @@ gimp_stroke_editor_constructor (GType                   type,
                           NULL);
 
 
-  box = gimp_enum_combo_box_new (GIMP_TYPE_DASH_PRESET);
+  store = g_object_new (GIMP_TYPE_ENUM_STORE,
+                        "enum-type",      GIMP_TYPE_DASH_PRESET,
+                        "user-data-type", GIMP_TYPE_DASH_PATTERN,
+                        NULL);
+
+  for (value = store->enum_class->values; value->value_name; value++)
+    {
+      GtkTreeIter  iter;
+      const gchar *desc;
+
+      desc = gimp_enum_value_get_desc (store->enum_class, value);
+
+      gtk_list_store_append (GTK_LIST_STORE (store), &iter);
+      gtk_list_store_set (GTK_LIST_STORE (store), &iter,
+                          GIMP_INT_STORE_VALUE, value->value,
+                          GIMP_INT_STORE_LABEL, desc,
+                          -1);
+    }
+
+  box = gimp_enum_combo_box_new_with_model (store);
+  g_object_unref (store);
+
   gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (box), GIMP_DASH_CUSTOM);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
                              _("Dash _preset:"), 0.0, 0.5,
@@ -364,20 +388,12 @@ gimp_stroke_editor_combo_update (GtkTreeModel      *model,
                                  GParamSpec        *pspec,
                                  GimpStrokeOptions *options)
 {
-  GtkTreeIter  iter;
+  GtkTreeIter iter;
 
-  if (gimp_int_store_lookup_by_value  (model, GIMP_DASH_CUSTOM, &iter))
+  if (gimp_int_store_lookup_by_value (model, GIMP_DASH_CUSTOM, &iter))
     {
-      GArray *pattern;
-
-      gtk_tree_model_get (model, &iter,
-                          GIMP_INT_STORE_USER_DATA, &pattern,
-                          -1);
-      gimp_dash_pattern_free (pattern);
-
-      pattern = gimp_dash_pattern_copy (options->dash_info);
       gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                          GIMP_INT_STORE_USER_DATA, pattern,
+                          GIMP_INT_STORE_USER_DATA, options->dash_info,
                           -1);
     }
 }
@@ -394,8 +410,7 @@ gimp_stroke_editor_combo_fill (GimpStrokeOptions *options,
        iter_valid;
        iter_valid = gtk_tree_model_iter_next (model, &iter))
     {
-      GArray *pattern;
-      gint    value;
+      gint value;
 
       gtk_tree_model_get (model, &iter,
                           GIMP_INT_STORE_VALUE, &value,
@@ -403,7 +418,9 @@ gimp_stroke_editor_combo_fill (GimpStrokeOptions *options,
 
       if (value == GIMP_DASH_CUSTOM)
         {
-          pattern = gimp_dash_pattern_copy (options->dash_info);
+          gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                              GIMP_INT_STORE_USER_DATA, options->dash_info,
+                              -1);
 
           g_signal_connect_object (options, "notify::dash-info",
                                    G_CALLBACK (gimp_stroke_editor_combo_update),
@@ -411,17 +428,12 @@ gimp_stroke_editor_combo_fill (GimpStrokeOptions *options,
         }
       else
         {
-          pattern = gimp_dash_pattern_from_preset (value);
-        }
+          GArray *pattern = gimp_dash_pattern_new_from_preset (value);
 
-      if (pattern)
-        {
           gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                               GIMP_INT_STORE_USER_DATA, pattern,
                               -1);
-
-          g_object_weak_ref (G_OBJECT (box),
-                             (GWeakNotify) gimp_dash_pattern_free, pattern);
+          gimp_dash_pattern_free (pattern);
         }
     }
 }

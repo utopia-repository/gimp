@@ -60,7 +60,7 @@
                                              <link linkend="GimpInterpolationType">GimpInterpolationType</link> interpolation,
                                              <link linkend="gboolean">gboolean</link> supersample,
                                              <link linkend="gint">gint</link> recursion_level,
-                                             <link linkend="gboolean">gboolean</link> clip_result);
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-drawable-transform-perspective-default">gimp_drawable_transform_perspective_default</link>
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> x0,
@@ -72,7 +72,7 @@
                                              <link linkend="gdouble">gdouble</link> x3,
                                              <link linkend="gdouble">gdouble</link> y3,
                                              <link linkend="gboolean">gboolean</link> interpolate,
-                                             <link linkend="gboolean">gboolean</link> clip_result);
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-drawable-transform-rotate-simple">gimp_drawable_transform_rotate_simple</link>
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="GimpRotationType">GimpRotationType</link> rotate_type,
@@ -89,7 +89,7 @@
                                              <link linkend="GimpInterpolationType">GimpInterpolationType</link> interpolation,
                                              <link linkend="gboolean">gboolean</link> supersample,
                                              <link linkend="gint">gint</link> recursion_level,
-                                             <link linkend="gboolean">gboolean</link> clip_result);
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-drawable-transform-rotate-default">gimp_drawable_transform_rotate_default</link>
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> angle,
@@ -97,7 +97,7 @@
                                              <link linkend="gint">gint</link> center_x,
                                              <link linkend="gint">gint</link> center_y,
                                              <link linkend="gboolean">gboolean</link> interpolate,
-                                             <link linkend="gboolean">gboolean</link> clip_result);
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-drawable-transform-scale">gimp_drawable_transform_scale</link>   (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> x0,
                                              <link linkend="gdouble">gdouble</link> y0,
@@ -107,7 +107,7 @@
                                              <link linkend="GimpInterpolationType">GimpInterpolationType</link> interpolation,
                                              <link linkend="gboolean">gboolean</link> supersample,
                                              <link linkend="gint">gint</link> recursion_level,
-                                             <link linkend="gboolean">gboolean</link> clip_result);
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-drawable-transform-scale-default">gimp_drawable_transform_scale_default</link>
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> x0,
@@ -115,7 +115,7 @@
                                              <link linkend="gdouble">gdouble</link> x1,
                                              <link linkend="gdouble">gdouble</link> y1,
                                              <link linkend="gboolean">gboolean</link> interpolate,
-                                             <link linkend="gboolean">gboolean</link> clip_result);
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-drawable-transform-shear">gimp_drawable_transform_shear</link>   (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="GimpOrientationType">GimpOrientationType</link> shear_type,
                                              <link linkend="gdouble">gdouble</link> magnitude,
@@ -123,13 +123,13 @@
                                              <link linkend="GimpInterpolationType">GimpInterpolationType</link> interpolation,
                                              <link linkend="gboolean">gboolean</link> supersample,
                                              <link linkend="gint">gint</link> recursion_level,
-                                             <link linkend="gboolean">gboolean</link> clip_result);
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-drawable-transform-shear-default">gimp_drawable_transform_shear_default</link>
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="GimpOrientationType">GimpOrientationType</link> shear_type,
                                              <link linkend="gdouble">gdouble</link> magnitude,
                                              <link linkend="gboolean">gboolean</link> interpolate,
-                                             <link linkend="gboolean">gboolean</link> clip_result);
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-drawable-transform-2d">gimp_drawable_transform_2d</link>      (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> source_x,
                                              <link linkend="gdouble">gdouble</link> source_y,
@@ -142,7 +142,7 @@
                                              <link linkend="GimpInterpolationType">GimpInterpolationType</link> interpolation,
                                              <link linkend="gboolean">gboolean</link> supersample,
                                              <link linkend="gint">gint</link> recursion_level,
-                                             <link linkend="gboolean">gboolean</link> clip_result);
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-drawable-transform-2d-default">gimp_drawable_transform_2d_default</link>
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> source_x,
@@ -153,7 +153,7 @@
                                              <link linkend="gdouble">gdouble</link> dest_x,
                                              <link linkend="gdouble">gdouble</link> dest_y,
                                              <link linkend="gboolean">gboolean</link> interpolate,
-                                             <link linkend="gboolean">gboolean</link> clip_result);
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-drawable-transform-matrix">gimp_drawable_transform_matrix</link>  (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> coeff_0_0,
                                              <link linkend="gdouble">gdouble</link> coeff_0_1,
@@ -168,7 +168,7 @@
                                              <link linkend="GimpInterpolationType">GimpInterpolationType</link> interpolation,
                                              <link linkend="gboolean">gboolean</link> supersample,
                                              <link linkend="gint">gint</link> recursion_level,
-                                             <link linkend="gboolean">gboolean</link> clip_result);
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-drawable-transform-matrix-default">gimp_drawable_transform_matrix_default</link>
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> coeff_0_0,
@@ -181,7 +181,7 @@
                                              <link linkend="gdouble">gdouble</link> coeff_2_1,
                                              <link linkend="gdouble">gdouble</link> coeff_2_2,
                                              <link linkend="gboolean">gboolean</link> interpolate,
-                                             <link linkend="gboolean">gboolean</link> clip_result);
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);
 </synopsis>
 </refsynopsisdiv>
 
@@ -372,7 +372,7 @@ uses no interpolation/supersampling at all, or default values
                                              <link linkend="GimpInterpolationType">GimpInterpolationType</link> interpolation,
                                              <link linkend="gboolean">gboolean</link> supersample,
                                              <link linkend="gint">gint</link> recursion_level,
-                                             <link linkend="gboolean">gboolean</link> clip_result);</programlisting>
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);</programlisting>
 <para>
 Perform a possibly non-affine transformation on the specified
 drawable, with extra parameters.
@@ -436,7 +436,7 @@ to have been projected via a perspective transform.</para>
 <listitem><simpara> Level of recursion (3 is a nice default).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to clip results.
+<listitem><simpara> How to clip results.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly mapped drawable.
 
@@ -456,7 +456,7 @@ to have been projected via a perspective transform.</para>
                                              <link linkend="gdouble">gdouble</link> x3,
                                              <link linkend="gdouble">gdouble</link> y3,
                                              <link linkend="gboolean">gboolean</link> interpolate,
-                                             <link linkend="gboolean">gboolean</link> clip_result);</programlisting>
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);</programlisting>
 <para>
 Perform a possibly non-affine transformation on the specified
 drawable, with extra parameters.
@@ -499,7 +499,7 @@ which uses no interpolation/supersampling at all, or default values
 <listitem><simpara> Whether to use interpolation and supersampling.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to clip results.
+<listitem><simpara> How to clip results.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly mapped drawable.
 
@@ -564,7 +564,7 @@ this will be the newly created and rotated drawable.</para>
                                              <link linkend="GimpInterpolationType">GimpInterpolationType</link> interpolation,
                                              <link linkend="gboolean">gboolean</link> supersample,
                                              <link linkend="gint">gint</link> recursion_level,
-                                             <link linkend="gboolean">gboolean</link> clip_result);</programlisting>
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);</programlisting>
 <para>
 Rotate the specified drawable about given coordinates through the
 specified angle.
@@ -608,7 +608,7 @@ this will be the newly created and rotated drawable.</para>
 <listitem><simpara> Level of recursion (3 is a nice default).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to clip results.
+<listitem><simpara> How to clip results.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The rotated drawable.
 
@@ -624,7 +624,7 @@ this will be the newly created and rotated drawable.</para>
                                              <link linkend="gint">gint</link> center_x,
                                              <link linkend="gint">gint</link> center_y,
                                              <link linkend="gboolean">gboolean</link> interpolate,
-                                             <link linkend="gboolean">gboolean</link> clip_result);</programlisting>
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);</programlisting>
 <para>
 Rotate the specified drawable about given coordinates through the
 specified angle.
@@ -655,7 +655,7 @@ which uses no interpolation/supersampling at all, or default values
 <listitem><simpara> Whether to use interpolation and supersampling.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to clip results.
+<listitem><simpara> How to clip results.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The rotated drawable.
 
@@ -673,7 +673,7 @@ which uses no interpolation/supersampling at all, or default values
                                              <link linkend="GimpInterpolationType">GimpInterpolationType</link> interpolation,
                                              <link linkend="gboolean">gboolean</link> supersample,
                                              <link linkend="gint">gint</link> recursion_level,
-                                             <link linkend="gboolean">gboolean</link> clip_result);</programlisting>
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);</programlisting>
 <para>
 Scale the specified drawable with extra parameters
 </para>
@@ -716,7 +716,7 @@ this will be the newly created and scaled drawable.</para>
 <listitem><simpara> Level of recursion (3 is a nice default).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to clip results.
+<listitem><simpara> How to clip results.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The scaled drawable.
 
@@ -732,7 +732,7 @@ this will be the newly created and scaled drawable.</para>
                                              <link linkend="gdouble">gdouble</link> x1,
                                              <link linkend="gdouble">gdouble</link> y1,
                                              <link linkend="gboolean">gboolean</link> interpolate,
-                                             <link linkend="gboolean">gboolean</link> clip_result);</programlisting>
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);</programlisting>
 <para>
 Scale the specified drawable with extra parameters
 </para>
@@ -762,7 +762,7 @@ uses no interpolation/supersampling at all, or default values
 <listitem><simpara> Whether to use interpolation and supersampling.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to clip results.
+<listitem><simpara> How to clip results.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The scaled drawable.
 
@@ -778,7 +778,7 @@ uses no interpolation/supersampling at all, or default values
                                              <link linkend="GimpInterpolationType">GimpInterpolationType</link> interpolation,
                                              <link linkend="gboolean">gboolean</link> supersample,
                                              <link linkend="gint">gint</link> recursion_level,
-                                             <link linkend="gboolean">gboolean</link> clip_result);</programlisting>
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);</programlisting>
 <para>
 Shear the specified drawable about its center by the specified
 magnitude, with extra parameters.
@@ -819,7 +819,7 @@ indicates the extent (in pixels) to shear by.</para>
 <listitem><simpara> Level of recursion (3 is a nice default).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to clip results.
+<listitem><simpara> How to clip results.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The sheared drawable.
 
@@ -833,7 +833,7 @@ indicates the extent (in pixels) to shear by.</para>
                                              <link linkend="GimpOrientationType">GimpOrientationType</link> shear_type,
                                              <link linkend="gdouble">gdouble</link> magnitude,
                                              <link linkend="gboolean">gboolean</link> interpolate,
-                                             <link linkend="gboolean">gboolean</link> clip_result);</programlisting>
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);</programlisting>
 <para>
 Shear the specified drawable about its center by the specified
 magnitude, with extra parameters.
@@ -858,7 +858,7 @@ uses no interpolation/supersampling at all, or default values
 <listitem><simpara> Whether to use interpolation and supersampling.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to clip results.
+<listitem><simpara> How to clip results.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The sheared drawable.
 
@@ -879,7 +879,7 @@ uses no interpolation/supersampling at all, or default values
                                              <link linkend="GimpInterpolationType">GimpInterpolationType</link> interpolation,
                                              <link linkend="gboolean">gboolean</link> supersample,
                                              <link linkend="gint">gint</link> recursion_level,
-                                             <link linkend="gboolean">gboolean</link> clip_result);</programlisting>
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);</programlisting>
 <para>
 Transform the specified drawable in 2d, with extra parameters.
 </para>
@@ -934,7 +934,7 @@ Otherwise, this will be the newly created and transformed drawable.</para>
 <listitem><simpara> Level of recursion (3 is a nice default).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to clip results.
+<listitem><simpara> How to clip results.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The transformed drawable.
 
@@ -953,7 +953,7 @@ Otherwise, this will be the newly created and transformed drawable.</para>
                                              <link linkend="gdouble">gdouble</link> dest_x,
                                              <link linkend="gdouble">gdouble</link> dest_y,
                                              <link linkend="gboolean">gboolean</link> interpolate,
-                                             <link linkend="gboolean">gboolean</link> clip_result);</programlisting>
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);</programlisting>
 <para>
 Transform the specified drawable in 2d, with extra parameters.
 </para>
@@ -992,7 +992,7 @@ uses no interpolation/supersampling at all, or default values
 <listitem><simpara> Whether to use interpolation and supersampling.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to clip results.
+<listitem><simpara> How to clip results.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The transformed drawable.
 
@@ -1015,7 +1015,7 @@ uses no interpolation/supersampling at all, or default values
                                              <link linkend="GimpInterpolationType">GimpInterpolationType</link> interpolation,
                                              <link linkend="gboolean">gboolean</link> supersample,
                                              <link linkend="gint">gint</link> recursion_level,
-                                             <link linkend="gboolean">gboolean</link> clip_result);</programlisting>
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);</programlisting>
 <para>
 Transform the specified drawable in 2d, with extra parameters.
 </para>
@@ -1074,7 +1074,7 @@ Otherwise, this will be the newly created and transformed drawable.</para>
 <listitem><simpara> Level of recursion (3 is a nice default).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to clip results.
+<listitem><simpara> How to clip results.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The transformed drawable.
 
@@ -1095,7 +1095,7 @@ Otherwise, this will be the newly created and transformed drawable.</para>
                                              <link linkend="gdouble">gdouble</link> coeff_2_1,
                                              <link linkend="gdouble">gdouble</link> coeff_2_2,
                                              <link linkend="gboolean">gboolean</link> interpolate,
-                                             <link linkend="gboolean">gboolean</link> clip_result);</programlisting>
+                                             <link linkend="GimpTransformResize">GimpTransformResize</link> clip_result);</programlisting>
 <para>
 Transform the specified drawable in 2d, with extra parameters.
 </para>
@@ -1140,7 +1140,7 @@ which uses no interpolation/supersampling at all, or default values
 <listitem><simpara> Whether to use interpolation and supersampling.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to clip results.
+<listitem><simpara> How to clip results.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The transformed drawable.
 

@@ -228,6 +228,8 @@ EXPORTS
 	gimp_preview_set_bounds
 	gimp_preview_set_default_cursor
 	gimp_preview_set_update
+	gimp_preview_transform
+	gimp_preview_untransform
 	gimp_prop_boolean_combo_box_new
 	gimp_prop_boolean_radio_frame_new
 	gimp_prop_check_button_new
@@ -243,6 +245,7 @@ EXPORTS
 	gimp_prop_enum_stock_box_new
 	gimp_prop_expander_new
 	gimp_prop_file_chooser_button_new
+	gimp_prop_file_chooser_button_new_with_dialog
 	gimp_prop_hscale_new
 	gimp_prop_int_combo_box_new
 	gimp_prop_label_new
@@ -265,6 +268,12 @@ EXPORTS
 	gimp_radio_group_new2
 	gimp_radio_group_set_active
 	gimp_random_seed_new
+	gimp_ratio_entry_get_fraction
+	gimp_ratio_entry_get_ratio
+	gimp_ratio_entry_get_type
+	gimp_ratio_entry_new
+	gimp_ratio_entry_set_fraction
+	gimp_ratio_entry_set_ratio
 	gimp_resolution_entry_attach_label
 	gimp_resolution_entry_get_height
 	gimp_resolution_entry_get_height_help_widget
@@ -281,8 +290,8 @@ EXPORTS
 	gimp_resolution_entry_grab_focus
 	gimp_resolution_entry_new
 	gimp_resolution_entry_set_activates_default
+	gimp_resolution_entry_set_height
 	gimp_resolution_entry_set_height_boundaries
-	gimp_resolution_entry_set_height_value
 	gimp_resolution_entry_set_pixel_digits
 	gimp_resolution_entry_set_unit
 	gimp_resolution_entry_set_width

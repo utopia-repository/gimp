@@ -28,6 +28,7 @@
                                              <link linkend="GimpImageBaseType">GimpImageBaseType</link> type);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-image-duplicate">gimp_image_duplicate</link>            (<link linkend="gint32">gint32</link> image_ID);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-delete">gimp_image_delete</link>               (<link linkend="gint32">gint32</link> image_ID);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-is-valid">gimp_image_is_valid</link>             (<link linkend="gint32">gint32</link> image_ID);
 <link linkend="GimpImageBaseType">GimpImageBaseType</link> <link linkend="gimp-image-base-type">gimp_image_base_type</link>      (<link linkend="gint32">gint32</link> image_ID);
 <link linkend="gint">gint</link>        <link linkend="gimp-image-width">gimp_image_width</link>                (<link linkend="gint32">gint32</link> image_ID);
 <link linkend="gint">gint</link>        <link linkend="gimp-image-height">gimp_image_height</link>               (<link linkend="gint32">gint32</link> image_ID);
@@ -304,6 +305,26 @@ the image.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-image-is-valid" role="function" condition="since:GIMP 2.4"/>gimp_image_is_valid ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_image_is_valid</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_is_valid             (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<para>
+Returns TRUE if the image is valid.
+</para>
+<para>
+This procedure checks if the given image ID is valid and refers to
+an existing image.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The image to check.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Whether the image ID is valid.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
 <refsect2>
 <title><anchor id="gimp-image-base-type" role="function"/>gimp_image_base_type ()</title>
 <indexterm><primary>gimp_image_base_type</primary></indexterm><programlisting><link linkend="GimpImageBaseType">GimpImageBaseType</link> gimp_image_base_type      (<link linkend="gint32">gint32</link> image_ID);</programlisting>
@@ -1781,11 +1802,11 @@ specified image.</para>
 <indexterm><primary>gimp_image_parasite_find</primary></indexterm><programlisting><link linkend="GimpParasite">GimpParasite</link>* gimp_image_parasite_find      (<link linkend="gint32">gint32</link> image_ID,
                                              const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
-Finds the named parasite in an image
+Look up a parasite in an image
 </para>
 <para>
-Finds and returns the named parasite that was previously attached to
-an image.</para>
+Finds and returns the parasite that was previously attached to an
+image.</para>
 <para>
 
 </para><variablelist role="params">

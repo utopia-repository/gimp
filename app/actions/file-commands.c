@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -70,7 +70,8 @@ static void   file_open_dialog_show        (GtkWidget   *parent,
 static void   file_save_dialog_show        (GimpImage   *image,
                                             GtkWidget   *parent,
                                             const gchar *title,
-                                            gboolean     save_a_copy);
+                                            gboolean     save_a_copy,
+                                            gboolean     close_after_saving);
 static void   file_save_dialog_destroyed   (GtkWidget   *dialog,
                                             GimpImage   *image);
 static void   file_new_template_callback   (GtkWidget   *widget,
@@ -83,19 +84,10 @@ static void   file_revert_confirm_response (GtkWidget   *dialog,
 
 /*  public functions  */
 
+
 void
 file_open_cmd_callback (GtkAction *action,
                         gpointer   data)
-{
-  GtkWidget *widget;
-  return_if_no_widget (widget, data);
-
-  file_open_dialog_show (widget, NULL, NULL, FALSE);
-}
-
-void
-file_open_from_image_cmd_callback (GtkAction *action,
-                                   gpointer   data)
 {
   GimpImage   *image;
   GtkWidget   *widget;
@@ -185,122 +177,127 @@ file_last_opened_cmd_callback (GtkAction *action,
 
 void
 file_save_cmd_callback (GtkAction *action,
+                        gint       value,
                         gpointer   data)
 {
-  GimpDisplay *display;
-  GimpImage   *image;
+  GimpDisplay  *display;
+  GimpImage    *image;
+  GtkWidget    *widget;
+  GimpSaveMode  save_mode;
+  gboolean      saved = FALSE;
   return_if_no_display (display, data);
+  return_if_no_widget (widget, data);
 
   image = display->image;
+
+  save_mode = (GimpSaveMode) value;
 
   if (! gimp_image_active_drawable (image))
     return;
 
-  /*  Only save if the image has been modified  */
-  if (image->dirty ||
-      ! GIMP_GUI_CONFIG (image->gimp->config)->trust_dirty_flag)
+  switch (save_mode)
     {
-      const gchar         *uri;
-      GimpPlugInProcedure *save_proc = NULL;
-
-      uri       = gimp_object_get_name (GIMP_OBJECT (image));
-      save_proc = gimp_image_get_save_proc (image);
-
-      if (uri && ! save_proc)
-        save_proc =
-          file_utils_find_proc (image->gimp->plug_in_manager->save_procs,
-                                uri, NULL);
-
-      if (! (uri && save_proc))
+    case GIMP_SAVE_MODE_SAVE:
+    case GIMP_SAVE_MODE_SAVE_AND_CLOSE:
+      /*  Only save if the image has been modified  */
+      if (image->dirty ||
+          ! GIMP_GUI_CONFIG (image->gimp->config)->trust_dirty_flag)
         {
-          file_save_as_cmd_callback (action, data);
+          const gchar         *uri;
+          GimpPlugInProcedure *save_proc = NULL;
+
+          uri       = gimp_object_get_name (GIMP_OBJECT (image));
+          save_proc = gimp_image_get_save_proc (image);
+
+          if (uri && ! save_proc)
+            save_proc =
+              file_utils_find_proc (image->gimp->plug_in_manager->save_procs,
+                                    uri, NULL);
+
+          if (uri && save_proc)
+            {
+              GimpPDBStatusType  status;
+              GError            *error = NULL;
+              GList             *list;
+
+              for (list = gimp_action_groups_from_name ("file");
+                   list;
+                   list = g_list_next (list))
+                {
+                  gimp_action_group_set_action_sensitive (list->data,
+                                                          "file-quit",
+                                                          FALSE);
+                }
+
+              status = file_save (image, action_data_get_context (data),
+                                  GIMP_PROGRESS (display),
+                                  uri, save_proc,
+                                  GIMP_RUN_WITH_LAST_VALS, FALSE, &error);
+
+              switch (status)
+                {
+                case GIMP_PDB_SUCCESS:
+                  saved = TRUE;
+                  break;
+
+                case GIMP_PDB_CANCEL:
+                  gimp_message (image->gimp, G_OBJECT (display),
+                                GIMP_MESSAGE_INFO,
+                                _("Saving canceled"));
+                  break;
+
+                default:
+                  {
+                    gchar *filename = file_utils_uri_display_name (uri);
+
+                    gimp_message (image->gimp, G_OBJECT (display),
+                                  GIMP_MESSAGE_ERROR,
+                                  _("Saving '%s' failed:\n\n%s"),
+                                  filename, error->message);
+                    g_free (filename);
+                    g_clear_error (&error);
+                  }
+                  break;
+                }
+
+              for (list = gimp_action_groups_from_name ("file");
+                   list;
+                   list = g_list_next (list))
+                {
+                  gimp_action_group_set_action_sensitive (list->data,
+                                                          "file-quit",
+                                                          TRUE);
+                }
+
+              break;
+            }
+
+          /* fall thru */
         }
       else
         {
-          GimpPDBStatusType  status;
-          GError            *error = NULL;
-          GList             *list;
-          gchar             *filename;
-
-          for (list = gimp_action_groups_from_name ("file");
-               list;
-               list = g_list_next (list))
-            {
-              gimp_action_group_set_action_sensitive (list->data, "file-quit",
-                                                      FALSE);
-            }
-
-          status = file_save (image, action_data_get_context (data),
-                              GIMP_PROGRESS (display),
-                              uri, save_proc,
-                              GIMP_RUN_WITH_LAST_VALS, FALSE, &error);
-
-          filename = file_utils_uri_display_name (uri);
-
-          switch (status)
-            {
-            case GIMP_PDB_SUCCESS:
-              gimp_message (image->gimp, G_OBJECT (display), GIMP_MESSAGE_INFO,
-                            _("Image saved to '%s'"),
-                            filename);
-              break;
-
-            case GIMP_PDB_CANCEL:
-              gimp_message (image->gimp, G_OBJECT (display), GIMP_MESSAGE_INFO,
-                            _("Saving canceled"));
-              break;
-
-            default:
-              gimp_message (image->gimp, G_OBJECT (display), GIMP_MESSAGE_ERROR,
-                            _("Saving '%s' failed:\n\n%s"),
-                            filename, error->message);
-              g_clear_error (&error);
-              break;
-            }
-
-          g_free (filename);
-
-          for (list = gimp_action_groups_from_name ("file");
-               list;
-               list = g_list_next (list))
-            {
-              gimp_action_group_set_action_sensitive (list->data, "file-quit",
-                                                      TRUE);
-            }
+          saved = TRUE;
+          break;
         }
+
+    case GIMP_SAVE_MODE_SAVE_AS:
+      file_save_dialog_show (display->image, widget,
+                             _("Save Image"), FALSE,
+                             save_mode == GIMP_SAVE_MODE_SAVE_AND_CLOSE);
+      break;
+
+    case GIMP_SAVE_MODE_SAVE_A_COPY:
+      file_save_dialog_show (display->image, widget,
+                             _("Save a Copy of the Image"), TRUE,
+                             FALSE);
+      break;
     }
-}
 
-void
-file_save_as_cmd_callback (GtkAction *action,
-                           gpointer   data)
-{
-  GimpDisplay *display;
-  GtkWidget   *widget;
-  return_if_no_display (display, data);
-  return_if_no_widget (widget, data);
-
-  if (! gimp_image_active_drawable (display->image))
-    return;
-
-  file_save_dialog_show (display->image, widget,
-                         _("Save Image"), FALSE);
-}
-
-void
-file_save_a_copy_cmd_callback (GtkAction *action,
-                               gpointer   data)
-{
-  GimpDisplay *display;
-  GtkWidget   *widget;
-  return_if_no_display (display, data);
-  return_if_no_widget (widget, data);
-
-  if (! gimp_image_active_drawable (display->image))
-    return;
-
-  file_save_dialog_show (display->image, widget,
-                         _("Save a Copy of the Image"), TRUE);
+  if (save_mode == GIMP_SAVE_MODE_SAVE_AND_CLOSE &&
+      saved && ! display->image->dirty)
+    {
+      gimp_display_delete (display);
+    }
 }
 
 void
@@ -467,7 +464,10 @@ file_open_dialog_show (GtkWidget   *parent,
           GIMP_FILE_DIALOG (dialog)->image = NULL;
         }
 
-      gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent));
+      parent = gtk_widget_get_toplevel (parent);
+
+      if (GTK_IS_WINDOW (parent))
+        gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent));
 
       gtk_window_present (GTK_WINDOW (dialog));
     }
@@ -477,7 +477,8 @@ static void
 file_save_dialog_show (GimpImage   *image,
                        GtkWidget   *parent,
                        const gchar *title,
-                       gboolean     save_a_copy)
+                       gboolean     save_a_copy,
+                       gboolean     close_after_saving)
 {
   GtkWidget *dialog;
 
@@ -509,7 +510,7 @@ file_save_dialog_show (GimpImage   *image,
       gtk_window_set_title (GTK_WINDOW (dialog), title);
 
       gimp_file_dialog_set_image (GIMP_FILE_DIALOG (dialog),
-                                  image, save_a_copy);
+                                  image, save_a_copy, close_after_saving);
 
       gtk_window_present (GTK_WINDOW (dialog));
     }

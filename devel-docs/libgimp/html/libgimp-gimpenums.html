@@ -5,18 +5,17 @@
 <title>gimpenums</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
-<link rel="up" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
-<link rel="prev" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
-<link rel="next" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
+<link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
+<link rel="prev" href="libgimp-gimp.html" title="gimp">
+<link rel="next" href="libgimp-gimpbuffer.html" title="gimpbuffer">
 <meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
-<link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
+<link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
-<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="chapter" href="libgimp-data.html" title="Data Objects">
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="part" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
@@ -26,22 +25,22 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="gimpdefinitions.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="gimpdefinitions.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="libgimp-gimp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimp-general.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
-<td><a accesskey="n" href="libgimp.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="libgimp-gimpbuffer.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2564003" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2580409" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2501682" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2547653" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpenums"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2564003"></a><span class="refentrytitle">gimpenums</span>
+<a name="id2580409"></a><span class="refentrytitle">gimpenums</span>
 </h2>
 <p>gimpenums &#8212; Enums and definitions.</p>
 </td>
@@ -77,18 +76,18 @@ const gchar** <a href="libgimp-gimpenums.html#gimp-enums-get-type-names">gimp_en
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2501682"></a><h2>Description</h2>
+<a name="id2547653"></a><h2>Description</h2>
 <p>
 Enums and definitions.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2506633"></a><h2>Details</h2>
+<a name="id2547669"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2506644"></a><h3>
+<a name="id2547680"></a><h3>
 <a name="gimp-enums-init"></a>gimp_enums_init ()</h3>
-<a class="indexterm" name="id2506659"></a><pre class="programlisting">void        gimp_enums_init                 (void);</pre>
+<a class="indexterm" name="id2547694"></a><pre class="programlisting">void        gimp_enums_init                 (void);</pre>
 <p>
 This function makes sure all the enum types are registered
 with the GObject type system. This is intended for use by
@@ -104,9 +103,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2506694"></a><h3>
+<a name="id2563328"></a><h3>
 <a name="GimpBrushApplicationMode"></a>enum GimpBrushApplicationMode</h3>
-<a class="indexterm" name="id2506705"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2563339"></a><pre class="programlisting">typedef enum
 {
   GIMP_BRUSH_HARD,
   GIMP_BRUSH_SOFT
@@ -118,9 +117,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2506721"></a><h3>
+<a name="id2563355"></a><h3>
 <a name="GimpBrushGeneratedShape"></a>enum GimpBrushGeneratedShape</h3>
-<a class="indexterm" name="id2506732"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2563367"></a><pre class="programlisting">typedef enum
 {
   GIMP_BRUSH_GENERATED_CIRCLE,
   GIMP_BRUSH_GENERATED_SQUARE,
@@ -133,9 +132,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2506750"></a><h3>
+<a name="id2563384"></a><h3>
 <a name="GimpConvertDitherType"></a>enum GimpConvertDitherType</h3>
-<a class="indexterm" name="id2506761"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2563395"></a><pre class="programlisting">typedef enum
 {
   GIMP_NO_DITHER,
   GIMP_FS_DITHER,
@@ -149,9 +148,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2566999"></a><h3>
+<a name="id2563412"></a><h3>
 <a name="GimpConvertPaletteType"></a>enum GimpConvertPaletteType</h3>
-<a class="indexterm" name="id2567010"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2563424"></a><pre class="programlisting">typedef enum
 {
   GIMP_MAKE_PALETTE,
   GIMP_REUSE_PALETTE,
@@ -166,9 +165,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567028"></a><h3>
+<a name="id2563441"></a><h3>
 <a name="GimpConvolutionType"></a>enum GimpConvolutionType</h3>
-<a class="indexterm" name="id2567040"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2563454"></a><pre class="programlisting">typedef enum
 {
   GIMP_NORMAL_CONVOL,
   GIMP_ABSOLUTE_CONVOL,
@@ -181,9 +180,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567057"></a><h3>
+<a name="id2557226"></a><h3>
 <a name="GimpConvolveType"></a>enum GimpConvolveType</h3>
-<a class="indexterm" name="id2567069"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2557239"></a><pre class="programlisting">typedef enum
 {
   GIMP_BLUR_CONVOLVE,
   GIMP_SHARPEN_CONVOLVE
@@ -195,9 +194,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567086"></a><h3>
+<a name="id2557255"></a><h3>
 <a name="GimpFillType"></a>enum GimpFillType</h3>
-<a class="indexterm" name="id2567098"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2557268"></a><pre class="programlisting">typedef enum
 {
   GIMP_FOREGROUND_FILL,
   GIMP_BACKGROUND_FILL,
@@ -212,9 +211,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567116"></a><h3>
+<a name="id2557286"></a><h3>
 <a name="GimpGradientSegmentColor"></a>enum GimpGradientSegmentColor</h3>
-<a class="indexterm" name="id2567128"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2557297"></a><pre class="programlisting">typedef enum
 {
   GIMP_GRADIENT_SEGMENT_RGB,
   GIMP_GRADIENT_SEGMENT_HSV_CCW,
@@ -227,9 +226,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567145"></a><h3>
+<a name="id2557314"></a><h3>
 <a name="GimpGradientSegmentType"></a>enum GimpGradientSegmentType</h3>
-<a class="indexterm" name="id2567156"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2557326"></a><pre class="programlisting">typedef enum
 {
   GIMP_GRADIENT_SEGMENT_LINEAR,
   GIMP_GRADIENT_SEGMENT_CURVED,
@@ -244,9 +243,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567175"></a><h3>
+<a name="id2557345"></a><h3>
 <a name="GimpHistogramChannel"></a>enum GimpHistogramChannel</h3>
-<a class="indexterm" name="id2567186"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2557356"></a><pre class="programlisting">typedef enum
 {
   GIMP_HISTOGRAM_VALUE,
   GIMP_HISTOGRAM_RED,
@@ -261,9 +260,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567204"></a><h3>
+<a name="id2557374"></a><h3>
 <a name="GimpHueRange"></a>enum GimpHueRange</h3>
-<a class="indexterm" name="id2567216"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2557386"></a><pre class="programlisting">typedef enum
 {
   GIMP_ALL_HUES,
   GIMP_RED_HUES,
@@ -280,9 +279,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567235"></a><h3>
+<a name="id2557404"></a><h3>
 <a name="GimpLayerModeEffects"></a>enum GimpLayerModeEffects</h3>
-<a class="indexterm" name="id2567246"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2557415"></a><pre class="programlisting">typedef enum
 {
   GIMP_NORMAL_MODE,
   GIMP_DISSOLVE_MODE,
@@ -315,9 +314,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2502373"></a><h3>
+<a name="id2557440"></a><h3>
 <a name="GimpMaskApplyMode"></a>enum GimpMaskApplyMode</h3>
-<a class="indexterm" name="id2502385"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2557452"></a><pre class="programlisting">typedef enum
 {
   GIMP_MASK_APPLY,
   GIMP_MASK_DISCARD
@@ -329,9 +328,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2502401"></a><h3>
+<a name="id2557468"></a><h3>
 <a name="GimpMergeType"></a>enum GimpMergeType</h3>
-<a class="indexterm" name="id2502414"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2580689"></a><pre class="programlisting">typedef enum
 {
   GIMP_EXPAND_AS_NECESSARY,
   GIMP_CLIP_TO_IMAGE,
@@ -345,9 +344,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2502431"></a><h3>
+<a name="id2580707"></a><h3>
 <a name="GimpOffsetType"></a>enum GimpOffsetType</h3>
-<a class="indexterm" name="id2502444"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2580720"></a><pre class="programlisting">typedef enum
 {
   GIMP_OFFSET_BACKGROUND,
   GIMP_OFFSET_TRANSPARENT
@@ -359,9 +358,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2502461"></a><h3>
+<a name="id2580737"></a><h3>
 <a name="GimpOrientationType"></a>enum GimpOrientationType</h3>
-<a class="indexterm" name="id2502473"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2580749"></a><pre class="programlisting">typedef enum
 {
   GIMP_ORIENTATION_HORIZONTAL,
   GIMP_ORIENTATION_VERTICAL,
@@ -374,9 +373,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2502491"></a><h3>
+<a name="id2580766"></a><h3>
 <a name="GimpRotationType"></a>enum GimpRotationType</h3>
-<a class="indexterm" name="id2502503"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2580779"></a><pre class="programlisting">typedef enum
 {
   GIMP_ROTATE_90,
   GIMP_ROTATE_180,
@@ -389,9 +388,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2502520"></a><h3>
+<a name="id2580796"></a><h3>
 <a name="GimpSelectCriterion"></a>enum GimpSelectCriterion</h3>
-<a class="indexterm" name="id2502532"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2580808"></a><pre class="programlisting">typedef enum
 {
   GIMP_SELECT_CRITERION_COMPOSITE,
   GIMP_SELECT_CRITERION_R,
@@ -408,9 +407,9 @@ implicitly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2502551"></a><h3>
+<a name="id2580827"></a><h3>
 <a name="gimp-enums-get-type-names"></a>gimp_enums_get_type_names ()</h3>
-<a class="indexterm" name="id2502565"></a><pre class="programlisting">const gchar** gimp_enums_get_type_names     (gint *n_type_names);</pre>
+<a class="indexterm" name="id2580841"></a><pre class="programlisting">const gchar** gimp_enums_get_type_names     (gint *n_type_names);</pre>
 <p>
 This function gives access to the list of enums registered by libgimp.
 The returned array is static and must not be modified.</p>

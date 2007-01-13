@@ -28,6 +28,7 @@
 <ANCHOR id="GimpStackTraceMode" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpStackTraceMode">
 <ANCHOR id="GimpTransferMode" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode">
 <ANCHOR id="GimpTransformDirection" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformDirection">
+<ANCHOR id="GimpTransformResize" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize">
 <ANCHOR id="GimpVectorsStrokeType" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType">
 <ANCHOR id="libgimpbase-gimpbasetypes" href="libgimpbase/libgimpbase-gimpbasetypes.html">
 <ANCHOR id="GimpEnumDesc" href="libgimpbase/libgimpbase-gimpbasetypes.html#GimpEnumDesc">
@@ -45,6 +46,10 @@
 <ANCHOR id="GIMP-VERSION:CAPS" href="libgimpbase/libgimpbase-gimpversion.html#GIMP-VERSION:CAPS">
 <ANCHOR id="GIMP-API-VERSION:CAPS" href="libgimpbase/libgimpbase-gimpversion.html#GIMP-API-VERSION:CAPS">
 <ANCHOR id="GIMP-CHECK-VERSION:CAPS" href="libgimpbase/libgimpbase-gimpversion.html#GIMP-CHECK-VERSION:CAPS">
+<ANCHOR id="GIMPVAR:CAPS" href="libgimpbase/libgimpbase-gimpversion.html#GIMPVAR:CAPS">
+<ANCHOR id="gimp-major-version" href="libgimpbase/libgimpbase-gimpversion.html#gimp-major-version">
+<ANCHOR id="gimp-minor-version" href="libgimpbase/libgimpbase-gimpversion.html#gimp-minor-version">
+<ANCHOR id="gimp-micro-version" href="libgimpbase/libgimpbase-gimpversion.html#gimp-micro-version">
 <ANCHOR id="libgimpbase-gimplimits" href="libgimpbase/libgimpbase-gimplimits.html">
 <ANCHOR id="GIMP-MIN-IMAGE-SIZE:CAPS" href="libgimpbase/libgimpbase-gimplimits.html#GIMP-MIN-IMAGE-SIZE:CAPS">
 <ANCHOR id="GIMP-MAX-IMAGE-SIZE:CAPS" href="libgimpbase/libgimpbase-gimplimits.html#GIMP-MAX-IMAGE-SIZE:CAPS">

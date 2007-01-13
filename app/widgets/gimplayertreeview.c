@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimplayertreeview.c
@@ -551,8 +551,11 @@ gimp_layer_tree_view_set_context (GimpContainerView *view,
                               layer_view->model_column_mask, &renderer,
                               -1);
 
-          gimp_view_renderer_set_context (renderer, context);
-          g_object_unref (renderer);
+          if (renderer)
+            {
+              gimp_view_renderer_set_context (renderer, context);
+              g_object_unref (renderer);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -116,7 +116,7 @@ static void       gimp_channel_transform     (GimpItem         *item,
                                               GimpInterpolationType interpolation_type,
                                               gboolean          supersample,
                                               gint              recursion_level,
-                                              gboolean          clip_result,
+                                              GimpTransformResize clip_result,
                                               GimpProgress     *progress);
 static gboolean   gimp_channel_stroke        (GimpItem         *item,
                                               GimpDrawable     *drawable,
@@ -654,7 +654,7 @@ gimp_channel_transform (GimpItem               *item,
                         GimpInterpolationType   interpolation_type,
                         gboolean                supersample,
                         gint                    recursion_level,
-                        gboolean                clip_result,
+                        GimpTransformResize     clip_result,
                         GimpProgress           *progress)
 {
   if (G_TYPE_FROM_INSTANCE (item) == GIMP_TYPE_CHANNEL)

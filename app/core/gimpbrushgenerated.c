@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimp_brush_generated module Copyright 1998 Jay Cox <jaycox@earthlink.net>
@@ -471,6 +471,7 @@ gimp_brush_generated_new (const gchar             *name,
   brush = g_object_new (GIMP_TYPE_BRUSH_GENERATED,
                         "name",         name,
                         "mime-type",    "application/x-gimp-brush-generated",
+                        "spacing",      20.0,
                         "shape",        shape,
                         "radius",       radius,
                         "spikes",       spikes,
@@ -478,8 +479,6 @@ gimp_brush_generated_new (const gchar             *name,
                         "aspect-ratio", aspect_ratio,
                         "angle",        angle,
                         NULL);
-
-  GIMP_BRUSH (brush)->spacing = 20;
 
   return GIMP_DATA (brush);
 }

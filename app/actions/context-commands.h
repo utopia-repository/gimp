@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -113,6 +113,9 @@ void   context_font_select_cmd_callback           (GtkAction *action,
                                                    gint       value,
                                                    gpointer   data);
 
+void   context_brush_spacing_cmd_callback         (GtkAction *action,
+                                                   gint       value,
+                                                   gpointer   data);
 void   context_brush_shape_cmd_callback           (GtkAction *action,
                                                    gint       value,
                                                    gpointer   data);

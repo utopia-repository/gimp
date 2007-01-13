@@ -61,20 +61,20 @@ SOURCES =
 DIST_SOURCES =
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 AA = aa$(EXEEXT)
-ACLOCAL = ${SHELL} /home/sven/gnomecvs/gimp-dist/missing --run aclocal-1.9 
+ACLOCAL = ${SHELL} /home/sven/gnomesvn/gimp-dist/missing --run aclocal-1.9 
 ALLOCA = 
-ALL_LINGUAS = ar bg ca cs da de dz el en_CA en_GB es et eu fi fr ga gl gu he hu hr id it ja ko lt mk ms nb ne nl pa pl pt pt_BR ro ru rw sk sr sr@Latn sv tr tt uk vi xh yi zh_CN zh_TW
+ALL_LINGUAS = ar bg ca cs da de dz el en_CA en_GB eo es et eu fi fr ga gl gu he hu hr id it ja ko lt mk ms nb ne nl pa pl pt pt_BR ro ru rw sk sr sr@Latn sv tr tt uk vi xh yi zh_CN zh_TW
 ALSA_CFLAGS = 
 ALSA_LIBS =  -lasound -lm -ldl -lpthread
 ALTIVEC_EXTRA_CFLAGS = 
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/sven/gnomecvs/gimp-dist/missing --run tar
+AMTAR = ${SHELL} /home/sven/gnomesvn/gimp-dist/missing --run tar
 AR = ar
 AS = as
-AUTOCONF = ${SHELL} /home/sven/gnomecvs/gimp-dist/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/sven/gnomecvs/gimp-dist/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/sven/gnomecvs/gimp-dist/missing --run automake-1.9
+AUTOCONF = ${SHELL} /home/sven/gnomesvn/gimp-dist/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/sven/gnomesvn/gimp-dist/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/sven/gnomesvn/gimp-dist/missing --run automake-1.9
 AWK = mawk
 BINRELOC_CFLAGS = 
 BINRELOC_LIBS = 
@@ -88,7 +88,7 @@ BUILD_SCRIPT_FU_FALSE = #
 BUILD_SCRIPT_FU_TRUE = 
 BUILD_XJT_FALSE = #
 BUILD_XJT_TRUE = 
-CATALOGS =  ar.gmo bg.gmo ca.gmo cs.gmo da.gmo de.gmo dz.gmo el.gmo en_CA.gmo en_GB.gmo es.gmo et.gmo eu.gmo fi.gmo fr.gmo ga.gmo gl.gmo gu.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo ne.gmo nl.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo rw.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo tt.gmo uk.gmo vi.gmo xh.gmo yi.gmo zh_CN.gmo zh_TW.gmo
+CATALOGS =  ar.gmo bg.gmo ca.gmo cs.gmo da.gmo de.gmo dz.gmo el.gmo en_CA.gmo en_GB.gmo eo.gmo es.gmo et.gmo eu.gmo fi.gmo fr.gmo ga.gmo gl.gmo gu.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo ne.gmo nl.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo rw.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo tt.gmo uk.gmo vi.gmo xh.gmo yi.gmo zh_CN.gmo zh_TW.gmo
 CATOBJEXT = .gmo
 CC = gcc
 CCAS = gcc
@@ -103,6 +103,9 @@ CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -g -O2
 CYGPATH_W = echo
 DATADIRNAME = share
+DBUS_BINDING_TOOL = /usr/bin/dbus-binding-tool
+DBUS_GLIB_CFLAGS = -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
+DBUS_GLIB_LIBS = -ldbus-glib-1 -ldbus-1 -lglib-2.0  
 DEFAULT_BINARY_FALSE = 
 DEFAULT_BINARY_TRUE = #
 DEFS = -DHAVE_CONFIG_H
@@ -139,19 +142,20 @@ GETTEXT_PACKAGE = gimp20
 GIMPINSTALL = 
 GIMP_API_VERSION = 2.0
 GIMP_APP_VERSION = 2.3
-GIMP_BINARY_AGE = 313
+GIMP_BINARY_AGE = 314
+GIMP_COMMAND = gimp-2.3
 GIMP_DATA_VERSION = 2.0
 GIMP_FULL_NAME = GNU Image Manipulation Program
 GIMP_INTERFACE_AGE = 0
 GIMP_MAJOR_VERSION = 2
-GIMP_MICRO_VERSION = 13
+GIMP_MICRO_VERSION = 14
 GIMP_MINOR_VERSION = 3
 GIMP_MKENUMS = $(PERL) $(top_srcdir)/tools/gimp-mkenums
 GIMP_MODULES = modules
 GIMP_PKGCONFIG_VERSION = 2.0
 GIMP_PLUGINS = plug-ins
 GIMP_PLUGIN_VERSION = 2.0
-GIMP_REAL_VERSION = 2.3.13
+GIMP_REAL_VERSION = 2.3.14
 GIMP_REMOTE = gimp-remote-2.3$(EXEEXT)
 GIMP_SYSCONF_VERSION = 2.0
 GIMP_TOOL_VERSION = 2.0
@@ -159,15 +163,15 @@ GIMP_UNSTABLE = yes
 GIMP_UNSTABLE_FALSE = #
 GIMP_UNSTABLE_TRUE = 
 GIMP_USER_VERSION = 2.3
-GIMP_VERSION = 2.3.13
+GIMP_VERSION = 2.3.14
 GLIB_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GLIB_GENMARSHAL = glib-genmarshal
 GLIB_LIBS = -lgobject-2.0 -lglib-2.0  
 GLIB_MKENUMS = glib-mkenums
-GLIB_REQUIRED_VERSION = 2.10.2
+GLIB_REQUIRED_VERSION = 2.12.3
 GMODULE_NO_EXPORT_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GMODULE_NO_EXPORT_LIBS = -lgmodule-2.0 -ldl -lglib-2.0  
-GMOFILES =  ar.gmo bg.gmo ca.gmo cs.gmo da.gmo de.gmo dz.gmo el.gmo en_CA.gmo en_GB.gmo es.gmo et.gmo eu.gmo fi.gmo fr.gmo ga.gmo gl.gmo gu.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo ne.gmo nl.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo rw.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo tt.gmo uk.gmo vi.gmo xh.gmo yi.gmo zh_CN.gmo zh_TW.gmo
+GMOFILES =  ar.gmo bg.gmo ca.gmo cs.gmo da.gmo de.gmo dz.gmo el.gmo en_CA.gmo en_GB.gmo eo.gmo es.gmo et.gmo eu.gmo fi.gmo fr.gmo ga.gmo gl.gmo gu.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo ne.gmo nl.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo rw.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo tt.gmo uk.gmo vi.gmo xh.gmo yi.gmo zh_CN.gmo zh_TW.gmo
 GMSGFMT = /usr/bin/msgfmt
 GOBJECT_QUERY = gobject-query
 GREP = /bin/grep
@@ -240,7 +244,7 @@ INTLTOOL_XML_NOMERGE_RULE = %.xml:       %.xml.in       $(INTLTOOL_MERGE) ; LC_A
 INTLTOOL_XML_RULE = %.xml:       %.xml.in       $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 JPEG = jpeg$(EXEEXT)
 LCMS = lcms$(EXEEXT)
-LDFLAGS = 
+LDFLAGS = -u $(SYMPREFIX)xcf_init -u $(SYMPREFIX)internal_procs_init
 LIBAA = -laa
 LIBART_CFLAGS = -I/usr/include/libart-2.0  
 LIBART_LIBS = -lart_lgpl_2  
@@ -262,12 +266,12 @@ LIBZ = -lz
 LN_S = ln -s
 LTLIBOBJS = 
 LT_CURRENT_MINUS_AGE = 0
-LT_VERSION_INFO = 313:0:313
+LT_VERSION_INFO = 314:0:314
 MAIL = mail$(EXEEXT)
 MAINT = 
 MAINTAINER_MODE_FALSE = #
 MAINTAINER_MODE_TRUE = 
-MAKEINFO = ${SHELL} /home/sven/gnomecvs/gimp-dist/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/sven/gnomesvn/gimp-dist/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 MMX_EXTRA_CFLAGS = -mmmx
 MNG = mng$(EXEEXT)
@@ -283,9 +287,9 @@ OS_WIN32_TRUE = #
 PACKAGE = gimp
 PACKAGE_BUGREPORT = http://bugzilla.gnome.org/enter_bug.cgi?product=GIMP
 PACKAGE_NAME = GIMP
-PACKAGE_STRING = GIMP 2.3.13
+PACKAGE_STRING = GIMP 2.3.14
 PACKAGE_TARNAME = gimp
-PACKAGE_VERSION = 2.3.13
+PACKAGE_VERSION = 2.3.14
 PANGOFT2_CFLAGS = -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 PANGOFT2_LIBS = -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 PANGOFT2_REQUIRED_VERSION = 1.12.2
@@ -298,7 +302,7 @@ PLATFORM_WIN32_TRUE = #
 PNG = png$(EXEEXT)
 PNG_CFLAGS = -I/usr/include/libpng12  
 PNG_LIBS = -lpng12  
-POFILES =  ar.po bg.po ca.po cs.po da.po de.po dz.po el.po en_CA.po en_GB.po es.po et.po eu.po fi.po fr.po ga.po gl.po gu.po he.po hu.po hr.po id.po it.po ja.po ko.po lt.po mk.po ms.po nb.po ne.po nl.po pa.po pl.po pt.po pt_BR.po ro.po ru.po rw.po sk.po sr.po sr@Latn.po sv.po tr.po tt.po uk.po vi.po xh.po yi.po zh_CN.po zh_TW.po
+POFILES =  ar.po bg.po ca.po cs.po da.po de.po dz.po el.po en_CA.po en_GB.po eo.po es.po et.po eu.po fi.po fr.po ga.po gl.po gu.po he.po hu.po hr.po id.po it.po ja.po ko.po lt.po mk.po ms.po nb.po ne.po nl.po pa.po pl.po pt.po pt_BR.po ro.po ru.po rw.po sk.po sr.po sr@Latn.po sv.po tr.po tt.po uk.po vi.po xh.po yi.po zh_CN.po zh_TW.po
 POPPLER = poppler$(EXEEXT)
 POPPLER_CFLAGS = -pthread -I/usr/include/poppler/glib -I/usr/include/poppler -I/usr/include/gtk-2.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 POPPLER_LIBS = -pthread -lpoppler-glib -lpoppler -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lgthread-2.0 -lglib-2.0  
@@ -345,7 +349,7 @@ URI_LIBCURL_LIBS =
 USE_BINRELOC_FALSE = 
 USE_BINRELOC_TRUE = #
 USE_NLS = yes
-VERSION = 2.3.13
+VERSION = 2.3.14
 WINDRES = :
 WITH_PDBGEN_FALSE = #
 WITH_PDBGEN_TRUE = 
@@ -398,7 +402,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = /home/sven/gnomecvs/gimp-dist/install-sh
+install_sh = /home/sven/gnomesvn/gimp-dist/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -482,9 +486,11 @@ GTKDOC_CFLAGS = \
 	-I$(includedir)
 
 GTKDOC_LIBS = \
-        $(top_builddir)/app/app_procs.o					     \
+	-u $(SYMPREFIX)xcf_init -u $(SYMPREFIX)internal_procs_init	     \
+	$(top_builddir)/app/app_procs.o					     \
         $(top_builddir)/app/batch.o					     \
         $(top_builddir)/app/errors.o					     \
+        $(top_builddir)/app/sanity.o					     \
         $(top_builddir)/app/units.o					     \
         $(top_builddir)/app/gui/libappgui.a				     \
 	$(top_builddir)/app/actions/libappactions.a			     \
@@ -493,33 +499,35 @@ GTKDOC_LIBS = \
         $(top_builddir)/app/display/libappdisplay.a			     \
         $(top_builddir)/app/tools/libapptools.a				     \
         $(top_builddir)/app/widgets/libappwidgets.a			     \
+	$(top_builddir)/app/pdb/libappinternal-procs.a			     \
+        $(top_builddir)/app/xcf/libappxcf.a				     \
+        $(top_builddir)/app/file/libappfile.a				     \
+        $(top_builddir)/app/plug-in/libappplug-in.a			     \
         $(top_builddir)/app/pdb/libapppdb.a				     \
         $(top_builddir)/app/vectors/libappvectors.a			     \
-        $(top_builddir)/app/plug-in/libappplug-in.a			     \
         $(top_builddir)/app/core/libappcore.a				     \
         $(top_builddir)/app/paint/libapppaint.a				     \
-        $(top_builddir)/app/xcf/libappxcf.a				     \
         $(top_builddir)/app/text/libapptext.a				     \
-        $(top_builddir)/app/file/libappfile.a				     \
         $(top_builddir)/app/config/libappconfig.a			     \
         $(top_builddir)/app/paint-funcs/libapppaint-funcs.a		     \
         $(top_builddir)/app/composite/libappcomposite.a			     \
         $(top_builddir)/app/base/libappbase.a				     \
-        $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la     \
-        $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la       \
-        $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la       \
-        $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la   \
-        $(top_builddir)/libgimpthumb/libgimpthumb-$(GIMP_API_VERSION).la     \
-        $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la   \
         $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la \
+        $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la   \
+        $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la     \
+        $(top_builddir)/libgimpthumb/libgimpthumb-$(GIMP_API_VERSION).la     \
+        $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la       \
+        $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la   \
+        $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la       \
+        $(REGEXREPL)							     \
         $(GTK_LIBS)                                                          \
         $(LIBART_LIBS)                                                       \
         $(PANGOFT2_LIBS)                                                     \
         $(FONTCONFIG_LIBS)                                                   \
         $(FREETYPE_LIBS)                                                     \
         $(GTHREAD_LIBS)                                                      \
-        $(INTLLIBS)                                                          \
-        $(REGEXREPL)
+	$(RT_LIBS)							     \
+        $(INTLLIBS)
 
 #GTKDOC_CC = $(CC) $(INCLUDES) $(AM_CFLAGS) $(CFLAGS)
 GTKDOC_CC = $(LIBTOOL) --mode=compile $(CC) $(INCLUDES) $(AM_CFLAGS) $(CFLAGS)

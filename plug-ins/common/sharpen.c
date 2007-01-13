@@ -1,7 +1,7 @@
 /*
- * "$Id: sharpen.c,v 1.65 2006/05/16 12:26:06 neo Exp $"
+ * "$Id: sharpen.c 21494 2006-12-09 21:33:38Z neo $"
  *
- *   Sharpen filters for The GIMP -- an image manipulation program
+ *   Sharpen filters for GIMP - The GNU Image Manipulation Program
  *
  *   Copyright 1997-1998 Michael Sweet (mike@easysw.com)
  *

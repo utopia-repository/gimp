@@ -10,13 +10,12 @@
 <link rel="next" href="libgimp-gimpgradientselect.html" title="gimpgradientselect">
 <meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
-<link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
+<link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
-<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="chapter" href="libgimp-data.html" title="Data Objects">
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="part" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
@@ -32,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpgradientselect.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2564813" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2577884" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2697564" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2696743" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpfontselect"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2564813"></a><span class="refentrytitle">gimpfontselect</span>
+<a name="id2577884"></a><span class="refentrytitle">gimpfontselect</span>
 </h2>
 <p>gimpfontselect &#8212; Functions providing a font selection dialog.</p>
 </td>
@@ -70,17 +69,17 @@ gboolean    <a href="libgimp-gimpfontselect.html#gimp-fonts-set-popup">gimp_font
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697564"></a><h2>Description</h2>
+<a name="id2696743"></a><h2>Description</h2>
 <p>
 Functions providing a font selection dialog.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697580"></a><h2>Details</h2>
+<a name="id2696760"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2697591"></a><h3>
+<a name="id2696770"></a><h3>
 <a name="GimpRunFontCallback"></a>GimpRunFontCallback ()</h3>
-<a class="indexterm" name="id2697602"></a><pre class="programlisting">void        (*GimpRunFontCallback)          (const gchar *font_name,
+<a class="indexterm" name="id2696781"></a><pre class="programlisting">void        (*GimpRunFontCallback)          (const gchar *font_name,
                                              gboolean dialog_closing,
                                              gpointer user_data);</pre>
 <p>
@@ -111,9 +110,9 @@ Functions providing a font selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2697145"></a><h3>
+<a name="id2696121"></a><h3>
 <a name="gimp-font-select-new"></a>gimp_font_select_new ()</h3>
-<a class="indexterm" name="id2697156"></a><pre class="programlisting">const gchar* gimp_font_select_new           (const gchar *title,
+<a class="indexterm" name="id2696132"></a><pre class="programlisting">const gchar* gimp_font_select_new           (const gchar *title,
                                              const gchar *font_name,
                                              <a href="libgimp-gimpfontselect.html#GimpRunFontCallback">GimpRunFontCallback</a> callback,
                                              gpointer data);</pre>
@@ -155,9 +154,9 @@ Functions providing a font selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2697275"></a><h3>
+<a name="id2696251"></a><h3>
 <a name="gimp-font-select-destroy"></a>gimp_font_select_destroy ()</h3>
-<a class="indexterm" name="id2697286"></a><pre class="programlisting">void        gimp_font_select_destroy        (const gchar *font_callback);</pre>
+<a class="indexterm" name="id2696263"></a><pre class="programlisting">void        gimp_font_select_destroy        (const gchar *font_callback);</pre>
 <p>
 
 </p>
@@ -174,16 +173,16 @@ Functions providing a font selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2694921"></a><h3>
+<a name="id2696307"></a><h3>
 <a name="gimp-fonts-popup"></a>gimp_fonts_popup ()</h3>
-<a class="indexterm" name="id2694933"></a><pre class="programlisting">gboolean    gimp_fonts_popup                (const gchar *font_callback,
+<a class="indexterm" name="id2696318"></a><pre class="programlisting">gboolean    gimp_fonts_popup                (const gchar *font_callback,
                                              const gchar *popup_title,
                                              const gchar *initial_font);</pre>
 <p>
 Invokes the Gimp font selection.
 </p>
 <p>
-This procedure popups the font selection dialog.</p>
+This procedure opens the font selection dialog.</p>
 <p>
 
 </p>
@@ -197,7 +196,7 @@ This procedure popups the font selection dialog.</p>
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>popup_title</code></em>&#160;:</span></td>
-<td> Title to give the font popup window.
+<td> Title of the font selection dialog.
 </td>
 </tr>
 <tr>
@@ -215,11 +214,11 @@ This procedure popups the font selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2695038"></a><h3>
+<a name="id2696424"></a><h3>
 <a name="gimp-fonts-close-popup"></a>gimp_fonts_close_popup ()</h3>
-<a class="indexterm" name="id2695050"></a><pre class="programlisting">gboolean    gimp_fonts_close_popup          (const gchar *font_callback);</pre>
+<a class="indexterm" name="id2696435"></a><pre class="programlisting">gboolean    gimp_fonts_close_popup          (const gchar *font_callback);</pre>
 <p>
-Popdown the Gimp font selection.
+Close the font selection dialog.
 </p>
 <p>
 This procedure closes an opened font selection dialog.</p>
@@ -231,7 +230,7 @@ This procedure closes an opened font selection dialog.</p>
 <tbody>
 <tr>
 <td><span class="term"><em class="parameter"><code>font_callback</code></em>&#160;:</span></td>
-<td> The name of the callback registered for this popup.
+<td> The name of the callback registered for this pop-up.
 </td>
 </tr>
 <tr>
@@ -244,15 +243,15 @@ This procedure closes an opened font selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2695112"></a><h3>
+<a name="id2698652"></a><h3>
 <a name="gimp-fonts-set-popup"></a>gimp_fonts_set_popup ()</h3>
-<a class="indexterm" name="id2695124"></a><pre class="programlisting">gboolean    gimp_fonts_set_popup            (const gchar *font_callback,
+<a class="indexterm" name="id2698663"></a><pre class="programlisting">gboolean    gimp_fonts_set_popup            (const gchar *font_callback,
                                              const gchar *font_name);</pre>
 <p>
-Sets the current font selection in a popup.
+Sets the current font in a font selection dialog.
 </p>
 <p>
-Sets the current font selection in a popup.</p>
+Sets the current font in a font selection dialog.</p>
 <p>
 
 </p>
@@ -261,7 +260,7 @@ Sets the current font selection in a popup.</p>
 <tbody>
 <tr>
 <td><span class="term"><em class="parameter"><code>font_callback</code></em>&#160;:</span></td>
-<td> The name of the callback registered for this popup.
+<td> The name of the callback registered for this pop-up.
 </td>
 </tr>
 <tr>

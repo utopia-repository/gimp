@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimpfiledialog.c
@@ -49,6 +49,7 @@
 #include "gimpview.h"
 #include "gimpviewrendererimagefile.h"
 #include "gimpthumbbox.h"
+#include "gimpwidgets-utils.h"
 
 #include "gimp-intl.h"
 
@@ -391,7 +392,8 @@ gimp_file_dialog_set_file_proc (GimpFileDialog      *dialog,
 void
 gimp_file_dialog_set_image (GimpFileDialog *dialog,
                             GimpImage      *image,
-                            gboolean        save_a_copy)
+                            gboolean        save_a_copy,
+                            gboolean        close_after_saving)
 {
   const gchar *uri = NULL;
   gchar       *dirname;
@@ -400,8 +402,9 @@ gimp_file_dialog_set_image (GimpFileDialog *dialog,
   g_return_if_fail (GIMP_IS_FILE_DIALOG (dialog));
   g_return_if_fail (GIMP_IS_IMAGE (image));
 
-  dialog->image       = image;
-  dialog->save_a_copy = save_a_copy;
+  dialog->image              = image;
+  dialog->save_a_copy        = save_a_copy;
+  dialog->close_after_saving = close_after_saving;
 
   if (save_a_copy)
     uri = g_object_get_data (G_OBJECT (image), "gimp-image-save-a-copy");
@@ -411,7 +414,52 @@ gimp_file_dialog_set_image (GimpFileDialog *dialog,
 
   gimp_file_dialog_set_file_proc (dialog, NULL);
 
+#ifndef G_OS_WIN32
   dirname  = g_path_get_dirname (uri);
+#else
+  /* g_path_get_dirname() is supposed to work on pathnames, not URIs.
+   *
+   * If uri points to a file on the root of a drive
+   * "file:///d:/foo.png", g_path_get_dirname() would return
+   * "file:///d:". (What we really would want is "file:///d:/".) When
+   * this then is passed inside gtk+ to g_filename_from_uri() we get
+   * "d:" which is not an absolute pathname. This currently causes an
+   * assertion failure in gtk+. This scenario occurs if we have opened
+   * an image from the root of a drive and then do Save As.
+   *
+   * Of course, gtk+ shouldn't assert even if we feed it slighly bogus
+   * data, and that problem should be fixed, too. But to get the
+   * correct default current folder in the filechooser combo box, we
+   * need to pass it the proper URI for an absolute path anyway. So
+   * don't use g_path_get_dirname() on file: URIs.
+   */
+  if (g_str_has_prefix (uri, "file:///"))
+    {
+      gchar *filepath = g_filename_from_uri (uri, NULL, NULL);
+      gchar *dirpath  = NULL;
+
+      if (filepath != NULL)
+	{
+	  dirpath = g_path_get_dirname (filepath);
+	  g_free (filepath);
+	}
+
+      if (dirpath != NULL)
+	{
+	  dirname = g_filename_to_uri (dirpath, NULL, NULL);
+	  g_free (dirpath);
+	}
+      else
+        {
+          dirname = NULL;
+        }
+    }
+  else
+    {
+      dirname = g_path_get_dirname (uri);
+    }
+#endif
+
   basename = file_utils_uri_display_basename (uri);
 
   if (dirname && strlen (dirname) && strcmp (dirname, "."))
@@ -595,11 +643,8 @@ static void
 gimp_file_dialog_update_preview (GtkFileChooser *chooser,
                                  GimpFileDialog *dialog)
 {
-  gchar *uri = gtk_file_chooser_get_preview_uri (chooser);
-
-  gimp_thumb_box_set_uri (GIMP_THUMB_BOX (dialog->thumb_box), uri);
-
-  g_free (uri);
+  gimp_thumb_box_take_uri (GIMP_THUMB_BOX (dialog->thumb_box),
+                           gtk_file_chooser_get_preview_uri (chooser));
 }
 
 static void

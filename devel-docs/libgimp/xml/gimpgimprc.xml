@@ -28,6 +28,7 @@
 <link linkend="GimpColorConfig">GimpColorConfig</link>* <link linkend="gimp-get-color-configuration">gimp_get_color_configuration</link>
                                             (void);
 <link linkend="gchar">gchar</link>*      <link linkend="gimp-get-default-comment">gimp_get_default_comment</link>        (void);
+<link linkend="GimpUnit">GimpUnit</link>    <link linkend="gimp-get-default-unit">gimp_get_default_unit</link>           (void);
 <link linkend="gchar">gchar</link>*      <link linkend="gimp-get-module-load-inhibit">gimp_get_module_load_inhibit</link>    (void);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-get-monitor-resolution">gimp_get_monitor_resolution</link>     (<link linkend="gdouble">gdouble</link> *xres,
                                              <link linkend="gdouble">gdouble</link> *yres);
@@ -129,9 +130,25 @@ Returns a copy of the default image comment.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Default Image Comment.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Default image comment.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-get-default-unit" role="function" condition="since:GIMP 2.4"/>gimp_get_default_unit ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_get_default_unit</primary></indexterm><programlisting><link linkend="GimpUnit">GimpUnit</link>    gimp_get_default_unit           (void);</programlisting>
+<para>
+Get the default unit (taken from the user's locale).
+</para>
+<para>
+Returns the default unit's integer ID.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Default unit.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
 <refsect2>
 <title><anchor id="gimp-get-module-load-inhibit" role="function"/>gimp_get_module_load_inhibit ()</title>
 <indexterm><primary>gimp_get_module_load_inhibit</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_get_module_load_inhibit    (void);</programlisting>

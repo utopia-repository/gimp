@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -55,8 +55,6 @@
 
 #define PREVIEW_WIDTH  ((ENTRY_WIDTH  + SPACING) * COLUMNS + 1)
 #define PREVIEW_HEIGHT ((ENTRY_HEIGHT + SPACING) * ROWS    + 1)
-
-#define EPSILON 1e-10
 
 /*  local function prototypes  */
 
@@ -520,15 +518,19 @@ gimp_palette_editor_zoom (GimpPaletteEditor  *editor,
 
   switch (zoom_type)
     {
+    case GIMP_ZOOM_IN_MAX:
+    case GIMP_ZOOM_IN_MORE:
     case GIMP_ZOOM_IN:
       zoom_factor += 0.1;
       break;
 
+    case GIMP_ZOOM_OUT_MORE:
     case GIMP_ZOOM_OUT:
       zoom_factor -= 0.1;
       break;
 
-    case GIMP_ZOOM_TO: /* used as ZOOM_ALL */
+    case GIMP_ZOOM_OUT_MAX:
+    case GIMP_ZOOM_TO: /* abused as ZOOM_ALL */
       {
         gint height  = editor->view->parent->parent->parent->allocation.height;
         gint columns = palette->n_columns ? palette->n_columns : COLUMNS;
@@ -564,77 +566,23 @@ gimp_palette_editor_get_index (GimpPaletteEditor *editor,
                                const GimpRGB     *search)
 {
   GimpPalette *palette;
-  gint         index = 0;
 
   g_return_val_if_fail (GIMP_IS_PALETTE_EDITOR (editor), -1);
+  g_return_val_if_fail (search != NULL, -1);
 
   palette = GIMP_PALETTE (GIMP_DATA_EDITOR (editor)->data);
 
-  if (! palette || palette->n_colors == 0)
-    return -1;
-
-  if (editor->color)
-    index = editor->color->position;
-
-  if (search)
+  if (palette && palette->n_colors > 0)
     {
-      if (! editor->color)
-        {
-          GList *list;
+      GimpPaletteEntry *entry;
 
-          /* search from the start */
+      entry = gimp_palette_find_entry (palette, search, editor->color);
 
-          for (list = palette->colors; list; list = g_list_next (list))
-            {
-              GimpPaletteEntry *entry = list->data;
-
-              if (gimp_rgb_distance (&entry->color, search) < EPSILON)
-                {
-                  index = entry->position;
-                  break;
-                }
-            }
-        }
-      else if (gimp_rgb_distance (&editor->color->color, search) > EPSILON)
-        {
-          GList *old  = g_list_nth (palette->colors, editor->color->position);
-          GList *next = old->next;
-          GList *prev = old->prev;
-
-          /* proximity-based search */
-
-          while (next || prev)
-            {
-              if (next)
-                {
-                  GimpPaletteEntry *entry = next->data;
-
-                  if (gimp_rgb_distance (&entry->color, search) < EPSILON)
-                    {
-                      index = entry->position;
-                      break;
-                    }
-
-                  next = next->next;
-                }
-
-              if (prev)
-                {
-                  GimpPaletteEntry *entry = prev->data;
-
-                  if (gimp_rgb_distance (&entry->color, search) < EPSILON)
-                    {
-                      index = entry->position;
-                      break;
-                    }
-
-                  prev = prev->prev;
-                }
-            }
-        }
+      if (entry)
+        return entry->position;
     }
 
-  return index;
+  return -1;
 }
 
 gboolean
@@ -809,14 +757,9 @@ palette_editor_entry_activated (GimpPaletteView   *view,
 {
   if (GIMP_DATA_EDITOR (editor)->data_editable && entry == editor->color)
     {
-      GtkAction *action;
-
-      action = gimp_ui_manager_find_action (GIMP_EDITOR (editor)->ui_manager,
-                                            "palette-editor",
-                                            "palette-editor-edit-color");
-
-      if (action)
-        gtk_action_activate (action);
+      gimp_ui_manager_activate_action (GIMP_EDITOR (editor)->ui_manager,
+                                       "palette-editor",
+                                       "palette-editor-edit-color");
     }
 }
 

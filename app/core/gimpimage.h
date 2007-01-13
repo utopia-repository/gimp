@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattisbvf
  *
  * This program is free software; you can redistribute it and/or modify
@@ -201,6 +201,9 @@ struct _GimpImageClass
                                          GimpDirtyMask         dirty_mask);
   void (* dirty)                        (GimpImage            *image,
                                          GimpDirtyMask         dirty_mask);
+  void (* saved)                        (GimpImage            *image,
+                                         const gchar          *uri);
+
   void (* update)                       (GimpImage            *image,
                                          gint                  x,
                                          gint                  y,
@@ -255,6 +258,8 @@ gchar         * gimp_image_get_filename          (const GimpImage    *image);
 void            gimp_image_set_save_proc         (GimpImage          *image,
                                                   GimpPlugInProcedure *proc);
 GimpPlugInProcedure * gimp_image_get_save_proc   (const GimpImage    *image);
+void            gimp_image_saved                 (GimpImage          *image,
+                                                  const gchar        *uri);
 
 void            gimp_image_set_resolution        (GimpImage          *image,
                                                   gdouble             xres,

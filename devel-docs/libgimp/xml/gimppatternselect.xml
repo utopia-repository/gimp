@@ -143,7 +143,7 @@ Functions providing a pattern selection dialog.
 Invokes the Gimp pattern selection.
 </para>
 <para>
-This procedure popups the pattern selection dialog.</para>
+This procedure opens the pattern selection dialog.</para>
 <para>
 
 </para><variablelist role="params">
@@ -151,7 +151,7 @@ This procedure popups the pattern selection dialog.</para>
 <listitem><simpara> The callback PDB proc to call when pattern selection is made.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>popup_title</parameter>&nbsp;:</term>
-<listitem><simpara> Title to give the pattern popup window.
+<listitem><simpara> Title of the pattern selection dialog.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>initial_pattern</parameter>&nbsp;:</term>
 <listitem><simpara> The name of the pattern to set as the first selected.
@@ -163,7 +163,7 @@ This procedure popups the pattern selection dialog.</para>
 <title><anchor id="gimp-patterns-close-popup" role="function"/>gimp_patterns_close_popup ()</title>
 <indexterm><primary>gimp_patterns_close_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_patterns_close_popup       (const <link linkend="gchar">gchar</link> *pattern_callback);</programlisting>
 <para>
-Popdown the Gimp pattern selection.
+Close the pattern selection dialog.
 </para>
 <para>
 This procedure closes an opened pattern selection dialog.</para>
@@ -171,7 +171,7 @@ This procedure closes an opened pattern selection dialog.</para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>pattern_callback</parameter>&nbsp;:</term>
-<listitem><simpara> The name of the callback registered for this popup.
+<listitem><simpara> The name of the callback registered for this pop-up.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
@@ -181,15 +181,15 @@ This procedure closes an opened pattern selection dialog.</para>
 <indexterm><primary>gimp_patterns_set_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_patterns_set_popup         (const <link linkend="gchar">gchar</link> *pattern_callback,
                                              const <link linkend="gchar">gchar</link> *pattern_name);</programlisting>
 <para>
-Sets the current pattern selection in a popup.
+Sets the current pattern in a pattern selection dialog.
 </para>
 <para>
-Sets the current pattern selection in a popup.</para>
+Sets the current pattern in a pattern selection dialog.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>pattern_callback</parameter>&nbsp;:</term>
-<listitem><simpara> The name of the callback registered for this popup.
+<listitem><simpara> The name of the callback registered for this pop-up.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pattern_name</parameter>&nbsp;:</term>
 <listitem><simpara> The name of the pattern to set as selected.

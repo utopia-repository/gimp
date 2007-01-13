@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -49,7 +49,7 @@
 
 static int   ts_console_mode;
 
-extern void *ts_output_routine;
+SCHEME_EXPORT void *ts_output_routine;
 
 #undef cons
 

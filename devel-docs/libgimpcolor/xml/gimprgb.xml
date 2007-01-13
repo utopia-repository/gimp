@@ -528,8 +528,9 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgb-intensity" role="function"/>gimp_rgb_intensity ()</title>
-<indexterm><primary>gimp_rgb_intensity</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_rgb_intensity              (const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<title><anchor id="gimp-rgb-intensity" role="function" condition="deprecated:"/>gimp_rgb_intensity ()</title>
+<indexterm role="deprecated"><primary>gimp_rgb_intensity</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_rgb_intensity              (const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<warning><para><literal>gimp_rgb_intensity</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This function is deprecated! Use <link linkend="gimp-rgb-luminance"><function>gimp_rgb_luminance()</function></link> instead.</para>
 <para>
@@ -542,8 +543,9 @@ This function is deprecated! Use <link linkend="gimp-rgb-luminance"><function>gi
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-rgb-intensity-uchar" role="function"/>gimp_rgb_intensity_uchar ()</title>
-<indexterm><primary>gimp_rgb_intensity_uchar</primary></indexterm><programlisting><link linkend="guchar">guchar</link>      gimp_rgb_intensity_uchar        (const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<title><anchor id="gimp-rgb-intensity-uchar" role="function" condition="deprecated:"/>gimp_rgb_intensity_uchar ()</title>
+<indexterm role="deprecated"><primary>gimp_rgb_intensity_uchar</primary></indexterm><programlisting><link linkend="guchar">guchar</link>      gimp_rgb_intensity_uchar        (const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<warning><para><literal>gimp_rgb_intensity_uchar</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This function is deprecated! Use <link linkend="gimp-rgb-luminance-uchar"><function>gimp_rgb_luminance_uchar()</function></link> instead.</para>
 <para>
@@ -799,8 +801,9 @@ they leave the alpha channel unspecified.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-RGB-INTENSITY:CAPS" role="macro"/>GIMP_RGB_INTENSITY()</title>
-<indexterm><primary>GIMP_RGB_INTENSITY</primary></indexterm><programlisting>#define     GIMP_RGB_INTENSITY(r,g,b)</programlisting>
+<title><anchor id="GIMP-RGB-INTENSITY:CAPS" role="macro" condition="deprecated:"/>GIMP_RGB_INTENSITY()</title>
+<indexterm role="deprecated"><primary>GIMP_RGB_INTENSITY</primary></indexterm><programlisting>#define     GIMP_RGB_INTENSITY(r,g,b)</programlisting>
+<warning><para><literal>GIMP_RGB_INTENSITY</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This macro calculates the intensity of an RGB value based on
 coefficients taken from the NTSC analog television standard.
@@ -818,23 +821,26 @@ coefficients taken from the NTSC analog television standard.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-RGB-INTENSITY-RED:CAPS" role="macro"/>GIMP_RGB_INTENSITY_RED</title>
-<indexterm><primary>GIMP_RGB_INTENSITY_RED</primary></indexterm><programlisting>#define GIMP_RGB_INTENSITY_RED    (0.30)
+<title><anchor id="GIMP-RGB-INTENSITY-RED:CAPS" role="macro" condition="deprecated:"/>GIMP_RGB_INTENSITY_RED</title>
+<indexterm role="deprecated"><primary>GIMP_RGB_INTENSITY_RED</primary></indexterm><programlisting>#define GIMP_RGB_INTENSITY_RED    (0.30)
 </programlisting>
+<warning><para><literal>GIMP_RGB_INTENSITY_RED</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-RGB-INTENSITY-GREEN:CAPS" role="macro"/>GIMP_RGB_INTENSITY_GREEN</title>
-<indexterm><primary>GIMP_RGB_INTENSITY_GREEN</primary></indexterm><programlisting>#define GIMP_RGB_INTENSITY_GREEN  (0.59)
+<title><anchor id="GIMP-RGB-INTENSITY-GREEN:CAPS" role="macro" condition="deprecated:"/>GIMP_RGB_INTENSITY_GREEN</title>
+<indexterm role="deprecated"><primary>GIMP_RGB_INTENSITY_GREEN</primary></indexterm><programlisting>#define GIMP_RGB_INTENSITY_GREEN  (0.59)
 </programlisting>
+<warning><para><literal>GIMP_RGB_INTENSITY_GREEN</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-RGB-INTENSITY-BLUE:CAPS" role="macro"/>GIMP_RGB_INTENSITY_BLUE</title>
-<indexterm><primary>GIMP_RGB_INTENSITY_BLUE</primary></indexterm><programlisting>#define GIMP_RGB_INTENSITY_BLUE   (0.11)
+<title><anchor id="GIMP-RGB-INTENSITY-BLUE:CAPS" role="macro" condition="deprecated:"/>GIMP_RGB_INTENSITY_BLUE</title>
+<indexterm role="deprecated"><primary>GIMP_RGB_INTENSITY_BLUE</primary></indexterm><programlisting>#define GIMP_RGB_INTENSITY_BLUE   (0.11)
 </programlisting>
+<warning><para><literal>GIMP_RGB_INTENSITY_BLUE</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 
 </para></refsect2>

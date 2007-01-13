@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -119,10 +119,10 @@ gimp_paint_tool_init (GimpPaintTool *paint_tool)
 {
   GimpTool *tool = GIMP_TOOL (paint_tool);
 
-  gimp_tool_control_set_motion_mode     (tool->control,
-                                         GIMP_MOTION_MODE_EXACT);
-  gimp_tool_control_set_action_value_1  (tool->control,
-                                         "context/context-opacity-set");
+  gimp_tool_control_set_motion_mode (tool->control, GIMP_MOTION_MODE_EXACT);
+  gimp_tool_control_set_scroll_lock (tool->control, TRUE);
+  gimp_tool_control_set_action_value_1 (tool->control,
+                                        "context/context-opacity-set");
 
   paint_tool->pick_colors = FALSE;
   paint_tool->draw_line   = FALSE;
@@ -220,6 +220,7 @@ gimp_paint_tool_control (GimpTool       *tool,
                              GIMP_PAINT_TOOL_GET_OPTIONS (tool),
                              GIMP_PAINT_STATE_FINISH, 0);
       gimp_paint_core_cleanup (paint_tool->core);
+      gimp_tool_pop_status (tool, display);
       break;
     }
 

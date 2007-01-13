@@ -126,7 +126,7 @@ GimpColorConfig implements
 </refsect2>
 <refsect2><title><anchor id="GimpColorConfig--display-profile-from-gdk"/>The &quot;<literal>display-profile-from-gdk</literal>&quot; property</title>
 <indexterm><primary>GimpColorConfig:display-profile-from-gdk</primary></indexterm><programlisting>  &quot;display-profile-from-gdk&quot; <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
-<para>When enabled, the GIMP will try to use the display color profile from the windowing system.  The configured monitor profile is then only used as a fallback.</para><para>Default value: TRUE</para>
+<para>When enabled, GIMP will try to use the display color profile from the windowing system.  The configured monitor profile is then only used as a fallback.</para><para>Default value: TRUE</para>
 </refsect2>
 <refsect2><title><anchor id="GimpColorConfig--display-rendering-intent"/>The &quot;<literal>display-rendering-intent</literal>&quot; property</title>
 <indexterm><primary>GimpColorConfig:display-rendering-intent</primary></indexterm><programlisting>  &quot;display-rendering-intent&quot; <link linkend="GimpColorRenderingIntent">GimpColorRenderingIntent</link>  : Read / Write / Construct</programlisting>

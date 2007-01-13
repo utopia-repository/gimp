@@ -5,9 +5,9 @@
 <title>GimpPropWidgets</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
-<link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
-<link rel="prev" href="GimpPreview.html" title="GimpPreview">
-<link rel="next" href="GimpScrolledPreview.html" title="GimpScrolledPreview">
+<link rel="up" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
+<link rel="prev" href="libgimpwidgets-GimpEnumWidgets.html" title="GimpEnumWidgets">
+<link rel="next" href="libgimpwidgets-GimpWidgets.html" title="GimpWidgets">
 <meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
@@ -27,22 +27,22 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="GimpPreview.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="libgimpwidgets-GimpEnumWidgets.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpwidgets-utils.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
-<td><a accesskey="n" href="GimpScrolledPreview.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="libgimpwidgets-GimpWidgets.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2566227" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2586069" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2624998" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2659686" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpwidgets-GimpPropWidgets"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2566227"></a><span class="refentrytitle">GimpPropWidgets</span>
+<a name="id2586069"></a><span class="refentrytitle">GimpPropWidgets</span>
 </h2>
 <p>GimpPropWidgets</p>
 </td>
@@ -141,6 +141,10 @@ GtkWidget*  <a href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-file-chooser-
                                              const gchar *property_name,
                                              const gchar *title,
                                              GtkFileChooserAction action);
+GtkWidget*  <a href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-file-chooser-button-new-with-dialog">gimp_prop_file_chooser_button_new_with_dialog</a>
+                                            (GObject *config,
+                                             const gchar *property_name,
+                                             GtkWidget *dialog);
 GtkWidget*  <a href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-path-editor-new">gimp_prop_path_editor_new</a>       (GObject *config,
                                              const gchar *path_property_name,
                                              const gchar *writable_property_name,
@@ -182,17 +186,17 @@ GtkWidget*  <a href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-stock-image-n
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2624998"></a><h2>Description</h2>
+<a name="id2659686"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2625014"></a><h2>Details</h2>
+<a name="id2659699"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2625025"></a><h3>
+<a name="id2659709"></a><h3>
 <a name="gimp-prop-check-button-new"></a>gimp_prop_check_button_new ()</h3>
-<a class="indexterm" name="id2625037"></a><pre class="programlisting">GtkWidget*  gimp_prop_check_button_new      (GObject *config,
+<a class="indexterm" name="id2659719"></a><pre class="programlisting">GtkWidget*  gimp_prop_check_button_new      (GObject *config,
                                              const gchar *property_name,
                                              const gchar *label);</pre>
 <p>
@@ -231,9 +235,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2625156"></a><h3>
+<a name="id2659838"></a><h3>
 <a name="gimp-prop-boolean-combo-box-new"></a>gimp_prop_boolean_combo_box_new ()</h3>
-<a class="indexterm" name="id2625169"></a><pre class="programlisting">GtkWidget*  gimp_prop_boolean_combo_box_new (GObject *config,
+<a class="indexterm" name="id2659851"></a><pre class="programlisting">GtkWidget*  gimp_prop_boolean_combo_box_new (GObject *config,
                                              const gchar *property_name,
                                              const gchar *true_text,
                                              const gchar *false_text);</pre>
@@ -281,9 +285,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2625351"></a><h3>
+<a name="id2660031"></a><h3>
 <a name="gimp-prop-boolean-radio-frame-new"></a>gimp_prop_boolean_radio_frame_new ()</h3>
-<a class="indexterm" name="id2625365"></a><pre class="programlisting">GtkWidget*  gimp_prop_boolean_radio_frame_new
+<a class="indexterm" name="id2660045"></a><pre class="programlisting">GtkWidget*  gimp_prop_boolean_radio_frame_new
                                             (GObject *config,
                                              const gchar *property_name,
                                              const gchar *title,
@@ -335,9 +339,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2625542"></a><h3>
+<a name="id2660221"></a><h3>
 <a name="gimp-prop-expander-new"></a>gimp_prop_expander_new ()</h3>
-<a class="indexterm" name="id2625553"></a><pre class="programlisting">GtkWidget*  gimp_prop_expander_new          (GObject *config,
+<a class="indexterm" name="id2660233"></a><pre class="programlisting">GtkWidget*  gimp_prop_expander_new          (GObject *config,
                                              const gchar *property_name,
                                              const gchar *label);</pre>
 <p>
@@ -377,9 +381,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2625681"></a><h3>
+<a name="id2660361"></a><h3>
 <a name="gimp-prop-hscale-new"></a>gimp_prop_hscale_new ()</h3>
-<a class="indexterm" name="id2625692"></a><pre class="programlisting">GtkWidget*  gimp_prop_hscale_new            (GObject *config,
+<a class="indexterm" name="id2660372"></a><pre class="programlisting">GtkWidget*  gimp_prop_hscale_new            (GObject *config,
                                              const gchar *property_name,
                                              gdouble step_increment,
                                              gdouble page_increment,
@@ -430,9 +434,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2625849"></a><h3>
+<a name="id2660528"></a><h3>
 <a name="gimp-prop-int-combo-box-new"></a>gimp_prop_int_combo_box_new ()</h3>
-<a class="indexterm" name="id2625861"></a><pre class="programlisting">GtkWidget*  gimp_prop_int_combo_box_new     (GObject *config,
+<a class="indexterm" name="id2660540"></a><pre class="programlisting">GtkWidget*  gimp_prop_int_combo_box_new     (GObject *config,
                                              const gchar *property_name,
                                              <a href="GimpIntStore.html" title="GimpIntStore">GimpIntStore</a> *store);</pre>
 <p>
@@ -473,9 +477,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626012"></a><h3>
+<a name="id2660692"></a><h3>
 <a name="gimp-prop-enum-combo-box-new"></a>gimp_prop_enum_combo_box_new ()</h3>
-<a class="indexterm" name="id2626026"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_combo_box_new    (GObject *config,
+<a class="indexterm" name="id2660705"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_combo_box_new    (GObject *config,
                                              const gchar *property_name,
                                              gint minimum,
                                              gint maximum);</pre>
@@ -524,9 +528,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626190"></a><h3>
+<a name="id2660870"></a><h3>
 <a name="gimp-prop-enum-check-button-new"></a>gimp_prop_enum_check_button_new ()</h3>
-<a class="indexterm" name="id2626204"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_check_button_new (GObject *config,
+<a class="indexterm" name="id2660883"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_check_button_new (GObject *config,
                                              const gchar *property_name,
                                              const gchar *label,
                                              gint false_value,
@@ -579,9 +583,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626339"></a><h3>
+<a name="id2661050"></a><h3>
 <a name="gimp-prop-enum-label-new"></a>gimp_prop_enum_label_new ()</h3>
-<a class="indexterm" name="id2626350"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_label_new        (GObject *config,
+<a class="indexterm" name="id2661061"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_label_new        (GObject *config,
                                              const gchar *property_name);</pre>
 <p>
 </p>
@@ -613,9 +617,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626430"></a><h3>
+<a name="id2661151"></a><h3>
 <a name="gimp-prop-enum-radio-frame-new"></a>gimp_prop_enum_radio_frame_new ()</h3>
-<a class="indexterm" name="id2626443"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_radio_frame_new  (GObject *config,
+<a class="indexterm" name="id2661164"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_radio_frame_new  (GObject *config,
                                              const gchar *property_name,
                                              const gchar *title,
                                              gint minimum,
@@ -668,9 +672,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626600"></a><h3>
+<a name="id2661318"></a><h3>
 <a name="gimp-prop-enum-radio-box-new"></a>gimp_prop_enum_radio_box_new ()</h3>
-<a class="indexterm" name="id2626612"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_radio_box_new    (GObject *config,
+<a class="indexterm" name="id2661331"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_radio_box_new    (GObject *config,
                                              const gchar *property_name,
                                              gint minimum,
                                              gint maximum);</pre>
@@ -719,9 +723,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626760"></a><h3>
+<a name="id2661479"></a><h3>
 <a name="gimp-prop-enum-stock-box-new"></a>gimp_prop_enum_stock_box_new ()</h3>
-<a class="indexterm" name="id2626772"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_stock_box_new    (GObject *config,
+<a class="indexterm" name="id2661491"></a><pre class="programlisting">GtkWidget*  gimp_prop_enum_stock_box_new    (GObject *config,
                                              const gchar *property_name,
                                              const gchar *stock_prefix,
                                              gint minimum,
@@ -775,9 +779,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626932"></a><h3>
+<a name="id2661651"></a><h3>
 <a name="gimp-prop-spin-button-new"></a>gimp_prop_spin_button_new ()</h3>
-<a class="indexterm" name="id2626943"></a><pre class="programlisting">GtkWidget*  gimp_prop_spin_button_new       (GObject *config,
+<a class="indexterm" name="id2661662"></a><pre class="programlisting">GtkWidget*  gimp_prop_spin_button_new       (GObject *config,
                                              const gchar *property_name,
                                              gdouble step_increment,
                                              gdouble page_increment,
@@ -828,9 +832,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627084"></a><h3>
+<a name="id2661802"></a><h3>
 <a name="gimp-prop-scale-entry-new"></a>gimp_prop_scale_entry_new ()</h3>
-<a class="indexterm" name="id2627095"></a><pre class="programlisting">GtkObject*  gimp_prop_scale_entry_new       (GObject *config,
+<a class="indexterm" name="id2661814"></a><pre class="programlisting">GtkObject*  gimp_prop_scale_entry_new       (GObject *config,
                                              const gchar *property_name,
                                              GtkTable *table,
                                              gint column,
@@ -926,9 +930,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627449"></a><h3>
+<a name="id2662168"></a><h3>
 <a name="gimp-prop-opacity-entry-new"></a>gimp_prop_opacity_entry_new ()</h3>
-<a class="indexterm" name="id2627460"></a><pre class="programlisting">GtkObject*  gimp_prop_opacity_entry_new     (GObject *config,
+<a class="indexterm" name="id2662179"></a><pre class="programlisting">GtkObject*  gimp_prop_opacity_entry_new     (GObject *config,
                                              const gchar *property_name,
                                              GtkTable *table,
                                              gint column,
@@ -988,9 +992,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627662"></a><h3>
+<a name="id2662381"></a><h3>
 <a name="gimp-prop-memsize-entry-new"></a>gimp_prop_memsize_entry_new ()</h3>
-<a class="indexterm" name="id2627673"></a><pre class="programlisting">GtkWidget*  gimp_prop_memsize_entry_new     (GObject *config,
+<a class="indexterm" name="id2662392"></a><pre class="programlisting">GtkWidget*  gimp_prop_memsize_entry_new     (GObject *config,
                                              const gchar *property_name);</pre>
 <p>
 Creates a <a href="GimpMemsizeEntry.html" title="GimpMemsizeEntry"><span class="type">GimpMemsizeEntry</span></a> (spin button and option menu) to set
@@ -1024,9 +1028,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627769"></a><h3>
+<a name="id2662488"></a><h3>
 <a name="gimp-prop-label-new"></a>gimp_prop_label_new ()</h3>
-<a class="indexterm" name="id2627780"></a><pre class="programlisting">GtkWidget*  gimp_prop_label_new             (GObject *config,
+<a class="indexterm" name="id2662499"></a><pre class="programlisting">GtkWidget*  gimp_prop_label_new             (GObject *config,
                                              const gchar *property_name);</pre>
 <p>
 Creates a <span class="type">GtkLabel</span> to display the value of the specified String
@@ -1060,9 +1064,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627876"></a><h3>
+<a name="id2662595"></a><h3>
 <a name="gimp-prop-entry-new"></a>gimp_prop_entry_new ()</h3>
-<a class="indexterm" name="id2627886"></a><pre class="programlisting">GtkWidget*  gimp_prop_entry_new             (GObject *config,
+<a class="indexterm" name="id2662605"></a><pre class="programlisting">GtkWidget*  gimp_prop_entry_new             (GObject *config,
                                              const gchar *property_name,
                                              gint max_len);</pre>
 <p>
@@ -1101,9 +1105,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627993"></a><h3>
+<a name="id2662712"></a><h3>
 <a name="gimp-prop-text-buffer-new"></a>gimp_prop_text_buffer_new ()</h3>
-<a class="indexterm" name="id2628004"></a><pre class="programlisting">GtkTextBuffer* gimp_prop_text_buffer_new    (GObject *config,
+<a class="indexterm" name="id2662723"></a><pre class="programlisting">GtkTextBuffer* gimp_prop_text_buffer_new    (GObject *config,
                                              const gchar *property_name,
                                              gint max_len);</pre>
 <p>
@@ -1149,9 +1153,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628139"></a><h3>
+<a name="id2662858"></a><h3>
 <a name="gimp-prop-file-chooser-button-new"></a>gimp_prop_file_chooser_button_new ()</h3>
-<a class="indexterm" name="id2628152"></a><pre class="programlisting">GtkWidget*  gimp_prop_file_chooser_button_new
+<a class="indexterm" name="id2662871"></a><pre class="programlisting">GtkWidget*  gimp_prop_file_chooser_button_new
                                             (GObject *config,
                                              const gchar *property_name,
                                              const gchar *title,
@@ -1200,9 +1204,59 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628302"></a><h3>
+<a name="id2663021"></a><h3>
+<a name="gimp-prop-file-chooser-button-new-with-dialog"></a>gimp_prop_file_chooser_button_new_with_dialog ()</h3>
+<a class="indexterm" name="id2663034"></a><pre class="programlisting">GtkWidget*  gimp_prop_file_chooser_button_new_with_dialog
+                                            (GObject *config,
+                                             const gchar *property_name,
+                                             GtkWidget *dialog);</pre>
+<p>
+Creates a <span class="type">GtkFileChooserButton</span> to edit the specified path property.
+</p>
+<p>
+The button uses <em class="parameter"><code>dialog</code></em> as it's file-picking window. Note that <em class="parameter"><code>dialog</code></em>
+must be a <span class="type">GtkFileChooserDialog</span> (or subclass) and must not have
+<code class="literal">GTK_DIALOG_DESTROY_WITH_PARENT</code> set.
+</p>
+<p>
+Note that <span class="type">GtkFileChooserButton</span> implements the <span class="type">GtkFileChooser</span>
+interface; you can use the <span class="type">GtkFileChooser</span> API with it.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td>        object to which property is attached.
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>property_name</code></em>&#160;:</span></td>
+<td> name of path property.
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>dialog</code></em>&#160;:</span></td>
+<td>        the <span class="type">GtkFileChooserDialog</span> widget to use.
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>  A new <span class="type">GtkFileChooserButton</span>.
+
+Since GIMP 2.4
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2663201"></a><h3>
 <a name="gimp-prop-path-editor-new"></a>gimp_prop_path_editor_new ()</h3>
-<a class="indexterm" name="id2628313"></a><pre class="programlisting">GtkWidget*  gimp_prop_path_editor_new       (GObject *config,
+<a class="indexterm" name="id2663212"></a><pre class="programlisting">GtkWidget*  gimp_prop_path_editor_new       (GObject *config,
                                              const gchar *path_property_name,
                                              const gchar *writable_property_name,
                                              const gchar *filesel_title);</pre>
@@ -1244,9 +1298,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628420"></a><h3>
+<a name="id2663320"></a><h3>
 <a name="gimp-prop-size-entry-new"></a>gimp_prop_size_entry_new ()</h3>
-<a class="indexterm" name="id2628431"></a><pre class="programlisting">GtkWidget*  gimp_prop_size_entry_new        (GObject *config,
+<a class="indexterm" name="id2663330"></a><pre class="programlisting">GtkWidget*  gimp_prop_size_entry_new        (GObject *config,
                                              const gchar *property_name,
                                              const gchar *unit_property_name,
                                              const gchar *unit_format,
@@ -1308,9 +1362,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628619"></a><h3>
+<a name="id2663519"></a><h3>
 <a name="gimp-prop-coordinates-new"></a>gimp_prop_coordinates_new ()</h3>
-<a class="indexterm" name="id2628630"></a><pre class="programlisting">GtkWidget*  gimp_prop_coordinates_new       (GObject *config,
+<a class="indexterm" name="id2663530"></a><pre class="programlisting">GtkWidget*  gimp_prop_coordinates_new       (GObject *config,
                                              const gchar *x_property_name,
                                              const gchar *y_property_name,
                                              const gchar *unit_property_name,
@@ -1388,9 +1442,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628873"></a><h3>
+<a name="id2663768"></a><h3>
 <a name="gimp-prop-coordinates-connect"></a>gimp_prop_coordinates_connect ()</h3>
-<a class="indexterm" name="id2628888"></a><pre class="programlisting">gboolean    gimp_prop_coordinates_connect   (GObject *config,
+<a class="indexterm" name="id2663781"></a><pre class="programlisting">gboolean    gimp_prop_coordinates_connect   (GObject *config,
                                              const gchar *x_property_name,
                                              const gchar *y_property_name,
                                              const gchar *unit_property_name,
@@ -1456,9 +1510,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2629093"></a><h3>
+<a name="id2663985"></a><h3>
 <a name="gimp-prop-color-area-new"></a>gimp_prop_color_area_new ()</h3>
-<a class="indexterm" name="id2629107"></a><pre class="programlisting">GtkWidget*  gimp_prop_color_area_new        (GObject *config,
+<a class="indexterm" name="id2663999"></a><pre class="programlisting">GtkWidget*  gimp_prop_color_area_new        (GObject *config,
                                              const gchar *property_name,
                                              gint width,
                                              gint height,
@@ -1509,9 +1563,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2629270"></a><h3>
+<a name="id2664162"></a><h3>
 <a name="gimp-prop-unit-menu-new"></a>gimp_prop_unit_menu_new ()</h3>
-<a class="indexterm" name="id2629284"></a><pre class="programlisting">GtkWidget*  gimp_prop_unit_menu_new         (GObject *config,
+<a class="indexterm" name="id2664176"></a><pre class="programlisting">GtkWidget*  gimp_prop_unit_menu_new         (GObject *config,
                                              const gchar *property_name,
                                              const gchar *unit_format);</pre>
 <p>
@@ -1551,9 +1605,9 @@ Since GIMP 2.4
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2629415"></a><h3>
+<a name="id2664307"></a><h3>
 <a name="gimp-prop-stock-image-new"></a>gimp_prop_stock_image_new ()</h3>
-<a class="indexterm" name="id2629429"></a><pre class="programlisting">GtkWidget*  gimp_prop_stock_image_new       (GObject *config,
+<a class="indexterm" name="id2664322"></a><pre class="programlisting">GtkWidget*  gimp_prop_stock_image_new       (GObject *config,
                                              const gchar *property_name,
                                              GtkIconSize icon_size);</pre>
 <p>

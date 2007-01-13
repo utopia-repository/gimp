@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-1999 Spencer Kimball and Peter Mattis
  *
  * gimpdevicestatus.c
@@ -185,7 +185,7 @@ gimp_device_status_set_property (GObject      *object,
   switch (property_id)
     {
     case PROP_GIMP:
-      status->gimp = GIMP (g_value_get_object (value));
+      status->gimp = g_value_get_object (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);

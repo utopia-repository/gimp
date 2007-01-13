@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  * PNM reading and writing code Copyright (C) 1996 Erik Nygren
  *
@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/* $Id: pnm.c,v 1.65 2006/05/28 21:29:59 mitch Exp $ */
+/* $Id: pnm.c 21497 2006-12-09 22:12:23Z neo $ */
 
 /*
  * The pnm reading and writing code was written from scratch by Erik Nygren
@@ -117,7 +117,7 @@ typedef struct
                                  * by the spec anyways so this shouldn't
                                  * be an issue. */
 
-#define SAVE_COMMENT_STRING "# CREATOR: The GIMP's PNM Filter Version 1.1\n"
+#define SAVE_COMMENT_STRING "# CREATOR: GIMP PNM Filter Version 1.1\n"
 
 /* Declare some local functions.
  */

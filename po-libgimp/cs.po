@@ -1,26 +1,35 @@
 # translation of cs.po to Czech
 # translation of cs.po to
 # Translation of gimp-libgimp to Czech
-# Copyright (C) 2000,2003, 2006 Free Software Foundation, Inc.
+# Copyright (C) 2000,2003, 2006, 2007 Free Software Foundation, Inc.
 # Copyright (C) 2004, 2005 Miloslav Trmac <mitr@volny.cz>
+#
 # Stanislav Brabec <utx@penguin.cz>, 2000.
 # Michal Bukovjan <bukm@centrum.cz>, 2002,2003.
 # Miloslav Trmac <mitr@volny.cz>, 2003 - 2005.
-# Jakub Friedl <jfriedl@suse.cz>, 2006.
-#
+# Jakub Friedl <jfriedl@suse.cz>, 2006, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: cs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-13 11:46+0100\n"
-"PO-Revision-Date: 2006-11-13 11:58+0100\n"
+"POT-Creation-Date: 2007-01-22 15:25+0100\n"
+"PO-Revision-Date: 2007-01-22 15:25+0100\n"
 "Last-Translator: Jakub Friedl <jfriedl@suse.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.10.2\n"
+"X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: ../libgimp/gimpbrushselectbutton.c:170
+msgid "Brush Selection"
+msgstr "Výběr stopy"
+
+#: ../libgimp/gimpbrushselectbutton.c:911
+#: ../libgimp/gimppatternselectbutton.c:712
+msgid "_Browse..."
+msgstr "_Procházet..."
 
 #: ../libgimp/gimpexport.c:217 ../libgimp/gimpexport.c:253
 #, c-format
@@ -197,9 +206,21 @@ msgstr "Výběr písma"
 msgid "Sans"
 msgstr "Sans"
 
-#: ../libgimp/gimpmenu.c:450 ../libgimpwidgets/gimpintstore.c:131
+#: ../libgimp/gimpgradientselectbutton.c:148
+msgid "Gradient Selection"
+msgstr "Výběr přechodu"
+
+#: ../libgimp/gimpmenu.c:450 ../libgimpwidgets/gimpintstore.c:239
 msgid "(Empty)"
 msgstr "(Prázdné)"
+
+#: ../libgimp/gimppaletteselectbutton.c:130
+msgid "Palette Selection"
+msgstr "Výběr palety"
+
+#: ../libgimp/gimppatternselectbutton.c:156
+msgid "Pattern Selection"
+msgstr "Výběr vzorku"
 
 #: ../libgimp/gimpprocbrowserdialog.c:140
 msgid "by name"
@@ -654,19 +675,35 @@ msgstr "Vpřed"
 msgid "Backward"
 msgstr "Zpět"
 
-#: ../libgimpbase/gimpbaseenums.c:848
+#: ../libgimpbase/gimpbaseenums.c:775
+msgid "Adjust"
+msgstr "Upravit"
+
+#: ../libgimpbase/gimpbaseenums.c:776
+msgid "Clip"
+msgstr "Oříznout"
+
+#: ../libgimpbase/gimpbaseenums.c:777
+msgid "Crop to result"
+msgstr "Oříznout na výsledek"
+
+#: ../libgimpbase/gimpbaseenums.c:778
+msgid "Crop with aspect"
+msgstr "Oříznout s poměrem"
+
+#: ../libgimpbase/gimpbaseenums.c:881
 msgid "Internal GIMP procedure"
 msgstr "Interní procedura GIMPu"
 
-#: ../libgimpbase/gimpbaseenums.c:849
+#: ../libgimpbase/gimpbaseenums.c:882
 msgid "GIMP Plug-In"
 msgstr "Zásuvný modul GIMPu"
 
-#: ../libgimpbase/gimpbaseenums.c:850
+#: ../libgimpbase/gimpbaseenums.c:883
 msgid "GIMP Extension"
 msgstr "Rozšíření GIMPu"
 
-#: ../libgimpbase/gimpbaseenums.c:851
+#: ../libgimpbase/gimpbaseenums.c:884
 msgid "Temporary Procedure"
 msgstr "Dočasná procedura"
 
@@ -738,12 +775,12 @@ msgstr "Profil barev vašeho (primárního) monitoru."
 
 #: ../libgimpconfig/gimpcolorconfig.c:44
 msgid ""
-"When enabled, the GIMP will try to use the display color profile from the "
+"When enabled, GIMP will try to use the display color profile from the "
 "windowing system.  The configured monitor profile is then only used as a "
 "fallback."
 msgstr ""
-"Je-li povoleno, GIMP se pokusí použít profil barev displeje ze systému oken. "
-"Nastavený profil monitoru se pak používá jen jako záloha."
+"Je-li povoleno, GIMP se pokusí použít profil barev displeje z okenního "
+"systému. Nastavený profil monitoru se pak používá jen jako záloha."
 
 #: ../libgimpconfig/gimpcolorconfig.c:48
 msgid "The default RGB working space color profile."
@@ -883,26 +920,26 @@ msgstr "neplatný řetězec v kódování UTF-8"
 msgid "Error while parsing '%s' in line %d: %s"
 msgstr "Chyba při zpracovávání '%s' na řádku %d: %s"
 
-#: ../libgimpmodule/gimpmodule.c:152 ../libgimpmodule/gimpmodule.c:170
-#: ../libgimpmodule/gimpmodule.c:279 ../libgimpmodule/gimpmodule.c:306
-#: ../libgimpmodule/gimpmodule.c:417
+#: ../libgimpmodule/gimpmodule.c:153 ../libgimpmodule/gimpmodule.c:171
+#: ../libgimpmodule/gimpmodule.c:280 ../libgimpmodule/gimpmodule.c:307
+#: ../libgimpmodule/gimpmodule.c:418
 #, c-format
 msgid "Module '%s' load error: %s"
 msgstr "Chyba při načítání modulu '%s': %s"
 
-#: ../libgimpmodule/gimpmodule.c:374
+#: ../libgimpmodule/gimpmodule.c:375
 msgid "Module error"
 msgstr "Chyba modulu"
 
-#: ../libgimpmodule/gimpmodule.c:375
+#: ../libgimpmodule/gimpmodule.c:376
 msgid "Loaded"
 msgstr "Načteno"
 
-#: ../libgimpmodule/gimpmodule.c:376
+#: ../libgimpmodule/gimpmodule.c:377
 msgid "Load failed"
 msgstr "Načtení selhalo"
 
-#: ../libgimpmodule/gimpmodule.c:377
+#: ../libgimpmodule/gimpmodule.c:378
 msgid "Not loaded"
 msgstr "Nenačteno"
 
@@ -1063,7 +1100,7 @@ msgid "Check Style"
 msgstr "Zkotrolovat styl"
 
 #. toggle button to (des)activate the instant preview
-#: ../libgimpwidgets/gimppreview.c:265
+#: ../libgimpwidgets/gimppreview.c:277
 msgid "_Preview"
 msgstr "Ná_hled"
 
@@ -1152,7 +1189,7 @@ msgstr "_Rotovat"
 msgid "_Shear"
 msgstr "Na_klonění"
 
-#: ../libgimpwidgets/gimpunitmenu.c:267
+#: ../libgimpwidgets/gimpunitmenu.c:266
 msgid "More..."
 msgstr "Více..."
 
@@ -1160,11 +1197,11 @@ msgstr "Více..."
 msgid "Unit Selection"
 msgstr "Výběr jednotek"
 
-#: ../libgimpwidgets/gimpunitmenu.c:625
+#: ../libgimpwidgets/gimpunitmenu.c:626
 msgid "Unit"
 msgstr "Jednotka"
 
-#: ../libgimpwidgets/gimpunitmenu.c:629
+#: ../libgimpwidgets/gimpunitmenu.c:630
 msgid "Factor"
 msgstr "Faktor"
 
@@ -1304,7 +1341,8 @@ msgstr "Správa barev"
 msgid ""
 "This filter takes its configuration from the Color Management section in the "
 "Preferences dialog."
-msgstr "Tento filtr bere své nastavení z oddílu Správa barev dialogu Předvolby."
+msgstr ""
+"Tento filtr bere své nastavení z oddílu Správa barev dialogu Předvolby."
 
 #: ../modules/cdisplay_lcms.c:302
 msgid "Mode of operation:"
@@ -1500,59 +1538,115 @@ msgid "Button Gear Up"
 msgstr "Tlačítko kolečka uvolněno"
 
 #: ../modules/controller_linux_input.c:87
-msgid "Wheel Turn Left"
-msgstr "Kolečko vlevo"
+msgid "X Move Left"
+msgstr "X vlevo"
 
 #: ../modules/controller_linux_input.c:88
-msgid "Wheel Turn Right"
-msgstr "Kolečko vpravo"
+msgid "X Move Right"
+msgstr "X vpravo"
 
 #: ../modules/controller_linux_input.c:89
+msgid "Y Move Away"
+msgstr "Y posun pryč"
+
+#: ../modules/controller_linux_input.c:90
+msgid "Y Move Near"
+msgstr "Y posun blízko"
+
+#: ../modules/controller_linux_input.c:91
+msgid "Z Move Up"
+msgstr "Z nahoru"
+
+#: ../modules/controller_linux_input.c:92
+msgid "Z Move Down"
+msgstr "Z dolů"
+
+#: ../modules/controller_linux_input.c:94
+msgid "X Axis Tilt Away"
+msgstr "X odklonění"
+
+#: ../modules/controller_linux_input.c:95
+msgid "X Axis Tilt Near"
+msgstr "X přiklonění"
+
+#: ../modules/controller_linux_input.c:96
+msgid "Y Axis Tilt Right"
+msgstr "Y naklonění vpravo"
+
+#: ../modules/controller_linux_input.c:97
+msgid "Y Axis Tilt Left"
+msgstr "Y naklonění vlevo"
+
+#: ../modules/controller_linux_input.c:98
+msgid "Z Axis Turn Left"
+msgstr "Vlevo podle osy Z"
+
+#: ../modules/controller_linux_input.c:99
+msgid "Z Axis Turn Right"
+msgstr "Vpravo podle osy Z"
+
+#: ../modules/controller_linux_input.c:101
+msgid "Horiz. Wheel Turn Back"
+msgstr "Horizontální kolečko vzad"
+
+#: ../modules/controller_linux_input.c:102
+msgid "Horiz. Wheel Turn Forward"
+msgstr "Horizontální kolečko vpřed"
+
+#: ../modules/controller_linux_input.c:103
 msgid "Dial Turn Left"
 msgstr "Číselník vlevo"
 
-#: ../modules/controller_linux_input.c:90
+#: ../modules/controller_linux_input.c:104
 msgid "Dial Turn Right"
 msgstr "Číselník vpravo"
 
-#: ../modules/controller_linux_input.c:154
+#: ../modules/controller_linux_input.c:105
+msgid "Wheel Turn Left"
+msgstr "Kolečko vlevo"
+
+#: ../modules/controller_linux_input.c:106
+msgid "Wheel Turn Right"
+msgstr "Kolečko vpravo"
+
+#: ../modules/controller_linux_input.c:170
 msgid "Linux input event controller"
 msgstr "Ovladač událostí linuxového vstupu"
 
-#: ../modules/controller_linux_input.c:222 ../modules/controller_midi.c:246
+#: ../modules/controller_linux_input.c:238 ../modules/controller_midi.c:246
 msgid "Device:"
 msgstr "Zařízení:"
 
-#: ../modules/controller_linux_input.c:223
+#: ../modules/controller_linux_input.c:239
 msgid "The name of the device to read Linux Input events from."
 msgstr "Jméno zařízení pro načítání událostí linuxového vstupu."
 
-#: ../modules/controller_linux_input.c:227
+#: ../modules/controller_linux_input.c:243
 msgid "Linux Input"
 msgstr "Linuxový vstup"
 
-#: ../modules/controller_linux_input.c:352
+#: ../modules/controller_linux_input.c:368
 msgid "Linux Input Events"
 msgstr "Události linuxového vstupu"
 
-#: ../modules/controller_linux_input.c:373 ../modules/controller_midi.c:483
+#: ../modules/controller_linux_input.c:389 ../modules/controller_midi.c:483
 #: ../modules/controller_midi.c:509
 #, c-format
 msgid "Reading from %s"
 msgstr "Čtení z %s"
 
-#: ../modules/controller_linux_input.c:389
-#: ../modules/controller_linux_input.c:432 ../modules/controller_midi.c:465
+#: ../modules/controller_linux_input.c:405
+#: ../modules/controller_linux_input.c:448 ../modules/controller_midi.c:465
 #: ../modules/controller_midi.c:526 ../modules/controller_midi.c:597
 #, c-format
 msgid "Device not available: %s"
 msgstr "Zařízení není dostupné: %s"
 
-#: ../modules/controller_linux_input.c:397 ../modules/controller_midi.c:534
+#: ../modules/controller_linux_input.c:413 ../modules/controller_midi.c:534
 msgid "No device configured"
 msgstr "Není konfigurováno žádné zařízení"
 
-#: ../modules/controller_linux_input.c:441 ../modules/controller_midi.c:606
+#: ../modules/controller_linux_input.c:457 ../modules/controller_midi.c:606
 msgid "End of file"
 msgstr "Konec souboru"
 
@@ -1603,3 +1697,10 @@ msgstr "Řadič %03d"
 msgid "MIDI Events"
 msgstr "Události MIDI"
 
+#: ../modules/controller_midi.c:455
+msgid "GIMP"
+msgstr "GIMP"
+
+#: ../modules/controller_midi.c:457
+msgid "GIMP MIDI Input Controller"
+msgstr "Gimpí ovladač vstupu MIDI"

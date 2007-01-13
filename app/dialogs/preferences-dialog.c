@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-1997 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -46,6 +46,7 @@
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpmessagebox.h"
 #include "widgets/gimpmessagedialog.h"
+#include "widgets/gimpprofilechooserdialog.h"
 #include "widgets/gimppropwidgets.h"
 #include "widgets/gimptemplateeditor.h"
 #include "widgets/gimpwidgets-utils.h"
@@ -2190,7 +2191,7 @@ prefs_dialog_new (Gimp       *gimp,
                             _("Check _size:"),
                             GTK_TABLE (table), 1, size_group);
 
-  vbox2 = prefs_frame_new (_("Get Monitor Resolution"),
+  vbox2 = prefs_frame_new (_("Monitor Resolution"),
                            GTK_CONTAINER (vbox), FALSE);
 
   {
@@ -2232,8 +2233,7 @@ prefs_dialog_new (Gimp       *gimp,
 
     gimp_get_screen_resolution (NULL, &xres, &yres);
 
-    str = g_strdup_printf (_("From _windowing system "
-                             "(currently %d × %d ppi)"),
+    str = g_strdup_printf (_("_Detect automatically (currently %d × %d ppi)"),
                            ROUND (xres), ROUND (yres));
 
     button = gtk_radio_button_new_with_mnemonic (group, str);
@@ -2253,7 +2253,7 @@ prefs_dialog_new (Gimp       *gimp,
                     G_CALLBACK (prefs_resolution_source_callback),
                     config);
 
-  button = gtk_radio_button_new_with_mnemonic (group, _("_Manually"));
+  button = gtk_radio_button_new_with_mnemonic (group, _("_Enter manually"));
   group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
   gtk_box_pack_start (GTK_BOX (vbox2), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
@@ -2332,11 +2332,14 @@ prefs_dialog_new (Gimp       *gimp,
 
     for (i = 0; i < G_N_ELEMENTS (profiles); i++)
       {
+        GtkWidget *chooser;
+
+        chooser = gimp_profile_chooser_dialog_new (gimp,
+                                                   gettext (profiles[i].fs_label));
         button =
-          gimp_prop_file_chooser_button_new (color_config,
-                                             profiles[i].property_name,
-                                             gettext (profiles[i].fs_label),
-                                             GTK_FILE_CHOOSER_ACTION_OPEN);
+          gimp_prop_file_chooser_button_new_with_dialog (color_config,
+                                                         profiles[i].property_name,
+                                                         chooser);
 
         gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
                                    gettext (profiles[i].label), 0.0, 0.5,

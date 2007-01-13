@@ -262,9 +262,10 @@ can check if it was compiled against the same module ABI the modules
 are compiled against.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-MODULE-PARAM-SERIALIZE:CAPS" role="macro"/>GIMP_MODULE_PARAM_SERIALIZE</title>
-<indexterm><primary>GIMP_MODULE_PARAM_SERIALIZE</primary></indexterm><programlisting>#define GIMP_MODULE_PARAM_SERIALIZE (1 &lt;&lt; (0 + G_PARAM_USER_SHIFT))
+<title><anchor id="GIMP-MODULE-PARAM-SERIALIZE:CAPS" role="macro" condition="deprecated:"/>GIMP_MODULE_PARAM_SERIALIZE</title>
+<indexterm role="deprecated"><primary>GIMP_MODULE_PARAM_SERIALIZE</primary></indexterm><programlisting>#define GIMP_MODULE_PARAM_SERIALIZE (1 &lt;&lt; (0 + G_PARAM_USER_SHIFT))
 </programlisting>
+<warning><para><literal>GIMP_MODULE_PARAM_SERIALIZE</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 
 </para></refsect2>
@@ -351,10 +352,11 @@ The returned string must not be freed.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-module-register-enum" role="function"/>gimp_module_register_enum ()</title>
-<indexterm><primary>gimp_module_register_enum</primary></indexterm><programlisting><link linkend="GType">GType</link>       gimp_module_register_enum       (<link linkend="GTypeModule">GTypeModule</link> *module,
+<title><anchor id="gimp-module-register-enum" role="function" condition="deprecated:"/>gimp_module_register_enum ()</title>
+<indexterm role="deprecated"><primary>gimp_module_register_enum</primary></indexterm><programlisting><link linkend="GType">GType</link>       gimp_module_register_enum       (<link linkend="GTypeModule">GTypeModule</link> *module,
                                              const <link linkend="gchar">gchar</link> *name,
                                              const <link linkend="GEnumValue">GEnumValue</link> *const _static_values);</programlisting>
+<warning><para><literal>gimp_module_register_enum</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This function is deprecated! Use <link linkend="g-type-module-register-enum"><function>g_type_module_register_enum()</function></link> instead.</para>
 <para>

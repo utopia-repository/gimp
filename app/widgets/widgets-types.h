@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -130,6 +130,7 @@ typedef struct _GimpColorDialog              GimpColorDialog;
 typedef struct _GimpErrorDialog              GimpErrorDialog;
 typedef struct _GimpFileDialog               GimpFileDialog;
 typedef struct _GimpMessageDialog            GimpMessageDialog;
+typedef struct _GimpProfileChooserDialog     GimpProfileChooserDialog;
 typedef struct _GimpProgressDialog           GimpProgressDialog;
 typedef struct _GimpTextEditor               GimpTextEditor;
 typedef struct _GimpToolDialog               GimpToolDialog;

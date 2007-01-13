@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-1997 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -149,16 +149,16 @@ cdisplay_lcms_get_type (GTypeModule *module)
         (GBaseInitFunc)     NULL,
         (GBaseFinalizeFunc) NULL,
         (GClassInitFunc) cdisplay_lcms_class_init,
-        NULL,			/* class_finalize */
-        NULL,			/* class_data     */
+        NULL,                   /* class_finalize */
+        NULL,                   /* class_data     */
         sizeof (CdisplayLcms),
-        0,			/* n_preallocs    */
+        0,                      /* n_preallocs    */
         (GInstanceInitFunc) cdisplay_lcms_init,
       };
 
        cdisplay_lcms_type =
-	g_type_module_register_type (module, GIMP_TYPE_COLOR_DISPLAY,
-				     "CdisplayLcms", &display_info, 0);
+        g_type_module_register_type (module, GIMP_TYPE_COLOR_DISPLAY,
+                                     "CdisplayLcms", &display_info, 0);
     }
 
   return cdisplay_lcms_type;
@@ -394,8 +394,8 @@ cdisplay_lcms_changed (GimpColorDisplay *display)
                                                      dest_profile :
                                                      src_profile), TYPE_RGB_8,
                                                     proof_profile,
-                                                    config->display_intent,
                                                     config->simulation_intent,
+                                                    config->display_intent,
                                                     cmsFLAGS_SOFTPROOFING);
       cmsCloseProfile (proof_profile);
     }

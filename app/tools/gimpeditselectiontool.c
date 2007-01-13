@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -63,44 +63,6 @@
 
 #define EDIT_SELECT_SCROLL_LOCK FALSE
 #define ARROW_VELOCITY          25
-
-
-#define GIMP_TYPE_EDIT_SELECTION_TOOL            (gimp_edit_selection_tool_get_type ())
-#define GIMP_EDIT_SELECTION_TOOL(obj)            (GTK_CHECK_CAST ((obj), GIMP_TYPE_EDIT_SELECTION_TOOL, GimpEditSelectionTool))
-#define GIMP_EDIT_SELECTION_TOOL_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GIMP_TYPE_EDIT_SELECTION_TOOL, GimpEditSelectionToolClass))
-#define GIMP_IS_EDIT_SELECTION_TOOL(obj)         (GTK_CHECK_TYPE ((obj), GIMP_TYPE_EDIT_SELECTION_TOOL))
-#define GIMP_IS_EDIT_SELECTION_TOOL_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_EDIT_SELECTION_TOOL))
-
-
-typedef struct _GimpEditSelectionTool      GimpEditSelectionTool;
-typedef struct _GimpEditSelectionToolClass GimpEditSelectionToolClass;
-
-struct _GimpEditSelectionTool
-{
-  GimpDrawTool        parent_instance;
-
-  gint                origx, origy;    /*  Last x and y coords               */
-  gint                cumlx, cumly;    /*  Cumulative changes to x and yed   */
-  gint                x, y;            /*  Current x and y coords            */
-  gint                num_segs_in;     /*  Num seg in selection boundary     */
-  gint                num_segs_out;    /*  Num seg in selection boundary     */
-  BoundSeg           *segs_in;         /*  Pointer to the channel sel. segs  */
-  BoundSeg           *segs_out;        /*  Pointer to the channel sel. segs  */
-
-  gint                x1, y1;          /*  Bounding box of selection mask    */
-  gint                x2, y2;
-
-  GimpTranslateMode   edit_mode;       /*  Translate the mask or layer?      */
-
-  gboolean            first_move;      /*  Don't push undos after the first  */
-
-  gboolean            propagate_release;
-};
-
-struct _GimpEditSelectionToolClass
-{
-  GimpDrawToolClass   parent_class;
-};
 
 
 static void    gimp_edit_selection_tool_button_release (GimpTool        *tool,
@@ -436,7 +398,7 @@ gimp_edit_selection_tool_start (GimpTool          *parent_tool,
 
   /* initialize the statusbar display */
   gimp_tool_push_status_coords (GIMP_TOOL (edit_select), display,
-                                _("Move: "), 0, ", ", 0);
+                                _("Move: "), 0, ", ", 0, NULL);
 
   gimp_draw_tool_start (GIMP_DRAW_TOOL (edit_select), display);
 }
@@ -708,7 +670,8 @@ gimp_edit_selection_tool_motion (GimpTool        *tool,
                                 _("Move: "),
                                 edit_select->cumlx,
                                 ", ",
-                                edit_select->cumly);
+                                edit_select->cumly,
+                                NULL);
 
   gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
 }

@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimpdock.c
@@ -222,7 +222,7 @@ gimp_dock_set_property (GObject      *object,
       dock->context = GIMP_CONTEXT (g_value_dup_object (value));
       break;
     case PROP_DIALOG_FACTORY:
-      dock->dialog_factory = GIMP_DIALOG_FACTORY (g_value_get_object (value));
+      dock->dialog_factory = g_value_get_object (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);

@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  * Copyright (C) 1999 Adrian Likins and Tor Lillqvist
  *
@@ -52,13 +52,13 @@ struct _GimpBrushPipe
   GimpBrush         parent_instance;
 
   gint              dimension;
-  gint             *rank;        /* Size in each dimension */
-  gint             *stride;        /* Aux for indexing */
-  PipeSelectModes  *select;        /* One mode per dimension */
+  gint             *rank;       /* Size in each dimension */
+  gint             *stride;     /* Aux for indexing */
+  PipeSelectModes  *select;     /* One mode per dimension */
 
-  gint             *index;        /* Current index for incremental dimensions */
+  gint             *index;      /* Current index for incremental dimensions */
 
-  gint              nbrushes;        /* Might be less than the product of the
+  gint              nbrushes;   /* Might be less than the product of the
                                  * ranks in some odd special case */
   GimpBrush       **brushes;
   GimpBrush        *current;    /* Currently selected brush */

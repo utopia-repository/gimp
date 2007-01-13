@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -37,6 +37,14 @@
 
 #include <glib-object.h>
 
+#if HAVE_DBUS_GLIB
+#include <dbus/dbus-glib.h>
+#endif
+
+#ifndef GIMP_CONSOLE_COMPILATION
+#include <gdk/gdk.h>
+#endif
+
 #include "libgimpbase/gimpbase.h"
 
 #include "core/core-types.h"
@@ -46,6 +54,8 @@
 #include "config/gimpconfig-dump.h"
 
 #include "core/gimp.h"
+
+#include "widgets/gimpdbusservice.h"
 
 #include "about.h"
 #include "app_procs.h"
@@ -100,6 +110,7 @@ static gboolean            no_data           = FALSE;
 static gboolean            no_fonts          = FALSE;
 static gboolean            no_splash         = FALSE;
 static gboolean            be_verbose        = FALSE;
+static gboolean            new_instance      = FALSE;
 #if defined (USE_SYSV_SHM) || defined (USE_POSIX_SHM) || defined (G_OS_WIN32)
 static gboolean            use_shm           = TRUE;
 #else
@@ -133,6 +144,11 @@ static const GOptionEntry main_entries[] =
     "verbose", 0, 0,
     G_OPTION_ARG_NONE, &be_verbose,
     N_("Be more verbose"), NULL
+  },
+  {
+    "new-instance", 'n', 0,
+    G_OPTION_ARG_NONE, &new_instance,
+    N_("Start a new GIMP instance"), NULL
   },
   {
     "no-interface", 'i', 0,
@@ -250,6 +266,11 @@ main (int    argc,
   gchar          *basename;
   gint            i;
 
+#ifdef ENABLE_MP
+  if (! g_thread_supported ())
+    g_thread_init (NULL);
+#endif
+
   gimp_init_malloc ();
 
   gimp_env_init (FALSE);
@@ -285,6 +306,8 @@ main (int    argc,
 #endif
 
   context = g_option_context_new (_("[FILE|URI...]"));
+  g_option_context_set_summary (context, GIMP_NAME);
+
   g_option_context_add_main_entries (context, main_entries, GETTEXT_PACKAGE);
 
   app_libs_init (context, no_interface);
@@ -306,6 +329,60 @@ main (int    argc,
 
       app_exit (EXIT_FAILURE);
     }
+
+  if (no_interface)
+    new_instance = TRUE;
+
+#ifndef GIMP_CONSOLE_COMPILATION
+#if HAVE_DBUS_GLIB
+  if (! new_instance)
+    {
+      DBusGConnection *connection;
+
+      connection = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
+
+      if (connection)
+        {
+          DBusGProxy   *proxy;
+          gboolean      success;
+
+          proxy = dbus_g_proxy_new_for_name (connection,
+                                             GIMP_DBUS_SERVICE_NAME,
+                                             GIMP_DBUS_SERVICE_PATH,
+                                             GIMP_DBUS_SERVICE_INTERFACE);
+
+          if (filenames)
+            success = dbus_g_proxy_call (proxy, "Open", &error,
+                                         G_TYPE_STRV, filenames,
+                                         G_TYPE_INVALID, G_TYPE_INVALID);
+          else
+            success = dbus_g_proxy_call (proxy, "Activate", &error,
+                                         G_TYPE_INVALID, G_TYPE_INVALID);
+
+          g_object_unref (proxy);
+          dbus_g_connection_unref (connection);
+
+          if (success)
+            {
+              if (be_verbose)
+                g_print ("%s\n",
+                         _("Another GIMP instance is already running."));
+
+              gdk_notify_startup_complete ();
+
+              return EXIT_SUCCESS;
+            }
+          else if (! (error->domain == DBUS_GERROR &&
+                      error->code == DBUS_GERROR_SERVICE_UNKNOWN))
+            {
+              g_print ("%s\n", error->message);
+            }
+
+          g_clear_error (&error);
+        }
+    }
+#endif
+#endif
 
   abort_message = sanity_check ();
   if (abort_message)

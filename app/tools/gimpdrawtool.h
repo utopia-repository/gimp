@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2001 Spencer Kimball, Peter Mattis, and others.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -52,9 +52,10 @@ struct _GimpDrawTool
                                */
 
   gint          paused_count; /*  count to keep track of multiple pauses */
+  gboolean      is_drawn;     /*  is the stuff we draw currently visible */
 
   GList        *vectors;      /*  GimpVectors to render                  */
-  GimpMatrix3  *transform;    /*  Transformation matrix fof the vectors  */
+  GimpMatrix3  *transform;    /*  Transformation matrix of the vectors   */
 };
 
 struct _GimpDrawToolClass
@@ -77,6 +78,8 @@ gboolean   gimp_draw_tool_is_active                (GimpDrawTool     *draw_tool)
 
 void       gimp_draw_tool_pause                    (GimpDrawTool     *draw_tool);
 void       gimp_draw_tool_resume                   (GimpDrawTool     *draw_tool);
+
+gboolean   gimp_draw_tool_is_drawn                 (GimpDrawTool     *draw_tool);
 
 void       gimp_draw_tool_set_vectors              (GimpDrawTool     *draw_tool,
                                                     GList            *vectors);

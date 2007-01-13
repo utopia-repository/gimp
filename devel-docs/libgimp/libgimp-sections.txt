@@ -1,11 +1,7 @@
 <SECTION>
 <FILE>gimp</FILE>
-GIMPVAR
 gimp_version
 gimp_getpid
-gimp_major_version
-gimp_minor_version
-gimp_micro_version
 gimp_get_data
 gimp_get_data_size
 gimp_set_data
@@ -267,6 +263,7 @@ gimp_image_convert_set_dither_matrix
 <FILE>gimpdisplay</FILE>
 gimp_display_new
 gimp_display_delete
+gimp_display_is_valid
 gimp_display_get_window_handle
 gimp_displays_flush
 gimp_displays_reconnect
@@ -279,6 +276,7 @@ gimp_drawable_get
 gimp_drawable_detach
 gimp_drawable_flush
 gimp_drawable_delete
+gimp_drawable_is_valid
 gimp_drawable_get_name
 gimp_drawable_set_name
 gimp_drawable_get_visible
@@ -410,6 +408,7 @@ gimp_gimprc_query
 gimp_gimprc_set
 gimp_get_color_configuration
 gimp_get_default_comment
+gimp_get_default_unit
 gimp_get_module_load_inhibit
 gimp_get_monitor_resolution
 gimp_get_theme_dir
@@ -505,6 +504,7 @@ gimp_image_list
 gimp_image_new
 gimp_image_duplicate
 gimp_image_delete
+gimp_image_is_valid
 gimp_image_base_type
 gimp_image_width
 gimp_image_height
@@ -891,6 +891,7 @@ gimp_image_undo_thaw
 gimp_vectors_new
 gimp_vectors_import_from_file
 gimp_vectors_import_from_string
+gimp_vectors_is_valid
 gimp_vectors_get_strokes
 gimp_vectors_get_image
 gimp_vectors_get_linked

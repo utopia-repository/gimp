@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,9 +18,6 @@
 
 #include "config.h"
 
-#include <string.h>
-#include <time.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
@@ -30,115 +27,45 @@
 #include "libgimp/stdplugins-intl.h"
 
 
-/* In points */
-#define HEADER_HEIGHT (20*72/25.4)
-#define EPSILON  0.0001
+#define EPSILON 0.0001
 
-static guchar * get_image_pixels     (PrintData       *data,
-                                      gint            *width_ptr,
-                                      gint            *height_ptr,
-                                      gint            *rowstride_ptr);
 
-static void     draw_info_header     (GtkPrintContext *context,
-                                      cairo_t         *cr,
-                                      PrintData       *data);
+static cairo_surface_t * create_surface   (guchar          *pixels,
+                                           gint             width,
+                                           gint             height,
+                                           gint             rowstride);
+
+#if 0
+static void              draw_info_header (GtkPrintContext *context,
+                                           cairo_t         *cr,
+                                           PrintData       *data);
+#endif
 
 
 gboolean
 draw_page_cairo (GtkPrintContext *context,
                  PrintData       *data)
 {
+  gint              tile_height = gimp_tile_height ();
+  gint32            image_id    = data->image_id;
+  gint32            drawable_id = data->drawable_id;
+  GimpDrawable     *drawable;
+  GimpPixelRgn      region;
   cairo_t          *cr;
   gdouble           cr_width;
   gdouble           cr_height;
   gdouble           cr_dpi_x;
   gdouble           cr_dpi_y;
-  gint              image_width;
-  gint              image_height;
-  gint              image_rowstride;
-  gdouble           scale_x;
-  gdouble           scale_y;
-  gdouble           x0            = 0;
-  gdouble           y0            = 0;
-  guchar           *pixels;
-  cairo_surface_t  *surface;
-  gint32            image_id      = data->image_id;
-  gdouble           image_xres;
-  gdouble           image_yres;
-
-  cr = gtk_print_context_get_cairo_context (context);
-  cr_width  = gtk_print_context_get_width  (context);
-  cr_height = gtk_print_context_get_height (context);
-  cr_dpi_x  = gtk_print_context_get_dpi_x  (context);
-  cr_dpi_y  = gtk_print_context_get_dpi_y  (context);
-
-  gimp_image_get_resolution (image_id, &image_xres, &image_yres);
-  pixels = get_image_pixels (data, &image_width, &image_height,
-                             &image_rowstride);
-
-  scale_x = cr_dpi_x / image_xres;
-  scale_y = cr_dpi_y / image_yres;
-
-  if (scale_x * image_width > cr_width + EPSILON)
-    {
-      g_message (_("Image width (%lg in) is larger than printable width (%lg in)."),
-                 image_width / image_xres, cr_width / cr_dpi_x);
-      gtk_print_operation_cancel (data->operation);
-      return FALSE;
-    }
-
-  if (scale_y * image_height > cr_height + EPSILON)
-    {
-      g_message (_("Image height (%lg in) is larger than printable height (%lg in)."),
-                 image_height / image_yres, cr_height / cr_dpi_y);
-      gtk_print_operation_cancel (data->operation);
-      return FALSE;
-    }
-
-  /* print header if it is requested */
-  if (data->show_info_header)
-    {
-      draw_info_header (context, cr, data);
-
-      cairo_translate (cr, 0, HEADER_HEIGHT);
-      cr_height -= HEADER_HEIGHT;
-    }
-
-  x0 = (cr_width - scale_x * image_width) / 2;
-  y0 = (cr_height - scale_y * image_height) / 2;
-
-  surface = cairo_image_surface_create_for_data (pixels, CAIRO_FORMAT_ARGB32,
-                                                 image_width, image_height,
-                                                 image_rowstride);
-  cairo_translate (cr, x0, y0);
-  cairo_scale (cr, scale_x, scale_y);
-
-  cairo_set_source_surface (cr, surface, 0, 0);
-  cairo_mask_surface (cr, surface, 0, 0);
-
-  g_free (pixels);
-
-  return TRUE;
-}
-
-static guchar *
-get_image_pixels (PrintData *data,
-                  gint      *width_ptr,
-                  gint      *height_ptr,
-                  gint      *rowstride_ptr)
-{
-  gint32            image_id    = data->image_id;
-  gint32            drawable_id = data->drawable_id;
-  GimpDrawable     *drawable;
-  GimpPixelRgn      region;
   gint              width;
   gint              height;
   gint              rowstride;
+  gint              y;
+  gdouble           scale_x;
+  gdouble           scale_y;
+  gdouble           x0 = 0;
+  gdouble           y0 = 0;
   guchar           *pixels;
-  guint32          *cairo_data;
-  gint              len;
-  guchar           *p;
-  gint              i;
+  cairo_surface_t  *surface;
 
   /* export the image */
   gimp_export_image (&image_id, &drawable_id, NULL,
@@ -150,27 +77,92 @@ get_image_pixels (PrintData *data,
 
   width     = drawable->width;
   height    = drawable->height;
-  rowstride = width * drawable->bpp;
+  rowstride = drawable->bpp * width;
 
-  pixels    = g_new (guchar, height * rowstride);
+  cr = gtk_print_context_get_cairo_context (context);
+
+  cr_width  = gtk_print_context_get_width  (context);
+  cr_height = gtk_print_context_get_height (context);
+  cr_dpi_x  = gtk_print_context_get_dpi_x  (context);
+  cr_dpi_y  = gtk_print_context_get_dpi_y  (context);
+
+  scale_x = cr_dpi_x / data->xres;
+  scale_y = cr_dpi_y / data->yres;
+
+  cairo_set_source_rgb (cr, 1, 1, 1);
+  cairo_paint (cr);
+
+#if 0
+  /* print header if it is requested */
+  if (data->show_info_header)
+    {
+      draw_info_header (context, cr, data);
+
+/* In points */
+#define HEADER_HEIGHT (20 * 72.0 / 25.4)
+      cairo_translate (cr, 0, HEADER_HEIGHT);
+      cr_height -= HEADER_HEIGHT;
+    }
+#endif
+
+  x0 = (cr_width - scale_x * width) / 2;
+  y0 = (cr_height - scale_y * height) / 2;
+
+  cairo_translate (cr, x0, y0);
+  cairo_scale (cr, scale_x, scale_y);
 
   gimp_pixel_rgn_init (&region, drawable, 0, 0, width, height, FALSE, FALSE);
 
-  gimp_pixel_rgn_get_rect (&region, pixels, 0, 0, width, height);
+  pixels = g_new (guchar, MIN (height, tile_height) * rowstride);
+
+  for (y = 0; y < height; y += tile_height)
+    {
+      gint h = MIN (tile_height, height - y);
+
+      gimp_pixel_rgn_get_rect (&region, pixels, 0, y, width, h);
+
+      surface = create_surface (pixels, width, h, rowstride);
+
+      cairo_set_source_surface (cr, surface, 0, y);
+
+      cairo_rectangle (cr, 0, y, width, h);
+      cairo_fill (cr);
+
+      cairo_surface_destroy (surface);
+
+      gimp_progress_update ((gdouble) (y + h) / (gdouble) height);
+    }
+
+  g_free (pixels);
 
   gimp_drawable_detach (drawable);
+
   if (image_id != data->image_id)
     gimp_image_delete (image_id);
+
+  return TRUE;
+}
+
+static cairo_surface_t *
+create_surface (guchar *pixels,
+                gint    width,
+                gint    height,
+                gint    rowstride)
+{
+  guint32 *cairo_data = (guint32 *) pixels;
+  guchar  *p;
+  gint     len;
+  gint     i;
 
   /* knock pixels into the shape requested by cairo:
    *
    *  CAIRO_FORMAT_ARGB32:
    *  each pixel is a 32-bit quantity, with alpha in the upper 8 bits,
    *  then red, then green, then blue. The 32-bit quantities are
-   *  stored native-endian.  Pre-multiplied alpha is used.
+   *  stored native-endian. Pre-multiplied alpha is used.
    *
    */
-  cairo_data = (guint32 *) pixels;
+
   len = width * height;
 
   for (i = 0, p = pixels; i < len; i++)
@@ -192,14 +184,11 @@ get_image_pixels (PrintData *data,
       cairo_data[i] = (a << 24) + (r << 16) + (g << 8) + b;
     }
 
-  *width_ptr = width;
-  *height_ptr = height;
-  *rowstride_ptr = rowstride;
-
-  return pixels;
+  return cairo_image_surface_create_for_data (pixels, CAIRO_FORMAT_ARGB32,
+                                              width, height, rowstride);
 }
 
-
+#if 0
 static void
 draw_info_header (GtkPrintContext *context,
                   cairo_t         *cr,
@@ -328,3 +317,4 @@ draw_info_header (GtkPrintContext *context,
 
   cairo_restore (cr);
 }
+#endif

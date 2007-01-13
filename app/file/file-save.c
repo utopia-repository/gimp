@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995, 1996, 1997 Spencer Kimball and Peter Mattis
  * Copyright (C) 1997 Josh MacDonald
  *
@@ -172,6 +172,8 @@ file_save (GimpImage           *image,
           gimp_image_set_save_proc (image, file_proc);
           gimp_image_clean_all (image);
         }
+
+      gimp_image_saved (image, uri);
 
       documents = GIMP_DOCUMENT_LIST (image->gimp->documents);
       imagefile = gimp_document_list_add_uri (documents,

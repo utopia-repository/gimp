@@ -1,14 +1,14 @@
 # This is the Italian catalog for The GIMP.
 # Copyright (C) 1999 Free Software Foundation, Inc.
 # Daniele Medri <madrid@linux.it>, 2000, 2001, 2002
-# Marco Ciampa <ciampix@libero.it>, 2003, 2004, 2005, 2006
+# Marco Ciampa <ciampix@libero.it>, 2003, 2004, 2005, 2006, 2007
 # Revision: Luca Ferretti <elle.uca@libero.it>, 2006
 msgid ""
 msgstr ""
 "Project-Id-Version: gimp 2.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-06 18:23+0100\n"
-"PO-Revision-Date: 2006-11-06 18:25+0100\n"
+"POT-Creation-Date: 2007-01-10 08:50+0100\n"
+"PO-Revision-Date: 2007-01-11 10:39+0100\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: gimp.linux.it\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Date: dom feb  6 16:47:39 CET 2000\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../libgimp/gimpbrushselectbutton.c:170
+msgid "Brush Selection"
+msgstr "Selezione pennello"
+
+#: ../libgimp/gimpbrushselectbutton.c:911
+#: ../libgimp/gimppatternselectbutton.c:712
+msgid "_Browse..."
+msgstr "_Naviga..."
 
 # %s è il tipo di formato, p.e. "PNG non può gestire i livelli" -Luca
 #: ../libgimp/gimpexport.c:217 ../libgimp/gimpexport.c:253
@@ -195,9 +204,21 @@ msgstr "Selezione caratteri"
 msgid "Sans"
 msgstr "Senza grazie"
 
+#: ../libgimp/gimpgradientselectbutton.c:148
+msgid "Gradient Selection"
+msgstr "Selezione gradiente"
+
 #: ../libgimp/gimpmenu.c:450 ../libgimpwidgets/gimpintstore.c:131
 msgid "(Empty)"
 msgstr "(Vuoto)"
+
+#: ../libgimp/gimppaletteselectbutton.c:130
+msgid "Palette Selection"
+msgstr "Selezione tavolozza"
+
+#: ../libgimp/gimppatternselectbutton.c:156
+msgid "Pattern Selection"
+msgstr "Selezione motivo"
 
 #: ../libgimp/gimpprocbrowserdialog.c:140
 msgid "by name"
@@ -654,19 +675,35 @@ msgstr "Avanti"
 msgid "Backward"
 msgstr "Indietro"
 
-#: ../libgimpbase/gimpbaseenums.c:848
+#: ../libgimpbase/gimpbaseenums.c:775
+msgid "Adjust"
+msgstr "Regola"
+
+#: ../libgimpbase/gimpbaseenums.c:776
+msgid "Clip"
+msgstr "Allega"
+
+#: ../libgimpbase/gimpbaseenums.c:777
+msgid "Crop to result"
+msgstr "Ritaglia al risultato"
+
+#: ../libgimpbase/gimpbaseenums.c:778
+msgid "Crop with aspect"
+msgstr "Ritaglia all'aspetto"
+
+#: ../libgimpbase/gimpbaseenums.c:881
 msgid "Internal GIMP procedure"
 msgstr "Procedura interna di GIMP"
 
-#: ../libgimpbase/gimpbaseenums.c:849
+#: ../libgimpbase/gimpbaseenums.c:882
 msgid "GIMP Plug-In"
 msgstr "Plug-in di GIMP"
 
-#: ../libgimpbase/gimpbaseenums.c:850
+#: ../libgimpbase/gimpbaseenums.c:883
 msgid "GIMP Extension"
 msgstr "Estensione di GIMP"
 
-#: ../libgimpbase/gimpbaseenums.c:851
+#: ../libgimpbase/gimpbaseenums.c:884
 msgid "Temporary Procedure"
 msgstr "Procedura temporanea"
 
@@ -737,10 +774,13 @@ msgstr "Profilo colore per il monitor (principale)."
 
 #: ../libgimpconfig/gimpcolorconfig.c:44
 msgid ""
-"When enabled, the GIMP will try to use the display color profile from the "
+"When enabled, GIMP will try to use the display color profile from the "
 "windowing system.  The configured monitor profile is then only used as a "
 "fallback."
-msgstr "Se attivata, GIMP tenterà di usare il profilo di colore dello schermo dall'ambiente grafico. Il profilo del monitor configurato verrà usato solo in caso di fallimento dell'operazione."
+msgstr ""
+"Se attivata, GIMP tenterà di usare il profilo di colore dello schermo "
+"dall'ambiente grafico. Il profilo del monitor configurato verrà usato solo "
+"in caso di fallimento dell'operazione."
 
 #: ../libgimpconfig/gimpcolorconfig.c:48
 msgid "The default RGB working space color profile."
@@ -764,7 +804,9 @@ msgstr "Imposta come verranno mappati i colori per il display."
 msgid ""
 "Sets how colors are converted from RGB working space to the print simulation "
 "device."
-msgstr "Imposta come i colori saranno convertiti dallo spazio di lavoro RGB al dispositivo di simulazione di stampa."
+msgstr ""
+"Imposta come i colori saranno convertiti dallo spazio di lavoro RGB al "
+"dispositivo di simulazione di stampa."
 
 #: ../libgimpconfig/gimpcolorconfig-enums.c:24
 msgid "No color management"
@@ -879,26 +921,26 @@ msgstr "stringa UTF-8 non valida"
 msgid "Error while parsing '%s' in line %d: %s"
 msgstr "Errore durante l'elaborazione di \"%s\" alla riga %d: %s"
 
-#: ../libgimpmodule/gimpmodule.c:152 ../libgimpmodule/gimpmodule.c:170
-#: ../libgimpmodule/gimpmodule.c:279 ../libgimpmodule/gimpmodule.c:306
-#: ../libgimpmodule/gimpmodule.c:417
+#: ../libgimpmodule/gimpmodule.c:153 ../libgimpmodule/gimpmodule.c:171
+#: ../libgimpmodule/gimpmodule.c:280 ../libgimpmodule/gimpmodule.c:307
+#: ../libgimpmodule/gimpmodule.c:418
 #, c-format
 msgid "Module '%s' load error: %s"
 msgstr "Errore di caricamento del modulo \"%s\": %s"
 
-#: ../libgimpmodule/gimpmodule.c:374
+#: ../libgimpmodule/gimpmodule.c:375
 msgid "Module error"
 msgstr "Errore modulo"
 
-#: ../libgimpmodule/gimpmodule.c:375
+#: ../libgimpmodule/gimpmodule.c:376
 msgid "Loaded"
 msgstr "Caricato"
 
-#: ../libgimpmodule/gimpmodule.c:376
+#: ../libgimpmodule/gimpmodule.c:377
 msgid "Load failed"
 msgstr "Caricamento fallito"
 
-#: ../libgimpmodule/gimpmodule.c:377
+#: ../libgimpmodule/gimpmodule.c:378
 msgid "Not loaded"
 msgstr "Non caricato"
 
@@ -1050,17 +1092,17 @@ msgstr ""
 "Fare clic sul contagocce, poi fare clic su un colore in un punto qualsiasi "
 "dello schermo per selezionare quel colore."
 
-# Credo che qui check sia inteso come casella, scacco, non come verbo
-#   Dimensione casella/scacco
+# Qui check è inteso come casella, scacco, non come verbo
+#   Dimensione scacco
 #: ../libgimpwidgets/gimppreviewarea.c:94
 msgid "Check Size"
-msgstr "Ampiezza casella"
+msgstr "Dimensione scacco"
 
 # Analogamente qui
-#   Stile casella/scacco
+#   Stile scacchi
 #: ../libgimpwidgets/gimppreviewarea.c:101
 msgid "Check Style"
-msgstr "Stile casella"
+msgstr "Stile scacchi"
 
 #. toggle button to (des)activate the instant preview
 #: ../libgimpwidgets/gimppreview.c:265
@@ -1152,7 +1194,7 @@ msgstr "_Ruota"
 msgid "_Shear"
 msgstr "_Inclina"
 
-#: ../libgimpwidgets/gimpunitmenu.c:267
+#: ../libgimpwidgets/gimpunitmenu.c:266
 msgid "More..."
 msgstr "Altri..."
 
@@ -1160,11 +1202,11 @@ msgstr "Altri..."
 msgid "Unit Selection"
 msgstr "Selezione delle unità"
 
-#: ../libgimpwidgets/gimpunitmenu.c:625
+#: ../libgimpwidgets/gimpunitmenu.c:626
 msgid "Unit"
 msgstr "Unità"
 
-#: ../libgimpwidgets/gimpunitmenu.c:629
+#: ../libgimpwidgets/gimpunitmenu.c:630
 msgid "Factor"
 msgstr "Fattore"
 
@@ -1395,11 +1437,11 @@ msgstr "Nero"
 
 #: ../modules/colorsel_cmyk.c:195
 msgid "Black _pullout:"
-msgstr "Estra_zione nero:"
+msgstr "Estra_zione del nero:"
 
 #: ../modules/colorsel_cmyk.c:212
 msgid "The percentage of black to pull out of the colored inks."
-msgstr "La percentuale di estrazione nero dagli inchiostri colorati."
+msgstr "La percentuale di estrazione del nero dagli inchiostri colorati."
 
 #: ../modules/colorsel_triangle.c:104
 msgid "Painter-style triangle color selector"
@@ -1503,59 +1545,115 @@ msgid "Button Gear Up"
 msgstr "Pulsante rotella su"
 
 #: ../modules/controller_linux_input.c:87
-msgid "Wheel Turn Left"
-msgstr "Rotella a sinistra"
+msgid "X Move Left"
+msgstr "A sinistra spostamento X"
 
 #: ../modules/controller_linux_input.c:88
-msgid "Wheel Turn Right"
-msgstr "Rotella a destra"
+msgid "X Move Right"
+msgstr "A destra Spostamento X"
 
 #: ../modules/controller_linux_input.c:89
+msgid "Y Move Away"
+msgstr "Allontanamento in Y"
+
+#: ../modules/controller_linux_input.c:90
+msgid "Y Move Near"
+msgstr "Avvicinamento in Y"
+
+#: ../modules/controller_linux_input.c:91
+msgid "Z Move Up"
+msgstr "In alto spostamento Z"
+
+#: ../modules/controller_linux_input.c:92
+msgid "Z Move Down"
+msgstr "In basso spostamento Z"
+
+#: ../modules/controller_linux_input.c:94
+msgid "X Axis Tilt Away"
+msgstr "Inclinazione asse X lontana"
+
+#: ../modules/controller_linux_input.c:95
+msgid "X Axis Tilt Near"
+msgstr "Inclinazione asse X vicina"
+
+#: ../modules/controller_linux_input.c:96
+msgid "Y Axis Tilt Right"
+msgstr "Inclinazione asse Y a destra"
+
+#: ../modules/controller_linux_input.c:97
+msgid "Y Axis Tilt Left"
+msgstr "Inclinazione asse Y a sinistra"
+
+#: ../modules/controller_linux_input.c:98
+msgid "Z Axis Turn Left"
+msgstr "Giro a sinistra asse Z"
+
+#: ../modules/controller_linux_input.c:99
+msgid "Z Axis Turn Right"
+msgstr "Giro a destra asse Z"
+
+#: ../modules/controller_linux_input.c:101
+msgid "Horiz. Wheel Turn Back"
+msgstr "Marcia indietro rotella orizzontale"
+
+#: ../modules/controller_linux_input.c:102
+msgid "Horiz. Wheel Turn Forward"
+msgstr "Marcia avanti rotella orizzontale"
+
+#: ../modules/controller_linux_input.c:103
 msgid "Dial Turn Left"
 msgstr "Tasto a sinistra"
 
-#: ../modules/controller_linux_input.c:90
+#: ../modules/controller_linux_input.c:104
 msgid "Dial Turn Right"
 msgstr "Tasto a destra"
 
-#: ../modules/controller_linux_input.c:154
+#: ../modules/controller_linux_input.c:105
+msgid "Wheel Turn Left"
+msgstr "Rotella a sinistra"
+
+#: ../modules/controller_linux_input.c:106
+msgid "Wheel Turn Right"
+msgstr "Rotella a destra"
+
+#: ../modules/controller_linux_input.c:170
 msgid "Linux input event controller"
 msgstr "Controllore eventi in ingresso di Linux"
 
-#: ../modules/controller_linux_input.c:222 ../modules/controller_midi.c:246
+#: ../modules/controller_linux_input.c:238 ../modules/controller_midi.c:246
 msgid "Device:"
 msgstr "Dispositivo:"
 
-#: ../modules/controller_linux_input.c:223
+#: ../modules/controller_linux_input.c:239
 msgid "The name of the device to read Linux Input events from."
 msgstr "Il nome del dispositivo da cui leggere gli eventi Linux in ingresso."
 
-#: ../modules/controller_linux_input.c:227
+#: ../modules/controller_linux_input.c:243
 msgid "Linux Input"
 msgstr "Ingresso Linux"
 
-#: ../modules/controller_linux_input.c:352
+#: ../modules/controller_linux_input.c:368
 msgid "Linux Input Events"
 msgstr "Eventi Linux in ingresso"
 
-#: ../modules/controller_linux_input.c:373 ../modules/controller_midi.c:483
-#: ../modules/controller_midi.c:509
+#: ../modules/controller_linux_input.c:389 ../modules/controller_midi.c:484
+#: ../modules/controller_midi.c:510
 #, c-format
 msgid "Reading from %s"
 msgstr "Lettura da %s"
 
-#: ../modules/controller_linux_input.c:389
-#: ../modules/controller_linux_input.c:432 ../modules/controller_midi.c:465
-#: ../modules/controller_midi.c:526 ../modules/controller_midi.c:597
+#: ../modules/controller_linux_input.c:405
+#: ../modules/controller_linux_input.c:448 ../modules/controller_midi.c:466
+#: ../modules/controller_midi.c:527 ../modules/controller_midi.c:598
 #, c-format
 msgid "Device not available: %s"
 msgstr "Dispositivo non disponibile: %s"
 
-#: ../modules/controller_linux_input.c:397 ../modules/controller_midi.c:534
+#: ../modules/controller_linux_input.c:413 ../modules/controller_midi.c:535
 msgid "No device configured"
 msgstr "Nessun dispositivo configurato"
 
-#: ../modules/controller_linux_input.c:441 ../modules/controller_midi.c:606
+#: ../modules/controller_linux_input.c:457 ../modules/controller_midi.c:607
 msgid "End of file"
 msgstr "Fine del file"
 
@@ -1605,3 +1703,7 @@ msgstr "Controllore %03d"
 #: ../modules/controller_midi.c:437
 msgid "MIDI Events"
 msgstr "Eventi MIDI"
+
+#: ../modules/controller_midi.c:458
+msgid "GIMP MIDI controller"
+msgstr "Controllore MIDI GIMP"

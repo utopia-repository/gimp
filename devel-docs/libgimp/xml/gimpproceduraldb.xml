@@ -90,8 +90,7 @@ Generates a unique temporary PDB name.
 </para>
 <para>
 This procedure generates a temporary PDB entry name that is
-guaranteed to be unique. It is mainly used by the interactive popup
-dialogs to generate a PDB entry name.</para>
+guaranteed to be unique.</para>
 <para>
 
 </para><variablelist role="params">

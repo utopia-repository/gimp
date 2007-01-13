@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995, 1996, 1997 Spencer Kimball and Peter Mattis
  * Copyright (C) 1997 Josh MacDonald
  *
@@ -43,6 +43,9 @@
 #include "widgets/gimpmessagebox.h"
 #include "widgets/gimpmessagedialog.h"
 
+#include "display/gimpdisplay.h"
+#include "display/gimpdisplayshell.h"
+
 #include "file-save-dialog.h"
 
 #include "gimp-intl.h"
@@ -50,21 +53,22 @@
 
 /*  local function prototypes  */
 
-static void       file_save_dialog_response      (GtkWidget            *save_dialog,
-                                                  gint                  response_id,
-                                                  Gimp                 *gimp);
-static gboolean   file_save_dialog_check_uri     (GtkWidget            *save_dialog,
-                                                  Gimp                 *gimp,
-                                                  gchar               **ret_uri,
-                                                  gchar               **ret_basename,
-                                                  GimpPlugInProcedure **ret_save_proc);
-static gboolean   file_save_dialog_use_extension (GtkWidget            *save_dialog,
-                                                  const gchar          *uri);
-static gboolean   file_save_dialog_save_image    (GtkWidget            *save_dialog,
-                                                  GimpImage            *image,
-                                                  const gchar          *uri,
-                                                  GimpPlugInProcedure  *save_proc,
-                                                  gboolean              save_a_copy);
+static void      file_save_dialog_response      (GtkWidget            *save_dialog,
+                                                 gint                  response_id,
+                                                 Gimp                 *gimp);
+static gboolean  file_save_dialog_check_uri     (GtkWidget            *save_dialog,
+                                                 Gimp                 *gimp,
+                                                 gchar               **ret_uri,
+                                                 gchar               **ret_basename,
+                                                 GimpPlugInProcedure **ret_save_proc);
+static gboolean  file_save_dialog_use_extension (GtkWidget            *save_dialog,
+                                                 const gchar          *uri);
+static gboolean  file_save_dialog_save_image    (GtkWidget            *save_dialog,
+                                                 GimpImage            *image,
+                                                 const gchar          *uri,
+                                                 GimpPlugInProcedure  *save_proc,
+                                                 gboolean              save_a_copy,
+                                                 gboolean             *file_saved);
 
 
 /*  public functions  */
@@ -128,14 +132,36 @@ file_save_dialog_response (GtkWidget *save_dialog,
   if (file_save_dialog_check_uri (save_dialog, gimp,
                                   &uri, &basename, &save_proc))
     {
+      gboolean file_saved = FALSE;
+
       if (file_save_dialog_save_image (save_dialog,
                                        dialog->image,
                                        uri,
                                        save_proc,
-                                       dialog->save_a_copy))
+                                       dialog->save_a_copy,
+                                       &file_saved))
         {
           if (dialog)
-            gtk_widget_hide (save_dialog);
+            {
+              gtk_widget_hide (save_dialog);
+
+              if (file_saved && dialog->close_after_saving)
+                {
+                  GtkWindow *parent;
+
+                  parent = gtk_window_get_transient_for (GTK_WINDOW (dialog));
+
+                  if (GIMP_IS_DISPLAY_SHELL (parent))
+                    {
+                      GimpDisplay *display;
+
+                      display = GIMP_DISPLAY_SHELL (parent)->display;
+
+                      if (! display->image->dirty)
+                        gimp_display_delete (display);
+                    }
+                }
+            }
         }
 
       g_free (uri);
@@ -472,7 +498,8 @@ file_save_dialog_save_image (GtkWidget           *save_dialog,
                              GimpImage           *image,
                              const gchar         *uri,
                              GimpPlugInProcedure *save_proc,
-                             gboolean             save_a_copy)
+                             gboolean             save_a_copy,
+                             gboolean            *file_saved)
 {
   GimpPDBStatusType  status;
   GError            *error   = NULL;
@@ -499,18 +526,29 @@ file_save_dialog_save_image (GtkWidget           *save_dialog,
 
   g_object_unref (image);
 
-  if (status != GIMP_PDB_SUCCESS &&
-      status != GIMP_PDB_CANCEL)
+  *file_saved = FALSE;
+
+  switch (status)
     {
-      gchar *filename = file_utils_uri_display_name (uri);
+    case GIMP_PDB_SUCCESS:
+      *file_saved = TRUE;
+      /* fallthru */
 
-      gimp_message (image->gimp, G_OBJECT (save_dialog), GIMP_MESSAGE_ERROR,
-                    _("Saving '%s' failed:\n\n%s"), filename, error->message);
-      g_clear_error (&error);
+    case GIMP_PDB_CANCEL:
+      break;
 
-      g_free (filename);
+    default:
+      {
+        gchar *filename = file_utils_uri_display_name (uri);
 
-      success = FALSE;
+        gimp_message (image->gimp, G_OBJECT (save_dialog), GIMP_MESSAGE_ERROR,
+                      _("Saving '%s' failed:\n\n%s"), filename, error->message);
+        g_clear_error (&error);
+        g_free (filename);
+
+        success = FALSE;
+      }
+      break;
     }
 
   for (list = gimp_action_groups_from_name ("file");

@@ -83,9 +83,10 @@ am__objects_2 = gimpwidgets.lo gimpbrowser.lo gimpbutton.lo \
 	gimpmemsizeentry.lo gimpoldwidgets.lo gimpoffsetarea.lo \
 	gimppageselector.lo gimppatheditor.lo gimppickbutton.lo \
 	gimppixmap.lo gimppreview.lo gimppreviewarea.lo \
-	gimppropwidgets.lo gimpquerybox.lo gimpresolutionentry.lo \
-	gimpscrolledpreview.lo gimpsizeentry.lo gimpstock.lo \
-	gimpunitmenu.lo gimpzoommodel.lo gimpwidgets-private.lo
+	gimppropwidgets.lo gimpquerybox.lo gimpratioentry.lo \
+	gimpresolutionentry.lo gimpscrolledpreview.lo gimpsizeentry.lo \
+	gimpstock.lo gimpunitmenu.lo gimpzoommodel.lo \
+	gimpwidgets-private.lo
 am_libgimpwidgets_2_0_la_OBJECTS = $(am__objects_1) $(am__objects_2)
 libgimpwidgets_2_0_la_OBJECTS = $(am_libgimpwidgets_2_0_la_OBJECTS)
 am_test_preview_area_OBJECTS = test-preview-area.$(OBJEXT)
@@ -156,6 +157,9 @@ CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DATADIRNAME = @DATADIRNAME@
+DBUS_BINDING_TOOL = @DBUS_BINDING_TOOL@
+DBUS_GLIB_CFLAGS = @DBUS_GLIB_CFLAGS@
+DBUS_GLIB_LIBS = @DBUS_GLIB_LIBS@
 DEFAULT_BINARY_FALSE = @DEFAULT_BINARY_FALSE@
 DEFAULT_BINARY_TRUE = @DEFAULT_BINARY_TRUE@
 DEFS = @DEFS@
@@ -193,6 +197,7 @@ GIMPINSTALL = @GIMPINSTALL@
 GIMP_API_VERSION = @GIMP_API_VERSION@
 GIMP_APP_VERSION = @GIMP_APP_VERSION@
 GIMP_BINARY_AGE = @GIMP_BINARY_AGE@
+GIMP_COMMAND = @GIMP_COMMAND@
 GIMP_DATA_VERSION = @GIMP_DATA_VERSION@
 GIMP_FULL_NAME = @GIMP_FULL_NAME@
 GIMP_INTERFACE_AGE = @GIMP_INTERFACE_AGE@
@@ -574,6 +579,8 @@ libgimpwidgets_2_0_la_sources = \
 	gimppropwidgets.h	\
 	gimpquerybox.c		\
 	gimpquerybox.h		\
+	gimpratioentry.c	\
+	gimpratioentry.h	\
 	gimpresolutionentry.c   \
 	gimpresolutionentry.h   \
 	gimpscrolledpreview.c	\
@@ -643,6 +650,7 @@ libgimpwidgetsinclude_HEADERS = \
 	gimppreviewarea.h	\
 	gimppropwidgets.h	\
 	gimpquerybox.h		\
+	gimpratioentry.h	\
 	gimpresolutionentry.h   \
 	gimpscrolledpreview.h	\
 	gimpsizeentry.h		\
@@ -808,6 +816,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppreviewarea.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropwidgets.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpquerybox.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpratioentry.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpresolutionentry.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpscrolledpreview.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsizeentry.Plo@am__quote@

@@ -5,18 +5,17 @@
 <title>gimpfontmenu</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
-<link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="up" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimpbrushmenu.html" title="gimpbrushmenu">
 <link rel="next" href="libgimp-gimpgradientmenu.html" title="gimpgradientmenu">
 <meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
-<link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
+<link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
-<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="chapter" href="libgimp-data.html" title="Data Objects">
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="part" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
@@ -32,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpgradientmenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2613205" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2578757" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2560935" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2555947" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpfontmenu"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2613205"></a><span class="refentrytitle">gimpfontmenu</span>
+<a name="id2578757"></a><span class="refentrytitle">gimpfontmenu</span>
 </h2>
 <p>gimpfontmenu &#8212; A widget for selecting fonts.</p>
 </td>
@@ -63,17 +62,17 @@ void        <a href="libgimp-gimpfontmenu.html#gimp-font-select-widget-set">gimp
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2560935"></a><h2>Description</h2>
+<a name="id2555947"></a><h2>Description</h2>
 <p>
 A widget for selecting fonts.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2711395"></a><h2>Details</h2>
+<a name="id2708083"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2711404"></a><h3>
+<a name="id2708094"></a><h3>
 <a name="gimp-font-select-widget-new"></a>gimp_font_select_widget_new ()</h3>
-<a class="indexterm" name="id2711418"></a><pre class="programlisting">GtkWidget*  gimp_font_select_widget_new     (const gchar *title,
+<a class="indexterm" name="id2708107"></a><pre class="programlisting">GtkWidget*  gimp_font_select_widget_new     (const gchar *title,
                                              const gchar *font_name,
                                              <a href="libgimp-gimpfontselect.html#GimpRunFontCallback">GimpRunFontCallback</a> callback,
                                              gpointer data);</pre>
@@ -121,9 +120,9 @@ plug-in dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2709765"></a><h3>
+<a name="id2712051"></a><h3>
 <a name="gimp-font-select-widget-close"></a>gimp_font_select_widget_close ()</h3>
-<a class="indexterm" name="id2709778"></a><pre class="programlisting">void        gimp_font_select_widget_close   (GtkWidget *widget);</pre>
+<a class="indexterm" name="id2712064"></a><pre class="programlisting">void        gimp_font_select_widget_close   (GtkWidget *widget);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_font_select_widget_close</code> is deprecated and should not be used in newly-written code.</p>
@@ -144,9 +143,9 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2711680"></a><h3>
+<a name="id2712130"></a><h3>
 <a name="gimp-font-select-widget-set"></a>gimp_font_select_widget_set ()</h3>
-<a class="indexterm" name="id2711693"></a><pre class="programlisting">void        gimp_font_select_widget_set     (GtkWidget *widget,
+<a class="indexterm" name="id2711572"></a><pre class="programlisting">void        gimp_font_select_widget_set     (GtkWidget *widget,
                                              const gchar *font_name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>

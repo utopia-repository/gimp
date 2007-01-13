@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimp_brush_generated module Copyright 1998 Jay Cox <jaycox@earthlink.net>
@@ -98,7 +98,7 @@ gimp_brush_generated_save (GimpData  *data,
   /* write brush spacing */
   fprintf (file, "%s\n",
            g_ascii_formatd (buf, G_ASCII_DTOSTR_BUF_SIZE, "%f",
-                            GIMP_BRUSH (brush)->spacing));
+                            gimp_brush_get_spacing (GIMP_BRUSH (brush))));
 
   /* write brush radius */
   fprintf (file, "%s\n",

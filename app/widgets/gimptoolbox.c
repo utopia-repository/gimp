@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -302,15 +302,11 @@ static gboolean
 gimp_toolbox_delete_event (GtkWidget   *widget,
                            GdkEventAny *event)
 {
-  GtkAction *action;
-
-  /* activate the action instead of simply calling gimp_exit(), so the
-   * quit action's senistivity is taken into account
+  /* Activate the action instead of simply calling gimp_exit(),
+   * so that the quit action's sensitivity is taken into account.
    */
-  action = gimp_ui_manager_find_action (GIMP_IMAGE_DOCK (widget)->ui_manager,
-                                        "file", "file-quit");
-  if (action)
-    gtk_action_activate (action);
+  gimp_ui_manager_activate_action (GIMP_IMAGE_DOCK (widget)->ui_manager,
+                                   "file", "file-quit");
 
   return TRUE;
 }

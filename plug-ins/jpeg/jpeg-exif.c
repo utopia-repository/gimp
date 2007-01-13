@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -49,9 +49,13 @@
 #include "libgimp/stdplugins-intl.h"
 
 
-#define THUMBNAIL_SIZE   128
+#define THUMBNAIL_SIZE             128
+#define JPEG_EXIF_ROTATE_PARASITE  "exif-orientation-rotate"
 
-static gboolean   jpeg_rotate_query (gint32 image_ID);
+
+static void      jpeg_exif_rotate       (gint32 image_ID,
+                                         gint   orientation);
+static gboolean  jpeg_exif_rotate_query (gint32 image_ID);
 
 
 /*  Replacement for exif_data_new_from_file() to work around
@@ -112,41 +116,7 @@ jpeg_apply_exif_data_to_image (const gchar  *filename,
   if ((entry = exif_content_get_entry (exif_data->ifd[EXIF_IFD_0],
                                        EXIF_TAG_ORIENTATION)))
     {
-      gint orient = exif_get_short (entry->data, byte_order);
-
-      if (orient > 1 && orient <= 8 &&
-          load_interactive && jpeg_rotate_query (image_ID))
-        {
-          switch (orient)
-            {
-            case 1:  /* standard orientation, do nothing */
-              break;
-            case 2:  /* flipped right-left               */
-              gimp_image_flip (image_ID, GIMP_ORIENTATION_HORIZONTAL);
-              break;
-            case 3:  /* rotated 180                      */
-              break;
-            case 4:  /* flipped top-bottom               */
-              gimp_image_flip (image_ID, GIMP_ORIENTATION_VERTICAL);
-              break;
-            case 5:  /* flipped diagonally around '\'    */
-              gimp_image_rotate (image_ID, GIMP_ROTATE_90);
-              gimp_image_flip (image_ID, GIMP_ORIENTATION_HORIZONTAL);
-              break;
-            case 6:  /* 90 CW                            */
-              gimp_image_rotate (image_ID, GIMP_ROTATE_90);
-              break;
-            case 7:  /* flipped diagonally around '/'    */
-              gimp_image_rotate (image_ID, GIMP_ROTATE_90);
-              gimp_image_flip (image_ID, GIMP_ORIENTATION_VERTICAL);
-              break;
-            case 8:  /* 90 CCW                           */
-              gimp_image_rotate (image_ID, GIMP_ROTATE_270);
-              break;
-            default: /* can't happen                     */
-              break;
-            }
-        }
+      jpeg_exif_rotate (image_ID, exif_get_short (entry->data, byte_order));
     }
 
   exif_data_unref (exif_data);
@@ -250,13 +220,86 @@ jpeg_setup_exif_for_save (ExifData      *exif_data,
 }
 
 
+static void
+jpeg_exif_rotate (gint32 image_ID,
+                  gint   orientation)
+{
+  GimpParasite *parasite;
+  gboolean      query = load_interactive;
+
+  if (orientation < 2 || orientation > 8)
+    return;
+
+  parasite = gimp_parasite_find (JPEG_EXIF_ROTATE_PARASITE);
+
+  if (parasite)
+    {
+      if (strncmp (gimp_parasite_data (parasite), "yes",
+                   gimp_parasite_data_size (parasite)) == 0)
+        {
+          query = FALSE;
+        }
+      else if (strncmp (gimp_parasite_data (parasite), "no",
+                        gimp_parasite_data_size (parasite)) == 0)
+        {
+          gimp_parasite_free (parasite);
+          return;
+        }
+
+      gimp_parasite_free (parasite);
+    }
+
+  if (query && ! jpeg_exif_rotate_query (image_ID))
+    return;
+
+  switch (orientation)
+    {
+    case 1:  /* standard orientation, do nothing */
+      break;
+
+    case 2:  /* flipped right-left               */
+      gimp_image_flip (image_ID, GIMP_ORIENTATION_HORIZONTAL);
+      break;
+
+    case 3:  /* rotated 180                      */
+      gimp_image_rotate (image_ID, GIMP_ROTATE_180);
+      break;
+
+    case 4:  /* flipped top-bottom               */
+      gimp_image_flip (image_ID, GIMP_ORIENTATION_VERTICAL);
+      break;
+
+    case 5:  /* flipped diagonally around '\'    */
+      gimp_image_rotate (image_ID, GIMP_ROTATE_90);
+      gimp_image_flip (image_ID, GIMP_ORIENTATION_HORIZONTAL);
+      break;
+
+    case 6:  /* 90 CW                            */
+      gimp_image_rotate (image_ID, GIMP_ROTATE_90);
+      break;
+
+    case 7:  /* flipped diagonally around '/'    */
+      gimp_image_rotate (image_ID, GIMP_ROTATE_90);
+      gimp_image_flip (image_ID, GIMP_ORIENTATION_VERTICAL);
+      break;
+
+    case 8:  /* 90 CCW                           */
+      gimp_image_rotate (image_ID, GIMP_ROTATE_270);
+      break;
+
+    default: /* can't happen                     */
+      break;
+    }
+}
+
 static gboolean
-jpeg_rotate_query (gint32 image_ID)
+jpeg_exif_rotate_query (gint32 image_ID)
 {
   GtkWidget *dialog;
   GtkWidget *hbox;
   GtkWidget *vbox;
   GtkWidget *label;
+  GtkWidget *toggle;
   GdkPixbuf *pixbuf;
   gint       response;
 
@@ -304,6 +347,7 @@ jpeg_rotate_query (gint32 image_ID)
       name = gimp_image_get_name (image_ID);
 
       label = gtk_label_new (name);
+      gtk_label_set_ellipsize (GTK_LABEL (label), PANGO_ELLIPSIZE_MIDDLE);
       gimp_label_set_attributes (GTK_LABEL (label),
                                  PANGO_ATTR_STYLE,  PANGO_STYLE_ITALIC,
                                  -1);
@@ -343,7 +387,24 @@ jpeg_rotate_query (gint32 image_ID)
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
+  toggle = gtk_check_button_new_with_mnemonic (_("_Don't ask me again"));
+  gtk_box_pack_end (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), FALSE);
+  gtk_widget_show (toggle);
+
   response = gimp_dialog_run (GIMP_DIALOG (dialog));
+
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (toggle)))
+    {
+      GimpParasite *parasite;
+      const gchar  *str = (response == GTK_RESPONSE_OK) ? "yes" : "no";
+
+      parasite = gimp_parasite_new (JPEG_EXIF_ROTATE_PARASITE,
+                                    GIMP_PARASITE_PERSISTENT,
+                                    strlen (str), str);
+      gimp_parasite_attach (parasite);
+      gimp_parasite_free (parasite);
+    }
 
   gtk_widget_destroy (dialog);
 

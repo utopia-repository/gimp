@@ -2,12 +2,10 @@
 <!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
 <book xmlns="http://www.devhelp.net/book" title="GIMP Library Reference Manual" link="index.html" author="" name="libgimp" version="2">
   <chapters>
-    <sub name="GIMP Constants" link="gimpdefinitions.html">
-      <sub name="gimpenums" link="libgimp-gimpenums.html"/>
-    </sub>
     <sub name="GIMP Library" link="libgimp.html">
       <sub name="Functions not Related to Specific Images" link="libgimp-general.html">
         <sub name="gimp" link="libgimp-gimp.html"/>
+        <sub name="gimpenums" link="libgimp-gimpenums.html"/>
         <sub name="gimpbuffer" link="libgimp-gimpbuffer.html"/>
         <sub name="gimpcontext" link="libgimp-gimpcontext.html"/>
         <sub name="gimpgimprc" link="libgimp-gimpgimprc.html"/>
@@ -17,7 +15,7 @@
         <sub name="gimpproceduraldb" link="libgimp-gimpproceduraldb.html"/>
         <sub name="gimpprogress" link="libgimp-gimpprogress.html"/>
       </sub>
-      <sub name="Manupulating Images and all their Properties" link="libgimp-image.html">
+      <sub name="Manupulating Images and their Properties" link="libgimp-image.html">
         <sub name="gimpchannel" link="libgimp-gimpchannel.html"/>
         <sub name="gimpcolor" link="libgimp-gimpcolor.html"/>
         <sub name="gimpconvert" link="libgimp-gimpconvert.html"/>
@@ -93,32 +91,8 @@
     <sub name="Index of deprecated symbols" link="libgimp-index-deprecated.html"/>
   </chapters>
   <functions>
-    <keyword type="function" name="gimp_enums_init ()" link="libgimp-gimpenums.html#gimp-enums-init" since="GIMP 2.4"/>
-    <keyword type="enum" name="enum GimpBrushApplicationMode" link="libgimp-gimpenums.html#GimpBrushApplicationMode"/>
-    <keyword type="enum" name="enum GimpBrushGeneratedShape" link="libgimp-gimpenums.html#GimpBrushGeneratedShape"/>
-    <keyword type="enum" name="enum GimpConvertDitherType" link="libgimp-gimpenums.html#GimpConvertDitherType"/>
-    <keyword type="enum" name="enum GimpConvertPaletteType" link="libgimp-gimpenums.html#GimpConvertPaletteType"/>
-    <keyword type="enum" name="enum GimpConvolutionType" link="libgimp-gimpenums.html#GimpConvolutionType"/>
-    <keyword type="enum" name="enum GimpConvolveType" link="libgimp-gimpenums.html#GimpConvolveType"/>
-    <keyword type="enum" name="enum GimpFillType" link="libgimp-gimpenums.html#GimpFillType"/>
-    <keyword type="enum" name="enum GimpGradientSegmentColor" link="libgimp-gimpenums.html#GimpGradientSegmentColor"/>
-    <keyword type="enum" name="enum GimpGradientSegmentType" link="libgimp-gimpenums.html#GimpGradientSegmentType"/>
-    <keyword type="enum" name="enum GimpHistogramChannel" link="libgimp-gimpenums.html#GimpHistogramChannel"/>
-    <keyword type="enum" name="enum GimpHueRange" link="libgimp-gimpenums.html#GimpHueRange"/>
-    <keyword type="enum" name="enum GimpLayerModeEffects" link="libgimp-gimpenums.html#GimpLayerModeEffects"/>
-    <keyword type="enum" name="enum GimpMaskApplyMode" link="libgimp-gimpenums.html#GimpMaskApplyMode"/>
-    <keyword type="enum" name="enum GimpMergeType" link="libgimp-gimpenums.html#GimpMergeType"/>
-    <keyword type="enum" name="enum GimpOffsetType" link="libgimp-gimpenums.html#GimpOffsetType"/>
-    <keyword type="enum" name="enum GimpOrientationType" link="libgimp-gimpenums.html#GimpOrientationType"/>
-    <keyword type="enum" name="enum GimpRotationType" link="libgimp-gimpenums.html#GimpRotationType"/>
-    <keyword type="enum" name="enum GimpSelectCriterion" link="libgimp-gimpenums.html#GimpSelectCriterion"/>
-    <keyword type="function" name="gimp_enums_get_type_names ()" link="libgimp-gimpenums.html#gimp-enums-get-type-names" since="GIMP 2.2"/>
-    <keyword type="macro" name="GIMPVAR" link="libgimp-gimp.html#GIMPVAR:CAPS"/>
     <keyword type="function" name="gimp_version ()" link="libgimp-gimp.html#gimp-version"/>
     <keyword type="function" name="gimp_getpid ()" link="libgimp-gimp.html#gimp-getpid" since="GIMP 2.4"/>
-    <keyword type="variable" name="gimp_major_version" link="libgimp-gimp.html#gimp-major-version"/>
-    <keyword type="variable" name="gimp_minor_version" link="libgimp-gimp.html#gimp-minor-version"/>
-    <keyword type="variable" name="gimp_micro_version" link="libgimp-gimp.html#gimp-micro-version"/>
     <keyword type="macro" name="gimp_get_data" link="libgimp-gimp.html#gimp-get-data"/>
     <keyword type="macro" name="gimp_get_data_size" link="libgimp-gimp.html#gimp-get-data-size"/>
     <keyword type="macro" name="gimp_set_data" link="libgimp-gimp.html#gimp-set-data"/>
@@ -165,6 +139,26 @@
     <keyword type="function" name="gimp_parasite_attach ()" link="libgimp-gimp.html#gimp-parasite-attach"/>
     <keyword type="function" name="gimp_parasite_detach ()" link="libgimp-gimp.html#gimp-parasite-detach"/>
     <keyword type="function" name="gimp_attach_new_parasite ()" link="libgimp-gimp.html#gimp-attach-new-parasite"/>
+    <keyword type="function" name="gimp_enums_init ()" link="libgimp-gimpenums.html#gimp-enums-init" since="GIMP 2.4"/>
+    <keyword type="enum" name="enum GimpBrushApplicationMode" link="libgimp-gimpenums.html#GimpBrushApplicationMode"/>
+    <keyword type="enum" name="enum GimpBrushGeneratedShape" link="libgimp-gimpenums.html#GimpBrushGeneratedShape"/>
+    <keyword type="enum" name="enum GimpConvertDitherType" link="libgimp-gimpenums.html#GimpConvertDitherType"/>
+    <keyword type="enum" name="enum GimpConvertPaletteType" link="libgimp-gimpenums.html#GimpConvertPaletteType"/>
+    <keyword type="enum" name="enum GimpConvolutionType" link="libgimp-gimpenums.html#GimpConvolutionType"/>
+    <keyword type="enum" name="enum GimpConvolveType" link="libgimp-gimpenums.html#GimpConvolveType"/>
+    <keyword type="enum" name="enum GimpFillType" link="libgimp-gimpenums.html#GimpFillType"/>
+    <keyword type="enum" name="enum GimpGradientSegmentColor" link="libgimp-gimpenums.html#GimpGradientSegmentColor"/>
+    <keyword type="enum" name="enum GimpGradientSegmentType" link="libgimp-gimpenums.html#GimpGradientSegmentType"/>
+    <keyword type="enum" name="enum GimpHistogramChannel" link="libgimp-gimpenums.html#GimpHistogramChannel"/>
+    <keyword type="enum" name="enum GimpHueRange" link="libgimp-gimpenums.html#GimpHueRange"/>
+    <keyword type="enum" name="enum GimpLayerModeEffects" link="libgimp-gimpenums.html#GimpLayerModeEffects"/>
+    <keyword type="enum" name="enum GimpMaskApplyMode" link="libgimp-gimpenums.html#GimpMaskApplyMode"/>
+    <keyword type="enum" name="enum GimpMergeType" link="libgimp-gimpenums.html#GimpMergeType"/>
+    <keyword type="enum" name="enum GimpOffsetType" link="libgimp-gimpenums.html#GimpOffsetType"/>
+    <keyword type="enum" name="enum GimpOrientationType" link="libgimp-gimpenums.html#GimpOrientationType"/>
+    <keyword type="enum" name="enum GimpRotationType" link="libgimp-gimpenums.html#GimpRotationType"/>
+    <keyword type="enum" name="enum GimpSelectCriterion" link="libgimp-gimpenums.html#GimpSelectCriterion"/>
+    <keyword type="function" name="gimp_enums_get_type_names ()" link="libgimp-gimpenums.html#gimp-enums-get-type-names" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_buffers_get_list ()" link="libgimp-gimpbuffer.html#gimp-buffers-get-list" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_buffer_rename ()" link="libgimp-gimpbuffer.html#gimp-buffer-rename" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_buffer_delete ()" link="libgimp-gimpbuffer.html#gimp-buffer-delete" since="GIMP 2.4"/>
@@ -200,6 +194,7 @@
     <keyword type="function" name="gimp_gimprc_set ()" link="libgimp-gimpgimprc.html#gimp-gimprc-set"/>
     <keyword type="function" name="gimp_get_color_configuration ()" link="libgimp-gimpgimprc.html#gimp-get-color-configuration" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_get_default_comment ()" link="libgimp-gimpgimprc.html#gimp-get-default-comment"/>
+    <keyword type="function" name="gimp_get_default_unit ()" link="libgimp-gimpgimprc.html#gimp-get-default-unit" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_get_module_load_inhibit ()" link="libgimp-gimpgimprc.html#gimp-get-module-load-inhibit"/>
     <keyword type="function" name="gimp_get_monitor_resolution ()" link="libgimp-gimpgimprc.html#gimp-get-monitor-resolution"/>
     <keyword type="function" name="gimp_get_theme_dir ()" link="libgimp-gimpgimprc.html#gimp-get-theme-dir"/>
@@ -269,6 +264,7 @@
     <keyword type="function" name="gimp_image_convert_set_dither_matrix ()" link="libgimp-gimpconvert.html#gimp-image-convert-set-dither-matrix" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_display_new ()" link="libgimp-gimpdisplay.html#gimp-display-new"/>
     <keyword type="function" name="gimp_display_delete ()" link="libgimp-gimpdisplay.html#gimp-display-delete"/>
+    <keyword type="function" name="gimp_display_is_valid ()" link="libgimp-gimpdisplay.html#gimp-display-is-valid" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_display_get_window_handle ()" link="libgimp-gimpdisplay.html#gimp-display-get-window-handle" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_displays_flush ()" link="libgimp-gimpdisplay.html#gimp-displays-flush"/>
     <keyword type="function" name="gimp_displays_reconnect ()" link="libgimp-gimpdisplay.html#gimp-displays-reconnect"/>
@@ -277,6 +273,7 @@
     <keyword type="function" name="gimp_drawable_detach ()" link="libgimp-gimpdrawable.html#gimp-drawable-detach"/>
     <keyword type="function" name="gimp_drawable_flush ()" link="libgimp-gimpdrawable.html#gimp-drawable-flush"/>
     <keyword type="function" name="gimp_drawable_delete ()" link="libgimp-gimpdrawable.html#gimp-drawable-delete"/>
+    <keyword type="function" name="gimp_drawable_is_valid ()" link="libgimp-gimpdrawable.html#gimp-drawable-is-valid" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_drawable_get_name ()" link="libgimp-gimpdrawable.html#gimp-drawable-get-name"/>
     <keyword type="function" name="gimp_drawable_set_name ()" link="libgimp-gimpdrawable.html#gimp-drawable-set-name"/>
     <keyword type="function" name="gimp_drawable_get_visible ()" link="libgimp-gimpdrawable.html#gimp-drawable-get-visible"/>
@@ -388,6 +385,7 @@
     <keyword type="function" name="gimp_image_new ()" link="libgimp-gimpimage.html#gimp-image-new"/>
     <keyword type="function" name="gimp_image_duplicate ()" link="libgimp-gimpimage.html#gimp-image-duplicate"/>
     <keyword type="function" name="gimp_image_delete ()" link="libgimp-gimpimage.html#gimp-image-delete"/>
+    <keyword type="function" name="gimp_image_is_valid ()" link="libgimp-gimpimage.html#gimp-image-is-valid" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_image_base_type ()" link="libgimp-gimpimage.html#gimp-image-base-type"/>
     <keyword type="function" name="gimp_image_width ()" link="libgimp-gimpimage.html#gimp-image-width"/>
     <keyword type="function" name="gimp_image_height ()" link="libgimp-gimpimage.html#gimp-image-height"/>
@@ -613,6 +611,7 @@
     <keyword type="function" name="gimp_vectors_new ()" link="libgimp-gimpvectors.html#gimp-vectors-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_import_from_file ()" link="libgimp-gimpvectors.html#gimp-vectors-import-from-file" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_import_from_string ()" link="libgimp-gimpvectors.html#gimp-vectors-import-from-string" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_vectors_is_valid ()" link="libgimp-gimpvectors.html#gimp-vectors-is-valid" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_get_strokes ()" link="libgimp-gimpvectors.html#gimp-vectors-get-strokes" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_get_image ()" link="libgimp-gimpvectors.html#gimp-vectors-get-image" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_get_linked ()" link="libgimp-gimpvectors.html#gimp-vectors-get-linked" since="GIMP 2.4"/>

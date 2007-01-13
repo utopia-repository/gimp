@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -21,6 +21,11 @@
 #include <stdlib.h>
 
 #include <gtk/gtk.h>
+
+#if HAVE_DBUS_GLIB
+#include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-lowlevel.h>
+#endif
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
@@ -51,6 +56,7 @@
 #include "widgets/gimpclipboard.h"
 #include "widgets/gimpcolorselectorpalette.h"
 #include "widgets/gimpcontrollers.h"
+#include "widgets/gimpdbusservice.h"
 #include "widgets/gimpdevices.h"
 #include "widgets/gimpdevicestatus.h"
 #include "widgets/gimpdialogfactory.h"
@@ -124,15 +130,20 @@ static void       gui_menu_hide_tooltip         (GimpUIManager      *manager,
 static void       gui_display_changed           (GimpContext        *context,
                                                  GimpDisplay        *display,
                                                  Gimp               *gimp);
-static void       gui_image_disconnect          (GimpImage          *image,
-                                                 Gimp               *gimp);
+static void       gui_display_remove            (GimpContainer      *displays);
+
+static void       gui_dbus_service_init         (Gimp               *gimp);
+static void       gui_dbus_service_exit         (void);
 
 
 /*  private variables  */
 
-static Gimp          *the_gui_gimp                = NULL;
-static GQuark         image_disconnect_handler_id = 0;
-static GimpUIManager *image_ui_manager            = NULL;
+static Gimp            *the_gui_gimp     = NULL;
+static GimpUIManager   *image_ui_manager = NULL;
+
+#if HAVE_DBUS_GLIB
+static DBusGConnection *dbus_connection  = NULL;
+#endif
 
 
 /*  public functions  */
@@ -264,18 +275,19 @@ gui_sanity_check (void)
                                 GTK_REQUIRED_MICRO);
 
   if (mismatch)
-    return g_strdup_printf
-      ("%s\n\n"
-       "The GIMP requires Gtk+ version %d.%d.%d or later.\n"
-       "Installed Gtk+ version is %d.%d.%d.\n\n"
-       "Somehow you or your software packager managed\n"
-       "to install The GIMP with an older Gtk+ version.\n\n"
-       "Please upgrade to Gtk+ version %d.%d.%d or later.",
-       mismatch,
-       GTK_REQUIRED_MAJOR, GTK_REQUIRED_MINOR, GTK_REQUIRED_MICRO,
-       gtk_major_version, gtk_minor_version, gtk_micro_version,
-       GTK_REQUIRED_MAJOR, GTK_REQUIRED_MINOR, GTK_REQUIRED_MICRO);
-
+    {
+      return g_strdup_printf
+        ("%s\n\n"
+         "GIMP requires GTK+ version %d.%d.%d or later.\n"
+         "Installed GTK+ version is %d.%d.%d.\n\n"
+         "Somehow you or your software packager managed\n"
+         "to install GIMP with an older GTK+ version.\n\n"
+         "Please upgrade to GTK+ version %d.%d.%d or later.",
+         mismatch,
+         GTK_REQUIRED_MAJOR, GTK_REQUIRED_MINOR, GTK_REQUIRED_MICRO,
+         gtk_major_version, gtk_minor_version, gtk_micro_version,
+         GTK_REQUIRED_MAJOR, GTK_REQUIRED_MINOR, GTK_REQUIRED_MICRO);
+    }
 #undef GTK_REQUIRED_MAJOR
 #undef GTK_REQUIRED_MINOR
 #undef GTK_REQUIRED_MICRO
@@ -362,11 +374,6 @@ gui_restore_callback (Gimp               *gimp,
 
   gui_vtable_init (gimp);
 
-  image_disconnect_handler_id =
-    gimp_container_add_handler (gimp->images, "disconnect",
-                                G_CALLBACK (gui_image_disconnect),
-                                gimp);
-
   if (! gui_config->show_tooltips)
     gimp_help_disable_tooltips ();
 
@@ -387,6 +394,9 @@ gui_restore_callback (Gimp               *gimp,
   g_signal_connect (gimp_get_user_context (gimp), "display-changed",
                     G_CALLBACK (gui_display_changed),
                     gimp);
+  g_signal_connect (gimp->displays, "remove",
+                    G_CALLBACK (gui_display_remove),
+                    NULL);
 
   /* make sure the monitor resolution is valid */
   if (display_config->monitor_res_from_gdk               ||
@@ -469,6 +479,8 @@ gui_restore_after_callback (Gimp               *gimp,
     session_restore (gimp);
 
   dialogs_show_toolbox ();
+
+  gui_dbus_service_init (gimp);
 }
 
 static gboolean
@@ -490,6 +502,10 @@ gui_exit_callback (Gimp     *gimp,
     }
 
   gimp->message_handler = GIMP_CONSOLE;
+
+#if HAVE_DBUS_GLIB
+  gui_dbus_service_exit ();
+#endif
 
   if (gui_config->save_session_info)
     session_save (gimp, FALSE);
@@ -523,16 +539,16 @@ gui_exit_after_callback (Gimp     *gimp,
   g_signal_handlers_disconnect_by_func (gimp->config,
                                         gui_show_help_button_notify,
                                         gimp);
-
   g_signal_handlers_disconnect_by_func (gimp->config,
                                         gui_show_tooltips_notify,
                                         gimp);
 
-  gimp_container_remove_handler (gimp->images, image_disconnect_handler_id);
-  image_disconnect_handler_id = 0;
-
   g_object_unref (image_ui_manager);
   image_ui_manager = NULL;
+
+  g_signal_handlers_disconnect_by_func (gimp->displays,
+                                        G_CALLBACK (gui_display_remove),
+                                        NULL);
 
   session_exit (gimp);
   menus_exit (gimp);
@@ -663,8 +679,8 @@ gui_display_changed (GimpContext *context,
                 {
                   gimp_context_set_display (context, display2);
 
-                  /*  stop the emission of the original signal (the emission of
-                   *  the recursive signal is finished)
+                  /* stop the emission of the original signal
+                   * (the emission of the recursive signal is finished)
                    */
                   g_signal_stop_emission_by_name (context, "display-changed");
                   return;
@@ -679,13 +695,50 @@ gui_display_changed (GimpContext *context,
 }
 
 static void
-gui_image_disconnect (GimpImage *image,
-                      Gimp      *gimp)
+gui_display_remove (GimpContainer *displays)
 {
-  /*  check if this is the last image and if it had a display  */
-  if (gimp_container_num_children (gimp->images) == 1 &&
-      image->instance_count > 0)
+  /* show the toolbox when the last image window is closed */
+
+  if (gimp_container_is_empty (displays))
+    dialogs_show_toolbox ();
+}
+
+static void
+gui_dbus_service_init (Gimp *gimp)
+{
+#if HAVE_DBUS_GLIB
+  GError  *error = NULL;
+
+  g_return_if_fail (dbus_connection == NULL);
+
+  dbus_connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+
+  if (dbus_connection)
     {
-      dialogs_show_toolbox ();
+      GObject *service = gimp_dbus_service_new (gimp);
+
+      dbus_bus_request_name (dbus_g_connection_get_connection (dbus_connection),
+                             GIMP_DBUS_SERVICE_NAME, 0, NULL);
+
+      dbus_g_connection_register_g_object (dbus_connection,
+                                           GIMP_DBUS_SERVICE_PATH, service);
     }
+  else
+    {
+      g_printerr ("%s\n", error->message);
+      g_error_free (error);
+    }
+#endif
+}
+
+static void
+gui_dbus_service_exit (void)
+{
+#if HAVE_DBUS_GLIB
+  if (dbus_connection)
+    {
+      dbus_g_connection_unref (dbus_connection);
+      dbus_connection = NULL;
+    }
+#endif
 }

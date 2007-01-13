@@ -1,3 +1,89 @@
+2007-01-12  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt: added gimp_get_default_unit().
+
+	* libgimp/tmpl/gimpgimprc.sgml: regenerated.
+
+2007-01-12  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt
+	* libgimpbase/libgimpbase-sections.txt: added new symbols.
+
+	* libgimp/tmpl/gimpdisplay.sgml
+	* libgimp/tmpl/gimpdrawable.sgml
+	* libgimp/tmpl/gimpimage.sgml
+	* libgimp/tmpl/gimpvectors.sgml
+	* libgimpbase/tmpl/gimpbaseenums.sgml
+	* libgimpwidgets/tmpl/gimpintstore.sgml
+	* libgimpwidgets/tmpl/gimpenumstore.sgml: regenerated.
+
+2007-01-12  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-sections.txt: added new symbols.	
+
+	* libgimpwidgets/tmpl/gimppreview.sgm: regenerated.
+
+2007-01-03  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/images/gimp-ratio-entry.png: added screenshot.
+
+2007-01-02  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/libgimpwidgets.types
+	* tools/widgets.c: added GimpRatioEntry.
+
+	* libgimpwidgets/tmpl/gimpratioentry.sgml: added generated file.
+
+	* libgimpwidgets/libgimpwidgets-docs.sgml
+	* libgimpwidgets/tmpl/gimppropwidgets.sgml: regenerated.
+
+2006-12-04  Sven Neumann  <sven@gimp.org>
+
+	* app/app-docs.sgml
+	* app/app-sections.txt: some updates.
+
+2006-11-29  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt
+	* libgimpbase/libgimpbase-sections.txt: version symbols moved from
+	libgimp to libgimpbase.
+
+	* libgimp/tmpl/gimp.sgml
+	* libgimpbase/tmpl/gimpversion.sgml: regenerated.
+
+2006-11-29  Sven Neumann  <sven@gimp.org>
+
+	* app/Makefile.am: use LDFLAGS instead of GTKDOC_LDFLAGS.
+
+	* app/app-docs.sgml
+	* app/app-sections.txt: some minor updates.
+
+2006-11-27  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/images/gimp-chain-button.png: replaced with an
+	image that doesn't show bug #376668.
+
+2006-11-27  Sven Neumann  <sven@gimp.org>
+
+	* app/app-docs.sgml: added id attributes for the index page.
+
+	* libgimp/libgimp-docs.sgml: merged the GIMP Constants chapter into
+	the GIMP Library chapter.
+
+	* app/Makefile.am (GTKDOC_LIBS): made app-scan link again.
+
+	* app/app.types: updated.
+
+2006-11-27  Sven Neumann  <sven@gimp.org>
+
+	* libgimpbase/Makefile.am
+	* libgimpcolor/Makefile.am
+	* libgimpmodule/Makefile.am: pass deprecation guards to gtkdoc-scan.
+
+	* libgimpconfig/libgimpconfig-sections.txt
+	* libgimpwidgets/libgimpwidgets-sections.txt: removed unused symbols.
+
 2006-11-23  Simon Budig  <simon@gimp.org>
 
 	* libgimp/libgimp-sections.txt: follow name change.

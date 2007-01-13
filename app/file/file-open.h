@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * file-open.h
@@ -67,6 +67,9 @@ GList     * file_open_layers                (Gimp                *gimp,
                                              GimpPlugInProcedure *file_proc,
                                              GimpPDBStatusType   *status,
                                              GError             **error);
+
+void        file_open_from_command_line     (Gimp                *gimp,
+                                             const gchar        **uris);
 
 
 #endif /* __FILE_OPEN_H__ */

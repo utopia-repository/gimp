@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimpfontlist.c
@@ -86,7 +86,7 @@ gimp_font_list_new (gdouble xresolution,
   g_return_val_if_fail (yresolution > 0.0, NULL);
 
   list = g_object_new (GIMP_TYPE_FONT_LIST,
-                       "children_type", GIMP_TYPE_FONT,
+                       "children-type", GIMP_TYPE_FONT,
                        "policy",        GIMP_CONTAINER_POLICY_STRONG,
                        NULL);
 

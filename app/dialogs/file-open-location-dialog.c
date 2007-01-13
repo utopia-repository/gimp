@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995, 1996, 1997 Spencer Kimball and Peter Mattis
  * Copyright (C) 1997 Josh MacDonald
  *
@@ -30,8 +30,6 @@
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "core/gimpprogress.h"
-
-#include "plug-in/gimppluginmanager.h"
 
 #include "file/file-open.h"
 #include "file/file-utils.h"
@@ -188,8 +186,7 @@ file_open_location_response (GtkDialog *dialog,
         }
       else
         {
-          uri = file_utils_filename_to_uri (gimp->plug_in_manager->load_procs,
-                                            text, &error);
+          uri = file_utils_filename_to_uri (gimp, text, &error);
         }
 
       box = gimp_progress_box_new ();

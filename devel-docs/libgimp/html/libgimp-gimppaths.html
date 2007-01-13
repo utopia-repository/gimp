@@ -5,18 +5,17 @@
 <title>gimppaths</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
-<link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimplayer.html" title="gimplayer">
 <link rel="next" href="libgimp-gimppixelfetcher.html" title="gimppixelfetcher">
 <meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
-<link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
+<link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
-<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="chapter" href="libgimp-data.html" title="Data Objects">
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="part" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
@@ -32,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimppixelfetcher.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2580600" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2560922" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2632213" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2632622" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppaths"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2580600"></a><span class="refentrytitle">gimppaths</span>
+<a name="id2560922"></a><span class="refentrytitle">gimppaths</span>
 </h2>
 <p>gimppaths &#8212; Operations related to paths.</p>
 </td>
@@ -103,17 +102,17 @@ gboolean    <a href="libgimp-gimppaths.html#gimp-path-import">gimp_path_import</
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2632213"></a><h2>Description</h2>
+<a name="id2632622"></a><h2>Description</h2>
 <p>
 Operations related to paths.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2632228"></a><h2>Details</h2>
+<a name="id2632637"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2632239"></a><h3>
+<a name="id2632648"></a><h3>
 <a name="gimp-path-list"></a>gimp_path_list ()</h3>
-<a class="indexterm" name="id2632254"></a><pre class="programlisting">gchar**     gimp_path_list                  (gint32 image_ID,
+<a class="indexterm" name="id2632663"></a><pre class="programlisting">gchar**     gimp_path_list                  (gint32 image_ID,
                                              gint *num_paths);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -147,9 +146,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpimage.html#gimp-image-get
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2630847"></a><h3>
+<a name="id2631266"></a><h3>
 <a name="gimp-path-get-points"></a>gimp_path_get_points ()</h3>
-<a class="indexterm" name="id2630861"></a><pre class="programlisting">gint        gimp_path_get_points            (gint32 image_ID,
+<a class="indexterm" name="id2631279"></a><pre class="programlisting">gint        gimp_path_get_points            (gint32 image_ID,
                                              const gchar *name,
                                              gint *path_closed,
                                              gint *num_path_point_details,
@@ -202,9 +201,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2631035"></a><h3>
+<a name="id2631453"></a><h3>
 <a name="gimp-path-get-current"></a>gimp_path_get_current ()</h3>
-<a class="indexterm" name="id2631048"></a><pre class="programlisting">gchar*      gimp_path_get_current           (gint32 image_ID);</pre>
+<a class="indexterm" name="id2631467"></a><pre class="programlisting">gchar*      gimp_path_get_current           (gint32 image_ID);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_get_current</code> is deprecated and should not be used in newly-written code.</p>
@@ -233,9 +232,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2631128"></a><h3>
+<a name="id2631546"></a><h3>
 <a name="gimp-path-set-current"></a>gimp_path_set_current ()</h3>
-<a class="indexterm" name="id2631141"></a><pre class="programlisting">gboolean    gimp_path_set_current           (gint32 image_ID,
+<a class="indexterm" name="id2631560"></a><pre class="programlisting">gboolean    gimp_path_set_current           (gint32 image_ID,
                                              const gchar *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -270,9 +269,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635223"></a><h3>
+<a name="id2635389"></a><h3>
 <a name="gimp-path-set-points"></a>gimp_path_set_points ()</h3>
-<a class="indexterm" name="id2635236"></a><pre class="programlisting">gboolean    gimp_path_set_points            (gint32 image_ID,
+<a class="indexterm" name="id2635402"></a><pre class="programlisting">gboolean    gimp_path_set_points            (gint32 image_ID,
                                              const gchar *name,
                                              gint ptype,
                                              gint num_path_points,
@@ -325,9 +324,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635422"></a><h3>
+<a name="id2635588"></a><h3>
 <a name="gimp-path-stroke-current"></a>gimp_path_stroke_current ()</h3>
-<a class="indexterm" name="id2635436"></a><pre class="programlisting">gboolean    gimp_path_stroke_current        (gint32 image_ID);</pre>
+<a class="indexterm" name="id2635602"></a><pre class="programlisting">gboolean    gimp_path_stroke_current        (gint32 image_ID);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_stroke_current</code> is deprecated and should not be used in newly-written code.</p>
@@ -356,9 +355,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635516"></a><h3>
+<a name="id2635682"></a><h3>
 <a name="gimp-path-get-point-at-dist"></a>gimp_path_get_point_at_dist ()</h3>
-<a class="indexterm" name="id2635530"></a><pre class="programlisting">gint        gimp_path_get_point_at_dist     (gint32 image_ID,
+<a class="indexterm" name="id2635696"></a><pre class="programlisting">gint        gimp_path_get_point_at_dist     (gint32 image_ID,
                                              gdouble distance,
                                              gint *y_point,
                                              gdouble *slope);</pre>
@@ -405,9 +404,9 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635673"></a><h3>
+<a name="id2635839"></a><h3>
 <a name="gimp-path-get-tattoo"></a>gimp_path_get_tattoo ()</h3>
-<a class="indexterm" name="id2635686"></a><pre class="programlisting">gint        gimp_path_get_tattoo            (gint32 image_ID,
+<a class="indexterm" name="id2635853"></a><pre class="programlisting">gint        gimp_path_get_tattoo            (gint32 image_ID,
                                              const gchar *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -441,9 +440,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpvectors.html#gimp-vectors
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635790"></a><h3>
+<a name="id2635957"></a><h3>
 <a name="gimp-get-path-by-tattoo"></a>gimp_get_path_by_tattoo ()</h3>
-<a class="indexterm" name="id2635803"></a><pre class="programlisting">gchar*      gimp_get_path_by_tattoo         (gint32 image_ID,
+<a class="indexterm" name="id2635971"></a><pre class="programlisting">gchar*      gimp_get_path_by_tattoo         (gint32 image_ID,
                                              gint tattoo);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -480,9 +479,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635907"></a><h3>
+<a name="id2636076"></a><h3>
 <a name="gimp-path-delete"></a>gimp_path_delete ()</h3>
-<a class="indexterm" name="id2635922"></a><pre class="programlisting">gboolean    gimp_path_delete                (gint32 image_ID,
+<a class="indexterm" name="id2636090"></a><pre class="programlisting">gboolean    gimp_path_delete                (gint32 image_ID,
                                              const gchar *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -517,9 +516,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2639650"></a><h3>
+<a name="id2639819"></a><h3>
 <a name="gimp-path-get-locked"></a>gimp_path_get_locked ()</h3>
-<a class="indexterm" name="id2639663"></a><pre class="programlisting">gboolean    gimp_path_get_locked            (gint32 image_ID,
+<a class="indexterm" name="id2639833"></a><pre class="programlisting">gboolean    gimp_path_get_locked            (gint32 image_ID,
                                              const gchar *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -553,9 +552,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpvectors.html#gimp-vectors
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2639767"></a><h3>
+<a name="id2639937"></a><h3>
 <a name="gimp-path-set-locked"></a>gimp_path_set_locked ()</h3>
-<a class="indexterm" name="id2639781"></a><pre class="programlisting">gboolean    gimp_path_set_locked            (gint32 image_ID,
+<a class="indexterm" name="id2639950"></a><pre class="programlisting">gboolean    gimp_path_set_locked            (gint32 image_ID,
                                              const gchar *name,
                                              gboolean locked);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -595,9 +594,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpvectors.html#gimp-vectors
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2639906"></a><h3>
+<a name="id2640076"></a><h3>
 <a name="gimp-path-set-tattoo"></a>gimp_path_set_tattoo ()</h3>
-<a class="indexterm" name="id2639920"></a><pre class="programlisting">gboolean    gimp_path_set_tattoo            (gint32 image_ID,
+<a class="indexterm" name="id2640089"></a><pre class="programlisting">gboolean    gimp_path_set_tattoo            (gint32 image_ID,
                                              const gchar *name,
                                              gint tattovalue);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -637,9 +636,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpvectors.html#gimp-vectors
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2640046"></a><h3>
+<a name="id2640216"></a><h3>
 <a name="gimp-path-to-selection"></a>gimp_path_to_selection ()</h3>
-<a class="indexterm" name="id2640060"></a><pre class="programlisting">gboolean    gimp_path_to_selection          (gint32 image_ID,
+<a class="indexterm" name="id2640229"></a><pre class="programlisting">gboolean    gimp_path_to_selection          (gint32 image_ID,
                                              const gchar *name,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
@@ -706,9 +705,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2640270"></a><h3>
+<a name="id2640439"></a><h3>
 <a name="gimp-path-import"></a>gimp_path_import ()</h3>
-<a class="indexterm" name="id2640284"></a><pre class="programlisting">gboolean    gimp_path_import                (gint32 image_ID,
+<a class="indexterm" name="id2640454"></a><pre class="programlisting">gboolean    gimp_path_import                (gint32 image_ID,
                                              const gchar *filename,
                                              gboolean merge,
                                              gboolean scale);</pre>
@@ -717,7 +716,8 @@ instead.</p>
 <p><code class="literal">gimp_path_import</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-This procedure is deprecated! Use <code class="function">vectors_new_from_file()</code> instead.</p>
+This procedure is deprecated! Use <code class="function">vectors_import_from_file()</code>
+instead.</p>
 <p>
 
 </p>

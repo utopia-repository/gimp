@@ -37,6 +37,16 @@
 <link linkend="void">void</link>        <link linkend="gimp-preview-get-position">gimp_preview_get_position</link>       (<link linkend="GimpPreview">GimpPreview</link> *preview,
                                              <link linkend="gint">gint</link> *x,
                                              <link linkend="gint">gint</link> *y);
+<link linkend="void">void</link>        <link linkend="gimp-preview-transform">gimp_preview_transform</link>          (<link linkend="GimpPreview">GimpPreview</link> *preview,
+                                             <link linkend="gint">gint</link> src_x,
+                                             <link linkend="gint">gint</link> src_y,
+                                             <link linkend="gint">gint</link> *dest_x,
+                                             <link linkend="gint">gint</link> *dest_y);
+<link linkend="void">void</link>        <link linkend="gimp-preview-untransform">gimp_preview_untransform</link>        (<link linkend="GimpPreview">GimpPreview</link> *preview,
+                                             <link linkend="gint">gint</link> src_x,
+                                             <link linkend="gint">gint</link> src_y,
+                                             <link linkend="gint">gint</link> *dest_x,
+                                             <link linkend="gint">gint</link> *dest_y);
 <link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-preview-get-area">gimp_preview_get_area</link>           (<link linkend="GimpPreview">GimpPreview</link> *preview);
 <link linkend="void">void</link>        <link linkend="gimp-preview-draw">gimp_preview_draw</link>               (<link linkend="GimpPreview">GimpPreview</link> *preview);
 <link linkend="void">void</link>        <link linkend="gimp-preview-draw-buffer">gimp_preview_draw_buffer</link>        (<link linkend="GimpPreview">GimpPreview</link> *preview,
@@ -225,6 +235,64 @@ maximum size of the <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type>
 <listitem><simpara>       return location for the vertical offset
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.2
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-preview-transform" role="function" condition="since:GIMP 2.4"/>gimp_preview_transform ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_preview_transform</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_transform          (<link linkend="GimpPreview">GimpPreview</link> *preview,
+                                             <link linkend="gint">gint</link> src_x,
+                                             <link linkend="gint">gint</link> src_y,
+                                             <link linkend="gint">gint</link> *dest_x,
+                                             <link linkend="gint">gint</link> *dest_y);</programlisting>
+<para>
+Transforms from image to widget coordinates.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GimpPreview"><type>GimpPreview</type></link> widget
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>src_x</parameter>&nbsp;:</term>
+<listitem><simpara>   horizontal position on the previewed image
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>src_y</parameter>&nbsp;:</term>
+<listitem><simpara>   vertical position on the previewed image
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dest_x</parameter>&nbsp;:</term>
+<listitem><simpara>  returns the transformed horizontal position
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dest_y</parameter>&nbsp;:</term>
+<listitem><simpara>  returns the transformed vertical position
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-preview-untransform" role="function" condition="since:GIMP 2.4"/>gimp_preview_untransform ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_preview_untransform</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_untransform        (<link linkend="GimpPreview">GimpPreview</link> *preview,
+                                             <link linkend="gint">gint</link> src_x,
+                                             <link linkend="gint">gint</link> src_y,
+                                             <link linkend="gint">gint</link> *dest_x,
+                                             <link linkend="gint">gint</link> *dest_y);</programlisting>
+<para>
+Transforms from widget to image coordinates.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GimpPreview"><type>GimpPreview</type></link> widget
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>src_x</parameter>&nbsp;:</term>
+<listitem><simpara>   horizontal position relative to the preview area's origin
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>src_y</parameter>&nbsp;:</term>
+<listitem><simpara>   vertical position relative to  preview area's origin
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dest_x</parameter>&nbsp;:</term>
+<listitem><simpara>  returns the untransformed horizontal position
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dest_y</parameter>&nbsp;:</term>
+<listitem><simpara>  returns the untransformed vertical position
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-preview-get-area" role="function" condition="since:GIMP 2.4"/>gimp_preview_get_area ()</title>

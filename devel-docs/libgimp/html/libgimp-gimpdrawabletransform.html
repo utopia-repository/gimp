@@ -5,18 +5,17 @@
 <title>gimpdrawabletransform</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
-<link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpdrawable.html" title="gimpdrawable">
 <link rel="next" href="libgimp-gimpedit.html" title="gimpedit">
 <meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
-<link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
+<link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
-<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="chapter" href="libgimp-data.html" title="Data Objects">
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="part" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
@@ -32,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpedit.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2566725" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2574774" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2623164" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2623336" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpdrawabletransform"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2566725"></a><span class="refentrytitle">gimpdrawabletransform</span>
+<a name="id2574774"></a><span class="refentrytitle">gimpdrawabletransform</span>
 </h2>
 <p>gimpdrawabletransform</p>
 </td>
@@ -99,7 +98,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"
 >GimpInterpolationType</a> interpolation,
                                              gboolean supersample,
                                              gint recursion_level,
-                                             gboolean clip_result);
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);
 gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-perspective-default">gimp_drawable_transform_perspective_default</a>
                                             (gint32 drawable_ID,
                                              gdouble x0,
@@ -111,7 +112,9 @@ gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-
                                              gdouble x3,
                                              gdouble y3,
                                              gboolean interpolate,
-                                             gboolean clip_result);
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);
 gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-rotate-simple">gimp_drawable_transform_rotate_simple</a>
                                             (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpRotationType">GimpRotationType</a> rotate_type,
@@ -132,7 +135,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"
 >GimpInterpolationType</a> interpolation,
                                              gboolean supersample,
                                              gint recursion_level,
-                                             gboolean clip_result);
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);
 gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-rotate-default">gimp_drawable_transform_rotate_default</a>
                                             (gint32 drawable_ID,
                                              gdouble angle,
@@ -140,7 +145,9 @@ gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-
                                              gint center_x,
                                              gint center_y,
                                              gboolean interpolate,
-                                             gboolean clip_result);
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);
 gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-scale">gimp_drawable_transform_scale</a>   (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
@@ -154,7 +161,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"
 >GimpInterpolationType</a> interpolation,
                                              gboolean supersample,
                                              gint recursion_level,
-                                             gboolean clip_result);
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);
 gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-scale-default">gimp_drawable_transform_scale_default</a>
                                             (gint32 drawable_ID,
                                              gdouble x0,
@@ -162,7 +171,9 @@ gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-
                                              gdouble x1,
                                              gdouble y1,
                                              gboolean interpolate,
-                                             gboolean clip_result);
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);
 gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-shear">gimp_drawable_transform_shear</a>   (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> shear_type,
                                              gdouble magnitude,
@@ -174,13 +185,17 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"
 >GimpInterpolationType</a> interpolation,
                                              gboolean supersample,
                                              gint recursion_level,
-                                             gboolean clip_result);
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);
 gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-shear-default">gimp_drawable_transform_shear_default</a>
                                             (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> shear_type,
                                              gdouble magnitude,
                                              gboolean interpolate,
-                                             gboolean clip_result);
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);
 gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-2d">gimp_drawable_transform_2d</a>      (gint32 drawable_ID,
                                              gdouble source_x,
                                              gdouble source_y,
@@ -197,7 +212,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"
 >GimpInterpolationType</a> interpolation,
                                              gboolean supersample,
                                              gint recursion_level,
-                                             gboolean clip_result);
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);
 gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-2d-default">gimp_drawable_transform_2d_default</a>
                                             (gint32 drawable_ID,
                                              gdouble source_x,
@@ -208,7 +225,9 @@ gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-
                                              gdouble dest_x,
                                              gdouble dest_y,
                                              gboolean interpolate,
-                                             gboolean clip_result);
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);
 gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-matrix">gimp_drawable_transform_matrix</a>  (gint32 drawable_ID,
                                              gdouble coeff_0_0,
                                              gdouble coeff_0_1,
@@ -227,7 +246,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"
 >GimpInterpolationType</a> interpolation,
                                              gboolean supersample,
                                              gint recursion_level,
-                                             gboolean clip_result);
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);
 gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-matrix-default">gimp_drawable_transform_matrix_default</a>
                                             (gint32 drawable_ID,
                                              gdouble coeff_0_0,
@@ -240,21 +261,23 @@ gint32      <a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-
                                              gdouble coeff_2_1,
                                              gdouble coeff_2_2,
                                              gboolean interpolate,
-                                             gboolean clip_result);
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2623164"></a><h2>Description</h2>
+<a name="id2623336"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2623177"></a><h2>Details</h2>
+<a name="id2623350"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2623186"></a><h3>
+<a name="id2623359"></a><h3>
 <a name="gimp-drawable-transform-flip-simple"></a>gimp_drawable_transform_flip_simple ()</h3>
-<a class="indexterm" name="id2623200"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip_simple
+<a class="indexterm" name="id2623371"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip_simple
                                             (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type,
                                              gboolean auto_center,
@@ -317,9 +340,9 @@ created and flipped drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623350"></a><h3>
+<a name="id2623521"></a><h3>
 <a name="gimp-drawable-transform-flip"></a>gimp_drawable_transform_flip ()</h3>
-<a class="indexterm" name="id2623364"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip    (gint32 drawable_ID,
+<a class="indexterm" name="id2623533"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip    (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
                                              gdouble x1,
@@ -416,9 +439,9 @@ transform.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623612"></a><h3>
+<a name="id2623777"></a><h3>
 <a name="gimp-drawable-transform-flip-default"></a>gimp_drawable_transform_flip_default ()</h3>
-<a class="indexterm" name="id2623627"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip_default
+<a class="indexterm" name="id2623792"></a><pre class="programlisting">gint32      gimp_drawable_transform_flip_default
                                             (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
@@ -487,9 +510,9 @@ uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623819"></a><h3>
+<a name="id2623984"></a><h3>
 <a name="gimp-drawable-transform-perspective"></a>gimp_drawable_transform_perspective ()</h3>
-<a class="indexterm" name="id2623834"></a><pre class="programlisting">gint32      gimp_drawable_transform_perspective
+<a class="indexterm" name="id2623999"></a><pre class="programlisting">gint32      gimp_drawable_transform_perspective
                                             (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
@@ -507,7 +530,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"
 >GimpInterpolationType</a> interpolation,
                                              gboolean supersample,
                                              gint recursion_level,
-                                             gboolean clip_result);</pre>
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);</pre>
 <p>
 Perform a possibly non-affine transformation on the specified
 drawable, with extra parameters.
@@ -601,7 +626,7 @@ to have been projected via a perspective transform.</p>
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
-<td> Whether to clip results.
+<td> How to clip results.
 </td>
 </tr>
 <tr>
@@ -617,9 +642,9 @@ to have been projected via a perspective transform.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2624173"></a><h3>
+<a name="id2624338"></a><h3>
 <a name="gimp-drawable-transform-perspective-default"></a>gimp_drawable_transform_perspective_default ()</h3>
-<a class="indexterm" name="id2624188"></a><pre class="programlisting">gint32      gimp_drawable_transform_perspective_default
+<a class="indexterm" name="id2624353"></a><pre class="programlisting">gint32      gimp_drawable_transform_perspective_default
                                             (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
@@ -630,7 +655,9 @@ to have been projected via a perspective transform.</p>
                                              gdouble x3,
                                              gdouble y3,
                                              gboolean interpolate,
-                                             gboolean clip_result);</pre>
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);</pre>
 <p>
 Perform a possibly non-affine transformation on the specified
 drawable, with extra parameters.
@@ -697,7 +724,7 @@ which uses no interpolation/supersampling at all, or default values
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
-<td> Whether to clip results.
+<td> How to clip results.
 </td>
 </tr>
 <tr>
@@ -713,9 +740,9 @@ which uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2624465"></a><h3>
+<a name="id2624630"></a><h3>
 <a name="gimp-drawable-transform-rotate-simple"></a>gimp_drawable_transform_rotate_simple ()</h3>
-<a class="indexterm" name="id2624480"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate_simple
+<a class="indexterm" name="id2624644"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate_simple
                                             (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpRotationType">GimpRotationType</a> rotate_type,
                                              gboolean auto_center,
@@ -783,9 +810,9 @@ this will be the newly created and rotated drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2624649"></a><h3>
+<a name="id2624814"></a><h3>
 <a name="gimp-drawable-transform-rotate"></a>gimp_drawable_transform_rotate ()</h3>
-<a class="indexterm" name="id2624663"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate  (gint32 drawable_ID,
+<a class="indexterm" name="id2624828"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate  (gint32 drawable_ID,
                                              gdouble angle,
                                              gboolean auto_center,
                                              gint center_x,
@@ -798,7 +825,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"
 >GimpInterpolationType</a> interpolation,
                                              gboolean supersample,
                                              gint recursion_level,
-                                             gboolean clip_result);</pre>
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);</pre>
 <p>
 Rotate the specified drawable about given coordinates through the
 specified angle.
@@ -864,7 +893,7 @@ this will be the newly created and rotated drawable.</p>
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
-<td> Whether to clip results.
+<td> How to clip results.
 </td>
 </tr>
 <tr>
@@ -880,16 +909,18 @@ this will be the newly created and rotated drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2624911"></a><h3>
+<a name="id2625076"></a><h3>
 <a name="gimp-drawable-transform-rotate-default"></a>gimp_drawable_transform_rotate_default ()</h3>
-<a class="indexterm" name="id2624925"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate_default
+<a class="indexterm" name="id2625090"></a><pre class="programlisting">gint32      gimp_drawable_transform_rotate_default
                                             (gint32 drawable_ID,
                                              gdouble angle,
                                              gboolean auto_center,
                                              gint center_x,
                                              gint center_y,
                                              gboolean interpolate,
-                                             gboolean clip_result);</pre>
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);</pre>
 <p>
 Rotate the specified drawable about given coordinates through the
 specified angle.
@@ -936,7 +967,7 @@ which uses no interpolation/supersampling at all, or default values
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
-<td> Whether to clip results.
+<td> How to clip results.
 </td>
 </tr>
 <tr>
@@ -952,9 +983,9 @@ which uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2625120"></a><h3>
+<a name="id2625285"></a><h3>
 <a name="gimp-drawable-transform-scale"></a>gimp_drawable_transform_scale ()</h3>
-<a class="indexterm" name="id2625134"></a><pre class="programlisting">gint32      gimp_drawable_transform_scale   (gint32 drawable_ID,
+<a class="indexterm" name="id2625299"></a><pre class="programlisting">gint32      gimp_drawable_transform_scale   (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
                                              gdouble x1,
@@ -967,7 +998,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"
 >GimpInterpolationType</a> interpolation,
                                              gboolean supersample,
                                              gint recursion_level,
-                                             gboolean clip_result);</pre>
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);</pre>
 <p>
 Scale the specified drawable with extra parameters
 </p>
@@ -1032,7 +1065,7 @@ this will be the newly created and scaled drawable.</p>
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
-<td> Whether to clip results.
+<td> How to clip results.
 </td>
 </tr>
 <tr>
@@ -1048,16 +1081,18 @@ this will be the newly created and scaled drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2625382"></a><h3>
+<a name="id2625547"></a><h3>
 <a name="gimp-drawable-transform-scale-default"></a>gimp_drawable_transform_scale_default ()</h3>
-<a class="indexterm" name="id2625397"></a><pre class="programlisting">gint32      gimp_drawable_transform_scale_default
+<a class="indexterm" name="id2625562"></a><pre class="programlisting">gint32      gimp_drawable_transform_scale_default
                                             (gint32 drawable_ID,
                                              gdouble x0,
                                              gdouble y0,
                                              gdouble x1,
                                              gdouble y1,
                                              gboolean interpolate,
-                                             gboolean clip_result);</pre>
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);</pre>
 <p>
 Scale the specified drawable with extra parameters
 </p>
@@ -1103,7 +1138,7 @@ uses no interpolation/supersampling at all, or default values
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
-<td> Whether to clip results.
+<td> How to clip results.
 </td>
 </tr>
 <tr>
@@ -1119,9 +1154,9 @@ uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2625592"></a><h3>
+<a name="id2625757"></a><h3>
 <a name="gimp-drawable-transform-shear"></a>gimp_drawable_transform_shear ()</h3>
-<a class="indexterm" name="id2625606"></a><pre class="programlisting">gint32      gimp_drawable_transform_shear   (gint32 drawable_ID,
+<a class="indexterm" name="id2625771"></a><pre class="programlisting">gint32      gimp_drawable_transform_shear   (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> shear_type,
                                              gdouble magnitude,
                                              <a
@@ -1132,7 +1167,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"
 >GimpInterpolationType</a> interpolation,
                                              gboolean supersample,
                                              gint recursion_level,
-                                             gboolean clip_result);</pre>
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);</pre>
 <p>
 Shear the specified drawable about its center by the specified
 magnitude, with extra parameters.
@@ -1191,7 +1228,7 @@ indicates the extent (in pixels) to shear by.</p>
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
-<td> Whether to clip results.
+<td> How to clip results.
 </td>
 </tr>
 <tr>
@@ -1207,14 +1244,16 @@ indicates the extent (in pixels) to shear by.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2625816"></a><h3>
+<a name="id2625981"></a><h3>
 <a name="gimp-drawable-transform-shear-default"></a>gimp_drawable_transform_shear_default ()</h3>
-<a class="indexterm" name="id2625831"></a><pre class="programlisting">gint32      gimp_drawable_transform_shear_default
+<a class="indexterm" name="id2625996"></a><pre class="programlisting">gint32      gimp_drawable_transform_shear_default
                                             (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> shear_type,
                                              gdouble magnitude,
                                              gboolean interpolate,
-                                             gboolean clip_result);</pre>
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);</pre>
 <p>
 Shear the specified drawable about its center by the specified
 magnitude, with extra parameters.
@@ -1251,7 +1290,7 @@ uses no interpolation/supersampling at all, or default values
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
-<td> Whether to clip results.
+<td> How to clip results.
 </td>
 </tr>
 <tr>
@@ -1267,9 +1306,9 @@ uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2625984"></a><h3>
+<a name="id2626149"></a><h3>
 <a name="gimp-drawable-transform-2d"></a>gimp_drawable_transform_2d ()</h3>
-<a class="indexterm" name="id2625997"></a><pre class="programlisting">gint32      gimp_drawable_transform_2d      (gint32 drawable_ID,
+<a class="indexterm" name="id2626164"></a><pre class="programlisting">gint32      gimp_drawable_transform_2d      (gint32 drawable_ID,
                                              gdouble source_x,
                                              gdouble source_y,
                                              gdouble scale_x,
@@ -1285,7 +1324,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"
 >GimpInterpolationType</a> interpolation,
                                              gboolean supersample,
                                              gint recursion_level,
-                                             gboolean clip_result);</pre>
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);</pre>
 <p>
 Transform the specified drawable in 2d, with extra parameters.
 </p>
@@ -1368,7 +1409,7 @@ Otherwise, this will be the newly created and transformed drawable.</p>
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
-<td> Whether to clip results.
+<td> How to clip results.
 </td>
 </tr>
 <tr>
@@ -1384,9 +1425,9 @@ Otherwise, this will be the newly created and transformed drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626321"></a><h3>
+<a name="id2626505"></a><h3>
 <a name="gimp-drawable-transform-2d-default"></a>gimp_drawable_transform_2d_default ()</h3>
-<a class="indexterm" name="id2626338"></a><pre class="programlisting">gint32      gimp_drawable_transform_2d_default
+<a class="indexterm" name="id2626522"></a><pre class="programlisting">gint32      gimp_drawable_transform_2d_default
                                             (gint32 drawable_ID,
                                              gdouble source_x,
                                              gdouble source_y,
@@ -1396,7 +1437,9 @@ Otherwise, this will be the newly created and transformed drawable.</p>
                                              gdouble dest_x,
                                              gdouble dest_y,
                                              gboolean interpolate,
-                                             gboolean clip_result);</pre>
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);</pre>
 <p>
 Transform the specified drawable in 2d, with extra parameters.
 </p>
@@ -1457,7 +1500,7 @@ uses no interpolation/supersampling at all, or default values
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
-<td> Whether to clip results.
+<td> How to clip results.
 </td>
 </tr>
 <tr>
@@ -1473,9 +1516,9 @@ uses no interpolation/supersampling at all, or default values
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626615"></a><h3>
+<a name="id2626799"></a><h3>
 <a name="gimp-drawable-transform-matrix"></a>gimp_drawable_transform_matrix ()</h3>
-<a class="indexterm" name="id2626631"></a><pre class="programlisting">gint32      gimp_drawable_transform_matrix  (gint32 drawable_ID,
+<a class="indexterm" name="id2626816"></a><pre class="programlisting">gint32      gimp_drawable_transform_matrix  (gint32 drawable_ID,
                                              gdouble coeff_0_0,
                                              gdouble coeff_0_1,
                                              gdouble coeff_0_2,
@@ -1493,7 +1536,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"
 >GimpInterpolationType</a> interpolation,
                                              gboolean supersample,
                                              gint recursion_level,
-                                             gboolean clip_result);</pre>
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);</pre>
 <p>
 Transform the specified drawable in 2d, with extra parameters.
 </p>
@@ -1584,7 +1629,7 @@ Otherwise, this will be the newly created and transformed drawable.</p>
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
-<td> Whether to clip results.
+<td> How to clip results.
 </td>
 </tr>
 <tr>
@@ -1600,9 +1645,9 @@ Otherwise, this will be the newly created and transformed drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627015"></a><h3>
+<a name="id2627200"></a><h3>
 <a name="gimp-drawable-transform-matrix-default"></a>gimp_drawable_transform_matrix_default ()</h3>
-<a class="indexterm" name="id2627032"></a><pre class="programlisting">gint32      gimp_drawable_transform_matrix_default
+<a class="indexterm" name="id2627216"></a><pre class="programlisting">gint32      gimp_drawable_transform_matrix_default
                                             (gint32 drawable_ID,
                                              gdouble coeff_0_0,
                                              gdouble coeff_0_1,
@@ -1614,7 +1659,9 @@ Otherwise, this will be the newly created and transformed drawable.</p>
                                              gdouble coeff_2_1,
                                              gdouble coeff_2_2,
                                              gboolean interpolate,
-                                             gboolean clip_result);</pre>
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"
+>GimpTransformResize</a> clip_result);</pre>
 <p>
 Transform the specified drawable in 2d, with extra parameters.
 </p>
@@ -1685,7 +1732,7 @@ which uses no interpolation/supersampling at all, or default values
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>clip_result</code></em>&#160;:</span></td>
-<td> Whether to clip results.
+<td> How to clip results.
 </td>
 </tr>
 <tr>

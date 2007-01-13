@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -49,6 +49,7 @@ typedef enum
   ISCISSORS_OP_SELECT,
   ISCISSORS_OP_MOVE_POINT,
   ISCISSORS_OP_ADD_POINT,
+  ISCISSORS_OP_CONNECT,
   ISCISSORS_OP_IMPOSSIBLE
 } IscissorsOps;
 

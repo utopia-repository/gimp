@@ -5,18 +5,17 @@
 <title>gimptools</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
-<link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimptile.html" title="gimptile">
 <link rel="next" href="libgimp-gimpundo.html" title="gimpundo">
 <meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
-<link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
+<link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
-<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="chapter" href="libgimp-data.html" title="Data Objects">
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="part" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
@@ -32,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpundo.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2627874" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2572765" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2668730" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2668999" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimptools"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2627874"></a><span class="refentrytitle">gimptools</span>
+<a name="id2572765"></a><span class="refentrytitle">gimptools</span>
 </h2>
 <p>gimptools &#8212; Access to common toolbox tools.</p>
 </td>
@@ -278,18 +277,18 @@ gint32      <a href="libgimp-gimptools.html#gimp-transform-2d">gimp_transform_2d
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2668730"></a><h2>Description</h2>
+<a name="id2668999"></a><h2>Description</h2>
 <p>
 Functions giving access to common toolbox tools.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2668745"></a><h2>Details</h2>
+<a name="id2669014"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2668754"></a><h3>
+<a name="id2669023"></a><h3>
 <a name="gimp-airbrush"></a>gimp_airbrush ()</h3>
-<a class="indexterm" name="id2668764"></a><pre class="programlisting">gboolean    gimp_airbrush                   (gint32 drawable_ID,
+<a class="indexterm" name="id2669034"></a><pre class="programlisting">gboolean    gimp_airbrush                   (gint32 drawable_ID,
                                              gdouble pressure,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
@@ -338,9 +337,9 @@ results in a thinner layer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2668885"></a><h3>
+<a name="id2669154"></a><h3>
 <a name="gimp-airbrush-default"></a>gimp_airbrush_default ()</h3>
-<a class="indexterm" name="id2668896"></a><pre class="programlisting">gboolean    gimp_airbrush_default           (gint32 drawable_ID,
+<a class="indexterm" name="id2669165"></a><pre class="programlisting">gboolean    gimp_airbrush_default           (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -383,9 +382,9 @@ default for the option will be used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669006"></a><h3>
+<a name="id2669275"></a><h3>
 <a name="gimp-by-color-select"></a>gimp_by_color_select ()</h3>
-<a class="indexterm" name="id2669016"></a><pre class="programlisting">gboolean    gimp_by_color_select            (gint32 drawable_ID,
+<a class="indexterm" name="id2669285"></a><pre class="programlisting">gboolean    gimp_by_color_select            (gint32 drawable_ID,
                                              const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
@@ -471,9 +470,9 @@ In the case of a merged sampling, the supplied drawable is ignored.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669222"></a><h3>
+<a name="id2669491"></a><h3>
 <a name="gimp-by-color-select-full"></a>gimp_by_color_select_full ()</h3>
-<a class="indexterm" name="id2669234"></a><pre class="programlisting">gboolean    gimp_by_color_select_full       (gint32 drawable_ID,
+<a class="indexterm" name="id2669503"></a><pre class="programlisting">gboolean    gimp_by_color_select_full       (gint32 drawable_ID,
                                              const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
@@ -581,9 +580,9 @@ In the case of a merged sampling, the supplied drawable is ignored.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669508"></a><h3>
+<a name="id2669778"></a><h3>
 <a name="gimp-clone"></a>gimp_clone ()</h3>
-<a class="indexterm" name="id2669519"></a><pre class="programlisting">gboolean    gimp_clone                      (gint32 drawable_ID,
+<a class="indexterm" name="id2669788"></a><pre class="programlisting">gboolean    gimp_clone                      (gint32 drawable_ID,
                                              gint32 src_drawable_ID,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCloneType"
@@ -659,9 +658,9 @@ significantly slower.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669705"></a><h3>
+<a name="id2669974"></a><h3>
 <a name="gimp-clone-default"></a>gimp_clone_default ()</h3>
-<a class="indexterm" name="id2669715"></a><pre class="programlisting">gboolean    gimp_clone_default              (gint32 drawable_ID,
+<a class="indexterm" name="id2669984"></a><pre class="programlisting">gboolean    gimp_clone_default              (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -705,9 +704,9 @@ will be used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669827"></a><h3>
+<a name="id2670096"></a><h3>
 <a name="gimp-convolve"></a>gimp_convolve ()</h3>
-<a class="indexterm" name="id2669837"></a><pre class="programlisting">gboolean    gimp_convolve                   (gint32 drawable_ID,
+<a class="indexterm" name="id2670107"></a><pre class="programlisting">gboolean    gimp_convolve                   (gint32 drawable_ID,
                                              gdouble pressure,
                                              <a href="libgimp-gimpenums.html#GimpConvolveType">GimpConvolveType</a> convolve_type,
                                              gint num_strokes,
@@ -761,9 +760,9 @@ between the specified stroke coordinates.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669977"></a><h3>
+<a name="id2670246"></a><h3>
 <a name="gimp-convolve-default"></a>gimp_convolve_default ()</h3>
-<a class="indexterm" name="id2669987"></a><pre class="programlisting">gboolean    gimp_convolve_default           (gint32 drawable_ID,
+<a class="indexterm" name="id2670257"></a><pre class="programlisting">gboolean    gimp_convolve_default           (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -806,9 +805,9 @@ been activated then the dialogs default values will be used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670098"></a><h3>
+<a name="id2670368"></a><h3>
 <a name="gimp-dodgeburn"></a>gimp_dodgeburn ()</h3>
-<a class="indexterm" name="id2670109"></a><pre class="programlisting">gboolean    gimp_dodgeburn                  (gint32 drawable_ID,
+<a class="indexterm" name="id2670378"></a><pre class="programlisting">gboolean    gimp_dodgeburn                  (gint32 drawable_ID,
                                              gdouble exposure,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpDodgeBurnType"
@@ -869,9 +868,9 @@ Dodgeburn. More details here later.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670262"></a><h3>
+<a name="id2670533"></a><h3>
 <a name="gimp-dodgeburn-default"></a>gimp_dodgeburn_default ()</h3>
-<a class="indexterm" name="id2670273"></a><pre class="programlisting">gboolean    gimp_dodgeburn_default          (gint32 drawable_ID,
+<a class="indexterm" name="id2670543"></a><pre class="programlisting">gboolean    gimp_dodgeburn_default          (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -913,9 +912,9 @@ Dodgeburn. More details here later.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670382"></a><h3>
+<a name="id2670654"></a><h3>
 <a name="gimp-edit-bucket-fill-full"></a>gimp_edit_bucket_fill_full ()</h3>
-<a class="indexterm" name="id2670394"></a><pre class="programlisting">gboolean    gimp_edit_bucket_fill_full      (gint32 drawable_ID,
+<a class="indexterm" name="id2670666"></a><pre class="programlisting">gboolean    gimp_edit_bucket_fill_full      (gint32 drawable_ID,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBucketFillMode"
 >GimpBucketFillMode</a> fill_mode,
@@ -1013,9 +1012,9 @@ relative to the drawable's origin.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670654"></a><h3>
+<a name="id2670927"></a><h3>
 <a name="gimp-ellipse-select"></a>gimp_ellipse_select ()</h3>
-<a class="indexterm" name="id2670664"></a><pre class="programlisting">gboolean    gimp_ellipse_select             (gint32 image_ID,
+<a class="indexterm" name="id2670937"></a><pre class="programlisting">gboolean    gimp_ellipse_select             (gint32 image_ID,
                                              gdouble x,
                                              gdouble y,
                                              gdouble width,
@@ -1100,9 +1099,9 @@ radius.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670884"></a><h3>
+<a name="id2671158"></a><h3>
 <a name="gimp-eraser"></a>gimp_eraser ()</h3>
-<a class="indexterm" name="id2670895"></a><pre class="programlisting">gboolean    gimp_eraser                     (gint32 drawable_ID,
+<a class="indexterm" name="id2671168"></a><pre class="programlisting">gboolean    gimp_eraser                     (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes,
                                              <a href="libgimp-gimpenums.html#GimpBrushApplicationMode">GimpBrushApplicationMode</a> hardness,
@@ -1159,9 +1158,9 @@ tool linearly interpolates between the specified stroke coordinates.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671043"></a><h3>
+<a name="id2671309"></a><h3>
 <a name="gimp-eraser-default"></a>gimp_eraser_default ()</h3>
-<a class="indexterm" name="id2671057"></a><pre class="programlisting">gboolean    gimp_eraser_default             (gint32 drawable_ID,
+<a class="indexterm" name="id2671321"></a><pre class="programlisting">gboolean    gimp_eraser_default             (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -1204,9 +1203,9 @@ will be used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671180"></a><h3>
+<a name="id2671443"></a><h3>
 <a name="gimp-flip"></a>gimp_flip ()</h3>
-<a class="indexterm" name="id2671195"></a><pre class="programlisting">gint32      gimp_flip                       (gint32 drawable_ID,
+<a class="indexterm" name="id2671459"></a><pre class="programlisting">gint32      gimp_flip                       (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -1241,9 +1240,9 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671301"></a><h3>
+<a name="id2671564"></a><h3>
 <a name="gimp-free-select"></a>gimp_free_select ()</h3>
-<a class="indexterm" name="id2671314"></a><pre class="programlisting">gboolean    gimp_free_select                (gint32 image_ID,
+<a class="indexterm" name="id2671578"></a><pre class="programlisting">gboolean    gimp_free_select                (gint32 image_ID,
                                              gint num_segs,
                                              const gdouble *segs,
                                              <a
@@ -1318,9 +1317,9 @@ radius.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671521"></a><h3>
+<a name="id2671784"></a><h3>
 <a name="gimp-fuzzy-select"></a>gimp_fuzzy_select ()</h3>
-<a class="indexterm" name="id2671535"></a><pre class="programlisting">gboolean    gimp_fuzzy_select               (gint32 drawable_ID,
+<a class="indexterm" name="id2671798"></a><pre class="programlisting">gboolean    gimp_fuzzy_select               (gint32 drawable_ID,
                                              gdouble x,
                                              gdouble y,
                                              gint threshold,
@@ -1415,9 +1414,9 @@ drawable's origin.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671792"></a><h3>
+<a name="id2672055"></a><h3>
 <a name="gimp-fuzzy-select-full"></a>gimp_fuzzy_select_full ()</h3>
-<a class="indexterm" name="id2671808"></a><pre class="programlisting">gboolean    gimp_fuzzy_select_full          (gint32 drawable_ID,
+<a class="indexterm" name="id2672071"></a><pre class="programlisting">gboolean    gimp_fuzzy_select_full          (gint32 drawable_ID,
                                              gdouble x,
                                              gdouble y,
                                              gint threshold,
@@ -1533,9 +1532,9 @@ drawable's origin.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2672139"></a><h3>
+<a name="id2672402"></a><h3>
 <a name="gimp-heal"></a>gimp_heal ()</h3>
-<a class="indexterm" name="id2672155"></a><pre class="programlisting">gboolean    gimp_heal                       (gint32 drawable_ID,
+<a class="indexterm" name="id2672418"></a><pre class="programlisting">gboolean    gimp_heal                       (gint32 drawable_ID,
                                              gint32 src_drawable_ID,
                                              gdouble src_x,
                                              gdouble src_y,
@@ -1600,9 +1599,9 @@ except RGB-&gt;Indexed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2672339"></a><h3>
+<a name="id2672603"></a><h3>
 <a name="gimp-heal-default"></a>gimp_heal_default ()</h3>
-<a class="indexterm" name="id2672355"></a><pre class="programlisting">gboolean    gimp_heal_default               (gint32 drawable_ID,
+<a class="indexterm" name="id2672619"></a><pre class="programlisting">gboolean    gimp_heal_default               (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -1649,9 +1648,9 @@ be used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2672484"></a><h3>
+<a name="id2672748"></a><h3>
 <a name="gimp-paintbrush"></a>gimp_paintbrush ()</h3>
-<a class="indexterm" name="id2672498"></a><pre class="programlisting">gboolean    gimp_paintbrush                 (gint32 drawable_ID,
+<a class="indexterm" name="id2672761"></a><pre class="programlisting">gboolean    gimp_paintbrush                 (gint32 drawable_ID,
                                              gdouble fade_out,
                                              gint num_strokes,
                                              const gdouble *strokes,
@@ -1719,9 +1718,9 @@ pixels. If the gradient-length is 0, no gradient is used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2672683"></a><h3>
+<a name="id2672946"></a><h3>
 <a name="gimp-paintbrush-default"></a>gimp_paintbrush_default ()</h3>
-<a class="indexterm" name="id2672697"></a><pre class="programlisting">gboolean    gimp_paintbrush_default         (gint32 drawable_ID,
+<a class="indexterm" name="id2672960"></a><pre class="programlisting">gboolean    gimp_paintbrush_default         (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -1773,9 +1772,9 @@ is 0, no gradient is used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2672821"></a><h3>
+<a name="id2673084"></a><h3>
 <a name="gimp-pencil"></a>gimp_pencil ()</h3>
-<a class="indexterm" name="id2672833"></a><pre class="programlisting">gboolean    gimp_pencil                     (gint32 drawable_ID,
+<a class="indexterm" name="id2673097"></a><pre class="programlisting">gboolean    gimp_pencil                     (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -1819,9 +1818,9 @@ white.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2672948"></a><h3>
+<a name="id2673212"></a><h3>
 <a name="gimp-perspective"></a>gimp_perspective ()</h3>
-<a class="indexterm" name="id2672964"></a><pre class="programlisting">gint32      gimp_perspective                (gint32 drawable_ID,
+<a class="indexterm" name="id2673228"></a><pre class="programlisting">gint32      gimp_perspective                (gint32 drawable_ID,
                                              gboolean interpolation,
                                              gdouble x0,
                                              gdouble y0,
@@ -1904,9 +1903,9 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2673247"></a><h3>
+<a name="id2673510"></a><h3>
 <a name="gimp-rect-select"></a>gimp_rect_select ()</h3>
-<a class="indexterm" name="id2673260"></a><pre class="programlisting">gboolean    gimp_rect_select                (gint32 image_ID,
+<a class="indexterm" name="id2673523"></a><pre class="programlisting">gboolean    gimp_rect_select                (gint32 image_ID,
                                              gdouble x,
                                              gdouble y,
                                              gdouble width,
@@ -1982,9 +1981,9 @@ radius.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2673481"></a><h3>
+<a name="id2673744"></a><h3>
 <a name="gimp-round-rect-select"></a>gimp_round_rect_select ()</h3>
-<a class="indexterm" name="id2673497"></a><pre class="programlisting">gboolean    gimp_round_rect_select          (gint32 image_ID,
+<a class="indexterm" name="id2673761"></a><pre class="programlisting">gboolean    gimp_round_rect_select          (gint32 image_ID,
                                              gdouble x,
                                              gdouble y,
                                              gdouble width,
@@ -2088,9 +2087,9 @@ specified feather radius.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2673811"></a><h3>
+<a name="id2674075"></a><h3>
 <a name="gimp-rotate"></a>gimp_rotate ()</h3>
-<a class="indexterm" name="id2673827"></a><pre class="programlisting">gint32      gimp_rotate                     (gint32 drawable_ID,
+<a class="indexterm" name="id2674090"></a><pre class="programlisting">gint32      gimp_rotate                     (gint32 drawable_ID,
                                              gboolean interpolation,
                                              gdouble angle);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -2131,9 +2130,9 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2673954"></a><h3>
+<a name="id2674218"></a><h3>
 <a name="gimp-scale"></a>gimp_scale ()</h3>
-<a class="indexterm" name="id2673970"></a><pre class="programlisting">gint32      gimp_scale                      (gint32 drawable_ID,
+<a class="indexterm" name="id2674233"></a><pre class="programlisting">gint32      gimp_scale                      (gint32 drawable_ID,
                                              gboolean interpolation,
                                              gdouble x0,
                                              gdouble y0,
@@ -2192,9 +2191,9 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2674164"></a><h3>
+<a name="id2674427"></a><h3>
 <a name="gimp-shear"></a>gimp_shear ()</h3>
-<a class="indexterm" name="id2674179"></a><pre class="programlisting">gint32      gimp_shear                      (gint32 drawable_ID,
+<a class="indexterm" name="id2674443"></a><pre class="programlisting">gint32      gimp_shear                      (gint32 drawable_ID,
                                              gboolean interpolation,
                                              <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> shear_type,
                                              gdouble magnitude);</pre>
@@ -2241,9 +2240,9 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2674328"></a><h3>
+<a name="id2674592"></a><h3>
 <a name="gimp-smudge"></a>gimp_smudge ()</h3>
-<a class="indexterm" name="id2674341"></a><pre class="programlisting">gboolean    gimp_smudge                     (gint32 drawable_ID,
+<a class="indexterm" name="id2674605"></a><pre class="programlisting">gboolean    gimp_smudge                     (gint32 drawable_ID,
                                              gdouble pressure,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
@@ -2290,9 +2289,9 @@ lesser smudge.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2674474"></a><h3>
+<a name="id2674738"></a><h3>
 <a name="gimp-smudge-default"></a>gimp_smudge_default ()</h3>
-<a class="indexterm" name="id2674488"></a><pre class="programlisting">gboolean    gimp_smudge_default             (gint32 drawable_ID,
+<a class="indexterm" name="id2674752"></a><pre class="programlisting">gboolean    gimp_smudge_default             (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -2334,9 +2333,9 @@ tools option dialog has not been activated.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2674610"></a><h3>
+<a name="id2674874"></a><h3>
 <a name="gimp-transform-2d"></a>gimp_transform_2d ()</h3>
-<a class="indexterm" name="id2674627"></a><pre class="programlisting">gint32      gimp_transform_2d               (gint32 drawable_ID,
+<a class="indexterm" name="id2674890"></a><pre class="programlisting">gint32      gimp_transform_2d               (gint32 drawable_ID,
                                              gboolean interpolation,
                                              gdouble source_x,
                                              gdouble source_y,

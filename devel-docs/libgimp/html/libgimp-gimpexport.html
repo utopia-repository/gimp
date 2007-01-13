@@ -5,18 +5,17 @@
 <title>gimpexport</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
-<link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="up" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimpui.html" title="gimpui">
 <link rel="next" href="GimpDrawablePreview.html" title="GimpDrawablePreview">
 <meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
-<link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
+<link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
-<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="chapter" href="libgimp-data.html" title="Data Objects">
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="part" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
@@ -32,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="GimpDrawablePreview.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2553173" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2566944" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2608319" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2566973" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpexport"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2553173"></a><span class="refentrytitle">gimpexport</span>
+<a name="id2566944"></a><span class="refentrytitle">gimpexport</span>
 </h2>
 <p>gimpexport &#8212; Export an image before it is saved.</p>
 </td>
@@ -62,7 +61,7 @@ enum        <a href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn<
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2608319"></a><h2>Description</h2>
+<a name="id2566973"></a><h2>Description</h2>
 <p>
 This function should be called by all save_plugins unless they are
 able to save all image formats the GIMP knows about. It takes care
@@ -79,11 +78,11 @@ as it will most probably have to open a dialog.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2573328"></a><h2>Details</h2>
+<a name="id2700183"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2700437"></a><h3>
+<a name="id2700192"></a><h3>
 <a name="GimpExportCapabilities"></a>enum GimpExportCapabilities</h3>
-<a class="indexterm" name="id2700446"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2700203"></a><pre class="programlisting">typedef enum
 {
   GIMP_EXPORT_CAN_HANDLE_RGB                 = 1 &lt;&lt; 0,
   GIMP_EXPORT_CAN_HANDLE_GRAY                = 1 &lt;&lt; 1,
@@ -102,9 +101,9 @@ as it will most probably have to open a dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2700468"></a><h3>
+<a name="id2700227"></a><h3>
 <a name="GimpExportReturn"></a>enum GimpExportReturn</h3>
-<a class="indexterm" name="id2700479"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2700238"></a><pre class="programlisting">typedef enum
 {
   GIMP_EXPORT_CANCEL,
   GIMP_EXPORT_IGNORE,
@@ -117,9 +116,9 @@ as it will most probably have to open a dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2700496"></a><h3>
+<a name="id2700254"></a><h3>
 <a name="gimp-export-image"></a>gimp_export_image ()</h3>
-<a class="indexterm" name="id2700507"></a><pre class="programlisting"><a href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a> gimp_export_image          (gint32 *image_ID,
+<a class="indexterm" name="id2700266"></a><pre class="programlisting"><a href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a> gimp_export_image          (gint32 *image_ID,
                                              gint32 *drawable_ID,
                                              const gchar *format_name,
                                              <a href="libgimp-gimpexport.html#GimpExportCapabilities">GimpExportCapabilities</a> capabilities);</pre>

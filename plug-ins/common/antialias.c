@@ -1,4 +1,7 @@
-/* Auntie Alias 0.92 --- image filter plug-in for The GIMP
+/* GIMP - The GNU Image Manipulation Program
+ * Copyright (C) 1995 Spencer Kimball and Peter Mattis
+ *
+ * Auntie Alias 0.92 --- image filter plug-in
  *
  * Copyright (C) 2005 Adam D. Moss (adam@gimp.org)
  *
@@ -229,7 +232,7 @@ render (GimpDrawable *drawable)
   dest       = g_new (guchar, (width + 2) * bytes);
   ninepix    = g_new (guchar, 9 * bytes);
 
-  gimp_pixel_rgn_get_row (&srcPR, &rowthis[bytes], 0, 0, width);
+  gimp_pixel_rgn_get_row (&srcPR, &rowthis[bytes], 0, y, width);
   memcpy (&rowthis[0], &rowthis[bytes], bytes);
   memcpy (&rowthis[(width+1)*bytes], &rowthis[(width)*bytes], bytes);
   memcpy (rowbefore, rowthis, (width+2)*bytes);

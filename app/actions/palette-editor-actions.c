@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -98,7 +98,7 @@ static const GimpEnumActionEntry palette_editor_zoom_actions[] =
   { "palette-editor-zoom-all", GTK_STOCK_ZOOM_FIT,
     N_("Zoom _All"), "",
     N_("Zoom all"),
-    GIMP_ZOOM_TO /* abused */, FALSE,
+    GIMP_ZOOM_OUT_MAX, FALSE,
     GIMP_HELP_PALETTE_EDITOR_ZOOM_ALL }
 };
 

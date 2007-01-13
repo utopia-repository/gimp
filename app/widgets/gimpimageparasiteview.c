@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * GimpImageParasiteView
@@ -126,7 +126,7 @@ gimp_image_parasite_view_set_property (GObject      *object,
   switch (property_id)
     {
     case PROP_IMAGE:
-      view->image = GIMP_IMAGE (g_value_get_object (value));
+      view->image = g_value_get_object (value);
       break;
     case PROP_PARASITE:
       view->parasite = g_value_dup_string (value);

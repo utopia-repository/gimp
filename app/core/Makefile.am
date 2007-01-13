@@ -39,6 +39,8 @@ libappcore_a_sources = \
 	gimp-templates.h		\
 	gimp-transform-region.c		\
 	gimp-transform-region.h		\
+	gimp-transform-resize.c		\
+	gimp-transform-resize.h		\
 	gimp-transform-utils.c		\
 	gimp-transform-utils.h		\
 	gimp-units.c			\
@@ -253,6 +255,8 @@ libappcore_a_sources = \
 	gimptoolinfo.h			\
 	gimptooloptions.c		\
 	gimptooloptions.h		\
+	gimptoolpresets.c		\
+	gimptoolpresets.h		\
 	gimpunit.c			\
 	gimpunit.h			\
 	gimpundo.c			\

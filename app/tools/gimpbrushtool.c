@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -263,7 +263,11 @@ gimp_brush_tool_draw (GimpDrawTool *draw_tool)
       GimpPaintOptions *paint_options = GIMP_PAINT_TOOL_GET_OPTIONS (draw_tool);
       GimpBrushCore    *brush_core    = GIMP_BRUSH_CORE (paint_tool->core);
 
-      if (! brush_core->brush_bound_segs && brush_core->main_brush)
+      /*  don't create the segments for the purpose of undrawing (if we
+       *  don't have the segments, we can hardly have drawn them before)
+       */
+      if (! brush_core->brush_bound_segs && brush_core->main_brush &&
+          ! gimp_draw_tool_is_drawn (draw_tool))
         {
           gimp_brush_core_create_bound_segs (brush_core, paint_options);
         }

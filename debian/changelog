@@ -1,3 +1,10 @@
+gimp (2.3.14-2) experimental; urgency=low
+
+  * Change Build-Depends: libpng-dev to libpng12-dev | libpng-dev
+    to fix FTBFS on experimental buildds (Closes: #408849)
+
+ -- Ari Pollak <ari@debian.org>  Sun, 28 Jan 2007 17:11:45 -0500
+
 gimp (2.3.14-1) experimental; urgency=low
 
   * New upstream release

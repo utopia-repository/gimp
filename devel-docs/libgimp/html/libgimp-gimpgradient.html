@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpgradient</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-data.html" title="Data Objects">
 <link rel="prev" href="libgimp-gimpfonts.html" title="gimpfonts">
@@ -28,16 +28,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpgradients.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2554478" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2570078" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2642283" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2675261" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpgradient"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2554478"></a><span class="refentrytitle">gimpgradient</span>
+<a name="id2570078"></a><span class="refentrytitle">gimpgradient</span>
 </h2>
 <p>gimpgradient &#8212; Functions operating on a single gradient.</p>
 </td>
@@ -183,17 +183,17 @@ gdouble     <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-move"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2642283"></a><h2>Description</h2>
+<a name="id2675261"></a><h2>Description</h2>
 <p>
 Functions operating on a single gradient.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2642297"></a><h2>Details</h2>
+<a name="id2675275"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2642306"></a><h3>
+<a name="id2675284"></a><h3>
 <a name="gimp-gradient-new"></a>gimp_gradient_new ()</h3>
-<a class="indexterm" name="id2642319"></a><pre class="programlisting">gchar*      gimp_gradient_new               (const gchar *name);</pre>
+<a class="indexterm" name="id2675297"></a><pre class="programlisting">gchar*      gimp_gradient_new               (const gchar *name);</pre>
 <p>
 Creates a new gradient
 </p>
@@ -206,14 +206,12 @@ This procedure creates a new, uninitialized gradient</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The requested name of the new gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The actual new gradient name.
 
 </td>
@@ -225,9 +223,9 @@ This procedure creates a new, uninitialized gradient</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2642386"></a><h3>
+<a name="id2675365"></a><h3>
 <a name="gimp-gradient-duplicate"></a>gimp_gradient_duplicate ()</h3>
-<a class="indexterm" name="id2642400"></a><pre class="programlisting">gchar*      gimp_gradient_duplicate         (const gchar *name);</pre>
+<a class="indexterm" name="id2675378"></a><pre class="programlisting">gchar*      gimp_gradient_duplicate         (const gchar *name);</pre>
 <p>
 Duplicates a gradient
 </p>
@@ -240,14 +238,12 @@ This procedure creates an identical gradient by a different name</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The name of the gradient's copy.
 
 </td>
@@ -259,9 +255,9 @@ This procedure creates an identical gradient by a different name</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2642468"></a><h3>
+<a name="id2675447"></a><h3>
 <a name="gimp-gradient-rename"></a>gimp_gradient_rename ()</h3>
-<a class="indexterm" name="id2642482"></a><pre class="programlisting">gchar*      gimp_gradient_rename            (const gchar *name,
+<a class="indexterm" name="id2675461"></a><pre class="programlisting">gchar*      gimp_gradient_rename            (const gchar *name,
                                              const gchar *new_name);</pre>
 <p>
 Rename a gradient
@@ -275,20 +271,17 @@ This procedure renames a gradient</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>new_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>new_name</code></em>&#160;:</span></td>
 <td> The new name of the gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The actual new name of the gradient.
 
 </td>
@@ -300,9 +293,9 @@ This procedure renames a gradient</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2642571"></a><h3>
+<a name="id2675550"></a><h3>
 <a name="gimp-gradient-delete"></a>gimp_gradient_delete ()</h3>
-<a class="indexterm" name="id2642585"></a><pre class="programlisting">gboolean    gimp_gradient_delete            (const gchar *name);</pre>
+<a class="indexterm" name="id2675564"></a><pre class="programlisting">gboolean    gimp_gradient_delete            (const gchar *name);</pre>
 <p>
 Deletes a gradient
 </p>
@@ -315,14 +308,12 @@ This procedure deletes a gradient</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -334,9 +325,9 @@ This procedure deletes a gradient</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2642653"></a><h3>
+<a name="id2675632"></a><h3>
 <a name="gimp-gradient-get-uniform-samples"></a>gimp_gradient_get_uniform_samples ()</h3>
-<a class="indexterm" name="id2642668"></a><pre class="programlisting">gboolean    gimp_gradient_get_uniform_samples
+<a class="indexterm" name="id2675646"></a><pre class="programlisting">gboolean    gimp_gradient_get_uniform_samples
                                             (const gchar *name,
                                              gint num_samples,
                                              gboolean reverse,
@@ -360,38 +351,32 @@ the colors at positions { 0.0, 0.5, 1.0 }.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_samples</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_samples</code></em>&#160;:</span></td>
 <td> The number of samples to take.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>reverse</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>reverse</code></em>&#160;:</span></td>
 <td> Use the reverse gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_color_samples</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_color_samples</code></em>&#160;:</span></td>
 <td> Length of the color_samples array (4 * num_samples).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>color_samples</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>color_samples</code></em>&#160;:</span></td>
 <td> Color samples: { R1, G1, B1, A1, ..., Rn, Gn, Bn, An }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -403,9 +388,9 @@ the colors at positions { 0.0, 0.5, 1.0 }.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2642831"></a><h3>
+<a name="id2675809"></a><h3>
 <a name="gimp-gradient-get-custom-samples"></a>gimp_gradient_get_custom_samples ()</h3>
-<a class="indexterm" name="id2642847"></a><pre class="programlisting">gboolean    gimp_gradient_get_custom_samples
+<a class="indexterm" name="id2675825"></a><pre class="programlisting">gboolean    gimp_gradient_get_custom_samples
                                             (const gchar *name,
                                              gint num_samples,
                                              const gdouble *positions,
@@ -429,44 +414,37 @@ correspond to the RGBA values for each sample.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_samples</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_samples</code></em>&#160;:</span></td>
 <td> The number of samples to take.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>positions</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>positions</code></em>&#160;:</span></td>
 <td> The list of positions to sample along the gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>reverse</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>reverse</code></em>&#160;:</span></td>
 <td> Use the reverse gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_color_samples</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_color_samples</code></em>&#160;:</span></td>
 <td> Length of the color_samples array (4 * num_samples).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>color_samples</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>color_samples</code></em>&#160;:</span></td>
 <td> Color samples: { R1, G1, B1, A1, ..., Rn, Gn, Bn, An }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -478,9 +456,9 @@ correspond to the RGBA values for each sample.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2643032"></a><h3>
+<a name="id2676010"></a><h3>
 <a name="gimp-gradient-segment-get-left-color"></a>gimp_gradient_segment_get_left_color ()</h3>
-<a class="indexterm" name="id2643048"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_left_color
+<a class="indexterm" name="id2676026"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_left_color
                                             (const gchar *name,
                                              gint segment,
                                              <a
@@ -501,32 +479,27 @@ segment of the specified gradient.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
 <td> The index of the segment within the gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
 <td> The return color.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
 <td> The opacity of the endpoint.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -538,9 +511,9 @@ segment of the specified gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2643185"></a><h3>
+<a name="id2676163"></a><h3>
 <a name="gimp-gradient-segment-set-left-color"></a>gimp_gradient_segment_set_left_color ()</h3>
-<a class="indexterm" name="id2643201"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_left_color
+<a class="indexterm" name="id2676179"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_left_color
                                             (const gchar *name,
                                              gint segment,
                                              const <a
@@ -561,32 +534,27 @@ segment of the specified gradient.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
 <td> The index of the segment within the gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
 <td> The color to set.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
 <td> The opacity to set for the endpoint.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -598,9 +566,9 @@ segment of the specified gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2643338"></a><h3>
+<a name="id2676316"></a><h3>
 <a name="gimp-gradient-segment-get-right-color"></a>gimp_gradient_segment_get_right_color ()</h3>
-<a class="indexterm" name="id2643354"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_right_color
+<a class="indexterm" name="id2676332"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_right_color
                                             (const gchar *name,
                                              gint segment,
                                              <a
@@ -621,32 +589,27 @@ segment of the specified gradient.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
 <td> The index of the segment within the gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
 <td> The return color.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
 <td> The opacity of the endpoint.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -658,9 +621,9 @@ segment of the specified gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2643491"></a><h3>
+<a name="id2676470"></a><h3>
 <a name="gimp-gradient-segment-set-right-color"></a>gimp_gradient_segment_set_right_color ()</h3>
-<a class="indexterm" name="id2643507"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_right_color
+<a class="indexterm" name="id2676486"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_right_color
                                             (const gchar *name,
                                              gint segment,
                                              const <a
@@ -681,32 +644,27 @@ segment of the specified gradient.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
 <td> The index of the segment within the gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
 <td> The color to set.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
 <td> The opacity to set for the endpoint.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -718,9 +676,9 @@ segment of the specified gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2643645"></a><h3>
+<a name="id2676623"></a><h3>
 <a name="gimp-gradient-segment-get-left-pos"></a>gimp_gradient_segment_get_left_pos ()</h3>
-<a class="indexterm" name="id2643661"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_left_pos
+<a class="indexterm" name="id2676639"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_left_pos
                                             (const gchar *name,
                                              gint segment,
                                              gdouble *pos);</pre>
@@ -738,26 +696,22 @@ segment of the specified gradient.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
 <td> The index of the segment within the gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>pos</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pos</code></em>&#160;:</span></td>
 <td> The return position.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -769,9 +723,9 @@ segment of the specified gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2643775"></a><h3>
+<a name="id2676754"></a><h3>
 <a name="gimp-gradient-segment-set-left-pos"></a>gimp_gradient_segment_set_left_pos ()</h3>
-<a class="indexterm" name="id2643792"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_left_pos
+<a class="indexterm" name="id2676770"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_left_pos
                                             (const gchar *name,
                                              gint segment,
                                              gdouble pos,
@@ -793,32 +747,27 @@ position.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
 <td> The index of the segment within the gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>pos</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pos</code></em>&#160;:</span></td>
 <td> The position to set the guidepoint in.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>final_pos</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>final_pos</code></em>&#160;:</span></td>
 <td> The return position.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -830,9 +779,9 @@ position.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2643930"></a><h3>
+<a name="id2676909"></a><h3>
 <a name="gimp-gradient-segment-get-middle-pos"></a>gimp_gradient_segment_get_middle_pos ()</h3>
-<a class="indexterm" name="id2643946"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_middle_pos
+<a class="indexterm" name="id2676925"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_middle_pos
                                             (const gchar *name,
                                              gint segment,
                                              gdouble *pos);</pre>
@@ -850,26 +799,22 @@ segment of the specified gradient.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
 <td> The index of the segment within the gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>pos</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pos</code></em>&#160;:</span></td>
 <td> The return position.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -881,9 +826,9 @@ segment of the specified gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644062"></a><h3>
+<a name="id2677040"></a><h3>
 <a name="gimp-gradient-segment-set-middle-pos"></a>gimp_gradient_segment_set_middle_pos ()</h3>
-<a class="indexterm" name="id2644078"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_middle_pos
+<a class="indexterm" name="id2677056"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_middle_pos
                                             (const gchar *name,
                                              gint segment,
                                              gdouble pos,
@@ -903,32 +848,27 @@ final position.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
 <td> The index of the segment within the gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>pos</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pos</code></em>&#160;:</span></td>
 <td> The position to set the guidepoint in.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>final_pos</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>final_pos</code></em>&#160;:</span></td>
 <td> The return position.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -940,9 +880,9 @@ final position.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644216"></a><h3>
+<a name="id2677194"></a><h3>
 <a name="gimp-gradient-segment-get-right-pos"></a>gimp_gradient_segment_get_right_pos ()</h3>
-<a class="indexterm" name="id2644232"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_right_pos
+<a class="indexterm" name="id2677211"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_right_pos
                                             (const gchar *name,
                                              gint segment,
                                              gdouble *pos);</pre>
@@ -960,26 +900,22 @@ specified segment of the specified gradient.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
 <td> The index of the segment within the gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>pos</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pos</code></em>&#160;:</span></td>
 <td> The return position.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -991,9 +927,9 @@ specified segment of the specified gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644319"></a><h3>
+<a name="id2677325"></a><h3>
 <a name="gimp-gradient-segment-set-right-pos"></a>gimp_gradient_segment_set_right_pos ()</h3>
-<a class="indexterm" name="id2644335"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_right_pos
+<a class="indexterm" name="id2677342"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_right_pos
                                             (const gchar *name,
                                              gint segment,
                                              gdouble pos,
@@ -1015,32 +951,27 @@ the final position.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
 <td> The index of the segment within the gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>pos</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pos</code></em>&#160;:</span></td>
 <td> The position to set the guidepoint in.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>final_pos</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>final_pos</code></em>&#160;:</span></td>
 <td> The return position.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1052,9 +983,9 @@ the final position.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644461"></a><h3>
+<a name="id2677451"></a><h3>
 <a name="gimp-gradient-segment-get-blending-function"></a>gimp_gradient_segment_get_blending_function ()</h3>
-<a class="indexterm" name="id2644476"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_blending_function
+<a class="indexterm" name="id2677466"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_blending_function
                                             (const gchar *name,
                                              gint segment,
                                              <a href="libgimp-gimpenums.html#GimpGradientSegmentType">GimpGradientSegmentType</a> *blend_func);</pre>
@@ -1071,26 +1002,22 @@ specified gradient name and segment index.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
 <td> The index of the segment within the gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>blend_func</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>blend_func</code></em>&#160;:</span></td>
 <td> The blending function of the segment.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1102,9 +1029,9 @@ specified gradient name and segment index.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644581"></a><h3>
+<a name="id2677571"></a><h3>
 <a name="gimp-gradient-segment-get-coloring-type"></a>gimp_gradient_segment_get_coloring_type ()</h3>
-<a class="indexterm" name="id2644596"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_coloring_type
+<a class="indexterm" name="id2677585"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_coloring_type
                                             (const gchar *name,
                                              gint segment,
                                              <a href="libgimp-gimpenums.html#GimpGradientSegmentColor">GimpGradientSegmentColor</a> *coloring_type);</pre>
@@ -1121,26 +1048,22 @@ specified gradient name and segment index.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>segment</code></em>&#160;:</span></td>
 <td> The index of the segment within the gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coloring_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coloring_type</code></em>&#160;:</span></td>
 <td> The coloring type of the segment.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1152,9 +1075,9 @@ specified gradient name and segment index.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644700"></a><h3>
+<a name="id2677690"></a><h3>
 <a name="gimp-gradient-segment-range-set-blending-function"></a>gimp_gradient_segment_range_set_blending_function ()</h3>
-<a class="indexterm" name="id2644716"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_set_blending_function
+<a class="indexterm" name="id2677706"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_set_blending_function
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment,
@@ -1172,32 +1095,27 @@ the specified blending function.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
 <td> The index of the first segment to operate on.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
 <td> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>blending_function</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>blending_function</code></em>&#160;:</span></td>
 <td> The Blending Function.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1209,9 +1127,9 @@ the specified blending function.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644841"></a><h3>
+<a name="id2677831"></a><h3>
 <a name="gimp-gradient-segment-range-set-coloring-type"></a>gimp_gradient_segment_range_set_coloring_type ()</h3>
-<a class="indexterm" name="id2644856"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_set_coloring_type
+<a class="indexterm" name="id2677846"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_set_coloring_type
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment,
@@ -1229,32 +1147,27 @@ specified coloring type.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
 <td> The index of the first segment to operate on.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
 <td> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>coloring_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>coloring_type</code></em>&#160;:</span></td>
 <td> The Coloring Type.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1266,9 +1179,9 @@ specified coloring type.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644981"></a><h3>
+<a name="id2677971"></a><h3>
 <a name="gimp-gradient-segment-range-flip"></a>gimp_gradient_segment_range_flip ()</h3>
-<a class="indexterm" name="id2644996"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_flip
+<a class="indexterm" name="id2677985"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_flip
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment);</pre>
@@ -1284,26 +1197,22 @@ This function flips a segment range.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
 <td> The index of the first segment to operate on.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
 <td> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1315,9 +1224,9 @@ This function flips a segment range.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645099"></a><h3>
+<a name="id2678089"></a><h3>
 <a name="gimp-gradient-segment-range-replicate"></a>gimp_gradient_segment_range_replicate ()</h3>
-<a class="indexterm" name="id2645114"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_replicate
+<a class="indexterm" name="id2678104"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_replicate
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment,
@@ -1336,32 +1245,27 @@ of it will appear in equal widths.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
 <td> The index of the first segment to operate on.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
 <td> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>replicate_times</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>replicate_times</code></em>&#160;:</span></td>
 <td> The number of times to replicate.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1373,9 +1277,9 @@ of it will appear in equal widths.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645241"></a><h3>
+<a name="id2678231"></a><h3>
 <a name="gimp-gradient-segment-range-split-midpoint"></a>gimp_gradient_segment_range_split_midpoint ()</h3>
-<a class="indexterm" name="id2645256"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_split_midpoint
+<a class="indexterm" name="id2678246"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_split_midpoint
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment);</pre>
@@ -1392,26 +1296,22 @@ midpoint.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
 <td> The index of the first segment to operate on.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
 <td> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1423,9 +1323,9 @@ midpoint.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645361"></a><h3>
+<a name="id2678351"></a><h3>
 <a name="gimp-gradient-segment-range-split-uniform"></a>gimp_gradient_segment_range_split_uniform ()</h3>
-<a class="indexterm" name="id2645377"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_split_uniform
+<a class="indexterm" name="id2678367"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_split_uniform
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment,
@@ -1443,32 +1343,27 @@ according to the number of times specified by the parameter.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
 <td> The index of the first segment to operate on.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
 <td> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>split_parts</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>split_parts</code></em>&#160;:</span></td>
 <td> The number of uniform divisions to split each segment to.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1480,9 +1375,9 @@ according to the number of times specified by the parameter.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645503"></a><h3>
+<a name="id2678493"></a><h3>
 <a name="gimp-gradient-segment-range-delete"></a>gimp_gradient_segment_range_delete ()</h3>
-<a class="indexterm" name="id2645518"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_delete
+<a class="indexterm" name="id2678508"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_delete
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment);</pre>
@@ -1498,26 +1393,22 @@ This function deletes a segment range.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
 <td> The index of the first segment to operate on.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
 <td> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1529,9 +1420,9 @@ This function deletes a segment range.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645621"></a><h3>
+<a name="id2678611"></a><h3>
 <a name="gimp-gradient-segment-range-redistribute-handles"></a>gimp_gradient_segment_range_redistribute_handles ()</h3>
-<a class="indexterm" name="id2645637"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_redistribute_handles
+<a class="indexterm" name="id2678626"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_redistribute_handles
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment);</pre>
@@ -1548,26 +1439,22 @@ range of the specified gradient, so they'll be evenly spaced.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
 <td> The index of the first segment to operate on.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
 <td> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1579,9 +1466,9 @@ range of the specified gradient, so they'll be evenly spaced.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645744"></a><h3>
+<a name="id2678733"></a><h3>
 <a name="gimp-gradient-segment-range-blend-colors"></a>gimp_gradient_segment_range_blend_colors ()</h3>
-<a class="indexterm" name="id2645758"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_blend_colors
+<a class="indexterm" name="id2678748"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_blend_colors
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment);</pre>
@@ -1599,26 +1486,22 @@ will be uniform across the range.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
 <td> The index of the first segment to operate on.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
 <td> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1630,9 +1513,9 @@ will be uniform across the range.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645865"></a><h3>
+<a name="id2678855"></a><h3>
 <a name="gimp-gradient-segment-range-blend-opacity"></a>gimp_gradient_segment_range_blend_opacity ()</h3>
-<a class="indexterm" name="id2645881"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_blend_opacity
+<a class="indexterm" name="id2678871"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_blend_opacity
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment);</pre>
@@ -1650,26 +1533,22 @@ will be uniform across the range.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
 <td> The index of the first segment to operate on.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
 <td> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1681,9 +1560,9 @@ will be uniform across the range.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645987"></a><h3>
+<a name="id2678977"></a><h3>
 <a name="gimp-gradient-segment-range-move"></a>gimp_gradient_segment_range_move ()</h3>
-<a class="indexterm" name="id2646002"></a><pre class="programlisting">gdouble     gimp_gradient_segment_range_move
+<a class="indexterm" name="id2678991"></a><pre class="programlisting">gdouble     gimp_gradient_segment_range_move
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment,
@@ -1703,38 +1582,32 @@ control points of the neighboring segments.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>start_segment</code></em>&#160;:</span></td>
 <td> The index of the first segment to operate on.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>end_segment</code></em>&#160;:</span></td>
 <td> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>delta</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>delta</code></em>&#160;:</span></td>
 <td> The delta to move the segment range.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>control_compress</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>control_compress</code></em>&#160;:</span></td>
 <td> Whether or not to compress the neighboring segments.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The final delta by which the range moved.
 
 </td>

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpimagecombobox</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimpdrawablecombobox.html" title="gimpdrawablecombobox">
@@ -28,16 +28,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimppixbuf.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2528968" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2589146" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2656096" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2686199" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpimagecombobox"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2528968"></a><span class="refentrytitle">gimpimagecombobox</span>
+<a name="id2589146"></a><span class="refentrytitle">gimpimagecombobox</span>
 </h2>
 <p>gimpimagecombobox &#8212; A widget providing a popup menu of images.</p>
 </td>
@@ -56,17 +56,17 @@ GtkWidget*  <a href="libgimp-gimpimagecombobox.html#gimp-image-combo-box-new">gi
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2656096"></a><h2>Description</h2>
+<a name="id2686199"></a><h2>Description</h2>
 <p>
 A widget providing a popup menu of images.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2656112"></a><h2>Details</h2>
+<a name="id2686215"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2656122"></a><h3>
+<a name="id2686226"></a><h3>
 <a name="GimpImageConstraintFunc"></a>GimpImageConstraintFunc ()</h3>
-<a class="indexterm" name="id2656134"></a><pre class="programlisting">gboolean    (*GimpImageConstraintFunc)      (gint32 image_id,
+<a class="indexterm" name="id2686237"></a><pre class="programlisting">gboolean    (*GimpImageConstraintFunc)      (gint32 image_id,
                                              gpointer data);</pre>
 <p>
 
@@ -75,20 +75,17 @@ A widget providing a popup menu of images.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>image_id</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>image_id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -99,9 +96,9 @@ A widget providing a popup menu of images.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2656210"></a><h3>
+<a name="id2685784"></a><h3>
 <a name="gimp-image-combo-box-new"></a>gimp_image_combo_box_new ()</h3>
-<a class="indexterm" name="id2656223"></a><pre class="programlisting">GtkWidget*  gimp_image_combo_box_new        (<a href="libgimp-gimpimagecombobox.html#GimpImageConstraintFunc">GimpImageConstraintFunc</a> constraint,
+<a class="indexterm" name="id2685797"></a><pre class="programlisting">GtkWidget*  gimp_image_combo_box_new        (<a href="libgimp-gimpimagecombobox.html#GimpImageConstraintFunc">GimpImageConstraintFunc</a> constraint,
                                              gpointer data);</pre>
 <p>
 Creates a new <a
@@ -127,20 +124,17 @@ the selected image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>constraint</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>constraint</code></em>&#160;:</span></td>
 <td> a <a href="libgimp-gimpimagecombobox.html#GimpImageConstraintFunc"><span class="type">GimpImageConstraintFunc</span></a> or <code class="literal">NULL</code>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>       a pointer that is passed to <em class="parameter"><code>constraint</code></em>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new <a
 href="../libgimpwidgets/GimpIntComboBox.html"
 ><span class="type">GimpIntComboBox</span></a>.

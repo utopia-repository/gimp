@@ -1,5 +1,5 @@
 /*
- * "$Id: despeckle.c,v 1.75 2004/12/23 23:19:43 neo Exp $"
+ * "$Id: despeckle.c 16025 2004-12-23 23:19:43Z neo $"
  *
  *   Despeckle (adaptive median) filter for The GIMP -- an image manipulation
  *   program

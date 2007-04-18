@@ -1,5 +1,5 @@
 /*
- * "$Id: sgilib.c,v 1.8 2003/04/07 11:59:33 neo Exp $"
+ * "$Id: sgilib.c 9327 2003-04-07 11:59:33Z neo $"
  *
  *   SGI image file format library routines.
  *
@@ -37,7 +37,7 @@
  *
  * Revision History:
  *
- *   $Log: sgilib.c,v $
+ *   $Log$
  *   Revision 1.8  2003/04/07 11:59:33  neo
  *   2003-04-07  Sven Neumann  <sven@gimp.org>
  *
@@ -899,5 +899,5 @@ write_rle16(sgi_t *sgip,	/* I - SGI image to write to */
 
 
 /*
- * End of "$Id: sgilib.c,v 1.8 2003/04/07 11:59:33 neo Exp $".
+ * End of "$Id: sgilib.c 9327 2003-04-07 11:59:33Z neo $".
  */

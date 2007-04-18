@@ -4,7 +4,7 @@
 
 <refentry id="GimpPreview">
 <refmeta>
-<refentrytitle id="top_of_page">GimpPreview</refentrytitle>
+<refentrytitle role="top_of_page">GimpPreview</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -48,8 +48,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -66,8 +66,8 @@
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpPreview implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -75,23 +75,23 @@ GimpPreview implements
 </refsect1>
 
 
-<refsect1 id="properties">
-<title id="properties.title">Properties</title>
+<refsect1 role="properties">
+<title role="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpPreview--update">update</link>&quot;               <link linkend="gboolean">gboolean</link>              : Read / Write / Construct
 </synopsis>
 </refsect1>
-<refsect1 id="style_properties">
-<title id="style_properties.title">Style Properties</title>
+<refsect1 role="style_properties">
+<title role="style_properties.title">Style Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpPreview--size">size</link>&quot;                 <link linkend="gint">gint</link>                  : Read
 </synopsis>
 </refsect1>
 
-<refsect1 id="signal_proto">
-<title id="signal_proto.title">Signals</title>
+<refsect1 role="signal_proto">
+<title role="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpPreview-invalidated">invalidated</link>&quot;
@@ -101,15 +101,15 @@ GimpPreview implements
 </refsect1>
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 A widget providing a <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type></link> plus framework to update the preview.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpPreview-struct" role="struct"/>GimpPreview</title>
 <indexterm><primary>GimpPreview</primary></indexterm><programlisting>typedef struct _GimpPreview GimpPreview;</programlisting>
@@ -309,16 +309,16 @@ be overriden by a <link linkend="GDK-FLEUR:CAPS"><literal>GDK_FLEUR</literal></l
 </para></refsect2>
 
 </refsect1>
-<refsect1 id="property_details">
-<title id="property_details.title">Property Details</title>
+<refsect1 role="property_details">
+<title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpPreview--update"/>The &quot;<literal>update</literal>&quot; property</title>
 <indexterm><primary>GimpPreview:update</primary></indexterm><programlisting>  &quot;update&quot;               <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para></para><para>Default value: TRUE</para>
 </refsect2>
 
 </refsect1>
-<refsect1 id="style_properties_details">
-<title id="style_properties_details.title">Style Property Details</title>
+<refsect1 role="style_properties_details">
+<title role="style_properties_details.title">Style Property Details</title>
 <refsect2><title><anchor id="GimpPreview--size"/>The &quot;<literal>size</literal>&quot; style property</title>
 <indexterm><primary>GimpPreview:size</primary></indexterm><programlisting>  &quot;size&quot;                 <link linkend="gint">gint</link>                  : Read</programlisting>
 <para></para><para>Allowed values: [1,1024]</para>
@@ -327,8 +327,8 @@ be overriden by a <link linkend="GDK-FLEUR:CAPS"><literal>GDK_FLEUR</literal></l
 
 </refsect1>
 
-<refsect1 id="signals">
-<title id="signals.title">Signal Details</title>
+<refsect1 role="signals">
+<title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpPreview-invalidated"/>The &quot;invalidated&quot; signal</title>
 <indexterm><primary>GimpPreview::invalidated</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpPreview">GimpPreview</link> *gimppreview,
                                             <link linkend="gpointer">gpointer</link>     user_data)        : Run first</programlisting>

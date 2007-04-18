@@ -1,5 +1,5 @@
 /*
- * "$Id: print.c,v 1.66.2.2 2005/04/09 23:55:13 neo Exp $"
+ * "$Id: print.c 17143 2005-04-09 23:55:13Z neo $"
  *
  *   Print plug-in for the GIMP.
  *
@@ -1240,5 +1240,5 @@ get_system_printers (void)
 }
 
 /*
- * End of "$Id: print.c,v 1.66.2.2 2005/04/09 23:55:13 neo Exp $".
+ * End of "$Id: print.c 17143 2005-04-09 23:55:13Z neo $".
  */

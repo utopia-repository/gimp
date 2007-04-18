@@ -4,7 +4,7 @@
 
 <refentry id="GimpColorSelector">
 <refmeta>
-<refentrytitle id="top_of_page">GimpColorSelector</refentrytitle>
+<refentrytitle role="top_of_page">GimpColorSelector</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -52,8 +52,8 @@ enum        <link linkend="GimpColorSelectorChannel">GimpColorSelectorChannel</l
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -73,8 +73,8 @@ enum        <link linkend="GimpColorSelectorChannel">GimpColorSelectorChannel</l
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpColorSelector implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -83,8 +83,8 @@ GimpColorSelector implements
 
 
 
-<refsect1 id="signal_proto">
-<title id="signal_proto.title">Signals</title>
+<refsect1 role="signal_proto">
+<title role="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpColorSelector-channel-changed">channel-changed</link>&quot;
@@ -100,16 +100,16 @@ GimpColorSelector implements
 </refsect1>
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Functions and definitions for creating pluggable GIMP color
 selector modules.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpColorSelector-struct" role="struct"/>GimpColorSelector</title>
 <indexterm><primary>GimpColorSelector</primary></indexterm><programlisting>typedef struct _GimpColorSelector GimpColorSelector;</programlisting>
@@ -325,8 +325,8 @@ The suggested width for a color bar in a <link linkend="GimpColorSelector"><type
 
 </refsect1>
 
-<refsect1 id="signals">
-<title id="signals.title">Signal Details</title>
+<refsect1 role="signals">
+<title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpColorSelector-channel-changed"/>The &quot;channel-changed&quot; signal</title>
 <indexterm><primary>GimpColorSelector::channel-changed</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpColorSelector">GimpColorSelector</link> *gimpcolorselector,
                                             <link linkend="gint">gint</link>               arg1,

@@ -1,4 +1,4 @@
-/* $Id: handy.c,v 1.13 2004/09/22 18:43:08 mitch Exp $
+/* $Id: handy.c 14812 2004-09-22 18:43:09Z mitch $
  * These routines are useful for working with the GIMP and need not be
  * specific to plug-in-maze.
  *

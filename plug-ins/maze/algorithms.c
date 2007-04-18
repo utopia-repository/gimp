@@ -1,4 +1,4 @@
-/* $Id: algorithms.c,v 1.12 2004/02/01 13:22:08 mitch Exp $
+/* $Id: algorithms.c 12245 2004-02-01 13:22:09Z mitch $
  * Contains routines for generating mazes, somewhat intertwined with 
  * Gimp plug-in-maze specific stuff.
  *

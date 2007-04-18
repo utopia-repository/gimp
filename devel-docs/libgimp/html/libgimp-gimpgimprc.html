@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpgimprc</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpcontext.html" title="gimpcontext">
@@ -28,16 +28,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimphelp.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2538960" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2583905" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2541521" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2572414" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpgimprc"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2538960"></a><span class="refentrytitle">gimpgimprc</span>
+<a name="id2583905"></a><span class="refentrytitle">gimpgimprc</span>
 </h2>
 <p>gimpgimprc &#8212; Interactions with settings from .gimprc.</p>
 </td>
@@ -60,18 +60,18 @@ gchar*      <a href="libgimp-gimpgimprc.html#gimp-get-theme-dir">gimp_get_theme_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2541521"></a><h2>Description</h2>
+<a name="id2572414"></a><h2>Description</h2>
 <p>
 Interactions with settings from .gimprc.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2541536"></a><h2>Details</h2>
+<a name="id2572429"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2541547"></a><h3>
+<a name="id2572440"></a><h3>
 <a name="gimp-gimprc-query"></a>gimp_gimprc_query ()</h3>
-<a class="indexterm" name="id2541559"></a><pre class="programlisting">gchar*      gimp_gimprc_query               (const gchar *token);</pre>
+<a class="indexterm" name="id2572452"></a><pre class="programlisting">gchar*      gimp_gimprc_query               (const gchar *token);</pre>
 <p>
 Queries the gimprc file parser for information on a specified token.
 </p>
@@ -92,14 +92,12 @@ to be issued on gimprc parsing and will not be queryable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>token</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>token</code></em>&#160;:</span></td>
 <td> The token to query for.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The value associated with the queried token.
 </td>
 </tr>
@@ -108,9 +106,9 @@ to be issued on gimprc parsing and will not be queryable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2554933"></a><h3>
+<a name="id2570932"></a><h3>
 <a name="gimp-gimprc-set"></a>gimp_gimprc_set ()</h3>
-<a class="indexterm" name="id2541608"></a><pre class="programlisting">gboolean    gimp_gimprc_set                 (const gchar *token,
+<a class="indexterm" name="id2570944"></a><pre class="programlisting">gboolean    gimp_gimprc_set                 (const gchar *token,
                                              const gchar *value);</pre>
 <p>
 Sets a gimprc token to a value and saves it in the gimprc.
@@ -128,20 +126,17 @@ will accept _only_ string values in UTF-8 encoding.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>token</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>token</code></em>&#160;:</span></td>
 <td> The token to add or modify.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
 <td> The value to set the token to.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -150,9 +145,9 @@ will accept _only_ string values in UTF-8 encoding.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2538710"></a><h3>
+<a name="id2571035"></a><h3>
 <a name="gimp-get-default-comment"></a>gimp_get_default_comment ()</h3>
-<a class="indexterm" name="id2538721"></a><pre class="programlisting">gchar*      gimp_get_default_comment        (void);</pre>
+<a class="indexterm" name="id2571046"></a><pre class="programlisting">gchar*      gimp_get_default_comment        (void);</pre>
 <p>
 Get the default image comment as specified in the Preferences.
 </p>
@@ -164,8 +159,7 @@ Returns a copy of the default image comment.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> Default Image Comment.
 </td>
 </tr></tbody>
@@ -173,9 +167,9 @@ Returns a copy of the default image comment.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2538766"></a><h3>
+<a name="id2599283"></a><h3>
 <a name="gimp-get-module-load-inhibit"></a>gimp_get_module_load_inhibit ()</h3>
-<a class="indexterm" name="id2538777"></a><pre class="programlisting">gchar*      gimp_get_module_load_inhibit    (void);</pre>
+<a class="indexterm" name="id2599295"></a><pre class="programlisting">gchar*      gimp_get_module_load_inhibit    (void);</pre>
 <p>
 Get the list of modules which should not be loaded.
 </p>
@@ -187,8 +181,7 @@ Returns a copy of the list of modules which should not be loaded.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The list of modules.
 </td>
 </tr></tbody>
@@ -196,9 +189,9 @@ Returns a copy of the list of modules which should not be loaded.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570158"></a><h3>
+<a name="id2599340"></a><h3>
 <a name="gimp-get-monitor-resolution"></a>gimp_get_monitor_resolution ()</h3>
-<a class="indexterm" name="id2570169"></a><pre class="programlisting">gboolean    gimp_get_monitor_resolution     (gdouble *xres,
+<a class="indexterm" name="id2599351"></a><pre class="programlisting">gboolean    gimp_get_monitor_resolution     (gdouble *xres,
                                              gdouble *yres);</pre>
 <p>
 Get the monitor resolution as specified in the Preferences.
@@ -215,20 +208,17 @@ reasonable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>xres</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>xres</code></em>&#160;:</span></td>
 <td> X resolution.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>yres</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>yres</code></em>&#160;:</span></td>
 <td> Y resolution.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -237,9 +227,9 @@ reasonable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570258"></a><h3>
+<a name="id2599439"></a><h3>
 <a name="gimp-get-theme-dir"></a>gimp_get_theme_dir ()</h3>
-<a class="indexterm" name="id2570270"></a><pre class="programlisting">gchar*      gimp_get_theme_dir              (void);</pre>
+<a class="indexterm" name="id2599452"></a><pre class="programlisting">gchar*      gimp_get_theme_dir              (void);</pre>
 <p>
 Get the directory of the current GUI theme.
 </p>
@@ -251,8 +241,7 @@ Returns a copy of the current GUI theme dir.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The GUI theme dir.
 </td>
 </tr></tbody>

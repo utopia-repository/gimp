@@ -1,5 +1,5 @@
 /*
- * "$Id: print-image-gimp.c,v 1.4 2002/05/06 23:27:48 neo Exp $"
+ * "$Id: print-image-gimp.c 7527 2002-05-06 23:27:49Z neo $"
  *
  *   Print plug-in for the GIMP.
  *
@@ -341,5 +341,5 @@ Image_get_appname(stp_image_t *image)
 }
 
 /*
- * End of "$Id: print-image-gimp.c,v 1.4 2002/05/06 23:27:48 neo Exp $".
+ * End of "$Id: print-image-gimp.c 7527 2002-05-06 23:27:49Z neo $".
  */

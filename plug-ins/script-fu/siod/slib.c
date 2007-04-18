@@ -102,7 +102,7 @@ static void
 init_slib_version (void)
 {
   setvar (cintern ("*slib-version*"),
-	  cintern ("$Id: slib.c,v 1.16.2.2 2005/12/12 23:09:37 schumaml Exp $"),
+	  cintern ("$Id: slib.c 19011 2005-12-12 23:09:37Z schumaml $"),
 	  NIL);
 }
 

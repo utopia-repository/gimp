@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpColorNotebook</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-colorselector.html" title="Part&#160;III.&#160;GIMP Color Selectors">
 <link rel="prev" href="GimpColorSelector.html" title="GimpColorSelector">
 <link rel="next" href="GimpColorScales.html" title="GimpColorScales">
-<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -28,25 +28,29 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpColorScales.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2509877" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#desc" class="shortcut">Description</a>
+                  <a href="#id2621598" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#object_hierarchy" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2624027" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#style_properties" class="shortcut">Style Properties</a></nobr></td></tr>
+                  <a href="#id2621535" class="shortcut">Implemented Interfaces</a>
+                  &#160;|&#160;
+                  <a href="#id2621556" class="shortcut">Style Properties</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpColorNotebook"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpColorNotebook</span></h2>
+<h2>
+<a name="id2509877"></a><span class="refentrytitle">GimpColorNotebook</span>
+</h2>
 <p>GimpColorNotebook &#8212; A <a href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> implementation.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<a name="synopsis"></a><h2>Synopsis</h2>
+<h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -60,7 +64,7 @@ GtkWidget*  <a href="GimpColorNotebook.html#gimp-color-notebook-set-has-page">gi
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="object_hierarchy"></a><h2>Object Hierarchy</h2>
+<a name="id2624027"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -75,13 +79,13 @@ GtkWidget*  <a href="GimpColorNotebook.html#gimp-color-notebook-set-has-page">gi
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="impl_interfaces"></a><h2>Implemented Interfaces</h2>
+<a name="id2621535"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorNotebook implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="style_properties"></a><h2>Style Properties</h2>
+<a name="id2621556"></a><h2>Style Properties</h2>
 <pre class="synopsis">
 
   "<a href="GimpColorNotebook.html#GimpColorNotebook--tab-border">tab-border</a>"           gint                  : Read
@@ -89,27 +93,27 @@ GimpColorNotebook implements
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="desc"></a><h2>Description</h2>
+<a name="id2621598"></a><h2>Description</h2>
 <p>
 The <a href="GimpColorNotebook.html" title="GimpColorNotebook"><span class="type">GimpColorNotebook</span></a> widget is an implementation of a <a href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a>.
 It serves as a container for <span class="type">GimpColorSelectors</span>.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="details"></a><h2>Details</h2>
+<a name="id2623807"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2580316"></a><h3>
+<a name="id2623818"></a><h3>
 <a name="GimpColorNotebook-struct"></a>GimpColorNotebook</h3>
-<a class="indexterm" name="id2580327"></a><pre class="programlisting">typedef struct _GimpColorNotebook GimpColorNotebook;</pre>
+<a class="indexterm" name="id2623830"></a><pre class="programlisting">typedef struct _GimpColorNotebook GimpColorNotebook;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2580344"></a><h3>
+<a name="id2623846"></a><h3>
 <a name="gimp-color-notebook-set-has-page"></a>gimp_color_notebook_set_has_page ()</h3>
-<a class="indexterm" name="id2580355"></a><pre class="programlisting">GtkWidget*  gimp_color_notebook_set_has_page
+<a class="indexterm" name="id2623858"></a><pre class="programlisting">GtkWidget*  gimp_color_notebook_set_has_page
                                             (<a href="GimpColorNotebook.html" title="GimpColorNotebook">GimpColorNotebook</a> *notebook,
                                              GType page_type,
                                              gboolean has_page);</pre>
@@ -123,26 +127,22 @@ The <em class="parameter"><code>page_type</code></em> passed must be a <a href="
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>notebook</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>notebook</code></em>&#160;:</span></td>
 <td>  A <a href="GimpColorNotebook.html" title="GimpColorNotebook"><span class="type">GimpColorNotebook</span></a> widget.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>page_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>page_type</code></em>&#160;:</span></td>
 <td> The <span class="type">GType</span> of the notebook page to add or remove.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>has_page</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>has_page</code></em>&#160;:</span></td>
 <td>  Whether the page should be added or removed.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The new page widget, if <em class="parameter"><code>has_page</code></em> was <span class="type">TRUE</span>, or <span class="type">NULL</span>
               if <em class="parameter"><code>has_page</code></em> was <span class="type">FALSE</span>.
 </td>
@@ -152,20 +152,20 @@ The <em class="parameter"><code>page_type</code></em> passed must be a <a href="
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="style_properties_details"></a><h2>Style Property Details</h2>
+<a name="id2620975"></a><h2>Style Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2590333"></a><h3>
+<a name="id2620985"></a><h3>
 <a name="GimpColorNotebook--tab-border"></a>The "<code class="literal">tab-border</code>" style property</h3>
-<a class="indexterm" name="id2590347"></a><pre class="programlisting">  "tab-border"           gint                  : Read</pre>
+<a class="indexterm" name="id2621000"></a><pre class="programlisting">  "tab-border"           gint                  : Read</pre>
 <p>Width of the border around the tab contents.</p>
 <p>Allowed values: &gt;= 0</p>
 <p>Default value: 0</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2590375"></a><h3>
+<a name="id2621028"></a><h3>
 <a name="GimpColorNotebook--tab-icon-size"></a>The "<code class="literal">tab-icon-size</code>" style property</h3>
-<a class="indexterm" name="id2590390"></a><pre class="programlisting">  "tab-icon-size"        GtkIconSize           : Read</pre>
+<a class="indexterm" name="id2626262"></a><pre class="programlisting">  "tab-icon-size"        GtkIconSize           : Read</pre>
 <p>Size for icons displayed in the tab.</p>
 <p>Default value: GTK_ICON_SIZE_BUTTON</p>
 </div>

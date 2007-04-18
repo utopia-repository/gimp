@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimptile</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
 <link rel="prev" href="libgimp-gimptexttool.html" title="gimptexttool">
@@ -28,16 +28,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimptools.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2562486" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2592494" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2618678" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2659777" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimptile"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2562486"></a><span class="refentrytitle">gimptile</span>
+<a name="id2592494"></a><span class="refentrytitle">gimptile</span>
 </h2>
 <p>gimptile &#8212; Functions for working with tiles.</p>
 </td>
@@ -60,18 +60,18 @@ void        <a href="libgimp-gimptile.html#gimp-tile-cache-ntiles">gimp_tile_cac
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2618678"></a><h2>Description</h2>
+<a name="id2659777"></a><h2>Description</h2>
 <p>
 Functions for working with tiles.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2618694"></a><h2>Details</h2>
+<a name="id2659792"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2618704"></a><h3>
+<a name="id2659803"></a><h3>
 <a name="GimpTile"></a>GimpTile</h3>
-<a class="indexterm" name="id2618716"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2659815"></a><pre class="programlisting">typedef struct {
   guint         ewidth;     /* the effective width of the tile */
   guint         eheight;    /* the effective height of the tile */
   guint         bpp;        /* the bytes per pixel (1, 2, 3 or 4 ) */
@@ -89,17 +89,16 @@ Functions for working with tiles.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2536610"></a><h3>
+<a name="id2585855"></a><h3>
 <a name="gimp-tile-ref"></a>gimp_tile_ref ()</h3>
-<a class="indexterm" name="id2526878"></a><pre class="programlisting">void        gimp_tile_ref                   (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre>
+<a class="indexterm" name="id2595815"></a><pre class="programlisting">void        gimp_tile_ref                   (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>tile</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>tile</code></em>&#160;:</span></td>
 <td>
 
 
@@ -109,17 +108,16 @@ Functions for working with tiles.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623849"></a><h3>
+<a name="id2659851"></a><h3>
 <a name="gimp-tile-ref-zero"></a>gimp_tile_ref_zero ()</h3>
-<a class="indexterm" name="id2623860"></a><pre class="programlisting">void        gimp_tile_ref_zero              (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre>
+<a class="indexterm" name="id2659863"></a><pre class="programlisting">void        gimp_tile_ref_zero              (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>tile</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>tile</code></em>&#160;:</span></td>
 <td>
 
 
@@ -129,9 +127,9 @@ Functions for working with tiles.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623904"></a><h3>
+<a name="id2659908"></a><h3>
 <a name="gimp-tile-unref"></a>gimp_tile_unref ()</h3>
-<a class="indexterm" name="id2623915"></a><pre class="programlisting">void        gimp_tile_unref                 (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile,
+<a class="indexterm" name="id2659920"></a><pre class="programlisting">void        gimp_tile_unref                 (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile,
                                              gboolean dirty);</pre>
 <p>
 
@@ -140,14 +138,12 @@ Functions for working with tiles.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>tile</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>tile</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>dirty</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>dirty</code></em>&#160;:</span></td>
 <td>
 
 
@@ -158,17 +154,16 @@ Functions for working with tiles.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623981"></a><h3>
+<a name="id2656770"></a><h3>
 <a name="gimp-tile-flush"></a>gimp_tile_flush ()</h3>
-<a class="indexterm" name="id2623993"></a><pre class="programlisting">void        gimp_tile_flush                 (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre>
+<a class="indexterm" name="id2656783"></a><pre class="programlisting">void        gimp_tile_flush                 (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>tile</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>tile</code></em>&#160;:</span></td>
 <td>
 
 
@@ -178,9 +173,9 @@ Functions for working with tiles.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623510"></a><h3>
+<a name="id2656828"></a><h3>
 <a name="gimp-tile-cache-size"></a>gimp_tile_cache_size ()</h3>
-<a class="indexterm" name="id2623521"></a><pre class="programlisting">void        gimp_tile_cache_size            (gulong kilobytes);</pre>
+<a class="indexterm" name="id2656839"></a><pre class="programlisting">void        gimp_tile_cache_size            (gulong kilobytes);</pre>
 <p>
 Sets the size of the tile cache on the plug-in side. The tile cache
 is used to reduce the number of tiles exchanged between the GIMP core
@@ -191,8 +186,7 @@ and the plug-in. See also <a href="libgimp-gimptile.html#gimp-tile-cache-ntiles"
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>kilobytes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>kilobytes</code></em>&#160;:</span></td>
 <td> new cache size in kilobytes
 </td>
 </tr></tbody>
@@ -200,9 +194,9 @@ and the plug-in. See also <a href="libgimp-gimptile.html#gimp-tile-cache-ntiles"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623580"></a><h3>
+<a name="id2656899"></a><h3>
 <a name="gimp-tile-cache-ntiles"></a>gimp_tile_cache_ntiles ()</h3>
-<a class="indexterm" name="id2623592"></a><pre class="programlisting">void        gimp_tile_cache_ntiles          (gulong ntiles);</pre>
+<a class="indexterm" name="id2656910"></a><pre class="programlisting">void        gimp_tile_cache_ntiles          (gulong ntiles);</pre>
 <p>
 Sets the size of the tile cache on the plug-in side. This function
 is similar to <a href="libgimp-gimptile.html#gimp-tile-cache-size"><code class="function">gimp_tile_cache_size()</code></a> but allows to specify the
@@ -220,8 +214,7 @@ shadow tiles.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>ntiles</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>ntiles</code></em>&#160;:</span></td>
 <td> number of tiles that should fit into the cache
 </td>
 </tr></tbody>

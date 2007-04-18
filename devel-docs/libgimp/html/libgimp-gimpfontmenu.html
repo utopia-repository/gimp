@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpfontmenu</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimpbrushmenu.html" title="gimpbrushmenu">
@@ -28,16 +28,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpgradientmenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2577505" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2592883" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2653399" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2691489" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpfontmenu"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2577505"></a><span class="refentrytitle">gimpfontmenu</span>
+<a name="id2592883"></a><span class="refentrytitle">gimpfontmenu</span>
 </h2>
 <p>gimpfontmenu &#8212; A widget for selecting fonts.</p>
 </td>
@@ -59,17 +59,17 @@ void        <a href="libgimp-gimpfontmenu.html#gimp-font-select-widget-set">gimp
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2653399"></a><h2>Description</h2>
+<a name="id2691489"></a><h2>Description</h2>
 <p>
 A widget for selecting fonts.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2652710"></a><h2>Details</h2>
+<a name="id2691505"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2652720"></a><h3>
+<a name="id2691515"></a><h3>
 <a name="gimp-font-select-widget-new"></a>gimp_font_select_widget_new ()</h3>
-<a class="indexterm" name="id2652731"></a><pre class="programlisting">GtkWidget*  gimp_font_select_widget_new     (const gchar *title,
+<a class="indexterm" name="id2691526"></a><pre class="programlisting">GtkWidget*  gimp_font_select_widget_new     (const gchar *title,
                                              const gchar *font_name,
                                              <a href="libgimp-gimpfontselect.html#GimpRunFontCallback">GimpRunFontCallback</a> callback,
                                              gpointer data);</pre>
@@ -84,33 +84,28 @@ plug-in dialog.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
 <td>     Title of the dialog to use or <code class="literal">NULL</code> means to use the default
             title.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>font_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>font_name</code></em>&#160;:</span></td>
 <td> Initial font name.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
 <td>  A function to call when the selected font changes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>      A pointer to arbitary data to be used in the call to <em class="parameter"><code>callback</code></em>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> A <span class="type">GtkWidget</span> that you can use in your UI.
 </td>
 </tr>
@@ -119,9 +114,9 @@ plug-in dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2652885"></a><h3>
+<a name="id2687184"></a><h3>
 <a name="gimp-font-select-widget-close"></a>gimp_font_select_widget_close ()</h3>
-<a class="indexterm" name="id2652896"></a><pre class="programlisting">void        gimp_font_select_widget_close   (GtkWidget *widget);</pre>
+<a class="indexterm" name="id2687195"></a><pre class="programlisting">void        gimp_font_select_widget_close   (GtkWidget *widget);</pre>
 <p>
 Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p>
 <p>
@@ -130,8 +125,7 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
 <td> A font select widget.
 </td>
 </tr></tbody>
@@ -139,9 +133,9 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2652950"></a><h3>
+<a name="id2687248"></a><h3>
 <a name="gimp-font-select-widget-set"></a>gimp_font_select_widget_set ()</h3>
-<a class="indexterm" name="id2652961"></a><pre class="programlisting">void        gimp_font_select_widget_set     (GtkWidget *widget,
+<a class="indexterm" name="id2687259"></a><pre class="programlisting">void        gimp_font_select_widget_set     (GtkWidget *widget,
                                              const gchar *font_name);</pre>
 <p>
 Sets the current font for the font select widget.  Calls the
@@ -154,14 +148,12 @@ callback function if one was supplied in the call to
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
 <td>    A font select widget.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>font_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>font_name</code></em>&#160;:</span></td>
 <td> Font name to set; <code class="literal">NULL</code> means no change.
 </td>
 </tr>

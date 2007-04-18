@@ -54,4 +54,4 @@ common-install-impl::
 	dh_movefiles
 
 binary-install/gimp-python::
-	dh_python -pgimp-python /usr/lib/gimp/2.0/python
+	dh_pysupport -pgimp-python /usr/lib/gimp/2.0/python

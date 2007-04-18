@@ -1,5 +1,5 @@
 /*
- * "$Id: sgi.h,v 1.11 2003/04/07 11:59:33 neo Exp $"
+ * "$Id: sgi.h 9327 2003-04-07 11:59:33Z neo $"
  *
  *   SGI image file format library definitions.
  *
@@ -97,5 +97,5 @@ extern int	sgiPutRow(sgi_t *sgip, unsigned short *row, int y, int z);
 #endif /* !_SGI_H_ */
 
 /*
- * End of "$Id: sgi.h,v 1.11 2003/04/07 11:59:33 neo Exp $".
+ * End of "$Id: sgi.h 9327 2003-04-07 11:59:33Z neo $".
  */

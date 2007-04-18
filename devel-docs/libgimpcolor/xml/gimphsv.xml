@@ -4,16 +4,19 @@
 
 <refentry id="libgimpcolor-GimpHSV">
 <refmeta>
-<refentrytitle>GimpHSV</refentrytitle>
+<refentrytitle role="top_of_page">GimpHSV</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCOLOR Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpHSV</refname><refpurpose>Definitions and Functions relating to HSV colors.</refpurpose>
+<refname>GimpHSV</refname>
+<refpurpose>Definitions and Functions relating to HSV colors.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -41,17 +44,17 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Definitions and Functions relating to HSV colors.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpHSV"/>GimpHSV</title>
+<title><anchor id="GimpHSV" role="struct"/>GimpHSV</title>
 <indexterm><primary>GimpHSV</primary></indexterm><programlisting>typedef struct {
   gdouble h, s, v, a;
 } GimpHSV;
@@ -60,7 +63,7 @@ Definitions and Functions relating to HSV colors.
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-hsv-set"/>gimp_hsv_set ()</title>
+<title><anchor id="gimp-hsv-set" role="function"/>gimp_hsv_set ()</title>
 <indexterm><primary>gimp_hsv_set</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_hsv_set                    (<link linkend="GimpHSV">GimpHSV</link> *hsv,
                                              <link linkend="gdouble">gdouble</link> hue,
                                              <link linkend="gdouble">gdouble</link> saturation,
@@ -84,7 +87,7 @@ Definitions and Functions relating to HSV colors.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-hsv-clamp"/>gimp_hsv_clamp ()</title>
+<title><anchor id="gimp-hsv-clamp" role="function"/>gimp_hsv_clamp ()</title>
 <indexterm><primary>gimp_hsv_clamp</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_hsv_clamp                  (<link linkend="GimpHSV">GimpHSV</link> *hsv);</programlisting>
 <para>
 
@@ -96,7 +99,7 @@ Definitions and Functions relating to HSV colors.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-hsva-set"/>gimp_hsva_set ()</title>
+<title><anchor id="gimp-hsva-set" role="function"/>gimp_hsva_set ()</title>
 <indexterm><primary>gimp_hsva_set</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_hsva_set                   (<link linkend="GimpHSV">GimpHSV</link> *hsva,
                                              <link linkend="gdouble">gdouble</link> hue,
                                              <link linkend="gdouble">gdouble</link> saturation,

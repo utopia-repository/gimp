@@ -4,7 +4,7 @@
 
 <refentry id="GimpChainButton">
 <refmeta>
-<refentrytitle id="top_of_page">GimpChainButton</refentrytitle>
+<refentrytitle role="top_of_page">GimpChainButton</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -32,8 +32,8 @@ enum        <link linkend="GimpChainPosition">GimpChainPosition</link>;
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -49,8 +49,8 @@ enum        <link linkend="GimpChainPosition">GimpChainPosition</link>;
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpChainButton implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -59,8 +59,8 @@ GimpChainButton implements
 
 
 
-<refsect1 id="signal_proto">
-<title id="signal_proto.title">Signals</title>
+<refsect1 role="signal_proto">
+<title role="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpChainButton-toggled">toggled</link>&quot;   <link linkend="void">void</link>        user_function      (<link linkend="GimpChainButton">GimpChainButton</link> *gimpchainbutton,
@@ -69,8 +69,8 @@ GimpChainButton implements
 </refsect1>
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 This widget provides a button showing either a linked or a broken
 chain that can be used to link two entries, spinbuttons, colors
@@ -87,8 +87,8 @@ necessary.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpChainButton-struct" role="struct"/>GimpChainButton</title>
 <indexterm><primary>GimpChainButton</primary></indexterm><programlisting>typedef struct _GimpChainButton GimpChainButton;</programlisting>
@@ -167,8 +167,8 @@ Checks the state of the <link linkend="GimpChainButton"><type>GimpChainButton</t
 
 </refsect1>
 
-<refsect1 id="signals">
-<title id="signals.title">Signal Details</title>
+<refsect1 role="signals">
+<title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpChainButton-toggled"/>The &quot;toggled&quot; signal</title>
 <indexterm><primary>GimpChainButton::toggled</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpChainButton">GimpChainButton</link> *gimpchainbutton,
                                             <link linkend="gpointer">gpointer</link>         user_data)            : Run first</programlisting>

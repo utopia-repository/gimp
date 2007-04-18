@@ -4,7 +4,7 @@
 
 <refentry id="GimpDialog">
 <refmeta>
-<refentrytitle id="top_of_page">GimpDialog</refentrytitle>
+<refentrytitle role="top_of_page">GimpDialog</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -16,8 +16,8 @@ dialog-related stuff.</refpurpose>
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -46,8 +46,8 @@ dialog-related stuff.</refpurpose>
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -65,8 +65,8 @@ dialog-related stuff.</refpurpose>
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpDialog implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -74,8 +74,8 @@ GimpDialog implements
 </refsect1>
 
 
-<refsect1 id="properties">
-<title id="properties.title">Properties</title>
+<refsect1 role="properties">
+<title role="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpDialog--help-func">help-func</link>&quot;            <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only
@@ -85,15 +85,15 @@ GimpDialog implements
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpDialog-struct" role="struct"/>GimpDialog</title>
 <indexterm><primary>GimpDialog</primary></indexterm><programlisting>typedef struct _GimpDialog GimpDialog;</programlisting>
@@ -241,8 +241,8 @@ This function is for internal use only.</para>
 </para></refsect2>
 
 </refsect1>
-<refsect1 id="property_details">
-<title id="property_details.title">Property Details</title>
+<refsect1 role="property_details">
+<title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpDialog--help-func"/>The &quot;<literal>help-func</literal>&quot; property</title>
 <indexterm><primary>GimpDialog:help-func</primary></indexterm><programlisting>  &quot;help-func&quot;            <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only</programlisting>
 <para></para></refsect2>

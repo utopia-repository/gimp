@@ -1,5 +1,5 @@
 /*
- * "$Id: sharpen.c,v 1.55 2004/12/23 23:58:35 weskaggs Exp $"
+ * "$Id: sharpen.c 16026 2004-12-23 23:58:35Z weskaggs $"
  *
  *   Sharpen filters for The GIMP -- an image manipulation program
  *

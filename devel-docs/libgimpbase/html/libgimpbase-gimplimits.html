@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimplimits</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Base Library Reference Manual">
 <link rel="up" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpversion.html" title="gimpversion">
@@ -21,16 +21,16 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimpchecks.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2541482" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2586172" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2552827" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2584346" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimplimits"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2541482"></a><span class="refentrytitle">gimplimits</span>
+<a name="id2586172"></a><span class="refentrytitle">gimplimits</span>
 </h2>
 <p>gimplimits &#8212; Boundaries of some GIMP data types and some global constants.</p>
 </td>
@@ -50,18 +50,18 @@
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2552827"></a><h2>Description</h2>
+<a name="id2584346"></a><h2>Description</h2>
 <p>
 Boundaries of some GIMP data types and some global constants.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2552842"></a><h2>Details</h2>
+<a name="id2584363"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2552853"></a><h3>
+<a name="id2584374"></a><h3>
 <a name="GIMP-MIN-IMAGE-SIZE:CAPS"></a>GIMP_MIN_IMAGE_SIZE</h3>
-<a class="indexterm" name="id2552865"></a><pre class="programlisting">#define GIMP_MIN_IMAGE_SIZE  1
+<a class="indexterm" name="id2584385"></a><pre class="programlisting">#define GIMP_MIN_IMAGE_SIZE  1
 </pre>
 <p>
 The minimum width and height of a GIMP image in pixels.
@@ -69,9 +69,9 @@ The minimum width and height of a GIMP image in pixels.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2552881"></a><h3>
+<a name="id2584402"></a><h3>
 <a name="GIMP-MAX-IMAGE-SIZE:CAPS"></a>GIMP_MAX_IMAGE_SIZE</h3>
-<a class="indexterm" name="id2552893"></a><pre class="programlisting">#define GIMP_MAX_IMAGE_SIZE  262144    /*  2^18  */
+<a class="indexterm" name="id2563710"></a><pre class="programlisting">#define GIMP_MAX_IMAGE_SIZE  262144    /*  2^18  */
 </pre>
 <p>
 The maximum width and height of a GIMP image in pixels. This is a
@@ -81,9 +81,9 @@ sizes is needed; for example to give a spin button an upper limit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2554705"></a><h3>
+<a name="id2563729"></a><h3>
 <a name="GIMP-MIN-RESOLUTION:CAPS"></a>GIMP_MIN_RESOLUTION</h3>
-<a class="indexterm" name="id2554717"></a><pre class="programlisting">#define GIMP_MIN_RESOLUTION  5e-3      /*  shouldn't display as 0.000  */
+<a class="indexterm" name="id2563741"></a><pre class="programlisting">#define GIMP_MIN_RESOLUTION  5e-3      /*  shouldn't display as 0.000  */
 </pre>
 <p>
 The minimum resolution of a GIMP image in pixels per inch. This is a
@@ -94,9 +94,9 @@ this value.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2554737"></a><h3>
+<a name="id2563761"></a><h3>
 <a name="GIMP-MAX-RESOLUTION:CAPS"></a>GIMP_MAX_RESOLUTION</h3>
-<a class="indexterm" name="id2554749"></a><pre class="programlisting">#define GIMP_MAX_RESOLUTION  65536.0
+<a class="indexterm" name="id2563773"></a><pre class="programlisting">#define GIMP_MAX_RESOLUTION  65536.0
 </pre>
 <p>
 The maximum resolution of a GIMP image in pixels per inch. This is a
@@ -107,9 +107,9 @@ this value.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2554768"></a><h3>
+<a name="id2563792"></a><h3>
 <a name="GIMP-MAX-MEMSIZE:CAPS"></a>GIMP_MAX_MEMSIZE</h3>
-<a class="indexterm" name="id2554779"></a><pre class="programlisting">#define GIMP_MAX_MEMSIZE     ((guint64) 1 &lt;&lt; 42) /*  4 terabyte;
+<a class="indexterm" name="id2563803"></a><pre class="programlisting">#define GIMP_MAX_MEMSIZE     ((guint64) 1 &lt;&lt; 42) /*  4 terabyte;
 </pre>
 <p>
 A large but arbitrary value that can be used when an upper limit for a

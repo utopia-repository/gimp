@@ -25,6 +25,7 @@
 #include "tools-types.h"
 
 #include "core/gimp.h"
+#include "core/gimpcontainer.h"
 #include "core/gimpimage.h"
 #include "core/gimptoolinfo.h"
 
@@ -103,6 +104,8 @@ static void       gimp_tool_real_cursor_update  (GimpTool              *tool,
                                                  GdkModifierType        state,
                                                  GimpDisplay           *display);
 
+static void       gimp_tool_clear_status        (GimpTool              *tool);
+
 
 G_DEFINE_TYPE (GimpTool, gimp_tool, GIMP_TYPE_OBJECT)
 
@@ -172,6 +175,12 @@ gimp_tool_finalize (GObject *object)
       tool->control = NULL;
     }
 
+  if (tool->status_displays)
+    {
+      g_list_free (tool->status_displays);
+      tool->status_displays = NULL;
+    }
+
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -222,7 +231,8 @@ static gboolean
 gimp_tool_real_has_display (GimpTool    *tool,
                             GimpDisplay *display)
 {
-  return (display == tool->display);
+  return (display == tool->display ||
+          g_list_find (tool->status_displays, display));
 }
 
 static GimpDisplay *
@@ -373,10 +383,34 @@ GimpDisplay *
 gimp_tool_has_image (GimpTool  *tool,
                      GimpImage *image)
 {
+  GimpDisplay *display;
+
   g_return_val_if_fail (GIMP_IS_TOOL (tool), NULL);
   g_return_val_if_fail (image == NULL || GIMP_IS_IMAGE (image), NULL);
 
-  return GIMP_TOOL_GET_CLASS (tool)->has_image (tool, image);
+  display = GIMP_TOOL_GET_CLASS (tool)->has_image (tool, image);
+
+  /*  check status displays last because they don't affect the tool
+   *  itself (unlike tool->display or draw_tool->display)
+   */
+  if (! display && tool->status_displays)
+    {
+      GList *list;
+
+      for (list = tool->status_displays; list; list = g_list_next (list))
+        {
+          GimpDisplay *status_display = list->data;
+
+          if (status_display->image == image)
+            return status_display;
+        }
+
+      /*  NULL image means any display  */
+      if (! image)
+        return tool->status_displays->data;
+    }
+
+  return display;
 }
 
 gboolean
@@ -434,6 +468,8 @@ gimp_tool_control (GimpTool       *tool,
 
       if (gimp_tool_control_is_active (tool->control))
         gimp_tool_control_halt (tool->control);
+
+      gimp_tool_clear_status (tool);
       break;
     }
 }
@@ -460,6 +496,7 @@ gimp_tool_button_press (GimpTool        *tool,
       if (gimp_tool_control_get_wants_click (tool->control))
         {
           tool->in_click_distance   = TRUE;
+          tool->got_motion_event    = FALSE;
           tool->button_press_coords = *coords;
           tool->button_press_time   = time;
         }
@@ -500,7 +537,7 @@ gimp_tool_check_click_distance (GimpTool    *tool,
       dx = SCALEX (shell, tool->button_press_coords.x - coords->x);
       dy = SCALEY (shell, tool->button_press_coords.y - coords->y);
 
-      if (sqrt (SQR (dx) + SQR (dy)) > double_click_distance)
+      if ((SQR (dx) + SQR (dy)) > SQR (double_click_distance))
         {
           tool->in_click_distance = FALSE;
         }
@@ -531,15 +568,24 @@ gimp_tool_button_release (GimpTool        *tool,
     {
       release_type = GIMP_BUTTON_RELEASE_CANCEL;
     }
-  else if (gimp_tool_check_click_distance (tool, coords, time, display))
+  else if (gimp_tool_control_get_wants_click (tool->control))
     {
-      release_type = GIMP_BUTTON_RELEASE_CLICK;
-      my_coords    = tool->button_press_coords;
+      if (gimp_tool_check_click_distance (tool, coords, time, display))
+        {
+          release_type = GIMP_BUTTON_RELEASE_CLICK;
+          my_coords    = tool->button_press_coords;
 
-      /*  synthesize a motion event back to the recorded press coordinates  */
-      GIMP_TOOL_GET_CLASS (tool)->motion (tool, &my_coords, time,
-                                          state & GDK_BUTTON1_MASK,
-                                          display);
+          /*  synthesize a motion event back to the recorded press
+           *  coordinates
+           */
+          GIMP_TOOL_GET_CLASS (tool)->motion (tool, &my_coords, time,
+                                              state & GDK_BUTTON1_MASK,
+                                              display);
+        }
+      else if (! tool->got_motion_event)
+        {
+          release_type = GIMP_BUTTON_RELEASE_NO_MOTION;
+        }
     }
 
   GIMP_TOOL_GET_CLASS (tool)->button_release (tool, &my_coords, time, state,
@@ -565,6 +611,7 @@ gimp_tool_motion (GimpTool        *tool,
   g_return_if_fail (GIMP_IS_DISPLAY (display));
   g_return_if_fail (gimp_tool_control_is_active (tool->control));
 
+  tool->got_motion_event = TRUE;
   gimp_tool_check_click_distance (tool, coords, time, display);
 
   GIMP_TOOL_GET_CLASS (tool)->motion (tool, coords, time, state, display);
@@ -808,6 +855,9 @@ gimp_tool_push_status (GimpTool    *tool,
                               format, args);
 
   va_end (args);
+
+  tool->status_displays = g_list_remove (tool->status_displays, display);
+  tool->status_displays = g_list_prepend (tool->status_displays, display);
 }
 
 void
@@ -829,6 +879,9 @@ gimp_tool_push_status_coords (GimpTool    *tool,
   gimp_statusbar_push_coords (GIMP_STATUSBAR (shell->statusbar),
                               G_OBJECT_TYPE_NAME (tool),
                               title, x, separator, y, help);
+
+  tool->status_displays = g_list_remove (tool->status_displays, display);
+  tool->status_displays = g_list_prepend (tool->status_displays, display);
 }
 
 void
@@ -849,6 +902,9 @@ gimp_tool_push_status_length (GimpTool            *tool,
   gimp_statusbar_push_length (GIMP_STATUSBAR (shell->statusbar),
                               G_OBJECT_TYPE_NAME (tool),
                               title, axis, value, help);
+
+  tool->status_displays = g_list_remove (tool->status_displays, display);
+  tool->status_displays = g_list_prepend (tool->status_displays, display);
 }
 
 void
@@ -873,6 +929,9 @@ gimp_tool_replace_status (GimpTool    *tool,
                                  format, args);
 
   va_end (args);
+
+  tool->status_displays = g_list_remove (tool->status_displays, display);
+  tool->status_displays = g_list_prepend (tool->status_displays, display);
 }
 
 void
@@ -888,6 +947,8 @@ gimp_tool_pop_status (GimpTool    *tool,
 
   gimp_statusbar_pop (GIMP_STATUSBAR (shell->statusbar),
                       G_OBJECT_TYPE_NAME (tool));
+
+  tool->status_displays = g_list_remove (tool->status_displays, display);
 }
 
 void
@@ -922,4 +983,26 @@ gimp_tool_set_cursor (GimpTool           *tool,
 
   gimp_display_shell_set_cursor (GIMP_DISPLAY_SHELL (display->shell),
                                  cursor, tool_cursor, modifier);
+}
+
+
+/*  private functions  */
+
+static void
+gimp_tool_clear_status (GimpTool *tool)
+{
+  GList *list;
+
+  g_return_if_fail (GIMP_IS_TOOL (tool));
+
+  list = tool->status_displays;
+  while (list)
+    {
+      GimpDisplay *display = list->data;
+
+      /*  get next element early because we modify the list  */
+      list = g_list_next (list);
+
+      gimp_tool_pop_status (tool, display);
+    }
 }

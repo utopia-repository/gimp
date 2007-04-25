@@ -22,101 +22,101 @@
 
 
 
-            <link linkend="GimpRGB">GimpRGB</link>;
-enum        <link linkend="GimpRGBCompositeMode">GimpRGBCompositeMode</link>;
-<link linkend="void">void</link>        <link linkend="gimp-rgb-set">gimp_rgb_set</link>                    (<link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                             <link linkend="gdouble">gdouble</link> red,
-                                             <link linkend="gdouble">gdouble</link> green,
-                                             <link linkend="gdouble">gdouble</link> blue);
-<link linkend="void">void</link>        <link linkend="gimp-rgb-set-alpha">gimp_rgb_set_alpha</link>              (<link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                             <link linkend="gdouble">gdouble</link> alpha);
-<link linkend="void">void</link>        <link linkend="gimp-rgb-set-uchar">gimp_rgb_set_uchar</link>              (<link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                             <link linkend="guchar">guchar</link> red,
-                                             <link linkend="guchar">guchar</link> green,
-                                             <link linkend="guchar">guchar</link> blue);
-<link linkend="void">void</link>        <link linkend="gimp-rgb-get-uchar">gimp_rgb_get_uchar</link>              (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                             <link linkend="guchar">guchar</link> *red,
-                                             <link linkend="guchar">guchar</link> *green,
-                                             <link linkend="guchar">guchar</link> *blue);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-rgb-parse-name">gimp_rgb_parse_name</link>             (<link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                             const <link linkend="gchar">gchar</link> *name,
-                                             <link linkend="gint">gint</link> len);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-rgb-parse-hex">gimp_rgb_parse_hex</link>              (<link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                             const <link linkend="gchar">gchar</link> *hex,
-                                             <link linkend="gint">gint</link> len);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-rgb-parse-css">gimp_rgb_parse_css</link>              (<link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                             const <link linkend="gchar">gchar</link> *css,
-                                             <link linkend="gint">gint</link> len);
-<link linkend="gint">gint</link>        <link linkend="gimp-rgb-list-names">gimp_rgb_list_names</link>             (const <link linkend="gchar">gchar</link> ***names,
-                                             <link linkend="GimpRGB">GimpRGB</link> **colors);
-<link linkend="void">void</link>        <link linkend="gimp-rgb-add">gimp_rgb_add</link>                    (<link linkend="GimpRGB">GimpRGB</link> *rgb1,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *rgb2);
-<link linkend="void">void</link>        <link linkend="gimp-rgb-subtract">gimp_rgb_subtract</link>               (<link linkend="GimpRGB">GimpRGB</link> *rgb1,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *rgb2);
-<link linkend="void">void</link>        <link linkend="gimp-rgb-multiply">gimp_rgb_multiply</link>               (<link linkend="GimpRGB">GimpRGB</link> *rgb1,
-                                             <link linkend="gdouble">gdouble</link> factor);
-<link linkend="gdouble">gdouble</link>     <link linkend="gimp-rgb-distance">gimp_rgb_distance</link>               (const <link linkend="GimpRGB">GimpRGB</link> *rgb1,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *rgb2);
-<link linkend="gdouble">gdouble</link>     <link linkend="gimp-rgb-max">gimp_rgb_max</link>                    (const <link linkend="GimpRGB">GimpRGB</link> *rgb);
-<link linkend="gdouble">gdouble</link>     <link linkend="gimp-rgb-min">gimp_rgb_min</link>                    (const <link linkend="GimpRGB">GimpRGB</link> *rgb);
-<link linkend="void">void</link>        <link linkend="gimp-rgb-clamp">gimp_rgb_clamp</link>                  (<link linkend="GimpRGB">GimpRGB</link> *rgb);
-<link linkend="void">void</link>        <link linkend="gimp-rgb-gamma">gimp_rgb_gamma</link>                  (<link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                             <link linkend="gdouble">gdouble</link> gamma);
-<link linkend="gdouble">gdouble</link>     <link linkend="gimp-rgb-luminance">gimp_rgb_luminance</link>              (const <link linkend="GimpRGB">GimpRGB</link> *rgb);
-<link linkend="guchar">guchar</link>      <link linkend="gimp-rgb-luminance-uchar">gimp_rgb_luminance_uchar</link>        (const <link linkend="GimpRGB">GimpRGB</link> *rgb);
-<link linkend="gdouble">gdouble</link>     <link linkend="gimp-rgb-intensity">gimp_rgb_intensity</link>              (const <link linkend="GimpRGB">GimpRGB</link> *rgb);
-<link linkend="guchar">guchar</link>      <link linkend="gimp-rgb-intensity-uchar">gimp_rgb_intensity_uchar</link>        (const <link linkend="GimpRGB">GimpRGB</link> *rgb);
-<link linkend="void">void</link>        <link linkend="gimp-rgb-composite">gimp_rgb_composite</link>              (<link linkend="GimpRGB">GimpRGB</link> *color1,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *color2,
-                                             <link linkend="GimpRGBCompositeMode">GimpRGBCompositeMode</link> mode);
-<link linkend="void">void</link>        <link linkend="gimp-rgba-set">gimp_rgba_set</link>                   (<link linkend="GimpRGB">GimpRGB</link> *rgba,
-                                             <link linkend="gdouble">gdouble</link> red,
-                                             <link linkend="gdouble">gdouble</link> green,
-                                             <link linkend="gdouble">gdouble</link> blue,
-                                             <link linkend="gdouble">gdouble</link> alpha);
-<link linkend="void">void</link>        <link linkend="gimp-rgba-set-uchar">gimp_rgba_set_uchar</link>             (<link linkend="GimpRGB">GimpRGB</link> *rgba,
-                                             <link linkend="guchar">guchar</link> red,
-                                             <link linkend="guchar">guchar</link> green,
-                                             <link linkend="guchar">guchar</link> blue,
-                                             <link linkend="guchar">guchar</link> alpha);
-<link linkend="void">void</link>        <link linkend="gimp-rgba-get-uchar">gimp_rgba_get_uchar</link>             (const <link linkend="GimpRGB">GimpRGB</link> *rgba,
-                                             <link linkend="guchar">guchar</link> *red,
-                                             <link linkend="guchar">guchar</link> *green,
-                                             <link linkend="guchar">guchar</link> *blue,
-                                             <link linkend="guchar">guchar</link> *alpha);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-rgba-parse-css">gimp_rgba_parse_css</link>             (<link linkend="GimpRGB">GimpRGB</link> *rgba,
-                                             const <link linkend="gchar">gchar</link> *css,
-                                             <link linkend="gint">gint</link> len);
-<link linkend="void">void</link>        <link linkend="gimp-rgba-add">gimp_rgba_add</link>                   (<link linkend="GimpRGB">GimpRGB</link> *rgba1,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *rgba2);
-<link linkend="void">void</link>        <link linkend="gimp-rgba-subtract">gimp_rgba_subtract</link>              (<link linkend="GimpRGB">GimpRGB</link> *rgba1,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *rgba2);
-<link linkend="void">void</link>        <link linkend="gimp-rgba-multiply">gimp_rgba_multiply</link>              (<link linkend="GimpRGB">GimpRGB</link> *rgba,
-                                             <link linkend="gdouble">gdouble</link> factor);
-<link linkend="gdouble">gdouble</link>     <link linkend="gimp-rgba-distance">gimp_rgba_distance</link>              (const <link linkend="GimpRGB">GimpRGB</link> *rgba1,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *rgba2);
-#define     <link linkend="GIMP-RGB-LUMINANCE:CAPS">GIMP_RGB_LUMINANCE</link>              (r,g,b)
-#define     <link linkend="GIMP-RGB-LUMINANCE-RED:CAPS">GIMP_RGB_LUMINANCE_RED</link>
-#define     <link linkend="GIMP-RGB-LUMINANCE-GREEN:CAPS">GIMP_RGB_LUMINANCE_GREEN</link>
-#define     <link linkend="GIMP-RGB-LUMINANCE-BLUE:CAPS">GIMP_RGB_LUMINANCE_BLUE</link>
-#define     <link linkend="GIMP-RGB-INTENSITY:CAPS">GIMP_RGB_INTENSITY</link>              (r,g,b)
-#define     <link linkend="GIMP-RGB-INTENSITY-RED:CAPS">GIMP_RGB_INTENSITY_RED</link>
-#define     <link linkend="GIMP-RGB-INTENSITY-GREEN:CAPS">GIMP_RGB_INTENSITY_GREEN</link>
-#define     <link linkend="GIMP-RGB-INTENSITY-BLUE:CAPS">GIMP_RGB_INTENSITY_BLUE</link>
-#define     <link linkend="GIMP-TYPE-RGB:CAPS">GIMP_TYPE_RGB</link>
-#define     <link linkend="GIMP-TYPE-PARAM-RGB:CAPS">GIMP_TYPE_PARAM_RGB</link>
-<link linkend="GParamSpec">GParamSpec</link>* <link linkend="gimp-param-spec-rgb">gimp_param_spec_rgb</link>             (const <link linkend="gchar">gchar</link> *name,
-                                             const <link linkend="gchar">gchar</link> *nick,
-                                             const <link linkend="gchar">gchar</link> *blurb,
-                                             <link linkend="gboolean">gboolean</link> has_alpha,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *default_value,
-                                             <link linkend="GParamFlags">GParamFlags</link> flags);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-param-spec-rgb-has-alpha">gimp_param_spec_rgb_has_alpha</link>   (<link linkend="GParamSpec">GParamSpec</link> *pspec);
-#define     <link linkend="GIMP-VALUE-HOLDS-RGB:CAPS">GIMP_VALUE_HOLDS_RGB</link>            (value)
-<link linkend="void">void</link>        <link linkend="gimp-value-get-rgb">gimp_value_get_rgb</link>              (const <link linkend="GValue">GValue</link> *value,
-                                             <link linkend="GimpRGB">GimpRGB</link> *rgb);
-<link linkend="void">void</link>        <link linkend="gimp-value-set-rgb">gimp_value_set_rgb</link>              (<link linkend="GValue">GValue</link> *value,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *rgb);
+                    <link linkend="GimpRGB">GimpRGB</link>;
+enum                <link linkend="GimpRGBCompositeMode">GimpRGBCompositeMode</link>;
+<link linkend="void">void</link>                <link linkend="gimp-rgb-set">gimp_rgb_set</link>                        (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                                         <link linkend="gdouble">gdouble</link> red,
+                                                         <link linkend="gdouble">gdouble</link> green,
+                                                         <link linkend="gdouble">gdouble</link> blue);
+<link linkend="void">void</link>                <link linkend="gimp-rgb-set-alpha">gimp_rgb_set_alpha</link>                  (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                                         <link linkend="gdouble">gdouble</link> alpha);
+<link linkend="void">void</link>                <link linkend="gimp-rgb-set-uchar">gimp_rgb_set_uchar</link>                  (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                                         <link linkend="guchar">guchar</link> red,
+                                                         <link linkend="guchar">guchar</link> green,
+                                                         <link linkend="guchar">guchar</link> blue);
+<link linkend="void">void</link>                <link linkend="gimp-rgb-get-uchar">gimp_rgb_get_uchar</link>                  (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                                         <link linkend="guchar">guchar</link> *red,
+                                                         <link linkend="guchar">guchar</link> *green,
+                                                         <link linkend="guchar">guchar</link> *blue);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-rgb-parse-name">gimp_rgb_parse_name</link>                 (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                                         const <link linkend="gchar">gchar</link> *name,
+                                                         <link linkend="gint">gint</link> len);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-rgb-parse-hex">gimp_rgb_parse_hex</link>                  (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                                         const <link linkend="gchar">gchar</link> *hex,
+                                                         <link linkend="gint">gint</link> len);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-rgb-parse-css">gimp_rgb_parse_css</link>                  (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                                         const <link linkend="gchar">gchar</link> *css,
+                                                         <link linkend="gint">gint</link> len);
+<link linkend="gint">gint</link>                <link linkend="gimp-rgb-list-names">gimp_rgb_list_names</link>                 (const <link linkend="gchar">gchar</link> ***names,
+                                                         <link linkend="GimpRGB">GimpRGB</link> **colors);
+<link linkend="void">void</link>                <link linkend="gimp-rgb-add">gimp_rgb_add</link>                        (<link linkend="GimpRGB">GimpRGB</link> *rgb1,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *rgb2);
+<link linkend="void">void</link>                <link linkend="gimp-rgb-subtract">gimp_rgb_subtract</link>                   (<link linkend="GimpRGB">GimpRGB</link> *rgb1,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *rgb2);
+<link linkend="void">void</link>                <link linkend="gimp-rgb-multiply">gimp_rgb_multiply</link>                   (<link linkend="GimpRGB">GimpRGB</link> *rgb1,
+                                                         <link linkend="gdouble">gdouble</link> factor);
+<link linkend="gdouble">gdouble</link>             <link linkend="gimp-rgb-distance">gimp_rgb_distance</link>                   (const <link linkend="GimpRGB">GimpRGB</link> *rgb1,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *rgb2);
+<link linkend="gdouble">gdouble</link>             <link linkend="gimp-rgb-max">gimp_rgb_max</link>                        (const <link linkend="GimpRGB">GimpRGB</link> *rgb);
+<link linkend="gdouble">gdouble</link>             <link linkend="gimp-rgb-min">gimp_rgb_min</link>                        (const <link linkend="GimpRGB">GimpRGB</link> *rgb);
+<link linkend="void">void</link>                <link linkend="gimp-rgb-clamp">gimp_rgb_clamp</link>                      (<link linkend="GimpRGB">GimpRGB</link> *rgb);
+<link linkend="void">void</link>                <link linkend="gimp-rgb-gamma">gimp_rgb_gamma</link>                      (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                                         <link linkend="gdouble">gdouble</link> gamma);
+<link linkend="gdouble">gdouble</link>             <link linkend="gimp-rgb-luminance">gimp_rgb_luminance</link>                  (const <link linkend="GimpRGB">GimpRGB</link> *rgb);
+<link linkend="guchar">guchar</link>              <link linkend="gimp-rgb-luminance-uchar">gimp_rgb_luminance_uchar</link>            (const <link linkend="GimpRGB">GimpRGB</link> *rgb);
+<link linkend="gdouble">gdouble</link>             <link linkend="gimp-rgb-intensity">gimp_rgb_intensity</link>                  (const <link linkend="GimpRGB">GimpRGB</link> *rgb);
+<link linkend="guchar">guchar</link>              <link linkend="gimp-rgb-intensity-uchar">gimp_rgb_intensity_uchar</link>            (const <link linkend="GimpRGB">GimpRGB</link> *rgb);
+<link linkend="void">void</link>                <link linkend="gimp-rgb-composite">gimp_rgb_composite</link>                  (<link linkend="GimpRGB">GimpRGB</link> *color1,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *color2,
+                                                         <link linkend="GimpRGBCompositeMode">GimpRGBCompositeMode</link> mode);
+<link linkend="void">void</link>                <link linkend="gimp-rgba-set">gimp_rgba_set</link>                       (<link linkend="GimpRGB">GimpRGB</link> *rgba,
+                                                         <link linkend="gdouble">gdouble</link> red,
+                                                         <link linkend="gdouble">gdouble</link> green,
+                                                         <link linkend="gdouble">gdouble</link> blue,
+                                                         <link linkend="gdouble">gdouble</link> alpha);
+<link linkend="void">void</link>                <link linkend="gimp-rgba-set-uchar">gimp_rgba_set_uchar</link>                 (<link linkend="GimpRGB">GimpRGB</link> *rgba,
+                                                         <link linkend="guchar">guchar</link> red,
+                                                         <link linkend="guchar">guchar</link> green,
+                                                         <link linkend="guchar">guchar</link> blue,
+                                                         <link linkend="guchar">guchar</link> alpha);
+<link linkend="void">void</link>                <link linkend="gimp-rgba-get-uchar">gimp_rgba_get_uchar</link>                 (const <link linkend="GimpRGB">GimpRGB</link> *rgba,
+                                                         <link linkend="guchar">guchar</link> *red,
+                                                         <link linkend="guchar">guchar</link> *green,
+                                                         <link linkend="guchar">guchar</link> *blue,
+                                                         <link linkend="guchar">guchar</link> *alpha);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-rgba-parse-css">gimp_rgba_parse_css</link>                 (<link linkend="GimpRGB">GimpRGB</link> *rgba,
+                                                         const <link linkend="gchar">gchar</link> *css,
+                                                         <link linkend="gint">gint</link> len);
+<link linkend="void">void</link>                <link linkend="gimp-rgba-add">gimp_rgba_add</link>                       (<link linkend="GimpRGB">GimpRGB</link> *rgba1,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *rgba2);
+<link linkend="void">void</link>                <link linkend="gimp-rgba-subtract">gimp_rgba_subtract</link>                  (<link linkend="GimpRGB">GimpRGB</link> *rgba1,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *rgba2);
+<link linkend="void">void</link>                <link linkend="gimp-rgba-multiply">gimp_rgba_multiply</link>                  (<link linkend="GimpRGB">GimpRGB</link> *rgba,
+                                                         <link linkend="gdouble">gdouble</link> factor);
+<link linkend="gdouble">gdouble</link>             <link linkend="gimp-rgba-distance">gimp_rgba_distance</link>                  (const <link linkend="GimpRGB">GimpRGB</link> *rgba1,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *rgba2);
+#define             <link linkend="GIMP-RGB-LUMINANCE:CAPS">GIMP_RGB_LUMINANCE</link>                  (r,g,b)
+#define             <link linkend="GIMP-RGB-LUMINANCE-RED:CAPS">GIMP_RGB_LUMINANCE_RED</link>
+#define             <link linkend="GIMP-RGB-LUMINANCE-GREEN:CAPS">GIMP_RGB_LUMINANCE_GREEN</link>
+#define             <link linkend="GIMP-RGB-LUMINANCE-BLUE:CAPS">GIMP_RGB_LUMINANCE_BLUE</link>
+#define             <link linkend="GIMP-RGB-INTENSITY:CAPS">GIMP_RGB_INTENSITY</link>                  (r,g,b)
+#define             <link linkend="GIMP-RGB-INTENSITY-RED:CAPS">GIMP_RGB_INTENSITY_RED</link>
+#define             <link linkend="GIMP-RGB-INTENSITY-GREEN:CAPS">GIMP_RGB_INTENSITY_GREEN</link>
+#define             <link linkend="GIMP-RGB-INTENSITY-BLUE:CAPS">GIMP_RGB_INTENSITY_BLUE</link>
+#define             <link linkend="GIMP-TYPE-RGB:CAPS">GIMP_TYPE_RGB</link>
+#define             <link linkend="GIMP-TYPE-PARAM-RGB:CAPS">GIMP_TYPE_PARAM_RGB</link>
+<link linkend="GParamSpec">GParamSpec</link>*         <link linkend="gimp-param-spec-rgb">gimp_param_spec_rgb</link>                 (const <link linkend="gchar">gchar</link> *name,
+                                                         const <link linkend="gchar">gchar</link> *nick,
+                                                         const <link linkend="gchar">gchar</link> *blurb,
+                                                         <link linkend="gboolean">gboolean</link> has_alpha,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *default_value,
+                                                         <link linkend="GParamFlags">GParamFlags</link> flags);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-param-spec-rgb-has-alpha">gimp_param_spec_rgb_has_alpha</link>       (<link linkend="GParamSpec">GParamSpec</link> *pspec);
+#define             <link linkend="GIMP-VALUE-HOLDS-RGB:CAPS">GIMP_VALUE_HOLDS_RGB</link>                (value)
+<link linkend="void">void</link>                <link linkend="gimp-value-get-rgb">gimp_value_get_rgb</link>                  (const <link linkend="GValue">GValue</link> *value,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *rgb);
+<link linkend="void">void</link>                <link linkend="gimp-value-set-rgb">gimp_value_set_rgb</link>                  (<link linkend="GValue">GValue</link> *value,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *rgb);
 
 </synopsis>
 </refsynopsisdiv>
@@ -161,10 +161,10 @@ Definitions and Functions relating to RGB colors.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-set" role="function"/>gimp_rgb_set ()</title>
-<indexterm><primary>gimp_rgb_set</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_set                    (<link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                             <link linkend="gdouble">gdouble</link> red,
-                                             <link linkend="gdouble">gdouble</link> green,
-                                             <link linkend="gdouble">gdouble</link> blue);</programlisting>
+<indexterm><primary>gimp_rgb_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_set                        (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                                         <link linkend="gdouble">gdouble</link> red,
+                                                         <link linkend="gdouble">gdouble</link> green,
+                                                         <link linkend="gdouble">gdouble</link> blue);</programlisting>
 <para>
 Sets the red, green and blue components of <parameter>rgb</parameter> and leaves the
 alpha component unchanged. The color values should be between 0.0
@@ -188,8 +188,8 @@ set exactly as they are passed in.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-set-alpha" role="function"/>gimp_rgb_set_alpha ()</title>
-<indexterm><primary>gimp_rgb_set_alpha</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_set_alpha              (<link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                             <link linkend="gdouble">gdouble</link> alpha);</programlisting>
+<indexterm><primary>gimp_rgb_set_alpha</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_set_alpha                  (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                                         <link linkend="gdouble">gdouble</link> alpha);</programlisting>
 <para>
 Sets the alpha component of <parameter>rgb</parameter> and leaves the RGB components unchanged.</para>
 <para>
@@ -204,10 +204,10 @@ Sets the alpha component of <parameter>rgb</parameter> and leaves the RGB compon
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-set-uchar" role="function"/>gimp_rgb_set_uchar ()</title>
-<indexterm><primary>gimp_rgb_set_uchar</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_set_uchar              (<link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                             <link linkend="guchar">guchar</link> red,
-                                             <link linkend="guchar">guchar</link> green,
-                                             <link linkend="guchar">guchar</link> blue);</programlisting>
+<indexterm><primary>gimp_rgb_set_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_set_uchar                  (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                                         <link linkend="guchar">guchar</link> red,
+                                                         <link linkend="guchar">guchar</link> green,
+                                                         <link linkend="guchar">guchar</link> blue);</programlisting>
 <para>
 Sets the red, green and blue components of <parameter>rgb</parameter> from 8bit values
 (0 to 255) and leaves the alpha component unchanged.</para>
@@ -229,10 +229,10 @@ Sets the red, green and blue components of <parameter>rgb</parameter> from 8bit 
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-get-uchar" role="function"/>gimp_rgb_get_uchar ()</title>
-<indexterm><primary>gimp_rgb_get_uchar</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_get_uchar              (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                             <link linkend="guchar">guchar</link> *red,
-                                             <link linkend="guchar">guchar</link> *green,
-                                             <link linkend="guchar">guchar</link> *blue);</programlisting>
+<indexterm><primary>gimp_rgb_get_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_get_uchar                  (const <link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                                         <link linkend="guchar">guchar</link> *red,
+                                                         <link linkend="guchar">guchar</link> *green,
+                                                         <link linkend="guchar">guchar</link> *blue);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -253,9 +253,9 @@ Sets the red, green and blue components of <parameter>rgb</parameter> from 8bit 
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-parse-name" role="function" condition="since:GIMP 2.2"/>gimp_rgb_parse_name ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_rgb_parse_name</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_rgb_parse_name             (<link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                             const <link linkend="gchar">gchar</link> *name,
-                                             <link linkend="gint">gint</link> len);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_rgb_parse_name</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_rgb_parse_name                 (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                                         const <link linkend="gchar">gchar</link> *name,
+                                                         <link linkend="gint">gint</link> len);</programlisting>
 <para>
 Attempts to parse a color name. This function accepts RGB hex
 values or <ulink url="http://www.w3.org/TR/SVG/types.html">SVG 1.0
@@ -281,13 +281,13 @@ This function does not touch the alpha component of <parameter>rgb</parameter>.<
               set, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-parse-hex" role="function" condition="since:GIMP 2.2"/>gimp_rgb_parse_hex ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_rgb_parse_hex</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_rgb_parse_hex              (<link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                             const <link linkend="gchar">gchar</link> *hex,
-                                             <link linkend="gint">gint</link> len);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_rgb_parse_hex</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_rgb_parse_hex                  (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                                         const <link linkend="gchar">gchar</link> *hex,
+                                                         <link linkend="gint">gint</link> len);</programlisting>
 <para>
 Attempts to parse a string describing a color in RGB value in
 hexadecimal notation (optionally prefixed with a '#').
@@ -310,13 +310,13 @@ This function does not touch the alpha component of <parameter>rgb</parameter>.<
               set, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-parse-css" role="function" condition="since:GIMP 2.2"/>gimp_rgb_parse_css ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_rgb_parse_css</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_rgb_parse_css              (<link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                             const <link linkend="gchar">gchar</link> *css,
-                                             <link linkend="gint">gint</link> len);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_rgb_parse_css</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_rgb_parse_css                  (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                                         const <link linkend="gchar">gchar</link> *css,
+                                                         <link linkend="gint">gint</link> len);</programlisting>
 <para>
 Attempts to parse a string describing a color in RGB value in CSS
 notation. This can be either a numerical representation
@@ -343,12 +343,12 @@ This function does not touch the alpha component of <parameter>rgb</parameter>.<
               set, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-list-names" role="function" condition="since:GIMP 2.2"/>gimp_rgb_list_names ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_rgb_list_names</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_rgb_list_names             (const <link linkend="gchar">gchar</link> ***names,
-                                             <link linkend="GimpRGB">GimpRGB</link> **colors);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_rgb_list_names</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_rgb_list_names                 (const <link linkend="gchar">gchar</link> ***names,
+                                                         <link linkend="GimpRGB">GimpRGB</link> **colors);</programlisting>
 <para>
 Allows to retrieve the list of <ulink
 url="http://www.w3.org/TR/SVG/types.html">SVG 1.0 color
@@ -371,12 +371,12 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
               (i.e. the length of the returned arrays)
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-add" role="function"/>gimp_rgb_add ()</title>
-<indexterm><primary>gimp_rgb_add</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_add                    (<link linkend="GimpRGB">GimpRGB</link> *rgb1,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *rgb2);</programlisting>
+<indexterm><primary>gimp_rgb_add</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_add                        (<link linkend="GimpRGB">GimpRGB</link> *rgb1,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *rgb2);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -391,8 +391,8 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-subtract" role="function"/>gimp_rgb_subtract ()</title>
-<indexterm><primary>gimp_rgb_subtract</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_subtract               (<link linkend="GimpRGB">GimpRGB</link> *rgb1,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *rgb2);</programlisting>
+<indexterm><primary>gimp_rgb_subtract</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_subtract                   (<link linkend="GimpRGB">GimpRGB</link> *rgb1,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *rgb2);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -407,8 +407,8 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-multiply" role="function"/>gimp_rgb_multiply ()</title>
-<indexterm><primary>gimp_rgb_multiply</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_multiply               (<link linkend="GimpRGB">GimpRGB</link> *rgb1,
-                                             <link linkend="gdouble">gdouble</link> factor);</programlisting>
+<indexterm><primary>gimp_rgb_multiply</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_multiply                   (<link linkend="GimpRGB">GimpRGB</link> *rgb1,
+                                                         <link linkend="gdouble">gdouble</link> factor);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -423,8 +423,8 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-distance" role="function"/>gimp_rgb_distance ()</title>
-<indexterm><primary>gimp_rgb_distance</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_rgb_distance               (const <link linkend="GimpRGB">GimpRGB</link> *rgb1,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *rgb2);</programlisting>
+<indexterm><primary>gimp_rgb_distance</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_rgb_distance                   (const <link linkend="GimpRGB">GimpRGB</link> *rgb1,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *rgb2);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -441,7 +441,7 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-max" role="function"/>gimp_rgb_max ()</title>
-<indexterm><primary>gimp_rgb_max</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_rgb_max                    (const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<indexterm><primary>gimp_rgb_max</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_rgb_max                        (const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -455,7 +455,7 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-min" role="function"/>gimp_rgb_min ()</title>
-<indexterm><primary>gimp_rgb_min</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_rgb_min                    (const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<indexterm><primary>gimp_rgb_min</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_rgb_min                        (const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -469,7 +469,7 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-clamp" role="function"/>gimp_rgb_clamp ()</title>
-<indexterm><primary>gimp_rgb_clamp</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_clamp                  (<link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<indexterm><primary>gimp_rgb_clamp</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_clamp                      (<link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -481,8 +481,8 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-gamma" role="function"/>gimp_rgb_gamma ()</title>
-<indexterm><primary>gimp_rgb_gamma</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_gamma                  (<link linkend="GimpRGB">GimpRGB</link> *rgb,
-                                             <link linkend="gdouble">gdouble</link> gamma);</programlisting>
+<indexterm><primary>gimp_rgb_gamma</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_gamma                      (<link linkend="GimpRGB">GimpRGB</link> *rgb,
+                                                         <link linkend="gdouble">gdouble</link> gamma);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -497,7 +497,7 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-luminance" role="function" condition="since:GIMP 2.4"/>gimp_rgb_luminance ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_rgb_luminance</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_rgb_luminance              (const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_rgb_luminance</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_rgb_luminance                  (const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
 <para>
 </para>
 <para>
@@ -509,11 +509,11 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the luminous intensity of the range from 0.0 to 1.0.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-luminance-uchar" role="function" condition="since:GIMP 2.4"/>gimp_rgb_luminance_uchar ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_rgb_luminance_uchar</primary></indexterm><programlisting><link linkend="guchar">guchar</link>      gimp_rgb_luminance_uchar        (const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_rgb_luminance_uchar</primary></indexterm><programlisting><link linkend="guchar">guchar</link>              gimp_rgb_luminance_uchar            (const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
 <para>
 </para>
 <para>
@@ -525,11 +525,11 @@ arrays are allocated dynamically. You must call <link linkend="g-free"><function
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the luminous intensity in the range from 0 to 255.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-intensity" role="function" condition="deprecated:"/>gimp_rgb_intensity ()</title>
-<indexterm role="deprecated"><primary>gimp_rgb_intensity</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_rgb_intensity              (const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<indexterm role="deprecated"><primary>gimp_rgb_intensity</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_rgb_intensity                  (const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
 <warning><para><literal>gimp_rgb_intensity</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This function is deprecated! Use <link linkend="gimp-rgb-luminance"><function>gimp_rgb_luminance()</function></link> instead.</para>
@@ -544,7 +544,7 @@ This function is deprecated! Use <link linkend="gimp-rgb-luminance"><function>gi
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-intensity-uchar" role="function" condition="deprecated:"/>gimp_rgb_intensity_uchar ()</title>
-<indexterm role="deprecated"><primary>gimp_rgb_intensity_uchar</primary></indexterm><programlisting><link linkend="guchar">guchar</link>      gimp_rgb_intensity_uchar        (const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<indexterm role="deprecated"><primary>gimp_rgb_intensity_uchar</primary></indexterm><programlisting><link linkend="guchar">guchar</link>              gimp_rgb_intensity_uchar            (const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
 <warning><para><literal>gimp_rgb_intensity_uchar</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This function is deprecated! Use <link linkend="gimp-rgb-luminance-uchar"><function>gimp_rgb_luminance_uchar()</function></link> instead.</para>
@@ -559,9 +559,9 @@ This function is deprecated! Use <link linkend="gimp-rgb-luminance-uchar"><funct
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgb-composite" role="function"/>gimp_rgb_composite ()</title>
-<indexterm><primary>gimp_rgb_composite</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgb_composite              (<link linkend="GimpRGB">GimpRGB</link> *color1,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *color2,
-                                             <link linkend="GimpRGBCompositeMode">GimpRGBCompositeMode</link> mode);</programlisting>
+<indexterm><primary>gimp_rgb_composite</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgb_composite                  (<link linkend="GimpRGB">GimpRGB</link> *color1,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *color2,
+                                                         <link linkend="GimpRGBCompositeMode">GimpRGBCompositeMode</link> mode);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -579,11 +579,11 @@ This function is deprecated! Use <link linkend="gimp-rgb-luminance-uchar"><funct
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgba-set" role="function"/>gimp_rgba_set ()</title>
-<indexterm><primary>gimp_rgba_set</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgba_set                   (<link linkend="GimpRGB">GimpRGB</link> *rgba,
-                                             <link linkend="gdouble">gdouble</link> red,
-                                             <link linkend="gdouble">gdouble</link> green,
-                                             <link linkend="gdouble">gdouble</link> blue,
-                                             <link linkend="gdouble">gdouble</link> alpha);</programlisting>
+<indexterm><primary>gimp_rgba_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgba_set                       (<link linkend="GimpRGB">GimpRGB</link> *rgba,
+                                                         <link linkend="gdouble">gdouble</link> red,
+                                                         <link linkend="gdouble">gdouble</link> green,
+                                                         <link linkend="gdouble">gdouble</link> blue,
+                                                         <link linkend="gdouble">gdouble</link> alpha);</programlisting>
 <para>
 Sets the red, green, blue and alpha components of <parameter>rgb</parameter>. The values
 should be between 0.0 and 1.0 but there is no check to enforce this
@@ -609,11 +609,11 @@ and the values are set exactly as they are passed in.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgba-set-uchar" role="function"/>gimp_rgba_set_uchar ()</title>
-<indexterm><primary>gimp_rgba_set_uchar</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgba_set_uchar             (<link linkend="GimpRGB">GimpRGB</link> *rgba,
-                                             <link linkend="guchar">guchar</link> red,
-                                             <link linkend="guchar">guchar</link> green,
-                                             <link linkend="guchar">guchar</link> blue,
-                                             <link linkend="guchar">guchar</link> alpha);</programlisting>
+<indexterm><primary>gimp_rgba_set_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgba_set_uchar                 (<link linkend="GimpRGB">GimpRGB</link> *rgba,
+                                                         <link linkend="guchar">guchar</link> red,
+                                                         <link linkend="guchar">guchar</link> green,
+                                                         <link linkend="guchar">guchar</link> blue,
+                                                         <link linkend="guchar">guchar</link> alpha);</programlisting>
 <para>
 Sets the red, green, blue and alpha components of <parameter>rgb</parameter> from 8bit
 values (0 to 255).</para>
@@ -638,11 +638,11 @@ values (0 to 255).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgba-get-uchar" role="function"/>gimp_rgba_get_uchar ()</title>
-<indexterm><primary>gimp_rgba_get_uchar</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgba_get_uchar             (const <link linkend="GimpRGB">GimpRGB</link> *rgba,
-                                             <link linkend="guchar">guchar</link> *red,
-                                             <link linkend="guchar">guchar</link> *green,
-                                             <link linkend="guchar">guchar</link> *blue,
-                                             <link linkend="guchar">guchar</link> *alpha);</programlisting>
+<indexterm><primary>gimp_rgba_get_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgba_get_uchar                 (const <link linkend="GimpRGB">GimpRGB</link> *rgba,
+                                                         <link linkend="guchar">guchar</link> *red,
+                                                         <link linkend="guchar">guchar</link> *green,
+                                                         <link linkend="guchar">guchar</link> *blue,
+                                                         <link linkend="guchar">guchar</link> *alpha);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -666,9 +666,9 @@ values (0 to 255).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgba-parse-css" role="function" condition="since:GIMP 2.2"/>gimp_rgba_parse_css ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_rgba_parse_css</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_rgba_parse_css             (<link linkend="GimpRGB">GimpRGB</link> *rgba,
-                                             const <link linkend="gchar">gchar</link> *css,
-                                             <link linkend="gint">gint</link> len);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_rgba_parse_css</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_rgba_parse_css                 (<link linkend="GimpRGB">GimpRGB</link> *rgba,
+                                                         const <link linkend="gchar">gchar</link> *css,
+                                                         <link linkend="gint">gint</link> len);</programlisting>
 <para>
 Similar to <link linkend="gimp-rgb-parse-css"><function>gimp_rgb_parse_css()</function></link> but handles RGB colors with alpha
 channel in the numerical CSS notation (<code>rgba(255,0,0,255)</code>
@@ -693,12 +693,12 @@ they leave the alpha channel unspecified.</para>
               set, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgba-add" role="function"/>gimp_rgba_add ()</title>
-<indexterm><primary>gimp_rgba_add</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgba_add                   (<link linkend="GimpRGB">GimpRGB</link> *rgba1,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *rgba2);</programlisting>
+<indexterm><primary>gimp_rgba_add</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgba_add                       (<link linkend="GimpRGB">GimpRGB</link> *rgba1,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *rgba2);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -713,8 +713,8 @@ they leave the alpha channel unspecified.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgba-subtract" role="function"/>gimp_rgba_subtract ()</title>
-<indexterm><primary>gimp_rgba_subtract</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgba_subtract              (<link linkend="GimpRGB">GimpRGB</link> *rgba1,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *rgba2);</programlisting>
+<indexterm><primary>gimp_rgba_subtract</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgba_subtract                  (<link linkend="GimpRGB">GimpRGB</link> *rgba1,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *rgba2);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -729,8 +729,8 @@ they leave the alpha channel unspecified.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgba-multiply" role="function"/>gimp_rgba_multiply ()</title>
-<indexterm><primary>gimp_rgba_multiply</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_rgba_multiply              (<link linkend="GimpRGB">GimpRGB</link> *rgba,
-                                             <link linkend="gdouble">gdouble</link> factor);</programlisting>
+<indexterm><primary>gimp_rgba_multiply</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_rgba_multiply                  (<link linkend="GimpRGB">GimpRGB</link> *rgba,
+                                                         <link linkend="gdouble">gdouble</link> factor);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -745,8 +745,8 @@ they leave the alpha channel unspecified.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-rgba-distance" role="function"/>gimp_rgba_distance ()</title>
-<indexterm><primary>gimp_rgba_distance</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_rgba_distance              (const <link linkend="GimpRGB">GimpRGB</link> *rgba1,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *rgba2);</programlisting>
+<indexterm><primary>gimp_rgba_distance</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_rgba_distance                  (const <link linkend="GimpRGB">GimpRGB</link> *rgba1,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *rgba2);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -763,7 +763,7 @@ they leave the alpha channel unspecified.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="GIMP-RGB-LUMINANCE:CAPS" role="macro"/>GIMP_RGB_LUMINANCE()</title>
-<indexterm><primary>GIMP_RGB_LUMINANCE</primary></indexterm><programlisting>#define     GIMP_RGB_LUMINANCE(r,g,b)</programlisting>
+<indexterm><primary>GIMP_RGB_LUMINANCE</primary></indexterm><programlisting>#define             GIMP_RGB_LUMINANCE(r,g,b)</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -802,7 +802,7 @@ they leave the alpha channel unspecified.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="GIMP-RGB-INTENSITY:CAPS" role="macro" condition="deprecated:"/>GIMP_RGB_INTENSITY()</title>
-<indexterm role="deprecated"><primary>GIMP_RGB_INTENSITY</primary></indexterm><programlisting>#define     GIMP_RGB_INTENSITY(r,g,b)</programlisting>
+<indexterm role="deprecated"><primary>GIMP_RGB_INTENSITY</primary></indexterm><programlisting>#define             GIMP_RGB_INTENSITY(r,g,b)</programlisting>
 <warning><para><literal>GIMP_RGB_INTENSITY</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This macro calculates the intensity of an RGB value based on
@@ -860,12 +860,12 @@ coefficients taken from the NTSC analog television standard.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-param-spec-rgb" role="function" condition="since:GIMP 2.4"/>gimp_param_spec_rgb ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_param_spec_rgb</primary></indexterm><programlisting><link linkend="GParamSpec">GParamSpec</link>* gimp_param_spec_rgb             (const <link linkend="gchar">gchar</link> *name,
-                                             const <link linkend="gchar">gchar</link> *nick,
-                                             const <link linkend="gchar">gchar</link> *blurb,
-                                             <link linkend="gboolean">gboolean</link> has_alpha,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *default_value,
-                                             <link linkend="GParamFlags">GParamFlags</link> flags);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_param_spec_rgb</primary></indexterm><programlisting><link linkend="GParamSpec">GParamSpec</link>*         gimp_param_spec_rgb                 (const <link linkend="gchar">gchar</link> *name,
+                                                         const <link linkend="gchar">gchar</link> *nick,
+                                                         const <link linkend="gchar">gchar</link> *blurb,
+                                                         <link linkend="gboolean">gboolean</link> has_alpha,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *default_value,
+                                                         <link linkend="GParamFlags">GParamFlags</link> flags);</programlisting>
 <para>
 Creates a param spec to hold an <link linkend="GimpRGB"><type>GimpRGB</type></link> value.
 See <link linkend="g-param-spec-internal"><function>g_param_spec_internal()</function></link> for more information.</para>
@@ -893,11 +893,11 @@ See <link linkend="g-param-spec-internal"><function>g_param_spec_internal()</fun
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a newly allocated <link linkend="GParamSpec"><type>GParamSpec</type></link> instance
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-param-spec-rgb-has-alpha" role="function" condition="since:GIMP 2.4"/>gimp_param_spec_rgb_has_alpha ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_param_spec_rgb_has_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_param_spec_rgb_has_alpha   (<link linkend="GParamSpec">GParamSpec</link> *pspec);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_param_spec_rgb_has_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_param_spec_rgb_has_alpha       (<link linkend="GParamSpec">GParamSpec</link> *pspec);</programlisting>
 <para>
 </para>
 <para>
@@ -909,7 +909,7 @@ See <link linkend="g-param-spec-internal"><function>g_param_spec_internal()</fun
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the alpha channel is relevant.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="GIMP-VALUE-HOLDS-RGB:CAPS" role="macro"/>GIMP_VALUE_HOLDS_RGB()</title>
@@ -926,8 +926,8 @@ See <link linkend="g-param-spec-internal"><function>g_param_spec_internal()</fun
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-value-get-rgb" role="function"/>gimp_value_get_rgb ()</title>
-<indexterm><primary>gimp_value_get_rgb</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_value_get_rgb              (const <link linkend="GValue">GValue</link> *value,
-                                             <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<indexterm><primary>gimp_value_get_rgb</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_value_get_rgb                  (const <link linkend="GValue">GValue</link> *value,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -942,8 +942,8 @@ See <link linkend="g-param-spec-internal"><function>g_param_spec_internal()</fun
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-value-set-rgb" role="function"/>gimp_value_set_rgb ()</title>
-<indexterm><primary>gimp_value_set_rgb</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_value_set_rgb              (<link linkend="GValue">GValue</link> *value,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
+<indexterm><primary>gimp_value_set_rgb</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_value_set_rgb                  (<link linkend="GValue">GValue</link> *value,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *rgb);</programlisting>
 <para>
 
 </para><variablelist role="params">

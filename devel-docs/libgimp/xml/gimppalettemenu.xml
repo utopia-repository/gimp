@@ -22,14 +22,13 @@
 
 
 
-<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-palette-select-widget-new">gimp_palette_select_widget_new</link>  (const <link linkend="gchar">gchar</link> *title,
-                                             const <link linkend="gchar">gchar</link> *palette_name,
-                                             <link linkend="GimpRunPaletteCallback">GimpRunPaletteCallback</link> callback,
-                                             <link linkend="gpointer">gpointer</link> data);
-<link linkend="void">void</link>        <link linkend="gimp-palette-select-widget-close">gimp_palette_select_widget_close</link>
-                                            (<link linkend="GtkWidget">GtkWidget</link> *widget);
-<link linkend="void">void</link>        <link linkend="gimp-palette-select-widget-set">gimp_palette_select_widget_set</link>  (<link linkend="GtkWidget">GtkWidget</link> *widget,
-                                             const <link linkend="gchar">gchar</link> *palette_name);
+<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-palette-select-widget-new">gimp_palette_select_widget_new</link>      (const <link linkend="gchar">gchar</link> *title,
+                                                         const <link linkend="gchar">gchar</link> *palette_name,
+                                                         <link linkend="GimpRunPaletteCallback">GimpRunPaletteCallback</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> data);
+<link linkend="void">void</link>                <link linkend="gimp-palette-select-widget-close">gimp_palette_select_widget_close</link>    (<link linkend="GtkWidget">GtkWidget</link> *widget);
+<link linkend="void">void</link>                <link linkend="gimp-palette-select-widget-set">gimp_palette_select_widget_set</link>      (<link linkend="GtkWidget">GtkWidget</link> *widget,
+                                                         const <link linkend="gchar">gchar</link> *palette_name);
 </synopsis>
 </refsynopsisdiv>
 
@@ -52,10 +51,10 @@ A widget for selecting palettes.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-palette-select-widget-new" role="function" condition="deprecated:|since:GIMP 2.2"/>gimp_palette_select_widget_new ()</title>
-<indexterm role="deprecated"><primary>gimp_palette_select_widget_new</primary></indexterm><indexterm role="GIMP 2.2"><primary>gimp_palette_select_widget_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_palette_select_widget_new  (const <link linkend="gchar">gchar</link> *title,
-                                             const <link linkend="gchar">gchar</link> *palette_name,
-                                             <link linkend="GimpRunPaletteCallback">GimpRunPaletteCallback</link> callback,
-                                             <link linkend="gpointer">gpointer</link> data);</programlisting>
+<indexterm role="deprecated"><primary>gimp_palette_select_widget_new</primary></indexterm><indexterm role="GIMP 2.2"><primary>gimp_palette_select_widget_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_palette_select_widget_new      (const <link linkend="gchar">gchar</link> *title,
+                                                         const <link linkend="gchar">gchar</link> *palette_name,
+                                                         <link linkend="GimpRunPaletteCallback">GimpRunPaletteCallback</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> data);</programlisting>
 <warning><para><literal>gimp_palette_select_widget_new</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 Creates a new <link linkend="GtkWidget"><type>GtkWidget</type></link> that completely controls the selection of
@@ -79,12 +78,11 @@ plug-in dialog.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A <link linkend="GtkWidget"><type>GtkWidget</type></link> that you can use in your UI.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-palette-select-widget-close" role="function" condition="deprecated:|since:GIMP 2.2"/>gimp_palette_select_widget_close ()</title>
-<indexterm role="deprecated"><primary>gimp_palette_select_widget_close</primary></indexterm><indexterm role="GIMP 2.2"><primary>gimp_palette_select_widget_close</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_palette_select_widget_close
-                                            (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
+<indexterm role="deprecated"><primary>gimp_palette_select_widget_close</primary></indexterm><indexterm role="GIMP 2.2"><primary>gimp_palette_select_widget_close</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_palette_select_widget_close    (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
 <warning><para><literal>gimp_palette_select_widget_close</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 Closes the popup window associated with <parameter>widget</parameter>.</para>
@@ -94,12 +92,12 @@ Closes the popup window associated with <parameter>widget</parameter>.</para>
 <varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
 <listitem><simpara> A palette select widget.
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-palette-select-widget-set" role="function" condition="deprecated:|since:GIMP 2.2"/>gimp_palette_select_widget_set ()</title>
-<indexterm role="deprecated"><primary>gimp_palette_select_widget_set</primary></indexterm><indexterm role="GIMP 2.2"><primary>gimp_palette_select_widget_set</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_palette_select_widget_set  (<link linkend="GtkWidget">GtkWidget</link> *widget,
-                                             const <link linkend="gchar">gchar</link> *palette_name);</programlisting>
+<indexterm role="deprecated"><primary>gimp_palette_select_widget_set</primary></indexterm><indexterm role="GIMP 2.2"><primary>gimp_palette_select_widget_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_palette_select_widget_set      (<link linkend="GtkWidget">GtkWidget</link> *widget,
+                                                         const <link linkend="gchar">gchar</link> *palette_name);</programlisting>
 <warning><para><literal>gimp_palette_select_widget_set</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 Sets the current palette for the palette select widget.  Calls the
@@ -114,7 +112,7 @@ callback function if one was supplied in the call to
 <varlistentry><term><parameter>palette_name</parameter>&nbsp;:</term>
 <listitem><simpara> Palette name to set; <link linkend="NULL:CAPS"><literal>NULL</literal></link> means no change.
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 
 </refsect1>

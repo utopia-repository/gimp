@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpEnumWidgets</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
 <link rel="prev" href="libgimpwidgets-GimpStock.html" title="GimpStock">
 <link rel="next" href="libgimpwidgets-GimpPropWidgets.html" title="GimpPropWidgets">
-<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -33,16 +33,16 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpwidgets-GimpPropWidgets.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2594929" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2573989" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2640249" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2648831" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpwidgets-GimpEnumWidgets"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2594929"></a><span class="refentrytitle">GimpEnumWidgets</span>
+<a name="id2573989"></a><span class="refentrytitle">GimpEnumWidgets</span>
 </h2>
 <p>GimpEnumWidgets</p>
 </td>
@@ -54,66 +54,64 @@
 
 
 
-GtkWidget*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new">gimp_enum_radio_box_new</a>         (GType enum_type,
-                                             GCallback callback,
-                                             gpointer callback_data,
-                                             GtkWidget **first_button);
-GtkWidget*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new-with-range">gimp_enum_radio_box_new_with_range</a>
-                                            (GType enum_type,
-                                             gint minimum,
-                                             gint maximum,
-                                             GCallback callback,
-                                             gpointer callback_data,
-                                             GtkWidget **first_button);
-GtkWidget*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-frame-new">gimp_enum_radio_frame_new</a>       (GType enum_type,
-                                             GtkWidget *label_widget,
-                                             GCallback callback,
-                                             gpointer callback_data,
-                                             GtkWidget **first_button);
-GtkWidget*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-frame-new-with-range">gimp_enum_radio_frame_new_with_range</a>
-                                            (GType enum_type,
-                                             gint minimum,
-                                             gint maximum,
-                                             GtkWidget *label_widget,
-                                             GCallback callback,
-                                             gpointer callback_data,
-                                             GtkWidget **first_button);
-GtkWidget*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new">gimp_enum_stock_box_new</a>         (GType enum_type,
-                                             const gchar *stock_prefix,
-                                             GtkIconSize icon_size,
-                                             GCallback callback,
-                                             gpointer callback_data,
-                                             GtkWidget **first_button);
-GtkWidget*  <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new-with-range">gimp_enum_stock_box_new_with_range</a>
-                                            (GType enum_type,
-                                             gint minimum,
-                                             gint maximum,
-                                             const gchar *stock_prefix,
-                                             GtkIconSize icon_size,
-                                             GCallback callback,
-                                             gpointer callback_data,
-                                             GtkWidget **first_button);
-void        <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-set-child-padding">gimp_enum_stock_box_set_child_padding</a>
-                                            (GtkWidget *stock_box,
-                                             gint xpad,
-                                             gint ypad);
+GtkWidget*          <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new">gimp_enum_radio_box_new</a>             (GType enum_type,
+                                                         GCallback callback,
+                                                         gpointer callback_data,
+                                                         GtkWidget **first_button);
+GtkWidget*          <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new-with-range">gimp_enum_radio_box_new_with_range</a>  (GType enum_type,
+                                                         gint minimum,
+                                                         gint maximum,
+                                                         GCallback callback,
+                                                         gpointer callback_data,
+                                                         GtkWidget **first_button);
+GtkWidget*          <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-frame-new">gimp_enum_radio_frame_new</a>           (GType enum_type,
+                                                         GtkWidget *label_widget,
+                                                         GCallback callback,
+                                                         gpointer callback_data,
+                                                         GtkWidget **first_button);
+GtkWidget*          <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-frame-new-with-range">gimp_enum_radio_frame_new_with_range</a>
+                                                        (GType enum_type,
+                                                         gint minimum,
+                                                         gint maximum,
+                                                         GtkWidget *label_widget,
+                                                         GCallback callback,
+                                                         gpointer callback_data,
+                                                         GtkWidget **first_button);
+GtkWidget*          <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new">gimp_enum_stock_box_new</a>             (GType enum_type,
+                                                         const gchar *stock_prefix,
+                                                         GtkIconSize icon_size,
+                                                         GCallback callback,
+                                                         gpointer callback_data,
+                                                         GtkWidget **first_button);
+GtkWidget*          <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new-with-range">gimp_enum_stock_box_new_with_range</a>  (GType enum_type,
+                                                         gint minimum,
+                                                         gint maximum,
+                                                         const gchar *stock_prefix,
+                                                         GtkIconSize icon_size,
+                                                         GCallback callback,
+                                                         gpointer callback_data,
+                                                         GtkWidget **first_button);
+void                <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-set-child-padding">gimp_enum_stock_box_set_child_padding</a>
+                                                        (GtkWidget *stock_box,
+                                                         gint xpad,
+                                                         gint ypad);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2640249"></a><h2>Description</h2>
+<a name="id2648831"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2640265"></a><h2>Details</h2>
+<a name="id2648846"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2640275"></a><h3>
+<a name="id2648857"></a><h3>
 <a name="gimp-enum-radio-box-new"></a>gimp_enum_radio_box_new ()</h3>
-<a class="indexterm" name="id2640289"></a><pre class="programlisting">GtkWidget*  gimp_enum_radio_box_new         (GType enum_type,
-                                             GCallback callback,
-                                             gpointer callback_data,
-                                             GtkWidget **first_button);</pre>
+<a class="indexterm" name="id2648871"></a><pre class="programlisting">GtkWidget*          gimp_enum_radio_box_new             (GType enum_type,
+                                                         GCallback callback,
+                                                         gpointer callback_data,
+                                                         GtkWidget **first_button);</pre>
 <p>
 Creates a new group of <span class="type">GtkRadioButtons</span> representing the enum
 values.  A group of radiobuttons is a good way to represent enums
@@ -154,20 +152,19 @@ with up to three or four values. Often it is better to use a
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2640470"></a><h3>
+<a name="id2649055"></a><h3>
 <a name="gimp-enum-radio-box-new-with-range"></a>gimp_enum_radio_box_new_with_range ()</h3>
-<a class="indexterm" name="id2640484"></a><pre class="programlisting">GtkWidget*  gimp_enum_radio_box_new_with_range
-                                            (GType enum_type,
-                                             gint minimum,
-                                             gint maximum,
-                                             GCallback callback,
-                                             gpointer callback_data,
-                                             GtkWidget **first_button);</pre>
+<a class="indexterm" name="id2659462"></a><pre class="programlisting">GtkWidget*          gimp_enum_radio_box_new_with_range  (GType enum_type,
+                                                         gint minimum,
+                                                         gint maximum,
+                                                         GCallback callback,
+                                                         gpointer callback_data,
+                                                         GtkWidget **first_button);</pre>
 <p>
 Just like <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new"><code class="function">gimp_enum_radio_box_new()</code></a>, this function creates a group
 of radio buttons, but it allows to limit the range of available
@@ -217,18 +214,18 @@ enum values.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2639223"></a><h3>
+<a name="id2659683"></a><h3>
 <a name="gimp-enum-radio-frame-new"></a>gimp_enum_radio_frame_new ()</h3>
-<a class="indexterm" name="id2639236"></a><pre class="programlisting">GtkWidget*  gimp_enum_radio_frame_new       (GType enum_type,
-                                             GtkWidget *label_widget,
-                                             GCallback callback,
-                                             gpointer callback_data,
-                                             GtkWidget **first_button);</pre>
+<a class="indexterm" name="id2659696"></a><pre class="programlisting">GtkWidget*          gimp_enum_radio_frame_new           (GType enum_type,
+                                                         GtkWidget *label_widget,
+                                                         GCallback callback,
+                                                         gpointer callback_data,
+                                                         GtkWidget **first_button);</pre>
 <p>
 Calls <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new"><code class="function">gimp_enum_radio_box_new()</code></a> and puts the resulting vbox into a
 <span class="type">GtkFrame</span>.</p>
@@ -273,21 +270,21 @@ Calls <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new"><cod
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2639440"></a><h3>
+<a name="id2647630"></a><h3>
 <a name="gimp-enum-radio-frame-new-with-range"></a>gimp_enum_radio_frame_new_with_range ()</h3>
-<a class="indexterm" name="id2639456"></a><pre class="programlisting">GtkWidget*  gimp_enum_radio_frame_new_with_range
-                                            (GType enum_type,
-                                             gint minimum,
-                                             gint maximum,
-                                             GtkWidget *label_widget,
-                                             GCallback callback,
-                                             gpointer callback_data,
-                                             GtkWidget **first_button);</pre>
+<a class="indexterm" name="id2647646"></a><pre class="programlisting">GtkWidget*          gimp_enum_radio_frame_new_with_range
+                                                        (GType enum_type,
+                                                         gint minimum,
+                                                         gint maximum,
+                                                         GtkWidget *label_widget,
+                                                         GCallback callback,
+                                                         gpointer callback_data,
+                                                         GtkWidget **first_button);</pre>
 <p>
 Calls <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new-with-range"><code class="function">gimp_enum_radio_box_new_with_range()</code></a> and puts the resulting
 vbox into a <span class="type">GtkFrame</span>.</p>
@@ -341,19 +338,19 @@ vbox into a <span class="type">GtkFrame</span>.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2639704"></a><h3>
+<a name="id2647898"></a><h3>
 <a name="gimp-enum-stock-box-new"></a>gimp_enum_stock_box_new ()</h3>
-<a class="indexterm" name="id2639717"></a><pre class="programlisting">GtkWidget*  gimp_enum_stock_box_new         (GType enum_type,
-                                             const gchar *stock_prefix,
-                                             GtkIconSize icon_size,
-                                             GCallback callback,
-                                             gpointer callback_data,
-                                             GtkWidget **first_button);</pre>
+<a class="indexterm" name="id2647911"></a><pre class="programlisting">GtkWidget*          gimp_enum_stock_box_new             (GType enum_type,
+                                                         const gchar *stock_prefix,
+                                                         GtkIconSize icon_size,
+                                                         GCallback callback,
+                                                         gpointer callback_data,
+                                                         GtkWidget **first_button);</pre>
 <p>
 Creates a horizontal box of radio buttons with stock icons.  The
 stock_id for each icon is created by appending the enum_value's
@@ -403,22 +400,21 @@ nick to the given <em class="parameter"><code>stock_prefix</code></em>.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645286"></a><h3>
+<a name="id2653353"></a><h3>
 <a name="gimp-enum-stock-box-new-with-range"></a>gimp_enum_stock_box_new_with_range ()</h3>
-<a class="indexterm" name="id2645300"></a><pre class="programlisting">GtkWidget*  gimp_enum_stock_box_new_with_range
-                                            (GType enum_type,
-                                             gint minimum,
-                                             gint maximum,
-                                             const gchar *stock_prefix,
-                                             GtkIconSize icon_size,
-                                             GCallback callback,
-                                             gpointer callback_data,
-                                             GtkWidget **first_button);</pre>
+<a class="indexterm" name="id2653367"></a><pre class="programlisting">GtkWidget*          gimp_enum_stock_box_new_with_range  (GType enum_type,
+                                                         gint minimum,
+                                                         gint maximum,
+                                                         const gchar *stock_prefix,
+                                                         GtkIconSize icon_size,
+                                                         GCallback callback,
+                                                         gpointer callback_data,
+                                                         GtkWidget **first_button);</pre>
 <p>
 Just like <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new"><code class="function">gimp_enum_stock_box_new()</code></a>, this function creates a group
 of radio buttons, but it allows to limit the range of available
@@ -478,17 +474,17 @@ enum values.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645561"></a><h3>
+<a name="id2653632"></a><h3>
 <a name="gimp-enum-stock-box-set-child-padding"></a>gimp_enum_stock_box_set_child_padding ()</h3>
-<a class="indexterm" name="id2645577"></a><pre class="programlisting">void        gimp_enum_stock_box_set_child_padding
-                                            (GtkWidget *stock_box,
-                                             gint xpad,
-                                             gint ypad);</pre>
+<a class="indexterm" name="id2653648"></a><pre class="programlisting">void                gimp_enum_stock_box_set_child_padding
+                                                        (GtkWidget *stock_box,
+                                                         gint xpad,
+                                                         gint ypad);</pre>
 <p>
 Sets the padding of all buttons in a box created by
 <a href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new"><code class="function">gimp_enum_stock_box_new()</code></a>.</p>
@@ -515,7 +511,7 @@ Sets the padding of all buttons in a box created by
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 </div>

@@ -22,63 +22,63 @@
 
 
 
-<link linkend="gint32">gint32</link>      <link linkend="gimp-layer-new">gimp_layer_new</link>                  (<link linkend="gint32">gint32</link> image_ID,
-                                             const <link linkend="gchar">gchar</link> *name,
-                                             <link linkend="gint">gint</link> width,
-                                             <link linkend="gint">gint</link> height,
-                                             <link linkend="GimpImageType">GimpImageType</link> type,
-                                             <link linkend="gdouble">gdouble</link> opacity,
-                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> mode);
-<link linkend="gint32">gint32</link>      <link linkend="gimp-layer-copy">gimp_layer_copy</link>                 (<link linkend="gint32">gint32</link> layer_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-scale">gimp_layer_scale</link>                (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gint">gint</link> new_width,
-                                             <link linkend="gint">gint</link> new_height,
-                                             <link linkend="gboolean">gboolean</link> local_origin);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-resize">gimp_layer_resize</link>               (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gint">gint</link> new_width,
-                                             <link linkend="gint">gint</link> new_height,
-                                             <link linkend="gint">gint</link> offx,
-                                             <link linkend="gint">gint</link> offy);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-resize-to-image-size">gimp_layer_resize_to_image_size</link> (<link linkend="gint32">gint32</link> layer_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-translate">gimp_layer_translate</link>            (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gint">gint</link> offx,
-                                             <link linkend="gint">gint</link> offy);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-add-alpha">gimp_layer_add_alpha</link>            (<link linkend="gint32">gint32</link> layer_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-set-offsets">gimp_layer_set_offsets</link>          (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gint">gint</link> offx,
-                                             <link linkend="gint">gint</link> offy);
-<link linkend="gint32">gint32</link>      <link linkend="gimp-layer-create-mask">gimp_layer_create_mask</link>          (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="GimpAddMaskType">GimpAddMaskType</link> mask_type);
-<link linkend="gint32">gint32</link>      <link linkend="gimp-layer-from-mask">gimp_layer_from_mask</link>            (<link linkend="gint32">gint32</link> mask_ID);
-<link linkend="gint32">gint32</link>      <link linkend="gimp-layer-get-mask">gimp_layer_get_mask</link>             (<link linkend="gint32">gint32</link> layer_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-add-mask">gimp_layer_add_mask</link>             (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gint32">gint32</link> mask_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-remove-mask">gimp_layer_remove_mask</link>          (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="GimpMaskApplyMode">GimpMaskApplyMode</link> mode);
-<link linkend="gint32">gint32</link>      <link linkend="gimp-layer-new-from-drawable">gimp_layer_new_from_drawable</link>    (<link linkend="gint32">gint32</link> drawable_ID,
-                                             <link linkend="gint32">gint32</link> dest_image_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-get-lock-alpha">gimp_layer_get_lock_alpha</link>       (<link linkend="gint32">gint32</link> layer_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-set-lock-alpha">gimp_layer_set_lock_alpha</link>       (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gboolean">gboolean</link> lock_alpha);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-get-preserve-trans">gimp_layer_get_preserve_trans</link>   (<link linkend="gint32">gint32</link> layer_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-set-preserve-trans">gimp_layer_set_preserve_trans</link>   (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gboolean">gboolean</link> preserve_trans);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-get-apply-mask">gimp_layer_get_apply_mask</link>       (<link linkend="gint32">gint32</link> layer_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-set-apply-mask">gimp_layer_set_apply_mask</link>       (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gboolean">gboolean</link> apply_mask);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-get-show-mask">gimp_layer_get_show_mask</link>        (<link linkend="gint32">gint32</link> layer_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-set-show-mask">gimp_layer_set_show_mask</link>        (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gboolean">gboolean</link> show_mask);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-get-edit-mask">gimp_layer_get_edit_mask</link>        (<link linkend="gint32">gint32</link> layer_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-set-edit-mask">gimp_layer_set_edit_mask</link>        (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gboolean">gboolean</link> edit_mask);
-<link linkend="gdouble">gdouble</link>     <link linkend="gimp-layer-get-opacity">gimp_layer_get_opacity</link>          (<link linkend="gint32">gint32</link> layer_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-set-opacity">gimp_layer_set_opacity</link>          (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gdouble">gdouble</link> opacity);
-<link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> <link linkend="gimp-layer-get-mode">gimp_layer_get_mode</link>    (<link linkend="gint32">gint32</link> layer_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-set-mode">gimp_layer_set_mode</link>             (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> mode);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-layer-is-floating-sel">gimp_layer_is_floating_sel</link>      (<link linkend="gint32">gint32</link> layer_ID);
+<link linkend="gint32">gint32</link>              <link linkend="gimp-layer-new">gimp_layer_new</link>                      (<link linkend="gint32">gint32</link> image_ID,
+                                                         const <link linkend="gchar">gchar</link> *name,
+                                                         <link linkend="gint">gint</link> width,
+                                                         <link linkend="gint">gint</link> height,
+                                                         <link linkend="GimpImageType">GimpImageType</link> type,
+                                                         <link linkend="gdouble">gdouble</link> opacity,
+                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> mode);
+<link linkend="gint32">gint32</link>              <link linkend="gimp-layer-copy">gimp_layer_copy</link>                     (<link linkend="gint32">gint32</link> layer_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-scale">gimp_layer_scale</link>                    (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gint">gint</link> new_width,
+                                                         <link linkend="gint">gint</link> new_height,
+                                                         <link linkend="gboolean">gboolean</link> local_origin);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-resize">gimp_layer_resize</link>                   (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gint">gint</link> new_width,
+                                                         <link linkend="gint">gint</link> new_height,
+                                                         <link linkend="gint">gint</link> offx,
+                                                         <link linkend="gint">gint</link> offy);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-resize-to-image-size">gimp_layer_resize_to_image_size</link>     (<link linkend="gint32">gint32</link> layer_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-translate">gimp_layer_translate</link>                (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gint">gint</link> offx,
+                                                         <link linkend="gint">gint</link> offy);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-add-alpha">gimp_layer_add_alpha</link>                (<link linkend="gint32">gint32</link> layer_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-set-offsets">gimp_layer_set_offsets</link>              (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gint">gint</link> offx,
+                                                         <link linkend="gint">gint</link> offy);
+<link linkend="gint32">gint32</link>              <link linkend="gimp-layer-create-mask">gimp_layer_create_mask</link>              (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="GimpAddMaskType">GimpAddMaskType</link> mask_type);
+<link linkend="gint32">gint32</link>              <link linkend="gimp-layer-from-mask">gimp_layer_from_mask</link>                (<link linkend="gint32">gint32</link> mask_ID);
+<link linkend="gint32">gint32</link>              <link linkend="gimp-layer-get-mask">gimp_layer_get_mask</link>                 (<link linkend="gint32">gint32</link> layer_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-add-mask">gimp_layer_add_mask</link>                 (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gint32">gint32</link> mask_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-remove-mask">gimp_layer_remove_mask</link>              (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="GimpMaskApplyMode">GimpMaskApplyMode</link> mode);
+<link linkend="gint32">gint32</link>              <link linkend="gimp-layer-new-from-drawable">gimp_layer_new_from_drawable</link>        (<link linkend="gint32">gint32</link> drawable_ID,
+                                                         <link linkend="gint32">gint32</link> dest_image_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-get-lock-alpha">gimp_layer_get_lock_alpha</link>           (<link linkend="gint32">gint32</link> layer_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-set-lock-alpha">gimp_layer_set_lock_alpha</link>           (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gboolean">gboolean</link> lock_alpha);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-get-preserve-trans">gimp_layer_get_preserve_trans</link>       (<link linkend="gint32">gint32</link> layer_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-set-preserve-trans">gimp_layer_set_preserve_trans</link>       (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gboolean">gboolean</link> preserve_trans);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-get-apply-mask">gimp_layer_get_apply_mask</link>           (<link linkend="gint32">gint32</link> layer_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-set-apply-mask">gimp_layer_set_apply_mask</link>           (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gboolean">gboolean</link> apply_mask);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-get-show-mask">gimp_layer_get_show_mask</link>            (<link linkend="gint32">gint32</link> layer_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-set-show-mask">gimp_layer_set_show_mask</link>            (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gboolean">gboolean</link> show_mask);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-get-edit-mask">gimp_layer_get_edit_mask</link>            (<link linkend="gint32">gint32</link> layer_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-set-edit-mask">gimp_layer_set_edit_mask</link>            (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gboolean">gboolean</link> edit_mask);
+<link linkend="gdouble">gdouble</link>             <link linkend="gimp-layer-get-opacity">gimp_layer_get_opacity</link>              (<link linkend="gint32">gint32</link> layer_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-set-opacity">gimp_layer_set_opacity</link>              (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gdouble">gdouble</link> opacity);
+<link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> <link linkend="gimp-layer-get-mode">gimp_layer_get_mode</link>                (<link linkend="gint32">gint32</link> layer_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-set-mode">gimp_layer_set_mode</link>                 (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> mode);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-is-floating-sel">gimp_layer_is_floating_sel</link>          (<link linkend="gint32">gint32</link> layer_ID);
 </synopsis>
 </refsynopsisdiv>
 
@@ -102,13 +102,13 @@ Operations on a single layer.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-layer-new" role="function"/>gimp_layer_new ()</title>
-<indexterm><primary>gimp_layer_new</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_layer_new                  (<link linkend="gint32">gint32</link> image_ID,
-                                             const <link linkend="gchar">gchar</link> *name,
-                                             <link linkend="gint">gint</link> width,
-                                             <link linkend="gint">gint</link> height,
-                                             <link linkend="GimpImageType">GimpImageType</link> type,
-                                             <link linkend="gdouble">gdouble</link> opacity,
-                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> mode);</programlisting>
+<indexterm><primary>gimp_layer_new</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_layer_new                      (<link linkend="gint32">gint32</link> image_ID,
+                                                         const <link linkend="gchar">gchar</link> *name,
+                                                         <link linkend="gint">gint</link> width,
+                                                         <link linkend="gint">gint</link> height,
+                                                         <link linkend="GimpImageType">GimpImageType</link> type,
+                                                         <link linkend="gdouble">gdouble</link> opacity,
+                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> mode);</programlisting>
 <para>
 Create a new layer.
 </para>
@@ -148,7 +148,7 @@ should be set with explicit procedure calls.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-copy" role="function"/>gimp_layer_copy ()</title>
-<indexterm><primary>gimp_layer_copy</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_layer_copy                 (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
+<indexterm><primary>gimp_layer_copy</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_layer_copy                     (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
 Copy a layer.
 </para>
@@ -169,10 +169,10 @@ before you add the new layer to the image.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-scale" role="function"/>gimp_layer_scale ()</title>
-<indexterm><primary>gimp_layer_scale</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_scale                (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gint">gint</link> new_width,
-                                             <link linkend="gint">gint</link> new_height,
-                                             <link linkend="gboolean">gboolean</link> local_origin);</programlisting>
+<indexterm><primary>gimp_layer_scale</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_scale                    (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gint">gint</link> new_width,
+                                                         <link linkend="gint">gint</link> new_height,
+                                                         <link linkend="gboolean">gboolean</link> local_origin);</programlisting>
 <para>
 Scale the layer to the specified extents.
 </para>
@@ -202,11 +202,11 @@ to an image.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-resize" role="function"/>gimp_layer_resize ()</title>
-<indexterm><primary>gimp_layer_resize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_resize               (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gint">gint</link> new_width,
-                                             <link linkend="gint">gint</link> new_height,
-                                             <link linkend="gint">gint</link> offx,
-                                             <link linkend="gint">gint</link> offy);</programlisting>
+<indexterm><primary>gimp_layer_resize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_resize                   (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gint">gint</link> new_width,
+                                                         <link linkend="gint">gint</link> new_height,
+                                                         <link linkend="gint">gint</link> offx,
+                                                         <link linkend="gint">gint</link> offy);</programlisting>
 <para>
 Resize the layer to the specified extents.
 </para>
@@ -238,7 +238,7 @@ operation only works if the layer has been added to an image.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-resize-to-image-size" role="function"/>gimp_layer_resize_to_image_size ()</title>
-<indexterm><primary>gimp_layer_resize_to_image_size</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_resize_to_image_size (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
+<indexterm><primary>gimp_layer_resize_to_image_size</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_resize_to_image_size     (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
 Resize a layer to the image size.
 </para>
@@ -256,9 +256,9 @@ are equal to the width and height of its image container.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-translate" role="function"/>gimp_layer_translate ()</title>
-<indexterm><primary>gimp_layer_translate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_translate            (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gint">gint</link> offx,
-                                             <link linkend="gint">gint</link> offy);</programlisting>
+<indexterm><primary>gimp_layer_translate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_translate                (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gint">gint</link> offx,
+                                                         <link linkend="gint">gint</link> offy);</programlisting>
 <para>
 Translate the layer by the specified offsets.
 </para>
@@ -286,7 +286,7 @@ the specified offsets.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-add-alpha" role="function"/>gimp_layer_add_alpha ()</title>
-<indexterm><primary>gimp_layer_add_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_add_alpha            (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
+<indexterm><primary>gimp_layer_add_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_add_alpha                (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
 Add an alpha channel to the layer if it doesn't already have one.
 </para>
@@ -308,9 +308,9 @@ and INDEXED to INDEXEDA.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-set-offsets" role="function"/>gimp_layer_set_offsets ()</title>
-<indexterm><primary>gimp_layer_set_offsets</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_set_offsets          (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gint">gint</link> offx,
-                                             <link linkend="gint">gint</link> offy);</programlisting>
+<indexterm><primary>gimp_layer_set_offsets</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_set_offsets              (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gint">gint</link> offx,
+                                                         <link linkend="gint">gint</link> offy);</programlisting>
 <para>
 Set the layer offsets.
 </para>
@@ -335,15 +335,15 @@ operation is valid only on layers which have been added to an image.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-create-mask" role="function"/>gimp_layer_create_mask ()</title>
-<indexterm><primary>gimp_layer_create_mask</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_layer_create_mask          (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="GimpAddMaskType">GimpAddMaskType</link> mask_type);</programlisting>
+<indexterm><primary>gimp_layer_create_mask</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_layer_create_mask              (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="GimpAddMaskType">GimpAddMaskType</link> mask_type);</programlisting>
 <para>
 Create a layer mask for the specified specified layer.
 </para>
 <para>
 This procedure creates a layer mask for the specified layer. Layer
 masks serve as an additional alpha channel for a layer. A number of
-ifferent types of masks are allowed for initialisation: completely
+different types of masks are allowed for initialisation: completely
 white masks (which will leave the layer fully visible), completely
 black masks (which will give the layer complete transparency, the
 layer's already existing alpha channel (which will leave the layer
@@ -365,7 +365,7 @@ to <link linkend="gimp-layer-add-mask"><function>gimp_layer_add_mask()</function
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-from-mask" role="function" condition="since:GIMP 2.2"/>gimp_layer_from_mask ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_layer_from_mask</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_layer_from_mask            (<link linkend="gint32">gint32</link> mask_ID);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_layer_from_mask</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_layer_from_mask                (<link linkend="gint32">gint32</link> mask_ID);</programlisting>
 <para>
 Get the specified mask's layer.
 </para>
@@ -381,11 +381,11 @@ exists.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The mask's layer.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-get-mask" role="function"/>gimp_layer_get_mask ()</title>
-<indexterm><primary>gimp_layer_get_mask</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_layer_get_mask             (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
+<indexterm><primary>gimp_layer_get_mask</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_layer_get_mask                 (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
 Get the specified layer's mask if it exists.
 </para>
@@ -403,8 +403,8 @@ exists.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-add-mask" role="function"/>gimp_layer_add_mask ()</title>
-<indexterm><primary>gimp_layer_add_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_add_mask             (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gint32">gint32</link> mask_ID);</programlisting>
+<indexterm><primary>gimp_layer_add_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_add_mask                 (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gint32">gint32</link> mask_ID);</programlisting>
 <para>
 Add a layer mask to the specified layer.
 </para>
@@ -413,8 +413,9 @@ This procedure adds a layer mask to the specified layer. Layer masks
 serve as an additional alpha channel for a layer. This procedure
 will fail if a number of prerequisites aren't met. The layer cannot
 already have a layer mask. The specified mask must exist and have
-the same dimensions as the layer. Both the mask and the layer must
-have been created for use with the specified image.</para>
+the same dimensions as the layer. The layer must have been created
+for use with the specified image and the mask must have been created
+with the procedure 'gimp-layer-create-mask'.</para>
 <para>
 
 </para><variablelist role="params">
@@ -429,8 +430,8 @@ have been created for use with the specified image.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-remove-mask" role="function"/>gimp_layer_remove_mask ()</title>
-<indexterm><primary>gimp_layer_remove_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_remove_mask          (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="GimpMaskApplyMode">GimpMaskApplyMode</link> mode);</programlisting>
+<indexterm><primary>gimp_layer_remove_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_remove_mask              (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="GimpMaskApplyMode">GimpMaskApplyMode</link> mode);</programlisting>
 <para>
 Remove the specified layer mask from the layer.
 </para>
@@ -451,8 +452,8 @@ the mask doesn't exist, an error is returned.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-new-from-drawable" role="function"/>gimp_layer_new_from_drawable ()</title>
-<indexterm><primary>gimp_layer_new_from_drawable</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_layer_new_from_drawable    (<link linkend="gint32">gint32</link> drawable_ID,
-                                             <link linkend="gint32">gint32</link> dest_image_ID);</programlisting>
+<indexterm><primary>gimp_layer_new_from_drawable</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_layer_new_from_drawable        (<link linkend="gint32">gint32</link> drawable_ID,
+                                                         <link linkend="gint32">gint32</link> dest_image_ID);</programlisting>
 <para>
 Create a new layer by copying an existing drawable.
 </para>
@@ -476,7 +477,7 @@ modes, and offsets should be set with explicit procedure calls.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-get-lock-alpha" role="function"/>gimp_layer_get_lock_alpha ()</title>
-<indexterm><primary>gimp_layer_get_lock_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_get_lock_alpha       (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
+<indexterm><primary>gimp_layer_get_lock_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_get_lock_alpha           (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
 Get the lock alpha channel setting of the specified layer.
 </para>
@@ -494,8 +495,8 @@ setting.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-set-lock-alpha" role="function"/>gimp_layer_set_lock_alpha ()</title>
-<indexterm><primary>gimp_layer_set_lock_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_set_lock_alpha       (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gboolean">gboolean</link> lock_alpha);</programlisting>
+<indexterm><primary>gimp_layer_set_lock_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_set_lock_alpha           (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gboolean">gboolean</link> lock_alpha);</programlisting>
 <para>
 Set the lock alpha channel setting of the specified layer.
 </para>
@@ -516,7 +517,7 @@ setting.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-get-preserve-trans" role="function" condition="deprecated:"/>gimp_layer_get_preserve_trans ()</title>
-<indexterm role="deprecated"><primary>gimp_layer_get_preserve_trans</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_get_preserve_trans   (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
+<indexterm role="deprecated"><primary>gimp_layer_get_preserve_trans</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_get_preserve_trans       (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <warning><para><literal>gimp_layer_get_preserve_trans</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-layer-get-lock-alpha"><function>gimp_layer_get_lock_alpha()</function></link> instead.</para>
@@ -531,8 +532,8 @@ This procedure is deprecated! Use <link linkend="gimp-layer-get-lock-alpha"><fun
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-set-preserve-trans" role="function" condition="deprecated:"/>gimp_layer_set_preserve_trans ()</title>
-<indexterm role="deprecated"><primary>gimp_layer_set_preserve_trans</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_set_preserve_trans   (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gboolean">gboolean</link> preserve_trans);</programlisting>
+<indexterm role="deprecated"><primary>gimp_layer_set_preserve_trans</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_set_preserve_trans       (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gboolean">gboolean</link> preserve_trans);</programlisting>
 <warning><para><literal>gimp_layer_set_preserve_trans</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-layer-set-lock-alpha"><function>gimp_layer_set_lock_alpha()</function></link> instead.</para>
@@ -550,7 +551,7 @@ This procedure is deprecated! Use <link linkend="gimp-layer-set-lock-alpha"><fun
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-get-apply-mask" role="function"/>gimp_layer_get_apply_mask ()</title>
-<indexterm><primary>gimp_layer_get_apply_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_get_apply_mask       (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
+<indexterm><primary>gimp_layer_get_apply_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_get_apply_mask           (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
 Get the apply mask setting of the specified layer.
 </para>
@@ -569,8 +570,8 @@ being composited with the layer's alpha channel.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-set-apply-mask" role="function"/>gimp_layer_set_apply_mask ()</title>
-<indexterm><primary>gimp_layer_set_apply_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_set_apply_mask       (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gboolean">gboolean</link> apply_mask);</programlisting>
+<indexterm><primary>gimp_layer_set_apply_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_set_apply_mask           (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gboolean">gboolean</link> apply_mask);</programlisting>
 <para>
 Set the apply mask setting of the specified layer.
 </para>
@@ -593,7 +594,7 @@ error.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-get-show-mask" role="function"/>gimp_layer_get_show_mask ()</title>
-<indexterm><primary>gimp_layer_get_show_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_get_show_mask        (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
+<indexterm><primary>gimp_layer_get_show_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_get_show_mask            (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
 Get the show mask setting of the specified layer.
 </para>
@@ -613,8 +614,8 @@ function returns an error.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-set-show-mask" role="function"/>gimp_layer_set_show_mask ()</title>
-<indexterm><primary>gimp_layer_set_show_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_set_show_mask        (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gboolean">gboolean</link> show_mask);</programlisting>
+<indexterm><primary>gimp_layer_set_show_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_set_show_mask            (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gboolean">gboolean</link> show_mask);</programlisting>
 <para>
 Set the show mask setting of the specified layer.
 </para>
@@ -637,7 +638,7 @@ error.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-get-edit-mask" role="function"/>gimp_layer_get_edit_mask ()</title>
-<indexterm><primary>gimp_layer_get_edit_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_get_edit_mask        (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
+<indexterm><primary>gimp_layer_get_edit_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_get_edit_mask            (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
 Get the edit mask setting of the specified layer.
 </para>
@@ -656,8 +657,8 @@ active, and not the layer.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-set-edit-mask" role="function"/>gimp_layer_set_edit_mask ()</title>
-<indexterm><primary>gimp_layer_set_edit_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_set_edit_mask        (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gboolean">gboolean</link> edit_mask);</programlisting>
+<indexterm><primary>gimp_layer_set_edit_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_set_edit_mask            (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gboolean">gboolean</link> edit_mask);</programlisting>
 <para>
 Set the edit mask setting of the specified layer.
 </para>
@@ -680,7 +681,7 @@ procedure will return an error.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-get-opacity" role="function"/>gimp_layer_get_opacity ()</title>
-<indexterm><primary>gimp_layer_get_opacity</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_layer_get_opacity          (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
+<indexterm><primary>gimp_layer_get_opacity</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_layer_get_opacity              (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
 Get the opacity of the specified layer.
 </para>
@@ -697,8 +698,8 @@ This procedure returns the specified layer's opacity.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-set-opacity" role="function"/>gimp_layer_set_opacity ()</title>
-<indexterm><primary>gimp_layer_set_opacity</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_set_opacity          (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gdouble">gdouble</link> opacity);</programlisting>
+<indexterm><primary>gimp_layer_set_opacity</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_set_opacity              (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gdouble">gdouble</link> opacity);</programlisting>
 <para>
 Set the opacity of the specified layer.
 </para>
@@ -718,7 +719,7 @@ This procedure sets the specified layer's opacity.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-get-mode" role="function"/>gimp_layer_get_mode ()</title>
-<indexterm><primary>gimp_layer_get_mode</primary></indexterm><programlisting><link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> gimp_layer_get_mode    (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
+<indexterm><primary>gimp_layer_get_mode</primary></indexterm><programlisting><link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> gimp_layer_get_mode                (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
 Get the combination mode of the specified layer.
 </para>
@@ -735,8 +736,8 @@ This procedure returns the specified layer's combination mode.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-set-mode" role="function"/>gimp_layer_set_mode ()</title>
-<indexterm><primary>gimp_layer_set_mode</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_set_mode             (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> mode);</programlisting>
+<indexterm><primary>gimp_layer_set_mode</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_set_mode                 (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> mode);</programlisting>
 <para>
 Set the combination mode of the specified layer.
 </para>
@@ -756,7 +757,7 @@ This procedure sets the specified layer's combination mode.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-is-floating-sel" role="function"/>gimp_layer_is_floating_sel ()</title>
-<indexterm><primary>gimp_layer_is_floating_sel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_is_floating_sel      (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
+<indexterm><primary>gimp_layer_is_floating_sel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_is_floating_sel          (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
 Is the specified layer a floating selection?
 </para>

@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpEnumComboBox</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="prev" href="GimpEnumStore.html" title="GimpEnumStore">
 <link rel="next" href="GimpEnumLabel.html" title="GimpEnumLabel">
-<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -33,22 +33,22 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpEnumLabel.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2587804" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2581703" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2556167" class="shortcut">Description</a>
+                  <a href="#id2563274" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2598705" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2607179" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2598773" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2607247" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2556137" class="shortcut">Properties</a></nobr></td></tr>
+                  <a href="#id2563245" class="shortcut">Properties</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpEnumComboBox"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2587804"></a><span class="refentrytitle">GimpEnumComboBox</span>
+<a name="id2581703"></a><span class="refentrytitle">GimpEnumComboBox</span>
 </h2>
 <p>GimpEnumComboBox</p>
 </td>
@@ -60,18 +60,17 @@
 
 
 
-            <a href="GimpEnumComboBox.html#GimpEnumComboBox-struct">GimpEnumComboBox</a>;
-GtkWidget*  <a href="GimpEnumComboBox.html#gimp-enum-combo-box-new">gimp_enum_combo_box_new</a>         (GType enum_type);
-GtkWidget*  <a href="GimpEnumComboBox.html#gimp-enum-combo-box-new-with-model">gimp_enum_combo_box_new_with_model</a>
-                                            (<a href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a> *enum_store);
-void        <a href="GimpEnumComboBox.html#gimp-enum-combo-box-set-stock-prefix">gimp_enum_combo_box_set_stock_prefix</a>
-                                            (<a href="GimpEnumComboBox.html" title="GimpEnumComboBox">GimpEnumComboBox</a> *combo_box,
-                                             const gchar *stock_prefix);
+                    <a href="GimpEnumComboBox.html#GimpEnumComboBox-struct">GimpEnumComboBox</a>;
+GtkWidget*          <a href="GimpEnumComboBox.html#gimp-enum-combo-box-new">gimp_enum_combo_box_new</a>             (GType enum_type);
+GtkWidget*          <a href="GimpEnumComboBox.html#gimp-enum-combo-box-new-with-model">gimp_enum_combo_box_new_with_model</a>  (<a href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a> *enum_store);
+void                <a href="GimpEnumComboBox.html#gimp-enum-combo-box-set-stock-prefix">gimp_enum_combo_box_set_stock_prefix</a>
+                                                        (<a href="GimpEnumComboBox.html" title="GimpEnumComboBox">GimpEnumComboBox</a> *combo_box,
+                                                         const gchar *stock_prefix);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2598705"></a><h2>Object Hierarchy</h2>
+<a name="id2607179"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -86,39 +85,39 @@ void        <a href="GimpEnumComboBox.html#gimp-enum-combo-box-set-stock-prefix"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2598773"></a><h2>Implemented Interfaces</h2>
+<a name="id2607247"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpEnumComboBox implements
  AtkImplementorIface,  GtkCellEditable and  GtkCellLayout.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2556137"></a><h2>Properties</h2>
+<a name="id2563245"></a><h2>Properties</h2>
 <pre class="synopsis">
 
-  "<a href="GimpEnumComboBox.html#GimpEnumComboBox--model">model</a>"                <a href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a>         : Read / Write
+  "<a href="GimpEnumComboBox.html#GimpEnumComboBox--model">model</a>"                    <a href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a>         : Read / Write
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2556167"></a><h2>Description</h2>
+<a name="id2563274"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2556183"></a><h2>Details</h2>
+<a name="id2563290"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2556194"></a><h3>
+<a name="id2563301"></a><h3>
 <a name="GimpEnumComboBox-struct"></a>GimpEnumComboBox</h3>
-<a class="indexterm" name="id2556205"></a><pre class="programlisting">typedef struct _GimpEnumComboBox GimpEnumComboBox;</pre>
+<a class="indexterm" name="id2563313"></a><pre class="programlisting">typedef struct _GimpEnumComboBox GimpEnumComboBox;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2556222"></a><h3>
+<a name="id2563329"></a><h3>
 <a name="gimp-enum-combo-box-new"></a>gimp_enum_combo_box_new ()</h3>
-<a class="indexterm" name="id2556235"></a><pre class="programlisting">GtkWidget*  gimp_enum_combo_box_new         (GType enum_type);</pre>
+<a class="indexterm" name="id2563343"></a><pre class="programlisting">GtkWidget*          gimp_enum_combo_box_new             (GType enum_type);</pre>
 <p>
 Creates a <span class="type">GtkComboBox</span> readily filled with all enum values from a
 given <em class="parameter"><code>enum_type</code></em>. The enum needs to be registered to the type
@@ -151,15 +150,14 @@ own <a href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEn
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598982"></a><h3>
+<a name="id2605041"></a><h3>
 <a name="gimp-enum-combo-box-new-with-model"></a>gimp_enum_combo_box_new_with_model ()</h3>
-<a class="indexterm" name="id2598996"></a><pre class="programlisting">GtkWidget*  gimp_enum_combo_box_new_with_model
-                                            (<a href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a> *enum_store);</pre>
+<a class="indexterm" name="id2605054"></a><pre class="programlisting">GtkWidget*          gimp_enum_combo_box_new_with_model  (<a href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a> *enum_store);</pre>
 <p>
 Creates a <span class="type">GtkComboBox</span> for the given <em class="parameter"><code>enum_store</code></em>.</p>
 <p>
@@ -181,16 +179,16 @@ Creates a <span class="type">GtkComboBox</span> for the given <em class="paramet
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599089"></a><h3>
+<a name="id2605380"></a><h3>
 <a name="gimp-enum-combo-box-set-stock-prefix"></a>gimp_enum_combo_box_set_stock_prefix ()</h3>
-<a class="indexterm" name="id2597142"></a><pre class="programlisting">void        gimp_enum_combo_box_set_stock_prefix
-                                            (<a href="GimpEnumComboBox.html" title="GimpEnumComboBox">GimpEnumComboBox</a> *combo_box,
-                                             const gchar *stock_prefix);</pre>
+<a class="indexterm" name="id2605395"></a><pre class="programlisting">void                gimp_enum_combo_box_set_stock_prefix
+                                                        (<a href="GimpEnumComboBox.html" title="GimpEnumComboBox">GimpEnumComboBox</a> *combo_box,
+                                                         const gchar *stock_prefix);</pre>
 <p>
 Attempts to create stock icons for all items in the <em class="parameter"><code>combo_box</code></em>. See
 <code class="function">gimp_enum_store_set_icons()</code> to find out what to use as <em class="parameter"><code>stock_prefix</code></em>.</p>
@@ -212,16 +210,16 @@ Attempts to create stock icons for all items in the <em class="parameter"><code>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2597250"></a><h2>Property Details</h2>
+<a name="id2605506"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2597261"></a><h3>
+<a name="id2605517"></a><h3>
 <a name="GimpEnumComboBox--model"></a>The "<code class="literal">model</code>" property</h3>
-<a class="indexterm" name="id2597274"></a><pre class="programlisting">  "model"                <a href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a>         : Read / Write</pre>
+<a class="indexterm" name="id2605530"></a><pre class="programlisting">  "model"                    <a href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a>         : Read / Write</pre>
 <p></p>
 </div>
 </div>

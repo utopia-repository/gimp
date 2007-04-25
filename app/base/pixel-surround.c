@@ -32,18 +32,18 @@
 
 struct _PixelSurround
 {
-  TileManager *mgr;               /*  tile manager to access tiles from   */
-  gint         bpp;               /*  bytes per pixel in tile manager     */
-  gint         w;                 /*  width of pixel surround area        */
-  gint         h;                 /*  height of pixel surround area       */
-  Tile        *tile;              /*  locked tile (may be NULL)           */
-  gint         tile_x;            /*  origin of locked tile               */
-  gint         tile_y;            /*  origin of locked tile               */
-  gint         tile_w;            /*  width of locked tile                */
-  gint         tile_h;            /*  height of locked tile               */
-  gint         rowstride;
-  guchar      *bg;
-  guchar      *buf;
+  TileManager *mgr;        /*  tile manager to access tiles from    */
+  gint         bpp;        /*  bytes per pixel in tile manager      */
+  gint         w;          /*  width of pixel surround area         */
+  gint         h;          /*  height of pixel surround area        */
+  Tile        *tile;       /*  locked tile (may be NULL)            */
+  gint         tile_x;     /*  origin of locked tile                */
+  gint         tile_y;     /*  origin of locked tile                */
+  gint         tile_w;     /*  width of locked tile                 */
+  gint         tile_h;     /*  height of locked tile                */
+  gint         rowstride;  /*  rowstride of buffers                 */
+  guchar      *bg;         /*  buffer filled with background color  */
+  guchar      *buf;        /*  buffer used for combining tile data  */
 };
 
 
@@ -113,7 +113,7 @@ pixel_surround_get_data (PixelSurround *surround,
 
 /**
  * pixel_surround_new:
- * @tm:     tile manager
+ * @tiles:  tile manager
  * @width:  width of surround region
  * @height: height of surround region
  * @bg:     color to use for pixels that are not covered by the tile manager

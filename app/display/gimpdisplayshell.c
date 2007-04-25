@@ -220,6 +220,8 @@ gimp_display_shell_init (GimpDisplayShell *shell)
 
   shell->offset_x               = 0;
   shell->offset_y               = 0;
+  shell->scale_x                = 1.0;
+  shell->scale_y                = 1.0;
 
   shell->last_scale             = 0.0;
   shell->last_scale_time        = 0;
@@ -322,6 +324,11 @@ gimp_display_shell_init (GimpDisplayShell *shell)
                                               GDK_FOCUS_CHANGE_MASK        |
                                               GDK_VISIBILITY_NOTIFY_MASK   |
                                               GDK_SCROLL_MASK));
+
+  /*  zoom model callback  */
+  g_signal_connect_swapped (shell->zoom, "zoomed",
+                            G_CALLBACK (gimp_display_shell_scale_changed),
+                            shell);
 
   /*  active display callback  */
   g_signal_connect (shell, "button-press-event",
@@ -624,8 +631,6 @@ gimp_display_shell_new (GimpDisplay     *display,
                         "unit",    unit,
                         NULL);
 
-  gimp_zoom_model_zoom (shell->zoom, GIMP_ZOOM_TO, scale);
-
   shell->display = display;
 
   image_width  = display->image->width;
@@ -639,6 +644,8 @@ gimp_display_shell_new (GimpDisplay     *display,
                     G_OBJECT (shell->options), 0);
   gimp_config_sync (G_OBJECT (display_config->default_fullscreen_view),
                     G_OBJECT (shell->fullscreen_options), 0);
+
+  gimp_zoom_model_zoom (shell->zoom, GIMP_ZOOM_TO, scale);
 
   /* adjust the initial scale -- so that window fits on screen the 75%
    * value is the same as in gimp_display_shell_shrink_wrap. It
@@ -854,7 +861,7 @@ gimp_display_shell_new (GimpDisplay     *display,
                            _("Access the image menu"),
                            GIMP_HELP_IMAGE_WINDOW_ORIGIN);
 
-  shell->canvas = gimp_canvas_new ();
+  shell->canvas = gimp_canvas_new (shell->display->image->gimp);
 
   gimp_display_shell_selection_init (shell);
 
@@ -1094,6 +1101,26 @@ gimp_display_shell_reconnect (GimpDisplayShell *shell)
   gimp_display_shell_scale_setup (shell);
   gimp_display_shell_expose_full (shell);
   gimp_display_shell_scaled (shell);
+}
+
+/*
+ * We used to calculate the scale factor in the SCALEFACTOR_X() and
+ * SCALEFACTOR_Y() macros. But since these are rather frequently
+ * called and the values rarely change, we now store them in the
+ * shell and call this function whenever they need to be recalculated.
+ */
+void
+gimp_display_shell_scale_changed (GimpDisplayShell *shell)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  shell->scale_x = (gimp_zoom_model_get_factor (shell->zoom)
+                    * SCREEN_XRES (shell)
+                    / shell->display->image->xresolution);
+
+  shell->scale_y = (gimp_zoom_model_get_factor (shell->zoom)
+                    * SCREEN_YRES (shell)
+                    / shell->display->image->yresolution);
 }
 
 void

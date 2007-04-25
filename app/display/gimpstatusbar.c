@@ -299,12 +299,12 @@ gimp_statusbar_progress_end (GimpProgress *progress)
     {
       GtkWidget *bar = statusbar->progressbar;
 
+      statusbar->progress_active = FALSE;
+
       gimp_statusbar_pop (statusbar, "progress");
       gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (bar), 0.0);
       gtk_widget_set_sensitive (statusbar->cancel_button, FALSE);
       gtk_widget_hide (statusbar->cancel_button);
-
-      statusbar->progress_active = FALSE;
     }
 }
 
@@ -395,7 +395,7 @@ gimp_statusbar_progress_message (GimpProgress        *progress,
     return FALSE;
 
   gimp_statusbar_push_temp (statusbar,
-                            gimp_get_message_stock_id (severity), message);
+                            gimp_get_message_stock_id (severity), "%s", message);
 
   return TRUE;
 }
@@ -416,6 +416,16 @@ gimp_statusbar_update (GimpStatusbar *statusbar)
   if (statusbar->messages)
     {
       GimpStatusbarMsg *msg = statusbar->messages->data;
+
+      /*  only allow progress messages while the progress is active  */
+      if (statusbar->progress_active)
+        {
+          guint context_id = gimp_statusbar_get_context_id (statusbar,
+                                                            "progress");
+ 
+          if (context_id != msg->context_id)
+            return;
+        }
 
       text = msg->text;
     }
@@ -833,9 +843,9 @@ gimp_statusbar_pop_temp (GimpStatusbar *statusbar)
 }
 
 void
-gimp_statusbar_set_cursor (GimpStatusbar *statusbar,
-                           gdouble        x,
-                           gdouble        y)
+gimp_statusbar_update_cursor (GimpStatusbar *statusbar,
+                              gdouble        x,
+                              gdouble        y)
 {
   GimpDisplayShell *shell;
   GtkTreeModel     *model;
@@ -1024,7 +1034,7 @@ gimp_statusbar_shell_scaled (GimpDisplayShell *shell,
                   _gimp_unit_get_digits (image->gimp, shell->unit));
     }
 
-  gimp_statusbar_set_cursor (statusbar, - image->width, - image->height);
+  gimp_statusbar_update_cursor (statusbar, -image->width, -image->height);
 
   text = gtk_label_get_text (GTK_LABEL (statusbar->cursor_label));
 

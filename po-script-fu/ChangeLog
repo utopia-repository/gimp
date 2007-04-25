@@ -1,3 +1,70 @@
+2007-04-21  Stéphane Raimbault  <stephane.raimbault@gmail.com>
+
+	* fr.po: Fixed French translation.
+
+2007-04-18  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by Djihed Afifi.
+
+2007-04-18  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by Anas Husseini.
+
+2007-04-13  Alexander Shopov  <ash@contact.bg>
+
+	* bg.po: Updated Bulgarian translation by
+	Victor Dachev <vdachev@gmail.com>
+
+2007-04-10  Sven Neumann  <sven@gimp.org>
+
+	* sv.po: fix for bug #330532.
+
+2007-04-10  Sven Neumann  <sven@gimp.org>
+
+	* de.po: bug #392051.
+
+2007-04-06  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Fixed a Czech string.
+
+2007-04-06  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-04-5  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by Djihed Afifi.
+
+2007-03-28  Pema Geyleg <pema.geyleg@gmail.com>
+
+	* dz.po: Updated dzongkha translation.
+
+2007-03-27  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	* hu.po: Translation updated by Árpád Bíró.
+
+2007-03-25  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2007-03-21  Stéphane Raimbault  <stephane.raimbault@gmail.com>
+
+	* fr.po: Updated French translation by Laurent Monin and Stéphane
+	Raimbault.
+
+2007-03-20  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+	Joaquim Perez <noguer@gmail.com>.
+
+2007-03-19  Claudio Saavedra  <csaavedra@alumnos.utalca.cl>
+
+	* es.po: Updated Spanish translation by Francisco Vila.
+
+2007-03-15  Michael Natterer  <mitch@gimp.org>
+
+	* POTFILES.in: add reverse-layers.scm
+
 2007-03-06  Žygimantas Beručka  <zygis@gnome.org>
 
 	* lt.po: Updated Lithuanian translation.

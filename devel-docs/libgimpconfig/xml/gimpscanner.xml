@@ -22,32 +22,32 @@
 
 
 
-<link linkend="GScanner">GScanner</link>*   <link linkend="gimp-scanner-new-file">gimp_scanner_new_file</link>           (const <link linkend="gchar">gchar</link> *filename,
-                                             <link linkend="GError">GError</link> **error);
-<link linkend="GScanner">GScanner</link>*   <link linkend="gimp-scanner-new-string">gimp_scanner_new_string</link>         (const <link linkend="gchar">gchar</link> *text,
-                                             <link linkend="gint">gint</link> text_len,
-                                             <link linkend="GError">GError</link> **error);
-<link linkend="void">void</link>        <link linkend="gimp-scanner-destroy">gimp_scanner_destroy</link>            (<link linkend="GScanner">GScanner</link> *scanner);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-scanner-parse-token">gimp_scanner_parse_token</link>        (<link linkend="GScanner">GScanner</link> *scanner,
-                                             <link linkend="GTokenType">GTokenType</link> token);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-scanner-parse-identifier">gimp_scanner_parse_identifier</link>   (<link linkend="GScanner">GScanner</link> *scanner,
-                                             const <link linkend="gchar">gchar</link> *identifier);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-scanner-parse-string">gimp_scanner_parse_string</link>       (<link linkend="GScanner">GScanner</link> *scanner,
-                                             <link linkend="gchar">gchar</link> **dest);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-scanner-parse-string-no-validate">gimp_scanner_parse_string_no_validate</link>
-                                            (<link linkend="GScanner">GScanner</link> *scanner,
-                                             <link linkend="gchar">gchar</link> **dest);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-scanner-parse-data">gimp_scanner_parse_data</link>         (<link linkend="GScanner">GScanner</link> *scanner,
-                                             <link linkend="gint">gint</link> length,
-                                             <link linkend="guint8">guint8</link> **dest);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-scanner-parse-int">gimp_scanner_parse_int</link>          (<link linkend="GScanner">GScanner</link> *scanner,
-                                             <link linkend="gint">gint</link> *dest);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-scanner-parse-float">gimp_scanner_parse_float</link>        (<link linkend="GScanner">GScanner</link> *scanner,
-                                             <link linkend="gdouble">gdouble</link> *dest);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-scanner-parse-color">gimp_scanner_parse_color</link>        (<link linkend="GScanner">GScanner</link> *scanner,
-                                             <link linkend="GimpRGB">GimpRGB</link> *dest);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-scanner-parse-matrix2">gimp_scanner_parse_matrix2</link>      (<link linkend="GScanner">GScanner</link> *scanner,
-                                             <link linkend="GimpMatrix2">GimpMatrix2</link> *dest);
+<link linkend="GScanner">GScanner</link>*           <link linkend="gimp-scanner-new-file">gimp_scanner_new_file</link>               (const <link linkend="gchar">gchar</link> *filename,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="GScanner">GScanner</link>*           <link linkend="gimp-scanner-new-string">gimp_scanner_new_string</link>             (const <link linkend="gchar">gchar</link> *text,
+                                                         <link linkend="gint">gint</link> text_len,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="void">void</link>                <link linkend="gimp-scanner-destroy">gimp_scanner_destroy</link>                (<link linkend="GScanner">GScanner</link> *scanner);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-scanner-parse-token">gimp_scanner_parse_token</link>            (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         <link linkend="GTokenType">GTokenType</link> token);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-scanner-parse-identifier">gimp_scanner_parse_identifier</link>       (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         const <link linkend="gchar">gchar</link> *identifier);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-scanner-parse-string">gimp_scanner_parse_string</link>           (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         <link linkend="gchar">gchar</link> **dest);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-scanner-parse-string-no-validate">gimp_scanner_parse_string_no_validate</link>
+                                                        (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         <link linkend="gchar">gchar</link> **dest);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-scanner-parse-data">gimp_scanner_parse_data</link>             (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         <link linkend="gint">gint</link> length,
+                                                         <link linkend="guint8">guint8</link> **dest);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-scanner-parse-int">gimp_scanner_parse_int</link>              (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         <link linkend="gint">gint</link> *dest);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-scanner-parse-float">gimp_scanner_parse_float</link>            (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         <link linkend="gdouble">gdouble</link> *dest);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-scanner-parse-color">gimp_scanner_parse_color</link>            (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *dest);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-scanner-parse-matrix2">gimp_scanner_parse_matrix2</link>          (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         <link linkend="GimpMatrix2">GimpMatrix2</link> *dest);
 </synopsis>
 </refsynopsisdiv>
 
@@ -70,8 +70,8 @@
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-scanner-new-file" role="function" condition="since:GIMP 2.4"/>gimp_scanner_new_file ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_scanner_new_file</primary></indexterm><programlisting><link linkend="GScanner">GScanner</link>*   gimp_scanner_new_file           (const <link linkend="gchar">gchar</link> *filename,
-                                             <link linkend="GError">GError</link> **error);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_scanner_new_file</primary></indexterm><programlisting><link linkend="GScanner">GScanner</link>*           gimp_scanner_new_file               (const <link linkend="gchar">gchar</link> *filename,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
 <para>
 </para>
 <para>
@@ -86,13 +86,13 @@
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-scanner-new-string" role="function" condition="since:GIMP 2.4"/>gimp_scanner_new_string ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_scanner_new_string</primary></indexterm><programlisting><link linkend="GScanner">GScanner</link>*   gimp_scanner_new_string         (const <link linkend="gchar">gchar</link> *text,
-                                             <link linkend="gint">gint</link> text_len,
-                                             <link linkend="GError">GError</link> **error);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_scanner_new_string</primary></indexterm><programlisting><link linkend="GScanner">GScanner</link>*           gimp_scanner_new_string             (const <link linkend="gchar">gchar</link> *text,
+                                                         <link linkend="gint">gint</link> text_len,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
 <para>
 </para>
 <para>
@@ -110,11 +110,11 @@
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-scanner-destroy" role="function" condition="since:GIMP 2.4"/>gimp_scanner_destroy ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_scanner_destroy</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_scanner_destroy            (<link linkend="GScanner">GScanner</link> *scanner);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_scanner_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_scanner_destroy                (<link linkend="GScanner">GScanner</link> *scanner);</programlisting>
 <para>
 </para>
 <para>
@@ -123,12 +123,12 @@
 <varlistentry><term><parameter>scanner</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-scanner-parse-token" role="function" condition="since:GIMP 2.4"/>gimp_scanner_parse_token ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_token</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_scanner_parse_token        (<link linkend="GScanner">GScanner</link> *scanner,
-                                             <link linkend="GTokenType">GTokenType</link> token);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_token</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_scanner_parse_token            (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         <link linkend="GTokenType">GTokenType</link> token);</programlisting>
 <para>
 </para>
 <para>
@@ -143,12 +143,12 @@
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-scanner-parse-identifier" role="function" condition="since:GIMP 2.4"/>gimp_scanner_parse_identifier ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_identifier</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_scanner_parse_identifier   (<link linkend="GScanner">GScanner</link> *scanner,
-                                             const <link linkend="gchar">gchar</link> *identifier);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_identifier</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_scanner_parse_identifier       (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         const <link linkend="gchar">gchar</link> *identifier);</programlisting>
 <para>
 </para>
 <para>
@@ -163,12 +163,12 @@
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-scanner-parse-string" role="function" condition="since:GIMP 2.4"/>gimp_scanner_parse_string ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_string</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_scanner_parse_string       (<link linkend="GScanner">GScanner</link> *scanner,
-                                             <link linkend="gchar">gchar</link> **dest);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_string</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_scanner_parse_string           (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         <link linkend="gchar">gchar</link> **dest);</programlisting>
 <para>
 </para>
 <para>
@@ -183,13 +183,13 @@
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-scanner-parse-string-no-validate" role="function" condition="since:GIMP 2.4"/>gimp_scanner_parse_string_no_validate ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_string_no_validate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_scanner_parse_string_no_validate
-                                            (<link linkend="GScanner">GScanner</link> *scanner,
-                                             <link linkend="gchar">gchar</link> **dest);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_string_no_validate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_scanner_parse_string_no_validate
+                                                        (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         <link linkend="gchar">gchar</link> **dest);</programlisting>
 <para>
 </para>
 <para>
@@ -204,13 +204,13 @@
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-scanner-parse-data" role="function" condition="since:GIMP 2.4"/>gimp_scanner_parse_data ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_data</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_scanner_parse_data         (<link linkend="GScanner">GScanner</link> *scanner,
-                                             <link linkend="gint">gint</link> length,
-                                             <link linkend="guint8">guint8</link> **dest);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_data</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_scanner_parse_data             (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         <link linkend="gint">gint</link> length,
+                                                         <link linkend="guint8">guint8</link> **dest);</programlisting>
 <para>
 </para>
 <para>
@@ -228,12 +228,12 @@
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-scanner-parse-int" role="function" condition="since:GIMP 2.4"/>gimp_scanner_parse_int ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_int</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_scanner_parse_int          (<link linkend="GScanner">GScanner</link> *scanner,
-                                             <link linkend="gint">gint</link> *dest);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_int</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_scanner_parse_int              (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         <link linkend="gint">gint</link> *dest);</programlisting>
 <para>
 </para>
 <para>
@@ -248,12 +248,12 @@
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-scanner-parse-float" role="function" condition="since:GIMP 2.4"/>gimp_scanner_parse_float ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_float</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_scanner_parse_float        (<link linkend="GScanner">GScanner</link> *scanner,
-                                             <link linkend="gdouble">gdouble</link> *dest);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_float</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_scanner_parse_float            (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         <link linkend="gdouble">gdouble</link> *dest);</programlisting>
 <para>
 </para>
 <para>
@@ -268,12 +268,12 @@
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-scanner-parse-color" role="function" condition="since:GIMP 2.4"/>gimp_scanner_parse_color ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_scanner_parse_color        (<link linkend="GScanner">GScanner</link> *scanner,
-                                             <link linkend="GimpRGB">GimpRGB</link> *dest);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_scanner_parse_color            (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *dest);</programlisting>
 <para>
 </para>
 <para>
@@ -288,12 +288,12 @@
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-scanner-parse-matrix2" role="function" condition="since:GIMP 2.4"/>gimp_scanner_parse_matrix2 ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_matrix2</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_scanner_parse_matrix2      (<link linkend="GScanner">GScanner</link> *scanner,
-                                             <link linkend="GimpMatrix2">GimpMatrix2</link> *dest);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_scanner_parse_matrix2</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_scanner_parse_matrix2          (<link linkend="GScanner">GScanner</link> *scanner,
+                                                         <link linkend="GimpMatrix2">GimpMatrix2</link> *dest);</programlisting>
 <para>
 </para>
 <para>
@@ -308,7 +308,7 @@
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 
 </refsect1>

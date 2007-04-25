@@ -1,3 +1,11 @@
+gimp (2.3.16-1) experimental; urgency=low
+
+  * New upstream release
+  * Remove XOR override, since there's now a configuration option to change it
+  * Add XS-Vcs-Svn and XS-Vcs-Browser headers for the subversion repository
+
+ -- Ari Pollak <ari@debian.org>  Wed, 25 Apr 2007 17:30:54 -0400
+
 gimp (2.3.15-1) experimental; urgency=low
 
   * New upstream release

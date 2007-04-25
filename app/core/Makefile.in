@@ -64,8 +64,9 @@ am__objects_2 = gimp.$(OBJEXT) gimp-contexts.$(OBJEXT) \
 	gimp-transform-resize.$(OBJEXT) gimp-transform-utils.$(OBJEXT) \
 	gimp-units.$(OBJEXT) gimp-user-install.$(OBJEXT) \
 	gimp-utils.$(OBJEXT) gimparea.$(OBJEXT) gimpbrush.$(OBJEXT) \
-	gimpbrush-load.$(OBJEXT) gimpbrushclipboard.$(OBJEXT) \
-	gimpbrushgenerated.$(OBJEXT) gimpbrushgenerated-load.$(OBJEXT) \
+	gimpbrush-load.$(OBJEXT) gimpbrush-scale.$(OBJEXT) \
+	gimpbrushclipboard.$(OBJEXT) gimpbrushgenerated.$(OBJEXT) \
+	gimpbrushgenerated-load.$(OBJEXT) \
 	gimpbrushgenerated-save.$(OBJEXT) gimpbrushpipe.$(OBJEXT) \
 	gimpbrushpipe-load.$(OBJEXT) gimpbuffer.$(OBJEXT) \
 	gimpchannel.$(OBJEXT) gimpchannel-combine.$(OBJEXT) \
@@ -364,6 +365,7 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MMX_EXTRA_CFLAGS = @MMX_EXTRA_CFLAGS@
 MNG = @MNG@
 MSGFMT = @MSGFMT@
+MSGFMT_OPTS = @MSGFMT_OPTS@
 MS_LIB_AVAILABLE_FALSE = @MS_LIB_AVAILABLE_FALSE@
 MS_LIB_AVAILABLE_TRUE = @MS_LIB_AVAILABLE_TRUE@
 OBJDUMP = @OBJDUMP@
@@ -397,8 +399,6 @@ POPPLER_LIBS = @POPPLER_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
-PRINT_CFLAGS = @PRINT_CFLAGS@
-PRINT_LIBS = @PRINT_LIBS@
 PSP = @PSP@
 PYBIN_PATH = @PYBIN_PATH@
 PYGIMP_EXTRA_CFLAGS = @PYGIMP_EXTRA_CFLAGS@
@@ -566,6 +566,8 @@ libappcore_a_sources = \
 	gimpbrush-header.h		\
 	gimpbrush-load.c		\
 	gimpbrush-load.h		\
+	gimpbrush-scale.c		\
+	gimpbrush-scale.h		\
 	gimpbrushclipboard.c		\
 	gimpbrushclipboard.h		\
 	gimpbrushgenerated.c		\
@@ -891,6 +893,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimparea.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrush-load.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrush-scale.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrush.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushclipboard.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushgenerated-load.Po@am__quote@

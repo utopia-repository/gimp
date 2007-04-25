@@ -22,30 +22,28 @@
 
 
 
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-thumb-init">gimp_thumb_init</link>                 (const <link linkend="gchar">gchar</link> *creator,
-                                             const <link linkend="gchar">gchar</link> *thumb_basedir);
-<link linkend="gchar">gchar</link>*      <link linkend="gimp-thumb-find-thumb">gimp_thumb_find_thumb</link>           (const <link linkend="gchar">gchar</link> *uri,
-                                             <link linkend="GimpThumbSize">GimpThumbSize</link> *size);
-<link linkend="GimpThumbFileType">GimpThumbFileType</link> <link linkend="gimp-thumb-file-test">gimp_thumb_file_test</link>      (const <link linkend="gchar">gchar</link> *filename,
-                                             <link linkend="gint64">gint64</link> *mtime,
-                                             <link linkend="gint64">gint64</link> *size,
-                                             <link linkend="gint">gint</link> *err_no);
-<link linkend="gchar">gchar</link>*      <link linkend="gimp-thumb-name-from-uri">gimp_thumb_name_from_uri</link>        (const <link linkend="gchar">gchar</link> *uri,
-                                             <link linkend="GimpThumbSize">GimpThumbSize</link> size);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-thumb-ensure-thumb-dir">gimp_thumb_ensure_thumb_dir</link>     (<link linkend="GimpThumbSize">GimpThumbSize</link> size,
-                                             <link linkend="GError">GError</link> **error);
-const <link linkend="gchar">gchar</link>* <link linkend="gimp-thumb-get-thumb-dir">gimp_thumb_get_thumb_dir</link>       (<link linkend="GimpThumbSize">GimpThumbSize</link> size);
-<link linkend="void">void</link>        <link linkend="gimp-thumbs-delete-for-uri">gimp_thumbs_delete_for_uri</link>      (const <link linkend="gchar">gchar</link> *uri);
-<link linkend="gchar">gchar</link>*      <link linkend="gimp-thumb-name-from-uri-local">gimp_thumb_name_from_uri_local</link>  (const <link linkend="gchar">gchar</link> *uri,
-                                             <link linkend="GimpThumbSize">GimpThumbSize</link> size);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-thumb-ensure-thumb-dir-local">gimp_thumb_ensure_thumb_dir_local</link>
-                                            (const <link linkend="gchar">gchar</link> *dirname,
-                                             <link linkend="GimpThumbSize">GimpThumbSize</link> size,
-                                             <link linkend="GError">GError</link> **error);
-<link linkend="gchar">gchar</link>*      <link linkend="gimp-thumb-get-thumb-dir-local">gimp_thumb_get_thumb_dir_local</link>  (const <link linkend="gchar">gchar</link> *dirname,
-                                             <link linkend="GimpThumbSize">GimpThumbSize</link> size);
-<link linkend="void">void</link>        <link linkend="gimp-thumbs-delete-for-uri-local">gimp_thumbs_delete_for_uri_local</link>
-                                            (const <link linkend="gchar">gchar</link> *uri);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-thumb-init">gimp_thumb_init</link>                     (const <link linkend="gchar">gchar</link> *creator,
+                                                         const <link linkend="gchar">gchar</link> *thumb_basedir);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-thumb-find-thumb">gimp_thumb_find_thumb</link>               (const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="GimpThumbSize">GimpThumbSize</link> *size);
+<link linkend="GimpThumbFileType">GimpThumbFileType</link>   <link linkend="gimp-thumb-file-test">gimp_thumb_file_test</link>                (const <link linkend="gchar">gchar</link> *filename,
+                                                         <link linkend="gint64">gint64</link> *mtime,
+                                                         <link linkend="gint64">gint64</link> *size,
+                                                         <link linkend="gint">gint</link> *err_no);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-thumb-name-from-uri">gimp_thumb_name_from_uri</link>            (const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="GimpThumbSize">GimpThumbSize</link> size);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-thumb-ensure-thumb-dir">gimp_thumb_ensure_thumb_dir</link>         (<link linkend="GimpThumbSize">GimpThumbSize</link> size,
+                                                         <link linkend="GError">GError</link> **error);
+const <link linkend="gchar">gchar</link>*        <link linkend="gimp-thumb-get-thumb-dir">gimp_thumb_get_thumb_dir</link>            (<link linkend="GimpThumbSize">GimpThumbSize</link> size);
+<link linkend="void">void</link>                <link linkend="gimp-thumbs-delete-for-uri">gimp_thumbs_delete_for_uri</link>          (const <link linkend="gchar">gchar</link> *uri);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-thumb-name-from-uri-local">gimp_thumb_name_from_uri_local</link>      (const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="GimpThumbSize">GimpThumbSize</link> size);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-thumb-ensure-thumb-dir-local">gimp_thumb_ensure_thumb_dir_local</link>   (const <link linkend="gchar">gchar</link> *dirname,
+                                                         <link linkend="GimpThumbSize">GimpThumbSize</link> size,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-thumb-get-thumb-dir-local">gimp_thumb_get_thumb_dir_local</link>      (const <link linkend="gchar">gchar</link> *dirname,
+                                                         <link linkend="GimpThumbSize">GimpThumbSize</link> size);
+<link linkend="void">void</link>                <link linkend="gimp-thumbs-delete-for-uri-local">gimp_thumbs_delete_for_uri_local</link>    (const <link linkend="gchar">gchar</link> *uri);
 </synopsis>
 </refsynopsisdiv>
 
@@ -68,8 +66,8 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-thumb-get-thumb-di
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-thumb-init" role="function"/>gimp_thumb_init ()</title>
-<indexterm><primary>gimp_thumb_init</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_thumb_init                 (const <link linkend="gchar">gchar</link> *creator,
-                                             const <link linkend="gchar">gchar</link> *thumb_basedir);</programlisting>
+<indexterm><primary>gimp_thumb_init</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_thumb_init                     (const <link linkend="gchar">gchar</link> *creator,
+                                                         const <link linkend="gchar">gchar</link> *thumb_basedir);</programlisting>
 <para>
 This function initializes the thumbnail system. It must be called
 before any other functions from libgimpthumb are used. You may call
@@ -103,8 +101,8 @@ directory here.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumb-find-thumb" role="function"/>gimp_thumb_find_thumb ()</title>
-<indexterm><primary>gimp_thumb_find_thumb</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_thumb_find_thumb           (const <link linkend="gchar">gchar</link> *uri,
-                                             <link linkend="GimpThumbSize">GimpThumbSize</link> *size);</programlisting>
+<indexterm><primary>gimp_thumb_find_thumb</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_thumb_find_thumb               (const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="GimpThumbSize">GimpThumbSize</link> *size);</programlisting>
 <para>
 This function attempts to locate a thumbnail for the given
 <parameter>uri</parameter>. First it tries the size that is stored at <parameter>size</parameter>. If no
@@ -135,10 +133,10 @@ pointer to by <parameter>size</parameter> and the file location is returned.</pa
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumb-file-test" role="function"/>gimp_thumb_file_test ()</title>
-<indexterm><primary>gimp_thumb_file_test</primary></indexterm><programlisting><link linkend="GimpThumbFileType">GimpThumbFileType</link> gimp_thumb_file_test      (const <link linkend="gchar">gchar</link> *filename,
-                                             <link linkend="gint64">gint64</link> *mtime,
-                                             <link linkend="gint64">gint64</link> *size,
-                                             <link linkend="gint">gint</link> *err_no);</programlisting>
+<indexterm><primary>gimp_thumb_file_test</primary></indexterm><programlisting><link linkend="GimpThumbFileType">GimpThumbFileType</link>   gimp_thumb_file_test                (const <link linkend="gchar">gchar</link> *filename,
+                                                         <link linkend="gint64">gint64</link> *mtime,
+                                                         <link linkend="gint64">gint64</link> *size,
+                                                         <link linkend="gint">gint</link> *err_no);</programlisting>
 <para>
 This is a convenience and portability wrapper around <link linkend="stat"><function>stat()</function></link>. It
 checks if the given <parameter>filename</parameter> exists and returns modification time
@@ -164,8 +162,8 @@ and file size in 64bit integer values.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumb-name-from-uri" role="function"/>gimp_thumb_name_from_uri ()</title>
-<indexterm><primary>gimp_thumb_name_from_uri</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_thumb_name_from_uri        (const <link linkend="gchar">gchar</link> *uri,
-                                             <link linkend="GimpThumbSize">GimpThumbSize</link> size);</programlisting>
+<indexterm><primary>gimp_thumb_name_from_uri</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_thumb_name_from_uri            (const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="GimpThumbSize">GimpThumbSize</link> size);</programlisting>
 <para>
 Creates the name of the thumbnail file of the specified <parameter>size</parameter> that
 belongs to an image file located at the given <parameter>uri</parameter>.</para>
@@ -185,8 +183,8 @@ belongs to an image file located at the given <parameter>uri</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumb-ensure-thumb-dir" role="function"/>gimp_thumb_ensure_thumb_dir ()</title>
-<indexterm><primary>gimp_thumb_ensure_thumb_dir</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_thumb_ensure_thumb_dir     (<link linkend="GimpThumbSize">GimpThumbSize</link> size,
-                                             <link linkend="GError">GError</link> **error);</programlisting>
+<indexterm><primary>gimp_thumb_ensure_thumb_dir</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_thumb_ensure_thumb_dir         (<link linkend="GimpThumbSize">GimpThumbSize</link> size,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
 <para>
 This function checks if the directory that is required to store
 thumbnails for a particular <parameter>size</parameter> exist and attempts to create it
@@ -211,7 +209,7 @@ do this for you.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumb-get-thumb-dir" role="function"/>gimp_thumb_get_thumb_dir ()</title>
-<indexterm><primary>gimp_thumb_get_thumb_dir</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_thumb_get_thumb_dir       (<link linkend="GimpThumbSize">GimpThumbSize</link> size);</programlisting>
+<indexterm><primary>gimp_thumb_get_thumb_dir</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_thumb_get_thumb_dir            (<link linkend="GimpThumbSize">GimpThumbSize</link> size);</programlisting>
 <para>
 Retrieve the name of the thumbnail folder for a specific size. The
 returned pointer will become invalid if <link linkend="gimp-thumb-init"><function>gimp_thumb_init()</function></link> is used
@@ -227,7 +225,7 @@ again. It must not be changed or freed.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumbs-delete-for-uri" role="function" condition="since:GIMP 2.2"/>gimp_thumbs_delete_for_uri ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_thumbs_delete_for_uri</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_thumbs_delete_for_uri      (const <link linkend="gchar">gchar</link> *uri);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_thumbs_delete_for_uri</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_thumbs_delete_for_uri          (const <link linkend="gchar">gchar</link> *uri);</programlisting>
 <para>
 Deletes all thumbnails for the image file specified by <parameter>uri</parameter> from the
 user's thumbnail repository.</para>
@@ -237,12 +235,12 @@ user's thumbnail repository.</para>
 <varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
 <listitem><simpara> an escaped URI
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumb-name-from-uri-local" role="function" condition="since:GIMP 2.2"/>gimp_thumb_name_from_uri_local ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_thumb_name_from_uri_local</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_thumb_name_from_uri_local  (const <link linkend="gchar">gchar</link> *uri,
-                                             <link linkend="GimpThumbSize">GimpThumbSize</link> size);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_thumb_name_from_uri_local</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_thumb_name_from_uri_local      (const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="GimpThumbSize">GimpThumbSize</link> size);</programlisting>
 <para>
 Creates the name of a local thumbnail file of the specified <parameter>size</parameter>
 that belongs to an image file located at the given <parameter>uri</parameter>. Local
@@ -261,14 +259,13 @@ thumbnails have been introduced with version 0.7 of the spec.</para>
               points to the user's thumbnail repository.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumb-ensure-thumb-dir-local" role="function" condition="since:GIMP 2.2"/>gimp_thumb_ensure_thumb_dir_local ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_thumb_ensure_thumb_dir_local</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_thumb_ensure_thumb_dir_local
-                                            (const <link linkend="gchar">gchar</link> *dirname,
-                                             <link linkend="GimpThumbSize">GimpThumbSize</link> size,
-                                             <link linkend="GError">GError</link> **error);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_thumb_ensure_thumb_dir_local</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_thumb_ensure_thumb_dir_local   (const <link linkend="gchar">gchar</link> *dirname,
+                                                         <link linkend="GimpThumbSize">GimpThumbSize</link> size,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
 <para>
 This function checks if the directory that is required to store
 local thumbnails for a particular <parameter>size</parameter> exist and attempts to
@@ -293,12 +290,12 @@ You shouldn't have to call this function directly since
               be created
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumb-get-thumb-dir-local" role="function" condition="since:GIMP 2.2"/>gimp_thumb_get_thumb_dir_local ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_thumb_get_thumb_dir_local</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_thumb_get_thumb_dir_local  (const <link linkend="gchar">gchar</link> *dirname,
-                                             <link linkend="GimpThumbSize">GimpThumbSize</link> size);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_thumb_get_thumb_dir_local</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_thumb_get_thumb_dir_local      (const <link linkend="gchar">gchar</link> *dirname,
+                                                         <link linkend="GimpThumbSize">GimpThumbSize</link> size);</programlisting>
 <para>
 Retrieve the name of the local thumbnail folder for a specific
 size.  Unlike <link linkend="gimp-thumb-get-thumb-dir"><function>gimp_thumb_get_thumb_dir()</function></link> the returned string is not
@@ -315,12 +312,11 @@ constant and should be free'd when it is not any longer needed.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the thumbnail directory in the encoding of the filesystem
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumbs-delete-for-uri-local" role="function" condition="since:GIMP 2.2"/>gimp_thumbs_delete_for_uri_local ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_thumbs_delete_for_uri_local</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_thumbs_delete_for_uri_local
-                                            (const <link linkend="gchar">gchar</link> *uri);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_thumbs_delete_for_uri_local</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_thumbs_delete_for_uri_local    (const <link linkend="gchar">gchar</link> *uri);</programlisting>
 <para>
 Deletes all thumbnails for the image file specified by <parameter>uri</parameter> from
 the local thumbnail repository.</para>
@@ -330,7 +326,7 @@ the local thumbnail repository.</para>
 <varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
 <listitem><simpara> an escaped URI
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 
 </refsect1>

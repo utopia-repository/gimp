@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpconfig-deserialize</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Config Library Reference Manual">
 <link rel="up" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="prev" href="libgimpconfig-GimpConfig.html" title="gimpconfig-iface">
 <link rel="next" href="libgimpconfig-gimpconfig-serialize.html" title="gimpconfig-serialize">
-<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="chapter" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpconfig-gimpconfig-serialize.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2583829" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2558526" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2588884" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2590653" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpconfig-gimpconfig-deserialize"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2583829"></a><span class="refentrytitle">gimpconfig-deserialize</span>
+<a name="id2558526"></a><span class="refentrytitle">gimpconfig-deserialize</span>
 </h2>
 <p>gimpconfig-deserialize &#8212; Deserializing code for libgimpconfig.</p>
 </td>
@@ -46,32 +46,29 @@
 
 
 
-gboolean    <a href="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deserialize-properties">gimp_config_deserialize_properties</a>
-                                            (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
-                                             GScanner *scanner,
-                                             gint nest_level);
-GTokenType  <a href="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deserialize-property">gimp_config_deserialize_property</a>
-                                            (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
-                                             GScanner *scanner,
-                                             gint nest_level);
+gboolean            <a href="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deserialize-properties">gimp_config_deserialize_properties</a>  (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
+                                                         GScanner *scanner,
+                                                         gint nest_level);
+GTokenType          <a href="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deserialize-property">gimp_config_deserialize_property</a>    (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
+                                                         GScanner *scanner,
+                                                         gint nest_level);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2588884"></a><h2>Description</h2>
+<a name="id2590653"></a><h2>Description</h2>
 <p>
 Deserializing code for libgimpconfig.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2588899"></a><h2>Details</h2>
+<a name="id2590669"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2588909"></a><h3>
+<a name="id2590680"></a><h3>
 <a name="gimp-config-deserialize-properties"></a>gimp_config_deserialize_properties ()</h3>
-<a class="indexterm" name="id2588923"></a><pre class="programlisting">gboolean    gimp_config_deserialize_properties
-                                            (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
-                                             GScanner *scanner,
-                                             gint nest_level);</pre>
+<a class="indexterm" name="id2590693"></a><pre class="programlisting">gboolean            gimp_config_deserialize_properties  (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
+                                                         GScanner *scanner,
+                                                         gint nest_level);</pre>
 <p>
 This function uses the <em class="parameter"><code>scanner</code></em> to configure the properties of <em class="parameter"><code>config</code></em>.</p>
 <p>
@@ -103,17 +100,16 @@ This function uses the <em class="parameter"><code>scanner</code></em> to config
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2579925"></a><h3>
+<a name="id2572350"></a><h3>
 <a name="gimp-config-deserialize-property"></a>gimp_config_deserialize_property ()</h3>
-<a class="indexterm" name="id2579939"></a><pre class="programlisting">GTokenType  gimp_config_deserialize_property
-                                            (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
-                                             GScanner *scanner,
-                                             gint nest_level);</pre>
+<a class="indexterm" name="id2572363"></a><pre class="programlisting">GTokenType          gimp_config_deserialize_property    (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
+                                                         GScanner *scanner,
+                                                         gint nest_level);</pre>
 <p>
 This function deserializes a single property of <em class="parameter"><code>config</code></em>. You
 shouldn't need to call this function directly. If possible, use
@@ -149,7 +145,7 @@ found but couldn't be parsed.
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 </div>

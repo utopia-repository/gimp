@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpplugin</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpmessage.html" title="gimpmessage">
 <link rel="next" href="libgimp-gimpproceduraldb.html" title="gimpproceduraldb">
-<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpproceduraldb.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2593000" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2559096" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2562490" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2576302" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpplugin"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2593000"></a><span class="refentrytitle">gimpplugin</span>
+<a name="id2559096"></a><span class="refentrytitle">gimpplugin</span>
 </h2>
 <p>gimpplugin &#8212; Functions useful for plugins, e.g. registration and progress indicators.</p>
 </td>
@@ -52,36 +52,35 @@
 
 
 
-gboolean    <a href="libgimp-gimpplugin.html#gimp-plugin-domain-register">gimp_plugin_domain_register</a>     (const gchar *domain_name,
-                                             const gchar *domain_path);
-gboolean    <a href="libgimp-gimpplugin.html#gimp-plugin-help-register">gimp_plugin_help_register</a>       (const gchar *domain_name,
-                                             const gchar *domain_uri);
-gboolean    <a href="libgimp-gimpplugin.html#gimp-plugin-icon-register">gimp_plugin_icon_register</a>       (const gchar *procedure_name,
-                                             <a
+gboolean            <a href="libgimp-gimpplugin.html#gimp-plugin-domain-register">gimp_plugin_domain_register</a>         (const gchar *domain_name,
+                                                         const gchar *domain_path);
+gboolean            <a href="libgimp-gimpplugin.html#gimp-plugin-help-register">gimp_plugin_help_register</a>           (const gchar *domain_name,
+                                                         const gchar *domain_uri);
+gboolean            <a href="libgimp-gimpplugin.html#gimp-plugin-icon-register">gimp_plugin_icon_register</a>           (const gchar *procedure_name,
+                                                         <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpIconType"
 >GimpIconType</a> icon_type,
-                                             const guint8 *icon_data);
-gboolean    <a href="libgimp-gimpplugin.html#gimp-plugin-menu-register">gimp_plugin_menu_register</a>       (const gchar *procedure_name,
-                                             const gchar *menu_path);
-gboolean    <a href="libgimp-gimpplugin.html#gimp-plugin-menu-branch-register">gimp_plugin_menu_branch_register</a>
-                                            (const gchar *menu_path,
-                                             const gchar *menu_name);
+                                                         const guint8 *icon_data);
+gboolean            <a href="libgimp-gimpplugin.html#gimp-plugin-menu-register">gimp_plugin_menu_register</a>           (const gchar *procedure_name,
+                                                         const gchar *menu_path);
+gboolean            <a href="libgimp-gimpplugin.html#gimp-plugin-menu-branch-register">gimp_plugin_menu_branch_register</a>    (const gchar *menu_path,
+                                                         const gchar *menu_name);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2562490"></a><h2>Description</h2>
+<a name="id2576302"></a><h2>Description</h2>
 <p>
 Functions useful for plugins, e.g. registration and progress indicators.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2562507"></a><h2>Details</h2>
+<a name="id2576319"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2562518"></a><h3>
+<a name="id2576329"></a><h3>
 <a name="gimp-plugin-domain-register"></a>gimp_plugin_domain_register ()</h3>
-<a class="indexterm" name="id2562529"></a><pre class="programlisting">gboolean    gimp_plugin_domain_register     (const gchar *domain_name,
-                                             const gchar *domain_path);</pre>
+<a class="indexterm" name="id2576341"></a><pre class="programlisting">gboolean            gimp_plugin_domain_register         (const gchar *domain_name,
+                                                         const gchar *domain_path);</pre>
 <p>
 Registers a textdomain for localisation.
 </p>
@@ -120,10 +119,10 @@ called before any procedure is installed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2552468"></a><h3>
+<a name="id2576436"></a><h3>
 <a name="gimp-plugin-help-register"></a>gimp_plugin_help_register ()</h3>
-<a class="indexterm" name="id2552480"></a><pre class="programlisting">gboolean    gimp_plugin_help_register       (const gchar *domain_name,
-                                             const gchar *domain_uri);</pre>
+<a class="indexterm" name="id2576447"></a><pre class="programlisting">gboolean            gimp_plugin_help_register           (const gchar *domain_name,
+                                                         const gchar *domain_uri);</pre>
 <p>
 Register a help path for a plug-in.
 </p>
@@ -157,13 +156,13 @@ interpreted relative to this rootdir.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2549714"></a><h3>
+<a name="id2562185"></a><h3>
 <a name="gimp-plugin-icon-register"></a>gimp_plugin_icon_register ()</h3>
-<a class="indexterm" name="id2549725"></a><pre class="programlisting">gboolean    gimp_plugin_icon_register       (const gchar *procedure_name,
-                                             <a
+<a class="indexterm" name="id2562196"></a><pre class="programlisting">gboolean            gimp_plugin_icon_register           (const gchar *procedure_name,
+                                                         <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpIconType"
 >GimpIconType</a> icon_type,
-                                             const guint8 *icon_data);</pre>
+                                                         const guint8 *icon_data);</pre>
 <p>
 
 </p>
@@ -197,10 +196,10 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpIconType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2549823"></a><h3>
+<a name="id2562296"></a><h3>
 <a name="gimp-plugin-menu-register"></a>gimp_plugin_menu_register ()</h3>
-<a class="indexterm" name="id2568097"></a><pre class="programlisting">gboolean    gimp_plugin_menu_register       (const gchar *procedure_name,
-                                             const gchar *menu_path);</pre>
+<a class="indexterm" name="id2562310"></a><pre class="programlisting">gboolean            gimp_plugin_menu_register           (const gchar *procedure_name,
+                                                         const gchar *menu_path);</pre>
 <p>
 Register an additional menu path for a plug-in procedure.
 </p>
@@ -231,16 +230,15 @@ procedure.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2568188"></a><h3>
+<a name="id2562626"></a><h3>
 <a name="gimp-plugin-menu-branch-register"></a>gimp_plugin_menu_branch_register ()</h3>
-<a class="indexterm" name="id2568202"></a><pre class="programlisting">gboolean    gimp_plugin_menu_branch_register
-                                            (const gchar *menu_path,
-                                             const gchar *menu_name);</pre>
+<a class="indexterm" name="id2562639"></a><pre class="programlisting">gboolean            gimp_plugin_menu_branch_register    (const gchar *menu_path,
+                                                         const gchar *menu_name);</pre>
 <p>
 Register a sub-menu.
 </p>
@@ -271,7 +269,7 @@ procedure.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 </div>

@@ -70,13 +70,30 @@ gimp_dbus_service_new (Gimp *gimp)
 
 gboolean
 gimp_dbus_service_open (GimpDBusService  *service,
-                        const gchar     **uris,
+                        const gchar      *uri,
+                        gboolean         *success,
                         GError          **dbus_error)
 {
   g_return_val_if_fail (GIMP_IS_DBUS_SERVICE (service), FALSE);
+  g_return_val_if_fail (uri != NULL, FALSE);
+  g_return_val_if_fail (success != NULL, FALSE);
 
-  if (uris)
-    file_open_from_command_line (service->gimp, uris);
+  *success = file_open_from_command_line (service->gimp, uri, FALSE);
+
+  return TRUE;
+}
+
+gboolean
+gimp_dbus_service_open_as_new (GimpDBusService  *service,
+                               const gchar      *uri,
+                               gboolean         *success,
+                               GError          **dbus_error)
+{
+  g_return_val_if_fail (GIMP_IS_DBUS_SERVICE (service), FALSE);
+  g_return_val_if_fail (uri != NULL, FALSE);
+  g_return_val_if_fail (success != NULL, FALSE);
+
+  *success = file_open_from_command_line (service->gimp, uri, TRUE);
 
   return TRUE;
 }

@@ -108,6 +108,7 @@ gimp_plug_in_procedure_init (GimpPlugInProcedure *proc)
 {
   GIMP_PROCEDURE (proc)->proc_type = GIMP_PLUGIN;
 
+  proc->label            = NULL;
   proc->icon_data_length = -1;
 }
 
@@ -117,12 +118,12 @@ gimp_plug_in_procedure_finalize (GObject *object)
   GimpPlugInProcedure *proc = GIMP_PLUG_IN_PROCEDURE (object);
 
   g_free (proc->prog);
-  g_free (proc->locale_domain);
-  g_free (proc->help_domain);
   g_free (proc->menu_label);
 
   g_list_foreach (proc->menu_paths, (GFunc) g_free, NULL);
   g_list_free (proc->menu_paths);
+
+  g_free (proc->label);
 
   g_free (proc->icon_data);
   g_free (proc->image_types);
@@ -296,8 +297,7 @@ gimp_plug_in_procedure_set_locale_domain (GimpPlugInProcedure *proc,
 {
   g_return_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc));
 
-  g_free (proc->locale_domain);
-  proc->locale_domain = g_strdup (locale_domain);
+  proc->locale_domain = locale_domain ? g_quark_from_string (locale_domain) : 0;
 }
 
 const gchar *
@@ -305,7 +305,7 @@ gimp_plug_in_procedure_get_locale_domain (const GimpPlugInProcedure *proc)
 {
   g_return_val_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc), NULL);
 
-  return proc->locale_domain;
+  return g_quark_to_string (proc->locale_domain);
 }
 
 void
@@ -314,8 +314,7 @@ gimp_plug_in_procedure_set_help_domain (GimpPlugInProcedure *proc,
 {
   g_return_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc));
 
-  g_free (proc->help_domain);
-  proc->help_domain = g_strdup (help_domain);
+  proc->help_domain = help_domain ? g_quark_from_string (help_domain) : 0;
 }
 
 const gchar *
@@ -323,7 +322,7 @@ gimp_plug_in_procedure_get_help_domain (const GimpPlugInProcedure *proc)
 {
   g_return_val_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc), NULL);
 
-  return proc->help_domain;
+  return g_quark_to_string (proc->help_domain);
 }
 
 gboolean
@@ -518,8 +517,8 @@ gimp_plug_in_procedure_add_menu_path (GimpPlugInProcedure  *proc,
   return FALSE;
 }
 
-gchar *
-gimp_plug_in_procedure_get_label (const GimpPlugInProcedure *proc)
+const gchar *
+gimp_plug_in_procedure_get_label (GimpPlugInProcedure *proc)
 {
   const gchar *path;
   gchar       *stripped;
@@ -528,10 +527,15 @@ gimp_plug_in_procedure_get_label (const GimpPlugInProcedure *proc)
 
   g_return_val_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc), NULL);
 
+  if (proc->label)
+    return proc->label;
+
   if (proc->menu_label)
-    path = dgettext (proc->locale_domain, proc->menu_label);
+    path = dgettext (gimp_plug_in_procedure_get_locale_domain (proc),
+                     proc->menu_label);
   else if (proc->menu_paths)
-    path = dgettext (proc->locale_domain, proc->menu_paths->data);
+    path = dgettext (gimp_plug_in_procedure_get_locale_domain (proc),
+                     proc->menu_paths->data);
   else
     return NULL;
 
@@ -552,7 +556,9 @@ gimp_plug_in_procedure_get_label (const GimpPlugInProcedure *proc)
   if (ellipsis && ellipsis == (label + strlen (label) - 3))
     *ellipsis = '\0';
 
-  return label;
+  proc->label = label;
+
+  return proc->label;
 }
 
 const gchar *
@@ -566,7 +572,8 @@ gimp_plug_in_procedure_get_blurb (const GimpPlugInProcedure *proc)
 
   /*  do not to pass the empty string to gettext()  */
   if (procedure->blurb && strlen (procedure->blurb))
-    return dgettext (proc->locale_domain, procedure->blurb);
+    return dgettext (gimp_plug_in_procedure_get_locale_domain (proc),
+                     procedure->blurb);
 
   return NULL;
 }
@@ -656,10 +663,14 @@ gimp_plug_in_procedure_get_pixbuf (const GimpPlugInProcedure *proc)
 gchar *
 gimp_plug_in_procedure_get_help_id (const GimpPlugInProcedure *proc)
 {
+  const gchar *domain;
+
   g_return_val_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc), NULL);
 
-  if (proc->help_domain)
-    return g_strconcat (proc->help_domain, "?", GIMP_OBJECT (proc)->name, NULL);
+  domain = gimp_plug_in_procedure_get_help_domain (proc);
+
+  if (domain)
+    return g_strconcat (domain, "?", GIMP_OBJECT (proc)->name, NULL);
 
   return g_strdup (GIMP_OBJECT (proc)->name);
 }
@@ -880,6 +891,8 @@ gimp_plug_in_procedure_set_mime_type (GimpPlugInProcedure *proc,
 {
   g_return_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc));
 
+  proc->file_proc = TRUE;
+
   if (proc->mime_type)
     g_free (proc->mime_type);
 
@@ -891,6 +904,8 @@ gimp_plug_in_procedure_set_thumb_loader (GimpPlugInProcedure *proc,
                                          const gchar         *thumb_loader)
 {
   g_return_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc));
+
+  proc->file_proc = TRUE;
 
   if (proc->thumb_loader)
     g_free (proc->thumb_loader);

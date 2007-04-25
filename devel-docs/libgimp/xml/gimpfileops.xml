@@ -22,39 +22,38 @@
 
 
 
-<link linkend="gchar">gchar</link>*      <link linkend="gimp-temp-name">gimp_temp_name</link>                  (const <link linkend="gchar">gchar</link> *extension);
-<link linkend="gint32">gint32</link>      <link linkend="gimp-file-load">gimp_file_load</link>                  (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
-                                             const <link linkend="gchar">gchar</link> *filename,
-                                             const <link linkend="gchar">gchar</link> *raw_filename);
-<link linkend="gint32">gint32</link>      <link linkend="gimp-file-load-layer">gimp_file_load_layer</link>            (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
-                                             <link linkend="gint32">gint32</link> image_ID,
-                                             const <link linkend="gchar">gchar</link> *filename);
-<link linkend="gint">gint</link>*       <link linkend="gimp-file-load-layers">gimp_file_load_layers</link>           (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
-                                             <link linkend="gint32">gint32</link> image_ID,
-                                             const <link linkend="gchar">gchar</link> *filename,
-                                             <link linkend="gint">gint</link> *num_layers);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-file-save">gimp_file_save</link>                  (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
-                                             <link linkend="gint32">gint32</link> image_ID,
-                                             <link linkend="gint32">gint32</link> drawable_ID,
-                                             const <link linkend="gchar">gchar</link> *filename,
-                                             const <link linkend="gchar">gchar</link> *raw_filename);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-file-save-thumbnail">gimp_file_save_thumbnail</link>        (<link linkend="gint32">gint32</link> image_ID,
-                                             const <link linkend="gchar">gchar</link> *filename);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-register-magic-load-handler">gimp_register_magic_load_handler</link>
-                                            (const <link linkend="gchar">gchar</link> *procedure_name,
-                                             const <link linkend="gchar">gchar</link> *extensions,
-                                             const <link linkend="gchar">gchar</link> *prefixes,
-                                             const <link linkend="gchar">gchar</link> *magics);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-register-load-handler">gimp_register_load_handler</link>      (const <link linkend="gchar">gchar</link> *procedure_name,
-                                             const <link linkend="gchar">gchar</link> *extensions,
-                                             const <link linkend="gchar">gchar</link> *prefixes);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-register-save-handler">gimp_register_save_handler</link>      (const <link linkend="gchar">gchar</link> *procedure_name,
-                                             const <link linkend="gchar">gchar</link> *extensions,
-                                             const <link linkend="gchar">gchar</link> *prefixes);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-register-file-handler-mime">gimp_register_file_handler_mime</link> (const <link linkend="gchar">gchar</link> *procedure_name,
-                                             const <link linkend="gchar">gchar</link> *mime_type);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-register-thumbnail-loader">gimp_register_thumbnail_loader</link>  (const <link linkend="gchar">gchar</link> *load_proc,
-                                             const <link linkend="gchar">gchar</link> *thumb_proc);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-temp-name">gimp_temp_name</link>                      (const <link linkend="gchar">gchar</link> *extension);
+<link linkend="gint32">gint32</link>              <link linkend="gimp-file-load">gimp_file_load</link>                      (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
+                                                         const <link linkend="gchar">gchar</link> *filename,
+                                                         const <link linkend="gchar">gchar</link> *raw_filename);
+<link linkend="gint32">gint32</link>              <link linkend="gimp-file-load-layer">gimp_file_load_layer</link>                (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
+                                                         <link linkend="gint32">gint32</link> image_ID,
+                                                         const <link linkend="gchar">gchar</link> *filename);
+<link linkend="gint">gint</link>*               <link linkend="gimp-file-load-layers">gimp_file_load_layers</link>               (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
+                                                         <link linkend="gint32">gint32</link> image_ID,
+                                                         const <link linkend="gchar">gchar</link> *filename,
+                                                         <link linkend="gint">gint</link> *num_layers);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-file-save">gimp_file_save</link>                      (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
+                                                         <link linkend="gint32">gint32</link> image_ID,
+                                                         <link linkend="gint32">gint32</link> drawable_ID,
+                                                         const <link linkend="gchar">gchar</link> *filename,
+                                                         const <link linkend="gchar">gchar</link> *raw_filename);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-file-save-thumbnail">gimp_file_save_thumbnail</link>            (<link linkend="gint32">gint32</link> image_ID,
+                                                         const <link linkend="gchar">gchar</link> *filename);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-register-magic-load-handler">gimp_register_magic_load_handler</link>    (const <link linkend="gchar">gchar</link> *procedure_name,
+                                                         const <link linkend="gchar">gchar</link> *extensions,
+                                                         const <link linkend="gchar">gchar</link> *prefixes,
+                                                         const <link linkend="gchar">gchar</link> *magics);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-register-load-handler">gimp_register_load_handler</link>          (const <link linkend="gchar">gchar</link> *procedure_name,
+                                                         const <link linkend="gchar">gchar</link> *extensions,
+                                                         const <link linkend="gchar">gchar</link> *prefixes);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-register-save-handler">gimp_register_save_handler</link>          (const <link linkend="gchar">gchar</link> *procedure_name,
+                                                         const <link linkend="gchar">gchar</link> *extensions,
+                                                         const <link linkend="gchar">gchar</link> *prefixes);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-register-file-handler-mime">gimp_register_file_handler_mime</link>     (const <link linkend="gchar">gchar</link> *procedure_name,
+                                                         const <link linkend="gchar">gchar</link> *mime_type);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-register-thumbnail-loader">gimp_register_thumbnail_loader</link>      (const <link linkend="gchar">gchar</link> *load_proc,
+                                                         const <link linkend="gchar">gchar</link> *thumb_proc);
 </synopsis>
 </refsynopsisdiv>
 
@@ -78,7 +77,7 @@ File operations (load, save, etc.)
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-temp-name" role="function"/>gimp_temp_name ()</title>
-<indexterm><primary>gimp_temp_name</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_temp_name                  (const <link linkend="gchar">gchar</link> *extension);</programlisting>
+<indexterm><primary>gimp_temp_name</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_temp_name                      (const <link linkend="gchar">gchar</link> *extension);</programlisting>
 <para>
 Generates a unique filename.
 </para>
@@ -96,9 +95,9 @@ user's gimprc.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-file-load" role="function"/>gimp_file_load ()</title>
-<indexterm><primary>gimp_file_load</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_file_load                  (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
-                                             const <link linkend="gchar">gchar</link> *filename,
-                                             const <link linkend="gchar">gchar</link> *raw_filename);</programlisting>
+<indexterm><primary>gimp_file_load</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_file_load                      (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
+                                                         const <link linkend="gchar">gchar</link> *filename,
+                                                         const <link linkend="gchar">gchar</link> *raw_filename);</programlisting>
 <para>
 Loads an image file by invoking the right load handler.
 </para>
@@ -127,9 +126,9 @@ will not look like a URL.\"</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-file-load-layer" role="function" condition="since:GIMP 2.4"/>gimp_file_load_layer ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_file_load_layer</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_file_load_layer            (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
-                                             <link linkend="gint32">gint32</link> image_ID,
-                                             const <link linkend="gchar">gchar</link> *filename);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_file_load_layer</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_file_load_layer                (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
+                                                         <link linkend="gint32">gint32</link> image_ID,
+                                                         const <link linkend="gchar">gchar</link> *filename);</programlisting>
 <para>
 Loads an image file as a layer for an existing image.
 </para>
@@ -152,14 +151,14 @@ needs to be added to the existing image with <link linkend="gimp-image-add-layer
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The layer created when loading the image file.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-file-load-layers" role="function" condition="since:GIMP 2.4"/>gimp_file_load_layers ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_file_load_layers</primary></indexterm><programlisting><link linkend="gint">gint</link>*       gimp_file_load_layers           (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
-                                             <link linkend="gint32">gint32</link> image_ID,
-                                             const <link linkend="gchar">gchar</link> *filename,
-                                             <link linkend="gint">gint</link> *num_layers);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_file_load_layers</primary></indexterm><programlisting><link linkend="gint">gint</link>*               gimp_file_load_layers               (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
+                                                         <link linkend="gint32">gint32</link> image_ID,
+                                                         const <link linkend="gchar">gchar</link> *filename,
+                                                         <link linkend="gint">gint</link> *num_layers);</programlisting>
 <para>
 Loads an image file as layers for an existing image.
 </para>
@@ -185,15 +184,15 @@ needs to be added to the existing image with <link linkend="gimp-image-add-layer
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The list of loaded layers.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-file-save" role="function"/>gimp_file_save ()</title>
-<indexterm><primary>gimp_file_save</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_file_save                  (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
-                                             <link linkend="gint32">gint32</link> image_ID,
-                                             <link linkend="gint32">gint32</link> drawable_ID,
-                                             const <link linkend="gchar">gchar</link> *filename,
-                                             const <link linkend="gchar">gchar</link> *raw_filename);</programlisting>
+<indexterm><primary>gimp_file_save</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_file_save                      (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
+                                                         <link linkend="gint32">gint32</link> image_ID,
+                                                         <link linkend="gint32">gint32</link> drawable_ID,
+                                                         const <link linkend="gchar">gchar</link> *filename,
+                                                         const <link linkend="gchar">gchar</link> *raw_filename);</programlisting>
 <para>
 Saves a file by extension.
 </para>
@@ -227,8 +226,8 @@ fetch a URL, and the full pathname will not look like a URL.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-file-save-thumbnail" role="function"/>gimp_file_save_thumbnail ()</title>
-<indexterm><primary>gimp_file_save_thumbnail</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_file_save_thumbnail        (<link linkend="gint32">gint32</link> image_ID,
-                                             const <link linkend="gchar">gchar</link> *filename);</programlisting>
+<indexterm><primary>gimp_file_save_thumbnail</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_file_save_thumbnail            (<link linkend="gint32">gint32</link> image_ID,
+                                                         const <link linkend="gchar">gchar</link> *filename);</programlisting>
 <para>
 Saves a thumbnail for the given image
 </para>
@@ -253,11 +252,10 @@ explicitely save a thumbnail with a file.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-register-magic-load-handler" role="function"/>gimp_register_magic_load_handler ()</title>
-<indexterm><primary>gimp_register_magic_load_handler</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_register_magic_load_handler
-                                            (const <link linkend="gchar">gchar</link> *procedure_name,
-                                             const <link linkend="gchar">gchar</link> *extensions,
-                                             const <link linkend="gchar">gchar</link> *prefixes,
-                                             const <link linkend="gchar">gchar</link> *magics);</programlisting>
+<indexterm><primary>gimp_register_magic_load_handler</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_register_magic_load_handler    (const <link linkend="gchar">gchar</link> *procedure_name,
+                                                         const <link linkend="gchar">gchar</link> *extensions,
+                                                         const <link linkend="gchar">gchar</link> *prefixes,
+                                                         const <link linkend="gchar">gchar</link> *magics);</programlisting>
 <para>
 Registers a file load handler procedure.
 </para>
@@ -284,9 +282,9 @@ of a particular file format using magic file information.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-register-load-handler" role="function"/>gimp_register_load_handler ()</title>
-<indexterm><primary>gimp_register_load_handler</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_register_load_handler      (const <link linkend="gchar">gchar</link> *procedure_name,
-                                             const <link linkend="gchar">gchar</link> *extensions,
-                                             const <link linkend="gchar">gchar</link> *prefixes);</programlisting>
+<indexterm><primary>gimp_register_load_handler</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_register_load_handler          (const <link linkend="gchar">gchar</link> *procedure_name,
+                                                         const <link linkend="gchar">gchar</link> *extensions,
+                                                         const <link linkend="gchar">gchar</link> *prefixes);</programlisting>
 <para>
 Registers a file load handler procedure.
 </para>
@@ -310,9 +308,9 @@ of a particular file format.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-register-save-handler" role="function"/>gimp_register_save_handler ()</title>
-<indexterm><primary>gimp_register_save_handler</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_register_save_handler      (const <link linkend="gchar">gchar</link> *procedure_name,
-                                             const <link linkend="gchar">gchar</link> *extensions,
-                                             const <link linkend="gchar">gchar</link> *prefixes);</programlisting>
+<indexterm><primary>gimp_register_save_handler</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_register_save_handler          (const <link linkend="gchar">gchar</link> *procedure_name,
+                                                         const <link linkend="gchar">gchar</link> *extensions,
+                                                         const <link linkend="gchar">gchar</link> *prefixes);</programlisting>
 <para>
 Registers a file save handler procedure.
 </para>
@@ -336,8 +334,8 @@ in a particular file format.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-register-file-handler-mime" role="function" condition="since:GIMP 2.2"/>gimp_register_file_handler_mime ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_register_file_handler_mime</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_register_file_handler_mime (const <link linkend="gchar">gchar</link> *procedure_name,
-                                             const <link linkend="gchar">gchar</link> *mime_type);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_register_file_handler_mime</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_register_file_handler_mime     (const <link linkend="gchar">gchar</link> *procedure_name,
+                                                         const <link linkend="gchar">gchar</link> *mime_type);</programlisting>
 <para>
 Associates a MIME type with a file handler procedure.
 </para>
@@ -357,12 +355,12 @@ procedure.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-register-thumbnail-loader" role="function" condition="since:GIMP 2.2"/>gimp_register_thumbnail_loader ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_register_thumbnail_loader</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_register_thumbnail_loader  (const <link linkend="gchar">gchar</link> *load_proc,
-                                             const <link linkend="gchar">gchar</link> *thumb_proc);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_register_thumbnail_loader</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_register_thumbnail_loader      (const <link linkend="gchar">gchar</link> *load_proc,
+                                                         const <link linkend="gchar">gchar</link> *thumb_proc);</programlisting>
 <para>
 Associates a thumbnail loader with a file load procedure.
 </para>
@@ -385,7 +383,7 @@ using this function.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 
 </refsect1>

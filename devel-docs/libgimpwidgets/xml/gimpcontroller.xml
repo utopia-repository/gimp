@@ -22,21 +22,20 @@
 
 
 
-enum        <link linkend="GimpControllerEventType">GimpControllerEventType</link>;
-            <link linkend="GimpControllerEventAny">GimpControllerEventAny</link>;
-            <link linkend="GimpControllerEventTrigger">GimpControllerEventTrigger</link>;
-            <link linkend="GimpControllerEventValue">GimpControllerEventValue</link>;
-union       <link linkend="GimpControllerEvent">GimpControllerEvent</link>;
-            <link linkend="GimpController-struct">GimpController</link>;
-<link linkend="GimpController">GimpController</link>* <link linkend="gimp-controller-new">gimp_controller_new</link>         (<link linkend="GType">GType</link> controller_type);
-<link linkend="gint">gint</link>        <link linkend="gimp-controller-get-n-events">gimp_controller_get_n_events</link>    (<link linkend="GimpController">GimpController</link> *controller);
-const <link linkend="gchar">gchar</link>* <link linkend="gimp-controller-get-event-name">gimp_controller_get_event_name</link> (<link linkend="GimpController">GimpController</link> *controller,
-                                             <link linkend="gint">gint</link> event_id);
-const <link linkend="gchar">gchar</link>* <link linkend="gimp-controller-get-event-blurb">gimp_controller_get_event_blurb</link>
-                                            (<link linkend="GimpController">GimpController</link> *controller,
-                                             <link linkend="gint">gint</link> event_id);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-controller-event">gimp_controller_event</link>           (<link linkend="GimpController">GimpController</link> *controller,
-                                             const <link linkend="GimpControllerEvent">GimpControllerEvent</link> *event);
+enum                <link linkend="GimpControllerEventType">GimpControllerEventType</link>;
+                    <link linkend="GimpControllerEventAny">GimpControllerEventAny</link>;
+                    <link linkend="GimpControllerEventTrigger">GimpControllerEventTrigger</link>;
+                    <link linkend="GimpControllerEventValue">GimpControllerEventValue</link>;
+union               <link linkend="GimpControllerEvent">GimpControllerEvent</link>;
+                    <link linkend="GimpController-struct">GimpController</link>;
+<link linkend="GimpController">GimpController</link>*     <link linkend="gimp-controller-new">gimp_controller_new</link>                 (<link linkend="GType">GType</link> controller_type);
+<link linkend="gint">gint</link>                <link linkend="gimp-controller-get-n-events">gimp_controller_get_n_events</link>        (<link linkend="GimpController">GimpController</link> *controller);
+const <link linkend="gchar">gchar</link>*        <link linkend="gimp-controller-get-event-name">gimp_controller_get_event_name</link>      (<link linkend="GimpController">GimpController</link> *controller,
+                                                         <link linkend="gint">gint</link> event_id);
+const <link linkend="gchar">gchar</link>*        <link linkend="gimp-controller-get-event-blurb">gimp_controller_get_event_blurb</link>     (<link linkend="GimpController">GimpController</link> *controller,
+                                                         <link linkend="gint">gint</link> event_id);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-controller-event">gimp_controller_event</link>               (<link linkend="GimpController">GimpController</link> *controller,
+                                                         const <link linkend="GimpControllerEvent">GimpControllerEvent</link> *event);
 
 </synopsis>
 </refsynopsisdiv>
@@ -66,8 +65,8 @@ GimpController implements
 <title role="properties.title">Properties</title>
 <synopsis>
 
-  &quot;<link linkend="GimpController--name">name</link>&quot;                 <link linkend="gchararray">gchararray</link>            : Read / Write / Construct
-  &quot;<link linkend="GimpController--state">state</link>&quot;                <link linkend="gchararray">gchararray</link>            : Read / Write / Construct
+  &quot;<link linkend="GimpController--name">name</link>&quot;                     <link linkend="gchararray">gchararray</link>            : Read / Write / Construct
+  &quot;<link linkend="GimpController--state">state</link>&quot;                    <link linkend="gchararray">gchararray</link>            : Read / Write / Construct
 </synopsis>
 </refsect1>
 
@@ -75,9 +74,7 @@ GimpController implements
 <title role="signal_proto.title">Signals</title>
 <synopsis>
 
-&quot;<link linkend="GimpController-event">event</link>&quot;     <link linkend="gboolean">gboolean</link>    user_function      (<link linkend="GimpController">GimpController</link> *gimpcontroller,
-                                            <link linkend="gpointer">gpointer</link>        arg1,
-                                            <link linkend="gpointer">gpointer</link>        user_data)           : Run last
+  &quot;<link linkend="GimpController-event">event</link>&quot;                                          : Run Last
 </synopsis>
 </refsect1>
 
@@ -157,7 +154,7 @@ An abstract interface for implementing arbitrary input controllers.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-controller-new" role="function"/>gimp_controller_new ()</title>
-<indexterm><primary>gimp_controller_new</primary></indexterm><programlisting><link linkend="GimpController">GimpController</link>* gimp_controller_new         (<link linkend="GType">GType</link> controller_type);</programlisting>
+<indexterm><primary>gimp_controller_new</primary></indexterm><programlisting><link linkend="GimpController">GimpController</link>*     gimp_controller_new                 (<link linkend="GType">GType</link> controller_type);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -171,7 +168,7 @@ An abstract interface for implementing arbitrary input controllers.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-controller-get-n-events" role="function"/>gimp_controller_get_n_events ()</title>
-<indexterm><primary>gimp_controller_get_n_events</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_controller_get_n_events    (<link linkend="GimpController">GimpController</link> *controller);</programlisting>
+<indexterm><primary>gimp_controller_get_n_events</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_controller_get_n_events        (<link linkend="GimpController">GimpController</link> *controller);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -185,8 +182,8 @@ An abstract interface for implementing arbitrary input controllers.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-controller-get-event-name" role="function"/>gimp_controller_get_event_name ()</title>
-<indexterm><primary>gimp_controller_get_event_name</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_controller_get_event_name (<link linkend="GimpController">GimpController</link> *controller,
-                                             <link linkend="gint">gint</link> event_id);</programlisting>
+<indexterm><primary>gimp_controller_get_event_name</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_controller_get_event_name      (<link linkend="GimpController">GimpController</link> *controller,
+                                                         <link linkend="gint">gint</link> event_id);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -203,9 +200,8 @@ An abstract interface for implementing arbitrary input controllers.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-controller-get-event-blurb" role="function"/>gimp_controller_get_event_blurb ()</title>
-<indexterm><primary>gimp_controller_get_event_blurb</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_controller_get_event_blurb
-                                            (<link linkend="GimpController">GimpController</link> *controller,
-                                             <link linkend="gint">gint</link> event_id);</programlisting>
+<indexterm><primary>gimp_controller_get_event_blurb</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_controller_get_event_blurb     (<link linkend="GimpController">GimpController</link> *controller,
+                                                         <link linkend="gint">gint</link> event_id);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -222,8 +218,8 @@ An abstract interface for implementing arbitrary input controllers.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-controller-event" role="function"/>gimp_controller_event ()</title>
-<indexterm><primary>gimp_controller_event</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_controller_event           (<link linkend="GimpController">GimpController</link> *controller,
-                                             const <link linkend="GimpControllerEvent">GimpControllerEvent</link> *event);</programlisting>
+<indexterm><primary>gimp_controller_event</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_controller_event               (<link linkend="GimpController">GimpController</link> *controller,
+                                                         const <link linkend="GimpControllerEvent">GimpControllerEvent</link> *event);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -243,11 +239,11 @@ An abstract interface for implementing arbitrary input controllers.
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpController--name"/>The &quot;<literal>name</literal>&quot; property</title>
-<indexterm><primary>GimpController:name</primary></indexterm><programlisting>  &quot;name&quot;                 <link linkend="gchararray">gchararray</link>            : Read / Write / Construct</programlisting>
+<indexterm><primary>GimpController:name</primary></indexterm><programlisting>  &quot;name&quot;                     <link linkend="gchararray">gchararray</link>            : Read / Write / Construct</programlisting>
 <para></para><para>Default value: "Unnamed Controller"</para>
 </refsect2>
 <refsect2><title><anchor id="GimpController--state"/>The &quot;<literal>state</literal>&quot; property</title>
-<indexterm><primary>GimpController:state</primary></indexterm><programlisting>  &quot;state&quot;                <link linkend="gchararray">gchararray</link>            : Read / Write / Construct</programlisting>
+<indexterm><primary>GimpController:state</primary></indexterm><programlisting>  &quot;state&quot;                    <link linkend="gchararray">gchararray</link>            : Read / Write / Construct</programlisting>
 <para></para><para>Default value: "Unknown"</para>
 </refsect2>
 
@@ -256,9 +252,9 @@ An abstract interface for implementing arbitrary input controllers.
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpController-event"/>The &quot;event&quot; signal</title>
-<indexterm><primary>GimpController::event</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    user_function                  (<link linkend="GimpController">GimpController</link> *gimpcontroller,
-                                            <link linkend="gpointer">gpointer</link>        arg1,
-                                            <link linkend="gpointer">gpointer</link>        user_data)           : Run last</programlisting>
+<indexterm><primary>GimpController::event</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            user_function                      (<link linkend="GimpController">GimpController</link> *gimpcontroller,
+                                                        <link linkend="gpointer">gpointer</link>        arg1,
+                                                        <link linkend="gpointer">gpointer</link>        user_data)           : Run Last</programlisting>
 <para>
 
 </para><variablelist role="params">

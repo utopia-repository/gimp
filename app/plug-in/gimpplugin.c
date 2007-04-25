@@ -188,10 +188,14 @@ gimp_plug_in_new (GimpPlugInManager   *manager,
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
   g_return_val_if_fail (procedure == NULL ||
                         GIMP_IS_PLUG_IN_PROCEDURE (procedure), NULL);
-  g_return_val_if_fail (prog != NULL, NULL);
-  g_return_val_if_fail (g_path_is_absolute (prog), NULL);
+  g_return_val_if_fail (prog == NULL || g_path_is_absolute (prog), NULL);
+  g_return_val_if_fail ((procedure != NULL || prog != NULL) &&
+                        ! (procedure != NULL && prog != NULL), NULL);
 
   plug_in = g_object_new (GIMP_TYPE_PLUG_IN, NULL);
+
+  if (! prog)
+    prog = gimp_plug_in_procedure_get_progname (procedure);
 
   gimp_object_take_name (GIMP_OBJECT (plug_in),
                          g_filename_display_basename (prog));
@@ -435,7 +439,7 @@ gimp_plug_in_close (GimpPlugIn *plug_in,
       if (kill_it)
         {
           if (plug_in->manager->gimp->be_verbose)
-            g_print (_("Terminating plug-in: '%s'\n"),
+            g_print ("Terminating plug-in: '%s'\n",
                      gimp_filename_to_utf8 (plug_in->prog));
 
           /*  If the plug-in opened a process group, kill the group instead
@@ -474,7 +478,7 @@ gimp_plug_in_close (GimpPlugIn *plug_in,
           if (dwExitCode == STILL_ACTIVE)
             {
               if (plug_in->manager->gimp->be_verbose)
-                g_print (_("Terminating plug-in: '%s'\n"),
+                g_print ("Terminating plug-in: '%s'\n",
                          gimp_filename_to_utf8 (plug_in->prog));
 
               TerminateProcess ((HANDLE) plug_in->pid, 0);
@@ -822,27 +826,27 @@ gimp_plug_in_main_loop_quit (GimpPlugIn *plug_in)
   g_main_loop_quit (proc_frame->main_loop);
 }
 
-gchar *
+const gchar *
 gimp_plug_in_get_undo_desc (GimpPlugIn *plug_in)
 {
-  GimpPlugInProcFrame *proc_frame = NULL;
-  GimpPlugInProcedure *proc       = NULL;
-  gchar               *undo_desc  = NULL;
+  GimpPlugInProcFrame *proc_frame;
+  const gchar         *undo_desc = NULL;
 
   g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), NULL);
 
   proc_frame = gimp_plug_in_get_proc_frame (plug_in);
 
   if (proc_frame)
-    proc = GIMP_PLUG_IN_PROCEDURE (proc_frame->procedure);
+    {
+      GimpPlugInProcedure *proc;
 
-  if (proc)
-    undo_desc = gimp_plug_in_procedure_get_label (proc);
+      proc = GIMP_PLUG_IN_PROCEDURE (proc_frame->procedure);
 
-  if (! undo_desc)
-    undo_desc = g_strdup (gimp_object_get_name (GIMP_OBJECT (plug_in)));
+      if (proc)
+        undo_desc = gimp_plug_in_procedure_get_label (proc);
+    }
 
-  return undo_desc;
+  return undo_desc ? undo_desc : gimp_object_get_name (GIMP_OBJECT (plug_in));
 }
 
 /*  called from the PDB (gimp_plugin_menu_register)  */

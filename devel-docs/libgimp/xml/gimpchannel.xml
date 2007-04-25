@@ -22,31 +22,31 @@
 
 
 
-<link linkend="gint32">gint32</link>      <link linkend="gimp-channel-new">gimp_channel_new</link>                (<link linkend="gint32">gint32</link> image_ID,
-                                             const <link linkend="gchar">gchar</link> *name,
-                                             <link linkend="guint">guint</link> width,
-                                             <link linkend="guint">guint</link> height,
-                                             <link linkend="gdouble">gdouble</link> opacity,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *color);
-<link linkend="gint32">gint32</link>      <link linkend="gimp-channel-new-from-component">gimp_channel_new_from_component</link> (<link linkend="gint32">gint32</link> image_ID,
-                                             <link linkend="GimpChannelType">GimpChannelType</link> component,
-                                             const <link linkend="gchar">gchar</link> *name);
-<link linkend="gint32">gint32</link>      <link linkend="gimp-channel-copy">gimp_channel_copy</link>               (<link linkend="gint32">gint32</link> channel_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-channel-get-show-masked">gimp_channel_get_show_masked</link>    (<link linkend="gint32">gint32</link> channel_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-channel-set-show-masked">gimp_channel_set_show_masked</link>    (<link linkend="gint32">gint32</link> channel_ID,
-                                             <link linkend="gboolean">gboolean</link> show_masked);
-<link linkend="gdouble">gdouble</link>     <link linkend="gimp-channel-get-opacity">gimp_channel_get_opacity</link>        (<link linkend="gint32">gint32</link> channel_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-channel-set-opacity">gimp_channel_set_opacity</link>        (<link linkend="gint32">gint32</link> channel_ID,
-                                             <link linkend="gdouble">gdouble</link> opacity);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-channel-get-color">gimp_channel_get_color</link>          (<link linkend="gint32">gint32</link> channel_ID,
-                                             <link linkend="GimpRGB">GimpRGB</link> *color);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-channel-set-color">gimp_channel_set_color</link>          (<link linkend="gint32">gint32</link> channel_ID,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *color);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-channel-combine-masks">gimp_channel_combine_masks</link>      (<link linkend="gint32">gint32</link> channel1_ID,
-                                             <link linkend="gint32">gint32</link> channel2_ID,
-                                             <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
-                                             <link linkend="gint">gint</link> offx,
-                                             <link linkend="gint">gint</link> offy);
+<link linkend="gint32">gint32</link>              <link linkend="gimp-channel-new">gimp_channel_new</link>                    (<link linkend="gint32">gint32</link> image_ID,
+                                                         const <link linkend="gchar">gchar</link> *name,
+                                                         <link linkend="guint">guint</link> width,
+                                                         <link linkend="guint">guint</link> height,
+                                                         <link linkend="gdouble">gdouble</link> opacity,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *color);
+<link linkend="gint32">gint32</link>              <link linkend="gimp-channel-new-from-component">gimp_channel_new_from_component</link>     (<link linkend="gint32">gint32</link> image_ID,
+                                                         <link linkend="GimpChannelType">GimpChannelType</link> component,
+                                                         const <link linkend="gchar">gchar</link> *name);
+<link linkend="gint32">gint32</link>              <link linkend="gimp-channel-copy">gimp_channel_copy</link>                   (<link linkend="gint32">gint32</link> channel_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-channel-get-show-masked">gimp_channel_get_show_masked</link>        (<link linkend="gint32">gint32</link> channel_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-channel-set-show-masked">gimp_channel_set_show_masked</link>        (<link linkend="gint32">gint32</link> channel_ID,
+                                                         <link linkend="gboolean">gboolean</link> show_masked);
+<link linkend="gdouble">gdouble</link>             <link linkend="gimp-channel-get-opacity">gimp_channel_get_opacity</link>            (<link linkend="gint32">gint32</link> channel_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-channel-set-opacity">gimp_channel_set_opacity</link>            (<link linkend="gint32">gint32</link> channel_ID,
+                                                         <link linkend="gdouble">gdouble</link> opacity);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-channel-get-color">gimp_channel_get_color</link>              (<link linkend="gint32">gint32</link> channel_ID,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *color);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-channel-set-color">gimp_channel_set_color</link>              (<link linkend="gint32">gint32</link> channel_ID,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *color);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-channel-combine-masks">gimp_channel_combine_masks</link>          (<link linkend="gint32">gint32</link> channel1_ID,
+                                                         <link linkend="gint32">gint32</link> channel2_ID,
+                                                         <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
+                                                         <link linkend="gint">gint</link> offx,
+                                                         <link linkend="gint">gint</link> offy);
 </synopsis>
 </refsynopsisdiv>
 
@@ -69,12 +69,12 @@ Functions for manipulating channels.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-channel-new" role="function"/>gimp_channel_new ()</title>
-<indexterm><primary>gimp_channel_new</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_channel_new                (<link linkend="gint32">gint32</link> image_ID,
-                                             const <link linkend="gchar">gchar</link> *name,
-                                             <link linkend="guint">guint</link> width,
-                                             <link linkend="guint">guint</link> height,
-                                             <link linkend="gdouble">gdouble</link> opacity,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
+<indexterm><primary>gimp_channel_new</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_channel_new                    (<link linkend="gint32">gint32</link> image_ID,
+                                                         const <link linkend="gchar">gchar</link> *name,
+                                                         <link linkend="guint">guint</link> width,
+                                                         <link linkend="guint">guint</link> height,
+                                                         <link linkend="gdouble">gdouble</link> opacity,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <para>
 Create a new channel.
 </para>
@@ -112,9 +112,9 @@ initially.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-channel-new-from-component" role="function" condition="since:GIMP 2.4"/>gimp_channel_new_from_component ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_channel_new_from_component</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_channel_new_from_component (<link linkend="gint32">gint32</link> image_ID,
-                                             <link linkend="GimpChannelType">GimpChannelType</link> component,
-                                             const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_channel_new_from_component</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_channel_new_from_component     (<link linkend="gint32">gint32</link> image_ID,
+                                                         <link linkend="GimpChannelType">GimpChannelType</link> component,
+                                                         const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Create a new channel from a color component
 </para>
@@ -135,11 +135,11 @@ This procedure creates a new channel from a color component.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly created channel.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-channel-copy" role="function"/>gimp_channel_copy ()</title>
-<indexterm><primary>gimp_channel_copy</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_channel_copy               (<link linkend="gint32">gint32</link> channel_ID);</programlisting>
+<indexterm><primary>gimp_channel_copy</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_channel_copy                   (<link linkend="gint32">gint32</link> channel_ID);</programlisting>
 <para>
 Copy a channel.
 </para>
@@ -156,7 +156,7 @@ This procedure copies the specified channel and returns the copy.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-channel-get-show-masked" role="function"/>gimp_channel_get_show_masked ()</title>
-<indexterm><primary>gimp_channel_get_show_masked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_channel_get_show_masked    (<link linkend="gint32">gint32</link> channel_ID);</programlisting>
+<indexterm><primary>gimp_channel_get_show_masked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_channel_get_show_masked        (<link linkend="gint32">gint32</link> channel_ID);</programlisting>
 <para>
 Get the composite method of the specified channel.
 </para>
@@ -175,8 +175,8 @@ masked regions are shown. Otherwise, selected regions are shown.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-channel-set-show-masked" role="function"/>gimp_channel_set_show_masked ()</title>
-<indexterm><primary>gimp_channel_set_show_masked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_channel_set_show_masked    (<link linkend="gint32">gint32</link> channel_ID,
-                                             <link linkend="gboolean">gboolean</link> show_masked);</programlisting>
+<indexterm><primary>gimp_channel_set_show_masked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_channel_set_show_masked        (<link linkend="gint32">gint32</link> channel_ID,
+                                                         <link linkend="gboolean">gboolean</link> show_masked);</programlisting>
 <para>
 Set the composite method of the specified channel.
 </para>
@@ -198,7 +198,7 @@ masked regions are shown. Otherwise, selected regions are shown.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-channel-get-opacity" role="function"/>gimp_channel_get_opacity ()</title>
-<indexterm><primary>gimp_channel_get_opacity</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_channel_get_opacity        (<link linkend="gint32">gint32</link> channel_ID);</programlisting>
+<indexterm><primary>gimp_channel_get_opacity</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_channel_get_opacity            (<link linkend="gint32">gint32</link> channel_ID);</programlisting>
 <para>
 Get the opacity of the specified channel.
 </para>
@@ -215,8 +215,8 @@ This procedure returns the specified channel's opacity.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-channel-set-opacity" role="function"/>gimp_channel_set_opacity ()</title>
-<indexterm><primary>gimp_channel_set_opacity</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_channel_set_opacity        (<link linkend="gint32">gint32</link> channel_ID,
-                                             <link linkend="gdouble">gdouble</link> opacity);</programlisting>
+<indexterm><primary>gimp_channel_set_opacity</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_channel_set_opacity            (<link linkend="gint32">gint32</link> channel_ID,
+                                                         <link linkend="gdouble">gdouble</link> opacity);</programlisting>
 <para>
 Set the opacity of the specified channel.
 </para>
@@ -236,8 +236,8 @@ This procedure sets the specified channel's opacity.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-channel-get-color" role="function"/>gimp_channel_get_color ()</title>
-<indexterm><primary>gimp_channel_get_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_channel_get_color          (<link linkend="gint32">gint32</link> channel_ID,
-                                             <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
+<indexterm><primary>gimp_channel_get_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_channel_get_color              (<link linkend="gint32">gint32</link> channel_ID,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <para>
 Get the compositing color of the specified channel.
 </para>
@@ -257,8 +257,8 @@ This procedure returns the specified channel's compositing color.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-channel-set-color" role="function"/>gimp_channel_set_color ()</title>
-<indexterm><primary>gimp_channel_set_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_channel_set_color          (<link linkend="gint32">gint32</link> channel_ID,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
+<indexterm><primary>gimp_channel_set_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_channel_set_color              (<link linkend="gint32">gint32</link> channel_ID,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <para>
 Set the compositing color of the specified channel.
 </para>
@@ -278,11 +278,11 @@ This procedure sets the specified channel's compositing color.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-channel-combine-masks" role="function"/>gimp_channel_combine_masks ()</title>
-<indexterm><primary>gimp_channel_combine_masks</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_channel_combine_masks      (<link linkend="gint32">gint32</link> channel1_ID,
-                                             <link linkend="gint32">gint32</link> channel2_ID,
-                                             <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
-                                             <link linkend="gint">gint</link> offx,
-                                             <link linkend="gint">gint</link> offy);</programlisting>
+<indexterm><primary>gimp_channel_combine_masks</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_channel_combine_masks          (<link linkend="gint32">gint32</link> channel1_ID,
+                                                         <link linkend="gint32">gint32</link> channel2_ID,
+                                                         <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
+                                                         <link linkend="gint">gint</link> offx,
+                                                         <link linkend="gint">gint</link> offy);</programlisting>
 <para>
 Combine two channel masks.
 </para>

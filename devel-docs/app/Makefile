@@ -63,7 +63,7 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 AA = aa$(EXEEXT)
 ACLOCAL = ${SHELL} /home/sven/gnomesvn/gimp-dist/missing --run aclocal-1.9 
 ALLOCA = 
-ALL_LINGUAS = ar bg ca cs da de dz el en_CA en_GB eo es et eu fi fr ga gl gu he hu hr id it ja ko lt mk ms nb ne nl pa pl pt pt_BR ro ru rw sk sr sr@Latn sv tr tt uk vi xh yi zh_CN zh_TW
+ALL_LINGUAS = ar bg ca cs da de dz el en_CA en_GB eo es et eu fi fr ga gl gu he hu hr id it ja km ko lt mk ms nb ne nl pa pl pt pt_BR ro ru rw sk sr sr@Latn sv tr tt uk vi xh yi zh_CN zh_TW
 ALSA_CFLAGS = 
 ALSA_LIBS =  -lasound -lm -ldl -lpthread
 ALTIVEC_EXTRA_CFLAGS = 
@@ -88,7 +88,7 @@ BUILD_SCRIPT_FU_FALSE = #
 BUILD_SCRIPT_FU_TRUE = 
 BUILD_XJT_FALSE = #
 BUILD_XJT_TRUE = 
-CATALOGS =  ar.gmo bg.gmo ca.gmo cs.gmo da.gmo de.gmo dz.gmo el.gmo en_CA.gmo en_GB.gmo eo.gmo es.gmo et.gmo eu.gmo fi.gmo fr.gmo ga.gmo gl.gmo gu.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo ne.gmo nl.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo rw.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo tt.gmo uk.gmo vi.gmo xh.gmo yi.gmo zh_CN.gmo zh_TW.gmo
+CATALOGS =  ar.gmo bg.gmo ca.gmo cs.gmo da.gmo de.gmo dz.gmo el.gmo en_CA.gmo en_GB.gmo eo.gmo es.gmo et.gmo eu.gmo fi.gmo fr.gmo ga.gmo gl.gmo gu.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo km.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo ne.gmo nl.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo rw.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo tt.gmo uk.gmo vi.gmo xh.gmo yi.gmo zh_CN.gmo zh_TW.gmo
 CATOBJEXT = .gmo
 CC = gcc
 CCAS = gcc
@@ -96,7 +96,7 @@ CCASFLAGS = -g -O2
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2 -Wall -Wdeclaration-after-statement -Wmissing-prototypes -Wmissing-declarations -Winit-self -Wpointer-arith
 CPP = gcc -E
-CPPFLAGS =  -DGIMP_DISABLE_DEPRECATED -DG_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DPANGO_DISABLE_DEPRECATED -DGDK_MULTIHEAD_SAFE -DGTK_MULTIHEAD_SAFE
+CPPFLAGS =  -DGIMP_DISABLE_DEPRECATED -DG_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGDK_MULTIHEAD_SAFE -DGTK_MULTIHEAD_SAFE
 CXX = g++
 CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
@@ -105,7 +105,7 @@ CYGPATH_W = echo
 DATADIRNAME = share
 DBUS_BINDING_TOOL = /usr/bin/dbus-binding-tool
 DBUS_GLIB_CFLAGS = -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
-DBUS_GLIB_LIBS = -ldbus-glib-1 -ldbus-1 -lglib-2.0  
+DBUS_GLIB_LIBS = -ldbus-glib-1 -ldbus-1 -lgobject-2.0 -lglib-2.0  
 DEFAULT_BINARY_FALSE = 
 DEFAULT_BINARY_TRUE = #
 DEFS = -DHAVE_CONFIG_H
@@ -137,25 +137,25 @@ FREETYPE_LIBS = -lfreetype -lz
 GDK_PIXBUF_CFLAGS = -I/usr/include/gtk-2.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GDK_PIXBUF_CSOURCE = /usr/bin/gdk-pixbuf-csource
 GDK_PIXBUF_LIBS = -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
-GDK_PIXBUF_REQUIRED_VERSION = 2.8.17
+GDK_PIXBUF_REQUIRED_VERSION = 2.10.6
 GETTEXT_PACKAGE = gimp20
 GIMPINSTALL = 
 GIMP_API_VERSION = 2.0
 GIMP_APP_VERSION = 2.3
-GIMP_BINARY_AGE = 315
+GIMP_BINARY_AGE = 316
 GIMP_COMMAND = gimp-2.3
 GIMP_DATA_VERSION = 2.0
 GIMP_FULL_NAME = GNU Image Manipulation Program
 GIMP_INTERFACE_AGE = 0
 GIMP_MAJOR_VERSION = 2
-GIMP_MICRO_VERSION = 15
+GIMP_MICRO_VERSION = 16
 GIMP_MINOR_VERSION = 3
 GIMP_MKENUMS = $(PERL) $(top_srcdir)/tools/gimp-mkenums
 GIMP_MODULES = modules
 GIMP_PKGCONFIG_VERSION = 2.0
 GIMP_PLUGINS = plug-ins
 GIMP_PLUGIN_VERSION = 2.0
-GIMP_REAL_VERSION = 2.3.15
+GIMP_REAL_VERSION = 2.3.16
 GIMP_REMOTE = gimp-remote-2.3$(EXEEXT)
 GIMP_SYSCONF_VERSION = 2.0
 GIMP_TOOL_VERSION = 2.0
@@ -163,7 +163,7 @@ GIMP_UNSTABLE = yes
 GIMP_UNSTABLE_FALSE = #
 GIMP_UNSTABLE_TRUE = 
 GIMP_USER_VERSION = 2.3
-GIMP_VERSION = 2.3.15
+GIMP_VERSION = 2.3.16
 GLIB_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GLIB_GENMARSHAL = glib-genmarshal
 GLIB_LIBS = -lgobject-2.0 -lglib-2.0  
@@ -171,12 +171,12 @@ GLIB_MKENUMS = glib-mkenums
 GLIB_REQUIRED_VERSION = 2.12.3
 GMODULE_NO_EXPORT_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GMODULE_NO_EXPORT_LIBS = -lgmodule-2.0 -ldl -lglib-2.0  
-GMOFILES =  ar.gmo bg.gmo ca.gmo cs.gmo da.gmo de.gmo dz.gmo el.gmo en_CA.gmo en_GB.gmo eo.gmo es.gmo et.gmo eu.gmo fi.gmo fr.gmo ga.gmo gl.gmo gu.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo ne.gmo nl.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo rw.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo tt.gmo uk.gmo vi.gmo xh.gmo yi.gmo zh_CN.gmo zh_TW.gmo
+GMOFILES =  ar.gmo bg.gmo ca.gmo cs.gmo da.gmo de.gmo dz.gmo el.gmo en_CA.gmo en_GB.gmo eo.gmo es.gmo et.gmo eu.gmo fi.gmo fr.gmo ga.gmo gl.gmo gu.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo km.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo ne.gmo nl.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo rw.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo tt.gmo uk.gmo vi.gmo xh.gmo yi.gmo zh_CN.gmo zh_TW.gmo
 GMSGFMT = /usr/bin/msgfmt
 GOBJECT_QUERY = gobject-query
 GREP = /bin/grep
 GTHREAD_CFLAGS = -pthread -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
-GTHREAD_LIBS = -pthread -lgthread-2.0 -lglib-2.0  
+GTHREAD_LIBS = -pthread -lgthread-2.0 -lrt -lglib-2.0  
 GTKDOC_REQUIRED_VERSION = 1.0
 GTKHTML2_CFLAGS = -I/usr/include/gtkhtml-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libxml2 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/freetype2 -I/usr/include/libpng12  
 GTKHTML2_LIBS = -lgtkhtml-2 -lgtk-x11-2.0 -lxml2 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
@@ -185,7 +185,7 @@ GTK_CFLAGS = -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/at
 GTK_DOC_USE_LIBTOOL_FALSE = #
 GTK_DOC_USE_LIBTOOL_TRUE = 
 GTK_LIBS = -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
-GTK_REQUIRED_VERSION = 2.8.17
+GTK_REQUIRED_VERSION = 2.10.6
 HAL_CFLAGS = -DDBUS_API_SUBJECT_TO_CHANGE -I/usr/include/hal -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include  
 HAL_LIBS = -lhal -ldbus-1  
 HAVE_DX_DINPUT_FALSE = 
@@ -257,7 +257,7 @@ LIBLCMS = -llcms
 LIBMNG = -lmng -ljpeg -lpng12  
 LIBOBJS = 
 LIBPNG = -lpng12  
-LIBPOPPLER = -pthread -lpoppler-glib -lpoppler -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lgthread-2.0 -lglib-2.0  
+LIBPOPPLER = -pthread -lpoppler-glib -lpoppler -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lgthread-2.0 -lrt -lglib-2.0  
 LIBS = 
 LIBSCREENSHOT =   -lSM -lICE -lX11 -lXmu -lXt -lXext
 LIBSVG = -lrsvg-2 -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
@@ -270,7 +270,7 @@ LIBZ = -lz
 LN_S = ln -s
 LTLIBOBJS = 
 LT_CURRENT_MINUS_AGE = 0
-LT_VERSION_INFO = 315:0:315
+LT_VERSION_INFO = 316:0:316
 MAIL = mail$(EXEEXT)
 MAINT = 
 MAINTAINER_MODE_FALSE = #
@@ -280,6 +280,7 @@ MKINSTALLDIRS = ./mkinstalldirs
 MMX_EXTRA_CFLAGS = -mmmx
 MNG = mng$(EXEEXT)
 MSGFMT = /usr/bin/msgfmt
+MSGFMT_OPTS = -c
 MS_LIB_AVAILABLE_FALSE = 
 MS_LIB_AVAILABLE_TRUE = #
 OBJDUMP = objdump
@@ -291,9 +292,9 @@ OS_WIN32_TRUE = #
 PACKAGE = gimp
 PACKAGE_BUGREPORT = http://bugzilla.gnome.org/enter_bug.cgi?product=GIMP
 PACKAGE_NAME = GIMP
-PACKAGE_STRING = GIMP 2.3.15
+PACKAGE_STRING = GIMP 2.3.16
 PACKAGE_TARNAME = gimp
-PACKAGE_VERSION = 2.3.15
+PACKAGE_VERSION = 2.3.16
 PANGOFT2_CFLAGS = -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 PANGOFT2_LIBS = -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 PANGOFT2_REQUIRED_VERSION = 1.12.2
@@ -306,15 +307,13 @@ PLATFORM_WIN32_TRUE = #
 PNG = png$(EXEEXT)
 PNG_CFLAGS = -I/usr/include/libpng12  
 PNG_LIBS = -lpng12  
-POFILES =  ar.po bg.po ca.po cs.po da.po de.po dz.po el.po en_CA.po en_GB.po eo.po es.po et.po eu.po fi.po fr.po ga.po gl.po gu.po he.po hu.po hr.po id.po it.po ja.po ko.po lt.po mk.po ms.po nb.po ne.po nl.po pa.po pl.po pt.po pt_BR.po ro.po ru.po rw.po sk.po sr.po sr@Latn.po sv.po tr.po tt.po uk.po vi.po xh.po yi.po zh_CN.po zh_TW.po
+POFILES =  ar.po bg.po ca.po cs.po da.po de.po dz.po el.po en_CA.po en_GB.po eo.po es.po et.po eu.po fi.po fr.po ga.po gl.po gu.po he.po hu.po hr.po id.po it.po ja.po km.po ko.po lt.po mk.po ms.po nb.po ne.po nl.po pa.po pl.po pt.po pt_BR.po ro.po ru.po rw.po sk.po sr.po sr@Latn.po sv.po tr.po tt.po uk.po vi.po xh.po yi.po zh_CN.po zh_TW.po
 POPPLER = poppler$(EXEEXT)
 POPPLER_CFLAGS = -pthread -I/usr/include/poppler/glib -I/usr/include/poppler -I/usr/include/gtk-2.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
-POPPLER_LIBS = -pthread -lpoppler-glib -lpoppler -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lgthread-2.0 -lglib-2.0  
+POPPLER_LIBS = -pthread -lpoppler-glib -lpoppler -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lgthread-2.0 -lrt -lglib-2.0  
 POSUB = po
 PO_IN_DATADIR_FALSE = 
 PO_IN_DATADIR_TRUE = 
-PRINT_CFLAGS = -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/freetype2 -I/usr/include/libpng12  
-PRINT_LIBS = -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 PSP = psp$(EXEEXT)
 PYBIN_PATH = /usr/bin/python
 PYGIMP_EXTRA_CFLAGS = -fno-strict-aliasing
@@ -346,14 +345,14 @@ SVG_CFLAGS = -I/usr/include/librsvg-2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.
 SVG_LIBS = -lrsvg-2 -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 SYMPREFIX = 
 TIFF = tiff$(EXEEXT)
-URI_GNOME_VFS_CFLAGS = -pthread -DORBIT2=1 -I/usr/include/gnome-vfs-2.0 -I/usr/lib/gnome-vfs-2.0/include -I/usr/include/bonobo-activation-2.0 -I/usr/include/libbonobo-2.0 -I/usr/include/gconf/2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/orbit-2.0 -I/usr/include/libgnomeui-2.0 -I/usr/include/libgnome-2.0 -I/usr/include/libgnomecanvas-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libart-2.0 -I/usr/include/libbonoboui-2.0 -I/usr/include/gnome-keyring-1 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/libpng12 -I/usr/include/libxml2  
-URI_GNOME_VFS_LIBS = -pthread -lgnomeui-2 -lSM -lICE -lbonoboui-2 -lxml2 -lgnomecanvas-2 -lgnome-2 -lpopt -lart_lgpl_2 -lpangoft2-1.0 -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgnomevfs-2 -lbonobo-2 -lgconf-2 -lgobject-2.0 -lbonobo-activation -lORBit-2 -lm -lgmodule-2.0 -ldl -lgthread-2.0 -lgnome-keyring -lglib-2.0  
+URI_GNOME_VFS_CFLAGS = -pthread -DORBIT2=1 -I/usr/include/gnome-vfs-2.0 -I/usr/lib/gnome-vfs-2.0/include -I/usr/include/gconf/2 -I/usr/include/orbit-2.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/libgnomeui-2.0 -I/usr/include/libgnome-2.0 -I/usr/include/libgnomecanvas-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libart-2.0 -I/usr/include/libbonoboui-2.0 -I/usr/include/gnome-keyring-1 -I/usr/include/libbonobo-2.0 -I/usr/include/bonobo-activation-2.0 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/libpng12 -I/usr/include/libxml2  
+URI_GNOME_VFS_LIBS = -pthread -Wl,--export-dynamic -lgnomeui-2 -lSM -lICE -lbonoboui-2 -lgnomevfs-2 -lgnomecanvas-2 -lgnome-2 -lpopt -lart_lgpl_2 -lpangoft2-1.0 -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lbonobo-2 -lbonobo-activation -lgconf-2 -lgmodule-2.0 -ldl -lORBit-2 -lgthread-2.0 -lrt -lgobject-2.0 -lgnome-keyring -lglib-2.0  
 URI_LIBCURL_CFLAGS = 
 URI_LIBCURL_LIBS = 
 USE_BINRELOC_FALSE = 
 USE_BINRELOC_TRUE = #
 USE_NLS = yes
-VERSION = 2.3.15
+VERSION = 2.3.16
 WINDRES = :
 WITH_PDBGEN_FALSE = #
 WITH_PDBGEN_TRUE = 
@@ -745,6 +744,8 @@ docs: html-build.stamp
 scan-build.stamp: $(HFILE_GLOB) $(CFILE_GLOB)
 	@echo 'gtk-doc: Scanning header files'
 	@-chmod -R u+w $(srcdir)
+	cd $(srcdir) && \
+	  gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)" $(SCAN_OPTIONS) $(EXTRA_HFILES)
 	if grep -l '^..*$$' $(srcdir)/$(DOC_MODULE).types > /dev/null 2>&1 ; then \
 	    CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" CFLAGS="$(GTKDOC_CFLAGS)" LDFLAGS="$(GTKDOC_LIBS)" gtkdoc-scangobj $(SCANGOBJ_OPTIONS) --module=$(DOC_MODULE) --output-dir=$(srcdir) ; \
 	else \
@@ -753,11 +754,9 @@ scan-build.stamp: $(HFILE_GLOB) $(CFILE_GLOB)
                test -f $$i || touch $$i ; \
 	    done \
 	fi
-	cd $(srcdir) && \
-	  gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)" $(SCAN_OPTIONS) $(EXTRA_HFILES)
 	touch scan-build.stamp
 
-$(DOC_MODULE)-decl.txt $(SCANOBJ_FILES): scan-build.stamp
+$(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt: scan-build.stamp
 	@true
 
 #### templates ####
@@ -836,7 +835,7 @@ dist-hook: dist-check-gtkdoc dist-hook-local
 	mkdir $(distdir)/html
 	-cp $(srcdir)/tmpl/*.sgml $(distdir)/tmpl
 	-cp $(srcdir)/xml/*.xml $(distdir)/xml
-	-cp $(srcdir)/html/* $(distdir)/html
+	cp $(srcdir)/html/* $(distdir)/html
 	if test -f $(srcdir)/$(DOC_MODULE).types; then \
 	  cp $(srcdir)/$(DOC_MODULE).types $(distdir)/$(DOC_MODULE).types; \
 	fi

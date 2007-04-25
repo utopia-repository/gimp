@@ -1,7 +1,7 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * $Id: tga.c 21497 2006-12-09 22:12:23Z neo $
+ * $Id: tga.c 22138 2007-03-17 19:44:55Z mitch $
  * TrueVision Targa loading and saving file filter for the Gimp.
  * Targa code Copyright (C) 1997 Raphael FRANCOIS and Gordon Matzigkeit
  *
@@ -234,7 +234,10 @@ query (void)
                           load_args, load_return_vals);
 
   gimp_register_file_handler_mime (LOAD_PROC, "image/x-tga");
-  gimp_register_load_handler (LOAD_PROC, "tga", "");
+  gimp_register_magic_load_handler (LOAD_PROC,
+                                    "tga,vda,icb,vst",
+                                    "",
+                                    "-18&,string,TRUEVISION-XFILE.,-1,byte,0");
 
   gimp_install_procedure (SAVE_PROC,
                           "saves files in the Targa file format",

@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpmessage</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimphelp.html" title="gimphelp">
 <link rel="next" href="libgimp-gimpplugin.html" title="gimpplugin">
-<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpplugin.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2556432" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2587964" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2548468" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2565714" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpmessage"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2556432"></a><span class="refentrytitle">gimpmessage</span>
+<a name="id2587964"></a><span class="refentrytitle">gimpmessage</span>
 </h2>
 <p>gimpmessage &#8212; Display a dialog box with a message.</p>
 </td>
@@ -52,29 +52,28 @@
 
 
 
-gboolean    <a href="libgimp-gimpmessage.html#gimp-message">gimp_message</a>                    (const gchar *message);
+gboolean            <a href="libgimp-gimpmessage.html#gimp-message">gimp_message</a>                        (const gchar *message);
 <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
->GimpMessageHandlerType</a> <a href="libgimp-gimpmessage.html#gimp-message-get-handler">gimp_message_get_handler</a>
-                                            (void);
-gboolean    <a href="libgimp-gimpmessage.html#gimp-message-set-handler">gimp_message_set_handler</a>        (<a
+>GimpMessageHandlerType</a> <a href="libgimp-gimpmessage.html#gimp-message-get-handler">gimp_message_get_handler</a>         (void);
+gboolean            <a href="libgimp-gimpmessage.html#gimp-message-set-handler">gimp_message_set_handler</a>            (<a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 >GimpMessageHandlerType</a> handler);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2548468"></a><h2>Description</h2>
+<a name="id2565714"></a><h2>Description</h2>
 <p>
 Display a dialog box with a message.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2561726"></a><h2>Details</h2>
+<a name="id2589901"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2591480"></a><h3>
+<a name="id2562489"></a><h3>
 <a name="gimp-message"></a>gimp_message ()</h3>
-<a class="indexterm" name="id2591492"></a><pre class="programlisting">gboolean    gimp_message                    (const gchar *message);</pre>
+<a class="indexterm" name="id2562501"></a><pre class="programlisting">gboolean            gimp_message                        (const gchar *message);</pre>
 <p>
 Displays a dialog box with a message.
 </p>
@@ -102,12 +101,11 @@ reporting. The message must be in UTF-8 encoding.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2591556"></a><h3>
+<a name="id2562567"></a><h3>
 <a name="gimp-message-get-handler"></a>gimp_message_get_handler ()</h3>
-<a class="indexterm" name="id2591568"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2562578"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
->GimpMessageHandlerType</a> gimp_message_get_handler
-                                            (void);</pre>
+>GimpMessageHandlerType</a> gimp_message_get_handler         (void);</pre>
 <p>
 Returns the current state of where warning messages are displayed.
 </p>
@@ -129,9 +127,9 @@ gimp was started.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2592011"></a><h3>
+<a name="id2601228"></a><h3>
 <a name="gimp-message-set-handler"></a>gimp_message_set_handler ()</h3>
-<a class="indexterm" name="id2592022"></a><pre class="programlisting">gboolean    gimp_message_set_handler        (<a
+<a class="indexterm" name="id2601239"></a><pre class="programlisting">gboolean            gimp_message_set_handler            (<a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 >GimpMessageHandlerType</a> handler);</pre>
 <p>

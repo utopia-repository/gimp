@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimptexttool</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpselection.html" title="gimpselection">
 <link rel="next" href="libgimp-gimptile.html" title="gimptile">
-<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimptile.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2556180" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2595618" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2655292" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2664322" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimptexttool"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2556180"></a><span class="refentrytitle">gimptexttool</span>
+<a name="id2595618"></a><span class="refentrytitle">gimptexttool</span>
 </h2>
 <p>gimptexttool &#8212; Functions for controlling the text tool.</p>
 </td>
@@ -52,90 +52,90 @@
 
 
 
-gint32      <a href="libgimp-gimptexttool.html#gimp-text-fontname">gimp_text_fontname</a>              (gint32 image_ID,
-                                             gint32 drawable_ID,
-                                             gdouble x,
-                                             gdouble y,
-                                             const gchar *text,
-                                             gint border,
-                                             gboolean antialias,
-                                             gdouble size,
-                                             <a
+gint32              <a href="libgimp-gimptexttool.html#gimp-text-fontname">gimp_text_fontname</a>                  (gint32 image_ID,
+                                                         gint32 drawable_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         const gchar *text,
+                                                         gint border,
+                                                         gboolean antialias,
+                                                         gdouble size,
+                                                         <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
 >GimpSizeType</a> size_type,
-                                             const gchar *fontname);
-gboolean    <a href="libgimp-gimptexttool.html#gimp-text-get-extents-fontname">gimp_text_get_extents_fontname</a>  (const gchar *text,
-                                             gdouble size,
-                                             <a
+                                                         const gchar *fontname);
+gboolean            <a href="libgimp-gimptexttool.html#gimp-text-get-extents-fontname">gimp_text_get_extents_fontname</a>      (const gchar *text,
+                                                         gdouble size,
+                                                         <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
 >GimpSizeType</a> size_type,
-                                             const gchar *fontname,
-                                             gint *width,
-                                             gint *height,
-                                             gint *ascent,
-                                             gint *descent);
-gint32      <a href="libgimp-gimptexttool.html#gimp-text">gimp_text</a>                       (gint32 image_ID,
-                                             gint32 drawable_ID,
-                                             gdouble x,
-                                             gdouble y,
-                                             const gchar *text,
-                                             gint border,
-                                             gboolean antialias,
-                                             gdouble size,
-                                             <a
+                                                         const gchar *fontname,
+                                                         gint *width,
+                                                         gint *height,
+                                                         gint *ascent,
+                                                         gint *descent);
+gint32              <a href="libgimp-gimptexttool.html#gimp-text">gimp_text</a>                           (gint32 image_ID,
+                                                         gint32 drawable_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         const gchar *text,
+                                                         gint border,
+                                                         gboolean antialias,
+                                                         gdouble size,
+                                                         <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
 >GimpSizeType</a> size_type,
-                                             const gchar *foundry,
-                                             const gchar *family,
-                                             const gchar *weight,
-                                             const gchar *slant,
-                                             const gchar *set_width,
-                                             const gchar *spacing,
-                                             const gchar *registry,
-                                             const gchar *encoding);
-gboolean    <a href="libgimp-gimptexttool.html#gimp-text-get-extents">gimp_text_get_extents</a>           (const gchar *text,
-                                             gdouble size,
-                                             <a
+                                                         const gchar *foundry,
+                                                         const gchar *family,
+                                                         const gchar *weight,
+                                                         const gchar *slant,
+                                                         const gchar *set_width,
+                                                         const gchar *spacing,
+                                                         const gchar *registry,
+                                                         const gchar *encoding);
+gboolean            <a href="libgimp-gimptexttool.html#gimp-text-get-extents">gimp_text_get_extents</a>               (const gchar *text,
+                                                         gdouble size,
+                                                         <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
 >GimpSizeType</a> size_type,
-                                             const gchar *foundry,
-                                             const gchar *family,
-                                             const gchar *weight,
-                                             const gchar *slant,
-                                             const gchar *set_width,
-                                             const gchar *spacing,
-                                             const gchar *registry,
-                                             const gchar *encoding,
-                                             gint *width,
-                                             gint *height,
-                                             gint *ascent,
-                                             gint *descent);
+                                                         const gchar *foundry,
+                                                         const gchar *family,
+                                                         const gchar *weight,
+                                                         const gchar *slant,
+                                                         const gchar *set_width,
+                                                         const gchar *spacing,
+                                                         const gchar *registry,
+                                                         const gchar *encoding,
+                                                         gint *width,
+                                                         gint *height,
+                                                         gint *ascent,
+                                                         gint *descent);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2655292"></a><h2>Description</h2>
+<a name="id2664322"></a><h2>Description</h2>
 <p>
 Functions for controlling the text tool.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2655308"></a><h2>Details</h2>
+<a name="id2664338"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2655318"></a><h3>
+<a name="id2664348"></a><h3>
 <a name="gimp-text-fontname"></a>gimp_text_fontname ()</h3>
-<a class="indexterm" name="id2655329"></a><pre class="programlisting">gint32      gimp_text_fontname              (gint32 image_ID,
-                                             gint32 drawable_ID,
-                                             gdouble x,
-                                             gdouble y,
-                                             const gchar *text,
-                                             gint border,
-                                             gboolean antialias,
-                                             gdouble size,
-                                             <a
+<a class="indexterm" name="id2664360"></a><pre class="programlisting">gint32              gimp_text_fontname                  (gint32 image_ID,
+                                                         gint32 drawable_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         const gchar *text,
+                                                         gint border,
+                                                         gboolean antialias,
+                                                         gdouble size,
+                                                         <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
 >GimpSizeType</a> size_type,
-                                             const gchar *fontname);</pre>
+                                                         const gchar *fontname);</pre>
 <p>
 Add text at the specified location as a floating selection or a new
 layer.
@@ -220,18 +220,18 @@ vertical resolution.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2639262"></a><h3>
+<a name="id2666133"></a><h3>
 <a name="gimp-text-get-extents-fontname"></a>gimp_text_get_extents_fontname ()</h3>
-<a class="indexterm" name="id2639273"></a><pre class="programlisting">gboolean    gimp_text_get_extents_fontname  (const gchar *text,
-                                             gdouble size,
-                                             <a
+<a class="indexterm" name="id2666144"></a><pre class="programlisting">gboolean            gimp_text_get_extents_fontname      (const gchar *text,
+                                                         gdouble size,
+                                                         <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
 >GimpSizeType</a> size_type,
-                                             const gchar *fontname,
-                                             gint *width,
-                                             gint *height,
-                                             gint *ascent,
-                                             gint *descent);</pre>
+                                                         const gchar *fontname,
+                                                         gint *width,
+                                                         gint *height,
+                                                         gint *ascent,
+                                                         gint *descent);</pre>
 <p>
 Get extents of the bounding box for the specified text.
 </p>
@@ -299,27 +299,27 @@ into account.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2639489"></a><h3>
+<a name="id2660921"></a><h3>
 <a name="gimp-text"></a>gimp_text ()</h3>
-<a class="indexterm" name="id2639503"></a><pre class="programlisting">gint32      gimp_text                       (gint32 image_ID,
-                                             gint32 drawable_ID,
-                                             gdouble x,
-                                             gdouble y,
-                                             const gchar *text,
-                                             gint border,
-                                             gboolean antialias,
-                                             gdouble size,
-                                             <a
+<a class="indexterm" name="id2660935"></a><pre class="programlisting">gint32              gimp_text                           (gint32 image_ID,
+                                                         gint32 drawable_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         const gchar *text,
+                                                         gint border,
+                                                         gboolean antialias,
+                                                         gdouble size,
+                                                         <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
 >GimpSizeType</a> size_type,
-                                             const gchar *foundry,
-                                             const gchar *family,
-                                             const gchar *weight,
-                                             const gchar *slant,
-                                             const gchar *set_width,
-                                             const gchar *spacing,
-                                             const gchar *registry,
-                                             const gchar *encoding);</pre>
+                                                         const gchar *foundry,
+                                                         const gchar *family,
+                                                         const gchar *weight,
+                                                         const gchar *slant,
+                                                         const gchar *set_width,
+                                                         const gchar *spacing,
+                                                         const gchar *registry,
+                                                         const gchar *encoding);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_text</code> is deprecated and should not be used in newly-written code.</p>
@@ -427,25 +427,25 @@ This procedure is deprecated! Use <a href="libgimp-gimptexttool.html#gimp-text-f
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2659608"></a><h3>
+<a name="id2668611"></a><h3>
 <a name="gimp-text-get-extents"></a>gimp_text_get_extents ()</h3>
-<a class="indexterm" name="id2659620"></a><pre class="programlisting">gboolean    gimp_text_get_extents           (const gchar *text,
-                                             gdouble size,
-                                             <a
+<a class="indexterm" name="id2668623"></a><pre class="programlisting">gboolean            gimp_text_get_extents               (const gchar *text,
+                                                         gdouble size,
+                                                         <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
 >GimpSizeType</a> size_type,
-                                             const gchar *foundry,
-                                             const gchar *family,
-                                             const gchar *weight,
-                                             const gchar *slant,
-                                             const gchar *set_width,
-                                             const gchar *spacing,
-                                             const gchar *registry,
-                                             const gchar *encoding,
-                                             gint *width,
-                                             gint *height,
-                                             gint *ascent,
-                                             gint *descent);</pre>
+                                                         const gchar *foundry,
+                                                         const gchar *family,
+                                                         const gchar *weight,
+                                                         const gchar *slant,
+                                                         const gchar *set_width,
+                                                         const gchar *spacing,
+                                                         const gchar *registry,
+                                                         const gchar *encoding,
+                                                         gint *width,
+                                                         gint *height,
+                                                         gint *ascent,
+                                                         gint *descent);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_text_get_extents</code> is deprecated and should not be used in newly-written code.</p>

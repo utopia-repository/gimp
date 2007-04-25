@@ -22,13 +22,13 @@
 
 
 
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-undo-group-start">gimp_image_undo_group_start</link>     (<link linkend="gint32">gint32</link> image_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-undo-group-end">gimp_image_undo_group_end</link>       (<link linkend="gint32">gint32</link> image_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-undo-is-enabled">gimp_image_undo_is_enabled</link>      (<link linkend="gint32">gint32</link> image_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-undo-disable">gimp_image_undo_disable</link>         (<link linkend="gint32">gint32</link> image_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-undo-enable">gimp_image_undo_enable</link>          (<link linkend="gint32">gint32</link> image_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-undo-freeze">gimp_image_undo_freeze</link>          (<link linkend="gint32">gint32</link> image_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-undo-thaw">gimp_image_undo_thaw</link>            (<link linkend="gint32">gint32</link> image_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-image-undo-group-start">gimp_image_undo_group_start</link>         (<link linkend="gint32">gint32</link> image_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-image-undo-group-end">gimp_image_undo_group_end</link>           (<link linkend="gint32">gint32</link> image_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-image-undo-is-enabled">gimp_image_undo_is_enabled</link>          (<link linkend="gint32">gint32</link> image_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-image-undo-disable">gimp_image_undo_disable</link>             (<link linkend="gint32">gint32</link> image_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-image-undo-enable">gimp_image_undo_enable</link>              (<link linkend="gint32">gint32</link> image_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-image-undo-freeze">gimp_image_undo_freeze</link>              (<link linkend="gint32">gint32</link> image_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-image-undo-thaw">gimp_image_undo_thaw</link>                (<link linkend="gint32">gint32</link> image_ID);
 </synopsis>
 </refsynopsisdiv>
 
@@ -52,7 +52,7 @@ Control of undo/redo.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-image-undo-group-start" role="function"/>gimp_image_undo_group_start ()</title>
-<indexterm><primary>gimp_image_undo_group_start</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_undo_group_start     (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<indexterm><primary>gimp_image_undo_group_start</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_undo_group_start         (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Starts a group undo.
 </para>
@@ -72,7 +72,7 @@ call.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-image-undo-group-end" role="function"/>gimp_image_undo_group_end ()</title>
-<indexterm><primary>gimp_image_undo_group_end</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_undo_group_end       (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<indexterm><primary>gimp_image_undo_group_end</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_undo_group_end           (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Finish a group undo.
 </para>
@@ -90,7 +90,7 @@ This function must be called once for each
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-image-undo-is-enabled" role="function"/>gimp_image_undo_is_enabled ()</title>
-<indexterm><primary>gimp_image_undo_is_enabled</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_undo_is_enabled      (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<indexterm><primary>gimp_image_undo_is_enabled</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_undo_is_enabled          (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Check if the image's undo stack is enabled.
 </para>
@@ -110,7 +110,7 @@ each other and want to check if their caller has already used
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-image-undo-disable" role="function"/>gimp_image_undo_disable ()</title>
-<indexterm><primary>gimp_image_undo_disable</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_undo_disable         (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<indexterm><primary>gimp_image_undo_disable</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_undo_disable             (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Disable the image's undo stack.
 </para>
@@ -131,7 +131,7 @@ be time and memory intensive.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-image-undo-enable" role="function"/>gimp_image_undo_enable ()</title>
-<indexterm><primary>gimp_image_undo_enable</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_undo_enable          (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<indexterm><primary>gimp_image_undo_enable</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_undo_enable              (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Enable the image's undo stack.
 </para>
@@ -151,7 +151,7 @@ image undo stack.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-image-undo-freeze" role="function"/>gimp_image_undo_freeze ()</title>
-<indexterm><primary>gimp_image_undo_freeze</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_undo_freeze          (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<indexterm><primary>gimp_image_undo_freeze</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_undo_freeze              (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Freeze the image's undo stack.
 </para>
@@ -178,7 +178,7 @@ behaviour is undefined.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-image-undo-thaw" role="function"/>gimp_image_undo_thaw ()</title>
-<indexterm><primary>gimp_image_undo_thaw</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_undo_thaw            (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<indexterm><primary>gimp_image_undo_thaw</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_undo_thaw                (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Thaw the image's undo stack.
 </para>

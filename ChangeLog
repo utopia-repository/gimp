@@ -1,3 +1,1152 @@
+2007-04-24  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.3.16 development release.
+
+2007-04-24  Sven Neumann  <sven@gimp.org>
+
+	* app/config/Makefile.am: fiddle with test_config_LDFLAGS to make
+	test-config link again.
+
+	* plug-ins/common/wind.c: increased MAX_STRENGTH to 100.
+
+2007-04-24  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/screenshot.c: unset 'show-border' on the
+	GtkNotebook that holds the hints.
+
+2007-04-24  Sven Neumann  <sven@gimp.org>
+
+	* app/plug-in/gimppluginprocedure.[ch]: use GQuark for locale and
+	help domains to avoid duplicating the same strings many times.
+
+	* app/plug-in/gimppluginmanager-restore.c: removed FIXME.
+
+2007-04-24  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/gimppluginmanager-restore.c
+	(gimp_plug_in_manager_restore): set the default plug-in locale
+	domain on all GimpPlugInDefs which don't register a locale domain
+	themselves. Fixes bug #430146.
+
+2007-04-22  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/brush.pdb (brush_rename)
+	* tools/pdbgen/pdb/gradient.pdb (gradient_rename)
+	* tools/pdbgen/pdb/palette.pdb (palette_rename): don't allow the
+	empty string as new name. Fixes bug #431845.
+
+	* app/pdb/brush_cmds.c
+	* app/pdb/gradient_cmds.c
+	* app/pdb/palette_cmds.c: regenerated.
+
+2007-04-21  Sven Neumann  <sven@gimp.org>
+
+	* app/widgets/dbus-service.xml
+	* app/widgets/gimpdbusservice.[ch]: use "uri" instead of "filename"
+	in the D-Bus methods.
+
+2007-04-20  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/script-fu/script-fu-console.c: enable word-wrapping in
+	the Script-Fu console.
+
+2007-04-19  Sven Neumann  <sven@gimp.org>
+
+	* configure.in (ALL_LINGUAS): added 'km' (Khmer) (bug #420417).
+
+2007-04-19  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bump the required version of pygtk to 2.10.4.
+	Older versions have a bug in the code generator (bug #381389).
+
+2007-04-18  Sven Neumann  <sven@gimp.org>
+
+	* app/Makefile.am: don't override LDFLAGS, use AM_LDFLAGS instead.
+
+2007-04-18  Sven Neumann  <sven@gimp.org>
+
+	* app/plug-in/Makefile.am
+	* app/plug-in/gimppluginmanager.[ch]
+	* app/plug-in/gimppluginmanager-restore.[ch]: moved
+	gimp_plug_in_manager_restore() to its own file.
+
+	* app/core/gimp.c: changed accordingly.
+
+	* app/Makefile.am (LDFLAGS): convince the linker to do its job.
+
+2007-04-18  Sven Neumann  <sven@gimp.org>
+
+	* app/plug-in/gimppluginmanager.c (gimp_plug_in_manager_restore):
+	try to improve readability by moving code to helper functions.
+
+2007-04-18  Sven Neumann  <sven@gimp.org>
+
+	* app/plug-in/gimpinterpreterdb.[ch]: added a function that
+	returns all file extensions registered in the interpreter db.
+
+	* app/plug-in/gimppluginmanager.c (gimp_plug_in_manager_restore):
+	if the PATHEXT environment variable is set, append all registered
+	file extensions to it. This way GIMP can recognize Python scripts
+	as plug-ins on platforms where the executable bit is unknown.
+
+2007-04-18  Sven Neumann  <sven@gimp.org>
+
+	* data/tips/gimp-tips.xml.in: fixed a typo.
+
+2007-04-18  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/gimpscrolledpreview.c
+	(gimp_scrolled_preview_nav_button_press): applied patch from
+	Aurimas Juška that fixes positioning of the quick navigation
+	popup (bug #430917).
+
+2007-04-17  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/fp.c (fp_render_preview): removed a conditional
+	that has become obsolete now. Fixed indentation.
+
+2007-04-17  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/gimppreviewarea.c: allow the draw, blend, mask
+	and fill methods to be called with zero width or height. Nothing
+	will be drawn, but it's still a valid call.
+
+2007-04-17  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/fp.c: deal better with drawables that are not
+	the same size as the image. Fixes bug #430455.
+
+2007-04-17  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/fp.c: use g_malloc(); plugged memory leaks.
+
+2007-04-17  Sven Neumann  <sven@gimp.org>
+
+	Allow other applications to open images in GIMP as if they were
+	new images (without associating a filename). Fixes bug #423118.
+
+	* app/file/file-open.[ch]: added parameter 'as_new' to
+	file_open_image() and its variants.
+
+	* app/actions/data-commands.c
+	* app/actions/documents-commands.c
+	* app/actions/file-commands.c
+	* app/core/gimpimagefile.c
+	* app/dialogs/file-open-dialog.c
+	* app/dialogs/file-open-location-dialog.c
+	* app/widgets/gimptoolbox.c
+	* app/widgets/gimptoolbox-dnd.c: changed accordingly.
+
+	* app/app.[ch]
+	* app/main.c: added new command-line option '--as-new'.
+
+	* app/widgets/gimpdbusservice.[ch]
+	* app/widgets/dbus-service.xml: added new method OpenAsNew to the
+	D-Bus interface.
+
+	* docs/gimp.1.in: document the new command-line option.
+
+2007-04-17  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/script-fu/scripts/neon-logo.scm: applied slightly
+	modified patch from Aurimas Juška which fixes bug #167260 by not
+	allowing the selection to shrink too much.
+
+2007-04-17  Michael Natterer  <mitch@gimp.org>
+
+	* app/config/gimprc.c
+	* app/plug-in/gimppluginmanager.c
+	* app/plug-in/gimpplugin.c
+	* app/gui/themes.c: don't translate --verbose or g_printerr()
+	messages, they are debugging output that often ends up in bugzilla
+	and should not depend on the locale.
+
+2007-04-17  Michael Natterer  <mitch@gimp.org>
+
+	* plug-ins/common/gqbist.c: applied slightly modified patch from
+	Aurimas Juška which adds an undo button to go back to the previous
+	state. Fixes bug #356662.
+
+2007-04-17  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/print/Makefile.am: use GTK_CFLAGS and GTK_LIBS.
+
+2007-04-16  Sven Neumann  <sven@gimp.org>
+
+	* app/base/pixel-surround.c: documentation fix.
+
+2007-04-16  Michael Natterer  <mitch@gimp.org>
+
+	* app/widgets/Makefile.am
+	* app/widgets/widgets-types.h
+	* app/widgets/gimpcellrendereraccel.[ch]: remove
+	GimpCellRendererAccel.
+
+	* app/widgets/gimpactionview.c: use GtkCellRendererAccel instead.
+	If an action has no label, use its name as label. Always show the
+	"Name" column because there are too many actions with confusingly
+	similar names.
+
+2007-04-16  Sven Neumann  <sven@gimp.org>
+
+	* INSTALL
+	* configure.in
+	* app/gui/gui.c (gui_sanity_check): require gtk+ >= 2.10.6.
+
+2007-04-16  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/Lighting/lighting_ui.c: applied patch from Aurimas
+	Juška that fixes sensitivity of input fields related to the light
+	type (bug #359833).
+
+2007-04-13  Michael Natterer  <mitch@gimp.org>
+
+	* app/base/base-types.h
+	* app/base/temp-buf.[ch]: remove redundant and inconsistently used
+	MaskBuf type and API.
+
+	* app/core/gimpbrush-scale.c
+	* app/paint/gimpbrushcore.[ch]: use TempBuf and its API instead.
+	This also optimizes away a useless memset() on brush scaling,
+	we completely fill each of the created buffers anyway.
+
+2007-04-12  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimprectangleselecttool.c: implement
+	GimpTool::key_press and delegate to the rectangle tool or the edit
+	selection tool. This resurrects positioning of floating selections
+	with the cursor keys.
+
+2007-04-12  Sven Neumann  <sven@gimp.org>
+
+	* tools/pdbgen/pdb/display.pdb (display_delete): added a note that
+	calling this function may cause data loss.
+
+	* app/pdb/display_cmds.c
+	* libgimp/gimpdisplay_pdb.c: regenerated.
+
+2007-04-12  Raphaël Quinet  <raphael@gimp.org>
+
+	* plug-ins/metadata/xmp-parse.c: made the parser more tolerant and
+	accept XMP blocks that are not using the namespace prefixes
+	recommended by the XMP specification.
+
+2007-04-12  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/plug-in-commands.c: if a plug-in or script
+	registered with a DISPLAY argument after the run-mode argument,
+	then pass the ID of the active display to the script, optionally
+	followed by image and drawable IDs.
+
+	* plug-ins/script-fu/scheme-wrapper.c
+	* plug-ins/script-fu/script-fu-enums.h
+	* plug-ins/script-fu/script-fu-interface.c
+	* plug-ins/script-fu/script-fu-scripts.c
+	* plug-ins/script-fu/script-fu-types.h: added SF-DISPLAY parameter.
+
+2007-04-12  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/sel2path/*.[ch]: updated copyright header.
+
+2007-04-12  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/channel_mixer.c
+	* plug-ins/gfig/gfig-style.c: get rid of compiler warnings about
+	dereferencing type-punned pointers.
+
+2007-04-12  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimplevelstool.c
+	* app/tools/gimpcurvestool.c
+	* app/xcf/xcf-save.c
+	* app/xcf/xcf-load.c
+	* app/widgets/gimppaletteeditor.c
+	* app/widgets/gimpcolormapeditor.c
+	* app/widgets/gimpcolorframe.c: get rid of compiler warnings about
+	dereferencing type-punned pointers.
+
+2007-04-12  Sven Neumann  <sven@gimp.org>
+
+	* libgimpbase/gimpprotocol.[ch] (struct _GPParam): don't redefine
+	the GimpParasite struct, just use it.
+
+	* libgimp/gimp.c: include gimpparasite.h.
+
+	* libgimp/gimpitemcombobox.c (gimp_item_combo_box_new): initialize
+	combo_box_type to suppress a compiler warning.
+
+	* libgimpwidgets/gimpmemsizeentry.c (gimp_memsize_entry_new):
+	avoid dereferencing a type-punned pointer.
+
+2007-04-11  Jakub Steiner <jimmac@ximian.com>
+
+	* themes/Default/images/stock-display-filter-contrast-24.svg
+	* themes/Default/images/stock-display-filter-colorblind-24.svg
+	* themes/Default/images/stock-display-filter-contrast-24.png
+	* themes/Default/images/stock-display-filter-colorblind-24.png
+	* themes/Default/images/stock-display-filter-contrast-16.svg
+	* themes/Default/images/stock-display-filter-colorblind-16.svg
+	* themes/Default/images/stock-display-filter-lcms-24.svg
+	* themes/Default/images/stock-display-filter-contrast-16.png
+	* themes/Default/images/stock-display-filter-colorblind-16.png
+	* themes/Default/images/stock-display-filter-lcms-24.png
+	* themes/Default/images/stock-display-filter-lcms-16.svg
+	* themes/Default/images/stock-display-filter-gamma-24.svg
+	* themes/Default/images/stock-display-filter-lcms-16.png
+	* themes/Default/images/stock-display-filter-gamma-24.png
+	* themes/Default/images/stock-display-filter-gamma-16.svg
+	* themes/Default/images/stock-display-filter-gamma-16.png: how
+	could I have gone to LGM with a straight face without finishing
+	these?
+
+2007-04-11  Sven Neumann  <sven@gimp.org>
+
+	* INSTALL: document the new options (and some not so new ones).
+
+	* configure.in: applied patch from Hanno Boeck that adds more
+	configure options (bug #425267).
+
+2007-04-11  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/ifscompose/ifscompose_utils.c (ifs_render): applied
+	patch from Aurimas Juška to fix bug #428556.
+
+2007-04-11  Mukund Sivaraman  <muks@mukund.org>
+
+	* app/display/gimpstatusbar.c: Fixes a bug (#428493) where
+	  gimp_statusbar_push_temp() expects vaargs and
+	  gimp_statusbar_progress_message() directly passes a message
+	  to it as the format string.. in this case the message
+	  contains % (in the filename) and no arguments.
+
+2007-04-09  Michael Natterer  <mitch@gimp.org>
+
+	* app/paint/gimpperspectiveclone.c
+	* app/paint/gimppaintoptions.c: #include "libgimpmath/gimpmath.h"
+
+2007-04-01  Michael Natterer  <mitch@gimp.org>
+
+	* app/base/Makefile.am
+	* app/base/brush-scale.[ch]: removed these files.
+
+	* app/core/Makefile.am
+	* app/core/gimpbrush-scale.[ch]: added the functions here as
+	static utility functions. Also move the default implementations of
+	GimpBrush::scale_size(), ::scale_mask() and ::scale_pixmap() here,
+	including their utility functions.
+
+	* app/core/gimpbrush.c: remove all scale stuff and
+	include "gimpbrush-scale.h" instead.
+
+	(gimp_brush_get_new_preview): use GimpBrush's scale functions
+	instead of the now private ones. Cleanup.
+
+	(gimp_brush_scale_mask)
+	(gimp_brush_scale_pixmap): return a copy of the buf for
+	scale == 1.0.
+
+2007-03-31  Michael Schumacher  <schumaml@cvs.gnome.org>
+
+	* plug-ins/common/svg.c:
+	* plug-ins/common/tiff.c:
+	* plug-ins/common/wmf.c:
+	* plug-ins/jpeg/jpeg-load.c: some file load plug-ins did call
+	gimp_quit() in their load functions. This aborts the plug-in
+	instead of returning a GIMP_PDB_EXECUTION_ERROR. The run()
+	function in each plug-in was already prepared to do this on
+	errors.
+
+2007-03-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpdrawable-blend.c: use SQR(x) instead of x*x.
+
+2007-03-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/paint/gimppaintcore.c (gimp_paint_core_start): set
+	core->saved_proj_tiles to NULL after unrefing them.
+
+	* app/paint/gimppaintcore.h: whitespace fixes.
+
+2007-03-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/tools/gimprectangleoptions.[ch]: made the
+	GimpRectangleOptionsPrivate struct public (ha ha).
+
+	(gimp_rectangle_options_gui): replaced the "Auto shrink selection"
+	toggle by a normal button that needs to be clicked explicitely.
+
+	* app/tools/gimprectangletool.c: access members of
+	GimpRectangleOptionsPrivate directly instead of reading them into
+	local variables using g_object_get(), this makes the code quite
+	more readable. Some code cleanup.
+
+	(gimp_rectangle_tool_button_release): get rid of the confusing
+	auto-shrink madness on button release...
+
+	(gimp_rectangle_tool_start)
+	(gimp_rectangle_tool_halt): ...instead, connect to the option's
+	auto shrink button and shrink on "clicked".
+
+2007-03-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/tools/gimprectangleselecttool.c: read the "operation" member
+	of GimpSelectionOptions directly.
+
+	* app/tools/gimpellipseselecttool.c (gimp_ellipse_select_tool_draw):
+	chain up instead of calling gimp_rectangle_tool_draw() directly,
+	don't #include "gimprectantletool.h".
+
+2007-03-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/tools/gimpcroptool.c: access the GimpCropOptions structure
+	directly to read the "layer_only" option (don't use g_object_get),
+	some code cleanup.
+
+2007-03-31  Michael Natterer  <mitch@gimp.org>
+
+	Statusbar messages shouldn't depend on the emission of unrelated
+	signals:
+
+	* app/widgets/gimpuimanager.c (gimp_ui_manager_connect_proxy):
+	connect to the menu items' "select" and "deselect" signals here...
+
+	(gimp_ui_manager_item_realize): ...instead of here.
+
+2007-03-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/actions/dialogs-actions.c
+	* app/actions/dock-actions.c
+	* app/actions/edit-actions.c
+	* app/actions/file-actions.c
+	* app/actions/help-actions.c
+	* app/actions/layers-actions.c
+	* app/actions/plug-in-actions.c
+	* app/actions/tools-actions.c
+	* app/actions/vectors-actions.c
+	* app/actions/view-actions.c
+	* app/actions/window-actions.c: add many missing action tooltips
+	and fixed some broken/inconsistent ones. Sorry for the big string
+	change but the inconsistencies were just too big to ship 2.4 like
+	that.
+
+2007-03-30  Sven Neumann  <sven@gimp.org>
+
+	* app/paint-funcs/paint-funcs.c: hardcode the result of
+	log (1.0 / 255.0) and avoid a useless call to sqrt().
+
+2007-03-30  Sven Neumann  <sven@gimp.org>
+
+	* app/paint/gimpheal.c (gimp_heal_laplace_iteration)
+	(gimp_heal_laplace_loop): compare square of errors instead of
+	calculating the square root. Rewritten loop to avoid code duplication.
+
+2007-03-30  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimpdrawtool.[ch]
+	* app/tools/gimpperspectiveclonetool.c
+	* app/tools/gimptransformtool.c: compare squared distances.
+
+2007-03-30  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimprectangletool.c (gimp_rectangle_tool_draw_guides):
+	hardcode the result of sqrt(5).
+
+2007-03-29  Michael Natterer  <mitch@gimp.org>
+
+	* app/tools/gimptool.c (gimp_tool_check_click_distance): don't
+	compare the result of sqrt() with something, compare the original
+	value with something's square instead.
+
+2007-03-29  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpbrushgenerated.c (gimp_brush_generated_calc): moved
+	generation of the lookup table to it's own function. Also changed
+	SUPERSAMPLING from 5 to 4. Let's see if someone complains...
+
+2007-03-29  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/gimppixelrgn.c: code cleanup. Removed MEMCPY_IS_NICE
+	define and unconditionally use memcpy().
+
+2007-03-29  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/gimppixelrgn.c (gimp_pixel_rgn_init): initialize
+	rowstride to zero; it's meaningless as long as data is NULL.
+
+2007-03-28  Sven Neumann  <sven@gimp.org>
+
+	* app/pdb/layer_cmds.c
+	* libgimp/gimplayer_pdb.c: regenerated.
+
+2007-03-28 João S. O. Bueno Calligaris <gwidion@mpc.com.br>
+
+        * tools/pdbgen/pdb/layer.pdb: clarified documentation for
+	add_mask procedure; fixed typo in documentation for create_mask.
+
+2007-03-27  Sven Neumann  <sven@gimp.org>
+
+	* app/widgets/gimpdbusservice.[ch]
+	* app/widgets/dbus-service.xml: added a boolean return value to
+	the D-Bus Open method.
+
+2007-03-27  Sven Neumann  <sven@gimp.org>
+
+	* app/file/file-open.[ch]: changed file_open_from_command_line()
+	to deal with a single filename only.
+
+	* app/widgets/gimpdbusservice.[ch]
+	* app/widgets/dbus-service.xml: changed the D-Bus Open method to
+	take only a single filename.
+
+	* app/app.c
+	* app/main.c: changed accordingly.
+
+2007-03-26  Michael Schumacher  <schumaml@cvs.gnome.org>
+
+	* plug-ins/common/compressor.c (save_image, load_image):
+	Check if the files to be read or written and the temporary files
+	have been opened. Otherwise, bail out safely instead of causing a
+	crash. Fixes bug #422444.
+
+2007-03-26  Sven Neumann  <sven@gimp.org>
+
+	* app/widgets/dbus-service.xml
+	* app/widgets/gimpdbusservice.h: be more specific in the D-Bus
+	service and interface name.
+
+2007-03-23  Sven Neumann  <sven@gimp.org>
+
+	Make XOR color configurable (bug #421466):
+
+	* app/config/gimprc-blurbs.h
+	* app/config/gimpdisplayconfig.[ch]: added gimprc option for the
+	XOR color.
+
+	* app/display/gimpcanvas.[ch]: keep a reference to the Gimp object
+	and take the XOR color from GimpDisplayConfig.
+
+	* app/display/gimpdisplayshell.c: pass gimp to gimp_canvas_new().
+
+2007-03-22  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimplayer.c (gimp_layer_add_mask): allow adding a mask
+	to a layer without alpha channel (bug #316207).
+
+2007-03-21  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/svg.c: fixed incorrect PDB documentation.
+
+2007-03-21  Martin Nordholts  <martin@svn.gnome.org>
+
+	* plug-ins/common/svg.c (run): Added comment to explain why the
+	svg file provided resolution is not clamped against
+	GIMP_MIN/MAX_RESOLUTION.
+
+2007-03-21  Sven Neumann  <sven@gimp.org>
+
+	* app/display/gimpdisplayshell.c (gimp_display_shell_new): don't
+	call gimp_zoom_model_zoom() before assigning shell->display. Fixes
+	bug #421044.
+
+2007-03-21  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimpblendtool.c (gimp_blend_tool_button_release): fixed
+	typo spotted by Bill Skaggs.
+
+2007-03-21  Sven Neumann  <sven@gimp.org>
+
+	* app/display/gimpdisplayshell-preview.c
+	(gimp_display_shell_trace_tri_edge): be more robust to avoid
+	crashes like bug #420595.
+
+2007-03-20  Michael Natterer  <mitch@gimp.org>
+
+	* app/widgets/gimpcursorview.[ch] (gimp_color_frame_update_cursor):
+	disallow passing a NULL image.
+
+	(gimp_color_frame_clear_cursor): new function that clears the
+	cursor view.
+
+	* app/widgets/gimpcolorframe.c (gimp_color_frame_update): if
+	color_frame->sample_valid is FALSE, don't do any color
+	transformations and don't construct any string because none
+	of them is going to be used (all labels will show "n/a").
+
+	* app/display/gimpstatusbar.[ch]: renamed set_cursor() API
+	to update_cursor().
+
+	* app/display/gimpdisplayshell-cursor.c
+	(gimp_display_shell_update_cursor): move variables to local
+	scopes. Follow GimpStatusbar API change. Cleanup.
+
+	(gimp_display_shell_clear_cursor): ditto. Follow GimpCursorView
+	API change.
+
+2007-03-20  Michael Natterer  <mitch@gimp.org>
+
+	* app/actions/plug-in-actions.c
+	* app/menus/plug-in-menus.c: GimpPlugInProcedure has a boolean
+	member "file_proc" now, use it instead of checking prefixes,
+	extensions and magics manually.
+
+	* app/plug-in/gimppluginprocedure.c
+	(gimp_plug_in_procedure_set_mime_type)
+	(gimp_plug_in_procedure_set_thumb_loader): set
+	plug_in_proc->file_proc to TRUE here too.
+
+	* plug-ins/common/pnm.c: register "image/x-portable-anymap" as
+	mime-type and "pnm" as extension for file-pnm-save so it's
+	recognized as file procedure.
+
+2007-03-19  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/gimp.c (gimp_install_procedure): rephrased new
+	documentation.
+
+2007-03-19  Michael Natterer  <mitch@gimp.org>
+
+	Make sure we create actions for all plug-in procedures which have
+	a menu_label, so it's possible to assign shortcuts to them.
+	Fixes bug #371300.
+
+	* app/actions/plug-in-actions.c (plug_in_actions_setup): removed
+	duplicate code and simply call plug_in_actions_register_procedure()
+	on all actions, it already does all needed checks and signal
+	connections by itself.
+
+	(plug_in_actions_update)
+	(plug_in_actions_register_procedure)
+	(plug_in_actions_unregister_procedure): unified checks for whether
+	a plug-in procedure needs an action or not: it needs either a
+	menu_label or menu_paths and must not have extensions, prefixes or
+	magics.
+
+	* libgimp/gimp.c (gimp_install_procedure): document that it's
+	possible to install shortcut-only procedures by registering a
+	menu_label but no menu_paths.
+
+2007-03-19  Sven Neumann  <sven@gimp.org>
+
+	* libgimpbase/gimpbaseenums.[ch]: changed labels for
+	GimpTransformDirection to make the corrective transform feature
+	more obvious.
+
+2007-03-18  Michael Natterer  <mitch@gimp.org>
+
+	* app/paint/gimpbrushcore.c: cosmetic cleanup.
+
+2007-03-18  Michael Natterer  <mitch@gimp.org>
+
+	* app/paint/gimpbrushcore.c
+	(gimp_brush_core_scale_mask)
+	(gimp_brush_core_scale_pixmap)
+	(gimp_brush_core_get_brush_mask): remove parameter
+	"gdouble scale" and use core->scale.
+
+	(gimp_brush_core_paste_canvas)
+	(gimp_brush_core_replace_canvas)
+	(gimp_brush_core_get_brush_mask)
+	(gimp_brush_core_color_area_with_pixmap): don't pass core->scale.
+	As below, passing anything else makes no sense.
+
+	(gimp_brush_core_interpolate): cleanup.
+
+2007-03-18  Michael Natterer  <mitch@gimp.org>
+
+	* app/paint/gimpbrushcore.[ch]
+	(gimp_brush_core_color_area_with_pixmap): removed parameters
+	"GimpImage *dest" (because it's always the passed drawable's
+	image) and "gdouble scale" (because passing anything but
+	brush_core->scale makes no sense whatsoever).
+
+	* app/paint/gimppaintbrush.c (_gimp_paintbrush_motion): changed
+	accordingly.
+
+2007-03-18  Michael Natterer  <mitch@gimp.org>
+
+	* app/paint/gimpbrushcore.c: simplified brush scale calculation by
+	making sure that brush_core->scale always contains a value that's
+	suited as input for gimp_brush_scale_mask/pixmap() (bug #419290).
+
+	(gimp_brush_core_calc_brush_size): removed this function. All
+	places can now call gimp_brush_scale_size() directly with
+	core->scale as parameter.
+
+	(gimp_brush_core_calc_brush_scale): new function which returns
+	a linear scale factor which contains both the area-based pressure
+	scale factor and the linear paint options scale factor.
+
+	(gimp_brush_core_start)
+	(gimp_brush_core_get_paint_area): use the new function instead
+	of doing these calculations manually.
+
+	(gimp_brush_core_interpolate): remove call to
+	gimp_brush_core_scale_brush_size() and use core->scale directly.
+
+	(gimp_brush_core_get_paint_area)
+	(gimp_brush_core_scale_mask)
+	(gimp_brush_core_scale_pixmap): use gimp_brush_scale_size()
+	instead of the removed gimp_brush_core_scale_brush_size().
+
+	(gimp_brush_core_create_bound_segs): use only
+	paint_options->brush_scale here since the canvas brush preview
+	always has to asume full pressure.
+
+	* app/core/gimpbrush.c (gimp_brush_scale_size): special case
+	scale == 1.0 and return the mask's width/height without calling
+	the virtual function.
+
+2007-03-18  Michael Natterer  <mitch@gimp.org>
+
+	* app/file/file-utils.c (file_check_single_magic): jikes, the
+	offset is to be interpreted as offset from the start of the file
+	for offset >= 0, not offset > 0.
+
+2007-03-17  Michael Natterer  <mitch@gimp.org>
+
+	* app/file/file-utils.c (file_check_single_magic): allow negative
+	offsets in magics and interpret them as relative to the end of the
+	file.
+
+	(file_utils_find_proc)
+	(file_check_magic_list): some cleanup.
+
+	* plug-ins/common/tga.c (query): register the magic string
+	"TRUEVISION-XFILE.\0" 18 bytes before the end of the file.
+	This way, "new style" TGA files are detected regardless of
+	their filename. "old style" TGA files still need the right
+	extension to be treated as TGA. Added "vda", "icb" and "vst"
+	to the list of extensions. Fixes bug #133798.
+
+2007-03-17  Michael Natterer  <mitch@gimp.org>
+
+	Make the height of the previews in data editors configurable.
+	Fixes bug #337757.
+
+	* app/widgets/gimpdataeditor.[ch]: add member "view" which needs
+	to be set by subclasses. Add style property "minimal-height" which
+	defaults to 96. Add style_set() implementation which sets
+	editor->view's height to the configured value.
+
+	* app/widgets/gimpbrusheditor.[ch]
+	* app/widgets/gimpgradienteditor.[ch]
+	* app/widgets/gimppaletteeditor.[ch]: use data_editor->view for
+	storing the view widget and removed own view members. Remove
+	separate #defines for the view's default width and height, it's
+	width follows the dialog anyway.
+
+	* themes/Default/gtkrc: document the default value of 96.
+
+	* themes/Small/gtkrc: set it to 64.
+
+2007-03-17  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	* plug-ins/script-fu/scripts/script-fu-compat.init: Fixed syntax
+	error in string-trim-left function (spotted by Saul Goode). Added
+	compatability routine for 'verbose'.
+
+2007-03-17  Michael Natterer  <mitch@gimp.org>
+
+	* app/tools/gimpvectortool.c (gimp_vector_tool_register):
+	register the tool with GIMP_PAINT_OPTIONS_CONTEXT_MASK and
+	GIMP_CONTEXT_GRADIENT_MASK so its tool options are suited
+	as parameter object for stroking (the stroke button in the
+	tool options was using default values before).
+
+2007-03-16  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/gimppluginprocframe.c
+	(gimp_plug_in_proc_frame_get_return_vals): don't just g_free() the
+	GValueArray after we memcpy()-stole its values because this both
+	leaks the contained array of GValues and crashes with glib trunk
+	where GValueArray is slice-allocated. Instead, free the array of
+	GValues manually, set it to NULL and use g_value_array_free().
+
+2007-03-16  Michael Natterer  <mitch@gimp.org>
+
+	* plug-ins/script-fu/script-fu.c: remove N_() from calls to
+	gimp_plugin_menu_register().
+
+2007-03-16  Michael Natterer  <mitch@gimp.org>
+
+	* plug-ins/script-fu/scripts/spyrogimp.scm: update the progress
+	to avoid looking like the script hangs. Fixes bug #356677.
+
+	* plug-ins/script-fu/script-fu-interface.c
+	(script_fu_interface_report_cc): if the command starts with
+	"gimp-progress-", the script is obviously showing a progress bar
+	for itself, so clear the text instead of showing an endless number
+	of "gimp-progress-update" messages. Also fixed manual main loop
+	iteration.
+
+2007-03-16  Michael Natterer  <mitch@gimp.org>
+
+	Fix stuck progress bars (bug #393832):
+
+	* app/plug-in/gimpplugin-progress.[ch] (gimp_plug_in_progress_end):
+	added PlugInProcFrame parameter instead of blindly using the topmost
+	in the procedure stack...
+
+	* app/plug-in/gimppluginprocframe.c
+	(gimp_plug_in_proc_frame_dispose): ...because we call it from here,
+	when the proc_frame is already removed from the procedure stack.
+
+	Unrelated:
+
+	* plug-ins/script-fu/scripts/difference-clouds.scm: use
+	RUN-INTERACTVE instead of 0, added (gimp-displays-flush)
+
+	* plug-ins/common/snoise.c (solid_noide): update the progress to
+	1.0 after rendering.
+
+2007-03-15  Michael Natterer  <mitch@gimp.org>
+
+	* data/brushes/Makefile.am: group files by type.
+
+2007-03-15  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Converted .gbr to .vbr brushes where possible. Fixes bug #322176 and
+	bug #157506.
+
+	* data/brushes/Makefile.am: Changed .gbr for .vbr-counterparts for
+	converted brushes.
+
+	* data/brushes/*circle.gbr:
+	* data/brushes/*fcircle.gbr:
+	* data/brushes/DStar*.gbr:
+	* data/brushes/callig*.gbr: Removed.
+
+	* data/brushes/Circle-*.vbr:
+	* data/brushes/Circle-Fuzzy-*.vbr:
+	* data/brushes/Diagonal-Star-*.vbr:
+	* data/brushes/Calligraphic-Brush-*.vbr: Added.
+
+2007-03-15  Michael Natterer  <mitch@gimp.org>
+
+	* app/tools/gimpaligntool.c
+	* app/tools/gimpcolorpickertool.c
+	* app/tools/gimppainttool.c
+	* app/tools/gimpvectortool.c: remove gimp_tool_pop_status() from
+	control() implementations because GimpTool does this generically now.
+
+	* app/tools/gimpblendtool.c
+	* app/tools/gimpselectiontool.c: remove entire control()
+	implementations because they were doing nothing else.
+
+2007-03-15  Michael Natterer  <mitch@gimp.org>
+
+	* app/tools/gimppaintoptions-gui.c (gimp_paint_options_gui): "adj"
+	is a GtkObject not a GtkWidget, also moved it to its local scope.
+
+2007-03-15  Michael Natterer  <mitch@gimp.org>
+
+	* app/tools/gimprectangletool.c (gimp_rectangle_tool_halt): check
+	if tool->display is there before dereferencing it (bug #418504).
+
+	(gimp_rectangle_tool_start): add "display" parameter and set
+	tool->display here.
+
+	(gimp_rectangle_tool_button_press): pass the display to start()
+	and don't set tool->display here.
+
+2007-03-14  Michael Natterer  <mitch@gimp.org>
+
+	Make the status display stuff local to GimpTool:
+
+	* app/tools/tool_manager.c (tool_manager_control_active): don't
+	call gimp_tool_clear_status().
+
+	* app/tools/gimptool.[ch]: make gimp_tool_clear_status() a
+	private function. Move call to gimp_tool_clear_status() from
+	real_control() to control(). Check the status_displays too in
+	gimp_tool_real_has_display() and gimp_tool_has_image() so the
+	normal mechanism of control(HALT)ing (and thus popping all
+	status messages) the tool on display close works.
+
+2007-03-14  Michael Natterer  <mitch@gimp.org>
+
+	Fix stuck statusbar messages when changing tools (bug #398913):
+
+	* app/tools/gimptool.[ch]: keep a list of status_displays around.
+	Update the list in all status push, replace and pop functions.
+	Added gimp_tool_clear_status() which removes the status messages
+	from all displays in the list. Call the function from
+	gimp_tool_real_control(HALT).
+
+	* app/tools/tool_manager.c (tool_manager_control_active): if we
+	can't call gimp_tool_control() because we have no display to pass,
+	still call gimp_tool_clear_status() so the messages go away from
+	displays the tool was only hovering.
+
+2007-03-14  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/gimpplugin.c (gimp_plug_in_new): require either
+	"procedure" or "prog" being non-NULL, not both of them at the same
+	time. Get the executable name from the procedure if the procedure
+	was passed.
+
+	* app/plug-in/gimppluginmanager-call.c
+	(gimp_plug_in_manager_call_run): pass a NULL prog since we already
+	pass the procedure.
+
+2007-03-14  Sven Neumann  <sven@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c: sprinkled some const
+	qualifiers and removed obscure shift code in favor of letting the
+	compiler do this optimization.
+
+2007-03-14  Sven Neumann  <sven@gimp.org>
+
+	* app/display/gimpdisplayshell.[ch]: renamed newly added members
+	to scale_x and scale_y and removed the SCALEFACTOR macros.
+
+	* app/display/gimpdisplayshell-handlers.c
+	* app/display/gimpdisplayshell-render.c
+	* app/display/gimpdisplayshell-scale.c
+	* app/display/gimpdisplayshell-transform.c
+	* app/display/gimpnavigationeditor.c
+	* app/tools/gimpforegroundselecttool.c
+	* app/tools/gimprectangletool.c: changed accordingly.
+
+2007-03-14  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpbrush.c
+	* app/core/gimpbrushgenerated.c: some minor fixes and stylistic
+	paranoia i overlooked in last night's late review.
+
+2007-03-14  Sven Neumann  <sven@gimp.org>
+
+	* app/display/gimpdisplayshell.[ch]: cache the display scale
+	factors in the GimpDisplayShell struct and recalculate it in
+	gimp_display_shell_scale_factor_changed().
+
+	* app/display/gimpdisplayshell-scale.c
+	(gimp_display_shell_scale_set_dot_for_dot)
+	* app/display/gimpdisplayshell-handlers.c
+	(gimp_display_shell_resolution_changed_handler)
+	(gimp_display_shell_monitor_res_notify_handler): update the scale
+	factors by calling gimp_display_shell_scale_factor_changed().
+
+	* app/display/gimpdisplayshell-transform.c
+	* app/display/gimpnavigationeditor.c: code cleanup.
+
+2007-03-14  Sven Neumann  <sven@gimp.org>
+
+	* app/base/pixel-surround.c (struct _PixelSurround): documentation.
+
+2007-03-14  Sven Neumann  <sven@gimp.org>
+
+	* app/base/siox.c (siox_drb): moved calculations out of MIN() macro.
+
+2007-03-14  Sven Neumann  <sven@gimp.org>
+
+	* app/paint/gimppaintoptions.c: limit brush scale to [0.01, 10.0]
+
+2007-03-14  Sven Neumann  <sven@gimp.org>
+
+	* app/base/brush-scale.c: minor cleanups, moved calculations out
+	of the MIN() macro, avoid unneeded floating-point calculations.
+
+2007-03-14  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Made brushes upscalable by using scale_region. Downscaling still
+	uses functions in app/base/brush-scale.c (because of better
+	performance). Parametric brushes of course recalculates masks
+	instead of using bitmap scaling. Fixes bug #65030.
+
+	* app/core/gimpbrush.[ch]: Added a private scale_buf method which
+	uses scale_region (with GIMP_INTERPOLATION_LINEAR) to scale its
+	masks and pixmaps. Also added public virtual method scale_size to
+	GimpBrush (overridden by GimpBrushGenerated) which calculates the
+	buffer sizes for a given brush scaled with a given scale.
+
+	* app/core/gimpbrushgenerated.c: Implemented the new scale_size
+	method inherited from GimpBrush, and modified
+	gimp_brush_generated_calc to use this helper function.
+
+	* app/tools/gimppaintoptions-gui.c (gimp_paint_options_gui): Made
+	the brush Scale-slider logarithmic.
+
+	* app/paint/gimppaintoptions.c (gimp_paint_options_class_init):
+	Changed Scale scale to [0.0, 10.0].
+
+	* app/paint/gimpbrushcore.c:
+	(gimp_brush_core_calc_brush_size): Refactored 'get brush size' code
+	to where it belongs, in GimpBrush-classes, and allowed scales
+	larger than 1.0.
+
+2007-03-13  Michael Natterer  <mitch@gimp.org>
+
+	* app/widgets/gimpdialogfactory.[ch]: added new ugly function
+	gimp_dialog_factory_hide_dialog() which does gtk_widget_hide() and
+	sets the stored visibility state to GIMP_DIALOG_VISIBILITY_INVISIBLE
+	in order to avoid re-showing dialogs that were already insivible due
+	to TAB-toggling when we gtk_widget_hided them.
+
+	* app/tools/gimptransformtool.c
+	* app/tools/gimpimagemaptool.c: use the new function instead of
+	gtk_widget_hide() to hide tool dialogs. Fixes bug #414006.
+
+2007-03-13  Sven Neumann  <sven@gimp.org>
+
+	* data/brushes/Makefile.am
+	* data/brushes/thegimp.gbr
+	* data/brushes/xcf.gbr: removed two legacy brushes.
+
+2007-03-13  Raphaël Quinet  <raphael@gimp.org>
+
+	* plug-ins/script-fu/script-fu-console.c: Fix for bug #417467
+	based on modified patch by Eric Lamarque and suggested by Mitch.
+	Allows build without warnings and correct localization for Solaris
+	and other platforms.
+
+2007-03-13  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimptransformtool.c (gimp_transform_tool_response):
+	added a g_return_if_fail() check to catch bug #414006.
+
+2007-03-13  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/gimpwidgets.c (gimp_label_set_attributes): fixed
+	implementation for PANGO_ATTR_STRIKETHROUGH, spotted by Behdad
+	Esfahbod.
+
+2007-03-12  Sven Neumann  <sven@gimp.org>
+
+	* app/display/gimpdisplayshell-transform.c: code cosmetics.
+
+2007-03-12  Michael Natterer  <mitch@gimp.org>
+
+	* app/tools/gimpmagnifytool.[ch]: lots of fixes and changes:
+
+	- Request click events and use them instead of looking at the
+	  distance the mouse travelled ourselves.
+	- Also zoom when the user draws a very thin rectangle or just a
+	  line, there is no reason to treat that as click.
+	- Changed all calculations and stored values to double so the tool
+	  continues to work smoothly at high zoom levels.
+	- Fix scale calculation when zooming out (was totally b0rk).
+	- Changed offset calculation when zooming out so that the current
+	  viewport ends up within the drawn rectangle (which is the
+	  opposite of what zooming in does).
+
+2007-03-12  Sven Neumann  <sven@gimp.org>
+
+	* app/plug-in/gimpplugin.[ch]: gimp_plug_in_get_undo_desc() uses
+	gimp_plug_in_procedure_get_label(). Made the return value const.
+
+	* tools/pdbgen/pdb/drawable.pdb
+	* tools/pdbgen/pdb/message.pdb
+	* tools/pdbgen/pdb/undo.pdb: changed accordingly.
+
+	* app/actions/plug-in-actions.c: cosmetics.
+
+	* app/pdb/undo_cmds.c
+	* app/pdb/message_cmds.c
+	* app/pdb/drawable_cmds.c: regenerated.
+
+2007-03-12  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpbrush.[ch]
+	* app/core/gimpbrushgenerated.c
+	* app/tools/gimppaintoptions-gui.c
+	* app/base/brush-scale.[ch]
+	* app/base/temp-buf.[ch]
+	* app/paint/gimppaintoptions.c
+	* app/paint/gimpbrushcore.c: revert last commit. The patch needs
+	more review and it's easier to start from quare one than have
+	patches on top of patches.
+
+2007-03-11  Michael Schumacher  <schumaml@cvs.gnome.org>
+
+	Made brushes scalable (both up and down) by using existing
+	scaling routines, and also refactored some brush-code. Patch by
+	Martin Nordholts. Fixes bug #65030.
+
+	* app/paint/gimpbrushcore.c:
+	(gimp_brush_core_calc_brush_length_scale) Refactored 'get brush
+	size' code to where it belongs, in GimpBrush-classes, and renamed
+	gimp_brush_core_calc_brush_size to
+	gimp_brush_core_calc_brush_length_scale.
+
+	* app/paint/gimppaintoptions.c (gimp_paint_options_class_init):
+	Changed Scale scale to [0.0, 100.0].
+
+	* app/base/temp-buf.[ch] (mask_buf_new): Change signature to also
+	take a bpp parameter.
+
+	* app/base/brush-scale.[ch]: Changed brush_scale_(mask|pixmap) to
+	the new brush_scale_buf, which uses existing scaling routines
+	(scale_region) instead of dedicated down-scaling only routines.
+
+	* app/tools/gimppaintoptions-gui.c (gimp_paint_options_gui): Made
+	the brush Scale-slider logarithmic.
+
+	* app/core/gimpbrushgenerated.c: Implemented the new
+	get_scaled_size method inherited from GimpBrush, and modified
+	gimp_brush_generated_calc to use this helper function.
+
+	* app/core/gimpbrush.[ch]: Added public virtual method
+	get_scaled_size to GimpBrush, overridden by GimpBrushGenerated,
+	which calculates the buffer sizes for a given brush scaled with a
+	given scale. Also changed calls to brush_scale_(mask|pixmap) to
+	the new brush_scale_buf.
+
+2007-03-10  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimpeditselectiontool.c (gimp_edit_selection_tool_motion):
+	removed default label from enum switch statement.
+
+2007-03-10  Sven Neumann  <sven@gimp.org>
+
+	* app/display/gimpstatusbar.c (gimp_statusbar_update): while the
+	statusbar is being used as a progress bar, only show progress
+	messages.
+
+2007-03-10  Sven Neumann  <sven@gimp.org>
+
+	* app/plug-in/gimppluginprocedure.[ch]: cache the result of
+	gimp_plug_in_procedure_get_label() and made the return value const.
+
+	* app/actions/plug-in-actions.c
+	* app/plug-in/gimpplugin-cleanup.c
+	* app/plug-in/gimppluginmanager.c
+	* app/widgets/gimpfiledialog.c
+	* app/widgets/gimpfileprocview.c
+	* app/widgets/gimpimagepropview.c: changed accordingly.
+
+	* app/file/file-open.c
+	* app/file/file-save.c: include the plug-in name (or actually the
+	label) in the error messages.
+
+2007-03-10  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/core-types.h: don't include libgimpmath/gimpmathtypes.h
+
+	* app/base/base-types.h: include it here. Also include
+	libgimpcolor/gimpcolortypes.h
+
+2007-03-10  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.3.16.
+
+2007-03-10  Michael Natterer  <mitch@gimp.org>
+
+	* app/tools/tools-enums.[ch] (enum GimpButtonReleaseType): added
+	value GIMP_BUTTON_RELEASE_NO_MOTION.
+
+	* app/tools/gimptool.[ch]: when click events are requested and the
+	click was too long for a "click" event, send a NO_MOTION event if
+	the pointer didn't move at all.
+
+	* app/tools/gimpbucketfilltool.c: treat NO_MOTION as tool
+	confirmation too.
+
+	* app/tools/gimpfreeselecttool.c: request click events and treat
+	both CLICK and NO_MOTION as tool confirmation.
+
+	* app/tools/gimprectangletool.c: ignore NO_MOTION.
+
 2007-03-09  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.3.15 development release.

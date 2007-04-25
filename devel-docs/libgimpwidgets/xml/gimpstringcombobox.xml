@@ -22,15 +22,13 @@
 
 
 
-            <link linkend="GimpStringComboBox-struct">GimpStringComboBox</link>;
-<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-string-combo-box-new">gimp_string_combo_box_new</link>       (<link linkend="GtkTreeModel">GtkTreeModel</link> *model,
-                                             <link linkend="gint">gint</link> id_column,
-                                             <link linkend="gint">gint</link> label_column);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-string-combo-box-set-active">gimp_string_combo_box_set_active</link>
-                                            (<link linkend="GimpStringComboBox">GimpStringComboBox</link> *combo_box,
-                                             const <link linkend="gchar">gchar</link> *id);
-<link linkend="gchar">gchar</link>*      <link linkend="gimp-string-combo-box-get-active">gimp_string_combo_box_get_active</link>
-                                            (<link linkend="GimpStringComboBox">GimpStringComboBox</link> *combo_box);
+                    <link linkend="GimpStringComboBox-struct">GimpStringComboBox</link>;
+<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-string-combo-box-new">gimp_string_combo_box_new</link>           (<link linkend="GtkTreeModel">GtkTreeModel</link> *model,
+                                                         <link linkend="gint">gint</link> id_column,
+                                                         <link linkend="gint">gint</link> label_column);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-string-combo-box-set-active">gimp_string_combo_box_set_active</link>    (<link linkend="GimpStringComboBox">GimpStringComboBox</link> *combo_box,
+                                                         const <link linkend="gchar">gchar</link> *id);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-string-combo-box-get-active">gimp_string_combo_box_get_active</link>    (<link linkend="GimpStringComboBox">GimpStringComboBox</link> *combo_box);
 
 </synopsis>
 </refsynopsisdiv>
@@ -66,9 +64,9 @@ GimpStringComboBox implements
 <title role="properties.title">Properties</title>
 <synopsis>
 
-  &quot;<link linkend="GimpStringComboBox--ellipsize">ellipsize</link>&quot;            <link linkend="PangoEllipsizeMode">PangoEllipsizeMode</link>    : Read / Write
-  &quot;<link linkend="GimpStringComboBox--id-column">id-column</link>&quot;            <link linkend="gint">gint</link>                  : Read / Write / Construct Only
-  &quot;<link linkend="GimpStringComboBox--label-column">label-column</link>&quot;         <link linkend="gint">gint</link>                  : Read / Write / Construct Only
+  &quot;<link linkend="GimpStringComboBox--ellipsize">ellipsize</link>&quot;                <link linkend="PangoEllipsizeMode">PangoEllipsizeMode</link>    : Read / Write
+  &quot;<link linkend="GimpStringComboBox--id-column">id-column</link>&quot;                <link linkend="gint">gint</link>                  : Read / Write / Construct Only
+  &quot;<link linkend="GimpStringComboBox--label-column">label-column</link>&quot;             <link linkend="gint">gint</link>                  : Read / Write / Construct Only
 </synopsis>
 </refsect1>
 
@@ -91,9 +89,9 @@ GimpStringComboBox implements
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-string-combo-box-new" role="function" condition="since:GIMP 2.4"/>gimp_string_combo_box_new ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_string_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_string_combo_box_new       (<link linkend="GtkTreeModel">GtkTreeModel</link> *model,
-                                             <link linkend="gint">gint</link> id_column,
-                                             <link linkend="gint">gint</link> label_column);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_string_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_string_combo_box_new           (<link linkend="GtkTreeModel">GtkTreeModel</link> *model,
+                                                         <link linkend="gint">gint</link> id_column,
+                                                         <link linkend="gint">gint</link> label_column);</programlisting>
 <para>
 </para>
 <para>
@@ -111,13 +109,12 @@ GimpStringComboBox implements
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a new <link linkend="GimpStringComboBox"><type>GimpStringComboBox</type></link>.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-string-combo-box-set-active" role="function" condition="since:GIMP 2.4"/>gimp_string_combo_box_set_active ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_string_combo_box_set_active</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_string_combo_box_set_active
-                                            (<link linkend="GimpStringComboBox">GimpStringComboBox</link> *combo_box,
-                                             const <link linkend="gchar">gchar</link> *id);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_string_combo_box_set_active</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_string_combo_box_set_active    (<link linkend="GimpStringComboBox">GimpStringComboBox</link> *combo_box,
+                                                         const <link linkend="gchar">gchar</link> *id);</programlisting>
 <para>
 Looks up the item that belongs to the given <parameter>id</parameter> and makes it the
 selected item in the <parameter>combo_box</parameter>.</para>
@@ -134,12 +131,11 @@ selected item in the <parameter>combo_box</parameter>.</para>
               this value.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-string-combo-box-get-active" role="function" condition="since:GIMP 2.4"/>gimp_string_combo_box_get_active ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_string_combo_box_get_active</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_string_combo_box_get_active
-                                            (<link linkend="GimpStringComboBox">GimpStringComboBox</link> *combo_box);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_string_combo_box_get_active</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_string_combo_box_get_active    (<link linkend="GimpStringComboBox">GimpStringComboBox</link> *combo_box);</programlisting>
 <para>
 Retrieves the value of the selected (active) item in the <parameter>combo_box</parameter>.</para>
 <para>
@@ -151,14 +147,14 @@ Retrieves the value of the selected (active) item in the <parameter>combo_box</p
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> newly allocated ID string or <link linkend="NULL:CAPS"><literal>NULL</literal></link> if nothing was selected
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpStringComboBox--ellipsize"/>The &quot;<literal>ellipsize</literal>&quot; property</title>
-<indexterm role="GIMP 2.4"><primary>GimpStringComboBox:ellipsize</primary></indexterm><programlisting>  &quot;ellipsize&quot;            <link linkend="PangoEllipsizeMode">PangoEllipsizeMode</link>    : Read / Write</programlisting>
+<indexterm role="GIMP 2.4"><primary>GimpStringComboBox:ellipsize</primary></indexterm><programlisting>  &quot;ellipsize&quot;                <link linkend="PangoEllipsizeMode">PangoEllipsizeMode</link>    : Read / Write</programlisting>
 <para>
 Specifies the preferred place to ellipsize text in the combo-box,
 if the cell renderer does not have enough room to display the
@@ -170,7 +166,7 @@ entire string.</para>
 </para>
 </refsect2>
 <refsect2><title><anchor id="GimpStringComboBox--id-column"/>The &quot;<literal>id-column</literal>&quot; property</title>
-<indexterm role="GIMP 2.4"><primary>GimpStringComboBox:id-column</primary></indexterm><programlisting>  &quot;id-column&quot;            <link linkend="gint">gint</link>                  : Read / Write / Construct Only</programlisting>
+<indexterm role="GIMP 2.4"><primary>GimpStringComboBox:id-column</primary></indexterm><programlisting>  &quot;id-column&quot;                <link linkend="gint">gint</link>                  : Read / Write / Construct Only</programlisting>
 <para>
 The column in the associated GtkTreeModel that holds strings to
 be used as labels in the combo-box.</para>
@@ -182,7 +178,7 @@ be used as labels in the combo-box.</para>
 </para>
 </refsect2>
 <refsect2><title><anchor id="GimpStringComboBox--label-column"/>The &quot;<literal>label-column</literal>&quot; property</title>
-<indexterm><primary>GimpStringComboBox:label-column</primary></indexterm><programlisting>  &quot;label-column&quot;         <link linkend="gint">gint</link>                  : Read / Write / Construct Only</programlisting>
+<indexterm><primary>GimpStringComboBox:label-column</primary></indexterm><programlisting>  &quot;label-column&quot;             <link linkend="gint">gint</link>                  : Read / Write / Construct Only</programlisting>
 <para></para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0</para>
 </refsect2>

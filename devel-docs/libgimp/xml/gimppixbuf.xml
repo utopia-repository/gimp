@@ -22,30 +22,30 @@
 
 
 
-enum        <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link>;
-<link linkend="GdkPixbuf">GdkPixbuf</link>*  <link linkend="gimp-image-get-thumbnail">gimp_image_get_thumbnail</link>        (<link linkend="gint32">gint32</link> image_ID,
-                                             <link linkend="gint">gint</link> width,
-                                             <link linkend="gint">gint</link> height,
-                                             <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link> alpha);
-<link linkend="GdkPixbuf">GdkPixbuf</link>*  <link linkend="gimp-drawable-get-thumbnail">gimp_drawable_get_thumbnail</link>     (<link linkend="gint32">gint32</link> drawable_ID,
-                                             <link linkend="gint">gint</link> width,
-                                             <link linkend="gint">gint</link> height,
-                                             <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link> alpha);
-<link linkend="GdkPixbuf">GdkPixbuf</link>*  <link linkend="gimp-drawable-get-sub-thumbnail">gimp_drawable_get_sub_thumbnail</link> (<link linkend="gint32">gint32</link> drawable_ID,
-                                             <link linkend="gint">gint</link> src_x,
-                                             <link linkend="gint">gint</link> src_y,
-                                             <link linkend="gint">gint</link> src_width,
-                                             <link linkend="gint">gint</link> src_height,
-                                             <link linkend="gint">gint</link> dest_width,
-                                             <link linkend="gint">gint</link> dest_height,
-                                             <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link> alpha);
-<link linkend="gint32">gint32</link>      <link linkend="gimp-layer-new-from-pixbuf">gimp_layer_new_from_pixbuf</link>      (<link linkend="gint32">gint32</link> image_ID,
-                                             const <link linkend="gchar">gchar</link> *name,
-                                             <link linkend="GdkPixbuf">GdkPixbuf</link> *pixbuf,
-                                             <link linkend="gdouble">gdouble</link> opacity,
-                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> mode,
-                                             <link linkend="gdouble">gdouble</link> progress_start,
-                                             <link linkend="gdouble">gdouble</link> progress_end);
+enum                <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link>;
+<link linkend="GdkPixbuf">GdkPixbuf</link>*          <link linkend="gimp-image-get-thumbnail">gimp_image_get_thumbnail</link>            (<link linkend="gint32">gint32</link> image_ID,
+                                                         <link linkend="gint">gint</link> width,
+                                                         <link linkend="gint">gint</link> height,
+                                                         <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link> alpha);
+<link linkend="GdkPixbuf">GdkPixbuf</link>*          <link linkend="gimp-drawable-get-thumbnail">gimp_drawable_get_thumbnail</link>         (<link linkend="gint32">gint32</link> drawable_ID,
+                                                         <link linkend="gint">gint</link> width,
+                                                         <link linkend="gint">gint</link> height,
+                                                         <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link> alpha);
+<link linkend="GdkPixbuf">GdkPixbuf</link>*          <link linkend="gimp-drawable-get-sub-thumbnail">gimp_drawable_get_sub_thumbnail</link>     (<link linkend="gint32">gint32</link> drawable_ID,
+                                                         <link linkend="gint">gint</link> src_x,
+                                                         <link linkend="gint">gint</link> src_y,
+                                                         <link linkend="gint">gint</link> src_width,
+                                                         <link linkend="gint">gint</link> src_height,
+                                                         <link linkend="gint">gint</link> dest_width,
+                                                         <link linkend="gint">gint</link> dest_height,
+                                                         <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link> alpha);
+<link linkend="gint32">gint32</link>              <link linkend="gimp-layer-new-from-pixbuf">gimp_layer_new_from_pixbuf</link>          (<link linkend="gint32">gint32</link> image_ID,
+                                                         const <link linkend="gchar">gchar</link> *name,
+                                                         <link linkend="GdkPixbuf">GdkPixbuf</link> *pixbuf,
+                                                         <link linkend="gdouble">gdouble</link> opacity,
+                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> mode,
+                                                         <link linkend="gdouble">gdouble</link> progress_start,
+                                                         <link linkend="gdouble">gdouble</link> progress_end);
 </synopsis>
 </refsynopsisdiv>
 
@@ -80,10 +80,10 @@ Get a thumbnail pixbuf for a drawable or image.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-image-get-thumbnail" role="function" condition="since:GIMP 2.2"/>gimp_image_get_thumbnail ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_image_get_thumbnail</primary></indexterm><programlisting><link linkend="GdkPixbuf">GdkPixbuf</link>*  gimp_image_get_thumbnail        (<link linkend="gint32">gint32</link> image_ID,
-                                             <link linkend="gint">gint</link> width,
-                                             <link linkend="gint">gint</link> height,
-                                             <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link> alpha);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_image_get_thumbnail</primary></indexterm><programlisting><link linkend="GdkPixbuf">GdkPixbuf</link>*          gimp_image_get_thumbnail            (<link linkend="gint32">gint32</link> image_ID,
+                                                         <link linkend="gint">gint</link> width,
+                                                         <link linkend="gint">gint</link> height,
+                                                         <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link> alpha);</programlisting>
 <para>
 Retrieves a thumbnail pixbuf for the image identified by <parameter>image_ID</parameter>.
 The thumbnail will be not larger than the requested size.</para>
@@ -105,14 +105,14 @@ The thumbnail will be not larger than the requested size.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a new <link linkend="GdkPixbuf"><type>GdkPixbuf</type></link>
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-get-thumbnail" role="function" condition="since:GIMP 2.2"/>gimp_drawable_get_thumbnail ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_get_thumbnail</primary></indexterm><programlisting><link linkend="GdkPixbuf">GdkPixbuf</link>*  gimp_drawable_get_thumbnail     (<link linkend="gint32">gint32</link> drawable_ID,
-                                             <link linkend="gint">gint</link> width,
-                                             <link linkend="gint">gint</link> height,
-                                             <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link> alpha);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_get_thumbnail</primary></indexterm><programlisting><link linkend="GdkPixbuf">GdkPixbuf</link>*          gimp_drawable_get_thumbnail         (<link linkend="gint32">gint32</link> drawable_ID,
+                                                         <link linkend="gint">gint</link> width,
+                                                         <link linkend="gint">gint</link> height,
+                                                         <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link> alpha);</programlisting>
 <para>
 Retrieves a thumbnail pixbuf for the drawable identified by
 <parameter>drawable_ID</parameter>. The thumbnail will be not larger than the requested
@@ -135,18 +135,18 @@ size.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a new <link linkend="GdkPixbuf"><type>GdkPixbuf</type></link>
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-get-sub-thumbnail" role="function" condition="since:GIMP 2.2"/>gimp_drawable_get_sub_thumbnail ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_get_sub_thumbnail</primary></indexterm><programlisting><link linkend="GdkPixbuf">GdkPixbuf</link>*  gimp_drawable_get_sub_thumbnail (<link linkend="gint32">gint32</link> drawable_ID,
-                                             <link linkend="gint">gint</link> src_x,
-                                             <link linkend="gint">gint</link> src_y,
-                                             <link linkend="gint">gint</link> src_width,
-                                             <link linkend="gint">gint</link> src_height,
-                                             <link linkend="gint">gint</link> dest_width,
-                                             <link linkend="gint">gint</link> dest_height,
-                                             <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link> alpha);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_get_sub_thumbnail</primary></indexterm><programlisting><link linkend="GdkPixbuf">GdkPixbuf</link>*          gimp_drawable_get_sub_thumbnail     (<link linkend="gint32">gint32</link> drawable_ID,
+                                                         <link linkend="gint">gint</link> src_x,
+                                                         <link linkend="gint">gint</link> src_y,
+                                                         <link linkend="gint">gint</link> src_width,
+                                                         <link linkend="gint">gint</link> src_height,
+                                                         <link linkend="gint">gint</link> dest_width,
+                                                         <link linkend="gint">gint</link> dest_height,
+                                                         <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link> alpha);</programlisting>
 <para>
 Retrieves a thumbnail pixbuf for the drawable identified by
 <parameter>drawable_ID</parameter>. The thumbnail will be not larger than the requested
@@ -181,17 +181,17 @@ size.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a new <link linkend="GdkPixbuf"><type>GdkPixbuf</type></link>
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-new-from-pixbuf" role="function" condition="since:GIMP 2.4"/>gimp_layer_new_from_pixbuf ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_layer_new_from_pixbuf</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_layer_new_from_pixbuf      (<link linkend="gint32">gint32</link> image_ID,
-                                             const <link linkend="gchar">gchar</link> *name,
-                                             <link linkend="GdkPixbuf">GdkPixbuf</link> *pixbuf,
-                                             <link linkend="gdouble">gdouble</link> opacity,
-                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> mode,
-                                             <link linkend="gdouble">gdouble</link> progress_start,
-                                             <link linkend="gdouble">gdouble</link> progress_end);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_layer_new_from_pixbuf</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_layer_new_from_pixbuf          (<link linkend="gint32">gint32</link> image_ID,
+                                                         const <link linkend="gchar">gchar</link> *name,
+                                                         <link linkend="GdkPixbuf">GdkPixbuf</link> *pixbuf,
+                                                         <link linkend="gdouble">gdouble</link> opacity,
+                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> mode,
+                                                         <link linkend="gdouble">gdouble</link> progress_start,
+                                                         <link linkend="gdouble">gdouble</link> progress_end);</programlisting>
 <para>
 Create a new layer from a <link linkend="GdkPixbuf"><literal>GdkPixbuf</literal></link>.
 </para>
@@ -231,7 +231,7 @@ If you pass <parameter>progress_end</parameter> &gt; <parameter>progress_start</
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly created layer.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 
 </refsect1>

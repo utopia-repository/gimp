@@ -23,14 +23,14 @@ Interface Library headers.</refpurpose>
 
 
 
-<link linkend="void">void</link>        <link linkend="gimp-ui-init">gimp_ui_init</link>                    (const <link linkend="gchar">gchar</link> *prog_name,
-                                             <link linkend="gboolean">gboolean</link> preview);
-<link linkend="GdkWindow">GdkWindow</link>*  <link linkend="gimp-ui-get-display-window">gimp_ui_get_display_window</link>      (<link linkend="guint32">guint32</link> gdisp_ID);
-<link linkend="GdkWindow">GdkWindow</link>*  <link linkend="gimp-ui-get-progress-window">gimp_ui_get_progress_window</link>     (void);
-<link linkend="void">void</link>        <link linkend="gimp-window-set-transient">gimp_window_set_transient</link>       (<link linkend="GtkWindow">GtkWindow</link> *window);
-<link linkend="void">void</link>        <link linkend="gimp-window-set-transient-for-display">gimp_window_set_transient_for_display</link>
-                                            (<link linkend="GtkWindow">GtkWindow</link> *window,
-                                             <link linkend="guint32">guint32</link> gdisp_ID);
+<link linkend="void">void</link>                <link linkend="gimp-ui-init">gimp_ui_init</link>                        (const <link linkend="gchar">gchar</link> *prog_name,
+                                                         <link linkend="gboolean">gboolean</link> preview);
+<link linkend="GdkWindow">GdkWindow</link>*          <link linkend="gimp-ui-get-display-window">gimp_ui_get_display_window</link>          (<link linkend="guint32">guint32</link> gdisp_ID);
+<link linkend="GdkWindow">GdkWindow</link>*          <link linkend="gimp-ui-get-progress-window">gimp_ui_get_progress_window</link>         (void);
+<link linkend="void">void</link>                <link linkend="gimp-window-set-transient">gimp_window_set_transient</link>           (<link linkend="GtkWindow">GtkWindow</link> *window);
+<link linkend="void">void</link>                <link linkend="gimp-window-set-transient-for-display">gimp_window_set_transient_for_display</link>
+                                                        (<link linkend="GtkWindow">GtkWindow</link> *window,
+                                                         <link linkend="guint32">guint32</link> gdisp_ID);
 </synopsis>
 </refsynopsisdiv>
 
@@ -55,8 +55,8 @@ Interface Library headers.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-ui-init" role="function"/>gimp_ui_init ()</title>
-<indexterm><primary>gimp_ui_init</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_ui_init                    (const <link linkend="gchar">gchar</link> *prog_name,
-                                             <link linkend="gboolean">gboolean</link> preview);</programlisting>
+<indexterm><primary>gimp_ui_init</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_ui_init                        (const <link linkend="gchar">gchar</link> *prog_name,
+                                                         <link linkend="gboolean">gboolean</link> preview);</programlisting>
 <para>
 This function initializes GTK+ with <link linkend="gtk-init"><function>gtk_init()</function></link> and initializes GDK's
 image rendering subsystem (GdkRGB) to follow the GIMP main program's
@@ -80,7 +80,7 @@ gimprc variables <parameter>min_colors</parameter> and <parameter>install_cmap</
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-ui-get-display-window" role="function" condition="since:GIMP 2.4"/>gimp_ui_get_display_window ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_ui_get_display_window</primary></indexterm><programlisting><link linkend="GdkWindow">GdkWindow</link>*  gimp_ui_get_display_window      (<link linkend="guint32">guint32</link> gdisp_ID);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_ui_get_display_window</primary></indexterm><programlisting><link linkend="GdkWindow">GdkWindow</link>*          gimp_ui_get_display_window          (<link linkend="guint32">guint32</link> gdisp_ID);</programlisting>
 <para>
 Returns the <link linkend="GdkWindow"><type>GdkWindow</type></link> of a display window. The purpose is to allow
 to make plug-in dialogs transient to the image display as explained
@@ -100,11 +100,11 @@ You shouldn't have to call this function directly. Use
               you don't need it any longer.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-ui-get-progress-window" role="function" condition="since:GIMP 2.4"/>gimp_ui_get_progress_window ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_ui_get_progress_window</primary></indexterm><programlisting><link linkend="GdkWindow">GdkWindow</link>*  gimp_ui_get_progress_window     (void);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_ui_get_progress_window</primary></indexterm><programlisting><link linkend="GdkWindow">GdkWindow</link>*          gimp_ui_get_progress_window         (void);</programlisting>
 <para>
 Returns the <link linkend="GdkWindow"><type>GdkWindow</type></link> of the window this plug-in's progress bar is
 shown in. Use it to make plug-in dialogs transient to this window
@@ -121,11 +121,11 @@ You shouldn't have to call this function directly. Use
               you don't need it any longer.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-window-set-transient" role="function" condition="since:GIMP 2.4"/>gimp_window_set_transient ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_window_set_transient</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_window_set_transient       (<link linkend="GtkWindow">GtkWindow</link> *window);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_window_set_transient</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_window_set_transient           (<link linkend="GtkWindow">GtkWindow</link> *window);</programlisting>
 <para>
 Indicates to the window manager that <parameter>window</parameter> is a transient dialog
 associated with the GIMP window that the plug-in has been
@@ -136,13 +136,13 @@ started from. See also <link linkend="gimp-window-set-transient-for-display"><fu
 <varlistentry><term><parameter>window</parameter>&nbsp;:</term>
 <listitem><simpara> the <link linkend="GtkWindow"><type>GtkWindow</type></link> that should become transient
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-window-set-transient-for-display" role="function" condition="since:GIMP 2.4"/>gimp_window_set_transient_for_display ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_window_set_transient_for_display</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_window_set_transient_for_display
-                                            (<link linkend="GtkWindow">GtkWindow</link> *window,
-                                             <link linkend="guint32">guint32</link> gdisp_ID);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_window_set_transient_for_display</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_window_set_transient_for_display
+                                                        (<link linkend="GtkWindow">GtkWindow</link> *window,
+                                                         <link linkend="guint32">guint32</link> gdisp_ID);</programlisting>
 <para>
 Indicates to the window manager that <parameter>window</parameter> is a transient dialog
 associated with the GIMP image window that is identified by it's
@@ -160,7 +160,7 @@ Most of the time you will want to use the convenience function
 <varlistentry><term><parameter>gdisp_ID</parameter>&nbsp;:</term>
 <listitem><simpara> display ID of the image window that should become the parent
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 
 </refsect1>

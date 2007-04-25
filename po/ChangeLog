@@ -1,6 +1,105 @@
-2007-03-08 Jakub Friedl  <jfriedl@suse.cz>
+2007-04-21  Stéphane Raimbault  <stephane.raimbault@gmail.com>
+
+	* fr.po: Fixed French translation (2 fixes).
+
+2007-04-20 Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation
+
+2007-04-18 Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated the Czech translation
+
+2007-04-18  Sven Neumann  <sven@gimp.org>
+
+	* POTFILES.skip: removed generated file desktop/gimp.desktop.in.
+
+	* POTFILES.in: removed app/widgets/gimpcellrendereraccel.c.
+
+2007-04-11  Sven Neumann  <sven@gimp.org>
+
+	* de.po: applied patch from bug #425532.
+
+2007-04-10 Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated the Czech translation
+
+2007-04-06 Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated the Czech translation
+
+2007-04-05  Djihed Afifi <djihed@gmail.com>
+
+	* ar.po: Updated Arabic Translation by Khaled Hosny.
+
+2007-04-05 Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated the Czech translation
+
+2007-04-03 Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated the Czech translation
+
+2007-04-02 Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated the Czech translation
+
+2007-04-02 Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated the Czech translation
+
+2007-03-30 Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Fixed a Czech string translation
+
+2007-03-29 Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Fixed strings in the Czech translation
+
+2007-03-29 Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Fixed a string in the Czech translation
+
+2007-03-28  Pema Geyleg <pema.geyleg@gmail.com>
+
+	* dz.po: Updated dzongkha translation.
+
+2007-03-27  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	* hu.po: Translation updated by Árpád Bíró.
+
+2007-03-25  Priit Laes  <plaes@cvs.gnome.org>
+
+	* et.po: Translation updated..
+
+2007-03-20  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+		Joaquim Perez <noguer@gmail.com>.
+
+2007-03-19  Claudio Saavedra  <csaavedra@alumnos.utalca.cl>
+
+	* es.po: Updated Spanish translation by Francisco Vila.
+
+2007-03-17  Stéphane Raimbault  <stephane.raimbault@gmail.com>
+
+	* fr.po: Updated French translation by Laurent Monin.
+
+2007-03-14 Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation
+
+2007-03-12 Jakub Friedl  <jfriedl@suse.cz>
 
 	* cs.po: Updated Czech translation
+
+2007-03-11  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Updated English (British) translation
+
+2007-03-08 Jakub Friedl  <jfriedl@suse.cz>
+
+* cs.po: Updated Czech translation
 
 2007-03-06  Žygimantas Beručka  <zygis@gnome.org>
 

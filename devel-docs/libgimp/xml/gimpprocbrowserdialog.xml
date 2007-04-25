@@ -22,14 +22,14 @@
 
 
 
-            <link linkend="GimpProcBrowserDialog-struct">GimpProcBrowserDialog</link>;
-<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-proc-browser-dialog-new">gimp_proc_browser_dialog_new</link>    (const <link linkend="gchar">gchar</link> *title,
-                                             const <link linkend="gchar">gchar</link> *role,
-                                             <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
-                                             const <link linkend="gchar">gchar</link> *help_id,
-                                             ...);
-<link linkend="gchar">gchar</link>*      <link linkend="gimp-proc-browser-dialog-get-selected">gimp_proc_browser_dialog_get_selected</link>
-                                            (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog);
+                    <link linkend="GimpProcBrowserDialog-struct">GimpProcBrowserDialog</link>;
+<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-proc-browser-dialog-new">gimp_proc_browser_dialog_new</link>        (const <link linkend="gchar">gchar</link> *title,
+                                                         const <link linkend="gchar">gchar</link> *role,
+                                                         <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
+                                                         const <link linkend="gchar">gchar</link> *help_id,
+                                                         ...);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-proc-browser-dialog-get-selected">gimp_proc_browser_dialog_get_selected</link>
+                                                        (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog);
 
 </synopsis>
 </refsynopsisdiv>
@@ -68,12 +68,8 @@ GimpProcBrowserDialog implements
 <title role="signal_proto.title">Signals</title>
 <synopsis>
 
-&quot;<link linkend="GimpProcBrowserDialog-row-activated">row-activated</link>&quot;
-            <link linkend="void">void</link>        user_function      (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog,
-                                            <link linkend="gpointer">gpointer</link>               user_data)      : Run last
-&quot;<link linkend="GimpProcBrowserDialog-selection-changed">selection-changed</link>&quot;
-            <link linkend="void">void</link>        user_function      (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog,
-                                            <link linkend="gpointer">gpointer</link>               user_data)      : Run last
+  &quot;<link linkend="GimpProcBrowserDialog-row-activated">row-activated</link>&quot;                                  : Run Last
+  &quot;<link linkend="GimpProcBrowserDialog-selection-changed">selection-changed</link>&quot;                              : Run Last
 </synopsis>
 </refsect1>
 
@@ -95,11 +91,11 @@ GimpProcBrowserDialog implements
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-proc-browser-dialog-new" role="function" condition="since:GIMP 2.4"/>gimp_proc_browser_dialog_new ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_proc_browser_dialog_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_proc_browser_dialog_new    (const <link linkend="gchar">gchar</link> *title,
-                                             const <link linkend="gchar">gchar</link> *role,
-                                             <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
-                                             const <link linkend="gchar">gchar</link> *help_id,
-                                             ...);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_proc_browser_dialog_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_proc_browser_dialog_new        (const <link linkend="gchar">gchar</link> *title,
+                                                         const <link linkend="gchar">gchar</link> *role,
+                                                         <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
+                                                         const <link linkend="gchar">gchar</link> *help_id,
+                                                         ...);</programlisting>
 <para>
 Create a new <link linkend="GimpProcBrowserDialog"><type>GimpProcBrowserDialog</type></link>.</para>
 <para>
@@ -123,12 +119,12 @@ Create a new <link linkend="GimpProcBrowserDialog"><type>GimpProcBrowserDialog</
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a newly created <link linkend="GimpProcBrowserDialog"><type>GimpProcBrowserDialog</type></link>.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-proc-browser-dialog-get-selected" role="function" condition="since:GIMP 2.4"/>gimp_proc_browser_dialog_get_selected ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_proc_browser_dialog_get_selected</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_proc_browser_dialog_get_selected
-                                            (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_proc_browser_dialog_get_selected</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_proc_browser_dialog_get_selected
+                                                        (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog);</programlisting>
 <para>
 Retrieves the name of the currently selected procedure.</para>
 <para>
@@ -141,7 +137,7 @@ Retrieves the name of the currently selected procedure.</para>
               procedure is selected.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 
 </refsect1>
@@ -149,8 +145,8 @@ Retrieves the name of the currently selected procedure.</para>
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpProcBrowserDialog-row-activated"/>The &quot;row-activated&quot; signal</title>
-<indexterm><primary>GimpProcBrowserDialog::row-activated</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog,
-                                            <link linkend="gpointer">gpointer</link>               user_data)      : Run last</programlisting>
+<indexterm><primary>GimpProcBrowserDialog::row-activated</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog,
+                                                        <link linkend="gpointer">gpointer</link>               user_data)      : Run Last</programlisting>
 <para>
 Emitted when one of the rows in the contained <link linkend="GtkTreeView"><type>GtkTreeView</type></link> is activated.</para>
 <para>
@@ -162,8 +158,8 @@ Emitted when one of the rows in the contained <link linkend="GtkTreeView"><type>
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
 </variablelist></refsect2><refsect2><title><anchor id="GimpProcBrowserDialog-selection-changed"/>The &quot;selection-changed&quot; signal</title>
-<indexterm><primary>GimpProcBrowserDialog::selection-changed</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog,
-                                            <link linkend="gpointer">gpointer</link>               user_data)      : Run last</programlisting>
+<indexterm><primary>GimpProcBrowserDialog::selection-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpProcBrowserDialog">GimpProcBrowserDialog</link> *dialog,
+                                                        <link linkend="gpointer">gpointer</link>               user_data)      : Run Last</programlisting>
 <para>
 Emitted when the selection in the contained <link linkend="GtkTreeView"><type>GtkTreeView</type></link> changes.</para>
 <para>

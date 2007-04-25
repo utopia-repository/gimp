@@ -22,37 +22,37 @@
 
 
 
-enum        <link linkend="GimpAddMaskType">GimpAddMaskType</link>;
-enum        <link linkend="GimpBlendMode">GimpBlendMode</link>;
-enum        <link linkend="GimpBucketFillMode">GimpBucketFillMode</link>;
-enum        <link linkend="GimpChannelOps">GimpChannelOps</link>;
-enum        <link linkend="GimpChannelType">GimpChannelType</link>;
-enum        <link linkend="GimpCheckSize">GimpCheckSize</link>;
-enum        <link linkend="GimpCheckType">GimpCheckType</link>;
-enum        <link linkend="GimpCloneType">GimpCloneType</link>;
-enum        <link linkend="GimpDesaturateMode">GimpDesaturateMode</link>;
-enum        <link linkend="GimpDodgeBurnType">GimpDodgeBurnType</link>;
-enum        <link linkend="GimpForegroundExtractMode">GimpForegroundExtractMode</link>;
-enum        <link linkend="GimpGradientType">GimpGradientType</link>;
-enum        <link linkend="GimpGridStyle">GimpGridStyle</link>;
-enum        <link linkend="GimpIconType">GimpIconType</link>;
-enum        <link linkend="GimpImageBaseType">GimpImageBaseType</link>;
-enum        <link linkend="GimpImageType">GimpImageType</link>;
-enum        <link linkend="GimpInterpolationType">GimpInterpolationType</link>;
-enum        <link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link>;
-enum        <link linkend="GimpPaintApplicationMode">GimpPaintApplicationMode</link>;
-enum        <link linkend="GimpPDBArgType">GimpPDBArgType</link>;
-enum        <link linkend="GimpPDBProcType">GimpPDBProcType</link>;
-enum        <link linkend="GimpPDBStatusType">GimpPDBStatusType</link>;
-enum        <link linkend="GimpProgressCommand">GimpProgressCommand</link>;
-enum        <link linkend="GimpRepeatMode">GimpRepeatMode</link>;
-enum        <link linkend="GimpRunMode">GimpRunMode</link>;
-enum        <link linkend="GimpSizeType">GimpSizeType</link>;
-enum        <link linkend="GimpStackTraceMode">GimpStackTraceMode</link>;
-enum        <link linkend="GimpTransferMode">GimpTransferMode</link>;
-enum        <link linkend="GimpTransformDirection">GimpTransformDirection</link>;
-enum        <link linkend="GimpTransformResize">GimpTransformResize</link>;
-enum        <link linkend="GimpVectorsStrokeType">GimpVectorsStrokeType</link>;
+enum                <link linkend="GimpAddMaskType">GimpAddMaskType</link>;
+enum                <link linkend="GimpBlendMode">GimpBlendMode</link>;
+enum                <link linkend="GimpBucketFillMode">GimpBucketFillMode</link>;
+enum                <link linkend="GimpChannelOps">GimpChannelOps</link>;
+enum                <link linkend="GimpChannelType">GimpChannelType</link>;
+enum                <link linkend="GimpCheckSize">GimpCheckSize</link>;
+enum                <link linkend="GimpCheckType">GimpCheckType</link>;
+enum                <link linkend="GimpCloneType">GimpCloneType</link>;
+enum                <link linkend="GimpDesaturateMode">GimpDesaturateMode</link>;
+enum                <link linkend="GimpDodgeBurnType">GimpDodgeBurnType</link>;
+enum                <link linkend="GimpForegroundExtractMode">GimpForegroundExtractMode</link>;
+enum                <link linkend="GimpGradientType">GimpGradientType</link>;
+enum                <link linkend="GimpGridStyle">GimpGridStyle</link>;
+enum                <link linkend="GimpIconType">GimpIconType</link>;
+enum                <link linkend="GimpImageBaseType">GimpImageBaseType</link>;
+enum                <link linkend="GimpImageType">GimpImageType</link>;
+enum                <link linkend="GimpInterpolationType">GimpInterpolationType</link>;
+enum                <link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link>;
+enum                <link linkend="GimpPaintApplicationMode">GimpPaintApplicationMode</link>;
+enum                <link linkend="GimpPDBArgType">GimpPDBArgType</link>;
+enum                <link linkend="GimpPDBProcType">GimpPDBProcType</link>;
+enum                <link linkend="GimpPDBStatusType">GimpPDBStatusType</link>;
+enum                <link linkend="GimpProgressCommand">GimpProgressCommand</link>;
+enum                <link linkend="GimpRepeatMode">GimpRepeatMode</link>;
+enum                <link linkend="GimpRunMode">GimpRunMode</link>;
+enum                <link linkend="GimpSizeType">GimpSizeType</link>;
+enum                <link linkend="GimpStackTraceMode">GimpStackTraceMode</link>;
+enum                <link linkend="GimpTransferMode">GimpTransferMode</link>;
+enum                <link linkend="GimpTransformDirection">GimpTransformDirection</link>;
+enum                <link linkend="GimpTransformResize">GimpTransformResize</link>;
+enum                <link linkend="GimpVectorsStrokeType">GimpVectorsStrokeType</link>;
 
 </synopsis>
 </refsynopsisdiv>
@@ -462,8 +462,8 @@ Basic GIMP enumeration data types.
 <title><anchor id="GimpTransformDirection" role="enum"/>enum GimpTransformDirection</title>
 <indexterm><primary>GimpTransformDirection</primary></indexterm><programlisting>typedef enum
 {
-  GIMP_TRANSFORM_FORWARD,   /*&lt; desc="Forward" &gt;*/
-  GIMP_TRANSFORM_BACKWARD   /*&lt; desc="Backward" &gt;*/
+  GIMP_TRANSFORM_FORWARD,   /*&lt; desc="Normal (Forward)" &gt;*/
+  GIMP_TRANSFORM_BACKWARD   /*&lt; desc="Corrective (Backward)" &gt;*/
 } GimpTransformDirection;
 </programlisting>
 <para>

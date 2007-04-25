@@ -22,18 +22,17 @@
 
 
 
-<link linkend="GList">GList</link>*      <link linkend="gimp-config-diff">gimp_config_diff</link>                (<link linkend="GObject">GObject</link> *a,
-                                             <link linkend="GObject">GObject</link> *b,
-                                             <link linkend="GParamFlags">GParamFlags</link> flags);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-config-sync">gimp_config_sync</link>                (<link linkend="GObject">GObject</link> *src,
-                                             <link linkend="GObject">GObject</link> *dest,
-                                             <link linkend="GParamFlags">GParamFlags</link> flags);
-<link linkend="void">void</link>        <link linkend="gimp-config-reset-properties">gimp_config_reset_properties</link>    (<link linkend="GObject">GObject</link> *object);
-<link linkend="void">void</link>        <link linkend="gimp-config-reset-property">gimp_config_reset_property</link>      (<link linkend="GObject">GObject</link> *object,
-                                             const <link linkend="gchar">gchar</link> *property_name);
-<link linkend="void">void</link>        <link linkend="gimp-config-string-append-escaped">gimp_config_string_append_escaped</link>
-                                            (<link linkend="GString">GString</link> *string,
-                                             const <link linkend="gchar">gchar</link> *val);
+<link linkend="GList">GList</link>*              <link linkend="gimp-config-diff">gimp_config_diff</link>                    (<link linkend="GObject">GObject</link> *a,
+                                                         <link linkend="GObject">GObject</link> *b,
+                                                         <link linkend="GParamFlags">GParamFlags</link> flags);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-config-sync">gimp_config_sync</link>                    (<link linkend="GObject">GObject</link> *src,
+                                                         <link linkend="GObject">GObject</link> *dest,
+                                                         <link linkend="GParamFlags">GParamFlags</link> flags);
+<link linkend="void">void</link>                <link linkend="gimp-config-reset-properties">gimp_config_reset_properties</link>        (<link linkend="GObject">GObject</link> *object);
+<link linkend="void">void</link>                <link linkend="gimp-config-reset-property">gimp_config_reset_property</link>          (<link linkend="GObject">GObject</link> *object,
+                                                         const <link linkend="gchar">gchar</link> *property_name);
+<link linkend="void">void</link>                <link linkend="gimp-config-string-append-escaped">gimp_config_string_append_escaped</link>   (<link linkend="GString">GString</link> *string,
+                                                         const <link linkend="gchar">gchar</link> *val);
 </synopsis>
 </refsynopsisdiv>
 
@@ -57,9 +56,9 @@ Miscellaneous utility functions for libgimpconfig.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-config-diff" role="function" condition="since:GIMP 2.4"/>gimp_config_diff ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_diff</primary></indexterm><programlisting><link linkend="GList">GList</link>*      gimp_config_diff                (<link linkend="GObject">GObject</link> *a,
-                                             <link linkend="GObject">GObject</link> *b,
-                                             <link linkend="GParamFlags">GParamFlags</link> flags);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_config_diff</primary></indexterm><programlisting><link linkend="GList">GList</link>*              gimp_config_diff                    (<link linkend="GObject">GObject</link> *a,
+                                                         <link linkend="GObject">GObject</link> *b,
+                                                         <link linkend="GParamFlags">GParamFlags</link> flags);</programlisting>
 <para>
 Compares all properties of <parameter>a</parameter> and <parameter>b</parameter> that have all <parameter>flags</parameter> set. If
 <parameter>flags</parameter> is 0, all properties are compared.
@@ -83,13 +82,13 @@ compared.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a GList of differing GParamSpecs.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-config-sync" role="function" condition="since:GIMP 2.4"/>gimp_config_sync ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_sync</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_config_sync                (<link linkend="GObject">GObject</link> *src,
-                                             <link linkend="GObject">GObject</link> *dest,
-                                             <link linkend="GParamFlags">GParamFlags</link> flags);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_config_sync</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_config_sync                    (<link linkend="GObject">GObject</link> *src,
+                                                         <link linkend="GObject">GObject</link> *dest,
+                                                         <link linkend="GParamFlags">GParamFlags</link> flags);</programlisting>
 <para>
 Compares all read- and write-able properties from <parameter>src</parameter> and <parameter>dest</parameter>
 that have all <parameter>flags</parameter> set. Differing values are then copied from
@@ -117,11 +116,11 @@ synchronized</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if <parameter>dest</parameter> was modified, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-config-reset-properties" role="function" condition="since:GIMP 2.4"/>gimp_config_reset_properties ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_reset_properties</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_config_reset_properties    (<link linkend="GObject">GObject</link> *object);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_config_reset_properties</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_config_reset_properties        (<link linkend="GObject">GObject</link> *object);</programlisting>
 <para>
 Resets all writable properties of <parameter>object</parameter> to the default values as
 defined in their <link linkend="GParamSpec"><type>GParamSpec</type></link>. Properties marked as "construct-only"
@@ -135,12 +134,12 @@ If you want to reset a <link linkend="GimpConfig"><type>GimpConfig</type></link>
 <varlistentry><term><parameter>object</parameter>&nbsp;:</term>
 <listitem><simpara> a <link linkend="GObject"><type>GObject</type></link>
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-config-reset-property" role="function" condition="since:GIMP 2.4"/>gimp_config_reset_property ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_reset_property</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_config_reset_property      (<link linkend="GObject">GObject</link> *object,
-                                             const <link linkend="gchar">gchar</link> *property_name);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_config_reset_property</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_config_reset_property          (<link linkend="GObject">GObject</link> *object,
+                                                         const <link linkend="gchar">gchar</link> *property_name);</programlisting>
 <para>
 Resets the property named <parameter>property_name</parameter> to its default value.  The
 property must be writable and must not be marked as "construct-only".</para>
@@ -153,13 +152,12 @@ property must be writable and must not be marked as "construct-only".</para>
 <varlistentry><term><parameter>property_name</parameter>&nbsp;:</term>
 <listitem><simpara> name of the property to reset
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-config-string-append-escaped" role="function" condition="since:GIMP 2.4"/>gimp_config_string_append_escaped ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_string_append_escaped</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_config_string_append_escaped
-                                            (<link linkend="GString">GString</link> *string,
-                                             const <link linkend="gchar">gchar</link> *val);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_config_string_append_escaped</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_config_string_append_escaped   (<link linkend="GString">GString</link> *string,
+                                                         const <link linkend="gchar">gchar</link> *val);</programlisting>
 <para>
 Escapes and quotes <parameter>val</parameter> and appends it to <parameter>string</parameter>. The escape
 algorithm is different from the one used by <link linkend="g-strescape"><function>g_strescape()</function></link> since it
@@ -174,7 +172,7 @@ strings. Only control characters and quotes are being escaped.</para>
 <varlistentry><term><parameter>val</parameter>&nbsp;:</term>
 <listitem><simpara> a string to append or <link linkend="NULL:CAPS"><literal>NULL</literal></link>
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 
 </refsect1>

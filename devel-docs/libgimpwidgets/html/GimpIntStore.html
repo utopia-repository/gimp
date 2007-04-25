@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpIntStore</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="prev" href="GimpIntComboBox.html" title="GimpIntComboBox">
 <link rel="next" href="GimpMemsizeEntry.html" title="GimpMemsizeEntry">
-<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -33,22 +33,22 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpMemsizeEntry.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2588753" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2569041" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2600592" class="shortcut">Description</a>
+                  <a href="#id2610326" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2605459" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2610218" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2605496" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2610255" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2600562" class="shortcut">Properties</a></nobr></td></tr>
+                  <a href="#id2610296" class="shortcut">Properties</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpIntStore"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2588753"></a><span class="refentrytitle">GimpIntStore</span>
+<a name="id2569041"></a><span class="refentrytitle">GimpIntStore</span>
 </h2>
 <p>GimpIntStore &#8212; A model for integer based name-value pairs (e.g. enums)</p>
 </td>
@@ -60,17 +60,17 @@
 
 
 
-            <a href="GimpIntStore.html#GimpIntStore-struct">GimpIntStore</a>;
-enum        <a href="GimpIntStore.html#GimpIntStoreColumns">GimpIntStoreColumns</a>;
-GtkListStore* <a href="GimpIntStore.html#gimp-int-store-new">gimp_int_store_new</a>            (void);
-gboolean    <a href="GimpIntStore.html#gimp-int-store-lookup-by-value">gimp_int_store_lookup_by_value</a>  (GtkTreeModel *model,
-                                             gint value,
-                                             GtkTreeIter *iter);
+                    <a href="GimpIntStore.html#GimpIntStore-struct">GimpIntStore</a>;
+enum                <a href="GimpIntStore.html#GimpIntStoreColumns">GimpIntStoreColumns</a>;
+GtkListStore*       <a href="GimpIntStore.html#gimp-int-store-new">gimp_int_store_new</a>                  (void);
+gboolean            <a href="GimpIntStore.html#gimp-int-store-lookup-by-value">gimp_int_store_lookup_by_value</a>      (GtkTreeModel *model,
+                                                         gint value,
+                                                         GtkTreeIter *iter);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2605459"></a><h2>Object Hierarchy</h2>
+<a name="id2610218"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -80,39 +80,39 @@ gboolean    <a href="GimpIntStore.html#gimp-int-store-lookup-by-value">gimp_int_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2605496"></a><h2>Implemented Interfaces</h2>
+<a name="id2610255"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpIntStore implements
  GtkTreeModel,  GtkTreeDragSource,  GtkTreeDragDest and  GtkTreeSortable.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2600562"></a><h2>Properties</h2>
+<a name="id2610296"></a><h2>Properties</h2>
 <pre class="synopsis">
 
-  "<a href="GimpIntStore.html#GimpIntStore--user-data-type">user-data-type</a>"       GType                 : Read / Write / Construct Only
+  "<a href="GimpIntStore.html#GimpIntStore--user-data-type">user-data-type</a>"           GType                 : Read / Write / Construct Only
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2600592"></a><h2>Description</h2>
+<a name="id2610326"></a><h2>Description</h2>
 <p>
 A model for integer based name-value pairs (e.g. enums)
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2600609"></a><h2>Details</h2>
+<a name="id2613814"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2600620"></a><h3>
+<a name="id2613825"></a><h3>
 <a name="GimpIntStore-struct"></a>GimpIntStore</h3>
-<a class="indexterm" name="id2600632"></a><pre class="programlisting">typedef struct _GimpIntStore GimpIntStore;</pre>
+<a class="indexterm" name="id2613838"></a><pre class="programlisting">typedef struct _GimpIntStore GimpIntStore;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600647"></a><h3>
+<a name="id2613853"></a><h3>
 <a name="GimpIntStoreColumns"></a>enum GimpIntStoreColumns</h3>
-<a class="indexterm" name="id2600660"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2613866"></a><pre class="programlisting">typedef enum
 {
   GIMP_INT_STORE_VALUE,
   GIMP_INT_STORE_LABEL,
@@ -128,9 +128,9 @@ A model for integer based name-value pairs (e.g. enums)
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600678"></a><h3>
+<a name="id2613884"></a><h3>
 <a name="gimp-int-store-new"></a>gimp_int_store_new ()</h3>
-<a class="indexterm" name="id2600693"></a><pre class="programlisting">GtkListStore* gimp_int_store_new            (void);</pre>
+<a class="indexterm" name="id2613898"></a><pre class="programlisting">GtkListStore*       gimp_int_store_new                  (void);</pre>
 <p>
 Creates a <span class="type">GtkListStore</span> with a number of useful columns.
 <a href="GimpIntStore.html" title="GimpIntStore"><span class="type">GimpIntStore</span></a> is especially useful if the items you want to store
@@ -147,16 +147,16 @@ are identified using an integer value.</p>
 </td>
 </tr></tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601431"></a><h3>
+<a name="id2613489"></a><h3>
 <a name="gimp-int-store-lookup-by-value"></a>gimp_int_store_lookup_by_value ()</h3>
-<a class="indexterm" name="id2601444"></a><pre class="programlisting">gboolean    gimp_int_store_lookup_by_value  (GtkTreeModel *model,
-                                             gint value,
-                                             GtkTreeIter *iter);</pre>
+<a class="indexterm" name="id2613502"></a><pre class="programlisting">gboolean            gimp_int_store_lookup_by_value      (GtkTreeModel *model,
+                                                         gint value,
+                                                         GtkTreeIter *iter);</pre>
 <p>
 Iterate over the <em class="parameter"><code>model</code></em> looking for <em class="parameter"><code>value</code></em>.</p>
 <p>
@@ -189,16 +189,16 @@ Iterate over the <em class="parameter"><code>model</code></em> looking for <em c
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2605072"></a><h2>Property Details</h2>
+<a name="id2613670"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2605082"></a><h3>
+<a name="id2613680"></a><h3>
 <a name="GimpIntStore--user-data-type"></a>The "<code class="literal">user-data-type</code>" property</h3>
-<a class="indexterm" name="id2605096"></a><pre class="programlisting">  "user-data-type"       GType                 : Read / Write / Construct Only</pre>
+<a class="indexterm" name="id2613694"></a><pre class="programlisting">  "user-data-type"           GType                 : Read / Write / Construct Only</pre>
 <p>
 Allows to set the <span class="type">GType</span> for the GIMP_INT_STORE_USER_DATA column.
 </p>

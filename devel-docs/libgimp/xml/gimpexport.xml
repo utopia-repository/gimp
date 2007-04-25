@@ -22,12 +22,12 @@
 
 
 
-enum        <link linkend="GimpExportCapabilities">GimpExportCapabilities</link>;
-enum        <link linkend="GimpExportReturn">GimpExportReturn</link>;
-<link linkend="GimpExportReturn">GimpExportReturn</link> <link linkend="gimp-export-image">gimp_export_image</link>          (<link linkend="gint32">gint32</link> *image_ID,
-                                             <link linkend="gint32">gint32</link> *drawable_ID,
-                                             const <link linkend="gchar">gchar</link> *format_name,
-                                             <link linkend="GimpExportCapabilities">GimpExportCapabilities</link> capabilities);
+enum                <link linkend="GimpExportCapabilities">GimpExportCapabilities</link>;
+enum                <link linkend="GimpExportReturn">GimpExportReturn</link>;
+<link linkend="GimpExportReturn">GimpExportReturn</link>    <link linkend="gimp-export-image">gimp_export_image</link>                   (<link linkend="gint32">gint32</link> *image_ID,
+                                                         <link linkend="gint32">gint32</link> *drawable_ID,
+                                                         const <link linkend="gchar">gchar</link> *format_name,
+                                                         <link linkend="GimpExportCapabilities">GimpExportCapabilities</link> capabilities);
 </synopsis>
 </refsynopsisdiv>
 
@@ -91,10 +91,10 @@ as it will most probably have to open a dialog.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-export-image" role="function"/>gimp_export_image ()</title>
-<indexterm><primary>gimp_export_image</primary></indexterm><programlisting><link linkend="GimpExportReturn">GimpExportReturn</link> gimp_export_image          (<link linkend="gint32">gint32</link> *image_ID,
-                                             <link linkend="gint32">gint32</link> *drawable_ID,
-                                             const <link linkend="gchar">gchar</link> *format_name,
-                                             <link linkend="GimpExportCapabilities">GimpExportCapabilities</link> capabilities);</programlisting>
+<indexterm><primary>gimp_export_image</primary></indexterm><programlisting><link linkend="GimpExportReturn">GimpExportReturn</link>    gimp_export_image                   (<link linkend="gint32">gint32</link> *image_ID,
+                                                         <link linkend="gint32">gint32</link> *drawable_ID,
+                                                         const <link linkend="gchar">gchar</link> *format_name,
+                                                         <link linkend="GimpExportCapabilities">GimpExportCapabilities</link> capabilities);</programlisting>
 <para>
 Takes an image and a drawable to be saved together with a
 description of the capabilities of the image_format. If the

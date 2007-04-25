@@ -559,32 +559,33 @@ gimp_transform_tool_oper_update (GimpTool        *tool,
       gdouble closest_dist;
       gdouble dist;
 
-      closest_dist = gimp_draw_tool_calc_distance (draw_tool, display,
-                                                   coords->x, coords->y,
-                                                   tr_tool->tx1, tr_tool->ty1);
+      dist = gimp_draw_tool_calc_distance_square (draw_tool, display,
+                                                  coords->x, coords->y,
+                                                  tr_tool->tx1, tr_tool->ty1);
+      closest_dist = dist;
       tr_tool->function = TRANSFORM_HANDLE_NW;
 
-      dist = gimp_draw_tool_calc_distance (draw_tool, display,
-                                           coords->x, coords->y,
-                                           tr_tool->tx2, tr_tool->ty2);
+      dist = gimp_draw_tool_calc_distance_square (draw_tool, display,
+                                                  coords->x, coords->y,
+                                                  tr_tool->tx2, tr_tool->ty2);
       if (dist < closest_dist)
         {
           closest_dist = dist;
           tr_tool->function = TRANSFORM_HANDLE_NE;
         }
 
-      dist = gimp_draw_tool_calc_distance (draw_tool, display,
-                                           coords->x, coords->y,
-                                           tr_tool->tx3, tr_tool->ty3);
+      dist = gimp_draw_tool_calc_distance_square (draw_tool, display,
+                                                  coords->x, coords->y,
+                                                  tr_tool->tx3, tr_tool->ty3);
       if (dist < closest_dist)
         {
           closest_dist = dist;
           tr_tool->function = TRANSFORM_HANDLE_SW;
         }
 
-      dist = gimp_draw_tool_calc_distance (draw_tool, display,
-                                           coords->x, coords->y,
-                                           tr_tool->tx4, tr_tool->ty4);
+      dist = gimp_draw_tool_calc_distance_square (draw_tool, display,
+                                                  coords->x, coords->y,
+                                                  tr_tool->tx4, tr_tool->ty4);
       if (dist < closest_dist)
         {
           closest_dist = dist;
@@ -1455,7 +1456,7 @@ gimp_transform_tool_halt (GimpTransformTool *tr_tool)
     gimp_draw_tool_stop (GIMP_DRAW_TOOL (tr_tool));
 
   if (tr_tool->dialog)
-    gtk_widget_hide (tr_tool->dialog);
+    gimp_dialog_factory_hide_dialog (tr_tool->dialog);
 
   tool->display  = NULL;
   tool->drawable = NULL;
@@ -1734,14 +1735,13 @@ gimp_transform_tool_response (GtkWidget         *widget,
                               gint               response_id,
                               GimpTransformTool *tr_tool)
 {
+  GimpTool *tool = GIMP_TOOL (tr_tool);
+
   switch (response_id)
     {
     case RESPONSE_RESET:
       {
-        GimpTool *tool;
-        gint      i;
-
-        tool = GIMP_TOOL (tr_tool);
+        gint i;
 
         gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
@@ -1763,7 +1763,8 @@ gimp_transform_tool_response (GtkWidget         *widget,
       break;
 
     case GTK_RESPONSE_OK:
-      gimp_transform_tool_doit (tr_tool, GIMP_TOOL (tr_tool)->display);
+      g_return_if_fail (tool->display != NULL);
+      gimp_transform_tool_doit (tr_tool, tool->display);
       break;
 
     default:

@@ -80,6 +80,9 @@ static void     gimp_rect_select_tool_active_modifier_key (GimpTool          *to
                                                            gboolean           press,
                                                            GdkModifierType    state,
                                                            GimpDisplay       *display);
+static gboolean gimp_rect_select_tool_key_press           (GimpTool          *tool,
+                                                           GdkEventKey       *kevent,
+                                                           GimpDisplay       *display);
 static void     gimp_rect_select_tool_oper_update         (GimpTool          *tool,
                                                            GimpCoords        *coords,
                                                            GdkModifierType    state,
@@ -156,7 +159,7 @@ gimp_rect_select_tool_class_init (GimpRectSelectToolClass *klass)
   tool_class->button_press        = gimp_rect_select_tool_button_press;
   tool_class->button_release      = gimp_rect_select_tool_button_release;
   tool_class->motion              = gimp_rectangle_tool_motion;
-  tool_class->key_press           = gimp_rectangle_tool_key_press;
+  tool_class->key_press           = gimp_rect_select_tool_key_press;
   tool_class->active_modifier_key = gimp_rect_select_tool_active_modifier_key;
   tool_class->oper_update         = gimp_rect_select_tool_oper_update;
   tool_class->cursor_update       = gimp_rect_select_tool_cursor_update;
@@ -346,9 +349,7 @@ gimp_rect_select_tool_button_press (GimpTool        *tool,
       if (rect_select->use_saved_op)
         operation = rect_select->operation;
       else
-        g_object_get (options,
-                      "operation", &operation,
-                      NULL);
+        operation = options->operation;
 
       undo = gimp_undo_stack_peek (image->undo_stack);
 
@@ -446,6 +447,15 @@ gimp_rect_select_tool_active_modifier_key (GimpTool        *tool,
   gimp_rectangle_tool_active_modifier_key (tool, key, press, state, display);
 }
 
+static gboolean
+gimp_rect_select_tool_key_press (GimpTool    *tool,
+                                 GdkEventKey *kevent,
+                                 GimpDisplay *display)
+{
+  return (gimp_rectangle_tool_key_press (tool, kevent, display) ||
+          gimp_edit_selection_tool_key_press (tool, kevent, display));
+}
+
 static void
 gimp_rect_select_tool_oper_update (GimpTool        *tool,
                                    GimpCoords      *coords,
@@ -509,9 +519,7 @@ gimp_rect_select_tool_select (GimpRectangleTool *rectangle,
   if (rect_select->use_saved_op)
     operation = rect_select->operation;
   else
-    g_object_get (options,
-                  "operation", &operation,
-                  NULL);
+    operation = options->operation;
 
   /* if rectangle exists, turn it into a selection */
   if (rectangle_exists)
@@ -719,10 +727,10 @@ gimp_rect_select_tool_rectangle_changed (GimpRectangleTool *rectangle)
 
       if (! rect_select->use_saved_op)
         {
+          GimpSelectionOptions *options = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
+
           /* remember the operation now in case we modify the rectangle */
-          g_object_get (gimp_tool_get_options (tool),
-                        "operation", &rect_select->operation,
-                        NULL);
+          rect_select->operation    = options->operation;
           rect_select->use_saved_op = TRUE;
         }
 

@@ -101,7 +101,7 @@ static const GimpActionEntry plug_in_actions[] =
 
   { "plug-in-reset-all", GIMP_STOCK_RESET,
     N_("Reset all _Filters"), NULL,
-    N_("Set all plug-in to their default settings"),
+    N_("Reset all plug-ins to their default settings"),
     G_CALLBACK (plug_in_reset_all_cmd_callback),
     GIMP_HELP_FILTER_RESET_ALL }
 };
@@ -165,23 +165,10 @@ plug_in_actions_setup (GimpActionGroup *group)
     {
       GimpPlugInProcedure *plug_in_proc = list->data;
 
-      if (! plug_in_proc->prog)
-        continue;
-
-      g_signal_connect_object (plug_in_proc, "menu-path-added",
-                               G_CALLBACK (plug_in_actions_menu_path_added),
-                               group, 0);
-
-      if (plug_in_proc->prog         &&
-          plug_in_proc->menu_paths   &&
-          ! plug_in_proc->extensions &&
-          ! plug_in_proc->prefixes   &&
-          ! plug_in_proc->magics)
-        {
-          plug_in_actions_register_procedure (group->gimp->pdb,
-                                              GIMP_PROCEDURE (plug_in_proc),
-                                              group);
-        }
+      if (plug_in_proc->prog)
+        plug_in_actions_register_procedure (group->gimp->pdb,
+                                            GIMP_PROCEDURE (plug_in_proc),
+                                            group);
     }
 
   g_signal_connect_object (group->gimp->pdb, "register-procedure",
@@ -248,11 +235,9 @@ plug_in_actions_update (GimpActionGroup *group,
     {
       GimpPlugInProcedure *proc = list->data;
 
-      if (proc->menu_paths      &&
-          proc->image_types_val &&
-          ! proc->extensions    &&
-          ! proc->prefixes      &&
-          ! proc->magics)
+      if ((proc->menu_label || proc->menu_paths) &&
+          ! proc->file_proc                      &&
+          proc->image_types_val)
         {
           gboolean sensitive = gimp_plug_in_procedure_get_sensitive (proc, type);
 
@@ -337,7 +322,8 @@ plug_in_actions_register_procedure (GimpPDB         *pdb,
                                G_CALLBACK (plug_in_actions_menu_path_added),
                                group, 0);
 
-      if (plug_in_proc->menu_label || plug_in_proc->menu_paths)
+      if ((plug_in_proc->menu_label || plug_in_proc->menu_paths) &&
+          ! plug_in_proc->file_proc)
         {
 #if 0
           g_print ("%s: %s\n", G_STRFUNC,
@@ -362,7 +348,8 @@ plug_in_actions_unregister_procedure (GimpPDB         *pdb,
                                             plug_in_actions_menu_path_added,
                                             group);
 
-      if (plug_in_proc->menu_label || plug_in_proc->menu_paths)
+      if ((plug_in_proc->menu_label || plug_in_proc->menu_paths) &&
+          ! plug_in_proc->file_proc)
         {
           GtkAction *action;
 
@@ -495,16 +482,14 @@ plug_in_actions_history_changed (GimpPlugInManager *manager,
 
   if (proc)
     {
-      gchar *label;
-      gchar *repeat;
-      gchar *reshow;
+      const gchar *label;
+      gchar       *repeat;
+      gchar       *reshow;
 
       label = gimp_plug_in_procedure_get_label (proc);
 
       repeat = g_strdup_printf (_("Re_peat \"%s\""),  label);
       reshow = g_strdup_printf (_("R_e-Show \"%s\""), label);
-
-      g_free (label);
 
       gimp_action_group_set_action_label (group, "plug-in-repeat", repeat);
       gimp_action_group_set_action_label (group, "plug-in-reshow", reshow);
@@ -523,25 +508,20 @@ plug_in_actions_history_changed (GimpPlugInManager *manager,
   for (i = 0; i < gimp_plug_in_manager_history_length (manager); i++)
     {
       GtkAction *action;
-      gchar     *name    = g_strdup_printf ("plug-in-recent-%02d", i + 1);
-      gchar     *label;
+      gchar     *name = g_strdup_printf ("plug-in-recent-%02d", i + 1);
 
       action = gtk_action_group_get_action (GTK_ACTION_GROUP (group), name);
       g_free (name);
 
-      proc  = gimp_plug_in_manager_history_nth (manager, i);
-
-      label = gimp_plug_in_procedure_get_label (proc);
+      proc = gimp_plug_in_manager_history_nth (manager, i);
 
       g_object_set (action,
                     "visible",   TRUE,
                     "procedure", proc,
-                    "label",     label,
+                    "label",     gimp_plug_in_procedure_get_label (proc),
                     "stock-id",  gimp_plug_in_procedure_get_stock_id (proc),
                     "tooltip",   gimp_plug_in_procedure_get_blurb (proc),
                     NULL);
-
-      g_free (label);
     }
 
   for (; i < gimp_plug_in_manager_history_size (manager); i++)

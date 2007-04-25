@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpBrushSelectButton</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="prev" href="GimpSelectButton.html" title="GimpSelectButton">
 <link rel="next" href="GimpFontSelectButton.html" title="GimpFontSelectButton">
-<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -31,24 +31,24 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="GimpFontSelectButton.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2589317" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2584476" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2692157" class="shortcut">Description</a>
+                  <a href="#id2692015" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2681040" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2671193" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2681104" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2671256" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2681124" class="shortcut">Properties</a>
+                  <a href="#id2691918" class="shortcut">Properties</a>
                   &#160;|&#160;
-                  <a href="#id2682568" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id2691992" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpBrushSelectButton"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2589317"></a><span class="refentrytitle">GimpBrushSelectButton</span>
+<a name="id2584476"></a><span class="refentrytitle">GimpBrushSelectButton</span>
 </h2>
 <p>GimpBrushSelectButton</p>
 </td>
@@ -60,28 +60,26 @@
 
 
 
-            <a href="GimpBrushSelectButton.html#GimpBrushSelectButton-struct">GimpBrushSelectButton</a>;
-GtkWidget*  <a href="GimpBrushSelectButton.html#gimp-brush-select-button-new">gimp_brush_select_button_new</a>    (const gchar *title,
-                                             const gchar *brush_name,
-                                             gdouble opacity,
-                                             gint spacing,
-                                             <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);
-const  gchar* <a href="GimpBrushSelectButton.html#gimp-brush-select-button-get-brush">gimp_brush_select_button_get_brush</a>
-                                            (<a href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a> *button,
-                                             gdouble *opacity,
-                                             gint *spacing,
-                                             <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> *paint_mode);
-void        <a href="GimpBrushSelectButton.html#gimp-brush-select-button-set-brush">gimp_brush_select_button_set_brush</a>
-                                            (<a href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a> *button,
-                                             const gchar *brush_name,
-                                             gdouble opacity,
-                                             gint spacing,
-                                             <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);
+                    <a href="GimpBrushSelectButton.html#GimpBrushSelectButton-struct">GimpBrushSelectButton</a>;
+GtkWidget*          <a href="GimpBrushSelectButton.html#gimp-brush-select-button-new">gimp_brush_select_button_new</a>        (const gchar *title,
+                                                         const gchar *brush_name,
+                                                         gdouble opacity,
+                                                         gint spacing,
+                                                         <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);
+const  gchar*       <a href="GimpBrushSelectButton.html#gimp-brush-select-button-get-brush">gimp_brush_select_button_get_brush</a>  (<a href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a> *button,
+                                                         gdouble *opacity,
+                                                         gint *spacing,
+                                                         <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> *paint_mode);
+void                <a href="GimpBrushSelectButton.html#gimp-brush-select-button-set-brush">gimp_brush_select_button_set_brush</a>  (<a href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a> *button,
+                                                         const gchar *brush_name,
+                                                         gdouble opacity,
+                                                         gint spacing,
+                                                         <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2681040"></a><h2>Object Hierarchy</h2>
+<a name="id2671193"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -96,63 +94,54 @@ void        <a href="GimpBrushSelectButton.html#gimp-brush-select-button-set-bru
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2681104"></a><h2>Implemented Interfaces</h2>
+<a name="id2671256"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpBrushSelectButton implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2681124"></a><h2>Properties</h2>
+<a name="id2691918"></a><h2>Properties</h2>
 <pre class="synopsis">
 
-  "<a href="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-name">brush-name</a>"           gchararray            : Read / Write
-  "<a href="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-opacity">brush-opacity</a>"        gdouble               : Read / Write
-  "<a href="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-paint-mode">brush-paint-mode</a>"     gint                  : Read / Write
-  "<a href="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-spacing">brush-spacing</a>"        gint                  : Read / Write
-  "<a href="GimpBrushSelectButton.html#GimpBrushSelectButton--title">title</a>"                gchararray            : Read / Write / Construct Only
+  "<a href="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-name">brush-name</a>"               gchararray            : Read / Write
+  "<a href="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-opacity">brush-opacity</a>"            gdouble               : Read / Write
+  "<a href="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-paint-mode">brush-paint-mode</a>"         gint                  : Read / Write
+  "<a href="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-spacing">brush-spacing</a>"            gint                  : Read / Write
+  "<a href="GimpBrushSelectButton.html#GimpBrushSelectButton--title">title</a>"                    gchararray            : Read / Write / Construct Only
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2682568"></a><h2>Signals</h2>
+<a name="id2691992"></a><h2>Signals</h2>
 <pre class="synopsis">
 
-"<a href="GimpBrushSelectButton.html#GimpBrushSelectButton-brush-set">brush-set</a>" void        user_function      (<a href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a> *widget,
-                                            gchar                 *brush_name,
-                                            gdouble                opacity,
-                                            gint                   spacing,
-                                            gint                   paint_mode,
-                                            gint                   width,
-                                            gint                   height,
-                                            gpointer               mask_data,
-                                            gboolean               dialog_closing,
-                                            gpointer               user_data)           : Run first
+  "<a href="GimpBrushSelectButton.html#GimpBrushSelectButton-brush-set">brush-set</a>"                                      : Run First
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2692157"></a><h2>Description</h2>
+<a name="id2692015"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2692172"></a><h2>Details</h2>
+<a name="id2692031"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2692183"></a><h3>
+<a name="id2692042"></a><h3>
 <a name="GimpBrushSelectButton-struct"></a>GimpBrushSelectButton</h3>
-<a class="indexterm" name="id2692194"></a><pre class="programlisting">typedef struct _GimpBrushSelectButton GimpBrushSelectButton;</pre>
+<a class="indexterm" name="id2692053"></a><pre class="programlisting">typedef struct _GimpBrushSelectButton GimpBrushSelectButton;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692210"></a><h3>
+<a name="id2692069"></a><h3>
 <a name="gimp-brush-select-button-new"></a>gimp_brush_select_button_new ()</h3>
-<a class="indexterm" name="id2692223"></a><pre class="programlisting">GtkWidget*  gimp_brush_select_button_new    (const gchar *title,
-                                             const gchar *brush_name,
-                                             gdouble opacity,
-                                             gint spacing,
-                                             <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);</pre>
+<a class="indexterm" name="id2701679"></a><pre class="programlisting">GtkWidget*          gimp_brush_select_button_new        (const gchar *title,
+                                                         const gchar *brush_name,
+                                                         gdouble opacity,
+                                                         gint spacing,
+                                                         <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);</pre>
 <p>
 Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
 a <a
@@ -199,18 +188,17 @@ a plug-in dialog.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2683612"></a><h3>
+<a name="id2701873"></a><h3>
 <a name="gimp-brush-select-button-get-brush"></a>gimp_brush_select_button_get_brush ()</h3>
-<a class="indexterm" name="id2683626"></a><pre class="programlisting">const  gchar* gimp_brush_select_button_get_brush
-                                            (<a href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a> *button,
-                                             gdouble *opacity,
-                                             gint *spacing,
-                                             <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> *paint_mode);</pre>
+<a class="indexterm" name="id2701886"></a><pre class="programlisting">const  gchar*       gimp_brush_select_button_get_brush  (<a href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a> *button,
+                                                         gdouble *opacity,
+                                                         gint *spacing,
+                                                         <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> *paint_mode);</pre>
 <p>
 Retrieves the properties of currently selected brush.</p>
 <p>
@@ -247,19 +235,18 @@ Retrieves the properties of currently selected brush.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2683761"></a><h3>
+<a name="id2669843"></a><h3>
 <a name="gimp-brush-select-button-set-brush"></a>gimp_brush_select_button_set_brush ()</h3>
-<a class="indexterm" name="id2683775"></a><pre class="programlisting">void        gimp_brush_select_button_set_brush
-                                            (<a href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a> *button,
-                                             const gchar *brush_name,
-                                             gdouble opacity,
-                                             gint spacing,
-                                             <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);</pre>
+<a class="indexterm" name="id2669856"></a><pre class="programlisting">void                gimp_brush_select_button_set_brush  (<a href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a> *button,
+                                                         const gchar *brush_name,
+                                                         gdouble opacity,
+                                                         gint spacing,
+                                                         <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);</pre>
 <p>
 Sets the current brush and other values for the brush select
 button.</p>
@@ -296,16 +283,16 @@ button.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2693965"></a><h2>Property Details</h2>
+<a name="id2670012"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2693974"></a><h3>
+<a name="id2703282"></a><h3>
 <a name="GimpBrushSelectButton--brush-name"></a>The "<code class="literal">brush-name</code>" property</h3>
-<a class="indexterm" name="id2693988"></a><pre class="programlisting">  "brush-name"           gchararray            : Read / Write</pre>
+<a class="indexterm" name="id2703295"></a><pre class="programlisting">  "brush-name"               gchararray            : Read / Write</pre>
 <p>
 The name of the currently selected brush.</p>
 <p>
@@ -317,36 +304,36 @@ The name of the currently selected brush.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2694019"></a><h3>
+<a name="id2703327"></a><h3>
 <a name="GimpBrushSelectButton--brush-opacity"></a>The "<code class="literal">brush-opacity</code>" property</h3>
-<a class="indexterm" name="id2694034"></a><pre class="programlisting">  "brush-opacity"        gdouble               : Read / Write</pre>
+<a class="indexterm" name="id2703342"></a><pre class="programlisting">  "brush-opacity"            gdouble               : Read / Write</pre>
 <p>The opacity of the currently selected brush.</p>
 <p>Allowed values: [-1,100]</p>
 <p>Default value: -1</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2694061"></a><h3>
+<a name="id2703370"></a><h3>
 <a name="GimpBrushSelectButton--brush-paint-mode"></a>The "<code class="literal">brush-paint-mode</code>" property</h3>
-<a class="indexterm" name="id2694075"></a><pre class="programlisting">  "brush-paint-mode"     gint                  : Read / Write</pre>
+<a class="indexterm" name="id2703384"></a><pre class="programlisting">  "brush-paint-mode"         gint                  : Read / Write</pre>
 <p>The paint mode of the currently selected brush.</p>
 <p>Allowed values: [-1,22]</p>
 <p>Default value: -1</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2694102"></a><h3>
+<a name="id2703411"></a><h3>
 <a name="GimpBrushSelectButton--brush-spacing"></a>The "<code class="literal">brush-spacing</code>" property</h3>
-<a class="indexterm" name="id2694117"></a><pre class="programlisting">  "brush-spacing"        gint                  : Read / Write</pre>
+<a class="indexterm" name="id2703426"></a><pre class="programlisting">  "brush-spacing"            gint                  : Read / Write</pre>
 <p>The spacing of the currently selected brush.</p>
 <p>Allowed values: [-2147483647,1000]</p>
 <p>Default value: -1</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2694145"></a><h3>
+<a name="id2703455"></a><h3>
 <a name="GimpBrushSelectButton--title"></a>The "<code class="literal">title</code>" property</h3>
-<a class="indexterm" name="id2694160"></a><pre class="programlisting">  "title"                gchararray            : Read / Write / Construct Only</pre>
+<a class="indexterm" name="id2703470"></a><pre class="programlisting">  "title"                    gchararray            : Read / Write / Construct Only</pre>
 <p>
 The title to be used for the brush selection popup dialog.</p>
 <p>
@@ -358,20 +345,20 @@ The title to be used for the brush selection popup dialog.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2694192"></a><h2>Signal Details</h2>
+<a name="id2703503"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2694201"></a><h3>
+<a name="id2703512"></a><h3>
 <a name="GimpBrushSelectButton-brush-set"></a>The "brush-set" signal</h3>
-<a class="indexterm" name="id2694211"></a><pre class="programlisting">void        user_function                  (<a href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a> *widget,
-                                            gchar                 *brush_name,
-                                            gdouble                opacity,
-                                            gint                   spacing,
-                                            gint                   paint_mode,
-                                            gint                   width,
-                                            gint                   height,
-                                            gpointer               mask_data,
-                                            gboolean               dialog_closing,
-                                            gpointer               user_data)           : Run first</pre>
+<a class="indexterm" name="id2703522"></a><pre class="programlisting">void                user_function                      (<a href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a> *widget,
+                                                        gchar                 *brush_name,
+                                                        gdouble                opacity,
+                                                        gint                   spacing,
+                                                        gint                   paint_mode,
+                                                        gint                   width,
+                                                        gint                   height,
+                                                        gpointer               mask_data,
+                                                        gboolean               dialog_closing,
+                                                        gpointer               user_data)           : Run First</pre>
 <p>
 The ::brush-set signal is emitted when the user selects a brush.</p>
 <p>

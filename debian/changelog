@@ -1,3 +1,11 @@
+gimp (2.2.13-1etch1) stable-security; urgency=high
+
+  * Non-maintainer upload by the security team.
+  * Apply upstream patch to fix stack overflow in sunras plugin.
+    (CVE-2007-2356)
+
+ -- Noah Meyerhans <noahm@debian.org>  Tue,  1 May 2007 16:58:05 -0400
+
 gimp (2.2.13-1) unstable; urgency=low
 
   * New upstream release

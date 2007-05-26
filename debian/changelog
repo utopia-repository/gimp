@@ -1,3 +1,10 @@
+gimp (2.2.6-1sarge2) oldstable-security; urgency=high
+
+  * Non-maintainer upload by the Security Team:
+    Fix buffer overflow in SUNRAS parser. [CVE-2006-2356]
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Sun, 27 May 2007 01:03:45 +0200
+
 gimp (2.2.6-1sarge1) stable-security; urgency=high
 
   * Non-maintainer upload by the Security Team:

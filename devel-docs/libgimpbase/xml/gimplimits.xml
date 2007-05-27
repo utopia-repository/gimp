@@ -22,11 +22,11 @@
 
 
 
-#define     <link linkend="GIMP-MIN-IMAGE-SIZE:CAPS">GIMP_MIN_IMAGE_SIZE</link>
-#define     <link linkend="GIMP-MAX-IMAGE-SIZE:CAPS">GIMP_MAX_IMAGE_SIZE</link>
-#define     <link linkend="GIMP-MIN-RESOLUTION:CAPS">GIMP_MIN_RESOLUTION</link>
-#define     <link linkend="GIMP-MAX-RESOLUTION:CAPS">GIMP_MAX_RESOLUTION</link>
-#define     <link linkend="GIMP-MAX-MEMSIZE:CAPS">GIMP_MAX_MEMSIZE</link>
+#define             <link linkend="GIMP-MIN-IMAGE-SIZE:CAPS">GIMP_MIN_IMAGE_SIZE</link>
+#define             <link linkend="GIMP-MAX-IMAGE-SIZE:CAPS">GIMP_MAX_IMAGE_SIZE</link>
+#define             <link linkend="GIMP-MIN-RESOLUTION:CAPS">GIMP_MIN_RESOLUTION</link>
+#define             <link linkend="GIMP-MAX-RESOLUTION:CAPS">GIMP_MAX_RESOLUTION</link>
+#define             <link linkend="GIMP-MAX-MEMSIZE:CAPS">GIMP_MAX_MEMSIZE</link>
 </synopsis>
 </refsynopsisdiv>
 

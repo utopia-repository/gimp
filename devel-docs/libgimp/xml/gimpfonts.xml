@@ -22,9 +22,9 @@
 
 
 
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-fonts-refresh">gimp_fonts_refresh</link>              (void);
-<link linkend="gchar">gchar</link>**     <link linkend="gimp-fonts-get-list">gimp_fonts_get_list</link>             (const <link linkend="gchar">gchar</link> *filter,
-                                             <link linkend="gint">gint</link> *num_fonts);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-fonts-refresh">gimp_fonts_refresh</link>                  (void);
+<link linkend="gchar">gchar</link>**             <link linkend="gimp-fonts-get-list">gimp_fonts_get_list</link>                 (const <link linkend="gchar">gchar</link> *filter,
+                                                         <link linkend="gint">gint</link> *num_fonts);
 </synopsis>
 </refsynopsisdiv>
 
@@ -47,7 +47,7 @@
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-fonts-refresh" role="function"/>gimp_fonts_refresh ()</title>
-<indexterm><primary>gimp_fonts_refresh</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_fonts_refresh              (void);</programlisting>
+<indexterm><primary>gimp_fonts_refresh</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_fonts_refresh                  (void);</programlisting>
 <para>
 Refresh current fonts. This function always succeeds.
 </para>
@@ -62,8 +62,8 @@ and updates the font dialogs accordingly.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-fonts-get-list" role="function"/>gimp_fonts_get_list ()</title>
-<indexterm><primary>gimp_fonts_get_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**     gimp_fonts_get_list             (const <link linkend="gchar">gchar</link> *filter,
-                                             <link linkend="gint">gint</link> *num_fonts);</programlisting>
+<indexterm><primary>gimp_fonts_get_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**             gimp_fonts_get_list                 (const <link linkend="gchar">gchar</link> *filter,
+                                                         <link linkend="gint">gint</link> *num_fonts);</programlisting>
 <para>
 Retrieve the list of loaded fonts.
 </para>

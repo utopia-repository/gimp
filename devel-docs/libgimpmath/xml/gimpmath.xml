@@ -22,13 +22,13 @@
 
 
 
-#define     <link linkend="RINT:CAPS">RINT</link>                            (x)
-#define     <link linkend="ROUND:CAPS">ROUND</link>                           (x)
-#define     <link linkend="SQR:CAPS">SQR</link>                             (x)
-#define     <link linkend="MAX255:CAPS">MAX255</link>                          (a)
-#define     <link linkend="CLAMP0255:CAPS">CLAMP0255</link>                       (a)
-#define     <link linkend="gimp-deg-to-rad">gimp_deg_to_rad</link>                 (angle)
-#define     <link linkend="gimp-rad-to-deg">gimp_rad_to_deg</link>                 (angle)
+#define             <link linkend="RINT:CAPS">RINT</link>                                (x)
+#define             <link linkend="ROUND:CAPS">ROUND</link>                               (x)
+#define             <link linkend="SQR:CAPS">SQR</link>                                 (x)
+#define             <link linkend="MAX255:CAPS">MAX255</link>                              (a)
+#define             <link linkend="CLAMP0255:CAPS">CLAMP0255</link>                           (a)
+#define             <link linkend="gimp-deg-to-rad">gimp_deg_to_rad</link>                     (angle)
+#define             <link linkend="gimp-rad-to-deg">gimp_rad_to_deg</link>                     (angle)
 </synopsis>
 </refsynopsisdiv>
 
@@ -52,7 +52,7 @@ rather than the ones from math.h for enhanced portability.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="RINT:CAPS" role="macro"/>RINT()</title>
-<indexterm><primary>RINT</primary></indexterm><programlisting>#define     RINT(x)</programlisting>
+<indexterm><primary>RINT</primary></indexterm><programlisting>#define             RINT(x)</programlisting>
 <para>
 This macro rounds its argument <parameter>x</parameter> to an integer value in floating point
 format.

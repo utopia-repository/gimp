@@ -22,12 +22,12 @@
 
 
 
-            <link linkend="GimpChainButton-struct">GimpChainButton</link>;
-enum        <link linkend="GimpChainPosition">GimpChainPosition</link>;
-<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-chain-button-new">gimp_chain_button_new</link>           (<link linkend="GimpChainPosition">GimpChainPosition</link> position);
-<link linkend="void">void</link>        <link linkend="gimp-chain-button-set-active">gimp_chain_button_set_active</link>    (<link linkend="GimpChainButton">GimpChainButton</link> *button,
-                                             <link linkend="gboolean">gboolean</link> active);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-chain-button-get-active">gimp_chain_button_get_active</link>    (<link linkend="GimpChainButton">GimpChainButton</link> *button);
+                    <link linkend="GimpChainButton-struct">GimpChainButton</link>;
+enum                <link linkend="GimpChainPosition">GimpChainPosition</link>;
+<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-chain-button-new">gimp_chain_button_new</link>               (<link linkend="GimpChainPosition">GimpChainPosition</link> position);
+<link linkend="void">void</link>                <link linkend="gimp-chain-button-set-active">gimp_chain_button_set_active</link>        (<link linkend="GimpChainButton">GimpChainButton</link> *button,
+                                                         <link linkend="gboolean">gboolean</link> active);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-chain-button-get-active">gimp_chain_button_get_active</link>        (<link linkend="GimpChainButton">GimpChainButton</link> *button);
 
 </synopsis>
 </refsynopsisdiv>
@@ -63,8 +63,7 @@ GimpChainButton implements
 <title role="signal_proto.title">Signals</title>
 <synopsis>
 
-&quot;<link linkend="GimpChainButton-toggled">toggled</link>&quot;   <link linkend="void">void</link>        user_function      (<link linkend="GimpChainButton">GimpChainButton</link> *gimpchainbutton,
-                                            <link linkend="gpointer">gpointer</link>         user_data)            : Run first
+  &quot;<link linkend="GimpChainButton-toggled">toggled</link>&quot;                                        : Run First
 </synopsis>
 </refsect1>
 
@@ -110,7 +109,7 @@ necessary.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-chain-button-new" role="function"/>gimp_chain_button_new ()</title>
-<indexterm><primary>gimp_chain_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_chain_button_new           (<link linkend="GimpChainPosition">GimpChainPosition</link> position);</programlisting>
+<indexterm><primary>gimp_chain_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_chain_button_new               (<link linkend="GimpChainPosition">GimpChainPosition</link> position);</programlisting>
 <para>
 Creates a new <link linkend="GimpChainButton"><type>GimpChainButton</type></link> widget.
 </para>
@@ -135,8 +134,8 @@ for more than two widgets, but the look is optimized for two.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-chain-button-set-active" role="function"/>gimp_chain_button_set_active ()</title>
-<indexterm><primary>gimp_chain_button_set_active</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_chain_button_set_active    (<link linkend="GimpChainButton">GimpChainButton</link> *button,
-                                             <link linkend="gboolean">gboolean</link> active);</programlisting>
+<indexterm><primary>gimp_chain_button_set_active</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_chain_button_set_active        (<link linkend="GimpChainButton">GimpChainButton</link> *button,
+                                                         <link linkend="gboolean">gboolean</link> active);</programlisting>
 <para>
 Sets the state of the <link linkend="GimpChainButton"><type>GimpChainButton</type></link> to be either locked (<link linkend="TRUE:CAPS"><literal>TRUE</literal></link>) or
 unlocked (<link linkend="FALSE:CAPS"><literal>FALSE</literal></link>) and changes the showed pixmap to reflect the new state.</para>
@@ -152,7 +151,7 @@ unlocked (<link linkend="FALSE:CAPS"><literal>FALSE</literal></link>) and change
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-chain-button-get-active" role="function"/>gimp_chain_button_get_active ()</title>
-<indexterm><primary>gimp_chain_button_get_active</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_chain_button_get_active    (<link linkend="GimpChainButton">GimpChainButton</link> *button);</programlisting>
+<indexterm><primary>gimp_chain_button_get_active</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_chain_button_get_active        (<link linkend="GimpChainButton">GimpChainButton</link> *button);</programlisting>
 <para>
 Checks the state of the <link linkend="GimpChainButton"><type>GimpChainButton</type></link>.</para>
 <para>
@@ -170,8 +169,8 @@ Checks the state of the <link linkend="GimpChainButton"><type>GimpChainButton</t
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpChainButton-toggled"/>The &quot;toggled&quot; signal</title>
-<indexterm><primary>GimpChainButton::toggled</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpChainButton">GimpChainButton</link> *gimpchainbutton,
-                                            <link linkend="gpointer">gpointer</link>         user_data)            : Run first</programlisting>
+<indexterm><primary>GimpChainButton::toggled</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpChainButton">GimpChainButton</link> *gimpchainbutton,
+                                                        <link linkend="gpointer">gpointer</link>         user_data)            : Run First</programlisting>
 <para>
 
 </para><variablelist role="params">

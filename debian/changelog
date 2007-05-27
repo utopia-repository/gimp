@@ -1,3 +1,9 @@
+gimp (2.2.15-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Ari Pollak <ari@debian.org>  Sun, 27 May 2007 13:55:28 -0400
+
 gimp (2.2.14-2) unstable; urgency=high
 
   * 06_sunras_CVE-2007-2356:

@@ -58,7 +58,7 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 AA = aa$(EXEEXT)
 ACLOCAL = ${SHELL} /home/sven/gnomesvn/gimp-dist-2-2/missing --run aclocal-1.9 
 ALLOCA = 
-ALL_LINGUAS = bg ca cs da de el en_CA en_GB es eu fi fr ga gl he hu hr id it ja ko lt mk ms nb nl pa pl pt pt_BR ro ru sk sr sr@Latn sv tr uk vi yi zh_CN zh_TW
+ALL_LINGUAS = bg ca cs da de el en_CA en_GB es eu fa fi fr ga gl he hu hr id it ja ko lt mk ms nb nl oc pa pl pt pt_BR ro ru sk sr sr@Latn sv tr uk vi yi zh_CN zh_TW
 ALSA_CFLAGS = 
 ALSA_LIBS =  -lasound -lm -ldl -lpthread
 AMDEP_FALSE = #
@@ -78,7 +78,7 @@ BUILD_PYTHON_FALSE =
 BUILD_PYTHON_TRUE = #
 BUILD_XJT_FALSE = #
 BUILD_XJT_TRUE = 
-CATALOGS =  bg.gmo ca.gmo cs.gmo da.gmo de.gmo el.gmo en_CA.gmo en_GB.gmo es.gmo eu.gmo fi.gmo fr.gmo ga.gmo gl.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo nl.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo uk.gmo vi.gmo yi.gmo zh_CN.gmo zh_TW.gmo
+CATALOGS =  bg.gmo ca.gmo cs.gmo da.gmo de.gmo el.gmo en_CA.gmo en_GB.gmo es.gmo eu.gmo fa.gmo fi.gmo fr.gmo ga.gmo gl.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo nl.gmo oc.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo uk.gmo vi.gmo yi.gmo zh_CN.gmo zh_TW.gmo
 CATOBJEXT = .gmo
 CC = gcc
 CCAS = gcc
@@ -133,13 +133,13 @@ GIMPPRINT_REQUIRED_VERSION = 4.2.0
 GIMPPRINT_TOONEW_VERSION = 4.3.0
 GIMP_API_VERSION = 2.0
 GIMP_APP_VERSION = 2.2
-GIMP_BINARY_AGE = 214
+GIMP_BINARY_AGE = 215
 GIMP_DATA_VERSION = 2.0
 GIMP_DESKTOP_ICON = wilber-icon.png
 GIMP_FULL_NAME = The GIMP
-GIMP_INTERFACE_AGE = 14
+GIMP_INTERFACE_AGE = 15
 GIMP_MAJOR_VERSION = 2
-GIMP_MICRO_VERSION = 14
+GIMP_MICRO_VERSION = 15
 GIMP_MINOR_VERSION = 2
 GIMP_MKENUMS = $(PERL) $(top_srcdir)/tools/gimp-mkenums
 GIMP_MODULES = modules
@@ -148,7 +148,7 @@ GIMP_MP_LIBS =
 GIMP_PKGCONFIG_VERSION = 2.0
 GIMP_PLUGINS = plug-ins
 GIMP_PLUGIN_VERSION = 2.0
-GIMP_REAL_VERSION = 2.2.14
+GIMP_REAL_VERSION = 2.2.15
 GIMP_REMOTE = gimp-remote-2.2$(EXEEXT)
 GIMP_SYSCONF_VERSION = 2.0
 GIMP_THREAD_FLAGS = 
@@ -156,7 +156,7 @@ GIMP_THREAD_LIBS =
 GIMP_TOOL_VERSION = 2.0
 GIMP_UNSTABLE = no
 GIMP_USER_VERSION = 2.2
-GIMP_VERSION = 2.2.14
+GIMP_VERSION = 2.2.15
 GLIB_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GLIB_GENMARSHAL = glib-genmarshal
 GLIB_LIBS = -lgobject-2.0 -lglib-2.0  
@@ -164,7 +164,7 @@ GLIB_MKENUMS = glib-mkenums
 GLIB_REQUIRED_VERSION = 2.4.5
 GMODULE_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GMODULE_LIBS = -Wl,--export-dynamic -lgmodule-2.0 -ldl -lgobject-2.0 -lglib-2.0  
-GMOFILES =  bg.gmo ca.gmo cs.gmo da.gmo de.gmo el.gmo en_CA.gmo en_GB.gmo es.gmo eu.gmo fi.gmo fr.gmo ga.gmo gl.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo nl.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo uk.gmo vi.gmo yi.gmo zh_CN.gmo zh_TW.gmo
+GMOFILES =  bg.gmo ca.gmo cs.gmo da.gmo de.gmo el.gmo en_CA.gmo en_GB.gmo es.gmo eu.gmo fa.gmo fi.gmo fr.gmo ga.gmo gl.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo nl.gmo oc.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo uk.gmo vi.gmo yi.gmo zh_CN.gmo zh_TW.gmo
 GMSGFMT = /usr/bin/msgfmt
 GOBJECT_QUERY = gobject-query
 GREP = /bin/grep
@@ -249,7 +249,7 @@ LIBZ = -lz
 LN_S = ln -s
 LTLIBOBJS = 
 LT_CURRENT_MINUS_AGE = 0
-LT_VERSION_INFO = 200:14:200
+LT_VERSION_INFO = 200:15:200
 MAIL = mail$(EXEEXT)
 MAINT = 
 MAINTAINER_MODE_FALSE = #
@@ -271,9 +271,9 @@ OS_WIN32_TRUE = #
 PACKAGE = gimp
 PACKAGE_BUGREPORT = http://bugzilla.gnome.org/enter_bug.cgi?product=GIMP
 PACKAGE_NAME = GIMP
-PACKAGE_STRING = GIMP 2.2.14
+PACKAGE_STRING = GIMP 2.2.15
 PACKAGE_TARNAME = gimp
-PACKAGE_VERSION = 2.2.14
+PACKAGE_VERSION = 2.2.15
 PANGOFT2_CFLAGS = -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 PANGOFT2_LIBS = -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 PANGOFT2_REQUIRED_VERSION = 1.4.0
@@ -284,7 +284,7 @@ PKG_CONFIG = /usr/bin/pkg-config
 PLATFORM_WIN32_FALSE = 
 PLATFORM_WIN32_TRUE = #
 PNG = png$(EXEEXT)
-POFILES =  bg.po ca.po cs.po da.po de.po el.po en_CA.po en_GB.po es.po eu.po fi.po fr.po ga.po gl.po he.po hu.po hr.po id.po it.po ja.po ko.po lt.po mk.po ms.po nb.po nl.po pa.po pl.po pt.po pt_BR.po ro.po ru.po sk.po sr.po sr@Latn.po sv.po tr.po uk.po vi.po yi.po zh_CN.po zh_TW.po
+POFILES =  bg.po ca.po cs.po da.po de.po el.po en_CA.po en_GB.po es.po eu.po fa.po fi.po fr.po ga.po gl.po he.po hu.po hr.po id.po it.po ja.po ko.po lt.po mk.po ms.po nb.po nl.po oc.po pa.po pl.po pt.po pt_BR.po ro.po ru.po sk.po sr.po sr@Latn.po sv.po tr.po uk.po vi.po yi.po zh_CN.po zh_TW.po
 POSUB = po
 PO_IN_DATADIR_FALSE = 
 PO_IN_DATADIR_TRUE = 
@@ -319,7 +319,7 @@ SYMPREFIX =
 TIFF = tiff$(EXEEXT)
 URL = url$(EXEEXT)
 USE_NLS = yes
-VERSION = 2.2.14
+VERSION = 2.2.15
 WINCLIPBOARD = 
 WINDRES = :
 WINPRINT = 
@@ -707,6 +707,8 @@ docs: html-build.stamp
 scan-build.stamp: $(HFILE_GLOB) $(CFILE_GLOB)
 	@echo 'gtk-doc: Scanning header files'
 	@-chmod -R u+w $(srcdir)
+	cd $(srcdir) && \
+	  gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)" $(SCAN_OPTIONS) $(EXTRA_HFILES)
 	if grep -l '^..*$$' $(srcdir)/$(DOC_MODULE).types > /dev/null 2>&1 ; then \
 	    CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" CFLAGS="$(GTKDOC_CFLAGS)" LDFLAGS="$(GTKDOC_LIBS)" gtkdoc-scangobj $(SCANGOBJ_OPTIONS) --module=$(DOC_MODULE) --output-dir=$(srcdir) ; \
 	else \
@@ -715,11 +717,9 @@ scan-build.stamp: $(HFILE_GLOB) $(CFILE_GLOB)
                test -f $$i || touch $$i ; \
 	    done \
 	fi
-	cd $(srcdir) && \
-	  gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)" $(SCAN_OPTIONS) $(EXTRA_HFILES)
 	touch scan-build.stamp
 
-$(DOC_MODULE)-decl.txt $(SCANOBJ_FILES): scan-build.stamp
+$(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt: scan-build.stamp
 	@true
 
 #### templates ####
@@ -798,7 +798,7 @@ dist-hook: dist-check-gtkdoc dist-hook-local
 	mkdir $(distdir)/html
 	-cp $(srcdir)/tmpl/*.sgml $(distdir)/tmpl
 	-cp $(srcdir)/xml/*.xml $(distdir)/xml
-	-cp $(srcdir)/html/* $(distdir)/html
+	cp $(srcdir)/html/* $(distdir)/html
 	if test -f $(srcdir)/$(DOC_MODULE).types; then \
 	  cp $(srcdir)/$(DOC_MODULE).types $(distdir)/$(DOC_MODULE).types; \
 	fi

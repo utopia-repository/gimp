@@ -22,10 +22,9 @@
 
 
 
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-message">gimp_message</link>                    (const <link linkend="gchar">gchar</link> *message);
-<link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link> <link linkend="gimp-message-get-handler">gimp_message_get_handler</link>
-                                            (void);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-message-set-handler">gimp_message_set_handler</link>        (<link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link> handler);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-message">gimp_message</link>                        (const <link linkend="gchar">gchar</link> *message);
+<link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link> <link linkend="gimp-message-get-handler">gimp_message_get_handler</link>         (void);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-message-set-handler">gimp_message_set_handler</link>            (<link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link> handler);
 </synopsis>
 </refsynopsisdiv>
 
@@ -49,7 +48,7 @@ Display a dialog box with a message.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-message" role="function"/>gimp_message ()</title>
-<indexterm><primary>gimp_message</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_message                    (const <link linkend="gchar">gchar</link> *message);</programlisting>
+<indexterm><primary>gimp_message</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_message                        (const <link linkend="gchar">gchar</link> *message);</programlisting>
 <para>
 Displays a dialog box with a message.
 </para>
@@ -67,8 +66,7 @@ reporting. The message must be in UTF-8 encoding.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-message-get-handler" role="function"/>gimp_message_get_handler ()</title>
-<indexterm><primary>gimp_message_get_handler</primary></indexterm><programlisting><link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link> gimp_message_get_handler
-                                            (void);</programlisting>
+<indexterm><primary>gimp_message_get_handler</primary></indexterm><programlisting><link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link> gimp_message_get_handler         (void);</programlisting>
 <para>
 Returns the current state of where warning messages are displayed.
 </para>
@@ -84,7 +82,7 @@ gimp was started.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-message-set-handler" role="function"/>gimp_message_set_handler ()</title>
-<indexterm><primary>gimp_message_set_handler</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_message_set_handler        (<link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link> handler);</programlisting>
+<indexterm><primary>gimp_message_set_handler</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_message_set_handler            (<link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link> handler);</programlisting>
 <para>
 Controls where warning messages are displayed.
 </para>

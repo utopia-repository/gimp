@@ -22,12 +22,12 @@
 
 
 
-            <link linkend="GimpColorHexEntry-struct">GimpColorHexEntry</link>;
-<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-color-hex-entry-new">gimp_color_hex_entry_new</link>        (void);
-<link linkend="void">void</link>        <link linkend="gimp-color-hex-entry-set-color">gimp_color_hex_entry_set_color</link>  (<link linkend="GimpColorHexEntry">GimpColorHexEntry</link> *entry,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *color);
-<link linkend="void">void</link>        <link linkend="gimp-color-hex-entry-get-color">gimp_color_hex_entry_get_color</link>  (<link linkend="GimpColorHexEntry">GimpColorHexEntry</link> *entry,
-                                             <link linkend="GimpRGB">GimpRGB</link> *color);
+                    <link linkend="GimpColorHexEntry-struct">GimpColorHexEntry</link>;
+<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-color-hex-entry-new">gimp_color_hex_entry_new</link>            (void);
+<link linkend="void">void</link>                <link linkend="gimp-color-hex-entry-set-color">gimp_color_hex_entry_set_color</link>      (<link linkend="GimpColorHexEntry">GimpColorHexEntry</link> *entry,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *color);
+<link linkend="void">void</link>                <link linkend="gimp-color-hex-entry-get-color">gimp_color_hex_entry_get_color</link>      (<link linkend="GimpColorHexEntry">GimpColorHexEntry</link> *entry,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *color);
 
 </synopsis>
 </refsynopsisdiv>
@@ -62,9 +62,7 @@ GimpColorHexEntry implements
 <title role="signal_proto.title">Signals</title>
 <synopsis>
 
-&quot;<link linkend="GimpColorHexEntry-color-changed">color-changed</link>&quot;
-            <link linkend="void">void</link>        user_function      (<link linkend="GimpColorHexEntry">GimpColorHexEntry</link> *gimpcolorhexentry,
-                                            <link linkend="gpointer">gpointer</link>           user_data)              : Run first
+  &quot;<link linkend="GimpColorHexEntry-color-changed">color-changed</link>&quot;                                  : Run First
 </synopsis>
 </refsect1>
 
@@ -86,7 +84,7 @@ Widget for entering a color's hex triplet.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-color-hex-entry-new" role="function" condition="since:GIMP 2.2"/>gimp_color_hex_entry_new ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_color_hex_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_color_hex_entry_new        (void);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_color_hex_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_color_hex_entry_new            (void);</programlisting>
 <para>
 </para>
 <para>
@@ -95,12 +93,12 @@ Widget for entering a color's hex triplet.
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a new <link linkend="GimpColorHexEntry"><type>GimpColorHexEntry</type></link> widget
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-color-hex-entry-set-color" role="function" condition="since:GIMP 2.2"/>gimp_color_hex_entry_set_color ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_color_hex_entry_set_color</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_hex_entry_set_color  (<link linkend="GimpColorHexEntry">GimpColorHexEntry</link> *entry,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_color_hex_entry_set_color</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_hex_entry_set_color      (<link linkend="GimpColorHexEntry">GimpColorHexEntry</link> *entry,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <para>
 Sets the color displayed by a <link linkend="GimpColorHexEntry"><type>GimpColorHexEntry</type></link>. If the new color
 is different to the previously set color, the "color_changed"
@@ -114,12 +112,12 @@ signal is emitted.</para>
 <varlistentry><term><parameter>color</parameter>&nbsp;:</term>
 <listitem><simpara> pointer to a <link linkend="GimpRGB"><type>GimpRGB</type></link>
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-color-hex-entry-get-color" role="function" condition="since:GIMP 2.2"/>gimp_color_hex_entry_get_color ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_color_hex_entry_get_color</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_hex_entry_get_color  (<link linkend="GimpColorHexEntry">GimpColorHexEntry</link> *entry,
-                                             <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_color_hex_entry_get_color</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_hex_entry_get_color      (<link linkend="GimpColorHexEntry">GimpColorHexEntry</link> *entry,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <para>
 Retrieves the color value displayed by a <link linkend="GimpColorHexEntry"><type>GimpColorHexEntry</type></link>.</para>
 <para>
@@ -131,7 +129,7 @@ Retrieves the color value displayed by a <link linkend="GimpColorHexEntry"><type
 <varlistentry><term><parameter>color</parameter>&nbsp;:</term>
 <listitem><simpara> pointer to a <link linkend="GimpRGB"><type>GimpRGB</type></link>
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 
 </refsect1>
@@ -139,8 +137,8 @@ Retrieves the color value displayed by a <link linkend="GimpColorHexEntry"><type
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpColorHexEntry-color-changed"/>The &quot;color-changed&quot; signal</title>
-<indexterm><primary>GimpColorHexEntry::color-changed</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpColorHexEntry">GimpColorHexEntry</link> *gimpcolorhexentry,
-                                            <link linkend="gpointer">gpointer</link>           user_data)              : Run first</programlisting>
+<indexterm><primary>GimpColorHexEntry::color-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpColorHexEntry">GimpColorHexEntry</link> *gimpcolorhexentry,
+                                                        <link linkend="gpointer">gpointer</link>           user_data)              : Run First</programlisting>
 <para>
 
 </para><variablelist role="params">

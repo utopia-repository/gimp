@@ -8,7 +8,7 @@
 <link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimpbrushmenu.html" title="gimpbrushmenu">
 <link rel="next" href="libgimp-gimpgradientmenu.html" title="gimpgradientmenu">
-<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -28,16 +28,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpgradientmenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2592883" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2591384" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2691489" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2690710" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpfontmenu"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2592883"></a><span class="refentrytitle">gimpfontmenu</span>
+<a name="id2591384"></a><span class="refentrytitle">gimpfontmenu</span>
 </h2>
 <p>gimpfontmenu &#8212; A widget for selecting fonts.</p>
 </td>
@@ -49,30 +49,30 @@
 
 
 
-GtkWidget*  <a href="libgimp-gimpfontmenu.html#gimp-font-select-widget-new">gimp_font_select_widget_new</a>     (const gchar *title,
-                                             const gchar *font_name,
-                                             <a href="libgimp-gimpfontselect.html#GimpRunFontCallback">GimpRunFontCallback</a> callback,
-                                             gpointer data);
-void        <a href="libgimp-gimpfontmenu.html#gimp-font-select-widget-close">gimp_font_select_widget_close</a>   (GtkWidget *widget);
-void        <a href="libgimp-gimpfontmenu.html#gimp-font-select-widget-set">gimp_font_select_widget_set</a>     (GtkWidget *widget,
-                                             const gchar *font_name);
+GtkWidget*          <a href="libgimp-gimpfontmenu.html#gimp-font-select-widget-new">gimp_font_select_widget_new</a>         (const gchar *title,
+                                                         const gchar *font_name,
+                                                         <a href="libgimp-gimpfontselect.html#GimpRunFontCallback">GimpRunFontCallback</a> callback,
+                                                         gpointer data);
+void                <a href="libgimp-gimpfontmenu.html#gimp-font-select-widget-close">gimp_font_select_widget_close</a>       (GtkWidget *widget);
+void                <a href="libgimp-gimpfontmenu.html#gimp-font-select-widget-set">gimp_font_select_widget_set</a>         (GtkWidget *widget,
+                                                         const gchar *font_name);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2691489"></a><h2>Description</h2>
+<a name="id2690710"></a><h2>Description</h2>
 <p>
 A widget for selecting fonts.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2691505"></a><h2>Details</h2>
+<a name="id2690726"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2691515"></a><h3>
+<a name="id2690736"></a><h3>
 <a name="gimp-font-select-widget-new"></a>gimp_font_select_widget_new ()</h3>
-<a class="indexterm" name="id2691526"></a><pre class="programlisting">GtkWidget*  gimp_font_select_widget_new     (const gchar *title,
-                                             const gchar *font_name,
-                                             <a href="libgimp-gimpfontselect.html#GimpRunFontCallback">GimpRunFontCallback</a> callback,
-                                             gpointer data);</pre>
+<a class="indexterm" name="id2690747"></a><pre class="programlisting">GtkWidget*          gimp_font_select_widget_new         (const gchar *title,
+                                                         const gchar *font_name,
+                                                         <a href="libgimp-gimpfontselect.html#GimpRunFontCallback">GimpRunFontCallback</a> callback,
+                                                         gpointer data);</pre>
 <p>
 Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
 a font.  This widget is suitable for placement in a table in a
@@ -114,9 +114,9 @@ plug-in dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687184"></a><h3>
+<a name="id2690903"></a><h3>
 <a name="gimp-font-select-widget-close"></a>gimp_font_select_widget_close ()</h3>
-<a class="indexterm" name="id2687195"></a><pre class="programlisting">void        gimp_font_select_widget_close   (GtkWidget *widget);</pre>
+<a class="indexterm" name="id2690914"></a><pre class="programlisting">void                gimp_font_select_widget_close       (GtkWidget *widget);</pre>
 <p>
 Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p>
 <p>
@@ -133,10 +133,10 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687248"></a><h3>
+<a name="id2690969"></a><h3>
 <a name="gimp-font-select-widget-set"></a>gimp_font_select_widget_set ()</h3>
-<a class="indexterm" name="id2687259"></a><pre class="programlisting">void        gimp_font_select_widget_set     (GtkWidget *widget,
-                                             const gchar *font_name);</pre>
+<a class="indexterm" name="id2690980"></a><pre class="programlisting">void                gimp_font_select_widget_set         (GtkWidget *widget,
+                                                         const gchar *font_name);</pre>
 <p>
 Sets the current font for the font select widget.  Calls the
 callback function if one was supplied in the call to

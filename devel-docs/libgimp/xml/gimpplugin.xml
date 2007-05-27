@@ -22,15 +22,15 @@
 
 
 
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-plugin-domain-register">gimp_plugin_domain_register</link>     (const <link linkend="gchar">gchar</link> *domain_name,
-                                             const <link linkend="gchar">gchar</link> *domain_path);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-plugin-help-register">gimp_plugin_help_register</link>       (const <link linkend="gchar">gchar</link> *domain_name,
-                                             const <link linkend="gchar">gchar</link> *domain_uri);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-plugin-icon-register">gimp_plugin_icon_register</link>       (const <link linkend="gchar">gchar</link> *procedure_name,
-                                             <link linkend="GimpIconType">GimpIconType</link> icon_type,
-                                             const <link linkend="guint8">guint8</link> *icon_data);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-plugin-menu-register">gimp_plugin_menu_register</link>       (const <link linkend="gchar">gchar</link> *procedure_name,
-                                             const <link linkend="gchar">gchar</link> *menu_path);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-plugin-domain-register">gimp_plugin_domain_register</link>         (const <link linkend="gchar">gchar</link> *domain_name,
+                                                         const <link linkend="gchar">gchar</link> *domain_path);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-plugin-help-register">gimp_plugin_help_register</link>           (const <link linkend="gchar">gchar</link> *domain_name,
+                                                         const <link linkend="gchar">gchar</link> *domain_uri);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-plugin-icon-register">gimp_plugin_icon_register</link>           (const <link linkend="gchar">gchar</link> *procedure_name,
+                                                         <link linkend="GimpIconType">GimpIconType</link> icon_type,
+                                                         const <link linkend="guint8">guint8</link> *icon_data);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-plugin-menu-register">gimp_plugin_menu_register</link>           (const <link linkend="gchar">gchar</link> *procedure_name,
+                                                         const <link linkend="gchar">gchar</link> *menu_path);
 </synopsis>
 </refsynopsisdiv>
 
@@ -54,8 +54,8 @@ Functions useful for plugins, e.g. registration and progress indicators.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-plugin-domain-register" role="function"/>gimp_plugin_domain_register ()</title>
-<indexterm><primary>gimp_plugin_domain_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_plugin_domain_register     (const <link linkend="gchar">gchar</link> *domain_name,
-                                             const <link linkend="gchar">gchar</link> *domain_path);</programlisting>
+<indexterm><primary>gimp_plugin_domain_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_plugin_domain_register         (const <link linkend="gchar">gchar</link> *domain_name,
+                                                         const <link linkend="gchar">gchar</link> *domain_path);</programlisting>
 <para>
 Registers a textdomain for localisation.
 </para>
@@ -82,8 +82,8 @@ called before any procedure is installed.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-plugin-help-register" role="function"/>gimp_plugin_help_register ()</title>
-<indexterm><primary>gimp_plugin_help_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_plugin_help_register       (const <link linkend="gchar">gchar</link> *domain_name,
-                                             const <link linkend="gchar">gchar</link> *domain_uri);</programlisting>
+<indexterm><primary>gimp_plugin_help_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_plugin_help_register           (const <link linkend="gchar">gchar</link> *domain_name,
+                                                         const <link linkend="gchar">gchar</link> *domain_uri);</programlisting>
 <para>
 Register a help path for a plug-in.
 </para>
@@ -105,9 +105,9 @@ interpreted relative to this rootdir.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-plugin-icon-register" role="function"/>gimp_plugin_icon_register ()</title>
-<indexterm><primary>gimp_plugin_icon_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_plugin_icon_register       (const <link linkend="gchar">gchar</link> *procedure_name,
-                                             <link linkend="GimpIconType">GimpIconType</link> icon_type,
-                                             const <link linkend="guint8">guint8</link> *icon_data);</programlisting>
+<indexterm><primary>gimp_plugin_icon_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_plugin_icon_register           (const <link linkend="gchar">gchar</link> *procedure_name,
+                                                         <link linkend="GimpIconType">GimpIconType</link> icon_type,
+                                                         const <link linkend="guint8">guint8</link> *icon_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -127,8 +127,8 @@ interpreted relative to this rootdir.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-plugin-menu-register" role="function" condition="since:GIMP 2.2"/>gimp_plugin_menu_register ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_plugin_menu_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_plugin_menu_register       (const <link linkend="gchar">gchar</link> *procedure_name,
-                                             const <link linkend="gchar">gchar</link> *menu_path);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_plugin_menu_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_plugin_menu_register           (const <link linkend="gchar">gchar</link> *procedure_name,
+                                                         const <link linkend="gchar">gchar</link> *menu_path);</programlisting>
 <para>
 Register an additional menu path for a plug-in procedure.
 </para>
@@ -147,7 +147,7 @@ procedure.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 
 </refsect1>

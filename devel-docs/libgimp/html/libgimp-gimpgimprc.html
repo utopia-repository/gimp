@@ -8,7 +8,7 @@
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpcontext.html" title="gimpcontext">
 <link rel="next" href="libgimp-gimphelp.html" title="gimphelp">
-<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -28,16 +28,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimphelp.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2583905" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2587490" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2572414" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2570106" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpgimprc"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2583905"></a><span class="refentrytitle">gimpgimprc</span>
+<a name="id2587490"></a><span class="refentrytitle">gimpgimprc</span>
 </h2>
 <p>gimpgimprc &#8212; Interactions with settings from .gimprc.</p>
 </td>
@@ -49,29 +49,29 @@
 
 
 
-gchar*      <a href="libgimp-gimpgimprc.html#gimp-gimprc-query">gimp_gimprc_query</a>               (const gchar *token);
-gboolean    <a href="libgimp-gimpgimprc.html#gimp-gimprc-set">gimp_gimprc_set</a>                 (const gchar *token,
-                                             const gchar *value);
-gchar*      <a href="libgimp-gimpgimprc.html#gimp-get-default-comment">gimp_get_default_comment</a>        (void);
-gchar*      <a href="libgimp-gimpgimprc.html#gimp-get-module-load-inhibit">gimp_get_module_load_inhibit</a>    (void);
-gboolean    <a href="libgimp-gimpgimprc.html#gimp-get-monitor-resolution">gimp_get_monitor_resolution</a>     (gdouble *xres,
-                                             gdouble *yres);
-gchar*      <a href="libgimp-gimpgimprc.html#gimp-get-theme-dir">gimp_get_theme_dir</a>              (void);
+gchar*              <a href="libgimp-gimpgimprc.html#gimp-gimprc-query">gimp_gimprc_query</a>                   (const gchar *token);
+gboolean            <a href="libgimp-gimpgimprc.html#gimp-gimprc-set">gimp_gimprc_set</a>                     (const gchar *token,
+                                                         const gchar *value);
+gchar*              <a href="libgimp-gimpgimprc.html#gimp-get-default-comment">gimp_get_default_comment</a>            (void);
+gchar*              <a href="libgimp-gimpgimprc.html#gimp-get-module-load-inhibit">gimp_get_module_load_inhibit</a>        (void);
+gboolean            <a href="libgimp-gimpgimprc.html#gimp-get-monitor-resolution">gimp_get_monitor_resolution</a>         (gdouble *xres,
+                                                         gdouble *yres);
+gchar*              <a href="libgimp-gimpgimprc.html#gimp-get-theme-dir">gimp_get_theme_dir</a>                  (void);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2572414"></a><h2>Description</h2>
+<a name="id2570106"></a><h2>Description</h2>
 <p>
 Interactions with settings from .gimprc.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2572429"></a><h2>Details</h2>
+<a name="id2570122"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2572440"></a><h3>
+<a name="id2570133"></a><h3>
 <a name="gimp-gimprc-query"></a>gimp_gimprc_query ()</h3>
-<a class="indexterm" name="id2572452"></a><pre class="programlisting">gchar*      gimp_gimprc_query               (const gchar *token);</pre>
+<a class="indexterm" name="id2570145"></a><pre class="programlisting">gchar*              gimp_gimprc_query                   (const gchar *token);</pre>
 <p>
 Queries the gimprc file parser for information on a specified token.
 </p>
@@ -106,10 +106,10 @@ to be issued on gimprc parsing and will not be queryable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570932"></a><h3>
+<a name="id2568878"></a><h3>
 <a name="gimp-gimprc-set"></a>gimp_gimprc_set ()</h3>
-<a class="indexterm" name="id2570944"></a><pre class="programlisting">gboolean    gimp_gimprc_set                 (const gchar *token,
-                                             const gchar *value);</pre>
+<a class="indexterm" name="id2583428"></a><pre class="programlisting">gboolean            gimp_gimprc_set                     (const gchar *token,
+                                                         const gchar *value);</pre>
 <p>
 Sets a gimprc token to a value and saves it in the gimprc.
 </p>
@@ -145,9 +145,9 @@ will accept _only_ string values in UTF-8 encoding.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2571035"></a><h3>
+<a name="id2583519"></a><h3>
 <a name="gimp-get-default-comment"></a>gimp_get_default_comment ()</h3>
-<a class="indexterm" name="id2571046"></a><pre class="programlisting">gchar*      gimp_get_default_comment        (void);</pre>
+<a class="indexterm" name="id2583530"></a><pre class="programlisting">gchar*              gimp_get_default_comment            (void);</pre>
 <p>
 Get the default image comment as specified in the Preferences.
 </p>
@@ -167,9 +167,9 @@ Returns a copy of the default image comment.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599283"></a><h3>
+<a name="id2603234"></a><h3>
 <a name="gimp-get-module-load-inhibit"></a>gimp_get_module_load_inhibit ()</h3>
-<a class="indexterm" name="id2599295"></a><pre class="programlisting">gchar*      gimp_get_module_load_inhibit    (void);</pre>
+<a class="indexterm" name="id2603246"></a><pre class="programlisting">gchar*              gimp_get_module_load_inhibit        (void);</pre>
 <p>
 Get the list of modules which should not be loaded.
 </p>
@@ -189,10 +189,10 @@ Returns a copy of the list of modules which should not be loaded.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599340"></a><h3>
+<a name="id2603291"></a><h3>
 <a name="gimp-get-monitor-resolution"></a>gimp_get_monitor_resolution ()</h3>
-<a class="indexterm" name="id2599351"></a><pre class="programlisting">gboolean    gimp_get_monitor_resolution     (gdouble *xres,
-                                             gdouble *yres);</pre>
+<a class="indexterm" name="id2603302"></a><pre class="programlisting">gboolean            gimp_get_monitor_resolution         (gdouble *xres,
+                                                         gdouble *yres);</pre>
 <p>
 Get the monitor resolution as specified in the Preferences.
 </p>
@@ -227,9 +227,9 @@ reasonable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599439"></a><h3>
+<a name="id2603392"></a><h3>
 <a name="gimp-get-theme-dir"></a>gimp_get_theme_dir ()</h3>
-<a class="indexterm" name="id2599452"></a><pre class="programlisting">gchar*      gimp_get_theme_dir              (void);</pre>
+<a class="indexterm" name="id2603404"></a><pre class="programlisting">gchar*              gimp_get_theme_dir                  (void);</pre>
 <p>
 Get the directory of the current GUI theme.
 </p>

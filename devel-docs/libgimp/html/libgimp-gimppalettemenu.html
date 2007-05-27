@@ -8,7 +8,7 @@
 <link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimpgradientmenu.html" title="gimpgradientmenu">
 <link rel="next" href="libgimp-gimppatternmenu.html" title="gimppatternmenu">
-<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -28,16 +28,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimppatternmenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2561408" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2579030" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2691072" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2690568" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppalettemenu"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2561408"></a><span class="refentrytitle">gimppalettemenu</span>
+<a name="id2579030"></a><span class="refentrytitle">gimppalettemenu</span>
 </h2>
 <p>gimppalettemenu &#8212; A widget for selecting palettes.</p>
 </td>
@@ -49,31 +49,30 @@
 
 
 
-GtkWidget*  <a href="libgimp-gimppalettemenu.html#gimp-palette-select-widget-new">gimp_palette_select_widget_new</a>  (const gchar *title,
-                                             const gchar *palette_name,
-                                             <a href="libgimp-gimppaletteselect.html#GimpRunPaletteCallback">GimpRunPaletteCallback</a> callback,
-                                             gpointer data);
-void        <a href="libgimp-gimppalettemenu.html#gimp-palette-select-widget-close">gimp_palette_select_widget_close</a>
-                                            (GtkWidget *widget);
-void        <a href="libgimp-gimppalettemenu.html#gimp-palette-select-widget-set">gimp_palette_select_widget_set</a>  (GtkWidget *widget,
-                                             const gchar *palette_name);
+GtkWidget*          <a href="libgimp-gimppalettemenu.html#gimp-palette-select-widget-new">gimp_palette_select_widget_new</a>      (const gchar *title,
+                                                         const gchar *palette_name,
+                                                         <a href="libgimp-gimppaletteselect.html#GimpRunPaletteCallback">GimpRunPaletteCallback</a> callback,
+                                                         gpointer data);
+void                <a href="libgimp-gimppalettemenu.html#gimp-palette-select-widget-close">gimp_palette_select_widget_close</a>    (GtkWidget *widget);
+void                <a href="libgimp-gimppalettemenu.html#gimp-palette-select-widget-set">gimp_palette_select_widget_set</a>      (GtkWidget *widget,
+                                                         const gchar *palette_name);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2691072"></a><h2>Description</h2>
+<a name="id2690568"></a><h2>Description</h2>
 <p>
 A widget for selecting palettes.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2691087"></a><h2>Details</h2>
+<a name="id2690583"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2691098"></a><h3>
+<a name="id2690594"></a><h3>
 <a name="gimp-palette-select-widget-new"></a>gimp_palette_select_widget_new ()</h3>
-<a class="indexterm" name="id2691111"></a><pre class="programlisting">GtkWidget*  gimp_palette_select_widget_new  (const gchar *title,
-                                             const gchar *palette_name,
-                                             <a href="libgimp-gimppaletteselect.html#GimpRunPaletteCallback">GimpRunPaletteCallback</a> callback,
-                                             gpointer data);</pre>
+<a class="indexterm" name="id2690607"></a><pre class="programlisting">GtkWidget*          gimp_palette_select_widget_new      (const gchar *title,
+                                                         const gchar *palette_name,
+                                                         <a href="libgimp-gimppaletteselect.html#GimpRunPaletteCallback">GimpRunPaletteCallback</a> callback,
+                                                         gpointer data);</pre>
 <p>
 Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
 a palette.  This widget is suitable for placement in a table in a
@@ -113,15 +112,14 @@ plug-in dialog.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688739"></a><h3>
+<a name="id2689532"></a><h3>
 <a name="gimp-palette-select-widget-close"></a>gimp_palette_select_widget_close ()</h3>
-<a class="indexterm" name="id2688752"></a><pre class="programlisting">void        gimp_palette_select_widget_close
-                                            (GtkWidget *widget);</pre>
+<a class="indexterm" name="id2689545"></a><pre class="programlisting">void                gimp_palette_select_widget_close    (GtkWidget *widget);</pre>
 <p>
 Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p>
 <p>
@@ -135,15 +133,15 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 </td>
 </tr></tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692260"></a><h3>
+<a name="id2691845"></a><h3>
 <a name="gimp-palette-select-widget-set"></a>gimp_palette_select_widget_set ()</h3>
-<a class="indexterm" name="id2692274"></a><pre class="programlisting">void        gimp_palette_select_widget_set  (GtkWidget *widget,
-                                             const gchar *palette_name);</pre>
+<a class="indexterm" name="id2691858"></a><pre class="programlisting">void                gimp_palette_select_widget_set      (GtkWidget *widget,
+                                                         const gchar *palette_name);</pre>
 <p>
 Sets the current palette for the palette select widget.  Calls the
 callback function if one was supplied in the call to
@@ -166,7 +164,7 @@ callback function if one was supplied in the call to
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 </div>

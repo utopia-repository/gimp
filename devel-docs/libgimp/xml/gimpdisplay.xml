@@ -22,11 +22,11 @@
 
 
 
-<link linkend="gint32">gint32</link>      <link linkend="gimp-display-new">gimp_display_new</link>                (<link linkend="gint32">gint32</link> image_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-display-delete">gimp_display_delete</link>             (<link linkend="gint32">gint32</link> display_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-displays-flush">gimp_displays_flush</link>             (void);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-displays-reconnect">gimp_displays_reconnect</link>         (<link linkend="gint32">gint32</link> old_image_ID,
-                                             <link linkend="gint32">gint32</link> new_image_ID);
+<link linkend="gint32">gint32</link>              <link linkend="gimp-display-new">gimp_display_new</link>                    (<link linkend="gint32">gint32</link> image_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-display-delete">gimp_display_delete</link>                 (<link linkend="gint32">gint32</link> display_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-displays-flush">gimp_displays_flush</link>                 (void);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-displays-reconnect">gimp_displays_reconnect</link>             (<link linkend="gint32">gint32</link> old_image_ID,
+                                                         <link linkend="gint32">gint32</link> new_image_ID);
 </synopsis>
 </refsynopsisdiv>
 
@@ -50,7 +50,7 @@ Functions to create, delete and flush new displays (views) on an image.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-display-new" role="function"/>gimp_display_new ()</title>
-<indexterm><primary>gimp_display_new</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_display_new                (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<indexterm><primary>gimp_display_new</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_display_new                    (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Create a new display for the specified image.
 </para>
@@ -71,7 +71,7 @@ This procedure only makes sense for use with the GIMP UI.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-display-delete" role="function"/>gimp_display_delete ()</title>
-<indexterm><primary>gimp_display_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_display_delete             (<link linkend="gint32">gint32</link> display_ID);</programlisting>
+<indexterm><primary>gimp_display_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_display_delete                 (<link linkend="gint32">gint32</link> display_ID);</programlisting>
 <para>
 Delete the specified display.
 </para>
@@ -90,7 +90,7 @@ deleted also.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-displays-flush" role="function"/>gimp_displays_flush ()</title>
-<indexterm><primary>gimp_displays_flush</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_displays_flush             (void);</programlisting>
+<indexterm><primary>gimp_displays_flush</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_displays_flush                 (void);</programlisting>
 <para>
 Flush all internal changes to the user interface
 </para>
@@ -107,8 +107,8 @@ appropriate.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-displays-reconnect" role="function"/>gimp_displays_reconnect ()</title>
-<indexterm><primary>gimp_displays_reconnect</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_displays_reconnect         (<link linkend="gint32">gint32</link> old_image_ID,
-                                             <link linkend="gint32">gint32</link> new_image_ID);</programlisting>
+<indexterm><primary>gimp_displays_reconnect</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_displays_reconnect             (<link linkend="gint32">gint32</link> old_image_ID,
+                                                         <link linkend="gint32">gint32</link> new_image_ID);</programlisting>
 <para>
 Reconnect displays from one image to another image.
 </para>

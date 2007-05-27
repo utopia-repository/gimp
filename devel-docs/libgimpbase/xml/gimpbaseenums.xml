@@ -22,16 +22,16 @@
 
 
 
-enum        <link linkend="GimpCheckSize">GimpCheckSize</link>;
-enum        <link linkend="GimpCheckType">GimpCheckType</link>;
-enum        <link linkend="GimpImageBaseType">GimpImageBaseType</link>;
-enum        <link linkend="GimpImageType">GimpImageType</link>;
-enum        <link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link>;
-enum        <link linkend="GimpPDBArgType">GimpPDBArgType</link>;
-enum        <link linkend="GimpPDBProcType">GimpPDBProcType</link>;
-enum        <link linkend="GimpPDBStatusType">GimpPDBStatusType</link>;
-enum        <link linkend="GimpProgressCommand">GimpProgressCommand</link>;
-enum        <link linkend="GimpStackTraceMode">GimpStackTraceMode</link>;
+enum                <link linkend="GimpCheckSize">GimpCheckSize</link>;
+enum                <link linkend="GimpCheckType">GimpCheckType</link>;
+enum                <link linkend="GimpImageBaseType">GimpImageBaseType</link>;
+enum                <link linkend="GimpImageType">GimpImageType</link>;
+enum                <link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link>;
+enum                <link linkend="GimpPDBArgType">GimpPDBArgType</link>;
+enum                <link linkend="GimpPDBProcType">GimpPDBProcType</link>;
+enum                <link linkend="GimpPDBStatusType">GimpPDBStatusType</link>;
+enum                <link linkend="GimpProgressCommand">GimpProgressCommand</link>;
+enum                <link linkend="GimpStackTraceMode">GimpStackTraceMode</link>;
 
 </synopsis>
 </refsynopsisdiv>

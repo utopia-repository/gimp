@@ -47,9 +47,9 @@ common-install-impl::
 	install -m644 debian/tmp/usr/share/gimp/2.0/misc/gimp.applications \
 		debian/tmp/usr/share/application-registry/gimp-2.2.applications
 
-	# Remove compiled python files from the distribution, this is done in
+	# Remove compiled python files from the distribution, they're created in 
 	# postrm using dh_python
-	find $(CURDIR)/debian/tmp -name "*.py[co]" -exec xargs rm '{}' ';'
+	find $(CURDIR)/debian/tmp -name "*.py[co]" -exec rm '{}' ';'
 
 	dh_movefiles
 

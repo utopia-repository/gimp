@@ -1,3 +1,9 @@
+gimp (2.2.15-2) unstable; urgency=low
+
+  * Don't use find -exec xargs (Closes: #426415) 
+
+ -- Ari Pollak <ari@debian.org>  Tue, 29 May 2007 00:41:43 -0400
+
 gimp (2.2.15-1) unstable; urgency=low
 
   * New upstream release

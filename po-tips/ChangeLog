@@ -1,3 +1,50 @@
+2007-05-26  Artur Flinta  <aflinta@svn.gnome.org>
+
+	* pl.po: Updated Polish translation by GNOME PL Team.
+
+2007-05-21  Sigurd Gartmann  <sigurdga@yahoo-inc.com>
+
+	* nb.po: Updated Bokmål Norwegian translation.
+
+2007-05-16  Sven Neumann  <sven@gimp.org>
+
+	* de.po: applied patch from Ulf-D. Ehlert (bug #438886).
+
+2007-05-16  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Updated British English translation
+
+2007-05-15  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
+
+	* gl.po: Updated Galician Translation.
+
+2007-05-15  Hendrik Brandt  <heb@gnome-de.org>
+
+	* de.po: Fix some misspellings.
+
+2007-05-06  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+	Joaquim Perez <noguer@gmail.com>.
+
+2007-05-02  Roozbeh Pournader  <roozbeh@farsiweb.info>
+
+	* fa.po: Added Persian translation by Meelad Zakaria and
+	  Farzad Ghanei.
+
+2007-05-02  Djihed Afifi  <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by Khaled Hosny.
+
+2007-04-29  Christophe Merlet  <redfox@redfoxcenter.org>
+
+	* oc.po: Added Occitan translation from
+	Yannig MARCHEGAY <yannig@marchegay.org>.
+
+2007-04-25  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	* hu.po: Translation updated.
+
 2007-04-22  Stéphane Raimbault  <stephane.raimbault@gmail.com>
 
 	* fr.po: Updated French translation by Robert-André Mauchin and

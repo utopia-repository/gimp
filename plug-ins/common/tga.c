@@ -1,8 +1,8 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * $Id: tga.c 22138 2007-03-17 19:44:55Z mitch $
- * TrueVision Targa loading and saving file filter for the Gimp.
+ * $Id: tga.c 22715 2007-06-06 08:44:52Z muks $
+ * TrueVision Targa loading and saving file filter for GIMP.
  * Targa code Copyright (C) 1997 Raphael FRANCOIS and Gordon Matzigkeit
  *
  * The Targa reading and writing code was written from scratch by

@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This is a plug-in for the GIMP.
+ * This is a plug-in for GIMP.
  *
  * Generates images containing vector type drawings.
  *
@@ -196,13 +196,15 @@ gfig_read_parameter_gimp_rgb (gchar  **text,
     }
 }
 
+#define MAX_STYLE_TEXT_ENTRIES 100
+
 gboolean
 gfig_load_style (Style *style,
                  FILE  *fp)
 {
   gulong  offset;
   gchar   load_buf2[MAX_LOAD_LINE];
-  gchar  *style_text[100];
+  gchar  *style_text[MAX_STYLE_TEXT_ENTRIES];
   gint    nitems = 0;
   gint    value;
   gint    k;
@@ -211,7 +213,7 @@ gfig_load_style (Style *style,
   offset = ftell (fp);
 
   get_line (load_buf2, MAX_LOAD_LINE, fp, 0);
-  if (1 != sscanf (load_buf2, "<Style %s>", name))
+  if (1 != sscanf (load_buf2, "<Style %99s>", name))
     {
       /* no style data, copy default style and fail silently */
       gfig_style_copy (style, &gfig_context->default_style, "default style");
@@ -233,12 +235,14 @@ gfig_load_style (Style *style,
       if (!strcmp (load_buf2, "</Style>") || feof (fp))
         break;
 
-      style_text[nitems] = g_new (gchar, MAX_LOAD_LINE);
-      strcpy (style_text[nitems], load_buf2);
+      style_text[nitems] = g_strdup (load_buf2);
       nitems++;
+
+      if (nitems >= MAX_STYLE_TEXT_ENTRIES)
+        break;
     }
 
-  if (feof (fp))
+  if (feof (fp) || (nitems >= MAX_STYLE_TEXT_ENTRIES))
     {
       g_message ("Error reading style data");
       return TRUE;
@@ -588,7 +592,7 @@ gfig_style_copy (Style       *style1,
 
 /*
  * gfig_style_apply() applies the settings from the specified style to
- * the Gimp core.  It does not change any widgets, and does not cause
+ * the GIMP core.  It does not change any widgets, and does not cause
  * a repaint.
  */
 void
@@ -770,4 +774,3 @@ gfig_context_get_current_style (void)
   else
     return &gfig_context->default_style;
 }
-

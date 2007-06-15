@@ -25,6 +25,7 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
@@ -175,6 +176,9 @@ gimp_file_dialog_progress_start (GimpProgress *progress,
                                 message, cancelable);
   gtk_widget_show (dialog->progress);
 
+  gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
+                                     GTK_RESPONSE_CANCEL, cancelable);
+
   return retval;
 }
 
@@ -252,6 +256,7 @@ gimp_file_dialog_new (Gimp                 *gimp,
   GSList         *file_procs;
   const gchar    *automatic;
   const gchar    *automatic_help_id;
+  gchar          *pictures;
   gboolean        local_only;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
@@ -330,6 +335,15 @@ gimp_file_dialog_new (Gimp                 *gimp,
       g_object_set_data (G_OBJECT (dialog), "gimp-dialog-help-button", button);
     }
 
+  pictures = gimp_user_directory (GIMP_USER_DIRECTORY_PICTURES);
+
+  if (pictures)
+    {
+      gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (dialog),
+                                            pictures, NULL);
+      g_free (pictures);
+    }
+
   gimp_file_dialog_add_preview (dialog, gimp);
 
   gimp_file_dialog_add_filters (dialog, gimp, file_procs);
@@ -367,10 +381,8 @@ gimp_file_dialog_set_sensitive (GimpFileDialog *dialog,
 
   g_list_free (children);
 
-  if (sensitive)
-    gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
-                                       GTK_RESPONSE_CANCEL, sensitive);
-
+  gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
+                                     GTK_RESPONSE_CANCEL, sensitive);
   gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
                                      GTK_RESPONSE_OK, sensitive);
 

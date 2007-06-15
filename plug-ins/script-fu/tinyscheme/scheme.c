@@ -129,8 +129,6 @@ enum scheme_types {
 #define MARK         32768    /* 1000000000000000 */
 #define UNMARK       32767    /* 0111111111111111 */
 
-SCHEME_EXPORT void (*ts_output_routine) (FILE *, char *, int);
-
 static num num_add(num a, num b);
 static num num_mul(num a, num b);
 static num num_div(num a, num b);
@@ -385,6 +383,8 @@ static void assign_proc(scheme *sc, enum scheme_opcodes, char *name);
 scheme *scheme_init_new(void);
 #if !STANDALONE
 void scheme_call(scheme *sc, pointer func, pointer args);
+
+void (*ts_output_routine) (const char *, int) = NULL;
 #endif
 
 #define num_ivalue(n)       (n.is_fixnum?(n).value.ivalue:(long)(n).value.rvalue)
@@ -587,7 +587,7 @@ static int alloc_cellseg(scheme *sc, int n) {
           i = ++sc->last_cell_seg ;
           sc->alloc_seg[i] = cp;
           /* adjust in TYPE_BITS-bit boundary */
-          if(((unsigned)cp)%adj!=0) {
+          if (((unsigned long) cp) % adj != 0) {
             cp=(char*)(adj*((unsigned long)cp/adj+1));
           }
         /* insert new segment in address order */
@@ -1506,7 +1506,7 @@ static gunichar inchar(scheme *sc) {
   port *pt;
  again:
   pt=sc->inport->_object._port;
-  if(pt->kind&port_file && pt->rep.stdio.file == stdin)
+  if(pt->kind&port_file)
   {
     if (sc->bc_flag)
     {
@@ -1539,15 +1539,8 @@ static void backchar(scheme *sc, gunichar c) {
   charlen = g_unichar_to_utf8(c, NULL);
   pt=sc->inport->_object._port;
   if(pt->kind&port_file) {
-    if (pt->rep.stdio.file == stdin)
-    {
       sc->backchar = c;
       sc->bc_flag = 1;
-    }
-    else {
-      if (ftell(pt->rep.stdio.file) >= (long)charlen)
-         fseek(pt->rep.stdio.file, 0L-(long)charlen, SEEK_CUR);
-    }
   } else {
     if(pt->rep.string.curr!=pt->rep.string.start) {
       if(pt->rep.string.curr-pt->rep.string.start >= charlen)
@@ -1567,12 +1560,6 @@ static void putchars(scheme *sc, const char *chars, int char_cnt) {
   if (char_cnt <= 0)
       return;
 
-#if !STANDALONE
-  /* Output characters to console mode (if enabled) */
-  if (ts_output_routine != NULL)    /* Should this be left in?? ~~~~~ */
-     (*ts_output_routine) (pt->rep.stdio.file, (char *)chars, char_cnt);
-#endif
-
   char_cnt = g_utf8_offset_to_pointer(chars, (long)char_cnt) - chars;
 
   if (sc->print_error) {
@@ -1583,8 +1570,19 @@ static void putchars(scheme *sc, const char *chars, int char_cnt) {
   }
 
   if(pt->kind&port_file) {
-    fwrite(chars,1,char_cnt,pt->rep.stdio.file);
-    fflush(pt->rep.stdio.file);
+#if STANDALONE
+      fwrite(chars,1,char_cnt,pt->rep.stdio.file);
+      fflush(pt->rep.stdio.file);
+#else
+      /* If output is still directed to stdout (the default) it should be    */
+      /* safe to redirect it to the routine pointed to by ts_output_routine. */
+      if (pt->rep.stdio.file == stdout && ts_output_routine != NULL)
+           (*ts_output_routine) (chars, char_cnt);
+      else {
+        fwrite(chars,1,char_cnt,pt->rep.stdio.file);
+        fflush(pt->rep.stdio.file);
+      }
+#endif
   } else {
     l = pt->rep.string.past_the_end - pt->rep.string.curr;
     if (l > 0)

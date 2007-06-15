@@ -1,5 +1,5 @@
 /****************************************************************************
- * This is a plugin for the GIMP v 2.0 or later.
+ * This is a plugin for GIMP v 2.0 or later.
  *
  * Copyright (C) 2002 Martin Guldahl <mguldahl@xmission.com>
  * Based on GTK code from:
@@ -913,7 +913,7 @@ cm_load_file_response_callback (GtkWidget    *dialog,
 
       filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
 
-      fp = g_fopen (filename, "r");
+      fp = g_fopen (filename, "rb");
 
       if (fp)
         {
@@ -925,7 +925,7 @@ cm_load_file_response_callback (GtkWidget    *dialog,
 
           fgets (buf[0], CM_LINE_SIZE - 1, fp);
 
-          fscanf (fp, "%*s %s", buf[0]);
+          fscanf (fp, "%*s %1023s", buf[0]);
           if (strcmp (buf[0], "RED") == 0)
             mix->output_channel = CM_RED_CHANNEL;
           else if (strcmp (buf[0], "GREEN") == 0)
@@ -933,36 +933,36 @@ cm_load_file_response_callback (GtkWidget    *dialog,
           else if (strcmp (buf[0], "BLUE") == 0)
             mix->output_channel = CM_BLUE_CHANNEL;
 
-          fscanf (fp, "%*s %s", buf[0]); /* preview flag, preserved for compatibility */
+          fscanf (fp, "%*s %1023s", buf[0]); /* preview flag, preserved for compatibility */
 
-          fscanf (fp, "%*s %s", buf[0]);
+          fscanf (fp, "%*s %1023s", buf[0]);
           if (strcmp (buf[0], "TRUE") == 0)
             mix->monochrome = TRUE;
           else
             mix->monochrome = FALSE;
 
-          fscanf (fp, "%*s %s", buf[0]);
+          fscanf (fp, "%*s %1023s", buf[0]);
           if (strcmp (buf[0], "TRUE") == 0)
             mix->preserve_luminosity = TRUE;
           else
             mix->preserve_luminosity = FALSE;
 
-          fscanf (fp, "%*s %s %s %s", buf[0], buf[1], buf[2]);
+          fscanf (fp, "%*s %1023s %1023s %1023s", buf[0], buf[1], buf[2]);
           mix->red.red_gain   = g_ascii_strtod (buf[0], NULL);
           mix->red.green_gain = g_ascii_strtod (buf[1], NULL);
           mix->red.blue_gain  = g_ascii_strtod (buf[2], NULL);
 
-          fscanf (fp, "%*s %s %s %s", buf[0], buf[1], buf[2]);
+          fscanf (fp, "%*s %1023s %1023s %1023s", buf[0], buf[1], buf[2]);
           mix->green.red_gain   = g_ascii_strtod (buf[0], NULL);
           mix->green.green_gain = g_ascii_strtod (buf[1], NULL);
           mix->green.blue_gain  = g_ascii_strtod (buf[2], NULL);
 
-          fscanf (fp, "%*s %s %s %s", buf[0], buf[1], buf[2]);
+          fscanf (fp, "%*s %1023s %1023s %1023s", buf[0], buf[1], buf[2]);
           mix->blue.red_gain   = g_ascii_strtod (buf[0], NULL);
           mix->blue.green_gain = g_ascii_strtod (buf[1], NULL);
           mix->blue.blue_gain  = g_ascii_strtod (buf[2], NULL);
 
-          fscanf (fp, "%*s %s %s %s", buf[0], buf[1], buf[2]);
+          fscanf (fp, "%*s %1023s %1023s %1023s", buf[0], buf[1], buf[2]);
           mix->black.red_gain   = g_ascii_strtod (buf[0], NULL);
           mix->black.green_gain = g_ascii_strtod (buf[1], NULL);
           mix->black.blue_gain  = g_ascii_strtod (buf[2], NULL);
@@ -1047,7 +1047,7 @@ cm_save_file_response_callback (GtkWidget    *dialog,
   if (! filename)
     return;
 
-  file = g_fopen (filename, "w");
+  file = g_fopen (filename, "wb");
 
   if (! file)
     {

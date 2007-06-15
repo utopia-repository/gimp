@@ -53,8 +53,8 @@ libexec_PROGRAMS = AlienMap2$(EXEEXT) CEL$(EXEEXT) \
 	edge$(EXEEXT) emboss$(EXEEXT) engrave$(EXEEXT) \
 	exchange$(EXEEXT) film$(EXEEXT) flarefx$(EXEEXT) fp$(EXEEXT) \
 	fractaltrace$(EXEEXT) gauss$(EXEEXT) gbr$(EXEEXT) gee$(EXEEXT) \
-	gee_zoom$(EXEEXT) gif$(EXEEXT) gifload$(EXEEXT) gih$(EXEEXT) \
-	glasstile$(EXEEXT) glob$(EXEEXT) gqbist$(EXEEXT) \
+	gee_zoom$(EXEEXT) gif-load$(EXEEXT) gif-save$(EXEEXT) \
+	gih$(EXEEXT) glasstile$(EXEEXT) glob$(EXEEXT) gqbist$(EXEEXT) \
 	gradmap$(EXEEXT) grid$(EXEEXT) gtm$(EXEEXT) \
 	guillotine$(EXEEXT) header$(EXEEXT) hot$(EXEEXT) \
 	illusion$(EXEEXT) iwarp$(EXEEXT) jigsaw$(EXEEXT) \
@@ -67,25 +67,27 @@ libexec_PROGRAMS = AlienMap2$(EXEEXT) CEL$(EXEEXT) \
 	photocopy$(EXEEXT) pix$(EXEEXT) pixelize$(EXEEXT) \
 	plasma$(EXEEXT) plugin-browser$(EXEEXT) $(am__EXEEXT_5) \
 	pnm$(EXEEXT) polar$(EXEEXT) $(am__EXEEXT_6) \
-	postscript$(EXEEXT) procedure-browser$(EXEEXT) psd$(EXEEXT) \
-	psd_save$(EXEEXT) $(am__EXEEXT_7) randomize$(EXEEXT) \
-	raw$(EXEEXT) redeye$(EXEEXT) retinex$(EXEEXT) ripple$(EXEEXT) \
-	rotate$(EXEEXT) sample_colorize$(EXEEXT) scatter_hsv$(EXEEXT) \
-	$(am__EXEEXT_8) sel_gauss$(EXEEXT) semiflatten$(EXEEXT) \
-	sharpen$(EXEEXT) shift$(EXEEXT) sinus$(EXEEXT) \
-	smooth_palette$(EXEEXT) snoise$(EXEEXT) sobel$(EXEEXT) \
-	softglow$(EXEEXT) sparkle$(EXEEXT) spheredesigner$(EXEEXT) \
-	spread$(EXEEXT) struc$(EXEEXT) sunras$(EXEEXT) $(am__EXEEXT_9) \
-	tga$(EXEEXT) threshold_alpha$(EXEEXT) $(am__EXEEXT_10) \
+	postscript$(EXEEXT) procedure-browser$(EXEEXT) \
+	psd-load$(EXEEXT) psd-save$(EXEEXT) $(am__EXEEXT_7) \
+	randomize$(EXEEXT) raw$(EXEEXT) redeye$(EXEEXT) \
+	retinex$(EXEEXT) ripple$(EXEEXT) rotate$(EXEEXT) \
+	sample_colorize$(EXEEXT) scatter_hsv$(EXEEXT) $(am__EXEEXT_8) \
+	sel_gauss$(EXEEXT) semiflatten$(EXEEXT) sharpen$(EXEEXT) \
+	shift$(EXEEXT) sinus$(EXEEXT) smooth_palette$(EXEEXT) \
+	snoise$(EXEEXT) sobel$(EXEEXT) softglow$(EXEEXT) \
+	sparkle$(EXEEXT) spheredesigner$(EXEEXT) spread$(EXEEXT) \
+	struc$(EXEEXT) sunras$(EXEEXT) $(am__EXEEXT_9) tga$(EXEEXT) \
+	threshold_alpha$(EXEEXT) $(am__EXEEXT_10) $(am__EXEEXT_11) \
 	tile$(EXEEXT) tileit$(EXEEXT) tiler$(EXEEXT) \
 	uniteditor$(EXEEXT) unsharp$(EXEEXT) video$(EXEEXT) \
 	vinvert$(EXEEXT) vpropagate$(EXEEXT) warp$(EXEEXT) \
 	waves$(EXEEXT) webbrowser$(EXEEXT) whirlpinch$(EXEEXT) \
-	wind$(EXEEXT) $(am__EXEEXT_11) xbm$(EXEEXT) $(am__EXEEXT_12) \
+	wind$(EXEEXT) $(am__EXEEXT_12) xbm$(EXEEXT) $(am__EXEEXT_13) \
 	xwd$(EXEEXT) zealouscrop$(EXEEXT)
 EXTRA_PROGRAMS = aa$(EXEEXT) lcms$(EXEEXT) mail$(EXEEXT) mng$(EXEEXT) \
 	png$(EXEEXT) poppler$(EXEEXT) psp$(EXEEXT) screenshot$(EXEEXT) \
-	svg$(EXEEXT) tiff$(EXEEXT) wmf$(EXEEXT) xpm$(EXEEXT)
+	svg$(EXEEXT) tiff-load$(EXEEXT) tiff-save$(EXEEXT) \
+	wmf$(EXEEXT) xpm$(EXEEXT)
 subdir = plug-ins/common
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -110,9 +112,10 @@ am__EXEEXT_6 = @POPPLER@
 am__EXEEXT_7 = @PSP@
 am__EXEEXT_8 = @SCREENSHOT@
 am__EXEEXT_9 = @SVG@
-am__EXEEXT_10 = @TIFF@
-am__EXEEXT_11 = @WMF@
-am__EXEEXT_12 = @XPM@
+am__EXEEXT_10 = @TIFF_LOAD@
+am__EXEEXT_11 = @TIFF_SAVE@
+am__EXEEXT_12 = @WMF@
+am__EXEEXT_13 = @XPM@
 am__installdirs = "$(DESTDIR)$(libexecdir)"
 libexecPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(libexec_PROGRAMS)
@@ -530,20 +533,20 @@ gee_zoom_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
 	$(am__DEPENDENCIES_9) $(am__DEPENDENCIES_9) \
 	$(am__DEPENDENCIES_9)
-am_gif_OBJECTS = gif.$(OBJEXT)
-gif_OBJECTS = $(am_gif_OBJECTS)
-gif_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
+am_gif_load_OBJECTS = gif-load.$(OBJEXT)
+gif_load_OBJECTS = $(am_gif_load_OBJECTS)
+gif_load_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_9) \
+	$(am__DEPENDENCIES_9) $(am__DEPENDENCIES_9)
+am_gif_save_OBJECTS = gif-save.$(OBJEXT)
+gif_save_OBJECTS = $(am_gif_save_OBJECTS)
+gif_save_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
 	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
 	$(am__DEPENDENCIES_9) $(am__DEPENDENCIES_9) \
 	$(am__DEPENDENCIES_9)
-am_gifload_OBJECTS = gifload.$(OBJEXT)
-gifload_OBJECTS = $(am_gifload_OBJECTS)
-gifload_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
-	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_9) \
-	$(am__DEPENDENCIES_9) $(am__DEPENDENCIES_9)
 am_gih_OBJECTS = gih.$(OBJEXT)
 gih_OBJECTS = $(am_gih_OBJECTS)
 gih_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
@@ -886,13 +889,13 @@ procedure_browser_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
 	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_9) \
 	$(am__DEPENDENCIES_9) $(am__DEPENDENCIES_9)
-am_psd_OBJECTS = psd.$(OBJEXT)
-psd_OBJECTS = $(am_psd_OBJECTS)
-psd_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+am_psd_load_OBJECTS = psd-load.$(OBJEXT)
+psd_load_OBJECTS = $(am_psd_load_OBJECTS)
+psd_load_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
 	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
 	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_9) \
 	$(am__DEPENDENCIES_9) $(am__DEPENDENCIES_9)
-am_psd_save_OBJECTS = psd_save.$(OBJEXT)
+am_psd_save_OBJECTS = psd-save.$(OBJEXT)
 psd_save_OBJECTS = $(am_psd_save_OBJECTS)
 psd_save_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
@@ -1112,9 +1115,17 @@ threshold_alpha_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
 	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_9) \
 	$(am__DEPENDENCIES_9) $(am__DEPENDENCIES_9)
-am_tiff_OBJECTS = tiff.$(OBJEXT)
-tiff_OBJECTS = $(am_tiff_OBJECTS)
-tiff_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
+am_tiff_load_OBJECTS = tiff-load.$(OBJEXT)
+tiff_load_OBJECTS = $(am_tiff_load_OBJECTS)
+tiff_load_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
+	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_9) $(am__DEPENDENCIES_9) \
+	$(am__DEPENDENCIES_9) $(am__DEPENDENCIES_9)
+am_tiff_save_OBJECTS = tiff-save.$(OBJEXT)
+tiff_save_OBJECTS = $(am_tiff_save_OBJECTS)
+tiff_save_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
 	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
@@ -1287,7 +1298,7 @@ SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) $(CML_explorer_SOURCES) \
 	$(exchange_SOURCES) $(film_SOURCES) $(flarefx_SOURCES) \
 	$(fp_SOURCES) $(fractaltrace_SOURCES) $(gauss_SOURCES) \
 	$(gbr_SOURCES) $(gee_SOURCES) $(gee_zoom_SOURCES) \
-	$(gif_SOURCES) $(gifload_SOURCES) $(gih_SOURCES) \
+	$(gif_load_SOURCES) $(gif_save_SOURCES) $(gih_SOURCES) \
 	$(glasstile_SOURCES) $(glob_SOURCES) $(gqbist_SOURCES) \
 	$(gradmap_SOURCES) $(grid_SOURCES) $(gtm_SOURCES) \
 	$(guillotine_SOURCES) $(header_SOURCES) $(hot_SOURCES) \
@@ -1302,7 +1313,7 @@ SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) $(CML_explorer_SOURCES) \
 	$(pix_SOURCES) $(pixelize_SOURCES) $(plasma_SOURCES) \
 	$(plugin_browser_SOURCES) $(png_SOURCES) $(pnm_SOURCES) \
 	$(polar_SOURCES) $(poppler_SOURCES) $(postscript_SOURCES) \
-	$(procedure_browser_SOURCES) $(psd_SOURCES) \
+	$(procedure_browser_SOURCES) $(psd_load_SOURCES) \
 	$(psd_save_SOURCES) $(psp_SOURCES) $(randomize_SOURCES) \
 	$(raw_SOURCES) $(redeye_SOURCES) $(retinex_SOURCES) \
 	$(ripple_SOURCES) $(rotate_SOURCES) $(sample_colorize_SOURCES) \
@@ -1312,13 +1323,14 @@ SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) $(CML_explorer_SOURCES) \
 	$(snoise_SOURCES) $(sobel_SOURCES) $(softglow_SOURCES) \
 	$(sparkle_SOURCES) $(spheredesigner_SOURCES) $(spread_SOURCES) \
 	$(struc_SOURCES) $(sunras_SOURCES) $(svg_SOURCES) \
-	$(tga_SOURCES) $(threshold_alpha_SOURCES) $(tiff_SOURCES) \
-	$(tile_SOURCES) $(tileit_SOURCES) $(tiler_SOURCES) \
-	$(uniteditor_SOURCES) $(unsharp_SOURCES) $(video_SOURCES) \
-	$(vinvert_SOURCES) $(vpropagate_SOURCES) $(warp_SOURCES) \
-	$(waves_SOURCES) $(webbrowser_SOURCES) $(whirlpinch_SOURCES) \
-	$(wind_SOURCES) $(wmf_SOURCES) $(xbm_SOURCES) $(xpm_SOURCES) \
-	$(xwd_SOURCES) $(zealouscrop_SOURCES)
+	$(tga_SOURCES) $(threshold_alpha_SOURCES) $(tiff_load_SOURCES) \
+	$(tiff_save_SOURCES) $(tile_SOURCES) $(tileit_SOURCES) \
+	$(tiler_SOURCES) $(uniteditor_SOURCES) $(unsharp_SOURCES) \
+	$(video_SOURCES) $(vinvert_SOURCES) $(vpropagate_SOURCES) \
+	$(warp_SOURCES) $(waves_SOURCES) $(webbrowser_SOURCES) \
+	$(whirlpinch_SOURCES) $(wind_SOURCES) $(wmf_SOURCES) \
+	$(xbm_SOURCES) $(xpm_SOURCES) $(xwd_SOURCES) \
+	$(zealouscrop_SOURCES)
 DIST_SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) \
 	$(CML_explorer_SOURCES) $(aa_SOURCES) $(align_layers_SOURCES) \
 	$(animationplay_SOURCES) $(animoptimize_SOURCES) \
@@ -1339,7 +1351,7 @@ DIST_SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) \
 	$(exchange_SOURCES) $(film_SOURCES) $(flarefx_SOURCES) \
 	$(fp_SOURCES) $(fractaltrace_SOURCES) $(gauss_SOURCES) \
 	$(gbr_SOURCES) $(gee_SOURCES) $(gee_zoom_SOURCES) \
-	$(gif_SOURCES) $(gifload_SOURCES) $(gih_SOURCES) \
+	$(gif_load_SOURCES) $(gif_save_SOURCES) $(gih_SOURCES) \
 	$(glasstile_SOURCES) $(glob_SOURCES) $(gqbist_SOURCES) \
 	$(gradmap_SOURCES) $(grid_SOURCES) $(gtm_SOURCES) \
 	$(guillotine_SOURCES) $(header_SOURCES) $(hot_SOURCES) \
@@ -1354,7 +1366,7 @@ DIST_SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) \
 	$(pix_SOURCES) $(pixelize_SOURCES) $(plasma_SOURCES) \
 	$(plugin_browser_SOURCES) $(png_SOURCES) $(pnm_SOURCES) \
 	$(polar_SOURCES) $(poppler_SOURCES) $(postscript_SOURCES) \
-	$(procedure_browser_SOURCES) $(psd_SOURCES) \
+	$(procedure_browser_SOURCES) $(psd_load_SOURCES) \
 	$(psd_save_SOURCES) $(psp_SOURCES) $(randomize_SOURCES) \
 	$(raw_SOURCES) $(redeye_SOURCES) $(retinex_SOURCES) \
 	$(ripple_SOURCES) $(rotate_SOURCES) $(sample_colorize_SOURCES) \
@@ -1364,13 +1376,14 @@ DIST_SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) \
 	$(snoise_SOURCES) $(sobel_SOURCES) $(softglow_SOURCES) \
 	$(sparkle_SOURCES) $(spheredesigner_SOURCES) $(spread_SOURCES) \
 	$(struc_SOURCES) $(sunras_SOURCES) $(svg_SOURCES) \
-	$(tga_SOURCES) $(threshold_alpha_SOURCES) $(tiff_SOURCES) \
-	$(tile_SOURCES) $(tileit_SOURCES) $(tiler_SOURCES) \
-	$(uniteditor_SOURCES) $(unsharp_SOURCES) $(video_SOURCES) \
-	$(vinvert_SOURCES) $(vpropagate_SOURCES) $(warp_SOURCES) \
-	$(waves_SOURCES) $(webbrowser_SOURCES) $(whirlpinch_SOURCES) \
-	$(wind_SOURCES) $(wmf_SOURCES) $(xbm_SOURCES) $(xpm_SOURCES) \
-	$(xwd_SOURCES) $(zealouscrop_SOURCES)
+	$(tga_SOURCES) $(threshold_alpha_SOURCES) $(tiff_load_SOURCES) \
+	$(tiff_save_SOURCES) $(tile_SOURCES) $(tileit_SOURCES) \
+	$(tiler_SOURCES) $(uniteditor_SOURCES) $(unsharp_SOURCES) \
+	$(video_SOURCES) $(vinvert_SOURCES) $(vpropagate_SOURCES) \
+	$(warp_SOURCES) $(waves_SOURCES) $(webbrowser_SOURCES) \
+	$(whirlpinch_SOURCES) $(wind_SOURCES) $(wmf_SOURCES) \
+	$(xbm_SOURCES) $(xpm_SOURCES) $(xwd_SOURCES) \
+	$(zealouscrop_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -1402,6 +1415,7 @@ BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
 BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
+CARBON_LDFLAGS = @CARBON_LDFLAGS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -1436,6 +1450,8 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ENABLE_GIMP_CONSOLE_FALSE = @ENABLE_GIMP_CONSOLE_FALSE@
 ENABLE_GIMP_CONSOLE_TRUE = @ENABLE_GIMP_CONSOLE_TRUE@
+ENABLE_GTK_DOC_APP_FALSE = @ENABLE_GTK_DOC_APP_FALSE@
+ENABLE_GTK_DOC_APP_TRUE = @ENABLE_GTK_DOC_APP_TRUE@
 ENABLE_GTK_DOC_FALSE = @ENABLE_GTK_DOC_FALSE@
 ENABLE_GTK_DOC_TRUE = @ENABLE_GTK_DOC_TRUE@
 EXEEXT = @EXEEXT@
@@ -1658,7 +1674,8 @@ SVG = @SVG@
 SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
-TIFF = @TIFF@
+TIFF_LOAD = @TIFF_LOAD@
+TIFF_SAVE = @TIFF_SAVE@
 URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
 URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
 URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
@@ -2568,10 +2585,23 @@ gee_zoom_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
-gif_SOURCES = \
-	gif.c
+gif_load_SOURCES = \
+	gif-load.c
 
-gif_LDADD = \
+gif_load_LDADD = \
+	$(libgimp)		\
+	$(libgimpmath)		\
+	$(libgimpconfig)	\
+	$(libgimpcolor)		\
+	$(libgimpbase)		\
+	$(GLIB_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)
+
+gif_save_SOURCES = \
+	gif-save.c
+
+gif_save_LDADD = \
 	$(libgimpui)		\
 	$(libgimpwidgets)	\
 	$(libgimpmodule)	\
@@ -2581,19 +2611,6 @@ gif_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)
-
-gifload_SOURCES = \
-	gifload.c
-
-gifload_LDADD = \
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
@@ -3293,10 +3310,10 @@ procedure_browser_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
-psd_SOURCES = \
-	psd.c
+psd_load_SOURCES = \
+	psd-load.c
 
-psd_LDADD = \
+psd_load_LDADD = \
 	$(libgimp)		\
 	$(libgimpmath)		\
 	$(libgimpconfig)	\
@@ -3307,7 +3324,7 @@ psd_LDADD = \
 	$(INTLLIBS)
 
 psd_save_SOURCES = \
-	psd_save.c
+	psd-save.c
 
 psd_save_LDADD = \
 	$(libgimpui)		\
@@ -3753,10 +3770,27 @@ threshold_alpha_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
-tiff_SOURCES = \
-	tiff.c
+tiff_load_SOURCES = \
+	tiff-load.c
 
-tiff_LDADD = \
+tiff_load_LDADD = \
+	$(libgimpui)		\
+	$(libgimpwidgets)	\
+	$(libgimpmodule)	\
+	$(libgimp)		\
+	$(libgimpmath)		\
+	$(libgimpconfig)	\
+	$(libgimpcolor)		\
+	$(libgimpbase)		\
+	$(GTK_LIBS)		\
+	$(LIBTIFF)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)
+
+tiff_save_SOURCES = \
+	tiff-save.c
+
+tiff_save_LDADD = \
 	$(libgimpui)		\
 	$(libgimpwidgets)	\
 	$(libgimpmodule)	\
@@ -4266,12 +4300,12 @@ gee$(EXEEXT): $(gee_OBJECTS) $(gee_DEPENDENCIES)
 gee_zoom$(EXEEXT): $(gee_zoom_OBJECTS) $(gee_zoom_DEPENDENCIES) 
 	@rm -f gee_zoom$(EXEEXT)
 	$(LINK) $(gee_zoom_LDFLAGS) $(gee_zoom_OBJECTS) $(gee_zoom_LDADD) $(LIBS)
-gif$(EXEEXT): $(gif_OBJECTS) $(gif_DEPENDENCIES) 
-	@rm -f gif$(EXEEXT)
-	$(LINK) $(gif_LDFLAGS) $(gif_OBJECTS) $(gif_LDADD) $(LIBS)
-gifload$(EXEEXT): $(gifload_OBJECTS) $(gifload_DEPENDENCIES) 
-	@rm -f gifload$(EXEEXT)
-	$(LINK) $(gifload_LDFLAGS) $(gifload_OBJECTS) $(gifload_LDADD) $(LIBS)
+gif-load$(EXEEXT): $(gif_load_OBJECTS) $(gif_load_DEPENDENCIES) 
+	@rm -f gif-load$(EXEEXT)
+	$(LINK) $(gif_load_LDFLAGS) $(gif_load_OBJECTS) $(gif_load_LDADD) $(LIBS)
+gif-save$(EXEEXT): $(gif_save_OBJECTS) $(gif_save_DEPENDENCIES) 
+	@rm -f gif-save$(EXEEXT)
+	$(LINK) $(gif_save_LDFLAGS) $(gif_save_OBJECTS) $(gif_save_LDADD) $(LIBS)
 gih$(EXEEXT): $(gih_OBJECTS) $(gih_DEPENDENCIES) 
 	@rm -f gih$(EXEEXT)
 	$(LINK) $(gih_LDFLAGS) $(gih_OBJECTS) $(gih_LDADD) $(LIBS)
@@ -4404,11 +4438,11 @@ postscript$(EXEEXT): $(postscript_OBJECTS) $(postscript_DEPENDENCIES)
 procedure-browser$(EXEEXT): $(procedure_browser_OBJECTS) $(procedure_browser_DEPENDENCIES) 
 	@rm -f procedure-browser$(EXEEXT)
 	$(LINK) $(procedure_browser_LDFLAGS) $(procedure_browser_OBJECTS) $(procedure_browser_LDADD) $(LIBS)
-psd$(EXEEXT): $(psd_OBJECTS) $(psd_DEPENDENCIES) 
-	@rm -f psd$(EXEEXT)
-	$(LINK) $(psd_LDFLAGS) $(psd_OBJECTS) $(psd_LDADD) $(LIBS)
-psd_save$(EXEEXT): $(psd_save_OBJECTS) $(psd_save_DEPENDENCIES) 
-	@rm -f psd_save$(EXEEXT)
+psd-load$(EXEEXT): $(psd_load_OBJECTS) $(psd_load_DEPENDENCIES) 
+	@rm -f psd-load$(EXEEXT)
+	$(LINK) $(psd_load_LDFLAGS) $(psd_load_OBJECTS) $(psd_load_LDADD) $(LIBS)
+psd-save$(EXEEXT): $(psd_save_OBJECTS) $(psd_save_DEPENDENCIES) 
+	@rm -f psd-save$(EXEEXT)
 	$(LINK) $(psd_save_LDFLAGS) $(psd_save_OBJECTS) $(psd_save_LDADD) $(LIBS)
 psp$(EXEEXT): $(psp_OBJECTS) $(psp_DEPENDENCIES) 
 	@rm -f psp$(EXEEXT)
@@ -4491,9 +4525,12 @@ tga$(EXEEXT): $(tga_OBJECTS) $(tga_DEPENDENCIES)
 threshold_alpha$(EXEEXT): $(threshold_alpha_OBJECTS) $(threshold_alpha_DEPENDENCIES) 
 	@rm -f threshold_alpha$(EXEEXT)
 	$(LINK) $(threshold_alpha_LDFLAGS) $(threshold_alpha_OBJECTS) $(threshold_alpha_LDADD) $(LIBS)
-tiff$(EXEEXT): $(tiff_OBJECTS) $(tiff_DEPENDENCIES) 
-	@rm -f tiff$(EXEEXT)
-	$(LINK) $(tiff_LDFLAGS) $(tiff_OBJECTS) $(tiff_LDADD) $(LIBS)
+tiff-load$(EXEEXT): $(tiff_load_OBJECTS) $(tiff_load_DEPENDENCIES) 
+	@rm -f tiff-load$(EXEEXT)
+	$(LINK) $(tiff_load_LDFLAGS) $(tiff_load_OBJECTS) $(tiff_load_LDADD) $(LIBS)
+tiff-save$(EXEEXT): $(tiff_save_OBJECTS) $(tiff_save_DEPENDENCIES) 
+	@rm -f tiff-save$(EXEEXT)
+	$(LINK) $(tiff_save_LDFLAGS) $(tiff_save_OBJECTS) $(tiff_save_LDADD) $(LIBS)
 tile$(EXEEXT): $(tile_OBJECTS) $(tile_DEPENDENCIES) 
 	@rm -f tile$(EXEEXT)
 	$(LINK) $(tile_LDFLAGS) $(tile_OBJECTS) $(tile_LDADD) $(LIBS)
@@ -4607,8 +4644,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gbr.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gee.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gee_zoom.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gif.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gifload.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gif-load.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gif-save.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gih.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glasstile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glob.Po@am__quote@
@@ -4653,8 +4690,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/poppler-poppler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/postscript.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/procedure-browser.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/psd.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/psd_save.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/psd-load.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/psd-save.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/psp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/randomize.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/raw.Po@am__quote@
@@ -4682,7 +4719,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/svg-svg.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tga.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/threshold_alpha.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tiff.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tiff-load.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tiff-save.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tileit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tiler.Po@am__quote@

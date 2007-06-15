@@ -24,7 +24,7 @@ sub palette_new {
     &mitch_pdb_misc('2004', '2.2');
 
     @inargs = (
-	{ name => 'name', type => 'string',
+	{ name => 'name', type => 'string', non_empty => 1,
 	  desc => 'The requested name of the new palette' }
     );
 
@@ -36,15 +36,10 @@ sub palette_new {
     %invoke = (
         code => <<'CODE'
 {
-  if (strlen (name))
-    {
-      GimpData *data = gimp_data_factory_data_new (gimp->palette_factory, name);
+  GimpData *data = gimp_data_factory_data_new (gimp->palette_factory, name);
 
-      if (data)
-        actual_name = g_strdup (gimp_object_get_name (GIMP_OBJECT (data)));
-      else
-        success = FALSE;
-    }
+  if (data)
+    actual_name = g_strdup (gimp_object_get_name (GIMP_OBJECT (data)));
   else
     success = FALSE;
 }
@@ -132,7 +127,7 @@ sub palette_rename {
     @inargs = (
 	{ name => 'name', type => 'string',
 	  desc => 'The palette name' },
-        { name => 'new_name', type => 'string',
+        { name => 'new_name', type => 'string', non_empty => 1,
           desc => "The new name of the palette" }
     );
 
@@ -147,7 +142,7 @@ sub palette_rename {
   GimpPalette *palette = (GimpPalette *)
     gimp_container_get_child_by_name (gimp->palette_factory->container, name);
 
-  if (palette && GIMP_DATA (palette)->writable && strlen (new_name))
+  if (palette && GIMP_DATA (palette)->writable)
     {
       gimp_object_set_name (GIMP_OBJECT (palette), new_name);
       actual_name = g_strdup (gimp_object_get_name (GIMP_OBJECT (palette)));
@@ -214,7 +209,7 @@ HELP
     );
 
     @outargs = (
-        { name => 'num_colors', type => 'int32', void_ret => '1',
+        { name => 'num_colors', type => 'int32', void_ret => 1,
           desc => 'The number of colors in the palette' }
     );
 
@@ -312,14 +307,14 @@ HELP
     @inargs = (
 	{ name => 'name', type => 'string',
 	  desc => 'The palette name' },
-        { name => 'entry_name', type => 'string', null_ok => '1',
+        { name => 'entry_name', type => 'string', null_ok => 1,
           desc => 'The name of the entry' },
         { name => 'color', type => 'color',
           desc => 'The new entry\'s color color' }
     );
 
     @outargs = (
-        { name => 'entry_num', type => 'int32', void_ret => '1',
+        { name => 'entry_num', type => 'int32', void_ret => 1,
           desc => 'The index of the added entry' }
     );
 
@@ -536,7 +531,7 @@ HELP
 	  desc => 'The palette name' },
         { name => 'entry_num', type => 'int32',
           desc => 'The entry to retrieve' },
-        { name => 'entry_name', type => 'string', null_ok => '1',
+        { name => 'entry_name', type => 'string', null_ok => 1,
           desc => 'The new name' }
     );
 

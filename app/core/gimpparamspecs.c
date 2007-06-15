@@ -349,8 +349,9 @@ gimp_param_string_init (GParamSpec *pspec)
 {
   GimpParamSpecString *sspec = GIMP_PARAM_SPEC_STRING (pspec);
 
-  sspec->no_validate = FALSE;
-  sspec->null_ok     = FALSE;
+  sspec->allow_non_utf8 = FALSE;
+  sspec->null_ok        = FALSE;
+  sspec->non_empty      = FALSE;
 }
 
 static gboolean
@@ -360,14 +361,36 @@ gimp_param_string_validate (GParamSpec *pspec,
   GimpParamSpecString *sspec  = GIMP_PARAM_SPEC_STRING (pspec);
   gchar               *string = value->data[0].v_pointer;
 
+#ifdef __GNUC__
+#warning FIXME: use GParamSpecString::ensure_non_null and chain up once we depend on glib 2.12.12 or newer
+#endif
+
   if (string)
     {
       gchar *s;
 
-      if (! sspec->no_validate &&
+      if (sspec->non_empty && ! string[0])
+        {
+          if (!(value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS))
+            g_free (string);
+          else
+            value->data[1].v_uint &= ~G_VALUE_NOCOPY_CONTENTS;
+
+          value->data[0].v_pointer = g_strdup ("none");
+          return TRUE;
+        }
+
+      if (! sspec->allow_non_utf8 &&
           ! g_utf8_validate (string, -1, (const gchar **) &s))
         {
-          for (; *s; s++)
+          if (value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS)
+            {
+              value->data[0].v_pointer = g_strdup (string);
+              value->data[1].v_uint &= ~G_VALUE_NOCOPY_CONTENTS;
+              string = value->data[0].v_pointer;
+            }
+
+          for (s = string; *s; s++)
             if (*s < ' ')
               *s = '?';
 
@@ -376,7 +399,14 @@ gimp_param_string_validate (GParamSpec *pspec,
     }
   else if (! sspec->null_ok)
     {
+      value->data[1].v_uint &= ~G_VALUE_NOCOPY_CONTENTS;
       value->data[0].v_pointer = g_strdup ("");
+      return TRUE;
+    }
+  else if (sspec->non_empty)
+    {
+      value->data[1].v_uint &= ~G_VALUE_NOCOPY_CONTENTS;
+      value->data[0].v_pointer = g_strdup ("none");
       return TRUE;
     }
 
@@ -387,12 +417,15 @@ GParamSpec *
 gimp_param_spec_string (const gchar *name,
                         const gchar *nick,
                         const gchar *blurb,
-                        gboolean     no_validate,
+                        gboolean     allow_non_utf8,
                         gboolean     null_ok,
+                        gboolean     non_empty,
                         const gchar *default_value,
                         GParamFlags  flags)
 {
   GimpParamSpecString *sspec;
+
+  g_return_val_if_fail (! (null_ok && non_empty), NULL);
 
   sspec = g_param_spec_internal (GIMP_TYPE_PARAM_STRING,
                                  name, nick, blurb, flags);
@@ -402,8 +435,9 @@ gimp_param_spec_string (const gchar *name,
       g_free (G_PARAM_SPEC_STRING (sspec)->default_value);
       G_PARAM_SPEC_STRING (sspec)->default_value = g_strdup (default_value);
 
-      sspec->no_validate = no_validate ? TRUE : FALSE;
-      sspec->null_ok     = null_ok     ? TRUE : FALSE;
+      sspec->allow_non_utf8 = allow_non_utf8 ? TRUE : FALSE;
+      sspec->null_ok        = null_ok        ? TRUE : FALSE;
+      sspec->non_empty      = non_empty      ? TRUE : FALSE;
     }
 
   return G_PARAM_SPEC (sspec);
@@ -1795,7 +1829,7 @@ gimp_array_new (const guint8 *data,
   g_return_val_if_fail ((data == NULL && length == 0) ||
                         (data != NULL && length  > 0), NULL);
 
-  array = g_new0 (GimpArray, 1);
+  array = g_slice_new0 (GimpArray);
 
   array->data        = static_data ? (guint8 *) data : g_memdup (data, length);
   array->length      = length;
@@ -1821,7 +1855,7 @@ gimp_array_free (GimpArray *array)
       if (! array->static_data)
         g_free (array->data);
 
-      g_free (array);
+      g_slice_free (GimpArray, array);
     }
 }
 
@@ -2510,7 +2544,7 @@ gimp_string_array_new (const gchar **data,
   g_return_val_if_fail ((data == NULL && length == 0) ||
                         (data != NULL && length  > 0), NULL);
 
-  array = g_new0 (GimpArray, 1);
+  array = g_slice_new0 (GimpArray);
 
   if (! static_data)
     {
@@ -2559,7 +2593,7 @@ gimp_string_array_free (GimpArray *array)
           g_free (array->data);
         }
 
-      g_free (array);
+      g_slice_free (GimpArray, array);
     }
 }
 

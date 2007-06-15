@@ -1,3 +1,20 @@
+gimp (2.3.18-1) experimental; urgency=low
+
+  * Merge gimp-svg back into main package since librsvg2-2 no longer seems to
+    pull in GNOME packages
+
+ -- Ari Pollak <ari@debian.org>  Fri, 15 Jun 2007 13:33:06 -0400
+
+gimp (2.3.17-1) experimental; urgency=low
+
+  * New upstream release
+    - Improves autodetection of TGA files (Closes: #231525)
+  * Make gimp-gnomevfs depend on libgnomevfs2-extra so it can open
+    http/ftp/smb URIs
+  * Enable GtkPrint support with gtk 2.10 (Closes: #422195)
+
+ -- Ari Pollak <ari@debian.org>  Sun, 27 May 2007 14:01:31 -0400
+
 gimp (2.3.16-2) experimental; urgency=high
 
   * 02_sunras_CVS-2007-2356.patch:

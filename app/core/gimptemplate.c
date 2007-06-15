@@ -34,6 +34,7 @@
 #include "gimpcontext.h"
 #include "gimpimage.h"
 #include "gimplayer.h"
+#include "gimpprojection.h"
 #include "gimptemplate.h"
 
 #include "gimp-intl.h"
@@ -51,6 +52,8 @@
 #define DEFAULT_IMAGE_WIDTH   420
 #define DEFAULT_IMAGE_HEIGHT  300
 #endif
+
+#define DEFAULT_RESOLUTION    72.0
 
 
 enum
@@ -121,12 +124,12 @@ gimp_template_class_init (GimpTemplateClass *klass)
   GIMP_CONFIG_INSTALL_PROP_RESOLUTION (object_class, PROP_XRESOLUTION,
                                        "xresolution",
                                        N_("The horizontal image resolution."),
-                                       72.0,
+                                       DEFAULT_RESOLUTION,
                                        GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_RESOLUTION (object_class, PROP_YRESOLUTION,
                                        "yresolution",
                                        N_("The vertical image resolution."),
-                                       72.0,
+                                       DEFAULT_RESOLUTION,
                                        GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_UNIT (object_class, PROP_RESOLUTION_UNIT,
                                  "resolution-unit",
@@ -291,12 +294,15 @@ gimp_template_notify (GObject    *object,
 
   channels = ((template->image_type == GIMP_RGB ? 3 : 1)     /* color      */ +
               (template->fill_type == GIMP_TRANSPARENT_FILL) /* alpha      */ +
-              1                                              /* selection  */ +
-              (template->image_type == GIMP_RGB ? 4 : 2)     /* projection */);
+              1                                              /* selection  */);
 
   template->initial_size = ((guint64) channels        *
                             (guint64) template->width *
                             (guint64) template->height);
+
+  template->initial_size +=
+    gimp_projection_estimate_memsize (template->image_type,
+                                      template->width, template->height);
 
   if (! strcmp (pspec->name, "stock-id"))
     gimp_viewable_invalidate_preview (GIMP_VIEWABLE (object));

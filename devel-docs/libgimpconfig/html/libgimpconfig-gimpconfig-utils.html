@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpconfig-GimpConfigWriter.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2577467" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2556122" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2570123" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2580732" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpconfig-gimpconfig-utils"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2577467"></a><span class="refentrytitle">gimpconfig-utils</span>
+<a name="id2556122"></a><span class="refentrytitle">gimpconfig-utils</span>
 </h2>
 <p>gimpconfig-utils &#8212; Miscellaneous utility functions for libgimpconfig.</p>
 </td>
@@ -60,18 +60,18 @@ void                <a href="libgimpconfig-gimpconfig-utils.html#gimp-config-str
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2570123"></a><h2>Description</h2>
+<a name="id2580732"></a><h2>Description</h2>
 <p>
 Miscellaneous utility functions for libgimpconfig.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2570139"></a><h2>Details</h2>
+<a name="id2580748"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2570150"></a><h3>
+<a name="id2580759"></a><h3>
 <a name="gimp-config-diff"></a>gimp_config_diff ()</h3>
-<a class="indexterm" name="id2573205"></a><pre class="programlisting">GList*              gimp_config_diff                    (GObject *a,
+<a class="indexterm" name="id2564652"></a><pre class="programlisting">GList*              gimp_config_diff                    (GObject *a,
                                                          GObject *b,
                                                          GParamFlags flags);</pre>
 <p>
@@ -116,9 +116,9 @@ compared.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2559312"></a><h3>
+<a name="id2595126"></a><h3>
 <a name="gimp-config-sync"></a>gimp_config_sync ()</h3>
-<a class="indexterm" name="id2559326"></a><pre class="programlisting">gboolean            gimp_config_sync                    (GObject *src,
+<a class="indexterm" name="id2595141"></a><pre class="programlisting">gboolean            gimp_config_sync                    (GObject *src,
                                                          GObject *dest,
                                                          GParamFlags flags);</pre>
 <p>
@@ -167,9 +167,9 @@ synchronized</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2559524"></a><h3>
+<a name="id2595338"></a><h3>
 <a name="gimp-config-reset-properties"></a>gimp_config_reset_properties ()</h3>
-<a class="indexterm" name="id2559537"></a><pre class="programlisting">void                gimp_config_reset_properties        (GObject *object);</pre>
+<a class="indexterm" name="id2595352"></a><pre class="programlisting">void                gimp_config_reset_properties        (GObject *object);</pre>
 <p>
 Resets all writable properties of <em class="parameter"><code>object</code></em> to the default values as
 defined in their <span class="type">GParamSpec</span>. Properties marked as "construct-only"
@@ -193,9 +193,9 @@ If you want to reset a <a href="libgimpconfig-GimpConfig.html#GimpConfig"><span 
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570368"></a><h3>
+<a name="id2587038"></a><h3>
 <a name="gimp-config-reset-property"></a>gimp_config_reset_property ()</h3>
-<a class="indexterm" name="id2570382"></a><pre class="programlisting">void                gimp_config_reset_property          (GObject *object,
+<a class="indexterm" name="id2587052"></a><pre class="programlisting">void                gimp_config_reset_property          (GObject *object,
                                                          const gchar *property_name);</pre>
 <p>
 Resets the property named <em class="parameter"><code>property_name</code></em> to its default value.  The
@@ -223,9 +223,9 @@ property must be writable and must not be marked as "construct-only".</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570474"></a><h3>
+<a name="id2587145"></a><h3>
 <a name="gimp-config-string-append-escaped"></a>gimp_config_string_append_escaped ()</h3>
-<a class="indexterm" name="id2570488"></a><pre class="programlisting">void                gimp_config_string_append_escaped   (GString *string,
+<a class="indexterm" name="id2587161"></a><pre class="programlisting">void                gimp_config_string_append_escaped   (GString *string,
                                                          const gchar *val);</pre>
 <p>
 Escapes and quotes <em class="parameter"><code>val</code></em> and appends it to <em class="parameter"><code>string</code></em>. The escape

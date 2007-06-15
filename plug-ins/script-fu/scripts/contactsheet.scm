@@ -99,7 +99,8 @@
                           BACKGROUND-FILL)
       (gimp-selection-none img)
       (set! text-layer (car (gimp-text-fontname img -1 0 0
-                              (string-append _"Sheet " (number->string num)
+                              (string-append _"Contact Sheet "
+                                             (number->string num)
                                              _" for directory " dir)
                                              0 TRUE 14 PIXELS title-font)))
       (set! text-width (car (gimp-drawable-width text-layer)))
@@ -112,9 +113,9 @@
     )
   )
 
-  ;This routine should preserve the aspect ration of the original image
+  ;This routine should preserve the aspect ratio of the original image
   (define (make-thumbnail-size img thumb-w thumb-h)
-    (gimp-image-scale new-img thumb-w thumb-h)
+    (gimp-image-scale img thumb-w thumb-h)
   )
 
   (let* (
@@ -123,9 +124,8 @@
         (img-count 0)
         (pos-x 0)
         (pos-y 0)
+
         (sheet-data)
-        (sheet-img)
-        (sheet-layer)
         (sheet-width)
         (sheet-height)
         (thumb-w)
@@ -136,6 +136,10 @@
         (off-y)
         (max-x)
         (max-y)
+
+        (sheet-img)
+        (sheet-layer)
+
         (new-img)
         (file)
         (file-path)
@@ -180,7 +184,7 @@
           (if (and (not (re-match "index.*" file))
                    (= (file-type file-path) FILE-TYPE-FILE)
               )
-            (catch 'errobj
+            (catch ()
               (set! new-img
                     (car (gimp-file-load RUN-NONINTERACTIVE file-path file)))
 
@@ -272,7 +276,7 @@
 )
 
 (script-fu-register "script-fu-contactsheet"
-    _"Contact Sheet"
+    _"_Contact Sheet..."
     _"Create a series of images containing thumbnail sized versions of all of the images in a specified directory."
     "Kevin Cozens <kcozens@interlog.com>"
     "Kevin Cozens"
@@ -283,11 +287,10 @@
                                      "800 x 600"
                                      "1024 x 768"
                                      "1280 x 1024")
-    SF-FONT    _"Title font"       "Helvetica Bold Italic"
-    SF-FONT    _"Legend font"      "Helvetica Bold"
+    SF-FONT    _"Title font"       "Sans Bold Italic"
+    SF-FONT    _"Legend font"      "Sans Bold"
     SF-COLOR   _"Text color"       "white"
     SF-COLOR   _"Background color" "black"
 )
 
-(script-fu-menu-register "script-fu-contactsheet"
-                         "<Toolbox>/Xtns/Utils")
+(script-fu-menu-register "script-fu-contactsheet" "<Toolbox>/Xtns/_Utilities")

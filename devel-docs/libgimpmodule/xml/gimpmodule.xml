@@ -109,7 +109,7 @@ A <link linkend="GTypeModule"><type>GTypeModule</type></link> subclass which imp
 </programlisting>
 <para>
 <link linkend="GimpModule"><type>GimpModule</type></link> is a generic mechanism to dynamically load modules into
-the GIMP.  It is a <link linkend="GTypeModule"><type>GTypeModule</type></link> subclass, implementing module loading
+GIMP.  It is a <link linkend="GTypeModule"><type>GTypeModule</type></link> subclass, implementing module loading
 using <link linkend="GModule"><type>GModule</type></link>.  <link linkend="GimpModule"><type>GimpModule</type></link> does not know which functionality is
 implemented by the modules, it just provides a framework to get
 arbitrary <link linkend="GType"><type>GType</type></link> implementations loaded from disk.

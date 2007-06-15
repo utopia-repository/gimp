@@ -1,5 +1,5 @@
 /*
- * This is a plugin for the GIMP.
+ * This is a plugin for GIMP.
  *
  * Copyright (C) 1996 Stephen Norris
  *
@@ -39,7 +39,7 @@
  * Ported to GIMP Plug-in API 1.0
  *    by Eiichi Takamori <taka@ma1.seikyou.ne.jp>
  *
- * $Id: plasma.c 19824 2006-05-16 12:26:20Z neo $
+ * $Id: plasma.c 22715 2007-06-06 08:44:52Z muks $
  *
  * A few functions names and their order are changed :)
  * Plasma implementation almost hasn't been changed.

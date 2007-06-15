@@ -6,7 +6,7 @@ gimprc \- gimp configuration file
 .SH DESCRIPTION
 The
 .B gimprc
-file is a configuration file read by the GIMP when it starts up.  There
+file is a configuration file read by GIMP when it starts up.  There
 are two of these: one system-wide one stored in
 @gimpsysconfdir@/gimprc and a per-user \fB$HOME\fP/@gimpdir@/gimprc
 which may override system settings.
@@ -285,8 +285,7 @@ extra-large, huge, enormous and gigantic.
 .TP
 (thumbnail-size normal)
 
-Sets the size of the thumbnail shown in the Open dialog. Note that GIMP can
-not create thumbnails if layer previews are disabled.  Possible values are
+Sets the size of the thumbnail shown in the Open dialog.  Possible values are
 none, normal and large.
 
 .TP
@@ -725,7 +724,7 @@ specified in bytes, kilobytes, megabytes or gigabytes. If no suffix is
 specified the size defaults to being specified in kilobytes.
 
 .TP
-(toolbox-color-area no)
+(toolbox-color-area yes)
 
 The toolbox-color-area property has no description.  Possible values are yes
 and no.

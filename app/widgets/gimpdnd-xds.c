@@ -40,6 +40,7 @@
 
 #include "plug-in/gimppluginmanager.h"
 
+#include "file/file-procedure.h"
 #include "file/file-save.h"
 #include "file/file-utils.h"
 
@@ -80,11 +81,11 @@ gimp_dnd_xds_source_set (GdkDragContext *context,
 
   D (g_printerr ("\ngimp_dnd_xds_source_set\n"));
 
-  property = gdk_atom_intern ("XdndDirectSave0", FALSE);
+  property = gdk_atom_intern_static_string ("XdndDirectSave0");
 
   if (image)
     {
-      GdkAtom  type     = gdk_atom_intern ("text/plain", FALSE);
+      GdkAtom  type     = gdk_atom_intern_static_string ("text/plain");
       gchar   *filename = gimp_image_get_filename (image);
       gchar   *basename;
 
@@ -120,8 +121,8 @@ gimp_dnd_xds_save_image (GdkDragContext   *context,
                          GtkSelectionData *selection)
 {
   GimpPlugInProcedure *proc;
-  GdkAtom              property = gdk_atom_intern ("XdndDirectSave0", FALSE);
-  GdkAtom              type     = gdk_atom_intern ("text/plain", FALSE);
+  GdkAtom              property;
+  GdkAtom              type;
   gint                 length;
   guchar              *data;
   gchar               *uri;
@@ -132,6 +133,9 @@ gimp_dnd_xds_save_image (GdkDragContext   *context,
 
   D (g_printerr ("\ngimp_dnd_xds_save_image\n"));
 
+  property = gdk_atom_intern_static_string ("XdndDirectSave0");
+  type     = gdk_atom_intern_static_string ("text/plain");
+
   if (! gdk_property_get (context->source_window, property, type,
                           0, MAX_URI_LEN, FALSE,
                           NULL, NULL, &length, &data))
@@ -141,8 +145,8 @@ gimp_dnd_xds_save_image (GdkDragContext   *context,
   uri = g_strndup ((const gchar *) data, length);
   g_free (data);
 
-  proc =
-    file_utils_find_proc (image->gimp->plug_in_manager->save_procs, uri, NULL);
+  proc = file_procedure_find (image->gimp->plug_in_manager->save_procs, uri,
+                              NULL);
 
   if (proc)
     {

@@ -67,8 +67,9 @@ libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 am_libgimpcolor_2_0_la_OBJECTS = gimpadaptivesupersample.lo \
-	gimpbilinear.lo gimpcmyk.lo gimpcolorspace.lo gimphsl.lo \
-	gimphsv.lo gimprgb.lo gimprgb-parse.lo
+	gimpbilinear.lo gimpcmyk.lo gimpcolormanaged.lo \
+	gimpcolorspace.lo gimphsl.lo gimphsv.lo gimprgb.lo \
+	gimprgb-parse.lo
 libgimpcolor_2_0_la_OBJECTS = $(am_libgimpcolor_2_0_la_OBJECTS)
 test_color_parser_SOURCES = test-color-parser.c
 test_color_parser_OBJECTS = test-color-parser.$(OBJEXT)
@@ -120,6 +121,7 @@ BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
 BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
+CARBON_LDFLAGS = @CARBON_LDFLAGS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -154,6 +156,8 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ENABLE_GIMP_CONSOLE_FALSE = @ENABLE_GIMP_CONSOLE_FALSE@
 ENABLE_GIMP_CONSOLE_TRUE = @ENABLE_GIMP_CONSOLE_TRUE@
+ENABLE_GTK_DOC_APP_FALSE = @ENABLE_GTK_DOC_APP_FALSE@
+ENABLE_GTK_DOC_APP_TRUE = @ENABLE_GTK_DOC_APP_TRUE@
 ENABLE_GTK_DOC_FALSE = @ENABLE_GTK_DOC_FALSE@
 ENABLE_GTK_DOC_TRUE = @ENABLE_GTK_DOC_TRUE@
 EXEEXT = @EXEEXT@
@@ -376,7 +380,8 @@ SVG = @SVG@
 SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
-TIFF = @TIFF@
+TIFF_LOAD = @TIFF_LOAD@
+TIFF_SAVE = @TIFF_SAVE@
 URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
 URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
 URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
@@ -488,6 +493,8 @@ libgimpcolor_2_0_la_SOURCES = \
 	gimpbilinear.h			\
 	gimpcmyk.c			\
 	gimpcmyk.h			\
+	gimpcolormanaged.c		\
+	gimpcolormanaged.h		\
 	gimpcolorspace.c		\
 	gimpcolorspace.h		\
 	gimphsl.c			\
@@ -504,6 +511,7 @@ libgimpcolorinclude_HEADERS = \
 	gimpadaptivesupersample.h	\
 	gimpbilinear.h			\
 	gimpcmyk.h			\
+	gimpcolormanaged.h		\
 	gimpcolorspace.h		\
 	gimphsl.h			\
 	gimphsv.h			\
@@ -604,6 +612,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpadaptivesupersample.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbilinear.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcmyk.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcolormanaged.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcolorspace.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphsl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphsv.Plo@am__quote@

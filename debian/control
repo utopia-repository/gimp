@@ -6,7 +6,7 @@ Standards-Version: 3.6.1
 Build-Depends: debhelper (>= 5), cdbs (>= 0.4.37), autotools-dev,
  patchutils, gettext, intltool, libx11-dev, libice-dev, libsm-dev,
  libxmu-dev, libxpm-dev, libxt-dev,
- libaa1-dev, libgtk2.0-dev (>= 2.8.17), libglib2.0-dev (>= 2.10.2),
+ libaa1-dev, libgtk2.0-dev (>= 2.10.0), libglib2.0-dev (>= 2.10.2),
  libpango1.0-dev (>= 1.12.2), libgtkhtml2-dev (>= 2.0.0), libjpeg62-dev,
  libart-2.0-dev, libpng12-dev | libpng-dev,
  zlib1g-dev, libtiff4-dev, python-dev (>= 2.3.5), python-gtk2-dev (>= 2.8.0),
@@ -17,8 +17,8 @@ Build-Depends: debhelper (>= 5), cdbs (>= 0.4.37), autotools-dev,
  libgnomeui-dev (>= 2.10.0), libcurl3-gnutls-dev,
  libasound2-dev (>= 1.0.0) [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386]
 Build-Conflicts: libgimp2.0
-XS-Vcs-Svn: svn://svn.debian.org/svn/collab-maint/deb-maint/gimp
-XS-Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/deb-maint/gimp
+XS-Vcs-Svn: svn://svn.debian.org/svn/collab-maint/deb-maint/gimp/
+XS-Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/deb-maint/gimp/
 
 Package: libgimp2.0
 Architecture: any
@@ -58,18 +58,10 @@ Description: Python support and plugins for The GIMP
   * Sphere: Generate simple spheres with drop shadows
   * Whirl and Pinch: Distorts an image by whirling and pinching
 
-Package: gimp-svg
-Architecture: any
-Section: graphics
-Depends: gimp (>= ${source:Version}), ${shlibs:Depends}
-Description: SVG (Scalable Vector Graphics) plugin for The GIMP
- This package includes the plugin necessary for opening SVG (Scalable
- Vector Graphics) files in The GIMP.
-
 Package: gimp-gnomevfs
 Architecture: any
 Section: graphics
-Depends: gimp (= ${source:Version}), ${shlibs:Depends}
+Depends: gimp (= ${source:Version}), libgnomevfs2-extra, ${shlibs:Depends}
 Conflicts: gimp-libcurl, gimp (<= 2.3.12-2)
 Replaces: gimp-libcurl, gimp (<= 2.3.12-2)
 Description: GNOME-VFS URI plugin for The GIMP
@@ -90,10 +82,10 @@ Package: gimp
 Architecture: any
 Section: graphics
 Depends: gimp-data (>= ${source:Upstream-Version}), gimp-data (<< ${source:Upstream-Version}-z), ${shlibs:Depends}
-Conflicts: gimp-data (<< 2.3.8-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2)
-Replaces: gimp-data (<< 2.3.8-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2)
-Recommends: gimp-gnomevfs | gimp-libcurl, gimp-svg, gimp-print
-Suggests: gimp-help-en | gimp-help, gimp-python, libgimp-perl, gimp-data-extras, gimp-dbg
+Conflicts: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2)
+Replaces: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2)
+Recommends: gimp-gnomevfs | gimp-libcurl
+Suggests: gimp-help-en | gimp-help, gimp-python, libgimp-perl, gimp-data-extras, gimp-print, gimp-dbg
 Description: The GNU Image Manipulation Program - DEVELOPMENT VERSION
  The GIMP lets you draw, paint, edit images, and much more! GIMP
  includes the functionality and plug-ins of other famous image

@@ -16,6 +16,7 @@
 
 
 
+
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
 VPATH = @srcdir@
@@ -38,6 +39,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+noinst_PROGRAMS = gimp-thumbnail-list$(EXEEXT)
 subdir = libgimpthumb
 DIST_COMMON = $(libgimpthumbinclude_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
@@ -71,6 +73,11 @@ libgimpthumb_2_0_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 am_libgimpthumb_2_0_la_OBJECTS = gimpthumb-enums.lo gimpthumb-error.lo \
 	gimpthumb-utils.lo gimpthumbnail.lo
 libgimpthumb_2_0_la_OBJECTS = $(am_libgimpthumb_2_0_la_OBJECTS)
+PROGRAMS = $(noinst_PROGRAMS)
+gimp_thumbnail_list_SOURCES = gimp-thumbnail-list.c
+gimp_thumbnail_list_OBJECTS = gimp-thumbnail-list.$(OBJEXT)
+am__DEPENDENCIES_3 = $(top_builddir)/libgimpthumb/libgimpthumb-$(GIMP_API_VERSION).la
+gimp_thumbnail_list_DEPENDENCIES = $(am__DEPENDENCIES_3)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -82,8 +89,8 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(libgimpthumb_2_0_la_SOURCES)
-DIST_SOURCES = $(libgimpthumb_2_0_la_SOURCES)
+SOURCES = $(libgimpthumb_2_0_la_SOURCES) gimp-thumbnail-list.c
+DIST_SOURCES = $(libgimpthumb_2_0_la_SOURCES) gimp-thumbnail-list.c
 DATA = $(noinst_DATA)
 libgimpthumbincludeHEADERS_INSTALL = $(INSTALL_HEADER)
 HEADERS = $(libgimpthumbinclude_HEADERS)
@@ -118,6 +125,7 @@ BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
 BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
+CARBON_LDFLAGS = @CARBON_LDFLAGS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -152,6 +160,8 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ENABLE_GIMP_CONSOLE_FALSE = @ENABLE_GIMP_CONSOLE_FALSE@
 ENABLE_GIMP_CONSOLE_TRUE = @ENABLE_GIMP_CONSOLE_TRUE@
+ENABLE_GTK_DOC_APP_FALSE = @ENABLE_GTK_DOC_APP_FALSE@
+ENABLE_GTK_DOC_APP_TRUE = @ENABLE_GTK_DOC_APP_TRUE@
 ENABLE_GTK_DOC_FALSE = @ENABLE_GTK_DOC_FALSE@
 ENABLE_GTK_DOC_TRUE = @ENABLE_GTK_DOC_TRUE@
 EXEEXT = @EXEEXT@
@@ -374,7 +384,8 @@ SVG = @SVG@
 SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
-TIFF = @TIFF@
+TIFF_LOAD = @TIFF_LOAD@
+TIFF_SAVE = @TIFF_SAVE@
 URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
 URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
 URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
@@ -457,6 +468,7 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
+libgimpthumb = $(top_builddir)/libgimpthumb/libgimpthumb-$(GIMP_API_VERSION).la
 @PLATFORM_WIN32_TRUE@no_undefined = -no-undefined
 @OS_WIN32_TRUE@gimpthumb_def = gimpthumb.def
 @OS_WIN32_TRUE@libgimpthumb_export_symbols = -export-symbols gimpthumb.def
@@ -502,6 +514,8 @@ libgimpthumb_2_0_la_LDFLAGS = \
 	$(libgimpthumb_export_symbols)
 
 libgimpthumb_2_0_la_LIBADD = $(libgimpmath) $(GDK_PIXBUF_LIBS)
+gimp_thumbnail_list_SURCES = gimp-thumbnail-list.c
+gimp_thumbnail_list_LDADD = $(libgimpthumb)
 
 #
 # rules to generate built sources
@@ -572,12 +586,23 @@ clean-libLTLIBRARIES:
 libgimpthumb-2.0.la: $(libgimpthumb_2_0_la_OBJECTS) $(libgimpthumb_2_0_la_DEPENDENCIES) 
 	$(LINK) -rpath $(libdir) $(libgimpthumb_2_0_la_LDFLAGS) $(libgimpthumb_2_0_la_OBJECTS) $(libgimpthumb_2_0_la_LIBADD) $(LIBS)
 
+clean-noinstPROGRAMS:
+	@list='$(noinst_PROGRAMS)'; for p in $$list; do \
+	  f=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
+	  echo " rm -f $$p $$f"; \
+	  rm -f $$p $$f ; \
+	done
+gimp-thumbnail-list$(EXEEXT): $(gimp_thumbnail_list_OBJECTS) $(gimp_thumbnail_list_DEPENDENCIES) 
+	@rm -f gimp-thumbnail-list$(EXEEXT)
+	$(LINK) $(gimp_thumbnail_list_LDFLAGS) $(gimp_thumbnail_list_OBJECTS) $(gimp_thumbnail_list_LDADD) $(LIBS)
+
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-thumbnail-list.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpthumb-enums.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpthumb-error.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpthumb-utils.Plo@am__quote@
@@ -708,7 +733,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(DATA) $(HEADERS)
+all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(DATA) $(HEADERS)
 installdirs:
 	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(libgimpthumbincludedir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
@@ -741,7 +766,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
-	mostlyclean-am
+	clean-noinstPROGRAMS mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -791,19 +816,19 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	uninstall-libgimpthumbincludeHEADERS uninstall-local
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool ctags distclean \
-	distclean-compile distclean-generic distclean-libtool \
-	distclean-tags distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am \
-	install-data-local install-exec install-exec-am install-info \
-	install-info-am install-libLTLIBRARIES \
-	install-libgimpthumbincludeHEADERS install-man install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am uninstall-info-am \
-	uninstall-libLTLIBRARIES uninstall-libgimpthumbincludeHEADERS \
-	uninstall-local
+	clean-libLTLIBRARIES clean-libtool clean-noinstPROGRAMS ctags \
+	distclean distclean-compile distclean-generic \
+	distclean-libtool distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-data-local install-exec \
+	install-exec-am install-info install-info-am \
+	install-libLTLIBRARIES install-libgimpthumbincludeHEADERS \
+	install-man install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
+	uninstall-am uninstall-info-am uninstall-libLTLIBRARIES \
+	uninstall-libgimpthumbincludeHEADERS uninstall-local
 
 
 @OS_WIN32_TRUE@install-libtool-import-lib:
@@ -832,7 +857,7 @@ install-data-local: install-ms-lib install-libtool-import-lib
 
 uninstall-local: uninstall-ms-lib uninstall-libtool-import-lib
 
-$(srcdir)/gimpthumb-enums.c: $(srcdir)/gimpthumb-enums.h $(GIMP_MKENUMS)
+gimpthumb-enums.c: $(srcdir)/gimpthumb-enums.h $(GIMP_MKENUMS)
 	$(GIMP_MKENUMS) \
 		--fhead "#include \"config.h\"\n#include <glib-object.h>\n#include \"gimpthumb-enums.h\"" \
 		--fprod "\n/* enumerations from \"@filename@\" */" \

@@ -29,22 +29,23 @@
 #include <unistd.h>
 #endif
 
-#include <glib.h>
+#include <glib-object.h>
 #include <glib/gstdio.h>
 
 #ifndef LIBGIMP_COMPILATION
 #define LIBGIMP_COMPILATION
 #endif
 
+#include "gimpbasetypes.h"
+
 #include "gimpenv.h"
 #include "gimpversion.h"
 #include "gimpreloc.h"
 
-
 #ifdef G_OS_WIN32
 #define STRICT
-#define WIN32_LEAN_AND_MEAN     /* without it DATADIR in objidl.h will collide */
-#include <windows.h>            /* For GetModuleFileName */
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 #include <io.h>
 #ifndef S_IWUSR
 # define S_IWUSR _S_IWRITE
@@ -61,6 +62,16 @@
 #define gid_t gint
 #define geteuid() 0
 #define getegid() 0
+#endif
+
+#ifndef G_OS_WIN32
+#ifndef HAVE_CARBON
+#include "xdg-user-dir.h"
+#endif
+#endif
+
+#ifdef HAVE_CARBON
+#include <CoreServices/CoreServices.h>
 #endif
 
 
@@ -222,25 +233,6 @@ gimp_directory (void)
     }
 
   return gimp_dir;
-}
-
-/**
- * gimp_personal_rc_file:
- * @basename: The basename of a rc_file.
- *
- * Returns the name of a file in the user-specific GIMP settings directory.
- *
- * The returned string is allocated dynamically and *SHOULD* be freed
- * with g_free() after use. The returned string is in the encoding used
- * for filenames by the system, which isn't necessarily UTF-8 (never
- * is on Windows).
- *
- * Returns: The name of a file in the user-specific GIMP settings directory.
- **/
-gchar *
-gimp_personal_rc_file (const gchar *basename)
-{
-  return g_build_filename (gimp_directory (), basename, NULL);
 }
 
 static const gchar *
@@ -416,6 +408,169 @@ gimp_sysconf_directory (void)
   return gimp_sysconf_dir;
 }
 
+#ifdef G_OS_WIN32
+
+#undef DATADIR			/* Collision otherwise */
+
+#include <shlobj.h>
+
+#ifndef CSIDL_MYDOCUMENTS
+#define CSIDL_MYDOCUMENTS 0x000C
+#endif
+#ifndef CSIDL_MYMUSIC
+#define CSIDL_MYMUSIC 0x000D
+#endif
+#ifndef CSIDL_MYVIDEO
+#define CSIDL_MYVIDEO 0x000E
+#endif
+
+static gchar *
+get_special_folder (int csidl)
+{
+  union {
+    char c[MAX_PATH+1];
+    wchar_t wc[MAX_PATH+1];
+  } path;
+  HRESULT hr;
+  LPITEMIDLIST pidl = NULL;
+  BOOL b;
+  gchar *retval = NULL;
+
+  hr = SHGetSpecialFolderLocation (NULL, csidl, &pidl);
+  if (hr == S_OK)
+    {
+      b = SHGetPathFromIDListW (pidl, path.wc);
+      if (b)
+	retval = g_utf16_to_utf8 (path.wc, -1, NULL, NULL, NULL);
+      CoTaskMemFree (pidl);
+    }
+
+  return retval;
+}
+#endif
+
+#ifdef HAVE_CARBON
+static gchar *
+find_folder (OSType type)
+{
+  gchar *filename = NULL;
+  FSRef  found;
+
+  if (FSFindFolder (kUserDomain, type, kDontCreateFolder, &found) == noErr)
+    {
+      CFURLRef url = CFURLCreateFromFSRef (kCFAllocatorSystemDefault, &found);
+
+      if (url)
+	{
+	  CFStringRef path = CFURLCopyFileSystemPath (url, kCFURLPOSIXPathStyle);
+
+	  if (path)
+	    {
+	      filename = g_strdup (CFStringGetCStringPtr (path, kCFStringEncodingUTF8));
+
+	      if (! filename)
+		{
+		  filename = g_new0 (gchar, CFStringGetLength (path) * 3 + 1);
+
+		  CFStringGetCString (path, filename,
+				      CFStringGetLength (path) * 3 + 1,
+				      kCFStringEncodingUTF8);
+		}
+
+	      CFRelease (path);
+	    }
+
+	  CFRelease (url);
+	}
+    }
+
+  return filename;
+}
+#endif
+
+/**
+ * gimp_user_directory:
+ * @type: the type of user directory to retrieve
+ *
+ * Identifies special folders used frequently by applications, but
+ * which may not have the same name or location on any given system.
+
+ * Plug-ins may want to use this function to add shortcuts to such
+ * folders to a file-chooser.
+ *
+ * Returns: a newly allocated directory name in filesystem encoding,
+ *          or %NULL
+ *
+ * Since: GIMP 2.4
+ **/
+gchar *
+gimp_user_directory (GimpUserDirectory type)
+{
+  switch (type)
+    {
+#ifdef G_OS_WIN32
+    case GIMP_USER_DIRECTORY_DESKTOP:
+      return get_special_folder (CSIDL_DESKTOPDIRECTORY);
+
+    case GIMP_USER_DIRECTORY_DOCUMENTS:
+      return get_special_folder (CSIDL_MYDOCUMENTS);
+
+    case GIMP_USER_DIRECTORY_MUSIC:
+      return get_special_folder (CSIDL_MYMUSIC);
+
+    case GIMP_USER_DIRECTORY_PICTURES:
+      return get_special_folder (CSIDL_MYPICTURES);
+
+    case GIMP_USER_DIRECTORY_TEMPLATES:
+      return get_special_folder (CSIDL_TEMPLATES);
+
+    case GIMP_USER_DIRECTORY_VIDEOS:
+      return get_special_folder (CSIDL_MYVIDEO);
+
+#elif HAVE_CARBON
+    case GIMP_USER_DIRECTORY_DESKTOP:
+      return find_folder (kDesktopFolderType);
+
+    case GIMP_USER_DIRECTORY_DOCUMENTS:
+      return find_folder (kDocumentsFolderType);
+
+    case GIMP_USER_DIRECTORY_MUSIC:
+      return find_folder (kMusicDocumentsFolderType);
+
+    case GIMP_USER_DIRECTORY_PICTURES:
+      return find_folder (kPictureDocumentsFolderType);
+
+    case GIMP_USER_DIRECTORY_TEMPLATES:
+      return NULL;
+
+    case GIMP_USER_DIRECTORY_VIDEOS:
+      return find_folder (kMovieDocumentsFolderType);
+
+#else
+    case GIMP_USER_DIRECTORY_DESKTOP:
+      return _xdg_user_dir_lookup ("DESKTOP");
+
+    case GIMP_USER_DIRECTORY_DOCUMENTS:
+      return _xdg_user_dir_lookup ("DOCUMENTS");
+
+    case GIMP_USER_DIRECTORY_MUSIC:
+      return _xdg_user_dir_lookup ("MUSIC");
+
+    case GIMP_USER_DIRECTORY_PICTURES:
+      return _xdg_user_dir_lookup ("PICTURES");
+
+    case GIMP_USER_DIRECTORY_TEMPLATES:
+      return _xdg_user_dir_lookup ("TEMPLATES");
+
+    case GIMP_USER_DIRECTORY_VIDEOS:
+      return _xdg_user_dir_lookup ("VIDEOS");
+
+#endif
+    default:
+      return NULL;
+    }
+}
+
 /**
  * gimp_plug_in_directory:
  *
@@ -448,15 +603,34 @@ gimp_plug_in_directory (void)
 }
 
 /**
+ * gimp_personal_rc_file:
+ * @basename: The basename of a rc_file.
+ *
+ * Returns the name of a file in the user-specific GIMP settings directory.
+ *
+ * The returned string is allocated dynamically and *SHOULD* be freed
+ * with g_free() after use. The returned string is in the encoding used
+ * for filenames by the system, which isn't necessarily UTF-8 (never
+ * is on Windows).
+ *
+ * Returns: The name of a file in the user-specific GIMP settings directory.
+ **/
+gchar *
+gimp_personal_rc_file (const gchar *basename)
+{
+  return g_build_filename (gimp_directory (), basename, NULL);
+}
+
+/**
  * gimp_gtkrc:
  *
- * Returns the name of the GIMP's application-specific gtkrc file.
+ * Returns the name of GIMP's application-specific gtkrc file.
  *
  * The returned string is owned by GIMP and must not be modified or
  * freed. The returned string is in the encoding used for filenames by
  * the system, which isn't necessarily UTF-8 (never is on Windows).
  *
- * Returns: The name of the GIMP's application-specific gtkrc file.
+ * Returns: The name of GIMP's application-specific gtkrc file.
  **/
 const gchar *
 gimp_gtkrc (void)

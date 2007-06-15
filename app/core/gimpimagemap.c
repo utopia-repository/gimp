@@ -69,9 +69,10 @@ static GimpImage     * gimp_image_map_get_image      (GimpPickable *pickable);
 static GimpImageType   gimp_image_map_get_image_type (GimpPickable *pickable);
 static gint            gimp_image_map_get_bytes      (GimpPickable *pickable);
 static TileManager   * gimp_image_map_get_tiles      (GimpPickable *pickable);
-static guchar        * gimp_image_map_get_color_at   (GimpPickable *pickable,
+static gboolean        gimp_image_map_get_pixel_at   (GimpPickable *pickable,
                                                       gint          x,
-                                                      gint          y);
+                                                      gint          y,
+                                                      guchar       *pixel);
 
 static gboolean        gimp_image_map_do             (GimpImageMap *image_map);
 
@@ -109,7 +110,7 @@ gimp_image_map_pickable_iface_init (GimpPickableInterface *iface)
   iface->get_image_type = gimp_image_map_get_image_type;
   iface->get_bytes      = gimp_image_map_get_bytes;
   iface->get_tiles      = gimp_image_map_get_tiles;
-  iface->get_color_at   = gimp_image_map_get_color_at;
+  iface->get_pixel_at   = gimp_image_map_get_pixel_at;
 }
 
 static void
@@ -190,10 +191,11 @@ gimp_image_map_get_tiles (GimpPickable *pickable)
     return gimp_pickable_get_tiles (GIMP_PICKABLE (image_map->drawable));
 }
 
-static guchar *
-gimp_image_map_get_color_at (GimpPickable *pickable,
+static gboolean
+gimp_image_map_get_pixel_at (GimpPickable *pickable,
                              gint          x,
-                             gint          y)
+                             gint          y,
+                             guchar       *pixel)
 {
   GimpImageMap *image_map = GIMP_IMAGE_MAP (pickable);
   GimpItem     *item      = GIMP_ITEM (image_map->drawable);
@@ -212,35 +214,21 @@ gimp_image_map_get_color_at (GimpPickable *pickable,
           if (x >= offset_x && x < offset_x + width &&
               y >= offset_y && y < offset_y + height)
             {
-              guchar  src[5];
-              guchar *dest;
-
-              dest = g_new (guchar, 5);
-
               read_pixel_data_1 (image_map->undo_tiles,
                                  x - offset_x,
                                  y - offset_y,
-                                 src);
+                                 pixel);
 
-              gimp_image_get_color (gimp_item_get_image (item),
-                                    gimp_drawable_type (image_map->drawable),
-                                    src, dest);
-
-              if (gimp_drawable_is_indexed (image_map->drawable))
-                dest[4] = src[0];
-              else
-                dest[4] = 0;
-
-              return dest;
+              return TRUE;
             }
         }
 
-      return gimp_pickable_get_color_at (GIMP_PICKABLE (image_map->drawable),
-                                         x, y);
+      return gimp_pickable_get_pixel_at (GIMP_PICKABLE (image_map->drawable),
+                                         x, y, pixel);
     }
   else /* out of bounds error */
     {
-      return NULL;
+      return FALSE;
     }
 }
 

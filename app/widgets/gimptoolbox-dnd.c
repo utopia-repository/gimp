@@ -154,7 +154,7 @@ gimp_toolbox_drop_uri_list (GtkWidget *widget,
         {
           gchar *filename = file_utils_uri_display_name (uri);
 
-          gimp_message (context->gimp, NULL, GIMP_MESSAGE_ERROR,
+          gimp_message (context->gimp, G_OBJECT (widget), GIMP_MESSAGE_ERROR,
                         _("Opening '%s' failed:\n\n%s"),
                         filename, error->message);
 
@@ -171,10 +171,10 @@ gimp_toolbox_drop_drawable (GtkWidget    *widget,
                             GimpViewable *viewable,
                             gpointer      data)
 {
-  GimpContext       *context = GIMP_CONTEXT (data);
-  GimpDrawable      *drawable;
-  GimpItem          *item;
-  GimpImage         *image;
+  GimpContext       *context  = GIMP_CONTEXT (data);
+  GimpDrawable      *drawable = GIMP_DRAWABLE (viewable);
+  GimpItem          *item     = GIMP_ITEM (viewable);
+  GimpImage         *image    = gimp_item_get_image (item);
   GimpImage         *new_image;
   GimpLayer         *new_layer;
   GType              new_type;
@@ -185,10 +185,6 @@ gimp_toolbox_drop_drawable (GtkWidget    *widget,
 
   if (context->gimp->busy)
     return;
-
-  drawable = GIMP_DRAWABLE (viewable);
-  item     = GIMP_ITEM (viewable);
-  image    = gimp_item_get_image (item);
 
   width  = gimp_item_width  (item);
   height = gimp_item_height (item);
@@ -221,6 +217,11 @@ gimp_toolbox_drop_drawable (GtkWidget    *widget,
 
   gimp_item_offsets (GIMP_ITEM (new_layer), &off_x, &off_y);
   gimp_item_translate (GIMP_ITEM (new_layer), -off_x, -off_y, FALSE);
+  gimp_item_set_visible (GIMP_ITEM (new_layer), TRUE, FALSE);
+  gimp_item_set_linked (GIMP_ITEM (new_layer), FALSE, FALSE);
+  gimp_layer_set_mode (new_layer, GIMP_NORMAL_MODE, FALSE);
+  gimp_layer_set_opacity (new_layer, GIMP_OPACITY_OPAQUE, FALSE);
+  gimp_layer_set_lock_alpha (new_layer, FALSE, FALSE);
 
   gimp_image_add_layer (new_image, new_layer, 0);
 

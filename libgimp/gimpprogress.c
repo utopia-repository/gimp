@@ -30,31 +30,30 @@
 #include "gimp.h"
 
 
-typedef struct _GimpProgressData GimpProgressData;
-
-struct _GimpProgressData
+typedef struct
 {
   gchar              *progress_callback;
   GimpProgressVtable  vtable;
   gpointer            data;
-};
+} GimpProgressData;
 
 
 /*  local function prototypes  */
 
-static void   gimp_temp_progress_run (const gchar      *name,
-                                      gint              nparams,
-                                      const GimpParam  *param,
-                                      gint             *nreturn_vals,
-                                      GimpParam       **return_vals);
+static void   gimp_progress_data_free (GimpProgressData *data);
+
+static void   gimp_temp_progress_run  (const gchar      *name,
+                                       gint              nparams,
+                                       const GimpParam  *param,
+                                       gint             *nreturn_vals,
+                                       GimpParam       **return_vals);
 
 
 /*  private variables  */
 
-static GHashTable   * gimp_progress_ht      = NULL;
-
-static gdouble        gimp_progress_current = 0.0;
-static const gdouble  gimp_progress_step    = (1.0 / 300.0);
+static GHashTable    * gimp_progress_ht      = NULL;
+static gdouble         gimp_progress_current = 0.0;
+static const gdouble   gimp_progress_step    = (1.0 / 256.0);
 
 
 /*  public functions  */
@@ -154,10 +153,14 @@ gimp_progress_install_vtable (const GimpProgressVtable *vtable,
 
       /* Now add to hash table so we can find it again */
       if (! gimp_progress_ht)
-        gimp_progress_ht = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                  g_free, g_free);
+        {
+          gimp_progress_ht =
+            g_hash_table_new_full (g_str_hash, g_str_equal,
+                                   g_free,
+                                   (GDestroyNotify) gimp_progress_data_free);
+        }
 
-      progress_data = g_new0 (GimpProgressData, 1);
+      progress_data = g_slice_new0 (GimpProgressData);
 
       progress_data->progress_callback = progress_callback;
       progress_data->vtable.start      = vtable->start;
@@ -335,8 +338,26 @@ gimp_progress_update (gdouble percentage)
     {
       changed =
         (fabs (gimp_progress_current - percentage) > gimp_progress_step);
+
+#ifdef GIMP_UNSTABLE
+      if (! changed)
+        {
+          static gboolean warned = FALSE;
+          static gint     count  = 0;
+
+          count++;
+
+          if (count > 3 && ! warned)
+            {
+              g_printerr ("%s is updating the progress too often\n",
+                          g_get_prgname ());
+              warned = TRUE;
+            }
+        }
+#endif
     }
 
+  /*  Suppress the update if the change was only marginal.  */
   if (! changed)
     return TRUE;
 
@@ -347,6 +368,12 @@ gimp_progress_update (gdouble percentage)
 
 
 /*  private functions  */
+
+static void
+gimp_progress_data_free (GimpProgressData *data)
+{
+  g_slice_free (GimpProgressData, data);
+}
 
 static void
 gimp_temp_progress_run (const gchar      *name,

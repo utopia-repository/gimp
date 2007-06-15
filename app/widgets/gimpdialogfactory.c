@@ -195,7 +195,8 @@ gimp_dialog_factory_finalize (GObject *object)
       g_free (entry->blurb);
       g_free (entry->stock_id);
       g_free (entry->help_id);
-      g_free (entry);
+
+      g_slice_free (GimpDialogFactoryEntry, entry);
     }
 
   if (factory->registered_dialogs)
@@ -301,7 +302,7 @@ gimp_dialog_factory_register_entry (GimpDialogFactory *factory,
   g_return_if_fail (GIMP_IS_DIALOG_FACTORY (factory));
   g_return_if_fail (identifier != NULL);
 
-  entry = g_new0 (GimpDialogFactoryEntry, 1);
+  entry = g_slice_new0 (GimpDialogFactoryEntry);
 
   entry->identifier       = g_strdup (identifier);
   entry->name             = g_strdup (name);
@@ -798,7 +799,7 @@ gimp_dialog_factory_add_dialog (GimpDialogFactory *factory,
 
       if (! list) /*  didn't find a session info  */
         {
-          info = g_new0 (GimpSessionInfo, 1);
+          info = gimp_session_info_new ();
 
           info->widget = dialog;
 
@@ -857,7 +858,7 @@ gimp_dialog_factory_add_dialog (GimpDialogFactory *factory,
 
       if (! list) /*  didn't find a session info  */
         {
-          info = g_new0 (GimpSessionInfo, 1);
+          info = gimp_session_info_new ();
 
           info->widget = dialog;
 
@@ -994,7 +995,7 @@ gimp_dialog_factory_remove_dialog (GimpDialogFactory *factory,
               factory->session_infos = g_list_remove (factory->session_infos,
                                                       session_info);
 
-              g_free (session_info);
+              gimp_session_info_free (session_info);
             }
 
           break;
@@ -1277,7 +1278,7 @@ gimp_dialog_factories_save_foreach (gconstpointer      key,
           (info->toplevel_entry && ! info->toplevel_entry->session_managed))
         continue;
 
-      gimp_session_info_save (info, GIMP_OBJECT (factory)->name, writer);
+      gimp_session_info_serialize (writer, info, GIMP_OBJECT (factory)->name);
     }
 }
 

@@ -80,6 +80,11 @@
 <ANCHOR id="gimp-hsl-to-rgb-int" href="libgimpcolor/libgimpcolor-GimpColorSpace.html#gimp-hsl-to-rgb-int">
 <ANCHOR id="gimp-rgb-to-hsv4" href="libgimpcolor/libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsv4">
 <ANCHOR id="gimp-hsv-to-rgb4" href="libgimpcolor/libgimpcolor-GimpColorSpace.html#gimp-hsv-to-rgb4">
+<ANCHOR id="libgimpcolor-GimpColorManaged" href="libgimpcolor/libgimpcolor-GimpColorManaged.html">
+<ANCHOR id="GimpColorManaged" href="libgimpcolor/libgimpcolor-GimpColorManaged.html#GimpColorManaged">
+<ANCHOR id="GimpColorManagedInterface" href="libgimpcolor/libgimpcolor-GimpColorManaged.html#GimpColorManagedInterface">
+<ANCHOR id="gimp-color-managed-get-icc-profile" href="libgimpcolor/libgimpcolor-GimpColorManaged.html#gimp-color-managed-get-icc-profile">
+<ANCHOR id="gimp-color-managed-profile-changed" href="libgimpcolor/libgimpcolor-GimpColorManaged.html#gimp-color-managed-profile-changed">
 <ANCHOR id="libgimpcolor-GimpAdaptiveSupersample" href="libgimpcolor/libgimpcolor-GimpAdaptiveSupersample.html">
 <ANCHOR id="GimpProgressFunc" href="libgimpcolor/libgimpcolor-GimpAdaptiveSupersample.html#GimpProgressFunc">
 <ANCHOR id="GimpPutPixelFunc" href="libgimpcolor/libgimpcolor-GimpAdaptiveSupersample.html#GimpPutPixelFunc">

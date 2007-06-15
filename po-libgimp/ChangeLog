@@ -1,3 +1,46 @@
+2007-05-28  Wadim Dziedzic <wadimd@svn.gnome.org>
+
+	* pl.po: Updated Polish translation by GNOME PL Team. 
+
+2007-05-26  Artur Flinta  <aflinta@svn.gnome.org>
+
+	* pl.po: Updated Polish translation by GNOME PL Team.
+
+2007-05-16  Sven Neumann  <sven@gimp.org>
+
+	* de.po: applied patch from Ulf-D. Ehlert (bug #438886).
+
+2007-05-16  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Updated British English translation
+
+2007-05-10  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-05-06  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+	Joaquim Perez <noguer@gmail.com>.
+
+2007-05-06  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-05-05  Roozbeh Pournader  <roozbeh@farsiweb.info>
+
+	* fa.po: Added Persian translation by Meelad Zakaria and
+	  Farzad Ghanei.
+
+2007-05-04  Sven Neumann  <sven@gimp.org>
+
+	* POTFILES.in: removed gimpresolutionentry.c.
+
+2007-04-29  Christophe Merlet  <redfox@redfoxcenter.org>
+
+	* oc.po: Added Occitan translation from
+	Yannig MARCHEGAY <yannig@marchegay.org>.
+
 2007-04-21  Djihed Afifi <djihed@gmail.com> 
 
 	* ar.po: Updated Arabic Translation by Djihed Afifi.

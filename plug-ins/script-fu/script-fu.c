@@ -230,6 +230,7 @@ script_fu_run (const gchar      *name,
        *  The script-fu text console for interactive Scheme development
        */
 
+      ts_output_routine = NULL;
       script_fu_text_console_run (name, nparams, param,
                                   nreturn_vals, return_vals);
     }
@@ -313,7 +314,7 @@ script_fu_extension_init (void)
   gimp_plugin_menu_branch_register ("<Toolbox>/Xtns/Languages/Script-Fu",
                                     N_("_Test"));
   gimp_plugin_menu_branch_register ("<Toolbox>/Xtns",
-                                    N_("_Utils"));
+                                    N_("_Utilities"));
   gimp_plugin_menu_branch_register ("<Toolbox>/Xtns",
                                     N_("_Web Page Themes"));
   gimp_plugin_menu_branch_register ("<Toolbox>/Xtns/Web Page Themes",

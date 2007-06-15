@@ -52,20 +52,19 @@ if GIMP_UNSTABLE
 XSLTPARAMS = --stringparam debug-menu yes
 endif
 
-%.xml: %.xml.in menus.xsl dialogs-menuitems.xml
+%.xml: %.xml.in $(srcdir)/menus.xsl dialogs-menuitems.xml
 if HAVE_XSLTPROC
-	$(XSLTPROC) --xinclude $(XSLTPARAMS) menus.xsl $< > $(@) || rm -f $(@)
+	$(XSLTPROC) --xinclude $(XSLTPARAMS) $(srcdir)/menus.xsl $< > $(@) || rm -f $(@)
 else
-	@echo "xsltproc is needed to build the menus XML files"; exit 1;
+	@echo "*** xsltproc is required to build the menus XML files ***"; exit 1;
 endif
 
 
 validate: $(menudata_DATA)
 if HAVE_XMLLINT
-	@cd $(srcdir); \
-	for menu in $(menudata_DATA); do \
-	   $(XMLLINT) --noout --valid $$menu || \
-	   ( echo "* $$menu INVALID *"; exit 1; ) ; \
+	@for menu in $^; do \
+	   $(XMLLINT) --noout --path $(srcdir) --valid $$menu || \
+	   ( echo "*** $$menu INVALID ***"; exit 1; ) ; \
 	done
 endif
 

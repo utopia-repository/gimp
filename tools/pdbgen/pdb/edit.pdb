@@ -192,7 +192,7 @@ sub edit_paste_as_new {
 This procedure pastes a copy of the internal GIMP edit buffer to a new
 image.  The GIMP edit buffer will be empty unless a call was
 previously made to either gimp_edit_cut() or gimp_edit_copy(). This
-procedure returns the new image.
+procedure returns the new image or -1 if the edit buffer was empty.
 HELP
 
     &mitch_pdb_misc('2005', '2.4');
@@ -212,7 +212,9 @@ HELP
         success = FALSE;
     }
   else
-    success = FALSE;
+    {
+      image = NULL;
+    }
 }
 CODE
     );
@@ -232,7 +234,7 @@ HELP
     @inargs = (
 	{ name => 'drawable', type => 'drawable',
 	  desc => "The drawable to cut from" },
-        { name => 'buffer_name', type => 'string',
+        { name => 'buffer_name', type => 'string', non_empty => 1,
           desc => 'The name of the buffer to create' }
     );
     @outargs = (
@@ -244,7 +246,7 @@ HELP
     %invoke = (
 	code => <<CODE
 {
-  if (strlen (buffer_name) && gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (gimp_item_is_attached (GIMP_ITEM (drawable)))
     {
        GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
 
@@ -277,7 +279,7 @@ HELP
     @inargs = (
 	{ name => 'drawable', type => 'drawable',
 	  desc => "The drawable to copy from" },
-        { name => 'buffer_name', type => 'string',
+        { name => 'buffer_name', type => 'string', non_empty => 1,
           desc => 'The name of the buffer to create' }
     );
     @outargs = (
@@ -289,7 +291,7 @@ HELP
     %invoke = (
 	code => <<CODE
 {
-  if (strlen (buffer_name) && gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (gimp_item_is_attached (GIMP_ITEM (drawable)))
     {
        GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
 
@@ -323,7 +325,7 @@ HELP
     @inargs = (
 	{ name => 'image', type => 'image',
 	  desc => "The image to copy from" },
-        { name => 'buffer_name', type => 'string',
+        { name => 'buffer_name', type => 'string', non_empty => 1,
           desc => 'The name of the buffer to create' }
     );
 
@@ -335,16 +337,11 @@ HELP
     %invoke = (
 	code => <<CODE
 {
-  if (strlen (buffer_name))
-    {
-      real_name = (gchar *) gimp_edit_named_copy_visible (image, buffer_name,
-                                                          context);
+  real_name = (gchar *) gimp_edit_named_copy_visible (image, buffer_name,
+                                                      context);
 
-      if (real_name)
-        real_name = g_strdup (real_name);
-      else
-        success = FALSE;
-    }
+  if (real_name)
+    real_name = g_strdup (real_name);
   else
     success = FALSE;
 }
@@ -709,9 +706,9 @@ HELP
 	  desc => 'Use the reverse gradient' },
 	{ name => 'supersample', type => 'boolean',
 	  desc => 'Do adaptive supersampling' },
-	{ name => 'max_depth', type => '1 <= int32 <= 9', no_success => 1,
+	{ name => 'max_depth', type => '1 <= int32 <= 9', no_validate => 1,
 	  desc => 'Maximum recursion levels for supersampling' },
-	{ name => 'threshold', type => '0 <= float <= 4', no_success => 1,
+	{ name => 'threshold', type => '0 <= float <= 4', no_validate => 1,
 	  desc => 'Supersampling threshold' },
 	{ name => 'dither', type => 'boolean',
 	  desc => 'Use dithering to reduce banding' },
@@ -793,7 +790,7 @@ HELP
       g_object_set (desc, "method", GIMP_STROKE_METHOD_PAINT_CORE, NULL);
 
       success = gimp_item_stroke (GIMP_ITEM (gimp_image_get_mask (image)),
-                                  drawable, context, desc, TRUE);
+                                  drawable, context, desc, TRUE, progress);
 
       g_object_unref (desc);
     }
@@ -832,7 +829,7 @@ HELP
       g_object_set (desc, "method", GIMP_STROKE_METHOD_PAINT_CORE, NULL);
 
       success = gimp_item_stroke (GIMP_ITEM (vectors),
-                                  drawable, context, desc, TRUE);
+                                  drawable, context, desc, TRUE, progress);
 
       g_object_unref (desc);
     }

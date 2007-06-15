@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpexport.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2594443" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2578944" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2711053" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2711755" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpui"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2594443"></a><span class="refentrytitle">gimpui</span>
+<a name="id2578944"></a><span class="refentrytitle">gimpui</span>
 </h2>
 <p>gimpui &#8212; Common user interface functions. This header includes all other GIMP User
 Interface Library headers.</p>
@@ -64,7 +64,7 @@ void                <a href="libgimp-gimpui.html#gimp-window-set-transient-for-d
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2711053"></a><h2>Description</h2>
+<a name="id2711755"></a><h2>Description</h2>
 <p>
 Common user interface functions. This header includes all other GIMP User
 Interface Library headers.
@@ -72,11 +72,11 @@ Interface Library headers.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2711070"></a><h2>Details</h2>
+<a name="id2711772"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2711080"></a><h3>
+<a name="id2711782"></a><h3>
 <a name="gimp-ui-init"></a>gimp_ui_init ()</h3>
-<a class="indexterm" name="id2711092"></a><pre class="programlisting">void                gimp_ui_init                        (const gchar *prog_name,
+<a class="indexterm" name="id2711794"></a><pre class="programlisting">void                gimp_ui_init                        (const gchar *prog_name,
                                                          gboolean preview);</pre>
 <p>
 This function initializes GTK+ with <code class="function">gtk_init()</code> and initializes GDK's
@@ -84,7 +84,7 @@ image rendering subsystem (GdkRGB) to follow the GIMP main program's
 colormap allocation/installation policy.
 </p>
 <p>
-The GIMP's colormap policy can be determinded by the user with the
+GIMP's colormap policy can be determinded by the user with the
 gimprc variables <em class="parameter"><code>min_colors</code></em> and <em class="parameter"><code>install_cmap</code></em>.</p>
 <p>
 
@@ -110,9 +110,9 @@ gimprc variables <em class="parameter"><code>min_colors</code></em> and <em clas
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2707517"></a><h3>
+<a name="id2712725"></a><h3>
 <a name="gimp-ui-get-display-window"></a>gimp_ui_get_display_window ()</h3>
-<a class="indexterm" name="id2707530"></a><pre class="programlisting">GdkWindow*          gimp_ui_get_display_window          (guint32 gdisp_ID);</pre>
+<a class="indexterm" name="id2712738"></a><pre class="programlisting">GdkWindow*          gimp_ui_get_display_window          (guint32 gdisp_ID);</pre>
 <p>
 Returns the <span class="type">GdkWindow</span> of a display window. The purpose is to allow
 to make plug-in dialogs transient to the image display as explained
@@ -147,9 +147,9 @@ You shouldn't have to call this function directly. Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2709149"></a><h3>
+<a name="id2712861"></a><h3>
 <a name="gimp-ui-get-progress-window"></a>gimp_ui_get_progress_window ()</h3>
-<a class="indexterm" name="id2709163"></a><pre class="programlisting">GdkWindow*          gimp_ui_get_progress_window         (void);</pre>
+<a class="indexterm" name="id2712874"></a><pre class="programlisting">GdkWindow*          gimp_ui_get_progress_window         (void);</pre>
 <p>
 Returns the <span class="type">GdkWindow</span> of the window this plug-in's progress bar is
 shown in. Use it to make plug-in dialogs transient to this window
@@ -177,9 +177,9 @@ You shouldn't have to call this function directly. Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2712646"></a><h3>
+<a name="id2709691"></a><h3>
 <a name="gimp-window-set-transient"></a>gimp_window_set_transient ()</h3>
-<a class="indexterm" name="id2712660"></a><pre class="programlisting">void                gimp_window_set_transient           (GtkWindow *window);</pre>
+<a class="indexterm" name="id2709704"></a><pre class="programlisting">void                gimp_window_set_transient           (GtkWindow *window);</pre>
 <p>
 Indicates to the window manager that <em class="parameter"><code>window</code></em> is a transient dialog
 associated with the GIMP window that the plug-in has been
@@ -200,9 +200,9 @@ started from. See also <a href="libgimp-gimpui.html#gimp-window-set-transient-fo
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2712738"></a><h3>
+<a name="id2709783"></a><h3>
 <a name="gimp-window-set-transient-for-display"></a>gimp_window_set_transient_for_display ()</h3>
-<a class="indexterm" name="id2712752"></a><pre class="programlisting">void                gimp_window_set_transient_for_display
+<a class="indexterm" name="id2709796"></a><pre class="programlisting">void                gimp_window_set_transient_for_display
                                                         (GtkWindow *window,
                                                          guint32 gdisp_ID);</pre>
 <p>
@@ -236,7 +236,7 @@ Most of the time you will want to use the convenience function
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2710057"></a><h2>See Also</h2>
+<a name="id2709912"></a><h2>See Also</h2>
 <p>
 <code class="function">gtk_init()</code>, <code class="function">gdk_set_use_xshm()</code>, <code class="function">gdk_rgb_set_min_colors()</code>,
 <code class="function">gdk_rgb_set_install()</code>, <code class="function">gdk_rgb_get_visual()</code>, <code class="function">gdk_rgb_get_cmap()</code>,

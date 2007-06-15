@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpvectors.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2579668" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2589529" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2676502" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2665212" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpundo"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2579668"></a><span class="refentrytitle">gimpundo</span>
+<a name="id2589529"></a><span class="refentrytitle">gimpundo</span>
 </h2>
 <p>gimpundo &#8212; Control of undo/redo.</p>
 </td>
@@ -62,18 +62,18 @@ gboolean            <a href="libgimp-gimpundo.html#gimp-image-undo-thaw">gimp_im
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2676502"></a><h2>Description</h2>
+<a name="id2665212"></a><h2>Description</h2>
 <p>
 Control of undo/redo.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2676518"></a><h2>Details</h2>
+<a name="id2665227"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2676528"></a><h3>
+<a name="id2665238"></a><h3>
 <a name="gimp-image-undo-group-start"></a>gimp_image_undo_group_start ()</h3>
-<a class="indexterm" name="id2676540"></a><pre class="programlisting">gboolean            gimp_image_undo_group_start         (gint32 image_ID);</pre>
+<a class="indexterm" name="id2665249"></a><pre class="programlisting">gboolean            gimp_image_undo_group_start         (gint32 image_ID);</pre>
 <p>
 Starts a group undo.
 </p>
@@ -103,9 +103,9 @@ call.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676615"></a><h3>
+<a name="id2665324"></a><h3>
 <a name="gimp-image-undo-group-end"></a>gimp_image_undo_group_end ()</h3>
-<a class="indexterm" name="id2676626"></a><pre class="programlisting">gboolean            gimp_image_undo_group_end           (gint32 image_ID);</pre>
+<a class="indexterm" name="id2667562"></a><pre class="programlisting">gboolean            gimp_image_undo_group_end           (gint32 image_ID);</pre>
 <p>
 Finish a group undo.
 </p>
@@ -133,9 +133,9 @@ This function must be called once for each
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676699"></a><h3>
+<a name="id2667634"></a><h3>
 <a name="gimp-image-undo-is-enabled"></a>gimp_image_undo_is_enabled ()</h3>
-<a class="indexterm" name="id2676710"></a><pre class="programlisting">gboolean            gimp_image_undo_is_enabled          (gint32 image_ID);</pre>
+<a class="indexterm" name="id2667646"></a><pre class="programlisting">gboolean            gimp_image_undo_is_enabled          (gint32 image_ID);</pre>
 <p>
 Check if the image's undo stack is enabled.
 </p>
@@ -165,9 +165,9 @@ each other and want to check if their caller has already used
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2667767"></a><h3>
+<a name="id2667730"></a><h3>
 <a name="gimp-image-undo-disable"></a>gimp_image_undo_disable ()</h3>
-<a class="indexterm" name="id2667778"></a><pre class="programlisting">gboolean            gimp_image_undo_disable             (gint32 image_ID);</pre>
+<a class="indexterm" name="id2667741"></a><pre class="programlisting">gboolean            gimp_image_undo_disable             (gint32 image_ID);</pre>
 <p>
 Disable the image's undo stack.
 </p>
@@ -198,9 +198,9 @@ be time and memory intensive.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2667854"></a><h3>
+<a name="id2667817"></a><h3>
 <a name="gimp-image-undo-enable"></a>gimp_image_undo_enable ()</h3>
-<a class="indexterm" name="id2667865"></a><pre class="programlisting">gboolean            gimp_image_undo_enable              (gint32 image_ID);</pre>
+<a class="indexterm" name="id2667828"></a><pre class="programlisting">gboolean            gimp_image_undo_enable              (gint32 image_ID);</pre>
 <p>
 Enable the image's undo stack.
 </p>
@@ -230,9 +230,9 @@ image undo stack.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2667939"></a><h3>
+<a name="id2667902"></a><h3>
 <a name="gimp-image-undo-freeze"></a>gimp_image_undo_freeze ()</h3>
-<a class="indexterm" name="id2667950"></a><pre class="programlisting">gboolean            gimp_image_undo_freeze              (gint32 image_ID);</pre>
+<a class="indexterm" name="id2667914"></a><pre class="programlisting">gboolean            gimp_image_undo_freeze              (gint32 image_ID);</pre>
 <p>
 Freeze the image's undo stack.
 </p>
@@ -269,9 +269,9 @@ behaviour is undefined.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2668066"></a><h3>
+<a name="id2670296"></a><h3>
 <a name="gimp-image-undo-thaw"></a>gimp_image_undo_thaw ()</h3>
-<a class="indexterm" name="id2668077"></a><pre class="programlisting">gboolean            gimp_image_undo_thaw                (gint32 image_ID);</pre>
+<a class="indexterm" name="id2670307"></a><pre class="programlisting">gboolean            gimp_image_undo_thaw                (gint32 image_ID);</pre>
 <p>
 Thaw the image's undo stack.
 </p>

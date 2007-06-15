@@ -63,7 +63,7 @@ image rendering subsystem (GdkRGB) to follow the GIMP main program's
 colormap allocation/installation policy.
 </para>
 <para>
-The GIMP's colormap policy can be determinded by the user with the
+GIMP's colormap policy can be determinded by the user with the
 gimprc variables <parameter>min_colors</parameter> and <parameter>install_cmap</parameter>.</para>
 <para>
 

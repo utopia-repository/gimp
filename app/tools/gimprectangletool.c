@@ -76,6 +76,11 @@ struct _GimpRectangleToolPrivate
   gint                    x1, y1;     /*  upper left hand coordinate     */
   gint                    x2, y2;     /*  lower right hand coords        */
 
+                                      /* Holds the coordinate used as center
+                                         when fixed_center is used. */
+  gint                    center_x_on_fixed_center;
+  gint                    center_y_on_fixed_center;
+
   guint                   function;   /*  moving or resizing             */
 
   GimpRectangleConstraint constraint; /* how to constrain rectangle     */
@@ -130,6 +135,12 @@ static void     gimp_rectangle_tool_check_function  (GimpRectangleTool *rectangl
                                                      gint              *y1,
                                                      gint              *x2,
                                                      gint              *y2);
+
+static void gimp_rectangle_tool_get_fixed_center_coords
+                                                    (GimpRectangleTool *rectangle,
+                                                     gint              *centerx,
+                                                     gint              *centery);
+
 static void gimp_rectangle_tool_rectangle_changed   (GimpRectangleTool *rectangle);
 
 static void gimp_rectangle_tool_constrain           (GimpRectangleTool *rectangle,
@@ -240,7 +251,7 @@ gimp_rectangle_tool_iface_base_init (GimpRectangleToolInterface *iface)
 static void
 gimp_rectangle_tool_private_finalize (GimpRectangleToolPrivate *private)
 {
-  g_free (private);
+  g_slice_free (GimpRectangleToolPrivate, private);
 }
 
 static GimpRectangleToolPrivate *
@@ -257,7 +268,7 @@ gimp_rectangle_tool_get_private (GimpRectangleTool *tool)
 
   if (! private)
     {
-      private = g_new0 (GimpRectangleToolPrivate, 1);
+      private = g_slice_new0 (GimpRectangleToolPrivate);
 
       g_object_set_qdata_full (G_OBJECT (tool), private_key, private,
                                (GDestroyNotify)
@@ -599,6 +610,21 @@ gimp_rectangle_tool_button_press (GimpTool        *tool,
   private->starty = y;
   private->lastx  = x;
   private->lasty  = y;
+
+  /* If the rectangle is being modified we want the center on fixed_center to be
+   * at the center of the currently existing rectangle, otherwise we want the
+   * point where the user clicked to be the center on fixed_center.
+   */
+  if (private->function == RECT_CREATING)
+    {
+      private->center_x_on_fixed_center = private->pressx;
+      private->center_y_on_fixed_center = private->pressy;
+    }
+  else
+    {
+      private->center_x_on_fixed_center = options_private->center_x;
+      private->center_y_on_fixed_center = options_private->center_y;
+    }
 
   gimp_tool_control_activate (tool->control);
 
@@ -1060,13 +1086,15 @@ gimp_rectangle_tool_active_modifier_key (GimpTool        *tool,
 
       if (options_private->fixed_center)
         {
-          gint press_x, press_y;
+          gint center_x, center_y;
 
-          gimp_rectangle_tool_get_press_coords (rectangle, &press_x, &press_y);
+          gimp_rectangle_tool_get_fixed_center_coords (rectangle,
+                                                       &center_x,
+                                                       &center_y);
 
           g_object_set (options,
-                        "center-x", (gdouble) press_x,
-                        "center-y", (gdouble) press_y,
+                        "center-x", (gdouble) center_x,
+                        "center-y", (gdouble) center_y,
                         NULL);
         }
     }
@@ -1080,6 +1108,19 @@ static void swap_ints (gint *i,
   tmp = *i;
   *i = *j;
   *j = tmp;
+}
+
+static void
+gimp_rectangle_tool_get_fixed_center_coords (GimpRectangleTool *rectangle,
+                                             gint              *centerx,
+                                             gint              *centery)
+{
+  GimpRectangleToolPrivate *private;
+
+  private = GIMP_RECTANGLE_TOOL_GET_PRIVATE (rectangle);
+
+  *centerx = private->center_x_on_fixed_center;
+  *centery = private->center_y_on_fixed_center;
 }
 
 /* gimp_rectangle_tool_check_function() is needed to deal with
@@ -1967,15 +2008,15 @@ gimp_rectangle_tool_rectangle_changed (GimpRectangleTool *rectangle)
 
 /*
  * check whether the coordinates extend outside the bounds of the image
- * or active drawable, if it is constrained not to.  If it does,truncates
- * the corrners to the constraints.
+ * or active drawable, if it is constrained not to.  If it does, clamp
+ * the corners to the constraints.
  */
 void
 gimp_rectangle_tool_constrain (GimpRectangleTool *rectangle,
-                               gint               *x1,
-                               gint               *y1,
-                               gint               *x2,
-                               gint               *y2)
+                               gint              *x1,
+                               gint              *y1,
+                               gint              *x2,
+                               gint              *y2)
 {
   GimpTool                 *tool = GIMP_TOOL (rectangle);
   GimpRectangleToolPrivate *private;

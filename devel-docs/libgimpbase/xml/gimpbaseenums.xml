@@ -52,6 +52,7 @@ enum                <link linkend="GimpStackTraceMode">GimpStackTraceMode</link>
 enum                <link linkend="GimpTransferMode">GimpTransferMode</link>;
 enum                <link linkend="GimpTransformDirection">GimpTransformDirection</link>;
 enum                <link linkend="GimpTransformResize">GimpTransformResize</link>;
+enum                <link linkend="GimpUserDirectory">GimpUserDirectory</link>;
 enum                <link linkend="GimpVectorsStrokeType">GimpVectorsStrokeType</link>;
 
 </synopsis>
@@ -174,8 +175,8 @@ Basic GIMP enumeration data types.
 <title><anchor id="GimpCloneType" role="enum"/>enum GimpCloneType</title>
 <indexterm><primary>GimpCloneType</primary></indexterm><programlisting>typedef enum
 {
-  GIMP_IMAGE_CLONE,   /*&lt; desc="Image source"   &gt;*/
-  GIMP_PATTERN_CLONE  /*&lt; desc="Pattern source" &gt;*/
+  GIMP_IMAGE_CLONE,   /*&lt; desc="Image"   &gt;*/
+  GIMP_PATTERN_CLONE  /*&lt; desc="Pattern" &gt;*/
 } GimpCloneType;
 </programlisting>
 <para>
@@ -478,6 +479,21 @@ Basic GIMP enumeration data types.
   GIMP_TRANSFORM_RESIZE_CROP,                 /*&lt; desc="Crop to result" &gt;*/
   GIMP_TRANSFORM_RESIZE_CROP_WITH_ASPECT,     /*&lt; desc="Crop with aspect" &gt;*/
 } GimpTransformResize;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpUserDirectory" role="enum"/>enum GimpUserDirectory</title>
+<indexterm><primary>GimpUserDirectory</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_USER_DIRECTORY_DESKTOP,
+  GIMP_USER_DIRECTORY_DOCUMENTS,
+  GIMP_USER_DIRECTORY_MUSIC,
+  GIMP_USER_DIRECTORY_PICTURES,
+  GIMP_USER_DIRECTORY_TEMPLATES,
+  GIMP_USER_DIRECTORY_VIDEOS
+} GimpUserDirectory;
 </programlisting>
 <para>
 

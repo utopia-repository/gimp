@@ -1,3 +1,48 @@
+2007-06-06  Sven Neumann  <sven@gimp.org>
+
+	* libgimpcolor/libgimpcolor-sections.txt
+	* libgimpcolor/libgimpcolor-docs.sgml: added documentation for the
+	GimpColorManaged interface.
+
+	* libgimpcolor/tmpl/gimpcolormanaged.sgml: new file.
+
+2007-05-29  Sven Neumann  <sven@gimp.org>
+
+	* app/app-sections.txt
+	* app/app-docs.sgml: minor updates.
+
+2007-05-21  Sven Neumann  <sven@gimp.org>
+
+	* app/Makefile.am: do nothing unless configured with
+	--enable-gtk-doc-app. Removed dist-hook override.
+
+2007-05-14  Sven Neumann  <sven@gimp.org>
+
+	* app/Makefile.am: ignore gimpdbusservice-glue.h.
+
+	* app/app-sections.txt: some more updates.
+
+2007-05-13  Sven Neumann  <sven@gimp.org>
+
+	* libgimpbase/libgimpbase-sections.txt: added gimp_user_directory().
+
+	* libgimpbase/tmpl/gimpbaseenums.sgml
+	* libgimpbase/tmpl/gimpenv.sgml: regenerated.
+
+	* app/app-sections.txt
+	* app/app.types
+	* app/app-docs.sgml: some updates; still a lot left to be done...
+
+2007-04-30  Michael Natterer  <mitch@gimp.org>
+
+	* app/Makefile.am
+	* app/app-docs.sgml
+	* app/app-sections.txt: "app_procs" is now merely "app"
+
+2007-04-27  Sven Neumann  <sven@gimp.org>
+
+	* app/Makefile.am (GTKDOC_LIBS): convince the linker to do its job.
+
 2007-04-16  Sven Neumann  <sven@gimp.org>
 
 	* app/app-sections.txt

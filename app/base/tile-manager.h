@@ -19,14 +19,6 @@
 #ifndef __TILE_MANAGER_H__
 #define __TILE_MANAGER_H__
 
-struct _PixelDataHandle
-{
-  guchar *data;
-  gint    width;
-  gint    height;
-  gint    stride;
-  gint    bpp;
-};
 
 /* Creates a new tile manager with the specified width for the
  *  toplevel. The toplevel size is used to compute the number of
@@ -69,6 +61,12 @@ Tile        * tile_manager_get               (TileManager *tm,
                                               gint         wantread,
                                               gint         wantwrite);
 
+Tile        * tile_manager_get_at            (TileManager *tm,
+                                              gint         tile_col,
+                                              gint         tile_row,
+                                              gint         wantread,
+                                              gint         wantwrite);
+
 void          tile_manager_map_tile          (TileManager *tm,
                                               gint         xpixel,
                                               gint         ypixel,
@@ -97,6 +95,12 @@ void          tile_invalidate_tile           (Tile        **tile_ptr,
 void          tile_manager_invalidate_tiles  (TileManager       *tm,
                                               Tile              *toplevel_tile);
 
+void          tile_manager_invalidate_area   (TileManager       *tm,
+                                              gint               x,
+                                              gint               y,
+                                              gint               w,
+                                              gint               h);
+
 void          tile_manager_set_user_data     (TileManager       *tm,
                                               gpointer           user_data);
 gpointer      tile_manager_get_user_data     (const TileManager *tm);
@@ -104,6 +108,11 @@ gpointer      tile_manager_get_user_data     (const TileManager *tm);
 gint          tile_manager_width             (const TileManager *tm);
 gint          tile_manager_height            (const TileManager *tm);
 gint          tile_manager_bpp               (const TileManager *tm);
+gint          tile_manager_tiles_per_col     (const TileManager *tm);
+gint          tile_manager_tiles_per_row     (const TileManager *tm);
+TileManager  *tile_manager_get_level_below   (const TileManager *tm);
+void          tile_manager_set_level_below   (TileManager       *tm,
+                                              TileManager       *level_below);
 
 void          tile_manager_get_offsets       (const TileManager *tm,
                                               gint              *x,
@@ -119,20 +128,14 @@ void          tile_manager_get_tile_coordinates (TileManager *tm,
                                                  Tile        *tile,
                                                  gint        *x,
                                                  gint        *y);
+void          tile_manager_get_tile_col_row     (TileManager *tm,
+                                                 Tile        *tile,
+                                                 gint        *tile_col,
+                                                 gint        *tile_row);
 
 void          tile_manager_map_over_tile        (TileManager *tm,
                                                  Tile        *tile,
                                                  Tile        *srctile);
-
-PixelDataHandle * request_pixel_data (TileManager *tm,
-                                      gint         x1,
-                                      gint         y1,
-                                      gint         x2,
-                                      gint         y2,
-                                      gboolean     wantread,
-                                      gboolean     wantwrite);
-
-void              release_pixel_data (PixelDataHandle *pdh);
 
 void              read_pixel_data    (TileManager  *tm,
                                       gint          x1,

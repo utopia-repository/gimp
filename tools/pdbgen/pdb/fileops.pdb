@@ -36,9 +36,9 @@ HELP
         { name => 'run_mode',
           type => 'enum GimpRunMode (no GIMP_RUN_WITH_LAST_VALS)',
           desc => 'The run mode' },
-        { name => 'filename', type => 'string', no_validate => 1,
+        { name => 'filename', type => 'string', allow_non_utf8 => 1,
           desc => 'The name of the file to load' },
-        { name => 'raw_filename', type => 'string', no_validate => 1,
+        { name => 'raw_filename', type => 'string', allow_non_utf8 => 1,
           desc => 'The name as entered by the user' }
     );
 
@@ -66,7 +66,7 @@ HELP
     return gimp_procedure_get_return_values (procedure, FALSE);
 
   file_proc =
-    file_utils_find_proc (gimp->plug_in_manager->load_procs, uri, NULL);
+    file_procedure_find (gimp->plug_in_manager->load_procs, uri, NULL);
 
   g_free (uri);
 
@@ -115,7 +115,7 @@ HELP
           desc => 'The run mode' },
         { name => 'image', type => 'image',
           desc => 'Destination image' },
-        { name => 'filename', type => 'string', no_validate => 1,
+        { name => 'filename', type => 'string', allow_non_utf8 => 1,
           desc => 'The name of the file to load' }
     );
 
@@ -170,7 +170,7 @@ HELP
           desc => 'The run mode' },
         { name => 'image', type => 'image',
           desc => 'Destination image' },
-        { name => 'filename', type => 'string', no_validate => 1,
+        { name => 'filename', type => 'string', allow_non_utf8 => 1,
           desc => 'The name of the file to load' }
     );
 
@@ -242,9 +242,9 @@ HELP
           desc => 'Input image' },
         { name => 'drawable', type => 'drawable',
           desc => 'Drawable to save' },
-        { name => 'filename', type => 'string', no_validate => 1,
+        { name => 'filename', type => 'string', allow_non_utf8 => 1,
           desc => 'The name of the file to save the image in' },
-        { name => 'raw_filename', type => 'string', no_validate => 1,
+        { name => 'raw_filename', type => 'string', allow_non_utf8 => 1,
           desc => 'The name as entered by the user' }
     );
 
@@ -268,7 +268,7 @@ HELP
     return gimp_procedure_get_return_values (procedure, FALSE);
 
   file_proc =
-    file_utils_find_proc (gimp->plug_in_manager->save_procs, uri, NULL);
+    file_procedure_find (gimp->plug_in_manager->save_procs, uri, NULL);
 
   g_free (uri);
 
@@ -315,7 +315,7 @@ HELP
     $date = '1999-2003';
 
     @inargs = (
-        { name => 'filename', type => 'string', no_validate => 1,
+        { name => 'filename', type => 'string', allow_non_utf8 => 1,
           desc => 'The name of the file that owns the thumbnail to load' }
     );
 
@@ -369,7 +369,7 @@ HELP
     @inargs = (
         { name => 'image', type => 'image',
           desc => 'The image' },
-        { name => 'filename', type => 'string', no_validate => 1,
+        { name => 'filename', type => 'string', allow_non_utf8 => 1,
           desc => 'The name of the file the thumbnail belongs to' },
     );
 
@@ -392,7 +392,7 @@ HELP
     &josh_pdb_misc('1997');
 
     @inargs = (
-        { name => 'extension', type => 'string', no_validate => 1,
+        { name => 'extension', type => 'string', allow_non_utf8 => 1,
           desc => 'The extension the file will have' }
     );
 
@@ -421,15 +421,15 @@ HELP
     &std_pdb_misc;
 
     @inargs = (
-        { name => 'procedure_name', type => 'string',
+        { name => 'procedure_name', type => 'string', non_empty => 1,
           desc => 'The name of the procedure to be used for loading' },
-        { name => 'extensions', type => 'string', no_success => 1,
+        { name => 'extensions', type => 'string', no_validate => 1,
           desc => 'comma separated list of extensions this handler
                    can load (i.e. "jpg,jpeg")' },
-        { name => 'prefixes', type => 'string', no_success => 1,
+        { name => 'prefixes', type => 'string', no_validate => 1,
           desc => 'comma separated list of prefixes this handler
                    can load (i.e. "http:,ftp:")' },
-        { name => 'magics', type => 'string', no_success => 1,
+        { name => 'magics', type => 'string', no_validate => 1,
           desc => 'comma separated list of magic file information
                    this handler can load (i.e. "0,string,GIF")' }
     );
@@ -460,12 +460,12 @@ HELP
     &std_pdb_misc;
 
     @inargs = (
-        { name => 'procedure_name', type => 'string',
+        { name => 'procedure_name', type => 'string', non_empty => 1,
           desc => 'The name of the procedure to be used for loading' },
-        { name => 'extensions', type => 'string', no_success => 1,
+        { name => 'extensions', type => 'string', no_validate => 1,
           desc => 'comma separated list of extensions this handler
                    can load (i.e. "jpg,jpeg")' },
-        { name => 'prefixes', type => 'string', no_success => 1,
+        { name => 'prefixes', type => 'string', no_validate => 1,
           desc => 'comma separated list of prefixes this handler
                    can load (i.e. "http:,ftp:")' }
     );
@@ -497,12 +497,12 @@ HELP
     &std_pdb_misc;
 
     @inargs = (
-        { name => 'procedure_name', type => 'string',
+        { name => 'procedure_name', type => 'string', non_empty => 1,
           desc => 'The name of the procedure to be used for saving' },
-        { name => 'extensions', type => 'string', no_success => 1,
+        { name => 'extensions', type => 'string', no_validate => 1,
           desc => 'comma separated list of extensions this handler
                    can save (i.e. "jpg,jpeg")' },
-        { name => 'prefixes', type => 'string', no_success => 1,
+        { name => 'prefixes', type => 'string', no_validate => 1,
           desc => 'comma separated list of prefixes this handler
                    can save (i.e. "http:,ftp:")' }
     );
@@ -534,7 +534,7 @@ HELP
     &neo_pdb_misc('2004', '2.2');
 
     @inargs = (
-        { name => 'procedure_name', type => 'string',
+        { name => 'procedure_name', type => 'string', non_empty => 1,
           desc => "The name of the procedure to associate a MIME type with." },
         { name => 'mime_type', type => 'string',
           desc => "A single MIME type, like for example \"image/jpeg\"."     }
@@ -569,9 +569,9 @@ HELP
     &neo_pdb_misc('2004', '2.2');
 
     @inargs = (
-        { name => 'load_proc', type => 'string',
+        { name => 'load_proc', type => 'string', non_empty => 1,
           desc => "The name of the procedure the thumbnail loader with." },
-        { name => 'thumb_proc', type => 'string',
+        { name => 'thumb_proc', type => 'string', non_empty => 1,
           desc => "The name of the thumbnail load procedure." }
     );
     %invoke = (
@@ -597,6 +597,7 @@ CODE
               "plug-in/gimppluginmanager-file.h"
               "file/file-open.h"
               "file/file-save.h"
+	      "file/file-procedure.h"
               "file/file-utils.h");
 
 @procs = qw(file_load file_load_layer file_load_layers

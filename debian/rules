@@ -21,7 +21,7 @@ nextmicro=$(shell expr ${micro} + 1)
 
 LDFLAGS = -Wl,--as-needed
 DEB_CONFIGURE_EXTRA_FLAGS := \
-	--enable-python --without-print --enable-default-binary
+	--enable-python --enable-default-binary
 DEB_BUILDDIR := $(DEB_SRCDIR)/build
 
 DEB_DH_SHLIBDEPS_ARGS_ALL := \
@@ -38,8 +38,8 @@ clean::
 	rm -rf build
 
 common-install-impl::
-	# Remove compiled python files from the distribution, this is done in
-	# postrm
+	# Remove compiled python files from the distribution, they're compiled in
+	# postrm by dh_python
 	find $(CURDIR)/debian/tmp -name "*.py[co]" -exec rm '{}' ';'
 
 	rm debian/tmp/usr/lib/gimp/2.0/plug-ins/uri

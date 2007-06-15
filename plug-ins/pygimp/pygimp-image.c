@@ -340,6 +340,20 @@ img_resize(PyGimpImage *self, PyObject *args, PyObject *kwargs)
 }
 
 static PyObject *
+img_resize_to_layers(PyGimpImage *self)
+{
+    if (!gimp_image_resize_to_layers(self->ID)) {
+	PyErr_Format(pygimp_error, "could not resize to layers on image "
+	                           "(ID %d)",
+		     self->ID);
+	return NULL;
+    }
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyObject *
 img_scale(PyGimpImage *self, PyObject *args, PyObject *kwargs)
 {
     int new_width, new_height;
@@ -742,6 +756,7 @@ static PyMethodDef img_methods[] = {
     {"remove_channel",	(PyCFunction)img_remove_channel,	METH_VARARGS},
     {"remove_layer",	(PyCFunction)img_remove_layer,	METH_VARARGS},
     {"resize",	(PyCFunction)img_resize,	METH_VARARGS | METH_KEYWORDS},
+    {"resize_to_layers",	(PyCFunction)img_resize_to_layers,	METH_NOARGS},
     {"get_component_active",	(PyCFunction)img_get_component_active,	METH_VARARGS},
     {"get_component_visible",	(PyCFunction)img_get_component_visible,	METH_VARARGS},
     {"set_component_active",	(PyCFunction)img_set_component_active,	METH_VARARGS},
@@ -911,7 +926,7 @@ img_get_colormap(PyGimpImage *self, void *closure)
 	return NULL;
     }
 	
-    ret = PyString_FromStringAndSize(cmap, n_colours * 3);
+    ret = PyString_FromStringAndSize((char *)cmap, n_colours * 3);
     g_free(cmap);
 
     return ret;
@@ -930,7 +945,7 @@ img_set_colormap(PyGimpImage *self, PyObject *value, void *closure)
 	return -1;
     }
 
-    if (!gimp_image_set_colormap(self->ID, PyString_AsString(value),
+    if (!gimp_image_set_colormap(self->ID, (guchar *)PyString_AsString(value),
                                  PyString_Size(value) / 3)) {
 	PyErr_Format(pygimp_error, "could not set colormap on image (ID %d)",
 		     self->ID);

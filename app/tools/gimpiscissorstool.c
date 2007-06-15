@@ -175,7 +175,7 @@ static void          calculate_curve           (GimpTool          *tool,
                                                 ICurve            *curve);
 static void          iscissors_draw_curve      (GimpDrawTool      *draw_tool,
                                                 ICurve            *curve);
-static void          iscissors_free_icurves    (GSList            *list);
+static void          iscissors_free_icurves    (GQueue            *curves);
 
 static gint          mouse_over_vertex         (GimpIscissorsTool *iscissors,
                                                 gdouble            x,
@@ -183,7 +183,7 @@ static gint          mouse_over_vertex         (GimpIscissorsTool *iscissors,
 static gboolean      clicked_on_vertex         (GimpIscissorsTool *iscissors,
                                                 gdouble            x,
                                                 gdouble            y);
-static GSList      * mouse_over_curve          (GimpIscissorsTool *iscissors,
+static GList       * mouse_over_curve          (GimpIscissorsTool *iscissors,
                                                 gdouble            x,
                                                 gdouble            y);
 static gboolean      clicked_on_curve          (GimpIscissorsTool *iscissors,
@@ -330,7 +330,7 @@ gimp_iscissors_tool_init (GimpIscissorsTool *iscissors)
 
   iscissors->op           = ISCISSORS_OP_NONE;
   iscissors->dp_buf       = NULL;
-  iscissors->curves       = NULL;
+  iscissors->curves       = g_queue_new ();
   iscissors->draw         = DRAW_NOTHING;
   iscissors->state        = NO_ACTION;
   iscissors->mask         = NULL;
@@ -352,6 +352,8 @@ gimp_iscissors_tool_finalize (GObject *object)
   GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (object);
 
   gimp_iscissors_tool_reset (iscissors);
+
+  g_queue_free (iscissors->curves);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -494,22 +496,19 @@ iscissors_convert (GimpIscissorsTool *iscissors,
 {
   GimpSelectionOptions *options = GIMP_SELECTION_TOOL_GET_OPTIONS (iscissors);
   GimpScanConvert      *sc;
-  GimpVector2          *points;
-  guint                 n_points;
-  GSList               *list;
-  ICurve               *icurve;
-  gint                  i;
-  gint                  index;
+  GList                *list;
 
   sc = gimp_scan_convert_new ();
 
   /* go over the curves in reverse order, adding the points we have */
-  list = iscissors->curves;
-  index = g_slist_length (list);
-  while (index)
+  for (list = g_queue_peek_tail_link (iscissors->curves);
+       list;
+       list = g_list_previous (list))
     {
-      index--;
-      icurve = (ICurve *) g_slist_nth_data (list, index);
+      ICurve      *icurve = list->data;
+      GimpVector2 *points;
+      guint        n_points;
+      gint         i;
 
       n_points = icurve->points->len;
       points   = g_new (GimpVector2, n_points);
@@ -548,7 +547,6 @@ gimp_iscissors_tool_button_release (GimpTool              *tool,
 {
   GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (tool);
   GimpSelectionOptions *options   = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
-  ICurve               *curve;
 
   /* Make sure X didn't skip the button release event -- as it's known
    * to do
@@ -583,9 +581,9 @@ gimp_iscissors_tool_button_release (GimpTool              *tool,
           if (!iscissors->first_point)
             {
               /*  Determine if we're connecting to the first point  */
-              if (iscissors->curves)
+              if (! g_queue_is_empty (iscissors->curves))
                 {
-                  curve = (ICurve *) iscissors->curves->data;
+                  ICurve *curve = g_queue_peek_head (iscissors->curves);
 
                   if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (tool), display,
                                                 iscissors->x, iscissors->y,
@@ -605,14 +603,16 @@ gimp_iscissors_tool_button_release (GimpTool              *tool,
               if (iscissors->ix != iscissors->x ||
                   iscissors->iy != iscissors->y)
                 {
-                  curve = g_new (ICurve, 1);
+                  ICurve *curve = g_slice_new (ICurve);
 
                   curve->x1 = iscissors->ix;
                   curve->y1 = iscissors->iy;
                   iscissors->ix = curve->x2 = iscissors->x;
                   iscissors->iy = curve->y2 = iscissors->y;
                   curve->points = NULL;
-                  iscissors->curves = g_slist_append (iscissors->curves, curve);
+
+                  g_queue_push_tail (iscissors->curves, curve);
+
                   calculate_curve (tool, curve);
                 }
             }
@@ -727,11 +727,6 @@ gimp_iscissors_tool_draw (GimpDrawTool *draw_tool)
 {
   GimpTool          *tool      = GIMP_TOOL (draw_tool);
   GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (draw_tool);
-  GimpDisplay       *display;
-  ICurve            *curve;
-  GSList            *list;
-
-  display = tool->display;
 
   /*  Draw the crosshairs target if we're placing a seed  */
   if (iscissors->draw & DRAW_CURRENT_SEED)
@@ -764,7 +759,7 @@ gimp_iscissors_tool_draw (GimpDrawTool *draw_tool)
             iscissors->iy != iscissors->livewire->y1 ||
             iscissors->y  != iscissors->livewire->y2)))
         {
-          curve = g_new (ICurve, 1);
+          ICurve *curve = g_slice_new (ICurve);
 
           curve->x1 = iscissors->ix;
           curve->y1 = iscissors->iy;
@@ -784,7 +779,6 @@ gimp_iscissors_tool_draw (GimpDrawTool *draw_tool)
 
           iscissors->livewire = curve;
           calculate_curve (tool, curve);
-          curve = NULL;
         }
 
       /*  plot the curve  */
@@ -793,6 +787,8 @@ gimp_iscissors_tool_draw (GimpDrawTool *draw_tool)
 
   if ((iscissors->draw & DRAW_CURVE) && ! iscissors->first_point)
     {
+      GList *list;
+
       /*  Draw a point at the init point coordinates  */
       if (! iscissors->connected)
         {
@@ -807,9 +803,11 @@ gimp_iscissors_tool_draw (GimpDrawTool *draw_tool)
         }
 
       /*  Go through the list of icurves, and render each one...  */
-      for (list = iscissors->curves; list; list = g_slist_next (list))
+      for (list = g_queue_peek_head_link (iscissors->curves);
+           list;
+           list = g_list_next (list))
         {
-          curve = (ICurve *) list->data;
+          ICurve *curve = list->data;
 
           if (iscissors->draw & DRAW_ACTIVE_CURVE)
             {
@@ -926,9 +924,7 @@ gimp_iscissors_tool_oper_update (GimpTool        *tool,
     }
   else if (mouse_over_curve (iscissors, coords->x, coords->y))
     {
-      ICurve *curve;
-
-      curve = (ICurve *) iscissors->curves->data;
+      ICurve *curve = g_queue_peek_head (iscissors->curves);
 
       if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (tool), display,
                                     RINT (coords->x), RINT (coords->y),
@@ -1105,12 +1101,7 @@ static void
 gimp_iscissors_tool_reset (GimpIscissorsTool *iscissors)
 {
   /*  Free and reset the curve list  */
-  if (iscissors->curves)
-    {
-      iscissors_free_icurves (iscissors->curves);
-      g_slist_free (iscissors->curves);
-      iscissors->curves = NULL;
-    }
+  iscissors_free_icurves (iscissors->curves);
 
   /*  free mask  */
   if (iscissors->mask)
@@ -1150,18 +1141,16 @@ gimp_iscissors_tool_reset (GimpIscissorsTool *iscissors)
 
 
 static void
-iscissors_free_icurves (GSList *list)
+iscissors_free_icurves (GQueue *curves)
 {
-  ICurve * curve;
-
-  while (list)
+  while (! g_queue_is_empty (curves))
     {
-      curve = (ICurve *) list->data;
+      ICurve *curve = g_queue_pop_head (curves);
+
       if (curve->points)
         g_ptr_array_free (curve->points, TRUE);
 
-      g_free (curve);
-      list = g_slist_next (list);
+      g_slice_free (ICurve, curve);
     }
 }
 
@@ -1173,8 +1162,8 @@ mouse_over_vertex (GimpIscissorsTool *iscissors,
                    gdouble            x,
                    gdouble            y)
 {
-  GSList *list;
-  gint    curves_found = 0;
+  GList *list;
+  gint   curves_found = 0;
 
   /*  traverse through the list, returning non-zero if the current cursor
    *  position is on an existing curve vertex.  Set the curve1 and curve2
@@ -1183,9 +1172,9 @@ mouse_over_vertex (GimpIscissorsTool *iscissors,
 
   iscissors->curve1 = iscissors->curve2 = NULL;
 
-  list = iscissors->curves;
-
-  while (list && curves_found < 2)
+  for (list = g_queue_peek_head_link (iscissors->curves);
+       list;
+       list = g_list_next (list))
     {
       ICurve *curve = list->data;
 
@@ -1217,8 +1206,6 @@ mouse_over_vertex (GimpIscissorsTool *iscissors,
           if (curves_found++)
             return curves_found;
         }
-
-      list = g_slist_next (list);
     }
 
   return curves_found;
@@ -1253,17 +1240,19 @@ clicked_on_vertex (GimpIscissorsTool *iscissors,
 }
 
 
-static GSList *
+static GList *
 mouse_over_curve (GimpIscissorsTool *iscissors,
                   gdouble            x,
                   gdouble            y)
 {
-  GSList *list;
+  GList *list;
 
   /*  traverse through the list, returning the curve segment's list element
    *  if the current cursor position is on a curve...
    */
-  for (list = iscissors->curves; list; list = g_slist_next (list))
+  for (list = g_queue_peek_head_link (iscissors->curves);
+       list;
+       list = g_list_next (list))
     {
       ICurve   *curve = list->data;
       gpointer *pt;
@@ -1301,27 +1290,25 @@ clicked_on_curve (GimpIscissorsTool *iscissors,
                   gdouble            x,
                   gdouble            y)
 {
-  GSList *list;
+  GList *list = mouse_over_curve (iscissors, x, y);
 
   /*  traverse through the list, getting back the curve segment's list
    *  element if the current cursor position is on a curve...
    *  If this occurs, replace the curve with two new curves,
    *  separated by a new vertex.
    */
-  list = mouse_over_curve (iscissors, x, y);
 
   if (list)
     {
       ICurve *curve = list->data;
       ICurve *new_curve;
-      GSList *new_link;
 
       /*  undraw the curve  */
       iscissors->draw = DRAW_CURVE;
       gimp_draw_tool_pause (GIMP_DRAW_TOOL (iscissors));
 
       /*  Create the new curve  */
-      new_curve = g_new (ICurve, 1);
+      new_curve = g_slice_new (ICurve);
 
       new_curve->x2 = curve->x2;
       new_curve->y2 = curve->y2;
@@ -1330,12 +1317,7 @@ clicked_on_curve (GimpIscissorsTool *iscissors,
       new_curve->points = NULL;
 
       /*  Create the new link and supply the new curve as data  */
-      new_link = g_slist_alloc ();
-      new_link->data = new_curve;
-
-      /*  Insert the new link in the list  */
-      new_link->next = list->next;
-      list->next = new_link;
+      g_queue_insert_after (iscissors->curves, list, new_curve);
 
       iscissors->curve1 = new_curve;
       iscissors->curve2 = curve;

@@ -24,14 +24,13 @@ sub brushes_popup {
     &andy_pdb_misc('1998');
 
     @inargs = (
-	{ name => 'brush_callback', type => 'string',
+	{ name => 'brush_callback', type => 'string', non_empty => 1,
 	  desc => 'The callback PDB proc to call when brush selection is
 		   made' },
 	{ name => 'popup_title', type => 'string',
 	  desc => 'Title of the brush selection dialog' },
-	{ name => 'initial_brush', type => 'string',
-	  desc => 'The name of the brush to set as the first selected',
-	  null_ok => 1 },
+	{ name => 'initial_brush', type => 'string', null_ok => 1,
+	  desc => 'The name of the brush to set as the first selected' },
 	{ name => 'opacity', type => '0 <= float <= 100',
 	  desc => 'The initial opacity of the brush' },
 	{ name => 'spacing', type => 'int32 <= 1000',
@@ -66,7 +65,7 @@ sub brushes_close_popup {
     &andy_pdb_misc('1998');
 
     @inargs = (
-	{ name => 'brush_callback', type => 'string',
+	{ name => 'brush_callback', type => 'string', non_empty => 1,
 	  desc => 'The name of the callback registered for this pop-up' }
     );
 
@@ -90,7 +89,7 @@ sub brushes_set_popup {
     &andy_pdb_misc('1998');
 
     @inargs = (
-	{ name => 'brush_callback', type => 'string',
+	{ name => 'brush_callback', type => 'string', non_empty => 1,
 	  desc => 'The name of the callback registered for this pop-up' },
 	{ name => 'brush_name', type => 'string',
 	  desc => 'The name of the brush to set as selected' },

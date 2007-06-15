@@ -84,9 +84,9 @@ am__objects_2 = gimpwidgets.lo gimpbrowser.lo gimpbutton.lo \
 	gimppageselector.lo gimppatheditor.lo gimppickbutton.lo \
 	gimppixmap.lo gimppreview.lo gimppreviewarea.lo \
 	gimppropwidgets.lo gimpquerybox.lo gimpratioentry.lo \
-	gimpresolutionentry.lo gimpscrolledpreview.lo gimpsizeentry.lo \
-	gimpstock.lo gimpstringcombobox.lo gimpunitmenu.lo \
-	gimpzoommodel.lo gimpwidgets-private.lo
+	gimpscrolledpreview.lo gimpsizeentry.lo gimpstock.lo \
+	gimpstringcombobox.lo gimpunitmenu.lo gimpzoommodel.lo \
+	gimpwidgets-private.lo
 am_libgimpwidgets_2_0_la_OBJECTS = $(am__objects_1) $(am__objects_2)
 libgimpwidgets_2_0_la_OBJECTS = $(am_libgimpwidgets_2_0_la_OBJECTS)
 am_test_preview_area_OBJECTS = test-preview-area.$(OBJEXT)
@@ -142,6 +142,7 @@ BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
 BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
+CARBON_LDFLAGS = @CARBON_LDFLAGS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -176,6 +177,8 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ENABLE_GIMP_CONSOLE_FALSE = @ENABLE_GIMP_CONSOLE_FALSE@
 ENABLE_GIMP_CONSOLE_TRUE = @ENABLE_GIMP_CONSOLE_TRUE@
+ENABLE_GTK_DOC_APP_FALSE = @ENABLE_GTK_DOC_APP_FALSE@
+ENABLE_GTK_DOC_APP_TRUE = @ENABLE_GTK_DOC_APP_TRUE@
 ENABLE_GTK_DOC_FALSE = @ENABLE_GTK_DOC_FALSE@
 ENABLE_GTK_DOC_TRUE = @ENABLE_GTK_DOC_TRUE@
 EXEEXT = @EXEEXT@
@@ -398,7 +401,8 @@ SVG = @SVG@
 SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
-TIFF = @TIFF@
+TIFF_LOAD = @TIFF_LOAD@
+TIFF_SAVE = @TIFF_SAVE@
 URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
 URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
 URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
@@ -584,8 +588,6 @@ libgimpwidgets_2_0_la_sources = \
 	gimpquerybox.h		\
 	gimpratioentry.c	\
 	gimpratioentry.h	\
-	gimpresolutionentry.c   \
-	gimpresolutionentry.h   \
 	gimpscrolledpreview.c	\
 	gimpscrolledpreview.h	\
 	gimpsizeentry.c		\
@@ -656,7 +658,6 @@ libgimpwidgetsinclude_HEADERS = \
 	gimppropwidgets.h	\
 	gimpquerybox.h		\
 	gimpratioentry.h	\
-	gimpresolutionentry.h   \
 	gimpscrolledpreview.h	\
 	gimpsizeentry.h		\
 	gimpstock.h		\
@@ -823,7 +824,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropwidgets.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpquerybox.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpratioentry.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpresolutionentry.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpscrolledpreview.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsizeentry.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpstock.Plo@am__quote@
@@ -1082,9 +1082,9 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 @MS_LIB_AVAILABLE_FALSE@install-ms-lib:
 @MS_LIB_AVAILABLE_FALSE@uninstall-ms-lib:
 
-gimpwidgets-private.c: gimp-wilber-pixbufs.h
+gimpwidgets-private.lo: gimp-wilber-pixbufs.h
 
-$(srcdir)/gimpwidgetsenums.c: $(srcdir)/gimpwidgetsenums.h $(GIMP_MKENUMS)
+gimpwidgetsenums.c: $(srcdir)/gimpwidgetsenums.h $(GIMP_MKENUMS)
 	$(GIMP_MKENUMS) \
 		--fhead "#include \"config.h\"\n#include <glib-object.h>\n#include \"libgimpbase/gimpbase.h\"\n#include \"gimpwidgetsenums.h\"\n#include \"libgimp/libgimp-intl.h\"" \
 		--fprod "\n/* enumerations from \"@filename@\" */" \
@@ -1098,18 +1098,18 @@ $(srcdir)/gimpwidgetsenums.c: $(srcdir)/gimpwidgetsenums.h $(GIMP_MKENUMS)
 	&& cp xgen-wec $(@F) \
 	&& rm -f xgen-wec
 
-$(srcdir)/gimpwidgetsmarshal.h: $(srcdir)/gimpwidgetsmarshal.list
+gimpwidgetsmarshal.h: $(srcdir)/gimpwidgetsmarshal.list
 	$(GLIB_GENMARSHAL) --prefix=_gimp_widgets_marshal $(srcdir)/gimpwidgetsmarshal.list --header >> xgen-wmh \
 	&& (cmp -s xgen-wmh $(@F) || cp xgen-wmh $(@F)) \
 	&& rm -f xgen-wmh xgen-wmh~
 
-$(srcdir)/gimpwidgetsmarshal.c: $(srcdir)/gimpwidgetsmarshal.h
+gimpwidgetsmarshal.c: gimpwidgetsmarshal.h
 	echo "#include \"gimpwidgetsmarshal.h\"" >> xgen-wmc \
 	&& $(GLIB_GENMARSHAL) --prefix=_gimp_widgets_marshal $(srcdir)/gimpwidgetsmarshal.list --body >> xgen-wmc \
 	&& cp xgen-wmc $(@F) \
 	&& rm -f xgen-wmc xgen-wmc~
 
-$(srcdir)/gimp-wilber-pixbufs.h: $(WILBER_IMAGES) Makefile.am
+gimp-wilber-pixbufs.h: $(WILBER_IMAGES) Makefile.am
 	$(GDK_PIXBUF_CSOURCE) --raw --build-list $(WILBER_VARIABLES) > $(@F)
 
 install-data-local: install-ms-lib install-libtool-import-lib

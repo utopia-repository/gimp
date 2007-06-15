@@ -1,3 +1,52 @@
+2007-05-30  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-05-22  Stéphane Raimbault  <stephane.raimbault@gmail.com>
+
+	* fr.po: Updated French translation.
+
+2007-05-16  Sven Neumann  <sven@gimp.org>
+
+	* de.po: applied patch from Ulf-D. Ehlert (bug #438886).
+
+2007-05-16  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Updated British English translation
+
+2007-05-07  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by Anas Husseini.
+
+2007-05-06  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+	Joaquim Perez <noguer@gmail.com>.
+
+2007-05-05  Roozbeh Pournader  <roozbeh@farsiweb.info>
+
+	* fa.po: Added Persian translation by Elnaz Sarbar, Meelad Zakaria,
+	  and Farzaneh Sarafraz.
+
+2007-05-04  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-05-03  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-04-29  Christophe Merlet  <redfox@redfoxcenter.org>
+
+	* oc.po: Added Occitan translation from
+	Yannig MARCHEGAY <yannig@marchegay.org>.
+	* POTFILES.in: Updated for {gif|psd}-{load|save}.c
+
+2007-04-25  Mukund Sivaraman  <muks@mukund.org>
+
+        * POTFILES.in: split TIFF load and save functionality into
+	different plug-ins.
+
 2007-04-21  Djihed Afifi <djihed@gmail.com> 
 
 	* ar.po: Updated Arabic Translation by Djihed Afifi.

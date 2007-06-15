@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
+libgimpthumb = $(top_builddir)/libgimpthumb/libgimpthumb-$(GIMP_API_VERSION).la
 
 if PLATFORM_WIN32
 no_undefined = -no-undefined
@@ -84,6 +85,13 @@ libgimpthumb_2_0_la_LDFLAGS = \
 libgimpthumb_2_0_la_LIBADD = $(libgimpmath) $(GDK_PIXBUF_LIBS)
 
 
+noinst_PROGRAMS = gimp-thumbnail-list
+
+gimp_thumbnail_list_SURCES = gimp-thumbnail-list.c
+
+gimp_thumbnail_list_LDADD = $(libgimpthumb)
+
+
 install-data-local: install-ms-lib install-libtool-import-lib
 
 uninstall-local: uninstall-ms-lib uninstall-libtool-import-lib
@@ -96,7 +104,7 @@ uninstall-local: uninstall-ms-lib uninstall-libtool-import-lib
 gen_sources = xgen-tec
 CLEANFILES = $(gen_sources)
 
-$(srcdir)/gimpthumb-enums.c: $(srcdir)/gimpthumb-enums.h $(GIMP_MKENUMS)
+gimpthumb-enums.c: $(srcdir)/gimpthumb-enums.h $(GIMP_MKENUMS)
 	$(GIMP_MKENUMS) \
 		--fhead "#include \"config.h\"\n#include <glib-object.h>\n#include \"gimpthumb-enums.h\"" \
 		--fprod "\n/* enumerations from \"@filename@\" */" \

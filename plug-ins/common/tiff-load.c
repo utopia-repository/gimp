@@ -491,6 +491,7 @@ load_image (const gchar       *filename,
   gboolean      alpha;
   gint          image = 0, image_type = GIMP_RGB;
   gint          layer, layer_type     = GIMP_RGB_IMAGE;
+  gint          first_image_type      = GIMP_RGB;
   float         layer_offset_x        = 0.0;
   float         layer_offset_y        = 0.0;
   gint          layer_offset_x_pixel  = 0;
@@ -677,6 +678,14 @@ load_image (const gchar       *filename,
           layer_type = GIMP_RGBA_IMAGE;
         }
 
+      if (target == GIMP_PAGE_SELECTOR_TARGET_LAYERS)
+        {
+          if (li == 0)
+            first_image_type = image_type;
+          else if (image_type != first_image_type)
+            continue;
+        }
+
       if ((target == GIMP_PAGE_SELECTOR_TARGET_IMAGES) || (! image))
         {
           if ((image = gimp_image_new (cols, rows, image_type)) == -1)
@@ -694,7 +703,7 @@ load_image (const gchar       *filename,
               gimp_image_set_filename (image, fname);
               g_free (fname);
 
-              images_list = g_list_append (images_list, GINT_TO_POINTER (image));
+              images_list = g_list_prepend (images_list, GINT_TO_POINTER (image));
             }
           else if (pages->o_pages == pages->n_pages)
             {
@@ -1086,7 +1095,7 @@ load_rgba (TIFF         *tif,
                        0, 0, imageWidth, imageLength, TRUE, FALSE);
 
   buffer = g_new (uint32, imageWidth * imageLength);
-  channel[0].pixels = (guchar*) buffer;
+  channel[0].pixels = (guchar *) buffer;
 
   if (!TIFFReadRGBAImage (tif, imageWidth, imageLength, buffer, 0))
     g_message ("Unsupported layout, no RGBA loader");

@@ -57,7 +57,8 @@ am__installdirs = "$(DESTDIR)$(libexecdir)"
 libexecPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(libexec_PROGRAMS)
 am_print_OBJECTS = print.$(OBJEXT) print-draw-page.$(OBJEXT) \
-	print-page-layout.$(OBJEXT) print-settings.$(OBJEXT)
+	print-page-layout.$(OBJEXT) print-preview.$(OBJEXT) \
+	print-settings.$(OBJEXT)
 print_OBJECTS = $(am_print_OBJECTS)
 print_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =  \
@@ -209,8 +210,6 @@ GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
 GOBJECT_QUERY = @GOBJECT_QUERY@
 GREP = @GREP@
-GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
-GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
 GTKHTML2_CFLAGS = @GTKHTML2_CFLAGS@
 GTKHTML2_LIBS = @GTKHTML2_LIBS@
@@ -366,6 +365,7 @@ RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
 SCREENSHOT = @SCREENSHOT@
+SED = @SED@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -494,6 +494,8 @@ print_SOURCES = \
 	print-draw-page.h	\
 	print-page-layout.c	\
 	print-page-layout.h	\
+	print-preview.c		\
+	print-preview.h		\
 	print-settings.c	\
 	print-settings.h
 
@@ -570,6 +572,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/print-draw-page.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/print-page-layout.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/print-preview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/print-settings.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/print.Po@am__quote@
 

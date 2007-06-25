@@ -21,9 +21,10 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <gtk/gtk.h>
 
-#include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "dialogs-types.h"
@@ -32,6 +33,7 @@
 #include "core/gimpimage.h"
 
 #include "widgets/gimphelp-ids.h"
+#include "widgets/gimpimagecommenteditor.h"
 #include "widgets/gimpimagepropview.h"
 #include "widgets/gimpimageprofileview.h"
 #include "widgets/gimpviewabledialog.h"
@@ -41,12 +43,6 @@
 #include "gimp-intl.h"
 
 
-static void  image_comment_update (GtkWidget *page,
-                                   GtkWidget *label);
-
-
-/*  public functions  */
-
 GtkWidget *
 image_properties_dialog_new (GimpImage   *image,
                              GimpContext *context,
@@ -55,7 +51,6 @@ image_properties_dialog_new (GimpImage   *image,
   GtkWidget *dialog;
   GtkWidget *notebook;
   GtkWidget *view;
-  GtkWidget *label;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
@@ -74,8 +69,6 @@ image_properties_dialog_new (GimpImage   *image,
 
                                      NULL);
 
-  gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
-
   g_signal_connect (dialog, "response",
                     G_CALLBACK (gtk_widget_destroy),
                     NULL);
@@ -92,65 +85,16 @@ image_properties_dialog_new (GimpImage   *image,
   gtk_widget_show (view);
 
   view = gimp_image_profile_view_new (image);
-  gtk_container_set_border_width (GTK_CONTAINER (view), 12);
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
                             view, gtk_label_new (_("Color Profile")));
   gtk_widget_show (view);
 
-  view = gimp_image_parasite_view_new (image, "gimp-comment");
-  gtk_container_set_border_width (GTK_CONTAINER (view), 12);
+  view = gimp_image_comment_editor_new (image);
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
                             view, gtk_label_new (_("Comment")));
+  gtk_widget_show (view);
 
-  label = g_object_new (GTK_TYPE_LABEL,
-                        "wrap",       TRUE,
-                        "justify",    GTK_JUSTIFY_LEFT,
-                        "xalign",     0.0,
-                        "yalign",     0.0,
-                        "selectable", TRUE,
-                        NULL);
-  gtk_container_add (GTK_CONTAINER (view), label);
-  gtk_widget_show (label);
-
-  g_signal_connect (view, "update",
-                    G_CALLBACK (image_comment_update),
-                    label);
-
-  image_comment_update (view, label);
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), 0);
 
   return dialog;
-}
-
-static void
-image_comment_update (GtkWidget *page,
-                      GtkWidget *label)
-{
-  GimpImageParasiteView *view = GIMP_IMAGE_PARASITE_VIEW (page);
-  const GimpParasite    *parasite;
-
-  parasite = gimp_image_parasite_view_get_parasite (view);
-
-  if (parasite)
-    {
-      gchar *text = g_strndup (gimp_parasite_data (parasite),
-                               gimp_parasite_data_size (parasite));
-
-      if (! g_utf8_validate (text, -1, NULL))
-        {
-          gchar *tmp = gimp_any_to_utf8 (text, -1, NULL);
-
-          g_free (text);
-          text = tmp;
-        }
-
-      gtk_label_set_text (GTK_LABEL (label), text);
-      g_free (text);
-
-      gtk_widget_show (page);
-    }
-  else
-    {
-      gtk_widget_hide (page);
-      gtk_label_set_text (GTK_LABEL (label), NULL);
-    }
 }

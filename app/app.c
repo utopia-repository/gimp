@@ -40,6 +40,7 @@
 #include "config/gimprc.h"
 
 #include "base/base.h"
+#include "base/tile-swap.h"
 
 #include "core/gimp.h"
 #include "core/gimp-user-install.h"
@@ -248,6 +249,7 @@ app_run (const gchar         *full_prog_name,
   g_main_loop_unref (loop);
 
   g_object_unref (gimp);
+  errors_exit ();
   base_exit ();
 }
 
@@ -282,7 +284,7 @@ app_exit_after_callback (Gimp      *gimp,
   g_main_loop_quit (loop);
 #else
   /*  make sure that the swap file is removed before we quit */
-  base_exit ();
+  tile_swap_exit ();
   exit (EXIT_SUCCESS);
 #endif
 

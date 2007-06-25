@@ -2,13 +2,14 @@
 # Copyright (C) 1999 Free Software Foundation, Inc.
 # Daniele Medri <madrid@linux.it>, 2000, 2001, 2002
 # Marco Ciampa <ciampix@libero.it>, 2003, 2004, 2005, 2006, 2007
-# Revision: Luca Ferretti <elle.uca@libero.it>, 2006
+# Luca Ferretti <elle.uca@libero.it>, 2006
+# Alessandro Falappa <alessandro@falappa.net>, 2007
 msgid ""
 msgstr ""
 "Project-Id-Version: gimp 2.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-25 15:13+0200\n"
-"PO-Revision-Date: 2007-03-25 15:15+0200\n"
+"POT-Creation-Date: 2007-06-30 22:38+0200\n"
+"PO-Revision-Date: 2007-06-30 22:31+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: gimp.linux.it\n"
 "MIME-Version: 1.0\n"
@@ -404,7 +405,7 @@ msgstr "Sottrai dalla selezione corrente"
 
 #: ../libgimpbase/gimpbaseenums.c:129
 msgid "Replace the current selection"
-msgstr "Rimpiazza ls selezione corrente"
+msgstr "Rimpiazza la selezione corrente"
 
 #: ../libgimpbase/gimpbaseenums.c:130
 msgid "Intersect with the current selection"
@@ -460,23 +461,23 @@ msgstr "Scacchi scuri"
 
 #: ../libgimpbase/gimpbaseenums.c:233
 msgid "White only"
-msgstr "Solo bianchi"
+msgstr "Solo bianco"
 
 #: ../libgimpbase/gimpbaseenums.c:234
 msgid "Gray only"
-msgstr "Solo grigi"
+msgstr "Solo grigio"
 
 #: ../libgimpbase/gimpbaseenums.c:235
 msgid "Black only"
-msgstr "Solo neri"
+msgstr "Solo nero"
 
 #: ../libgimpbase/gimpbaseenums.c:263
-msgid "Image source"
-msgstr "Sorgente immagine"
+msgid "Image"
+msgstr "Immagine"
 
 #: ../libgimpbase/gimpbaseenums.c:264
-msgid "Pattern source"
-msgstr "Sorgente motivo"
+msgid "Pattern"
+msgstr "Motivo"
 
 #: ../libgimpbase/gimpbaseenums.c:293
 msgid "Lightness"
@@ -512,7 +513,7 @@ msgstr "Radiale"
 
 #: ../libgimpbase/gimpbaseenums.c:391 ../libgimpwidgets/gimpwidgetsenums.c:24
 msgid "Square"
-msgstr "Quadratica"
+msgstr "Quadrangolare"
 
 #: ../libgimpbase/gimpbaseenums.c:392
 msgid "Conical (sym)"
@@ -660,7 +661,7 @@ msgstr "Punti"
 
 #: ../libgimpbase/gimpbaseenums.c:714
 msgid "Shadows"
-msgstr "Toni scuri"
+msgstr "Ombre"
 
 #: ../libgimpbase/gimpbaseenums.c:715
 msgid "Midtones"
@@ -668,7 +669,7 @@ msgstr "Mezzi toni"
 
 #: ../libgimpbase/gimpbaseenums.c:716
 msgid "Highlights"
-msgstr "Toni luminosi"
+msgstr "Alte luci"
 
 #: ../libgimpbase/gimpbaseenums.c:744
 msgid "Normal (Forward)"
@@ -684,7 +685,7 @@ msgstr "Regola"
 
 #: ../libgimpbase/gimpbaseenums.c:776
 msgid "Clip"
-msgstr "Allega"
+msgstr "Taglia"
 
 #: ../libgimpbase/gimpbaseenums.c:777
 msgid "Crop to result"
@@ -773,7 +774,7 @@ msgstr "Modalità di operazione per gestione colore."
 
 #: ../libgimpconfig/gimpcolorconfig.c:42
 msgid "The color profile of your (primary) monitor."
-msgstr "Profilo colore per il monitor (principale)."
+msgstr "Profilo di colore per il monitor (principale)."
 
 #: ../libgimpconfig/gimpcolorconfig.c:44
 msgid ""
@@ -839,29 +840,29 @@ msgstr "Saturazione"
 msgid "Absolute colorimetric"
 msgstr "Colorimetrico assoluto"
 
-#: ../libgimpconfig/gimpconfig-deserialize.c:96
+#: ../libgimpconfig/gimpconfig-deserialize.c:97
 #, c-format
 msgid "value for token %s is not a valid UTF-8 string"
 msgstr "il valore per il token %s non è una stringa UTF-8 valida"
 
 #. please don't translate 'yes' and 'no'
-#: ../libgimpconfig/gimpconfig-deserialize.c:427
+#: ../libgimpconfig/gimpconfig-deserialize.c:436
 #, c-format
 msgid "expected 'yes' or 'no' for boolean token %s, got '%s'"
 msgstr ""
 "per un token booleano %s era previsto \"yes\" o \"no\" ma è arrivato \"%s\""
 
-#: ../libgimpconfig/gimpconfig-deserialize.c:501
+#: ../libgimpconfig/gimpconfig-deserialize.c:510
 #, c-format
 msgid "invalid value '%s' for token %s"
 msgstr "valore \"%s\" non valido per il token %s"
 
-#: ../libgimpconfig/gimpconfig-deserialize.c:516
+#: ../libgimpconfig/gimpconfig-deserialize.c:525
 #, c-format
 msgid "invalid value '%ld' for token %s"
 msgstr "valore non valido \"%ld\" per il token %s"
 
-#: ../libgimpconfig/gimpconfig-deserialize.c:585
+#: ../libgimpconfig/gimpconfig-deserialize.c:594
 #, c-format
 msgid "while parsing token '%s': %s"
 msgstr "durante l'analisi del token \"%s\": %s"
@@ -877,17 +878,23 @@ msgstr "errore di analisi fatale"
 msgid "Cannot expand ${%s}"
 msgstr "Impossibile espandere $(%s)"
 
-#: ../libgimpconfig/gimpconfigwriter.c:135
+#: ../libgimpconfig/gimpconfigwriter.c:78
+#: ../libgimpconfig/gimpconfigwriter.c:693
+#, c-format
+msgid "Error writing to '%s': %s"
+msgstr "Errore nella scrittura su \"%s\": %s"
+
+#: ../libgimpconfig/gimpconfigwriter.c:136
 #, c-format
 msgid "Could not create temporary file for '%s': %s"
 msgstr "Impossibile creare il file temporaneo per \"%s\": %s"
 
-#: ../libgimpconfig/gimpconfigwriter.c:148
+#: ../libgimpconfig/gimpconfigwriter.c:149
 #, c-format
 msgid "Could not open '%s' for writing: %s"
 msgstr "Impossibile aprire \"%s\" in scrittura: %s"
 
-#: ../libgimpconfig/gimpconfigwriter.c:667
+#: ../libgimpconfig/gimpconfigwriter.c:674
 #, c-format
 msgid ""
 "Error writing to temporary file for '%s': %s\n"
@@ -896,7 +903,7 @@ msgstr ""
 "Errore nella scrittura su file temporaneo per \"%s\": %s\n"
 "Il file originale non è stato toccato."
 
-#: ../libgimpconfig/gimpconfigwriter.c:675
+#: ../libgimpconfig/gimpconfigwriter.c:682
 #, c-format
 msgid ""
 "Error writing to temporary file for '%s': %s\n"
@@ -905,12 +912,7 @@ msgstr ""
 "Errore nella scrittura su file temporaneo per \"%s\": %s\n"
 "Non è stato creato alcun file."
 
-#: ../libgimpconfig/gimpconfigwriter.c:686
-#, c-format
-msgid "Error writing to '%s': %s"
-msgstr "Errore nella scrittura su \"%s\": %s"
-
-#: ../libgimpconfig/gimpconfigwriter.c:704
+#: ../libgimpconfig/gimpconfigwriter.c:711
 #, c-format
 msgid "Could not create '%s': %s"
 msgstr "Impossibile creare \"%s\": %s"
@@ -1031,15 +1033,15 @@ msgstr "Seleziona cartella"
 msgid "Select File"
 msgstr "Seleziona file"
 
-#: ../libgimpwidgets/gimpmemsizeentry.c:202
+#: ../libgimpwidgets/gimpmemsizeentry.c:204
 msgid "Kilobytes"
 msgstr "Kilobyte"
 
-#: ../libgimpwidgets/gimpmemsizeentry.c:203
+#: ../libgimpwidgets/gimpmemsizeentry.c:205
 msgid "Megabytes"
 msgstr "Megabyte"
 
-#: ../libgimpwidgets/gimpmemsizeentry.c:204
+#: ../libgimpwidgets/gimpmemsizeentry.c:206
 msgid "Gigabytes"
 msgstr "Gigabyte"
 
@@ -1122,11 +1124,6 @@ msgid "This text input field is limited to %d character."
 msgid_plural "This text input field is limited to %d characters."
 msgstr[0] "Questo campo di immissione testo è limitato a %d carattere."
 msgstr[1] "Questo campo di immissione testo è limitato a %d caratteri."
-
-#: ../libgimpwidgets/gimpresolutionentry.c:382
-#, c-format
-msgid "pixels/%s"
-msgstr "pixel/%s"
 
 #: ../libgimpwidgets/gimpstock.c:113
 msgid "Anchor"
@@ -1577,14 +1574,12 @@ msgid "X Move Right"
 msgstr "A destra Spostamento X"
 
 #: ../modules/controller_linux_input.c:92
-#: ../modules/controller_dx_dinput.c:478
-msgid "Y Move Away"
-msgstr "Allontanamento in Y"
+msgid "Y Move Forward"
+msgstr "Spostamento in avanti in Y"
 
 #: ../modules/controller_linux_input.c:93
-#: ../modules/controller_dx_dinput.c:481
-msgid "Y Move Near"
-msgstr "Avvicinamento in Y"
+msgid "Y Move Back"
+msgstr "Spostamento indietro in Y"
 
 #: ../modules/controller_linux_input.c:94
 #: ../modules/controller_dx_dinput.c:487
@@ -1597,14 +1592,12 @@ msgid "Z Move Down"
 msgstr "In basso spostamento Z"
 
 #: ../modules/controller_linux_input.c:97
-#: ../modules/controller_dx_dinput.c:496
-msgid "X Axis Tilt Away"
-msgstr "Inclinazione asse X lontana"
+msgid "X Axis Tilt Forward"
+msgstr "Inclinazione asse X in avanti"
 
 #: ../modules/controller_linux_input.c:98
-#: ../modules/controller_dx_dinput.c:499
-msgid "X Axis Tilt Near"
-msgstr "Inclinazione asse X vicina"
+msgid "X Axis Tilt Back"
+msgstr "Inclinazione asse X indietro"
 
 #: ../modules/controller_linux_input.c:99
 #: ../modules/controller_dx_dinput.c:505
@@ -1724,6 +1717,22 @@ msgstr "Pressione pulsante %d"
 #, c-format
 msgid "Button %d Release"
 msgstr "Rilascio pulsante %d"
+
+#: ../modules/controller_dx_dinput.c:478
+msgid "Y Move Away"
+msgstr "Allontanamento in Y"
+
+#: ../modules/controller_dx_dinput.c:481
+msgid "Y Move Near"
+msgstr "Avvicinamento in Y"
+
+#: ../modules/controller_dx_dinput.c:496
+msgid "X Axis Tilt Away"
+msgstr "Inclinazione asse X lontana"
+
+#: ../modules/controller_dx_dinput.c:499
+msgid "X Axis Tilt Near"
+msgstr "Inclinazione asse X vicina"
 
 #: ../modules/controller_dx_dinput.c:528
 #, c-format

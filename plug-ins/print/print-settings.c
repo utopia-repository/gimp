@@ -17,7 +17,7 @@
  */
 
 #define PRINT_SETTINGS_MAJOR_VERSION 0
-#define PRINT_SETTINGS_MINOR_VERSION 2
+#define PRINT_SETTINGS_MINOR_VERSION 3
 
 #include "config.h"
 
@@ -54,11 +54,10 @@ static GKeyFile * check_version                              (GKeyFile          
  * file of the same name
  */
 gboolean
-load_print_settings (PrintData *data)
+load_print_settings (PrintData *data,
+                     gint32     image_ID)
 {
-  GKeyFile *key_file;
-
-  key_file = print_settings_key_file_from_parasite (data->image_id);
+  GKeyFile *key_file = print_settings_key_file_from_parasite (image_ID);
 
   if (! key_file)
     key_file = print_settings_key_file_from_resource_file ();
@@ -78,7 +77,8 @@ load_print_settings (PrintData *data)
  * and as an image parasite
  */
 void
-save_print_settings (PrintData *data)
+save_print_settings (PrintData *data,
+                     gint32     image_ID)
 {
   GKeyFile *key_file;
 
@@ -90,8 +90,10 @@ save_print_settings (PrintData *data)
   g_key_file_set_integer (key_file, "image-setup", "unit", data->unit);
   g_key_file_set_double (key_file, "image-setup", "x-resolution", data->xres);
   g_key_file_set_double (key_file, "image-setup", "y-resolution", data->yres);
+  g_key_file_set_double (key_file, "image-setup", "x-offset", data->offset_x);
+  g_key_file_set_double (key_file, "image-setup", "y-offset", data->offset_y);
 
-  save_print_settings_as_parasite (key_file, data->image_id);
+  save_print_settings_as_parasite (key_file, image_ID);
 
   g_key_file_free (key_file);
 }
@@ -339,6 +341,15 @@ load_print_settings_from_key_file (PrintData *data,
                                           "image-setup", "x-resolution", NULL);
       data->yres = g_key_file_get_double (key_file,
                                           "image-setup", "y-resolution", NULL);
+    }
+
+  if (g_key_file_has_key (key_file, "image-setup", "x-offset", NULL) &&
+      g_key_file_has_key (key_file, "image-setup", "y-offset", NULL))
+    {
+      data->offset_x = g_key_file_get_double (key_file,
+                                              "image-setup", "x-offset", NULL);
+      data->offset_y = g_key_file_get_double (key_file,
+                                              "image-setup", "y-offset", NULL);
     }
 
 #if 0

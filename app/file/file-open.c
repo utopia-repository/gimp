@@ -504,9 +504,11 @@ file_open_from_command_line (Gimp        *gimp,
         }
       else if (status != GIMP_PDB_CANCEL)
         {
-          gchar *filename = file_utils_uri_to_utf8_filename (uri);
+          gchar *filename = file_utils_uri_display_name (uri);
 
-          g_message (_("Opening '%s' failed: %s"), filename, error->message);
+          gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR,
+                        _("Opening '%s' failed: %s"),
+                        filename, error->message);
           g_clear_error (&error);
 
           g_free (filename);
@@ -544,9 +546,16 @@ file_open_sanitize_image (GimpImage *image,
   /* set the image to clean  */
   gimp_image_clean_all (image);
 
+  /* make sure the entire projection is properly constructed, because
+   * load plug-ins are not required to call gimp_drawable_update() or
+   * anything.
+   */
+  gimp_image_update (image, 0, 0, image->width, image->height);
+  gimp_image_flush (image);
+
+  /* same for drawable previews */
   gimp_image_invalidate_layer_previews (image);
   gimp_image_invalidate_channel_previews (image);
-  gimp_viewable_invalidate_preview (GIMP_VIEWABLE (image));
 }
 
 static void

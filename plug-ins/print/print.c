@@ -42,26 +42,28 @@ static void        run   (const gchar       *name,
                           gint              *nreturn_vals,
                           GimpParam        **return_vals);
 
-static gboolean    print_image          (gint32             image_ID,
-                                         gint32             drawable_ID,
-                                         gboolean           interactive);
+static gboolean    print_image              (gint32             image_ID,
+                                             gint32             drawable_ID,
+                                             gboolean           interactive);
 
-static void        begin_print          (GtkPrintOperation *operation,
-                                         GtkPrintContext   *context,
-                                         PrintData         *data);
+static void        print_operation_set_name (GtkPrintOperation *operation,
+                                             gint               image_ID);
 
-static void        end_print            (GtkPrintOperation *operation,
-                                         GtkPrintContext   *context,
-                                         PrintData         *data);
+static void        begin_print              (GtkPrintOperation *operation,
+                                             GtkPrintContext   *context,
+                                             PrintData         *data);
+static void        end_print                (GtkPrintOperation *operation,
+                                             GtkPrintContext   *context,
+                                             PrintData         *data);
+static void        draw_page                (GtkPrintOperation *print,
+                                             GtkPrintContext   *context,
+                                             gint               page_nr,
+                                             PrintData         *data);
+static void        status_changed           (GtkPrintOperation *operation,
+                                             gint32            *image_ID);
 
-static void        draw_page            (GtkPrintOperation *print,
-                                         GtkPrintContext   *context,
-                                         int                page_nr,
-                                         PrintData         *data);
-static void        print_status_changed (GtkPrintOperation *operation);
-
-static GtkWidget * create_custom_widget (GtkPrintOperation *operation,
-                                         PrintData         *data);
+static GtkWidget * create_custom_widget     (GtkPrintOperation *operation,
+                                             PrintData         *data);
 
 
 
@@ -153,30 +155,54 @@ print_image (gint32    image_ID,
              gint32    drawable_ID,
              gboolean  interactive)
 {
-  GtkPrintOperation *operation = gtk_print_operation_new ();
-  GError            *error     = NULL;
-  PrintData         *data;
+  GtkPrintOperation *operation;
+  GError            *error         = NULL;
+  gint32             orig_image_ID = image_ID;
+  PrintData          data;
+  GimpExportReturn   export;
 
-  data = g_new0 (PrintData, 1);
+  /* export the image */
+  export = gimp_export_image (&image_ID, &drawable_ID, NULL,
+                              GIMP_EXPORT_CAN_HANDLE_RGB   |
+                              GIMP_EXPORT_CAN_HANDLE_ALPHA);
 
-  data->num_pages   = 1;
-  data->image_id    = image_ID;
-  data->drawable_id = drawable_ID;
-  data->operation   = operation;
-  data->unit        = gimp_get_default_unit ();
-  gimp_image_get_resolution (data->image_id, &data->xres, &data->yres);
+  if (export == GIMP_EXPORT_CANCEL)
+    return FALSE;
 
-  load_print_settings (data);
+  operation = gtk_print_operation_new ();
+
+  print_operation_set_name (operation, orig_image_ID);
+
+  /* fill in the PrintData struct */
+  data.num_pages     = 1;
+  data.drawable_id   = drawable_ID;
+  data.unit          = gimp_get_default_unit ();
+  data.image_unit    = gimp_image_get_unit (image_ID);
+  data.offset_x      = 0;
+  data.offset_y      = 0;
+  data.use_full_page = FALSE;
+  data.operation     = operation;
+
+  gimp_image_get_resolution (image_ID, &data.xres, &data.yres);
+
+  load_print_settings (&data, orig_image_ID);
 
   g_signal_connect (operation, "begin-print",
                     G_CALLBACK (begin_print),
-                    data);
+                    &data);
   g_signal_connect (operation, "draw-page",
                     G_CALLBACK (draw_page),
-                    data);
+                    &data);
   g_signal_connect (operation, "end-print",
                     G_CALLBACK (end_print),
-                    data);
+                    &data);
+
+  if (export != GIMP_EXPORT_EXPORT)
+    image_ID = -1;
+
+  g_signal_connect (operation, "status-changed",
+                    G_CALLBACK (status_changed),
+                    &image_ID);
 
   if (interactive)
     {
@@ -184,13 +210,9 @@ print_image (gint32    image_ID,
 
       g_signal_connect (operation, "create-custom-widget",
                         G_CALLBACK (create_custom_widget),
-                        data);
+                        &data);
 
       gtk_print_operation_set_custom_tab_label (operation, _("Image"));
-
-      g_signal_connect (operation, "status-changed",
-                        G_CALLBACK (print_status_changed),
-                        &result);
 
       result = gtk_print_operation_run (operation,
                                         GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
@@ -200,7 +222,7 @@ print_image (gint32    image_ID,
         {
         case GTK_PRINT_OPERATION_RESULT_APPLY:
         case GTK_PRINT_OPERATION_RESULT_IN_PROGRESS:
-          save_print_settings (data);
+          save_print_settings (&data, orig_image_ID);
           break;
 
         case GTK_PRINT_OPERATION_RESULT_ERROR:
@@ -216,6 +238,13 @@ print_image (gint32    image_ID,
     }
 
   g_object_unref (operation);
+
+  /* The export image should have been deleted already from the
+   * "status-changed" handler, but better make sure that it isn't
+   * left behind.
+   */
+  if (gimp_image_is_valid (image_ID))
+    gimp_image_delete (image_ID);
 
   if (error)
     {
@@ -240,6 +269,19 @@ print_image (gint32    image_ID,
 }
 
 static void
+print_operation_set_name (GtkPrintOperation *operation,
+                          gint               image_ID)
+{
+  gchar *name    = gimp_image_get_name (image_ID);
+  gchar *jobname = g_strdup_printf ("%s - %s", g_get_application_name (), name);
+
+  gtk_print_operation_set_job_name (operation, jobname);
+
+  g_free (jobname);
+  g_free (name);
+}
+
+static void
 begin_print (GtkPrintOperation *operation,
              GtkPrintContext   *context,
              PrintData         *data)
@@ -247,6 +289,7 @@ begin_print (GtkPrintOperation *operation,
   data->num_pages = 1;
 
   gtk_print_operation_set_n_pages (operation, data->num_pages);
+  gtk_print_operation_set_use_full_page (operation, data->use_full_page);
 
   gimp_progress_init (_("Printing"));
 }
@@ -260,9 +303,21 @@ end_print (GtkPrintOperation *operation,
 }
 
 static void
-print_status_changed (GtkPrintOperation *operation)
+status_changed (GtkPrintOperation *operation,
+                gint32            *image_ID)
 {
   const gchar *status = gtk_print_operation_get_status_string (operation);
+
+  if (gtk_print_operation_get_status (operation) >
+      GTK_PRINT_STATUS_GENERATING_DATA)
+    {
+      /* we don't need the export image any longer, delete it */
+      if (gimp_image_is_valid (*image_ID))
+        {
+          gimp_image_delete (*image_ID);
+          *image_ID = -1;
+        }
+    }
 
   if (status && strlen (status))
     {
@@ -274,7 +329,7 @@ print_status_changed (GtkPrintOperation *operation)
 static void
 draw_page (GtkPrintOperation *operation,
            GtkPrintContext   *context,
-           int                page_nr,
+           gint               page_nr,
            PrintData         *data)
 {
   draw_page_cairo (context, data);

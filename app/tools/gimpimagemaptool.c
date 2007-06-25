@@ -304,7 +304,7 @@ gimp_image_map_tool_initialize (GimpTool     *tool,
       gtk_widget_show (vbox);
     }
 
-  drawable = gimp_image_active_drawable (display->image);
+  drawable = gimp_image_get_active_drawable (display->image);
 
   gimp_viewable_dialog_set_viewable (GIMP_VIEWABLE_DIALOG (image_map_tool->shell),
                                      GIMP_VIEWABLE (drawable),
@@ -487,10 +487,11 @@ gimp_image_map_tool_response (GtkWidget        *widget,
 
           gimp_tool_control_set_preserve (tool->control, FALSE);
 
+          gimp_viewable_invalidate_preview (GIMP_VIEWABLE (image_map_tool->drawable));
           gimp_image_flush (tool->display->image);
         }
 
-      tool->display    = NULL;
+      tool->display  = NULL;
       tool->drawable = NULL;
       break;
 
@@ -507,10 +508,11 @@ gimp_image_map_tool_response (GtkWidget        *widget,
 
           gimp_tool_control_set_preserve (tool->control, FALSE);
 
+          gimp_viewable_invalidate_preview (GIMP_VIEWABLE (image_map_tool->drawable));
           gimp_image_flush (tool->display->image);
         }
 
-      tool->display    = NULL;
+      tool->display  = NULL;
       tool->drawable = NULL;
       break;
     }
@@ -542,7 +544,8 @@ gimp_image_map_tool_notify_preview (GObject          *config,
 
           gimp_tool_control_set_preserve (tool->control, FALSE);
 
-          gimp_image_flush (tool->display->image);
+          gimp_image_map_tool_flush (image_map_tool->image_map,
+                                     image_map_tool);
         }
     }
 }

@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimpenv.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2576922" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2582268" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2597791" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2597834" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpdatafiles"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2576922"></a><span class="refentrytitle">gimpdatafiles</span>
+<a name="id2582268"></a><span class="refentrytitle">gimpdatafiles</span>
 </h2>
 <p>gimpdatafiles &#8212; Functions to handle GIMP data files.</p>
 </td>
@@ -58,17 +58,17 @@ void                <a href="libgimpbase-gimpdatafiles.html#gimp-datafiles-read-
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2597791"></a><h2>Description</h2>
+<a name="id2597834"></a><h2>Description</h2>
 <p>
 Functions to handle GIMP data files.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2597806"></a><h2>Details</h2>
+<a name="id2597849"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2597817"></a><h3>
+<a name="id2597860"></a><h3>
 <a name="GimpDatafileData"></a>GimpDatafileData</h3>
-<a class="indexterm" name="id2597830"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2597872"></a><pre class="programlisting">typedef struct {
   const gchar *filename;
   const gchar *dirname;
   const gchar *basename;
@@ -84,9 +84,9 @@ Functions to handle GIMP data files.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2594443"></a><h3>
+<a name="id2577786"></a><h3>
 <a name="GimpDatafileLoaderFunc"></a>GimpDatafileLoaderFunc ()</h3>
-<a class="indexterm" name="id2594454"></a><pre class="programlisting">void                (*GimpDatafileLoaderFunc)           (const <a href="libgimpbase-gimpdatafiles.html#GimpDatafileData">GimpDatafileData</a> *file_data,
+<a class="indexterm" name="id2577797"></a><pre class="programlisting">void                (*GimpDatafileLoaderFunc)           (const <a href="libgimpbase-gimpdatafiles.html#GimpDatafileData">GimpDatafileData</a> *file_data,
                                                          gpointer user_data);</pre>
 <p>
 
@@ -111,9 +111,9 @@ Functions to handle GIMP data files.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2594521"></a><h3>
+<a name="id2577864"></a><h3>
 <a name="gimp-datafiles-check-extension"></a>gimp_datafiles_check_extension ()</h3>
-<a class="indexterm" name="id2594533"></a><pre class="programlisting">gboolean            gimp_datafiles_check_extension      (const gchar *filename,
+<a class="indexterm" name="id2577876"></a><pre class="programlisting">gboolean            gimp_datafiles_check_extension      (const gchar *filename,
                                                          const gchar *extension);</pre>
 <p>
 
@@ -143,9 +143,9 @@ Functions to handle GIMP data files.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599205"></a><h3>
+<a name="id2556159"></a><h3>
 <a name="gimp-datafiles-read-directories"></a>gimp_datafiles_read_directories ()</h3>
-<a class="indexterm" name="id2599216"></a><pre class="programlisting">void                gimp_datafiles_read_directories     (const gchar *path_str,
+<a class="indexterm" name="id2556170"></a><pre class="programlisting">void                gimp_datafiles_read_directories     (const gchar *path_str,
                                                          GFileTest flags,
                                                          <a href="libgimpbase-gimpdatafiles.html#GimpDatafileLoaderFunc">GimpDatafileLoaderFunc</a> loader_func,
                                                          gpointer user_data);</pre>

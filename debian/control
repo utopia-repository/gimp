@@ -9,12 +9,12 @@ Build-Depends: debhelper (>= 5), cdbs (>= 0.4.37), autotools-dev,
  libaa1-dev, libgtk2.0-dev (>= 2.10.0), libglib2.0-dev (>= 2.10.2),
  libpango1.0-dev (>= 1.12.2), libgtkhtml2-dev (>= 2.0.0), libjpeg62-dev,
  libart-2.0-dev, libpng12-dev | libpng-dev,
- zlib1g-dev, libtiff4-dev, python-dev (>= 2.3.5), python-gtk2-dev (>= 2.8.0),
+ zlib1g-dev, libtiff4-dev, python-dev (>= 2.3.5), python-gtk2-dev (>= 2.10.4),
  python-support (>= 0.4), libexif-dev (>= 0.6.12), libmng-dev,
  librsvg2-dev (>= 2.7.2-2), libfontconfig1-dev (>= 2.2.0),
  libwmf-dev (>= 0.2.8-1.1), libfreetype6-dev (>= 2.2),
  libpoppler-glib-dev (>= 0.3.1), libgnomevfs2-dev (>= 2.10.0),
- libgnomeui-dev (>= 2.10.0), libcurl3-gnutls-dev,
+ libgnomeui-dev (>= 2.10.0), libcurl4-gnutls-dev,
  libasound2-dev (>= 1.0.0) [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386]
 Build-Conflicts: libgimp2.0
 XS-Vcs-Svn: svn://svn.debian.org/svn/collab-maint/deb-maint/gimp/
@@ -36,7 +36,7 @@ Description: Libraries necessary to run the GIMP - DEVELOPMENT VERSION
 Package: gimp-helpbrowser
 Architecture: any
 Section: graphics
-Depends: gimp (= ${source:Version}), ${shlibs:Depends}
+Depends: gimp (= ${binary:Version}), ${shlibs:Depends}
 Description: Built-in Help Browser plugin for The GIMP
  This package includes the browser for reading documentation for The GIMP,
  accessible from within the program.
@@ -61,7 +61,7 @@ Description: Python support and plugins for The GIMP
 Package: gimp-gnomevfs
 Architecture: any
 Section: graphics
-Depends: gimp (= ${source:Version}), libgnomevfs2-extra, ${shlibs:Depends}
+Depends: gimp (= ${binary:Version}), libgnomevfs2-extra, ${shlibs:Depends}
 Conflicts: gimp-libcurl, gimp (<= 2.3.12-2)
 Replaces: gimp-libcurl, gimp (<= 2.3.12-2)
 Description: GNOME-VFS URI plugin for The GIMP
@@ -71,7 +71,7 @@ Description: GNOME-VFS URI plugin for The GIMP
 Package: gimp-libcurl
 Architecture: any
 Section: graphics
-Depends: gimp (= ${source:Version}), ${shlibs:Depends}
+Depends: gimp (= ${binary:Version}), ${shlibs:Depends}
 Conflicts: gimp-gnomevfs, gimp (<= 2.3.12-2)
 Replaces: gimp-gnomevfs, gimp (<= 2.3.12-2)
 Description: libcurl URI plugin for The GIMP
@@ -82,8 +82,8 @@ Package: gimp
 Architecture: any
 Section: graphics
 Depends: gimp-data (>= ${source:Upstream-Version}), gimp-data (<< ${source:Upstream-Version}-z), ${shlibs:Depends}
-Conflicts: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2)
-Replaces: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2)
+Conflicts: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2), gimp-svg
+Replaces: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2), gimp-svg
 Recommends: gimp-gnomevfs | gimp-libcurl
 Suggests: gimp-help-en | gimp-help, gimp-python, libgimp-perl, gimp-data-extras, gimp-print, gimp-dbg
 Description: The GNU Image Manipulation Program - DEVELOPMENT VERSION
@@ -113,7 +113,7 @@ Description: Data files for The GIMP
 Package: libgimp2.0-dev
 Architecture: any
 Section: libdevel
-Depends: libgimp2.0 (= ${source:Version}), libgtk2.0-dev (>= 2.4.4-1), pkg-config
+Depends: libgimp2.0 (= ${binary:Version}), libgtk2.0-dev (>= 2.10.0), pkg-config
 Suggests: libgimp2.0-doc
 Description: Headers and other files for compiling plugins for The GIMP
  This package contains the header files for the GNU Image Manipulation
@@ -135,7 +135,7 @@ Package: gimp-dbg
 Priority: extra
 Architecture: any
 Section: graphics
-Depends: gimp (= ${source:Version}) | libgimp2.0 (= ${source:Version}), ${shlibs:Depends}
+Depends: gimp (= ${binary:Version}) | libgimp2.0 (= ${source:Version}), ${shlibs:Depends}
 Description: Debugging symbols for The GIMP
  This package includes the debugging symbols useful for debugging
  The GIMP and its libraries, contained in the gimp and libgimp2.0 packages.

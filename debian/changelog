@@ -1,5 +1,16 @@
+gimp (2.3.19-1) experimental; urgency=high
+
+  * New upstream version
+    - Fixes integer overflow in PSD plugin (CVE-2007-2949)
+  * Make gimp conflict and replace gimp-svg
+  * Update versioned build-dep of python-gtk2-dev (Closes: #430363) 
+  * Make package binNMU-safe (Closes: #432965)
+
+ -- Ari Pollak <ari@debian.org>  Mon, 25 Jun 2007 11:45:41 -0400
+
 gimp (2.3.18-1) experimental; urgency=low
 
+  * New upstream release
   * Merge gimp-svg back into main package since librsvg2-2 no longer seems to
     pull in GNOME packages
 
@@ -188,6 +199,27 @@ gimp (2.3.6-1) experimental; urgency=low
   * Make libgimp2.0-dev suggest libgimp2.0-doc
 
  -- Ari Pollak <ari@debian.org>  Wed, 28 Dec 2005 15:24:24 -0500
+
+gimp (2.2.17-1) unstable; urgency=low
+
+  * New upstream version
+    - Fixes a regression loading PSD files
+
+ -- Ari Pollak <ari@debian.org>  Fri, 13 Jul 2007 10:31:45 -0400
+
+gimp (2.2.16-1) unstable; urgency=high
+
+  * New upstream version
+    - Fixes integer overflow in PSD plugin (CVE-2007-2949)
+  * Don't use find -exec xargs (Closes: #426415)
+
+ -- Ari Pollak <ari@debian.org>  Fri, 06 Jul 2007 23:11:47 -0400
+
+gimp (2.2.15-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Ari Pollak <ari@debian.org>  Sun, 27 May 2007 13:55:28 -0400
 
 gimp (2.2.14-2) unstable; urgency=high
 

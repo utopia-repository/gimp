@@ -63,7 +63,8 @@ am_libappbase_a_OBJECTS = base.$(OBJEXT) base-enums.$(OBJEXT) \
 	pixel-region.$(OBJEXT) pixel-surround.$(OBJEXT) siox.$(OBJEXT) \
 	temp-buf.$(OBJEXT) threshold.$(OBJEXT) tile.$(OBJEXT) \
 	tile-cache.$(OBJEXT) tile-manager.$(OBJEXT) \
-	tile-manager-crop.$(OBJEXT) tile-swap.$(OBJEXT)
+	tile-manager-crop.$(OBJEXT) tile-manager-preview.$(OBJEXT) \
+	tile-pyramid.$(OBJEXT) tile-swap.$(OBJEXT)
 libappbase_a_OBJECTS = $(am_libappbase_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -199,8 +200,6 @@ GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
 GOBJECT_QUERY = @GOBJECT_QUERY@
 GREP = @GREP@
-GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
-GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
 GTKHTML2_CFLAGS = @GTKHTML2_CFLAGS@
 GTKHTML2_LIBS = @GTKHTML2_LIBS@
@@ -356,6 +355,7 @@ RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
 SCREENSHOT = @SCREENSHOT@
+SED = @SED@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -497,15 +497,18 @@ libappbase_a_SOURCES = \
 	tile-cache.h		\
 	tile-manager.c		\
 	tile-manager.h		\
-	tile-manager-private.h	\
 	tile-manager-crop.c	\
 	tile-manager-crop.h	\
+	tile-manager-preview.c	\
+	tile-manager-preview.h	\
+	tile-manager-private.h	\
+	tile-pyramid.c		\
+	tile-pyramid.h		\
 	tile-swap.c		\
 	tile-swap.h
 
 AM_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"Gimp-Base\"	\
-	@GTHREAD_CFLAGS@
+	-DG_LOG_DOMAIN=\"Gimp-Base\"
 
 INCLUDES = \
 	-I$(top_builddir)	\
@@ -590,7 +593,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/threshold.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tile-cache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tile-manager-crop.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tile-manager-preview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tile-manager.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tile-pyramid.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tile-swap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tile.Po@am__quote@
 

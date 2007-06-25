@@ -82,6 +82,7 @@ struct _GimpImageFlushAccumulator
 {
   gboolean alpha_changed;
   gboolean mask_changed;
+  gboolean preview_invalidated;
 };
 
 
@@ -226,7 +227,8 @@ struct _GimpImageClass
                                          GimpUndoEvent         event,
                                          GimpUndo             *undo);
 
-  void (* flush)                        (GimpImage            *image);
+  void (* flush)                        (GimpImage            *image,
+                                         gboolean              invalidate_preview);
 };
 
 
@@ -408,7 +410,7 @@ GimpContainer * gimp_image_get_layers            (const GimpImage    *image);
 GimpContainer * gimp_image_get_channels          (const GimpImage    *image);
 GimpContainer * gimp_image_get_vectors           (const GimpImage    *image);
 
-GimpDrawable  * gimp_image_active_drawable       (const GimpImage    *image);
+GimpDrawable  * gimp_image_get_active_drawable   (const GimpImage    *image);
 GimpLayer     * gimp_image_get_active_layer      (const GimpImage    *image);
 GimpChannel   * gimp_image_get_active_channel    (const GimpImage    *image);
 GimpVectors   * gimp_image_get_active_vectors    (const GimpImage    *image);

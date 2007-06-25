@@ -877,6 +877,9 @@ gimp_draw_tool_draw_corner (GimpDrawTool   *draw_tool,
   GimpCanvas       *canvas;
   gint              tx1, ty1;
   gint              tx2, ty2;
+  gint              tw,  th;
+  gint              top_and_bottom_handle_x_offset;
+  gint              left_and_right_handle_y_offset;
 
   g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
   g_return_if_fail (width > 2 && height > 2);
@@ -887,8 +890,14 @@ gimp_draw_tool_draw_corner (GimpDrawTool   *draw_tool,
   gimp_display_shell_transform_xy (shell, x1, y1, &tx1, &ty1, use_offsets);
   gimp_display_shell_transform_xy (shell, x2, y2, &tx2, &ty2, use_offsets);
 
-  if (tx2 - tx1 <= width || ty2 - ty1 <= height)
+  tw = tx2 - tx1;
+  th = ty2 - ty1;
+
+  if (tw <= width || th <= height)
     return;
+
+  top_and_bottom_handle_x_offset = (tw - width)  / 2;
+  left_and_right_handle_y_offset = (th - height) / 2;
 
   switch (anchor)
     {
@@ -933,22 +942,26 @@ gimp_draw_tool_draw_corner (GimpDrawTool   *draw_tool,
 
     case GTK_ANCHOR_NORTH:
       gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                             tx1 + 1, ty1 + height, tx2 - 1, ty1 + height);
+                             tx1 + 1, ty1 + height - 1,
+                             tx2 - 1, ty1 + height - 1);
       break;
 
     case GTK_ANCHOR_SOUTH:
       gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                             tx1 + 1, ty2 - height, tx2 - 1, ty2 - height);
+                             tx1 + 1, ty2 - height,
+                             tx2 - 1, ty2 - height);
       break;
 
     case GTK_ANCHOR_WEST:
       gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                             tx1 + width, ty1 + 1, tx1 + width, ty2 - 1);
+                             tx1 + width - 1, ty1 + 1,
+                             tx1 + width - 1, ty2 - 1);
       break;
 
     case GTK_ANCHOR_EAST:
       gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                             tx2 - width, ty1 + 1, tx2 - width, ty2 - 1);
+                             tx2 - width, ty1 + 1,
+                             tx2 - width, ty2 - 1);
       break;
     }
 
@@ -983,26 +996,70 @@ gimp_draw_tool_draw_corner (GimpDrawTool   *draw_tool,
 
     case GTK_ANCHOR_NORTH:
       gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                  tx1 + 1,         ty1 + 1,
-                                  tx2 - tx1 - 3,   height - 2);
+                                  tx1 + top_and_bottom_handle_x_offset,
+                                  ty1 + 1,
+                                  width, height - 3);
+      gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
+                             tx1 + top_and_bottom_handle_x_offset + 1,
+                             ty1 + 2,
+                             tx1 + top_and_bottom_handle_x_offset + 1,
+                             ty1 + height - 2);
+      gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
+                             tx1 + top_and_bottom_handle_x_offset + width - 1,
+                             ty1 + 2,
+                             tx1 + top_and_bottom_handle_x_offset + width - 1,
+                             ty1 + height - 2);
       break;
 
     case GTK_ANCHOR_SOUTH:
       gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                  tx1 + 1,         ty2 - height + 1,
-                                  tx2 - tx1 - 3,   height - 3);
+                                  tx1 + top_and_bottom_handle_x_offset,
+                                  ty2 - height + 1,
+                                  width, height - 3);
+      gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
+                             tx1 + top_and_bottom_handle_x_offset + 1,
+                             ty2 - 3,
+                             tx1 + top_and_bottom_handle_x_offset + 1,
+                             ty2 - height + 1);
+      gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
+                             tx1 + top_and_bottom_handle_x_offset + width - 1,
+                             ty2 - 3,
+                             tx1 + top_and_bottom_handle_x_offset + width - 1,
+                             ty2 - height + 1);
       break;
 
     case GTK_ANCHOR_WEST:
       gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                  tx1 + 1,         ty1 + 1,
-                                  width - 2,       ty2 - ty1 - 3);
+                                  tx1 + 1,
+                                  ty1 + left_and_right_handle_y_offset,
+                                  width - 3, height);
+      gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
+                             tx1 + 2,
+                             ty1 + left_and_right_handle_y_offset + 1,
+                             tx1 + width - 2,
+                             ty1 + left_and_right_handle_y_offset + 1);
+      gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
+                             tx1 + 2,
+                             ty1 + left_and_right_handle_y_offset + height - 1,
+                             tx1 + width - 2,
+                             ty1 + left_and_right_handle_y_offset + height - 1);
       break;
 
     case GTK_ANCHOR_EAST:
       gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                  tx2 - width + 1, ty1 + 1,
-                                  width - 3,       ty2 - ty1 - 3);
+                                  tx2 - width + 1,
+                                  ty1 + left_and_right_handle_y_offset,
+                                  width - 3, height);
+      gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
+                             tx2 - 3,
+                             ty1 + left_and_right_handle_y_offset + 1,
+                             tx2 - width + 1,
+                             ty1 + left_and_right_handle_y_offset + 1);
+      gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
+                             tx2 - 3,
+                             ty1 + left_and_right_handle_y_offset + height - 1,
+                             tx2 - width + 1,
+                             ty1 + left_and_right_handle_y_offset + height - 1);
       break;
 
     default:

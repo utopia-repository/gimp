@@ -411,6 +411,12 @@ gimp_finalize (GObject *object)
       gimp->session_name = NULL;
     }
 
+  if (gimp->context_list)
+    {
+      g_list_free (gimp->context_list);
+      gimp->context_list = NULL;
+    }
+
   gimp_units_exit (gimp);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -830,8 +836,8 @@ gimp_restore (Gimp               *gimp,
   status_callback (NULL, _("Gradients"), 0.4);
   gimp_data_factory_data_init (gimp->gradient_factory, gimp->no_data);
 
-  /*  initialize the list of gimp fonts  */
-  status_callback (NULL, _("Fonts"), 0.5);
+  /*  initialize the list of fonts  */
+  status_callback (NULL, _("Fonts (this may take a while)"), 0.5);
   if (! gimp->no_fonts)
     gimp_fonts_load (gimp);
 

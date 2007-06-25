@@ -8,7 +8,7 @@ AC_PREREQ(2.54)
 
 m4_define([gimp_major_version], [2])
 m4_define([gimp_minor_version], [3])
-m4_define([gimp_micro_version], [18])
+m4_define([gimp_micro_version], [19])
 m4_define([gimp_real_version],
           [gimp_major_version.gimp_minor_version.gimp_micro_version])
 m4_define([gimp_version], [gimp_real_version])
@@ -41,7 +41,7 @@ m4_define([gimp_full_name], [GNU Image Manipulation Program])
 
 # required versions of other packages
 m4_define([glib_required_version], [2.12.3])
-m4_define([gtk_required_version], [2.10.6])
+m4_define([gtk_required_version], [2.10.13])
 m4_define([gdk_pixbuf_required_version], [gtk_required_version])
 m4_define([pangoft2_required_version], [1.12.2])
 m4_define([fontconfig_required_version], [2.2.0])
@@ -92,7 +92,6 @@ AC_SUBST(GIMP_MINOR_VERSION)
 AC_SUBST(GIMP_MICRO_VERSION)
 AC_SUBST(GIMP_INTERFACE_AGE)
 AC_SUBST(GIMP_BINARY_AGE)
-AC_SUBST(GIMP_API_VERSION)
 AC_SUBST(GIMP_VERSION)
 AC_SUBST(GIMP_REAL_VERSION)
 AC_SUBST(GIMP_API_VERSION)
@@ -418,7 +417,7 @@ AM_GLIB_GNU_GETTEXT
 
 AM_PATH_GLIB_2_0(glib_required_version, :,
   AC_MSG_ERROR(Test for GLIB failed. See the file 'INSTALL' for help.),
-  gobject)
+  gobject gthread)
 
 PKG_CHECK_MODULES(GMODULE_NO_EXPORT, gmodule-no-export-2.0)
 
@@ -443,7 +442,8 @@ LIBS=$gimp_save_LIBS
 AC_PATH_XTRA
 
 AM_PATH_GTK_2_0(gtk_required_version, :,
-    AC_MSG_ERROR(Test for GTK+ failed. See the file 'INSTALL' for help.))
+  AC_MSG_ERROR(Test for GTK+ failed. See the file 'INSTALL' for help.),
+  gthread)
 
 AC_MSG_CHECKING([if GTK+ is version 2.11.0 or newer])
 if $PKG_CONFIG --atleast-version=2.11.0 gtk+-2.0; then
@@ -884,10 +884,8 @@ fi
 
 AC_ARG_ENABLE(mp, [  --disable-mp            disable support for multiple processors])
 if test "x$enable_mp" != "xno"; then
-  PKG_CHECK_MODULES(GTHREAD, gthread-2.0,
-    [AC_DEFINE(ENABLE_MP, 1,
-	       [Define to 1 to enable support for multiple processors.])]
-  )
+  AC_DEFINE(ENABLE_MP, 1,
+	    [Define to 1 to enable support for multiple processors.])
 fi
 
 
@@ -1416,7 +1414,7 @@ if test x"$os_win32" = xyes; then
   esac
 
   dinput_save_CPPFLAGS="$CPPFLAGS"
-  dinput_save_LDFLAGS="$CPPFLAGS"
+  dinput_save_LDFLAGS="$LDFLAGS"
   if test "x$with_directx_sdk" != x; then
     CPPFLAGS="-I $with_directx_sdk/Include $CPPFLAGS"
     LDFLAGS="-L$with_directx_sdk/Lib/x86 $LDFLAGS"

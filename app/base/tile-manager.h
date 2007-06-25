@@ -44,28 +44,29 @@ void          tile_manager_unref             (TileManager *tm);
  *  allocated, but not initialized.
  */
 void          tile_manager_set_validate_proc (TileManager      *tm,
-                                              TileValidateProc  proc);
+                                              TileValidateProc  proc,
+                                              gpointer          user_data);
 
 /* Get a specified tile from a tile manager.
  */
 Tile        * tile_manager_get_tile          (TileManager *tm,
                                               gint         xpixel,
                                               gint         ypixel,
-                                              gint         wantread,
-                                              gint         wantwrite);
+                                              gboolean     wantread,
+                                              gboolean     wantwrite);
 
 /* Get a specified tile from a tile manager.
  */
 Tile        * tile_manager_get               (TileManager *tm,
                                               gint         tile_num,
-                                              gint         wantread,
-                                              gint         wantwrite);
+                                              gboolean     wantread,
+                                              gboolean     wantwrite);
 
 Tile        * tile_manager_get_at            (TileManager *tm,
                                               gint         tile_col,
                                               gint         tile_row,
-                                              gint         wantread,
-                                              gint         wantwrite);
+                                              gboolean     wantread,
+                                              gboolean     wantwrite);
 
 void          tile_manager_map_tile          (TileManager *tm,
                                               gint         xpixel,
@@ -81,38 +82,17 @@ void          tile_manager_map               (TileManager *tm,
 void          tile_manager_validate          (TileManager  *tm,
                                               Tile         *tile);
 
-void          tile_invalidate                (Tile        **tile_ptr,
-                                              TileManager  *tm,
-                                              gint          tile_num);
-void          tile_invalidate_tile           (Tile        **tile_ptr,
-                                              TileManager  *tm,
-                                              gint          xpixel,
-                                              gint          ypixel);
-
-/* Given a toplevel tile, this procedure will invalidate
- *  (set the dirty bit) for this toplevel tile.
- */
-void          tile_manager_invalidate_tiles  (TileManager       *tm,
-                                              Tile              *toplevel_tile);
-
 void          tile_manager_invalidate_area   (TileManager       *tm,
                                               gint               x,
                                               gint               y,
                                               gint               w,
                                               gint               h);
 
-void          tile_manager_set_user_data     (TileManager       *tm,
-                                              gpointer           user_data);
-gpointer      tile_manager_get_user_data     (const TileManager *tm);
-
 gint          tile_manager_width             (const TileManager *tm);
 gint          tile_manager_height            (const TileManager *tm);
 gint          tile_manager_bpp               (const TileManager *tm);
 gint          tile_manager_tiles_per_col     (const TileManager *tm);
 gint          tile_manager_tiles_per_row     (const TileManager *tm);
-TileManager  *tile_manager_get_level_below   (const TileManager *tm);
-void          tile_manager_set_level_below   (TileManager       *tm,
-                                              TileManager       *level_below);
 
 void          tile_manager_get_offsets       (const TileManager *tm,
                                               gint              *x,

@@ -94,22 +94,23 @@ am__objects_2 = gimpaction.$(OBJEXT) gimpactionfactory.$(OBJEXT) \
 	gimpgrideditor.$(OBJEXT) gimphelp.$(OBJEXT) \
 	gimphistogrambox.$(OBJEXT) gimphistogrameditor.$(OBJEXT) \
 	gimphistogramview.$(OBJEXT) gimpimagedock.$(OBJEXT) \
-	gimpimageeditor.$(OBJEXT) gimpimageparasiteview.$(OBJEXT) \
-	gimpimageprofileview.$(OBJEXT) gimpimagepropview.$(OBJEXT) \
-	gimpimageview.$(OBJEXT) gimpitemtreeview.$(OBJEXT) \
-	gimplayertreeview.$(OBJEXT) gimpmenudock.$(OBJEXT) \
-	gimpmenufactory.$(OBJEXT) gimpmessagebox.$(OBJEXT) \
-	gimpmessagedialog.$(OBJEXT) gimpnavigationview.$(OBJEXT) \
-	gimppaletteeditor.$(OBJEXT) gimppaletteselect.$(OBJEXT) \
-	gimppaletteview.$(OBJEXT) gimppatternfactoryview.$(OBJEXT) \
-	gimppatternselect.$(OBJEXT) gimppdbdialog.$(OBJEXT) \
-	gimppixbuf.$(OBJEXT) gimppluginaction.$(OBJEXT) \
-	gimpprofilechooserdialog.$(OBJEXT) gimpprogressbox.$(OBJEXT) \
-	gimpprogressdialog.$(OBJEXT) gimppropwidgets.$(OBJEXT) \
-	gimprender.$(OBJEXT) gimpsamplepointeditor.$(OBJEXT) \
-	gimpselectiondata.$(OBJEXT) gimpselectioneditor.$(OBJEXT) \
-	gimpsessioninfo.$(OBJEXT) gimpsessioninfo-aux.$(OBJEXT) \
-	gimpsessioninfo-book.$(OBJEXT) gimpsessioninfo-dock.$(OBJEXT) \
+	gimpimagecommenteditor.$(OBJEXT) gimpimageeditor.$(OBJEXT) \
+	gimpimageparasiteview.$(OBJEXT) gimpimageprofileview.$(OBJEXT) \
+	gimpimagepropview.$(OBJEXT) gimpimageview.$(OBJEXT) \
+	gimpitemtreeview.$(OBJEXT) gimplayertreeview.$(OBJEXT) \
+	gimpmenudock.$(OBJEXT) gimpmenufactory.$(OBJEXT) \
+	gimpmessagebox.$(OBJEXT) gimpmessagedialog.$(OBJEXT) \
+	gimpnavigationview.$(OBJEXT) gimppaletteeditor.$(OBJEXT) \
+	gimppaletteselect.$(OBJEXT) gimppaletteview.$(OBJEXT) \
+	gimppatternfactoryview.$(OBJEXT) gimppatternselect.$(OBJEXT) \
+	gimppdbdialog.$(OBJEXT) gimppixbuf.$(OBJEXT) \
+	gimppluginaction.$(OBJEXT) gimpprofilechooserdialog.$(OBJEXT) \
+	gimpprogressbox.$(OBJEXT) gimpprogressdialog.$(OBJEXT) \
+	gimppropwidgets.$(OBJEXT) gimprender.$(OBJEXT) \
+	gimpsamplepointeditor.$(OBJEXT) gimpselectiondata.$(OBJEXT) \
+	gimpselectioneditor.$(OBJEXT) gimpsessioninfo.$(OBJEXT) \
+	gimpsessioninfo-aux.$(OBJEXT) gimpsessioninfo-book.$(OBJEXT) \
+	gimpsessioninfo-dock.$(OBJEXT) \
 	gimpsessioninfo-dockable.$(OBJEXT) gimpsizebox.$(OBJEXT) \
 	gimpstringaction.$(OBJEXT) gimpstrokeeditor.$(OBJEXT) \
 	gimptemplateeditor.$(OBJEXT) gimptemplateview.$(OBJEXT) \
@@ -273,8 +274,6 @@ GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
 GOBJECT_QUERY = @GOBJECT_QUERY@
 GREP = @GREP@
-GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
-GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
 GTKHTML2_CFLAGS = @GTKHTML2_CFLAGS@
 GTKHTML2_LIBS = @GTKHTML2_LIBS@
@@ -430,6 +429,7 @@ RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
 SCREENSHOT = @SCREENSHOT@
+SED = @SED@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -526,8 +526,7 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 AM_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"Gimp-Widgets\"	\
-	@GTHREAD_CFLAGS@
+	-DG_LOG_DOMAIN=\"Gimp-Widgets\"
 
 INCLUDES = \
 	-I$(top_builddir)	\
@@ -694,6 +693,8 @@ libappwidgets_a_sources = \
 	gimphistogramview.h		\
 	gimpimagedock.c			\
 	gimpimagedock.h			\
+	gimpimagecommenteditor.c	\
+	gimpimagecommenteditor.h	\
 	gimpimageeditor.c		\
 	gimpimageeditor.h		\
 	gimpimageparasiteview.c		\
@@ -981,6 +982,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphistogrambox.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphistogrameditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphistogramview.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimagecommenteditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimagedock.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimageeditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimageparasiteview.Po@am__quote@

@@ -372,66 +372,69 @@ static gchar * modename[] =
 };
 
 
-static void   unpack_pb_channel            (FILE    *fd,
-                                            guchar  *dst,
-                                            gint32   unpackedlen,
-                                            guint32 *offset);
-static void   decode                       (long     clen,
-                                            long     uclen,
-                                            guchar  *src,
-                                            guchar  *dst,
-                                            int      step);
-static void   packbitsdecode               (long    *clenp,
-                                            long     uclen,
-                                            guchar  *src,
-                                            guchar  *dst,
-                                            int      step);
-static void   cmyk2rgb                     (guchar  *src,
-                                            guchar  *destp,
-                                            long     width,
-                                            long     height,
-                                            int      alpha);
-static void   cmykp2rgb                    (guchar  *src,
-                                            guchar  *destp,
-                                            long     width,
-                                            long     height,
-                                            int      alpha);
-static void   bitmap2gray                  (guchar  *src,
-                                            guchar  *dest,
-                                            long     w,
-                                            long     h);
-static guchar getguchar                    (FILE    *fd,
-                                            gchar   *why);
-static gint16 getgint16                    (FILE    *fd,
-                                            gchar   *why);
-static gint32  getgint32                     (FILE    *fd,
-                                            gchar   *why);
-static void   xfread                       (FILE    *fd,
-                                            void    *buf,
-                                            long     len,
-                                            gchar   *why);
-static void   xfread_interlaced            (FILE    *fd,
-                                            guchar  *buf,
-                                            long     len,
-                                            gchar   *why,
-                                            gint     step);
-static void   read_whole_file              (FILE    *fd);
-static void   reshuffle_cmap               (guchar  *map256);
-static gchar *getpascalstring              (FILE    *fd,
-                                            gchar   *why);
-static gchar *getstring                    (size_t   n,
-                                            FILE    *fd,
-                                            gchar   *why);
-static void   throwchunk                   (size_t   n,
-                                            FILE    *fd,
-                                            gchar   *why);
-static void   dumpchunk                    (size_t   n,
-                                            FILE    *fd,
-                                            gchar   *why);
-static void   seek_to_and_unpack_pixeldata (FILE    *fd,
-                                            gint     layeri,
-                                            gint     channeli);
-static void   validate_aux_channel_name    (gint     aux_index);
+static void   unpack_pb_channel            (FILE        *fd,
+                                            guchar      *dst,
+                                            gint32       unpackedlen,
+                                            guint32     *offset);
+static void   decode                       (long         clen,
+                                            long         uclen,
+                                            const guchar *src,
+                                            guchar       *dst,
+                                            int           step);
+static void   packbitsdecode               (long         *clenp,
+                                            long          uclen,
+                                            const guchar *src,
+                                            guchar       *dst,
+                                            int           step);
+static void   cmyk2rgb                     (const guchar *src,
+                                            guchar       *destp,
+                                            long          width,
+                                            long          height,
+                                            int           alpha);
+static void   cmykp2rgb                    (const guchar *src,
+                                            guchar       *destp,
+                                            long          width,
+                                            long          height,
+                                            int           alpha);
+static void   bitmap2gray                  (const guchar *src,
+                                            guchar       *dest,
+                                            long          w,
+                                            long          h);
+static guchar getguchar                    (FILE         *fd,
+                                            const gchar  *why);
+static gint16 getgint16                    (FILE         *fd,
+                                            const gchar  *why);
+static gint32 getgint32                    (FILE         *fd,
+                                            const gchar  *why);
+static void   xfread                       (FILE         *fd,
+                                            void         *buf,
+                                            long          len,
+                                            const gchar  *why);
+static void   xfread_interlaced            (FILE         *fd,
+                                            guchar       *buf,
+                                            long          len,
+                                            const gchar  *why,
+                                            gint          step);
+static void   read_whole_file              (FILE         *fd,
+                                            const gchar  *name);
+static void   reshuffle_cmap               (guchar       *map256);
+static gchar *getpascalstring              (FILE         *fd,
+                                            const gchar  *why);
+static gchar *getunicodepascalstring       (FILE         *fd,
+                                            const gchar  *why);
+static gchar *getstring                    (size_t        n,
+                                            FILE         *fd,
+                                            const gchar  *why);
+static void   throwchunk                   (size_t        n,
+                                            FILE         *fd,
+                                            const gchar  *why);
+static void   dumpchunk                    (size_t        n,
+                                            FILE         *fd,
+                                            const gchar  *why);
+static void   seek_to_and_unpack_pixeldata (FILE         *fd,
+                                            gint          layeri,
+                                            gint          channeli);
+static void   validate_aux_channel_name    (gint          aux_index);
 
 
 
@@ -562,7 +565,8 @@ psd_lmode_to_gimp_lmode (gchar modekey[4])
   if (strncmp (modekey, "sLit", 4) == 0) return GIMP_SOFTLIGHT_MODE;
   if (strncmp (modekey, "over", 4) == 0) return GIMP_OVERLAY_MODE;
 
-  g_printerr("PSD: Warning - UNKNOWN layer-blend mode, reverting to 'normal'\n");
+  g_printerr ("PSD: Warning - "
+              "UNKNOWN layer-blend mode, reverting to 'normal'\n");
 
   return GIMP_NORMAL_MODE;
 }
@@ -604,7 +608,7 @@ psd_unit_to_gimp_unit (int psdunit)
       return GIMP_UNIT_PICA;
     case 5: /* 5 == Columns, but what the heck is a column? */
     default:
-      IFDBG printf("Warning: unable to convert psd unit %d to gimp unit\n", psdunit);
+      IFDBG g_printerr ("Warning: unable to convert psd unit %d to gimp unit\n", psdunit);
       return GIMP_UNIT_PIXEL;
     }
 }
@@ -668,7 +672,7 @@ dispatch_resID (guint    ID,
 {
   if ( (ID <= 0x0bb6) && (ID >= 0x07d0) ) /* 2998 && 2000 */
     {
-      IFDBG printf ("\t\tThe psd plugin does not currently support reading path data.\n");
+      IFDBG g_printerr ("\t\tThe psd plugin does not currently support reading path data.\n");
       throwchunk (Size, fd, "dispatch_res path throw");
       (*offset) += Size;
     }
@@ -679,7 +683,7 @@ dispatch_resID (guint    ID,
         {
           gint32 remaining = Size;
 
-          IFDBG printf ("\t\tALPHA CHANNEL NAMES:\n");
+          IFDBG g_printerr ("\t\tALPHA CHANNEL NAMES:\n");
           if (Size > 0)
             {
               do
@@ -693,9 +697,9 @@ dispatch_resID (guint    ID,
                   /* Check for (Mac?) Photoshop (4?) file-writing bug */
                   if (slen > remaining)
                     {
-                      IFDBG {printf("\nYay, a file bug.  "
-                                    "Yuck.  Photoshop 4/Mac?  "
-                                    "I'll work around you.\n");fflush(stdout);}
+                      IFDBG g_printerr ("\nYay, a file bug.  "
+                                        "Yuck.  Photoshop 4/Mac?  "
+                                        "I'll work around you.\n");
                       break;
                     }
 
@@ -714,16 +718,15 @@ dispatch_resID (guint    ID,
                       psd_image.aux_channel[psd_image.num_aux_channels].name =
                         sname;
 
-                      IFDBG printf("\t\t\tname: \"%s\"\n",
-                                   psd_image.aux_channel[psd_image.num_aux_channels].name);
+                      IFDBG g_printerr ("\t\t\tname: \"%s\"\n",
+                                        psd_image.aux_channel[psd_image.num_aux_channels].name);
                     }
                   else
                     {
                       psd_image.aux_channel[psd_image.num_aux_channels].name =
                         NULL;
-                      IFDBG
-                        {printf("\t\t\tNull channel name %d.\n",
-                                psd_image.num_aux_channels);fflush(stdout);}
+                      IFDBG g_printerr ("\t\t\tNull channel name %d.\n",
+                                        psd_image.num_aux_channels);
                     }
 
                   psd_image.num_aux_channels++;
@@ -750,7 +753,7 @@ dispatch_resID (guint    ID,
         }
         break;
       case 0x03ef: /* 1007 */
-        IFDBG printf("\t\tDISPLAYINFO STRUCTURE: unhandled\n");
+        IFDBG g_printerr ("\t\tDISPLAYINFO STRUCTURE: unhandled\n");
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
@@ -761,78 +764,78 @@ dispatch_resID (guint    ID,
 
           if (psd_image.caption)
             {
-              IFDBG printf("\t\t\tcontent: \"%s\"\n",psd_image.caption);
+              IFDBG g_printerr ("\t\t\tcontent: \"%s\"\n",psd_image.caption);
               (*offset) += strlen(psd_image.caption);
             }
         }
         break;
       case 0x03f2: /* 1010 */
-        IFDBG printf("\t\tBACKGROUND COLOR: unhandled\n");
+        IFDBG g_printerr ("\t\tBACKGROUND COLOR: unhandled\n");
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
       case 0x03f4: /* 1012 */
-        IFDBG printf("\t\tGREY/MULTICHANNEL HALFTONING INFO: unhandled\n");
+        IFDBG g_printerr ("\t\tGREY/MULTICHANNEL HALFTONING INFO: unhandled\n");
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
       case 0x03f5: /* 1013 */
-        IFDBG printf("\t\tCOLOUR HALFTONING INFO: unhandled\n");
+        IFDBG g_printerr ("\t\tCOLOUR HALFTONING INFO: unhandled\n");
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
       case 0x03f6: /* 1014 */
-        IFDBG printf("\t\tDUOTONE HALFTONING INFO: unhandled\n");
+        IFDBG g_printerr ("\t\tDUOTONE HALFTONING INFO: unhandled\n");
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
       case 0x03f7: /* 1015 */
-        IFDBG printf("\t\tGREYSCALE/MULTICHANNEL TRANSFER FUNCTION: unhandled\n");
+        IFDBG g_printerr ("\t\tGREYSCALE/MULTICHANNEL TRANSFER FUNCTION: unhandled\n");
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
       case 0x03f8: /* 1016 */
-        IFDBG printf("\t\tCOLOUR TRANSFER FUNCTION: unhandled\n");
+        IFDBG g_printerr ("\t\tCOLOUR TRANSFER FUNCTION: unhandled\n");
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
       case 0x03f9: /* 1017 */
-        IFDBG printf("\t\tDUOTONE TRANSFER FUNCTION: unhandled\n");
+        IFDBG g_printerr ("\t\tDUOTONE TRANSFER FUNCTION: unhandled\n");
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
       case 0x03fa: /* 1018 */
-        IFDBG printf("\t\tDUOTONE IMAGE INFO: unhandled\n");
+        IFDBG g_printerr ("\t\tDUOTONE IMAGE INFO: unhandled\n");
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
       case 0x03fb: /* 1019 */
-        IFDBG printf("\t\tEFFECTIVE BLACK/WHITE VALUES: unhandled\n");
+        IFDBG g_printerr ("\t\tEFFECTIVE BLACK/WHITE VALUES: unhandled\n");
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
       case 0x03fe: /* 1022 */
-        IFDBG printf("\t\tQUICK MASK INFO: unhandled\n");
+        IFDBG g_printerr ("\t\tQUICK MASK INFO: unhandled\n");
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
       case 0x0400: /* 1024 */
         {
-          IFDBG printf("\t\tLAYER STATE INFO:\n");
+          IFDBG g_printerr ("\t\tLAYER STATE INFO:\n");
           psd_image.active_layer_num = getgint16(fd, "ID target_layer_num");
 
-          IFDBG printf("\t\t\ttarget: %d\n",(gint)psd_image.active_layer_num);
+          IFDBG g_printerr ("\t\t\ttarget: %d\n",(gint)psd_image.active_layer_num);
           (*offset) += 2;
         }
         break;
       case 0x0402: /* 1026 */
-        IFDBG printf("\t\tLAYER GROUP INFO: unhandled\n");
-        IFDBG printf("\t\t\t(Inferred number of layers: %d)\n",(gint)(Size/2));
+        IFDBG g_printerr ("\t\tLAYER GROUP INFO: unhandled\n");
+        IFDBG g_printerr ("\t\t\t(Inferred number of layers: %d)\n",(gint)(Size/2));
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
       case 0x0405: /* 1029 */
-        IFDBG printf ("\t\tIMAGE MODE FOR RAW FORMAT: unhandled\n");
+        IFDBG g_printerr ("\t\tIMAGE MODE FOR RAW FORMAT: unhandled\n");
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
@@ -840,7 +843,7 @@ dispatch_resID (guint    ID,
         {
           gint32 remaining = Size;
           int i;
-          IFDBG printf ("\t\tGUIDE INFORMATION:\n");
+          IFDBG g_printerr ("\t\tGUIDE INFORMATION:\n");
 
           if (Size > 0)
             {
@@ -856,24 +859,24 @@ dispatch_resID (guint    ID,
               magic6 = getgint16(fd, "guide"); (*offset) += 2;
               remaining -= 12;
 
-              IFDBG printf("\t\t\tSize: %d\n", Size);
-              IFDBG printf("\t\t\tMagic: %d %d %d %d %d %d\n",
-                           magic1, magic2, magic3, magic4, magic5, magic6);
+              IFDBG g_printerr ("\t\t\tSize: %d\n", Size);
+              IFDBG g_printerr ("\t\t\tMagic: %d %d %d %d %d %d\n",
+                                magic1, magic2, magic3, magic4, magic5, magic6);
 
-              IFDBG printf("\t\t\tMagic: 0x%04x 0x%04x 0x%04x 0x%04x 0x%04x 0x%04x\n",
-                           magic1, magic2, magic3, magic4, magic5, magic6);
+              IFDBG g_printerr ("\t\t\tMagic: 0x%04x 0x%04x 0x%04x 0x%04x 0x%04x 0x%04x\n",
+                                magic1, magic2, magic3, magic4, magic5, magic6);
 
               num_guides = getgint32(fd, "guide");
               (*offset) += 4; remaining -= 4;
 
               if (remaining != num_guides*5)
                 {
-                  IFDBG printf ("** FUNNY AMOUNT OF GUIDE DATA (%d)\n",
-                                remaining);
+                  IFDBG g_printerr ("** FUNNY AMOUNT OF GUIDE DATA (%d)\n",
+                                    remaining);
                   goto funny_amount_of_guide_data;
                 }
 
-              IFDBG printf("\t\t\tNumber of guides is %d\n", num_guides);
+              IFDBG g_printerr ("\t\t\tNumber of guides is %d\n", num_guides);
               psd_image.num_guides = num_guides;
               psd_image.guides = g_new(PSDguide, num_guides);
               guide = psd_image.guides;
@@ -881,8 +884,8 @@ dispatch_resID (guint    ID,
               for (i = 0; i < num_guides; i++, guide++)
                 {
                   guide->position = getgint32(fd, "guide");
-                  IFDBG printf ("Position: %d     %x\n", guide->position,
-                                guide->position);
+                  IFDBG g_printerr ("Position: %d     %x\n", guide->position,
+                                    guide->position);
                   guide->horizontal = (1 == getguchar(fd, "guide"));
                   (*offset) += 5; remaining -= 5;
 
@@ -899,9 +902,10 @@ dispatch_resID (guint    ID,
                              /(double)(magic6&255));
                     }
 
-                  IFDBG printf("\t\t\tGuide %d at %d, %s\n", i+1,
-                               guide->position,
-                               guide->horizontal ? "horizontal" : "vertical");
+                  IFDBG g_printerr ("\t\t\tGuide %d at %d, %s\n", i+1,
+                                    guide->position,
+                                    guide->horizontal ?
+                                    "horizontal" : "vertical");
                 }
             }
 
@@ -911,7 +915,7 @@ dispatch_resID (guint    ID,
             {
               IFDBG
                 {
-                  printf ("** GUIDE INFORMATION DROSS: ");
+                  g_printerr ("** GUIDE INFORMATION DROSS: ");
                   dumpchunk(remaining, fd, "dispatch_res");
                 }
               else
@@ -925,7 +929,7 @@ dispatch_resID (guint    ID,
         break;
       case 0x03ed: /* 1005 */
         {
-          IFDBG printf ("\t\tResolution Info:\n");
+          IFDBG g_printerr ("\t\tResolution Info:\n");
           psd_image.resolution_is_set = 1;
 
           psd_image.resolution.hRes = getgint32(fd, "hRes");
@@ -935,9 +939,9 @@ dispatch_resID (guint    ID,
           psd_image.resolution.vRes_unit = getgint16(fd, "vRes_unit");
           psd_image.resolution.heightUnit = getgint16(fd, "HeightUnit");
           (*offset) += Size;
-          IFDBG  printf("\t\t\tres = %f, %f\n",
-                        psd_image.resolution.hRes / 65536.0,
-                        psd_image.resolution.vRes / 65536.0);
+          IFDBG  g_printerr ("\t\t\tres = %f, %f\n",
+                             psd_image.resolution.hRes / 65536.0,
+                             psd_image.resolution.vRes / 65536.0);
         } break;
 
       case 0x0409: /* 1033 */
@@ -951,7 +955,7 @@ dispatch_resID (guint    ID,
         /* 2 bytes     bits per pixel     Always 24?          */
         /* 2 bytes     planes             Always 1?           */
         /* size bytes  data               JFIF (or raw) data  */
-        IFDBG printf("\t\t<Photoshop 4.0 style thumbnail (BGR)>  unhandled\n");
+        IFDBG g_printerr ("\t\t<Photoshop 4.0 style thumbnail (BGR)>  unhandled\n");
         /* for resource 0x0409 we have to swap the r and b channels
            after decoding */
         throwchunk (Size, fd, "dispatch_res");
@@ -959,7 +963,7 @@ dispatch_resID (guint    ID,
         break;
       case 0x040C: /* 1036 */
         /* See above */
-        IFDBG printf("\t\t<Photoshop 5.0 style thumbnail (RGB)> unhandled\n");
+        IFDBG g_printerr ("\t\t<Photoshop 5.0 style thumbnail (RGB)> unhandled\n");
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
@@ -972,14 +976,14 @@ dispatch_resID (guint    ID,
       case 0x0406: /* 1030 */
       case 0x0bb7: /* 2999 */
       case 0x2710: /* 10000 */
-        IFDBG printf ("\t\t<Field is irrelevant to GIMP at this time.>\n");
+        IFDBG g_printerr ("\t\t<Field is irrelevant to GIMP at this time.>\n");
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
 
       case 0x03e8: /* 1000 */
       case 0x03eb: /* 1003 */
-        IFDBG printf ("\t\t<Obsolete Photoshop 2.0 field.>\n");
+        IFDBG g_printerr ("\t\t<Obsolete Photoshop 2.0 field.>\n");
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
@@ -987,7 +991,7 @@ dispatch_resID (guint    ID,
       case 0x03fc: /* 1020 */
       case 0x03ff: /* 1023 */
       case 0x0403: /* 1027 */
-        IFDBG printf ("\t\t<Obsolete field.>\n");
+        IFDBG g_printerr ("\t\t<Obsolete field.>\n");
         throwchunk (Size, fd, "dispatch_res");
         (*offset) += Size;
         break;
@@ -995,7 +999,7 @@ dispatch_resID (guint    ID,
       default:
         IFDBG
           {
-            printf ("\t\t<Undocumented field.>\n");
+            g_printerr ("\t\t<Undocumented field.>\n");
             dumpchunk(Size, fd, "dispatch_res");
           }
         else
@@ -1019,7 +1023,13 @@ do_layer_record (FILE    *fd,
   guchar    flags;
   gint      i;
 
-  IFDBG printf("\t\t\tLAYER RECORD (layer %d)\n", (int)layernum);
+  /* Info used for extra data blocks */
+  guchar    numpadchars;
+  guint32   xdsignature;
+  guint32   xdkey;
+  guint32   xdsize;
+
+  IFDBG g_printerr ("\t\t\tLAYER RECORD (layer %d)\n", (int)layernum);
 
   layer = psd_image.layer + layernum;
 
@@ -1038,14 +1048,32 @@ do_layer_record (FILE    *fd,
   layer->width  = right - left;
   layer->height = bottom - top;
 
-  IFDBG printf("\t\t\t\tLayer extents: (%d,%d) -> (%d,%d)\n",
-               left,top,right,bottom);
+  if ((layer->height > GIMP_MAX_IMAGE_SIZE) ||
+      (layer->width > GIMP_MAX_IMAGE_SIZE))
+    {
+      g_error ("Input file has a larger layer size than GIMP can handle.");
+    }
+
+  if (layer->height && layer->width > (G_MAXUINT / layer->height))
+    {
+      g_error ("Input file has a larger layer size than GIMP can handle.");
+    }
+
+  IFDBG g_printerr ("\t\t\t\tLayer extents: (%d,%d) -> (%d,%d)\n",
+                    left, top, right,bottom);
 
   layer->num_channels = getgint16 (fd, "layer num_channels");
   (*offset)+=2;
 
-  IFDBG printf("\t\t\t\tNumber of channels: %d\n",
-               (int)layer->num_channels);
+  IFDBG g_printerr ("\t\t\t\tNumber of channels: %d\n",
+                    (int) layer->num_channels);
+
+  if ((layer->num_channels < 0) || (layer->num_channels > 56))
+    {
+      g_message ("Error: invalid number of channels in layer %d: %d",
+                 layernum, layer->num_channels);
+      gimp_quit();
+    }
 
   if (layer->num_channels)
     {
@@ -1056,19 +1084,21 @@ do_layer_record (FILE    *fd,
           PSDchannel *channel = layer->channel + i;
 
           /* table 11-13 */
-          IFDBG printf("\t\t\t\tCHANNEL LENGTH INFO (%d)\n", i);
+          IFDBG g_printerr ("\t\t\t\tCHANNEL LENGTH INFO (%d)\n", i);
 
           channel->type = getgint16(fd, "channel id");
           (*offset)+=2;
-          IFDBG printf("\t\t\t\t\tChannel TYPE: %d\n", channel->type);
+          IFDBG g_printerr ("\t\t\t\t\tChannel TYPE: %d\n", channel->type);
 
           channel->compressedsize = getgint32(fd, "channeldatalength");
           (*offset)+=4;
-          IFDBG printf("\t\t\t\t\tChannel Data Length: %d\n",
-                       channel->compressedsize);
+          IFDBG g_printerr ("\t\t\t\t\tChannel Data Length: %d\n",
+                            channel->compressedsize);
         }
-    } else {
-      IFDBG printf("\t\t\t\tOo-er, layer has no channels.  Hmm.\n");
+    }
+  else
+    {
+      IFDBG g_printerr ("\t\t\t\tOo-er, layer has no channels.  Hmm.\n");
     }
 
   xfread(fd, sig, 4, "layer blend sig");
@@ -1076,39 +1106,40 @@ do_layer_record (FILE    *fd,
 
   if (strncmp(sig, "8BIM", 4)!=0)
     {
-      IFDBG printf("\t\t\t(layer blend signature '%c%c%c%c' is incorrect: quitting)\n", sig[0], sig[1], sig[2], sig[3]);
-      g_message ("Error: layer blend signature is incorrect. :-(");
+      IFDBG g_printerr ("\t\t\t(layer blend signature '%c%c%c%c' is incorrect: quitting)\n",
+                        sig[0], sig[1], sig[2], sig[3]);
+      g_message ("Error: layer blend signature is incorrect");
       gimp_quit();
     }
 
   xfread(fd, layer->blendkey, 4, "layer blend key");
   (*offset)+=4;
 
-  IFDBG printf("\t\t\t\tBlend type: PSD(\"%c%c%c%c\") = GIMP(%d)\n",
-               layer->blendkey[0],
-               layer->blendkey[1],
-               layer->blendkey[2],
-               layer->blendkey[3],
-               psd_lmode_to_gimp_lmode(layer->blendkey));
+  IFDBG g_printerr ("\t\t\t\tBlend type: PSD(\"%c%c%c%c\") = GIMP(%d)\n",
+                    layer->blendkey[0],
+                    layer->blendkey[1],
+                    layer->blendkey[2],
+                    layer->blendkey[3],
+                    psd_lmode_to_gimp_lmode(layer->blendkey));
 
   layer->opacity = getguchar(fd, "layer opacity");
   (*offset)++;
 
-  IFDBG printf("\t\t\t\tLayer Opacity: %d\n", layer->opacity);
+  IFDBG g_printerr ("\t\t\t\tLayer Opacity: %d\n", layer->opacity);
 
   layer->clipping = getguchar(fd, "layer clipping");
   (*offset)++;
 
-  IFDBG printf("\t\t\t\tLayer Clipping: %d (%s)\n",
-               layer->clipping,
-               layer->clipping == 0 ? "base" : "non-base");
+  IFDBG g_printerr ("\t\t\t\tLayer Clipping: %d (%s)\n",
+                    layer->clipping,
+                    layer->clipping == 0 ? "base" : "non-base");
 
   flags = getguchar(fd, "layer flags");
   (*offset)++;
 
-  IFDBG printf("\t\t\t\tLayer Flags: %d (%s, %s)\n", flags,
-         flags&1?"lock alpha":"don't lock alpha",
-         flags&2?"visible":"not visible");
+  IFDBG g_printerr ("\t\t\t\tLayer Flags: %d (%s, %s)\n", flags,
+                    flags & 1 ? "lock alpha" : "don't lock alpha",
+                    flags & 2 ? "visible" : "not visible");
 
   layer->protecttrans = (flags & 1) ? TRUE : FALSE;
   layer->visible = (flags & 2) ? FALSE : TRUE;
@@ -1118,7 +1149,7 @@ do_layer_record (FILE    *fd,
 
   extradatasize = getgint32(fd, "layer extra data size");
   (*offset)+=4;
-  IFDBG printf("\t\t\t\tEXTRA DATA SIZE: %d\n",extradatasize);
+  IFDBG g_printerr ("\t\t\t\tEXTRA DATA SIZE: %d\n",extradatasize);
 
   /* FIXME: should do something with this data */
   /*throwchunk (extradatasize, fd, "layer extradata throw");
@@ -1129,7 +1160,7 @@ do_layer_record (FILE    *fd,
   /* table 11-14 */
   layermaskdatasize = getgint32(fd, "layer mask data size");
   (*offset)+=4;
-  IFDBG printf("\t\t\t\t\tLAYER MASK DATA SIZE: %d\n", layermaskdatasize);
+  IFDBG g_printerr ("\t\t\t\t\tLAYER MASK DATA SIZE: %d\n", layermaskdatasize);
 
   if (layermaskdatasize)
     {
@@ -1151,20 +1182,31 @@ do_layer_record (FILE    *fd,
       layer->lm_width = right - left;
       layer->lm_height = bottom - top;
 
+    if ((layer->lm_height > GIMP_MAX_IMAGE_SIZE) ||
+        (layer->lm_width > GIMP_MAX_IMAGE_SIZE))
+      {
+        g_error ("Input file has a larger layer mask size than GIMP can handle.");
+      }
+
+    if (layer->lm_height && layer->lm_width > (G_MAXUINT / layer->lm_height))
+      {
+        g_error ("Input file has a larger layer mask size than GIMP can handle.");
+      }
+
       color = getguchar(fd, "lmask color");
       flags = getguchar(fd, "lmask flags");
 
       o += 2;
 
-      IFDBG printf ("\t\t\t\t\t\ttop:    %d\n", top);
-      IFDBG printf ("\t\t\t\t\t\tleft:   %d\n", left);
-      IFDBG printf ("\t\t\t\t\t\tbottom: %d\n", bottom);
-      IFDBG printf ("\t\t\t\t\t\tright:  %d\n", right);
-      IFDBG printf ("\t\t\t\t\t\tcolor:  %d\n", color);
-      IFDBG printf ("\t\t\t\t\t\tflags:  %X\n", flags);
-      IFDBG printf ("\t\t\t\t\t\t\trelative: %d\n", flags & 0x1);
-      IFDBG printf ("\t\t\t\t\t\t\tvisible:  %d\n", ((flags & 0x2) >> 1));
-      IFDBG printf ("\t\t\t\t\t\t\tinvert:   %d\n", ((flags & 0x4) >> 2));
+      IFDBG g_printerr ("\t\t\t\t\t\ttop:    %d\n", top);
+      IFDBG g_printerr ("\t\t\t\t\t\tleft:   %d\n", left);
+      IFDBG g_printerr ("\t\t\t\t\t\tbottom: %d\n", bottom);
+      IFDBG g_printerr ("\t\t\t\t\t\tright:  %d\n", right);
+      IFDBG g_printerr ("\t\t\t\t\t\tcolor:  %d\n", color);
+      IFDBG g_printerr ("\t\t\t\t\t\tflags:  %X\n", flags);
+      IFDBG g_printerr ("\t\t\t\t\t\t\trelative: %d\n", flags & 0x1);
+      IFDBG g_printerr ("\t\t\t\t\t\t\tvisible:  %d\n", ((flags & 0x2) >> 1));
+      IFDBG g_printerr ("\t\t\t\t\t\t\tinvert:   %d\n", ((flags & 0x4) >> 2));
 
       throwchunk (layermaskdatasize - o, fd, "extra layer mask data");
       (*offset) += layermaskdatasize;
@@ -1172,7 +1214,7 @@ do_layer_record (FILE    *fd,
 
   layerrangesdatasize = getgint32 (fd, "layer ranges data size");
   (*offset) += 4;
-  IFDBG printf("\t\t\t\t\t\tLAYER RANGES DATA SIZE: %d\n", layermaskdatasize);
+  IFDBG g_printerr ("\t\t\t\t\t\tLAYER RANGES DATA SIZE: %d\n", layermaskdatasize);
 
   if (layerrangesdatasize)
     {
@@ -1186,13 +1228,190 @@ do_layer_record (FILE    *fd,
   if (layer->name)
     {
       (*offset) += strlen (layer->name);
-      IFDBG printf("\t\t\t\t\t\tLAYER NAME: '%s'\n", layer->name);
+      IFDBG g_printerr ("\t\t\t\t\t\tLAYER NAME: '%s'\n", layer->name);
+
+      /* Layer name string lengths are padded to be divisible by 4 */
+      numpadchars = 4-((1+strlen(layer->name)) % 4);
+      if (numpadchars == 4)
+        numpadchars = 0;
+
+      if (numpadchars)
+        {
+          throwchunk (numpadchars, fd, "layer record extra data block throw");
+          (*offset) += numpadchars;
+        }
+
       layer->name = sanitise_string (layer->name);
     }
   else
     {
-      IFDBG printf ("\t\t\t\t\t\tNULL LAYER NAME\n");
+      IFDBG g_printerr ("\t\t\t\t\t\tNULL LAYER NAME\n");
     }
+
+  /*
+    The remaining data in this layer contains any number of blocks that follow
+    this structure:
+      4 bytes for signature (always 8BIM)
+      4 bytes for a key to define kind of data
+      4 bytes for size of data to follow
+      ? bytes of data
+   */
+
+  IFDBG g_printerr ("\t\t\t\t\tLAYER EXTRA DATA BLOCKS\n");
+
+  /* The order of these blocks sometimes varies so read all blocks. */
+  while (totaloff-(*offset) > 12)
+  {
+    guint32 topofblock = ftell (fd);
+
+    xdsignature = getgint32 (fd, "layer extra data block signature");
+    xdkey = getgint32 (fd, "layer extra data block key");
+    xdsize = getgint32 (fd, "layer extra data block size");
+
+    IFDBG
+      {
+        g_printerr ("\t\t\t\t\t\tKEY: 0x%08x '%c%c%c%c' / Size: 0x%04x  ", xdkey,
+                    ((gchar*)(&xdkey))[3], ((gchar*)(&xdkey))[2],
+                    ((gchar*)(&xdkey))[1], ((gchar*)(&xdkey))[0], xdsize);
+      }
+
+    switch (xdkey)
+      {
+        /* luni: Long unicode name */
+        case 0x6c756e69:
+          if (layer->name)
+            g_free (layer->name);
+
+          layer->name = getunicodepascalstring (fd, "layer name");
+
+          if (layer->name)
+            layer->name = sanitise_string (layer->name);
+
+          IFDBG g_printerr ("Long Layer Name: '%s'\n",layer->name);
+          break;
+
+        /* lyid: Layer id number */
+        case 0x6c796964:
+          {
+            guint32 idnum = getgint32 (fd, "layer extra data block lyid");
+            IFDBG g_printerr ("Layer ID #%d\n",idnum);
+          }
+          break;
+
+        /* iOpa: Layer Fill (opacity?)  */
+        case 0x694f7061:
+          {
+            guchar fill = getguchar (fd, "layer extra data block fill");
+            throwchunk (xdsize-1, fd, "iOpa: Layer Fill padding throw");
+            IFDBG g_printerr ("Layer Fill = %d (%d%%)\n", fill, (100 * fill) / 255);
+          }
+          break;
+
+        /* lclr: Layer Color */
+        case 0x6c636c72:
+          {
+            guint16 labelcolor = getgint16 (fd, "lclr: Layer Color");
+            throwchunk (xdsize-2, fd, "lclr: Layer Color padding throw");
+            IFDBG
+              {
+                g_printerr ("Layer Color=%d ",labelcolor);
+                switch (labelcolor)
+                  {
+                    case 0:  g_printerr ("None\n"); break;
+                    case 1:  g_printerr ("Red\n"); break;
+                    case 2:  g_printerr ("Orange\n"); break;
+                    case 3:  g_printerr ("Yellow\n"); break;
+                    case 4:  g_printerr ("Green\n"); break;
+                    case 5:  g_printerr ("Blue\n"); break;
+                    case 6:  g_printerr ("Violet\n"); break;
+                    case 7:  g_printerr ("Grey\n"); break;
+                    default: g_printerr ("Undefined\n");
+                  }
+              }
+          }
+          break;
+
+        /* lsct: Layer Set Controls Type */
+        case 0x6c736374:
+          {
+            guint32 lscttype;
+            guint32 blendsignature;
+            guint32 blendkey;
+            lscttype = getgint32 (fd, "layer extra data block lsct type");
+            IFDBG g_printerr ("Layer Set Controls:\n\t\t\t\t\t\t\tType = 0x%08x ", lscttype);
+            switch (lscttype)
+              {
+                case 1:
+                case 2:
+                  blendsignature = getgint32 (fd, "layer extra data block lsct");
+                  blendkey = getgint32 (fd, "layer extra data block lsct");
+
+                  IFDBG
+                    {
+                      g_printerr ("Close layer set.\n\t\t\t\t\t\t\tBlend = 0x%08x '%c%c%c%c'\n",
+                                  blendkey,
+                                  ((gchar*)(&blendkey))[3],
+                                  ((gchar*)(&blendkey))[2],
+                                  ((gchar*)(&blendkey))[1],
+                                  ((gchar*)(&blendkey))[0]);
+                    }
+
+                  if (xdsize-12)
+                    throwchunk (xdsize-12, fd, "lsct: Layer Set Controls throw");
+                  break;
+
+                case 3:
+                  IFDBG g_printerr ("Open layer set.\n");
+                  if (xdsize-4)
+                    throwchunk (xdsize-4, fd, "lsct: Layer Set Controls throw");
+                  break;
+
+                default:
+                  IFDBG g_printerr ("Unknown\n");
+                  if (xdsize-4)
+                    throwchunk (xdsize-4, fd, "lsct: Layer Set Controls throw");
+              }
+          }
+          break;
+
+        /* lnsr:  Some sort of layer type key. */
+        case 0x6c6e7372:
+          {
+            guint32 lnsr = getgint32 (fd, "layer extra data block lnsr");
+            IFDBG
+              {
+                g_printerr ("lnsr = 0x%08x '%c%c%c%c'\n", lnsr,
+                            ((guchar*)(&lnsr))[3], ((guchar*)(&lnsr))[2],
+                            ((guchar*)(&lnsr))[1], ((guchar*)(&lnsr))[0]);
+                switch (lnsr)
+                  {
+                    case 0x62676e64: /* 'bgnd' */
+                      g_printerr ("\t\t\t\t\t\t\t(background?)\n");
+                      break;
+                    case 0x6c617972: /* 'layr' */
+                      g_printerr ("\t\t\t\t\t\t\t(Layer?)\n");
+                      break;
+                    case 0x6c736574: /* 'lset' */
+                      g_printerr ("\t\t\t\t\t\t\tNew layer set.\n");
+                      break;
+                    default:
+                      g_printerr ("\t\t\t\t\t\t\tUnknown\n");
+                  }
+              }
+          }
+          break;
+
+        /* These 2 contain all of the settings for the different layer styles. */
+        case 0x6c724658: /* lrFX:  Layer effects settings. */
+        case 0x6c667832: /* lfx2:  More Layer effects settings. */
+
+        default:
+          IFDBG g_printerr ( "<Undefined Block>\n" );
+          throwchunk (xdsize, fd, "layer record extra data block throw");
+      }
+    (*offset) += ftell (fd) - topofblock;
+  }
+
   /* If no layermask data - set offset and size from layer data */
   if (! layermaskdatasize)
     {
@@ -1208,7 +1427,7 @@ do_layer_record (FILE    *fd,
     {
       IFDBG
         {
-          printf ("Warning: layer record dross: ");
+          g_printerr ("Warning: layer record dross: ");
           dumpchunk (totaloff-(*offset), fd, "layer record dross throw");
         }
       else
@@ -1225,15 +1444,15 @@ do_layer_struct (FILE    *fd,
 {
   gint i;
 
-  IFDBG printf ("\t\tLAYER STRUCTURE SECTION\n");
+  IFDBG g_printerr ("\t\tLAYER STRUCTURE SECTION\n");
 
   psd_image.num_layers = getgint16 (fd, "layer struct numlayers");
   (*offset)+=2;
 
-  IFDBG printf("\t\t\tCanonical number of layers: %d%s\n",
-         psd_image.num_layers>0?
-         (int)psd_image.num_layers:abs(psd_image.num_layers),
-         psd_image.num_layers>0?"":" (absolute/alpha)");
+  IFDBG g_printerr ("\t\t\tCanonical number of layers: %d%s\n",
+                    psd_image.num_layers > 0 ?
+                    (int) psd_image.num_layers : abs (psd_image.num_layers),
+                    psd_image.num_layers > 0 ? "" : " (absolute/alpha)");
 
   if (psd_image.num_layers < 0)
     {
@@ -1291,30 +1510,35 @@ seek_to_and_unpack_pixeldata (FILE *fd,
                               gint  layeri,
                               gint  channeli)
 {
-  int         width, height;
+  gint        width, height;
   guchar     *tmpline;
   gint        compression;
-  guint32     offset = 0;
+  guint32     offset  = 0;
   PSDchannel *channel = &psd_image.layer[layeri].channel[channeli];
 
-  fsetpos(fd, &channel->fpos);
+  fsetpos (fd, &channel->fpos);
 
-  compression = getgint16(fd, "layer channel compression type");
-  offset+=2;
+  compression = getgint16 (fd, "layer channel compression type");
+  offset += 2;
 
   width  = channel->width;
   height = channel->height;
 
+  if (width > G_MAXINT16 || height > G_MAXINT16)
+    {
+      g_message ("Error: Invalid channel dimensions");
+      gimp_quit ();
+    }
+
   IFDBG
     {
-      printf ("\t\t\tLayer (%d) Channel (%d:%d) Compression: %d (%s)\n",
-              layeri,
-              channeli,
-              channel->type,
-              compression,
-              compression==0?"raw":(compression==1?"RLE":"*UNKNOWN!*"));
-
-      fflush (stdout);
+      g_printerr ("\t\t\tLayer (%d) Channel (%d:%d) Compression: %d (%s)\n",
+                  layeri,
+                  channeli,
+                  channel->type,
+                  compression,
+                  compression == 0 ?
+                  "raw" : (compression == 1 ? "RLE" : "*UNKNOWN!*"));
     }
 
   channel->data = g_malloc (width * height);
@@ -1356,12 +1580,8 @@ seek_to_and_unpack_pixeldata (FILE *fd,
 
         blockread = offset;
 
-        /*IFDBG {printf("\nHere comes the guitar solo...\n");
-          fflush(stdout);}*/
-
         for (linei = 0; linei < height; linei++)
           {
-            /*printf(" %d ", *offset);*/
             unpack_pb_channel (fd, tmpline,
                                width
                                /*+ (width&1)*/,
@@ -1369,15 +1589,15 @@ seek_to_and_unpack_pixeldata (FILE *fd,
             memcpy (channel->data + linei * width, tmpline, width);
           }
 
-        IFDBG {printf("\t\t\t\t\tActual compressed size was %d bytes\n",
-                      offset-blockread);fflush(stdout);}
+        IFDBG g_printerr ("\t\t\t\t\tActual compressed size was %d bytes\n",
+                          offset-blockread);
       }
       break;
 
     default: /* *unknown* */
-      IFDBG {printf("\nEEP!\n");fflush(stdout);}
-      g_message ("*** Unknown compression type in channel.");
-      gimp_quit();
+      IFDBG g_printerr ("\nEEP!\n");
+      g_message ("Error: Unknown compression type in channel");
+      gimp_quit ();
     }
 
   g_free (tmpline);
@@ -1392,8 +1612,8 @@ do_layers (FILE    *fd,
   section_length = getgint32 (fd, "layerinfo sectionlength");
   (*offset)+=4;
 
-  IFDBG printf ("\tLAYER INFO SECTION\n");
-  IFDBG printf ("\t\tSECTION LENGTH: %u\n", section_length);
+  IFDBG g_printerr ("\tLAYER INFO SECTION\n");
+  IFDBG g_printerr ("\t\tSECTION LENGTH: %u\n", section_length);
 
   do_layer_struct (fd, offset);
 
@@ -1408,26 +1628,26 @@ do_layer_and_mask (FILE *fd)
 
   glong   offset_now = ftell (fd);
 
-  IFDBG printf ("LAYER AND MASK INFO\n");
-  IFDBG printf ("\tSECTION LENGTH: %u\n", Size);
+  IFDBG g_printerr ("LAYER AND MASK INFO\n");
+  IFDBG g_printerr ("\tSECTION LENGTH: %u\n", Size);
 
   if (Size == 0)
     return;
 
   do_layers (fd, &offset);
 
-  IFDBG {printf("And...?\n");fflush(stdout);}
+  IFDBG g_printerr ("And...?\n");
 
   if (offset < Size)
     {
       IFDBG
         {
-          printf ("PSD: Supposedly there are %d bytes of mask info left.\n",
-                  Size-offset);
+          g_printerr ("PSD: Supposedly there are %d bytes of mask info left.\n",
+                      Size-offset);
           if ((Size-offset == 4) || (Size-offset == 24))
-            printf("     That sounds good to me.\n");
+            g_print("     That sounds good to me.\n");
           else
-            printf("     That sounds strange to me.\n");
+            g_print("     That sounds strange to me.\n");
         }
 
 
@@ -1436,11 +1656,11 @@ do_layer_and_mask (FILE *fd)
           (getguchar(fd, "mask info throw")!=0) ||
           (getguchar(fd, "mask info throw")!=0))
         {
-          printf("*** This mask info block looks pretty bogus.\n");
+          g_print("*** This mask info block looks pretty bogus.\n");
         }*/
     }
   else
-    printf("PSD: Stern warning - no mask info.\n");
+    g_print("PSD: Stern warning - no mask info.\n");
 
 
   /* If 'offset' wasn't being buggily updated, we wouldn't need this. (!?) */
@@ -1455,7 +1675,7 @@ do_image_resources (FILE *fd)
   guint32  Size;
   guint32  offset = 0;
 
-  IFDBG printf ("IMAGE RESOURCE BLOCK:\n");
+  IFDBG g_printerr ("IMAGE RESOURCE BLOCK:\n");
 
   psd_image.resolution_is_set = 0;
 
@@ -1473,14 +1693,14 @@ do_image_resources (FILE *fd)
 
       ID = getgint16 (fd, "ID num");
       offset += 2;
-      IFDBG printf ("\tID: 0x%04x / ",ID);
+      IFDBG g_printerr ("\tID: 0x%04x / ",ID);
 
       Name = getpascalstring (fd, "ID name");
       offset++;
 
       if (Name)
         {
-          IFDBG printf ("\"%s\" ", Name);
+          IFDBG g_printerr ("\"%s\" ", Name);
           offset += strlen (Name);
 
           if (!(strlen (Name) & 1))
@@ -1498,20 +1718,21 @@ do_image_resources (FILE *fd)
 
       Size = getgint32 (fd, "ID Size");
       offset += 4;
-      IFDBG printf ("Size: %d\n", Size);
+      IFDBG g_printerr ("Size: %d\n", Size);
 
       if (strncmp (sig, "8BIM", 4) == 0)
         dispatch_resID (ID, fd, &offset, Size);
       else
         {
-          printf ("PSD: Warning, unknown resource signature \"%.4s\" at or before offset %d ::: skipping\n", sig, offset - 8);
+          g_printerr ("PSD: Warning, unknown resource signature \"%.4s\" at or before offset %d ::: skipping\n",
+                      sig, offset - 8);
           throwchunk (Size, fd, "Skipping Unknown Resource");
           offset += Size;
         }
 
       if (Size&1)
         {
-          IFDBG printf ("+1");
+          IFDBG g_printerr ("+1");
           throwchunk (1, fd, "ID content throw");
           offset ++;
         }
@@ -1519,7 +1740,7 @@ do_image_resources (FILE *fd)
 
   /*  if (offset != PSDheader.imgreslen)
     {
-      printf("\tSucking imageres byte...\n");
+      g_print("\tSucking imageres byte...\n");
       throwchunk (1, fd, "imageres suck");
       offset ++;
     }*/
@@ -1538,7 +1759,7 @@ RGB_to_RGBA (const guchar *rgb_data,
 
   if (!rgb_data)
     {
-      printf ("NULL rgb data - eep!");
+      g_printerr ("NULL rgb data - eep!");
       return NULL;
     }
 
@@ -1568,7 +1789,7 @@ chans_to_GRAYA (const guchar *grey,
 
   if (!grey || !alpha)
     {
-      printf ("NULL channel - eep!");
+      g_printerr ("NULL channel - eep!");
       return NULL;
     }
 
@@ -1594,7 +1815,7 @@ chans_to_RGB (const guchar *red,
 
   if (!red || !green || !blue)
     {
-      printf ("NULL channel - eep!");
+      g_printerr ("NULL channel - eep!");
       return NULL;
     }
 
@@ -1623,7 +1844,7 @@ chans_to_RGBA (const guchar *red,
 
   if (!red || !green || !blue || !alpha)
     {
-      printf ("chans_to_RGBA : NULL channel - eep!");
+      g_printerr ("chans_to_RGBA : NULL channel - eep!");
       careful = TRUE;
     }
 
@@ -1695,13 +1916,14 @@ extract_data_and_channels (guchar       *src,
   guchar       *aux_data;
   GimpPixelRgn  pixel_rgn;
 
-  IFDBG printf ("Extracting primary channel data (%d channels)\n"
-                "\tand %d auxiliary channels.\n", gimpstep, psstep-gimpstep);
+  IFDBG g_printerr ("Extracting primary channel data (%d channels)\n"
+                    "\tand %d auxiliary channels.\n",
+                    gimpstep, psstep-gimpstep);
 
   /* gimp doesn't like 0 width/height drawables. */
   if ((width == 0) || (height == 0))
     {
-      IFDBG printf("(bad channel dimensions -- skipping)");
+      IFDBG g_printerr ("(bad channel dimensions -- skipping)");
       return;
     }
 
@@ -1768,7 +1990,7 @@ extract_data_and_channels (guchar       *src,
   }
   g_free (aux_data);
 
-  IFDBG printf ("Done with that.\n\n");
+  IFDBG g_printerr ("Done with that.\n\n");
 }
 
 static void
@@ -1782,12 +2004,13 @@ extract_channels (guchar *src,
   guchar       *aux_data;
   GimpPixelRgn  pixel_rgn;
 
-  IFDBG printf ("Extracting %d/%d auxiliary channels.\n", num_wanted, psstep);
+  IFDBG g_printerr ("Extracting %d/%d auxiliary channels.\n",
+                    num_wanted, psstep);
 
   /* gimp doesn't like 0 width/height drawables. */
   if ((width == 0) || (height == 0))
     {
-      IFDBG printf("(bad channel dimensions -- skipping)");
+      IFDBG g_printerr ("(bad channel dimensions -- skipping)");
       return;
     }
 
@@ -1831,7 +2054,7 @@ extract_channels (guchar *src,
   }
   g_free(aux_data);
 
-  IFDBG printf ("Done with that.\n\n");
+  IFDBG g_printerr ("Done with that.\n\n");
 }
 
 static void
@@ -1846,11 +2069,11 @@ resize_mask (guchar *src,
 {
   gint x, y;
 
-  IFDBG printf ("--> %p %p : %d %d . %d %d . %d %d\n",
-                src, dest,
-                src_x, src_y,
-                src_w, src_h,
-                dest_w, dest_h);
+  IFDBG g_printerr ("--> %p %p : %d %d . %d %d . %d %d\n",
+                    src, dest,
+                    src_x, src_y,
+                    src_w, src_h,
+                    dest_w, dest_h);
 
   for (y = 0; y < dest_h; y++)
     {
@@ -1890,7 +2113,7 @@ load_image (const gchar *name)
   fpos_t         tmpfpos;
   int            red_chan, grn_chan, blu_chan, alpha_chan, ichan;
 
-  IFDBG printf ("------- %s ---------------------------------\n",name);
+  IFDBG g_printerr ("------- %s ---------------------------------\n",name);
 
   fd = g_fopen (name, "rb");
   if (! fd)
@@ -1903,7 +2126,7 @@ load_image (const gchar *name)
   gimp_progress_init_printf (_("Opening '%s'"),
                              gimp_filename_to_utf8 (name));
 
-  read_whole_file (fd);
+  read_whole_file (fd, name);
 
   if (psd_image.num_layers > 0) /* PS3-style */
     {
@@ -1962,13 +2185,13 @@ load_image (const gchar *name)
 
           numc = layer->num_channels;
 
-          IFDBG printf ("Hey, it's a LAYER with %d channels!\n", numc);
+          IFDBG g_printerr ("Hey, it's a LAYER with %d channels!\n", numc);
 
           switch (imagetype)
             {
             case GIMP_GRAY:
               {
-                IFDBG printf("It's GRAY.\n");
+                IFDBG g_printerr ("It's GRAY.\n");
                 if (! empty)
                   {
                     if (!psd_layer_has_alpha (layer))
@@ -2007,8 +2230,8 @@ load_image (const gchar *name)
 
             case GIMP_RGB:
               {
-                IFDBG printf ("It's RGB, %dx%d.\n", layer->width,
-                              layer->height);
+                IFDBG g_printerr ("It's RGB, %dx%d.\n", layer->width,
+                                  layer->height);
 
                 if (! empty)
                   {
@@ -2096,7 +2319,7 @@ load_image (const gchar *name)
               break;
 
             default:
-              g_message ("Error: Sorry, can't deal with a layered image of this type.\n");
+              g_message ("Error: Can't deal with a layered image of this type");
               gimp_quit();
             }
 
@@ -2149,8 +2372,8 @@ load_image (const gchar *name)
 
                      /* Add layer mask */
 #endif /* PANOTOOLS_FIX */
-                    IFDBG printf ("Adding layer mask %d to layer %d\n",
-                                  mask_id, layer_ID);
+                    IFDBG g_printerr ("Adding layer mask %d to layer %d\n",
+                                      mask_id, layer_ID);
 
                     gimp_layer_add_mask (layer_ID, mask_id);
 
@@ -2217,7 +2440,7 @@ load_image (const gchar *name)
       (psd_image.num_layers > 0))
     {
       want_aux = TRUE;
-      IFDBG printf ("::::::::::: WANT AUX :::::::::::::::::::::::::::::::::::::::\n");
+      IFDBG g_printerr ("::::::::::: WANT AUX :::::::::::::::::::::::::::::::::::::::\n");
     }
   else
     {
@@ -2227,7 +2450,7 @@ load_image (const gchar *name)
 
   if (want_aux || (psd_image.num_layers == 0)) /* Photoshop2-style: NO LAYERS. */
     {
-      IFDBG printf ("Image data %ld chars\n", PSDheader.imgdatalen);
+      IFDBG g_printerr ("Image data %ld chars\n", PSDheader.imgdatalen);
 
       step = PSDheader.channels;
 
@@ -2286,10 +2509,10 @@ load_image (const gchar *name)
           return -1;
         }
 
-      IFDBG printf ("psd:%d gimp:%d gimpbase:%d\n",
-                    imagetype,
-                    psd_type_to_gimp_type(imagetype),
-                    psd_type_to_gimp_base_type(imagetype));
+      IFDBG g_printerr ("psd:%d gimp:%d gimpbase:%d\n",
+                        imagetype,
+                        psd_type_to_gimp_type(imagetype),
+                        psd_type_to_gimp_base_type(imagetype));
 
 
       if (!want_aux)
@@ -2297,7 +2520,7 @@ load_image (const gchar *name)
           /* gimp doesn't like 0 width/height drawables. */
           if ((PSDheader.columns == 0) || (PSDheader.rows == 0))
             {
-              IFDBG printf ("(bad psd2-style image dimensions -- skipping)");
+              IFDBG g_printerr ("(bad psd2-style image dimensions -- skipping)");
               image_ID = -1;
               goto finish_up;
             }
@@ -2308,11 +2531,11 @@ load_image (const gchar *name)
           if (psd_type_to_gimp_base_type (imagetype) == GIMP_INDEXED)
             {
               if ((psd_image.colmaplen % 3) != 0)
-                printf("PSD: Colourmap looks screwed! Aiee!\n");
+                g_print("PSD: Colourmap looks screwed! Aiee!\n");
               if (psd_image.colmaplen == 0)
-                printf("PSD: Indexed image has no colourmap!\n");
+                g_print("PSD: Indexed image has no colourmap!\n");
               if (psd_image.colmaplen != 768)
-                printf("PSD: Warning: Indexed image is %d!=256 colours.\n",
+                g_print("PSD: Warning: Indexed image is %d!=256 colours.\n",
                        psd_image.colmaplen / 3);
               if (psd_image.colmaplen == 768)
                 {
@@ -2347,7 +2570,7 @@ load_image (const gchar *name)
               channels = 3;
               break;
             default:
-              printf ("aux? Aieeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee!!!!!!!!!\n");
+              g_printerr ("aux? Aieeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee!!!!!!!!!\n");
               channels = 1;
               break;
             }
@@ -2372,6 +2595,7 @@ load_image (const gchar *name)
           nguchars = PSDheader.columns * PSDheader.rows;
           temp = g_malloc (PSDheader.imgdatalen);
           xfread (fd, temp, PSDheader.imgdatalen, "image data");
+
           if (!cmyk)
             {
               gimp_progress_update (1.0);
@@ -2415,7 +2639,9 @@ load_image (const gchar *name)
             {
               gimp_progress_update (1.0);
 
-              xfread_interlaced (fd, dest, PSDheader.imgdatalen,
+              xfread_interlaced (fd, dest, MIN (PSDheader.imgdatalen,
+                                                step * PSDheader.columns
+                                                * PSDheader.rows),
                                  "raw image data", step);
             }
           else
@@ -2423,7 +2649,9 @@ load_image (const gchar *name)
               gimp_progress_update (1.0);
 
               cmykbuf = g_malloc (PSDheader.imgdatalen);
-              xfread_interlaced (fd, cmykbuf, PSDheader.imgdatalen,
+              xfread_interlaced (fd, cmykbuf, MIN (PSDheader.imgdatalen,
+                                                   step * PSDheader.columns
+                                                   * PSDheader.rows),
                                  "raw cmyk image data", step);
 
               cmykp2rgb (cmykbuf, dest,
@@ -2450,7 +2678,7 @@ load_image (const gchar *name)
 
               if (psd_type_to_gimp_type (imagetype) == GIMP_INDEXEDA_IMAGE)
                 {
-                  printf ("@@@@ Didn't know that this could happen...\n");
+                  g_printerr ("@@@@ Didn't know that this could happen...\n");
                   for (iter = 0; iter < drawable->width * drawable->height; iter++)
                     {
                       dest[iter * 2 + 1] = 255;
@@ -2468,7 +2696,7 @@ load_image (const gchar *name)
             }
           else
             {
-              IFDBG printf ("Uhhh... uhm... extra channels... heavy...\n");
+              IFDBG g_printerr ("Uhhh... uhm... extra channels... heavy...\n");
 
               extract_data_and_channels (dest, channels, step,
                                          image_ID, drawable,
@@ -2490,7 +2718,7 @@ load_image (const gchar *name)
       PSDguide *guide = psd_image.guides;
       int       i;
 
-      IFDBG printf ("--- Adding %d Guides\n", psd_image.num_guides);
+      IFDBG g_printerr ("--- Adding %d Guides\n", psd_image.num_guides);
 
       for (i = 0; i < psd_image.num_guides; i++, guide++)
         {
@@ -2503,19 +2731,19 @@ load_image (const gchar *name)
 
   gimp_displays_flush ();
 
-  IFDBG printf ("--- %d layers : pos %ld : a-alph %d ---\n",
-                psd_image.num_layers, ftell (fd),
-                psd_image.absolute_alpha);
+  IFDBG g_printerr ("--- %d layers : pos %ld : a-alph %d ---\n",
+                    psd_image.num_layers, ftell (fd),
+                    psd_image.absolute_alpha);
 
   return image_ID;
 }
 
 static void
-decode (long    clen,
-        long    uclen,
-        guchar *src,
-        guchar *dst,
-        int     step)
+decode (long          clen,
+        long          uclen,
+        const guchar *src,
+        guchar       *dst,
+        int           step)
 {
   gint     i, j;
   gint32   l;
@@ -2545,18 +2773,18 @@ decode (long    clen,
       packbitsdecode (&clen, uclen, src, dst++, step);
     }
 
-  IFDBG printf ("clen %ld\n", clen);
+  IFDBG g_printerr ("clen %ld\n", clen);
 }
 
 /*
  * Decode a PackBits data stream.
  */
 static void
-packbitsdecode (long   *clenp,
-                long    uclen,
-                guchar *src,
-                guchar *dst,
-                int     step)
+packbitsdecode (long         *clenp,
+                long          uclen,
+                const guchar *src,
+                guchar       *dst,
+                int           step)
 {
   gint   n, b;
   gint32 clen = *clenp;
@@ -2599,7 +2827,7 @@ packbitsdecode (long   *clenp,
 
   if (uclen > 0)
     {
-      printf ("PSD: unexpected EOF while reading image data\n");
+      g_message ("Unexpected end of file while reading image data");
       gimp_quit ();
     }
 
@@ -2670,18 +2898,18 @@ unpack_pb_channel (FILE    *fd,
 
   if (upremain < 0)
     {
-      printf("*** Unpacking overshot destination (%d) buffer by %d bytes!\n",
+      g_print("*** Unpacking overshot destination (%d) buffer by %d bytes!\n",
              unpackedlen,
              -upremain);
     }
 }
 
 static void
-cmyk2rgb (unsigned char *src,
-          unsigned char *dst,
-          long           width,
-          long           height,
-          int            alpha)
+cmyk2rgb (const guchar *src,
+          guchar       *dst,
+          long          width,
+          long          height,
+          int           alpha)
 {
   int r, g, b, k;
   int i, j;
@@ -2714,16 +2942,16 @@ cmyk2rgb (unsigned char *src,
  * Decode planar CMYK(A) to RGB(A).
  */
 static void
-cmykp2rgb (unsigned char *src,
-           unsigned char *dst,
-           long           width,
-           long           height,
-           int            alpha)
+cmykp2rgb (const guchar *src,
+           guchar       *dst,
+           long          width,
+           long          height,
+           int           alpha)
 {
-    int     r, g, b, k;
-    int     i, j;
-    long    n;
-    guchar *rp, *gp, *bp, *kp, *ap;
+    const guchar *rp, *gp, *bp, *kp, *ap;
+    int           r, g, b, k;
+    int           i, j;
+    long          n;
 
     n = width * height;
     rp = src;
@@ -2757,10 +2985,10 @@ cmykp2rgb (unsigned char *src,
 }
 
 static void
-bitmap2gray (guchar *src,
-             guchar *dest,
-             long    w,
-             long    h)
+bitmap2gray (const guchar *src,
+             guchar       *dest,
+             long          w,
+             long          h)
 {
   int i,j;
 
@@ -2770,7 +2998,7 @@ bitmap2gray (guchar *src,
 
       for(j = 0; j < w; j++)
         {
-          *dest++ = (*src&mask) ? 0 : 255;
+          *dest++ = (*src & mask) ? 0 : 255;
           mask >>= 1;
 
            if(!mask)
@@ -2785,26 +3013,26 @@ bitmap2gray (guchar *src,
 }
 
 static void
-dumpchunk (size_t  n,
-           FILE   *fd,
-           gchar  *why)
+dumpchunk (size_t       n,
+           FILE        *fd,
+           const gchar *why)
 {
   guint32 i;
 
-  printf("\n");
+  g_print("\n");
 
   for (i = 0; i < n; i++)
     {
-      printf ("%02x ", (int) getguchar (fd, why));
+      g_printerr ("%02x ", (int) getguchar (fd, why));
     }
 
-  printf ("\n");
+  g_printerr ("\n");
 }
 
 static void
-throwchunk (size_t  n,
-            FILE   *fd,
-            gchar  *why)
+throwchunk (size_t       n,
+            FILE        *fd,
+            const gchar *why)
 {
 #if 0
   guchar *tmpchunk;
@@ -2821,16 +3049,17 @@ throwchunk (size_t  n,
 
   if (fseek (fd, (glong) n, SEEK_CUR) != 0)
     {
-      printf ("PSD: unable to seek forward while reading '%s' chunk\n", why);
+      g_printerr ("PSD: unable to seek forward while reading '%s' chunk\n",
+                  why);
       gimp_quit();
     }
 #endif
 }
 
 static gchar *
-getstring (size_t  n,
-           FILE   *fd,
-           gchar  *why)
+getstring (size_t       n,
+           FILE        *fd,
+           const gchar *why)
 {
   gchar *tmpchunk;
 
@@ -2842,8 +3071,8 @@ getstring (size_t  n,
 }
 
 static gchar *
-getpascalstring (FILE  *fd,
-                 gchar *why)
+getpascalstring (FILE        *fd,
+                 const gchar *why)
 {
   guchar *tmpchunk;
   guchar  len;
@@ -2853,7 +3082,7 @@ getpascalstring (FILE  *fd,
   if (len == 0)
     return NULL;
 
-  tmpchunk = g_malloc(len+1);
+  tmpchunk = g_malloc (len+1);
 
   xfread(fd, tmpchunk, len, why);
   tmpchunk[len]=0;
@@ -2861,9 +3090,39 @@ getpascalstring (FILE  *fd,
   return (gchar *) tmpchunk; /* caller should free memory */
 }
 
+static gchar *
+getunicodepascalstring (FILE        *fd,
+                        const gchar *why)
+{
+  gunichar2 *tmpunichunk;
+  gchar     *tmpchunk;
+  guint32    count = 0;
+  guint32    len   = getgint32 (fd, why);
+
+  if (len == 0)
+    return NULL;
+
+  /* Looks like these are always padded to an even number. */
+  len += len % 2;
+
+  tmpunichunk = g_new (gunichar2, len + 1);
+
+  /* Slower but necessary to get correct endianness */
+  for (count = 0; count < len; count++)
+    tmpunichunk[count] = getgint16 (fd, why);
+
+  tmpunichunk[len] = 0;
+
+  tmpchunk = g_utf16_to_utf8 (tmpunichunk, len, NULL, NULL, NULL);
+
+  g_free (tmpunichunk);
+
+  return tmpchunk; /* caller should free memory */
+}
+
 static guchar
-getguchar (FILE  *fd,
-           gchar *why)
+getguchar (FILE        *fd,
+           const gchar *why)
 {
   gint tmp;
 
@@ -2871,7 +3130,7 @@ getguchar (FILE  *fd,
 
   if (tmp == EOF)
     {
-      printf ("PSD: unexpected EOF while reading '%s' chunk\n", why);
+      g_message ("Unexpected end of file while reading '%s' chunk", why);
       gimp_quit ();
     }
 
@@ -2879,8 +3138,8 @@ getguchar (FILE  *fd,
 }
 
 static gint16
-getgint16 (FILE  *fd,
-           gchar *why)
+getgint16 (FILE        *fd,
+           const gchar *why)
 {
   guchar b1, b2;
 
@@ -2891,8 +3150,8 @@ getgint16 (FILE  *fd,
 }
 
 static gint32
-getgint32 (FILE  *fd,
-          gchar *why)
+getgint32 (FILE        *fd,
+           const gchar *why)
 {
   guchar s1, s2, s3, s4;
 
@@ -2908,34 +3167,37 @@ getgint32 (FILE  *fd,
 }
 
 static void
-xfread (FILE  *fd,
-        void  *buf,
-        long   len,
-        gchar *why)
+xfread (FILE        *fd,
+        void        *buf,
+        long         len,
+        const gchar *why)
 {
   if (fread (buf, len, 1, fd) == 0)
     {
-      printf ("PSD: unexpected EOF while reading '%s' chunk\n", why);
+      g_message ("Unexpected end of file while reading '%s' chunk", why);
       gimp_quit();
     }
 }
 
 static void
-xfread_interlaced (FILE   *fd,
-                   guchar *buf,
-                   long    len,
-                   gchar  *why,
-                   gint    step)
+xfread_interlaced (FILE        *fd,
+                   guchar      *buf,
+                   long         len,
+                   const gchar *why,
+                   gint         step)
 {
   guchar *dest;
-  gint    pix, pos, bpplane;
-
-  bpplane = len / step;
+  gint    pix;
+  gint    pos;
+  gint    bpplane;
 
   if (len % step != 0)
     {
-      printf ("PSD: Stern warning: data size is not a factor of step size!\n");
+      g_printerr ("PSD: Stern warning: "
+                  "data size is not a factor of step size!\n");
     }
+
+  bpplane = len / step;
 
   for (pix = 0; pix < step; pix++)
     {
@@ -2950,7 +3212,7 @@ xfread_interlaced (FILE   *fd,
 }
 
 static void
-read_whole_file (FILE *fd)
+read_whole_file (FILE *fd, const gchar *filename)
 {
     guint16 w;
     glong   pos;
@@ -2960,12 +3222,38 @@ read_whole_file (FILE *fd)
     xfread (fd, &PSDheader.signature, 4, "signature");
     PSDheader.version  = getgint16 (fd, "version");
     xfread (fd, &dummy, 6, "reserved");
+
     PSDheader.channels = getgint16 (fd, "channels");
+
+    /* Photoshop CS (version 8) supports a maximum of 56 channels */
+
+    if (PSDheader.channels > 56)
+      {
+        g_error ("'%s' has more channels than GIMP can handle.",
+                 gimp_filename_to_utf8 (filename));
+      }
+
     PSDheader.rows     = getgint32 (fd, "rows");
     PSDheader.columns  = getgint32 (fd, "columns");
+
+    /* Photoshop CS (version 8) supports 300000 x 300000, but this
+       is currently larger than GIMP_MAX_IMAGE_SIZE */
+
+    if ((PSDheader.rows > GIMP_MAX_IMAGE_SIZE) ||
+        (PSDheader.columns > GIMP_MAX_IMAGE_SIZE))
+      {
+        g_error ("'%s' has a larger image size than GIMP can handle.",
+                 gimp_filename_to_utf8 (filename));
+      }
+
+    if (PSDheader.rows && PSDheader.columns > (G_MAXUINT / PSDheader.rows))
+      {
+        g_error ("'%s' has a larger image size than GIMP can handle.",
+                 gimp_filename_to_utf8 (filename));
+      }
+
     PSDheader.bpp      = getgint16 (fd, "depth");
     PSDheader.mode     = getgint16 (fd, "mode");
-
 
     psd_image.num_layers       = 0;
     psd_image.type             = PSDheader.mode;
@@ -2998,7 +3286,7 @@ read_whole_file (FILE *fd)
 
 
     PSDheader.compression = getgint16 (fd, "compression");
-    IFDBG printf("<<compr:%d>>", (int) PSDheader.compression);
+    IFDBG g_printerr ("<<compr:%d>>", (int) PSDheader.compression);
     if (PSDheader.compression == 1) /* RLE */
       {
         PSDheader.rowlength = g_malloc (PSDheader.rows *
@@ -3020,19 +3308,20 @@ read_whole_file (FILE *fd)
       }
     if (PSDheader.version != 1)
       {
-        g_message (_("The PSD file has bad version number '%d', not 1"), PSDheader.version);
+        g_message (_("The PSD file has bad version number '%d', not 1"),
+                   PSDheader.version);
         gimp_quit ();
       }
     w = PSDheader.mode;
-    IFDBG printf ("HEAD:\n"
-                  "\tChannels %d\n\tRows %d\n\tColumns %d\n\tDepth %d\n\tMode %d (%s)\n"
-                  "\tColour data %d guchars\n",
-                  PSDheader.channels, PSDheader.rows,
-                  PSDheader.columns, PSDheader.bpp,
-                  w, modename[w < 10 ? w : 10],
-                  psd_image.colmaplen);
-    /*    printf("\tImage resource length: %lu\n", PSDheader.imgreslen);*/
-    IFDBG printf ("\tLayer/Mask Data length: %u\n", PSDheader.miscsizelen);
+    IFDBG g_printerr ("HEAD:\n"
+                      "\tChannels %d\n\tRows %d\n\tColumns %d\n\tDepth %d\n\tMode %d (%s)\n"
+                      "\tColour data %d guchars\n",
+                      PSDheader.channels, PSDheader.rows,
+                      PSDheader.columns, PSDheader.bpp,
+                      w, modename[w < 10 ? w : 10],
+                      psd_image.colmaplen);
+
+    IFDBG g_printerr ("\tLayer/Mask Data length: %u\n", PSDheader.miscsizelen);
     w = PSDheader.compression;
-    IFDBG printf ("\tCompression %d (%s)\n", w, w ? "RLE" : "raw");
+    IFDBG g_printerr ("\tCompression %d (%s)\n", w, w ? "RLE" : "raw");
 }

@@ -64,7 +64,6 @@ tile_manager_new (gint width,
   tm->ntile_rows  = (height + TILE_HEIGHT - 1) / TILE_HEIGHT;
   tm->ntile_cols  = (width  + TILE_WIDTH  - 1) / TILE_WIDTH;
   tm->cached_num  = -1;
-  tm->level_below = NULL;
 
   return tm;
 }
@@ -108,19 +107,21 @@ tile_manager_unref (TileManager *tm)
 
 void
 tile_manager_set_validate_proc (TileManager      *tm,
-                                TileValidateProc  proc)
+                                TileValidateProc  proc,
+                                gpointer          user_data)
 {
   g_return_if_fail (tm != NULL);
 
   tm->validate_proc = proc;
+  tm->user_data     = user_data;
 }
 
 Tile *
 tile_manager_get_tile (TileManager *tm,
                        gint         xpixel,
                        gint         ypixel,
-                       gint         wantread,
-                       gint         wantwrite)
+                       gboolean     wantread,
+                       gboolean     wantwrite)
 {
   g_return_val_if_fail (tm != NULL, NULL);
 
@@ -132,8 +133,8 @@ tile_manager_get_tile (TileManager *tm,
 Tile *
 tile_manager_get (TileManager *tm,
                   gint         tile_num,
-                  gint         wantread,
-                  gint         wantwrite)
+                  gboolean     wantread,
+                  gboolean     wantwrite)
 {
   Tile **tiles;
   Tile **tile_ptr;
@@ -184,7 +185,7 @@ tile_manager_get (TileManager *tm,
 
   tile_ptr = &tm->tiles[tile_num];
 
-  if (G_UNLIKELY (wantwrite && !wantread))
+  if (G_UNLIKELY (wantwrite && ! wantread))
     g_warning ("WRITE-ONLY TILE... UNTESTED!");
 
 #ifdef DEBUG_TILE_MANAGER
@@ -256,8 +257,8 @@ Tile *
 tile_manager_get_at (TileManager *tm,
                      gint         tile_col,
                      gint         tile_row,
-                     gint         wantread,
-                     gint         wantwrite)
+                     gboolean     wantread,
+                     gboolean     wantwrite)
 {
   g_return_val_if_fail (tm != NULL, NULL);
 
@@ -280,69 +281,18 @@ tile_manager_validate (TileManager *tm,
   tile->valid = TRUE;
 
   if (tm->validate_proc)
-    (* tm->validate_proc) (tm, tile);
+    (* tm->validate_proc) (tm, tile, tm->user_data);
 
 #ifdef DEBUG_TILE_MANAGER
   g_printerr ("%c", tm->user_data ? 'V' : 'v');
 #endif
 }
 
-void
-tile_manager_invalidate_tiles (TileManager *tm,
-                               Tile        *toplevel_tile)
+static void
+tile_manager_invalidate_tile (TileManager  *tm,
+                              gint          tile_num)
 {
-  gdouble x, y;
-  gint    row, col;
-
-  g_return_if_fail (tm != NULL);
-  g_return_if_fail (toplevel_tile != NULL);
-
-  col = toplevel_tile->tlink->tile_num % tm->ntile_cols;
-  row = toplevel_tile->tlink->tile_num / tm->ntile_cols;
-
-  x = (col * TILE_WIDTH  + toplevel_tile->ewidth  / 2.0) / (gdouble) tm->width;
-  y = (row * TILE_HEIGHT + toplevel_tile->eheight / 2.0) / (gdouble) tm->height;
-
-  if (tm->tiles)
-    {
-      gint num;
-
-      col = x * tm->width / TILE_WIDTH;
-      row = y * tm->height / TILE_HEIGHT;
-
-      num = row * tm->ntile_cols + col;
-
-      tile_invalidate (&tm->tiles[num], tm, num);
-    }
-}
-
-void
-tile_invalidate_tile (Tile        **tile_ptr,
-                      TileManager  *tm,
-                      gint          xpixel,
-                      gint          ypixel)
-{
-  gint num;
-
-  g_return_if_fail (tile_ptr != NULL);
-  g_return_if_fail (tm != NULL);
-
-  num = tile_manager_get_tile_num (tm, xpixel, ypixel);
-  if (num < 0)
-    return;
-
-  tile_invalidate (tile_ptr, tm, num);
-}
-
-void
-tile_invalidate (Tile        **tile_ptr,
-                 TileManager  *tm,
-                 gint          tile_num)
-{
-  Tile *tile = *tile_ptr;
-
-  g_return_if_fail (tile_ptr != NULL);
-  g_return_if_fail (tm != NULL);
+  Tile *tile = tm->tiles[tile_num];
 
   if (! tile->valid)
     return;
@@ -369,7 +319,7 @@ tile_invalidate (Tile        **tile_ptr,
       tile_detach (tile, tm, tile_num);
 
       tile_attach (new, tm, tile_num);
-      tile = *tile_ptr = new;
+      tile = new;
     }
 
   if (tile->listhead)
@@ -390,6 +340,19 @@ tile_invalidate (Tile        **tile_ptr,
        */
       tile_swap_delete (tile);
     }
+}
+
+static void
+tile_manager_invalidate_pixel (TileManager  *tm,
+                               gint          xpixel,
+                               gint          ypixel)
+{
+  gint num = tile_manager_get_tile_num (tm, xpixel, ypixel);
+
+  if (num < 0)
+    return;
+
+  tile_manager_invalidate_tile (tm, num);
 }
 
 void
@@ -523,32 +486,12 @@ tile_manager_invalidate_area (TileManager *tm,
   for (i = y; i < (y + h); i += (TILE_HEIGHT - (i % TILE_HEIGHT)))
     for (j = x; j < (x + w); j += (TILE_WIDTH - (j % TILE_WIDTH)))
       {
-        Tile *tile = tile_manager_get_tile (tm, j, i, FALSE, FALSE);
-
-        if (tile != NULL)
-          tile_invalidate_tile (&tile, tm, j, i);
+        tile_manager_invalidate_pixel (tm, j, i);
       }
 }
 
-void
-tile_manager_set_user_data (TileManager *tm,
-                            gpointer     user_data)
-{
-  g_return_if_fail (tm != NULL);
-
-  tm->user_data = user_data;
-}
-
-gpointer
-tile_manager_get_user_data (const TileManager *tm)
-{
-  g_return_val_if_fail (tm != NULL, NULL);
-
-  return tm->user_data;
-}
-
 gint
-tile_manager_width  (const TileManager *tm)
+tile_manager_width (const TileManager *tm)
 {
   g_return_val_if_fail (tm != NULL, 0);
 
@@ -587,23 +530,6 @@ tile_manager_tiles_per_row (const TileManager *tm)
   return tm->ntile_rows;
 }
 
-TileManager *
-tile_manager_get_level_below (const TileManager *tm)
-{
-  g_return_val_if_fail (tm != NULL, NULL);
-
-  return tm->level_below;
-}
-
-void
-tile_manager_set_level_below (TileManager *tm,
-                              TileManager *level_below)
-{
-  g_return_if_fail (tm != NULL);
-
-  tm->level_below = level_below;
-}
-
 void
 tile_manager_get_offsets (const TileManager *tm,
                           gint              *x,
@@ -631,18 +557,16 @@ gint64
 tile_manager_get_memsize (const TileManager *tm,
                           gboolean           sparse)
 {
-  gint64 memsize;
+  /*  the tile manager itself  */
+  gint64 memsize = sizeof (TileManager);
 
   g_return_val_if_fail (tm != NULL, 0);
-
-  /*  the tile manager itself  */
-  memsize = sizeof (TileManager);
 
   /*  the array of tiles  */
   memsize += (gint64) tm->ntile_rows * tm->ntile_cols * (sizeof (Tile) +
                                                          sizeof (gpointer));
 
-  /*  the memory allocated for the tiles   */
+  /*  the memory allocated for the tiles  */
   if (sparse)
     {
       if (tm->tiles)

@@ -212,7 +212,9 @@ gimp_marshal_BOOLEAN__OBJECT_POINTER_STRING (GClosure     *closure,
   g_value_set_boolean (return_value, v_return);
 }
 
-/* VOID:BOOLEAN,INT,INT,INT,INT (./gimpmarshal.list:30) */
+/* VOID:BOOLEAN (./gimpmarshal.list:30) */
+
+/* VOID:BOOLEAN,INT,INT,INT,INT (./gimpmarshal.list:31) */
 void
 gimp_marshal_VOID__BOOLEAN_INT_INT_INT_INT (GClosure     *closure,
                                             GValue       *return_value,
@@ -255,9 +257,9 @@ gimp_marshal_VOID__BOOLEAN_INT_INT_INT_INT (GClosure     *closure,
             data2);
 }
 
-/* VOID:BOXED (./gimpmarshal.list:31) */
+/* VOID:BOXED (./gimpmarshal.list:32) */
 
-/* VOID:BOXED,ENUM (./gimpmarshal.list:32) */
+/* VOID:BOXED,ENUM (./gimpmarshal.list:33) */
 void
 gimp_marshal_VOID__BOXED_ENUM (GClosure     *closure,
                                GValue       *return_value,
@@ -294,9 +296,9 @@ gimp_marshal_VOID__BOXED_ENUM (GClosure     *closure,
             data2);
 }
 
-/* VOID:DOUBLE (./gimpmarshal.list:33) */
+/* VOID:DOUBLE (./gimpmarshal.list:34) */
 
-/* VOID:DOUBLE,DOUBLE (./gimpmarshal.list:34) */
+/* VOID:DOUBLE,DOUBLE (./gimpmarshal.list:35) */
 void
 gimp_marshal_VOID__DOUBLE_DOUBLE (GClosure     *closure,
                                   GValue       *return_value,
@@ -333,9 +335,9 @@ gimp_marshal_VOID__DOUBLE_DOUBLE (GClosure     *closure,
             data2);
 }
 
-/* VOID:ENUM (./gimpmarshal.list:35) */
+/* VOID:ENUM (./gimpmarshal.list:36) */
 
-/* VOID:ENUM,ENUM,BOXED,INT (./gimpmarshal.list:36) */
+/* VOID:ENUM,ENUM,BOXED,INT (./gimpmarshal.list:37) */
 void
 gimp_marshal_VOID__ENUM_ENUM_BOXED_INT (GClosure     *closure,
                                         GValue       *return_value,
@@ -376,7 +378,7 @@ gimp_marshal_VOID__ENUM_ENUM_BOXED_INT (GClosure     *closure,
             data2);
 }
 
-/* VOID:ENUM,OBJECT (./gimpmarshal.list:37) */
+/* VOID:ENUM,OBJECT (./gimpmarshal.list:38) */
 void
 gimp_marshal_VOID__ENUM_OBJECT (GClosure     *closure,
                                 GValue       *return_value,
@@ -413,7 +415,7 @@ gimp_marshal_VOID__ENUM_OBJECT (GClosure     *closure,
             data2);
 }
 
-/* VOID:ENUM,POINTER (./gimpmarshal.list:38) */
+/* VOID:ENUM,POINTER (./gimpmarshal.list:39) */
 void
 gimp_marshal_VOID__ENUM_POINTER (GClosure     *closure,
                                  GValue       *return_value,
@@ -450,11 +452,11 @@ gimp_marshal_VOID__ENUM_POINTER (GClosure     *closure,
             data2);
 }
 
-/* VOID:FLAGS (./gimpmarshal.list:39) */
+/* VOID:FLAGS (./gimpmarshal.list:40) */
 
-/* VOID:INT (./gimpmarshal.list:40) */
+/* VOID:INT (./gimpmarshal.list:41) */
 
-/* VOID:INT,INT (./gimpmarshal.list:41) */
+/* VOID:INT,INT (./gimpmarshal.list:42) */
 void
 gimp_marshal_VOID__INT_INT (GClosure     *closure,
                             GValue       *return_value,
@@ -491,7 +493,7 @@ gimp_marshal_VOID__INT_INT (GClosure     *closure,
             data2);
 }
 
-/* VOID:INT,INT,INT,INT (./gimpmarshal.list:42) */
+/* VOID:INT,INT,INT,INT (./gimpmarshal.list:43) */
 void
 gimp_marshal_VOID__INT_INT_INT_INT (GClosure     *closure,
                                     GValue       *return_value,
@@ -532,9 +534,9 @@ gimp_marshal_VOID__INT_INT_INT_INT (GClosure     *closure,
             data2);
 }
 
-/* VOID:OBJECT (./gimpmarshal.list:43) */
+/* VOID:OBJECT (./gimpmarshal.list:44) */
 
-/* VOID:OBJECT,INT (./gimpmarshal.list:44) */
+/* VOID:OBJECT,INT (./gimpmarshal.list:45) */
 void
 gimp_marshal_VOID__OBJECT_INT (GClosure     *closure,
                                GValue       *return_value,
@@ -571,7 +573,7 @@ gimp_marshal_VOID__OBJECT_INT (GClosure     *closure,
             data2);
 }
 
-/* VOID:OBJECT,OBJECT (./gimpmarshal.list:45) */
+/* VOID:OBJECT,OBJECT (./gimpmarshal.list:46) */
 void
 gimp_marshal_VOID__OBJECT_OBJECT (GClosure     *closure,
                                   GValue       *return_value,
@@ -608,7 +610,7 @@ gimp_marshal_VOID__OBJECT_OBJECT (GClosure     *closure,
             data2);
 }
 
-/* VOID:OBJECT,POINTER (./gimpmarshal.list:46) */
+/* VOID:OBJECT,POINTER (./gimpmarshal.list:47) */
 void
 gimp_marshal_VOID__OBJECT_POINTER (GClosure     *closure,
                                    GValue       *return_value,
@@ -645,9 +647,9 @@ gimp_marshal_VOID__OBJECT_POINTER (GClosure     *closure,
             data2);
 }
 
-/* VOID:POINTER (./gimpmarshal.list:47) */
+/* VOID:POINTER (./gimpmarshal.list:48) */
 
-/* VOID:POINTER,BOXED (./gimpmarshal.list:48) */
+/* VOID:POINTER,BOXED (./gimpmarshal.list:49) */
 void
 gimp_marshal_VOID__POINTER_BOXED (GClosure     *closure,
                                   GValue       *return_value,
@@ -684,7 +686,7 @@ gimp_marshal_VOID__POINTER_BOXED (GClosure     *closure,
             data2);
 }
 
-/* VOID:POINTER,ENUM (./gimpmarshal.list:49) */
+/* VOID:POINTER,ENUM (./gimpmarshal.list:50) */
 void
 gimp_marshal_VOID__POINTER_ENUM (GClosure     *closure,
                                  GValue       *return_value,
@@ -721,9 +723,9 @@ gimp_marshal_VOID__POINTER_ENUM (GClosure     *closure,
             data2);
 }
 
-/* VOID:STRING (./gimpmarshal.list:50) */
+/* VOID:STRING (./gimpmarshal.list:51) */
 
-/* VOID:STRING,BOOLEAN,UINT,FLAGS (./gimpmarshal.list:51) */
+/* VOID:STRING,BOOLEAN,UINT,FLAGS (./gimpmarshal.list:52) */
 void
 gimp_marshal_VOID__STRING_BOOLEAN_UINT_FLAGS (GClosure     *closure,
                                               GValue       *return_value,
@@ -764,7 +766,7 @@ gimp_marshal_VOID__STRING_BOOLEAN_UINT_FLAGS (GClosure     *closure,
             data2);
 }
 
-/* VOID:STRING,FLAGS (./gimpmarshal.list:52) */
+/* VOID:STRING,FLAGS (./gimpmarshal.list:53) */
 void
 gimp_marshal_VOID__STRING_FLAGS (GClosure     *closure,
                                  GValue       *return_value,
@@ -801,7 +803,7 @@ gimp_marshal_VOID__STRING_FLAGS (GClosure     *closure,
             data2);
 }
 
-/* VOID:STRING,STRING,STRING (./gimpmarshal.list:53) */
+/* VOID:STRING,STRING,STRING (./gimpmarshal.list:54) */
 void
 gimp_marshal_VOID__STRING_STRING_STRING (GClosure     *closure,
                                          GValue       *return_value,
@@ -840,5 +842,5 @@ gimp_marshal_VOID__STRING_STRING_STRING (GClosure     *closure,
             data2);
 }
 
-/* VOID:VOID (./gimpmarshal.list:54) */
+/* VOID:VOID (./gimpmarshal.list:55) */
 

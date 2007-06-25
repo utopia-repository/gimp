@@ -56,7 +56,7 @@ ARFLAGS = cru
 libapppaint_funcs_a_AR = $(AR) $(ARFLAGS)
 libapppaint_funcs_a_LIBADD =
 am_libapppaint_funcs_a_OBJECTS = paint-funcs.$(OBJEXT) \
-	scale-funcs.$(OBJEXT)
+	sample-funcs.$(OBJEXT) scale-funcs.$(OBJEXT)
 libapppaint_funcs_a_OBJECTS = $(am_libapppaint_funcs_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -192,8 +192,6 @@ GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
 GOBJECT_QUERY = @GOBJECT_QUERY@
 GREP = @GREP@
-GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
-GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
 GTKHTML2_CFLAGS = @GTKHTML2_CFLAGS@
 GTKHTML2_LIBS = @GTKHTML2_LIBS@
@@ -349,6 +347,7 @@ RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
 SCREENSHOT = @SCREENSHOT@
+SED = @SED@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -449,7 +448,9 @@ libapppaint_funcs_a_SOURCES = \
 	paint-funcs-types.h	\
 	paint-funcs.c		\
 	paint-funcs.h		\
-	paint-funcs-generic.h \
+	paint-funcs-generic.h	\
+	sample-funcs.c		\
+	sample-funcs.h		\
 	scale-funcs.c		\
 	scale-funcs.h
 
@@ -462,8 +463,7 @@ INCLUDES = \
 	-I$(includedir)
 
 AM_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"Gimp-Paint-Funcs\"	\
-	@GTHREAD_CFLAGS@
+	-DG_LOG_DOMAIN=\"Gimp-Paint-Funcs\"
 
 AM_CCASFLAGS = \
 	-I$(top_builddir)	\
@@ -519,6 +519,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/paint-funcs.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sample-funcs.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scale-funcs.Po@am__quote@
 
 .c.o:

@@ -47,15 +47,18 @@ libappbase_a_SOURCES = \
 	tile-cache.h		\
 	tile-manager.c		\
 	tile-manager.h		\
-	tile-manager-private.h	\
 	tile-manager-crop.c	\
 	tile-manager-crop.h	\
+	tile-manager-preview.c	\
+	tile-manager-preview.h	\
+	tile-manager-private.h	\
+	tile-pyramid.c		\
+	tile-pyramid.h		\
 	tile-swap.c		\
 	tile-swap.h
 
 AM_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"Gimp-Base\"	\
-	@GTHREAD_CFLAGS@
+	-DG_LOG_DOMAIN=\"Gimp-Base\"
 
 INCLUDES = \
 	-I$(top_builddir)	\

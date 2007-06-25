@@ -1,8 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 AM_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"Gimp-Widgets\"	\
-	@GTHREAD_CFLAGS@
+	-DG_LOG_DOMAIN=\"Gimp-Widgets\"
 
 INCLUDES = \
 	-I$(top_builddir)	\
@@ -170,6 +169,8 @@ libappwidgets_a_sources = \
 	gimphistogramview.h		\
 	gimpimagedock.c			\
 	gimpimagedock.h			\
+	gimpimagecommenteditor.c	\
+	gimpimagecommenteditor.h	\
 	gimpimageeditor.c		\
 	gimpimageeditor.h		\
 	gimpimageparasiteview.c		\

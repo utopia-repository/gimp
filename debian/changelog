@@ -1,8 +1,10 @@
-gimp (2.2.15-2) unstable; urgency=low
+gimp (2.2.16-1) unstable; urgency=high
 
-  * Don't use find -exec xargs (Closes: #426415) 
+  * New upstream version
+    - Fixes integer overflow in PSD plugin (CVE-2007-2949)
+  * Don't use find -exec xargs (Closes: #426415)
 
- -- Ari Pollak <ari@debian.org>  Tue, 29 May 2007 00:41:43 -0400
+ -- Ari Pollak <ari@debian.org>  Fri, 06 Jul 2007 23:11:47 -0400
 
 gimp (2.2.15-1) unstable; urgency=low
 

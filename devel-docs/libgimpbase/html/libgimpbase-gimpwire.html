@@ -20,16 +20,16 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td>&#160;</td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2560886" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2585478" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2579246" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2610626" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpwire"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2560886"></a><span class="refentrytitle">gimpwire</span>
+<a name="id2585478"></a><span class="refentrytitle">gimpwire</span>
 </h2>
 <p>gimpwire &#8212; The lowlevel I/O protocol used for communication between GIMP and
 it's plug-ins.</p>
@@ -125,7 +125,7 @@ gboolean            <a href="libgimpbase-gimpwire.html#wire-write-string">wire_w
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2579246"></a><h2>Description</h2>
+<a name="id2610626"></a><h2>Description</h2>
 <p>
 The lowlevel I/O protocol used for communication between GIMP and
 it's plug-ins.
@@ -133,11 +133,11 @@ it's plug-ins.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2614724"></a><h2>Details</h2>
+<a name="id2614888"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2614733"></a><h3>
+<a name="id2614898"></a><h3>
 <a name="WireMessage"></a>WireMessage</h3>
-<a class="indexterm" name="id2614743"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2614908"></a><pre class="programlisting">typedef struct {
   guint32  type;
   gpointer data;
 } WireMessage;
@@ -148,9 +148,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614758"></a><h3>
+<a name="id2614923"></a><h3>
 <a name="WireReadFunc"></a>WireReadFunc ()</h3>
-<a class="indexterm" name="id2614768"></a><pre class="programlisting">void                (*WireReadFunc)                     (GIOChannel *channel,
+<a class="indexterm" name="id2614933"></a><pre class="programlisting">void                (*WireReadFunc)                     (GIOChannel *channel,
                                                          <a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg,
                                                          gpointer user_data);</pre>
 <p>
@@ -181,9 +181,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614847"></a><h3>
+<a name="id2615012"></a><h3>
 <a name="WireWriteFunc"></a>WireWriteFunc ()</h3>
-<a class="indexterm" name="id2614859"></a><pre class="programlisting">void                (*WireWriteFunc)                    (GIOChannel *channel,
+<a class="indexterm" name="id2615023"></a><pre class="programlisting">void                (*WireWriteFunc)                    (GIOChannel *channel,
                                                          <a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg,
                                                          gpointer user_data);</pre>
 <p>
@@ -214,9 +214,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614948"></a><h3>
+<a name="id2615111"></a><h3>
 <a name="WireDestroyFunc"></a>WireDestroyFunc ()</h3>
-<a class="indexterm" name="id2614960"></a><pre class="programlisting">void                (*WireDestroyFunc)                  (<a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg);</pre>
+<a class="indexterm" name="id2615124"></a><pre class="programlisting">void                (*WireDestroyFunc)                  (<a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg);</pre>
 <p>
 
 </p>
@@ -233,9 +233,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615006"></a><h3>
+<a name="id2615170"></a><h3>
 <a name="WireIOFunc"></a>WireIOFunc ()</h3>
-<a class="indexterm" name="id2615018"></a><pre class="programlisting">gboolean            (*WireIOFunc)                       (GIOChannel *channel,
+<a class="indexterm" name="id2615182"></a><pre class="programlisting">gboolean            (*WireIOFunc)                       (GIOChannel *channel,
                                                          guint8 *buf,
                                                          gulong count,
                                                          gpointer user_data);</pre>
@@ -277,9 +277,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615139"></a><h3>
+<a name="id2615276"></a><h3>
 <a name="WireFlushFunc"></a>WireFlushFunc ()</h3>
-<a class="indexterm" name="id2615151"></a><pre class="programlisting">gboolean            (*WireFlushFunc)                    (GIOChannel *channel,
+<a class="indexterm" name="id2615286"></a><pre class="programlisting">gboolean            (*WireFlushFunc)                    (GIOChannel *channel,
                                                          gpointer user_data);</pre>
 <p>
 
@@ -309,9 +309,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615229"></a><h3>
+<a name="id2615356"></a><h3>
 <a name="wire-register"></a>wire_register ()</h3>
-<a class="indexterm" name="id2615242"></a><pre class="programlisting">void                wire_register                       (guint32 type,
+<a class="indexterm" name="id2615366"></a><pre class="programlisting">void                wire_register                       (guint32 type,
                                                          <a href="libgimpbase-gimpwire.html#WireReadFunc">WireReadFunc</a> read_func,
                                                          <a href="libgimpbase-gimpwire.html#WireWriteFunc">WireWriteFunc</a> write_func,
                                                          <a href="libgimpbase-gimpwire.html#WireDestroyFunc">WireDestroyFunc</a> destroy_func);</pre>
@@ -348,9 +348,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615353"></a><h3>
+<a name="id2615464"></a><h3>
 <a name="wire-set-reader"></a>wire_set_reader ()</h3>
-<a class="indexterm" name="id2615365"></a><pre class="programlisting">void                wire_set_reader                     (<a href="libgimpbase-gimpwire.html#WireIOFunc">WireIOFunc</a> read_func);</pre>
+<a class="indexterm" name="id2615475"></a><pre class="programlisting">void                wire_set_reader                     (<a href="libgimpbase-gimpwire.html#WireIOFunc">WireIOFunc</a> read_func);</pre>
 <p>
 
 </p>
@@ -367,9 +367,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615411"></a><h3>
+<a name="id2615516"></a><h3>
 <a name="wire-set-writer"></a>wire_set_writer ()</h3>
-<a class="indexterm" name="id2615424"></a><pre class="programlisting">void                wire_set_writer                     (<a href="libgimpbase-gimpwire.html#WireIOFunc">WireIOFunc</a> write_func);</pre>
+<a class="indexterm" name="id2615526"></a><pre class="programlisting">void                wire_set_writer                     (<a href="libgimpbase-gimpwire.html#WireIOFunc">WireIOFunc</a> write_func);</pre>
 <p>
 
 </p>
@@ -386,9 +386,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615470"></a><h3>
+<a name="id2615567"></a><h3>
 <a name="wire-set-flusher"></a>wire_set_flusher ()</h3>
-<a class="indexterm" name="id2615482"></a><pre class="programlisting">void                wire_set_flusher                    (<a href="libgimpbase-gimpwire.html#WireFlushFunc">WireFlushFunc</a> flush_func);</pre>
+<a class="indexterm" name="id2615577"></a><pre class="programlisting">void                wire_set_flusher                    (<a href="libgimpbase-gimpwire.html#WireFlushFunc">WireFlushFunc</a> flush_func);</pre>
 <p>
 
 </p>
@@ -405,9 +405,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615529"></a><h3>
+<a name="id2615618"></a><h3>
 <a name="wire-read"></a>wire_read ()</h3>
-<a class="indexterm" name="id2615541"></a><pre class="programlisting">gboolean            wire_read                           (GIOChannel *channel,
+<a class="indexterm" name="id2615628"></a><pre class="programlisting">gboolean            wire_read                           (GIOChannel *channel,
                                                          guint8 *buf,
                                                          gsize count,
                                                          gpointer user_data);</pre>
@@ -449,9 +449,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615661"></a><h3>
+<a name="id2615736"></a><h3>
 <a name="wire-write"></a>wire_write ()</h3>
-<a class="indexterm" name="id2615674"></a><pre class="programlisting">gboolean            wire_write                          (GIOChannel *channel,
+<a class="indexterm" name="id2615746"></a><pre class="programlisting">gboolean            wire_write                          (GIOChannel *channel,
                                                          guint8 *buf,
                                                          gsize count,
                                                          gpointer user_data);</pre>
@@ -493,9 +493,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615794"></a><h3>
+<a name="id2615854"></a><h3>
 <a name="wire-flush"></a>wire_flush ()</h3>
-<a class="indexterm" name="id2615806"></a><pre class="programlisting">gboolean            wire_flush                          (GIOChannel *channel,
+<a class="indexterm" name="id2615864"></a><pre class="programlisting">gboolean            wire_flush                          (GIOChannel *channel,
                                                          gpointer user_data);</pre>
 <p>
 
@@ -525,9 +525,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615884"></a><h3>
+<a name="id2615934"></a><h3>
 <a name="wire-error"></a>wire_error ()</h3>
-<a class="indexterm" name="id2615896"></a><pre class="programlisting">gboolean            wire_error                          (void);</pre>
+<a class="indexterm" name="id2615944"></a><pre class="programlisting">gboolean            wire_error                          (void);</pre>
 <p>
 
 </p>
@@ -544,18 +544,18 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615933"></a><h3>
+<a name="id2615977"></a><h3>
 <a name="wire-clear-error"></a>wire_clear_error ()</h3>
-<a class="indexterm" name="id2615945"></a><pre class="programlisting">void                wire_clear_error                    (void);</pre>
+<a class="indexterm" name="id2615987"></a><pre class="programlisting">void                wire_clear_error                    (void);</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615966"></a><h3>
+<a name="id2616006"></a><h3>
 <a name="wire-read-msg"></a>wire_read_msg ()</h3>
-<a class="indexterm" name="id2615979"></a><pre class="programlisting">gboolean            wire_read_msg                       (GIOChannel *channel,
+<a class="indexterm" name="id2616016"></a><pre class="programlisting">gboolean            wire_read_msg                       (GIOChannel *channel,
                                                          <a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg,
                                                          gpointer user_data);</pre>
 <p>
@@ -591,9 +591,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2616078"></a><h3>
+<a name="id2616105"></a><h3>
 <a name="wire-write-msg"></a>wire_write_msg ()</h3>
-<a class="indexterm" name="id2616090"></a><pre class="programlisting">gboolean            wire_write_msg                      (GIOChannel *channel,
+<a class="indexterm" name="id2616115"></a><pre class="programlisting">gboolean            wire_write_msg                      (GIOChannel *channel,
                                                          <a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg,
                                                          gpointer user_data);</pre>
 <p>
@@ -629,9 +629,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2616190"></a><h3>
+<a name="id2616204"></a><h3>
 <a name="wire-destroy"></a>wire_destroy ()</h3>
-<a class="indexterm" name="id2616202"></a><pre class="programlisting">void                wire_destroy                        (<a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg);</pre>
+<a class="indexterm" name="id2616214"></a><pre class="programlisting">void                wire_destroy                        (<a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg);</pre>
 <p>
 
 </p>
@@ -648,9 +648,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2616248"></a><h3>
+<a name="id2616255"></a><h3>
 <a name="wire-read-int32"></a>wire_read_int32 ()</h3>
-<a class="indexterm" name="id2616261"></a><pre class="programlisting">gboolean            wire_read_int32                     (GIOChannel *channel,
+<a class="indexterm" name="id2616266"></a><pre class="programlisting">gboolean            wire_read_int32                     (GIOChannel *channel,
                                                          guint32 *data,
                                                          gint count,
                                                          gpointer user_data);</pre>
@@ -692,9 +692,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2616381"></a><h3>
+<a name="id2616373"></a><h3>
 <a name="wire-read-int16"></a>wire_read_int16 ()</h3>
-<a class="indexterm" name="id2616394"></a><pre class="programlisting">gboolean            wire_read_int16                     (GIOChannel *channel,
+<a class="indexterm" name="id2616384"></a><pre class="programlisting">gboolean            wire_read_int16                     (GIOChannel *channel,
                                                          guint16 *data,
                                                          gint count,
                                                          gpointer user_data);</pre>
@@ -736,9 +736,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2616514"></a><h3>
+<a name="id2616491"></a><h3>
 <a name="wire-read-int8"></a>wire_read_int8 ()</h3>
-<a class="indexterm" name="id2616526"></a><pre class="programlisting">gboolean            wire_read_int8                      (GIOChannel *channel,
+<a class="indexterm" name="id2616502"></a><pre class="programlisting">gboolean            wire_read_int8                      (GIOChannel *channel,
                                                          guint8 *data,
                                                          gint count,
                                                          gpointer user_data);</pre>
@@ -780,9 +780,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2616647"></a><h3>
+<a name="id2616609"></a><h3>
 <a name="wire-read-double"></a>wire_read_double ()</h3>
-<a class="indexterm" name="id2616659"></a><pre class="programlisting">gboolean            wire_read_double                    (GIOChannel *channel,
+<a class="indexterm" name="id2616620"></a><pre class="programlisting">gboolean            wire_read_double                    (GIOChannel *channel,
                                                          gdouble *data,
                                                          gint count,
                                                          gpointer user_data);</pre>
@@ -824,9 +824,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2616780"></a><h3>
+<a name="id2616727"></a><h3>
 <a name="wire-read-string"></a>wire_read_string ()</h3>
-<a class="indexterm" name="id2616792"></a><pre class="programlisting">gboolean            wire_read_string                    (GIOChannel *channel,
+<a class="indexterm" name="id2616738"></a><pre class="programlisting">gboolean            wire_read_string                    (GIOChannel *channel,
                                                          gchar **data,
                                                          gint count,
                                                          gpointer user_data);</pre>
@@ -868,9 +868,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2616913"></a><h3>
+<a name="id2616845"></a><h3>
 <a name="wire-write-int32"></a>wire_write_int32 ()</h3>
-<a class="indexterm" name="id2616925"></a><pre class="programlisting">gboolean            wire_write_int32                    (GIOChannel *channel,
+<a class="indexterm" name="id2616856"></a><pre class="programlisting">gboolean            wire_write_int32                    (GIOChannel *channel,
                                                          guint32 *data,
                                                          gint count,
                                                          gpointer user_data);</pre>
@@ -912,9 +912,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617016"></a><h3>
+<a name="id2616963"></a><h3>
 <a name="wire-write-int16"></a>wire_write_int16 ()</h3>
-<a class="indexterm" name="id2617026"></a><pre class="programlisting">gboolean            wire_write_int16                    (GIOChannel *channel,
+<a class="indexterm" name="id2616974"></a><pre class="programlisting">gboolean            wire_write_int16                    (GIOChannel *channel,
                                                          guint16 *data,
                                                          gint count,
                                                          gpointer user_data);</pre>
@@ -956,9 +956,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617134"></a><h3>
+<a name="id2617081"></a><h3>
 <a name="wire-write-int8"></a>wire_write_int8 ()</h3>
-<a class="indexterm" name="id2617144"></a><pre class="programlisting">gboolean            wire_write_int8                     (GIOChannel *channel,
+<a class="indexterm" name="id2617092"></a><pre class="programlisting">gboolean            wire_write_int8                     (GIOChannel *channel,
                                                          guint8 *data,
                                                          gint count,
                                                          gpointer user_data);</pre>
@@ -1000,9 +1000,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617252"></a><h3>
+<a name="id2617199"></a><h3>
 <a name="wire-write-double"></a>wire_write_double ()</h3>
-<a class="indexterm" name="id2617262"></a><pre class="programlisting">gboolean            wire_write_double                   (GIOChannel *channel,
+<a class="indexterm" name="id2617210"></a><pre class="programlisting">gboolean            wire_write_double                   (GIOChannel *channel,
                                                          gdouble *data,
                                                          gint count,
                                                          gpointer user_data);</pre>
@@ -1044,9 +1044,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617370"></a><h3>
+<a name="id2617317"></a><h3>
 <a name="wire-write-string"></a>wire_write_string ()</h3>
-<a class="indexterm" name="id2617380"></a><pre class="programlisting">gboolean            wire_write_string                   (GIOChannel *channel,
+<a class="indexterm" name="id2617328"></a><pre class="programlisting">gboolean            wire_write_string                   (GIOChannel *channel,
                                                          gchar **data,
                                                          gint count,
                                                          gpointer user_data);</pre>
@@ -1088,7 +1088,7 @@ it's plug-ins.
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2617489"></a><h2>See Also</h2>
+<a name="id2617436"></a><h2>See Also</h2>
 <p>
 <span class="type">libgimp-gimpprotocol</span>
 </p>

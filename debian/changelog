@@ -1,3 +1,11 @@
+gimp (2.2.13-1etch3) stable-security; urgency=high
+
+  * Backported security fixes from 2.2.16:
+    - Multiple buffer overflows and integer overflows in DICOM, PNM, PSD,
+      PCX, RAS, XBM and XWD loaders (CVE-2006-4519, CVE-2007-2949)
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Tue, 10 Jul 2007 21:03:03 +0000
+
 gimp (2.2.13-1etch1) stable-security; urgency=high
 
   * Non-maintainer upload by the security team.

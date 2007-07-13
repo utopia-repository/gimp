@@ -1,3 +1,9 @@
+gimp (2.2.13-1etch4) stable-security; urgency=high
+
+  * Fix PSD regression spotted by Ari
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Sat, 14 Jul 2007 00:11:19 +0200
+
 gimp (2.2.13-1etch3) stable-security; urgency=high
 
   * Backported security fixes from 2.2.16:

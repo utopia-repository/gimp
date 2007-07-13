@@ -1,3 +1,10 @@
+gimp (2.2.17-1) unstable; urgency=low
+
+  * New upstream version
+    - Fixes a regression loading PSD files
+
+ -- Ari Pollak <ari@debian.org>  Fri, 13 Jul 2007 10:31:45 -0400
+
 gimp (2.2.16-1) unstable; urgency=high
 
   * New upstream version

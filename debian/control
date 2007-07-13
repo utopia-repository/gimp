@@ -104,7 +104,7 @@ Architecture: any
 Section: graphics
 Depends: gimp (= ${Source-Version}) | libgimp2.0 (= ${Source-Version}), ${shlibs:Depends}
 Description: Debugging symbols for The GIMP
-  This package includes the debugging symbols useful for debugging
-  The GIMP and its libraries, contained in the gimp and libgimp2.0 packages.
-  The debugging symbols are used for execution tracing and core dump
-  analysis.
+ This package includes the debugging symbols useful for debugging
+ The GIMP and its libraries, contained in the gimp and libgimp2.0 packages.
+ The debugging symbols are used for execution tracing and core dump
+ analysis.

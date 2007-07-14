@@ -34,12 +34,12 @@ xcf_read_int32 (FILE    *fp,
 		guint32 *data,
 		gint     count)
 {
-  guint total;
+  guint total = 0;
 
   total = count;
   if (count > 0)
     {
-      xcf_read_int8 (fp, (guint8 *) data, count * 4);
+      total += xcf_read_int8 (fp, (guint8 *) data, count * 4);
 
       while (count--)
         {
@@ -48,7 +48,7 @@ xcf_read_int32 (FILE    *fp,
         }
     }
 
-  return total * 4;
+  return total;
 }
 
 guint
@@ -64,7 +64,7 @@ xcf_read_int8 (FILE   *fp,
 	       guint8 *data,
 	       gint    count)
 {
-  guint total;
+  guint total = 0;
   gint  bytes;
 
   total = count;
@@ -73,6 +73,9 @@ xcf_read_int8 (FILE   *fp,
       bytes = fread ((char *) data, sizeof (char), count, fp);
       if (bytes <= 0) /* something bad happened */
         break;
+
+      total += bytes;
+
       count -= bytes;
       data += bytes;
     }

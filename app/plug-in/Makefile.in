@@ -60,8 +60,8 @@ am_libappplug_in_a_OBJECTS = plug-in-enums.$(OBJEXT) \
 	gimpplugindebug.$(OBJEXT) gimpplugin.$(OBJEXT) \
 	gimpplugin-cleanup.$(OBJEXT) gimpplugin-context.$(OBJEXT) \
 	gimpplugin-message.$(OBJEXT) gimpplugin-progress.$(OBJEXT) \
-	gimpplugindef.$(OBJEXT) gimppluginmanager.$(OBJEXT) \
-	gimppluginmanager-call.$(OBJEXT) \
+	gimpplugindef.$(OBJEXT) gimppluginerror.$(OBJEXT) \
+	gimppluginmanager.$(OBJEXT) gimppluginmanager-call.$(OBJEXT) \
 	gimppluginmanager-data.$(OBJEXT) \
 	gimppluginmanager-file.$(OBJEXT) \
 	gimppluginmanager-help-domain.$(OBJEXT) \
@@ -256,14 +256,12 @@ INTLTOOL_CAVES_RULE = @INTLTOOL_CAVES_RULE@
 INTLTOOL_DESKTOP_RULE = @INTLTOOL_DESKTOP_RULE@
 INTLTOOL_DIRECTORY_RULE = @INTLTOOL_DIRECTORY_RULE@
 INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
-INTLTOOL_ICONV = @INTLTOOL_ICONV@
 INTLTOOL_KBD_RULE = @INTLTOOL_KBD_RULE@
 INTLTOOL_KEYS_RULE = @INTLTOOL_KEYS_RULE@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
-INTLTOOL_MSGFMT = @INTLTOOL_MSGFMT@
-INTLTOOL_MSGMERGE = @INTLTOOL_MSGMERGE@
 INTLTOOL_OAF_RULE = @INTLTOOL_OAF_RULE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
+INTLTOOL_POLICY_RULE = @INTLTOOL_POLICY_RULE@
 INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
@@ -275,7 +273,6 @@ INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
 INTLTOOL_UI_RULE = @INTLTOOL_UI_RULE@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTLTOOL_XAM_RULE = @INTLTOOL_XAM_RULE@
-INTLTOOL_XGETTEXT = @INTLTOOL_XGETTEXT@
 INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
@@ -496,6 +493,8 @@ libappplug_in_a_SOURCES = \
 	gimpplugin-progress.h			\
 	gimpplugindef.c				\
 	gimpplugindef.h				\
+	gimppluginerror.c 			\
+	gimppluginerror.h 			\
 	gimppluginmanager.c			\
 	gimppluginmanager.h			\
 	gimppluginmanager-call.c		\
@@ -597,6 +596,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpplugin.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpplugindebug.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpplugindef.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginerror.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-call.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-data.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-file.Po@am__quote@

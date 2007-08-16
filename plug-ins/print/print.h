@@ -16,9 +16,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+typedef enum
+{
+  CENTER_NONE         = 0,
+  CENTER_HORIZONTALLY = 1,
+  CENTER_VERTICALLY   = 2,
+  CENTER_BOTH         = 3
+} PrintCenterMode;
+
 typedef struct
 {
   gint                num_pages;
+  gint32              image_id;
   gint32              drawable_id;
   GimpUnit            unit;
   gboolean            show_info_header;
@@ -27,6 +36,7 @@ typedef struct
   GimpUnit            image_unit;
   gdouble             offset_x;
   gdouble             offset_y;
+  PrintCenterMode     center;
   gboolean            use_full_page;
   GtkPrintOperation  *operation;
   GtkPageOrientation  orientation;

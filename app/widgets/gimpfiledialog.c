@@ -256,7 +256,7 @@ gimp_file_dialog_new (Gimp                 *gimp,
   GSList         *file_procs;
   const gchar    *automatic;
   const gchar    *automatic_help_id;
-  gchar          *pictures;
+  const gchar    *pictures;
   gboolean        local_only;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
@@ -338,11 +338,8 @@ gimp_file_dialog_new (Gimp                 *gimp,
   pictures = gimp_user_directory (GIMP_USER_DIRECTORY_PICTURES);
 
   if (pictures)
-    {
-      gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (dialog),
-                                            pictures, NULL);
-      g_free (pictures);
-    }
+    gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (dialog),
+                                          pictures, NULL);
 
   gimp_file_dialog_add_preview (dialog, gimp);
 
@@ -472,24 +469,25 @@ gimp_file_dialog_set_image (GimpFileDialog *dialog,
     }
 #endif
 
-  basename = file_utils_uri_display_basename (uri);
-
   if (dirname && strlen (dirname) && strcmp (dirname, "."))
     {
       gtk_file_chooser_set_current_folder_uri (GTK_FILE_CHOOSER (dialog),
                                                dirname);
     }
-  else if (g_object_get_data (G_OBJECT (image), "gimp-image-dirname"))
+  else
     {
-      gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog),
-                                           g_object_get_data (G_OBJECT (image),
-                                                              "gimp-image-dirname"));
+      const gchar *folder;
+
+      folder = g_object_get_data (G_OBJECT (image), "gimp-image-dirname");
+
+      if (folder)
+        gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), folder);
     }
 
-
-  gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), basename);
-
   g_free (dirname);
+
+  basename = file_utils_uri_display_basename (uri);
+  gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), basename);
   g_free (basename);
 }
 

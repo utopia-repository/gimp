@@ -43,9 +43,10 @@ static void        run   (const gchar       *name,
                           GimpParam        **return_vals);
 
 static gboolean    print_image              (gint32             image_ID,
-                                             gint32             drawable_ID,
                                              gboolean           interactive);
 
+static void        print_show_error         (const gchar       *message,
+                                             gboolean           interactive);
 static void        print_operation_set_name (GtkPrintOperation *operation,
                                              gint               image_ID);
 
@@ -54,13 +55,11 @@ static void        begin_print              (GtkPrintOperation *operation,
                                              PrintData         *data);
 static void        end_print                (GtkPrintOperation *operation,
                                              GtkPrintContext   *context,
-                                             PrintData         *data);
+                                             gint32            *image_ID);
 static void        draw_page                (GtkPrintOperation *print,
                                              GtkPrintContext   *context,
                                              gint               page_nr,
                                              PrintData         *data);
-static void        status_changed           (GtkPrintOperation *operation,
-                                             gint32            *image_ID);
 
 static GtkWidget * create_custom_widget     (GtkPrintOperation *operation,
                                              PrintData         *data);
@@ -83,16 +82,15 @@ query (void)
   static const GimpParamDef print_args[] =
   {
     { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",    "Input image"                  },
-    { GIMP_PDB_DRAWABLE, "drawable", "Drawable to print"            }
+    { GIMP_PDB_IMAGE,    "image",    "Image to print"               }
   };
 
   gimp_install_procedure (PRINT_PROC_NAME,
                           N_("Print the image"),
                           "Print the image using the GTK+ Print API.",
+                          "Bill Skaggs, Sven Neumann, Stefan Röllin",
                           "Bill Skaggs  <weskaggs@primate.ucdavis.edu>",
-                          "Bill Skaggs  <weskaggs@primate.ucdavis.edu>",
-                          "2006",
+                          "2006, 2007",
                           N_("_Print..."),
                           "*",
                           GIMP_PLUGIN,
@@ -133,11 +131,11 @@ run (const gchar      *name,
 
   if (strcmp (name, PRINT_PROC_NAME) == 0)
     {
-      if (run_mode == GIMP_RUN_INTERACTIVE)
-        gimp_ui_init (PLUG_IN_BINARY, FALSE);
+      g_thread_init (NULL);
 
-      if (! print_image (image_ID, drawable_ID,
-                         run_mode == GIMP_RUN_INTERACTIVE))
+      gimp_ui_init (PLUG_IN_BINARY, FALSE);
+
+      if (! print_image (image_ID, run_mode == GIMP_RUN_INTERACTIVE))
         {
           status = GIMP_PDB_EXECUTION_ERROR;
         }
@@ -152,12 +150,12 @@ run (const gchar      *name,
 
 static gboolean
 print_image (gint32    image_ID,
-             gint32    drawable_ID,
              gboolean  interactive)
 {
   GtkPrintOperation *operation;
   GError            *error         = NULL;
   gint32             orig_image_ID = image_ID;
+  gint32             drawable_ID   = gimp_image_get_active_drawable (image_ID);
   PrintData          data;
   GimpExportReturn   export;
 
@@ -175,17 +173,22 @@ print_image (gint32    image_ID,
 
   /* fill in the PrintData struct */
   data.num_pages     = 1;
+  data.image_id      = orig_image_ID;
   data.drawable_id   = drawable_ID;
   data.unit          = gimp_get_default_unit ();
   data.image_unit    = gimp_image_get_unit (image_ID);
   data.offset_x      = 0;
   data.offset_y      = 0;
+  data.center        = CENTER_BOTH;
   data.use_full_page = FALSE;
   data.operation     = operation;
 
   gimp_image_get_resolution (image_ID, &data.xres, &data.yres);
 
-  load_print_settings (&data, orig_image_ID);
+  load_print_settings (&data);
+
+  if (export != GIMP_EXPORT_EXPORT)
+    image_ID = -1;
 
   g_signal_connect (operation, "begin-print",
                     G_CALLBACK (begin_print),
@@ -195,40 +198,23 @@ print_image (gint32    image_ID,
                     &data);
   g_signal_connect (operation, "end-print",
                     G_CALLBACK (end_print),
-                    &data);
-
-  if (export != GIMP_EXPORT_EXPORT)
-    image_ID = -1;
-
-  g_signal_connect (operation, "status-changed",
-                    G_CALLBACK (status_changed),
                     &image_ID);
 
   if (interactive)
     {
-      GtkPrintOperationResult  result;
+      g_signal_connect_swapped (operation, "end-print",
+                                G_CALLBACK (save_print_settings),
+                                &data);
 
       g_signal_connect (operation, "create-custom-widget",
                         G_CALLBACK (create_custom_widget),
                         &data);
 
-      gtk_print_operation_set_custom_tab_label (operation, _("Image"));
+      gtk_print_operation_set_custom_tab_label (operation, _("Image Settings"));
 
-      result = gtk_print_operation_run (operation,
-                                        GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
-                                        NULL, &error);
-
-      switch (result)
-        {
-        case GTK_PRINT_OPERATION_RESULT_APPLY:
-        case GTK_PRINT_OPERATION_RESULT_IN_PROGRESS:
-          save_print_settings (&data, orig_image_ID);
-          break;
-
-        case GTK_PRINT_OPERATION_RESULT_ERROR:
-        case GTK_PRINT_OPERATION_RESULT_CANCEL:
-          break;
-        }
+      gtk_print_operation_run (operation,
+                               GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
+                               NULL, &error);
     }
   else
     {
@@ -239,45 +225,50 @@ print_image (gint32    image_ID,
 
   g_object_unref (operation);
 
-  /* The export image should have been deleted already from the
-   * "status-changed" handler, but better make sure that it isn't
-   * left behind.
-   */
   if (gimp_image_is_valid (image_ID))
     gimp_image_delete (image_ID);
 
   if (error)
     {
-      GtkWidget *dialog;
-
-      dialog = gtk_message_dialog_new (NULL, 0,
-                                       GTK_MESSAGE_ERROR,
-                                       GTK_BUTTONS_OK,
-                                       _("An error occurred while trying to print:"));
-
-      gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
-                                                error->message);
+      print_show_error (error->message, interactive);
       g_error_free (error);
-
-      gimp_window_set_transient (GTK_WINDOW (dialog));
-
-      gtk_dialog_run (GTK_DIALOG (dialog));
-      gtk_widget_destroy (dialog);
     }
 
   return TRUE;
 }
 
 static void
+print_show_error (const gchar *message,
+                  gboolean     interactive)
+{
+  g_printerr ("Print: %s\n", message);
+
+  if (interactive)
+    {
+      GtkWidget *dialog;
+
+      dialog = gtk_message_dialog_new (NULL, 0,
+                                       GTK_MESSAGE_ERROR,
+                                       GTK_BUTTONS_OK,
+                                       _("An error occurred "
+                                         "while trying to print:"));
+
+      gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
+                                                message);
+
+      gtk_dialog_run (GTK_DIALOG (dialog));
+      gtk_widget_destroy (dialog);
+    }
+}
+
+static void
 print_operation_set_name (GtkPrintOperation *operation,
                           gint               image_ID)
 {
-  gchar *name    = gimp_image_get_name (image_ID);
-  gchar *jobname = g_strdup_printf ("%s - %s", g_get_application_name (), name);
+  gchar *name = gimp_image_get_name (image_ID);
 
-  gtk_print_operation_set_job_name (operation, jobname);
+  gtk_print_operation_set_job_name (operation, name);
 
-  g_free (jobname);
   g_free (name);
 }
 
@@ -286,8 +277,6 @@ begin_print (GtkPrintOperation *operation,
              GtkPrintContext   *context,
              PrintData         *data)
 {
-  data->num_pages = 1;
-
   gtk_print_operation_set_n_pages (operation, data->num_pages);
   gtk_print_operation_set_use_full_page (operation, data->use_full_page);
 
@@ -297,33 +286,19 @@ begin_print (GtkPrintOperation *operation,
 static void
 end_print (GtkPrintOperation *operation,
            GtkPrintContext   *context,
-           PrintData         *data)
+           gint32            *image_ID)
 {
-  gimp_progress_update (1.0);
-}
-
-static void
-status_changed (GtkPrintOperation *operation,
-                gint32            *image_ID)
-{
-  const gchar *status = gtk_print_operation_get_status_string (operation);
-
-  if (gtk_print_operation_get_status (operation) >
-      GTK_PRINT_STATUS_GENERATING_DATA)
+  /* we don't need the export image any longer, delete it */
+  if (gimp_image_is_valid (*image_ID))
     {
-      /* we don't need the export image any longer, delete it */
-      if (gimp_image_is_valid (*image_ID))
-        {
-          gimp_image_delete (*image_ID);
-          *image_ID = -1;
-        }
+      gimp_image_delete (*image_ID);
+      *image_ID = -1;
     }
 
-  if (status && strlen (status))
-    {
-      /* display status of the print operation in the status bar */
-      gimp_progress_set_text_printf (_("Print: %s"), status);
-    }
+  gimp_progress_end ();
+
+  /* generate events to solve the problems described in bug #466928 */
+  g_timeout_add (1000, (GSourceFunc) gtk_true, NULL);
 }
 
 static void

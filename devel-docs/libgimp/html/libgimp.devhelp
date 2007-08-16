@@ -223,8 +223,7 @@
     <function name="gimp_progress_pulse ()" link="libgimp-gimpprogress.html#gimp-progress-pulse"/>
     <function name="gimp_progress_set_text ()" link="libgimp-gimpprogress.html#gimp-progress-set-text"/>
     <function name="gimp_progress_set_text_printf ()" link="libgimp-gimpprogress.html#gimp-progress-set-text-printf"/>
-    <function name="gimp_progress_uninstall ()" link="libgimp-gimpprogress.html#gimp-progress-uninstall"/>
-    <function name="gimp_progress_cancel ()" link="libgimp-gimpprogress.html#gimp-progress-cancel"/>
+    <function name="gimp_progress_end ()" link="libgimp-gimpprogress.html#gimp-progress-end"/>
     <function name="gimp_progress_get_window_handle ()" link="libgimp-gimpprogress.html#gimp-progress-get-window-handle"/>
     <function name="GimpProgressStartCallback ()" link="libgimp-gimpprogress.html#GimpProgressStartCallback"/>
     <function name="GimpProgressEndCallback ()" link="libgimp-gimpprogress.html#GimpProgressEndCallback"/>
@@ -232,6 +231,8 @@
     <function name="GimpProgressValueCallback ()" link="libgimp-gimpprogress.html#GimpProgressValueCallback"/>
     <function name="gimp_progress_install_vtable ()" link="libgimp-gimpprogress.html#gimp-progress-install-vtable"/>
     <function name="gimp_progress_install ()" link="libgimp-gimpprogress.html#gimp-progress-install"/>
+    <function name="gimp_progress_uninstall ()" link="libgimp-gimpprogress.html#gimp-progress-uninstall"/>
+    <function name="gimp_progress_cancel ()" link="libgimp-gimpprogress.html#gimp-progress-cancel"/>
     <function name="gimp_channel_new ()" link="libgimp-gimpchannel.html#gimp-channel-new"/>
     <function name="gimp_channel_new_from_component ()" link="libgimp-gimpchannel.html#gimp-channel-new-from-component"/>
     <function name="gimp_channel_copy ()" link="libgimp-gimpchannel.html#gimp-channel-copy"/>

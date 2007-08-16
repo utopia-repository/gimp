@@ -28,7 +28,7 @@ const <link linkend="gchar">gchar</link>*        <link linkend="gimp-data-direct
 const <link linkend="gchar">gchar</link>*        <link linkend="gimp-locale-directory">gimp_locale_directory</link>               (void);
 const <link linkend="gchar">gchar</link>*        <link linkend="gimp-plug-in-directory">gimp_plug_in_directory</link>              (void);
 const <link linkend="gchar">gchar</link>*        <link linkend="gimp-sysconf-directory">gimp_sysconf_directory</link>              (void);
-<link linkend="gchar">gchar</link>*              <link linkend="gimp-user-directory">gimp_user_directory</link>                 (<link linkend="GimpUserDirectory">GimpUserDirectory</link> type);
+const <link linkend="gchar">gchar</link>*        <link linkend="gimp-user-directory">gimp_user_directory</link>                 (<link linkend="GimpUserDirectory">GimpUserDirectory</link> type);
 <link linkend="gchar">gchar</link>*              <link linkend="gimp-personal-rc-file">gimp_personal_rc_file</link>               (const <link linkend="gchar">gchar</link> *basename);
 const <link linkend="gchar">gchar</link>*        <link linkend="gimp-gtkrc">gimp_gtkrc</link>                          (void);
 <link linkend="GList">GList</link>*              <link linkend="gimp-path-parse">gimp_path_parse</link>                     (const <link linkend="gchar">gchar</link> *path,
@@ -185,7 +185,7 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-user-directory" role="function" condition="since:GIMP 2.4"/>gimp_user_directory ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_user_directory</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_user_directory                 (<link linkend="GimpUserDirectory">GimpUserDirectory</link> type);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_user_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_user_directory                 (<link linkend="GimpUserDirectory">GimpUserDirectory</link> type);</programlisting>
 <para>
 Identifies special folders used frequently by applications, but
 which may not have the same name or location on any given system.
@@ -199,8 +199,8 @@ folders to a file-chooser.</para>
 <varlistentry><term><parameter>type</parameter>&nbsp;:</term>
 <listitem><simpara> the type of user directory to retrieve
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a newly allocated directory name in filesystem encoding,
-         or <link linkend="NULL:CAPS"><literal>NULL</literal></link>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The path to the specified user directory, or <link linkend="NULL:CAPS"><literal>NULL</literal></link> if the
+         logical ID was not found.
 
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4

@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Math Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpmath-index.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2574804" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2585198" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2580904" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2511034" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpmath-GimpMD5"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2574804"></a><span class="refentrytitle">GimpMD5</span>
+<a name="id2585198"></a><span class="refentrytitle">GimpMD5</span>
 </h2>
 <p>GimpMD5 &#8212; the MD5 message-digest algorithm</p>
 </td>
@@ -46,25 +46,37 @@
 
 
 
-void                <a href="libgimpmath-GimpMD5.html#gimp-md5-get-digest">gimp_md5_get_digest</a>                 (const gchar *buffer,
-                                                         gint buffer_size,
-                                                         guchar digest[16]);
+void                <a href="libgimpmath-GimpMD5.html#gimp-md5-get-digest">gimp_md5_get_digest</a>                 (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *buffer,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> buffer_size,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> digest[16]);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2580904"></a><h2>Description</h2>
+<a name="id2511034"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2580919"></a><h2>Details</h2>
+<a name="id2559826"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2580930"></a><h3>
+<a name="id2559836"></a><h3>
 <a name="gimp-md5-get-digest"></a>gimp_md5_get_digest ()</h3>
-<a class="indexterm" name="id2580942"></a><pre class="programlisting">void                gimp_md5_get_digest                 (const gchar *buffer,
-                                                         gint buffer_size,
-                                                         guchar digest[16]);</pre>
+<a class="indexterm" name="id2559848"></a><pre class="programlisting">void                gimp_md5_get_digest                 (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *buffer,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> buffer_size,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> digest[16]);</pre>
 <p>
 Get the md5 hash of a buffer. The result is put in the 16 bytes
 buffer <em class="parameter"><code>digest</code></em>.

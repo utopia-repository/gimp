@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimpunit.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2578622" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2568593" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2569124" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2558593" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpsignal"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2578622"></a><span class="refentrytitle">gimpsignal</span>
+<a name="id2568593"></a><span class="refentrytitle">gimpsignal</span>
 </h2>
 <p>gimpsignal &#8212; Portable signal handling.</p>
 </td>
@@ -46,25 +46,33 @@
 
 
 
-void                (<a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">*GimpSignalHandlerFunc</a>)            (gint signum);
-<a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> <a href="libgimpbase-gimpsignal.html#gimp-signal-private">gimp_signal_private</a>               (gint signum,
+void                (<a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">*GimpSignalHandlerFunc</a>)            (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> signum);
+<a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> <a href="libgimpbase-gimpsignal.html#gimp-signal-private">gimp_signal_private</a>               (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> signum,
                                                          <a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> handler,
-                                                         gint flags);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> flags);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2569124"></a><h2>Description</h2>
+<a name="id2558593"></a><h2>Description</h2>
 <p>
 Portable signal handling.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2569139"></a><h2>Details</h2>
+<a name="id2558609"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2569150"></a><h3>
+<a name="id2558620"></a><h3>
 <a name="GimpSignalHandlerFunc"></a>GimpSignalHandlerFunc ()</h3>
-<a class="indexterm" name="id2569161"></a><pre class="programlisting">void                (*GimpSignalHandlerFunc)            (gint signum);</pre>
+<a class="indexterm" name="id2558631"></a><pre class="programlisting">void                (*GimpSignalHandlerFunc)            (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> signum);</pre>
 <p>
 A prototype for signal handler functions. Note that each function which
 takes or returns a variable of this type also accepts or may return
@@ -85,11 +93,15 @@ special values defined by your system's signal.h header file (like
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569224"></a><h3>
+<a name="id2558693"></a><h3>
 <a name="gimp-signal-private"></a>gimp_signal_private ()</h3>
-<a class="indexterm" name="id2569236"></a><pre class="programlisting"><a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> gimp_signal_private               (gint signum,
+<a class="indexterm" name="id2558706"></a><pre class="programlisting"><a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> gimp_signal_private               (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> signum,
                                                          <a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> handler,
-                                                         gint flags);</pre>
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> flags);</pre>
 <p>
 This function furnishes a workalike for signal(2) but
 which internally invokes sigaction(2) after certain
@@ -139,7 +151,7 @@ exactly what we want. [austin 06.04.2000]</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2604821"></a><h2>See Also</h2>
+<a name="id2559970"></a><h2>See Also</h2>
 <p>
 signal(2), signal(5 or 7), sigaction(2).
 </p>

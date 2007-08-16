@@ -223,8 +223,7 @@
     <keyword type="function" name="gimp_progress_pulse ()" link="libgimp-gimpprogress.html#gimp-progress-pulse" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_progress_set_text ()" link="libgimp-gimpprogress.html#gimp-progress-set-text" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_progress_set_text_printf ()" link="libgimp-gimpprogress.html#gimp-progress-set-text-printf" since="GIMP 2.4"/>
-    <keyword type="function" name="gimp_progress_uninstall ()" link="libgimp-gimpprogress.html#gimp-progress-uninstall" since="GIMP 2.2"/>
-    <keyword type="function" name="gimp_progress_cancel ()" link="libgimp-gimpprogress.html#gimp-progress-cancel" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_progress_end ()" link="libgimp-gimpprogress.html#gimp-progress-end" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_progress_get_window_handle ()" link="libgimp-gimpprogress.html#gimp-progress-get-window-handle" since="GIMP 2.2"/>
     <keyword type="function" name="GimpProgressStartCallback ()" link="libgimp-gimpprogress.html#GimpProgressStartCallback" deprecated=""/>
     <keyword type="function" name="GimpProgressEndCallback ()" link="libgimp-gimpprogress.html#GimpProgressEndCallback" deprecated=""/>
@@ -232,6 +231,8 @@
     <keyword type="function" name="GimpProgressValueCallback ()" link="libgimp-gimpprogress.html#GimpProgressValueCallback" deprecated=""/>
     <keyword type="function" name="gimp_progress_install_vtable ()" link="libgimp-gimpprogress.html#gimp-progress-install-vtable" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_progress_install ()" link="libgimp-gimpprogress.html#gimp-progress-install" deprecated="" since=""/>
+    <keyword type="function" name="gimp_progress_uninstall ()" link="libgimp-gimpprogress.html#gimp-progress-uninstall" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_progress_cancel ()" link="libgimp-gimpprogress.html#gimp-progress-cancel" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_channel_new ()" link="libgimp-gimpchannel.html#gimp-channel-new"/>
     <keyword type="function" name="gimp_channel_new_from_component ()" link="libgimp-gimpchannel.html#gimp-channel-new-from-component" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_channel_copy ()" link="libgimp-gimpchannel.html#gimp-channel-copy"/>

@@ -29,10 +29,10 @@ DEB_DH_SHLIBDEPS_ARGS_ALL := \
 DEB_DH_SHLIBDEPS_ARGS_gimp := -Xlibcontroller_midi.so
 
 # For the stable branch:
-#DEB_DH_MAKESHLIBS_ARGS_libgimp2.0 := -V "libgimp2.0 (>= 2.4.0)"
+DEB_DH_MAKESHLIBS_ARGS_libgimp2.0 := -V "libgimp2.0 (>= 2.4.0~rc1)"
 # For the development branch:
-DEB_DH_MAKESHLIBS_ARGS_libgimp2.0 := \
-	-V "libgimp2.0 (>= ${version}), libgimp2.0 (<< ${major}.${nextmicro})"
+#DEB_DH_MAKESHLIBS_ARGS_libgimp2.0 := \
+#	-V "libgimp2.0 (>= ${version}), libgimp2.0 (<< ${major}.${nextmicro})"
 
 clean::
 	rm -rf build

@@ -33,22 +33,22 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpPixmap.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2566872" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2565073" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2619270" class="shortcut">Description</a>
+                  <a href="#id2607151" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2576912" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2597949" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2562547" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2607105" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2562568" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id2607126" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpPickButton"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2566872"></a><span class="refentrytitle">GimpPickButton</span>
+<a name="id2565073"></a><span class="refentrytitle">GimpPickButton</span>
 </h2>
 <p>GimpPickButton &#8212; Widget to pick a color from screen.</p>
 </td>
@@ -61,39 +61,55 @@
 
 
                     <a href="GimpPickButton.html#GimpPickButton-struct">GimpPickButton</a>;
-GtkWidget*          <a href="GimpPickButton.html#gimp-pick-button-new">gimp_pick_button_new</a>                (void);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          <a href="GimpPickButton.html#gimp-pick-button-new">gimp_pick_button_new</a>                (void);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2576912"></a><h2>Object Hierarchy</h2>
+<a name="id2597949"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkContainer
-                           +----GtkBin
-                                 +----GtkButton
+  <a
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+                     +----<a
+href="../gtk/GtkContainer.html"
+>GtkContainer</a>
+                           +----<a
+href="../gtk/GtkBin.html"
+>GtkBin</a>
+                                 +----<a
+href="../gtk/GtkButton.html"
+>GtkButton</a>
                                        +----GimpPickButton
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2562547"></a><h2>Implemented Interfaces</h2>
+<a name="id2607105"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpPickButton implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2562568"></a><h2>Signals</h2>
+<a name="id2607126"></a><h2>Signals</h2>
 <pre class="synopsis">
 
   "<a href="GimpPickButton.html#GimpPickButton-color-picked">color-picked</a>"                                   : Run First
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2619270"></a><h2>Description</h2>
+<a name="id2607151"></a><h2>Description</h2>
 <p>
 <a href="GimpPickButton.html" title="GimpPickButton"><span class="type">GimpPickButton</span></a> is a specialized button. When clicked, it changes the
 cursor to a color-picker pipette and allows the user to pick a color
@@ -101,20 +117,22 @@ from any point on the screen.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2619295"></a><h2>Details</h2>
+<a name="id2615859"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2619306"></a><h3>
+<a name="id2615868"></a><h3>
 <a name="GimpPickButton-struct"></a>GimpPickButton</h3>
-<a class="indexterm" name="id2619318"></a><pre class="programlisting">typedef struct _GimpPickButton GimpPickButton;</pre>
+<a class="indexterm" name="id2615880"></a><pre class="programlisting">typedef struct _GimpPickButton GimpPickButton;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2619334"></a><h3>
+<a name="id2615896"></a><h3>
 <a name="gimp-pick-button-new"></a>gimp_pick_button_new ()</h3>
-<a class="indexterm" name="id2619345"></a><pre class="programlisting">GtkWidget*          gimp_pick_button_new                (void);</pre>
+<a class="indexterm" name="id2615908"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_pick_button_new                (void);</pre>
 <p>
 Creates a new <a href="GimpPickButton.html" title="GimpPickButton"><span class="type">GimpPickButton</span></a> widget.</p>
 <p>
@@ -131,13 +149,17 @@ Creates a new <a href="GimpPickButton.html" title="GimpPickButton"><span class="
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2619107"></a><h2>Signal Details</h2>
+<a name="id2615964"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2619118"></a><h3>
+<a name="id2615975"></a><h3>
 <a name="GimpPickButton-color-picked"></a>The "color-picked" signal</h3>
-<a class="indexterm" name="id2619126"></a><pre class="programlisting">void                user_function                      (<a href="GimpPickButton.html" title="GimpPickButton">GimpPickButton</a> *gimppickbutton,
-                                                        gpointer        arg1,
-                                                        gpointer        user_data)           : Run First</pre>
+<a class="indexterm" name="id2615982"></a><pre class="programlisting">void                user_function                      (<a href="GimpPickButton.html" title="GimpPickButton">GimpPickButton</a> *gimppickbutton,
+                                                        <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>        arg1,
+                                                        <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>        user_data)           : Run First</pre>
 <p>
 
 </p>

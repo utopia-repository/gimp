@@ -33,20 +33,20 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpFileEntry.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2570407" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2582700" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2561456" class="shortcut">Description</a>
+                  <a href="#id2609096" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2561380" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2607869" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2561435" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
+                  <a href="#id2609075" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpEnumLabel"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2570407"></a><span class="refentrytitle">GimpEnumLabel</span>
+<a name="id2582700"></a><span class="refentrytitle">GimpEnumLabel</span>
 </h2>
 <p>GimpEnumLabel</p>
 </td>
@@ -59,54 +59,80 @@
 
 
                     <a href="GimpEnumLabel.html#GimpEnumLabel-struct">GimpEnumLabel</a>;
-GtkWidget*          <a href="GimpEnumLabel.html#gimp-enum-label-new">gimp_enum_label_new</a>                 (GType enum_type,
-                                                         gint value);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          <a href="GimpEnumLabel.html#gimp-enum-label-new">gimp_enum_label_new</a>                 (<a
+href="../gobject/gobject-Type-Information.html#GType"
+>GType</a> enum_type,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> value);
 void                <a href="GimpEnumLabel.html#gimp-enum-label-set-value">gimp_enum_label_set_value</a>           (<a href="GimpEnumLabel.html" title="GimpEnumLabel">GimpEnumLabel</a> *label,
-                                                         gint value);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> value);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2561380"></a><h2>Object Hierarchy</h2>
+<a name="id2607869"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkMisc
-                           +----GtkLabel
+  <a
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+                     +----<a
+href="../gtk/GtkMisc.html"
+>GtkMisc</a>
+                           +----<a
+href="../gtk/GtkLabel.html"
+>GtkLabel</a>
                                  +----GimpEnumLabel
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2561435"></a><h2>Implemented Interfaces</h2>
+<a name="id2609075"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpEnumLabel implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2561456"></a><h2>Description</h2>
+<a name="id2609096"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2561472"></a><h2>Details</h2>
+<a name="id2609112"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2561483"></a><h3>
+<a name="id2609123"></a><h3>
 <a name="GimpEnumLabel-struct"></a>GimpEnumLabel</h3>
-<a class="indexterm" name="id2561494"></a><pre class="programlisting">typedef struct _GimpEnumLabel GimpEnumLabel;</pre>
+<a class="indexterm" name="id2609134"></a><pre class="programlisting">typedef struct _GimpEnumLabel GimpEnumLabel;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2574493"></a><h3>
+<a name="id2609151"></a><h3>
 <a name="gimp-enum-label-new"></a>gimp_enum_label_new ()</h3>
-<a class="indexterm" name="id2574508"></a><pre class="programlisting">GtkWidget*          gimp_enum_label_new                 (GType enum_type,
-                                                         gint value);</pre>
+<a class="indexterm" name="id2609165"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_enum_label_new                 (<a
+href="../gobject/gobject-Type-Information.html#GType"
+>GType</a> enum_type,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> value);</pre>
 <p>
 </p>
 <p>
@@ -117,7 +143,9 @@ GimpEnumLabel implements
 <tbody>
 <tr>
 <td><span class="term"><em class="parameter"><code>enum_type</code></em>&#160;:</span></td>
-<td> the <span class="type">GType</span> of an enum.
+<td> the <a
+href="../gobject/gobject-Type-Information.html#GType"
+><span class="type">GType</span></a> of an enum.
 </td>
 </tr>
 <tr>
@@ -138,10 +166,12 @@ GimpEnumLabel implements
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2574611"></a><h3>
+<a name="id2609414"></a><h3>
 <a name="gimp-enum-label-set-value"></a>gimp_enum_label_set_value ()</h3>
-<a class="indexterm" name="id2574625"></a><pre class="programlisting">void                gimp_enum_label_set_value           (<a href="GimpEnumLabel.html" title="GimpEnumLabel">GimpEnumLabel</a> *label,
-                                                         gint value);</pre>
+<a class="indexterm" name="id2609427"></a><pre class="programlisting">void                gimp_enum_label_set_value           (<a href="GimpEnumLabel.html" title="GimpEnumLabel">GimpEnumLabel</a> *label,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> value);</pre>
 <p>
 </p>
 <p>

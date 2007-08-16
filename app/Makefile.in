@@ -36,9 +36,9 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@ENABLE_GIMP_CONSOLE_FALSE@bin_PROGRAMS = gimp-2.3$(EXEEXT)
-@ENABLE_GIMP_CONSOLE_TRUE@bin_PROGRAMS = gimp-2.3$(EXEEXT) \
-@ENABLE_GIMP_CONSOLE_TRUE@	gimp-console-2.3$(EXEEXT)
+@ENABLE_GIMP_CONSOLE_FALSE@bin_PROGRAMS = gimp-2.4$(EXEEXT)
+@ENABLE_GIMP_CONSOLE_TRUE@bin_PROGRAMS = gimp-2.4$(EXEEXT) \
+@ENABLE_GIMP_CONSOLE_TRUE@	gimp-console-2.4$(EXEEXT)
 subdir = app
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -59,8 +59,8 @@ binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
 am__objects_1 = app.$(OBJEXT) batch.$(OBJEXT) errors.$(OBJEXT) \
 	main.$(OBJEXT) sanity.$(OBJEXT) units.$(OBJEXT)
-am_gimp_2_3_OBJECTS = $(am__objects_1)
-gimp_2_3_OBJECTS = $(am_gimp_2_3_OBJECTS)
+am_gimp_2_4_OBJECTS = $(am__objects_1)
+gimp_2_4_OBJECTS = $(am_gimp_2_4_OBJECTS)
 am__DEPENDENCIES_1 = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 am__DEPENDENCIES_2 = $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la
 am__DEPENDENCIES_3 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
@@ -72,7 +72,7 @@ am__DEPENDENCIES_7 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION)
 @HAVE_GLIBC_REGEX_FALSE@	$(top_builddir)/regexrepl/libregex.a
 am__DEPENDENCIES_9 =
 @HAVE_WINDRES_TRUE@am__DEPENDENCIES_10 = gimprc.o
-gimp_2_3_DEPENDENCIES = gui/libappgui.a actions/libappactions.a \
+gimp_2_4_DEPENDENCIES = gui/libappgui.a actions/libappactions.a \
 	dialogs/libappdialogs.a menus/libappmenus.a \
 	display/libappdisplay.a tools/libapptools.a \
 	widgets/libappwidgets.a pdb/libappinternal-procs.a \
@@ -89,19 +89,19 @@ gimp_2_3_DEPENDENCIES = gui/libappgui.a actions/libappactions.a \
 	$(am__DEPENDENCIES_9) $(am__DEPENDENCIES_9) \
 	$(am__DEPENDENCIES_9) $(am__DEPENDENCIES_9) \
 	$(am__DEPENDENCIES_10)
-am__gimp_console_2_3_SOURCES_DIST = about.h app.c app.h batch.c \
+am__gimp_console_2_4_SOURCES_DIST = about.h app.c app.h batch.c \
 	batch.h errors.c errors.h main.c sanity.c sanity.h units.c \
 	units.h gimp-intl.h
-am__objects_2 = gimp_console_2_3-app.$(OBJEXT) \
-	gimp_console_2_3-batch.$(OBJEXT) \
-	gimp_console_2_3-errors.$(OBJEXT) \
-	gimp_console_2_3-main.$(OBJEXT) \
-	gimp_console_2_3-sanity.$(OBJEXT) \
-	gimp_console_2_3-units.$(OBJEXT)
-@ENABLE_GIMP_CONSOLE_TRUE@am_gimp_console_2_3_OBJECTS =  \
+am__objects_2 = gimp_console_2_4-app.$(OBJEXT) \
+	gimp_console_2_4-batch.$(OBJEXT) \
+	gimp_console_2_4-errors.$(OBJEXT) \
+	gimp_console_2_4-main.$(OBJEXT) \
+	gimp_console_2_4-sanity.$(OBJEXT) \
+	gimp_console_2_4-units.$(OBJEXT)
+@ENABLE_GIMP_CONSOLE_TRUE@am_gimp_console_2_4_OBJECTS =  \
 @ENABLE_GIMP_CONSOLE_TRUE@	$(am__objects_2)
-gimp_console_2_3_OBJECTS = $(am_gimp_console_2_3_OBJECTS)
-@ENABLE_GIMP_CONSOLE_TRUE@gimp_console_2_3_DEPENDENCIES =  \
+gimp_console_2_4_OBJECTS = $(am_gimp_console_2_4_OBJECTS)
+@ENABLE_GIMP_CONSOLE_TRUE@gimp_console_2_4_DEPENDENCIES =  \
 @ENABLE_GIMP_CONSOLE_TRUE@	widgets/widgets-enums.o \
 @ENABLE_GIMP_CONSOLE_TRUE@	display/display-enums.o \
 @ENABLE_GIMP_CONSOLE_TRUE@	display/gimpdisplayoptions.o \
@@ -143,9 +143,9 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(gimp_2_3_SOURCES) $(gimp_console_2_3_SOURCES)
-DIST_SOURCES = $(gimp_2_3_SOURCES) \
-	$(am__gimp_console_2_3_SOURCES_DIST)
+SOURCES = $(gimp_2_4_SOURCES) $(gimp_console_2_4_SOURCES)
+DIST_SOURCES = $(gimp_2_4_SOURCES) \
+	$(am__gimp_console_2_4_SOURCES_DIST)
 RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	html-recursive info-recursive install-data-recursive \
 	install-exec-recursive install-info-recursive \
@@ -321,14 +321,12 @@ INTLTOOL_CAVES_RULE = @INTLTOOL_CAVES_RULE@
 INTLTOOL_DESKTOP_RULE = @INTLTOOL_DESKTOP_RULE@
 INTLTOOL_DIRECTORY_RULE = @INTLTOOL_DIRECTORY_RULE@
 INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
-INTLTOOL_ICONV = @INTLTOOL_ICONV@
 INTLTOOL_KBD_RULE = @INTLTOOL_KBD_RULE@
 INTLTOOL_KEYS_RULE = @INTLTOOL_KEYS_RULE@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
-INTLTOOL_MSGFMT = @INTLTOOL_MSGFMT@
-INTLTOOL_MSGMERGE = @INTLTOOL_MSGMERGE@
 INTLTOOL_OAF_RULE = @INTLTOOL_OAF_RULE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
+INTLTOOL_POLICY_RULE = @INTLTOOL_POLICY_RULE@
 INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
@@ -340,7 +338,6 @@ INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
 INTLTOOL_UI_RULE = @INTLTOOL_UI_RULE@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTLTOOL_XAM_RULE = @INTLTOOL_XAM_RULE@
-INTLTOOL_XGETTEXT = @INTLTOOL_XGETTEXT@
 INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
@@ -568,7 +565,7 @@ app_sources = \
 	units.h		\
 	gimp-intl.h
 
-gimp_2_3_SOURCES = $(app_sources)
+gimp_2_4_SOURCES = $(app_sources)
 EXTRA_DIST = \
 	makefile.msc	\
 	gimp.rc		\
@@ -597,7 +594,7 @@ AM_LDFLAGS = $(mwindows) $(munix) \
 	-u $(SYMPREFIX)gimp_coords_mix		\
 	-u $(SYMPREFIX)gimp_plug_in_manager_restore
 
-gimp_2_3_LDADD = \
+gimp_2_4_LDADD = \
 	gui/libappgui.a			\
 	actions/libappactions.a		\
 	dialogs/libappdialogs.a		\
@@ -636,12 +633,12 @@ gimp_2_3_LDADD = \
 	$(INTLLIBS)			\
 	$(GIMPICONRC)
 
-@ENABLE_GIMP_CONSOLE_TRUE@gimp_console_2_3_SOURCES = $(app_sources)
-@ENABLE_GIMP_CONSOLE_TRUE@gimp_console_2_3_CPPFLAGS = \
+@ENABLE_GIMP_CONSOLE_TRUE@gimp_console_2_4_SOURCES = $(app_sources)
+@ENABLE_GIMP_CONSOLE_TRUE@gimp_console_2_4_CPPFLAGS = \
 @ENABLE_GIMP_CONSOLE_TRUE@	$(AM_CPPFLAGS)			\
 @ENABLE_GIMP_CONSOLE_TRUE@	-DGIMP_CONSOLE_COMPILATION
 
-@ENABLE_GIMP_CONSOLE_TRUE@gimp_console_2_3_LDADD = \
+@ENABLE_GIMP_CONSOLE_TRUE@gimp_console_2_4_LDADD = \
 @ENABLE_GIMP_CONSOLE_TRUE@	widgets/widgets-enums.o		\
 @ENABLE_GIMP_CONSOLE_TRUE@	display/display-enums.o		\
 @ENABLE_GIMP_CONSOLE_TRUE@	display/gimpdisplayoptions.o	\
@@ -736,12 +733,12 @@ clean-binPROGRAMS:
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
 	done
-gimp-2.3$(EXEEXT): $(gimp_2_3_OBJECTS) $(gimp_2_3_DEPENDENCIES) 
-	@rm -f gimp-2.3$(EXEEXT)
-	$(LINK) $(gimp_2_3_LDFLAGS) $(gimp_2_3_OBJECTS) $(gimp_2_3_LDADD) $(LIBS)
-gimp-console-2.3$(EXEEXT): $(gimp_console_2_3_OBJECTS) $(gimp_console_2_3_DEPENDENCIES) 
-	@rm -f gimp-console-2.3$(EXEEXT)
-	$(LINK) $(gimp_console_2_3_LDFLAGS) $(gimp_console_2_3_OBJECTS) $(gimp_console_2_3_LDADD) $(LIBS)
+gimp-2.4$(EXEEXT): $(gimp_2_4_OBJECTS) $(gimp_2_4_DEPENDENCIES) 
+	@rm -f gimp-2.4$(EXEEXT)
+	$(LINK) $(gimp_2_4_LDFLAGS) $(gimp_2_4_OBJECTS) $(gimp_2_4_LDADD) $(LIBS)
+gimp-console-2.4$(EXEEXT): $(gimp_console_2_4_OBJECTS) $(gimp_console_2_4_DEPENDENCIES) 
+	@rm -f gimp-console-2.4$(EXEEXT)
+	$(LINK) $(gimp_console_2_4_LDFLAGS) $(gimp_console_2_4_OBJECTS) $(gimp_console_2_4_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -752,12 +749,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/app.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/batch.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/errors.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp_console_2_3-app.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp_console_2_3-batch.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp_console_2_3-errors.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp_console_2_3-main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp_console_2_3-sanity.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp_console_2_3-units.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp_console_2_4-app.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp_console_2_4-batch.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp_console_2_4-errors.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp_console_2_4-main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp_console_2_4-sanity.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp_console_2_4-units.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sanity.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/units.Po@am__quote@
@@ -783,89 +780,89 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
 
-gimp_console_2_3-app.o: app.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_3-app.o -MD -MP -MF "$(DEPDIR)/gimp_console_2_3-app.Tpo" -c -o gimp_console_2_3-app.o `test -f 'app.c' || echo '$(srcdir)/'`app.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_3-app.Tpo" "$(DEPDIR)/gimp_console_2_3-app.Po"; else rm -f "$(DEPDIR)/gimp_console_2_3-app.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='app.c' object='gimp_console_2_3-app.o' libtool=no @AMDEPBACKSLASH@
+gimp_console_2_4-app.o: app.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_4-app.o -MD -MP -MF "$(DEPDIR)/gimp_console_2_4-app.Tpo" -c -o gimp_console_2_4-app.o `test -f 'app.c' || echo '$(srcdir)/'`app.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_4-app.Tpo" "$(DEPDIR)/gimp_console_2_4-app.Po"; else rm -f "$(DEPDIR)/gimp_console_2_4-app.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='app.c' object='gimp_console_2_4-app.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_3-app.o `test -f 'app.c' || echo '$(srcdir)/'`app.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_4-app.o `test -f 'app.c' || echo '$(srcdir)/'`app.c
 
-gimp_console_2_3-app.obj: app.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_3-app.obj -MD -MP -MF "$(DEPDIR)/gimp_console_2_3-app.Tpo" -c -o gimp_console_2_3-app.obj `if test -f 'app.c'; then $(CYGPATH_W) 'app.c'; else $(CYGPATH_W) '$(srcdir)/app.c'; fi`; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_3-app.Tpo" "$(DEPDIR)/gimp_console_2_3-app.Po"; else rm -f "$(DEPDIR)/gimp_console_2_3-app.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='app.c' object='gimp_console_2_3-app.obj' libtool=no @AMDEPBACKSLASH@
+gimp_console_2_4-app.obj: app.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_4-app.obj -MD -MP -MF "$(DEPDIR)/gimp_console_2_4-app.Tpo" -c -o gimp_console_2_4-app.obj `if test -f 'app.c'; then $(CYGPATH_W) 'app.c'; else $(CYGPATH_W) '$(srcdir)/app.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_4-app.Tpo" "$(DEPDIR)/gimp_console_2_4-app.Po"; else rm -f "$(DEPDIR)/gimp_console_2_4-app.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='app.c' object='gimp_console_2_4-app.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_3-app.obj `if test -f 'app.c'; then $(CYGPATH_W) 'app.c'; else $(CYGPATH_W) '$(srcdir)/app.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_4-app.obj `if test -f 'app.c'; then $(CYGPATH_W) 'app.c'; else $(CYGPATH_W) '$(srcdir)/app.c'; fi`
 
-gimp_console_2_3-batch.o: batch.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_3-batch.o -MD -MP -MF "$(DEPDIR)/gimp_console_2_3-batch.Tpo" -c -o gimp_console_2_3-batch.o `test -f 'batch.c' || echo '$(srcdir)/'`batch.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_3-batch.Tpo" "$(DEPDIR)/gimp_console_2_3-batch.Po"; else rm -f "$(DEPDIR)/gimp_console_2_3-batch.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='batch.c' object='gimp_console_2_3-batch.o' libtool=no @AMDEPBACKSLASH@
+gimp_console_2_4-batch.o: batch.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_4-batch.o -MD -MP -MF "$(DEPDIR)/gimp_console_2_4-batch.Tpo" -c -o gimp_console_2_4-batch.o `test -f 'batch.c' || echo '$(srcdir)/'`batch.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_4-batch.Tpo" "$(DEPDIR)/gimp_console_2_4-batch.Po"; else rm -f "$(DEPDIR)/gimp_console_2_4-batch.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='batch.c' object='gimp_console_2_4-batch.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_3-batch.o `test -f 'batch.c' || echo '$(srcdir)/'`batch.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_4-batch.o `test -f 'batch.c' || echo '$(srcdir)/'`batch.c
 
-gimp_console_2_3-batch.obj: batch.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_3-batch.obj -MD -MP -MF "$(DEPDIR)/gimp_console_2_3-batch.Tpo" -c -o gimp_console_2_3-batch.obj `if test -f 'batch.c'; then $(CYGPATH_W) 'batch.c'; else $(CYGPATH_W) '$(srcdir)/batch.c'; fi`; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_3-batch.Tpo" "$(DEPDIR)/gimp_console_2_3-batch.Po"; else rm -f "$(DEPDIR)/gimp_console_2_3-batch.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='batch.c' object='gimp_console_2_3-batch.obj' libtool=no @AMDEPBACKSLASH@
+gimp_console_2_4-batch.obj: batch.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_4-batch.obj -MD -MP -MF "$(DEPDIR)/gimp_console_2_4-batch.Tpo" -c -o gimp_console_2_4-batch.obj `if test -f 'batch.c'; then $(CYGPATH_W) 'batch.c'; else $(CYGPATH_W) '$(srcdir)/batch.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_4-batch.Tpo" "$(DEPDIR)/gimp_console_2_4-batch.Po"; else rm -f "$(DEPDIR)/gimp_console_2_4-batch.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='batch.c' object='gimp_console_2_4-batch.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_3-batch.obj `if test -f 'batch.c'; then $(CYGPATH_W) 'batch.c'; else $(CYGPATH_W) '$(srcdir)/batch.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_4-batch.obj `if test -f 'batch.c'; then $(CYGPATH_W) 'batch.c'; else $(CYGPATH_W) '$(srcdir)/batch.c'; fi`
 
-gimp_console_2_3-errors.o: errors.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_3-errors.o -MD -MP -MF "$(DEPDIR)/gimp_console_2_3-errors.Tpo" -c -o gimp_console_2_3-errors.o `test -f 'errors.c' || echo '$(srcdir)/'`errors.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_3-errors.Tpo" "$(DEPDIR)/gimp_console_2_3-errors.Po"; else rm -f "$(DEPDIR)/gimp_console_2_3-errors.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='errors.c' object='gimp_console_2_3-errors.o' libtool=no @AMDEPBACKSLASH@
+gimp_console_2_4-errors.o: errors.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_4-errors.o -MD -MP -MF "$(DEPDIR)/gimp_console_2_4-errors.Tpo" -c -o gimp_console_2_4-errors.o `test -f 'errors.c' || echo '$(srcdir)/'`errors.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_4-errors.Tpo" "$(DEPDIR)/gimp_console_2_4-errors.Po"; else rm -f "$(DEPDIR)/gimp_console_2_4-errors.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='errors.c' object='gimp_console_2_4-errors.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_3-errors.o `test -f 'errors.c' || echo '$(srcdir)/'`errors.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_4-errors.o `test -f 'errors.c' || echo '$(srcdir)/'`errors.c
 
-gimp_console_2_3-errors.obj: errors.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_3-errors.obj -MD -MP -MF "$(DEPDIR)/gimp_console_2_3-errors.Tpo" -c -o gimp_console_2_3-errors.obj `if test -f 'errors.c'; then $(CYGPATH_W) 'errors.c'; else $(CYGPATH_W) '$(srcdir)/errors.c'; fi`; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_3-errors.Tpo" "$(DEPDIR)/gimp_console_2_3-errors.Po"; else rm -f "$(DEPDIR)/gimp_console_2_3-errors.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='errors.c' object='gimp_console_2_3-errors.obj' libtool=no @AMDEPBACKSLASH@
+gimp_console_2_4-errors.obj: errors.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_4-errors.obj -MD -MP -MF "$(DEPDIR)/gimp_console_2_4-errors.Tpo" -c -o gimp_console_2_4-errors.obj `if test -f 'errors.c'; then $(CYGPATH_W) 'errors.c'; else $(CYGPATH_W) '$(srcdir)/errors.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_4-errors.Tpo" "$(DEPDIR)/gimp_console_2_4-errors.Po"; else rm -f "$(DEPDIR)/gimp_console_2_4-errors.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='errors.c' object='gimp_console_2_4-errors.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_3-errors.obj `if test -f 'errors.c'; then $(CYGPATH_W) 'errors.c'; else $(CYGPATH_W) '$(srcdir)/errors.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_4-errors.obj `if test -f 'errors.c'; then $(CYGPATH_W) 'errors.c'; else $(CYGPATH_W) '$(srcdir)/errors.c'; fi`
 
-gimp_console_2_3-main.o: main.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_3-main.o -MD -MP -MF "$(DEPDIR)/gimp_console_2_3-main.Tpo" -c -o gimp_console_2_3-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_3-main.Tpo" "$(DEPDIR)/gimp_console_2_3-main.Po"; else rm -f "$(DEPDIR)/gimp_console_2_3-main.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='main.c' object='gimp_console_2_3-main.o' libtool=no @AMDEPBACKSLASH@
+gimp_console_2_4-main.o: main.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_4-main.o -MD -MP -MF "$(DEPDIR)/gimp_console_2_4-main.Tpo" -c -o gimp_console_2_4-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_4-main.Tpo" "$(DEPDIR)/gimp_console_2_4-main.Po"; else rm -f "$(DEPDIR)/gimp_console_2_4-main.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='main.c' object='gimp_console_2_4-main.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_3-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_4-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
 
-gimp_console_2_3-main.obj: main.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_3-main.obj -MD -MP -MF "$(DEPDIR)/gimp_console_2_3-main.Tpo" -c -o gimp_console_2_3-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_3-main.Tpo" "$(DEPDIR)/gimp_console_2_3-main.Po"; else rm -f "$(DEPDIR)/gimp_console_2_3-main.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='main.c' object='gimp_console_2_3-main.obj' libtool=no @AMDEPBACKSLASH@
+gimp_console_2_4-main.obj: main.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_4-main.obj -MD -MP -MF "$(DEPDIR)/gimp_console_2_4-main.Tpo" -c -o gimp_console_2_4-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_4-main.Tpo" "$(DEPDIR)/gimp_console_2_4-main.Po"; else rm -f "$(DEPDIR)/gimp_console_2_4-main.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='main.c' object='gimp_console_2_4-main.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_3-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_4-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
 
-gimp_console_2_3-sanity.o: sanity.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_3-sanity.o -MD -MP -MF "$(DEPDIR)/gimp_console_2_3-sanity.Tpo" -c -o gimp_console_2_3-sanity.o `test -f 'sanity.c' || echo '$(srcdir)/'`sanity.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_3-sanity.Tpo" "$(DEPDIR)/gimp_console_2_3-sanity.Po"; else rm -f "$(DEPDIR)/gimp_console_2_3-sanity.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='sanity.c' object='gimp_console_2_3-sanity.o' libtool=no @AMDEPBACKSLASH@
+gimp_console_2_4-sanity.o: sanity.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_4-sanity.o -MD -MP -MF "$(DEPDIR)/gimp_console_2_4-sanity.Tpo" -c -o gimp_console_2_4-sanity.o `test -f 'sanity.c' || echo '$(srcdir)/'`sanity.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_4-sanity.Tpo" "$(DEPDIR)/gimp_console_2_4-sanity.Po"; else rm -f "$(DEPDIR)/gimp_console_2_4-sanity.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='sanity.c' object='gimp_console_2_4-sanity.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_3-sanity.o `test -f 'sanity.c' || echo '$(srcdir)/'`sanity.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_4-sanity.o `test -f 'sanity.c' || echo '$(srcdir)/'`sanity.c
 
-gimp_console_2_3-sanity.obj: sanity.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_3-sanity.obj -MD -MP -MF "$(DEPDIR)/gimp_console_2_3-sanity.Tpo" -c -o gimp_console_2_3-sanity.obj `if test -f 'sanity.c'; then $(CYGPATH_W) 'sanity.c'; else $(CYGPATH_W) '$(srcdir)/sanity.c'; fi`; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_3-sanity.Tpo" "$(DEPDIR)/gimp_console_2_3-sanity.Po"; else rm -f "$(DEPDIR)/gimp_console_2_3-sanity.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='sanity.c' object='gimp_console_2_3-sanity.obj' libtool=no @AMDEPBACKSLASH@
+gimp_console_2_4-sanity.obj: sanity.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_4-sanity.obj -MD -MP -MF "$(DEPDIR)/gimp_console_2_4-sanity.Tpo" -c -o gimp_console_2_4-sanity.obj `if test -f 'sanity.c'; then $(CYGPATH_W) 'sanity.c'; else $(CYGPATH_W) '$(srcdir)/sanity.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_4-sanity.Tpo" "$(DEPDIR)/gimp_console_2_4-sanity.Po"; else rm -f "$(DEPDIR)/gimp_console_2_4-sanity.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='sanity.c' object='gimp_console_2_4-sanity.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_3-sanity.obj `if test -f 'sanity.c'; then $(CYGPATH_W) 'sanity.c'; else $(CYGPATH_W) '$(srcdir)/sanity.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_4-sanity.obj `if test -f 'sanity.c'; then $(CYGPATH_W) 'sanity.c'; else $(CYGPATH_W) '$(srcdir)/sanity.c'; fi`
 
-gimp_console_2_3-units.o: units.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_3-units.o -MD -MP -MF "$(DEPDIR)/gimp_console_2_3-units.Tpo" -c -o gimp_console_2_3-units.o `test -f 'units.c' || echo '$(srcdir)/'`units.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_3-units.Tpo" "$(DEPDIR)/gimp_console_2_3-units.Po"; else rm -f "$(DEPDIR)/gimp_console_2_3-units.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='units.c' object='gimp_console_2_3-units.o' libtool=no @AMDEPBACKSLASH@
+gimp_console_2_4-units.o: units.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_4-units.o -MD -MP -MF "$(DEPDIR)/gimp_console_2_4-units.Tpo" -c -o gimp_console_2_4-units.o `test -f 'units.c' || echo '$(srcdir)/'`units.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_4-units.Tpo" "$(DEPDIR)/gimp_console_2_4-units.Po"; else rm -f "$(DEPDIR)/gimp_console_2_4-units.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='units.c' object='gimp_console_2_4-units.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_3-units.o `test -f 'units.c' || echo '$(srcdir)/'`units.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_4-units.o `test -f 'units.c' || echo '$(srcdir)/'`units.c
 
-gimp_console_2_3-units.obj: units.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_3-units.obj -MD -MP -MF "$(DEPDIR)/gimp_console_2_3-units.Tpo" -c -o gimp_console_2_3-units.obj `if test -f 'units.c'; then $(CYGPATH_W) 'units.c'; else $(CYGPATH_W) '$(srcdir)/units.c'; fi`; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_3-units.Tpo" "$(DEPDIR)/gimp_console_2_3-units.Po"; else rm -f "$(DEPDIR)/gimp_console_2_3-units.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='units.c' object='gimp_console_2_3-units.obj' libtool=no @AMDEPBACKSLASH@
+gimp_console_2_4-units.obj: units.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gimp_console_2_4-units.obj -MD -MP -MF "$(DEPDIR)/gimp_console_2_4-units.Tpo" -c -o gimp_console_2_4-units.obj `if test -f 'units.c'; then $(CYGPATH_W) 'units.c'; else $(CYGPATH_W) '$(srcdir)/units.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gimp_console_2_4-units.Tpo" "$(DEPDIR)/gimp_console_2_4-units.Po"; else rm -f "$(DEPDIR)/gimp_console_2_4-units.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='units.c' object='gimp_console_2_4-units.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_3_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_3-units.obj `if test -f 'units.c'; then $(CYGPATH_W) 'units.c'; else $(CYGPATH_W) '$(srcdir)/units.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gimp_console_2_4_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gimp_console_2_4-units.obj `if test -f 'units.c'; then $(CYGPATH_W) 'units.c'; else $(CYGPATH_W) '$(srcdir)/units.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

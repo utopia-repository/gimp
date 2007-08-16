@@ -90,6 +90,8 @@ enum
 
 /*  local function prototypes  */
 
+static void     gimp_color_managed_iface_init      (GimpColorManagedInterface *iface);
+
 static void      gimp_display_shell_finalize       (GObject          *object);
 static void      gimp_display_shell_set_property   (GObject          *object,
                                                     guint             property_id,
@@ -121,10 +123,17 @@ static void      gimp_display_shell_show_tooltip   (GimpUIManager    *manager,
 static void      gimp_display_shell_hide_tooltip   (GimpUIManager    *manager,
                                                     GimpDisplayShell *shell);
 
+static const guint8 * gimp_display_shell_get_icc_profile
+                                                   (GimpColorManaged *managed,
+                                                    gsize            *len);
+
 
 G_DEFINE_TYPE_WITH_CODE (GimpDisplayShell, gimp_display_shell, GTK_TYPE_WINDOW,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_PROGRESS,
-                                                gimp_display_shell_progress_iface_init))
+                                                gimp_display_shell_progress_iface_init)
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_COLOR_MANAGED,
+                                                gimp_color_managed_iface_init))
+
 
 #define parent_class gimp_display_shell_parent_class
 
@@ -348,6 +357,12 @@ gimp_display_shell_init (GimpDisplayShell *shell)
 
   gimp_help_connect (GTK_WIDGET (shell), gimp_standard_help_func,
                      GIMP_HELP_IMAGE_WINDOW, NULL);
+}
+
+static void
+gimp_color_managed_iface_init (GimpColorManagedInterface *iface)
+{
+  iface->get_icc_profile = gimp_display_shell_get_icc_profile;
 }
 
 static void
@@ -594,6 +609,15 @@ gimp_display_shell_hide_tooltip (GimpUIManager    *manager,
   gimp_statusbar_pop (GIMP_STATUSBAR (shell->statusbar), "menu-tooltip");
 }
 
+static const guint8 *
+gimp_display_shell_get_icc_profile (GimpColorManaged *managed,
+                                    gsize            *len)
+{
+  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (managed);
+  GimpImage        *image = shell->display->image;
+
+  return gimp_color_managed_get_icc_profile (GIMP_COLOR_MANAGED (image), len);
+}
 
 /*  public functions  */
 
@@ -604,22 +628,23 @@ gimp_display_shell_new (GimpDisplay     *display,
                         GimpMenuFactory *menu_factory,
                         GimpUIManager   *popup_manager)
 {
-  GimpDisplayShell  *shell;
-  GimpDisplayConfig *display_config;
-  GimpColorConfig   *color_config;
-  GtkWidget         *main_vbox;
-  GtkWidget         *disp_vbox;
-  GtkWidget         *upper_hbox;
-  GtkWidget         *right_vbox;
-  GtkWidget         *lower_hbox;
-  GtkWidget         *inner_table;
-  GtkWidget         *image;
-  GdkScreen         *screen;
-  GtkAction         *action;
-  gint               image_width, image_height;
-  gint               n_width, n_height;
-  gint               s_width, s_height;
-  gdouble            new_scale;
+  GimpDisplayShell      *shell;
+  GimpDisplayConfig     *display_config;
+  GimpColorDisplayStack *filter;
+  Gimp                  *gimp;
+  GtkWidget             *main_vbox;
+  GtkWidget             *disp_vbox;
+  GtkWidget             *upper_hbox;
+  GtkWidget             *right_vbox;
+  GtkWidget             *lower_hbox;
+  GtkWidget             *inner_table;
+  GtkWidget             *image;
+  GdkScreen             *screen;
+  GtkAction             *action;
+  gint                   image_width, image_height;
+  gint                   n_width, n_height;
+  gint                   s_width, s_height;
+  gdouble                new_scale;
 
   g_return_val_if_fail (GIMP_IS_DISPLAY (display), NULL);
   g_return_val_if_fail (GIMP_IS_MENU_FACTORY (menu_factory), NULL);
@@ -636,7 +661,8 @@ gimp_display_shell_new (GimpDisplay     *display,
   image_width  = display->image->width;
   image_height = display->image->height;
 
-  display_config = GIMP_DISPLAY_CONFIG (display->image->gimp->config);
+  gimp = display->image->gimp;
+  display_config = GIMP_DISPLAY_CONFIG (gimp->config);
 
   shell->dot_for_dot = display_config->default_dot_for_dot;
 
@@ -1041,15 +1067,21 @@ gimp_display_shell_new (GimpDisplay     *display,
                     GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0, 0);
 
   /*  fill the right_vbox  */
-  gtk_box_pack_start (GTK_BOX (right_vbox), shell->zoom_button, FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (right_vbox), shell->vsb, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (right_vbox),
+                      shell->zoom_button, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (right_vbox),
+                      shell->vsb, TRUE, TRUE, 0);
 
   /*  fill the lower_hbox  */
-  gtk_box_pack_start (GTK_BOX (lower_hbox), shell->quick_mask_button, FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (lower_hbox), shell->hsb, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (lower_hbox), shell->nav_ebox, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (lower_hbox),
+                      shell->quick_mask_button, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (lower_hbox),
+                      shell->hsb, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (lower_hbox),
+                      shell->nav_ebox, FALSE, FALSE, 0);
 
-  gtk_box_pack_end (GTK_BOX (main_vbox), shell->statusbar, FALSE, FALSE, 0);
+  gtk_box_pack_end (GTK_BOX (main_vbox),
+                    shell->statusbar, FALSE, FALSE, 0);
 
   /*  show everything  *******************************************************/
 
@@ -1076,9 +1108,10 @@ gimp_display_shell_new (GimpDisplay     *display,
 
   gtk_widget_show (main_vbox);
 
-  color_config = display->image->gimp->config->color_management;
-  gimp_display_shell_filter_set (shell,
-                                 gimp_display_shell_filter_new (color_config));
+  filter = gimp_display_shell_filter_new (shell,
+                                          gimp->config->color_management);
+  gimp_display_shell_filter_set (shell, filter);
+  g_object_unref (filter);
 
   gimp_display_shell_connect (shell);
 
@@ -1097,6 +1130,8 @@ gimp_display_shell_reconnect (GimpDisplayShell *shell)
   gimp_display_shell_connect (shell);
 
   g_signal_emit (shell, display_shell_signals[RECONNECT], 0);
+
+  gimp_color_managed_profile_changed (GIMP_COLOR_MANAGED (shell));
 
   gimp_display_shell_scale_setup (shell);
   gimp_display_shell_expose_full (shell);

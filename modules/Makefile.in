@@ -36,6 +36,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+@PLATFORM_WIN32_TRUE@am__append_1 = -lgdi32
 subdir = modules
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -62,41 +63,41 @@ libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 am__DEPENDENCIES_2 = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_3 = $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_4 = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_5 =
-am__DEPENDENCIES_6 = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5)
-am__DEPENDENCIES_7 = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
+am__DEPENDENCIES_3 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_4 = $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_5 = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_6 =
+am__DEPENDENCIES_7 = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
 	$(am__DEPENDENCIES_6)
-libcdisplay_colorblind_la_DEPENDENCIES = $(am__DEPENDENCIES_7)
+am__DEPENDENCIES_8 = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_7)
+libcdisplay_colorblind_la_DEPENDENCIES = $(am__DEPENDENCIES_8)
 am_libcdisplay_colorblind_la_OBJECTS = cdisplay_colorblind.lo
 libcdisplay_colorblind_la_OBJECTS =  \
 	$(am_libcdisplay_colorblind_la_OBJECTS)
-libcdisplay_gamma_la_DEPENDENCIES = $(am__DEPENDENCIES_7)
+libcdisplay_gamma_la_DEPENDENCIES = $(am__DEPENDENCIES_8)
 am_libcdisplay_gamma_la_OBJECTS = cdisplay_gamma.lo
 libcdisplay_gamma_la_OBJECTS = $(am_libcdisplay_gamma_la_OBJECTS)
-libcdisplay_highcontrast_la_DEPENDENCIES = $(am__DEPENDENCIES_7)
+libcdisplay_highcontrast_la_DEPENDENCIES = $(am__DEPENDENCIES_8)
 am_libcdisplay_highcontrast_la_OBJECTS = cdisplay_highcontrast.lo
 libcdisplay_highcontrast_la_OBJECTS =  \
 	$(am_libcdisplay_highcontrast_la_OBJECTS)
-libcdisplay_lcms_la_DEPENDENCIES = $(am__DEPENDENCIES_7) \
-	$(am__DEPENDENCIES_5)
+libcdisplay_lcms_la_DEPENDENCIES = $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
 am_libcdisplay_lcms_la_OBJECTS = cdisplay_lcms.lo
 libcdisplay_lcms_la_OBJECTS = $(am_libcdisplay_lcms_la_OBJECTS)
 @HAVE_LCMS_TRUE@am_libcdisplay_lcms_la_rpath = -rpath $(libdir)
-libcdisplay_proof_la_DEPENDENCIES = $(am__DEPENDENCIES_7) \
-	$(am__DEPENDENCIES_5)
+libcdisplay_proof_la_DEPENDENCIES = $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_6)
 am_libcdisplay_proof_la_OBJECTS = cdisplay_proof.lo
 libcdisplay_proof_la_OBJECTS = $(am_libcdisplay_proof_la_OBJECTS)
 @HAVE_LCMS_TRUE@am_libcdisplay_proof_la_rpath = -rpath $(libdir)
-am__DEPENDENCIES_8 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_9 = $(am__DEPENDENCIES_8) $(am__DEPENDENCIES_6)
+am__DEPENDENCIES_9 = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_7)
 @HAVE_LCMS_FALSE@libcolorsel_cmyk_la_DEPENDENCIES =  \
 @HAVE_LCMS_FALSE@	$(am__DEPENDENCIES_9)
 @HAVE_LCMS_TRUE@libcolorsel_cmyk_la_DEPENDENCIES =  \
 @HAVE_LCMS_TRUE@	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_9) \
-@HAVE_LCMS_TRUE@	$(am__DEPENDENCIES_5)
+@HAVE_LCMS_TRUE@	$(am__DEPENDENCIES_6)
 am__libcolorsel_cmyk_la_SOURCES_DIST = colorsel_cmyk.c \
 	colorsel_cmyk_lcms.c
 @HAVE_LCMS_FALSE@am_libcolorsel_cmyk_la_OBJECTS = colorsel_cmyk.lo
@@ -110,7 +111,7 @@ libcolorsel_triangle_la_OBJECTS =  \
 libcolorsel_water_la_DEPENDENCIES = $(am__DEPENDENCIES_9)
 am_libcolorsel_water_la_OBJECTS = colorsel_water.lo
 libcolorsel_water_la_OBJECTS = $(am_libcolorsel_water_la_OBJECTS)
-am__DEPENDENCIES_10 = $(am__DEPENDENCIES_6)
+am__DEPENDENCIES_10 = $(am__DEPENDENCIES_7)
 libcontroller_dx_dinput_la_DEPENDENCIES = $(am__DEPENDENCIES_10)
 am_libcontroller_dx_dinput_la_OBJECTS = gimpinputdevicestore.lo \
 	controller_dx_dinput.lo
@@ -119,7 +120,7 @@ libcontroller_dx_dinput_la_OBJECTS =  \
 @HAVE_DX_DINPUT_TRUE@am_libcontroller_dx_dinput_la_rpath = -rpath \
 @HAVE_DX_DINPUT_TRUE@	$(libdir)
 libcontroller_linux_input_la_DEPENDENCIES = $(am__DEPENDENCIES_10) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_5)
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
 am_libcontroller_linux_input_la_OBJECTS =  \
 	libcontroller_linux_input_la-gimpinputdevicestore.lo \
 	libcontroller_linux_input_la-controller_linux_input.lo
@@ -128,7 +129,7 @@ libcontroller_linux_input_la_OBJECTS =  \
 @HAVE_LINUX_INPUT_TRUE@am_libcontroller_linux_input_la_rpath = -rpath \
 @HAVE_LINUX_INPUT_TRUE@	$(libdir)
 libcontroller_midi_la_DEPENDENCIES = $(am__DEPENDENCIES_10) \
-	$(am__DEPENDENCIES_5)
+	$(am__DEPENDENCIES_6)
 am_libcontroller_midi_la_OBJECTS =  \
 	libcontroller_midi_la-controller_midi.lo
 libcontroller_midi_la_OBJECTS = $(am_libcontroller_midi_la_OBJECTS)
@@ -333,14 +334,12 @@ INTLTOOL_CAVES_RULE = @INTLTOOL_CAVES_RULE@
 INTLTOOL_DESKTOP_RULE = @INTLTOOL_DESKTOP_RULE@
 INTLTOOL_DIRECTORY_RULE = @INTLTOOL_DIRECTORY_RULE@
 INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
-INTLTOOL_ICONV = @INTLTOOL_ICONV@
 INTLTOOL_KBD_RULE = @INTLTOOL_KBD_RULE@
 INTLTOOL_KEYS_RULE = @INTLTOOL_KEYS_RULE@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
-INTLTOOL_MSGFMT = @INTLTOOL_MSGFMT@
-INTLTOOL_MSGMERGE = @INTLTOOL_MSGMERGE@
 INTLTOOL_OAF_RULE = @INTLTOOL_OAF_RULE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
+INTLTOOL_POLICY_RULE = @INTLTOOL_POLICY_RULE@
 INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
@@ -352,7 +351,6 @@ INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
 INTLTOOL_UI_RULE = @INTLTOOL_UI_RULE@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTLTOOL_XAM_RULE = @INTLTOOL_XAM_RULE@
-INTLTOOL_XGETTEXT = @INTLTOOL_XGETTEXT@
 INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
@@ -571,7 +569,7 @@ lib_LTLIBRARIES = \
 
 modules_libadd = $(libgimpmodule) $(libgimpwidgets) $(GTK_LIBS)
 colorsel_libadd = $(libgimpcolor) $(modules_libadd)
-cdisplay_libadd = $(libgimpbase) $(libgimpconfig) $(modules_libadd)
+cdisplay_libadd = $(libgimpbase) $(libgimpconfig) $(libgimpcolor) $(modules_libadd)
 controller_libadd = $(modules_libadd)
 @HAVE_LCMS_FALSE@libcolorsel_cmyk_la_SOURCES = colorsel_cmyk.c
 @HAVE_LCMS_TRUE@libcolorsel_cmyk_la_SOURCES = colorsel_cmyk_lcms.c
@@ -595,7 +593,8 @@ libcdisplay_highcontrast_la_LDFLAGS = -avoid-version -module $(no_undefined)
 libcdisplay_highcontrast_la_LIBADD = $(cdisplay_libadd)
 libcdisplay_lcms_la_SOURCES = cdisplay_lcms.c
 libcdisplay_lcms_la_LDFLAGS = -avoid-version -module $(no_undefined)
-libcdisplay_lcms_la_LIBADD = $(cdisplay_libadd) $(LIBLCMS)
+libcdisplay_lcms_la_LIBADD = $(cdisplay_libadd) $(LIBLCMS) \
+	$(am__append_1)
 libcdisplay_proof_la_SOURCES = cdisplay_proof.c
 libcdisplay_proof_la_LDFLAGS = -avoid-version -module $(no_undefined)
 libcdisplay_proof_la_LIBADD = $(cdisplay_libadd) $(LIBLCMS)

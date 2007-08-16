@@ -186,7 +186,7 @@ static void     gimp_image_channel_name_changed  (GimpChannel    *channel,
 static void     gimp_image_channel_color_changed (GimpChannel    *channel,
                                                   GimpImage      *image);
 
-const guint8 *  gimp_image_get_icc_profile       (GimpColorManaged *managed,
+static const guint8 * gimp_image_get_icc_profile (GimpColorManaged *managed,
                                                   gsize            *len);
 
 
@@ -1176,10 +1176,8 @@ gimp_image_drawable_update (GimpDrawable *drawable,
       gint offset_y;
 
       gimp_item_offsets (item, &offset_x, &offset_y);
-      x += offset_x;
-      y += offset_y;
 
-      gimp_image_update (image, x, y, width, height);
+      gimp_image_update (image, x + offset_x, y + offset_y, width, height);
     }
 }
 
@@ -3765,7 +3763,7 @@ gimp_image_invalidate_channel_previews (GimpImage *image)
                           NULL);
 }
 
-const guint8 *
+static const guint8 *
 gimp_image_get_icc_profile (GimpColorManaged *managed,
                             gsize            *len)
 {
@@ -3775,9 +3773,14 @@ gimp_image_get_icc_profile (GimpColorManaged *managed,
 
   if (parasite)
     {
-      *len = gimp_parasite_data_size (parasite);
+      gsize data_size = gimp_parasite_data_size (parasite);
 
-      return gimp_parasite_data (parasite);
+      if (data_size > 0)
+        {
+          *len = data_size;
+
+          return gimp_parasite_data (parasite);
+        }
     }
 
   return NULL;

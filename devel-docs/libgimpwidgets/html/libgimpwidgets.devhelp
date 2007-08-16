@@ -13,6 +13,8 @@
       <sub name="GimpColorHexEntry" link="GimpColorHexEntry.html"/>
       <sub name="GimpColorScale" link="GimpColorScale.html"/>
       <sub name="GimpColorSelection" link="GimpColorSelection.html"/>
+      <sub name="GimpColorProfileStore" link="GimpColorProfileStore.html"/>
+      <sub name="GimpColorProfileComboBox" link="GimpColorProfileComboBox.html"/>
       <sub name="GimpDialog" link="GimpDialog.html"/>
       <sub name="GimpEnumStore" link="GimpEnumStore.html"/>
       <sub name="GimpEnumComboBox" link="GimpEnumComboBox.html"/>
@@ -23,6 +25,7 @@
       <sub name="GimpIntComboBox" link="GimpIntComboBox.html"/>
       <sub name="GimpIntStore" link="GimpIntStore.html"/>
       <sub name="GimpMemsizeEntry" link="GimpMemsizeEntry.html"/>
+      <sub name="GimpNumberPairEntry" link="GimpNumberPairEntry.html"/>
       <sub name="GimpOffsetArea" link="GimpOffsetArea.html"/>
       <sub name="GimpPageSelector" link="GimpPageSelector.html"/>
       <sub name="GimpPathEditor" link="GimpPathEditor.html"/>
@@ -30,11 +33,11 @@
       <sub name="GimpPixmap" link="GimpPixmap.html"/>
       <sub name="GimpPreviewArea" link="GimpPreviewArea.html"/>
       <sub name="GimpPreview" link="GimpPreview.html"/>
-      <sub name="GimpRatioEntry" link="GimpRatioEntry.html"/>
       <sub name="GimpScrolledPreview" link="GimpScrolledPreview.html"/>
       <sub name="GimpSizeEntry" link="GimpSizeEntry.html"/>
       <sub name="GimpStringComboBox" link="GimpStringComboBox.html"/>
       <sub name="GimpUnitMenu" link="GimpUnitMenu.html"/>
+      <sub name="GimpZoomModel" link="GimpZoomModel.html"/>
     </sub>
     <sub name="Cell Renderers for GtkTreeView" link="libgimpwidgets-cell-renderers.html">
       <sub name="GimpCellRendererColor" link="GimpCellRendererColor.html"/>
@@ -135,6 +138,18 @@
     <function name="gimp_color_selection_set_config ()" link="GimpColorSelection.html#gimp-color-selection-set-config"/>
     <function name="The &quot;config&quot; property" link="GimpColorSelection.html#GimpColorSelection--config"/>
     <function name="The &quot;color-changed&quot; signal" link="GimpColorSelection.html#GimpColorSelection-color-changed"/>
+    <function name="GimpColorProfileStore" link="GimpColorProfileStore.html#GimpColorProfileStore-struct"/>
+    <function name="gimp_color_profile_store_new ()" link="GimpColorProfileStore.html#gimp-color-profile-store-new"/>
+    <function name="gimp_color_profile_store_add ()" link="GimpColorProfileStore.html#gimp-color-profile-store-add"/>
+    <function name="The &quot;history&quot; property" link="GimpColorProfileStore.html#GimpColorProfileStore--history"/>
+    <function name="GimpColorProfileComboBox" link="GimpColorProfileComboBox.html#GimpColorProfileComboBox-struct"/>
+    <function name="gimp_color_profile_combo_box_new ()" link="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-new"/>
+    <function name="gimp_color_profile_combo_box_new_with_model ()" link="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-new-with-model"/>
+    <function name="gimp_color_profile_combo_box_add ()" link="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-add"/>
+    <function name="gimp_color_profile_combo_box_set_active ()" link="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-set-active"/>
+    <function name="gimp_color_profile_combo_box_get_active ()" link="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-get-active"/>
+    <function name="The &quot;dialog&quot; property" link="GimpColorProfileComboBox.html#GimpColorProfileComboBox--dialog"/>
+    <function name="The &quot;model&quot; property" link="GimpColorProfileComboBox.html#GimpColorProfileComboBox--model"/>
     <function name="GimpDialog" link="GimpDialog.html#GimpDialog-struct"/>
     <function name="gimp_dialog_new ()" link="GimpDialog.html#gimp-dialog-new"/>
     <function name="gimp_dialog_new_valist ()" link="GimpDialog.html#gimp-dialog-new-valist"/>
@@ -192,6 +207,32 @@
     <function name="gimp_memsize_entry_set_value ()" link="GimpMemsizeEntry.html#gimp-memsize-entry-set-value"/>
     <function name="gimp_memsize_entry_get_value ()" link="GimpMemsizeEntry.html#gimp-memsize-entry-get-value"/>
     <function name="The &quot;value-changed&quot; signal" link="GimpMemsizeEntry.html#GimpMemsizeEntry-value-changed"/>
+    <function name="GimpNumberPairEntry" link="GimpNumberPairEntry.html#GimpNumberPairEntry-struct"/>
+    <function name="enum GimpAspectType" link="GimpNumberPairEntry.html#GimpAspectType"/>
+    <function name="gimp_number_pair_entry_new ()" link="GimpNumberPairEntry.html#gimp-number-pair-entry-new"/>
+    <function name="gimp_number_pair_entry_set_default_values ()" link="GimpNumberPairEntry.html#gimp-number-pair-entry-set-default-values"/>
+    <function name="gimp_number_pair_entry_get_default_values ()" link="GimpNumberPairEntry.html#gimp-number-pair-entry-get-default-values"/>
+    <function name="gimp_number_pair_entry_set_values ()" link="GimpNumberPairEntry.html#gimp-number-pair-entry-set-values"/>
+    <function name="gimp_number_pair_entry_get_values ()" link="GimpNumberPairEntry.html#gimp-number-pair-entry-get-values"/>
+    <function name="gimp_number_pair_entry_get_aspect ()" link="GimpNumberPairEntry.html#gimp-number-pair-entry-get-aspect"/>
+    <function name="gimp_number_pair_entry_set_aspect ()" link="GimpNumberPairEntry.html#gimp-number-pair-entry-set-aspect"/>
+    <function name="gimp_number_pair_entry_get_ratio ()" link="GimpNumberPairEntry.html#gimp-number-pair-entry-get-ratio"/>
+    <function name="gimp_number_pair_entry_set_ratio ()" link="GimpNumberPairEntry.html#gimp-number-pair-entry-set-ratio"/>
+    <function name="gimp_number_pair_entry_get_user_override ()" link="GimpNumberPairEntry.html#gimp-number-pair-entry-get-user-override"/>
+    <function name="gimp_number_pair_entry_set_user_override ()" link="GimpNumberPairEntry.html#gimp-number-pair-entry-set-user-override"/>
+    <function name="The &quot;allow-simplification&quot; property" link="GimpNumberPairEntry.html#GimpNumberPairEntry--allow-simplification"/>
+    <function name="The &quot;aspect&quot; property" link="GimpNumberPairEntry.html#GimpNumberPairEntry--aspect"/>
+    <function name="The &quot;default-left-number&quot; property" link="GimpNumberPairEntry.html#GimpNumberPairEntry--default-left-number"/>
+    <function name="The &quot;default-right-number&quot; property" link="GimpNumberPairEntry.html#GimpNumberPairEntry--default-right-number"/>
+    <function name="The &quot;left-number&quot; property" link="GimpNumberPairEntry.html#GimpNumberPairEntry--left-number"/>
+    <function name="The &quot;max-valid-value&quot; property" link="GimpNumberPairEntry.html#GimpNumberPairEntry--max-valid-value"/>
+    <function name="The &quot;min-valid-value&quot; property" link="GimpNumberPairEntry.html#GimpNumberPairEntry--min-valid-value"/>
+    <function name="The &quot;ratio&quot; property" link="GimpNumberPairEntry.html#GimpNumberPairEntry--ratio"/>
+    <function name="The &quot;right-number&quot; property" link="GimpNumberPairEntry.html#GimpNumberPairEntry--right-number"/>
+    <function name="The &quot;separators&quot; property" link="GimpNumberPairEntry.html#GimpNumberPairEntry--separators"/>
+    <function name="The &quot;user-override&quot; property" link="GimpNumberPairEntry.html#GimpNumberPairEntry--user-override"/>
+    <function name="The &quot;numbers-changed&quot; signal" link="GimpNumberPairEntry.html#GimpNumberPairEntry-numbers-changed"/>
+    <function name="The &quot;ratio-changed&quot; signal" link="GimpNumberPairEntry.html#GimpNumberPairEntry-ratio-changed"/>
     <function name="GimpOffsetArea" link="GimpOffsetArea.html#GimpOffsetArea-struct"/>
     <function name="gimp_offset_area_new ()" link="GimpOffsetArea.html#gimp-offset-area-new"/>
     <function name="gimp_offset_area_set_size ()" link="GimpOffsetArea.html#gimp-offset-area-set-size"/>
@@ -266,20 +307,6 @@
     <function name="The &quot;update&quot; property" link="GimpPreview.html#GimpPreview--update"/>
     <function name="The &quot;size&quot; style property" link="GimpPreview.html#GimpPreview--size"/>
     <function name="The &quot;invalidated&quot; signal" link="GimpPreview.html#GimpPreview-invalidated"/>
-    <function name="GimpRatioEntry" link="GimpRatioEntry.html#GimpRatioEntry-struct"/>
-    <function name="enum GimpAspectType" link="GimpRatioEntry.html#GimpAspectType"/>
-    <function name="gimp_ratio_entry_new ()" link="GimpRatioEntry.html#gimp-ratio-entry-new"/>
-    <function name="gimp_ratio_entry_set_fraction ()" link="GimpRatioEntry.html#gimp-ratio-entry-set-fraction"/>
-    <function name="gimp_ratio_entry_get_fraction ()" link="GimpRatioEntry.html#gimp-ratio-entry-get-fraction"/>
-    <function name="gimp_ratio_entry_set_ratio ()" link="GimpRatioEntry.html#gimp-ratio-entry-set-ratio"/>
-    <function name="gimp_ratio_entry_get_ratio ()" link="GimpRatioEntry.html#gimp-ratio-entry-get-ratio"/>
-    <function name="gimp_ratio_entry_set_aspect ()" link="GimpRatioEntry.html#gimp-ratio-entry-set-aspect"/>
-    <function name="gimp_ratio_entry_get_aspect ()" link="GimpRatioEntry.html#gimp-ratio-entry-get-aspect"/>
-    <function name="The &quot;aspect&quot; property" link="GimpRatioEntry.html#GimpRatioEntry--aspect"/>
-    <function name="The &quot;denominator&quot; property" link="GimpRatioEntry.html#GimpRatioEntry--denominator"/>
-    <function name="The &quot;numerator&quot; property" link="GimpRatioEntry.html#GimpRatioEntry--numerator"/>
-    <function name="The &quot;ratio&quot; property" link="GimpRatioEntry.html#GimpRatioEntry--ratio"/>
-    <function name="The &quot;ratio-changed&quot; signal" link="GimpRatioEntry.html#GimpRatioEntry-ratio-changed"/>
     <function name="GimpScrolledPreview" link="GimpScrolledPreview.html#GimpScrolledPreview-struct"/>
     <function name="gimp_scrolled_preview_set_position ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-set-position"/>
     <function name="gimp_scrolled_preview_set_policy ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-set-policy"/>
@@ -324,6 +351,21 @@
     <function name="gimp_unit_menu_get_pixel_digits ()" link="GimpUnitMenu.html#gimp-unit-menu-get-pixel-digits"/>
     <function name="gimp_unit_menu_set_pixel_digits ()" link="GimpUnitMenu.html#gimp-unit-menu-set-pixel-digits"/>
     <function name="The &quot;unit-changed&quot; signal" link="GimpUnitMenu.html#GimpUnitMenu-unit-changed"/>
+    <function name="GimpZoomModel" link="GimpZoomModel.html#GimpZoomModel-struct"/>
+    <function name="enum GimpZoomType" link="GimpZoomModel.html#GimpZoomType"/>
+    <function name="gimp_zoom_model_new ()" link="GimpZoomModel.html#gimp-zoom-model-new"/>
+    <function name="gimp_zoom_model_set_range ()" link="GimpZoomModel.html#gimp-zoom-model-set-range"/>
+    <function name="gimp_zoom_model_zoom ()" link="GimpZoomModel.html#gimp-zoom-model-zoom"/>
+    <function name="gimp_zoom_model_get_factor ()" link="GimpZoomModel.html#gimp-zoom-model-get-factor"/>
+    <function name="gimp_zoom_model_get_fraction ()" link="GimpZoomModel.html#gimp-zoom-model-get-fraction"/>
+    <function name="gimp_zoom_button_new ()" link="GimpZoomModel.html#gimp-zoom-button-new"/>
+    <function name="gimp_zoom_model_zoom_step ()" link="GimpZoomModel.html#gimp-zoom-model-zoom-step"/>
+    <function name="The &quot;fraction&quot; property" link="GimpZoomModel.html#GimpZoomModel--fraction"/>
+    <function name="The &quot;maximum&quot; property" link="GimpZoomModel.html#GimpZoomModel--maximum"/>
+    <function name="The &quot;minimum&quot; property" link="GimpZoomModel.html#GimpZoomModel--minimum"/>
+    <function name="The &quot;percentage&quot; property" link="GimpZoomModel.html#GimpZoomModel--percentage"/>
+    <function name="The &quot;value&quot; property" link="GimpZoomModel.html#GimpZoomModel--value"/>
+    <function name="The &quot;zoomed&quot; signal" link="GimpZoomModel.html#GimpZoomModel-zoomed"/>
     <function name="GimpCellRendererColor" link="GimpCellRendererColor.html#GimpCellRendererColor-struct"/>
     <function name="gimp_cell_renderer_color_new ()" link="GimpCellRendererColor.html#gimp-cell-renderer-color-new"/>
     <function name="The &quot;color&quot; property" link="GimpCellRendererColor.html#GimpCellRendererColor--color"/>
@@ -340,12 +382,16 @@
     <function name="gimp_color_display_clone ()" link="GimpColorDisplay.html#gimp-color-display-clone"/>
     <function name="gimp_color_display_set_enabled ()" link="GimpColorDisplay.html#gimp-color-display-set-enabled"/>
     <function name="gimp_color_display_get_enabled ()" link="GimpColorDisplay.html#gimp-color-display-get-enabled"/>
+    <function name="gimp_color_display_get_config ()" link="GimpColorDisplay.html#gimp-color-display-get-config"/>
+    <function name="gimp_color_display_get_managed ()" link="GimpColorDisplay.html#gimp-color-display-get-managed"/>
     <function name="gimp_color_display_convert ()" link="GimpColorDisplay.html#gimp-color-display-convert"/>
     <function name="gimp_color_display_load_state ()" link="GimpColorDisplay.html#gimp-color-display-load-state"/>
     <function name="gimp_color_display_save_state ()" link="GimpColorDisplay.html#gimp-color-display-save-state"/>
     <function name="gimp_color_display_configure ()" link="GimpColorDisplay.html#gimp-color-display-configure"/>
     <function name="gimp_color_display_configure_reset ()" link="GimpColorDisplay.html#gimp-color-display-configure-reset"/>
     <function name="gimp_color_display_changed ()" link="GimpColorDisplay.html#gimp-color-display-changed"/>
+    <function name="The &quot;color-config&quot; property" link="GimpColorDisplay.html#GimpColorDisplay--color-config"/>
+    <function name="The &quot;color-managed&quot; property" link="GimpColorDisplay.html#GimpColorDisplay--color-managed"/>
     <function name="The &quot;enabled&quot; property" link="GimpColorDisplay.html#GimpColorDisplay--enabled"/>
     <function name="The &quot;changed&quot; signal" link="GimpColorDisplay.html#GimpColorDisplay-changed"/>
     <function name="GimpColorDisplayStack" link="GimpColorDisplayStack.html#GimpColorDisplayStack-struct"/>

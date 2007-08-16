@@ -35,6 +35,7 @@
 #include "libgimp/stdplugins-intl.h"
 
 #include "jpeg.h"
+#include "jpeg-settings.h"
 #include "jpeg-load.h"
 #include "jpeg-save.h"
 #include "gimpexif.h"
@@ -57,6 +58,11 @@ gint32        display_ID;
 JpegSaveVals  jsvals;
 gint32        orig_image_ID_global;
 gint32        drawable_ID_global;
+gboolean      has_metadata;
+gint          orig_quality;
+gint          orig_subsmp;
+gint          num_quant_tables;
+
 
 #ifdef HAVE_EXIF
 ExifData     *exif_data = NULL;
@@ -127,7 +133,7 @@ query (void)
                           "loads files in the JPEG file format",
                           "Spencer Kimball, Peter Mattis & others",
                           "Spencer Kimball & Peter Mattis",
-                          "1995-1999",
+                          "1995-2007",
                           N_("JPEG image"),
                           NULL,
                           GIMP_PLUGIN,
@@ -165,7 +171,7 @@ query (void)
                           "saves files in the lossy, widely supported JPEG format",
                           "Spencer Kimball, Peter Mattis & others",
                           "Spencer Kimball & Peter Mattis",
-                          "1995-1999",
+                          "1995-2007",
                           N_("JPEG image"),
                           "RGB*, GRAY*",
                           GIMP_PLUGIN,
@@ -202,8 +208,13 @@ run (const gchar      *name,
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 
-  image_ID_global = -1;
-  layer_ID_global = -1;
+  preview_image_ID = -1;
+  preview_layer_ID = -1;
+
+  has_metadata = FALSE;
+  orig_quality = 0;
+  orig_subsmp = 0;
+  num_quant_tables = 0;
 
   if (strcmp (name, LOAD_PROC) == 0)
     {
@@ -321,6 +332,13 @@ run (const gchar      *name,
           gimp_parasite_free (parasite);
         }
 
+      parasite = gimp_image_parasite_find (orig_image_ID, "gimp-metadata");
+      if (parasite)
+        {
+          has_metadata = TRUE;
+          gimp_parasite_free (parasite);
+        }
+
 #ifdef HAVE_EXIF
 
       exif_data = gimp_metadata_generate_exif (orig_image_ID);
@@ -366,7 +384,7 @@ run (const gchar      *name,
                 status = GIMP_PDB_CALLING_ERROR;
               else if (jsvals.smoothing < 0.0 || jsvals.smoothing > 1.0)
                 status = GIMP_PDB_CALLING_ERROR;
-              else if (jsvals.subsmp < 0 || jsvals.subsmp > 2)
+              else if (jsvals.subsmp < 0 || jsvals.subsmp > 3)
                 status = GIMP_PDB_CALLING_ERROR;
               else if (jsvals.dct < 0 || jsvals.dct > 2)
                 status = GIMP_PDB_CALLING_ERROR;
@@ -378,6 +396,11 @@ run (const gchar      *name,
           /*  Possibly retrieve data  */
           gimp_get_data (SAVE_PROC, &jsvals);
 
+          jpeg_restore_original_settings (orig_image_ID,
+                                          &orig_quality,
+                                          &orig_subsmp,
+                                          &num_quant_tables);
+
           /* load up the previously used values */
           parasite = gimp_image_parasite_find (orig_image_ID,
                                                "jpeg-save-options");
@@ -385,18 +408,19 @@ run (const gchar      *name,
             {
               const JpegSaveVals *save_vals = gimp_parasite_data (parasite);
 
-              jsvals.quality        = save_vals->quality;
-              jsvals.smoothing      = save_vals->smoothing;
-              jsvals.optimize       = save_vals->optimize;
-              jsvals.progressive    = save_vals->progressive;
-              jsvals.baseline       = save_vals->baseline;
-              jsvals.subsmp         = save_vals->subsmp;
-              jsvals.restart        = save_vals->restart;
-              jsvals.dct            = save_vals->dct;
-              jsvals.preview        = save_vals->preview;
-              jsvals.save_exif      = save_vals->save_exif;
-              jsvals.save_thumbnail = save_vals->save_thumbnail;
-              jsvals.save_xmp       = save_vals->save_xmp;
+              jsvals.quality          = save_vals->quality;
+              jsvals.smoothing        = save_vals->smoothing;
+              jsvals.optimize         = save_vals->optimize;
+              jsvals.progressive      = save_vals->progressive;
+              jsvals.baseline         = save_vals->baseline;
+              jsvals.subsmp           = save_vals->subsmp;
+              jsvals.restart          = save_vals->restart;
+              jsvals.dct              = save_vals->dct;
+              jsvals.preview          = save_vals->preview;
+              jsvals.save_exif        = save_vals->save_exif;
+              jsvals.save_thumbnail   = save_vals->save_thumbnail;
+              jsvals.save_xmp         = save_vals->save_xmp;
+              jsvals.use_quant_tables = save_vals->use_quant_tables;
 
               gimp_parasite_free (parasite);
             }
@@ -408,6 +432,18 @@ run (const gchar      *name,
                * over the JPEG encoding parameters.
                */
               run_mode = GIMP_RUN_INTERACTIVE;
+              /* If this image was loaded from a JPEG file and has not been
+               * saved yet, try to use some of the settings from the
+               * original file if they are better than the default values.
+               */
+              if (orig_quality > jsvals.quality)
+                {
+                  jsvals.quality = orig_quality;
+                  jsvals.use_quant_tables = TRUE;
+                }
+              if (orig_subsmp == 2
+                  || (orig_subsmp > 0 && jsvals.subsmp == 0))
+                jsvals.subsmp = orig_subsmp;
             }
           break;
         }
@@ -424,7 +460,7 @@ run (const gchar      *name,
             }
 
           /* prepare for the preview */
-          image_ID_global = image_ID;
+          preview_image_ID = image_ID;
           orig_image_ID_global = orig_image_ID;
           drawable_ID_global = drawable_ID;
 

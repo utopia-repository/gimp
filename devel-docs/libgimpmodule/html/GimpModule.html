@@ -25,24 +25,28 @@
 <th width="100%" align="center">GIMP Module Library Reference Manual</th>
 <td><a accesskey="n" href="GimpModuleDB.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2583686" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2583848" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2574848" class="shortcut">Description</a>
+                  <a href="#id2575008" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2532939" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2533103" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2574801" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2574962" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2574822" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id2574983" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpModule"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2583686"></a><span class="refentrytitle">GimpModule</span>
+<a name="id2583848"></a><span class="refentrytitle">GimpModule</span>
 </h2>
-<p>GimpModule &#8212; A <span class="type">GTypeModule</span> subclass which implements module loading using <span class="type">GModule</span>.</p>
+<p>GimpModule &#8212; A <a
+href="../gobject/GTypeModule.html"
+><span class="type">GTypeModule</span></a> subclass which implements module loading using <a
+href="../glib/glib-Dynamic-Loading-of-Modules.html#GModule"
+><span class="type">GModule</span></a>.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
@@ -55,66 +59,114 @@
                     <a href="GimpModule.html#GimpModule-struct">GimpModule</a>;
                     <a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>;
 enum                <a href="GimpModule.html#GimpModuleState">GimpModuleState</a>;
-const <a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>* (<a href="GimpModule.html#GimpModuleQueryFunc">*GimpModuleQueryFunc</a>)            (GTypeModule *module);
-gboolean            (<a href="GimpModule.html#GimpModuleRegisterFunc">*GimpModuleRegisterFunc</a>)           (GTypeModule *module);
+const <a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>* (<a href="GimpModule.html#GimpModuleQueryFunc">*GimpModuleQueryFunc</a>)            (<a
+href="../gobject/GTypeModule.html"
+>GTypeModule</a> *module);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            (<a href="GimpModule.html#GimpModuleRegisterFunc">*GimpModuleRegisterFunc</a>)           (<a
+href="../gobject/GTypeModule.html"
+>GTypeModule</a> *module);
 #define             <a href="GimpModule.html#GIMP-MODULE-ABI-VERSION:CAPS">GIMP_MODULE_ABI_VERSION</a>
 #define             <a href="GimpModule.html#GIMP-MODULE-PARAM-SERIALIZE:CAPS">GIMP_MODULE_PARAM_SERIALIZE</a>
-<a href="GimpModule.html" title="GimpModule">GimpModule</a>*         <a href="GimpModule.html#gimp-module-new">gimp_module_new</a>                     (const gchar *filename,
-                                                         gboolean load_inhibit,
-                                                         gboolean verbose);
+<a href="GimpModule.html" title="GimpModule">GimpModule</a>*         <a href="GimpModule.html#gimp-module-new">gimp_module_new</a>                     (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> load_inhibit,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> verbose);
 void                <a href="GimpModule.html#gimp-module-modified">gimp_module_modified</a>                (<a href="GimpModule.html" title="GimpModule">GimpModule</a> *module);
-gboolean            <a href="GimpModule.html#gimp-module-query-module">gimp_module_query_module</a>            (<a href="GimpModule.html" title="GimpModule">GimpModule</a> *module);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="GimpModule.html#gimp-module-query-module">gimp_module_query_module</a>            (<a href="GimpModule.html" title="GimpModule">GimpModule</a> *module);
 void                <a href="GimpModule.html#gimp-module-set-load-inhibit">gimp_module_set_load_inhibit</a>        (<a href="GimpModule.html" title="GimpModule">GimpModule</a> *module,
-                                                         gboolean load_inhibit);
-const gchar*        <a href="GimpModule.html#gimp-module-state-name">gimp_module_state_name</a>              (<a href="GimpModule.html#GimpModuleState">GimpModuleState</a> state);
-GType               <a href="GimpModule.html#gimp-module-register-enum">gimp_module_register_enum</a>           (GTypeModule *module,
-                                                         const gchar *name,
-                                                         const GEnumValue *const _static_values);
-<a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>*     <a href="GimpModule.html#gimp-module-info-new">gimp_module_info_new</a>                (guint32 abi_version,
-                                                         const gchar *purpose,
-                                                         const gchar *author,
-                                                         const gchar *version,
-                                                         const gchar *copyright,
-                                                         const gchar *date);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> load_inhibit);
+const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        <a href="GimpModule.html#gimp-module-state-name">gimp_module_state_name</a>              (<a href="GimpModule.html#GimpModuleState">GimpModuleState</a> state);
+<a
+href="../gobject/gobject-Type-Information.html#GType"
+>GType</a>               <a href="GimpModule.html#gimp-module-register-enum">gimp_module_register_enum</a>           (<a
+href="../gobject/GTypeModule.html"
+>GTypeModule</a> *module,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         const <a
+href="../gobject/gobject-Enumeration-and-Flag-Types.html#GEnumValue"
+>GEnumValue</a> *const _static_values);
+<a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>*     <a href="GimpModule.html#gimp-module-info-new">gimp_module_info_new</a>                (<a
+href="../glib/glib-Basic-Types.html#guint32"
+>guint32</a> abi_version,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *purpose,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *author,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *version,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *copyright,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *date);
 <a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>*     <a href="GimpModule.html#gimp-module-info-copy">gimp_module_info_copy</a>               (const <a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a> *info);
 void                <a href="GimpModule.html#gimp-module-info-free">gimp_module_info_free</a>               (<a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a> *info);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2532939"></a><h2>Object Hierarchy</h2>
+<a name="id2533103"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  GObject
-   +----GTypeModule
+  <a
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="../gobject/GTypeModule.html"
+>GTypeModule</a>
          +----GimpModule
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2574801"></a><h2>Implemented Interfaces</h2>
+<a name="id2574962"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpModule implements
- GTypePlugin.</p>
+ <a
+href="../gobject/GTypePlugin.html"
+>GTypePlugin</a>.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2574822"></a><h2>Signals</h2>
+<a name="id2574983"></a><h2>Signals</h2>
 <pre class="synopsis">
 
   "<a href="GimpModule.html#GimpModule-modified">modified</a>"                                       : Run First
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2574848"></a><h2>Description</h2>
+<a name="id2575008"></a><h2>Description</h2>
 <p>
-A <span class="type">GTypeModule</span> subclass which implements module loading using <span class="type">GModule</span>.
+A <a
+href="../gobject/GTypeModule.html"
+><span class="type">GTypeModule</span></a> subclass which implements module loading using <a
+href="../glib/glib-Dynamic-Loading-of-Modules.html#GModule"
+><span class="type">GModule</span></a>.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2574878"></a><h2>Details</h2>
+<a name="id2575039"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2574889"></a><h3>
+<a name="id2575050"></a><h3>
 <a name="GimpModule-struct"></a>GimpModule</h3>
-<a class="indexterm" name="id2574902"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2575062"></a><pre class="programlisting">typedef struct {
   gchar           *filename;     /* path to the module                       */
   gboolean         verbose;      /* verbose error reporting                  */
   GimpModuleState  state;        /* what's happened to the module            */
@@ -128,17 +180,23 @@ A <span class="type">GTypeModule</span> subclass which implements module loading
 </pre>
 <p>
 <a href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a> is a generic mechanism to dynamically load modules into
-GIMP.  It is a <span class="type">GTypeModule</span> subclass, implementing module loading
-using <span class="type">GModule</span>.  <a href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a> does not know which functionality is
+GIMP.  It is a <a
+href="../gobject/GTypeModule.html"
+><span class="type">GTypeModule</span></a> subclass, implementing module loading
+using <a
+href="../glib/glib-Dynamic-Loading-of-Modules.html#GModule"
+><span class="type">GModule</span></a>.  <a href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a> does not know which functionality is
 implemented by the modules, it just provides a framework to get
-arbitrary <span class="type">GType</span> implementations loaded from disk.
+arbitrary <a
+href="../gobject/gobject-Type-Information.html#GType"
+><span class="type">GType</span></a> implementations loaded from disk.
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2574932"></a><h3>
+<a name="id2575093"></a><h3>
 <a name="GimpModuleInfo"></a>GimpModuleInfo</h3>
-<a class="indexterm" name="id2574944"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2575105"></a><pre class="programlisting">typedef struct {
   guint32  abi_version;
   gchar   *purpose;
   gchar   *author;
@@ -154,32 +212,44 @@ This structure contains information about a loadable module.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term">guint32&#160;<em class="structfield"><code>abi_version</code></em>;</span></td>
+<td><span class="term"><a
+href="../glib/glib-Basic-Types.html#guint32"
+>guint32</a>&#160;<em class="structfield"><code>abi_version</code></em>;</span></td>
 <td>The <a href="GimpModule.html#GIMP-MODULE-ABI-VERSION:CAPS"><span class="type">GIMP_MODULE_ABI_VERSION</span></a> the module was compiled against.
 </td>
 </tr>
 <tr>
-<td><span class="term">gchar&#160;*<em class="structfield"><code>purpose</code></em>;</span></td>
+<td><span class="term"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>&#160;*<em class="structfield"><code>purpose</code></em>;</span></td>
 <td>    The module's general purpose.
 </td>
 </tr>
 <tr>
-<td><span class="term">gchar&#160;*<em class="structfield"><code>author</code></em>;</span></td>
+<td><span class="term"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>&#160;*<em class="structfield"><code>author</code></em>;</span></td>
 <td>     The module's author.
 </td>
 </tr>
 <tr>
-<td><span class="term">gchar&#160;*<em class="structfield"><code>version</code></em>;</span></td>
+<td><span class="term"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>&#160;*<em class="structfield"><code>version</code></em>;</span></td>
 <td>    The module's version.
 </td>
 </tr>
 <tr>
-<td><span class="term">gchar&#160;*<em class="structfield"><code>copyright</code></em>;</span></td>
+<td><span class="term"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>&#160;*<em class="structfield"><code>copyright</code></em>;</span></td>
 <td>  The module's copyright.
 </td>
 </tr>
 <tr>
-<td><span class="term">gchar&#160;*<em class="structfield"><code>date</code></em>;</span></td>
+<td><span class="term"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>&#160;*<em class="structfield"><code>date</code></em>;</span></td>
 <td>       The module's release date.
 
 </td>
@@ -189,9 +259,9 @@ This structure contains information about a loadable module.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2510370"></a><h3>
+<a name="id2510534"></a><h3>
 <a name="GimpModuleState"></a>enum GimpModuleState</h3>
-<a class="indexterm" name="id2510382"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2510546"></a><pre class="programlisting">typedef enum
 {
   GIMP_MODULE_STATE_ERROR,       /* missing gimp_module_register function
                                   * or other error
@@ -227,7 +297,9 @@ The possible states a <a href="GimpModule.html" title="GimpModule"><span class="
 <tr>
 <td><span class="term"><a name="GIMP-MODULE-STATE-LOAD-FAILED:CAPS"></a><code class="literal">GIMP_MODULE_STATE_LOAD_FAILED</code></span></td>
 <td>
-<code class="function">gimp_module_register()</code> returned <span class="type">FALSE</span>.
+<code class="function">gimp_module_register()</code> returned <a
+href="../glib/glib-Standard-Macros.html#FALSE:CAPS"
+><span class="type">FALSE</span></a>.
 </td>
 </tr>
 <tr>
@@ -242,9 +314,11 @@ The possible states a <a href="GimpModule.html" title="GimpModule"><span class="
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2510537"></a><h3>
+<a name="id2510700"></a><h3>
 <a name="GimpModuleQueryFunc"></a>GimpModuleQueryFunc ()</h3>
-<a class="indexterm" name="id2510549"></a><pre class="programlisting">const <a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>* (*GimpModuleQueryFunc)            (GTypeModule *module);</pre>
+<a class="indexterm" name="id2510712"></a><pre class="programlisting">const <a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>* (*GimpModuleQueryFunc)            (<a
+href="../gobject/GTypeModule.html"
+>GTypeModule</a> *module);</pre>
 <p>
 The signature of the query function a loadable GIMP module must
 implement.  In the module, the function must be called
@@ -275,9 +349,13 @@ the module will just return a pointer to a constant structure).
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598930"></a><h3>
+<a name="id2599091"></a><h3>
 <a name="GimpModuleRegisterFunc"></a>GimpModuleRegisterFunc ()</h3>
-<a class="indexterm" name="id2598940"></a><pre class="programlisting">gboolean            (*GimpModuleRegisterFunc)           (GTypeModule *module);</pre>
+<a class="indexterm" name="id2599101"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            (*GimpModuleRegisterFunc)           (<a
+href="../gobject/GTypeModule.html"
+>GTypeModule</a> *module);</pre>
 <p>
 The signature of the register function a loadable GIMP module must
 implement.  In the module, the function must be called
@@ -298,7 +376,11 @@ it implements with the passed <em class="parameter"><code>module</code></em>.
 <tr>
 <td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
-<span class="type">TRUE</span> on success, <span class="type">FALSE</span> otherwise.
+<a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><span class="type">TRUE</span></a> on success, <a
+href="../glib/glib-Standard-Macros.html#FALSE:CAPS"
+><span class="type">FALSE</span></a> otherwise.
 
 
 </td>
@@ -308,9 +390,9 @@ it implements with the passed <em class="parameter"><code>module</code></em>.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599029"></a><h3>
+<a name="id2599190"></a><h3>
 <a name="GIMP-MODULE-ABI-VERSION:CAPS"></a>GIMP_MODULE_ABI_VERSION</h3>
-<a class="indexterm" name="id2599040"></a><pre class="programlisting">#define GIMP_MODULE_ABI_VERSION 0x0004
+<a class="indexterm" name="id2599202"></a><pre class="programlisting">#define GIMP_MODULE_ABI_VERSION 0x0004
 </pre>
 <p>
 The version of the module system's ABI. Modules put this value into
@@ -321,9 +403,9 @@ are compiled against.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599068"></a><h3>
+<a name="id2599231"></a><h3>
 <a name="GIMP-MODULE-PARAM-SERIALIZE:CAPS"></a>GIMP_MODULE_PARAM_SERIALIZE</h3>
-<a class="indexterm" name="id2599083"></a><pre class="programlisting">#define GIMP_MODULE_PARAM_SERIALIZE (1 &lt;&lt; (0 + G_PARAM_USER_SHIFT))
+<a class="indexterm" name="id2599245"></a><pre class="programlisting">#define GIMP_MODULE_PARAM_SERIALIZE (1 &lt;&lt; (0 + G_PARAM_USER_SHIFT))
 </pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -335,11 +417,17 @@ are compiled against.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599109"></a><h3>
+<a name="id2599271"></a><h3>
 <a name="gimp-module-new"></a>gimp_module_new ()</h3>
-<a class="indexterm" name="id2599120"></a><pre class="programlisting"><a href="GimpModule.html" title="GimpModule">GimpModule</a>*         gimp_module_new                     (const gchar *filename,
-                                                         gboolean load_inhibit,
-                                                         gboolean verbose);</pre>
+<a class="indexterm" name="id2599282"></a><pre class="programlisting"><a href="GimpModule.html" title="GimpModule">GimpModule</a>*         gimp_module_new                     (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> load_inhibit,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> verbose);</pre>
 <p>
 Creates a new <a href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a> instance.</p>
 <p>
@@ -355,12 +443,16 @@ Creates a new <a href="GimpModule.html" title="GimpModule"><span class="type">Gi
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>load_inhibit</code></em>&#160;:</span></td>
-<td> Pass <code class="literal">TRUE</code> to exclude this module from auto-loading.
+<td> Pass <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> to exclude this module from auto-loading.
 </td>
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>verbose</code></em>&#160;:</span></td>
-<td>      Pass <code class="literal">TRUE</code> to enable debugging output.
+<td>      Pass <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> to enable debugging output.
 </td>
 </tr>
 <tr>
@@ -373,9 +465,9 @@ Creates a new <a href="GimpModule.html" title="GimpModule"><span class="type">Gi
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599242"></a><h3>
+<a name="id2599404"></a><h3>
 <a name="gimp-module-modified"></a>gimp_module_modified ()</h3>
-<a class="indexterm" name="id2599253"></a><pre class="programlisting">void                gimp_module_modified                (<a href="GimpModule.html" title="GimpModule">GimpModule</a> *module);</pre>
+<a class="indexterm" name="id2599415"></a><pre class="programlisting">void                gimp_module_modified                (<a href="GimpModule.html" title="GimpModule">GimpModule</a> *module);</pre>
 <p>
 Emits the "modified" signal. Call it whenever you have modified the module
 manually (which you shouldn't do).</p>
@@ -393,9 +485,11 @@ manually (which you shouldn't do).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599305"></a><h3>
+<a name="id2599467"></a><h3>
 <a name="gimp-module-query-module"></a>gimp_module_query_module ()</h3>
-<a class="indexterm" name="id2599316"></a><pre class="programlisting">gboolean            gimp_module_query_module            (<a href="GimpModule.html" title="GimpModule">GimpModule</a> *module);</pre>
+<a class="indexterm" name="id2599477"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_module_query_module            (<a href="GimpModule.html" title="GimpModule">GimpModule</a> *module);</pre>
 <p>
 Queries the module without actually registering any of the types it
 may implement. After successful query, the <em class="parameter"><code>info</code></em> field of the
@@ -413,7 +507,9 @@ may implement. After successful query, the <em class="parameter"><code>info</cod
 </tr>
 <tr>
 <td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> <code class="literal">TRUE</code> on success.
+<td> <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> on success.
 </td>
 </tr>
 </tbody>
@@ -421,10 +517,12 @@ may implement. After successful query, the <em class="parameter"><code>info</cod
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599398"></a><h3>
+<a name="id2599560"></a><h3>
 <a name="gimp-module-set-load-inhibit"></a>gimp_module_set_load_inhibit ()</h3>
-<a class="indexterm" name="id2599410"></a><pre class="programlisting">void                gimp_module_set_load_inhibit        (<a href="GimpModule.html" title="GimpModule">GimpModule</a> *module,
-                                                         gboolean load_inhibit);</pre>
+<a class="indexterm" name="id2599572"></a><pre class="programlisting">void                gimp_module_set_load_inhibit        (<a href="GimpModule.html" title="GimpModule">GimpModule</a> *module,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> load_inhibit);</pre>
 <p>
 Sets the <em class="parameter"><code>load_inhibit</code></em> property if the module. Emits "modified".</p>
 <p>
@@ -440,7 +538,9 @@ Sets the <em class="parameter"><code>load_inhibit</code></em> property if the mo
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>load_inhibit</code></em>&#160;:</span></td>
-<td> Pass <code class="literal">TRUE</code> to exclude this module from auto-loading.
+<td> Pass <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> to exclude this module from auto-loading.
 </td>
 </tr>
 </tbody>
@@ -448,9 +548,11 @@ Sets the <em class="parameter"><code>load_inhibit</code></em> property if the mo
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599495"></a><h3>
+<a name="id2599657"></a><h3>
 <a name="gimp-module-state-name"></a>gimp_module_state_name ()</h3>
-<a class="indexterm" name="id2599506"></a><pre class="programlisting">const gchar*        gimp_module_state_name              (<a href="GimpModule.html#GimpModuleState">GimpModuleState</a> state);</pre>
+<a class="indexterm" name="id2599668"></a><pre class="programlisting">const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        gimp_module_state_name              (<a href="GimpModule.html#GimpModuleState">GimpModuleState</a> state);</pre>
 <p>
 Returns the translated textual representation of a <a href="GimpModule.html#GimpModuleState"><span class="type">GimpModuleState</span></a>.
 The returned string must not be freed.</p>
@@ -475,17 +577,27 @@ The returned string must not be freed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599580"></a><h3>
+<a name="id2599742"></a><h3>
 <a name="gimp-module-register-enum"></a>gimp_module_register_enum ()</h3>
-<a class="indexterm" name="id2599593"></a><pre class="programlisting">GType               gimp_module_register_enum           (GTypeModule *module,
-                                                         const gchar *name,
-                                                         const GEnumValue *const _static_values);</pre>
+<a class="indexterm" name="id2599755"></a><pre class="programlisting"><a
+href="../gobject/gobject-Type-Information.html#GType"
+>GType</a>               gimp_module_register_enum           (<a
+href="../gobject/GTypeModule.html"
+>GTypeModule</a> *module,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         const <a
+href="../gobject/gobject-Enumeration-and-Flag-Types.html#GEnumValue"
+>GEnumValue</a> *const _static_values);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_module_register_enum</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-This function is deprecated! Use <code class="function">g_type_module_register_enum()</code> instead.</p>
+This function is deprecated! Use <a
+href="../gobject/GTypeModule.html#g-type-module-register-enum"
+><code class="function">g_type_module_register_enum()</code></a> instead.</p>
 <p>
 
 </p>
@@ -509,7 +621,9 @@ This function is deprecated! Use <code class="function">g_type_module_register_e
 </tr>
 <tr>
 <td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> a new enum <span class="type">GType</span>
+<td> a new enum <a
+href="../gobject/gobject-Type-Information.html#GType"
+><span class="type">GType</span></a>
 </td>
 </tr>
 </tbody>
@@ -517,14 +631,26 @@ This function is deprecated! Use <code class="function">g_type_module_register_e
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599712"></a><h3>
+<a name="id2599874"></a><h3>
 <a name="gimp-module-info-new"></a>gimp_module_info_new ()</h3>
-<a class="indexterm" name="id2599723"></a><pre class="programlisting"><a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>*     gimp_module_info_new                (guint32 abi_version,
-                                                         const gchar *purpose,
-                                                         const gchar *author,
-                                                         const gchar *version,
-                                                         const gchar *copyright,
-                                                         const gchar *date);</pre>
+<a class="indexterm" name="id2599885"></a><pre class="programlisting"><a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>*     gimp_module_info_new                (<a
+href="../glib/glib-Basic-Types.html#guint32"
+>guint32</a> abi_version,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *purpose,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *author,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *version,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *copyright,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *date);</pre>
 <p>
 Creates a newly allocated <a href="GimpModule.html#GimpModuleInfo"><span class="type">GimpModuleInfo</span></a> struct.</p>
 <p>
@@ -573,9 +699,9 @@ Creates a newly allocated <a href="GimpModule.html#GimpModuleInfo"><span class="
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599894"></a><h3>
+<a name="id2600056"></a><h3>
 <a name="gimp-module-info-copy"></a>gimp_module_info_copy ()</h3>
-<a class="indexterm" name="id2599904"></a><pre class="programlisting"><a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>*     gimp_module_info_copy               (const <a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a> *info);</pre>
+<a class="indexterm" name="id2600066"></a><pre class="programlisting"><a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>*     gimp_module_info_copy               (const <a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a> *info);</pre>
 <p>
 Copies a <a href="GimpModule.html#GimpModuleInfo"><span class="type">GimpModuleInfo</span></a> struct.</p>
 <p>
@@ -599,9 +725,9 @@ Copies a <a href="GimpModule.html#GimpModuleInfo"><span class="type">GimpModuleI
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599970"></a><h3>
+<a name="id2600132"></a><h3>
 <a name="gimp-module-info-free"></a>gimp_module_info_free ()</h3>
-<a class="indexterm" name="id2599981"></a><pre class="programlisting">void                gimp_module_info_free               (<a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a> *info);</pre>
+<a class="indexterm" name="id2600143"></a><pre class="programlisting">void                gimp_module_info_free               (<a href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a> *info);</pre>
 <p>
 Frees the passed <a href="GimpModule.html#GimpModuleInfo"><span class="type">GimpModuleInfo</span></a>.</p>
 <p>
@@ -618,12 +744,14 @@ Frees the passed <a href="GimpModule.html#GimpModuleInfo"><span class="type">Gim
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2600038"></a><h2>Signal Details</h2>
+<a name="id2600200"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2600048"></a><h3>
+<a name="id2600210"></a><h3>
 <a name="GimpModule-modified"></a>The "modified" signal</h3>
-<a class="indexterm" name="id2600055"></a><pre class="programlisting">void                user_function                      (<a href="GimpModule.html" title="GimpModule">GimpModule</a> *gimpmodule,
-                                                        gpointer    user_data)       : Run First</pre>
+<a class="indexterm" name="id2600217"></a><pre class="programlisting">void                user_function                      (<a href="GimpModule.html" title="GimpModule">GimpModule</a> *gimpmodule,
+                                                        <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>    user_data)       : Run First</pre>
 <p>
 
 </p>
@@ -645,12 +773,16 @@ Frees the passed <a href="GimpModule.html#GimpModuleInfo"><span class="type">Gim
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2600119"></a><h2>See Also</h2>
+<a name="id2600280"></a><h2>See Also</h2>
 <p>
-<span class="type">GModule</span>
+<a
+href="../glib/glib-Dynamic-Loading-of-Modules.html#GModule"
+><span class="type">GModule</span></a>
 </p>
 <p>
-<span class="type">GTypeModule</span>
+<a
+href="../gobject/GTypeModule.html"
+><span class="type">GTypeModule</span></a>
 </p>
 </div>
 </div>

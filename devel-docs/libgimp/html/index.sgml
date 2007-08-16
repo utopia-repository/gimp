@@ -140,8 +140,7 @@
 <ANCHOR id="gimp-progress-pulse" href="libgimp/libgimp-gimpprogress.html#gimp-progress-pulse">
 <ANCHOR id="gimp-progress-set-text" href="libgimp/libgimp-gimpprogress.html#gimp-progress-set-text">
 <ANCHOR id="gimp-progress-set-text-printf" href="libgimp/libgimp-gimpprogress.html#gimp-progress-set-text-printf">
-<ANCHOR id="gimp-progress-uninstall" href="libgimp/libgimp-gimpprogress.html#gimp-progress-uninstall">
-<ANCHOR id="gimp-progress-cancel" href="libgimp/libgimp-gimpprogress.html#gimp-progress-cancel">
+<ANCHOR id="gimp-progress-end" href="libgimp/libgimp-gimpprogress.html#gimp-progress-end">
 <ANCHOR id="gimp-progress-get-window-handle" href="libgimp/libgimp-gimpprogress.html#gimp-progress-get-window-handle">
 <ANCHOR id="GimpProgressStartCallback" href="libgimp/libgimp-gimpprogress.html#GimpProgressStartCallback">
 <ANCHOR id="GimpProgressEndCallback" href="libgimp/libgimp-gimpprogress.html#GimpProgressEndCallback">
@@ -149,6 +148,8 @@
 <ANCHOR id="GimpProgressValueCallback" href="libgimp/libgimp-gimpprogress.html#GimpProgressValueCallback">
 <ANCHOR id="gimp-progress-install-vtable" href="libgimp/libgimp-gimpprogress.html#gimp-progress-install-vtable">
 <ANCHOR id="gimp-progress-install" href="libgimp/libgimp-gimpprogress.html#gimp-progress-install">
+<ANCHOR id="gimp-progress-uninstall" href="libgimp/libgimp-gimpprogress.html#gimp-progress-uninstall">
+<ANCHOR id="gimp-progress-cancel" href="libgimp/libgimp-gimpprogress.html#gimp-progress-cancel">
 <ANCHOR id="libgimp-gimpchannel" href="libgimp/libgimp-gimpchannel.html">
 <ANCHOR id="gimp-channel-new" href="libgimp/libgimp-gimpchannel.html#gimp-channel-new">
 <ANCHOR id="gimp-channel-new-from-component" href="libgimp/libgimp-gimpchannel.html#gimp-channel-new-from-component">

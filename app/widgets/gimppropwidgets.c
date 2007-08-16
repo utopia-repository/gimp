@@ -457,116 +457,259 @@ gimp_prop_view_notify (GObject      *config,
 }
 
 
+/***********************
+ *  number pair entry  *
+ ***********************/
+
 typedef struct
 {
   GObject     *config;
-  const gchar *numerator_property;
-  const gchar *denominator_property;
-  const gchar *fixed_aspect_property;
-} AspectData;
+  const gchar *left_number_property;
+  const gchar *right_number_property;
+  const gchar *default_left_number_property;
+  const gchar *default_right_number_property;
+  const gchar *user_override_property;
+} GimpPropNumberPairEntryData;
 
 static void
-aspect_data_free (AspectData *data)
+gimp_prop_number_pair_entry_data_free (GimpPropNumberPairEntryData *data)
 {
-  g_slice_free (AspectData, data);
+  g_slice_free (GimpPropNumberPairEntryData, data);
 }
 
 
-static void  gimp_prop_ratio_entry_notify   (GObject    *config,
-                                             GParamSpec *param_spec,
-                                             GtkEntry   *entry);
-static void  gimp_prop_aspect_ratio_changed (GtkWidget  *widget,
-                                             AspectData *data);
+static void  gimp_prop_number_pair_entry_config_notify   (GObject                     *config,
+                                                          GParamSpec                  *param_spec,
+                                                          GtkEntry                    *entry);
+static void  gimp_prop_number_pair_entry_number_pair_numbers_changed
+                                                         (GtkWidget                   *widget,
+                                                          GimpPropNumberPairEntryData *data);
+static void  gimp_prop_number_pair_entry_number_pair_user_override_notify
+                                                         (GtkWidget                   *entry,
+                                                          GParamSpec                  *param_spec,
+                                                          GimpPropNumberPairEntryData *data);
+
 
 /**
- * gimp_prop_aspect_ratio_new:
- * @config:                Object to which property is attached.
- * @numerator_property:    Name of double property for numerator.
- * @denominator_property:  Name of double property for denominator.
- * @fixed_aspect_property: Name of boolean property for fixed aspect (or %NULL).
+ * gimp_prop_number_pair_entry_new:
+ * @config:                        Object to which properties are attached.
+ * @left_number_property:          Name of double property for left number.
+ * @right_number_property:         Name of double property for right number.
+ * @default_left_number_property:  Name of double property for default left number.
+ * @default_right_number_property: Name of double property for default right number.
+ * @user_override_property:        Name of boolean property for user override mode.
+ * @connect_numbers_changed:       %TRUE to connect to the widgets "numbers-changed"
+ *                                 signal, %FALSE to not connect.
+ * @connect_ratio_changed:         %TRUE to connect to the widgets "ratio-changed"
+ *                                 signal, %FALSE to not connect.
+ * @separators:
+ * @allow_simplification:
+ * @min_valid_value:
+ * @max_valid_value:         What to pass to gimp_number_pair_entry_new ().
  *
- * Return value: a #GimpRatioEntry widget
+ * Return value: A #GimpNumberPairEntry widget.
  */
-GtkWidget *
-gimp_prop_aspect_ratio_new (GObject     *config,
-                            const gchar *numerator_property,
-                            const gchar *denominator_property,
-                            const gchar *fixed_aspect_property)
+GtkWidget * gimp_prop_number_pair_entry_new (GObject     *config,
+                                             const gchar *left_number_property,
+                                             const gchar *right_number_property,
+                                             const gchar *default_left_number_property,
+                                             const gchar *default_right_number_property,
+                                             const gchar *user_override_property,
+                                             gboolean     connect_numbers_changed,
+                                             gboolean     connect_ratio_changed,
+                                             const gchar *separators,
+                                             gboolean     allow_simplification,
+                                             gdouble      min_valid_value,
+                                             gdouble      max_valid_value)
 {
-  AspectData *aspect_data;
-  GtkWidget  *entry;
-  gdouble     numerator;
-  gdouble     denominator;
+  GimpPropNumberPairEntryData *data;
+  GtkWidget                   *number_pair_entry;
+  gdouble                      left_number;
+  gdouble                      right_number;
+  gdouble                      default_left_number;
+  gdouble                      default_right_number;
+  gboolean                     user_override;
+
+
+  /* Setup config data */
+
+  data = g_slice_new (GimpPropNumberPairEntryData);
+
+  data->config                        = config;
+  data->left_number_property          = left_number_property;
+  data->right_number_property         = right_number_property;
+  data->default_left_number_property  = default_left_number_property;
+  data->default_right_number_property = default_right_number_property;
+  data->user_override_property        = user_override_property;
+
+
+  /* Read current values of config properties */
 
   g_object_get (config,
-                numerator_property,   &numerator,
-                denominator_property, &denominator,
+                left_number_property,          &left_number,
+                right_number_property,         &right_number,
+                default_left_number_property,  &default_left_number,
+                default_right_number_property, &default_right_number,
+                user_override_property,        &user_override,
                 NULL);
 
-  aspect_data = g_slice_new (AspectData);
 
-  aspect_data->config                = config;
-  aspect_data->numerator_property    = numerator_property;
-  aspect_data->denominator_property  = denominator_property;
-  aspect_data->fixed_aspect_property = fixed_aspect_property;
+  /* Create a GimpNumberPairEntry and setup with config property values */
 
-  entry = gimp_ratio_entry_new ();
-  gtk_entry_set_width_chars (GTK_ENTRY (entry), 7);
+  number_pair_entry = gimp_number_pair_entry_new (separators,
+                                                  allow_simplification,
+                                                  min_valid_value,
+                                                  max_valid_value);
 
-  g_object_set_data_full (G_OBJECT (entry),
-                          "gimp-ratio-entry-aspect-data", aspect_data,
-                          (GDestroyNotify) aspect_data_free);
+  g_object_set_data_full (G_OBJECT (number_pair_entry),
+                          "gimp-prop-number-pair-entry-data", data,
+                          (GDestroyNotify) gimp_prop_number_pair_entry_data_free);
 
-  gimp_ratio_entry_set_fraction (GIMP_RATIO_ENTRY (entry),
-                                 numerator, denominator);
+  gtk_entry_set_width_chars (GTK_ENTRY (number_pair_entry), 7);
 
-  g_signal_connect (entry, "ratio-changed",
-                    G_CALLBACK (gimp_prop_aspect_ratio_changed),
-                    aspect_data);
+  gimp_number_pair_entry_set_user_override  (GIMP_NUMBER_PAIR_ENTRY (number_pair_entry),
+                                             user_override);
+  gimp_number_pair_entry_set_values         (GIMP_NUMBER_PAIR_ENTRY (number_pair_entry),
+                                             left_number,
+                                             right_number);
+  gimp_number_pair_entry_set_default_values (GIMP_NUMBER_PAIR_ENTRY (number_pair_entry),
+                                             default_left_number,
+                                             default_right_number);
 
-  connect_notify (config, numerator_property,
-                  G_CALLBACK (gimp_prop_ratio_entry_notify),
-                  entry);
-  connect_notify (config, denominator_property,
-                  G_CALLBACK (gimp_prop_ratio_entry_notify),
-                  entry);
 
-  return entry;
+  /* Connect to GimpNumberPairEntry signals */
+
+  if (connect_ratio_changed)
+    g_signal_connect (number_pair_entry, "ratio-changed",
+                      G_CALLBACK (gimp_prop_number_pair_entry_number_pair_numbers_changed),
+                      data);
+
+  if (connect_numbers_changed)
+    g_signal_connect (number_pair_entry, "numbers-changed",
+                      G_CALLBACK (gimp_prop_number_pair_entry_number_pair_numbers_changed),
+                      data);
+
+  g_signal_connect (number_pair_entry, "notify::user-override",
+                    G_CALLBACK (gimp_prop_number_pair_entry_number_pair_user_override_notify),
+                    data);
+
+
+  /* Connect to connfig object signals */
+
+  connect_notify (config, left_number_property,
+                  G_CALLBACK (gimp_prop_number_pair_entry_config_notify),
+                  number_pair_entry);
+  connect_notify (config, right_number_property,
+                  G_CALLBACK (gimp_prop_number_pair_entry_config_notify),
+                  number_pair_entry);
+  connect_notify (config, default_left_number_property,
+                  G_CALLBACK (gimp_prop_number_pair_entry_config_notify),
+                  number_pair_entry);
+  connect_notify (config, default_right_number_property,
+                  G_CALLBACK (gimp_prop_number_pair_entry_config_notify),
+                  number_pair_entry);
+  connect_notify (config, user_override_property,
+                  G_CALLBACK (gimp_prop_number_pair_entry_config_notify),
+                  number_pair_entry);
+
+
+  /* Done */
+
+  return number_pair_entry;
 }
 
 static void
-gimp_prop_ratio_entry_notify (GObject    *config,
-                              GParamSpec *param_spec,
-                              GtkEntry   *entry)
+gimp_prop_number_pair_entry_config_notify (GObject    *config,
+                                           GParamSpec *param_spec,
+                                           GtkEntry   *number_pair_entry)
 {
-  AspectData *aspect_data = g_object_get_data (G_OBJECT (entry),
-                                               "gimp-ratio-entry-aspect-data");
-  gdouble     num, denom;
+  GimpPropNumberPairEntryData *data =
+    g_object_get_data (G_OBJECT (number_pair_entry),
+                       "gimp-prop-number-pair-entry-data");
 
-  g_return_if_fail (aspect_data != NULL);
+  g_return_if_fail (data != NULL);
 
-  g_object_get (config,
-                aspect_data->numerator_property,   &num,
-                aspect_data->denominator_property, &denom,
-                NULL);
+  if (strcmp (param_spec->name, data->left_number_property)  == 0 ||
+      strcmp (param_spec->name, data->right_number_property) == 0)
+    {
+      gdouble left_number;
+      gdouble right_number;
 
-  gimp_ratio_entry_set_fraction (GIMP_RATIO_ENTRY (entry), num, denom);
+      g_object_get (config,
+                    data->left_number_property,  &left_number,
+                    data->right_number_property, &right_number,
+                    NULL);
+
+      gimp_number_pair_entry_set_values (GIMP_NUMBER_PAIR_ENTRY (number_pair_entry),
+                                         left_number,
+                                         right_number);
+    }
+  else if (strcmp (param_spec->name, data->default_left_number_property)  == 0 ||
+           strcmp (param_spec->name, data->default_right_number_property) == 0)
+    {
+      gdouble default_left_number;
+      gdouble default_right_number;
+
+      g_object_get (config,
+                    data->default_left_number_property,  &default_left_number,
+                    data->default_right_number_property, &default_right_number,
+                    NULL);
+
+      gimp_number_pair_entry_set_default_values (GIMP_NUMBER_PAIR_ENTRY (number_pair_entry),
+                                                 default_left_number,
+                                                 default_right_number);
+    }
+  else if (strcmp (param_spec->name, data->user_override_property)  == 0)
+    {
+      gboolean user_override;
+
+      g_object_get (config,
+                    data->user_override_property, &user_override,
+                    NULL);
+
+      gimp_number_pair_entry_set_user_override (GIMP_NUMBER_PAIR_ENTRY (number_pair_entry),
+                                                user_override);
+    }
 }
 
-
 static void
-gimp_prop_aspect_ratio_changed (GtkWidget  *widget,
-                                AspectData *data)
+gimp_prop_number_pair_entry_number_pair_numbers_changed (GtkWidget                   *widget,
+                                                         GimpPropNumberPairEntryData *data)
 {
-  gdouble num, denom;
+  gdouble left_number;
+  gdouble right_number;
 
-  gimp_ratio_entry_get_fraction (GIMP_RATIO_ENTRY (widget), &num, &denom);
+  gimp_number_pair_entry_get_values (GIMP_NUMBER_PAIR_ENTRY (widget),
+                                     &left_number,
+                                     &right_number);
 
   g_object_set (data->config,
-                data->numerator_property,    num,
-                data->denominator_property,  denom,
-                data->fixed_aspect_property, TRUE,
+                data->left_number_property,  left_number,
+                data->right_number_property, right_number,
                 NULL);
+}
+
+static void
+gimp_prop_number_pair_entry_number_pair_user_override_notify (GtkWidget                   *entry,
+                                                              GParamSpec                  *param_spec,
+                                                              GimpPropNumberPairEntryData *data)
+
+{
+  gboolean old_config_user_override;
+  gboolean new_config_user_override;
+
+  g_object_get (data->config,
+                data->user_override_property, &old_config_user_override,
+                NULL);
+
+  new_config_user_override =
+    gimp_number_pair_entry_get_user_override (GIMP_NUMBER_PAIR_ENTRY (entry));
+
+  /* Only set when property changed, to avoid deadlocks */
+  if (new_config_user_override != old_config_user_override)
+    g_object_set (data->config,
+                  data->user_override_property, new_config_user_override,
+                  NULL);
 }
 
 
@@ -574,7 +717,20 @@ gimp_prop_aspect_ratio_changed (GtkWidget  *widget,
 /*  private utility functions  */
 /*******************************/
 
-static GQuark param_spec_quark = 0;
+static GQuark gimp_prop_widgets_param_spec_quark (void) G_GNUC_CONST;
+
+#define PARAM_SPEC_QUARK (gimp_prop_widgets_param_spec_quark ())
+
+static GQuark
+gimp_prop_widgets_param_spec_quark (void)
+{
+  static GQuark param_spec_quark = 0;
+
+  if (! param_spec_quark)
+    param_spec_quark = g_quark_from_static_string ("gimp-config-param-spec");
+
+  return param_spec_quark;
+}
 
 static void
 set_param_spec (GObject     *object,
@@ -583,10 +739,7 @@ set_param_spec (GObject     *object,
 {
   if (object)
     {
-      if (! param_spec_quark)
-        param_spec_quark = g_quark_from_static_string ("gimp-config-param-spec");
-
-      g_object_set_qdata (object, param_spec_quark, param_spec);
+      g_object_set_qdata (object, PARAM_SPEC_QUARK, param_spec);
     }
 
   if (widget)
@@ -601,10 +754,7 @@ set_param_spec (GObject     *object,
 static GParamSpec *
 get_param_spec (GObject *object)
 {
-  if (! param_spec_quark)
-    param_spec_quark = g_quark_from_static_string ("gimp-config-param-spec");
-
-  return g_object_get_qdata (object, param_spec_quark);
+  return g_object_get_qdata (object, PARAM_SPEC_QUARK);
 }
 
 static GParamSpec *

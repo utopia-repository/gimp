@@ -16,18 +16,20 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __SAMPLE_FUNCS_H__
-#define __SAMPLE_FUNCS_H__
+#ifndef __GIMP_PLUG_IN_ERROR_H__
+#define __GIMP_PLUG_IN_ERROR_H__
 
 
-void   subsample_region         (PixelRegion  *srcPR,
-                                 PixelRegion  *destPR,
-                                 gint          subsample);
-
-void   subsample_indexed_region (PixelRegion  *srcPR,
-                                 PixelRegion  *destPR,
-                                 const guchar *cmap,
-                                 gint          subsample);
+typedef enum
+{
+  GIMP_PLUG_IN_EXECUTION_FAILED,
+  GIMP_PLUG_IN_NOT_FOUND
+} GimpPlugInErrorCode;
 
 
-#endif  /*  __SAMPLE_FUNCS_H__  */
+#define GIMP_PLUG_IN_ERROR (gimp_plug_in_error_quark ())
+
+GQuark  gimp_plug_in_error_quark (void) G_GNUC_CONST;
+
+
+#endif /* __GIMP_PLUG_IN_ERROR_H__ */

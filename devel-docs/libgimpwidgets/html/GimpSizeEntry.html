@@ -33,22 +33,22 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpStringComboBox.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2570238" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2587198" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2629040" class="shortcut">Description</a>
+                  <a href="#id2629086" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2628926" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2628972" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2628981" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2629027" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2629002" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id2629048" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpSizeEntry"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2570238"></a><span class="refentrytitle">GimpSizeEntry</span>
+<a name="id2587198"></a><span class="refentrytitle">GimpSizeEntry</span>
 </h2>
 <p>GimpSizeEntry &#8212; Widget for entering pixel values and resolutions.</p>
 </td>
@@ -63,55 +63,127 @@
                     <a href="GimpSizeEntry.html#GimpSizeEntry-struct">GimpSizeEntry</a>;
                     <a href="GimpSizeEntry.html#GimpSizeEntryField">GimpSizeEntryField</a>;
 enum                <a href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy</a>;
-GtkWidget*          <a href="GimpSizeEntry.html#gimp-size-entry-new">gimp_size_entry_new</a>                 (gint number_of_fields,
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          <a href="GimpSizeEntry.html#gimp-size-entry-new">gimp_size_entry_new</a>                 (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> number_of_fields,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a> unit,
-                                                         const gchar *unit_format,
-                                                         gboolean menu_show_pixels,
-                                                         gboolean menu_show_percent,
-                                                         gboolean show_refval,
-                                                         gint spinbutton_width,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *unit_format,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> menu_show_pixels,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> menu_show_percent,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> show_refval,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> spinbutton_width,
                                                          <a href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy</a> update_policy);
 void                <a href="GimpSizeEntry.html#gimp-size-entry-add-field">gimp_size_entry_add_field</a>           (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         GtkSpinButton *value_spinbutton,
-                                                         GtkSpinButton *refval_spinbutton);
-GtkWidget*          <a href="GimpSizeEntry.html#gimp-size-entry-attach-label">gimp_size_entry_attach_label</a>        (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         const gchar *text,
-                                                         gint row,
-                                                         gint column,
-                                                         gfloat alignment);
+                                                         <a
+href="../gtk/GtkSpinButton.html"
+>GtkSpinButton</a> *value_spinbutton,
+                                                         <a
+href="../gtk/GtkSpinButton.html"
+>GtkSpinButton</a> *refval_spinbutton);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          <a href="GimpSizeEntry.html#gimp-size-entry-attach-label">gimp_size_entry_attach_label</a>        (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *text,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> row,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> column,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gfloat"
+>gfloat</a> alignment);
 void                <a href="GimpSizeEntry.html#gimp-size-entry-set-resolution">gimp_size_entry_set_resolution</a>      (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field,
-                                                         gdouble resolution,
-                                                         gboolean keep_size);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> resolution,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> keep_size);
 void                <a href="GimpSizeEntry.html#gimp-size-entry-set-size">gimp_size_entry_set_size</a>            (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field,
-                                                         gdouble lower,
-                                                         gdouble upper);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> lower,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> upper);
 void                <a href="GimpSizeEntry.html#gimp-size-entry-set-value-boundaries">gimp_size_entry_set_value_boundaries</a>
                                                         (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field,
-                                                         gdouble lower,
-                                                         gdouble upper);
-gdouble             <a href="GimpSizeEntry.html#gimp-size-entry-get-value">gimp_size_entry_get_value</a>           (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> lower,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> upper);
+<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             <a href="GimpSizeEntry.html#gimp-size-entry-get-value">gimp_size_entry_get_value</a>           (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field);
 void                <a href="GimpSizeEntry.html#gimp-size-entry-set-value">gimp_size_entry_set_value</a>           (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field,
-                                                         gdouble value);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> value);
 void                <a href="GimpSizeEntry.html#gimp-size-entry-set-refval-boundaries">gimp_size_entry_set_refval_boundaries</a>
                                                         (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field,
-                                                         gdouble lower,
-                                                         gdouble upper);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> lower,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> upper);
 void                <a href="GimpSizeEntry.html#gimp-size-entry-set-refval-digits">gimp_size_entry_set_refval_digits</a>   (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field,
-                                                         gint digits);
-gdouble             <a href="GimpSizeEntry.html#gimp-size-entry-get-refval">gimp_size_entry_get_refval</a>          (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> digits);
+<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             <a href="GimpSizeEntry.html#gimp-size-entry-get-refval">gimp_size_entry_get_refval</a>          (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field);
 void                <a href="GimpSizeEntry.html#gimp-size-entry-set-refval">gimp_size_entry_set_refval</a>          (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field,
-                                                         gdouble refval);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> refval);
 <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a>            <a href="GimpSizeEntry.html#gimp-size-entry-get-unit">gimp_size_entry_get_unit</a>            (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse);
@@ -120,39 +192,61 @@ void                <a href="GimpSizeEntry.html#gimp-size-entry-set-unit">gimp_s
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a> unit);
 void                <a href="GimpSizeEntry.html#gimp-size-entry-set-pixel-digits">gimp_size_entry_set_pixel_digits</a>    (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint digits);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> digits);
 void                <a href="GimpSizeEntry.html#gimp-size-entry-show-unit-menu">gimp_size_entry_show_unit_menu</a>      (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gboolean show);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> show);
 void                <a href="GimpSizeEntry.html#gimp-size-entry-grab-focus">gimp_size_entry_grab_focus</a>          (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse);
 void                <a href="GimpSizeEntry.html#gimp-size-entry-set-activates-default">gimp_size_entry_set_activates_default</a>
                                                         (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gboolean setting);
-GtkWidget*          <a href="GimpSizeEntry.html#gimp-size-entry-get-help-widget">gimp_size_entry_get_help_widget</a>     (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> setting);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          <a href="GimpSizeEntry.html#gimp-size-entry-get-help-widget">gimp_size_entry_get_help_widget</a>     (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2628926"></a><h2>Object Hierarchy</h2>
+<a name="id2628972"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkContainer
-                           +----GtkTable
+  <a
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+                     +----<a
+href="../gtk/GtkContainer.html"
+>GtkContainer</a>
+                           +----<a
+href="../gtk/GtkTable.html"
+>GtkTable</a>
                                  +----GimpSizeEntry
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2628981"></a><h2>Implemented Interfaces</h2>
+<a name="id2629027"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpSizeEntry implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2629002"></a><h2>Signals</h2>
+<a name="id2629048"></a><h2>Signals</h2>
 <pre class="synopsis">
 
   "<a href="GimpSizeEntry.html#GimpSizeEntry-refval-changed">refval-changed</a>"                                 : Run First
@@ -161,7 +255,7 @@ GimpSizeEntry implements
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2629040"></a><h2>Description</h2>
+<a name="id2629086"></a><h2>Description</h2>
 <p>
 This widget is used to enter pixel distances/sizes and resolutions.
 </p>
@@ -177,9 +271,15 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 ><span class="type">GimpUnit</span></a> of the displayed values.
 </p>
 <p>
-For each field, there can be one or two <span class="type">GtkSpinButton</span>'s to enter
-"value" and "reference value". If you specify <em class="parameter"><code>show_refval</code></em> as <span class="type">FALSE</span>
-in <a href="GimpSizeEntry.html#gimp-size-entry-new"><code class="function">gimp_size_entry_new()</code></a> there will be only one <span class="type">GtkSpinButton</span> and the
+For each field, there can be one or two <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a>'s to enter
+"value" and "reference value". If you specify <em class="parameter"><code>show_refval</code></em> as <a
+href="../glib/glib-Standard-Macros.html#FALSE:CAPS"
+><span class="type">FALSE</span></a>
+in <a href="GimpSizeEntry.html#gimp-size-entry-new"><code class="function">gimp_size_entry_new()</code></a> there will be only one <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a> and the
 <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a> will contain an item for selecting GIMP_UNIT_PIXEL.
 </p>
 <p>
@@ -193,29 +293,29 @@ real-world-unit.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2634404"></a><h2>Details</h2>
+<a name="id2637838"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2634413"></a><h3>
+<a name="id2637848"></a><h3>
 <a name="GimpSizeEntry-struct"></a>GimpSizeEntry</h3>
-<a class="indexterm" name="id2634423"></a><pre class="programlisting">typedef struct _GimpSizeEntry GimpSizeEntry;</pre>
+<a class="indexterm" name="id2637858"></a><pre class="programlisting">typedef struct _GimpSizeEntry GimpSizeEntry;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2634438"></a><h3>
+<a name="id2637872"></a><h3>
 <a name="GimpSizeEntryField"></a>GimpSizeEntryField</h3>
-<a class="indexterm" name="id2634448"></a><pre class="programlisting">typedef struct _GimpSizeEntryField GimpSizeEntryField;</pre>
+<a class="indexterm" name="id2637883"></a><pre class="programlisting">typedef struct _GimpSizeEntryField GimpSizeEntryField;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2634463"></a><h3>
+<a name="id2637898"></a><h3>
 <a name="GimpSizeEntryUpdatePolicy"></a>enum GimpSizeEntryUpdatePolicy</h3>
-<a class="indexterm" name="id2634473"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2637908"></a><pre class="programlisting">typedef enum
 {
   GIMP_SIZE_ENTRY_UPDATE_NONE       = 0,
   GIMP_SIZE_ENTRY_UPDATE_SIZE       = 1,
@@ -228,17 +328,31 @@ real-world-unit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2634490"></a><h3>
+<a name="id2637924"></a><h3>
 <a name="gimp-size-entry-new"></a>gimp_size_entry_new ()</h3>
-<a class="indexterm" name="id2634500"></a><pre class="programlisting">GtkWidget*          gimp_size_entry_new                 (gint number_of_fields,
+<a class="indexterm" name="id2637935"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_size_entry_new                 (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> number_of_fields,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a> unit,
-                                                         const gchar *unit_format,
-                                                         gboolean menu_show_pixels,
-                                                         gboolean menu_show_percent,
-                                                         gboolean show_refval,
-                                                         gint spinbutton_width,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *unit_format,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> menu_show_pixels,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> menu_show_percent,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> show_refval,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> spinbutton_width,
                                                          <a href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy</a> update_policy);</pre>
 <p>
 Creates a new <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> widget.
@@ -273,7 +387,9 @@ For each input field:
 7. <a href="GimpSizeEntry.html#gimp-size-entry-set-refval"><code class="function">gimp_size_entry_set_refval()</code></a> (or <a href="GimpSizeEntry.html#gimp-size-entry-set-value"><code class="function">gimp_size_entry_set_value()</code></a>)
 </p>
 <p>
-The <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> is derived from <span class="type">GtkTable</span> and will have
+The <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> is derived from <a
+href="../gtk/GtkTable.html"
+><span class="type">GtkTable</span></a> and will have
 an empty border of one cell width on each side plus an empty column left
 of the <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a> to allow the caller to add labels or a
 <a href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a>.</p>
@@ -301,26 +417,34 @@ of the <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpU
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>menu_show_pixels</code></em>&#160;:</span></td>
-<td>  <code class="literal">TRUE</code> if the unit menu shold contain an item for
+<td>  <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if the unit menu shold contain an item for
                     GIMP_UNIT_PIXEL (ignored if the <em class="parameter"><code>update_policy</code></em> is not
                     GIMP_SIZE_ENTRY_UPDATE_NONE).
 </td>
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>menu_show_percent</code></em>&#160;:</span></td>
-<td> <code class="literal">TRUE</code> if the unit menu shold contain an item for
+<td> <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if the unit menu shold contain an item for
                     GIMP_UNIT_PERCENT.
 </td>
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>show_refval</code></em>&#160;:</span></td>
-<td>       <code class="literal">TRUE</code> if you want an extra "reference value"
+<td>       <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if you want an extra "reference value"
                     spinbutton per input field.
 </td>
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>spinbutton_width</code></em>&#160;:</span></td>
-<td>  The minimal horizontal size of the <span class="type">GtkSpinButton</span>'s.
+<td>  The minimal horizontal size of the <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a>'s.
 </td>
 </tr>
 <tr>
@@ -339,18 +463,28 @@ of the <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpU
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2634937"></a><h3>
+<a name="id2638371"></a><h3>
 <a name="gimp-size-entry-add-field"></a>gimp_size_entry_add_field ()</h3>
-<a class="indexterm" name="id2634949"></a><pre class="programlisting">void                gimp_size_entry_add_field           (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         GtkSpinButton *value_spinbutton,
-                                                         GtkSpinButton *refval_spinbutton);</pre>
+<a class="indexterm" name="id2638383"></a><pre class="programlisting">void                gimp_size_entry_add_field           (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+                                                         <a
+href="../gtk/GtkSpinButton.html"
+>GtkSpinButton</a> *value_spinbutton,
+                                                         <a
+href="../gtk/GtkSpinButton.html"
+>GtkSpinButton</a> *refval_spinbutton);</pre>
 <p>
 Adds an input field to the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.
 </p>
 <p>
 The new input field will have the index 0. If you specified <em class="parameter"><code>show_refval</code></em>
-as <code class="literal">TRUE</code> in <a href="GimpSizeEntry.html#gimp-size-entry-new"><code class="function">gimp_size_entry_new()</code></a> you have to pass an additional
-<span class="type">GtkSpinButton</span> to hold the reference value. If <em class="parameter"><code>show_refval</code></em> was <code class="literal">FALSE</code>,
+as <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> in <a href="GimpSizeEntry.html#gimp-size-entry-new"><code class="function">gimp_size_entry_new()</code></a> you have to pass an additional
+<a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a> to hold the reference value. If <em class="parameter"><code>show_refval</code></em> was <a
+href="../glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a>,
 <em class="parameter"><code>refval_spinbutton</code></em> will be ignored.</p>
 <p>
 
@@ -378,15 +512,29 @@ as <code class="literal">TRUE</code> in <a href="GimpSizeEntry.html#gimp-size-en
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635111"></a><h3>
+<a name="id2638544"></a><h3>
 <a name="gimp-size-entry-attach-label"></a>gimp_size_entry_attach_label ()</h3>
-<a class="indexterm" name="id2635124"></a><pre class="programlisting">GtkWidget*          gimp_size_entry_attach_label        (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         const gchar *text,
-                                                         gint row,
-                                                         gint column,
-                                                         gfloat alignment);</pre>
+<a class="indexterm" name="id2638558"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_size_entry_attach_label        (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *text,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> row,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> column,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gfloat"
+>gfloat</a> alignment);</pre>
 <p>
-Attaches a <span class="type">GtkLabel</span> to the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> (which is a <span class="type">GtkTable</span>).</p>
+Attaches a <a
+href="../gtk/GtkLabel.html"
+><span class="type">GtkLabel</span></a> to the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> (which is a <a
+href="../gtk/GtkTable.html"
+><span class="type">GtkTable</span></a>).</p>
 <p>
 
 </p>
@@ -420,7 +568,9 @@ Attaches a <span class="type">GtkLabel</span> to the <a href="GimpSizeEntry.html
 </tr>
 <tr>
 <td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A pointer to the new <span class="type">GtkLabel</span> widget.
+<td> A pointer to the new <a
+href="../gtk/GtkLabel.html"
+><span class="type">GtkLabel</span></a> widget.
 </td>
 </tr>
 </tbody>
@@ -428,12 +578,18 @@ Attaches a <span class="type">GtkLabel</span> to the <a href="GimpSizeEntry.html
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635302"></a><h3>
+<a name="id2638735"></a><h3>
 <a name="gimp-size-entry-set-resolution"></a>gimp_size_entry_set_resolution ()</h3>
-<a class="indexterm" name="id2635315"></a><pre class="programlisting">void                gimp_size_entry_set_resolution      (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field,
-                                                         gdouble resolution,
-                                                         gboolean keep_size);</pre>
+<a class="indexterm" name="id2638748"></a><pre class="programlisting">void                gimp_size_entry_set_resolution      (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> resolution,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> keep_size);</pre>
 <p>
 Sets the resolution (in dpi) for field # <em class="parameter"><code>field</code></em> of the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.
 </p>
@@ -471,8 +627,12 @@ This function does nothing if the <a href="GimpSizeEntry.html#GimpSizeEntryUpdat
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>keep_size</code></em>&#160;:</span></td>
-<td>  <code class="literal">TRUE</code> if the <em class="parameter"><code>field</code></em>'s size in pixels should stay the same.
-             <code class="literal">FALSE</code> if the <em class="parameter"><code>field</code></em>'s size in units should stay the same.
+<td>  <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if the <em class="parameter"><code>field</code></em>'s size in pixels should stay the same.
+             <a
+href="../glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> if the <em class="parameter"><code>field</code></em>'s size in units should stay the same.
 </td>
 </tr>
 </tbody>
@@ -480,18 +640,26 @@ This function does nothing if the <a href="GimpSizeEntry.html#GimpSizeEntryUpdat
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635535"></a><h3>
+<a name="id2638968"></a><h3>
 <a name="gimp-size-entry-set-size"></a>gimp_size_entry_set_size ()</h3>
-<a class="indexterm" name="id2635546"></a><pre class="programlisting">void                gimp_size_entry_set_size            (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field,
-                                                         gdouble lower,
-                                                         gdouble upper);</pre>
+<a class="indexterm" name="id2638979"></a><pre class="programlisting">void                gimp_size_entry_set_size            (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> lower,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> upper);</pre>
 <p>
 Sets the pixel values for field # <em class="parameter"><code>field</code></em> of the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>
 which will be treated as 0% and 100%.
 </p>
 <p>
-These values will be used if you specified <em class="parameter"><code>menu_show_percent</code></em> as <code class="literal">TRUE</code>
+These values will be used if you specified <em class="parameter"><code>menu_show_percent</code></em> as <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a>
 in <a href="GimpSizeEntry.html#gimp-size-entry-new"><code class="function">gimp_size_entry_new()</code></a> and the user has selected GIMP_UNIT_PERCENT in
 the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>'s <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a>.
 </p>
@@ -529,13 +697,19 @@ This function does nothing if the <a href="GimpSizeEntry.html#GimpSizeEntryUpdat
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635742"></a><h3>
+<a name="id2639175"></a><h3>
 <a name="gimp-size-entry-set-value-boundaries"></a>gimp_size_entry_set_value_boundaries ()</h3>
-<a class="indexterm" name="id2635755"></a><pre class="programlisting">void                gimp_size_entry_set_value_boundaries
+<a class="indexterm" name="id2639189"></a><pre class="programlisting">void                gimp_size_entry_set_value_boundaries
                                                         (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field,
-                                                         gdouble lower,
-                                                         gdouble upper);</pre>
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> lower,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> upper);</pre>
 <p>
 Limits the range of possible values which can be entered in field # <em class="parameter"><code>field</code></em>
 of the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.
@@ -581,10 +755,14 @@ NOTE: In most cases you won't be interested in this function because the
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635942"></a><h3>
+<a name="id2639375"></a><h3>
 <a name="gimp-size-entry-get-value"></a>gimp_size_entry_get_value ()</h3>
-<a class="indexterm" name="id2635954"></a><pre class="programlisting">gdouble             gimp_size_entry_get_value           (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field);</pre>
+<a class="indexterm" name="id2639387"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             gimp_size_entry_get_value           (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field);</pre>
 <p>
 Returns the value of field # <em class="parameter"><code>field</code></em> of the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.
 </p>
@@ -625,11 +803,15 @@ NOTE: In most cases you won't be interested in this value because the
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636111"></a><h3>
+<a name="id2639545"></a><h3>
 <a name="gimp-size-entry-set-value"></a>gimp_size_entry_set_value ()</h3>
-<a class="indexterm" name="id2636123"></a><pre class="programlisting">void                gimp_size_entry_set_value           (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field,
-                                                         gdouble value);</pre>
+<a class="indexterm" name="id2639557"></a><pre class="programlisting">void                gimp_size_entry_set_value           (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> value);</pre>
 <p>
 Sets the value for field # <em class="parameter"><code>field</code></em> of the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.
 </p>
@@ -670,13 +852,19 @@ NOTE: In most cases you won't be interested in this value because the
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636292"></a><h3>
+<a name="id2639726"></a><h3>
 <a name="gimp-size-entry-set-refval-boundaries"></a>gimp_size_entry_set_refval_boundaries ()</h3>
-<a class="indexterm" name="id2636306"></a><pre class="programlisting">void                gimp_size_entry_set_refval_boundaries
+<a class="indexterm" name="id2639739"></a><pre class="programlisting">void                gimp_size_entry_set_refval_boundaries
                                                         (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field,
-                                                         gdouble lower,
-                                                         gdouble upper);</pre>
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> lower,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> upper);</pre>
 <p>
 Limits the range of possible reference values which can be entered in
 field # <em class="parameter"><code>field</code></em> of the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.
@@ -716,11 +904,15 @@ The current reference value of the <em class="parameter"><code>field</code></em>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636468"></a><h3>
+<a name="id2639902"></a><h3>
 <a name="gimp-size-entry-set-refval-digits"></a>gimp_size_entry_set_refval_digits ()</h3>
-<a class="indexterm" name="id2636482"></a><pre class="programlisting">void                gimp_size_entry_set_refval_digits   (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field,
-                                                         gint digits);</pre>
+<a class="indexterm" name="id2639916"></a><pre class="programlisting">void                gimp_size_entry_set_refval_digits   (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> digits);</pre>
 <p>
 Sets the decimal digits of field # <em class="parameter"><code>field</code></em> of the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> to
 <em class="parameter"><code>digits</code></em>.
@@ -747,7 +939,9 @@ of digits will equal to 0 for <span class="type">GIMP_SIZE_ENTRY_UPDATE_SIZE</sp
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>digits</code></em>&#160;:</span></td>
-<td> The new number of decimal digits for the <span class="type">GtkSpinButton</span> which
+<td> The new number of decimal digits for the <a
+href="../gtk/GtkSpinButton.html"
+><span class="type">GtkSpinButton</span></a> which
          displays <em class="parameter"><code>field</code></em>'s reference value.
 </td>
 </tr>
@@ -756,10 +950,14 @@ of digits will equal to 0 for <span class="type">GIMP_SIZE_ENTRY_UPDATE_SIZE</sp
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636602"></a><h3>
+<a name="id2640042"></a><h3>
 <a name="gimp-size-entry-get-refval"></a>gimp_size_entry_get_refval ()</h3>
-<a class="indexterm" name="id2636614"></a><pre class="programlisting">gdouble             gimp_size_entry_get_refval          (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field);</pre>
+<a class="indexterm" name="id2640053"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             gimp_size_entry_get_refval          (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field);</pre>
 <p>
 Returns the reference value for field # <em class="parameter"><code>field</code></em> of the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.
 </p>
@@ -793,11 +991,15 @@ in dpi, depending on which <a href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636726"></a><h3>
+<a name="id2640166"></a><h3>
 <a name="gimp-size-entry-set-refval"></a>gimp_size_entry_set_refval ()</h3>
-<a class="indexterm" name="id2636737"></a><pre class="programlisting">void                gimp_size_entry_set_refval          (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field,
-                                                         gdouble refval);</pre>
+<a class="indexterm" name="id2640177"></a><pre class="programlisting">void                gimp_size_entry_set_refval          (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> refval);</pre>
 <p>
 Sets the reference value for field # <em class="parameter"><code>field</code></em> of the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.
 </p>
@@ -831,9 +1033,9 @@ depending on which <a href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy"><span 
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636864"></a><h3>
+<a name="id2640304"></a><h3>
 <a name="gimp-size-entry-get-unit"></a>gimp_size_entry_get_unit ()</h3>
-<a class="indexterm" name="id2636874"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2640314"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a>            gimp_size_entry_get_unit            (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse);</pre>
 <p>
@@ -862,9 +1064,9 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636948"></a><h3>
+<a name="id2640388"></a><h3>
 <a name="gimp-size-entry-set-unit"></a>gimp_size_entry_set_unit ()</h3>
-<a class="indexterm" name="id2636959"></a><pre class="programlisting">void                gimp_size_entry_set_unit            (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+<a class="indexterm" name="id2640398"></a><pre class="programlisting">void                gimp_size_entry_set_unit            (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a> unit);</pre>
@@ -894,10 +1096,12 @@ according to which <a href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy"><span 
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2637046"></a><h3>
+<a name="id2640486"></a><h3>
 <a name="gimp-size-entry-set-pixel-digits"></a>gimp_size_entry_set_pixel_digits ()</h3>
-<a class="indexterm" name="id2637058"></a><pre class="programlisting">void                gimp_size_entry_set_pixel_digits    (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint digits);</pre>
+<a class="indexterm" name="id2640498"></a><pre class="programlisting">void                gimp_size_entry_set_pixel_digits    (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> digits);</pre>
 <p>
 Similar to <a href="GimpUnitMenu.html#gimp-unit-menu-set-pixel-digits"><code class="function">gimp_unit_menu_set_pixel_digits()</code></a>, this function allows
 you set up a <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> so that sub-pixel sizes can be entered.</p>
@@ -922,13 +1126,17 @@ you set up a <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="typ
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2637147"></a><h3>
+<a name="id2640586"></a><h3>
 <a name="gimp-size-entry-show-unit-menu"></a>gimp_size_entry_show_unit_menu ()</h3>
-<a class="indexterm" name="id2637161"></a><pre class="programlisting">void                gimp_size_entry_show_unit_menu      (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gboolean show);</pre>
+<a class="indexterm" name="id2640601"></a><pre class="programlisting">void                gimp_size_entry_show_unit_menu      (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> show);</pre>
 <p>
 Controls whether a unit menu is shown in the size entry.  If
-<em class="parameter"><code>show</code></em> is <span class="type">TRUE</span>, the menu is shown; otherwise it is hidden.</p>
+<em class="parameter"><code>show</code></em> is <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><span class="type">TRUE</span></a>, the menu is shown; otherwise it is hidden.</p>
 <p>
 
 </p>
@@ -952,12 +1160,16 @@ Controls whether a unit menu is shown in the size entry.  If
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2637251"></a><h3>
+<a name="id2640690"></a><h3>
 <a name="gimp-size-entry-grab-focus"></a>gimp_size_entry_grab_focus ()</h3>
-<a class="indexterm" name="id2637262"></a><pre class="programlisting">void                gimp_size_entry_grab_focus          (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse);</pre>
+<a class="indexterm" name="id2640702"></a><pre class="programlisting">void                gimp_size_entry_grab_focus          (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse);</pre>
 <p>
 This function is rather ugly and just a workaround for the fact that
-it's impossible to implement <code class="function">gtk_widget_grab_focus()</code> for a <span class="type">GtkTable</span>.</p>
+it's impossible to implement <a
+href="../gtk/GtkWidget.html#gtk-widget-grab-focus"
+><code class="function">gtk_widget_grab_focus()</code></a> for a <a
+href="../gtk/GtkTable.html"
+><span class="type">GtkTable</span></a>.</p>
 <p>
 
 </p>
@@ -972,14 +1184,18 @@ it's impossible to implement <code class="function">gtk_widget_grab_focus()</cod
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2637323"></a><h3>
+<a name="id2640763"></a><h3>
 <a name="gimp-size-entry-set-activates-default"></a>gimp_size_entry_set_activates_default ()</h3>
-<a class="indexterm" name="id2637338"></a><pre class="programlisting">void                gimp_size_entry_set_activates_default
+<a class="indexterm" name="id2640778"></a><pre class="programlisting">void                gimp_size_entry_set_activates_default
                                                         (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gboolean setting);</pre>
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> setting);</pre>
 <p>
 Iterates over all entries in the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> and calls
-<code class="function">gtk_entry_set_activates_default()</code> on them.</p>
+<a
+href="../gtk/GtkEntry.html#gtk-entry-set-activates-default"
+><code class="function">gtk_entry_set_activates_default()</code></a> on them.</p>
 <p>
 
 </p>
@@ -993,7 +1209,9 @@ Iterates over all entries in the <a href="GimpSizeEntry.html" title="GimpSizeEnt
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>setting</code></em>&#160;:</span></td>
-<td> <code class="literal">TRUE</code> to activate window's default widget on Enter keypress
+<td> <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> to activate window's default widget on Enter keypress
 </td>
 </tr>
 </tbody>
@@ -1003,10 +1221,14 @@ Iterates over all entries in the <a href="GimpSizeEntry.html" title="GimpSizeEnt
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2637441"></a><h3>
+<a name="id2640881"></a><h3>
 <a name="gimp-size-entry-get-help-widget"></a>gimp_size_entry_get_help_widget ()</h3>
-<a class="indexterm" name="id2637453"></a><pre class="programlisting">GtkWidget*          gimp_size_entry_get_help_widget     (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
-                                                         gint field);</pre>
+<a class="indexterm" name="id2640893"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_size_entry_get_help_widget     (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gse,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> field);</pre>
 <p>
 You shouldn't fiddle with the internals of a <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> but
 if you want to set tooltips using <a href="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data"><code class="function">gimp_help_set_help_data()</code></a> you
@@ -1029,7 +1251,9 @@ can use this function to get a pointer to the spinbuttons.</p>
 </tr>
 <tr>
 <td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> a <span class="type">GtkWidget</span> pointer that you can attach a tooltip to.
+<td> a <a
+href="../gtk/GtkWidget.html"
+><span class="type">GtkWidget</span></a> pointer that you can attach a tooltip to.
 </td>
 </tr>
 </tbody>
@@ -1037,12 +1261,14 @@ can use this function to get a pointer to the spinbuttons.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2637560"></a><h2>Signal Details</h2>
+<a name="id2640999"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2637569"></a><h3>
+<a name="id2641009"></a><h3>
 <a name="GimpSizeEntry-refval-changed"></a>The "refval-changed" signal</h3>
-<a class="indexterm" name="id2637578"></a><pre class="programlisting">void                user_function                      (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gimpsizeentry,
-                                                        gpointer       user_data)          : Run First</pre>
+<a class="indexterm" name="id2641018"></a><pre class="programlisting">void                user_function                      (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gimpsizeentry,
+                                                        <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>       user_data)          : Run First</pre>
 <p>
 
 </p>
@@ -1064,10 +1290,12 @@ can use this function to get a pointer to the spinbuttons.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2637640"></a><h3>
+<a name="id2641080"></a><h3>
 <a name="GimpSizeEntry-unit-changed"></a>The "unit-changed" signal</h3>
-<a class="indexterm" name="id2637647"></a><pre class="programlisting">void                user_function                      (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gimpsizeentry,
-                                                        gpointer       user_data)          : Run First</pre>
+<a class="indexterm" name="id2641087"></a><pre class="programlisting">void                user_function                      (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gimpsizeentry,
+                                                        <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>       user_data)          : Run First</pre>
 <p>
 
 </p>
@@ -1089,10 +1317,12 @@ can use this function to get a pointer to the spinbuttons.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2637709"></a><h3>
+<a name="id2641148"></a><h3>
 <a name="GimpSizeEntry-value-changed"></a>The "value-changed" signal</h3>
-<a class="indexterm" name="id2637716"></a><pre class="programlisting">void                user_function                      (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gimpsizeentry,
-                                                        gpointer       user_data)          : Run First</pre>
+<a class="indexterm" name="id2641156"></a><pre class="programlisting">void                user_function                      (<a href="GimpSizeEntry.html" title="GimpSizeEntry">GimpSizeEntry</a> *gimpsizeentry,
+                                                        <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>       user_data)          : Run First</pre>
 <p>
 
 </p>
@@ -1114,7 +1344,7 @@ can use this function to get a pointer to the spinbuttons.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2637780"></a><h2>See Also</h2>
+<a name="id2641220"></a><h2>See Also</h2>
 <p>
 <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"

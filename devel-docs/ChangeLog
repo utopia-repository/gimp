@@ -1,3 +1,98 @@
+2007-08-16  Sven Neumann  <sven@gimp.org>
+
+	* release-howto.txt: added a check-list for doing a GIMP release.
+
+2007-08-15  Michael Natterer  <mitch@gimp.org>
+
+	* app/app.types
+	* app/app-docs.sgml
+	* app/app-sections.txt: completely updated, everything from app/
+	should be listed now.
+
+2007-08-15  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/visual-index.xml: added GimpColorProfileComboBox
+	to the widget gallery.
+
+2007-08-14  Sven Neumann  <sven@gimp.org>
+
+	* tools/widgets.c: added GimpColorProfileComboBox to doc-shooter.
+
+	* libgimpwidgets/images/gimp-color-profile-combo-box.png: added
+	screenshot.
+
+	* libgimpwidgets/Makefile.am: ignore
+	libgimpwidgets/gimpcolorprofilestore-private.h.
+
+	* libgimpwidgets/libgimpwidgets-docs.sgml
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/libgimpwidgets.types: added docs for 
+	GimpColorProfileStore and GimpColorProfileComboBox.
+
+	* libgimpwidgets/tmpl/gimpcolorprofilestore.sgml
+	* libgimpwidgets/tmpl/gimpcolorprofilecombobox.sgml: new files.
+
+2007-08-12  Sven Neumann  <sven@gimp.org>
+
+	* libgimpbase/tmpl/gimpbaseenums.sgml: regenerated.
+
+2007-08-10  Sven Neumann  <sven@gimp.org>
+
+	* app/app-sections.txt
+	* app/app-docs.sgml: minor update.
+
+2007-08-10  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-docs.sgml: include GimpZoomModel.
+
+2007-08-10  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/Makefile.am
+	* libgimpwidgets/Makefile.am (FIXXREF_OPTIONS): added libgimpconfig.
+
+2007-08-10  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-sections.txt: added new symbols in
+	GimpNumberPairEntry.
+
+2007-08-09  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/visual-index.xml: updated for GimpNumberPairEntry.
+
+	* libgimpwidgets/tmpl/gimpnumberpairentry.sgml: regenerated.
+
+2007-08-08  Sven Neumann  <sven@gimp.org>
+
+	* tools/widgets.c: include number-pair-entry instead of ratio-entry.
+
+	* libgimpwidgets/images/gimp-ratio-entry.png
+	* libgimpwidgets/images/gimp-number-pair-entry.png: replaced
+	screenshots.
+
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/libgimpwidgets.types
+	* libgimpwidgets/libgimpwidgets-docs.sgml
+	* libgimpwidgets/tmpl/gimpnumberpairentry.sgml
+	* libgimpwidgets/tmpl/gimpratioentry.sgml: adopt to change from
+	GimpRatioEntry to GimpNumberPairEntry.
+
+2007-08-08  Sven Neumann  <sven@gimp.org>
+
+	* app/app-sections.txt
+	* app/app-docs.sgml: adjust to renamed files in app/paint-funcs.
+
+2007-07-27  Raphaël Quinet  <raphael@gimp.org>
+
+	* parasites.txt: document some of the parasites that have been
+	added in the last two years: gimp-metadata, jpeg-save-defaults,
+	jpeg-original-settings.
+
+2007-07-25  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt
+	* libgimp/tmpl/gimpprogress.sgml: updated for gimp_progress_end().
+
 2007-07-20  Sven Neumann  <sven@gimp.org>
 
 	* app/app-sections.txt

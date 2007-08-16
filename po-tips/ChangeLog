@@ -1,3 +1,64 @@
+2007-08-15  Hendrik Brandt  <heb@gnome-de.org>
+
+	* de.po: revised and updated German translation for 2.4.
+
+2007-08-13  Claude Paroz <claude@2xlibre.net>
+
+	* ms.po:
+	* ne.po:
+	* pa.po
+	* km.po: Removed executable property.
+
+2007-08-10  Jakub Friedl <jfriedl@suse.cz>
+
+	* cs.po: Updated czech translation.
+
+2007-08-06  Sven Neumann  <sven@gimp.org>
+
+	* de.po: update to the German translation by Axel Wernicke.
+
+2007-08-03  Inaki Larranaga Murgoitio  <dooteo@zundan.com>
+
+	* eu.po: Updated Basque translation.
+
+2007-08-01  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+
+2007-07-30  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+	Joaquim Perez <noguer@gmail.com> et al.
+
+2007-07-30  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+
+2007-07-28  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+
+2007-07-28  Žygimantas Beručka  <zygis@gnome.org>
+
+	* lt.po: Updated Lithuanian translation.
+
+2007-07-27  Stéphane Raimbault  <stephane.raimbault@gmail.com>
+
+	* fr.po: Updated French translation.
+
+2007-07-27  Alexander Shopov  <ash@contact.bg>
+
+	* bg.po: Updated Bulgarian translation by
+	Victor Dachev <vdachev@gmail.com>
+
+2007-07-27  Pawan Chitrakar <pchitrakar@gmail.com>
+
+	* ne.po: Updated Nepali Translation.
+
+2007-07-26  Žygimantas Beručka  <zygis@gnome.org>
+
+	* lt.po: Updated Lithuanian translation.
+
 2007-07-08  Jorge Gonzalez <jorgegonz@svn.gnome.org>
 
         * es.po: Updated Spanish translation by Francisco Vila.

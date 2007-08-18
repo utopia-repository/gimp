@@ -1,3 +1,10 @@
+gimp (2.4.0~rc1-2) unstable; urgency=low
+
+  * Fix debian/watch, README.Debian, and gimp.menu to reflect the new
+    major version
+
+ -- Ari Pollak <ari@debian.org>  Fri, 17 Aug 2007 20:14:24 -0400
+
 gimp (2.4.0~rc1-1) unstable; urgency=low
 
   * New upstream version

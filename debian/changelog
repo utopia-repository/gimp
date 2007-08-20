@@ -1,3 +1,10 @@
+gimp (2.4.0~rc1-4) unstable; urgency=low
+
+  * debian/patches/03_toolbox-menu.patch:
+    - Don't patch .xml.in file, only .xml; should fix FTBFS
+
+ -- Ari Pollak <ari@debian.org>  Mon, 20 Aug 2007 00:30:45 -0400
+
 gimp (2.4.0~rc1-3) unstable; urgency=low
 
   * debian/patches/02_print-crash.patch:

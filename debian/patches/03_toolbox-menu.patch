@@ -16,21 +16,3 @@ diff -Nur gimp-2.4.0~rc1/menus/toolbox-menu.xml gimp-2.4.0~rc1.new/menus/toolbox
        <separator/>
        <menuitem action="file-close-all"/>
        <menuitem action="file-quit"/>
-diff -Nur gimp-2.4.0~rc1/menus/toolbox-menu.xml.in gimp-2.4.0~rc1.new/menus/toolbox-menu.xml.in
---- gimp-2.4.0~rc1/menus/toolbox-menu.xml.in	2007-01-23 05:15:33.000000000 -0500
-+++ gimp-2.4.0~rc1.new/menus/toolbox-menu.xml.in	2007-08-19 20:15:09.000000000 -0400
-@@ -31,14 +31,6 @@
-         <xi:include href="dialogs-menuitems.xml" />
-       </menu>
- 
--<!--  The debug-menu is automatically excluded for stable releases  -->
--      <menu action="debug-menu" name="Debug">
--        <menuitem action="debug-mem-profile" />
--        <menuitem action="debug-dump-items" />
--        <menuitem action="debug-dump-managers" />
--        <menuitem action="debug-dump-attached-data" />
--      </menu>
--
-       <separator />
-       <menuitem action="file-close-all" />
-       <menuitem action="file-quit" />

@@ -1,3 +1,3 @@
 ?package(gimp):command="/usr/bin/gimp" icon="/usr/share/gimp/2.0/images/wilber-icon.png" needs="X11" \
-	section="Apps/Graphics" title="The GIMP" hints="Bitmap" \
+	section="Applications/Graphics" title="The GIMP" hints="Bitmap" \
 	hotkey="Gimp"

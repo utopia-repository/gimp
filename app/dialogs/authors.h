@@ -6,6 +6,7 @@ static const gchar * const authors[] =
   "Spencer Kimball",
   "Peter Mattis",
   "Henrik Brix Andersen",
+  "Nicola Archibald",
   "Hans Breuer",
   "Simon Budig",
   "João S. O. Bueno Calligaris",
@@ -45,6 +46,7 @@ static const gchar * const authors[] =
   "Loren Merritt",
   "Chris Mohler",
   "Chris Moller",
+  "Tim Mooney",
   "Adam D Moss",
   "Michael Natterer",
   "David Neary",
@@ -53,6 +55,8 @@ static const gchar * const authors[] =
   "David Odin",
   "Robert Ögren",
   "Akkana Peck",
+  "Nils Philippsen",
+  "Ari Pollak",
   "Raphaël Quinet",
   "Maurits Rijk",
   "Clarence Risher",
@@ -72,6 +76,7 @@ static const gchar * const authors[] =
   "Helvetix Victorinox",
   "Matthew Wilson",
   "Karl Günter Wünsch",
+  "Yoshinori Yamakawa",
   NULL
 };
 

@@ -1,3 +1,14 @@
+gimp (2.4.0~rc2-1) unstable; urgency=low
+
+  * New upstream version
+    - Remove extraneous comma in header file (Closes: #440021)
+  * Remove development version notes from control file
+  * Tighten up gimp-python dependencies to make it less likely that an
+    inconsistent version of gimp-python will be installed
+  * Update watch file for 2.4 RC versions
+
+ -- Ari Pollak <ari@debian.org>  Mon, 03 Sep 2007 12:19:27 -0400
+
 gimp (2.4.0~rc1-5) unstable; urgency=low
 
   * debian/patches/04_c++-fix.patch:

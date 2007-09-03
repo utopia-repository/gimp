@@ -1,3 +1,528 @@
+2007-09-03  Michael Natterer  <mitch@gimp.org>
+
+	* Made 2.4.0-rc2 release.
+
+	* app/Makefile.am (dist-dump-gimprc): added some sed voodoo to
+	make sure the num-processors in the distributed gimprc and its
+	manpage don't depend on the machine that does make dist.
+
+2007-09-03  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimp-transform-region.c: Applied slightly reformatted
+	patch from Jakub Friedl and Daniel Hornung which ROUND()s the
+	floating point result values before assigning them to integers to
+	avoid reducing the output space to [0..254] (thus darkening the
+	image). Fixes bug #472806.
+
+2007-09-03  Michael Natterer  <mitch@gimp.org>
+
+	* data/tips/Makefile.am
+	* desktop/Makefile.am:
+	s/.intltool-merge-cachemake/.intltool-merge-cache/ to fix
+	distcheck, probably a "make" was entered in the wrong window.
+
+2007-09-02  Michael Natterer  <mitch@gimp.org>
+
+	* configure.in: bump version to 2.4.0-rc2.
+
+2007-09-02  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/display/gimpdisplayshell-draw.c
+	(gimp_display_shell_draw_area): Remove the STRESS_TEST stuff,
+	gimp_image_invalidate_without_render does not exist anymore
+	anyway.
+
+2007-09-02  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/tools/gimprectangleselecttool.c
+	(gimp_rect_select_tool_update_option_defaults): New function to
+	update default values for Fixed: Size. This function is called to
+	update defaults values for Fixed: Size to that of the pending
+	rectangle width x height if there is one, or 100x100 otherwise.
+
+	* app/tools/gimpcroptool.c
+	(gimp_crop_tool_update_option_defaults): Set Fixed: Size to the
+	size of the pending crop rectangle, or 100x100 if there is none.
+
+2007-09-01  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/tools/gimpcroptool.c
+	(gimp_crop_tool_update_default_fixed_ratio_options):
+	Generalize the default Fixed: Aspect ratio option setting code
+	so that it can later be used for Fixed: Size as well, and move
+	it to
+
+	* app/tools/gimprectangletool.[ch]
+	(gimp_rectangle_tool_pending_size_set)
+	(gimp_rectangle_tool_constraint_size_set): and use these two new
+	functions instead.
+
+2007-08-31  Simon Budig  <simon@gimp.org>
+
+	* plug-ins/script-fu/tinyscheme/scheme.[ch]
+	* plug-ins/script-fu/tinyscheme/scheme-private.h: make it possible
+	for foreign functions to return an error.
+
+	* plug-ins/script-fu/script-fu-scripts.c
+	* plug-ins/script-fu/scheme-wrapper.c: Make use of this.
+	Fixes bug #472026.
+
+2007-08-31  Simon Budig  <simon@gimp.org>
+
+	* MAINTAINERS: adjusted to enforced gnome-svn standards  :-(
+
+2007-08-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/gui/sync-menu.[ch]: renamed...
+
+	* app/gui/gtk-macmenu.[ch]: ...to these to match new namespace.
+
+	* app/gui/Makefile.am
+	* app/gui/gui.c: changed accordingly.
+
+2007-08-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/gui/sync-menu.[ch]: new versions with sane namespace and
+	support for setting the application menu's "Quit", "About" and
+	"Preferences" items.
+
+	* app/gui/gui.c: changed accordingly and use the new menu items
+	from the application menu.
+
+2007-08-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/base/tile-manager.c (tile_manager_get): if
+	tile_manager->cached_tile is requested for writing, clear the
+	cache before giving out the tile. Fixes bug #472170.
+
+2007-08-31  Øyvind Kolås  <pippin@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c: (render_image_tile_fault):
+	use nearest neighbour resampling when rendering for a 1byte per pixel
+	drawable (ony happens when interacting with the SIOX tool, and then
+	the buffer is a indexed; not a greyscale buffer), fixes bug #472027.
+
+2007-08-31  Raphaël Quinet  <raphael@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c (render_image_tile_fault):
+	do not use anti-aliasing when the zoom is exactly 200%.  Fixes bug
+	#472150.  Also miscellaneous cosmetic changes.
+
+2007-08-31  Simon Budig  <simon@gimp.org>
+
+	* plug-ins/common/antialias.c: fixed subtle cut'n'paste bug,
+	made the code a little bit more readable.
+
+2007-08-30  Karine Delvare  <edhel@gimp.org>
+
+	* plug-ins/common/illusion.c
+	* plug-ins/common/polar.c
+	* plug-ins/common/whirlpinch.c: applied patches from Aurimas Juška
+	that fixes use of the GimpZoomPreview widget in those plug-ins (see
+	bug #356716), and makes illusion handle selections properly.
+
+2007-08-30  Raphaël Quinet  <raphael@gimp.org>
+
+	* authors.xml: updated some entries, added contributors: Nicola
+	Archibald, Tim Mooney, Nils Philippsen and Yoshinori Yamakawa
+
+	* AUTHORS: regenerated.
+
+2007-08-30  Michael Natterer  <mitch@gimp.org>
+
+	* libgimpbase/gimpbaseenums.h: remove extraneous comma.
+
+2007-08-30  Michael Natterer  <mitch@gimp.org>
+
+	* app/gui/sync-menu.c: take over cosmetic fix from upstream.
+
+	* configure.in: add HAVE_CARBON as AM_CONDITIONAL
+
+	* menus/image-menu.xml.in: add the Help menu to the image menu.
+
+	* menus/Makefile.am
+	* menus/menus.xsl: filter it away if we are not on carbon.
+
+	* app/menus/menus.c: added the "help" action group to the image UI
+	manager.
+
+2007-08-30  Simon Budig  <simon@gimp.org>
+
+	* plug-ins/script-fu/scheme-wrapper.c
+	* plug-ins/script-fu/tinyscheme/scheme.[ch]
+	* plug-ins/script-fu/scheme-wrapper.h: Shuffeled some
+	code around to have scheme.c not include scheme-wrapper.h.
+
+2007-08-30  Raphaël Quinet  <raphael@gimp.org>
+
+	* data/tips/gimp-tips.xml.in: expanded old tip and mentioned that
+	it is possible to configure most window managers so that they do
+	not steal the Alt key from the applications.  Fixes bug #471565.
+
+2007-08-30  Raphaël Quinet  <raphael@gimp.org>
+
+	* plug-ins/common/pcx.c: applied modified patch from Nils
+	Philippsen that adds more sanity checks when loading and saving
+	images.  Fixes the reopened bug #471189.
+
+2007-08-30  Michael Natterer  <mitch@gimp.org>
+
+	First version of global menubar support for OSX. Work in progress.
+
+	* app/gui/Makefile.am
+	* app/gui/sync-menu.[ch]: new files containing code that takes
+	a GtkMenuShell and proxies it in the OSX global menubar. Taken
+	from http://developer.imendio.com/projects/gtk-macosx/menubar
+
+	* app/gui/gui.c: put the global image popup menu to the menubar.
+
+	* app/dialogs/preferences-dialog.c
+	* app/display/gimpdisplayshell.c
+	* app/widgets/gimptoolbox.c: #ifdef out all menubars in windows.
+
+	* app/Makefile.am (AM_LDFLAGS): add $(CARBON_LDFLAGS)
+
+2007-08-30  Jakub Friedl  <jfriedl@suse.cz>
+
+	* plug-ins/common/scatter_hsv.c: Randomizing hue of desaturated
+	pixels before increasing saturation. Fixes #471476.
+
+2007-08-29  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	* plug-ins/script-fu/tinyscheme/scheme.c: Applied change suggested
+	in SourceForge bug #1593861 which stops integer? from thinking that
+	non-numbers are integers.
+
+2007-08-30  Simon Budig  <simon@gimp.org>
+
+	* plug-ins/script-fu/tinyscheme/scheme.[ch]
+	* plug-ins/script-fu/tinyscheme/scheme-private.h: small changes
+	to tinyscheme - mostly removing workarounds for message output.
+
+	* plug-ins/script-fu/scheme-wrapper.[ch]: try to channel the
+	output through a central function, have various output functions
+	to handle the messages. Remove some hacks.
+
+	* plug-ins/script-fu/script-fu-text-console.c
+	* plug-ins/script-fu/script-fu-scripts.[ch]
+	* plug-ins/script-fu/script-fu-interface.c
+	* plug-ins/script-fu/script-fu.c
+	* plug-ins/script-fu/script-fu-server.c
+	* plug-ins/script-fu/script-fu-console.[ch]: use the new
+	infrastructure. Remove more hacks.
+
+	* plug-ins/script-fu/servertest.py: small script to test the
+	communication with the script-fu-server.
+
+	This hopefully fixes bug #438997
+
+2007-08-29  Raphaël Quinet  <raphael@gimp.org>
+
+	* plug-ins/metadata/xmp-encode.c (gen_property): escape the text
+	values output in the XMP packet.  Based on a bug report and patch
+	by John Marshall.  Fixes bug #455481.
+
+2007-08-29  Jakub Friedl  <jfriedl@suse.cz>
+
+	* plug-ins/common/scatter_hsv.c: Calling randomize_value with
+	max value 359 instead of 360 to fix off by 1 error when wrapping
+	around.
+
+2007-08-29  Jakub Friedl  <jfriedl@suse.cz>
+
+	* plug-ins/common/convmatrix.c: Removes the fprint function.
+	Values are printed using g_snprintf and "%g" which supresses
+	trailing zeroes. Fixes bug #471051.
+
+2007-08-29  Raphaël Quinet  <raphael@gimp.org>
+
+	* plug-ins/jpeg/jpeg-save.[ch]
+	* plug-ins/jpeg/jpeg.c: change the behavior of the code so that
+	"Use quality settings from original image" does what it claims,
+	even if these settings are worse than the user's defaults (note
+	that the option is not automatically enabled in this case).  Also
+	set the subsampling type when that box is checked.
+
+	* plug-ins/jpeg/jpeg-settings.h: formatting.
+
+2007-08-29  Raphaël Quinet  <raphael@gimp.org>
+
+	* plug-ins/common/pcx.c: applied modified patch from Nils
+	Philippsen that uses the glib endianness conversion macros instead
+	of the ones provided in the old code (broken on S390/S390x).
+	Fixes bug #471189.
+
+2007-08-29  Michael Natterer  <mitch@gimp.org>
+
+	* plug-ins/common/lcms.c (lcms_image_apply_profile):
+	gimp-selection-* procedures operate on the image_ID, not on the
+	selection drawable_ID itself. Fixes bug #470589. Also remove the
+	saved selection channel after reloading it.
+
+2007-08-29  Michael Natterer  <mitch@gimp.org>
+
+	* themes/Default/images/preferences/Makefile.am (PREFS_IMAGES):
+	install and distribute the new icons. Fixes bug #436815
+
+2007-08-28  Jakub Steiner <jimmac@ximian.com>
+
+	* themes/Default/images/preferences/folder-palettes-{16,22}*:
+	* themes/Default/images/preferences/folder-themes-{16,22}*:
+	missing sizes. Addresses bug #436815
+
+2007-08-28  Michael Natterer  <mitch@gimp.org>
+
+	* libgimpbase/gimpdatafiles.c (gimp_datafiles_read_directories):
+	skip files starting with '.' so we don't try to parse .DS_Store
+	and other metadata storage files. Also moved variables to local
+	scopes.
+
+2007-08-28  Tor Lillqvist  <tml@novell.com>
+
+	* libgimpbase/gimpenv.c: Update doc comments about filename
+	encoding on Windows. It is now always UTF-8, like in
+	GLib. (#471033) Change "Win32" to "Windows" in doc comments.
+
+2007-08-28  Jakub Friedl  <jfriedl@suse.cz>
+
+	* plug-ins/common/redeye.c: CLAMP()ing the red value
+	so that it is in the 0-255 range. Fixes bug #470914.
+
+2007-08-26  Hans Breuer  <hans@breuer.org>
+
+	* **/makefile.msc app/gimpcore.def : updated msvc build
+	* app/main.c : include <io.h> for get_osfhandle()
+	* plug-ins/jpeg/jpeg-settings.h : prototype
+	jpeg_swap_original_settings
+
+2007-08-26  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* libgimpwidgets/gimpcolorprofilestore.h: Add a G_END_DECLS.
+
+2007-08-24  Raphaël Quinet  <raphael@gimp.org>
+
+	* plug-ins/jpeg/jpeg-save.c (save_dialog): use a label that is
+	easier to understand.  Required code changes will follow later.
+
+2007-08-24  Raphaël Quinet  <raphael@gimp.org>
+
+	* plug-ins/jpeg/jpeg-settings.c (jpeg_swap_original_settings): new
+	function that swaps the vertical and horizontal axis for the saved
+	subsampling parameters and quantization tables.
+
+	* plug-ins/jpeg/jpeg-exif.c (jpeg_exif_rotate): swap the saved
+	settings when the image is rotated.  Fixes bug #466593.
+
+2007-08-24  Raphaël Quinet  <raphael@gimp.org>
+
+	* tools/pdbgen/pdb/selection.pdb: fixed incorrect description of
+	gimp-selection-is-empty, reported by pk.  This function returns
+	TRUE when the selection is empty, but the description stated the
+	opposite.
+
+	* app/pdb/selection_cmds.c
+	* libgimp/gimpselection_pdb.c: regenerated.
+	
+2007-08-24  Michael Natterer  <mitch@gimp.org>
+
+	* app/display/gimpdisplayshell-draw.c
+	(gimp_display_shell_draw_area): don't use SCALEX()/SCALEY() on x/y
+	*and* width/height of the highlight rectangle because that adds up
+	the error introduced by the ceil() contained in these macros.
+	Instead, scale manually and use ceil() on x/y and floor() on
+	width/height. Fixes off-by-one rendering artifacts (bug #467972).
+
+2007-08-24  Michael Natterer  <mitch@gimp.org>
+
+	* app/display/gimpdisplayshell.c: don't use g_slice_dup(), that's
+	in GLib 2.14 only.
+
+2007-08-24  Øyvind Kolås  <pippin@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c: s/compute_sample/box_filter/.
+
+2007-08-24  Michael Natterer  <mitch@gimp.org>
+
+	* app/display/gimpdisplayshell.c: allocate shell->highlight with
+	GSlice.
+
+2007-08-24  Øyvind Kolås  <pippin@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c: swapped center and middle
+	terms around (now center means horizontal (betwen left and right )and
+	middle means vertical (between top and bottom)).
+
+2007-08-24  Øyvind Kolås  <pippin@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c: (compute_sample): removed
+	a temporary variable, simplified logic slightly.
+	(render_image_tile_fault, render_image_tile_fault_one_row): moved
+	sum computation out of loop.
+
+2007-08-24  Øyvind Kolås  <pippin@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c: Replaced signed integres with
+	unsigned ones for weights etc to gain some additional bits of
+	precision. Enabled anti-aliasing for zoomlevels between 100% and 200%
+	to improve the smoothness of the display at the levels where the size
+	differences between pixels yields the most distracting artifacts.
+
+2007-08-24  Øyvind Kolås  <pippin@gimp.org>
+
+	Reshuffled shifting code in fixed point code of display to improve
+	quality.
+
+	* app/display/gimpdisplayshell-render.c:
+		(compute_sample): reshuffle a bit of the fixed point induced
+		shifting to allow higher precision.
+		(render_image_tile_fault): remove need to disable box-filter
+		for some non square zoom ratios that was needed before
+		compute_sample cleanup.
+		, (render_image_tile_fault_one_row): fetch source sample #1
+		from the correct tile.
+
+2007-08-24  Michael Natterer  <mitch@gimp.org>
+
+	* plug-ins/common/scatter_hsv.c: stylistic cleanup.
+
+2007-08-24  Jakub Friedl  <jfriedl@suse.cz>
+
+	* plug-ins/common/scatter_hsv.c: fixing
+	bug #469519 and some cleanup.
+
+2007-08-24  Øyvind Kolås  <pippin@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c: (compute_sample)
+	fixed a division by zero issue. Fixes bug #469785.
+
+2007-08-24  Michael Natterer  <mitch@gimp.org>
+
+	* configure.in: applied patch from Tim Mooney which fixes
+	configure output if libexif is not found. Fixes bug #469708.
+
+2007-08-23  Øyvind Kolås  <pippin@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c: added a static global
+	variable with configuration.
+	(compute_sample): moved common computation of alpha*weight factors 
+	for channel out of loop.
+
+2007-08-23  Øyvind Kolås  <pippin@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c: (compute_sample),
+	(render_image_tile_fault), (render_image_tile_fault_one_row):
+	refactored to use arrays of tiles/source pixels instead of individual
+	variables, also modified the order of the 0..8 numbers to sorted
+	in increasing row-major order.
+
+2007-08-22  Øyvind Kolås  <pippin@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c: replaced bilinear
+	interpolation from next larger pyramid level with a boxfilter
+	of the next larger pyramid level.
+
+	This is probably the last update to the quality of the display
+	in GIMP 2.4.
+
+2007-08-21  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/tools/gimprectangletool.c
+	(gimp_rectangle_tool_update_with_coord): Don't adjust the
+	rectangle shape if it is is merely being moved.
+
+2007-08-20  Michael Natterer  <mitch@gimp.org>
+
+	* menus/Makefile.am: s/MAINTAINERCLEAN_FILES/MAINTAINERCLEANFILES/
+	Fixes bug #468336.
+
+2007-08-18  Michael Natterer  <mitch@gimp.org>
+	    Simon Budig  <simon@gimp.org>
+	    Øyvind Kolås  <pippin@gimp.org>
+	    Roman Joost  <romanofski@gimp.org>
+
+	* app/sven.c: changed license from free to bus2342. Congratulations!
+
+2007-08-18  Michael Natterer  <mitch@gimp.org>
+
+	* app/actions/view-actions.c (view_actions_update): use _()
+	instead of N_() when setting the label of "Revert Zoom"
+	directly. Fixes bug #467933.
+
+2007-08-18  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/tools/gimprectangletool.c: Don't make
+	GIMP_RECTANGLE_CONSTRAIN_NONE into GIMP_RECTANGLE_CONSTRAIN_IMAGE,
+	and restructure the code a bit in the rectangle adjustingo
+	functions so that they can handle the _NONE constraint. The effect
+	of this change is that rectangle based selection tools no longer
+	are constrained when using fixed-rules.
+
+2007-08-18  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/tools/gimprectangletool.c
+	(gimp_rectangle_tool_button_press): Clear highlight in previously
+	active shell when changing active shell.
+
+2007-08-18  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/tools/gimpcroptool.c (gimp_crop_tool_button_release): Call
+	gimp_crop_tool_update_default_fixed_ratio_options after
+	gimp_rectangle_tool_button_release, so that the state of the
+	rectangle tool is reflected when updating the default aspect.
+
+2007-08-18  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/tools/gimpcroptool.c
+	(gimp_crop_tool_update_default_fixed_ratio_options): Added a
+	'ignore_pending' boolean parameter so that the pending rectangle
+	can be ignored in gimp_crop_tool_execute, as it should be.
+
+2007-08-17  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/tools/gimpcroptool.c
+	(gimp_crop_tool_constructor): Connect to the "image-changed"
+	signal of GimpContext and update default aspect when image
+	changes (fixes bug #417166), by using
+	(gimp_crop_tool_update_default_fixed_ratio_options): which is a
+	new function that does this. This function is called whenever it
+	is time to update defualts.
+
+	* app/tools/gimprectangletool.[ch]: Made
+	gimp_rectangle_tool_get_constraint part of the rectangle tool API.
+
+2007-08-17  Michael Natterer  <mitch@gimp.org>
+
+	* plug-ins/print/print-page-layout.c: set a default page setup on
+	the operation if it is NULL to prevent crash in new installations
+	(which don't have a setup yet). Fixes bug #467643, patch from
+	Stefan Röllin.
+
+2007-08-17  Michael Natterer  <mitch@gimp.org>
+
+	* app/tools/gimpperspectiveclonetool.c (motion)
+	* app/tools/gimpsourcetool.c (motion): don't allow to ctrl-switch
+	between clone and set-source mode while painting. It's totally
+	unclear to me why we used to allow this since it doesn't make much
+	sense and isn't very intuitive either. Fixes bug #467605.
+
+2007-08-16  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/whirlpinch.c: applied patch from Aurimas Juška to
+	fix bug #467368.
+
+2007-08-16  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/polar.c: applied patch from Aurimas Juška to fix
+	bug #467369.
+
+2007-08-16  Raphaël Quinet  <raphael@gimp.org>
+
+	* README: updated Mailing Lists section.
+
+2007-08-16  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.4.0-rc1 release, a release candidate for GIMP 2.4.0.
+
 2007-08-15  Sven Neumann  <sven@gimp.org>
 
 	* configure.in: bumped the version to 2.4.0-rc1.

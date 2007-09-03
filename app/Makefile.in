@@ -285,6 +285,8 @@ GTK_LIBS = @GTK_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
 HAL_CFLAGS = @HAL_CFLAGS@
 HAL_LIBS = @HAL_LIBS@
+HAVE_CARBON_FALSE = @HAVE_CARBON_FALSE@
+HAVE_CARBON_TRUE = @HAVE_CARBON_TRUE@
 HAVE_DX_DINPUT_FALSE = @HAVE_DX_DINPUT_FALSE@
 HAVE_DX_DINPUT_TRUE = @HAVE_DX_DINPUT_TRUE@
 HAVE_FINITE = @HAVE_FINITE@
@@ -589,6 +591,7 @@ INCLUDES = \
 	-I$(includedir)
 
 AM_LDFLAGS = $(mwindows) $(munix) \
+	$(CARBON_LDFLAGS)			\
 	-u $(SYMPREFIX)xcf_init			\
 	-u $(SYMPREFIX)internal_procs_init	\
 	-u $(SYMPREFIX)gimp_coords_mix		\
@@ -1177,13 +1180,17 @@ uninstall-local:
 #
 dist-dump-gimprc: gimp-console-$(GIMP_APP_VERSION)$(EXEEXT)
 	./$< --dump-gimprc-system > gimprc.tmp	\
-		&& (cmp -s gimprc.tmp $(top_srcdir)/etc/gimprc ||	\
-		    cp gimprc.tmp $(top_srcdir)/etc/gimprc)		\
-		&& rm gimprc.tmp
+		&& sed -e "s/num-processors [0-9]*/num-processors 1/"	\
+		   gimprc.tmp > gimprc.tmp2				\
+		&& (cmp -s gimprc.tmp2 $(top_srcdir)/etc/gimprc ||	\
+		    cp gimprc.tmp2 $(top_srcdir)/etc/gimprc)		\
+		&& rm gimprc.tmp gimprc.tmp2
 	./$< --dump-gimprc-manpage > gimprc.tmp	\
-		&& (cmp -s gimprc.tmp $(top_srcdir)/docs/gimprc.5.in ||	\
-		    cp gimprc.tmp $(top_srcdir)/docs/gimprc.5.in)	\
-		&& rm gimprc.tmp
+		&& sed -e "s/num-processors [0-9]*/num-processors 1/"	\
+		   gimprc.tmp > gimprc.tmp2				\
+		&& (cmp -s gimprc.tmp2 $(top_srcdir)/docs/gimprc.5.in ||\
+		    cp gimprc.tmp2 $(top_srcdir)/docs/gimprc.5.in)	\
+		&& rm gimprc.tmp gimprc.tmp2
 
 dist-hook: dist-check-gimp-console dist-dump-gimprc
 

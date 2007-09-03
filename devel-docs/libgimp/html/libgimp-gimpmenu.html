@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpmenu</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
 <link rel="prev" href="GimpProgressBar.html" title="GimpProgressBar">
@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpbrushmenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2666145" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2599206" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2717742" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2730810" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpmenu"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2666145"></a><span class="refentrytitle">gimpmenu</span>
+<a name="id2599206"></a><span class="refentrytitle">gimpmenu</span>
 </h2>
 <p>gimpmenu &#8212; Menus for selecting images, layers, channels and drawables</p>
 </td>
@@ -52,87 +52,43 @@
 
 
 
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            (<a href="libgimp-gimpmenu.html#GimpConstraintFunc">*GimpConstraintFunc</a>)               (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_id,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_id,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-void                (<a href="libgimp-gimpmenu.html#GimpMenuCallback">*GimpMenuCallback</a>)                 (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> any_id,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*          <a href="libgimp-gimpmenu.html#gimp-image-menu-new">gimp_image_menu_new</a>                 (<a href="libgimp-gimpmenu.html#GimpConstraintFunc">GimpConstraintFunc</a> constraint,
-                                                         <a href="libgimp-gimpmenu.html#GimpMenuCallback">GimpMenuCallback</a> callback,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> active_image);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*          <a href="libgimp-gimpmenu.html#gimp-layer-menu-new">gimp_layer_menu_new</a>                 (<a href="libgimp-gimpmenu.html#GimpConstraintFunc">GimpConstraintFunc</a> constraint,
-                                                         <a href="libgimp-gimpmenu.html#GimpMenuCallback">GimpMenuCallback</a> callback,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> active_layer);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*          <a href="libgimp-gimpmenu.html#gimp-channel-menu-new">gimp_channel_menu_new</a>               (<a href="libgimp-gimpmenu.html#GimpConstraintFunc">GimpConstraintFunc</a> constraint,
-                                                         <a href="libgimp-gimpmenu.html#GimpMenuCallback">GimpMenuCallback</a> callback,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> active_channel);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*          <a href="libgimp-gimpmenu.html#gimp-drawable-menu-new">gimp_drawable_menu_new</a>              (<a href="libgimp-gimpmenu.html#GimpConstraintFunc">GimpConstraintFunc</a> constraint,
-                                                         <a href="libgimp-gimpmenu.html#GimpMenuCallback">GimpMenuCallback</a> callback,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> active_drawable);
+gboolean            (<a class="link" href="libgimp-gimpmenu.html#GimpConstraintFunc">*GimpConstraintFunc</a>)               (gint32 image_id,
+                                                         gint32 drawable_id,
+                                                         gpointer data);
+void                (<a class="link" href="libgimp-gimpmenu.html#GimpMenuCallback">*GimpMenuCallback</a>)                 (gint32 any_id,
+                                                         gpointer data);
+GtkWidget*          <a class="link" href="libgimp-gimpmenu.html#gimp-image-menu-new">gimp_image_menu_new</a>                 (<a class="link" href="libgimp-gimpmenu.html#GimpConstraintFunc">GimpConstraintFunc</a> constraint,
+                                                         <a class="link" href="libgimp-gimpmenu.html#GimpMenuCallback">GimpMenuCallback</a> callback,
+                                                         gpointer data,
+                                                         gint32 active_image);
+GtkWidget*          <a class="link" href="libgimp-gimpmenu.html#gimp-layer-menu-new">gimp_layer_menu_new</a>                 (<a class="link" href="libgimp-gimpmenu.html#GimpConstraintFunc">GimpConstraintFunc</a> constraint,
+                                                         <a class="link" href="libgimp-gimpmenu.html#GimpMenuCallback">GimpMenuCallback</a> callback,
+                                                         gpointer data,
+                                                         gint32 active_layer);
+GtkWidget*          <a class="link" href="libgimp-gimpmenu.html#gimp-channel-menu-new">gimp_channel_menu_new</a>               (<a class="link" href="libgimp-gimpmenu.html#GimpConstraintFunc">GimpConstraintFunc</a> constraint,
+                                                         <a class="link" href="libgimp-gimpmenu.html#GimpMenuCallback">GimpMenuCallback</a> callback,
+                                                         gpointer data,
+                                                         gint32 active_channel);
+GtkWidget*          <a class="link" href="libgimp-gimpmenu.html#gimp-drawable-menu-new">gimp_drawable_menu_new</a>              (<a class="link" href="libgimp-gimpmenu.html#GimpConstraintFunc">GimpConstraintFunc</a> constraint,
+                                                         <a class="link" href="libgimp-gimpmenu.html#GimpMenuCallback">GimpMenuCallback</a> callback,
+                                                         gpointer data,
+                                                         gint32 active_drawable);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2717742"></a><h2>Description</h2>
+<a name="id2730810"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2720643"></a><h2>Details</h2>
+<a name="id2735653"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2720653"></a><h3>
+<a name="id2735663"></a><h3>
 <a name="GimpConstraintFunc"></a>GimpConstraintFunc ()</h3>
-<a class="indexterm" name="id2720666"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            (*GimpConstraintFunc)               (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_id,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_id,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<a class="indexterm" name="id2735677"></a><pre class="programlisting">gboolean            (*GimpConstraintFunc)               (gint32 image_id,
+                                                         gint32 drawable_id,
+                                                         gpointer data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">GimpConstraintFunc</code> is deprecated and should not be used in newly-written code.</p>
@@ -144,22 +100,22 @@ href="../glib/glib-Basic-Types.html#gpointer"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_id</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>image_id</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_id</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_id</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td>
 
 
@@ -170,14 +126,10 @@ href="../glib/glib-Basic-Types.html#gpointer"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2720777"></a><h3>
+<a name="id2735788"></a><h3>
 <a name="GimpMenuCallback"></a>GimpMenuCallback ()</h3>
-<a class="indexterm" name="id2720791"></a><pre class="programlisting">void                (*GimpMenuCallback)                 (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> any_id,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<a class="indexterm" name="id2735801"></a><pre class="programlisting">void                (*GimpMenuCallback)                 (gint32 any_id,
+                                                         gpointer data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">GimpMenuCallback</code> is deprecated and should not be used in newly-written code.</p>
@@ -189,12 +141,12 @@ href="../glib/glib-Basic-Types.html#gpointer"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>any_id</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>any_id</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></p></td>
 <td>
 
 
@@ -205,24 +157,18 @@ href="../glib/glib-Basic-Types.html#gpointer"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2720870"></a><h3>
+<a name="id2731980"></a><h3>
 <a name="gimp-image-menu-new"></a>gimp_image_menu_new ()</h3>
-<a class="indexterm" name="id2720883"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_image_menu_new                 (<a href="libgimp-gimpmenu.html#GimpConstraintFunc">GimpConstraintFunc</a> constraint,
-                                                         <a href="libgimp-gimpmenu.html#GimpMenuCallback">GimpMenuCallback</a> callback,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> active_image);</pre>
+<a class="indexterm" name="id2731994"></a><pre class="programlisting">GtkWidget*          gimp_image_menu_new                 (<a class="link" href="libgimp-gimpmenu.html#GimpConstraintFunc">GimpConstraintFunc</a> constraint,
+                                                         <a class="link" href="libgimp-gimpmenu.html#GimpMenuCallback">GimpMenuCallback</a> callback,
+                                                         gpointer data,
+                                                         gint32 active_image);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_image_menu_new</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-Use <a href="GimpImageComboBox.html#gimp-image-combo-box-new"><code class="function">gimp_image_combo_box_new()</code></a> instead.</p>
+Use <a class="link" href="GimpImageComboBox.html#gimp-image-combo-box-new"><code class="function">gimp_image_combo_box_new()</code></a> instead.</p>
 <p>
 
 </p>
@@ -230,27 +176,27 @@ Use <a href="GimpImageComboBox.html#gimp-image-combo-box-new"><code class="funct
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>constraint</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>constraint</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>active_image</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>active_image</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
@@ -259,24 +205,18 @@ Use <a href="GimpImageComboBox.html#gimp-image-combo-box-new"><code class="funct
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2718278"></a><h3>
+<a name="id2732137"></a><h3>
 <a name="gimp-layer-menu-new"></a>gimp_layer_menu_new ()</h3>
-<a class="indexterm" name="id2718292"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_layer_menu_new                 (<a href="libgimp-gimpmenu.html#GimpConstraintFunc">GimpConstraintFunc</a> constraint,
-                                                         <a href="libgimp-gimpmenu.html#GimpMenuCallback">GimpMenuCallback</a> callback,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> active_layer);</pre>
+<a class="indexterm" name="id2732150"></a><pre class="programlisting">GtkWidget*          gimp_layer_menu_new                 (<a class="link" href="libgimp-gimpmenu.html#GimpConstraintFunc">GimpConstraintFunc</a> constraint,
+                                                         <a class="link" href="libgimp-gimpmenu.html#GimpMenuCallback">GimpMenuCallback</a> callback,
+                                                         gpointer data,
+                                                         gint32 active_layer);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_layer_menu_new</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-Use <a href="libgimp-GimpItemComboBox.html#gimp-layer-combo-box-new"><code class="function">gimp_layer_combo_box_new()</code></a> instead.</p>
+Use <a class="link" href="libgimp-GimpItemComboBox.html#gimp-layer-combo-box-new"><code class="function">gimp_layer_combo_box_new()</code></a> instead.</p>
 <p>
 
 </p>
@@ -284,27 +224,27 @@ Use <a href="libgimp-GimpItemComboBox.html#gimp-layer-combo-box-new"><code class
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>constraint</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>constraint</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>active_layer</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>active_layer</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
@@ -313,24 +253,18 @@ Use <a href="libgimp-GimpItemComboBox.html#gimp-layer-combo-box-new"><code class
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2718435"></a><h3>
+<a name="id2734546"></a><h3>
 <a name="gimp-channel-menu-new"></a>gimp_channel_menu_new ()</h3>
-<a class="indexterm" name="id2718448"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_channel_menu_new               (<a href="libgimp-gimpmenu.html#GimpConstraintFunc">GimpConstraintFunc</a> constraint,
-                                                         <a href="libgimp-gimpmenu.html#GimpMenuCallback">GimpMenuCallback</a> callback,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> active_channel);</pre>
+<a class="indexterm" name="id2734560"></a><pre class="programlisting">GtkWidget*          gimp_channel_menu_new               (<a class="link" href="libgimp-gimpmenu.html#GimpConstraintFunc">GimpConstraintFunc</a> constraint,
+                                                         <a class="link" href="libgimp-gimpmenu.html#GimpMenuCallback">GimpMenuCallback</a> callback,
+                                                         gpointer data,
+                                                         gint32 active_channel);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_channel_menu_new</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-Use <a href="libgimp-GimpItemComboBox.html#gimp-channel-combo-box-new"><code class="function">gimp_channel_combo_box_new()</code></a> instead.</p>
+Use <a class="link" href="libgimp-GimpItemComboBox.html#gimp-channel-combo-box-new"><code class="function">gimp_channel_combo_box_new()</code></a> instead.</p>
 <p>
 
 </p>
@@ -338,27 +272,27 @@ Use <a href="libgimp-GimpItemComboBox.html#gimp-channel-combo-box-new"><code cla
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>constraint</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>constraint</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>active_channel</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>active_channel</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
@@ -367,24 +301,18 @@ Use <a href="libgimp-GimpItemComboBox.html#gimp-channel-combo-box-new"><code cla
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2721935"></a><h3>
+<a name="id2739181"></a><h3>
 <a name="gimp-drawable-menu-new"></a>gimp_drawable_menu_new ()</h3>
-<a class="indexterm" name="id2721947"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_drawable_menu_new              (<a href="libgimp-gimpmenu.html#GimpConstraintFunc">GimpConstraintFunc</a> constraint,
-                                                         <a href="libgimp-gimpmenu.html#GimpMenuCallback">GimpMenuCallback</a> callback,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> active_drawable);</pre>
+<a class="indexterm" name="id2739194"></a><pre class="programlisting">GtkWidget*          gimp_drawable_menu_new              (<a class="link" href="libgimp-gimpmenu.html#GimpConstraintFunc">GimpConstraintFunc</a> constraint,
+                                                         <a class="link" href="libgimp-gimpmenu.html#GimpMenuCallback">GimpMenuCallback</a> callback,
+                                                         gpointer data,
+                                                         gint32 active_drawable);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_menu_new</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-Use <a href="libgimp-GimpItemComboBox.html#gimp-drawable-combo-box-new"><code class="function">gimp_drawable_combo_box_new()</code></a> instead.</p>
+Use <a class="link" href="libgimp-GimpItemComboBox.html#gimp-drawable-combo-box-new"><code class="function">gimp_drawable_combo_box_new()</code></a> instead.</p>
 <p>
 
 </p>
@@ -392,27 +320,27 @@ Use <a href="libgimp-GimpItemComboBox.html#gimp-drawable-combo-box-new"><code cl
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>constraint</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>constraint</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>active_drawable</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>active_drawable</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td>
 </td>
 </tr>

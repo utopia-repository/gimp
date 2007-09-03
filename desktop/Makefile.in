@@ -211,6 +211,8 @@ GTK_LIBS = @GTK_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
 HAL_CFLAGS = @HAL_CFLAGS@
 HAL_LIBS = @HAL_LIBS@
+HAVE_CARBON_FALSE = @HAVE_CARBON_FALSE@
+HAVE_CARBON_TRUE = @HAVE_CARBON_TRUE@
 HAVE_DX_DINPUT_FALSE = @HAVE_DX_DINPUT_FALSE@
 HAVE_DX_DINPUT_TRUE = @HAVE_DX_DINPUT_TRUE@
 HAVE_FINITE = @HAVE_FINITE@
@@ -854,7 +856,7 @@ uninstall-am: uninstall-applicationsDATA uninstall-icons16DATA \
 @DESKTOP_DATADIR_TRUE@	touch $(DESTDIR)$(DESKTOP_DATADIR)/icons/hicolor
 
 gimp.desktop: gimp.desktop.in $(wildcard $(top_srcdir)/po/*.po)
-	$(INTLTOOL_MERGE) $(top_srcdir)/po $< $(@) -d -u -c $(top_builddir)/po/.intltool-merge-cachemake
+	$(INTLTOOL_MERGE) $(top_srcdir)/po $< $(@) -d -u -c $(top_builddir)/po/.intltool-merge-cache
 
 validate: gimp.desktop
 	( dfvalidate=`which desktop-file-validate`; \

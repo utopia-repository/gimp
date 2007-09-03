@@ -52,7 +52,7 @@
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpColorHexEntry implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link>,  <link linkend="GtkEditable">GtkEditable</link> and  <link linkend="GtkCellEditable">GtkCellEditable</link>.</para>
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link>,  <link linkend="GtkBuildable">GtkBuildable</link>,  <link linkend="GtkEditable">GtkEditable</link> and  <link linkend="GtkCellEditable">GtkCellEditable</link>.</para>
 
 </refsect1>
 

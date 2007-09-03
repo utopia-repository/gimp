@@ -57,7 +57,7 @@ const <link linkend="gchar">gchar</link>*        <link linkend="gimp-palette-sel
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpPaletteSelectButton implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkBuildable">GtkBuildable</link>.</para>
 
 </refsect1>
 

@@ -115,7 +115,19 @@ typedef struct num {
 } num;
 
 #if !STANDALONE
-SCHEME_EXPORT void (*ts_output_routine) (const char *, int);
+
+typedef enum { TS_OUTPUT_NORMAL, TS_OUTPUT_ERROR } TsOutputType;
+
+typedef void (* ts_output_func)       (TsOutputType    type,
+                                       const char     *string,
+                                       int             len,
+                                       gpointer        data);
+
+SCHEME_EXPORT void ts_register_output_func (ts_output_func  func,
+                                            gpointer        user_data);
+SCHEME_EXPORT void ts_output_string        (TsOutputType    type,
+                                            const char     *string,
+                                            int             len);
 #endif
 
 SCHEME_EXPORT scheme *scheme_init_new();
@@ -149,6 +161,7 @@ void    putcharacter(scheme *sc, gunichar c);
 void    putstr(scheme *sc, const char *s);
 
 SCHEME_EXPORT void set_safe_foreign (scheme *sc, pointer data);
+SCHEME_EXPORT pointer foreign_error (scheme *sc, const char *s, pointer a);
 
 #if USE_INTERFACE
 struct scheme_interface {

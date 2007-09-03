@@ -102,16 +102,16 @@ typedef             <link linkend="GimpVectorsConstraintFunc">GimpVectorsConstra
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpDrawableComboBox implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link>,  <link linkend="GtkCellLayout">GtkCellLayout</link> and  <link linkend="GtkCellEditable">GtkCellEditable</link>.</para>
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link>,  <link linkend="GtkBuildable">GtkBuildable</link>,  <link linkend="GtkCellLayout">GtkCellLayout</link> and  <link linkend="GtkCellEditable">GtkCellEditable</link>.</para>
 <para>
 GimpChannelComboBox implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link>,  <link linkend="GtkCellLayout">GtkCellLayout</link> and  <link linkend="GtkCellEditable">GtkCellEditable</link>.</para>
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link>,  <link linkend="GtkBuildable">GtkBuildable</link>,  <link linkend="GtkCellLayout">GtkCellLayout</link> and  <link linkend="GtkCellEditable">GtkCellEditable</link>.</para>
 <para>
 GimpLayerComboBox implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link>,  <link linkend="GtkCellLayout">GtkCellLayout</link> and  <link linkend="GtkCellEditable">GtkCellEditable</link>.</para>
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link>,  <link linkend="GtkBuildable">GtkBuildable</link>,  <link linkend="GtkCellLayout">GtkCellLayout</link> and  <link linkend="GtkCellEditable">GtkCellEditable</link>.</para>
 <para>
 GimpVectorsComboBox implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link>,  <link linkend="GtkCellLayout">GtkCellLayout</link> and  <link linkend="GtkCellEditable">GtkCellEditable</link>.</para>
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link>,  <link linkend="GtkBuildable">GtkBuildable</link>,  <link linkend="GtkCellLayout">GtkCellLayout</link> and  <link linkend="GtkCellEditable">GtkCellEditable</link>.</para>
 
 </refsect1>
 

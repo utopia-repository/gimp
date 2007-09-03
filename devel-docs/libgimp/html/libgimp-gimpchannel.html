@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpchannel</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-image.html" title="Manupulating Images and their Properties">
@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpcolor.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2598211" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2602626" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2609742" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2627965" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpchannel"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2598211"></a><span class="refentrytitle">gimpchannel</span>
+<a name="id2602626"></a><span class="refentrytitle">gimpchannel</span>
 </h2>
 <p>gimpchannel &#8212; Functions for manipulating channels.</p>
 </td>
@@ -52,131 +52,59 @@
 
 
 
-<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a href="libgimp-gimpchannel.html#gimp-channel-new">gimp_channel_new</a>                    (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                                         <a
-href="../glib/glib-Basic-Types.html#guint"
->guint</a> width,
-                                                         <a
-href="../glib/glib-Basic-Types.html#guint"
->guint</a> height,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> opacity,
+gint32              <a class="link" href="libgimp-gimpchannel.html#gimp-channel-new">gimp_channel_new</a>                    (gint32 image_ID,
+                                                         const gchar *name,
+                                                         guint width,
+                                                         guint height,
+                                                         gdouble opacity,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
-<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a href="libgimp-gimpchannel.html#gimp-channel-new-from-component">gimp_channel_new_from_component</a>     (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
+gint32              <a class="link" href="libgimp-gimpchannel.html#gimp-channel-new-from-component">gimp_channel_new_from_component</a>     (gint32 image_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelType"
 >GimpChannelType</a> component,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);
-<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a href="libgimp-gimpchannel.html#gimp-channel-copy">gimp_channel_copy</a>                   (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel_ID);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimpchannel.html#gimp-channel-get-show-masked">gimp_channel_get_show_masked</a>        (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel_ID);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimpchannel.html#gimp-channel-set-show-masked">gimp_channel_set_show_masked</a>        (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> show_masked);
-<a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             <a href="libgimp-gimpchannel.html#gimp-channel-get-opacity">gimp_channel_get_opacity</a>            (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel_ID);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimpchannel.html#gimp-channel-set-opacity">gimp_channel_set_opacity</a>            (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> opacity);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimpchannel.html#gimp-channel-get-color">gimp_channel_get_color</a>              (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel_ID,
+                                                         const gchar *name);
+gint32              <a class="link" href="libgimp-gimpchannel.html#gimp-channel-copy">gimp_channel_copy</a>                   (gint32 channel_ID);
+gboolean            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-get-show-masked">gimp_channel_get_show_masked</a>        (gint32 channel_ID);
+gboolean            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-set-show-masked">gimp_channel_set_show_masked</a>        (gint32 channel_ID,
+                                                         gboolean show_masked);
+gdouble             <a class="link" href="libgimp-gimpchannel.html#gimp-channel-get-opacity">gimp_channel_get_opacity</a>            (gint32 channel_ID);
+gboolean            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-set-opacity">gimp_channel_set_opacity</a>            (gint32 channel_ID,
+                                                         gdouble opacity);
+gboolean            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-get-color">gimp_channel_get_color</a>              (gint32 channel_ID,
                                                          <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimpchannel.html#gimp-channel-set-color">gimp_channel_set_color</a>              (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel_ID,
+gboolean            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-set-color">gimp_channel_set_color</a>              (gint32 channel_ID,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimpchannel.html#gimp-channel-combine-masks">gimp_channel_combine_masks</a>          (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel1_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel2_ID,
+gboolean            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-combine-masks">gimp_channel_combine_masks</a>          (gint32 channel1_ID,
+                                                         gint32 channel2_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> offx,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> offy);
+                                                         gint offx,
+                                                         gint offy);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2609742"></a><h2>Description</h2>
+<a name="id2627965"></a><h2>Description</h2>
 <p>
 Functions for manipulating channels.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2609757"></a><h2>Details</h2>
+<a name="id2627981"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2609768"></a><h3>
+<a name="id2627991"></a><h3>
 <a name="gimp-channel-new"></a>gimp_channel_new ()</h3>
-<a class="indexterm" name="id2609780"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              gimp_channel_new                    (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                                         <a
-href="../glib/glib-Basic-Types.html#guint"
->guint</a> width,
-                                                         <a
-href="../glib/glib-Basic-Types.html#guint"
->guint</a> height,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> opacity,
+<a class="indexterm" name="id2628004"></a><pre class="programlisting">gint32              gimp_channel_new                    (gint32 image_ID,
+                                                         const gchar *name,
+                                                         guint width,
+                                                         guint height,
+                                                         gdouble opacity,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
@@ -198,37 +126,37 @@ initially.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
 <td> The image to which to add the channel.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
 <td> The channel name.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
 <td> The channel width.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
 <td> The channel height.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></p></td>
 <td> The channel opacity.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></p></td>
 <td> The channel compositing color.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> The newly created channel.
 </td>
 </tr>
@@ -237,19 +165,13 @@ initially.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2612624"></a><h3>
+<a name="id2629793"></a><h3>
 <a name="gimp-channel-new-from-component"></a>gimp_channel_new_from_component ()</h3>
-<a class="indexterm" name="id2612638"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              gimp_channel_new_from_component     (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
+<a class="indexterm" name="id2629807"></a><pre class="programlisting">gint32              gimp_channel_new_from_component     (gint32 image_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelType"
 >GimpChannelType</a> component,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);</pre>
+                                                         const gchar *name);</pre>
 <p>
 Create a new channel from a color component
 </p>
@@ -262,22 +184,22 @@ This procedure creates a new channel from a color component.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
 <td> The image to which to add the channel.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>component</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>component</code></em>&#160;:</span></p></td>
 <td> The image component.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
 <td> The channel name.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> The newly created channel.
 
 </td>
@@ -289,13 +211,9 @@ This procedure creates a new channel from a color component.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2609888"></a><h3>
+<a name="id2626271"></a><h3>
 <a name="gimp-channel-copy"></a>gimp_channel_copy ()</h3>
-<a class="indexterm" name="id2609900"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              gimp_channel_copy                   (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel_ID);</pre>
+<a class="indexterm" name="id2626283"></a><pre class="programlisting">gint32              gimp_channel_copy                   (gint32 channel_ID);</pre>
 <p>
 Copy a channel.
 </p>
@@ -308,12 +226,12 @@ This procedure copies the specified channel and returns the copy.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></p></td>
 <td> The channel to copy.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> The newly copied channel.
 </td>
 </tr>
@@ -322,13 +240,9 @@ This procedure copies the specified channel and returns the copy.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2609964"></a><h3>
+<a name="id2626348"></a><h3>
 <a name="gimp-channel-get-show-masked"></a>gimp_channel_get_show_masked ()</h3>
-<a class="indexterm" name="id2609976"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_channel_get_show_masked        (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel_ID);</pre>
+<a class="indexterm" name="id2626359"></a><pre class="programlisting">gboolean            gimp_channel_get_show_masked        (gint32 channel_ID);</pre>
 <p>
 Get the composite method of the specified channel.
 </p>
@@ -343,12 +257,12 @@ masked regions are shown. Otherwise, selected regions are shown.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></p></td>
 <td> The channel.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> The channel composite method.
 </td>
 </tr>
@@ -357,16 +271,10 @@ masked regions are shown. Otherwise, selected regions are shown.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2610043"></a><h3>
+<a name="id2626428"></a><h3>
 <a name="gimp-channel-set-show-masked"></a>gimp_channel_set_show_masked ()</h3>
-<a class="indexterm" name="id2610056"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_channel_set_show_masked        (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> show_masked);</pre>
+<a class="indexterm" name="id2626442"></a><pre class="programlisting">gboolean            gimp_channel_set_show_masked        (gint32 channel_ID,
+                                                         gboolean show_masked);</pre>
 <p>
 Set the composite method of the specified channel.
 </p>
@@ -381,17 +289,17 @@ masked regions are shown. Otherwise, selected regions are shown.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></p></td>
 <td> The channel.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>show_masked</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>show_masked</code></em>&#160;:</span></p></td>
 <td> The new channel composite method.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -400,13 +308,9 @@ masked regions are shown. Otherwise, selected regions are shown.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2610147"></a><h3>
+<a name="id2626532"></a><h3>
 <a name="gimp-channel-get-opacity"></a>gimp_channel_get_opacity ()</h3>
-<a class="indexterm" name="id2608877"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             gimp_channel_get_opacity            (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel_ID);</pre>
+<a class="indexterm" name="id2625992"></a><pre class="programlisting">gdouble             gimp_channel_get_opacity            (gint32 channel_ID);</pre>
 <p>
 Get the opacity of the specified channel.
 </p>
@@ -419,12 +323,12 @@ This procedure returns the specified channel's opacity.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></p></td>
 <td> The channel.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> The channel opacity.
 </td>
 </tr>
@@ -433,16 +337,10 @@ This procedure returns the specified channel's opacity.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2608941"></a><h3>
+<a name="id2626056"></a><h3>
 <a name="gimp-channel-set-opacity"></a>gimp_channel_set_opacity ()</h3>
-<a class="indexterm" name="id2608953"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_channel_set_opacity            (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> opacity);</pre>
+<a class="indexterm" name="id2626067"></a><pre class="programlisting">gboolean            gimp_channel_set_opacity            (gint32 channel_ID,
+                                                         gdouble opacity);</pre>
 <p>
 Set the opacity of the specified channel.
 </p>
@@ -455,17 +353,17 @@ This procedure sets the specified channel's opacity.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></p></td>
 <td> The channel.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></p></td>
 <td> The new channel opacity.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -474,13 +372,9 @@ This procedure sets the specified channel's opacity.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2609038"></a><h3>
+<a name="id2626153"></a><h3>
 <a name="gimp-channel-get-color"></a>gimp_channel_get_color ()</h3>
-<a class="indexterm" name="id2609049"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_channel_get_color              (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel_ID,
+<a class="indexterm" name="id2626164"></a><pre class="programlisting">gboolean            gimp_channel_get_color              (gint32 channel_ID,
                                                          <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
@@ -496,17 +390,17 @@ This procedure returns the specified channel's compositing color.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></p></td>
 <td> The channel.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></p></td>
 <td> The channel compositing color.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -515,13 +409,9 @@ This procedure returns the specified channel's compositing color.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2609137"></a><h3>
+<a name="id2626252"></a><h3>
 <a name="gimp-channel-set-color"></a>gimp_channel_set_color ()</h3>
-<a class="indexterm" name="id2609148"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_channel_set_color              (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel_ID,
+<a class="indexterm" name="id2632058"></a><pre class="programlisting">gboolean            gimp_channel_set_color              (gint32 channel_ID,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
@@ -537,17 +427,17 @@ This procedure sets the specified channel's compositing color.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>channel_ID</code></em>&#160;:</span></p></td>
 <td> The channel.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></p></td>
 <td> The new channel compositing color.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -556,25 +446,15 @@ This procedure sets the specified channel's compositing color.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614971"></a><h3>
+<a name="id2632136"></a><h3>
 <a name="gimp-channel-combine-masks"></a>gimp_channel_combine_masks ()</h3>
-<a class="indexterm" name="id2614982"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_channel_combine_masks          (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel1_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> channel2_ID,
+<a class="indexterm" name="id2632146"></a><pre class="programlisting">gboolean            gimp_channel_combine_masks          (gint32 channel1_ID,
+                                                         gint32 channel2_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> offx,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> offy);</pre>
+                                                         gint offx,
+                                                         gint offy);</pre>
 <p>
 Combine two channel masks.
 </p>
@@ -588,32 +468,32 @@ the first channel.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>channel1_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>channel1_ID</code></em>&#160;:</span></p></td>
 <td> The channel1.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>channel2_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>channel2_ID</code></em>&#160;:</span></p></td>
 <td> The channel2.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></p></td>
 <td> The selection operation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>offx</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>offx</code></em>&#160;:</span></p></td>
 <td> x offset between upper left corner of channels: (second - first).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>offy</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>offy</code></em>&#160;:</span></p></td>
 <td> y offset between upper left corner of channels: (second - first).
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>

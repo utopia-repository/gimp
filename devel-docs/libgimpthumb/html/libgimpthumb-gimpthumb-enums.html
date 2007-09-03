@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpthumb-enums</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Thumbnail Library Reference Manual">
 <link rel="up" href="libgimpthumb.html" title="Part&#160;I.&#160;GIMP Thumbnail Library">
 <link rel="prev" href="libgimpthumb-gimpthumb-utils.html" title="gimpthumb-utils">
@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Thumbnail Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpthumb-gimpthumb-error.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2597910" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2577410" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2572844" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2581682" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpthumb-gimpthumb-enums"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2597910"></a><span class="refentrytitle">gimpthumb-enums</span>
+<a name="id2577410"></a><span class="refentrytitle">gimpthumb-enums</span>
 </h2>
 <p>gimpthumb-enums &#8212; Enumerations used by libgimpthumb</p>
 </td>
@@ -46,24 +46,24 @@
 
 
 
-enum                <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbFileType">GimpThumbFileType</a>;
-enum                <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a>;
-enum                <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbState">GimpThumbState</a>;
+enum                <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbFileType">GimpThumbFileType</a>;
+enum                <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a>;
+enum                <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbState">GimpThumbState</a>;
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2572844"></a><h2>Description</h2>
+<a name="id2581682"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2563601"></a><h2>Details</h2>
+<a name="id2577014"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2563612"></a><h3>
+<a name="id2577024"></a><h3>
 <a name="GimpThumbFileType"></a>enum GimpThumbFileType</h3>
-<a class="indexterm" name="id2563624"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2577037"></a><pre class="programlisting">typedef enum
 {
   GIMP_THUMB_FILE_TYPE_NONE,
   GIMP_THUMB_FILE_TYPE_REGULAR,
@@ -72,28 +72,28 @@ enum                <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbState">G
 } GimpThumbFileType;
 </pre>
 <p>
-File types as returned by <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-file-test"><code class="function">gimp_thumb_file_test()</code></a>.
+File types as returned by <a class="link" href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-file-test"><code class="function">gimp_thumb_file_test()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><a name="GIMP-THUMB-FILE-TYPE-NONE:CAPS"></a><code class="literal">GIMP_THUMB_FILE_TYPE_NONE</code></span></td>
+<td><p><span class="term"><a name="GIMP-THUMB-FILE-TYPE-NONE:CAPS"></a><code class="literal">GIMP_THUMB_FILE_TYPE_NONE</code></span></p></td>
 <td>    file does not exist
 </td>
 </tr>
 <tr>
-<td><span class="term"><a name="GIMP-THUMB-FILE-TYPE-REGULAR:CAPS"></a><code class="literal">GIMP_THUMB_FILE_TYPE_REGULAR</code></span></td>
+<td><p><span class="term"><a name="GIMP-THUMB-FILE-TYPE-REGULAR:CAPS"></a><code class="literal">GIMP_THUMB_FILE_TYPE_REGULAR</code></span></p></td>
 <td> a regular file
 </td>
 </tr>
 <tr>
-<td><span class="term"><a name="GIMP-THUMB-FILE-TYPE-FOLDER:CAPS"></a><code class="literal">GIMP_THUMB_FILE_TYPE_FOLDER</code></span></td>
+<td><p><span class="term"><a name="GIMP-THUMB-FILE-TYPE-FOLDER:CAPS"></a><code class="literal">GIMP_THUMB_FILE_TYPE_FOLDER</code></span></p></td>
 <td>  a directory
 </td>
 </tr>
 <tr>
-<td><span class="term"><a name="GIMP-THUMB-FILE-TYPE-SPECIAL:CAPS"></a><code class="literal">GIMP_THUMB_FILE_TYPE_SPECIAL</code></span></td>
+<td><p><span class="term"><a name="GIMP-THUMB-FILE-TYPE-SPECIAL:CAPS"></a><code class="literal">GIMP_THUMB_FILE_TYPE_SPECIAL</code></span></p></td>
 <td> a special file (device node, fifo, socket, ...)
 
 </td>
@@ -103,9 +103,9 @@ File types as returned by <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2573251"></a><h3>
+<a name="id2578481"></a><h3>
 <a name="GimpThumbSize"></a>enum GimpThumbSize</h3>
-<a class="indexterm" name="id2573264"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2578493"></a><pre class="programlisting">typedef enum
 {
   GIMP_THUMB_SIZE_FAIL   = 0,
   GIMP_THUMB_SIZE_NORMAL = 128,
@@ -119,18 +119,18 @@ Possible thumbnail sizes as defined by the Thumbnail Managaging Standard
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><a name="GIMP-THUMB-SIZE-FAIL:CAPS"></a><code class="literal">GIMP_THUMB_SIZE_FAIL</code></span></td>
+<td><p><span class="term"><a name="GIMP-THUMB-SIZE-FAIL:CAPS"></a><code class="literal">GIMP_THUMB_SIZE_FAIL</code></span></p></td>
 <td>   special size used to indicate a thumbnail
                           creation failure
 </td>
 </tr>
 <tr>
-<td><span class="term"><a name="GIMP-THUMB-SIZE-NORMAL:CAPS"></a><code class="literal">GIMP_THUMB_SIZE_NORMAL</code></span></td>
+<td><p><span class="term"><a name="GIMP-THUMB-SIZE-NORMAL:CAPS"></a><code class="literal">GIMP_THUMB_SIZE_NORMAL</code></span></p></td>
 <td> normal thumbnail size (128 pixels)
 </td>
 </tr>
 <tr>
-<td><span class="term"><a name="GIMP-THUMB-SIZE-LARGE:CAPS"></a><code class="literal">GIMP_THUMB_SIZE_LARGE</code></span></td>
+<td><p><span class="term"><a name="GIMP-THUMB-SIZE-LARGE:CAPS"></a><code class="literal">GIMP_THUMB_SIZE_LARGE</code></span></p></td>
 <td>  large thumbnail size (256 pixels)
 
 </td>
@@ -140,9 +140,9 @@ Possible thumbnail sizes as defined by the Thumbnail Managaging Standard
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2581414"></a><h3>
+<a name="id2576396"></a><h3>
 <a name="GimpThumbState"></a>enum GimpThumbState</h3>
-<a class="indexterm" name="id2581426"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2576409"></a><pre class="programlisting">typedef enum
 {
   GIMP_THUMB_STATE_UNKNOWN,
   GIMP_THUMB_STATE_REMOTE,
@@ -162,47 +162,47 @@ Possible image and thumbnail file states used by libgimpthumb.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><a name="GIMP-THUMB-STATE-UNKNOWN:CAPS"></a><code class="literal">GIMP_THUMB_STATE_UNKNOWN</code></span></td>
+<td><p><span class="term"><a name="GIMP-THUMB-STATE-UNKNOWN:CAPS"></a><code class="literal">GIMP_THUMB_STATE_UNKNOWN</code></span></p></td>
 <td>   nothing is known about the file/thumbnail
 </td>
 </tr>
 <tr>
-<td><span class="term"><a name="GIMP-THUMB-STATE-REMOTE:CAPS"></a><code class="literal">GIMP_THUMB_STATE_REMOTE</code></span></td>
+<td><p><span class="term"><a name="GIMP-THUMB-STATE-REMOTE:CAPS"></a><code class="literal">GIMP_THUMB_STATE_REMOTE</code></span></p></td>
 <td>    the file is on a remote file system
 </td>
 </tr>
 <tr>
-<td><span class="term"><a name="GIMP-THUMB-STATE-FOLDER:CAPS"></a><code class="literal">GIMP_THUMB_STATE_FOLDER</code></span></td>
+<td><p><span class="term"><a name="GIMP-THUMB-STATE-FOLDER:CAPS"></a><code class="literal">GIMP_THUMB_STATE_FOLDER</code></span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><a name="GIMP-THUMB-STATE-SPECIAL:CAPS"></a><code class="literal">GIMP_THUMB_STATE_SPECIAL</code></span></td>
+<td><p><span class="term"><a name="GIMP-THUMB-STATE-SPECIAL:CAPS"></a><code class="literal">GIMP_THUMB_STATE_SPECIAL</code></span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><a name="GIMP-THUMB-STATE-NOT-FOUND:CAPS"></a><code class="literal">GIMP_THUMB_STATE_NOT_FOUND</code></span></td>
+<td><p><span class="term"><a name="GIMP-THUMB-STATE-NOT-FOUND:CAPS"></a><code class="literal">GIMP_THUMB_STATE_NOT_FOUND</code></span></p></td>
 <td> the file/thumbnail doesn't exist
 </td>
 </tr>
 <tr>
-<td><span class="term"><a name="GIMP-THUMB-STATE-EXISTS:CAPS"></a><code class="literal">GIMP_THUMB_STATE_EXISTS</code></span></td>
+<td><p><span class="term"><a name="GIMP-THUMB-STATE-EXISTS:CAPS"></a><code class="literal">GIMP_THUMB_STATE_EXISTS</code></span></p></td>
 <td>    the file/thumbnail exists
 </td>
 </tr>
 <tr>
-<td><span class="term"><a name="GIMP-THUMB-STATE-OLD:CAPS"></a><code class="literal">GIMP_THUMB_STATE_OLD</code></span></td>
+<td><p><span class="term"><a name="GIMP-THUMB-STATE-OLD:CAPS"></a><code class="literal">GIMP_THUMB_STATE_OLD</code></span></p></td>
 <td>       the thumbnail may be outdated
 </td>
 </tr>
 <tr>
-<td><span class="term"><a name="GIMP-THUMB-STATE-FAILED:CAPS"></a><code class="literal">GIMP_THUMB_STATE_FAILED</code></span></td>
+<td><p><span class="term"><a name="GIMP-THUMB-STATE-FAILED:CAPS"></a><code class="literal">GIMP_THUMB_STATE_FAILED</code></span></p></td>
 <td>    the thumbnail couldn't be created
 </td>
 </tr>
 <tr>
-<td><span class="term"><a name="GIMP-THUMB-STATE-OK:CAPS"></a><code class="literal">GIMP_THUMB_STATE_OK</code></span></td>
+<td><p><span class="term"><a name="GIMP-THUMB-STATE-OK:CAPS"></a><code class="literal">GIMP_THUMB_STATE_OK</code></span></p></td>
 <td>        the thumbnail exists and matches the image
 
 </td>

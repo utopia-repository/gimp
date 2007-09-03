@@ -55,7 +55,7 @@ const <link linkend="gchar">gchar</link>*        <link linkend="gimp-font-select
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpFontSelectButton implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkBuildable">GtkBuildable</link>.</para>
 
 </refsect1>
 

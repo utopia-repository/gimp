@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpColorProfileComboBox</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="prev" href="GimpColorProfileStore.html" title="GimpColorProfileStore">
@@ -33,22 +33,22 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpDialog.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2582303" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2617599" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2593914" class="shortcut">Description</a>
+                  <a href="#id2615658" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2566940" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2580175" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2593838" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2615576" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2593873" class="shortcut">Properties</a></nobr></td></tr>
+                  <a href="#id2615616" class="shortcut">Properties</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpColorProfileComboBox"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2582303"></a><span class="refentrytitle">GimpColorProfileComboBox</span>
+<a name="id2617599"></a><span class="refentrytitle">GimpColorProfileComboBox</span>
 </h2>
 <p>GimpColorProfileComboBox</p>
 </td>
@@ -60,122 +60,74 @@
 
 
 
-                    <a href="GimpColorProfileComboBox.html#GimpColorProfileComboBox-struct">GimpColorProfileComboBox</a>;
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*          <a href="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-new">gimp_color_profile_combo_box_new</a>    (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *dialog,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *history);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*          <a href="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-new-with-model">gimp_color_profile_combo_box_new_with_model</a>
-                                                        (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *dialog,
-                                                         <a
-href="../gtk/GtkTreeModel.html"
->GtkTreeModel</a> *model);
-void                <a href="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-add">gimp_color_profile_combo_box_add</a>    (<a href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox">GimpColorProfileComboBox</a> *combo,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *filename,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *label);
-void                <a href="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-set-active">gimp_color_profile_combo_box_set_active</a>
-                                                        (<a href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox">GimpColorProfileComboBox</a> *combo,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *filename,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *label);
-<a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a href="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-get-active">gimp_color_profile_combo_box_get_active</a>
-                                                        (<a href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox">GimpColorProfileComboBox</a> *combo);
+                    <a class="link" href="GimpColorProfileComboBox.html#GimpColorProfileComboBox-struct">GimpColorProfileComboBox</a>;
+GtkWidget*          <a class="link" href="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-new">gimp_color_profile_combo_box_new</a>    (GtkWidget *dialog,
+                                                         const gchar *history);
+GtkWidget*          <a class="link" href="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-new-with-model">gimp_color_profile_combo_box_new_with_model</a>
+                                                        (GtkWidget *dialog,
+                                                         GtkTreeModel *model);
+void                <a class="link" href="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-add">gimp_color_profile_combo_box_add</a>    (<a class="link" href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox">GimpColorProfileComboBox</a> *combo,
+                                                         const gchar *filename,
+                                                         const gchar *label);
+void                <a class="link" href="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-set-active">gimp_color_profile_combo_box_set_active</a>
+                                                        (<a class="link" href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox">GimpColorProfileComboBox</a> *combo,
+                                                         const gchar *filename,
+                                                         const gchar *label);
+gchar*              <a class="link" href="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-get-active">gimp_color_profile_combo_box_get_active</a>
+                                                        (<a class="link" href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox">GimpColorProfileComboBox</a> *combo);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2566940"></a><h2>Object Hierarchy</h2>
+<a name="id2580175"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  <a
-href="../gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a
-href="../gtk/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>
-                     +----<a
-href="../gtk/GtkContainer.html"
->GtkContainer</a>
-                           +----<a
-href="../gtk/GtkBin.html"
->GtkBin</a>
-                                 +----<a
-href="../gtk/GtkComboBox.html"
->GtkComboBox</a>
+  GObject
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkContainer
+                           +----GtkBin
+                                 +----GtkComboBox
                                        +----GimpColorProfileComboBox
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2593838"></a><h2>Implemented Interfaces</h2>
+<a name="id2615576"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorProfileComboBox implements
- AtkImplementorIface,  <a
-href="../gtk/GtkCellEditable.html"
->GtkCellEditable</a> and  <a
-href="../gtk/GtkCellLayout.html"
->GtkCellLayout</a>.</p>
+ AtkImplementorIface,  GtkBuildable,  GtkCellEditable and  GtkCellLayout.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2593873"></a><h2>Properties</h2>
+<a name="id2615616"></a><h2>Properties</h2>
 <pre class="synopsis">
 
-  "<a href="GimpColorProfileComboBox.html#GimpColorProfileComboBox--dialog">dialog</a>"                   <a
-href="../gtk/GtkDialog.html"
->GtkDialog</a>             : Read / Write / Construct Only
-  "<a href="GimpColorProfileComboBox.html#GimpColorProfileComboBox--model">model</a>"                    <a href="GimpColorProfileStore.html" title="GimpColorProfileStore">GimpColorProfileStore</a>  : Read / Write
+  "<a class="link" href="GimpColorProfileComboBox.html#GimpColorProfileComboBox--dialog">dialog</a>"                   GtkDialog             : Read / Write / Construct Only
+  "<a class="link" href="GimpColorProfileComboBox.html#GimpColorProfileComboBox--model">model</a>"                    <a class="link" href="GimpColorProfileStore.html" title="GimpColorProfileStore">GimpColorProfileStore</a>  : Read / Write
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2593914"></a><h2>Description</h2>
+<a name="id2615658"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2593930"></a><h2>Details</h2>
+<a name="id2615674"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2593941"></a><h3>
+<a name="id2615684"></a><h3>
 <a name="GimpColorProfileComboBox-struct"></a>GimpColorProfileComboBox</h3>
-<a class="indexterm" name="id2593952"></a><pre class="programlisting">typedef struct _GimpColorProfileComboBox GimpColorProfileComboBox;</pre>
+<a class="indexterm" name="id2615696"></a><pre class="programlisting">typedef struct _GimpColorProfileComboBox GimpColorProfileComboBox;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604463"></a><h3>
+<a name="id2622106"></a><h3>
 <a name="gimp-color-profile-combo-box-new"></a>gimp_color_profile_combo_box_new ()</h3>
-<a class="indexterm" name="id2604476"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_color_profile_combo_box_new    (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *dialog,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *history);</pre>
+<a class="indexterm" name="id2622120"></a><pre class="programlisting">GtkWidget*          gimp_color_profile_combo_box_new    (GtkWidget *dialog,
+                                                         const gchar *history);</pre>
 <p>
 Create a combo-box widget for selecting color profiles. The combo-box
 is populated from the file specified as <em class="parameter"><code>history</code></em>. This filename is
@@ -191,23 +143,19 @@ typically created using the following code snippet:
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>dialog</code></em>&#160;:</span></td>
-<td>  a <a
-href="../gtk/GtkDialog.html"
-><span class="type">GtkDialog</span></a> to present when the user selects the
+<td><p><span class="term"><em class="parameter"><code>dialog</code></em>&#160;:</span></p></td>
+<td>  a <span class="type">GtkDialog</span> to present when the user selects the
           "Select color profile from disk..." item
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>history</code></em>&#160;:</span></td>
-<td> filename of the profilerc (or <a
-href="../glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a> for no history)
+<td><p><span class="term"><em class="parameter"><code>history</code></em>&#160;:</span></p></td>
+<td> filename of the profilerc (or <code class="literal">NULL</code> for no history)
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> a new <a href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox"><span class="type">GimpColorProfileComboBox</span></a>.
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td> a new <a class="link" href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox"><span class="type">GimpColorProfileComboBox</span></a>.
 
 </td>
 </tr>
@@ -218,25 +166,19 @@ href="../glib/glib-Standard-Macros.html#NULL:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604604"></a><h3>
+<a name="id2622248"></a><h3>
 <a name="gimp-color-profile-combo-box-new-with-model"></a>gimp_color_profile_combo_box_new_with_model ()</h3>
-<a class="indexterm" name="id2604621"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_color_profile_combo_box_new_with_model
-                                                        (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *dialog,
-                                                         <a
-href="../gtk/GtkTreeModel.html"
->GtkTreeModel</a> *model);</pre>
+<a class="indexterm" name="id2622265"></a><pre class="programlisting">GtkWidget*          gimp_color_profile_combo_box_new_with_model
+                                                        (GtkWidget *dialog,
+                                                         GtkTreeModel *model);</pre>
 <p>
 This constructor is useful when you want to create several
 combo-boxes for profile selection that all share the same
-<a href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a>. This is for example done in the
+<a class="link" href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a>. This is for example done in the
 GIMP Preferences dialog.
 </p>
 <p>
-See also <a href="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-new"><code class="function">gimp_color_profile_combo_box_new()</code></a>.</p>
+See also <a class="link" href="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-new"><code class="function">gimp_color_profile_combo_box_new()</code></a>.</p>
 <p>
 
 </p>
@@ -244,21 +186,19 @@ See also <a href="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-new
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>dialog</code></em>&#160;:</span></td>
-<td> a <a
-href="../gtk/GtkDialog.html"
-><span class="type">GtkDialog</span></a> to present when the user selects the
+<td><p><span class="term"><em class="parameter"><code>dialog</code></em>&#160;:</span></p></td>
+<td> a <span class="type">GtkDialog</span> to present when the user selects the
          "Select color profile from disk..." item
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>model</code></em>&#160;:</span></td>
-<td>  a <a href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a> object
+<td><p><span class="term"><em class="parameter"><code>model</code></em>&#160;:</span></p></td>
+<td>  a <a class="link" href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a> object
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> a new <a href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox"><span class="type">GimpColorProfileComboBox</span></a>.
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td> a new <a class="link" href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox"><span class="type">GimpColorProfileComboBox</span></a>.
 
 </td>
 </tr>
@@ -269,19 +209,15 @@ href="../gtk/GtkDialog.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604867"></a><h3>
+<a name="id2616453"></a><h3>
 <a name="gimp-color-profile-combo-box-add"></a>gimp_color_profile_combo_box_add ()</h3>
-<a class="indexterm" name="id2604880"></a><pre class="programlisting">void                gimp_color_profile_combo_box_add    (<a href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox">GimpColorProfileComboBox</a> *combo,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *filename,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *label);</pre>
+<a class="indexterm" name="id2616469"></a><pre class="programlisting">void                gimp_color_profile_combo_box_add    (<a class="link" href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox">GimpColorProfileComboBox</a> *combo,
+                                                         const gchar *filename,
+                                                         const gchar *label);</pre>
 <p>
 This function delegates to the underlying
-<a href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a>. Please refer to the documentation of
-<a href="GimpColorProfileStore.html#gimp-color-profile-store-add"><code class="function">gimp_color_profile_store_add()</code></a> for details.</p>
+<a class="link" href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a>. Please refer to the documentation of
+<a class="link" href="GimpColorProfileStore.html#gimp-color-profile-store-add"><code class="function">gimp_color_profile_store_add()</code></a> for details.</p>
 <p>
 
 </p>
@@ -289,25 +225,19 @@ This function delegates to the underlying
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>combo</code></em>&#160;:</span></td>
-<td>    a <a href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox"><span class="type">GimpColorProfileComboBox</span></a>
+<td><p><span class="term"><em class="parameter"><code>combo</code></em>&#160;:</span></p></td>
+<td>    a <a class="link" href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox"><span class="type">GimpColorProfileComboBox</span></a>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
-<td> filename of the profile to add (or <a
-href="../glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a>)
+<td><p><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></p></td>
+<td> filename of the profile to add (or <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></p></td>
 <td>    label to use for the profile
-           (may only be <a
-href="../glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a> if <em class="parameter"><code>filename</code></em> is <a
-href="../glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a>)
+           (may only be <code class="literal">NULL</code> if <em class="parameter"><code>filename</code></em> is <code class="literal">NULL</code>)
 </td>
 </tr>
 </tbody>
@@ -317,16 +247,12 @@ href="../glib/glib-Standard-Macros.html#NULL:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605038"></a><h3>
+<a name="id2616628"></a><h3>
 <a name="gimp-color-profile-combo-box-set-active"></a>gimp_color_profile_combo_box_set_active ()</h3>
-<a class="indexterm" name="id2605054"></a><pre class="programlisting">void                gimp_color_profile_combo_box_set_active
-                                                        (<a href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox">GimpColorProfileComboBox</a> *combo,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *filename,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *label);</pre>
+<a class="indexterm" name="id2616644"></a><pre class="programlisting">void                gimp_color_profile_combo_box_set_active
+                                                        (<a class="link" href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox">GimpColorProfileComboBox</a> *combo,
+                                                         const gchar *filename,
+                                                         const gchar *label);</pre>
 <p>
 Selects a color profile from the <em class="parameter"><code>combo</code></em> and makes it the active
 item.  If the profile is not listed in the <em class="parameter"><code>combo</code></em>, then it is
@@ -338,17 +264,17 @@ added.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>combo</code></em>&#160;:</span></td>
-<td>    a <a href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox"><span class="type">GimpColorProfileComboBox</span></a>
+<td><p><span class="term"><em class="parameter"><code>combo</code></em>&#160;:</span></p></td>
+<td>    a <a class="link" href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox"><span class="type">GimpColorProfileComboBox</span></a>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></p></td>
 <td> filename of the profile to select
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></p></td>
 <td>    label
 </td>
 </tr>
@@ -359,12 +285,10 @@ added.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2608413"></a><h3>
+<a name="id2625653"></a><h3>
 <a name="gimp-color-profile-combo-box-get-active"></a>gimp_color_profile_combo_box_get_active ()</h3>
-<a class="indexterm" name="id2608428"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_color_profile_combo_box_get_active
-                                                        (<a href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox">GimpColorProfileComboBox</a> *combo);</pre>
+<a class="indexterm" name="id2625668"></a><pre class="programlisting">gchar*              gimp_color_profile_combo_box_get_active
+                                                        (<a class="link" href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox">GimpColorProfileComboBox</a> *combo);</pre>
 <p>
 </p>
 <p>
@@ -374,17 +298,15 @@ href="../glib/glib-Basic-Types.html#gchar"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>combo</code></em>&#160;:</span></td>
-<td> a <a href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox"><span class="type">GimpColorProfileComboBox</span></a>
+<td><p><span class="term"><em class="parameter"><code>combo</code></em>&#160;:</span></p></td>
+<td> a <a class="link" href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox"><span class="type">GimpColorProfileComboBox</span></a>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> The filename of the currently selected color profile.
               This is a newly allocated string and should be released
-              using <a
-href="../glib/glib-Memory-Allocation.html#g-free"
-><code class="function">g_free()</code></a> when it is not any longer needed.
+              using <code class="function">g_free()</code> when it is not any longer needed.
 
 </td>
 </tr>
@@ -395,17 +317,13 @@ href="../glib/glib-Memory-Allocation.html#g-free"
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2608509"></a><h2>Property Details</h2>
+<a name="id2625749"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2608520"></a><h3>
+<a name="id2625760"></a><h3>
 <a name="GimpColorProfileComboBox--dialog"></a>The "<code class="literal">dialog</code>" property</h3>
-<a class="indexterm" name="id2608536"></a><pre class="programlisting">  "dialog"                   <a
-href="../gtk/GtkDialog.html"
->GtkDialog</a>             : Read / Write / Construct Only</pre>
+<a class="indexterm" name="id2625776"></a><pre class="programlisting">  "dialog"                   GtkDialog             : Read / Write / Construct Only</pre>
 <p>
-<a
-href="../gtk/GtkDialog.html"
-><span class="type">GtkDialog</span></a> to present when the user selects the
+<span class="type">GtkDialog</span> to present when the user selects the
 "Select color profile from disk..." item.</p>
 <p>
 
@@ -415,15 +333,13 @@ href="../gtk/GtkDialog.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2608576"></a><h3>
+<a name="id2580615"></a><h3>
 <a name="GimpColorProfileComboBox--model"></a>The "<code class="literal">model</code>" property</h3>
-<a class="indexterm" name="id2608592"></a><pre class="programlisting">  "model"                    <a href="GimpColorProfileStore.html" title="GimpColorProfileStore">GimpColorProfileStore</a>  : Read / Write</pre>
+<a class="indexterm" name="id2625812"></a><pre class="programlisting">  "model"                    <a class="link" href="GimpColorProfileStore.html" title="GimpColorProfileStore">GimpColorProfileStore</a>  : Read / Write</pre>
 <p>
-Overrides the "model" property of the <a
-href="../gtk/GtkComboBox.html"
-><span class="type">GtkComboBox</span></a> class.
-<a href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox"><span class="type">GimpColorProfileComboBox</span></a> requires the model to be a
-<a href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a>.</p>
+Overrides the "model" property of the <span class="type">GtkComboBox</span> class.
+<a class="link" href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox"><span class="type">GimpColorProfileComboBox</span></a> requires the model to be a
+<a class="link" href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a>.</p>
 <p>
 
 </p>

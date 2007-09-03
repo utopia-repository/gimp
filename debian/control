@@ -25,7 +25,7 @@ Package: libgimp2.0
 Architecture: any
 Section: libs
 Depends: ${shlibs:Depends}
-Description: Libraries necessary to run the GIMP - DEVELOPMENT VERSION
+Description: Libraries necessary to run the GIMP
  This package includes the libgimp libraries, which are
  necessary to run The GIMP.
  .
@@ -45,7 +45,7 @@ Description: Built-in Help Browser plugin for The GIMP
 Package: gimp-python
 Architecture: any
 Section: graphics
-Depends: python-gtk2 (>= 2.8.0), ${shlibs:Depends}, ${python:Depends}
+Depends: gimp (= ${binary:Version}), python-gtk2 (>= 2.8.0), ${shlibs:Depends}, ${python:Depends}
 Description: Python support and plugins for The GIMP
  This package includes the Python modules necessary to write Python-based
  plugins for The GIMP. It includes several plugins with various useful
@@ -86,22 +86,14 @@ Depends: gimp-data (>= ${source:Upstream-Version}), gimp-data (<< ${source:Upstr
 Conflicts: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2), gimp-svg
 Replaces: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2), gimp-svg
 Recommends: gimp-gnomevfs | gimp-libcurl
-Suggests: gimp-help-en | gimp-help, gimp-python, libgimp-perl, gimp-data-extras, gimp-print, gimp-dbg
-Description: The GNU Image Manipulation Program - DEVELOPMENT VERSION
+Suggests: gimp-help-en | gimp-help, gimp-python (>= 2.4.0~rc1-1), libgimp-perl, gimp-data-extras, gimp-print, gimp-dbg
+Description: The GNU Image Manipulation Program
  The GIMP lets you draw, paint, edit images, and much more! GIMP
  includes the functionality and plug-ins of other famous image
  editing and processing programs.
  .
  If you'd like to use a MIDI device as an input controller in GIMP,
  install libasound2 and read the how-to at /usr/share/doc/gimp/README.MIDI
- .
- This is the UNSTABLE DEVELOPMENT VERSION of gimp. It should not
- be used for production purposes. File formats may change without notice,
- gimp may crash, and you may lose data. If you need stability,
- do not install this package, use the 2.2 version from testing/unstable instead.
- If you do use this package, it is highly recommended that you install
- the associated gimp-dbg package as well, so that you can produce
- meaningful bug reports if needed.
 
 Package: gimp-data
 Architecture: all

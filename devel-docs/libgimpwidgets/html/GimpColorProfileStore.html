@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpColorProfileStore</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="prev" href="GimpColorSelection.html" title="GimpColorSelection">
@@ -33,22 +33,22 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpColorProfileComboBox.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2589648" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2597682" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2567583" class="shortcut">Description</a>
+                  <a href="#id2615043" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2567483" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2614936" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2567512" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2614966" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2567552" class="shortcut">Properties</a></nobr></td></tr>
+                  <a href="#id2615012" class="shortcut">Properties</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpColorProfileStore"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2589648"></a><span class="refentrytitle">GimpColorProfileStore</span>
+<a name="id2597682"></a><span class="refentrytitle">GimpColorProfileStore</span>
 </h2>
 <p>GimpColorProfileStore</p>
 </td>
@@ -60,85 +60,59 @@
 
 
 
-                    <a href="GimpColorProfileStore.html#GimpColorProfileStore-struct">GimpColorProfileStore</a>;
-<a
-href="../gtk/GtkListStore.html"
->GtkListStore</a>*       <a href="GimpColorProfileStore.html#gimp-color-profile-store-new">gimp_color_profile_store_new</a>        (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *history);
-void                <a href="GimpColorProfileStore.html#gimp-color-profile-store-add">gimp_color_profile_store_add</a>        (<a href="GimpColorProfileStore.html" title="GimpColorProfileStore">GimpColorProfileStore</a> *store,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *filename,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *label);
+                    <a class="link" href="GimpColorProfileStore.html#GimpColorProfileStore-struct">GimpColorProfileStore</a>;
+GtkListStore*       <a class="link" href="GimpColorProfileStore.html#gimp-color-profile-store-new">gimp_color_profile_store_new</a>        (const gchar *history);
+void                <a class="link" href="GimpColorProfileStore.html#gimp-color-profile-store-add">gimp_color_profile_store_add</a>        (<a class="link" href="GimpColorProfileStore.html" title="GimpColorProfileStore">GimpColorProfileStore</a> *store,
+                                                         const gchar *filename,
+                                                         const gchar *label);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2567483"></a><h2>Object Hierarchy</h2>
+<a name="id2614936"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  <a
-href="../gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="../gtk/GtkListStore.html"
->GtkListStore</a>
+  GObject
+   +----GtkListStore
          +----GimpColorProfileStore
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2567512"></a><h2>Implemented Interfaces</h2>
+<a name="id2614966"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorProfileStore implements
- <a
-href="../gtk/GtkTreeModel.html"
->GtkTreeModel</a>,  <a
-href="../gtk/gtk-GtkTreeView-drag-and-drop.html#GtkTreeDragSource"
->GtkTreeDragSource</a>,  <a
-href="../gtk/gtk-GtkTreeView-drag-and-drop.html#GtkTreeDragDest"
->GtkTreeDragDest</a> and  <a
-href="../gtk/GtkTreeSortable.html"
->GtkTreeSortable</a>.</p>
+ GtkBuildable,  GtkTreeModel,  GtkTreeDragSource,  GtkTreeDragDest and  GtkTreeSortable.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2567552"></a><h2>Properties</h2>
+<a name="id2615012"></a><h2>Properties</h2>
 <pre class="synopsis">
 
-  "<a href="GimpColorProfileStore.html#GimpColorProfileStore--history">history</a>"                  <a
-href="../gobject/gobject-Standard-Parameter-and-Value-Types.html#gchararray"
->gchararray</a>            : Read / Write / Construct Only
+  "<a class="link" href="GimpColorProfileStore.html#GimpColorProfileStore--history">history</a>"                  gchararray            : Read / Write / Construct Only
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2567583"></a><h2>Description</h2>
+<a name="id2615043"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2601393"></a><h2>Details</h2>
+<a name="id2616765"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2601404"></a><h3>
+<a name="id2616776"></a><h3>
 <a name="GimpColorProfileStore-struct"></a>GimpColorProfileStore</h3>
-<a class="indexterm" name="id2601415"></a><pre class="programlisting">typedef struct _GimpColorProfileStore GimpColorProfileStore;</pre>
+<a class="indexterm" name="id2616787"></a><pre class="programlisting">typedef struct _GimpColorProfileStore GimpColorProfileStore;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601430"></a><h3>
+<a name="id2616803"></a><h3>
 <a name="gimp-color-profile-store-new"></a>gimp_color_profile_store_new ()</h3>
-<a class="indexterm" name="id2601443"></a><pre class="programlisting"><a
-href="../gtk/GtkListStore.html"
->GtkListStore</a>*       gimp_color_profile_store_new        (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *history);</pre>
+<a class="indexterm" name="id2616817"></a><pre class="programlisting">GtkListStore*       gimp_color_profile_store_new        (const gchar *history);</pre>
 <p>
-Creates a new <a href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a> object and populates it with
+Creates a new <a class="link" href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a> object and populates it with
 last used profiles read from the file <em class="parameter"><code>history</code></em>. The updated history
 is written back to disk when the store is disposed.
 </p>
@@ -156,15 +130,13 @@ following code snippet:
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>history</code></em>&#160;:</span></td>
-<td> filename of the profilerc (or <a
-href="../glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a> for no history)
+<td><p><span class="term"><em class="parameter"><code>history</code></em>&#160;:</span></p></td>
+<td> filename of the profilerc (or <code class="literal">NULL</code> for no history)
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> a new <a href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td> a new <a class="link" href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a>
 
 </td>
 </tr>
@@ -175,27 +147,19 @@ href="../glib/glib-Standard-Macros.html#NULL:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605121"></a><h3>
+<a name="id2618275"></a><h3>
 <a name="gimp-color-profile-store-add"></a>gimp_color_profile_store_add ()</h3>
-<a class="indexterm" name="id2605137"></a><pre class="programlisting">void                gimp_color_profile_store_add        (<a href="GimpColorProfileStore.html" title="GimpColorProfileStore">GimpColorProfileStore</a> *store,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *filename,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *label);</pre>
+<a class="indexterm" name="id2618291"></a><pre class="programlisting">void                gimp_color_profile_store_add        (<a class="link" href="GimpColorProfileStore.html" title="GimpColorProfileStore">GimpColorProfileStore</a> *store,
+                                                         const gchar *filename,
+                                                         const gchar *label);</pre>
 <p>
-Adds a color profile item to the <a href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a>. Items
+Adds a color profile item to the <a class="link" href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a>. Items
 added with this function will be kept at the top, separated from
 the history of last used color profiles.
 </p>
 <p>
-This function is often used to add a selectable item for the <a
-href="../glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a>
-filename. If you pass <a
-href="../glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a> for both <em class="parameter"><code>filename</code></em> and <em class="parameter"><code>label</code></em>, the
+This function is often used to add a selectable item for the <code class="literal">NULL</code>
+filename. If you pass <code class="literal">NULL</code> for both <em class="parameter"><code>filename</code></em> and <em class="parameter"><code>label</code></em>, the
 <em class="parameter"><code>label</code></em> will be set to the string "None" for you (and translated for
 the user).</p>
 <p>
@@ -205,25 +169,19 @@ the user).</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>store</code></em>&#160;:</span></td>
-<td>    a <a href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a>
+<td><p><span class="term"><em class="parameter"><code>store</code></em>&#160;:</span></p></td>
+<td>    a <a class="link" href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
-<td> filename of the profile to add (or <a
-href="../glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a>)
+<td><p><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></p></td>
+<td> filename of the profile to add (or <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></p></td>
 <td>    label to use for the profile
-           (may only be <a
-href="../glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a> if <em class="parameter"><code>filename</code></em> is <a
-href="../glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a>)
+           (may only be <code class="literal">NULL</code> if <em class="parameter"><code>filename</code></em> is <code class="literal">NULL</code>)
 </td>
 </tr>
 </tbody>
@@ -233,13 +191,11 @@ href="../glib/glib-Standard-Macros.html#NULL:CAPS"
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2604123"></a><h2>Property Details</h2>
+<a name="id2578483"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2604134"></a><h3>
+<a name="id2578494"></a><h3>
 <a name="GimpColorProfileStore--history"></a>The "<code class="literal">history</code>" property</h3>
-<a class="indexterm" name="id2604150"></a><pre class="programlisting">  "history"                  <a
-href="../gobject/gobject-Standard-Parameter-and-Value-Types.html#gchararray"
->gchararray</a>            : Read / Write / Construct Only</pre>
+<a class="indexterm" name="id2578509"></a><pre class="programlisting">  "history"                  gchararray            : Read / Write / Construct Only</pre>
 <p>
 Filename of the color history used to populate the profile store.</p>
 <p>

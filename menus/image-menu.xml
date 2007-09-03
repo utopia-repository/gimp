@@ -618,6 +618,8 @@
       <separator/>
     </menu>
 
+    
+
   </menubar><menubar name="dummy-menubar"><menu action="image-popup">
 
     <menu action="file-menu" name="File">
@@ -1232,6 +1234,8 @@
       </menu>
       <separator/>
     </menu>
+
+    
 
   </menu></menubar>
 

@@ -57,7 +57,7 @@ const <link linkend="gchar">gchar</link>*        <link linkend="gimp-gradient-se
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpGradientSelectButton implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkBuildable">GtkBuildable</link>.</para>
 
 </refsect1>
 

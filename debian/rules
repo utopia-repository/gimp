@@ -44,7 +44,10 @@ common-install-impl::
 	find $(CURDIR)/debian/tmp -name "*.py[co]" -exec rm '{}' ';'
 
 	rm debian/tmp/usr/lib/gimp/2.0/plug-ins/uri
+	rm debian/tmp/usr/lib/*.la
+
 	dh_movefiles
+	dh_icons
 
 binary-install/gimp-gnomevfs::
 	# Build gnomevfs URI plugin

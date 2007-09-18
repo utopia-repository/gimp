@@ -1,5 +1,6 @@
 etc/
 usr/share/gimp/
+usr/share/icons/
 usr/share/locale/*/LC_MESSAGES/gimp??.mo
 usr/share/locale/*/LC_MESSAGES/gimp??-std-plug-ins.mo
 usr/share/locale/*/LC_MESSAGES/gimp??-script-fu.mo

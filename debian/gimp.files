@@ -10,7 +10,6 @@ usr/lib/gimp/2.0/interpreters/default.interp
 usr/lib/gimp/2.0/plug-ins/
 usr/share/applications
 usr/share/application-registry
-usr/share/icons
 usr/share/man/man1/gimp.1
 usr/share/man/man1/gimp-?.?.1
 usr/share/man/man1/gimp-console.1

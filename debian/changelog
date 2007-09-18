@@ -1,3 +1,20 @@
+gimp (2.4.0~rc2-2) unstable; urgency=medium
+
+  * Explicitly build-depend on liblcms1-dev
+  * Explicitly remove *.la files in debian/rules
+  * Add a note in NEWS.Debian about unnecessary gimp-print
+  * Make libgimp2.0 recommend gimp-data for the locale data,
+    since it's mostly only messages used in gimp itself.
+  * Install XPM for menu icon (Closes: #441177, #237637, #77625)
+  * Add back 02_help-message.patch to show a better error message when
+    gimp-help-* isn't installed
+  * Put icons into gimp-data, and call dh_icons from debian/rules
+  * debian/patches/03_zoom-crash.patch:
+    - Apply patch from upstream to fix zooming on images with abnormal
+      dimensions (Closes: #441409)
+
+ -- Ari Pollak <ari@debian.org>  Mon, 17 Sep 2007 21:26:10 -0400
+
 gimp (2.4.0~rc2-1) unstable; urgency=low
 
   * New upstream version

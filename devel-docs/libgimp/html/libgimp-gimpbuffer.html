@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpcontext.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2593364" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2596387" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2583251" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2594771" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpbuffer"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2593364"></a><span class="refentrytitle">gimpbuffer</span>
+<a name="id2596387"></a><span class="refentrytitle">gimpbuffer</span>
 </h2>
 <p>gimpbuffer</p>
 </td>
@@ -52,32 +52,68 @@
 
 
 
-gchar**             <a class="link" href="libgimp-gimpbuffer.html#gimp-buffers-get-list">gimp_buffers_get_list</a>               (const gchar *filter,
-                                                         gint *num_buffers);
-gchar*              <a class="link" href="libgimp-gimpbuffer.html#gimp-buffer-rename">gimp_buffer_rename</a>                  (const gchar *buffer_name,
-                                                         const gchar *new_name);
-gboolean            <a class="link" href="libgimp-gimpbuffer.html#gimp-buffer-delete">gimp_buffer_delete</a>                  (const gchar *buffer_name);
-gint                <a class="link" href="libgimp-gimpbuffer.html#gimp-buffer-get-width">gimp_buffer_get_width</a>               (const gchar *buffer_name);
-gint                <a class="link" href="libgimp-gimpbuffer.html#gimp-buffer-get-height">gimp_buffer_get_height</a>              (const gchar *buffer_name);
-gint                <a class="link" href="libgimp-gimpbuffer.html#gimp-buffer-get-bytes">gimp_buffer_get_bytes</a>               (const gchar *buffer_name);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>**             <a class="link" href="libgimp-gimpbuffer.html#gimp-buffers-get-list">gimp_buffers_get_list</a>               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filter,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_buffers);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimpbuffer.html#gimp-buffer-rename">gimp_buffer_rename</a>                  (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *buffer_name,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *new_name);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpbuffer.html#gimp-buffer-delete">gimp_buffer_delete</a>                  (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *buffer_name);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimp-gimpbuffer.html#gimp-buffer-get-width">gimp_buffer_get_width</a>               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *buffer_name);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimp-gimpbuffer.html#gimp-buffer-get-height">gimp_buffer_get_height</a>              (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *buffer_name);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimp-gimpbuffer.html#gimp-buffer-get-bytes">gimp_buffer_get_bytes</a>               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *buffer_name);
 <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageBaseType"
->GimpImageBaseType</a>   <a class="link" href="libgimp-gimpbuffer.html#gimp-buffer-get-image-type">gimp_buffer_get_image_type</a>          (const gchar *buffer_name);
+>GimpImageBaseType</a>   <a class="link" href="libgimp-gimpbuffer.html#gimp-buffer-get-image-type">gimp_buffer_get_image_type</a>          (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *buffer_name);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2583251"></a><h2>Description</h2>
+<a name="id2594771"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2583267"></a><h2>Details</h2>
+<a name="id2594786"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2583278"></a><h3>
+<a name="id2594797"></a><h3>
 <a name="gimp-buffers-get-list"></a>gimp_buffers_get_list ()</h3>
-<a class="indexterm" name="id2583291"></a><pre class="programlisting">gchar**             gimp_buffers_get_list               (const gchar *filter,
-                                                         gint *num_buffers);</pre>
+<a class="indexterm" name="id2594811"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>**             gimp_buffers_get_list               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filter,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_buffers);</pre>
 <p>
 Retrieve a complete listing of the available buffers.
 </p>
@@ -113,10 +149,16 @@ buffers.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2616658"></a><h3>
+<a name="id2587075"></a><h3>
 <a name="gimp-buffer-rename"></a>gimp_buffer_rename ()</h3>
-<a class="indexterm" name="id2616673"></a><pre class="programlisting">gchar*              gimp_buffer_rename                  (const gchar *buffer_name,
-                                                         const gchar *new_name);</pre>
+<a class="indexterm" name="id2587090"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_buffer_rename                  (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *buffer_name,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *new_name);</pre>
 <p>
 Renames a named buffer.
 </p>
@@ -151,9 +193,13 @@ This procedure renames a named buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2616080"></a><h3>
+<a name="id2616062"></a><h3>
 <a name="gimp-buffer-delete"></a>gimp_buffer_delete ()</h3>
-<a class="indexterm" name="id2616094"></a><pre class="programlisting">gboolean            gimp_buffer_delete                  (const gchar *buffer_name);</pre>
+<a class="indexterm" name="id2616077"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_buffer_delete                  (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *buffer_name);</pre>
 <p>
 Deletes a named buffer.
 </p>
@@ -183,9 +229,13 @@ This procedure deletes a named buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2616165"></a><h3>
+<a name="id2616148"></a><h3>
 <a name="gimp-buffer-get-width"></a>gimp_buffer_get_width ()</h3>
-<a class="indexterm" name="id2616179"></a><pre class="programlisting">gint                gimp_buffer_get_width               (const gchar *buffer_name);</pre>
+<a class="indexterm" name="id2616162"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_buffer_get_width               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *buffer_name);</pre>
 <p>
 Retrieves the specified buffer's width.
 </p>
@@ -215,9 +265,13 @@ This procedure retrieves the specified named buffer's width.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2616250"></a><h3>
+<a name="id2616233"></a><h3>
 <a name="gimp-buffer-get-height"></a>gimp_buffer_get_height ()</h3>
-<a class="indexterm" name="id2616264"></a><pre class="programlisting">gint                gimp_buffer_get_height              (const gchar *buffer_name);</pre>
+<a class="indexterm" name="id2616247"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_buffer_get_height              (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *buffer_name);</pre>
 <p>
 Retrieves the specified buffer's height.
 </p>
@@ -247,9 +301,13 @@ This procedure retrieves the specified named buffer's height.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615784"></a><h3>
+<a name="id2580670"></a><h3>
 <a name="gimp-buffer-get-bytes"></a>gimp_buffer_get_bytes ()</h3>
-<a class="indexterm" name="id2615798"></a><pre class="programlisting">gint                gimp_buffer_get_bytes               (const gchar *buffer_name);</pre>
+<a class="indexterm" name="id2580684"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_buffer_get_bytes               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *buffer_name);</pre>
 <p>
 Retrieves the specified buffer's bytes.
 </p>
@@ -279,11 +337,13 @@ This procedure retrieves the specified named buffer's bytes.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615870"></a><h3>
+<a name="id2580756"></a><h3>
 <a name="gimp-buffer-get-image-type"></a>gimp_buffer_get_image_type ()</h3>
-<a class="indexterm" name="id2615883"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2580769"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageBaseType"
->GimpImageBaseType</a>   gimp_buffer_get_image_type          (const gchar *buffer_name);</pre>
+>GimpImageBaseType</a>   gimp_buffer_get_image_type          (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *buffer_name);</pre>
 <p>
 Retrieves the specified buffer's image type.
 </p>

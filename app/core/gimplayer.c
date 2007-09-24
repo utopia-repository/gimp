@@ -133,7 +133,6 @@ static void       gimp_layer_transform          (GimpItem           *item,
                                                  const GimpMatrix3  *matrix,
                                                  GimpTransformDirection direction,
                                                  GimpInterpolationType  interpolation_type,
-                                                 gboolean            supersample,
                                                  gint                recursion_level,
                                                  GimpTransformResize    clip_result,
                                                  GimpProgress       *progress);
@@ -776,7 +775,6 @@ gimp_layer_transform (GimpItem               *item,
                       const GimpMatrix3      *matrix,
                       GimpTransformDirection  direction,
                       GimpInterpolationType   interpolation_type,
-                      gboolean                supersample,
                       gint                    recursion_level,
                       GimpTransformResize     clip_result,
                       GimpProgress           *progress)
@@ -792,14 +790,14 @@ gimp_layer_transform (GimpItem               *item,
 
   GIMP_ITEM_CLASS (parent_class)->transform (item, context, matrix, direction,
                                              interpolation_type,
-                                             supersample, recursion_level,
-                                             clip_result, progress);
+                                             recursion_level,
+                                             clip_result,
+                                             progress);
 
   if (layer->mask)
     gimp_item_transform (GIMP_ITEM (layer->mask), context,
                          matrix, direction,
-                         interpolation_type,
-                         supersample, recursion_level,
+                         interpolation_type, recursion_level,
                          clip_result, progress);
 }
 
@@ -858,9 +856,7 @@ gimp_layer_get_opacity_at (GimpPickable *pickable,
       tile = tile_manager_get_tile (GIMP_DRAWABLE (layer)->tiles,
                                     x, y, TRUE, FALSE);
 
-      val = * ((guchar *) tile_data_pointer (tile,
-                                             x % TILE_WIDTH,
-                                             y % TILE_HEIGHT) +
+      val = * ((const guchar *) tile_data_pointer (tile, x, y) +
                tile_bpp (tile) - 1);
 
       if (layer->mask)
@@ -1495,9 +1491,9 @@ gimp_layer_apply_mask (GimpLayer         *layer,
   if (! layer->mask)
     return;
 
-  /*  this operation can only be done to layers with an alpha channel  */
+  /*  APPLY can only be done to layers with an alpha channel  */
   if (! gimp_drawable_has_alpha (GIMP_DRAWABLE (layer)))
-    return;
+    g_return_if_fail (mode == GIMP_MASK_DISCARD || push_undo == TRUE);
 
   item = GIMP_ITEM (layer);
 
@@ -1514,6 +1510,12 @@ gimp_layer_apply_mask (GimpLayer         *layer,
                                    _("Delete Layer Mask"));
 
       gimp_image_undo_push_layer_mask_remove (image, NULL, layer, layer->mask);
+
+      if (mode == GIMP_MASK_APPLY &&
+          ! gimp_drawable_has_alpha (GIMP_DRAWABLE (layer)))
+        {
+          gimp_layer_add_alpha (layer);
+        }
     }
 
   /*  check if applying the mask changes the projection  */

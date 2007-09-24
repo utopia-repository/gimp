@@ -253,7 +253,8 @@ gimp_color_profile_combo_box_changed (GtkComboBox *combo)
 
       priv->last_path = gtk_tree_model_get_path (model, &iter);
 
-      /*  FIXME: update order of history  */
+      _gimp_color_profile_store_history_reorder (GIMP_COLOR_PROFILE_STORE (model),
+                                                 &iter);
       break;
 
     default:
@@ -283,12 +284,17 @@ GtkWidget *
 gimp_color_profile_combo_box_new (GtkWidget   *dialog,
                                   const gchar *history)
 {
+  GtkWidget    *combo;
+  GtkListStore *store;
+
   g_return_val_if_fail (GTK_IS_DIALOG (dialog), NULL);
 
-  return g_object_new (GIMP_TYPE_COLOR_PROFILE_COMBO_BOX,
-                       "dialog", dialog,
-                       "model",  gimp_color_profile_store_new (history),
-                       NULL);
+  store = gimp_color_profile_store_new (history);
+  combo = gimp_color_profile_combo_box_new_with_model (dialog,
+                                                       GTK_TREE_MODEL (store));
+  g_object_unref (store);
+
+  return combo;
 }
 
 /**
@@ -354,11 +360,11 @@ gimp_color_profile_combo_box_add (GimpColorProfileComboBox *combo,
  * gimp_color_profile_combo_box_set_active:
  * @combo:    a #GimpColorProfileComboBox
  * @filename: filename of the profile to select
- * @label:    label
+ * @label:    label to use when adding a new entry (can be %NULL)
  *
  * Selects a color profile from the @combo and makes it the active
- * item.  If the profile is not listed in the @combo, then it is
- * added.
+ * item.  If the profile is not listed in the @combo, then it is added
+ * with the given @label (or @filename in case that @label is %NULL).
  *
  * Since: GIMP 2.4
  **/

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpconfig-deserialize</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Config Library Reference Manual">
 <link rel="up" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="prev" href="libgimpconfig-GimpConfig.html" title="gimpconfig-iface">
@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpconfig-gimpconfig-serialize.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2590725" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2597116" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2575076" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2596630" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpconfig-gimpconfig-deserialize"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2590725"></a><span class="refentrytitle">gimpconfig-deserialize</span>
+<a name="id2597116"></a><span class="refentrytitle">gimpconfig-deserialize</span>
 </h2>
 <p>gimpconfig-deserialize &#8212; Deserializing code for libgimpconfig.</p>
 </td>
@@ -46,29 +46,47 @@
 
 
 
-gboolean            <a class="link" href="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deserialize-properties">gimp_config_deserialize_properties</a>  (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
-                                                         GScanner *scanner,
-                                                         gint nest_level);
-GTokenType          <a class="link" href="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deserialize-property">gimp_config_deserialize_property</a>    (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
-                                                         GScanner *scanner,
-                                                         gint nest_level);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deserialize-properties">gimp_config_deserialize_properties</a>  (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
+                                                         <a
+href="../glib/glib-Lexical-Scanner.html#GScanner"
+>GScanner</a> *scanner,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> nest_level);
+<a
+href="../glib/glib-Lexical-Scanner.html#GTokenType"
+>GTokenType</a>          <a href="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deserialize-property">gimp_config_deserialize_property</a>    (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
+                                                         <a
+href="../glib/glib-Lexical-Scanner.html#GScanner"
+>GScanner</a> *scanner,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> nest_level);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2575076"></a><h2>Description</h2>
+<a name="id2596630"></a><h2>Description</h2>
 <p>
 Deserializing code for libgimpconfig.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2575092"></a><h2>Details</h2>
+<a name="id2596645"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2575103"></a><h3>
+<a name="id2596656"></a><h3>
 <a name="gimp-config-deserialize-properties"></a>gimp_config_deserialize_properties ()</h3>
-<a class="indexterm" name="id2575116"></a><pre class="programlisting">gboolean            gimp_config_deserialize_properties  (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
-                                                         GScanner *scanner,
-                                                         gint nest_level);</pre>
+<a class="indexterm" name="id2596670"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_config_deserialize_properties  (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
+                                                         <a
+href="../glib/glib-Lexical-Scanner.html#GScanner"
+>GScanner</a> *scanner,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> nest_level);</pre>
 <p>
 This function uses the <em class="parameter"><code>scanner</code></em> to configure the properties of <em class="parameter"><code>config</code></em>.</p>
 <p>
@@ -78,23 +96,29 @@ This function uses the <em class="parameter"><code>scanner</code></em> to config
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></p></td>
-<td> a <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig"><span class="type">GimpConfig</span></a>.
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td> a <a href="libgimpconfig-GimpConfig.html#GimpConfig"><span class="type">GimpConfig</span></a>.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></p></td>
-<td> a <span class="type">GScanner</span>.
+<td><span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
+<td> a <a
+href="../glib/glib-Lexical-Scanner.html#GScanner"
+><span class="type">GScanner</span></a>.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>nest_level</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>nest_level</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
-<td> <code class="literal">TRUE</code> on success, <code class="literal">FALSE</code> otherwise.
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> on success, <a
+href="../glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> otherwise.
 
 </td>
 </tr>
@@ -105,15 +129,21 @@ This function uses the <em class="parameter"><code>scanner</code></em> to config
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2595946"></a><h3>
+<a name="id2562615"></a><h3>
 <a name="gimp-config-deserialize-property"></a>gimp_config_deserialize_property ()</h3>
-<a class="indexterm" name="id2595960"></a><pre class="programlisting">GTokenType          gimp_config_deserialize_property    (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
-                                                         GScanner *scanner,
-                                                         gint nest_level);</pre>
+<a class="indexterm" name="id2562628"></a><pre class="programlisting"><a
+href="../glib/glib-Lexical-Scanner.html#GTokenType"
+>GTokenType</a>          gimp_config_deserialize_property    (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
+                                                         <a
+href="../glib/glib-Lexical-Scanner.html#GScanner"
+>GScanner</a> *scanner,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> nest_level);</pre>
 <p>
 This function deserializes a single property of <em class="parameter"><code>config</code></em>. You
 shouldn't need to call this function directly. If possible, use
-<a class="link" href="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deserialize-properties"><code class="function">gimp_config_deserialize_properties()</code></a> instead.</p>
+<a href="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deserialize-properties"><code class="function">gimp_config_deserialize_properties()</code></a> instead.</p>
 <p>
 
 </p>
@@ -121,24 +151,28 @@ shouldn't need to call this function directly. If possible, use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></p></td>
-<td> a <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig"><span class="type">GimpConfig</span></a>.
+<td><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td> a <a href="libgimpconfig-GimpConfig.html#GimpConfig"><span class="type">GimpConfig</span></a>.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></p></td>
-<td> a <span class="type">GScanner</span>.
+<td><span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
+<td> a <a
+href="../glib/glib-Lexical-Scanner.html#GScanner"
+><span class="type">GScanner</span></a>.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>nest_level</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>nest_level</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> <code class="literal">G_TOKEN_RIGHT_PAREN</code> on success, otherwise the
-expected <span class="type">GTokenType</span> or <code class="literal">G_TOKEN_NONE</code> if the expected token was
+expected <a
+href="../glib/glib-Lexical-Scanner.html#GTokenType"
+><span class="type">GTokenType</span></a> or <code class="literal">G_TOKEN_NONE</code> if the expected token was
 found but couldn't be parsed.
 
 </td>

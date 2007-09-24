@@ -350,6 +350,8 @@ SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
 TIFF_LOAD = @TIFF_LOAD@
 TIFF_SAVE = @TIFF_SAVE@
+TOOLBOX_MENU_FALSE = @TOOLBOX_MENU_FALSE@
+TOOLBOX_MENU_TRUE = @TOOLBOX_MENU_TRUE@
 URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
 URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
 URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
@@ -476,7 +478,8 @@ EXTRA_DIST = \
 
 MAINTAINERCLEANFILES = $(menudata_built_files)
 @GIMP_UNSTABLE_TRUE@DEBUG_MENU_PARAMS = --stringparam debug-menu yes
-@HAVE_CARBON_TRUE@HELP_MENU_PARAMS = --stringparam help-menu yes
+@TOOLBOX_MENU_FALSE@TOOLBOX_MENU_PARAMS = --stringparam toolbox-menu no
+@TOOLBOX_MENU_TRUE@TOOLBOX_MENU_PARAMS = --stringparam toolbox-menu yes
 all: all-am
 
 .SUFFIXES:
@@ -664,7 +667,7 @@ uninstall-am: uninstall-info-am uninstall-menudataDATA
 
 
 %.xml: %.xml.in $(srcdir)/menus.xsl dialogs-menuitems.xml
-@HAVE_XSLTPROC_TRUE@	$(XSLTPROC) --xinclude $(DEBUG_MENU_PARAMS) $(HELP_MENU_PARAMS) $(srcdir)/menus.xsl $< > $(@) || rm -f $(@)
+@HAVE_XSLTPROC_TRUE@	$(XSLTPROC) --xinclude $(DEBUG_MENU_PARAMS) $(TOOLBOX_MENU_PARAMS) $(srcdir)/menus.xsl $< > $(@) || rm -f $(@)
 @HAVE_XSLTPROC_FALSE@	@echo "*** xsltproc is required to build the menus XML files ***"; exit 1;
 
 validate: $(menudata_DATA)

@@ -188,8 +188,10 @@
         <menuitem action="vectors-stroke"/>
       </placeholder>
       <separator/>
+      <placeholder name="Preferences">
         <menuitem action="dialogs-preferences"/>      
         <menuitem action="dialogs-keyboard-shortcuts"/>
+      </placeholder>
       <separator/>
     </menu>
 
@@ -620,6 +622,8 @@
 
     
 
+    
+
   </menubar><menubar name="dummy-menubar"><menu action="image-popup">
 
     <menu action="file-menu" name="File">
@@ -805,8 +809,10 @@
         <menuitem action="vectors-stroke"/>
       </placeholder>
       <separator/>
+      <placeholder name="Preferences">
         <menuitem action="dialogs-preferences"/>      
         <menuitem action="dialogs-keyboard-shortcuts"/>
+      </placeholder>
       <separator/>
     </menu>
 
@@ -1234,6 +1240,8 @@
       </menu>
       <separator/>
     </menu>
+
+    
 
     
 

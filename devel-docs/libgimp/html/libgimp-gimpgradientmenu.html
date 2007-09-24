@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimppalettemenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2688822" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2607623" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2609663" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2737045" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpgradientmenu"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2688822"></a><span class="refentrytitle">gimpgradientmenu</span>
+<a name="id2607623"></a><span class="refentrytitle">gimpgradientmenu</span>
 </h2>
 <p>gimpgradientmenu &#8212; A widget for selecting gradients.</p>
 </td>
@@ -52,36 +52,60 @@
 
 
 
-GtkWidget*          <a class="link" href="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-new">gimp_gradient_select_widget_new</a>     (const gchar *title,
-                                                         const gchar *gradient_name,
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          <a class="link" href="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-new">gimp_gradient_select_widget_new</a>     (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *gradient_name,
                                                          <a class="link" href="libgimp-gimpgradientselect.html#GimpRunGradientCallback">GimpRunGradientCallback</a> callback,
-                                                         gpointer data);
-void                <a class="link" href="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-close">gimp_gradient_select_widget_close</a>   (GtkWidget *widget);
-void                <a class="link" href="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-set">gimp_gradient_select_widget_set</a>     (GtkWidget *widget,
-                                                         const gchar *gradient_name);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);
+void                <a class="link" href="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-close">gimp_gradient_select_widget_close</a>   (<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *widget);
+void                <a class="link" href="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-set">gimp_gradient_select_widget_set</a>     (<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *widget,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *gradient_name);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2609663"></a><h2>Description</h2>
+<a name="id2737045"></a><h2>Description</h2>
 <p>
 A widget for selecting gradients.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2736544"></a><h2>Details</h2>
+<a name="id2737059"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2736554"></a><h3>
+<a name="id2737070"></a><h3>
 <a name="gimp-gradient-select-widget-new"></a>gimp_gradient_select_widget_new ()</h3>
-<a class="indexterm" name="id2736567"></a><a class="indexterm" name="id2736575"></a><pre class="programlisting">GtkWidget*          gimp_gradient_select_widget_new     (const gchar *title,
-                                                         const gchar *gradient_name,
+<a class="indexterm" name="id2737083"></a><a class="indexterm" name="id2737692"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_gradient_select_widget_new     (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *gradient_name,
                                                          <a class="link" href="libgimp-gimpgradientselect.html#GimpRunGradientCallback">GimpRunGradientCallback</a> callback,
-                                                         gpointer data);</pre>
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_gradient_select_widget_new</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
+Creates a new <a
+href="../gtk/GtkWidget.html"
+><span class="type">GtkWidget</span></a> that completely controls the selection of
 a gradient.  This widget is suitable for placement in a table in a
 plug-in dialog.</p>
 <p>
@@ -92,7 +116,9 @@ plug-in dialog.</p>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></p></td>
-<td>         Title of the dialog to use or <code class="literal">NULL</code> to use the default title.
+<td>         Title of the dialog to use or <a
+href="../glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a> to use the default title.
 </td>
 </tr>
 <tr>
@@ -112,7 +138,9 @@ plug-in dialog.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
-<td> A <span class="type">GtkWidget</span> that you can use in your UI.
+<td> A <a
+href="../gtk/GtkWidget.html"
+><span class="type">GtkWidget</span></a> that you can use in your UI.
 
 </td>
 </tr>
@@ -123,9 +151,11 @@ plug-in dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2738621"></a><h3>
+<a name="id2738605"></a><h3>
 <a name="gimp-gradient-select-widget-close"></a>gimp_gradient_select_widget_close ()</h3>
-<a class="indexterm" name="id2738635"></a><pre class="programlisting">void                gimp_gradient_select_widget_close   (GtkWidget *widget);</pre>
+<a class="indexterm" name="id2738618"></a><pre class="programlisting">void                gimp_gradient_select_widget_close   (<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *widget);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_gradient_select_widget_close</code> is deprecated and should not be used in newly-written code.</p>
@@ -146,10 +176,14 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2738702"></a><h3>
+<a name="id2738685"></a><h3>
 <a name="gimp-gradient-select-widget-set"></a>gimp_gradient_select_widget_set ()</h3>
-<a class="indexterm" name="id2740309"></a><pre class="programlisting">void                gimp_gradient_select_widget_set     (GtkWidget *widget,
-                                                         const gchar *gradient_name);</pre>
+<a class="indexterm" name="id2738699"></a><pre class="programlisting">void                gimp_gradient_select_widget_set     (<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *widget,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *gradient_name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_gradient_select_widget_set</code> is deprecated and should not be used in newly-written code.</p>

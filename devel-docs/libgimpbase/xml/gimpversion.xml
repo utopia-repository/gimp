@@ -78,7 +78,7 @@ capabilities.
 </para></refsect2>
 <refsect2>
 <title><anchor id="GIMP-VERSION:CAPS" role="macro"/>GIMP_VERSION</title>
-<indexterm><primary>GIMP_VERSION</primary></indexterm><programlisting>#define GIMP_VERSION                                    "2.4.0-rc2"
+<indexterm><primary>GIMP_VERSION</primary></indexterm><programlisting>#define GIMP_VERSION                                    "2.4.0-rc3"
 </programlisting>
 <para>
 

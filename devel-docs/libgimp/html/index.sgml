@@ -101,6 +101,7 @@
 <ANCHOR id="gimp-context-set-font" href="libgimp/libgimp-gimpcontext.html#gimp-context-set-font">
 <ANCHOR id="gimp-context-get-paint-method" href="libgimp/libgimp-gimpcontext.html#gimp-context-get-paint-method">
 <ANCHOR id="gimp-context-set-paint-method" href="libgimp/libgimp-gimpcontext.html#gimp-context-set-paint-method">
+<ANCHOR id="gimp-context-list-paint-methods" href="libgimp/libgimp-gimpcontext.html#gimp-context-list-paint-methods">
 <ANCHOR id="libgimp-gimpgimprc" href="libgimp/libgimp-gimpgimprc.html">
 <ANCHOR id="gimp-gimprc-query" href="libgimp/libgimp-gimpgimprc.html#gimp-gimprc-query">
 <ANCHOR id="gimp-gimprc-set" href="libgimp/libgimp-gimpgimprc.html#gimp-gimprc-set">
@@ -399,6 +400,7 @@
 <ANCHOR id="gimp-layer-resize-to-image-size" href="libgimp/libgimp-gimplayer.html#gimp-layer-resize-to-image-size">
 <ANCHOR id="gimp-layer-translate" href="libgimp/libgimp-gimplayer.html#gimp-layer-translate">
 <ANCHOR id="gimp-layer-add-alpha" href="libgimp/libgimp-gimplayer.html#gimp-layer-add-alpha">
+<ANCHOR id="gimp-layer-flatten" href="libgimp/libgimp-gimplayer.html#gimp-layer-flatten">
 <ANCHOR id="gimp-layer-set-offsets" href="libgimp/libgimp-gimplayer.html#gimp-layer-set-offsets">
 <ANCHOR id="gimp-layer-create-mask" href="libgimp/libgimp-gimplayer.html#gimp-layer-create-mask">
 <ANCHOR id="gimp-layer-from-mask" href="libgimp/libgimp-gimplayer.html#gimp-layer-from-mask">

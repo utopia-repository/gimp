@@ -684,8 +684,7 @@ read_pixel_data (TileManager *tm,
     for (x = x1; x <= x2; x += TILE_WIDTH - (x % TILE_WIDTH))
       {
         Tile         *t = tile_manager_get_tile (tm, x, y, TRUE, FALSE);
-        const guchar *s = tile_data_pointer (t,
-                                             x % TILE_WIDTH, y % TILE_HEIGHT);
+        const guchar *s = tile_data_pointer (t, x, y);
         guchar       *d = buffer + stride * (y - y1) + tm->bpp * (x - x1);
         guint         rows, cols;
         guint         srcstride;
@@ -728,8 +727,7 @@ write_pixel_data (TileManager  *tm,
       {
         Tile         *t = tile_manager_get_tile (tm, x, y, TRUE, TRUE);
         const guchar *s = buffer + stride * (y - y1) + tm->bpp * (x - x1);
-        guchar       *d = tile_data_pointer (t,
-                                             x % TILE_WIDTH, y % TILE_HEIGHT);
+        guchar       *d = tile_data_pointer (t, x, y);
         guint         rows, cols;
         guint         dststride;
 
@@ -767,18 +765,30 @@ read_pixel_data_1 (TileManager *tm,
 
       if (num != tm->cached_num)    /* must fetch a new tile */
         {
+          Tile *tile;
+
           if (tm->cached_tile)
             tile_release (tm->cached_tile, FALSE);
 
+          tm->cached_num  = -1;
+          tm->cached_tile = NULL;
+
+          /*  use a temporary variable instead of assigning to
+           *  tm->cached_tile directly to make sure tm->cached_num
+           *  and tm->cached_tile are always in a consistent state.
+           *  (the requested tile might be invalid and needs to be
+           *  validated, which would call tile_manager_get() recursively,
+           *  which in turn would clear the cached tile) See bug #472770.
+           */
+          tile = tile_manager_get (tm, num, TRUE, FALSE);
+
           tm->cached_num  = num;
-          tm->cached_tile = tile_manager_get (tm, num, TRUE, FALSE);
+          tm->cached_tile = tile;
         }
 
       if (tm->cached_tile)
         {
-          const guchar *src = tile_data_pointer (tm->cached_tile,
-                                                 x % TILE_WIDTH,
-                                                 y % TILE_HEIGHT);
+          const guchar *src = tile_data_pointer (tm->cached_tile, x, y);
 
            switch (tm->bpp)
              {
@@ -802,7 +812,7 @@ write_pixel_data_1 (TileManager  *tm,
                     const guchar *buffer)
 {
   Tile   *tile = tile_manager_get_tile (tm, x, y, TRUE, TRUE);
-  guchar *dest = tile_data_pointer (tile, x % TILE_WIDTH, y % TILE_HEIGHT);
+  guchar *dest = tile_data_pointer (tile, x, y);
 
   switch (tm->bpp)
     {

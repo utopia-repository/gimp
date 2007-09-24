@@ -94,6 +94,17 @@ file_load_invoker (GimpProcedure     *procedure,
 
   g_value_array_free (new_args);
 
+  if (g_value_get_enum (return_vals->values) == GIMP_PDB_SUCCESS)
+    {
+      if (return_vals->n_values > 1 &&
+          GIMP_VALUE_HOLDS_IMAGE_ID (return_vals->values + 1))
+        {
+          GimpImage *image = gimp_value_get_image (return_vals->values + 1,
+                                                   gimp);
+          gimp_image_set_load_proc (image, file_proc);
+        }
+    }
+
   return return_vals;
 }
 
@@ -496,12 +507,14 @@ register_thumbnail_loader_invoker (GimpProcedure     *procedure,
 
   if (success)
     {
-      gchar *canonical = gimp_canonicalize_identifier (load_proc);
+      gchar *canonical   = gimp_canonicalize_identifier (load_proc);
+      gchar *canon_thumb = gimp_canonicalize_identifier (thumb_proc);
 
       success = gimp_plug_in_manager_register_thumb_loader (gimp->plug_in_manager,
-                                                            canonical, thumb_proc);
+                                                            canonical, canon_thumb);
 
       g_free (canonical);
+      g_free (canon_thumb);
     }
 
   return gimp_procedure_get_return_values (procedure, success);

@@ -1,3 +1,15 @@
+gimp (2.4.0~rc3-1) unstable; urgency=low
+
+  * New upstream release
+    - Fixes crash after migrating old Extended Input settings (Closes: #439509)
+    - Fixes crash on converting color space (Closes: #439511)
+    - Script-fu now handles non-UTF8 characters better (Closes: #442277)
+  * Conflict & Replaces with gimp-print and update NEWS.Debian to reflect
+    the change
+  * Fix menu entry to point to XPM icon (Really Closes: #441177)
+
+ -- Ari Pollak <ari@debian.org>  Sun, 23 Sep 2007 20:27:11 -0400
+
 gimp (2.4.0~rc2-2) unstable; urgency=medium
 
   * Explicitly build-depend on liblcms1-dev

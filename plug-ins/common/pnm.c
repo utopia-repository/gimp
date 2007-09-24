@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/* $Id: pnm.c 22865 2007-07-04 23:32:15Z raphael $ */
+/* $Id: pnm.c 23505 2007-09-12 07:15:38Z neo $ */
 
 /*
  * The pnm reading and writing code was written from scratch by Erik Nygren
@@ -629,6 +629,7 @@ pnm_load_ascii (PNMScanner   *scan,
                 /* Truncated files will just have all 0's at the end of the images */
                 if (pnmscanner_eof (scan))
                   g_message (_("Premature end of file."));
+
                 if (info->np)
                   pnmscanner_gettoken (scan, buf, BUFLEN);
                 else
@@ -641,12 +642,16 @@ pnm_load_ascii (PNMScanner   *scan,
                     break;
 
                   case 1:
-                    d[b] = (*buf == '0') ? 0xff : 0x00;
+                    if (info->np)
+                      d[b] = (*buf == '0') ? 0x00 : 0xff;
+                    else
+                      d[b] = (*buf == '0') ? 0xff : 0x00; /* invert for PBM */
                     break;
 
                   default:
-                    d[b] = (255.0 * (((gdouble)(g_ascii_isdigit (*buf) ? atoi (buf) : 0))
-                                     / (gdouble)(info->maxval)));
+                    d[b] = (255.0 * (((gdouble) (g_ascii_isdigit (*buf) ?
+                                                 atoi (buf) : 0))
+                                     / (gdouble) (info->maxval)));
                   }
               }
 

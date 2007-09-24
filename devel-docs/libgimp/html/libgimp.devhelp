@@ -190,6 +190,7 @@
     <function name="gimp_context_set_font ()" link="libgimp-gimpcontext.html#gimp-context-set-font"/>
     <function name="gimp_context_get_paint_method ()" link="libgimp-gimpcontext.html#gimp-context-get-paint-method"/>
     <function name="gimp_context_set_paint_method ()" link="libgimp-gimpcontext.html#gimp-context-set-paint-method"/>
+    <function name="gimp_context_list_paint_methods ()" link="libgimp-gimpcontext.html#gimp-context-list-paint-methods"/>
     <function name="gimp_gimprc_query ()" link="libgimp-gimpgimprc.html#gimp-gimprc-query"/>
     <function name="gimp_gimprc_set ()" link="libgimp-gimpgimprc.html#gimp-gimprc-set"/>
     <function name="gimp_get_color_configuration ()" link="libgimp-gimpgimprc.html#gimp-get-color-configuration"/>
@@ -469,6 +470,7 @@
     <function name="gimp_layer_resize_to_image_size ()" link="libgimp-gimplayer.html#gimp-layer-resize-to-image-size"/>
     <function name="gimp_layer_translate ()" link="libgimp-gimplayer.html#gimp-layer-translate"/>
     <function name="gimp_layer_add_alpha ()" link="libgimp-gimplayer.html#gimp-layer-add-alpha"/>
+    <function name="gimp_layer_flatten ()" link="libgimp-gimplayer.html#gimp-layer-flatten"/>
     <function name="gimp_layer_set_offsets ()" link="libgimp-gimplayer.html#gimp-layer-set-offsets"/>
     <function name="gimp_layer_create_mask ()" link="libgimp-gimplayer.html#gimp-layer-create-mask"/>
     <function name="gimp_layer_from_mask ()" link="libgimp-gimplayer.html#gimp-layer-from-mask"/>

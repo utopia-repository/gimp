@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimputils.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2607792" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2600736" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2622539" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2623272" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpunit"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2607792"></a><span class="refentrytitle">gimpunit</span>
+<a name="id2600736"></a><span class="refentrytitle">gimpunit</span>
 </h2>
 <p>gimpunit &#8212; Provides a collection of predefined units and functions for creating
 user-defined units.</p>
@@ -48,42 +48,92 @@ user-defined units.</p>
 
 
 enum                <a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a>;
-gint                <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-number-of-units">gimp_unit_get_number_of_units</a>       (void);
-gint                <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-number-of-built-in-units">gimp_unit_get_number_of_built_in_units</a>
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-number-of-units">gimp_unit_get_number_of_units</a>       (void);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-number-of-built-in-units">gimp_unit_get_number_of_built_in_units</a>
                                                         (void);
-<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a>            <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-new">gimp_unit_new</a>                       (gchar *identifier,
-                                                         gdouble factor,
-                                                         gint digits,
-                                                         gchar *symbol,
-                                                         gchar *abbreviation,
-                                                         gchar *singular,
-                                                         gchar *plural);
-gboolean            <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-deletion-flag">gimp_unit_get_deletion_flag</a>         (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);
+<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a>            <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-new">gimp_unit_new</a>                       (<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *identifier,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> factor,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> digits,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *symbol,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *abbreviation,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *singular,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *plural);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-deletion-flag">gimp_unit_get_deletion_flag</a>         (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);
 void                <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-set-deletion-flag">gimp_unit_set_deletion_flag</a>         (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit,
-                                                         gboolean deletion_flag);
-gdouble             <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-factor">gimp_unit_get_factor</a>                (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);
-gint                <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-digits">gimp_unit_get_digits</a>                (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);
-const gchar*        <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-identifier">gimp_unit_get_identifier</a>            (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);
-const gchar*        <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-symbol">gimp_unit_get_symbol</a>                (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);
-const gchar*        <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-abbreviation">gimp_unit_get_abbreviation</a>          (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);
-const gchar*        <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-singular">gimp_unit_get_singular</a>              (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);
-const gchar*        <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-plural">gimp_unit_get_plural</a>                (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> deletion_flag);
+<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-factor">gimp_unit_get_factor</a>                (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-digits">gimp_unit_get_digits</a>                (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);
+const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-identifier">gimp_unit_get_identifier</a>            (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);
+const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-symbol">gimp_unit_get_symbol</a>                (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);
+const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-abbreviation">gimp_unit_get_abbreviation</a>          (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);
+const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-singular">gimp_unit_get_singular</a>              (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);
+const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-get-plural">gimp_unit_get_plural</a>                (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);
 #define             <a class="link" href="libgimpbase-gimpunit.html#GIMP-TYPE-UNIT:CAPS">GIMP_TYPE_UNIT</a>
 #define             <a class="link" href="libgimpbase-gimpunit.html#GIMP-TYPE-PARAM-UNIT:CAPS">GIMP_TYPE_PARAM_UNIT</a>
 #define             <a class="link" href="libgimpbase-gimpunit.html#GIMP-IS-PARAM-SPEC-UNIT:CAPS">GIMP_IS_PARAM_SPEC_UNIT</a>             (pspec)
-GParamSpec*         <a class="link" href="libgimpbase-gimpunit.html#gimp-param-spec-unit">gimp_param_spec_unit</a>                (const gchar *name,
-                                                         const gchar *nick,
-                                                         const gchar *blurb,
-                                                         gboolean allow_pixels,
-                                                         gboolean allow_percent,
+<a
+href="../gobject/gobject-GParamSpec.html#GParamSpec"
+>GParamSpec</a>*         <a class="link" href="libgimpbase-gimpunit.html#gimp-param-spec-unit">gimp_param_spec_unit</a>                (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *nick,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *blurb,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> allow_pixels,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> allow_percent,
                                                          <a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> default_value,
-                                                         GParamFlags flags);
+                                                         <a
+href="../gobject/gobject-GParamSpec.html#GParamFlags"
+>GParamFlags</a> flags);
 #define             <a class="link" href="libgimpbase-gimpunit.html#GIMP-VALUE-HOLDS-UNIT:CAPS">GIMP_VALUE_HOLDS_UNIT</a>               (value)
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2622539"></a><h2>Description</h2>
+<a name="id2623272"></a><h2>Description</h2>
 <p>
 Provides a collection of predefined units and functions for creating
 user-defined units.
@@ -91,11 +141,11 @@ user-defined units.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2622556"></a><h2>Details</h2>
+<a name="id2623289"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2622567"></a><h3>
+<a name="id2623300"></a><h3>
 <a name="GimpUnit"></a>enum GimpUnit</h3>
-<a class="indexterm" name="id2622579"></a><pre class="programlisting">typedef enum /*&lt; skip &gt;*/
+<a class="indexterm" name="id2623312"></a><pre class="programlisting">typedef enum /*&lt; skip &gt;*/
 {
   GIMP_UNIT_PIXEL   = 0,
 
@@ -115,9 +165,11 @@ user-defined units.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622598"></a><h3>
+<a name="id2623331"></a><h3>
 <a name="gimp-unit-get-number-of-units"></a>gimp_unit_get_number_of_units ()</h3>
-<a class="indexterm" name="id2622610"></a><pre class="programlisting">gint                gimp_unit_get_number_of_units       (void);</pre>
+<a class="indexterm" name="id2623342"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_unit_get_number_of_units       (void);</pre>
 <p>
 Returns the number of units which are known to the <a class="link" href="libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> system.</p>
 <p>
@@ -134,9 +186,11 @@ Returns the number of units which are known to the <a class="link" href="libgimp
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622657"></a><h3>
+<a name="id2623390"></a><h3>
 <a name="gimp-unit-get-number-of-built-in-units"></a>gimp_unit_get_number_of_built_in_units ()</h3>
-<a class="indexterm" name="id2622669"></a><pre class="programlisting">gint                gimp_unit_get_number_of_built_in_units
+<a class="indexterm" name="id2623401"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_unit_get_number_of_built_in_units
                                                         (void);</pre>
 <p>
 Returns the number of <a class="link" href="libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>'s which are hardcoded in the unit system
@@ -156,21 +210,39 @@ Returns the number of <a class="link" href="libgimpbase-gimpunit.html#GimpUnit">
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622719"></a><h3>
+<a name="id2623451"></a><h3>
 <a name="gimp-unit-new"></a>gimp_unit_new ()</h3>
-<a class="indexterm" name="id2622732"></a><pre class="programlisting"><a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a>            gimp_unit_new                       (gchar *identifier,
-                                                         gdouble factor,
-                                                         gint digits,
-                                                         gchar *symbol,
-                                                         gchar *abbreviation,
-                                                         gchar *singular,
-                                                         gchar *plural);</pre>
+<a class="indexterm" name="id2623463"></a><pre class="programlisting"><a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a>            gimp_unit_new                       (<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *identifier,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> factor,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> digits,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *symbol,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *abbreviation,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *singular,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *plural);</pre>
 <p>
 Returns the integer ID of the new <a class="link" href="libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>.
 </p>
 <p>
 Note that a new unit is always created with it's deletion flag
-set to <code class="literal">TRUE</code>. You will have to set it to <code class="literal">FALSE</code> with
+set to <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a>. You will have to set it to <a
+href="../glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> with
 <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-set-deletion-flag"><code class="function">gimp_unit_set_deletion_flag()</code></a> to make the unit definition persistent.</p>
 <p>
 
@@ -223,9 +295,11 @@ set to <code class="literal">TRUE</code>. You will have to set it to <code class
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2619042"></a><h3>
+<a name="id2621605"></a><h3>
 <a name="gimp-unit-get-deletion-flag"></a>gimp_unit_get_deletion_flag ()</h3>
-<a class="indexterm" name="id2619054"></a><pre class="programlisting">gboolean            gimp_unit_get_deletion_flag         (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre>
+<a class="indexterm" name="id2621617"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_unit_get_deletion_flag         (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre>
 <p>
 </p>
 <p>
@@ -249,13 +323,17 @@ set to <code class="literal">TRUE</code>. You will have to set it to <code class
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2619126"></a><h3>
+<a name="id2626679"></a><h3>
 <a name="gimp-unit-set-deletion-flag"></a>gimp_unit_set_deletion_flag ()</h3>
-<a class="indexterm" name="id2626702"></a><pre class="programlisting">void                gimp_unit_set_deletion_flag         (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit,
-                                                         gboolean deletion_flag);</pre>
+<a class="indexterm" name="id2626690"></a><pre class="programlisting">void                gimp_unit_set_deletion_flag         (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> deletion_flag);</pre>
 <p>
 Sets a <a class="link" href="libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>'s <em class="parameter"><code>deletion_flag</code></em>. If the <em class="parameter"><code>deletion_flag</code></em> of a unit is
-<code class="literal">TRUE</code> when GIMP exits, this unit will not be saved in the users's
+<a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> when GIMP exits, this unit will not be saved in the users's
 "unitrc" file.
 </p>
 <p>
@@ -282,9 +360,11 @@ ignored.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626806"></a><h3>
+<a name="id2626795"></a><h3>
 <a name="gimp-unit-get-factor"></a>gimp_unit_get_factor ()</h3>
-<a class="indexterm" name="id2626817"></a><pre class="programlisting">gdouble             gimp_unit_get_factor                (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre>
+<a class="indexterm" name="id2626805"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             gimp_unit_get_factor                (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre>
 <p>
 A <a class="link" href="libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>'s <em class="parameter"><code>factor</code></em> is defined to be:
 </p>
@@ -314,9 +394,11 @@ Returns 0 for <em class="parameter"><code>unit</code></em> == GIMP_UNIT_PIXEL.</
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626908"></a><h3>
+<a name="id2626897"></a><h3>
 <a name="gimp-unit-get-digits"></a>gimp_unit_get_digits ()</h3>
-<a class="indexterm" name="id2626920"></a><pre class="programlisting">gint                gimp_unit_get_digits                (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre>
+<a class="indexterm" name="id2626908"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_unit_get_digits                (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre>
 <p>
 Returns the number of digits an entry field should provide to get
 approximately the same accuracy as an inch input field with two digits.
@@ -344,9 +426,11 @@ Returns 0 for <em class="parameter"><code>unit</code></em> == GIMP_UNIT_PIXEL.</
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626992"></a><h3>
+<a name="id2626981"></a><h3>
 <a name="gimp-unit-get-identifier"></a>gimp_unit_get_identifier ()</h3>
-<a class="indexterm" name="id2627004"></a><pre class="programlisting">const gchar*        gimp_unit_get_identifier            (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre>
+<a class="indexterm" name="id2626992"></a><pre class="programlisting">const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        gimp_unit_get_identifier            (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre>
 <p>
 This is an unstranslated string and must not be changed or freed.</p>
 <p>
@@ -370,9 +454,11 @@ This is an unstranslated string and must not be changed or freed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627066"></a><h3>
+<a name="id2627055"></a><h3>
 <a name="gimp-unit-get-symbol"></a>gimp_unit_get_symbol ()</h3>
-<a class="indexterm" name="id2627077"></a><pre class="programlisting">const gchar*        gimp_unit_get_symbol                (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre>
+<a class="indexterm" name="id2627066"></a><pre class="programlisting">const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        gimp_unit_get_symbol                (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre>
 <p>
 This is e.g. "''" for UNIT_INCH.
 </p>
@@ -399,9 +485,11 @@ NOTE: This string must not be changed or freed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627144"></a><h3>
+<a name="id2627132"></a><h3>
 <a name="gimp-unit-get-abbreviation"></a>gimp_unit_get_abbreviation ()</h3>
-<a class="indexterm" name="id2627156"></a><pre class="programlisting">const gchar*        gimp_unit_get_abbreviation          (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre>
+<a class="indexterm" name="id2627144"></a><pre class="programlisting">const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        gimp_unit_get_abbreviation          (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre>
 <p>
 For built-in units, this function returns the translated abbreviation
 of the unit.
@@ -429,9 +517,11 @@ NOTE: This string must not be changed or freed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627223"></a><h3>
+<a name="id2627212"></a><h3>
 <a name="gimp-unit-get-singular"></a>gimp_unit_get_singular ()</h3>
-<a class="indexterm" name="id2627234"></a><pre class="programlisting">const gchar*        gimp_unit_get_singular              (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre>
+<a class="indexterm" name="id2627223"></a><pre class="programlisting">const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        gimp_unit_get_singular              (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre>
 <p>
 For built-in units, this function returns the translated singular form
 of the unit's name.
@@ -459,9 +549,11 @@ NOTE: This string must not be changed or freed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627302"></a><h3>
+<a name="id2627290"></a><h3>
 <a name="gimp-unit-get-plural"></a>gimp_unit_get_plural ()</h3>
-<a class="indexterm" name="id2627313"></a><pre class="programlisting">const gchar*        gimp_unit_get_plural                (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre>
+<a class="indexterm" name="id2627302"></a><pre class="programlisting">const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        gimp_unit_get_plural                (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre>
 <p>
 For built-in units, this function returns the translated plural form
 of the unit's name.
@@ -489,19 +581,23 @@ NOTE: This string must not be changed or freed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627381"></a><h3>
+<a name="id2627369"></a><h3>
 <a name="GIMP-TYPE-UNIT:CAPS"></a>GIMP_TYPE_UNIT</h3>
-<a class="indexterm" name="id2627393"></a><pre class="programlisting">#define GIMP_TYPE_UNIT               (gimp_unit_get_type ())
+<a class="indexterm" name="id2627381"></a><pre class="programlisting">#define GIMP_TYPE_UNIT               (gimp_unit_get_type ())
 </pre>
 <p>
-<a class="link" href="libgimpbase-gimpunit.html#GIMP-TYPE-UNIT:CAPS"><span class="type">GIMP_TYPE_UNIT</span></a> is a <span class="type">GType</span> derived from <span class="type">G_TYPE_INT</span>.
+<a class="link" href="libgimpbase-gimpunit.html#GIMP-TYPE-UNIT:CAPS"><span class="type">GIMP_TYPE_UNIT</span></a> is a <a
+href="../gobject/gobject-Type-Information.html#GType"
+><span class="type">GType</span></a> derived from <a
+href="../gobject/gobject-Type-Information.html#G-TYPE-INT:CAPS"
+><span class="type">G_TYPE_INT</span></a>.
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627431"></a><h3>
+<a name="id2627420"></a><h3>
 <a name="GIMP-TYPE-PARAM-UNIT:CAPS"></a>GIMP_TYPE_PARAM_UNIT</h3>
-<a class="indexterm" name="id2627443"></a><pre class="programlisting">#define GIMP_TYPE_PARAM_UNIT              (gimp_param_unit_get_type ())
+<a class="indexterm" name="id2627431"></a><pre class="programlisting">#define GIMP_TYPE_PARAM_UNIT              (gimp_param_unit_get_type ())
 </pre>
 <p>
 
@@ -509,9 +605,9 @@ NOTE: This string must not be changed or freed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627459"></a><h3>
+<a name="id2627447"></a><h3>
 <a name="GIMP-IS-PARAM-SPEC-UNIT:CAPS"></a>GIMP_IS_PARAM_SPEC_UNIT()</h3>
-<a class="indexterm" name="id2627472"></a><pre class="programlisting">#define GIMP_IS_PARAM_SPEC_UNIT(pspec)    (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_UNIT))
+<a class="indexterm" name="id2627461"></a><pre class="programlisting">#define GIMP_IS_PARAM_SPEC_UNIT(pspec)    (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_UNIT))
 </pre>
 <p>
 
@@ -529,18 +625,34 @@ NOTE: This string must not be changed or freed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627508"></a><h3>
+<a name="id2627496"></a><h3>
 <a name="gimp-param-spec-unit"></a>gimp_param_spec_unit ()</h3>
-<a class="indexterm" name="id2627522"></a><pre class="programlisting">GParamSpec*         gimp_param_spec_unit                (const gchar *name,
-                                                         const gchar *nick,
-                                                         const gchar *blurb,
-                                                         gboolean allow_pixels,
-                                                         gboolean allow_percent,
+<a class="indexterm" name="id2627510"></a><pre class="programlisting"><a
+href="../gobject/gobject-GParamSpec.html#GParamSpec"
+>GParamSpec</a>*         gimp_param_spec_unit                (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *nick,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *blurb,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> allow_pixels,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> allow_percent,
                                                          <a class="link" href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> default_value,
-                                                         GParamFlags flags);</pre>
+                                                         <a
+href="../gobject/gobject-GParamSpec.html#GParamFlags"
+>GParamFlags</a> flags);</pre>
 <p>
 Creates a param spec to hold a units param.
-See <code class="function">g_param_spec_internal()</code> for more information.</p>
+See <a
+href="../gobject/gobject-GParamSpec.html#g-param-spec-internal"
+><code class="function">g_param_spec_internal()</code></a> for more information.</p>
 <p>
 
 </p>
@@ -579,12 +691,16 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
-<td>         a combination of <span class="type">GParamFlags</span>
+<td>         a combination of <a
+href="../gobject/gobject-GParamSpec.html#GParamFlags"
+><span class="type">GParamFlags</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
-<td> a newly allocated <span class="type">GParamSpec</span> instance
+<td> a newly allocated <a
+href="../gobject/gobject-GParamSpec.html#GParamSpec"
+><span class="type">GParamSpec</span></a> instance
 
 </td>
 </tr>
@@ -595,9 +711,9 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627743"></a><h3>
+<a name="id2627731"></a><h3>
 <a name="GIMP-VALUE-HOLDS-UNIT:CAPS"></a>GIMP_VALUE_HOLDS_UNIT()</h3>
-<a class="indexterm" name="id2627754"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_UNIT(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_UNIT))
+<a class="indexterm" name="id2627742"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_UNIT(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_UNIT))
 </pre>
 <p>
 
@@ -615,15 +731,15 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2627791"></a><h2>See Also</h2>
+<a name="id2627779"></a><h2>See Also</h2>
 <p>
 <a
-href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpUnitMenu.html"
+href="../libgimpwidgets/GimpUnitMenu.html"
 ><span class="type">GimpUnitMenu</span></a>
 </p>
 <p>
 <a
-href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpSizeEntry.html"
+href="../libgimpwidgets/GimpSizeEntry.html"
 ><span class="type">GimpSizeEntry</span></a>
 </p>
 </div>

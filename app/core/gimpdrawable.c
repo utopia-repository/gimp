@@ -110,7 +110,6 @@ static void       gimp_drawable_transform          (GimpItem          *item,
                                                     const GimpMatrix3 *matrix,
                                                     GimpTransformDirection  direction,
                                                     GimpInterpolationType   interpolation_type,
-                                                    gboolean           supersample,
                                                     gint               recursion_level,
                                                     GimpTransformResize     clip_result,
                                                     GimpProgress      *progress);
@@ -556,7 +555,6 @@ gimp_drawable_transform (GimpItem               *item,
                          const GimpMatrix3      *matrix,
                          GimpTransformDirection  direction,
                          GimpInterpolationType   interpolation_type,
-                         gboolean                supersample,
                          gint                    recursion_level,
                          GimpTransformResize     clip_result,
                          GimpProgress           *progress)
@@ -575,7 +573,7 @@ gimp_drawable_transform (GimpItem               *item,
                                                 drawable->tiles,
                                                 matrix, direction,
                                                 interpolation_type,
-                                                supersample, recursion_level,
+                                                recursion_level,
                                                 clip_result,
                                                 progress);
 
@@ -737,14 +735,9 @@ gimp_drawable_real_swap_pixels (GimpDrawable *drawable,
                                          j, i, dest_tile);
                   tile_manager_map_tile (gimp_drawable_get_tiles (drawable),
                                          j, i, src_tile);
-#if 0
-                  swap_pixels (tile_data_pointer (src_tile, 0, 0),
-                               tile_data_pointer (dest_tile, 0, 0),
-                               tile_size (src_tile));
-#endif
 
-                  tile_release (dest_tile, FALSE /* TRUE */);
-                  tile_release (src_tile, FALSE /* TRUE */);
+                  tile_release (dest_tile, FALSE);
+                  tile_release (src_tile, FALSE);
                 }
             }
         }

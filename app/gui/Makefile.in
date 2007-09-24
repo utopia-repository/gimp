@@ -57,7 +57,7 @@ libappgui_a_AR = $(AR) $(ARFLAGS)
 libappgui_a_LIBADD =
 am_libappgui_a_OBJECTS = color-history.$(OBJEXT) gui.$(OBJEXT) \
 	gui-message.$(OBJEXT) gui-vtable.$(OBJEXT) session.$(OBJEXT) \
-	splash.$(OBJEXT) themes.$(OBJEXT) gtk-macmenu.$(OBJEXT)
+	splash.$(OBJEXT) themes.$(OBJEXT) ige-mac-menu.$(OBJEXT)
 libappgui_a_OBJECTS = $(am_libappgui_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -362,6 +362,8 @@ SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
 TIFF_LOAD = @TIFF_LOAD@
 TIFF_SAVE = @TIFF_SAVE@
+TOOLBOX_MENU_FALSE = @TOOLBOX_MENU_FALSE@
+TOOLBOX_MENU_TRUE = @TOOLBOX_MENU_TRUE@
 URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
 URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
 URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
@@ -444,7 +446,8 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 AM_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"Gimp-GUI\"
+	-DG_LOG_DOMAIN=\"Gimp-GUI\"	\
+	-DGIMP_COMMAND=\"@GIMP_COMMAND@\"
 
 INCLUDES = \
 	-I$(top_builddir)	\
@@ -472,8 +475,8 @@ libappgui_a_SOURCES = \
 	splash.h		\
 	themes.c		\
 	themes.h		\
-	gtk-macmenu.c		\
-	gtk-macmenu.h
+	ige-mac-menu.c		\
+	ige-mac-menu.h
 
 EXTRA_DIST = makefile.msc
 all: all-am
@@ -524,10 +527,10 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/color-history.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-macmenu.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gui-message.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gui-vtable.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gui.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ige-mac-menu.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/session.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/splash.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/themes.Po@am__quote@

@@ -33,24 +33,26 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpEnumStore.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2594626" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2615492" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2622772" class="shortcut">Description</a>
+                  <a href="#id2622766" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2624497" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2625519" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2624565" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2625587" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2622728" class="shortcut">Properties</a></nobr></td></tr>
+                  <a href="#id2622722" class="shortcut">Properties</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpDialog"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2594626"></a><span class="refentrytitle">GimpDialog</span>
+<a name="id2615492"></a><span class="refentrytitle">GimpDialog</span>
 </h2>
-<p>GimpDialog &#8212; Constructors for <span class="type">GtkDialog</span>'s and action_areas as well as other
+<p>GimpDialog &#8212; Constructors for <a
+href="../gtk/GtkDialog.html"
+><span class="type">GtkDialog</span></a>'s and action_areas as well as other
 dialog-related stuff.</p>
 </td>
 <td valign="top" align="right"><img src="gimp-dialog.png"></td>
@@ -62,87 +64,153 @@ dialog-related stuff.</p>
 
 
                     <a class="link" href="GimpDialog.html#GimpDialog-struct">GimpDialog</a>;
-GtkWidget*          <a class="link" href="GimpDialog.html#gimp-dialog-new">gimp_dialog_new</a>                     (const gchar *title,
-                                                         const gchar *role,
-                                                         GtkWidget *parent,
-                                                         GtkDialogFlags flags,
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          <a class="link" href="GimpDialog.html#gimp-dialog-new">gimp_dialog_new</a>                     (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *role,
+                                                         <a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *parent,
+                                                         <a
+href="../gtk/GtkDialog.html#GtkDialogFlags"
+>GtkDialogFlags</a> flags,
                                                          <a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
-                                                         const gchar *help_id,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *help_id,
                                                          ...);
-GtkWidget*          <a class="link" href="GimpDialog.html#gimp-dialog-new-valist">gimp_dialog_new_valist</a>              (const gchar *title,
-                                                         const gchar *role,
-                                                         GtkWidget *parent,
-                                                         GtkDialogFlags flags,
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          <a class="link" href="GimpDialog.html#gimp-dialog-new-valist">gimp_dialog_new_valist</a>              (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *role,
+                                                         <a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *parent,
+                                                         <a
+href="../gtk/GtkDialog.html#GtkDialogFlags"
+>GtkDialogFlags</a> flags,
                                                          <a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
-                                                         const gchar *help_id,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *help_id,
                                                          va_list args);
-GtkWidget*          <a class="link" href="GimpDialog.html#gimp-dialog-add-button">gimp_dialog_add_button</a>              (<a class="link" href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
-                                                         const gchar *button_text,
-                                                         gint response_id);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          <a class="link" href="GimpDialog.html#gimp-dialog-add-button">gimp_dialog_add_button</a>              (<a class="link" href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *button_text,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> response_id);
 void                <a class="link" href="GimpDialog.html#gimp-dialog-add-buttons">gimp_dialog_add_buttons</a>             (<a class="link" href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
                                                          ...);
 void                <a class="link" href="GimpDialog.html#gimp-dialog-add-buttons-valist">gimp_dialog_add_buttons_valist</a>      (<a class="link" href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
                                                          va_list args);
-gint                <a class="link" href="GimpDialog.html#gimp-dialog-run">gimp_dialog_run</a>                     (<a class="link" href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog);
-void                <a class="link" href="GimpDialog.html#gimp-dialogs-show-help-button">gimp_dialogs_show_help_button</a>       (gboolean show);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="GimpDialog.html#gimp-dialog-run">gimp_dialog_run</a>                     (<a class="link" href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog);
+void                <a class="link" href="GimpDialog.html#gimp-dialogs-show-help-button">gimp_dialogs_show_help_button</a>       (<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> show);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2624497"></a><h2>Object Hierarchy</h2>
+<a name="id2625519"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkContainer
-                           +----GtkBin
-                                 +----GtkWindow
-                                       +----GtkDialog
+  <a
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+                     +----<a
+href="../gtk/GtkContainer.html"
+>GtkContainer</a>
+                           +----<a
+href="../gtk/GtkBin.html"
+>GtkBin</a>
+                                 +----<a
+href="../gtk/GtkWindow.html"
+>GtkWindow</a>
+                                       +----<a
+href="../gtk/GtkDialog.html"
+>GtkDialog</a>
                                              +----GimpDialog
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2624565"></a><h2>Implemented Interfaces</h2>
+<a name="id2625587"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpDialog implements
  AtkImplementorIface and  GtkBuildable.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2622728"></a><h2>Properties</h2>
+<a name="id2622722"></a><h2>Properties</h2>
 <pre class="synopsis">
 
-  "<a class="link" href="GimpDialog.html#GimpDialog--help-func">help-func</a>"                gpointer              : Read / Write / Construct Only
-  "<a class="link" href="GimpDialog.html#GimpDialog--help-id">help-id</a>"                  gchararray            : Read / Write / Construct Only
+  "<a class="link" href="GimpDialog.html#GimpDialog--help-func">help-func</a>"                <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>              : Read / Write / Construct Only
+  "<a class="link" href="GimpDialog.html#GimpDialog--help-id">help-id</a>"                  <a
+href="../gobject/gobject-Standard-Parameter-and-Value-Types.html#gchararray"
+>gchararray</a>            : Read / Write / Construct Only
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2622772"></a><h2>Description</h2>
+<a name="id2622766"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2622788"></a><h2>Details</h2>
+<a name="id2622782"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2622799"></a><h3>
+<a name="id2622793"></a><h3>
 <a name="GimpDialog-struct"></a>GimpDialog</h3>
-<a class="indexterm" name="id2622811"></a><pre class="programlisting">typedef struct _GimpDialog GimpDialog;</pre>
+<a class="indexterm" name="id2622805"></a><pre class="programlisting">typedef struct _GimpDialog GimpDialog;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622826"></a><h3>
+<a name="id2622820"></a><h3>
 <a name="gimp-dialog-new"></a>gimp_dialog_new ()</h3>
-<a class="indexterm" name="id2622839"></a><pre class="programlisting">GtkWidget*          gimp_dialog_new                     (const gchar *title,
-                                                         const gchar *role,
-                                                         GtkWidget *parent,
-                                                         GtkDialogFlags flags,
+<a class="indexterm" name="id2622833"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_dialog_new                     (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *role,
+                                                         <a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *parent,
+                                                         <a
+href="../gtk/GtkDialog.html#GtkDialogFlags"
+>GtkDialogFlags</a> flags,
                                                          <a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
-                                                         const gchar *help_id,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *help_id,
                                                          ...);</pre>
 <p>
 Creates a new <em class="parameter"><code>GimpDialog</code></em> widget.
@@ -153,7 +221,9 @@ into a <em class="parameter"><code>va_list</code></em> variable and passes every
 </p>
 <p>
 For a description of the format of the <em class="parameter"><code>va_list</code></em> describing the
-action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</code>.</p>
+action_area buttons see <a
+href="../gtk/GtkDialog.html#gtk-dialog-new-with-buttons"
+><code class="function">gtk_dialog_new_with_buttons()</code></a>.</p>
 <p>
 
 </p>
@@ -163,13 +233,17 @@ action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</co
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></p></td>
 <td>        The dialog's title which will be set with
-               <code class="function">gtk_window_set_title()</code>.
+               <a
+href="../gtk/GtkWindow.html#gtk-window-set-title"
+><code class="function">gtk_window_set_title()</code></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>role</code></em>&#160;:</span></p></td>
 <td>         The dialog's <em class="parameter"><code>role</code></em> which will be set with
-               <code class="function">gtk_window_set_role()</code>.
+               <a
+href="../gtk/GtkWindow.html#gtk-window-set-role"
+><code class="function">gtk_window_set_role()</code></a>.
 </td>
 </tr>
 <tr>
@@ -179,7 +253,9 @@ action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</co
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
-<td>        The <em class="parameter"><code>flags</code></em> (see the <span class="type">GtkDialog</span> documentation).
+<td>        The <em class="parameter"><code>flags</code></em> (see the <a
+href="../gtk/GtkDialog.html"
+><span class="type">GtkDialog</span></a> documentation).
 </td>
 </tr>
 <tr>
@@ -194,7 +270,9 @@ action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</co
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></p></td>
-<td>          A <code class="literal">NULL</code>-terminated <em class="parameter"><code>va_list</code></em> destribing the
+<td>          A <a
+href="../glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a>-terminated <em class="parameter"><code>va_list</code></em> destribing the
                action_area buttons.
 </td>
 </tr>
@@ -208,14 +286,26 @@ action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</co
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620164"></a><h3>
+<a name="id2624758"></a><h3>
 <a name="gimp-dialog-new-valist"></a>gimp_dialog_new_valist ()</h3>
-<a class="indexterm" name="id2620175"></a><pre class="programlisting">GtkWidget*          gimp_dialog_new_valist              (const gchar *title,
-                                                         const gchar *role,
-                                                         GtkWidget *parent,
-                                                         GtkDialogFlags flags,
+<a class="indexterm" name="id2624770"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_dialog_new_valist              (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *role,
+                                                         <a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a> *parent,
+                                                         <a
+href="../gtk/GtkDialog.html#GtkDialogFlags"
+>GtkDialogFlags</a> flags,
                                                          <a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
-                                                         const gchar *help_id,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *help_id,
                                                          va_list args);</pre>
 <p>
 Creates a new <em class="parameter"><code>GimpDialog</code></em> widget. If a GtkWindow is specified as
@@ -223,7 +313,9 @@ Creates a new <em class="parameter"><code>GimpDialog</code></em> widget. If a Gt
 </p>
 <p>
 For a description of the format of the <em class="parameter"><code>va_list</code></em> describing the
-action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</code>.</p>
+action_area buttons see <a
+href="../gtk/GtkDialog.html#gtk-dialog-new-with-buttons"
+><code class="function">gtk_dialog_new_with_buttons()</code></a>.</p>
 <p>
 
 </p>
@@ -233,23 +325,31 @@ action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</co
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></p></td>
 <td>        The dialog's title which will be set with
-               <code class="function">gtk_window_set_title()</code>.
+               <a
+href="../gtk/GtkWindow.html#gtk-window-set-title"
+><code class="function">gtk_window_set_title()</code></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>role</code></em>&#160;:</span></p></td>
 <td>         The dialog's <em class="parameter"><code>role</code></em> which will be set with
-               <code class="function">gtk_window_set_role()</code>.
+               <a
+href="../gtk/GtkWindow.html#gtk-window-set-role"
+><code class="function">gtk_window_set_role()</code></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>parent</code></em>&#160;:</span></p></td>
-<td>       The <em class="parameter"><code>parent</code></em> widget of this dialog or <code class="literal">NULL</code>.
+<td>       The <em class="parameter"><code>parent</code></em> widget of this dialog or <a
+href="../glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
-<td>        The <em class="parameter"><code>flags</code></em> (see the <span class="type">GtkDialog</span> documentation).
+<td>        The <em class="parameter"><code>flags</code></em> (see the <a
+href="../gtk/GtkDialog.html"
+><span class="type">GtkDialog</span></a> documentation).
 </td>
 </tr>
 <tr>
@@ -277,13 +377,21 @@ action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</co
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627542"></a><h3>
+<a name="id2627578"></a><h3>
 <a name="gimp-dialog-add-button"></a>gimp_dialog_add_button ()</h3>
-<a class="indexterm" name="id2627553"></a><pre class="programlisting">GtkWidget*          gimp_dialog_add_button              (<a class="link" href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
-                                                         const gchar *button_text,
-                                                         gint response_id);</pre>
+<a class="indexterm" name="id2627589"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_dialog_add_button              (<a class="link" href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *button_text,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> response_id);</pre>
 <p>
-This function is essentially the same as <code class="function">gtk_dialog_add_button()</code>
+This function is essentially the same as <a
+href="../gtk/GtkDialog.html#gtk-dialog-add-button"
+><code class="function">gtk_dialog_add_button()</code></a>
 except it ensures there is only one help button and automatically
 sets the RESPONSE_OK widget as the default response.</p>
 <p>
@@ -317,13 +425,17 @@ sets the RESPONSE_OK widget as the default response.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627674"></a><h3>
+<a name="id2627710"></a><h3>
 <a name="gimp-dialog-add-buttons"></a>gimp_dialog_add_buttons ()</h3>
-<a class="indexterm" name="id2627686"></a><pre class="programlisting">void                gimp_dialog_add_buttons             (<a class="link" href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
+<a class="indexterm" name="id2627722"></a><pre class="programlisting">void                gimp_dialog_add_buttons             (<a class="link" href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
                                                          ...);</pre>
 <p>
-This function is essentially the same as <code class="function">gtk_dialog_add_buttons()</code>
-except it calls <a class="link" href="GimpDialog.html#gimp-dialog-add-button"><code class="function">gimp_dialog_add_button()</code></a> instead of <code class="function">gtk_dialog_add_button()</code></p>
+This function is essentially the same as <a
+href="../gtk/GtkDialog.html#gtk-dialog-add-buttons"
+><code class="function">gtk_dialog_add_buttons()</code></a>
+except it calls <a class="link" href="GimpDialog.html#gimp-dialog-add-button"><code class="function">gimp_dialog_add_button()</code></a> instead of <a
+href="../gtk/GtkDialog.html#gtk-dialog-add-button"
+><code class="function">gtk_dialog_add_button()</code></a></p>
 <p>
 
 </p>
@@ -345,9 +457,9 @@ except it calls <a class="link" href="GimpDialog.html#gimp-dialog-add-button"><c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627782"></a><h3>
+<a name="id2627818"></a><h3>
 <a name="gimp-dialog-add-buttons-valist"></a>gimp_dialog_add_buttons_valist ()</h3>
-<a class="indexterm" name="id2627796"></a><pre class="programlisting">void                gimp_dialog_add_buttons_valist      (<a class="link" href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
+<a class="indexterm" name="id2627832"></a><pre class="programlisting">void                gimp_dialog_add_buttons_valist      (<a class="link" href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
                                                          va_list args);</pre>
 <p>
 This function is essentially the same as <a class="link" href="GimpDialog.html#gimp-dialog-add-buttons"><code class="function">gimp_dialog_add_buttons()</code></a>
@@ -373,12 +485,18 @@ except it takes a va_list instead of '...'</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627882"></a><h3>
+<a name="id2627918"></a><h3>
 <a name="gimp-dialog-run"></a>gimp_dialog_run ()</h3>
-<a class="indexterm" name="id2627895"></a><pre class="programlisting">gint                gimp_dialog_run                     (<a class="link" href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog);</pre>
+<a class="indexterm" name="id2627931"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_dialog_run                     (<a class="link" href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog);</pre>
 <p>
-This function does exactly the same as <code class="function">gtk_dialog_run()</code> except it
-does not make the dialog modal while the <span class="type">GMainLoop</span> is running.</p>
+This function does exactly the same as <a
+href="../gtk/GtkDialog.html#gtk-dialog-run"
+><code class="function">gtk_dialog_run()</code></a> except it
+does not make the dialog modal while the <a
+href="../glib/glib-The-Main-Event-Loop.html#GMainLoop"
+><span class="type">GMainLoop</span></a> is running.</p>
 <p>
 
 </p>
@@ -400,9 +518,11 @@ does not make the dialog modal while the <span class="type">GMainLoop</span> is 
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627980"></a><h3>
+<a name="id2628016"></a><h3>
 <a name="gimp-dialogs-show-help-button"></a>gimp_dialogs_show_help_button ()</h3>
-<a class="indexterm" name="id2627996"></a><pre class="programlisting">void                gimp_dialogs_show_help_button       (gboolean show);</pre>
+<a class="indexterm" name="id2628032"></a><pre class="programlisting">void                gimp_dialogs_show_help_button       (<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> show);</pre>
 <p>
 This function is for internal use only.</p>
 <p>
@@ -421,18 +541,22 @@ This function is for internal use only.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2628056"></a><h2>Property Details</h2>
+<a name="id2628071"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2612653"></a><h3>
+<a name="id2628080"></a><h3>
 <a name="GimpDialog--help-func"></a>The "<code class="literal">help-func</code>" property</h3>
-<a class="indexterm" name="id2589548"></a><pre class="programlisting">  "help-func"                gpointer              : Read / Write / Construct Only</pre>
+<a class="indexterm" name="id2628092"></a><pre class="programlisting">  "help-func"                <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>              : Read / Write / Construct Only</pre>
 <p></p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628079"></a><h3>
+<a name="id2628112"></a><h3>
 <a name="GimpDialog--help-id"></a>The "<code class="literal">help-id</code>" property</h3>
-<a class="indexterm" name="id2628092"></a><pre class="programlisting">  "help-id"                  gchararray            : Read / Write / Construct Only</pre>
+<a class="indexterm" name="id2628124"></a><pre class="programlisting">  "help-id"                  <a
+href="../gobject/gobject-Standard-Parameter-and-Value-Types.html#gchararray"
+>gchararray</a>            : Read / Write / Construct Only</pre>
 <p></p>
 <p>Default value: NULL</p>
 </div>

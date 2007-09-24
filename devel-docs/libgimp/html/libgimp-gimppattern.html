@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimppatterns.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2598181" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2609424" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2712215" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2688320" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppattern"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2598181"></a><span class="refentrytitle">gimppattern</span>
+<a name="id2609424"></a><span class="refentrytitle">gimppattern</span>
 </h2>
 <p>gimppattern &#8212; Functions operating on a single pattern.</p>
 </td>
@@ -52,33 +52,67 @@
 
 
 
-gboolean            <a class="link" href="libgimp-gimppattern.html#gimp-pattern-get-info">gimp_pattern_get_info</a>               (const gchar *name,
-                                                         gint *width,
-                                                         gint *height,
-                                                         gint *bpp);
-gboolean            <a class="link" href="libgimp-gimppattern.html#gimp-pattern-get-pixels">gimp_pattern_get_pixels</a>             (const gchar *name,
-                                                         gint *width,
-                                                         gint *height,
-                                                         gint *bpp,
-                                                         gint *num_color_bytes,
-                                                         guint8 **color_bytes);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppattern.html#gimp-pattern-get-info">gimp_pattern_get_info</a>               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *height,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *bpp);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppattern.html#gimp-pattern-get-pixels">gimp_pattern_get_pixels</a>             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *height,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *bpp,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_color_bytes,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guint8"
+>guint8</a> **color_bytes);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2712215"></a><h2>Description</h2>
+<a name="id2688320"></a><h2>Description</h2>
 <p>
 Functions operating on a single pattern.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2712230"></a><h2>Details</h2>
+<a name="id2688336"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2712240"></a><h3>
+<a name="id2688346"></a><h3>
 <a name="gimp-pattern-get-info"></a>gimp_pattern_get_info ()</h3>
-<a class="indexterm" name="id2712254"></a><pre class="programlisting">gboolean            gimp_pattern_get_info               (const gchar *name,
-                                                         gint *width,
-                                                         gint *height,
-                                                         gint *bpp);</pre>
+<a class="indexterm" name="id2688359"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_pattern_get_info               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *height,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *bpp);</pre>
 <p>
 Retrieve information about the specified pattern.
 </p>
@@ -124,14 +158,28 @@ This includes the pattern extents (width and height).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2711514"></a><h3>
+<a name="id2710140"></a><h3>
 <a name="gimp-pattern-get-pixels"></a>gimp_pattern_get_pixels ()</h3>
-<a class="indexterm" name="id2711527"></a><pre class="programlisting">gboolean            gimp_pattern_get_pixels             (const gchar *name,
-                                                         gint *width,
-                                                         gint *height,
-                                                         gint *bpp,
-                                                         gint *num_color_bytes,
-                                                         guint8 **color_bytes);</pre>
+<a class="indexterm" name="id2710153"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_pattern_get_pixels             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *height,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *bpp,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_color_bytes,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guint8"
+>guint8</a> **color_bytes);</pre>
 <p>
 Retrieve information about the specified pattern (including pixels).
 </p>

@@ -72,8 +72,8 @@ am_libappplug_in_a_OBJECTS = plug-in-enums.$(OBJEXT) \
 	gimppluginmanager-restore.$(OBJEXT) \
 	gimppluginprocedure.$(OBJEXT) gimppluginprocframe.$(OBJEXT) \
 	gimppluginshm.$(OBJEXT) gimptemporaryprocedure.$(OBJEXT) \
-	plug-in-params.$(OBJEXT) plug-in-rc.$(OBJEXT) \
-	plug-in-icc-profile.$(OBJEXT)
+	plug-in-menu-path.$(OBJEXT) plug-in-params.$(OBJEXT) \
+	plug-in-rc.$(OBJEXT) plug-in-icc-profile.$(OBJEXT)
 libappplug_in_a_OBJECTS = $(am_libappplug_in_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -378,6 +378,8 @@ SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
 TIFF_LOAD = @TIFF_LOAD@
 TIFF_SAVE = @TIFF_SAVE@
+TOOLBOX_MENU_FALSE = @TOOLBOX_MENU_FALSE@
+TOOLBOX_MENU_TRUE = @TOOLBOX_MENU_TRUE@
 URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
 URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
 URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
@@ -526,6 +528,8 @@ libappplug_in_a_SOURCES = \
 	gimptemporaryprocedure.c		\
 	gimptemporaryprocedure.h		\
 	\
+	plug-in-menu-path.c			\
+	plug-in-menu-path.h			\
 	plug-in-params.c			\
 	plug-in-params.h			\
 	plug-in-rc.c				\
@@ -615,6 +619,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptemporaryprocedure.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-enums.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-icc-profile.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-menu-path.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-params.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-rc.Po@am__quote@
 

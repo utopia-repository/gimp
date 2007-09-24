@@ -1,3 +1,671 @@
+2007-09-23  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.4.0-rc3 release.
+
+2007-09-23  Sven Neumann  <sven@gimp.org>
+
+	* app/widgets/gimptooloptionseditor.c
+	(gimp_tool_options_editor_get_title): avoid the crash reported in
+	bug #470304.
+
+2007-09-23  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/lcms.c: marked blurbs as translatable.
+
+2007-09-23  Simon Budig  <simon@gimp.org>
+
+	* app/display/gimpdisplay.c: Accomodate for spill that
+	happens by the box filtering.
+
+	Fixes bug #474509. Again. Hopefully.
+
+2007-09-23  Michael Natterer  <mitch@gimp.org>
+
+	* menus/toolbox-menu.xml.in: added placeholder File/Preferences
+	and move the preferences and keyboard shortcut dialogs there.
+
+	* plug-ins/common/uniteditor.c (query): register the unit editor
+	there too.
+
+2007-09-23  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/pcx.c: avoid pointer arithmetics on void pointers.
+	Fixes compilation on IRIX (bug #479357).
+
+2007-09-23  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/tools/gimprectangleselecttool.c: Reverted commits for
+	bug #479426, it's NOTABUG.
+
+2007-09-23  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/tools/gimprectangleselecttool.c
+	(gimp_rect_select_tool_should_draw): New name for
+	gimp_rect_select_selection_visible() which has been changed to
+	always return TRUE when the tool is active, i.e. when a rectangle
+	is being create or resized. Better fix for bug #479426.
+
+2007-09-23  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/tools/gimprectangleselecttool.c
+	(gimp_rect_select_tool_draw): Only draw the rectangle when `Show
+	selection' is `true', with the help of a new function
+	gimp_rect_select_tool_selection_visible(). Fixes bug #479426.
+
+2007-09-23  Simon Budig  <simon@gimp.org>
+
+	* plug-ins/common/bumpmap.c: add a few strategically placed
+	return TRUEs to stop event propagation.
+
+	Fixes bug #479389
+
+2007-09-23  Simon Budig  <simon@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c: oops - managed to miss the
+	mask rendering.
+
+2007-09-23  Simon Budig  <simon@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c: use Bresenham stepping
+	for the y-direction as well.
+
+	Fixes bug #474509.
+
+	Retired old and unused functions.
+
+2007-09-23  Simon Budig  <simon@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c: implement
+	bresenham-like stepping for interpolating the view in
+	x-direction. Since I now know how it is supposed to work
+	the y direction will follow shortly.
+
+	Adresses bug #474509.
+
+2007-09-22  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/tools/gimpcropoptions.[ch]: Add an allow-growing option.
+
+	* app/tools/gimpcroptool.c: Take the new allow-growing option into
+	account when setting crop rectangle constraints, and restructure
+	the code a bit.
+	(gimp_crop_tool_execute): Allow rectangles larger than the
+	image/layer being sent to gimp_image_crop() since that function
+	handles that fine. These changes fixes bug #368325.
+
+2007-09-22  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/tools/gimprectangletool.c
+	(gimp_rectangle_tool_set_constraint): Enforce constraints of any
+	pending rectangle when setting a constraint.
+
+2007-09-22  Simon Budig  <simon@gimp.org>
+
+	* plug-ins/script-fu/tinyscheme/scheme.c: further simplifications.
+
+2007-09-21  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	* plug-ins/script-fu/tinyscheme/scheme.c (basic_inchar): Applied
+	modified patch from Simon Budig. Any bytes read from a file which
+	are not valid UTF-8 characters will be ignored. Fixes bug #476356.
+
+2007-09-21  Sven Neumann  <sven@gimp.org>
+
+	General fix for bug #478657:
+
+	* libgimp/gimpaspectpreview.c
+	* libgimp/gimpdrawablepreview.c
+	* libgimp/gimpzoompreview.c: let all preview widgets store the
+	state of the Preview toggle. Declared "toggle" parameter as unused.
+
+	* plug-ins/common/*.c: pass NULL for "toggle" to
+	gimp_drawable_preview_new() and gimp_aspect_preview_new().
+
+2007-09-21  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/gimppreview.c: formatting.
+
+	* libgimpwidgets/gimpscrolledpreview.c: make use of freeze/thaw to
+	reduce the number of updates during initialization.
+
+2007-09-21  Sven Neumann  <sven@gimp.org>
+
+	* app/file/file-open.c (file_open_image): set the image clean
+	after handling the color profile.
+
+2007-09-20  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpimage.[ch]: added a load_proc member to GimpImage
+	and getters and setters for it.
+
+	* app/file/file-open.c (file_open_image): set the load procedure,
+	but only if it hasn't been set already. Use the MIME type from the
+	load procedure that is set on the image.
+
+	* tools/pdbgen/pdb/fileops.pdb (file_load_invoker): set the load
+	procedure. This causes it to be set when the URI plug-in calls
+	gimp-file-load to load the image.
+
+	* app/pdb/fileops_cmds.c: regenerated.
+
+	* app/widgets/gimpimagepropview.c
+	(gimp_image_prop_view_label_set_filetype): use the MIME type from
+	the load procedure, in case that no save procedure is set.
+
+2007-09-20  Sven Neumann  <sven@gimp.org>
+
+	* app/gui/gui-vtable.c (gui_recent_list_add_uri): use
+	"application/octet-stream" as MIME type in case that it is unset.
+
+2007-09-20  Raphaël Quinet  <raphael@gimp.org>
+
+	* plug-ins/jpeg/jpegqual.c (quant_info): updated the table of
+	known devices and software, work in progress.
+
+2007-09-20  Michael Natterer  <mitch@gimp.org>
+
+	* menus/image-menu.xml.in: added placeholder Edit/Preferences and
+	move the preferences and keyboard shortcut dialogs there.
+
+	* plug-ins/common/uniteditor.c (query): register the unit editor
+	there too.
+
+2007-09-19  Sven Neumann  <sven@gimp.org>
+
+	* app/base/gimphistogram.c: weight pixels by their alpha value
+	(bug #477689).
+
+2007-09-19  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/compose.c: removed extra arguments that were
+	added to the compose procedures in the 2.3 development cycle.
+	Restores compatibility and fixes bug #477795.
+
+2007-09-19  Raphaël Quinet  <raphael@gimp.org>
+
+	* plug-ins/jpeg/jpegqual.c: Re-wrote large parts of the code,
+	still work in progress: use GOption for command-line options, add
+	number of quantization tables in QuantInfo, added info for more
+	sources (devices or software) but not verified yet.
+
+2007-09-19  Raphaël Quinet  <raphael@gimp.org>
+
+	* plug-ins/jpeg/jpeg-load.c
+	* plug-ins/jpeg/jpeg-save.c: ifdef'ed out some debugging
+	statements so that they show up only in unstable releases.
+
+	* plug-ins/jpeg/jpeg.c (run): removed calls to gimp_set_data() and
+	gimp_get_data() so that changes made to the JPEG save settings for
+	one file do not affect other files saved later.
+
+2007-09-18  Michael Natterer  <mitch@gimp.org>
+
+	* app/gui/gtk-macmenu.[ch]: removed...
+
+	* app/gui/ige-mac-menu.[ch]: ...and replaced by new versions which
+	don't use the GTK+ namespace.
+
+	* app/gui/Makefile.am
+	* app/gui/gui.c: changed accorgingly.
+
+2007-09-18  Michael Natterer  <mitch@gimp.org>
+
+	* configure.in: replaced HAVE_GDK_QUARTZ conditional by
+	--disable-toolbox-menu configure switch which defaults to "no"
+	normally and to "yes" on quartz.
+
+	* app/widgets/gimptoolbox.c: changed #ifdef accordingly.
+
+	* app/plug-in/Makefile.am
+	* app/plug-in/plug-in-menu-path.[ch]: new generic machanism to map
+	around menu locations. If ENABLE_TOOLBOX_MENU is false, map
+	"Xtns" and "Help" from <Toolbox> to <Image>.
+
+	* app/plug-in/gimppluginmanager-menu-branch.c
+	* app/plug-in/gimppluginprocedure.c: run all menu paths through the
+	new mapping function.
+
+	* menus/Makefile.am
+	* menus/menus.xsl
+	* menus/image-menu.xml.in: add both the "Xtns" and "Help" menus to
+	the image menubar if TOOLBOX_MENU is false.
+
+2007-09-18  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/fileops.pdb: canonicalize the name of the
+	thumbnail loader procedure too. Fixes bug #477917.
+
+	* app/pdb/fileops_cmds.c: regenerated.
+
+2007-09-17  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* plug-ins/common/psd-load.c (do_layer_record, load_image):
+	Applied slightly modified patch from John Marshall that drops
+	adjustment and layer group layers when loading PSD files. Fixes
+	bug #474718.
+
+2007-09-17  Nils Philippsen  <nphilipp@redhat.com>
+
+	* plug-ins/common/pcx.c (load_image): verify that the bytesperline
+	header field (number of bytes to allocate per plane and line)
+	isn't less than the width of the image (bug #477802).
+
+2007-09-17  Michael Natterer  <mitch@gimp.org>
+
+	* app/widgets/gimpdockbook.[ch]: when DND-hovering > 500ms over a
+	notebook tab, switch to that tab's page. Suggested by Saul Goode.
+
+2007-09-17  Sven Neumann  <sven@gimp.org>
+
+	* modules/cdisplay_proof.c: use a GimpColorProfileComboBox for
+	profile selection.
+
+2007-09-17  Simon Budig  <simon@gimp.org>
+
+	* plug-ins/common/decompose.c: flush the displays at the end.
+
+	Fixes bug #477008.
+
+2007-09-17  Simon Budig  <simon@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c: avoid rendering
+	issues by adding xdelta/2 to xstart.
+
+	Probably fixes bug #474509.
+
+2007-09-15  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/layer.pdb: added gimp-layer-flatten.
+	Fixes bug #477026. Fixed docs of gimp-layer-add-alpha.
+
+	* app/pdb/internal_procs.c
+	* app/pdb/layer_cmds.c
+	* libgimp/gimplayer_pdb.[ch]: regenerated.
+	* libgimp/gimp.def: changed accordingly.
+
+2007-09-15  Michael Natterer  <mitch@gimp.org>
+
+	Make layer masks work consistently on layers without alpha.
+	Fixes bug #475548.
+
+	* app/core/gimplayer.c (gimp_layer_apply_mask): changed to work
+	on layers without alpha.
+
+	* app/actions/layers-commands.c (layers_add_mask_response): don't
+	automatically add an alpha channel when adding a layer mask.
+
+2007-09-14  Michael Natterer  <mitch@gimp.org>
+
+	* libgimpbase/gimpdatafiles.c: move private functions to the end
+	of the file. Added function is_hidden() and use it in
+	gimp_datafiles_read_directories(). Moved variables to local
+	scopes.
+
+2007-09-14  Sven Neumann  <sven@gimp.org>
+
+	* app/gui/gui-vtable.c (gui_recent_list_add_uri): use the
+	untranslated application name. Specify the group "Graphics".
+
+2007-09-14  Sven Neumann  <sven@gimp.org>
+
+	* app/base/tile-pyramid.c: formatting.
+
+	* app/display/gimpdisplayshell-render.c: removed unused include.
+
+2007-09-13  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	* plug-ins/script-fu/scripts/lava.scm: Removed 'from-selection'.
+	Reset active layer after calling gimp-selection-save. Modified
+	version of patch from Jakub Friedl which fixes bug #476672. Don't
+	add alpha if drawable already has alpha. Minor format changes.
+
+2007-09-13  Sven Neumann  <sven@gimp.org>
+
+	* app/gui/Makefile.am
+	* app/gui/gui-vtable.c (gui_recent_list_add_uri): use GIMP_COMMAND
+	instead of hardcoding "gimp" as the command line used to launch
+	this resource. Use the translated full application name.
+
+2007-09-13  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/gimpcolorprofilestore-private.h
+	* libgimpwidgets/gimpcolorprofilestore.c
+	* libgimpwidgets/gimpcolorprofilecombobox.c: only keep the eight
+	most recently used profiles in the history.
+
+2007-09-13  Nils Philippsen  <nphilipp@redhat.com>
+
+	* app/file/file-save.[ch] (file_save)
+	* app/dialogs/file-save-dialog.c (file_save_dialog_save_image)
+	* app/actions/file-commands.c (file_save_cmd_callback)
+	* app/widgets/gimpdnd-xds.c (gimp_dnd_xds_save_image): don't pass
+	Gimp instance to file_save() calls as it's not needed
+
+2007-09-13  Nils Philippsen  <nphilipp@redhat.com>
+
+	Drop own recently used files code in favour of GtkRecentManager:
+	
+	* app/core/gimp-gui.[ch] (gimp_recent_list_add_uri)
+	* app/gui/gui-vtable.c (gui_recent_list_add_uri): add
+	{gimp,gui}_recent_list_add_uri(), gui_recent_list_add_uri()
+	dispatches to GtkRecentManager
+
+	* app/dialogs/file-save-dialog.c (file_save_dialog_save_image)
+	* app/actions/file-commands.c (file_save_cmd_callback)
+	* app/widgets/gimpdnd-xds.c (gimp_dnd_xds_save_image): pass Gimp
+	instance to file_save() calls
+	
+	* app/file/file-open.c (file_open_with_proc_and_display)
+	(file_open_layers)
+	* app/file/file-save.[ch] (file_save): pass Gimp instance to
+	gimp_recent_list_add_uri() calls
+
+	* app/file/gimprecentitem.[ch]
+	* app/file/gimprecentlist.[ch]: removed
+
+	* app/file/Makefile.am: drop reference to removed files
+
+2007-09-13  Michael Natterer  <mitch@gimp.org>
+
+	* configure.in: : remove PANGO_DISABLE_DEPRECATED only for
+	pango >= 1.19, GIMP builds fine against 1.18
+
+2007-09-13  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpviewable.c: removed static variable debug_context
+	but keep the warnings about NULL contexts.
+
+2007-09-13  Sven Neumann  <sven@gimp.org>
+
+	* app/text/gimpfontlist.c (gimp_font_list_add_font): corrected
+	Pango version number in comment.
+
+	* app/widgets/gimpundoeditor.c (gimp_undo_editor_set_context):
+	chain up after initializing the context. Fixes a warning about
+	gimp_viewable_get_new_preview() being called with a NULL context.
+
+2007-09-13  Michael Natterer  <mitch@gimp.org>
+
+	* configure.in: remove FOO_DISABLE_DEPRECATED only for glib >= 2.15
+	and gtk+ >= 2.13, GIMP builds fine against the 2.14 and 2.12 APIs
+	apart from:
+
+	* app/tools/gimpselectionoptions.c
+	* libgimpwidgets/gimphelpui.c: undef GTK_DISABLE_DEPRECATED because
+	GtkTooltips is deprecated in gtk+ 2.12.
+
+	* libgimp/gimpui.c
+	* plug-ins/common/pat.c: the address of an array is always
+	non-NULL, no need to check for that. Fixes new gcc warnings.
+
+2007-09-12  Øyvind Kolås  <pippin@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c: (render_image_tile_fault),
+	(render_image_tile_fault_one_row): clone the middle row/column when
+	walking off the source drawable during downscaling. Probably fixes bug
+	#469567.
+
+2007-09-12  Michael Natterer  <mitch@gimp.org>
+
+	* libgimpwidgets/gimpunitmenu.c (gimp_unit_menu_create_selection):
+	if the parent toplevel is modal, make the unit selection dialog
+	modal too. Fixes bug #389358.
+
+2007-09-12  Sven Neumann  <sven@gimp.org>
+
+	* app/base/tile.c (tile_data_pointer): use the offsets modulo
+	TILE_WIDTH and TILE_HEIGHT instead of doing the modulo operation
+	in each and every caller.
+
+	* app/base/boundary.c
+	* app/base/pixel-region.c
+	* app/base/tile-manager.c
+	* app/core/gimpchannel.c
+	* app/core/gimpdrawable-blend.c
+	* app/core/gimpdrawable.c
+	* app/core/gimpimage-contiguous-region.c
+	* app/core/gimplayer.c
+	* app/display/gimpdisplayshell-render.c
+	* app/paint-funcs/paint-funcs.c
+	* app/paint/gimppaintcore.c
+	* app/tools/gimpiscissorstool.c: changed accordingly.
+
+2007-09-12  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimp-transform-region.c (supersample_dtest): use
+	G_SQRT2 instead of defining this constant again.
+
+2007-09-12  Michael Natterer  <mitch@gimp.org>
+
+	Bring back our menus when building on OS X but not against the
+	quartz GDK backend:
+
+	* configure.in: added conditional HAVE_GDK_QUARTZ.
+
+	* menus/Makefile.am: use it when moving the help menu around.
+
+	* app/dialogs/preferences-dialog.c
+	* app/display/gimpdisplayshell.c
+	* app/gui/gtk-macmenu.c
+	* app/gui/gui.c
+	* app/widgets/gimptoolbox.c: use #ifdef GDK_WINDOWING_QUARTZ
+	instead of #ifdef HAVE_CARBON when enabling the global menubar.
+
+2007-09-12  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/gimpcolorprofilecombobox.c
+	(gimp_color_profile_combo_box_new): fixed reference count of the
+	profile store.
+
+2007-09-12  Øyvind Kolås  <pippin@gimp.org>
+
+	* app/core/gimp-transform-region.c: (supersample_dtest): do not invoke
+	supersampling for linear, bicubic and lanczos until the largest
+	horizontal/vertical difference between transformed pixel corners goes
+	above sqrt(2) (this ensures interpolation instead of supersampling is
+	used for rotation.)
+
+2007-09-12  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpcontainer-filter.c
+	(gimp_container_filter_by_name): changed to use extended regular
+	expression syntax.
+
+2007-09-12  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/lcms.c: remember color conversion parameters
+	(bug #475966).
+
+2007-09-12  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/gimp.def: added gimp_context_list_paint_methods.
+
+	* libgimp/tmpl/gimpcontext.sgml: regenerated.
+
+2007-09-12  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/pnm.c (pnm_load_ascii): fixed loading of PGM
+	files with maxval of 1 (bug #475991).
+
+2007-09-12  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/lcms.c: fixed use of black-point-compensation
+	parameter (bug #475952).
+
+2007-09-11  Manish Singh  <yosh@gimp.org>
+
+	* plug-ins/common/psp.c: don't use "major" and "minor" as variable
+	names, they may conflict with system symbols.
+
+2007-09-11  Sven Neumann  <sven@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c: formatting.
+
+2007-09-11  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpimage.c (gimp_image_add_layers): make the first of
+	the added layers the active layer. Fixes bug #469752.
+
+2007-09-11  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/spread.c (spread_dialog): update the preview on
+	"value-changed", instead of "refval-changed". Fixes bug #469360.
+
+2007-09-11  Simon Budig  <simon@gimp.org>
+
+	* tools/pdbgen/pdb/context.pdb: add PDB function to determine
+	the available paint methods.
+
+	* app/pdb/internal_procs.c
+	* app/pdb/context_cmds.c
+	* libgimp/gimpcontext_pdb.[ch]: regenerated.
+
+	Fixes bug #473513
+
+2007-09-11  Sven Neumann  <sven@gimp.org>
+
+	* app/dialogs/file-open-dialog.c: don't reverse the order of URIs
+	when opening multiple files as layers. Fixes one aspect of bug
+	#469752.
+
+2007-09-11  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/lcms.c: allow to specify rendering intent and 
+	black point compensation. Fixes bug #474787.
+
+2007-09-11  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/script-fu/scripts/burn-in-anim.scm
+	* plug-ins/script-fu/scripts/coffee.scm: removed newlines from
+	translatable strings. Fixes bug #475553.
+
+2007-09-10  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/lens.c: applied patch from Aurimas Juška which
+	simplifies the code by using GimpPixelFetcher and fixes handling
+	of selections in the preview. Fixes the last aspect of bug #356716.
+
+2007-09-10  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimp-transform-region.[ch]
+	* app/core/gimpchannel.c
+	* app/core/gimpdrawable-transform.[ch]
+	* app/core/gimpdrawable.c
+	* app/core/gimpimage-item-list.[ch]
+	* app/core/gimpitem-linked.[ch]
+	* app/core/gimpitem.[ch]
+	* app/core/gimplayer.c
+	* app/paint/gimpperspectiveclone.c
+	* app/vectors/gimpvectors.c: removed supersample parameter from
+	transform functions and perform it depending on the interpolation
+	type (bug #473265).
+
+	* app/tools/gimptransformoptions.[ch]
+	* app/tools/gimptransformtool.c: removed Supersample toggle from
+	the transform tool options.
+
+	* tools/pdbgen/pdb/drawable_transform.pdb
+	* tools/pdbgen/pdb/transform_tools.pdb: document that the
+	supersample parameter is unused and improved documentation of the
+	recursion-level parameter.
+
+	* app/pdb/transform_tools_cmds.c
+	* app/pdb/drawable_transform_cmds.c
+	* libgimp/gimpdrawabletransform_pdb.c: regenerated.
+
+2007-09-10  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimpperspectiveclonetool.c
+	(gimp_perspective_clone_tool_motion): removed unused variable.
+
+2007-09-10  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/psp.c: applied patch from Nils Philippsen that
+	fixes an endianess problem (bug #475464).
+
+2007-09-10  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/lcms.c (lcms_drawable_transform): copy the alpha
+	channel to the destination region. Fixes bug #473998.
+
+2007-09-10  Sven Neumann  <sven@gimp.org>
+
+	* etc/ps-menurc: minor update for 2.4. Removed bindings for brush
+	radius as these keys are now bound by default.
+
+2007-09-08  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimpforegroundselecttoolundo.c: removed unused variable.
+
+2007-09-07  Michael Natterer  <mitch@gimp.org>
+
+	* plug-ins/script-fu/script-fu-scripts.c (script_fu_script_proc):
+	applied patch from Kevin Cozens which implements RUN-WITH-LAST-VALS.
+	On top of that, factored out script_fu_collect_standard_args()
+	which collects DISPLAY,IMAGE,[DRAWABLE|LAYER|...] from the passed
+	parameters according to the new calling conventions (the old code
+	for INTERACTIVE was broken). Also cleaned up the function a bit.
+	Fixes bug #472493.
+
+2007-09-07  Michael Natterer  <mitch@gimp.org>
+
+	* app/base/tile-manager.c (read_pixel_data_1): use a temporary
+	variable to store the return value of tile_manager_get() instead
+	of assigning to tm->cached_tile directly to make sure
+	tm->cached_num and tm->cached_tile are always in a consistent
+	state (the requested tile might be invalid and needs to be
+	validated, which would call tile_manager_get() recursively, which
+	in turn would clear the cached tile). Fixes bug #472770.
+
+2007-09-06  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/tools/gimprectangletool.c (gimp_rectangle_tool_auto_shrink):
+	Call gimp_rectangle_tool_rectangle_changed and recalculate handle
+	sizes after 'Auto shrink selection'. Fixes bug #474344.
+
+2007-09-06  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	* plug-ins/script-fu/scripts/contactsheet.scm: Preserve aspect ratio
+	of original images. Center thumbnails in space above filename label.
+	Added new sheet size of 1600x1200 pixels. Changed a dialog label.
+
+2007-09-06  Simon Budig  <simon@gimp.org>
+
+	* plug-ins/common/convmatrix.c: there is no need to mess
+	with the selected channels within check_config(). Also fix
+	bug with with copying its values into the chanmask
+	in convolve_image()
+
+	Fixes bug #472518
+
+2007-09-06  Simon Budig  <simon@gimp.org>
+
+	* plug-ins/script-fu/tinyscheme/scheme-private.h: quick fix:
+	raise the cell segment size as well as the number of possible
+	segments to reduce the likelihood of a failing (make-vector)
+
+	(yes, this is a hack and no proper fix)
+
+2007-09-04  Simon Budig  <simon@gimp.org>
+
+	* app/vectors/gimpbezierstroke.c: Fix initialization of the delta
+	vectors. Fixes bug #473515.
+
+2007-09-04  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpparamspecs.c: remove unbalanced "*/"
+
+	* app/core/gimpdrawable-transform.c
+	* app/core/gimp-transform-resize.c: formatting.
+
+2007-09-04  Simon Budig  <simon@gimp.org>
+
+	* app/core/gimpparamspecs.c: fix NULL handling and formatting.
+
+2007-09-03  Michael Natterer  <mitch@gimp.org>
+
+	* configure.in: bump version to 2.4.0-rc3.
+
 2007-09-03  Michael Natterer  <mitch@gimp.org>
 
 	* Made 2.4.0-rc2 release.

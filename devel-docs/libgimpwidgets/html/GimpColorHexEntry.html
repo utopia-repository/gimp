@@ -33,22 +33,22 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpColorScale.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2581889" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2607648" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2586842" class="shortcut">Description</a>
+                  <a href="#id2593956" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2590467" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2611710" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2590516" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2611759" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2590555" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id2611799" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpColorHexEntry"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2581889"></a><span class="refentrytitle">GimpColorHexEntry</span>
+<a name="id2607648"></a><span class="refentrytitle">GimpColorHexEntry</span>
 </h2>
 <p>GimpColorHexEntry &#8212; Widget for entering a color's hex triplet.</p>
 </td>
@@ -61,7 +61,9 @@
 
 
                     <a class="link" href="GimpColorHexEntry.html#GimpColorHexEntry-struct">GimpColorHexEntry</a>;
-GtkWidget*          <a class="link" href="GimpColorHexEntry.html#gimp-color-hex-entry-new">gimp_color_hex_entry_new</a>            (void);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          <a class="link" href="GimpColorHexEntry.html#gimp-color-hex-entry-new">gimp_color_hex_entry_new</a>            (void);
 void                <a class="link" href="GimpColorHexEntry.html#gimp-color-hex-entry-set-color">gimp_color_hex_entry_set_color</a>      (<a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *entry,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
@@ -74,51 +76,67 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2590467"></a><h2>Object Hierarchy</h2>
+<a name="id2611710"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkEntry
+  <a
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+                     +----<a
+href="../gtk/GtkEntry.html"
+>GtkEntry</a>
                            +----GimpColorHexEntry
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2590516"></a><h2>Implemented Interfaces</h2>
+<a name="id2611759"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorHexEntry implements
- AtkImplementorIface,  GtkBuildable,  GtkEditable and  GtkCellEditable.</p>
+ AtkImplementorIface,  GtkBuildable,  <a
+href="../gtk/GtkEditable.html"
+>GtkEditable</a> and  <a
+href="../gtk/GtkCellEditable.html"
+>GtkCellEditable</a>.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2590555"></a><h2>Signals</h2>
+<a name="id2611799"></a><h2>Signals</h2>
 <pre class="synopsis">
 
   "<a class="link" href="GimpColorHexEntry.html#GimpColorHexEntry-color-changed">color-changed</a>"                                  : Run First
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2586842"></a><h2>Description</h2>
+<a name="id2593956"></a><h2>Description</h2>
 <p>
 Widget for entering a color's hex triplet.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2586858"></a><h2>Details</h2>
+<a name="id2593973"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2586869"></a><h3>
+<a name="id2593984"></a><h3>
 <a name="GimpColorHexEntry-struct"></a>GimpColorHexEntry</h3>
-<a class="indexterm" name="id2586880"></a><pre class="programlisting">typedef struct _GimpColorHexEntry GimpColorHexEntry;</pre>
+<a class="indexterm" name="id2593995"></a><pre class="programlisting">typedef struct _GimpColorHexEntry GimpColorHexEntry;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2586897"></a><h3>
+<a name="id2594012"></a><h3>
 <a name="gimp-color-hex-entry-new"></a>gimp_color_hex_entry_new ()</h3>
-<a class="indexterm" name="id2586911"></a><pre class="programlisting">GtkWidget*          gimp_color_hex_entry_new            (void);</pre>
+<a class="indexterm" name="id2594025"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_color_hex_entry_new            (void);</pre>
 <p>
 </p>
 <p>
@@ -138,9 +156,9 @@ Widget for entering a color's hex triplet.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2586965"></a><h3>
+<a name="id2594080"></a><h3>
 <a name="gimp-color-hex-entry-set-color"></a>gimp_color_hex_entry_set_color ()</h3>
-<a class="indexterm" name="id2586978"></a><pre class="programlisting">void                gimp_color_hex_entry_set_color      (<a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *entry,
+<a class="indexterm" name="id2594093"></a><pre class="programlisting">void                gimp_color_hex_entry_set_color      (<a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *entry,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
@@ -173,9 +191,9 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2578305"></a><h3>
+<a name="id2618667"></a><h3>
 <a name="gimp-color-hex-entry-get-color"></a>gimp_color_hex_entry_get_color ()</h3>
-<a class="indexterm" name="id2578320"></a><pre class="programlisting">void                gimp_color_hex_entry_get_color      (<a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *entry,
+<a class="indexterm" name="id2618681"></a><pre class="programlisting">void                gimp_color_hex_entry_get_color      (<a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *entry,
                                                          <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
@@ -206,12 +224,14 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2593597"></a><h2>Signal Details</h2>
+<a name="id2574352"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2593608"></a><h3>
+<a name="id2574363"></a><h3>
 <a name="GimpColorHexEntry-color-changed"></a>The "color-changed" signal</h3>
-<a class="indexterm" name="id2593617"></a><pre class="programlisting">void                user_function                      (<a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *gimpcolorhexentry,
-                                                        gpointer           user_data)              : Run First</pre>
+<a class="indexterm" name="id2574370"></a><pre class="programlisting">void                user_function                      (<a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *gimpcolorhexentry,
+                                                        <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>           user_data)              : Run First</pre>
 <p>
 
 </p>

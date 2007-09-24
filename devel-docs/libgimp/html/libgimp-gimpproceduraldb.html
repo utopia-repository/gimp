@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpprogress.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2607209" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2596486" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2576599" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2626579" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpproceduraldb"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2607209"></a><span class="refentrytitle">gimpproceduraldb</span>
+<a name="id2596486"></a><span class="refentrytitle">gimpproceduraldb</span>
 </h2>
 <p>gimpproceduraldb &#8212; Functions for querying and changing procedural database (PDB) entries.</p>
 </td>
@@ -52,65 +52,149 @@
 
 
 
-gchar*              <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-temp-name">gimp_procedural_db_temp_name</a>        (void);
-gboolean            <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-info">gimp_procedural_db_proc_info</a>        (const gchar *procedure,
-                                                         gchar **blurb,
-                                                         gchar **help,
-                                                         gchar **author,
-                                                         gchar **copyright,
-                                                         gchar **date,
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-temp-name">gimp_procedural_db_temp_name</a>        (void);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-info">gimp_procedural_db_proc_info</a>        (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *procedure,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **blurb,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **help,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **author,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **copyright,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **date,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBProcType"
 >GimpPDBProcType</a> *proc_type,
-                                                         gint *num_args,
-                                                         gint *num_values,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_args,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_values,
                                                          <a class="link" href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> **args,
                                                          <a class="link" href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> **return_vals);
-gboolean            <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data">gimp_procedural_db_get_data</a>         (const gchar *identifier,
-                                                         gpointer data);
-gboolean            <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-set-data">gimp_procedural_db_set_data</a>         (const gchar *identifier,
-                                                         gconstpointer data,
-                                                         guint32 bytes);
-gboolean            <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-dump">gimp_procedural_db_dump</a>             (const gchar *filename);
-gboolean            <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-query">gimp_procedural_db_query</a>            (const gchar *name,
-                                                         const gchar *blurb,
-                                                         const gchar *help,
-                                                         const gchar *author,
-                                                         const gchar *copyright,
-                                                         const gchar *date,
-                                                         const gchar *proc_type,
-                                                         gint *num_matches,
-                                                         gchar ***procedure_names);
-gboolean            <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-arg">gimp_procedural_db_proc_arg</a>         (const gchar *procedure_name,
-                                                         gint arg_num,
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data">gimp_procedural_db_get_data</a>         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *identifier,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-set-data">gimp_procedural_db_set_data</a>         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *identifier,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gconstpointer"
+>gconstpointer</a> data,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guint32"
+>guint32</a> bytes);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-dump">gimp_procedural_db_dump</a>             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-query">gimp_procedural_db_query</a>            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *blurb,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *help,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *author,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *copyright,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *date,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *proc_type,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_matches,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> ***procedure_names);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-arg">gimp_procedural_db_proc_arg</a>         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *procedure_name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> arg_num,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBArgType"
 >GimpPDBArgType</a> *arg_type,
-                                                         gchar **arg_name,
-                                                         gchar **arg_desc);
-gboolean            <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-val">gimp_procedural_db_proc_val</a>         (const gchar *procedure_name,
-                                                         gint val_num,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **arg_name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **arg_desc);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-val">gimp_procedural_db_proc_val</a>         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *procedure_name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> val_num,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBArgType"
 >GimpPDBArgType</a> *val_type,
-                                                         gchar **val_name,
-                                                         gchar **val_desc);
-gint                <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data-size">gimp_procedural_db_get_data_size</a>    (const gchar *identifier);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **val_name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **val_desc);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data-size">gimp_procedural_db_get_data_size</a>    (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *identifier);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2576599"></a><h2>Description</h2>
+<a name="id2626579"></a><h2>Description</h2>
 <p>
 Functions for querying and changing procedural database (PDB) entries.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2576616"></a><h2>Details</h2>
+<a name="id2626596"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2576627"></a><h3>
+<a name="id2626607"></a><h3>
 <a name="gimp-procedural-db-temp-name"></a>gimp_procedural_db_temp_name ()</h3>
-<a class="indexterm" name="id2576638"></a><pre class="programlisting">gchar*              gimp_procedural_db_temp_name        (void);</pre>
+<a class="indexterm" name="id2626618"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_procedural_db_temp_name        (void);</pre>
 <p>
 Generates a unique temporary PDB name.
 </p>
@@ -131,19 +215,37 @@ guaranteed to be unique.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576683"></a><h3>
+<a name="id2626664"></a><h3>
 <a name="gimp-procedural-db-proc-info"></a>gimp_procedural_db_proc_info ()</h3>
-<a class="indexterm" name="id2576694"></a><pre class="programlisting">gboolean            gimp_procedural_db_proc_info        (const gchar *procedure,
-                                                         gchar **blurb,
-                                                         gchar **help,
-                                                         gchar **author,
-                                                         gchar **copyright,
-                                                         gchar **date,
+<a class="indexterm" name="id2626675"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_procedural_db_proc_info        (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *procedure,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **blurb,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **help,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **author,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **copyright,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **date,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBProcType"
 >GimpPDBProcType</a> *proc_type,
-                                                         gint *num_args,
-                                                         gint *num_values,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_args,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_values,
                                                          <a class="link" href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> **args,
                                                          <a class="link" href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> **return_vals);</pre>
 <p>
@@ -227,10 +329,16 @@ about each input argument and return value.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627759"></a><h3>
+<a name="id2627890"></a><h3>
 <a name="gimp-procedural-db-get-data"></a>gimp_procedural_db_get_data ()</h3>
-<a class="indexterm" name="id2627771"></a><pre class="programlisting">gboolean            gimp_procedural_db_get_data         (const gchar *identifier,
-                                                         gpointer data);</pre>
+<a class="indexterm" name="id2627902"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_procedural_db_get_data         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *identifier,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);</pre>
 <p>
 Returns data associated with the specified identifier.
 </p>
@@ -265,11 +373,19 @@ the identifier
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576974"></a><h3>
+<a name="id2577743"></a><h3>
 <a name="gimp-procedural-db-set-data"></a>gimp_procedural_db_set_data ()</h3>
-<a class="indexterm" name="id2576986"></a><pre class="programlisting">gboolean            gimp_procedural_db_set_data         (const gchar *identifier,
-                                                         gconstpointer data,
-                                                         guint32 bytes);</pre>
+<a class="indexterm" name="id2577755"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_procedural_db_set_data         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *identifier,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gconstpointer"
+>gconstpointer</a> data,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guint32"
+>guint32</a> bytes);</pre>
 <p>
 Associates the specified identifier with the supplied data.
 </p>
@@ -308,9 +424,13 @@ identifier. The data may be subsequently retrieved by a call to
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2577096"></a><h3>
+<a name="id2577866"></a><h3>
 <a name="gimp-procedural-db-dump"></a>gimp_procedural_db_dump ()</h3>
-<a class="indexterm" name="id2577108"></a><pre class="programlisting">gboolean            gimp_procedural_db_dump             (const gchar *filename);</pre>
+<a class="indexterm" name="id2577877"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_procedural_db_dump             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename);</pre>
 <p>
 Dumps the current contents of the procedural database
 </p>
@@ -341,17 +461,37 @@ script, which generates a texinfo document.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628223"></a><h3>
+<a name="id2628354"></a><h3>
 <a name="gimp-procedural-db-query"></a>gimp_procedural_db_query ()</h3>
-<a class="indexterm" name="id2628233"></a><pre class="programlisting">gboolean            gimp_procedural_db_query            (const gchar *name,
-                                                         const gchar *blurb,
-                                                         const gchar *help,
-                                                         const gchar *author,
-                                                         const gchar *copyright,
-                                                         const gchar *date,
-                                                         const gchar *proc_type,
-                                                         gint *num_matches,
-                                                         gchar ***procedure_names);</pre>
+<a class="indexterm" name="id2628364"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_procedural_db_query            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *blurb,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *help,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *author,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *copyright,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *date,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *proc_type,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_matches,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> ***procedure_names);</pre>
 <p>
 Queries the procedural database for its contents using regular
 expression matching.
@@ -430,15 +570,25 @@ entries is 0.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628460"></a><h3>
+<a name="id2628590"></a><h3>
 <a name="gimp-procedural-db-proc-arg"></a>gimp_procedural_db_proc_arg ()</h3>
-<a class="indexterm" name="id2628470"></a><pre class="programlisting">gboolean            gimp_procedural_db_proc_arg         (const gchar *procedure_name,
-                                                         gint arg_num,
+<a class="indexterm" name="id2628602"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_procedural_db_proc_arg         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *procedure_name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> arg_num,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBArgType"
 >GimpPDBArgType</a> *arg_type,
-                                                         gchar **arg_name,
-                                                         gchar **arg_desc);</pre>
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **arg_name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **arg_desc);</pre>
 <p>
 Queries the procedural database for information on the specified
 procedure's argument.
@@ -487,15 +637,25 @@ argument. The argument type, name, and a description are retrieved.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628607"></a><h3>
+<a name="id2628740"></a><h3>
 <a name="gimp-procedural-db-proc-val"></a>gimp_procedural_db_proc_val ()</h3>
-<a class="indexterm" name="id2628618"></a><pre class="programlisting">gboolean            gimp_procedural_db_proc_val         (const gchar *procedure_name,
-                                                         gint val_num,
+<a class="indexterm" name="id2628751"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_procedural_db_proc_val         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *procedure_name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> val_num,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBArgType"
 >GimpPDBArgType</a> *val_type,
-                                                         gchar **val_name,
-                                                         gchar **val_desc);</pre>
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **val_name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> **val_desc);</pre>
 <p>
 Queries the procedural database for information on the specified
 procedure's return value.
@@ -545,9 +705,13 @@ retrieved.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628756"></a><h3>
+<a name="id2628890"></a><h3>
 <a name="gimp-procedural-db-get-data-size"></a>gimp_procedural_db_get_data_size ()</h3>
-<a class="indexterm" name="id2628769"></a><pre class="programlisting">gint                gimp_procedural_db_get_data_size    (const gchar *identifier);</pre>
+<a class="indexterm" name="id2628902"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_procedural_db_get_data_size    (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *identifier);</pre>
 <p>
 Returns size of data associated with the specified identifier.
 </p>

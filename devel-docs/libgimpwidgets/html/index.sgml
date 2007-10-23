@@ -166,10 +166,13 @@
 <ANCHOR id="gimp-number-pair-entry-set-ratio" href="libgimpwidgets/GimpNumberPairEntry.html#gimp-number-pair-entry-set-ratio">
 <ANCHOR id="gimp-number-pair-entry-get-user-override" href="libgimpwidgets/GimpNumberPairEntry.html#gimp-number-pair-entry-get-user-override">
 <ANCHOR id="gimp-number-pair-entry-set-user-override" href="libgimpwidgets/GimpNumberPairEntry.html#gimp-number-pair-entry-set-user-override">
+<ANCHOR id="gimp-number-pair-entry-get-default-text" href="libgimpwidgets/GimpNumberPairEntry.html#gimp-number-pair-entry-get-default-text">
+<ANCHOR id="gimp-number-pair-entry-set-default-text" href="libgimpwidgets/GimpNumberPairEntry.html#gimp-number-pair-entry-set-default-text">
 <ANCHOR id="GimpNumberPairEntry--allow-simplification" href="libgimpwidgets/GimpNumberPairEntry.html#GimpNumberPairEntry--allow-simplification">
 <ANCHOR id="GimpNumberPairEntry--aspect" href="libgimpwidgets/GimpNumberPairEntry.html#GimpNumberPairEntry--aspect">
 <ANCHOR id="GimpNumberPairEntry--default-left-number" href="libgimpwidgets/GimpNumberPairEntry.html#GimpNumberPairEntry--default-left-number">
 <ANCHOR id="GimpNumberPairEntry--default-right-number" href="libgimpwidgets/GimpNumberPairEntry.html#GimpNumberPairEntry--default-right-number">
+<ANCHOR id="GimpNumberPairEntry--default-text" href="libgimpwidgets/GimpNumberPairEntry.html#GimpNumberPairEntry--default-text">
 <ANCHOR id="GimpNumberPairEntry--left-number" href="libgimpwidgets/GimpNumberPairEntry.html#GimpNumberPairEntry--left-number">
 <ANCHOR id="GimpNumberPairEntry--max-valid-value" href="libgimpwidgets/GimpNumberPairEntry.html#GimpNumberPairEntry--max-valid-value">
 <ANCHOR id="GimpNumberPairEntry--min-valid-value" href="libgimpwidgets/GimpNumberPairEntry.html#GimpNumberPairEntry--min-valid-value">

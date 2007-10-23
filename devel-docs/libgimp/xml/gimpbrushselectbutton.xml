@@ -202,7 +202,7 @@ button.</para>
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpBrushSelectButton--brush-name"/>The &quot;<literal>brush-name</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpBrushSelectButton--brush-name"/>The <literal>&quot;brush-name&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpBrushSelectButton:brush-name</primary></indexterm><programlisting>  &quot;brush-name&quot;               <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
 <para>
 The name of the currently selected brush.</para>
@@ -212,22 +212,22 @@ The name of the currently selected brush.</para>
 <para>Since  GIMP 2.4
 </para>
 </refsect2>
-<refsect2><title><anchor id="GimpBrushSelectButton--brush-opacity"/>The &quot;<literal>brush-opacity</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpBrushSelectButton--brush-opacity"/>The <literal>&quot;brush-opacity&quot;</literal> property</title>
 <indexterm><primary>GimpBrushSelectButton:brush-opacity</primary></indexterm><programlisting>  &quot;brush-opacity&quot;            <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para>The opacity of the currently selected brush.</para><para>Allowed values: [-1,100]</para>
 <para>Default value: -1</para>
 </refsect2>
-<refsect2><title><anchor id="GimpBrushSelectButton--brush-paint-mode"/>The &quot;<literal>brush-paint-mode</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpBrushSelectButton--brush-paint-mode"/>The <literal>&quot;brush-paint-mode&quot;</literal> property</title>
 <indexterm><primary>GimpBrushSelectButton:brush-paint-mode</primary></indexterm><programlisting>  &quot;brush-paint-mode&quot;         <link linkend="gint">gint</link>                  : Read / Write</programlisting>
 <para>The paint mode of the currently selected brush.</para><para>Allowed values: [-1,22]</para>
 <para>Default value: -1</para>
 </refsect2>
-<refsect2><title><anchor id="GimpBrushSelectButton--brush-spacing"/>The &quot;<literal>brush-spacing</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpBrushSelectButton--brush-spacing"/>The <literal>&quot;brush-spacing&quot;</literal> property</title>
 <indexterm><primary>GimpBrushSelectButton:brush-spacing</primary></indexterm><programlisting>  &quot;brush-spacing&quot;            <link linkend="gint">gint</link>                  : Read / Write</programlisting>
 <para>The spacing of the currently selected brush.</para><para>Allowed values: [-2147483647,1000]</para>
 <para>Default value: -1</para>
 </refsect2>
-<refsect2><title><anchor id="GimpBrushSelectButton--title"/>The &quot;<literal>title</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpBrushSelectButton--title"/>The <literal>&quot;title&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpBrushSelectButton:title</primary></indexterm><programlisting>  &quot;title&quot;                    <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only</programlisting>
 <para>
 The title to be used for the brush selection popup dialog.</para>
@@ -242,7 +242,7 @@ The title to be used for the brush selection popup dialog.</para>
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpBrushSelectButton-brush-set"/>The &quot;brush-set&quot; signal</title>
+<refsect2><title><anchor id="GimpBrushSelectButton-brush-set"/>The <literal>&quot;brush-set&quot;</literal> signal</title>
 <indexterm role="GIMP 2.4"><primary>GimpBrushSelectButton::brush-set</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpBrushSelectButton">GimpBrushSelectButton</link> *widget,
                                                         <link linkend="gchar">gchar</link>                 *brush_name,
                                                         <link linkend="gdouble">gdouble</link>                opacity,
@@ -293,4 +293,6 @@ The ::brush-set signal is emitted when the user selects a brush.</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

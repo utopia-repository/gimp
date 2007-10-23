@@ -274,7 +274,7 @@ the RGB colorspace, and the values pointed to are all in the range
 <para>
 The function changes the arguments to point to the HSV value
 corresponding, with the returned values in the following
-ranges: H [0, 360], S [0, 255], V [0, 255].</para>
+ranges: H [0, 359], S [0, 255], V [0, 255].</para>
 <para>
 
 </para><variablelist role="params">
@@ -497,4 +497,6 @@ corresponding, with the returned values all in the range [0, 255].</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

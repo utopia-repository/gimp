@@ -98,7 +98,7 @@ Creates a new <link linkend="GimpPickButton"><type>GimpPickButton</type></link> 
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpPickButton-color-picked"/>The &quot;color-picked&quot; signal</title>
+<refsect2><title><anchor id="GimpPickButton-color-picked"/>The <literal>&quot;color-picked&quot;</literal> signal</title>
 <indexterm><primary>GimpPickButton::color-picked</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpPickButton">GimpPickButton</link> *gimppickbutton,
                                                         <link linkend="gpointer">gpointer</link>        arg1,
                                                         <link linkend="gpointer">gpointer</link>        user_data)           : Run First</programlisting>
@@ -119,4 +119,6 @@ Creates a new <link linkend="GimpPickButton"><type>GimpPickButton</type></link> 
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

@@ -289,10 +289,10 @@ This function is for internal use only.</para>
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpDialog--help-func"/>The &quot;<literal>help-func</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpDialog--help-func"/>The <literal>&quot;help-func&quot;</literal> property</title>
 <indexterm><primary>GimpDialog:help-func</primary></indexterm><programlisting>  &quot;help-func&quot;                <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only</programlisting>
 <para></para></refsect2>
-<refsect2><title><anchor id="GimpDialog--help-id"/>The &quot;<literal>help-id</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpDialog--help-id"/>The <literal>&quot;help-id&quot;</literal> property</title>
 <indexterm><primary>GimpDialog:help-id</primary></indexterm><programlisting>  &quot;help-id&quot;                  <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only</programlisting>
 <para></para><para>Default value: NULL</para>
 </refsect2>
@@ -302,4 +302,6 @@ This function is for internal use only.</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

@@ -252,7 +252,7 @@ Sets the color management configuration to use with this color selection.</para>
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpColorSelection--config"/>The &quot;<literal>config</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpColorSelection--config"/>The <literal>&quot;config&quot;</literal> property</title>
 <indexterm><primary>GimpColorSelection:config</primary></indexterm><programlisting>  &quot;config&quot;                   <link linkend="GimpColorConfig">GimpColorConfig</link>       : Write</programlisting>
 <para></para></refsect2>
 
@@ -260,7 +260,7 @@ Sets the color management configuration to use with this color selection.</para>
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpColorSelection-color-changed"/>The &quot;color-changed&quot; signal</title>
+<refsect2><title><anchor id="GimpColorSelection-color-changed"/>The <literal>&quot;color-changed&quot;</literal> signal</title>
 <indexterm><primary>GimpColorSelection::color-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpColorSelection">GimpColorSelection</link> *gimpcolorselection,
                                                         <link linkend="gpointer">gpointer</link>            user_data)               : Run First</programlisting>
 <para>
@@ -277,4 +277,6 @@ Sets the color management configuration to use with this color selection.</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

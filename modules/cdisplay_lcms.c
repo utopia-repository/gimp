@@ -201,12 +201,16 @@ cdisplay_lcms_profile_get_info (cmsHPROFILE   profile,
 {
   if (profile)
     {
-      *name = cmsTakeProductName (profile);
-      if (! g_utf8_validate (*name, -1, NULL))
+      *name = cmsTakeProductDesc (profile);
+
+      if (! *name)
+        *name = cmsTakeProductName (profile);
+
+      if (*name && ! g_utf8_validate (*name, -1, NULL))
         *name = _("(invalid UTF-8 string)");
 
       *info = cmsTakeProductInfo (profile);
-      if (! g_utf8_validate (*info, -1, NULL))
+      if (*name && ! g_utf8_validate (*info, -1, NULL))
         *info = NULL;
     }
   else
@@ -251,6 +255,7 @@ cdisplay_lcms_configure (GimpColorDisplay *display)
                                  FALSE);
 
   label = gtk_label_new (NULL);
+  gtk_label_set_ellipsize (GTK_LABEL (label), PANGO_ELLIPSIZE_END);
   g_object_set_data (G_OBJECT (lcms), "rgb-profile", label);
   cdisplay_lcms_attach_labelled (GTK_TABLE (table), row++,
                                  _("Image profile:"),
@@ -258,6 +263,7 @@ cdisplay_lcms_configure (GimpColorDisplay *display)
   cdisplay_lcms_update_profile_label (lcms, "rgb-profile");
 
   label = gtk_label_new (NULL);
+  gtk_label_set_ellipsize (GTK_LABEL (label), PANGO_ELLIPSIZE_END);
   g_object_set_data (G_OBJECT (lcms), "display-profile", label);
   cdisplay_lcms_attach_labelled (GTK_TABLE (table), row++,
                                  _("Monitor profile:"),
@@ -265,6 +271,7 @@ cdisplay_lcms_configure (GimpColorDisplay *display)
   cdisplay_lcms_update_profile_label (lcms, "display-profile");
 
   label = gtk_label_new (NULL);
+  gtk_label_set_ellipsize (GTK_LABEL (label), PANGO_ELLIPSIZE_END);
   g_object_set_data (G_OBJECT (lcms), "printer-profile", label);
   cdisplay_lcms_attach_labelled (GTK_TABLE (table), row++,
                                  _("Print simulation profile:"),
@@ -308,6 +315,7 @@ cdisplay_lcms_changed (GimpColorDisplay *display)
   cmsHPROFILE      src_profile   = NULL;
   cmsHPROFILE      dest_profile  = NULL;
   cmsHPROFILE      proof_profile = NULL;
+  DWORD            flags         = 0;
 
   if (lcms->transform)
     {
@@ -333,6 +341,12 @@ cdisplay_lcms_changed (GimpColorDisplay *display)
       break;
     }
 
+  if (config->display_intent ==
+      GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC)
+    {
+      flags |= cmsFLAGS_BLACKPOINTCOMPENSATION;
+    }
+
   if (proof_profile)
     {
       if (! src_profile)
@@ -341,12 +355,25 @@ cdisplay_lcms_changed (GimpColorDisplay *display)
       if (! dest_profile)
        dest_profile = cmsCreate_sRGBProfile ();
 
+      flags |= cmsFLAGS_SOFTPROOFING;
+
+      if (config->simulation_gamut_check)
+        {
+          guchar r, g, b;
+
+          flags |= cmsFLAGS_GAMUTCHECK;
+
+          gimp_rgb_get_uchar (&config->out_of_gamut_color, &r, &g, &b);
+
+          cmsSetAlarmCodes (r, g, b);
+        }
+
       lcms->transform = cmsCreateProofingTransform (src_profile,  TYPE_RGB_8,
                                                     dest_profile, TYPE_RGB_8,
                                                     proof_profile,
                                                     config->simulation_intent,
                                                     config->display_intent,
-                                                    cmsFLAGS_SOFTPROOFING);
+                                                    flags);
       cmsCloseProfile (proof_profile);
     }
   else if (src_profile || dest_profile)
@@ -360,7 +387,7 @@ cdisplay_lcms_changed (GimpColorDisplay *display)
       lcms->transform = cmsCreateTransform (src_profile,  TYPE_RGB_8,
                                             dest_profile, TYPE_RGB_8,
                                             config->display_intent,
-                                            0);
+                                            flags);
     }
 
   if (dest_profile)
@@ -412,6 +439,36 @@ cdisplay_lcms_get_rgb_profile (CdisplayLcms *lcms)
   return profile;
 }
 
+static GdkScreen *
+cdisplay_lcms_get_screen (CdisplayLcms *lcms,
+                          gint         *monitor)
+{
+  GimpColorManaged *managed;
+  GdkScreen        *screen;
+
+  managed = gimp_color_display_get_managed (GIMP_COLOR_DISPLAY (lcms));
+
+  if (GTK_IS_WIDGET (managed))
+    screen = gtk_widget_get_screen (GTK_WIDGET (managed));
+  else
+    screen = gdk_screen_get_default ();
+
+  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+
+  if (GTK_IS_WIDGET (managed) && GTK_WIDGET_DRAWABLE (managed))
+    {
+      GtkWidget *widget = GTK_WIDGET (managed);
+
+      *monitor = gdk_screen_get_monitor_at_window (screen, widget->window);
+    }
+  else
+    {
+      *monitor = 0;
+    }
+
+  return screen;
+}
+
 static cmsHPROFILE
 cdisplay_lcms_get_display_profile (CdisplayLcms *lcms)
 {
@@ -420,27 +477,26 @@ cdisplay_lcms_get_display_profile (CdisplayLcms *lcms)
 
   config = gimp_color_display_get_config (GIMP_COLOR_DISPLAY (lcms));
 
-#if defined (GDK_WINDOWING_X11)
+#if defined GDK_WINDOWING_X11
   if (config->display_profile_from_gdk)
     {
-      GimpColorManaged *managed;
-      GdkScreen        *screen;
-      GdkAtom           type   = GDK_NONE;
-      gint              format = 0;
-      gint              nitems = 0;
-      guchar           *data   = NULL;
+      GdkScreen *screen;
+      GdkAtom    type    = GDK_NONE;
+      gint       format  = 0;
+      gint       nitems  = 0;
+      gint       monitor = 0;
+      gchar     *atom_name;
+      guchar    *data    = NULL;
 
-      managed = gimp_color_display_get_managed (GIMP_COLOR_DISPLAY (lcms));
+      screen = cdisplay_lcms_get_screen (lcms, &monitor);
 
-      if (GTK_IS_WIDGET (managed))
-        screen = gtk_widget_get_screen (GTK_WIDGET (managed));
+      if (monitor > 0)
+        atom_name = g_strdup_printf ("_ICC_PROFILE_%d", monitor);
       else
-        screen = gdk_screen_get_default ();
-
-      g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+        atom_name = g_strdup ("_ICC_PROFILE");
 
       if (gdk_property_get (gdk_screen_get_root_window (screen),
-                            gdk_atom_intern ("_ICC_PROFILE", FALSE),
+                            gdk_atom_intern (atom_name, FALSE),
                             GDK_NONE,
                             0, 64 * 1024 * 1024, FALSE,
                             &type, &format, &nitems, &data) && nitems > 0)
@@ -448,7 +504,16 @@ cdisplay_lcms_get_display_profile (CdisplayLcms *lcms)
           profile = cmsOpenProfileFromMem (data, nitems);
           g_free (data);
         }
+
+      g_free (atom_name);
     }
+
+#elif defined GDK_WINDOWING_QUARTZ
+  if (config->display_profile_from_gdk)
+    {
+      /* FIXME: implement */
+    }
+
 #elif defined G_OS_WIN32
   if (config->display_profile_from_gdk)
     {
@@ -499,7 +564,6 @@ cdisplay_lcms_attach_labelled (GtkTable    *table,
 {
   GtkWidget *label;
   GtkWidget *ebox = NULL;
-  GtkWidget *hbox;
 
   label = g_object_new (GTK_TYPE_LABEL,
                         "label",  text,
@@ -510,8 +574,7 @@ cdisplay_lcms_attach_labelled (GtkTable    *table,
   gimp_label_set_attributes (GTK_LABEL (label),
                              PANGO_ATTR_WEIGHT, PANGO_WEIGHT_BOLD,
                              -1);
-  gtk_table_attach (table, label, 0, 1, row, row + 1,
-                    GTK_FILL, GTK_FILL, 0, 0);
+  gtk_table_attach (table, label, 0, 1, row, row + 1, GTK_FILL, GTK_FILL, 0, 0);
   gtk_widget_show (label);
 
   if (tooltip)
@@ -524,17 +587,15 @@ cdisplay_lcms_attach_labelled (GtkTable    *table,
       g_object_set_data (G_OBJECT (label), "tooltip-widget", ebox);
     }
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  if (GTK_IS_LABEL (widget))
+    gtk_misc_set_alignment (GTK_MISC (widget), 0.0, 0.5);
 
   if (ebox)
-    gtk_container_add (GTK_CONTAINER (ebox), hbox);
+    gtk_container_add (GTK_CONTAINER (ebox), widget);
   else
-    gtk_table_attach (table, hbox, 1, 2, row, row + 1,
+    gtk_table_attach (table, widget, 1, 2, row, row + 1,
                       GTK_FILL | GTK_EXPAND, GTK_FILL, 0, 0);
 
-  gtk_widget_show (hbox);
-
-  gtk_box_pack_start (GTK_BOX (hbox), widget, FALSE, FALSE, 0);
   gtk_widget_show (widget);
 }
 

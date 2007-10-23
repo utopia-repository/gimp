@@ -136,7 +136,7 @@ Retrieves the color value displayed by a <link linkend="GimpColorHexEntry"><type
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpColorHexEntry-color-changed"/>The &quot;color-changed&quot; signal</title>
+<refsect2><title><anchor id="GimpColorHexEntry-color-changed"/>The <literal>&quot;color-changed&quot;</literal> signal</title>
 <indexterm><primary>GimpColorHexEntry::color-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpColorHexEntry">GimpColorHexEntry</link> *gimpcolorhexentry,
                                                         <link linkend="gpointer">gpointer</link>           user_data)              : Run First</programlisting>
 <para>
@@ -153,4 +153,6 @@ Retrieves the color value displayed by a <link linkend="GimpColorHexEntry"><type
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

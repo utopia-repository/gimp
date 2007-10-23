@@ -1,3 +1,117 @@
+2007-10-22  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by Anas Husseini.
+
+2007-10-22  Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+
+	* ru.po: Updated Russian translation.
+
+2007-10-22 Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2007-10-21  Matic Žgur  <mr.zgur@gmail.com>
+
+	* sl.po: Updated Slovenian translation by Martin Srebotnjak.
+
+2007-10-19  Stéphane Raimbault  <stephane.raimbault@gmail.com>
+
+	* fr.po: Updated French translation.
+
+2007-10-19  Sven Neumann  <sven@gimp.org>
+
+	* es.po: corrected a syntax error.
+
+2007-10-19  Jorge Gonzalez  <jorgegonz@svn.gnome.org>  
+
+        * es.po: Updated Spanish translation by Francisco Vila
+
+2007-10-18  Priit Laes  <plaes@svn.gnome.org>
+
+	* et.po: Translation updated by Olle Niit.
+
+2007-10-18  Hendrik Brandt  <heb@gnome-de.org>
+
+	* de.po: Updated German translation.
+
+2007-10-17  Ulf-D. Ehlert  <ulfehlert@svn.gnome.org>
+
+	* de.po: Fixed German translation.
+
+2007-10-16  Michael Natterer  <mitch@gimp.org>
+
+	* POTFILES.skip: added app/widgets/gimpcolorselectorpalette.c
+	Fixes bug #487153.
+
+2007-10-16  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	* hu.po: Translation updated by Árpád Bíró.
+
+2007-10-13  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+
+2007-10-10  Ulf-D. Ehlert  <ulfehlert@svn.gnome.org>
+
+	* de.po: Updated German translation.
+
+2007-10-09  Ilkka Tuohela  <hile@iki.fi>
+
+	* fi.po: Updated Finnish translation  (fix for bug #484798).
+
+2007-10-08 Gabor Kelemen  <kelemeng@gnome.hu>
+
+	* hu.po: Translation updated by Árpád Bíró.
+
+2007-10-05 Gabor Kelemen  <kelemeng@gnome.hu>
+
+	* hu.po: Translation updated by Árpád Bíró.
+
+2007-10-04  Žygimantas Beručka  <zygis@gnome.org>
+
+	* lt.po: Updated Lithuanian translation.
+
+2007-10-01 Gabor Kelemen  <kelemeng@gnome.hu>
+
+	* hu.po: Translation updated by Árpád Bíró.
+
+2007-10-01  Priit Laes  <plaes@svn.gnome.org>
+
+	* et.po: Translation update by Olle Niit.
+
+2007-09-30  Stéphane Raimbault  <stephane.raimbault@gmail.com>
+
+	* fr.po: Updated French translation by Laurent Monin.
+
+2007-09-29  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2007-09-26  Gil Forcada  <gforcada@svn.gnome.org>
+
+	* ca.po: Updated Catalan translation by Joaquim Perez.
+
+2007-09-25  Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+
+	* ru.po: Updated Russian translation.
+
+2007-09-24  Matic Zgur  <mr.zgur@gmail.com>
+
+	* sl.po: Added Slovenian translation by Martin Srebotnjak and Nedeljko
+	Grabant.
+
+2007-09-24  Ulf-D. Ehlert  <ulfehlert@svn.gnome.org>
+
+	* de.po: Bugfixes in German translation.
+
+2007-09-24  Jakub Friedl <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-09-24  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+
 2007-09-23  Žygimantas Beručka  <zygis@gnome.org>
 
 	* lt.po: Updated Lithuanian translation.
@@ -106,7 +220,7 @@
 
 2007-08-23 Joao S. O. Bueno Calligaris <gwidion@mpc.com.br>
 
-       * pt_BR.po: Major Brazilian Portuguese update from 2.2 to 2.4
+	* pt_BR.po: Major Brazilian Portuguese update from 2.2 to 2.4
 
 2007-08-22  Jakub Friedl <jfriedl@suse.cz>
 

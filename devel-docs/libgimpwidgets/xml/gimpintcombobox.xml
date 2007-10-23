@@ -359,7 +359,7 @@ sensitivity to be updated.</para>
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpIntComboBox--ellipsize"/>The &quot;<literal>ellipsize</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpIntComboBox--ellipsize"/>The <literal>&quot;ellipsize&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpIntComboBox:ellipsize</primary></indexterm><programlisting>  &quot;ellipsize&quot;                <link linkend="PangoEllipsizeMode">PangoEllipsizeMode</link>    : Read / Write</programlisting>
 <para>
 Specifies the preferred place to ellipsize text in the combo-box,
@@ -377,4 +377,6 @@ entire string.</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

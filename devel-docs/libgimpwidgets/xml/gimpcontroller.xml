@@ -238,11 +238,11 @@ An abstract interface for implementing arbitrary input controllers.
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpController--name"/>The &quot;<literal>name</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpController--name"/>The <literal>&quot;name&quot;</literal> property</title>
 <indexterm><primary>GimpController:name</primary></indexterm><programlisting>  &quot;name&quot;                     <link linkend="gchararray">gchararray</link>            : Read / Write / Construct</programlisting>
 <para></para><para>Default value: "Unnamed Controller"</para>
 </refsect2>
-<refsect2><title><anchor id="GimpController--state"/>The &quot;<literal>state</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpController--state"/>The <literal>&quot;state&quot;</literal> property</title>
 <indexterm><primary>GimpController:state</primary></indexterm><programlisting>  &quot;state&quot;                    <link linkend="gchararray">gchararray</link>            : Read / Write / Construct</programlisting>
 <para></para><para>Default value: "Unknown"</para>
 </refsect2>
@@ -251,7 +251,7 @@ An abstract interface for implementing arbitrary input controllers.
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpController-event"/>The &quot;event&quot; signal</title>
+<refsect2><title><anchor id="GimpController-event"/>The <literal>&quot;event&quot;</literal> signal</title>
 <indexterm><primary>GimpController::event</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            user_function                      (<link linkend="GimpController">GimpController</link> *gimpcontroller,
                                                         <link linkend="gpointer">gpointer</link>        arg1,
                                                         <link linkend="gpointer">gpointer</link>        user_data)           : Run Last</programlisting>
@@ -274,4 +274,6 @@ An abstract interface for implementing arbitrary input controllers.
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

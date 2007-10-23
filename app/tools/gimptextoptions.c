@@ -414,6 +414,7 @@ gimp_text_options_gui (GimpToolOptions *tool_options)
   GtkWidget       *entry;
   GtkWidget       *box;
   GtkWidget       *spinbutton;
+  GtkSizeGroup    *size_group;
   gint             row = 0;
 
   table = gtk_table_new (10, 3, FALSE);
@@ -429,7 +430,7 @@ gimp_text_options_gui (GimpToolOptions *tool_options)
                              hbox, 2, FALSE);
 
   entry = gimp_prop_size_entry_new (config,
-                                    "font-size", "font-size-unit", "%a",
+                                    "font-size", FALSE, "font-size-unit", "%a",
                                     GIMP_SIZE_ENTRY_UPDATE_SIZE, 72.0);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
                              _("Size:"), 0.0, 0.5,
@@ -459,18 +460,23 @@ gimp_text_options_gui (GimpToolOptions *tool_options)
   gtk_widget_show (button);
   row++;
 
+  size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
+
   button = gimp_prop_color_button_new (config, "foreground", _("Text Color"),
-                                       -1, 24, GIMP_COLOR_AREA_FLAT);
+                                       40, 24, GIMP_COLOR_AREA_FLAT);
   gimp_color_panel_set_context (GIMP_COLOR_PANEL (button),
                                 GIMP_CONTEXT (options));
   gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
                              _("Color:"), 0.0, 0.5,
-                             button, 1, FALSE);
+                             button, 1, TRUE);
+  gtk_size_group_add_widget (size_group, button);
 
   box = gimp_prop_enum_stock_box_new (config, "justify", "gtk-justify", 0, 0);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
                              _("Justify:"), 0.0, 0.5,
                              box, 2, TRUE);
+  gtk_size_group_add_widget (size_group, box);
+  g_object_unref (size_group);
 
   spinbutton = gimp_prop_spin_button_new (config, "indent", 1.0, 10.0, 1);
   gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), 5);
@@ -488,7 +494,8 @@ gimp_text_options_gui (GimpToolOptions *tool_options)
   gimp_table_attach_stock (GTK_TABLE (table), row++,
                            GIMP_STOCK_LETTER_SPACING, spinbutton, 1, TRUE);
 
-  button = gtk_button_new_with_label (_("Create Path from Text"));
+  /*  Create a path from the current text  */
+  button = gtk_button_new_with_label (_("Path from Text"));
   gtk_box_pack_end (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_set_sensitive (button, FALSE);
   gtk_widget_show (button);

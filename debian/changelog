@@ -1,3 +1,11 @@
+gimp (2.4.0-1) unstable; urgency=low
+
+  * New upstream version
+    - Fix screenshots sometimes having 100% alpha (Closes: #445445)
+  * Rewrite libgimp2.0 description (Closes: #445567)
+
+ -- Ari Pollak <ari@debian.org>  Tue, 23 Oct 2007 19:31:40 -0400
+
 gimp (2.4.0~rc3-1) unstable; urgency=low
 
   * New upstream release

@@ -208,7 +208,7 @@ See also: <link linkend="gimp-enum-combo-box-set-stock-prefix"><function>gimp_en
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpEnumStore--enum-type"/>The &quot;<literal>enum-type</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpEnumStore--enum-type"/>The <literal>&quot;enum-type&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpEnumStore:enum-type</primary></indexterm><programlisting>  &quot;enum-type&quot;                <link linkend="GType">GType</link>                 : Read / Write / Construct Only</programlisting>
 <para>
 Sets the <link linkend="GType"><type>GType</type></link> of the enum to be used in the store.</para>
@@ -223,4 +223,6 @@ Sets the <link linkend="GType"><type>GType</type></link> of the enum to be used 
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

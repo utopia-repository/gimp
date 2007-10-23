@@ -17,7 +17,7 @@ m4_define([gimp_binary_age],
           [m4_eval(100 * gimp_minor_version + gimp_micro_version)])
 
 # For overriding the version string. Comment out if not needed.
-m4_define([gimp_version], [2.4.0-rc3])
+# m4_define([gimp_version], [2.4.0])
 
 # This is the X.Y used in -lgimp-X.Y
 m4_define([gimp_api_version], [2.0])
@@ -405,7 +405,7 @@ fi
 dnl Note to translators: you MUST have .po files in all 5 directories: po,
 dnl po-libgimp, po-plug-ins, po-python and po-script-fu before adding your
 dnl language code to ALL_LINGUAS.
-ALL_LINGUAS="ar bg ca cs da de dz el en_CA en_GB eo es et eu fa fi fr ga gl gu he hu hr id it ja km ko lt mk ms nb ne nl oc pa pl pt pt_BR ro ru rw sk sr sr@Latn sv tr tt uk vi xh yi zh_CN zh_TW"
+ALL_LINGUAS="ar bg ca cs da de dz el en_CA en_GB eo es et eu fa fi fr ga gl gu he hu hr id it ja km ko lt mk ms nb ne nl oc pa pl pt pt_BR ro ru rw sk sl sr sr@Latn sv tr tt uk vi xh yi zh_CN zh_TW"
 
 AC_PROG_INTLTOOL
 AM_GLIB_GNU_GETTEXT
@@ -1377,6 +1377,7 @@ if test "x$with_lcms" != xno; then
       ])
   ])
   if test $have_lcms = yes; then
+    AC_DEFINE(HAVE_LCMS, 1, [Define to 1 if lcms is available])
     LIBLCMS="-llcms"
     LCMS='lcms$(EXEEXT)'
   else

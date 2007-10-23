@@ -333,11 +333,27 @@ tinyscheme_deinit (void)
   scheme_deinit (&sc);
 }
 
-static void     convert_string               (gchar  *str);
-static pointer  marshall_proc_db_call        (scheme *sc, pointer  a);
-static pointer  script_fu_register_call      (scheme *sc, pointer  a);
-static pointer  script_fu_menu_register_call (scheme *sc, pointer  a);
-static pointer  script_fu_quit_call          (scheme *sc, pointer  a);
+/* Create an SF-RUN-MODE constant for use in scripts.  */
+/* It is set to the run mode state determined by GIMP. */
+void
+set_run_mode_constant (GimpRunMode run_mode)
+{
+  pointer symbol;
+
+  symbol = sc.vptr->mk_symbol (&sc, "SF-RUN-MODE");
+  sc.vptr->scheme_define (&sc, sc.global_env, symbol,
+                          sc.vptr->mk_integer (&sc, run_mode));
+  sc.vptr->setimmutable(symbol);
+}
+
+static void     convert_string                   (gchar  *str);
+static pointer  script_fu_marshal_procedure_call (scheme *sc, pointer  a);
+static void     script_fu_marshal_destroy_args   (GimpParam *params,
+                                                  gint       n_params);
+
+static pointer  script_fu_register_call          (scheme *sc, pointer  a);
+static pointer  script_fu_menu_register_call     (scheme *sc, pointer  a);
+static pointer  script_fu_quit_call              (scheme *sc, pointer  a);
 
 
 /*
@@ -498,7 +514,7 @@ init_procedures (void)
   symbol = sc.vptr->mk_symbol (&sc, "gimp-proc-db-call");
   sc.vptr->scheme_define (&sc, sc.global_env, symbol,
                           sc.vptr->mk_foreign_func (&sc,
-                                                    marshall_proc_db_call));
+                                                    script_fu_marshal_procedure_call));
   sc.vptr->setimmutable(symbol);
 
   gimp_procedural_db_query (".*", ".*", ".*", ".*", ".*", ".*", ".*",
@@ -567,7 +583,7 @@ convert_string (gchar *str)
 
 /* This is called by the Scheme interpreter to allow calls to GIMP functions */
 static pointer
-marshall_proc_db_call (scheme *sc, pointer a)
+script_fu_marshal_procedure_call (scheme *sc, pointer a)
 {
   GimpParam       *args;
   GimpParam       *values = NULL;
@@ -592,7 +608,13 @@ marshall_proc_db_call (scheme *sc, pointer a)
   gchar           *string;
   gint32           n_elements;
   pointer          vector;
+
 #if DEBUG_MARSHALL
+/* These three #defines are from Tinyscheme (tinyscheme/scheme.c) */
+#define T_MASKTYPE  31
+#define typeflag(p) ((p)->_flag)
+#define type(p)     (typeflag(p)&T_MASKTYPE)
+
 char *ret_types[] = {
   "GIMP_PDB_INT32",       "GIMP_PDB_INT16",     "GIMP_PDB_INT8",
   "GIMP_PDB_FLOAT",       "GIMP_PDB_STRING",    "GIMP_PDB_INT32ARRAY",
@@ -618,15 +640,15 @@ char *status_types[] = {
   "GIMP_PDB_CANCEL"
 };
 
-g_printerr ("\nIn marshall_proc_db_call ()\n");
+g_printerr ("\nIn script_fu_marshal_procedure_call ()\n");
 #endif
 
   /*  Make sure there are arguments  */
   if (a == sc->NIL)
     return foreign_error (sc,
-                          "Procedure database argument marshaller was called with no arguments. "
+                          "Procedure argument marshaller was called with no arguments. "
                           "The procedure to be executed and the arguments it requires "
-                          " (possibly none) must be specified.", 0);
+                          "(possibly none) must be specified.", 0);
 
   /*  The PDB procedure name is the argument or first argument of the list  */
   if (sc->vptr->is_pair (a))
@@ -785,16 +807,17 @@ g_printerr ("      string arg is '%s'\n", args[i].data.d_string);
           if (success)
             {
               n_elements = args[i-1].data.d_int32;
-              if (n_elements < 0 || n_elements > sc->vptr->vector_length (vector))
+              if (n_elements < 0 ||
+                  n_elements > sc->vptr->vector_length (vector))
                 {
                   g_snprintf (error_str, sizeof (error_str),
                               "INT32 vector (argument %d) for function %s has "
                               "size of %ld but expected size of %d",
-                              i+1, proc_name, sc->vptr->vector_length (vector), n_elements);
+                              i+1, proc_name,
+                              sc->vptr->vector_length (vector), n_elements);
                   return foreign_error (sc, error_str, 0);
                 }
 
-              /* FIXME: Check that g_new returned non-NULL value. */
               args[i].data.d_int32array = g_new (gint32, n_elements);
 
               for (j = 0; j < n_elements; j++)
@@ -805,7 +828,7 @@ g_printerr ("      string arg is '%s'\n", args[i].data.d_string);
                   if (!sc->vptr->is_number (v_element))
                     {
                       g_snprintf (error_str, sizeof (error_str),
-                                  "Item %d in vector is not a number (argument %d for function %s)\n",
+                                  "Item %d in vector is not a number (argument %d for function %s)",
                                   j+1, i+1, proc_name);
                       return foreign_error (sc, error_str, vector);
                     }
@@ -856,7 +879,7 @@ if (count > 0)
                   if (!sc->vptr->is_number (v_element))
                     {
                       g_snprintf (error_str, sizeof (error_str),
-                                  "Item %d in vector is not a number (argument %d for function %s)\n",
+                                  "Item %d in vector is not a number (argument %d for function %s)",
                                   j+1, i+1, proc_name);
                       return foreign_error (sc, error_str, vector);
                     }
@@ -889,12 +912,14 @@ if (count > 0)
           if (success)
             {
               n_elements = args[i-1].data.d_int32;
-              if (n_elements < 0 || n_elements > sc->vptr->vector_length (vector))
+              if (n_elements < 0 ||
+                  n_elements > sc->vptr->vector_length (vector))
                 {
                   g_snprintf (error_str, sizeof (error_str),
                               "INT8 vector (argument %d) for function %s has "
                               "size of %ld but expected size of %d",
-                              i+1, proc_name, sc->vptr->vector_length (vector), n_elements);
+                              i+1, proc_name,
+                              sc->vptr->vector_length (vector), n_elements);
                   return foreign_error (sc, error_str, 0);
                 }
 
@@ -907,7 +932,7 @@ if (count > 0)
                   if (!sc->vptr->is_number (v_element))
                     {
                       g_snprintf (error_str, sizeof (error_str),
-                                  "Item %d in vector is not a number (argument %d for function %s)\n",
+                                  "Item %d in vector is not a number (argument %d for function %s)",
                                   j+1, i+1, proc_name);
                       return foreign_error (sc, error_str, vector);
                     }
@@ -940,12 +965,14 @@ if (count > 0)
           if (success)
             {
               n_elements = args[i-1].data.d_int32;
-              if (n_elements < 0 || n_elements > sc->vptr->vector_length (vector))
+              if (n_elements < 0 ||
+                  n_elements > sc->vptr->vector_length (vector))
                 {
                   g_snprintf (error_str, sizeof (error_str),
                               "FLOAT vector (argument %d) for function %s has "
                               "size of %ld but expected size of %d",
-                              i+1, proc_name, sc->vptr->vector_length (vector), n_elements);
+                              i+1, proc_name,
+                              sc->vptr->vector_length (vector), n_elements);
                   return foreign_error (sc, error_str, 0);
                 }
 
@@ -958,7 +985,7 @@ if (count > 0)
                   if (!sc->vptr->is_number (v_element))
                     {
                       g_snprintf (error_str, sizeof (error_str),
-                                  "Item %d in vector is not a number (argument %d for function %s)\n",
+                                  "Item %d in vector is not a number (argument %d for function %s)",
                                   j+1, i+1, proc_name);
                       return foreign_error (sc, error_str, vector);
                     }
@@ -985,18 +1012,20 @@ if (count > 0)
           break;
 
         case GIMP_PDB_STRINGARRAY:
-          vector = sc->vptr->pair_car (a);
-          if (!sc->vptr->is_vector (vector))
+          vector = sc->vptr->pair_car (a);  /* vector is pointing to a list */
+          if (!sc->vptr->is_list (sc, vector))
             success = FALSE;
           if (success)
             {
-              n_elements = args[i-1].data.d_int32;
-              if (n_elements < 0 || n_elements > sc->vptr->vector_length (vector))
+              n_elements = args[i - 1].data.d_int32;
+              if (n_elements < 0 ||
+                  n_elements > sc->vptr->list_length (sc, vector))
                 {
                   g_snprintf (error_str, sizeof (error_str),
                               "STRING vector (argument %d) for function %s has "
-                              "length of %ld but expected length of %d",
-                              i+1, proc_name, sc->vptr->vector_length (vector), n_elements);
+                              "length of %d but expected length of %d",
+                              i+1, proc_name,
+                              sc->vptr->list_length (sc, vector), n_elements);
                   return foreign_error (sc, error_str, 0);
                 }
 
@@ -1004,30 +1033,32 @@ if (count > 0)
 
               for (j = 0; j < n_elements; j++)
                 {
-                  pointer v_element = sc->vptr->vector_elem (vector, j);
+                  pointer v_element = sc->vptr->pair_car (vector);
 
                   if (!sc->vptr->is_string (v_element))
                     {
                       g_snprintf (error_str, sizeof (error_str),
-                                  "Item %d in vector is not a string (argument %d for function %s)\n",
+                                  "Item %d in vector is not a string (argument %d for function %s)",
                                   j+1, i+1, proc_name);
                       return foreign_error (sc, error_str, vector);
                     }
 
                   args[i].data.d_stringarray[j] =
                       (gchar *) sc->vptr->string_value (v_element);
+
+                  vector = sc->vptr->pair_cdr (vector);
                 }
 
 #if DEBUG_MARSHALL
 {
-glong count = sc->vptr->vector_length (vector);
+glong count = sc->vptr->list_length ( sc, sc->vptr->pair_car (a) );
 g_printerr ("      string vector has %ld elements\n", count);
 if (count > 0)
   {
     g_printerr ("     ");
     for (j = 0; j < count; ++j)
       g_printerr (" \"%s\"",
-               sc->vptr->string_value ( sc->vptr->vector_elem (vector, j) ));
+                  args[i].data.d_stringarray[j]);
     g_printerr ("\n");
   }
 }
@@ -1205,8 +1236,8 @@ g_printerr ("  Invalid type for argument %d\n", i+1);
 g_printerr ("  Did not return status\n");
 #endif
       g_snprintf (error_str, sizeof(error_str),
-               "Procedural database execution of %s did not return a status:\n    ",
-               proc_name);
+                  "Procedure execution of %s did not return a status",
+                  proc_name);
 
       return foreign_error (sc, error_str, 0);
     }
@@ -1220,15 +1251,15 @@ g_printerr ("    return value is %s\n",
     {
     case GIMP_PDB_EXECUTION_ERROR:
       g_snprintf (error_str, sizeof (error_str),
-              "Procedural database execution of %s failed:\n    ",
-              proc_name);
+                  "Procedure execution of %s failed",
+                  proc_name);
       return foreign_error (sc, error_str, 0);
       break;
 
     case GIMP_PDB_CALLING_ERROR:
       g_snprintf (error_str, sizeof (error_str),
-               "Procedural database execution of %s failed on invalid input arguments:\n    ",
-               proc_name);
+                  "Procedure execution of %s failed on invalid input arguments",
+                  proc_name);
       return foreign_error (sc, error_str, 0);
       break;
 
@@ -1385,16 +1416,23 @@ g_printerr ("      value %d is type %s (%d)\n",
               {
                 gint    num_strings = values[i].data.d_int32;
                 gchar **array  = (gchar **) values[i + 1].data.d_stringarray;
-                pointer vector = sc->vptr->mk_vector (sc, num_strings);
+                pointer list   = sc->NIL;
 
-                return_val = sc->vptr->cons (sc, vector, return_val);
+                return_val = sc->vptr->cons (sc, list, return_val);
                 set_safe_foreign (sc, return_val);
 
-                for (j = 0; j < num_strings; j++)
+                for (j = num_strings - 1; j >= 0; j--)
                   {
-                    sc->vptr->set_vector_elem (vector, j,
-                                               sc->vptr->mk_string (sc,
-                                                                    array[j]));
+                    list = sc->vptr->cons (sc,
+                                           sc->vptr->mk_string
+                                               (sc, array[j] ? array[j] : ""),
+                                           list);
+
+                    /* hook the current list into return_val, so that it
+                     * inherits the set_safe_foreign()-protection.
+                     * May be removed when tinyscheme fixes the GC issue
+                     * with foreign functions */
+                    sc->vptr->set_car (return_val, list);
                   }
               }
               break;
@@ -1482,7 +1520,7 @@ g_printerr ("      data '%.*s'\n",
               break;
 
             case GIMP_PDB_STATUS:
-              return foreign_error (sc, "Procedural database execution returned multiple status values", 0);
+              return foreign_error (sc, "Procedure execution returned multiple status values", 0);
               break;
 
             default:
@@ -1512,7 +1550,7 @@ g_printerr ("      data '%.*s'\n",
   gimp_destroy_params (values, nvalues);
 
   /*  free up arguments and values  */
-  g_free (args);
+  script_fu_marshal_destroy_args (args, nparams);
 
   /*  free the query information  */
   g_free (proc_blurb);
@@ -1534,6 +1572,64 @@ g_printerr ("      data '%.*s'\n",
 #endif
 
   return return_val;
+
+}
+
+static void
+script_fu_marshal_destroy_args (GimpParam *params,
+                                gint       n_params)
+{
+  gint i;
+
+  for (i = 0; i < n_params; i++)
+    {
+      switch (params[i].type)
+        {
+        case GIMP_PDB_INT32:
+        case GIMP_PDB_INT16:
+        case GIMP_PDB_INT8:
+        case GIMP_PDB_FLOAT:
+        case GIMP_PDB_STRING:
+          break;
+
+        case GIMP_PDB_INT32ARRAY:
+          g_free (params[i].data.d_int32array);
+          break;
+
+        case GIMP_PDB_INT16ARRAY:
+          g_free (params[i].data.d_int16array);
+          break;
+
+        case GIMP_PDB_INT8ARRAY:
+          g_free (params[i].data.d_int8array);
+          break;
+
+        case GIMP_PDB_FLOATARRAY:
+          g_free (params[i].data.d_floatarray);
+          break;
+
+        case GIMP_PDB_STRINGARRAY:
+          g_free (params[i].data.d_stringarray);
+          break;
+
+        case GIMP_PDB_COLOR:
+        case GIMP_PDB_REGION:
+        case GIMP_PDB_DISPLAY:
+        case GIMP_PDB_IMAGE:
+        case GIMP_PDB_LAYER:
+        case GIMP_PDB_CHANNEL:
+        case GIMP_PDB_DRAWABLE:
+        case GIMP_PDB_SELECTION:
+        case GIMP_PDB_BOUNDARY:
+        case GIMP_PDB_VECTORS:
+        case GIMP_PDB_PARASITE:
+        case GIMP_PDB_STATUS:
+        case GIMP_PDB_END:
+          break;
+        }
+    }
+
+  g_free (params);
 }
 
 static pointer

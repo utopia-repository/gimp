@@ -451,7 +451,7 @@ overlapping pages and ranges will be merged.</para>
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpPageSelector--n-pages"/>The &quot;<literal>n-pages</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpPageSelector--n-pages"/>The <literal>&quot;n-pages&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpPageSelector:n-pages</primary></indexterm><programlisting>  &quot;n-pages&quot;                  <link linkend="gint">gint</link>                  : Read / Write</programlisting>
 <para>
 The number of pages of the document to open.</para>
@@ -462,7 +462,7 @@ The number of pages of the document to open.</para>
 <para>Since  GIMP 2.4
 </para>
 </refsect2>
-<refsect2><title><anchor id="GimpPageSelector--target"/>The &quot;<literal>target</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpPageSelector--target"/>The <literal>&quot;target&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpPageSelector:target</primary></indexterm><programlisting>  &quot;target&quot;                   <link linkend="GimpPageSelectorTarget">GimpPageSelectorTarget</link>  : Read / Write</programlisting>
 <para>
 The target to open the document to.</para>
@@ -477,7 +477,7 @@ The target to open the document to.</para>
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpPageSelector-activate"/>The &quot;activate&quot; signal</title>
+<refsect2><title><anchor id="GimpPageSelector-activate"/>The <literal>&quot;activate&quot;</literal> signal</title>
 <indexterm role="GIMP 2.4"><primary>GimpPageSelector::activate</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpPageSelector">GimpPageSelector</link> *widget,
                                                         <link linkend="gpointer">gpointer</link>          user_data)      : Run First / Action</programlisting>
 <para>
@@ -492,7 +492,7 @@ is emitted when a user double-clicks an item in the page selection.</para>
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
-</para></refsect2><refsect2><title><anchor id="GimpPageSelector-selection-changed"/>The &quot;selection-changed&quot; signal</title>
+</para></refsect2><refsect2><title><anchor id="GimpPageSelector-selection-changed"/>The <literal>&quot;selection-changed&quot;</literal> signal</title>
 <indexterm role="GIMP 2.4"><primary>GimpPageSelector::selection-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpPageSelector">GimpPageSelector</link> *widget,
                                                         <link linkend="gpointer">gpointer</link>          user_data)      : Run First</programlisting>
 <para>
@@ -511,4 +511,6 @@ This signal is emitted whenever the set of selected pages changes.</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

@@ -146,7 +146,7 @@ Retrieves the current value from a <link linkend="GimpMemsizeEntry"><type>GimpMe
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpMemsizeEntry-value-changed"/>The &quot;value-changed&quot; signal</title>
+<refsect2><title><anchor id="GimpMemsizeEntry-value-changed"/>The <literal>&quot;value-changed&quot;</literal> signal</title>
 <indexterm><primary>GimpMemsizeEntry::value-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpMemsizeEntry">GimpMemsizeEntry</link> *gimpmemsizeentry,
                                                         <link linkend="gpointer">gpointer</link>          user_data)             : Run First</programlisting>
 <para>
@@ -163,4 +163,6 @@ Retrieves the current value from a <link linkend="GimpMemsizeEntry"><type>GimpMe
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

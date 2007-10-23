@@ -66,6 +66,9 @@
 
 #define RESPONSE_RESET 1
 
+#define COLOR_BUTTON_WIDTH  40
+#define COLOR_BUTTON_HEIGHT 24
+
 
 /*  preferences local functions  */
 
@@ -1182,7 +1185,8 @@ prefs_color_button_add (GObject      *config,
 {
   GtkWidget *button = gimp_prop_color_button_new (config, property_name,
                                                   title,
-                                                  60, 24,
+                                                  COLOR_BUTTON_WIDTH,
+                                                  COLOR_BUTTON_HEIGHT,
                                                   GIMP_COLOR_AREA_FLAT);
 
   if (button)
@@ -2397,7 +2401,7 @@ prefs_dialog_new (Gimp       *gimp,
                                      &top_iter,
                                      page_index++);
 
-  table = prefs_table_new (9, GTK_CONTAINER (vbox));
+  table = prefs_table_new (10, GTK_CONTAINER (vbox));
 
   {
     static const struct
@@ -2451,15 +2455,16 @@ prefs_dialog_new (Gimp       *gimp,
 
         if (i == 2) /* display profile */
           {
+            gtk_table_set_row_spacing (GTK_TABLE (table), row - 2, 12);
+
             button =
               gimp_prop_check_button_new (color_config,
                                           "display-profile-from-gdk",
-                                          _("_Try to obtain the monitor "
-                                            "profile from the windowing "
-                                            "system"));
+                                          _("_Try to use the system monitor "
+                                            "profile"));
 
             gtk_table_attach_defaults (GTK_TABLE (table),
-                                       button, 0, 2, row, row + 1);
+                                       button, 1, 2, row, row + 1);
             gtk_widget_show (button);
             row++;
 
@@ -2479,14 +2484,36 @@ prefs_dialog_new (Gimp       *gimp,
           }
       }
 
-    gtk_table_set_row_spacing (GTK_TABLE (table), row - 1, 12);
-
     g_object_unref (store);
-    g_object_unref (color_config);
+
+    hbox = gtk_hbox_new (FALSE, 6);
+    gtk_table_attach_defaults (GTK_TABLE (table), hbox, 1, 2, row, row + 1);
+    gtk_widget_show (hbox);
+    row++;
+
+    button = gimp_prop_check_button_new (color_config, "simulation-gamut-check",
+                                         _("Mark out of gamut colors"));
+    gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
+    gtk_widget_show (button);
+
+    button = gimp_prop_color_button_new (color_config, "out-of-gamut-color",
+                                         _("Select Warning Color"),
+                                         COLOR_BUTTON_WIDTH,
+                                         COLOR_BUTTON_HEIGHT,
+                                         GIMP_COLOR_AREA_FLAT);
+    gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+    gtk_widget_show (button);
+
+    gimp_color_panel_set_context (GIMP_COLOR_PANEL (button),
+                                  gimp_get_user_context (gimp));
+
+    gtk_table_set_row_spacing (GTK_TABLE (table), row - 1, 12);
 
     button = prefs_enum_combo_box_add (object, "color-profile-policy", 0, 0,
                                        _("File Open behaviour:"),
                                        GTK_TABLE (table), row++, NULL);
+
+    g_object_unref (color_config);
   }
 
 

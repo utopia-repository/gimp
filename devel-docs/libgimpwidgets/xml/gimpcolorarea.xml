@@ -225,7 +225,7 @@ off. The default is not draw a border.</para>
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpColorArea--color"/>The &quot;<literal>color</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpColorArea--color"/>The <literal>&quot;color&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpColorArea:color</primary></indexterm><programlisting>  &quot;color&quot;                    <link linkend="GimpRGB">GimpRGB</link>               : Read / Write / Construct</programlisting>
 <para>
 The color displayed in the color area.</para>
@@ -234,10 +234,10 @@ The color displayed in the color area.</para>
 </para><para>Since  GIMP 2.4
 </para>
 </refsect2>
-<refsect2><title><anchor id="GimpColorArea--drag-mask"/>The &quot;<literal>drag-mask</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpColorArea--drag-mask"/>The <literal>&quot;drag-mask&quot;</literal> property</title>
 <indexterm><primary>GimpColorArea:drag-mask</primary></indexterm><programlisting>  &quot;drag-mask&quot;                <link linkend="GdkModifierType">GdkModifierType</link>       : Write / Construct Only</programlisting>
 <para></para></refsect2>
-<refsect2><title><anchor id="GimpColorArea--draw-border"/>The &quot;<literal>draw-border</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpColorArea--draw-border"/>The <literal>&quot;draw-border&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpColorArea:draw-border</primary></indexterm><programlisting>  &quot;draw-border&quot;              <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
 <para>
 Whether to draw a thin border in the foreground color around the area.</para>
@@ -247,7 +247,7 @@ Whether to draw a thin border in the foreground color around the area.</para>
 <para>Since  GIMP 2.4
 </para>
 </refsect2>
-<refsect2><title><anchor id="GimpColorArea--type"/>The &quot;<literal>type</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpColorArea--type"/>The <literal>&quot;type&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpColorArea:type</primary></indexterm><programlisting>  &quot;type&quot;                     <link linkend="GimpColorAreaType">GimpColorAreaType</link>     : Read / Write / Construct</programlisting>
 <para>
 The type of the color area.</para>
@@ -262,7 +262,7 @@ The type of the color area.</para>
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpColorArea-color-changed"/>The &quot;color-changed&quot; signal</title>
+<refsect2><title><anchor id="GimpColorArea-color-changed"/>The <literal>&quot;color-changed&quot;</literal> signal</title>
 <indexterm><primary>GimpColorArea::color-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpColorArea">GimpColorArea</link> *gimpcolorarea,
                                                         <link linkend="gpointer">gpointer</link>       user_data)          : Run First</programlisting>
 <para>
@@ -279,4 +279,6 @@ The type of the color area.</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

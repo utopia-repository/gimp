@@ -23,10 +23,11 @@
 #include "base-types.h"
 
 #include "tile.h"
-#include "tile-private.h"
 #include "tile-cache.h"
 #include "tile-manager.h"
+#include "tile-rowhints.h"
 #include "tile-swap.h"
+#include "tile-private.h"
 
 
 /*  Uncomment for verbose debugging on copy-on-write logic  */
@@ -34,9 +35,6 @@
 
 /*  Uncomment to enable global counters to profile the tile system. */
 /*  #define TILE_PROFILING */
-
-/*  Sanity checks on tile hinting code  */
-/*  #define HINTS_SANITY */
 
 
 /*  This is being used from tile-swap, but just for debugging purposes.  */
@@ -49,63 +47,14 @@ static gint tile_count        = 0;
 static gint tile_share_count  = 0;
 static gint tile_active_count = 0;
 
-#ifdef HINTS_SANITY
 static gint tile_exist_peak   = 0;
 static gint tile_exist_count  = 0;
-#endif
 
 #endif
 
 
 static void tile_destroy (Tile *tile);
 
-
-void
-tile_allocate_rowhints (Tile *tile)
-{
-  if (! tile->rowhint)
-    tile->rowhint = g_slice_alloc0 (sizeof (TileRowHint) * TILE_HEIGHT);
-}
-
-TileRowHint
-tile_get_rowhint (Tile *tile,
-                  gint  yoff)
-{
-#ifdef HINTS_SANITY
-  if (yoff < tile_eheight(tile) && yoff >= 0)
-    {
-      return tile->rowhint[yoff];
-    }
-  else
-    {
-      g_error ("GET_ROWHINT OUT OF RANGE");
-    }
-
-  return TILEROWHINT_OUTOFRANGE;
-#else
-  return tile->rowhint[yoff];
-#endif
-}
-
-void
-tile_set_rowhint (Tile        *tile,
-                  gint         yoff,
-                  TileRowHint  rowhint)
-{
-#ifdef HINTS_SANITY
-  if (yoff < tile_eheight(tile) && yoff >= 0)
-    {
-      tile->rowhint[yoff] = rowhint;
-    }
-  else
-    {
-      g_error("SET_ROWHINT OUT OF RANGE");
-    }
-#else
-
-  tile->rowhint[yoff] = rowhint;
-#endif
-}
 
 Tile *
 tile_new (gint bpp)
@@ -222,11 +171,9 @@ tile_alloc (Tile *tile)
   tile->data = g_new (guchar, tile->size);
 
 #ifdef TILE_PROFILING
-#ifdef HINTS_SANITY
   tile_exist_count++;
   if (tile_exist_count > tile_exist_peak)
     tile_exist_peak = tile_exist_count;
-#endif
 #endif
 }
 
@@ -268,10 +215,7 @@ tile_destroy (Tile *tile)
 #ifdef TILE_PROFILING
   tile_count--;
 
-#ifdef HINTS_SANITY
   tile_exist_count--;
-#endif
-
 #endif
 }
 

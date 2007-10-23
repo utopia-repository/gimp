@@ -31,6 +31,7 @@
 #include "base/pixel-region.h"
 #include "base/temp-buf.h"
 #include "base/tile-manager.h"
+#include "base/tile-rowhints.h"
 #include "base/tile.h"
 
 #include "composite/gimp-composite.h"
@@ -148,188 +149,6 @@ static void     apply_layer_mode_replace (const guchar   *src1,
 
 static inline void rotate_pointers       (guchar        **p,
                                           guint32         n);
-
-static void
-update_tile_rowhints (Tile *tile,
-                      gint  ymin,
-                      gint  ymax)
-{
-  const guchar *ptr;
-  gint          bpp, ewidth;
-  gint          x, y;
-
-#ifdef HINTS_SANITY
-  g_assert (tile != NULL);
-#endif
-
-  tile_allocate_rowhints (tile);
-
-  bpp = tile_bpp (tile);
-  ewidth = tile_ewidth (tile);
-
-  switch (bpp)
-    {
-    case 1:
-    case 3:
-      for (y = ymin; y <= ymax; y++)
-        tile_set_rowhint (tile, y, TILEROWHINT_OPAQUE);
-      break;
-
-    case 4:
-#ifdef HINTS_SANITY
-      g_assert (tile != NULL);
-#endif
-
-      ptr = tile_data_pointer (tile, 0, ymin);
-
-#ifdef HINTS_SANITY
-      g_assert (ptr != NULL);
-#endif
-
-      for (y = ymin; y <= ymax; y++)
-        {
-          TileRowHint hint = tile_get_rowhint (tile, y);
-
-#ifdef HINTS_SANITY
-          if (hint == TILEROWHINT_BROKEN)
-            g_error ("BROKEN y=%d", y);
-          if (hint == TILEROWHINT_OUTOFRANGE)
-            g_error ("OOR y=%d", y);
-          if (hint == TILEROWHINT_UNDEFINED)
-            g_error ("UNDEFINED y=%d - bpp=%d ew=%d eh=%d",
-                     y, bpp, ewidth, eheight);
-#endif
-
-#ifdef HINTS_SANITY
-          if (hint == TILEROWHINT_TRANSPARENT ||
-              hint == TILEROWHINT_MIXED ||
-              hint == TILEROWHINT_OPAQUE)
-            {
-              goto next_row4;
-            }
-
-          if (hint != TILEROWHINT_UNKNOWN)
-            {
-              g_error ("MEGABOGUS y=%d - bpp=%d ew=%d eh=%d",
-                       y, bpp, ewidth, eheight);
-            }
-#endif
-
-          if (hint == TILEROWHINT_UNKNOWN)
-            {
-              const guchar alpha = ptr[3];
-
-              /* row is all-opaque or all-transparent? */
-              if (alpha == 0 || alpha == 255)
-                {
-                  if (ewidth > 1)
-                    {
-                      for (x = 1; x < ewidth; x++)
-                        {
-                          if (ptr[x * 4 + 3] != alpha)
-                            {
-                              tile_set_rowhint (tile, y, TILEROWHINT_MIXED);
-                              goto next_row4;
-                            }
-                        }
-                    }
-
-                  tile_set_rowhint (tile, y,
-                                    (alpha == 0) ?
-                                    TILEROWHINT_TRANSPARENT :
-                                    TILEROWHINT_OPAQUE);
-                }
-              else
-                {
-                  tile_set_rowhint (tile, y, TILEROWHINT_MIXED);
-                }
-            }
-
-        next_row4:
-          ptr += 4 * ewidth;
-        }
-      break;
-
-    case 2:
-#ifdef HINTS_SANITY
-      g_assert (tile != NULL);
-#endif
-
-      ptr = tile_data_pointer (tile, 0, ymin);
-
-#ifdef HINTS_SANITY
-      g_assert (ptr != NULL);
-#endif
-
-      for (y = ymin; y <= ymax; y++)
-        {
-          TileRowHint hint = tile_get_rowhint (tile, y);
-
-#ifdef HINTS_SANITY
-          if (hint == TILEROWHINT_BROKEN)
-            g_error ("BROKEN y=%d",y);
-          if (hint == TILEROWHINT_OUTOFRANGE)
-            g_error ("OOR y=%d",y);
-          if (hint == TILEROWHINT_UNDEFINED)
-            g_error ("UNDEFINED y=%d - bpp=%d ew=%d eh=%d",
-                     y, bpp, ewidth, eheight);
-#endif
-
-#ifdef HINTS_SANITY
-          if (hint == TILEROWHINT_TRANSPARENT ||
-              hint == TILEROWHINT_MIXED ||
-              hint == TILEROWHINT_OPAQUE)
-            {
-              goto next_row2;
-            }
-
-          if (hint != TILEROWHINT_UNKNOWN)
-            {
-              g_error ("MEGABOGUS y=%d - bpp=%d ew=%d eh=%d",
-                       y, bpp, ewidth, eheight);
-            }
-#endif
-
-          if (hint == TILEROWHINT_UNKNOWN)
-            {
-              const guchar alpha = ptr[1];
-
-              /* row is all-opaque or all-transparent? */
-              if (alpha == 0 || alpha == 255)
-                {
-                  if (ewidth > 1)
-                    {
-                      for (x = 1; x < ewidth; x++)
-                        {
-                          if (ptr[x * 2 + 1] != alpha)
-                            {
-                              tile_set_rowhint (tile, y, TILEROWHINT_MIXED);
-                              goto next_row2;
-                            }
-                        }
-                    }
-                  tile_set_rowhint (tile, y,
-                                    (alpha == 0) ?
-                                    TILEROWHINT_TRANSPARENT :
-                                    TILEROWHINT_OPAQUE);
-                }
-              else
-                {
-                  tile_set_rowhint (tile, y, TILEROWHINT_MIXED);
-                }
-            }
-
-        next_row2:
-          ptr += 2 * ewidth;
-        }
-      break;
-
-    default:
-      g_return_if_reached ();
-      break;
-    }
-}
-
 
 /*
  * The equations: g(r) = exp (- r^2 / (2 * sigma^2))
@@ -1578,7 +1397,7 @@ replace_inten_pixels (const guchar   *src1,
     }
   else
     {
-      const guchar mask_alpha = OPAQUE_OPACITY;
+      const guchar mask_alpha = opacity;
 
       while (length --)
         {
@@ -4106,7 +3925,7 @@ struct initial_regions_struct
   GimpLayerModeEffects  mode;
   const gboolean       *affect;
   InitialMode           type;
-  guchar               *data;
+  const guchar         *data;
 };
 
 static void
@@ -4118,7 +3937,7 @@ initial_sub_region (struct initial_regions_struct *st,
   gint                  h;
   guchar               *s, *d, *m;
   guchar               *buf;
-  guchar               *data;
+  const guchar         *data;
   guint                 opacity;
   GimpLayerModeEffects  mode;
   const gboolean       *affect;
@@ -4259,7 +4078,7 @@ void
 initial_region (PixelRegion          *src,
                 PixelRegion          *dest,
                 PixelRegion          *mask,
-                guchar               *data,
+                const guchar         *data,
                 guint                 opacity,
                 GimpLayerModeEffects  mode,
                 const gboolean       *affect,
@@ -4283,7 +4102,7 @@ struct combine_regions_struct
   GimpLayerModeEffects  mode;
   const gboolean       *affect;
   CombinationMode       type;
-  guchar               *data;
+  const guchar         *data;
   gboolean              opacity_quickskip_possible;
   gboolean              transparency_quickskip_possible;
 };
@@ -4333,7 +4152,7 @@ combine_sub_region (struct combine_regions_struct *st,
                     PixelRegion                   *dest,
                     PixelRegion                   *mask)
 {
-  guchar               *data;
+  const guchar         *data;
   guint                 opacity;
   guint                 layer_mode_opacity;
   const guchar         *layer_mode_mask;
@@ -4380,8 +4199,7 @@ combine_sub_region (struct combine_regions_struct *st,
       if (src1->offy != dest->offy)
         g_error("SRC1 OFFSET != DEST OFFSET");
 #endif
-      update_tile_rowhints (src2->curtile,
-                            src2->offy, src2->offy + (src1->h - 1));
+      tile_update_rowhints (src2->curtile, src2->offy, src1->h);
     }
   /* else it's probably a brush-composite */
 
@@ -4684,7 +4502,7 @@ combine_regions (PixelRegion          *src1,
                  PixelRegion          *src2,
                  PixelRegion          *dest,
                  PixelRegion          *mask,
-                 guchar               *data,
+                 const guchar         *data,
                  guint                 opacity,
                  GimpLayerModeEffects  mode,
                  const gboolean       *affect,
@@ -4773,7 +4591,7 @@ combine_regions_replace (PixelRegion     *src1,
                          PixelRegion     *src2,
                          PixelRegion     *dest,
                          PixelRegion     *mask,
-                         guchar          *data,
+                         const guchar    *data,
                          guint            opacity,
                          const gboolean  *affect,
                          CombinationMode  type)

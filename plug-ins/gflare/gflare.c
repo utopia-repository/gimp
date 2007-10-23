@@ -749,10 +749,10 @@ static void gm_combo_destroy_callback       (GtkWidget    *widget,
 
 static void gradient_get_values_internal    (const gchar *gradient_name,
                                              guchar *values, gint nvalues);
-static void gradient_get_blend              (guchar *fg, guchar *bg,
+static void gradient_get_blend              (const guchar *fg,
+                                             const guchar *bg,
                                              guchar *values, gint nvalues);
-static void gradient_get_random             (guchar *values,
-                                             gint nvalues);
+static void gradient_get_random             (guchar *values, gint nvalues);
 static void gradient_get_default            (const gchar *name,
                                              guchar *values, gint nvalues);
 static void gradient_get_values_external    (const gchar *gradient_name,
@@ -1017,49 +1017,55 @@ plugin_do_non_asupsample (void)
 {
   GimpPixelRgn  src_rgn, dest_rgn;
   gpointer      pr;
-  guchar       *src_row;
-  guchar       *dest_row;
-  guchar       *src;
-  guchar       *dest;
-  gint          row, col;
-  gint          x, y;
-  gint          b;
+  gint          width, height;
   gint          progress, max_progress;
-  guchar        src_pix[4];
-  guchar        dest_pix[4];
+
+  width  = dinfo.x2 - dinfo.x1;
+  height = dinfo.y2 - dinfo.y1;
 
   progress = 0;
-  max_progress = (dinfo.x2 - dinfo.x1) * (dinfo.y2 - dinfo.y1);
+  max_progress = width * height;
 
   gimp_pixel_rgn_init (&src_rgn, drawable,
-                       dinfo.x1, dinfo.y1, dinfo.x2, dinfo.y2, FALSE, FALSE);
+                       dinfo.x1, dinfo.y1, width, height, FALSE, FALSE);
   gimp_pixel_rgn_init (&dest_rgn, drawable,
-                       dinfo.x1, dinfo.y1, dinfo.x2, dinfo.y2, TRUE, TRUE);
+                       dinfo.x1, dinfo.y1, width, height, TRUE, TRUE);
 
   for (pr = gimp_pixel_rgns_register (2, &src_rgn, &dest_rgn);
        pr != NULL; pr = gimp_pixel_rgns_process (pr))
     {
-      src_row  = src_rgn.data;
-      dest_row = dest_rgn.data;
+      const guchar *src_row  = src_rgn.data;
+      guchar       *dest_row = dest_rgn.data;
+      gint          row, y;
 
       for (row = 0, y = src_rgn.y; row < src_rgn.h; row++, y++)
         {
-          src = src_row;
-          dest = dest_row;
+          const guchar *src  = src_row;
+          guchar       *dest = dest_row;
+          gint          col, x;
 
           for (col = 0, x = src_rgn.x; col < src_rgn.w; col++, x++)
             {
+              guchar  src_pix[4];
+              guchar  dest_pix[4];
+              gint    b;
+
               for (b = 0; b < 3; b++)
                 src_pix[b] = dinfo.is_color ? src[b] : src[0];
+
               src_pix[3] = dinfo.has_alpha ? src[src_rgn.bpp - 1] : OPAQUE;
 
               calc_gflare_pix (dest_pix, x, y, src_pix);
 
               if (dinfo.is_color)
-                for (b = 0; b < 3; b++)
-                  dest[b] = dest_pix[b];
+                {
+                  for (b = 0; b < 3; b++)
+                    dest[b] = dest_pix[b];
+                }
               else
-                dest[0] = LUMINOSITY (dest_pix);
+                {
+                  dest[0] = LUMINOSITY (dest_pix);
+                }
 
               if (dinfo.has_alpha)
                 dest[src_rgn.bpp - 1] = dest_pix[3];
@@ -1067,9 +1073,11 @@ plugin_do_non_asupsample (void)
               src  += src_rgn.bpp;
               dest += dest_rgn.bpp;
             }
+
           src_row  += src_rgn.rowstride;
           dest_row += dest_rgn.rowstride;
         }
+
       /* Update progress */
       progress += src_rgn.w * src_rgn.h;
       gimp_progress_update ((double) progress / (double) max_progress);
@@ -1084,7 +1092,8 @@ plugin_do_asupsample (void)
 
   tk_write = gimp_pixel_fetcher_new (drawable, TRUE);
 
-  gimp_adaptive_supersample_area (dinfo.x1, dinfo.y1, dinfo.x2 - 1, dinfo.y2 - 1,
+  gimp_adaptive_supersample_area (dinfo.x1, dinfo.y1,
+                                  dinfo.x2 - 1, dinfo.y2 - 1,
                                   pvals.asupsample_max_depth,
                                   pvals.asupsample_threshold,
                                   plugin_render_func,
@@ -1478,39 +1487,54 @@ gflare_save (GFlare *gflare)
     }
 
   fprintf (fp, "%s", GFLARE_FILE_HEADER);
-  g_ascii_formatd (buf[0], G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->glow_opacity);
+  g_ascii_formatd (buf[0],
+                   G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->glow_opacity);
   fprintf (fp, "%s %s\n", buf[0], gflare_modes[gflare->glow_mode]);
-  g_ascii_formatd (buf[0], G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->rays_opacity);
+  g_ascii_formatd (buf[0],
+                   G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->rays_opacity);
   fprintf (fp, "%s %s\n", buf[0], gflare_modes[gflare->rays_mode]);
-  g_ascii_formatd (buf[0], G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->sflare_opacity);
+  g_ascii_formatd (buf[0],
+                   G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->sflare_opacity);
   fprintf (fp, "%s %s\n", buf[0], gflare_modes[gflare->sflare_mode]);
 
   gflare_write_gradient_name (gflare->glow_radial, fp);
   gflare_write_gradient_name (gflare->glow_angular, fp);
   gflare_write_gradient_name (gflare->glow_angular_size, fp);
-  g_ascii_formatd (buf[0], G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->glow_size);
-  g_ascii_formatd (buf[1], G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->glow_rotation);
-  g_ascii_formatd (buf[2], G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->glow_hue);
+  g_ascii_formatd (buf[0],
+                   G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->glow_size);
+  g_ascii_formatd (buf[1],
+                   G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->glow_rotation);
+  g_ascii_formatd (buf[2],
+                   G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->glow_hue);
   fprintf (fp, "%s %s %s\n", buf[0], buf[1], buf[2]);
 
   gflare_write_gradient_name (gflare->rays_radial, fp);
   gflare_write_gradient_name (gflare->rays_angular, fp);
   gflare_write_gradient_name (gflare->rays_angular_size, fp);
-  g_ascii_formatd (buf[0], G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->rays_size);
-  g_ascii_formatd (buf[1], G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->rays_rotation);
-  g_ascii_formatd (buf[2], G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->rays_hue);
+  g_ascii_formatd (buf[0],
+                   G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->rays_size);
+  g_ascii_formatd (buf[1],
+                   G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->rays_rotation);
+  g_ascii_formatd (buf[2],
+                   G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->rays_hue);
   fprintf (fp, "%s %s %s\n", buf[0], buf[1], buf[2]);
-  g_ascii_formatd (buf[0], G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->rays_thickness);
+  g_ascii_formatd (buf[0],
+                   G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->rays_thickness);
   fprintf (fp, "%d %s\n", gflare->rays_nspikes, buf[0]);
 
   gflare_write_gradient_name (gflare->sflare_radial, fp);
   gflare_write_gradient_name (gflare->sflare_sizefac, fp);
   gflare_write_gradient_name (gflare->sflare_probability, fp);
-  g_ascii_formatd (buf[0], G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->sflare_size);
-  g_ascii_formatd (buf[1], G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->sflare_rotation);
-  g_ascii_formatd (buf[2], G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->sflare_hue);
+  g_ascii_formatd (buf[0],
+                   G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->sflare_size);
+  g_ascii_formatd (buf[1],
+                   G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->sflare_rotation);
+  g_ascii_formatd (buf[2],
+                   G_ASCII_DTOSTR_BUF_SIZE, "%f", gflare->sflare_hue);
   fprintf (fp, "%s %s %s\n", buf[0], buf[1], buf[2]);
-  fprintf (fp, "%s %d %d\n", gflare_shapes[gflare->sflare_shape], gflare->sflare_nverts, gflare->sflare_seed);
+  fprintf (fp, "%s %d %d\n",
+           gflare_shapes[gflare->sflare_shape],
+           gflare->sflare_nverts, gflare->sflare_seed);
 
   fclose (fp);
 }
@@ -2563,7 +2587,9 @@ dlg_preview_render_func (Preview  *preview,
   guchar        src_pix[4], dest_pix[4];
   gint          b;
 
-  dy = dlg->pwin.y0 + (gdouble) (dlg->pwin.y1 - dlg->pwin.y0) * y / DLG_PREVIEW_HEIGHT;
+  dy = (dlg->pwin.y0 +
+        (gdouble) (dlg->pwin.y1 - dlg->pwin.y0) * y / DLG_PREVIEW_HEIGHT);
+
   if (dy < 0 || dy >= drawable->height)
     {
       memset (dest, GRAY50, 3 * DLG_PREVIEW_WIDTH);
@@ -2577,7 +2603,9 @@ dlg_preview_render_func (Preview  *preview,
 
   for (x = 0; x < DLG_PREVIEW_HEIGHT; x++)
     {
-      dx = dlg->pwin.x0 + (double) (dlg->pwin.x1 - dlg->pwin.x0) * x / DLG_PREVIEW_WIDTH;
+      dx = (dlg->pwin.x0 +
+            (double) (dlg->pwin.x1 - dlg->pwin.x0) * x / DLG_PREVIEW_WIDTH);
+
       if (dx < 0 || dx >= drawable->width)
         {
           for (b = 0; b < 3; b++)
@@ -4494,9 +4522,13 @@ gm_preview_draw (GtkWidget   *preview,
               /* more or less transparent */
               if((col % (GIMP_CHECK_SIZE) < GIMP_CHECK_SIZE_SM) ^
                   (row % (GIMP_CHECK_SIZE) < GIMP_CHECK_SIZE_SM))
-                check = GIMP_CHECK_LIGHT * 255;
+                {
+                  check = GIMP_CHECK_LIGHT * 255;
+                }
               else
-                check = GIMP_CHECK_DARK * 255;
+                {
+                  check = GIMP_CHECK_DARK * 255;
+                }
 
               if (src[alpha] == 0)
                 {
@@ -4508,22 +4540,27 @@ gm_preview_draw (GtkWidget   *preview,
                 {
                   /* middlemost transparent -- mix check and src */
                   for (b = 0; b < alpha; b++)
-                    dest[b] = (src[b]*src[alpha] + check*(OPAQUE-src[alpha])) / OPAQUE;
+                    dest[b] = (src[b] * src[alpha] +
+                               check * (OPAQUE - src[alpha])) / OPAQUE;
                 }
             }
         }
-      for(irow = 0; irow < GIMP_CHECK_SIZE_SM && row + irow < GM_PREVIEW_HEIGHT; irow++)
+
+      for (irow = 0;
+           irow < GIMP_CHECK_SIZE_SM && row + irow < GM_PREVIEW_HEIGHT;
+           irow++)
         {
-          memcpy (dest_total_preview_buffer+(row+irow)*3*GM_PREVIEW_WIDTH,
+          memcpy (dest_total_preview_buffer + (row+irow) * 3 * GM_PREVIEW_WIDTH,
                   dest_row,
-                  GM_PREVIEW_WIDTH*3);
+                  GM_PREVIEW_WIDTH * 3);
         }
     }
+
     gimp_preview_area_draw (GIMP_PREVIEW_AREA (preview),
                             0, 0, GM_PREVIEW_WIDTH, GM_PREVIEW_HEIGHT,
                             GIMP_RGB_IMAGE,
-                            (guchar*) dest_total_preview_buffer,
-                            GM_PREVIEW_WIDTH*3);
+                            (const guchar *) dest_total_preview_buffer,
+                            GM_PREVIEW_WIDTH * 3);
 
     g_free (dest_total_preview_buffer);
 }
@@ -4664,11 +4701,11 @@ gradient_get_values_internal (const gchar *gradient_name,
                               guchar      *values,
                               gint         nvalues)
 {
-  static guchar white[4]        = { 255, 255, 255, 255 };
-  static guchar white_trans[4]  = { 255, 255, 255, 0   };
-  static guchar red_trans[4]    = { 255, 0,   0,   0   };
-  static guchar blue_trans[4]   = { 0,   0,   255, 0   };
-  static guchar yellow_trans[4] = { 255, 255, 0,   0   };
+  const guchar white[4]        = { 255, 255, 255, 255 };
+  const guchar white_trans[4]  = { 255, 255, 255, 0   };
+  const guchar red_trans[4]    = { 255, 0,   0,   0   };
+  const guchar blue_trans[4]   = { 0,   0,   255, 0   };
+  const guchar yellow_trans[4] = { 255, 255, 0,   0   };
 
   /*
     The internal gradients here are example --
@@ -4705,10 +4742,10 @@ gradient_get_values_internal (const gchar *gradient_name,
 }
 
 static void
-gradient_get_blend (guchar *fg,
-                    guchar *bg,
-                    guchar *values,
-                    gint    nvalues)
+gradient_get_blend (const guchar *fg,
+                    const guchar *bg,
+                    guchar       *values,
+                    gint          nvalues)
 {
   gdouble  x;
   gint     i;

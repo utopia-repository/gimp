@@ -149,7 +149,7 @@ Attempts to create stock icons for all items in the <parameter>combo_box</parame
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpEnumComboBox--model"/>The &quot;<literal>model</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpEnumComboBox--model"/>The <literal>&quot;model&quot;</literal> property</title>
 <indexterm><primary>GimpEnumComboBox:model</primary></indexterm><programlisting>  &quot;model&quot;                    <link linkend="GimpEnumStore">GimpEnumStore</link>         : Read / Write</programlisting>
 <para></para></refsect2>
 
@@ -158,4 +158,6 @@ Attempts to create stock icons for all items in the <parameter>combo_box</parame
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

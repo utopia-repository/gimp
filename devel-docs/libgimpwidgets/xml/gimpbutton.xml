@@ -117,7 +117,7 @@ Emits the button's "extended_clicked" signal.</para>
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpButton-extended-clicked"/>The &quot;extended-clicked&quot; signal</title>
+<refsect2><title><anchor id="GimpButton-extended-clicked"/>The <literal>&quot;extended-clicked&quot;</literal> signal</title>
 <indexterm><primary>GimpButton::extended-clicked</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpButton">GimpButton</link>     *gimpbutton,
                                                         <link linkend="GdkModifierType">GdkModifierType</link> arg1,
                                                         <link linkend="gpointer">gpointer</link>        user_data)       : Run First</programlisting>
@@ -138,4 +138,6 @@ Emits the button's "extended_clicked" signal.</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

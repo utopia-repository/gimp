@@ -101,6 +101,8 @@
 <ANCHOR id="GimpColorConfig--display-profile-from-gdk" href="libgimpconfig/GimpColorConfig.html#GimpColorConfig--display-profile-from-gdk">
 <ANCHOR id="GimpColorConfig--display-rendering-intent" href="libgimpconfig/GimpColorConfig.html#GimpColorConfig--display-rendering-intent">
 <ANCHOR id="GimpColorConfig--mode" href="libgimpconfig/GimpColorConfig.html#GimpColorConfig--mode">
+<ANCHOR id="GimpColorConfig--out-of-gamut-color" href="libgimpconfig/GimpColorConfig.html#GimpColorConfig--out-of-gamut-color">
 <ANCHOR id="GimpColorConfig--printer-profile" href="libgimpconfig/GimpColorConfig.html#GimpColorConfig--printer-profile">
 <ANCHOR id="GimpColorConfig--rgb-profile" href="libgimpconfig/GimpColorConfig.html#GimpColorConfig--rgb-profile">
+<ANCHOR id="GimpColorConfig--simulation-gamut-check" href="libgimpconfig/GimpColorConfig.html#GimpColorConfig--simulation-gamut-check">
 <ANCHOR id="GimpColorConfig--simulation-rendering-intent" href="libgimpconfig/GimpColorConfig.html#GimpColorConfig--simulation-rendering-intent">

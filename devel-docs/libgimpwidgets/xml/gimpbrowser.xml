@@ -167,7 +167,7 @@ side already contains a <link linkend="GtkLabel"><type>GtkLabel</type></link>, t
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpBrowser-search"/>The &quot;search&quot; signal</title>
+<refsect2><title><anchor id="GimpBrowser-search"/>The <literal>&quot;search&quot;</literal> signal</title>
 <indexterm><primary>GimpBrowser::search</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpBrowser">GimpBrowser</link> *gimpbrowser,
                                                         <link linkend="gchar">gchar</link>       *arg1,
                                                         <link linkend="gint">gint</link>         arg2,
@@ -192,4 +192,6 @@ side already contains a <link linkend="GtkLabel"><type>GtkLabel</type></link>, t
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

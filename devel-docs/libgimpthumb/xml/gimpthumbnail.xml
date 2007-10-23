@@ -451,48 +451,48 @@ valid failure thumbnail exists.</para>
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpThumbnail--image-filesize"/>The &quot;<literal>image-filesize</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpThumbnail--image-filesize"/>The <literal>&quot;image-filesize&quot;</literal> property</title>
 <indexterm><primary>GimpThumbnail:image-filesize</primary></indexterm><programlisting>  &quot;image-filesize&quot;           <link linkend="gint64">gint64</link>                : Read / Write</programlisting>
 <para>Size of the image file in bytes.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0</para>
 </refsect2>
-<refsect2><title><anchor id="GimpThumbnail--image-height"/>The &quot;<literal>image-height</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpThumbnail--image-height"/>The <literal>&quot;image-height&quot;</literal> property</title>
 <indexterm><primary>GimpThumbnail:image-height</primary></indexterm><programlisting>  &quot;image-height&quot;             <link linkend="gint">gint</link>                  : Read / Write</programlisting>
 <para>Height of the image in pixels.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0</para>
 </refsect2>
-<refsect2><title><anchor id="GimpThumbnail--image-mimetype"/>The &quot;<literal>image-mimetype</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpThumbnail--image-mimetype"/>The <literal>&quot;image-mimetype&quot;</literal> property</title>
 <indexterm><primary>GimpThumbnail:image-mimetype</primary></indexterm><programlisting>  &quot;image-mimetype&quot;           <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
 <para>Image mimetype.</para><para>Default value: NULL</para>
 </refsect2>
-<refsect2><title><anchor id="GimpThumbnail--image-mtime"/>The &quot;<literal>image-mtime</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpThumbnail--image-mtime"/>The <literal>&quot;image-mtime&quot;</literal> property</title>
 <indexterm><primary>GimpThumbnail:image-mtime</primary></indexterm><programlisting>  &quot;image-mtime&quot;              <link linkend="gint64">gint64</link>                : Read / Write</programlisting>
 <para>Modification time of the image file in seconds since the Epoch.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0</para>
 </refsect2>
-<refsect2><title><anchor id="GimpThumbnail--image-num-layers"/>The &quot;<literal>image-num-layers</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpThumbnail--image-num-layers"/>The <literal>&quot;image-num-layers&quot;</literal> property</title>
 <indexterm><primary>GimpThumbnail:image-num-layers</primary></indexterm><programlisting>  &quot;image-num-layers&quot;         <link linkend="gint">gint</link>                  : Read / Write</programlisting>
 <para>The number of layers in the image.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0</para>
 </refsect2>
-<refsect2><title><anchor id="GimpThumbnail--image-state"/>The &quot;<literal>image-state</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpThumbnail--image-state"/>The <literal>&quot;image-state&quot;</literal> property</title>
 <indexterm><primary>GimpThumbnail:image-state</primary></indexterm><programlisting>  &quot;image-state&quot;              <link linkend="GimpThumbState">GimpThumbState</link>        : Read / Write</programlisting>
 <para>State of the image associated to the thumbnail object.</para><para>Default value: GIMP_THUMB_STATE_UNKNOWN</para>
 </refsect2>
-<refsect2><title><anchor id="GimpThumbnail--image-type"/>The &quot;<literal>image-type</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpThumbnail--image-type"/>The <literal>&quot;image-type&quot;</literal> property</title>
 <indexterm><primary>GimpThumbnail:image-type</primary></indexterm><programlisting>  &quot;image-type&quot;               <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
 <para>String describing the type of the image format.</para><para>Default value: NULL</para>
 </refsect2>
-<refsect2><title><anchor id="GimpThumbnail--image-uri"/>The &quot;<literal>image-uri</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpThumbnail--image-uri"/>The <literal>&quot;image-uri&quot;</literal> property</title>
 <indexterm><primary>GimpThumbnail:image-uri</primary></indexterm><programlisting>  &quot;image-uri&quot;                <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
 <para>URI of the image file.</para><para>Default value: NULL</para>
 </refsect2>
-<refsect2><title><anchor id="GimpThumbnail--image-width"/>The &quot;<literal>image-width</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpThumbnail--image-width"/>The <literal>&quot;image-width&quot;</literal> property</title>
 <indexterm><primary>GimpThumbnail:image-width</primary></indexterm><programlisting>  &quot;image-width&quot;              <link linkend="gint">gint</link>                  : Read / Write</programlisting>
 <para>Width of the image in pixels.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0</para>
 </refsect2>
-<refsect2><title><anchor id="GimpThumbnail--thumb-state"/>The &quot;<literal>thumb-state</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpThumbnail--thumb-state"/>The <literal>&quot;thumb-state&quot;</literal> property</title>
 <indexterm><primary>GimpThumbnail:thumb-state</primary></indexterm><programlisting>  &quot;thumb-state&quot;              <link linkend="GimpThumbState">GimpThumbState</link>        : Read / Write</programlisting>
 <para>State of the thumbnail file.</para><para>Default value: GIMP_THUMB_STATE_UNKNOWN</para>
 </refsect2>
@@ -502,4 +502,6 @@ valid failure thumbnail exists.</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

@@ -16,7 +16,8 @@ Build-Depends: debhelper (>= 5), cdbs (>= 0.4.37), autotools-dev,
  libpoppler-glib-dev (>= 0.3.1), libgnomevfs2-dev (>= 2.10.0),
  libgnomeui-dev (>= 2.10.0), libcurl4-gnutls-dev,
  libasound2-dev (>= 1.0.0) [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386],
- libhal-dev (>= 0.5.7), libdbus-glib-1-dev (>= 0.70), liblcms1-dev | liblcms-dev
+ libhal-dev (>= 0.5.7), libdbus-glib-1-dev (>= 0.70),
+ liblcms1-dev | liblcms-dev
 #Build-Conflicts: libgimp2.0
 XS-Vcs-Svn: svn://svn.debian.org/svn/collab-maint/deb-maint/gimp/
 XS-Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/deb-maint/gimp/
@@ -26,30 +27,25 @@ Architecture: any
 Section: libs
 Depends: ${shlibs:Depends}
 Recommends: gimp-data (>= ${source:Upstream-Version}), gimp-data (<= ${source:Upstream-Version}-z)
-Description: Libraries necessary to run the GIMP
+Description: Libraries for the GNU Image Manipulation Program
  This package includes the libgimp libraries, which are
- necessary to run The GIMP.
- .
- It has been split off from the main gimp package in order to 
- facilitate easy development for packages that use libgimp,
- like SANE, the Scanner Access package for GIMP, as well as any other
- third-party plugins.
+ necessary to run GIMP and third-party GIMP plugins.
 
 Package: gimp-helpbrowser
 Architecture: any
 Section: graphics
 Depends: gimp (= ${binary:Version}), ${shlibs:Depends}
-Description: Built-in Help Browser plugin for The GIMP
- This package includes the browser for reading documentation for The GIMP,
+Description: Built-in Help Browser plugin for GIMP
+ This package includes the browser for reading documentation for GIMP,
  accessible from within the program.
 
 Package: gimp-python
 Architecture: any
 Section: graphics
 Depends: gimp (= ${binary:Version}), python-gtk2 (>= 2.8.0), ${shlibs:Depends}, ${python:Depends}
-Description: Python support and plugins for The GIMP
+Description: Python support and plugins for GIMP
  This package includes the Python modules necessary to write Python-based
- plugins for The GIMP. It includes several plugins with various useful
+ plugins for GIMP. It includes several plugins with various useful
  features:
   * Clothify: Make the specified layer look like it's printed on cloth
   * ColorXHTML: Save the image as colored XHTML text
@@ -66,8 +62,8 @@ Section: graphics
 Depends: gimp (= ${binary:Version}), libgnomevfs2-extra, ${shlibs:Depends}
 Conflicts: gimp-libcurl, gimp (<= 2.3.12-2)
 Replaces: gimp-libcurl, gimp (<= 2.3.12-2)
-Description: GNOME-VFS URI plugin for The GIMP
- This package includes a plugin for The GIMP which will open URIs (e.g.
+Description: GNOME-VFS URI plugin for GIMP
+ This package includes a plugin for GIMP which will open URIs (e.g.
  ftp:, http:, smb:, and sftp:) using protocol handlers from GNOME-VFS.
 
 Package: gimp-libcurl
@@ -76,8 +72,8 @@ Section: graphics
 Depends: gimp (= ${binary:Version}), ${shlibs:Depends}
 Conflicts: gimp-gnomevfs, gimp (<= 2.3.12-2)
 Replaces: gimp-gnomevfs, gimp (<= 2.3.12-2)
-Description: libcurl URI plugin for The GIMP
- This package includes a plugin for The GIMP which will open URIs (e.g.
+Description: libcurl URI plugin for GIMP
+ This package includes a plugin for GIMP which will open URIs (e.g.
  ftp: and http:) using protocol handlers from libcurl.
 
 Package: gimp
@@ -89,7 +85,7 @@ Replaces: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0
 Recommends: gimp-gnomevfs | gimp-libcurl
 Suggests: gimp-help-en | gimp-help, gimp-python (>= 2.4.0~rc1-1), libgimp-perl, gimp-data-extras
 Description: The GNU Image Manipulation Program
- The GIMP lets you draw, paint, edit images, and much more! GIMP
+ GIMP lets you draw, paint, edit images, and much more! GIMP
  includes the functionality and plug-ins of other famous image
  editing and processing programs.
  .
@@ -102,16 +98,16 @@ Section: graphics
 Recommends: gimp
 Conflicts: gimp (<< 2.4.0~rc2-2) 
 Replaces: gimp (<< 2.4.0~rc2-2) 
-Description: Data files for The GIMP
+Description: Data files for GIMP
  This package contains architecture-independent supporting data files
- for use with The GIMP.
+ for use with GIMP.
 
 Package: libgimp2.0-dev
 Architecture: any
 Section: libdevel
 Depends: libgimp2.0 (= ${binary:Version}), libgtk2.0-dev (>= 2.10.0), pkg-config
 Suggests: libgimp2.0-doc
-Description: Headers and other files for compiling plugins for The GIMP
+Description: Headers and other files for compiling plugins for GIMP
  This package contains the header files for the GNU Image Manipulation
  Program, along with the static versions of libgimp.
  It also includes the gimptool-2.0 utility.
@@ -132,8 +128,8 @@ Priority: extra
 Architecture: any
 Section: graphics
 Depends: gimp (= ${binary:Version}) | libgimp2.0 (= ${source:Version}), ${shlibs:Depends}
-Description: Debugging symbols for The GIMP
+Description: Debugging symbols for GIMP
  This package includes the debugging symbols useful for debugging
- The GIMP and its libraries, contained in the gimp and libgimp2.0 packages.
+ GIMP and its libraries, contained in the gimp and libgimp2.0 packages.
  The debugging symbols are used for execution tracing and core dump
  analysis.

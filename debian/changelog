@@ -1,3 +1,11 @@
+gimp (2.4.0-2) unstable; urgency=medium
+
+  * Bump shlibs on libgimp2.0 to prevent a crash in gimp with an older version
+    of libgimp2.0 (Closes: #448318)
+  * Bump debhelper dependency (Closes: #448339)
+
+ -- Ari Pollak <ari@debian.org>  Sun, 28 Oct 2007 12:45:05 -0400
+
 gimp (2.4.0-1) unstable; urgency=low
 
   * New upstream version

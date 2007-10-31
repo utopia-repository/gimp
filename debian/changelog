@@ -1,3 +1,9 @@
+gimp (2.4.1-1) unstable; urgency=low
+
+  * New upstream version
+
+ -- Ari Pollak <ari@debian.org>  Wed, 31 Oct 2007 11:54:37 -0400
+
 gimp (2.4.0-2) unstable; urgency=medium
 
   * Bump shlibs on libgimp2.0 to prevent a crash in gimp with an older version

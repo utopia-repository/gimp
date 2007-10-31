@@ -54,28 +54,28 @@ Interface Library headers.</p>
 
 
 void                <a class="link" href="libgimp-gimpui.html#gimp-ui-init">gimp_ui_init</a>                        (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="../glib/glib-Basic-Types.html#gchar"
 >gchar</a> *prog_name,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="../glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> preview);
 <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkWindow"
+href="../gdk/gdk-Windows.html#GdkWindow"
 >GdkWindow</a>*          <a class="link" href="libgimp-gimpui.html#gimp-ui-get-display-window">gimp_ui_get_display_window</a>          (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"
+href="../glib/glib-Basic-Types.html#guint32"
 >guint32</a> gdisp_ID);
 <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkWindow"
+href="../gdk/gdk-Windows.html#GdkWindow"
 >GdkWindow</a>*          <a class="link" href="libgimp-gimpui.html#gimp-ui-get-progress-window">gimp_ui_get_progress_window</a>         (void);
 void                <a class="link" href="libgimp-gimpui.html#gimp-window-set-transient">gimp_window_set_transient</a>           (<a
-href="/usr/share/gtk-doc/html/gtk/GtkWindow.html"
+href="../gtk/GtkWindow.html"
 >GtkWindow</a> *window);
 void                <a class="link" href="libgimp-gimpui.html#gimp-window-set-transient-for-display">gimp_window_set_transient_for_display</a>
                                                         (<a
-href="/usr/share/gtk-doc/html/gtk/GtkWindow.html"
+href="../gtk/GtkWindow.html"
 >GtkWindow</a> *window,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"
+href="../glib/glib-Basic-Types.html#guint32"
 >guint32</a> gdisp_ID);
 </pre>
 </div>
@@ -93,14 +93,14 @@ Interface Library headers.
 <a name="id2728906"></a><h3>
 <a name="gimp-ui-init"></a>gimp_ui_init ()</h3>
 <a class="indexterm" name="id2728917"></a><pre class="programlisting">void                gimp_ui_init                        (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="../glib/glib-Basic-Types.html#gchar"
 >gchar</a> *prog_name,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="../glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> preview);</pre>
 <p>
 This function initializes GTK+ with <a
-href="/usr/share/gtk-doc/html/gtk/gtk-General.html#gtk-init"
+href="../gtk/gtk-General.html#gtk-init"
 ><code class="function">gtk_init()</code></a> and initializes GDK's
 image rendering subsystem (GdkRGB) to follow the GIMP main program's
 colormap allocation/installation policy.
@@ -118,7 +118,7 @@ gimprc variables <em class="parameter"><code>min_colors</code></em> and <em clas
 <td><p><span class="term"><em class="parameter"><code>prog_name</code></em>&#160;:</span></p></td>
 <td> The name of the plug-in which will be passed as argv[0] to
             <a
-href="/usr/share/gtk-doc/html/gtk/gtk-General.html#gtk-init"
+href="../gtk/gtk-General.html#gtk-init"
 ><code class="function">gtk_init()</code></a>. It's a convention to use the name of the
             executable and _not_ the PDB procedure name or something.
 </td>
@@ -137,17 +137,17 @@ href="/usr/share/gtk-doc/html/gtk/gtk-General.html#gtk-init"
 <a name="id2727366"></a><h3>
 <a name="gimp-ui-get-display-window"></a>gimp_ui_get_display_window ()</h3>
 <a class="indexterm" name="id2727379"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkWindow"
+href="../gdk/gdk-Windows.html#GdkWindow"
 >GdkWindow</a>*          gimp_ui_get_display_window          (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"
+href="../glib/glib-Basic-Types.html#guint32"
 >guint32</a> gdisp_ID);</pre>
 <p>
 Returns the <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkWindow"
+href="../gdk/gdk-Windows.html#GdkWindow"
 ><span class="type">GdkWindow</span></a> of a display window. The purpose is to allow
 to make plug-in dialogs transient to the image display as explained
 with <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#gdk-window-set-transient-for"
+href="../gdk/gdk-Windows.html#gdk-window-set-transient-for"
 ><code class="function">gdk_window_set_transient_for()</code></a>.
 </p>
 <p>
@@ -167,12 +167,12 @@ You shouldn't have to call this function directly. Use
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> A reference to a <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkWindow"
+href="../gdk/gdk-Windows.html#GdkWindow"
 ><span class="type">GdkWindow</span></a> or <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="../glib/glib-Standard-Macros.html#NULL:CAPS"
 ><code class="literal">NULL</code></a>. You should
               unref the window using <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#g-object-unref"
+href="../gobject/gobject-The-Base-Object-Type.html#g-object-unref"
 ><code class="function">g_object_unref()</code></a> as soon as
               you don't need it any longer.
 
@@ -188,15 +188,15 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#g-object
 <a name="id2729839"></a><h3>
 <a name="gimp-ui-get-progress-window"></a>gimp_ui_get_progress_window ()</h3>
 <a class="indexterm" name="id2729852"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkWindow"
+href="../gdk/gdk-Windows.html#GdkWindow"
 >GdkWindow</a>*          gimp_ui_get_progress_window         (void);</pre>
 <p>
 Returns the <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkWindow"
+href="../gdk/gdk-Windows.html#GdkWindow"
 ><span class="type">GdkWindow</span></a> of the window this plug-in's progress bar is
 shown in. Use it to make plug-in dialogs transient to this window
 as explained with <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#gdk-window-set-transient-for"
+href="../gdk/gdk-Windows.html#gdk-window-set-transient-for"
 ><code class="function">gdk_window_set_transient_for()</code></a>.
 </p>
 <p>
@@ -210,12 +210,12 @@ You shouldn't have to call this function directly. Use
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> A reference to a <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkWindow"
+href="../gdk/gdk-Windows.html#GdkWindow"
 ><span class="type">GdkWindow</span></a> or <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="../glib/glib-Standard-Macros.html#NULL:CAPS"
 ><code class="literal">NULL</code></a>. You should
               unref the window using <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#g-object-unref"
+href="../gobject/gobject-The-Base-Object-Type.html#g-object-unref"
 ><code class="function">g_object_unref()</code></a> as soon as
               you don't need it any longer.
 
@@ -230,7 +230,7 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#g-object
 <a name="id2729956"></a><h3>
 <a name="gimp-window-set-transient"></a>gimp_window_set_transient ()</h3>
 <a class="indexterm" name="id2729969"></a><pre class="programlisting">void                gimp_window_set_transient           (<a
-href="/usr/share/gtk-doc/html/gtk/GtkWindow.html"
+href="../gtk/GtkWindow.html"
 >GtkWindow</a> *window);</pre>
 <p>
 Indicates to the window manager that <em class="parameter"><code>window</code></em> is a transient dialog
@@ -244,7 +244,7 @@ started from. See also <a class="link" href="libgimp-gimpui.html#gimp-window-set
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>window</code></em>&#160;:</span></p></td>
 <td> the <a
-href="/usr/share/gtk-doc/html/gtk/GtkWindow.html"
+href="../gtk/GtkWindow.html"
 ><span class="type">GtkWindow</span></a> that should become transient
 </td>
 </tr></tbody>
@@ -258,16 +258,16 @@ href="/usr/share/gtk-doc/html/gtk/GtkWindow.html"
 <a name="gimp-window-set-transient-for-display"></a>gimp_window_set_transient_for_display ()</h3>
 <a class="indexterm" name="id2731085"></a><pre class="programlisting">void                gimp_window_set_transient_for_display
                                                         (<a
-href="/usr/share/gtk-doc/html/gtk/GtkWindow.html"
+href="../gtk/GtkWindow.html"
 >GtkWindow</a> *window,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"
+href="../glib/glib-Basic-Types.html#guint32"
 >guint32</a> gdisp_ID);</pre>
 <p>
 Indicates to the window manager that <em class="parameter"><code>window</code></em> is a transient dialog
 associated with the GIMP image window that is identified by it's
 display ID.  See <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#gdk-window-set-transient-for"
+href="../gdk/gdk-Windows.html#gdk-window-set-transient-for"
 ><code class="function">gdk_window_set_transient_for()</code></a> for more information.
 </p>
 <p>
@@ -282,7 +282,7 @@ Most of the time you will want to use the convenience function
 <tr>
 <td><p><span class="term"><em class="parameter"><code>window</code></em>&#160;:</span></p></td>
 <td>   the <a
-href="/usr/share/gtk-doc/html/gtk/GtkWindow.html"
+href="../gtk/GtkWindow.html"
 ><span class="type">GtkWindow</span></a> that should become transient
 </td>
 </tr>
@@ -301,26 +301,26 @@ href="/usr/share/gtk-doc/html/gtk/GtkWindow.html"
 <a name="id2731202"></a><h2>See Also</h2>
 <p>
 <a
-href="/usr/share/gtk-doc/html/gtk/gtk-General.html#gtk-init"
+href="../gtk/gtk-General.html#gtk-init"
 ><code class="function">gtk_init()</code></a>, <a
-href="/usr/share/gtk-doc/html/gdk/gdk-General.html#gdk-set-use-xshm"
+href="../gdk/gdk-General.html#gdk-set-use-xshm"
 ><code class="function">gdk_set_use_xshm()</code></a>, <a
-href="/usr/share/gtk-doc/html/gdk/gdk-GdkRGB.html#gdk-rgb-set-min-colors"
+href="../gdk/gdk-GdkRGB.html#gdk-rgb-set-min-colors"
 ><code class="function">gdk_rgb_set_min_colors()</code></a>,
 <a
-href="/usr/share/gtk-doc/html/gdk/gdk-GdkRGB.html#gdk-rgb-set-install"
+href="../gdk/gdk-GdkRGB.html#gdk-rgb-set-install"
 ><code class="function">gdk_rgb_set_install()</code></a>, <a
-href="/usr/share/gtk-doc/html/gdk/gdk-GdkRGB.html#gdk-rgb-get-visual"
+href="../gdk/gdk-GdkRGB.html#gdk-rgb-get-visual"
 ><code class="function">gdk_rgb_get_visual()</code></a>, <a
-href="/usr/share/gtk-doc/html/gdk/gdk-GdkRGB.html#gdk-rgb-get-cmap"
+href="../gdk/gdk-GdkRGB.html#gdk-rgb-get-cmap"
 ><code class="function">gdk_rgb_get_cmap()</code></a>,
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html#gtk-widget-set-default-visual"
+href="../gtk/GtkWidget.html#gtk-widget-set-default-visual"
 ><code class="function">gtk_widget_set_default_visual()</code></a>, <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html#gtk-widget-set-default-colormap"
+href="../gtk/GtkWidget.html#gtk-widget-set-default-colormap"
 ><code class="function">gtk_widget_set_default_colormap()</code></a>,
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkPreview.html#gtk-preview-set-gamma"
+href="../gtk/GtkPreview.html#gtk-preview-set-gamma"
 ><code class="function">gtk_preview_set_gamma()</code></a>.
 </p>
 </div>

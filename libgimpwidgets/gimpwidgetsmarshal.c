@@ -53,10 +53,10 @@
 /* VOID:INT,INT (./gimpwidgetsmarshal.list:26) */
 void
 _gimp_widgets_marshal_VOID__INT_INT (GClosure     *closure,
-                                     GValue       *return_value,
+                                     GValue       *return_value G_GNUC_UNUSED,
                                      guint         n_param_values,
                                      const GValue *param_values,
-                                     gpointer      invocation_hint,
+                                     gpointer      invocation_hint G_GNUC_UNUSED,
                                      gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__INT_INT) (gpointer     data1,
@@ -92,10 +92,10 @@ _gimp_widgets_marshal_VOID__INT_INT (GClosure     *closure,
 /* VOID:OBJECT,INT (./gimpwidgetsmarshal.list:28) */
 void
 _gimp_widgets_marshal_VOID__OBJECT_INT (GClosure     *closure,
-                                        GValue       *return_value,
+                                        GValue       *return_value G_GNUC_UNUSED,
                                         guint         n_param_values,
                                         const GValue *param_values,
-                                        gpointer      invocation_hint,
+                                        gpointer      invocation_hint G_GNUC_UNUSED,
                                         gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__OBJECT_INT) (gpointer     data1,
@@ -129,10 +129,10 @@ _gimp_widgets_marshal_VOID__OBJECT_INT (GClosure     *closure,
 /* VOID:POINTER,POINTER (./gimpwidgetsmarshal.list:29) */
 void
 _gimp_widgets_marshal_VOID__POINTER_POINTER (GClosure     *closure,
-                                             GValue       *return_value,
+                                             GValue       *return_value G_GNUC_UNUSED,
                                              guint         n_param_values,
                                              const GValue *param_values,
-                                             gpointer      invocation_hint,
+                                             gpointer      invocation_hint G_GNUC_UNUSED,
                                              gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__POINTER_POINTER) (gpointer     data1,
@@ -166,10 +166,10 @@ _gimp_widgets_marshal_VOID__POINTER_POINTER (GClosure     *closure,
 /* VOID:STRING,FLAGS (./gimpwidgetsmarshal.list:30) */
 void
 _gimp_widgets_marshal_VOID__STRING_FLAGS (GClosure     *closure,
-                                          GValue       *return_value,
+                                          GValue       *return_value G_GNUC_UNUSED,
                                           guint         n_param_values,
                                           const GValue *param_values,
-                                          gpointer      invocation_hint,
+                                          gpointer      invocation_hint G_GNUC_UNUSED,
                                           gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__STRING_FLAGS) (gpointer     data1,
@@ -203,10 +203,10 @@ _gimp_widgets_marshal_VOID__STRING_FLAGS (GClosure     *closure,
 /* VOID:STRING,INT (./gimpwidgetsmarshal.list:31) */
 void
 _gimp_widgets_marshal_VOID__STRING_INT (GClosure     *closure,
-                                        GValue       *return_value,
+                                        GValue       *return_value G_GNUC_UNUSED,
                                         guint         n_param_values,
                                         const GValue *param_values,
-                                        gpointer      invocation_hint,
+                                        gpointer      invocation_hint G_GNUC_UNUSED,
                                         gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__STRING_INT) (gpointer     data1,
@@ -240,10 +240,10 @@ _gimp_widgets_marshal_VOID__STRING_INT (GClosure     *closure,
 /* VOID:DOUBLE,DOUBLE (./gimpwidgetsmarshal.list:32) */
 void
 _gimp_widgets_marshal_VOID__DOUBLE_DOUBLE (GClosure     *closure,
-                                           GValue       *return_value,
+                                           GValue       *return_value G_GNUC_UNUSED,
                                            guint         n_param_values,
                                            const GValue *param_values,
-                                           gpointer      invocation_hint,
+                                           gpointer      invocation_hint G_GNUC_UNUSED,
                                            gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__DOUBLE_DOUBLE) (gpointer     data1,
@@ -277,10 +277,10 @@ _gimp_widgets_marshal_VOID__DOUBLE_DOUBLE (GClosure     *closure,
 /* BOOLEAN:POINTER (./gimpwidgetsmarshal.list:34) */
 void
 _gimp_widgets_marshal_BOOLEAN__POINTER (GClosure     *closure,
-                                        GValue       *return_value,
+                                        GValue       *return_value G_GNUC_UNUSED,
                                         guint         n_param_values,
                                         const GValue *param_values,
-                                        gpointer      invocation_hint,
+                                        gpointer      invocation_hint G_GNUC_UNUSED,
                                         gpointer      marshal_data)
 {
   typedef gboolean (*GMarshalFunc_BOOLEAN__POINTER) (gpointer     data1,

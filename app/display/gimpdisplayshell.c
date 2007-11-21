@@ -604,7 +604,7 @@ gimp_display_shell_show_tooltip (GimpUIManager    *manager,
                                  GimpDisplayShell *shell)
 {
   gimp_statusbar_push (GIMP_STATUSBAR (shell->statusbar), "menu-tooltip",
-                       tooltip);
+                       "%s", tooltip);
 }
 
 static void
@@ -1117,8 +1117,11 @@ gimp_display_shell_new (GimpDisplay     *display,
 
   filter = gimp_display_shell_filter_new (shell,
                                           gimp->config->color_management);
-  gimp_display_shell_filter_set (shell, filter);
-  g_object_unref (filter);
+  if (filter)
+    {
+      gimp_display_shell_filter_set (shell, filter);
+      g_object_unref (filter);
+    }
 
   gimp_display_shell_connect (shell);
 

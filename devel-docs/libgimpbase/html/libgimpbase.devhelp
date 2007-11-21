@@ -126,8 +126,8 @@
     <function name="gimp_path_to_str ()" link="libgimpbase-gimpenv.html#gimp-path-to-str"/>
     <function name="gimp_path_free ()" link="libgimpbase-gimpenv.html#gimp-path-free"/>
     <function name="gimp_path_get_user_writable_dir ()" link="libgimpbase-gimpenv.html#gimp-path-get-user-writable-dir"/>
-    <function name="" link="libgimpbase-gimpenv.html#id2620790"/>
-    <function name="" link="libgimpbase-gimpenv.html#id2620791"/>
+    <function name="" link="libgimpbase-gimpenv.html#id2620817"/>
+    <function name="" link="libgimpbase-gimpenv.html#id2620818"/>
     <function name="gimp_memsize_serialize ()" link="libgimpbase-gimpmemsize.html#gimp-memsize-serialize"/>
     <function name="gimp_memsize_deserialize ()" link="libgimpbase-gimpmemsize.html#gimp-memsize-deserialize"/>
     <function name="gimp_memsize_to_string ()" link="libgimpbase-gimpmemsize.html#gimp-memsize-to-string"/>
@@ -136,11 +136,11 @@
     <function name="GIMP_IS_PARAM_SPEC_MEMSIZE()" link="libgimpbase-gimpmemsize.html#GIMP-IS-PARAM-SPEC-MEMSIZE:CAPS"/>
     <function name="gimp_param_spec_memsize ()" link="libgimpbase-gimpmemsize.html#gimp-param-spec-memsize"/>
     <function name="GIMP_VALUE_HOLDS_MEMSIZE()" link="libgimpbase-gimpmemsize.html#GIMP-VALUE-HOLDS-MEMSIZE:CAPS"/>
-    <function name="" link="libgimpbase-gimpmemsize.html#id2621354"/>
-    <function name="" link="libgimpbase-gimpmemsize.html#id2621355"/>
+    <function name="" link="libgimpbase-gimpmemsize.html#id2621361"/>
+    <function name="" link="libgimpbase-gimpmemsize.html#id2621362"/>
     <function name="gimp_rectangle_intersect ()" link="libgimpbase-gimprectangle.html#gimp-rectangle-intersect"/>
-    <function name="" link="libgimpbase-gimprectangle.html#id2621103"/>
-    <function name="" link="libgimpbase-gimprectangle.html#id2621104"/>
+    <function name="" link="libgimpbase-gimprectangle.html#id2621108"/>
+    <function name="" link="libgimpbase-gimprectangle.html#id2621109"/>
     <function name="GimpParasite" link="libgimpbase-gimpparasite.html#GimpParasite"/>
     <function name="gimp_parasite_new ()" link="libgimpbase-gimpparasite.html#gimp-parasite-new"/>
     <function name="gimp_parasite_free ()" link="libgimpbase-gimpparasite.html#gimp-parasite-free"/>
@@ -167,18 +167,18 @@
     <function name="GIMP_IS_PARAM_SPEC_PARASITE()" link="libgimpbase-gimpparasite.html#GIMP-IS-PARAM-SPEC-PARASITE:CAPS"/>
     <function name="gimp_param_spec_parasite ()" link="libgimpbase-gimpparasite.html#gimp-param-spec-parasite"/>
     <function name="GIMP_VALUE_HOLDS_PARASITE()" link="libgimpbase-gimpparasite.html#GIMP-VALUE-HOLDS-PARASITE:CAPS"/>
-    <function name="" link="libgimpbase-gimpparasite.html#id2625066"/>
-    <function name="" link="libgimpbase-gimpparasite.html#id2625067"/>
+    <function name="" link="libgimpbase-gimpparasite.html#id2625082"/>
+    <function name="" link="libgimpbase-gimpparasite.html#id2625084"/>
     <function name="GIMP_PIXPIPE_MAXDIM" link="libgimpbase-gimpparasiteio.html#GIMP-PIXPIPE-MAXDIM:CAPS"/>
     <function name="gimp_pixpipe_params_init ()" link="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-init"/>
     <function name="gimp_pixpipe_params_parse ()" link="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-parse"/>
     <function name="gimp_pixpipe_params_build ()" link="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-build"/>
-    <function name="" link="libgimpbase-gimpparasiteio.html#id2618619"/>
-    <function name="" link="libgimpbase-gimpparasiteio.html#id2618620"/>
+    <function name="" link="libgimpbase-gimpparasiteio.html#id2528461"/>
+    <function name="" link="libgimpbase-gimpparasiteio.html#id2528462"/>
     <function name="GimpSignalHandlerFunc ()" link="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc"/>
     <function name="gimp_signal_private ()" link="libgimpbase-gimpsignal.html#gimp-signal-private"/>
-    <function name="" link="libgimpbase-gimpsignal.html#id2617244"/>
-    <function name="" link="libgimpbase-gimpsignal.html#id2617245"/>
+    <function name="" link="libgimpbase-gimpsignal.html#id2622315"/>
+    <function name="" link="libgimpbase-gimpsignal.html#id2622316"/>
     <function name="enum GimpUnit" link="libgimpbase-gimpunit.html#GimpUnit"/>
     <function name="gimp_unit_get_number_of_units ()" link="libgimpbase-gimpunit.html#gimp-unit-get-number-of-units"/>
     <function name="gimp_unit_get_number_of_built_in_units ()" link="libgimpbase-gimpunit.html#gimp-unit-get-number-of-built-in-units"/>
@@ -197,8 +197,8 @@
     <function name="GIMP_IS_PARAM_SPEC_UNIT()" link="libgimpbase-gimpunit.html#GIMP-IS-PARAM-SPEC-UNIT:CAPS"/>
     <function name="gimp_param_spec_unit ()" link="libgimpbase-gimpunit.html#gimp-param-spec-unit"/>
     <function name="GIMP_VALUE_HOLDS_UNIT()" link="libgimpbase-gimpunit.html#GIMP-VALUE-HOLDS-UNIT:CAPS"/>
-    <function name="" link="libgimpbase-gimpunit.html#id2628159"/>
-    <function name="" link="libgimpbase-gimpunit.html#id2628160"/>
+    <function name="" link="libgimpbase-gimpunit.html#id2628174"/>
+    <function name="" link="libgimpbase-gimpunit.html#id2628175"/>
     <function name="gimp_any_to_utf8 ()" link="libgimpbase-gimputils.html#gimp-any-to-utf8"/>
     <function name="gimp_filename_to_utf8 ()" link="libgimpbase-gimputils.html#gimp-filename-to-utf8"/>
     <function name="gimp_utf8_strtrim ()" link="libgimpbase-gimputils.html#gimp-utf8-strtrim"/>
@@ -213,7 +213,7 @@
     <function name="gimp_flags_get_first_value ()" link="libgimpbase-gimputils.html#gimp-flags-get-first-value"/>
     <function name="gimp_flags_value_get_desc ()" link="libgimpbase-gimputils.html#gimp-flags-value-get-desc"/>
     <function name="gimp_flags_value_get_help ()" link="libgimpbase-gimputils.html#gimp-flags-value-get-help"/>
-    <function name="" link="libgimpbase-gimputils.html#id2631392"/>
-    <function name="" link="libgimpbase-gimputils.html#id2631393"/>
+    <function name="" link="libgimpbase-gimputils.html#id2631401"/>
+    <function name="" link="libgimpbase-gimputils.html#id2631402"/>
   </functions>
 </book>

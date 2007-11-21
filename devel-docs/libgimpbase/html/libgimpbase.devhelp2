@@ -126,8 +126,8 @@
     <keyword type="function" name="gimp_path_to_str ()" link="libgimpbase-gimpenv.html#gimp-path-to-str"/>
     <keyword type="function" name="gimp_path_free ()" link="libgimpbase-gimpenv.html#gimp-path-free"/>
     <keyword type="function" name="gimp_path_get_user_writable_dir ()" link="libgimpbase-gimpenv.html#gimp-path-get-user-writable-dir"/>
-    <keyword type="" name="" link="libgimpbase-gimpenv.html#id2620790"/>
-    <keyword type="" name="" link="libgimpbase-gimpenv.html#id2620791"/>
+    <keyword type="" name="" link="libgimpbase-gimpenv.html#id2620817"/>
+    <keyword type="" name="" link="libgimpbase-gimpenv.html#id2620818"/>
     <keyword type="function" name="gimp_memsize_serialize ()" link="libgimpbase-gimpmemsize.html#gimp-memsize-serialize" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_memsize_deserialize ()" link="libgimpbase-gimpmemsize.html#gimp-memsize-deserialize" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_memsize_to_string ()" link="libgimpbase-gimpmemsize.html#gimp-memsize-to-string"/>
@@ -136,11 +136,11 @@
     <keyword type="macro" name="GIMP_IS_PARAM_SPEC_MEMSIZE()" link="libgimpbase-gimpmemsize.html#GIMP-IS-PARAM-SPEC-MEMSIZE:CAPS"/>
     <keyword type="function" name="gimp_param_spec_memsize ()" link="libgimpbase-gimpmemsize.html#gimp-param-spec-memsize" since="GIMP 2.4"/>
     <keyword type="macro" name="GIMP_VALUE_HOLDS_MEMSIZE()" link="libgimpbase-gimpmemsize.html#GIMP-VALUE-HOLDS-MEMSIZE:CAPS"/>
-    <keyword type="" name="" link="libgimpbase-gimpmemsize.html#id2621354"/>
-    <keyword type="" name="" link="libgimpbase-gimpmemsize.html#id2621355"/>
+    <keyword type="" name="" link="libgimpbase-gimpmemsize.html#id2621361"/>
+    <keyword type="" name="" link="libgimpbase-gimpmemsize.html#id2621362"/>
     <keyword type="function" name="gimp_rectangle_intersect ()" link="libgimpbase-gimprectangle.html#gimp-rectangle-intersect" since="GIMP 2.4"/>
-    <keyword type="" name="" link="libgimpbase-gimprectangle.html#id2621103"/>
-    <keyword type="" name="" link="libgimpbase-gimprectangle.html#id2621104"/>
+    <keyword type="" name="" link="libgimpbase-gimprectangle.html#id2621108"/>
+    <keyword type="" name="" link="libgimpbase-gimprectangle.html#id2621109"/>
     <keyword type="struct" name="GimpParasite" link="libgimpbase-gimpparasite.html#GimpParasite"/>
     <keyword type="function" name="gimp_parasite_new ()" link="libgimpbase-gimpparasite.html#gimp-parasite-new"/>
     <keyword type="function" name="gimp_parasite_free ()" link="libgimpbase-gimpparasite.html#gimp-parasite-free"/>
@@ -167,18 +167,18 @@
     <keyword type="macro" name="GIMP_IS_PARAM_SPEC_PARASITE()" link="libgimpbase-gimpparasite.html#GIMP-IS-PARAM-SPEC-PARASITE:CAPS"/>
     <keyword type="function" name="gimp_param_spec_parasite ()" link="libgimpbase-gimpparasite.html#gimp-param-spec-parasite"/>
     <keyword type="macro" name="GIMP_VALUE_HOLDS_PARASITE()" link="libgimpbase-gimpparasite.html#GIMP-VALUE-HOLDS-PARASITE:CAPS"/>
-    <keyword type="" name="" link="libgimpbase-gimpparasite.html#id2625066"/>
-    <keyword type="" name="" link="libgimpbase-gimpparasite.html#id2625067"/>
+    <keyword type="" name="" link="libgimpbase-gimpparasite.html#id2625082"/>
+    <keyword type="" name="" link="libgimpbase-gimpparasite.html#id2625084"/>
     <keyword type="macro" name="GIMP_PIXPIPE_MAXDIM" link="libgimpbase-gimpparasiteio.html#GIMP-PIXPIPE-MAXDIM:CAPS"/>
     <keyword type="function" name="gimp_pixpipe_params_init ()" link="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-init"/>
     <keyword type="function" name="gimp_pixpipe_params_parse ()" link="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-parse"/>
     <keyword type="function" name="gimp_pixpipe_params_build ()" link="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-build"/>
-    <keyword type="" name="" link="libgimpbase-gimpparasiteio.html#id2618619"/>
-    <keyword type="" name="" link="libgimpbase-gimpparasiteio.html#id2618620"/>
+    <keyword type="" name="" link="libgimpbase-gimpparasiteio.html#id2528461"/>
+    <keyword type="" name="" link="libgimpbase-gimpparasiteio.html#id2528462"/>
     <keyword type="function" name="GimpSignalHandlerFunc ()" link="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc"/>
     <keyword type="function" name="gimp_signal_private ()" link="libgimpbase-gimpsignal.html#gimp-signal-private"/>
-    <keyword type="" name="" link="libgimpbase-gimpsignal.html#id2617244"/>
-    <keyword type="" name="" link="libgimpbase-gimpsignal.html#id2617245"/>
+    <keyword type="" name="" link="libgimpbase-gimpsignal.html#id2622315"/>
+    <keyword type="" name="" link="libgimpbase-gimpsignal.html#id2622316"/>
     <keyword type="enum" name="enum GimpUnit" link="libgimpbase-gimpunit.html#GimpUnit"/>
     <keyword type="function" name="gimp_unit_get_number_of_units ()" link="libgimpbase-gimpunit.html#gimp-unit-get-number-of-units"/>
     <keyword type="function" name="gimp_unit_get_number_of_built_in_units ()" link="libgimpbase-gimpunit.html#gimp-unit-get-number-of-built-in-units"/>
@@ -197,8 +197,8 @@
     <keyword type="macro" name="GIMP_IS_PARAM_SPEC_UNIT()" link="libgimpbase-gimpunit.html#GIMP-IS-PARAM-SPEC-UNIT:CAPS"/>
     <keyword type="function" name="gimp_param_spec_unit ()" link="libgimpbase-gimpunit.html#gimp-param-spec-unit" since="GIMP 2.4"/>
     <keyword type="macro" name="GIMP_VALUE_HOLDS_UNIT()" link="libgimpbase-gimpunit.html#GIMP-VALUE-HOLDS-UNIT:CAPS"/>
-    <keyword type="" name="" link="libgimpbase-gimpunit.html#id2628159"/>
-    <keyword type="" name="" link="libgimpbase-gimpunit.html#id2628160"/>
+    <keyword type="" name="" link="libgimpbase-gimpunit.html#id2628174"/>
+    <keyword type="" name="" link="libgimpbase-gimpunit.html#id2628175"/>
     <keyword type="function" name="gimp_any_to_utf8 ()" link="libgimpbase-gimputils.html#gimp-any-to-utf8"/>
     <keyword type="function" name="gimp_filename_to_utf8 ()" link="libgimpbase-gimputils.html#gimp-filename-to-utf8"/>
     <keyword type="function" name="gimp_utf8_strtrim ()" link="libgimpbase-gimputils.html#gimp-utf8-strtrim"/>
@@ -213,7 +213,7 @@
     <keyword type="function" name="gimp_flags_get_first_value ()" link="libgimpbase-gimputils.html#gimp-flags-get-first-value" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_flags_value_get_desc ()" link="libgimpbase-gimputils.html#gimp-flags-value-get-desc" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_flags_value_get_help ()" link="libgimpbase-gimputils.html#gimp-flags-value-get-help" since="GIMP 2.2"/>
-    <keyword type="" name="" link="libgimpbase-gimputils.html#id2631392"/>
-    <keyword type="" name="" link="libgimpbase-gimputils.html#id2631393"/>
+    <keyword type="" name="" link="libgimpbase-gimputils.html#id2631401"/>
+    <keyword type="" name="" link="libgimpbase-gimputils.html#id2631402"/>
   </functions>
 </book>

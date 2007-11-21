@@ -81,7 +81,22 @@ GimpColorConfig implements
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpColorConfig-struct" role="struct"/>GimpColorConfig</title>
-<indexterm><primary>GimpColorConfig</primary></indexterm><programlisting>typedef struct _GimpColorConfig GimpColorConfig;</programlisting>
+<indexterm><primary>GimpColorConfig</primary></indexterm><programlisting>typedef struct {
+  GimpColorManagementMode     mode;
+  gchar                      *rgb_profile;
+  gchar                      *cmyk_profile;
+  gchar                      *display_profile;
+  gboolean                    display_profile_from_gdk;
+  gchar                      *printer_profile;
+  GimpColorRenderingIntent    display_intent;
+  GimpColorRenderingIntent    simulation_intent;
+
+  gchar                      *display_module;
+
+  gboolean                    simulation_gamut_check;
+  GimpRGB                     out_of_gamut_color;
+} GimpColorConfig;
+</programlisting>
 <para>
 
 </para></refsect2>
@@ -128,7 +143,7 @@ GimpColorConfig implements
 </refsect2>
 <refsect2><title><anchor id="GimpColorConfig--display-profile-from-gdk"/>The <literal>&quot;display-profile-from-gdk&quot;</literal> property</title>
 <indexterm><primary>GimpColorConfig:display-profile-from-gdk</primary></indexterm><programlisting>  &quot;display-profile-from-gdk&quot; <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
-<para>When enabled, GIMP will try to use the display color profile from the windowing system.  The configured monitor profile is then only used as a fallback.</para><para>Default value: TRUE</para>
+<para>When enabled, GIMP will try to use the display color profile from the windowing system.  The configured monitor profile is then only used as a fallback.</para><para>Default value: FALSE</para>
 </refsect2>
 <refsect2><title><anchor id="GimpColorConfig--display-rendering-intent"/>The <literal>&quot;display-rendering-intent&quot;</literal> property</title>
 <indexterm><primary>GimpColorConfig:display-rendering-intent</primary></indexterm><programlisting>  &quot;display-rendering-intent&quot; <link linkend="GimpColorRenderingIntent">GimpColorRenderingIntent</link>  : Read / Write / Construct</programlisting>

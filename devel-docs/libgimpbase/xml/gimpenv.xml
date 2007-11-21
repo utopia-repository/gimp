@@ -138,8 +138,11 @@ from the executable's full filename is used.
 <para>
 The returned string is owned by GIMP and must not be modified or
 freed. The returned string is in the encoding used for filenames by
-GLib, which isn't necessarily UTF-8. (On Windows it always is
-UTF-8.)</para>
+the C library, which isn't necessarily UTF-8. (On Windows, unlike
+the other similar functions here, the return value from this
+function is in the system codepage, never in UTF-8. It can thus be
+passed directly to the <link linkend="bindtextdomain"><function>bindtextdomain()</function></link> function from libintl which
+does not handle UTF-8.)</para>
 <para>
 
 </para><variablelist role="params">

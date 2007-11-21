@@ -1,3 +1,12 @@
+gimp (2.4.2-1) unstable; urgency=low
+
+  * New upstream version
+    - Don't take a fully transparent screenshot (Closes: #445445)
+  * Move gimp-python to Recommends
+  * Fix version on libexif-dev build-depend (Closes: #449129)
+
+ -- Ari Pollak <ari@debian.org>  Wed, 21 Nov 2007 12:07:09 -0500
+
 gimp (2.4.1-1) unstable; urgency=low
 
   * New upstream version

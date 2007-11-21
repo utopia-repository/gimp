@@ -53,7 +53,7 @@ G_BEGIN_DECLS
 #endif /* !G_ENABLE_DEBUG */
 
 
-/* BOOLEAN:STRING,POINTER,POINTER (/tmp/dbus-binding-tool-c-marshallers.5HE9WT:1) */
+/* BOOLEAN:STRING,POINTER,POINTER (/tmp/dbus-binding-tool-c-marshallers.DJ8D2T:1) */
 extern void dbus_glib_marshal_gimp_BOOLEAN__STRING_POINTER_POINTER (GClosure     *closure,
                                                                     GValue       *return_value,
                                                                     guint         n_param_values,
@@ -62,10 +62,10 @@ extern void dbus_glib_marshal_gimp_BOOLEAN__STRING_POINTER_POINTER (GClosure    
                                                                     gpointer      marshal_data);
 void
 dbus_glib_marshal_gimp_BOOLEAN__STRING_POINTER_POINTER (GClosure     *closure,
-                                                        GValue       *return_value,
+                                                        GValue       *return_value G_GNUC_UNUSED,
                                                         guint         n_param_values,
                                                         const GValue *param_values,
-                                                        gpointer      invocation_hint,
+                                                        gpointer      invocation_hint G_GNUC_UNUSED,
                                                         gpointer      marshal_data)
 {
   typedef gboolean (*GMarshalFunc_BOOLEAN__STRING_POINTER_POINTER) (gpointer     data1,
@@ -102,7 +102,7 @@ dbus_glib_marshal_gimp_BOOLEAN__STRING_POINTER_POINTER (GClosure     *closure,
   g_value_set_boolean (return_value, v_return);
 }
 
-/* BOOLEAN:POINTER (/tmp/dbus-binding-tool-c-marshallers.5HE9WT:2) */
+/* BOOLEAN:POINTER (/tmp/dbus-binding-tool-c-marshallers.DJ8D2T:2) */
 extern void dbus_glib_marshal_gimp_BOOLEAN__POINTER (GClosure     *closure,
                                                      GValue       *return_value,
                                                      guint         n_param_values,
@@ -111,10 +111,10 @@ extern void dbus_glib_marshal_gimp_BOOLEAN__POINTER (GClosure     *closure,
                                                      gpointer      marshal_data);
 void
 dbus_glib_marshal_gimp_BOOLEAN__POINTER (GClosure     *closure,
-                                         GValue       *return_value,
+                                         GValue       *return_value G_GNUC_UNUSED,
                                          guint         n_param_values,
                                          const GValue *param_values,
-                                         gpointer      invocation_hint,
+                                         gpointer      invocation_hint G_GNUC_UNUSED,
                                          gpointer      marshal_data)
 {
   typedef gboolean (*GMarshalFunc_BOOLEAN__POINTER) (gpointer     data1,

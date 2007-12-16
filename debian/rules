@@ -21,22 +21,26 @@ micro=$(shell echo ${version} | cut -d. -f3 | cut -d+ -f1)
 nextmicro=$(shell expr ${micro} + 1)
 
 LDFLAGS = -Wl,--as-needed
-DEB_CONFIGURE_EXTRA_FLAGS := \
-	--enable-python --enable-default-binary
+DEB_CONFIGURE_EXTRA_FLAGS := --enable-python --enable-default-binary
 DEB_BUILDDIR := $(DEB_SRCDIR)/build
 
-DEB_DH_SHLIBDEPS_ARGS_ALL := \
-	-Llibgimp2.0 -l$(CURDIR)/debian/libgimp2.0/usr/lib
+DEB_DH_SHLIBDEPS_ARGS_ALL := -Llibgimp2.0 -l$(CURDIR)/debian/libgimp2.0/usr/lib
 DEB_DH_SHLIBDEPS_ARGS_gimp := -Xlibcontroller_midi.so
 
 # For the stable branch:
-DEB_DH_MAKESHLIBS_ARGS_libgimp2.0 := -V "libgimp2.0 (>= 2.4.0-1)"
+libgimp2.0_shlibs := libgimp2.0 (>= $(major).0)
 # For the development branch:
-#DEB_DH_MAKESHLIBS_ARGS_libgimp2.0 := \
-#	-V "libgimp2.0 (>= ${version}), libgimp2.0 (<< ${major}.${nextmicro})"
+#libgimp2.0_shlibs := \
+#	libgimp2.0 (>= ${version}), libgimp2.0 (<< ${major}.${nextmicro})
+
+DEB_DH_MAKESHLIBS_ARGS_libgimp2.0 := -V "$(libgimp2.0_shlibs)"
 
 clean::
 	rm -rf build
+
+binary-predeb/gimp::
+	sed -i -e 's/$(libgimp2.0_shlibs), //' \
+		debian/gimp.substvars
 
 common-install-impl::
 	# Remove compiled python files from the distribution, they're compiled in

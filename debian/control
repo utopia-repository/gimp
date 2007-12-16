@@ -21,6 +21,7 @@ Build-Depends: debhelper (>= 5.0.53), cdbs (>= 0.4.37), autotools-dev,
 #Build-Conflicts: libgimp2.0
 XS-Vcs-Svn: svn://svn.debian.org/svn/collab-maint/deb-maint/gimp/
 XS-Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/deb-maint/gimp/
+Homepage: http://www.gimp.org
 
 Package: libgimp2.0
 Architecture: any
@@ -30,14 +31,6 @@ Recommends: gimp-data (>= ${source:Upstream-Version}), gimp-data (<= ${source:Up
 Description: Libraries for the GNU Image Manipulation Program
  This package includes the libgimp libraries, which are
  necessary to run GIMP and third-party GIMP plugins.
-
-Package: gimp-helpbrowser
-Architecture: any
-Section: graphics
-Depends: gimp (= ${binary:Version}), ${shlibs:Depends}
-Description: Built-in Help Browser plugin for GIMP
- This package includes the browser for reading documentation for GIMP,
- accessible from within the program.
 
 Package: gimp-python
 Architecture: any
@@ -79,9 +72,10 @@ Description: libcurl URI plugin for GIMP
 Package: gimp
 Architecture: any
 Section: graphics
-Depends: gimp-data (>= ${source:Upstream-Version}), gimp-data (<< ${source:Upstream-Version}-z), ${shlibs:Depends}
-Conflicts: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2), gimp-svg, gimp-print (<= 5.0.1-3)
-Replaces: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2), gimp-svg, gimp-print (<= 5.0.1-3)
+Provides: gimp-helpbrowser
+Depends: libgimp2.0 (>= ${source:Upstream-Version}), libgimp2.0 (<< ${source:Upstream-Version}-z), gimp-data (>= ${source:Upstream-Version}), gimp-data (<< ${source:Upstream-Version}-z), ${shlibs:Depends}
+Conflicts: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2), gimp-svg, gimp-print (<= 5.0.1-3), gimp-help (<< 2+0.13-1), gimp-helpbrowser
+Replaces: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2), gimp-svg, gimp-print (<= 5.0.1-3), gimp-helpbrowser
 Recommends: gimp-gnomevfs | gimp-libcurl, gimp-python (>= 2.4.0-1)
 Suggests: gimp-help-en | gimp-help, libgimp-perl, gimp-data-extras, libasound2
 Description: The GNU Image Manipulation Program

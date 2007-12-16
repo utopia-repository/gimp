@@ -1,3 +1,14 @@
+gimp (2.4.2-2) unstable; urgency=low
+
+  * Create custom libgimp2.0 depends for the gimp package since the two
+    versions need to be consistent (Closes: #452755)
+  * Conflict with older versions of gimp-help since they no longer work
+    with the new gimp. (Closes: #454109)
+  * Merge -helpbrowser back into gimp package; add Provides: gimp-helpbrowser
+    for compatibility with existing gimp-help packages
+
+ -- Ari Pollak <ari@debian.org>  Sat, 15 Dec 2007 19:25:55 -0500
+
 gimp (2.4.2-1) unstable; urgency=low
 
   * New upstream version

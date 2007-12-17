@@ -1,3 +1,209 @@
+2007-12-16  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.4.3 release.
+
+2007-12-13  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* libgimpbase/gimpenv.c (gimp_toplevel_directory) [Win32]: Use
+	the location of the libgimpbase DLL and not that of the main
+	executable (which will be the Python interpreter in the case of
+	python-fu) to determine the top-level GIMP installation
+	folder. (#502506)
+
+2007-12-12  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/base/tile-private.h
+        * app/base/tile-swap.c: Move the LARGE_SEEK and LARGE_TRUNCATE
+        macros from tile-private.h to tile-swap.c as they aren't used
+        anywhere else, and the helper function used on Windows was static
+        in tile-swap.c anyway. (#503124)
+
+2007-12-11  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	Merged from trunk:
+
+	* plug-ins/script-fu/tinyscheme/scheme.c (get_consecutive_cells):
+	Fix to prevent reporting out of memory when there should be plenty
+	of cells still available. See SourceForge bug #1794369.
+
+2007-12-11  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	Merged from trunk:
+
+	* plug-ins/script-fu/tinyscheme/scheme.c: Applied changes from
+	official version of TinyScheme which fix is_integer(). See
+	SourceForge bug #1593861.
+
+2007-12-11  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* libgimpbase/gimpwire.c (_gimp_read_read_string): NULL-terminate
+	all strings coming in over the wire protocol. Should help with bug
+	#498207.
+
+2007-12-10  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/display/gimpdisplayshell-callbacks.c
+	(gimp_display_shell_tool_events): if a device change happens, make
+	sure we update the new active tool's focus display and modifier
+	state. Fixes most of bug #493176.
+
+2007-12-10  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merged from trunk:
+
+	* app/paint/gimpheal.c: make the healing brush work properly
+	when dragged.  Fixes bug #492575.
+
+2007-12-07  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merged from trunk:
+
+	* app/display/gimpdisplayshell-draw.c: draw grid correctly when
+	non-integer spacing is combined with a large offset.  Fixes
+	bug #502374.
+
+	* app/core/gimpimage-snap.c: make snapping to grid work when
+	coord is less than the grid offset.
+
+2007-12-07  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* configure.in: fixed indentation of --help output.
+
+2007-12-07  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/pygimp/pygimp-colors.c
+	* plug-ins/pygimp/gimpcolormodule.c: removed calls to PyMem_Free().
+
+2007-12-07  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/pygimp/plug-ins/foggify.py: push/pop a context instead
+	of manually restoring the background color.
+
+2007-12-07  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/batch.c (batch_run): only show the message about using the
+	default batch interpreter when running in verbose mode.
+
+2007-12-05  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	* app/actions/tool-options-commands.c
+	(tool_options_save_to_cmd_callback)
+	(tool_options_restore_from_cmd_callback): Only care about
+	GIMP_CONFIG_PARAM_SERIALIZE properties, fixes bug #498948.
+
+2007-12-04  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	* app/core/gimpdrawable.[ch]: added new API
+	gimp_drawable_estimate_memsize() and virtual function
+	GimpDrawable::estimate_memsize() which estimate the memsize of a
+	drawable after scaling/resizing.
+
+	* app/core/gimplayer.c: implement the virtual function and take
+	the layer mask into account.
+
+	* app/core/gimpimage-item-list.[ch] (gimp_image_item_list_get_list):
+	added const qualifiers.
+
+	* app/core/gimpimage-scale.c (gimp_image_scale_check): use the new
+	function to correctly estimate the new size instead of scaling the
+	drawables' memsizes including all constant parts. Fixes bug #329468.
+
+2007-12-02  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/tiff-load.c (load_image): removed pointless and
+	untranslated warning.
+
+2007-12-02  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/jpeg/jpeg-load.c (jpeg_load_resolution): only set the
+	resolution if X_density and Y_density are not zero. Otherwise the
+	default resolution would be used anyway and the user sees an
+	annoying and confusion warning.
+
+2007-12-01  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	* docs/Makefile.am: Applied patch from Jesper de Jong that removes
+	an errant leading space in a command. Fixes bug #500826.
+
+2007-11-30  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/core/gimpprojection.c (gimp_projection_idle_render_init):
+	raised the idle renderer priority even higher (bug #499150).
+
+2007-11-30  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/base/tile-manager.c (tile_manager_invalidate_area): if no
+	tiles have been allocated, there's no need to invalidate any.
+	Should fix bug #500178.
+
+2007-11-29  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merged from trunk:
+
+	* plug-ins/Lighting/lighting_ui.c: make sure to update bumpmap
+	when combo is changed.  Addresses bug #500317.
+
+2007-11-29  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/core/gimpprojection.c (gimp_projection_idle_render_init):
+	raise the priority of the idle renderer to G_PRIORITY_DEFAULT_IDLE.
+	Should fix bug #499150.
+
+2007-11-28  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/actions/drawable-commands.c (drawable_flip_cmd_callback):
+	fixed orientation type used for linked items (bug #499161).
+
+	* app/core/gimpdrawable-transform.c
+	(gimp_drawable_transform_tiles_flip): fixed typo in if condition
+	and added more sanity checks.
+
+2007-11-26  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/wmf.c: avoid filename encoding problems by not
+	using wmf_file_open() but mapping the file into memory with
+	GMappedFile. Fixes bug #499329.
+
+2007-11-21  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.4.3 (interface age 3).
+
 2007-11-20  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.4.2 release.

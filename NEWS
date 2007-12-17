@@ -7,6 +7,40 @@ This is the stable branch of GIMP. No new features are being added
 here, just bug-fixes.
 
 
+Changes in GIMP 2.4.3
+=====================
+
+- avoid filename encoding problems in the WMF import plug-in (bug #499329)
+- fixed horizontal flipping of linked layers (bug #499161)
+- raised the priority of the display idle renderer to improve performance
+  on Win32 (bug #499150)
+- fixed a missing update in the Lighting plug-in UI (bug #500317)
+- fixed a potential crash in the projection code (bug #500178)
+- fixed a minor Makefile issue (bug #500826)
+- removed some pointless warnings from the JPEG and TIFF load plug-ins
+- fixed size calculation for the image size warning dialog (bug #329468)
+- fixed loading of tool options for the rectangle tools (bug #498948)
+- push/pop a context in the Fog filter
+- fixed potential crashes in the Python binding
+- corrected grid drawing with non-integer spacing (bug #502374)
+- fixed grid snapping for coordinates less than the grid offset
+- made the healing brush work properly when dragged (bug #492575)
+- update tool state when a device change happens (bug #493176)
+- improved validation of strings sent over the wire (bug #498207)
+- fixed integer check in Script-Fu (bug #498207)
+- fixed potential out-of-memory problem in Script-Fu
+- fixed compilation on msys/mingw (bug #503124)
+- fixed localisation of Python plug-ins on Win32 (bug #502506)
+- translation updates (ca, cs, de, gl, it, ko, lt, sv, uk)
+
+
+Contributors:
+
+   Jesper de Jong, Bill Skaggs, Michael Natterer, Sven Neumann,
+   Martin Nordholts, Kevin Cozens, Tor Lillqvist.
+
+
+
 Changes in GIMP 2.4.2
 =====================
 
@@ -31,6 +65,12 @@ Changes in GIMP 2.4.2
 - translation updates (ca, et, it, lt, pt, pt_BR, sr, sv)
 
 
+Contributors:
+
+   Kevin Cozens, Tor Lillqvist, Michael Natterer, Sven Neumann.
+
+
+
 Changes in GIMP 2.4.1
 =====================
 
@@ -50,3 +90,9 @@ Changes in GIMP 2.4.1
 - show changes to the rounded corners in the Rectangle Select tool (bug #418284)
 - reduced rounding errors in the display render routines (bug #490785)
 - translation updates (ca, de, et, lt, mk, pa, sv)
+
+
+Contributors:
+
+   Hans Breuer, Simon Budig, Kevin Cozens, Tor Lillqvist,
+   Michael Natterer, Sven Neumann, Martin Nordholts, Manish Singh.

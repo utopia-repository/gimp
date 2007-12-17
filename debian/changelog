@@ -1,3 +1,10 @@
+gimp (2.4.3-1) unstable; urgency=low
+
+  * New upstream version
+  * Start using symbol versioning in libgimp2.0
+
+ -- Ari Pollak <ari@debian.org>  Mon, 17 Dec 2007 12:56:48 -0500
+
 gimp (2.4.2-2) unstable; urgency=low
 
   * Create custom libgimp2.0 depends for the gimp package since the two

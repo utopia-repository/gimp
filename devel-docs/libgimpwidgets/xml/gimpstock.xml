@@ -326,7 +326,7 @@ RTL variant
 </para></refsect2>
 <refsect2>
 <title><anchor id="GIMP-STOCK-MOVE-TO-SCREEN:CAPS" role="macro"/>GIMP_STOCK_MOVE_TO_SCREEN</title>
-<indexterm><primary>GIMP_STOCK_MOVE_TO_SCREEN</primary></indexterm><programlisting>#define GIMP_STOCK_MOVE_TO_SCREEN           "gimp_move-to-screen"
+<indexterm><primary>GIMP_STOCK_MOVE_TO_SCREEN</primary></indexterm><programlisting>#define GIMP_STOCK_MOVE_TO_SCREEN           "gimp-move-to-screen"
 </programlisting>
 <para xml:base="../gimpstock.xml">
 <inlinegraphic fileref="stock-move-to-screen-24.png" format="png"></inlinegraphic>

@@ -39,6 +39,10 @@ clean::
 	rm -rf build
 
 binary-predeb/gimp::
+	# Remove automatically-generated libgimp dependency since we provide
+	# our own tight dependency in debian/control; this is needed
+	# because the gimp application contains a runtime check for the equivalent
+	# library version.
 	sed -i -e 's/$(libgimp2.0_shlibs), //' \
 		debian/gimp.substvars
 

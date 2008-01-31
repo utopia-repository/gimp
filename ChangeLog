@@ -1,3 +1,272 @@
+2008-01-30  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.4.4 release.
+
+2008-01-29  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	* plug-ins/script-fu/tinyscheme/scheme.c: Reverted changes that
+	prevent a seg fault due to bad syntax in LET*, LET, and LETREC.
+	The change enforced R5RS syntax breaking scripts that used bad
+	syntax (missing values) when they were updated to GIMP 2.4.
+
+2008-01-28  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/lcms.c (lcms_dialog): fixed crash on missing
+	profile (bug #512529).
+	(lcms_load_profile): fixed error messages.
+
+2008-01-27  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/gimpressionist/gimp.c: use a tile cache for better
+	performance. Addresses bug #512126.
+
+2008-01-24  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/core/gimpimage.c
+	* app/core/gimpimage-undo.c: fixed handling of the image undo
+	counter for the case where the user has undone the image to a
+	state before the last save and then pushes a new undo. Fixes
+	bug #509822.
+
+2008-01-23  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	* app/tools/gimprectangleselecttool.c
+	(gimp_rect_select_tool_execute): Reset the automatic undo/redo
+	mechanism so that commiting pending rectangles with Return
+	works (bug #511599).
+
+2008-01-23  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/display/gimpdisplayshell-selection.c: show the selection,
+	even if the window is flagged as invisible, but don't start the
+	animation. Addresses bug #505758.
+
+2008-01-23  Sven Neumann  <sven@gimp.org>
+
+	* app/dialogs/about-dialog.c (about_dialog_create): use a run-time
+	check for the GTK+ version instead of a compile time one.
+
+2008-01-23  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/imagemap/imap_about.c: check for the GTK+ version and
+	adjust the property name accordingly.
+
+2008-01-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/core/gimpprojection.c (gimp_projection_idle_render_init):
+	decreased the priority of the projection idle renderer to 150,
+	halfway between G_PRIORITY_HIGH_IDLE and G_PRIORITY_DEFAULT_IDLE.
+	Fixes bug #511214.
+
+2008-01-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/paint/gimpbrushcore.c (gimp_brush_core_create_bound_segs):
+	smooth the brush mask in order to obtain a simpler boundary.
+	Addresses bug #304798.
+
+2008-01-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/imagemap/imap_csim.y: increased buffer size. Addresses
+	bug #511072.
+
+	* plug-ins/imagemap/imap_csim_parse.[ch]: regenerated.
+
+2008-01-21  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	* app/widgets/gimpcolorbar.c (gimp_color_bar_class_init): fix the
+	ID of the "histogram-channel" property.
+
+2008-01-18  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merged from trunk:
+
+	* app/base/lut-funcs.c (equalize_lut_fuct): Don't 
+	equalize the alpha channel.  Fixes bug #510210.
+	
+2008-01-15  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	* app/tools/gimpimagemaptool.c (gimp_image_map_tool_notify_preview):
+	check for image_map_tool->image_map also when the preview is
+	switched on, not only when it's switched off.
+
+2008-01-15  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/bumpmap.c
+	* plug-ins/script-fu/scripts/swirltile.scm: applied patch from
+	Ulf-D. Ehlert that catches a potential division by zero in the
+	Bumpmap plug-in and adjusts the range of the Depth parameter in
+	the Swirl-Tile script (bug #509608).
+
+2008-01-15  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	Merged from trunk:
+
+	* plug-ins/script-fu/scripts/3d-outline.scm
+	* plug-ins/script-fu/scripts/add-bevel.scm
+	* plug-ins/script-fu/scripts/burn-in-anim.scm
+	* plug-ins/script-fu/scripts/camo.scm
+	* plug-ins/script-fu/scripts/circuit.scm
+	* plug-ins/script-fu/scripts/clothify.scm
+	* plug-ins/script-fu/scripts/coffee.scm
+	* plug-ins/script-fu/scripts/contactsheet.scm
+	* plug-ins/script-fu/scripts/distress-selection.scm
+	* plug-ins/script-fu/scripts/flatland.scm
+	* plug-ins/script-fu/scripts/font-map.scm
+	* plug-ins/script-fu/scripts/fuzzyborder.scm
+	* plug-ins/script-fu/scripts/glossy.scm
+	* plug-ins/script-fu/scripts/land.scm
+	* plug-ins/script-fu/scripts/lava.scm
+	* plug-ins/script-fu/scripts/old-photo.scm
+	* plug-ins/script-fu/scripts/predator.scm
+	* plug-ins/script-fu/scripts/rendermap.scm
+	* plug-ins/script-fu/scripts/ripply-anim.scm
+	* plug-ins/script-fu/scripts/script-fu-set-cmap.scm
+	* plug-ins/script-fu/scripts/select-to-brush.scm
+	* plug-ins/script-fu/scripts/select-to-image.scm
+	* plug-ins/script-fu/scripts/select-to-pattern.scm
+	* plug-ins/script-fu/scripts/speed-text.scm
+	* plug-ins/script-fu/scripts/spinning-globe.scm
+	* plug-ins/script-fu/scripts/test-sphere.scm
+	* plug-ins/script-fu/scripts/text-circle.scm
+	* plug-ins/script-fu/scripts/unsharp-mask.scm
+	* plug-ins/script-fu/scripts/xach-effect.scm: Variables in a let
+	block must be of the form (variable value) per the R5RS.
+
+2008-01-14  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	Merged from trunk:
+
+	* plug-ins/script-fu/scripts/script-fu-compat.init: Fixed definition
+	of 'prog1' due to recent fixes enforcing R5RS syntax for 'let'.
+
+2008-01-09  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* modules/colorsel_cmyk_lcms.c (colorsel_cmyk_class_init): don't
+	abort on errors in lcms.
+
+2008-01-09  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/convmatrix.c (convolve_image): round the result
+	of the convolution. Fixes bug #508114.
+
+2008-01-06  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/convmatrix.c (convolve_image): fixed out-of-bounds
+	array access.
+
+2008-01-05  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	* configure.in: Set default value of jpeg_ok to no. From a patch
+	by Hanno Boeck which fixes bug #507572.
+
+2008-01-04  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/config/gimpdisplayconfig.c: changed the default marching ants
+	speed to 200.
+
+2008-01-04  Hans Breuer  <hans@breuer.org>
+
+	* app/display/gimpdisplayshell-selection.c :
+	marching ants with G_PRIORITY_DEFAULT_IDLE, fixes bug #479875
+
+2008-01-04  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/tools/gimprotatetool.c (rotate_angle_changed): also update
+	trans_info[REAL_ANGLE]. Fixes bug #507167.
+
+2007-12-30  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/script-fu/scripts/chip-away.scm: applied another patch
+	from Ulf-D. Ehlert for the parameter range (bug #506110).
+
+2007-12-28  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/script-fu/scripts/chip-away.scm: applied patch from
+	Ulf-D. Ehlert that fixes the range of the "Chip amount" parameter
+	(bug #506110).
+
+2007-12-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/core/gimpimage-sample-points.c
+	(gimp_image_add_sample_point_at_pos): corrected undo description.
+
+2007-12-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* data/palettes/Tango.gpl: removed duplicate entry ("Untitled").
+
+2007-12-21  Sven Neumann  <sven@gimp.org>
+
+	* app/paint/gimpink.c: reverted last change.
+
+2007-12-21  Sven Neumann  <sven@gimp.org>
+
+	* app/paint/gimpink.c (gimp_ink_motion): applied patch from Alexia
+	Death that fixes Ink tool speed calculation when using a tablet
+	(bug #504711).
+
+2007-12-19  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	Merged from trunk:
+
+	* plug-ins/script-fu/tinyscheme/scheme.c: Added extra checks to stop
+	bad syntax in LET*, LET, and LETREC from causing a segmentation fault
+	in Linux. See SourceForge bug #1817986.
+
+2007-12-18  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/psd-load.c: applied patch from John Marshall
+	that fixes handling of PSD files with blank layer names (bug #504149).
+
+2007-12-18  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merged from trunk:
+
+	* libgimpwidgets/gimpstock.h:  fix typo.
+
+2007-12-16  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.4.4 (interface age 4).
+
 2007-12-16  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.4.3 release.

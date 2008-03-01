@@ -1,3 +1,32 @@
+2008-02-22  Changwoo Ryu  <cwryu@debian.org>
+
+	* ko.po: Updated Korean translation by Choi, Ji-Hui.
+
+2008-02-18  Yanko Kaneti  <yaneti@declera.com>
+
+	* bg.po: Fixed plural.
+
+2008-02-17  Yair Hershkovitz  <yairhr@gmail.com>
+
+	* he.po: Updated Hebrew translation.
+
+2008-02-13  Sven Neumann  <sven@gimp.org>
+
+	* ja.po: fixed Plural-Forms definition.
+
+2008-02-11  Stéphane Raimbault  <stephane.raimbault@gmail.com>
+
+	* fr.po: Fixed French translation by Julien Hardelin and Stéphane
+	Raimbault.
+
+2008-02-11  Inaki Larranaga Murgoitio  <dooteo@euskalgnu.org>
+
+	* eu.po: Updated Basque translation.
+
+2008-02-03  Stéphane Raimbault  <stephane.raimbault@gmail.com>
+
+	* fr.po: Fixed French translation (partial fix for bug #513008).
+
 2008-01-18  Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
 
 	* ru.po: Updated Russian translation.

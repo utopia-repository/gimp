@@ -114,7 +114,6 @@ run (const gchar      *name,
   GimpRunMode       run_mode;
   GimpPDBStatusType status = GIMP_PDB_SUCCESS;
   gint32            image_ID;
-  gint32            drawable_ID;
 
   run_mode = param[0].data.d_int32;
 
@@ -126,8 +125,7 @@ run (const gchar      *name,
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 
-  image_ID    = param[1].data.d_int32;
-  drawable_ID = param[2].data.d_int32;
+  image_ID = param[1].data.d_int32;
 
   if (strcmp (name, PRINT_PROC_NAME) == 0)
     {
@@ -189,6 +187,8 @@ print_image (gint32    image_ID,
 
   if (export != GIMP_EXPORT_EXPORT)
     image_ID = -1;
+
+  gtk_print_operation_set_unit (operation, GTK_UNIT_POINTS);
 
   g_signal_connect (operation, "begin-print",
                     G_CALLBACK (begin_print),

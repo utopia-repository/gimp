@@ -1,3 +1,182 @@
+2008-02-29  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.4.5 release.
+
+2008-02-27  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/core/gimpdrawable-transform.c (gimp_drawable_transform_affine):
+	pass the direction parameter down to
+	gimp_drawable_transform_tiles_affine() instead of hardcoding it to
+	GIMP_TRANSFORM_FORWARD. Fixes bug #518910.
+
+2008-02-27  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/gui/gui-vtable.c (gui_display_create): added a sanity check
+	which might help to catch the problem reported in bug #518905.
+
+2008-02-26  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	Merged from trunk:
+
+	* plug-ins/script-fu/scripts/frosty-logo.scm: Commited slightly
+	modified patch from LightningIsMyName. Fixes bug #472316. The
+	appearance of the sparkle layer could be better.
+
+2008-02-25  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimpcurvestool.c (curves_graph_events): in the
+	button-press handler for smooth curves, recalculate the curve
+	before updating the preview. Fixes bug #518012.
+
+2008-02-24  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/actions/edit-actions.c: removed default keyboard shortcuts
+	from actions that work with named buffers. Use Ctrl-Shift-V as the
+	default keyboard shortcut for "Paste As New Image" and
+	Ctrl-Shift-C for "Copy Visible".
+
+2008-02-24  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/print/print.c (print_image): added missing call to
+	gtk_print_operation_set_unit().
+
+2008-02-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/tileit.c
+	* plug-ins/common/warp.c
+	* plug-ins/common/struc.c: fixed the same problem as in the Wind
+	plug-in here as well (see bug #516369).
+
+2008-02-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/wind.c (render_wind) (render_blast): fixed calls
+	to gimp_drawable_mask_intersect() which was causing a crash as
+	reported in bug #516369.
+
+2008-02-21  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	* app/actions/plug-in-actions.c (plug_in_actions_history_changed):
+	don't call plug_in_actions_update() because that updated the
+	sensitivity of *all* plug-in actions according to the properties
+	of the *current* image. Instead, look up the original GtkAction of
+	the history items of *this* action group and copy the sensitivity
+	from that action. Fixes bug #517683.
+
+2008-02-19  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merged from trunk:
+
+	* plug-ins/jpeg/jpeg-exif.c: correctly record dimensions when
+	saving an image.  Fixes bug #517077.
+	
+2008-02-19  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/script-fu/scripts/glossy.scm: applied patch from
+	Ulf-D. Ehlert that fixes a bug in the Glossy script when used with
+	a pattern instead of a gradient blend (bug #517285).
+
+2008-02-16  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	* app/display/gimpdisplayshell-callbacks.c
+	* app/tools/gimpforegroundselecttool.c
+	* app/tools/gimpimagemaptool.c
+	* app/tools/gimpiscissorstool.c
+	* app/tools/gimprectangletool.c
+	* app/tools/gimptransformtool.c
+	* app/tools/gimpvectortool.c
+	* app/widgets/gimpcontainerpopup.c
+	* app/widgets/gimppaletteview.c
+	* libgimpwidgets/gimpcolorhexentry.c
+	* libgimpwidgets/gimpnumberpairentry.c
+	* plug-ins/script-fu/script-fu-console.c: Unify the handling of
+	various "Enter" and "Space" keysyms all over the place. Fixes bug
+	#516544 (also see gtk bug #515047).
+
+2008-02-14  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/text/gimpfont.c (gimp_font_get_sample_string): check if the
+	font has the glyphs from the sample string. Fixes bug #514021.
+
+2008-02-11  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* libgimpthumb/Makefile.am (libgimpthumb_2_0_la_LIBADD):
+	explicitly added GLIB_LIBS. Fixes bug #515566.
+
+2008-02-05  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/dialogs/image-new-dialog.c (image_new_create_image):
+	use the user context when creating the new image. Fixes bug #514082.
+
+2008-02-05  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/mail.c (to64): fixed a bug in the base64 encoding.
+
+2008-02-05  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/psd-save.c (write_pixel_data): check if drawable
+	is a layer before trying to access the layer mask.
+
+2008-02-04  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/display/gimpdisplayshell-preview.c
+	(gimp_display_shell_trace_tri_edge): use a gint for direction, not
+	a gchar which might be unsigned. Patch from Giuliano Pochini;
+	fixes bug #340965.
+
+2008-02-04  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/paint/gimpbrushcore.c (gimp_brush_core_create_bound_segs):
+	changed workaround to look at the brush size instead (bug #514309).
+
+2008-02-04  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/paint/gimpbrushcore.c (gimp_brush_core_create_bound_segs):
+	only smooth the inner area of the mask so that we don't enlarge
+	the boundary for hard brushes (bug #304798).
+
+2008-01-31  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/print/print.c (run): don't access param[2], we only
+	accept two parameters.
+
+2008-01-30  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.4.5 (interface age 5).
+
 2008-01-30  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.4.4 release.

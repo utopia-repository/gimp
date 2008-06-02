@@ -4,7 +4,7 @@
 
 <refentry id="GimpPageSelector">
 <refmeta>
-<refentrytitle role="top_of_page">GimpPageSelector</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpPageSelector.top_of_page">GimpPageSelector</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpPageSelector.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpPageSelector-struct">GimpPageSelector</link>;
 enum                <link linkend="GimpPageSelectorTarget">GimpPageSelectorTarget</link>;
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-page-selector-new">gimp_page_selector_new</link>              (void);
@@ -58,14 +55,12 @@ enum                <link linkend="GimpPageSelectorTarget">GimpPageSelectorTarge
                                                          const <link linkend="gchar">gchar</link> *range);
 <link linkend="gchar">gchar</link>*              <link linkend="gimp-page-selector-get-selected-range">gimp_page_selector_get_selected_range</link>
                                                         (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpPageSelector.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -80,7 +75,7 @@ enum                <link linkend="GimpPageSelectorTarget">GimpPageSelectorTarge
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpPageSelector.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpPageSelector implements
@@ -89,43 +84,41 @@ GimpPageSelector implements
 </refsect1>
 
 
-<refsect1 role="properties">
+<refsect1 id="GimpPageSelector.properties" role="properties">
 <title role="properties.title">Properties</title>
 <synopsis>
-
   &quot;<link linkend="GimpPageSelector--n-pages">n-pages</link>&quot;                  <link linkend="gint">gint</link>                  : Read / Write
   &quot;<link linkend="GimpPageSelector--target">target</link>&quot;                   <link linkend="GimpPageSelectorTarget">GimpPageSelectorTarget</link>  : Read / Write
 </synopsis>
 </refsect1>
 
-<refsect1 role="signal_proto">
+<refsect1 id="GimpPageSelector.signals" role="signal_proto">
 <title role="signal_proto.title">Signals</title>
 <synopsis>
-
   &quot;<link linkend="GimpPageSelector-activate">activate</link>&quot;                                       : Run First / Action
   &quot;<link linkend="GimpPageSelector-selection-changed">selection-changed</link>&quot;                              : Run First
 </synopsis>
 </refsect1>
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpPageSelector.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpPageSelector.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpPageSelector-struct" role="struct"/>GimpPageSelector</title>
-<indexterm><primary>GimpPageSelector</primary></indexterm><programlisting>typedef struct _GimpPageSelector GimpPageSelector;</programlisting>
+<refsect2 id="GimpPageSelector-struct" role="struct">
+<title>GimpPageSelector</title>
+<indexterm zone="GimpPageSelector-struct"><primary>GimpPageSelector</primary></indexterm><programlisting>typedef struct _GimpPageSelector GimpPageSelector;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="GimpPageSelectorTarget" role="enum"/>enum GimpPageSelectorTarget</title>
-<indexterm><primary>GimpPageSelectorTarget</primary></indexterm><programlisting>typedef enum
+<refsect2 id="GimpPageSelectorTarget" role="enum">
+<title>enum GimpPageSelectorTarget</title>
+<indexterm zone="GimpPageSelectorTarget"><primary>GimpPageSelectorTarget</primary></indexterm><programlisting>typedef enum
 {
   GIMP_PAGE_SELECTOR_TARGET_LAYERS, /*&lt; desc="Layers" &gt;*/
   GIMP_PAGE_SELECTOR_TARGET_IMAGES  /*&lt; desc="Images" &gt;*/
@@ -134,9 +127,9 @@ GimpPageSelector implements
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-new" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_new ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_page_selector_new              (void);</programlisting>
+<refsect2 id="gimp-page-selector-new" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_new ()</title>
+<indexterm zone="gimp-page-selector-new" role="GIMP 2.4"><primary>gimp_page_selector_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_page_selector_new              (void);</programlisting>
 <para>
 Creates a new <link linkend="GimpPageSelector"><type>GimpPageSelector</type></link> widget.</para>
 <para>
@@ -147,9 +140,9 @@ Creates a new <link linkend="GimpPageSelector"><type>GimpPageSelector</type></li
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-set-n-pages" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_set_n_pages ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_set_n_pages</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_set_n_pages      (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
+<refsect2 id="gimp-page-selector-set-n-pages" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_set_n_pages ()</title>
+<indexterm zone="gimp-page-selector-set-n-pages" role="GIMP 2.4"><primary>gimp_page_selector_set_n_pages</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_set_n_pages      (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
                                                          <link linkend="gint">gint</link> n_pages);</programlisting>
 <para>
 Sets the number of pages in the document to open.</para>
@@ -164,9 +157,9 @@ Sets the number of pages in the document to open.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-get-n-pages" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_get_n_pages ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_get_n_pages</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_page_selector_get_n_pages      (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector);</programlisting>
+<refsect2 id="gimp-page-selector-get-n-pages" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_get_n_pages ()</title>
+<indexterm zone="gimp-page-selector-get-n-pages" role="GIMP 2.4"><primary>gimp_page_selector_get_n_pages</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_page_selector_get_n_pages      (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector);</programlisting>
 <para>
 </para>
 <para>
@@ -180,9 +173,9 @@ Sets the number of pages in the document to open.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-set-target" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_set_target ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_set_target</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_set_target       (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
+<refsect2 id="gimp-page-selector-set-target" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_set_target ()</title>
+<indexterm zone="gimp-page-selector-set-target" role="GIMP 2.4"><primary>gimp_page_selector_set_target</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_set_target       (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
                                                          <link linkend="GimpPageSelectorTarget">GimpPageSelectorTarget</link> target);</programlisting>
 <para>
 </para>
@@ -197,9 +190,9 @@ Sets the number of pages in the document to open.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-get-target" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_get_target ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_get_target</primary></indexterm><programlisting><link linkend="GimpPageSelectorTarget">GimpPageSelectorTarget</link> gimp_page_selector_get_target    (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector);</programlisting>
+<refsect2 id="gimp-page-selector-get-target" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_get_target ()</title>
+<indexterm zone="gimp-page-selector-get-target" role="GIMP 2.4"><primary>gimp_page_selector_get_target</primary></indexterm><programlisting><link linkend="GimpPageSelectorTarget">GimpPageSelectorTarget</link> gimp_page_selector_get_target    (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector);</programlisting>
 <para>
 </para>
 <para>
@@ -213,9 +206,9 @@ Sets the number of pages in the document to open.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-set-page-thumbnail" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_set_page_thumbnail ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_set_page_thumbnail</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_set_page_thumbnail
+<refsect2 id="gimp-page-selector-set-page-thumbnail" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_set_page_thumbnail ()</title>
+<indexterm zone="gimp-page-selector-set-page-thumbnail" role="GIMP 2.4"><primary>gimp_page_selector_set_page_thumbnail</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_set_page_thumbnail
                                                         (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
                                                          <link linkend="gint">gint</link> page_no,
                                                          <link linkend="GdkPixbuf">GdkPixbuf</link> *thumbnail);</programlisting>
@@ -236,9 +229,9 @@ be used if no page thumbnail is set.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-get-page-thumbnail" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_get_page_thumbnail ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_get_page_thumbnail</primary></indexterm><programlisting><link linkend="GdkPixbuf">GdkPixbuf</link>*          gimp_page_selector_get_page_thumbnail
+<refsect2 id="gimp-page-selector-get-page-thumbnail" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_get_page_thumbnail ()</title>
+<indexterm zone="gimp-page-selector-get-page-thumbnail" role="GIMP 2.4"><primary>gimp_page_selector_get_page_thumbnail</primary></indexterm><programlisting><link linkend="GdkPixbuf">GdkPixbuf</link>*          gimp_page_selector_get_page_thumbnail
                                                         (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
                                                          <link linkend="gint">gint</link> page_no);</programlisting>
 <para>
@@ -259,9 +252,9 @@ be used if no page thumbnail is set.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-set-page-label" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_set_page_label ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_set_page_label</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_set_page_label   (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
+<refsect2 id="gimp-page-selector-set-page-label" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_set_page_label ()</title>
+<indexterm zone="gimp-page-selector-set-page-label" role="GIMP 2.4"><primary>gimp_page_selector_set_page_label</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_set_page_label   (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
                                                          <link linkend="gint">gint</link> page_no,
                                                          const <link linkend="gchar">gchar</link> *label);</programlisting>
 <para>
@@ -280,9 +273,9 @@ be used if no page thumbnail is set.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-get-page-label" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_get_page_label ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_get_page_label</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_page_selector_get_page_label   (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
+<refsect2 id="gimp-page-selector-get-page-label" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_get_page_label ()</title>
+<indexterm zone="gimp-page-selector-get-page-label" role="GIMP 2.4"><primary>gimp_page_selector_get_page_label</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_page_selector_get_page_label   (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
                                                          <link linkend="gint">gint</link> page_no);</programlisting>
 <para>
 </para>
@@ -302,9 +295,9 @@ be used if no page thumbnail is set.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-select-all" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_select_all ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_select_all</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_select_all       (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector);</programlisting>
+<refsect2 id="gimp-page-selector-select-all" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_select_all ()</title>
+<indexterm zone="gimp-page-selector-select-all" role="GIMP 2.4"><primary>gimp_page_selector_select_all</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_select_all       (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector);</programlisting>
 <para>
 Selects all pages.</para>
 <para>
@@ -315,9 +308,9 @@ Selects all pages.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-unselect-all" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_unselect_all ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_unselect_all</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_unselect_all     (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector);</programlisting>
+<refsect2 id="gimp-page-selector-unselect-all" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_unselect_all ()</title>
+<indexterm zone="gimp-page-selector-unselect-all" role="GIMP 2.4"><primary>gimp_page_selector_unselect_all</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_unselect_all     (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector);</programlisting>
 <para>
 Unselects all pages.</para>
 <para>
@@ -328,9 +321,9 @@ Unselects all pages.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-select-page" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_select_page ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_select_page</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_select_page      (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
+<refsect2 id="gimp-page-selector-select-page" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_select_page ()</title>
+<indexterm zone="gimp-page-selector-select-page" role="GIMP 2.4"><primary>gimp_page_selector_select_page</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_select_page      (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
                                                          <link linkend="gint">gint</link> page_no);</programlisting>
 <para>
 Adds a page to the selection.</para>
@@ -345,9 +338,9 @@ Adds a page to the selection.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-unselect-page" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_unselect_page ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_unselect_page</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_unselect_page    (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
+<refsect2 id="gimp-page-selector-unselect-page" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_unselect_page ()</title>
+<indexterm zone="gimp-page-selector-unselect-page" role="GIMP 2.4"><primary>gimp_page_selector_unselect_page</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_unselect_page    (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
                                                          <link linkend="gint">gint</link> page_no);</programlisting>
 <para>
 Removes a page from the selection.</para>
@@ -362,9 +355,9 @@ Removes a page from the selection.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-page-is-selected" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_page_is_selected ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_page_is_selected</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_page_selector_page_is_selected (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
+<refsect2 id="gimp-page-selector-page-is-selected" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_page_is_selected ()</title>
+<indexterm zone="gimp-page-selector-page-is-selected" role="GIMP 2.4"><primary>gimp_page_selector_page_is_selected</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_page_selector_page_is_selected (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
                                                          <link linkend="gint">gint</link> page_no);</programlisting>
 <para>
 </para>
@@ -382,9 +375,9 @@ Removes a page from the selection.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-get-selected-pages" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_get_selected_pages ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_get_selected_pages</primary></indexterm><programlisting><link linkend="gint">gint</link>*               gimp_page_selector_get_selected_pages
+<refsect2 id="gimp-page-selector-get-selected-pages" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_get_selected_pages ()</title>
+<indexterm zone="gimp-page-selector-get-selected-pages" role="GIMP 2.4"><primary>gimp_page_selector_get_selected_pages</primary></indexterm><programlisting><link linkend="gint">gint</link>*               gimp_page_selector_get_selected_pages
                                                         (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
                                                          <link linkend="gint">gint</link> *n_selected_pages);</programlisting>
 <para>
@@ -404,9 +397,9 @@ Removes a page from the selection.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-select-range" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_select_range ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_select_range</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_select_range     (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
+<refsect2 id="gimp-page-selector-select-range" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_select_range ()</title>
+<indexterm zone="gimp-page-selector-select-range" role="GIMP 2.4"><primary>gimp_page_selector_select_range</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_page_selector_select_range     (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector,
                                                          const <link linkend="gchar">gchar</link> *range);</programlisting>
 <para>
 Selectes the pages described by <link linkend="range"><literal>range</literal></link>. The range string is a
@@ -428,9 +421,9 @@ overlapping pages and ranges will be merged.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-page-selector-get-selected-range" role="function" condition="since:GIMP 2.4"/>gimp_page_selector_get_selected_range ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_page_selector_get_selected_range</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_page_selector_get_selected_range
+<refsect2 id="gimp-page-selector-get-selected-range" role="function" condition="since:GIMP 2.4">
+<title>gimp_page_selector_get_selected_range ()</title>
+<indexterm zone="gimp-page-selector-get-selected-range" role="GIMP 2.4"><primary>gimp_page_selector_get_selected_range</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_page_selector_get_selected_range
                                                         (<link linkend="GimpPageSelector">GimpPageSelector</link> *selector);</programlisting>
 <para>
 </para>
@@ -449,10 +442,10 @@ overlapping pages and ranges will be merged.</para>
 </para></refsect2>
 
 </refsect1>
-<refsect1 role="property_details">
+<refsect1 id="GimpPageSelector.property-details" role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpPageSelector--n-pages"/>The <literal>&quot;n-pages&quot;</literal> property</title>
-<indexterm role="GIMP 2.4"><primary>GimpPageSelector:n-pages</primary></indexterm><programlisting>  &quot;n-pages&quot;                  <link linkend="gint">gint</link>                  : Read / Write</programlisting>
+<refsect2 id="GimpPageSelector--n-pages"><title>The <literal>&quot;n-pages&quot;</literal> property</title>
+<indexterm zone="GimpPageSelector--n-pages" role="GIMP 2.4"><primary>GimpPageSelector:n-pages</primary></indexterm><programlisting>  &quot;n-pages&quot;                  <link linkend="gint">gint</link>                  : Read / Write</programlisting>
 <para>
 The number of pages of the document to open.</para>
 <para>
@@ -462,8 +455,8 @@ The number of pages of the document to open.</para>
 <para>Since  GIMP 2.4
 </para>
 </refsect2>
-<refsect2><title><anchor id="GimpPageSelector--target"/>The <literal>&quot;target&quot;</literal> property</title>
-<indexterm role="GIMP 2.4"><primary>GimpPageSelector:target</primary></indexterm><programlisting>  &quot;target&quot;                   <link linkend="GimpPageSelectorTarget">GimpPageSelectorTarget</link>  : Read / Write</programlisting>
+<refsect2 id="GimpPageSelector--target"><title>The <literal>&quot;target&quot;</literal> property</title>
+<indexterm zone="GimpPageSelector--target" role="GIMP 2.4"><primary>GimpPageSelector:target</primary></indexterm><programlisting>  &quot;target&quot;                   <link linkend="GimpPageSelectorTarget">GimpPageSelectorTarget</link>  : Read / Write</programlisting>
 <para>
 The target to open the document to.</para>
 <para>
@@ -475,10 +468,10 @@ The target to open the document to.</para>
 
 </refsect1>
 
-<refsect1 role="signals">
+<refsect1 id="GimpPageSelector.signal-details" role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpPageSelector-activate"/>The <literal>&quot;activate&quot;</literal> signal</title>
-<indexterm role="GIMP 2.4"><primary>GimpPageSelector::activate</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpPageSelector">GimpPageSelector</link> *widget,
+<refsect2 id="GimpPageSelector-activate"><title>The <literal>&quot;activate&quot;</literal> signal</title>
+<indexterm zone="GimpPageSelector-activate" role="GIMP 2.4"><primary>GimpPageSelector::activate</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpPageSelector">GimpPageSelector</link> *widget,
                                                         <link linkend="gpointer">gpointer</link>          user_data)      : Run First / Action</programlisting>
 <para>
 The "activate" signal on GimpPageSelector is an action signal. It
@@ -492,8 +485,8 @@ is emitted when a user double-clicks an item in the page selection.</para>
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
-</para></refsect2><refsect2><title><anchor id="GimpPageSelector-selection-changed"/>The <literal>&quot;selection-changed&quot;</literal> signal</title>
-<indexterm role="GIMP 2.4"><primary>GimpPageSelector::selection-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpPageSelector">GimpPageSelector</link> *widget,
+</para></refsect2><refsect2 id="GimpPageSelector-selection-changed"><title>The <literal>&quot;selection-changed&quot;</literal> signal</title>
+<indexterm zone="GimpPageSelector-selection-changed" role="GIMP 2.4"><primary>GimpPageSelector::selection-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpPageSelector">GimpPageSelector</link> *widget,
                                                         <link linkend="gpointer">gpointer</link>          user_data)      : Run First</programlisting>
 <para>
 This signal is emitted whenever the set of selected pages changes.</para>
@@ -511,6 +504,4 @@ This signal is emitted whenever the set of selected pages changes.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

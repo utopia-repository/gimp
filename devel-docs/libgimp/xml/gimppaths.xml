@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimppaths">
 <refmeta>
-<refentrytitle role="top_of_page">gimppaths</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimppaths.top_of_page">gimppaths</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimppaths.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="gchar">gchar</link>**             <link linkend="gimp-path-list">gimp_path_list</link>                      (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gint">gint</link> *num_paths);
 <link linkend="gint">gint</link>                <link linkend="gimp-path-get-points">gimp_path_get_points</link>                (<link linkend="gint32">gint32</link> image_ID,
@@ -78,18 +75,18 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimppaths.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Operations related to paths.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimppaths.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-path-list" role="function" condition="deprecated:"/>gimp_path_list ()</title>
-<indexterm role="deprecated"><primary>gimp_path_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**             gimp_path_list                      (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-path-list" role="function" condition="deprecated:">
+<title>gimp_path_list ()</title>
+<indexterm zone="gimp-path-list" role="deprecated"><primary>gimp_path_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**             gimp_path_list                      (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gint">gint</link> *num_paths);</programlisting>
 <warning><para><literal>gimp_path_list</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -106,9 +103,9 @@ This procedure is deprecated! Use <link linkend="gimp-image-get-vectors"><functi
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> List of the paths belonging to this image.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-path-get-points" role="function" condition="deprecated:"/>gimp_path_get_points ()</title>
-<indexterm role="deprecated"><primary>gimp_path_get_points</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_path_get_points                (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-path-get-points" role="function" condition="deprecated:">
+<title>gimp_path_get_points ()</title>
+<indexterm zone="gimp-path-get-points" role="deprecated"><primary>gimp_path_get_points</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_path_get_points                (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> *path_closed,
                                                          <link linkend="gint">gint</link> *num_path_point_details,
@@ -138,9 +135,9 @@ instead.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The type of the path. Currently only one type (1 = Bezier) is supported.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-path-get-current" role="function" condition="deprecated:"/>gimp_path_get_current ()</title>
-<indexterm role="deprecated"><primary>gimp_path_get_current</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_path_get_current               (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<refsect2 id="gimp-path-get-current" role="function" condition="deprecated:">
+<title>gimp_path_get_current ()</title>
+<indexterm zone="gimp-path-get-current" role="deprecated"><primary>gimp_path_get_current</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_path_get_current               (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <warning><para><literal>gimp_path_get_current</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-image-get-active-vectors"><function>gimp_image_get_active_vectors()</function></link>
@@ -154,9 +151,9 @@ instead.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The name of the current path.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-path-set-current" role="function" condition="deprecated:"/>gimp_path_set_current ()</title>
-<indexterm role="deprecated"><primary>gimp_path_set_current</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_set_current               (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-path-set-current" role="function" condition="deprecated:">
+<title>gimp_path_set_current ()</title>
+<indexterm zone="gimp-path-set-current" role="deprecated"><primary>gimp_path_set_current</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_set_current               (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="gchar">gchar</link> *name);</programlisting>
 <warning><para><literal>gimp_path_set_current</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -174,9 +171,9 @@ instead.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-path-set-points" role="function" condition="deprecated:"/>gimp_path_set_points ()</title>
-<indexterm role="deprecated"><primary>gimp_path_set_points</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_set_points                (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-path-set-points" role="function" condition="deprecated:">
+<title>gimp_path_set_points ()</title>
+<indexterm zone="gimp-path-set-points" role="deprecated"><primary>gimp_path_set_points</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_set_points                (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> ptype,
                                                          <link linkend="gint">gint</link> num_path_points,
@@ -206,9 +203,9 @@ instead.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-path-stroke-current" role="function" condition="deprecated:"/>gimp_path_stroke_current ()</title>
-<indexterm role="deprecated"><primary>gimp_path_stroke_current</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_stroke_current            (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<refsect2 id="gimp-path-stroke-current" role="function" condition="deprecated:">
+<title>gimp_path_stroke_current ()</title>
+<indexterm zone="gimp-path-stroke-current" role="deprecated"><primary>gimp_path_stroke_current</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_stroke_current            (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <warning><para><literal>gimp_path_stroke_current</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-edit-stroke-vectors"><function>gimp_edit_stroke_vectors()</function></link>
@@ -222,9 +219,9 @@ instead.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-path-get-point-at-dist" role="function" condition="deprecated:"/>gimp_path_get_point_at_dist ()</title>
-<indexterm role="deprecated"><primary>gimp_path_get_point_at_dist</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_path_get_point_at_dist         (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-path-get-point-at-dist" role="function" condition="deprecated:">
+<title>gimp_path_get_point_at_dist ()</title>
+<indexterm zone="gimp-path-get-point-at-dist" role="deprecated"><primary>gimp_path_get_point_at_dist</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_path_get_point_at_dist         (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gdouble">gdouble</link> distance,
                                                          <link linkend="gint">gint</link> *y_point,
                                                          <link linkend="gdouble">gdouble</link> *slope);</programlisting>
@@ -250,9 +247,9 @@ This procedure is deprecated! Use
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The x position of the point.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-path-get-tattoo" role="function" condition="deprecated:"/>gimp_path_get_tattoo ()</title>
-<indexterm role="deprecated"><primary>gimp_path_get_tattoo</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_path_get_tattoo                (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-path-get-tattoo" role="function" condition="deprecated:">
+<title>gimp_path_get_tattoo ()</title>
+<indexterm zone="gimp-path-get-tattoo" role="deprecated"><primary>gimp_path_get_tattoo</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_path_get_tattoo                (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="gchar">gchar</link> *name);</programlisting>
 <warning><para><literal>gimp_path_get_tattoo</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -269,9 +266,9 @@ This procedure is deprecated! Use <link linkend="gimp-vectors-get-tattoo"><funct
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The tattoo associated with the named path.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-get-path-by-tattoo" role="function" condition="deprecated:"/>gimp_get_path_by_tattoo ()</title>
-<indexterm role="deprecated"><primary>gimp_get_path_by_tattoo</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_get_path_by_tattoo             (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-get-path-by-tattoo" role="function" condition="deprecated:">
+<title>gimp_get_path_by_tattoo ()</title>
+<indexterm zone="gimp-get-path-by-tattoo" role="deprecated"><primary>gimp_get_path_by_tattoo</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_get_path_by_tattoo             (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gint">gint</link> tattoo);</programlisting>
 <warning><para><literal>gimp_get_path_by_tattoo</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -289,9 +286,9 @@ instead.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The name of the path with the specified tattoo.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-path-delete" role="function" condition="deprecated:"/>gimp_path_delete ()</title>
-<indexterm role="deprecated"><primary>gimp_path_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_delete                    (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-path-delete" role="function" condition="deprecated:">
+<title>gimp_path_delete ()</title>
+<indexterm zone="gimp-path-delete" role="deprecated"><primary>gimp_path_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_delete                    (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="gchar">gchar</link> *name);</programlisting>
 <warning><para><literal>gimp_path_delete</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -309,9 +306,9 @@ instead.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-path-get-locked" role="function" condition="deprecated:"/>gimp_path_get_locked ()</title>
-<indexterm role="deprecated"><primary>gimp_path_get_locked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_get_locked                (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-path-get-locked" role="function" condition="deprecated:">
+<title>gimp_path_get_locked ()</title>
+<indexterm zone="gimp-path-get-locked" role="deprecated"><primary>gimp_path_get_locked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_get_locked                (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="gchar">gchar</link> *name);</programlisting>
 <warning><para><literal>gimp_path_get_locked</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -328,9 +325,9 @@ This procedure is deprecated! Use <link linkend="gimp-vectors-get-linked"><funct
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the path is locked, FALSE otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-path-set-locked" role="function" condition="deprecated:"/>gimp_path_set_locked ()</title>
-<indexterm role="deprecated"><primary>gimp_path_set_locked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_set_locked                (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-path-set-locked" role="function" condition="deprecated:">
+<title>gimp_path_set_locked ()</title>
+<indexterm zone="gimp-path-set-locked" role="deprecated"><primary>gimp_path_set_locked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_set_locked                (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gboolean">gboolean</link> locked);</programlisting>
 <warning><para><literal>gimp_path_set_locked</literal> is deprecated and should not be used in newly-written code.</para></warning>
@@ -351,9 +348,9 @@ This procedure is deprecated! Use <link linkend="gimp-vectors-set-linked"><funct
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-path-set-tattoo" role="function" condition="deprecated:"/>gimp_path_set_tattoo ()</title>
-<indexterm role="deprecated"><primary>gimp_path_set_tattoo</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_set_tattoo                (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-path-set-tattoo" role="function" condition="deprecated:">
+<title>gimp_path_set_tattoo ()</title>
+<indexterm zone="gimp-path-set-tattoo" role="deprecated"><primary>gimp_path_set_tattoo</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_set_tattoo                (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> tattovalue);</programlisting>
 <warning><para><literal>gimp_path_set_tattoo</literal> is deprecated and should not be used in newly-written code.</para></warning>
@@ -374,9 +371,9 @@ This procedure is deprecated! Use <link linkend="gimp-vectors-set-tattoo"><funct
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-path-to-selection" role="function" condition="deprecated:"/>gimp_path_to_selection ()</title>
-<indexterm role="deprecated"><primary>gimp_path_to_selection</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_to_selection              (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-path-to-selection" role="function" condition="deprecated:">
+<title>gimp_path_to_selection ()</title>
+<indexterm zone="gimp-path-to-selection" role="deprecated"><primary>gimp_path_to_selection</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_to_selection              (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="GimpChannelOps">GimpChannelOps</link> op,
                                                          <link linkend="gboolean">gboolean</link> antialias,
@@ -414,9 +411,9 @@ instead.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-path-import" role="function" condition="deprecated:"/>gimp_path_import ()</title>
-<indexterm role="deprecated"><primary>gimp_path_import</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_import                    (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-path-import" role="function" condition="deprecated:">
+<title>gimp_path_import ()</title>
+<indexterm zone="gimp-path-import" role="deprecated"><primary>gimp_path_import</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_import                    (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="gchar">gchar</link> *filename,
                                                          <link linkend="gboolean">gboolean</link> merge,
                                                          <link linkend="gboolean">gboolean</link> scale);</programlisting>
@@ -448,6 +445,4 @@ instead.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

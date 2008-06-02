@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpplugin">
 <refmeta>
-<refentrytitle role="top_of_page">gimpplugin</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimpplugin.top_of_page">gimpplugin</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimpplugin.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-plugin-domain-register">gimp_plugin_domain_register</link>         (const <link linkend="gchar">gchar</link> *domain_name,
                                                          const <link linkend="gchar">gchar</link> *domain_path);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-plugin-help-register">gimp_plugin_help_register</link>           (const <link linkend="gchar">gchar</link> *domain_name,
@@ -44,7 +41,7 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimpplugin.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Functions useful for plugins, e.g. registration and progress indicators.
@@ -52,11 +49,11 @@ Functions useful for plugins, e.g. registration and progress indicators.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimpplugin.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-plugin-domain-register" role="function"/>gimp_plugin_domain_register ()</title>
-<indexterm><primary>gimp_plugin_domain_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_plugin_domain_register         (const <link linkend="gchar">gchar</link> *domain_name,
+<refsect2 id="gimp-plugin-domain-register" role="function">
+<title>gimp_plugin_domain_register ()</title>
+<indexterm zone="gimp-plugin-domain-register"><primary>gimp_plugin_domain_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_plugin_domain_register         (const <link linkend="gchar">gchar</link> *domain_name,
                                                          const <link linkend="gchar">gchar</link> *domain_path);</programlisting>
 <para>
 Registers a textdomain for localisation.
@@ -82,9 +79,9 @@ called before any procedure is installed.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-plugin-help-register" role="function"/>gimp_plugin_help_register ()</title>
-<indexterm><primary>gimp_plugin_help_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_plugin_help_register           (const <link linkend="gchar">gchar</link> *domain_name,
+<refsect2 id="gimp-plugin-help-register" role="function">
+<title>gimp_plugin_help_register ()</title>
+<indexterm zone="gimp-plugin-help-register"><primary>gimp_plugin_help_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_plugin_help_register           (const <link linkend="gchar">gchar</link> *domain_name,
                                                          const <link linkend="gchar">gchar</link> *domain_uri);</programlisting>
 <para>
 Register a help path for a plug-in.
@@ -105,9 +102,9 @@ interpreted relative to this rootdir.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-plugin-icon-register" role="function"/>gimp_plugin_icon_register ()</title>
-<indexterm><primary>gimp_plugin_icon_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_plugin_icon_register           (const <link linkend="gchar">gchar</link> *procedure_name,
+<refsect2 id="gimp-plugin-icon-register" role="function">
+<title>gimp_plugin_icon_register ()</title>
+<indexterm zone="gimp-plugin-icon-register"><primary>gimp_plugin_icon_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_plugin_icon_register           (const <link linkend="gchar">gchar</link> *procedure_name,
                                                          <link linkend="GimpIconType">GimpIconType</link> icon_type,
                                                          const <link linkend="guint8">guint8</link> *icon_data);</programlisting>
 <para>
@@ -127,9 +124,9 @@ interpreted relative to this rootdir.</para>
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-plugin-menu-register" role="function" condition="since:GIMP 2.2"/>gimp_plugin_menu_register ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_plugin_menu_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_plugin_menu_register           (const <link linkend="gchar">gchar</link> *procedure_name,
+<refsect2 id="gimp-plugin-menu-register" role="function" condition="since:GIMP 2.2">
+<title>gimp_plugin_menu_register ()</title>
+<indexterm zone="gimp-plugin-menu-register" role="GIMP 2.2"><primary>gimp_plugin_menu_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_plugin_menu_register           (const <link linkend="gchar">gchar</link> *procedure_name,
                                                          const <link linkend="gchar">gchar</link> *menu_path);</programlisting>
 <para>
 Register an additional menu path for a plug-in procedure.
@@ -151,9 +148,9 @@ procedure.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-plugin-menu-branch-register" role="function" condition="since:GIMP 2.4"/>gimp_plugin_menu_branch_register ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_plugin_menu_branch_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_plugin_menu_branch_register    (const <link linkend="gchar">gchar</link> *menu_path,
+<refsect2 id="gimp-plugin-menu-branch-register" role="function" condition="since:GIMP 2.4">
+<title>gimp_plugin_menu_branch_register ()</title>
+<indexterm zone="gimp-plugin-menu-branch-register" role="GIMP 2.4"><primary>gimp_plugin_menu_branch_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_plugin_menu_branch_register    (const <link linkend="gchar">gchar</link> *menu_path,
                                                          const <link linkend="gchar">gchar</link> *menu_name);</programlisting>
 <para>
 Register a sub-menu.
@@ -183,6 +180,4 @@ plug-in.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

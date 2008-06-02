@@ -1,21 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpfileops</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpedit.html" title="gimpedit">
 <link rel="next" href="libgimp-gimpfloatingsel.html" title="gimpfloatingsel">
-<meta name="generator" content="GTK-Doc V1.9 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
+<link rel="part" href="libgimp.html" title="Part I. GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="chapter" href="libgimp-data.html" title="Data Objects">
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
+<link rel="part" href="libgimpui.html" title="Part II. GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
@@ -31,163 +31,157 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpfloatingsel.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2601684" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2630017" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimp-gimpfileops.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libgimp-gimpfileops.description" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpfileops"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2601684"></a><span class="refentrytitle">gimpfileops</span>
-</h2>
-<p>gimpfileops &#8212; File operations (load, save, etc.)</p>
+<h2><span class="refentrytitle"><a name="libgimp-gimpfileops.top_of_page"></a>gimpfileops</span></h2>
+<p>gimpfileops — File operations (load, save, etc.)</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="libgimp-gimpfileops.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
 <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpfileops.html#gimp-temp-name">gimp_temp_name</a>                      (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimpfileops.html#gimp-temp-name" title="gimp_temp_name ()">gimp_temp_name</a>                      (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *extension);
 <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a class="link" href="libgimp-gimpfileops.html#gimp-file-load">gimp_file_load</a>                      (<a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a>              <a class="link" href="libgimp-gimpfileops.html#gimp-file-load" title="gimp_file_load ()">gimp_file_load</a>                      (<a
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
 >GimpRunMode</a> run_mode,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *filename,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *raw_filename);
 <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a class="link" href="libgimp-gimpfileops.html#gimp-file-load-layer">gimp_file_load_layer</a>                (<a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a>              <a class="link" href="libgimp-gimpfileops.html#gimp-file-load-layer" title="gimp_file_load_layer ()">gimp_file_load_layer</a>                (<a
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
 >GimpRunMode</a> run_mode,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *filename);
 <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a>*               <a class="link" href="libgimp-gimpfileops.html#gimp-file-load-layers">gimp_file_load_layers</a>               (<a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>*               <a class="link" href="libgimp-gimpfileops.html#gimp-file-load-layers" title="gimp_file_load_layers ()">gimp_file_load_layers</a>               (<a
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
 >GimpRunMode</a> run_mode,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *filename,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *num_layers);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpfileops.html#gimp-file-save">gimp_file_save</a>                      (<a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpfileops.html#gimp-file-save" title="gimp_file_save ()">gimp_file_save</a>                      (<a
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
 >GimpRunMode</a> run_mode,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *filename,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *raw_filename);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpfileops.html#gimp-file-save-thumbnail">gimp_file_save_thumbnail</a>            (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpfileops.html#gimp-file-save-thumbnail" title="gimp_file_save_thumbnail ()">gimp_file_save_thumbnail</a>            (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *filename);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpfileops.html#gimp-register-magic-load-handler">gimp_register_magic_load_handler</a>    (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpfileops.html#gimp-register-magic-load-handler" title="gimp_register_magic_load_handler ()">gimp_register_magic_load_handler</a>    (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *procedure_name,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *extensions,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *prefixes,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *magics);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpfileops.html#gimp-register-load-handler">gimp_register_load_handler</a>          (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpfileops.html#gimp-register-load-handler" title="gimp_register_load_handler ()">gimp_register_load_handler</a>          (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *procedure_name,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *extensions,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *prefixes);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpfileops.html#gimp-register-save-handler">gimp_register_save_handler</a>          (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpfileops.html#gimp-register-save-handler" title="gimp_register_save_handler ()">gimp_register_save_handler</a>          (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *procedure_name,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *extensions,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *prefixes);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpfileops.html#gimp-register-file-handler-mime">gimp_register_file_handler_mime</a>     (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpfileops.html#gimp-register-file-handler-mime" title="gimp_register_file_handler_mime ()">gimp_register_file_handler_mime</a>     (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *procedure_name,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *mime_type);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpfileops.html#gimp-register-thumbnail-loader">gimp_register_thumbnail_loader</a>      (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpfileops.html#gimp-register-thumbnail-loader" title="gimp_register_thumbnail_loader ()">gimp_register_thumbnail_loader</a>      (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *load_proc,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *thumb_proc);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2630017"></a><h2>Description</h2>
+<a name="libgimp-gimpfileops.description"></a><h2>Description</h2>
 <p>
 File operations (load, save, etc.)
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2630033"></a><h2>Details</h2>
+<a name="libgimp-gimpfileops.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2630044"></a><h3>
-<a name="gimp-temp-name"></a>gimp_temp_name ()</h3>
-<a class="indexterm" name="id2630056"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
+<a name="gimp-temp-name"></a><h3>gimp_temp_name ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>*              gimp_temp_name                      (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *extension);</pre>
 <p>
 Generates a unique filename.
@@ -202,12 +196,12 @@ user's gimprc.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>extension</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>extension</code></em> :</span></p></td>
 <td> The extension the file will have.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The new temp filename.
 </td>
 </tr>
@@ -216,18 +210,17 @@ user's gimprc.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2638991"></a><h3>
-<a name="gimp-file-load"></a>gimp_file_load ()</h3>
-<a class="indexterm" name="id2639003"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint32"
+<a name="gimp-file-load"></a><h3>gimp_file_load ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a>              gimp_file_load                      (<a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
 >GimpRunMode</a> run_mode,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *filename,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *raw_filename);</pre>
 <p>
 Loads an image file by invoking the right load handler.
@@ -247,22 +240,22 @@ will not look like a URL.\"</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>run_mode</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>run_mode</code></em> :</span></p></td>
 <td> The run mode.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
 <td> The name of the file to load.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>raw_filename</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>raw_filename</code></em> :</span></p></td>
 <td> The name as entered by the user.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The output image.
 </td>
 </tr>
@@ -271,18 +264,17 @@ will not look like a URL.\"</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2639118"></a><h3>
-<a name="gimp-file-load-layer"></a>gimp_file_load_layer ()</h3>
-<a class="indexterm" name="id2639131"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint32"
+<a name="gimp-file-load-layer"></a><h3>gimp_file_load_layer ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a>              gimp_file_load_layer                (<a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
 >GimpRunMode</a> run_mode,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *filename);</pre>
 <p>
 Loads an image file as a layer for an existing image.
@@ -290,7 +282,7 @@ Loads an image file as a layer for an existing image.
 <p>
 This procedure behaves like the file-load procedure but opens the
 specified image as a layer for an existing image. The returned layer
-needs to be added to the existing image with <a class="link" href="libgimp-gimpimage.html#gimp-image-add-layer"><code class="function">gimp_image_add_layer()</code></a>.</p>
+needs to be added to the existing image with <a class="link" href="libgimp-gimpimage.html#gimp-image-add-layer" title="gimp_image_add_layer ()"><code class="function">gimp_image_add_layer()</code></a>.</p>
 <p>
 
 </p>
@@ -298,22 +290,22 @@ needs to be added to the existing image with <a class="link" href="libgimp-gimpi
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>run_mode</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>run_mode</code></em> :</span></p></td>
 <td> The run mode.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
 <td> Destination image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
 <td> The name of the file to load.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The layer created when loading the image file.
 
 </td>
@@ -325,21 +317,20 @@ needs to be added to the existing image with <a class="link" href="libgimp-gimpi
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2641404"></a><h3>
-<a name="gimp-file-load-layers"></a>gimp_file_load_layers ()</h3>
-<a class="indexterm" name="id2641418"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint"
+<a name="gimp-file-load-layers"></a><h3>gimp_file_load_layers ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a>*               gimp_file_load_layers               (<a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
 >GimpRunMode</a> run_mode,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *filename,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *num_layers);</pre>
 <p>
 Loads an image file as layers for an existing image.
@@ -347,7 +338,7 @@ Loads an image file as layers for an existing image.
 <p>
 This procedure behaves like the file-load procedure but opens the
 specified image as layers for an existing image. The returned layers
-needs to be added to the existing image with <a class="link" href="libgimp-gimpimage.html#gimp-image-add-layer"><code class="function">gimp_image_add_layer()</code></a>.</p>
+needs to be added to the existing image with <a class="link" href="libgimp-gimpimage.html#gimp-image-add-layer" title="gimp_image_add_layer ()"><code class="function">gimp_image_add_layer()</code></a>.</p>
 <p>
 
 </p>
@@ -355,27 +346,27 @@ needs to be added to the existing image with <a class="link" href="libgimp-gimpi
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>run_mode</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>run_mode</code></em> :</span></p></td>
 <td> The run mode.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
 <td> Destination image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
 <td> The name of the file to load.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>num_layers</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>num_layers</code></em> :</span></p></td>
 <td> The number of loaded layers.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The list of loaded layers.
 
 </td>
@@ -387,24 +378,23 @@ needs to be added to the existing image with <a class="link" href="libgimp-gimpi
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2641564"></a><h3>
-<a name="gimp-file-save"></a>gimp_file_save ()</h3>
-<a class="indexterm" name="id2641577"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-file-save"></a><h3>gimp_file_save ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_file_save                      (<a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
 >GimpRunMode</a> run_mode,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *filename,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *raw_filename);</pre>
 <p>
 Saves a file by extension.
@@ -423,32 +413,32 @@ fetch a URL, and the full pathname will not look like a URL.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>run_mode</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>run_mode</code></em> :</span></p></td>
 <td> The run mode.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
 <td> Input image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> Drawable to save.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
 <td> The name of the file to save the image in.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>raw_filename</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>raw_filename</code></em> :</span></p></td>
 <td> The name as entered by the user.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -457,15 +447,14 @@ fetch a URL, and the full pathname will not look like a URL.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2641734"></a><h3>
-<a name="gimp-file-save-thumbnail"></a>gimp_file_save_thumbnail ()</h3>
-<a class="indexterm" name="id2641745"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-file-save-thumbnail"></a><h3>gimp_file_save_thumbnail ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_file_save_thumbnail            (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *filename);</pre>
 <p>
 Saves a thumbnail for the given image
@@ -484,17 +473,17 @@ explicitely save a thumbnail with a file.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
 <td> The name of the file the thumbnail belongs to.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -503,21 +492,20 @@ explicitely save a thumbnail with a file.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649107"></a><h3>
-<a name="gimp-register-magic-load-handler"></a>gimp_register_magic_load_handler ()</h3>
-<a class="indexterm" name="id2649118"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-register-magic-load-handler"></a><h3>gimp_register_magic_load_handler ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_register_magic_load_handler    (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *procedure_name,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *extensions,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *prefixes,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *magics);</pre>
 <p>
 Registers a file load handler procedure.
@@ -532,27 +520,27 @@ of a particular file format using magic file information.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>procedure_name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>procedure_name</code></em> :</span></p></td>
 <td> The name of the procedure to be used for loading.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>extensions</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>extensions</code></em> :</span></p></td>
 <td> comma separated list of extensions this handler can load (i.e. \"jpg,jpeg\").
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>prefixes</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>prefixes</code></em> :</span></p></td>
 <td> comma separated list of prefixes this handler can load (i.e. \"http:,ftp:\").
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>magics</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>magics</code></em> :</span></p></td>
 <td> comma separated list of magic file information this handler can load (i.e. \"0,string,GIF\").
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -561,18 +549,17 @@ of a particular file format using magic file information.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649252"></a><h3>
-<a name="gimp-register-load-handler"></a>gimp_register_load_handler ()</h3>
-<a class="indexterm" name="id2649264"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-register-load-handler"></a><h3>gimp_register_load_handler ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_register_load_handler          (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *procedure_name,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *extensions,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *prefixes);</pre>
 <p>
 Registers a file load handler procedure.
@@ -587,22 +574,22 @@ of a particular file format.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>procedure_name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>procedure_name</code></em> :</span></p></td>
 <td> The name of the procedure to be used for loading.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>extensions</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>extensions</code></em> :</span></p></td>
 <td> comma separated list of extensions this handler can load (i.e. \"jpg,jpeg\").
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>prefixes</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>prefixes</code></em> :</span></p></td>
 <td> comma separated list of prefixes this handler can load (i.e. \"http:,ftp:\").
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -611,18 +598,17 @@ of a particular file format.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649375"></a><h3>
-<a name="gimp-register-save-handler"></a>gimp_register_save_handler ()</h3>
-<a class="indexterm" name="id2649387"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-register-save-handler"></a><h3>gimp_register_save_handler ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_register_save_handler          (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *procedure_name,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *extensions,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *prefixes);</pre>
 <p>
 Registers a file save handler procedure.
@@ -637,22 +623,22 @@ in a particular file format.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>procedure_name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>procedure_name</code></em> :</span></p></td>
 <td> The name of the procedure to be used for saving.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>extensions</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>extensions</code></em> :</span></p></td>
 <td> comma separated list of extensions this handler can save (i.e. \"jpg,jpeg\").
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>prefixes</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>prefixes</code></em> :</span></p></td>
 <td> comma separated list of prefixes this handler can save (i.e. \"http:,ftp:\").
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -661,15 +647,14 @@ in a particular file format.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649498"></a><h3>
-<a name="gimp-register-file-handler-mime"></a>gimp_register_file_handler_mime ()</h3>
-<a class="indexterm" name="id2649514"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-register-file-handler-mime"></a><h3>gimp_register_file_handler_mime ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_register_file_handler_mime     (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *procedure_name,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *mime_type);</pre>
 <p>
 Associates a MIME type with a file handler procedure.
@@ -685,17 +670,17 @@ procedure.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>procedure_name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>procedure_name</code></em> :</span></p></td>
 <td> The name of the procedure to associate a MIME type with.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>mime_type</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>mime_type</code></em> :</span></p></td>
 <td> A single MIME type, like for example \"image/jpeg\".
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 
 </td>
@@ -707,15 +692,14 @@ procedure.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649612"></a><h3>
-<a name="gimp-register-thumbnail-loader"></a>gimp_register_thumbnail_loader ()</h3>
-<a class="indexterm" name="id2649628"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-register-thumbnail-loader"></a><h3>gimp_register_thumbnail_loader ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_register_thumbnail_loader      (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *load_proc,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *thumb_proc);</pre>
 <p>
 Associates a thumbnail loader with a file load procedure.
@@ -734,17 +718,17 @@ using this function.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>load_proc</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>load_proc</code></em> :</span></p></td>
 <td> The name of the procedure the thumbnail loader with.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>thumb_proc</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>thumb_proc</code></em> :</span></p></td>
 <td> The name of the thumbnail load procedure.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 
 </td>
@@ -755,11 +739,9 @@ using this function.</p>
 </p>
 </div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2655164"></a><div class="refsect2" lang="en"><a name="id2655165"></a></div>
+</div>
+<div class="footer">
 <hr>
-<div class="refsect2" lang="en"><a name="id2655166"></a></div>
-</div>
-</div>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

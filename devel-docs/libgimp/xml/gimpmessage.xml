@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpmessage">
 <refmeta>
-<refentrytitle role="top_of_page">gimpmessage</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimpmessage.top_of_page">gimpmessage</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimpmessage.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-message">gimp_message</link>                        (const <link linkend="gchar">gchar</link> *message);
 <link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link> <link linkend="gimp-message-get-handler">gimp_message_get_handler</link>         (void);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-message-set-handler">gimp_message_set_handler</link>            (<link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link> handler);
@@ -36,7 +33,7 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimpmessage.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Display a dialog box with a message.
@@ -44,11 +41,11 @@ Display a dialog box with a message.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimpmessage.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-message" role="function"/>gimp_message ()</title>
-<indexterm><primary>gimp_message</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_message                        (const <link linkend="gchar">gchar</link> *message);</programlisting>
+<refsect2 id="gimp-message" role="function">
+<title>gimp_message ()</title>
+<indexterm zone="gimp-message"><primary>gimp_message</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_message                        (const <link linkend="gchar">gchar</link> *message);</programlisting>
 <para>
 Displays a dialog box with a message.
 </para>
@@ -64,9 +61,9 @@ reporting. The message must be in UTF-8 encoding.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-message-get-handler" role="function"/>gimp_message_get_handler ()</title>
-<indexterm><primary>gimp_message_get_handler</primary></indexterm><programlisting><link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link> gimp_message_get_handler         (void);</programlisting>
+<refsect2 id="gimp-message-get-handler" role="function">
+<title>gimp_message_get_handler ()</title>
+<indexterm zone="gimp-message-get-handler"><primary>gimp_message_get_handler</primary></indexterm><programlisting><link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link> gimp_message_get_handler         (void);</programlisting>
 <para>
 Returns the current state of where warning messages are displayed.
 </para>
@@ -80,9 +77,9 @@ gimp was started.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The current handler type.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-message-set-handler" role="function"/>gimp_message_set_handler ()</title>
-<indexterm><primary>gimp_message_set_handler</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_message_set_handler            (<link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link> handler);</programlisting>
+<refsect2 id="gimp-message-set-handler" role="function">
+<title>gimp_message_set_handler ()</title>
+<indexterm zone="gimp-message-set-handler"><primary>gimp_message_set_handler</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_message_set_handler            (<link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link> handler);</programlisting>
 <para>
 Controls where warning messages are displayed.
 </para>
@@ -105,6 +102,4 @@ was started.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

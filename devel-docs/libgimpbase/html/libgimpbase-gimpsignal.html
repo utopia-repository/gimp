@@ -1,16 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpsignal</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Base Library Reference Manual">
-<link rel="up" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
+<link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpparasiteio.html" title="gimpparasiteio">
 <link rel="next" href="libgimpbase-gimpunit.html" title="gimpunit">
-<meta name="generator" content="GTK-Doc V1.9 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
+<link rel="part" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="index" href="libgimpbase-index.html" title="Index">
 <link rel="index" href="libgimpbase-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimpbase-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
@@ -25,53 +25,47 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimpunit.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2619886" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2584212" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimpbase-gimpsignal.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libgimpbase-gimpsignal.description" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpsignal"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2619886"></a><span class="refentrytitle">gimpsignal</span>
-</h2>
-<p>gimpsignal &#8212; Portable signal handling.</p>
+<h2><span class="refentrytitle"><a name="libgimpbase-gimpsignal.top_of_page"></a>gimpsignal</span></h2>
+<p>gimpsignal — Portable signal handling.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="libgimpbase-gimpsignal.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
-void                (<a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">*GimpSignalHandlerFunc</a>)            (<a
-href="../glib/glib-Basic-Types.html#gint"
+void                (<a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">*GimpSignalHandlerFunc</a>)            (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> signum);
-<a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> <a class="link" href="libgimpbase-gimpsignal.html#gimp-signal-private">gimp_signal_private</a>               (<a
-href="../glib/glib-Basic-Types.html#gint"
+<a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">GimpSignalHandlerFunc</a> <a class="link" href="libgimpbase-gimpsignal.html#gimp-signal-private" title="gimp_signal_private ()">gimp_signal_private</a>               (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> signum,
-                                                         <a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> handler,
+                                                         <a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">GimpSignalHandlerFunc</a> handler,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> flags);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2584212"></a><h2>Description</h2>
+<a name="libgimpbase-gimpsignal.description"></a><h2>Description</h2>
 <p>
 Portable signal handling.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2618762"></a><h2>Details</h2>
+<a name="libgimpbase-gimpsignal.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2578708"></a><h3>
-<a name="GimpSignalHandlerFunc"></a>GimpSignalHandlerFunc ()</h3>
-<a class="indexterm" name="id2578720"></a><pre class="programlisting">void                (*GimpSignalHandlerFunc)            (<a
-href="../glib/glib-Basic-Types.html#gint"
+<a name="GimpSignalHandlerFunc"></a><h3>GimpSignalHandlerFunc ()</h3>
+<pre class="programlisting">void                (*GimpSignalHandlerFunc)            (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> signum);</pre>
 <p>
 A prototype for signal handler functions. Note that each function which
@@ -82,7 +76,7 @@ special values defined by your system's signal.h header file (like
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>signum</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>signum</code></em> :</span></p></td>
 <td>The number of the signal. Useful if different signals are handled
          by a single handler.
 
@@ -93,14 +87,13 @@ special values defined by your system's signal.h header file (like
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618364"></a><h3>
-<a name="gimp-signal-private"></a>gimp_signal_private ()</h3>
-<a class="indexterm" name="id2618376"></a><pre class="programlisting"><a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> gimp_signal_private               (<a
-href="../glib/glib-Basic-Types.html#gint"
+<a name="gimp-signal-private"></a><h3>gimp_signal_private ()</h3>
+<pre class="programlisting"><a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">GimpSignalHandlerFunc</a> gimp_signal_private               (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> signum,
-                                                         <a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> handler,
+                                                         <a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">GimpSignalHandlerFunc</a> handler,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> flags);</pre>
 <p>
 This function furnishes a workalike for signal(2) but
@@ -123,27 +116,27 @@ exactly what we want. [austin 06.04.2000]</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>signum</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>signum</code></em> :</span></p></td>
 <td> Selects signal to be handled see man 5 signal (or man 7 signal)
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>handler</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>handler</code></em> :</span></p></td>
 <td> Handler that maps to signum. Invoked by O/S.
           Handler gets signal that caused invocation. Corresponds
           to the <em class="parameter"><code>sa_handler</code></em> field of the <em class="parameter"><code>sigaction</code></em> struct.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
 <td> Preferences. OR'ed SA_&lt;xxx&gt;. See man sigaction. Corresponds
         to the <em class="parameter"><code>sa_flags</code></em> field of the <em class="parameter"><code>sigaction</code></em> struct.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> A reference to the signal handling function which was
-         active before the call to <a class="link" href="libgimpbase-gimpsignal.html#gimp-signal-private"><code class="function">gimp_signal_private()</code></a>.
+         active before the call to <a class="link" href="libgimpbase-gimpsignal.html#gimp-signal-private" title="gimp_signal_private ()"><code class="function">gimp_signal_private()</code></a>.
 </td>
 </tr>
 </tbody>
@@ -151,16 +144,14 @@ exactly what we want. [austin 06.04.2000]</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2625938"></a><h2>See Also</h2>
+<a name="libgimpbase-gimpsignal.see-also"></a><h2>See Also</h2>
 <p>
 signal(2), signal(5 or 7), sigaction(2).
 </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2625949"></a><div class="refsect2" lang="en"><a name="id2625950"></a></div>
+</div>
+<div class="footer">
 <hr>
-<div class="refsect2" lang="en"><a name="id2625951"></a></div>
-</div>
-</div>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpvectors">
 <refmeta>
-<refentrytitle role="top_of_page">gimpvectors</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimpvectors.top_of_page">gimpvectors</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimpvectors.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="gint32">gint32</link>              <link linkend="gimp-vectors-new">gimp_vectors_new</link>                    (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="gchar">gchar</link> *name);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-vectors-import-from-file">gimp_vectors_import_from_file</link>       (<link linkend="gint32">gint32</link> image_ID,
@@ -162,18 +159,18 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimpvectors.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimpvectors.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-vectors-new" role="function" condition="since:GIMP 2.4"/>gimp_vectors_new ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_new</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_vectors_new                    (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-vectors-new" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_new ()</title>
+<indexterm zone="gimp-vectors-new" role="GIMP 2.4"><primary>gimp_vectors_new</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_vectors_new                    (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Creates a new empty vectors object.
@@ -195,9 +192,9 @@ using <link linkend="gimp-image-add-vectors"><function>gimp_image_add_vectors()<
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-import-from-file" role="function" condition="since:GIMP 2.4"/>gimp_vectors_import_from_file ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_import_from_file</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_import_from_file       (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-vectors-import-from-file" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_import_from_file ()</title>
+<indexterm zone="gimp-vectors-import-from-file" role="GIMP 2.4"><primary>gimp_vectors_import_from_file</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_import_from_file       (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="gchar">gchar</link> *filename,
                                                          <link linkend="gboolean">gboolean</link> merge,
                                                          <link linkend="gboolean">gboolean</link> scale,
@@ -235,9 +232,9 @@ than paths and basic shapes are ignored.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-import-from-string" role="function" condition="since:GIMP 2.4"/>gimp_vectors_import_from_string ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_import_from_string</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_import_from_string     (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-vectors-import-from-string" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_import_from_string ()</title>
+<indexterm zone="gimp-vectors-import-from-string" role="GIMP 2.4"><primary>gimp_vectors_import_from_string</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_import_from_string     (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="gchar">gchar</link> *string,
                                                          <link linkend="gint">gint</link> length,
                                                          <link linkend="gboolean">gboolean</link> merge,
@@ -280,9 +277,9 @@ write scripts that generate SVG and feed it to GIMP.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-is-valid" role="function" condition="since:GIMP 2.4"/>gimp_vectors_is_valid ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_is_valid</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_is_valid               (<link linkend="gint32">gint32</link> vectors_ID);</programlisting>
+<refsect2 id="gimp-vectors-is-valid" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_is_valid ()</title>
+<indexterm zone="gimp-vectors-is-valid" role="GIMP 2.4"><primary>gimp_vectors_is_valid</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_is_valid               (<link linkend="gint32">gint32</link> vectors_ID);</programlisting>
 <para>
 Returns TRUE if the vectors object is valid.
 </para>
@@ -300,9 +297,9 @@ an existing vectors object.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-get-strokes" role="function" condition="since:GIMP 2.4"/>gimp_vectors_get_strokes ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_get_strokes</primary></indexterm><programlisting><link linkend="gint">gint</link>*               gimp_vectors_get_strokes            (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-get-strokes" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_get_strokes ()</title>
+<indexterm zone="gimp-vectors-get-strokes" role="GIMP 2.4"><primary>gimp_vectors_get_strokes</primary></indexterm><programlisting><link linkend="gint">gint</link>*               gimp_vectors_get_strokes            (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> *num_strokes);</programlisting>
 <para>
 List the strokes associated with the passed path.
@@ -324,9 +321,9 @@ path.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-get-image" role="function" condition="since:GIMP 2.4"/>gimp_vectors_get_image ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_get_image</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_vectors_get_image              (<link linkend="gint32">gint32</link> vectors_ID);</programlisting>
+<refsect2 id="gimp-vectors-get-image" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_get_image ()</title>
+<indexterm zone="gimp-vectors-get-image" role="GIMP 2.4"><primary>gimp_vectors_get_image</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_vectors_get_image              (<link linkend="gint32">gint32</link> vectors_ID);</programlisting>
 <para>
 Returns the vectors objects image.
 </para>
@@ -343,9 +340,9 @@ Returns the vectors objects image.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-get-linked" role="function" condition="since:GIMP 2.4"/>gimp_vectors_get_linked ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_get_linked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_get_linked             (<link linkend="gint32">gint32</link> vectors_ID);</programlisting>
+<refsect2 id="gimp-vectors-get-linked" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_get_linked ()</title>
+<indexterm zone="gimp-vectors-get-linked" role="GIMP 2.4"><primary>gimp_vectors_get_linked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_get_linked             (<link linkend="gint32">gint32</link> vectors_ID);</programlisting>
 <para>
 Gets the linked state of the vectors object.
 </para>
@@ -362,9 +359,9 @@ Gets the linked state of the vectors object.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-get-name" role="function" condition="since:GIMP 2.4"/>gimp_vectors_get_name ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_get_name</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_vectors_get_name               (<link linkend="gint32">gint32</link> vectors_ID);</programlisting>
+<refsect2 id="gimp-vectors-get-name" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_get_name ()</title>
+<indexterm zone="gimp-vectors-get-name" role="GIMP 2.4"><primary>gimp_vectors_get_name</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_vectors_get_name               (<link linkend="gint32">gint32</link> vectors_ID);</programlisting>
 <para>
 Gets the name of the vectors object.
 </para>
@@ -381,9 +378,9 @@ Gets the name of the vectors object.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-get-tattoo" role="function" condition="since:GIMP 2.4"/>gimp_vectors_get_tattoo ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_get_tattoo</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_vectors_get_tattoo             (<link linkend="gint32">gint32</link> vectors_ID);</programlisting>
+<refsect2 id="gimp-vectors-get-tattoo" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_get_tattoo ()</title>
+<indexterm zone="gimp-vectors-get-tattoo" role="GIMP 2.4"><primary>gimp_vectors_get_tattoo</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_vectors_get_tattoo             (<link linkend="gint32">gint32</link> vectors_ID);</programlisting>
 <para>
 Get the tattoo of the vectors object.
 </para>
@@ -400,9 +397,9 @@ Get the tattoo state of the vectors object.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-get-visible" role="function" condition="since:GIMP 2.4"/>gimp_vectors_get_visible ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_get_visible</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_get_visible            (<link linkend="gint32">gint32</link> vectors_ID);</programlisting>
+<refsect2 id="gimp-vectors-get-visible" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_get_visible ()</title>
+<indexterm zone="gimp-vectors-get-visible" role="GIMP 2.4"><primary>gimp_vectors_get_visible</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_get_visible            (<link linkend="gint32">gint32</link> vectors_ID);</programlisting>
 <para>
 Gets the visibility of the vectors object.
 </para>
@@ -419,9 +416,9 @@ Gets the visibility of the vectors object.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-set-linked" role="function" condition="since:GIMP 2.4"/>gimp_vectors_set_linked ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_set_linked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_set_linked             (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-set-linked" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_set_linked ()</title>
+<indexterm zone="gimp-vectors-set-linked" role="GIMP 2.4"><primary>gimp_vectors_set_linked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_set_linked             (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gboolean">gboolean</link> linked);</programlisting>
 <para>
 Sets the linked state of the vectors object.
@@ -442,9 +439,9 @@ Sets the linked state of the vectors object.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-set-name" role="function" condition="since:GIMP 2.4"/>gimp_vectors_set_name ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_set_name</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_set_name               (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-set-name" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_set_name ()</title>
+<indexterm zone="gimp-vectors-set-name" role="GIMP 2.4"><primary>gimp_vectors_set_name</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_set_name               (<link linkend="gint32">gint32</link> vectors_ID,
                                                          const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Sets the name of the vectors object.
@@ -465,9 +462,9 @@ Sets the name of the vectors object.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-set-tattoo" role="function" condition="since:GIMP 2.4"/>gimp_vectors_set_tattoo ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_set_tattoo</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_set_tattoo             (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-set-tattoo" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_set_tattoo ()</title>
+<indexterm zone="gimp-vectors-set-tattoo" role="GIMP 2.4"><primary>gimp_vectors_set_tattoo</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_set_tattoo             (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> tattoo);</programlisting>
 <para>
 Set the tattoo of the vectors object.
@@ -488,9 +485,9 @@ Set the tattoo of the vectors object.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-set-visible" role="function" condition="since:GIMP 2.4"/>gimp_vectors_set_visible ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_set_visible</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_set_visible            (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-set-visible" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_set_visible ()</title>
+<indexterm zone="gimp-vectors-set-visible" role="GIMP 2.4"><primary>gimp_vectors_set_visible</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_set_visible            (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gboolean">gboolean</link> visible);</programlisting>
 <para>
 Sets the visibility of the vectors object.
@@ -511,9 +508,9 @@ Sets the visibility of the vectors object.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-remove-stroke" role="function" condition="since:GIMP 2.4"/>gimp_vectors_remove_stroke ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_remove_stroke</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_remove_stroke          (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-remove-stroke" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_remove_stroke ()</title>
+<indexterm zone="gimp-vectors-remove-stroke" role="GIMP 2.4"><primary>gimp_vectors_remove_stroke</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_remove_stroke          (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> stroke_id);</programlisting>
 <para>
 remove the stroke from a vectors object.
@@ -534,9 +531,9 @@ Remove the stroke from a vectors object.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-to-selection" role="function" condition="since:GIMP 2.4"/>gimp_vectors_to_selection ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_to_selection</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_to_selection           (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-to-selection" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_to_selection ()</title>
+<indexterm zone="gimp-vectors-to-selection" role="GIMP 2.4"><primary>gimp_vectors_to_selection</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_to_selection           (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
                                                          <link linkend="gboolean">gboolean</link> antialias,
                                                          <link linkend="gboolean">gboolean</link> feather,
@@ -574,9 +571,9 @@ selection of the image the vectors object belongs to.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-parasite-attach" role="function" condition="since:GIMP 2.4"/>gimp_vectors_parasite_attach ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_parasite_attach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_parasite_attach        (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-parasite-attach" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_parasite_attach ()</title>
+<indexterm zone="gimp-vectors-parasite-attach" role="GIMP 2.4"><primary>gimp_vectors_parasite_attach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_parasite_attach        (<link linkend="gint32">gint32</link> vectors_ID,
                                                          const <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
 <para>
 Add a parasite to a vectors object
@@ -598,9 +595,9 @@ return values.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-parasite-detach" role="function" condition="since:GIMP 2.4"/>gimp_vectors_parasite_detach ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_parasite_detach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_parasite_detach        (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-parasite-detach" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_parasite_detach ()</title>
+<indexterm zone="gimp-vectors-parasite-detach" role="GIMP 2.4"><primary>gimp_vectors_parasite_detach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_parasite_detach        (<link linkend="gint32">gint32</link> vectors_ID,
                                                          const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Removes a parasite from a vectors object
@@ -622,9 +619,9 @@ return values.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-parasite-find" role="function" condition="since:GIMP 2.4"/>gimp_vectors_parasite_find ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_parasite_find</primary></indexterm><programlisting><link linkend="GimpParasite">GimpParasite</link>*       gimp_vectors_parasite_find          (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-parasite-find" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_parasite_find ()</title>
+<indexterm zone="gimp-vectors-parasite-find" role="GIMP 2.4"><primary>gimp_vectors_parasite_find</primary></indexterm><programlisting><link linkend="GimpParasite">GimpParasite</link>*       gimp_vectors_parasite_find          (<link linkend="gint32">gint32</link> vectors_ID,
                                                          const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Look up a parasite in a vectors object
@@ -646,9 +643,9 @@ vectors object.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-parasite-list" role="function" condition="since:GIMP 2.4"/>gimp_vectors_parasite_list ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_parasite_list</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_parasite_list          (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-parasite-list" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_parasite_list ()</title>
+<indexterm zone="gimp-vectors-parasite-list" role="GIMP 2.4"><primary>gimp_vectors_parasite_list</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_parasite_list          (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> *num_parasites,
                                                          <link linkend="gchar">gchar</link> ***parasites);</programlisting>
 <para>
@@ -673,9 +670,9 @@ Returns a list of all currently attached parasites.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-stroke-new-from-points" role="function" condition="since:GIMP 2.4"/>gimp_vectors_stroke_new_from_points ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_stroke_new_from_points</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_vectors_stroke_new_from_points (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-stroke-new-from-points" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_stroke_new_from_points ()</title>
+<indexterm zone="gimp-vectors-stroke-new-from-points" role="GIMP 2.4"><primary>gimp_vectors_stroke_new_from_points</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_vectors_stroke_new_from_points (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="GimpVectorsStrokeType">GimpVectorsStrokeType</link> type,
                                                          <link linkend="gint">gint</link> num_points,
                                                          const <link linkend="gdouble">gdouble</link> *controlpoints,
@@ -715,9 +712,9 @@ order CACCACCAC...</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-stroke-close" role="function" condition="since:GIMP 2.4"/>gimp_vectors_stroke_close ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_stroke_close</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_stroke_close           (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-stroke-close" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_stroke_close ()</title>
+<indexterm zone="gimp-vectors-stroke-close" role="GIMP 2.4"><primary>gimp_vectors_stroke_close</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_stroke_close           (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> stroke_id);</programlisting>
 <para>
 closes the specified stroke.
@@ -738,9 +735,9 @@ Closes the specified stroke.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-stroke-get-length" role="function" condition="since:GIMP 2.4"/>gimp_vectors_stroke_get_length ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_stroke_get_length</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vectors_stroke_get_length      (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-stroke-get-length" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_stroke_get_length ()</title>
+<indexterm zone="gimp-vectors-stroke-get-length" role="GIMP 2.4"><primary>gimp_vectors_stroke_get_length</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vectors_stroke_get_length      (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> stroke_id,
                                                          <link linkend="gdouble">gdouble</link> precision);</programlisting>
 <para>
@@ -765,9 +762,9 @@ Measure the length of the given stroke.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-stroke-get-points" role="function" condition="since:GIMP 2.4"/>gimp_vectors_stroke_get_points ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_stroke_get_points</primary></indexterm><programlisting><link linkend="GimpVectorsStrokeType">GimpVectorsStrokeType</link> gimp_vectors_stroke_get_points    (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-stroke-get-points" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_stroke_get_points ()</title>
+<indexterm zone="gimp-vectors-stroke-get-points" role="GIMP 2.4"><primary>gimp_vectors_stroke_get_points</primary></indexterm><programlisting><link linkend="GimpVectorsStrokeType">GimpVectorsStrokeType</link> gimp_vectors_stroke_get_points    (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> stroke_id,
                                                          <link linkend="gint">gint</link> *num_points,
                                                          <link linkend="gdouble">gdouble</link> **controlpoints,
@@ -803,9 +800,9 @@ control points.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-stroke-get-point-at-dist" role="function" condition="since:GIMP 2.4"/>gimp_vectors_stroke_get_point_at_dist ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_stroke_get_point_at_dist</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_stroke_get_point_at_dist
+<refsect2 id="gimp-vectors-stroke-get-point-at-dist" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_stroke_get_point_at_dist ()</title>
+<indexterm zone="gimp-vectors-stroke-get-point-at-dist" role="GIMP 2.4"><primary>gimp_vectors_stroke_get_point_at_dist</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_stroke_get_point_at_dist
                                                         (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> stroke_id,
                                                          <link linkend="gdouble">gdouble</link> dist,
@@ -856,9 +853,9 @@ enough, a \"valid\" flag will be FALSE.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-stroke-interpolate" role="function" condition="since:GIMP 2.4"/>gimp_vectors_stroke_interpolate ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_stroke_interpolate</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>*            gimp_vectors_stroke_interpolate     (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-stroke-interpolate" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_stroke_interpolate ()</title>
+<indexterm zone="gimp-vectors-stroke-interpolate" role="GIMP 2.4"><primary>gimp_vectors_stroke_interpolate</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>*            gimp_vectors_stroke_interpolate     (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> stroke_id,
                                                          <link linkend="gdouble">gdouble</link> precision,
                                                          <link linkend="gint">gint</link> *num_coords,
@@ -891,9 +888,9 @@ returns polygonal approximation of the stroke.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-stroke-scale" role="function" condition="since:GIMP 2.4"/>gimp_vectors_stroke_scale ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_stroke_scale</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_stroke_scale           (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-stroke-scale" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_stroke_scale ()</title>
+<indexterm zone="gimp-vectors-stroke-scale" role="GIMP 2.4"><primary>gimp_vectors_stroke_scale</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_stroke_scale           (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> stroke_id,
                                                          <link linkend="gdouble">gdouble</link> scale_x,
                                                          <link linkend="gdouble">gdouble</link> scale_y);</programlisting>
@@ -922,9 +919,9 @@ Scale the given stroke.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-stroke-translate" role="function" condition="since:GIMP 2.4"/>gimp_vectors_stroke_translate ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_stroke_translate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_stroke_translate       (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-stroke-translate" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_stroke_translate ()</title>
+<indexterm zone="gimp-vectors-stroke-translate" role="GIMP 2.4"><primary>gimp_vectors_stroke_translate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_stroke_translate       (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> stroke_id,
                                                          <link linkend="gint">gint</link> off_x,
                                                          <link linkend="gint">gint</link> off_y);</programlisting>
@@ -953,9 +950,9 @@ Translate the given stroke.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-stroke-flip" role="function" condition="since:GIMP 2.4"/>gimp_vectors_stroke_flip ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_stroke_flip</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_stroke_flip            (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-stroke-flip" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_stroke_flip ()</title>
+<indexterm zone="gimp-vectors-stroke-flip" role="GIMP 2.4"><primary>gimp_vectors_stroke_flip</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_stroke_flip            (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> stroke_id,
                                                          <link linkend="GimpOrientationType">GimpOrientationType</link> flip_type,
                                                          <link linkend="gdouble">gdouble</link> axis);</programlisting>
@@ -984,9 +981,9 @@ Rotates the given stroke around given center by angle (in degrees).</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-stroke-flip-free" role="function" condition="since:GIMP 2.4"/>gimp_vectors_stroke_flip_free ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_stroke_flip_free</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_stroke_flip_free       (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-stroke-flip-free" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_stroke_flip_free ()</title>
+<indexterm zone="gimp-vectors-stroke-flip-free" role="GIMP 2.4"><primary>gimp_vectors_stroke_flip_free</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_stroke_flip_free       (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> stroke_id,
                                                          <link linkend="gdouble">gdouble</link> x1,
                                                          <link linkend="gdouble">gdouble</link> y1,
@@ -1025,9 +1022,9 @@ axis passes.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-stroke-rotate" role="function" condition="since:GIMP 2.4"/>gimp_vectors_stroke_rotate ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_stroke_rotate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_stroke_rotate          (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-stroke-rotate" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_stroke_rotate ()</title>
+<indexterm zone="gimp-vectors-stroke-rotate" role="GIMP 2.4"><primary>gimp_vectors_stroke_rotate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_stroke_rotate          (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> stroke_id,
                                                          <link linkend="gdouble">gdouble</link> center_x,
                                                          <link linkend="gdouble">gdouble</link> center_y,
@@ -1060,9 +1057,9 @@ Rotates the given stroke around given center by angle (in degrees).</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-bezier-stroke-conicto" role="function" condition="since:GIMP 2.4"/>gimp_vectors_bezier_stroke_conicto ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_bezier_stroke_conicto</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_bezier_stroke_conicto  (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-bezier-stroke-conicto" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_bezier_stroke_conicto ()</title>
+<indexterm zone="gimp-vectors-bezier-stroke-conicto" role="GIMP 2.4"><primary>gimp_vectors_bezier_stroke_conicto</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_bezier_stroke_conicto  (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> stroke_id,
                                                          <link linkend="gdouble">gdouble</link> x0,
                                                          <link linkend="gdouble">gdouble</link> y0,
@@ -1101,9 +1098,9 @@ spline.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-bezier-stroke-cubicto" role="function" condition="since:GIMP 2.4"/>gimp_vectors_bezier_stroke_cubicto ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_bezier_stroke_cubicto</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_bezier_stroke_cubicto  (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-bezier-stroke-cubicto" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_bezier_stroke_cubicto ()</title>
+<indexterm zone="gimp-vectors-bezier-stroke-cubicto" role="GIMP 2.4"><primary>gimp_vectors_bezier_stroke_cubicto</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_bezier_stroke_cubicto  (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> stroke_id,
                                                          <link linkend="gdouble">gdouble</link> x0,
                                                          <link linkend="gdouble">gdouble</link> y0,
@@ -1148,9 +1145,9 @@ Extends a bezier stroke with a cubic bezier spline.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-bezier-stroke-lineto" role="function" condition="since:GIMP 2.4"/>gimp_vectors_bezier_stroke_lineto ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_bezier_stroke_lineto</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_bezier_stroke_lineto   (<link linkend="gint32">gint32</link> vectors_ID,
+<refsect2 id="gimp-vectors-bezier-stroke-lineto" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_bezier_stroke_lineto ()</title>
+<indexterm zone="gimp-vectors-bezier-stroke-lineto" role="GIMP 2.4"><primary>gimp_vectors_bezier_stroke_lineto</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_vectors_bezier_stroke_lineto   (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gint">gint</link> stroke_id,
                                                          <link linkend="gdouble">gdouble</link> x0,
                                                          <link linkend="gdouble">gdouble</link> y0);</programlisting>
@@ -1179,9 +1176,9 @@ Extends a bezier stroke with a lineto.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-bezier-stroke-new-ellipse" role="function" condition="since:GIMP 2.4"/>gimp_vectors_bezier_stroke_new_ellipse ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_bezier_stroke_new_ellipse</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_vectors_bezier_stroke_new_ellipse
+<refsect2 id="gimp-vectors-bezier-stroke-new-ellipse" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_bezier_stroke_new_ellipse ()</title>
+<indexterm zone="gimp-vectors-bezier-stroke-new-ellipse" role="GIMP 2.4"><primary>gimp_vectors_bezier_stroke_new_ellipse</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_vectors_bezier_stroke_new_ellipse
                                                         (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gdouble">gdouble</link> x0,
                                                          <link linkend="gdouble">gdouble</link> y0,
@@ -1219,9 +1216,9 @@ Adds a bezier stroke describing an ellipse the vectors object.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-bezier-stroke-new-moveto" role="function" condition="since:GIMP 2.4"/>gimp_vectors_bezier_stroke_new_moveto ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_bezier_stroke_new_moveto</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_vectors_bezier_stroke_new_moveto
+<refsect2 id="gimp-vectors-bezier-stroke-new-moveto" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_bezier_stroke_new_moveto ()</title>
+<indexterm zone="gimp-vectors-bezier-stroke-new-moveto" role="GIMP 2.4"><primary>gimp_vectors_bezier_stroke_new_moveto</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_vectors_bezier_stroke_new_moveto
                                                         (<link linkend="gint32">gint32</link> vectors_ID,
                                                          <link linkend="gdouble">gdouble</link> x0,
                                                          <link linkend="gdouble">gdouble</link> y0);</programlisting>
@@ -1253,6 +1250,4 @@ Adds a bezier stroke with a single moveto to the vectors object.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

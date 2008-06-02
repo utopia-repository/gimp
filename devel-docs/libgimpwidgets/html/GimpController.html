@@ -1,24 +1,24 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpController</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
-<link rel="up" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
-<link rel="prev" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
-<link rel="next" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
-<meta name="generator" content="GTK-Doc V1.9 (XML mode)">
+<link rel="up" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers">
+<link rel="prev" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers">
+<link rel="next" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
+<link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
 <link rel="chapter" href="libgimpwidgets-gallery.html" title="Widget Gallery">
 <link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
-<link rel="part" href="libgimpwidgets-colordisplay.html" title="Part&#160;II.&#160;GIMP Display Filters">
-<link rel="part" href="libgimpwidgets-colorselector.html" title="Part&#160;III.&#160;GIMP Color Selectors">
-<link rel="part" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
-<link rel="part" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
-<link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
+<link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters">
+<link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors">
+<link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers">
+<link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
+<link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API">
 <link rel="index" href="libgimpwidgets-index.html" title="Index">
 <link rel="index" href="libgimpwidgets-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimpwidgets-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
@@ -33,115 +33,105 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpwidgets-utils.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2605362" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2664588" class="shortcut">Description</a>
-                  &#160;|&#160;
-                  <a href="#id2664477" class="shortcut">Object Hierarchy</a>
-                  &#160;|&#160;
-                  <a href="#id2664501" class="shortcut">Implemented Interfaces</a>
-                  &#160;|&#160;
-                  <a href="#id2664522" class="shortcut">Properties</a>
-                  &#160;|&#160;
-                  <a href="#id2664563" class="shortcut">Signals</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#GimpController.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#GimpController.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#GimpController.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#GimpController.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+                   | 
+                  <a href="#GimpController.properties" class="shortcut">Properties</a>
+                   | 
+                  <a href="#GimpController.signals" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpController"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2605362"></a><span class="refentrytitle">GimpController</span>
-</h2>
-<p>GimpController &#8212; Pluggable GIMP input controller modules.</p>
+<h2><span class="refentrytitle"><a name="GimpController.top_of_page"></a>GimpController</span></h2>
+<p>GimpController — Pluggable GIMP input controller modules.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="GimpController.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
-enum                <a class="link" href="GimpController.html#GimpControllerEventType">GimpControllerEventType</a>;
-                    <a class="link" href="GimpController.html#GimpControllerEventAny">GimpControllerEventAny</a>;
-                    <a class="link" href="GimpController.html#GimpControllerEventTrigger">GimpControllerEventTrigger</a>;
-                    <a class="link" href="GimpController.html#GimpControllerEventValue">GimpControllerEventValue</a>;
-union               <a class="link" href="GimpController.html#GimpControllerEvent">GimpControllerEvent</a>;
-                    <a class="link" href="GimpController.html#GimpController-struct">GimpController</a>;
-<a class="link" href="GimpController.html" title="GimpController">GimpController</a>*     <a class="link" href="GimpController.html#gimp-controller-new">gimp_controller_new</a>                 (<a
-href="../gobject/gobject-Type-Information.html#GType"
+enum                <a class="link" href="GimpController.html#GimpControllerEventType" title="enum GimpControllerEventType">GimpControllerEventType</a>;
+                    <a class="link" href="GimpController.html#GimpControllerEventAny" title="GimpControllerEventAny">GimpControllerEventAny</a>;
+                    <a class="link" href="GimpController.html#GimpControllerEventTrigger" title="GimpControllerEventTrigger">GimpControllerEventTrigger</a>;
+                    <a class="link" href="GimpController.html#GimpControllerEventValue" title="GimpControllerEventValue">GimpControllerEventValue</a>;
+union               <a class="link" href="GimpController.html#GimpControllerEvent" title="union GimpControllerEvent">GimpControllerEvent</a>;
+                    <a class="link" href="GimpController.html#GimpController-struct" title="GimpController">GimpController</a>;
+<a class="link" href="GimpController.html" title="GimpController">GimpController</a>*     <a class="link" href="GimpController.html#gimp-controller-new" title="gimp_controller_new ()">gimp_controller_new</a>                 (<a
+href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 >GType</a> controller_type);
 <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a>                <a class="link" href="GimpController.html#gimp-controller-get-n-events">gimp_controller_get_n_events</a>        (<a class="link" href="GimpController.html" title="GimpController">GimpController</a> *controller);
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="GimpController.html#gimp-controller-get-n-events" title="gimp_controller_get_n_events ()">gimp_controller_get_n_events</a>        (<a class="link" href="GimpController.html" title="GimpController">GimpController</a> *controller);
 const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*        <a class="link" href="GimpController.html#gimp-controller-get-event-name">gimp_controller_get_event_name</a>      (<a class="link" href="GimpController.html" title="GimpController">GimpController</a> *controller,
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        <a class="link" href="GimpController.html#gimp-controller-get-event-name" title="gimp_controller_get_event_name ()">gimp_controller_get_event_name</a>      (<a class="link" href="GimpController.html" title="GimpController">GimpController</a> *controller,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> event_id);
 const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*        <a class="link" href="GimpController.html#gimp-controller-get-event-blurb">gimp_controller_get_event_blurb</a>     (<a class="link" href="GimpController.html" title="GimpController">GimpController</a> *controller,
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        <a class="link" href="GimpController.html#gimp-controller-get-event-blurb" title="gimp_controller_get_event_blurb ()">gimp_controller_get_event_blurb</a>     (<a class="link" href="GimpController.html" title="GimpController">GimpController</a> *controller,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> event_id);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="GimpController.html#gimp-controller-event">gimp_controller_event</a>               (<a class="link" href="GimpController.html" title="GimpController">GimpController</a> *controller,
-                                                         const <a class="link" href="GimpController.html#GimpControllerEvent">GimpControllerEvent</a> *event);
-
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="GimpController.html#gimp-controller-event" title="gimp_controller_event ()">gimp_controller_event</a>               (<a class="link" href="GimpController.html" title="GimpController">GimpController</a> *controller,
+                                                         const <a class="link" href="GimpController.html#GimpControllerEvent" title="union GimpControllerEvent">GimpControllerEvent</a> *event);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2664477"></a><h2>Object Hierarchy</h2>
+<a name="GimpController.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-
   <a
-href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 >GObject</a>
    +----GimpController
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2664501"></a><h2>Implemented Interfaces</h2>
+<a name="GimpController.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpController implements
  <a
-href="../libgimpconfig/libgimpconfig-GimpConfig.html#GimpConfigInterface"
+href="/usr/share/gtk-doc/html/libgimpconfig/libgimpconfig-GimpConfig.html#GimpConfigInterface"
 >GimpConfigInterface</a>.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2664522"></a><h2>Properties</h2>
+<a name="GimpController.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-
-  "<a class="link" href="GimpController.html#GimpController--name">name</a>"                     <a
-href="../gobject/gobject-Standard-Parameter-and-Value-Types.html#gchararray"
->gchararray</a>            : Read / Write / Construct
-  "<a class="link" href="GimpController.html#GimpController--state">state</a>"                    <a
-href="../gobject/gobject-Standard-Parameter-and-Value-Types.html#gchararray"
->gchararray</a>            : Read / Write / Construct
+  "<a class="link" href="GimpController.html#GimpController--name" title='The "name" property'>name</a>"                     <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*                : Read / Write / Construct
+  "<a class="link" href="GimpController.html#GimpController--state" title='The "state" property'>state</a>"                    <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*                : Read / Write / Construct
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2664563"></a><h2>Signals</h2>
+<a name="GimpController.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
-
-  "<a class="link" href="GimpController.html#GimpController-event">event</a>"                                          : Run Last
+  "<a class="link" href="GimpController.html#GimpController-event" title='The "event" signal'>event</a>"                                          : Run Last
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2664588"></a><h2>Description</h2>
+<a name="GimpController.description"></a><h2>Description</h2>
 <p>
 An abstract interface for implementing arbitrary input controllers.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2664605"></a><h2>Details</h2>
+<a name="GimpController.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2664616"></a><h3>
-<a name="GimpControllerEventType"></a>enum GimpControllerEventType</h3>
-<a class="indexterm" name="id2664627"></a><pre class="programlisting">typedef enum
+<a name="GimpControllerEventType"></a><h3>enum GimpControllerEventType</h3>
+<pre class="programlisting">typedef enum
 {
   GIMP_CONTROLLER_EVENT_TRIGGER,
   GIMP_CONTROLLER_EVENT_VALUE
@@ -153,9 +143,8 @@ An abstract interface for implementing arbitrary input controllers.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2664644"></a><h3>
-<a name="GimpControllerEventAny"></a>GimpControllerEventAny</h3>
-<a class="indexterm" name="id2664655"></a><pre class="programlisting">typedef struct {
+<a name="GimpControllerEventAny"></a><h3>GimpControllerEventAny</h3>
+<pre class="programlisting">typedef struct {
   GimpControllerEventType  type;
   GimpController          *source;
   gint                     event_id;
@@ -167,9 +156,8 @@ An abstract interface for implementing arbitrary input controllers.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2664673"></a><h3>
-<a name="GimpControllerEventTrigger"></a>GimpControllerEventTrigger</h3>
-<a class="indexterm" name="id2664684"></a><pre class="programlisting">typedef struct {
+<a name="GimpControllerEventTrigger"></a><h3>GimpControllerEventTrigger</h3>
+<pre class="programlisting">typedef struct {
   GimpControllerEventType  type;
   GimpController          *source;
   gint                     event_id;
@@ -181,9 +169,8 @@ An abstract interface for implementing arbitrary input controllers.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2664702"></a><h3>
-<a name="GimpControllerEventValue"></a>GimpControllerEventValue</h3>
-<a class="indexterm" name="id2664713"></a><pre class="programlisting">typedef struct {
+<a name="GimpControllerEventValue"></a><h3>GimpControllerEventValue</h3>
+<pre class="programlisting">typedef struct {
   GimpControllerEventType  type;
   GimpController          *source;
   gint                     event_id;
@@ -196,9 +183,8 @@ An abstract interface for implementing arbitrary input controllers.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2664731"></a><h3>
-<a name="GimpControllerEvent"></a>union GimpControllerEvent</h3>
-<a class="indexterm" name="id2664744"></a><pre class="programlisting">union GimpControllerEvent
+<a name="GimpControllerEvent"></a><h3>union GimpControllerEvent</h3>
+<pre class="programlisting">union GimpControllerEvent
 {
   GimpControllerEventType    type;
   GimpControllerEventAny     any;
@@ -212,19 +198,17 @@ An abstract interface for implementing arbitrary input controllers.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2665325"></a><h3>
-<a name="GimpController-struct"></a>GimpController</h3>
-<a class="indexterm" name="id2665336"></a><pre class="programlisting">typedef struct _GimpController GimpController;</pre>
+<a name="GimpController-struct"></a><h3>GimpController</h3>
+<pre class="programlisting">typedef struct _GimpController GimpController;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2665353"></a><h3>
-<a name="gimp-controller-new"></a>gimp_controller_new ()</h3>
-<a class="indexterm" name="id2665365"></a><pre class="programlisting"><a class="link" href="GimpController.html" title="GimpController">GimpController</a>*     gimp_controller_new                 (<a
-href="../gobject/gobject-Type-Information.html#GType"
+<a name="gimp-controller-new"></a><h3>gimp_controller_new ()</h3>
+<pre class="programlisting"><a class="link" href="GimpController.html" title="GimpController">GimpController</a>*     gimp_controller_new                 (<a
+href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 >GType</a> controller_type);</pre>
 <p>
 
@@ -233,12 +217,12 @@ href="../gobject/gobject-Type-Information.html#GType"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>controller_type</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>controller_type</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -249,10 +233,9 @@ href="../gobject/gobject-Type-Information.html#GType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2665421"></a><h3>
-<a name="gimp-controller-get-n-events"></a>gimp_controller_get_n_events ()</h3>
-<a class="indexterm" name="id2665432"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint"
+<a name="gimp-controller-get-n-events"></a><h3>gimp_controller_get_n_events ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a>                gimp_controller_get_n_events        (<a class="link" href="GimpController.html" title="GimpController">GimpController</a> *controller);</pre>
 <p>
 
@@ -261,12 +244,12 @@ href="../glib/glib-Basic-Types.html#gint"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>controller</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>controller</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -277,13 +260,12 @@ href="../glib/glib-Basic-Types.html#gint"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2665489"></a><h3>
-<a name="gimp-controller-get-event-name"></a>gimp_controller_get_event_name ()</h3>
-<a class="indexterm" name="id2665500"></a><pre class="programlisting">const <a
-href="../glib/glib-Basic-Types.html#gchar"
+<a name="gimp-controller-get-event-name"></a><h3>gimp_controller_get_event_name ()</h3>
+<pre class="programlisting">const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>*        gimp_controller_get_event_name      (<a class="link" href="GimpController.html" title="GimpController">GimpController</a> *controller,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> event_id);</pre>
 <p>
 
@@ -292,17 +274,17 @@ href="../glib/glib-Basic-Types.html#gint"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>controller</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>controller</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>event_id</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>event_id</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -313,13 +295,12 @@ href="../glib/glib-Basic-Types.html#gint"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2665579"></a><h3>
-<a name="gimp-controller-get-event-blurb"></a>gimp_controller_get_event_blurb ()</h3>
-<a class="indexterm" name="id2665590"></a><pre class="programlisting">const <a
-href="../glib/glib-Basic-Types.html#gchar"
+<a name="gimp-controller-get-event-blurb"></a><h3>gimp_controller_get_event_blurb ()</h3>
+<pre class="programlisting">const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>*        gimp_controller_get_event_blurb     (<a class="link" href="GimpController.html" title="GimpController">GimpController</a> *controller,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> event_id);</pre>
 <p>
 
@@ -328,17 +309,17 @@ href="../glib/glib-Basic-Types.html#gint"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>controller</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>controller</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>event_id</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>event_id</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -349,12 +330,11 @@ href="../glib/glib-Basic-Types.html#gint"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2665670"></a><h3>
-<a name="gimp-controller-event"></a>gimp_controller_event ()</h3>
-<a class="indexterm" name="id2665681"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-controller-event"></a><h3>gimp_controller_event ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_controller_event               (<a class="link" href="GimpController.html" title="GimpController">GimpController</a> *controller,
-                                                         const <a class="link" href="GimpController.html#GimpControllerEvent">GimpControllerEvent</a> *event);</pre>
+                                                         const <a class="link" href="GimpController.html#GimpControllerEvent" title="union GimpControllerEvent">GimpControllerEvent</a> *event);</pre>
 <p>
 
 </p>
@@ -362,17 +342,17 @@ href="../glib/glib-Basic-Types.html#gboolean"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>controller</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>controller</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>event</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>event</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -383,40 +363,37 @@ href="../glib/glib-Basic-Types.html#gboolean"
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2665760"></a><h2>Property Details</h2>
+<a name="GimpController.property-details"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2665771"></a><h3>
-<a name="GimpController--name"></a>The <code class="literal">"name"</code> property</h3>
-<a class="indexterm" name="id2665785"></a><pre class="programlisting">  "name"                     <a
-href="../gobject/gobject-Standard-Parameter-and-Value-Types.html#gchararray"
->gchararray</a>            : Read / Write / Construct</pre>
+<a name="GimpController--name"></a><h3>The <code class="literal">"name"</code> property</h3>
+<pre class="programlisting">  "name"                     <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*                : Read / Write / Construct</pre>
 <p></p>
 <p>Default value: "Unnamed Controller"</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2665808"></a><h3>
-<a name="GimpController--state"></a>The <code class="literal">"state"</code> property</h3>
-<a class="indexterm" name="id2665822"></a><pre class="programlisting">  "state"                    <a
-href="../gobject/gobject-Standard-Parameter-and-Value-Types.html#gchararray"
->gchararray</a>            : Read / Write / Construct</pre>
+<a name="GimpController--state"></a><h3>The <code class="literal">"state"</code> property</h3>
+<pre class="programlisting">  "state"                    <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*                : Read / Write / Construct</pre>
 <p></p>
 <p>Default value: "Unknown"</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2665847"></a><h2>Signal Details</h2>
+<a name="GimpController.signal-details"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2665858"></a><h3>
-<a name="GimpController-event"></a>The <code class="literal">"event"</code> signal</h3>
-<a class="indexterm" name="id2665872"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="GimpController-event"></a><h3>The <code class="literal">"event"</code> signal</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            user_function                      (<a class="link" href="GimpController.html" title="GimpController">GimpController</a> *gimpcontroller,
                                                         <a
-href="../glib/glib-Basic-Types.html#gpointer"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 >gpointer</a>        arg1,
                                                         <a
-href="../glib/glib-Basic-Types.html#gpointer"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 >gpointer</a>        user_data)           : Run Last</pre>
 <p>
 
@@ -425,21 +402,21 @@ href="../glib/glib-Basic-Types.html#gpointer"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>gimpcontroller</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>gimpcontroller</code></em> :</span></p></td>
 <td>the object which received the signal.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>arg1</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>arg1</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 </td>
@@ -448,11 +425,9 @@ href="../glib/glib-Basic-Types.html#gpointer"
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2668963"></a><div class="refsect2" lang="en"><a name="id2668964"></a></div>
+</div>
+<div class="footer">
 <hr>
-<div class="refsect2" lang="en"><a name="id2668965"></a></div>
-</div>
-</div>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

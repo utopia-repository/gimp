@@ -1,24 +1,24 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpColorSelection</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
-<link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
+<link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpColorScale.html" title="GimpColorScale">
 <link rel="next" href="GimpColorProfileStore.html" title="GimpColorProfileStore">
-<meta name="generator" content="GTK-Doc V1.9 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
+<link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
 <link rel="chapter" href="libgimpwidgets-gallery.html" title="Widget Gallery">
 <link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
-<link rel="part" href="libgimpwidgets-colordisplay.html" title="Part&#160;II.&#160;GIMP Display Filters">
-<link rel="part" href="libgimpwidgets-colorselector.html" title="Part&#160;III.&#160;GIMP Color Selectors">
-<link rel="part" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
-<link rel="part" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
-<link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
+<link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters">
+<link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors">
+<link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers">
+<link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
+<link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API">
 <link rel="index" href="libgimpwidgets-index.html" title="Index">
 <link rel="index" href="libgimpwidgets-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimpwidgets-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
@@ -33,143 +33,132 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpColorProfileStore.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2580660" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2624423" class="shortcut">Description</a>
-                  &#160;|&#160;
-                  <a href="#id2583646" class="shortcut">Object Hierarchy</a>
-                  &#160;|&#160;
-                  <a href="#id2583708" class="shortcut">Implemented Interfaces</a>
-                  &#160;|&#160;
-                  <a href="#id2583736" class="shortcut">Properties</a>
-                  &#160;|&#160;
-                  <a href="#id2583766" class="shortcut">Signals</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#GimpColorSelection.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#GimpColorSelection.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#GimpColorSelection.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#GimpColorSelection.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+                   | 
+                  <a href="#GimpColorSelection.properties" class="shortcut">Properties</a>
+                   | 
+                  <a href="#GimpColorSelection.signals" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpColorSelection"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2580660"></a><span class="refentrytitle">GimpColorSelection</span>
-</h2>
-<p>GimpColorSelection &#8212; Widget for doing a color selection.</p>
+<h2><span class="refentrytitle"><a name="GimpColorSelection.top_of_page"></a>GimpColorSelection</span></h2>
+<p>GimpColorSelection — Widget for doing a color selection.</p>
 </td>
 <td valign="top" align="right"><img src="gimp-color-selection.png"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="GimpColorSelection.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
-                    <a class="link" href="GimpColorSelection.html#GimpColorSelection-struct">GimpColorSelection</a>;
+                    <a class="link" href="GimpColorSelection.html#GimpColorSelection-struct" title="GimpColorSelection">GimpColorSelection</a>;
 <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="GimpColorSelection.html#gimp-color-selection-new">gimp_color_selection_new</a>            (void);
-void                <a class="link" href="GimpColorSelection.html#gimp-color-selection-set-show-alpha">gimp_color_selection_set_show_alpha</a> (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>*          <a class="link" href="GimpColorSelection.html#gimp-color-selection-new" title="gimp_color_selection_new ()">gimp_color_selection_new</a>            (void);
+void                <a class="link" href="GimpColorSelection.html#gimp-color-selection-set-show-alpha" title="gimp_color_selection_set_show_alpha ()">gimp_color_selection_set_show_alpha</a> (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> show_alpha);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="GimpColorSelection.html#gimp-color-selection-get-show-alpha">gimp_color_selection_get_show_alpha</a> (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection);
-void                <a class="link" href="GimpColorSelection.html#gimp-color-selection-set-color">gimp_color_selection_set_color</a>      (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="GimpColorSelection.html#gimp-color-selection-get-show-alpha" title="gimp_color_selection_get_show_alpha ()">gimp_color_selection_get_show_alpha</a> (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection);
+void                <a class="link" href="GimpColorSelection.html#gimp-color-selection-set-color" title="gimp_color_selection_set_color ()">gimp_color_selection_set_color</a>      (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
                                                          const <a
-href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
-void                <a class="link" href="GimpColorSelection.html#gimp-color-selection-get-color">gimp_color_selection_get_color</a>      (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
+void                <a class="link" href="GimpColorSelection.html#gimp-color-selection-get-color" title="gimp_color_selection_get_color ()">gimp_color_selection_get_color</a>      (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
                                                          <a
-href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
-void                <a class="link" href="GimpColorSelection.html#gimp-color-selection-set-old-color">gimp_color_selection_set_old_color</a>  (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
+void                <a class="link" href="GimpColorSelection.html#gimp-color-selection-set-old-color" title="gimp_color_selection_set_old_color ()">gimp_color_selection_set_old_color</a>  (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
                                                          const <a
-href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
-void                <a class="link" href="GimpColorSelection.html#gimp-color-selection-get-old-color">gimp_color_selection_get_old_color</a>  (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
+void                <a class="link" href="GimpColorSelection.html#gimp-color-selection-get-old-color" title="gimp_color_selection_get_old_color ()">gimp_color_selection_get_old_color</a>  (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
                                                          <a
-href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
-void                <a class="link" href="GimpColorSelection.html#gimp-color-selection-reset">gimp_color_selection_reset</a>          (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection);
-void                <a class="link" href="GimpColorSelection.html#gimp-color-selection-color-changed">gimp_color_selection_color_changed</a>  (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection);
-void                <a class="link" href="GimpColorSelection.html#gimp-color-selection-set-config">gimp_color_selection_set_config</a>     (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
+void                <a class="link" href="GimpColorSelection.html#gimp-color-selection-reset" title="gimp_color_selection_reset ()">gimp_color_selection_reset</a>          (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection);
+void                <a class="link" href="GimpColorSelection.html#gimp-color-selection-color-changed" title="gimp_color_selection_color_changed ()">gimp_color_selection_color_changed</a>  (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection);
+void                <a class="link" href="GimpColorSelection.html#gimp-color-selection-set-config" title="gimp_color_selection_set_config ()">gimp_color_selection_set_config</a>     (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
                                                          <a
-href="../libgimpconfig/GimpColorConfig.html"
+href="/usr/share/gtk-doc/html/libgimpconfig/GimpColorConfig.html"
 >GimpColorConfig</a> *config);
-
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2583646"></a><h2>Object Hierarchy</h2>
+<a name="GimpColorSelection.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-
   <a
-href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 >GObject</a>
    +----<a
-href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----<a
-href="../gtk/GtkObject.html"
+href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
 >GtkObject</a>
                +----<a
-href="../gtk/GtkWidget.html"
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 >GtkWidget</a>
                      +----<a
-href="../gtk/GtkContainer.html"
+href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
 >GtkContainer</a>
                            +----<a
-href="../gtk/GtkBox.html"
+href="/usr/share/gtk-doc/html/gtk/GtkBox.html"
 >GtkBox</a>
                                  +----<a
-href="../gtk/GtkVBox.html"
+href="/usr/share/gtk-doc/html/gtk/GtkVBox.html"
 >GtkVBox</a>
                                        +----GimpColorSelection
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2583708"></a><h2>Implemented Interfaces</h2>
+<a name="GimpColorSelection.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorSelection implements
  AtkImplementorIface and  GtkBuildable.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2583736"></a><h2>Properties</h2>
+<a name="GimpColorSelection.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-
-  "<a class="link" href="GimpColorSelection.html#GimpColorSelection--config">config</a>"                   <a
-href="../libgimpconfig/GimpColorConfig.html"
->GimpColorConfig</a>       : Write
+  "<a class="link" href="GimpColorSelection.html#GimpColorSelection--config" title='The "config" property'>config</a>"                   <a
+href="/usr/share/gtk-doc/html/libgimpconfig/GimpColorConfig.html"
+>GimpColorConfig</a>*      : Write
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2583766"></a><h2>Signals</h2>
+<a name="GimpColorSelection.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
-
-  "<a class="link" href="GimpColorSelection.html#GimpColorSelection-color-changed">color-changed</a>"                                  : Run First
+  "<a class="link" href="GimpColorSelection.html#GimpColorSelection-color-changed" title='The "color-changed" signal'>color-changed</a>"                                  : Run First
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2624423"></a><h2>Description</h2>
+<a name="GimpColorSelection.description"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2624439"></a><h2>Details</h2>
+<a name="GimpColorSelection.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2624450"></a><h3>
-<a name="GimpColorSelection-struct"></a>GimpColorSelection</h3>
-<a class="indexterm" name="id2624461"></a><pre class="programlisting">typedef struct _GimpColorSelection GimpColorSelection;</pre>
+<a name="GimpColorSelection-struct"></a><h3>GimpColorSelection</h3>
+<pre class="programlisting">typedef struct _GimpColorSelection GimpColorSelection;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2624478"></a><h3>
-<a name="gimp-color-selection-new"></a>gimp_color_selection_new ()</h3>
-<a class="indexterm" name="id2624489"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
+<a name="gimp-color-selection-new"></a><h3>gimp_color_selection_new ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 >GtkWidget</a>*          gimp_color_selection_new            (void);</pre>
 <p>
 Creates a new <a class="link" href="GimpColorSelection.html" title="GimpColorSelection"><span class="type">GimpColorSelection</span></a> widget.</p>
@@ -179,7 +168,7 @@ Creates a new <a class="link" href="GimpColorSelection.html" title="GimpColorSel
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The new <a class="link" href="GimpColorSelection.html" title="GimpColorSelection"><span class="type">GimpColorSelection</span></a> widget.
 </td>
 </tr></tbody>
@@ -187,11 +176,10 @@ Creates a new <a class="link" href="GimpColorSelection.html" title="GimpColorSel
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2624544"></a><h3>
-<a name="gimp-color-selection-set-show-alpha"></a>gimp_color_selection_set_show_alpha ()</h3>
-<a class="indexterm" name="id2624557"></a><pre class="programlisting">void                gimp_color_selection_set_show_alpha (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
+<a name="gimp-color-selection-set-show-alpha"></a><h3>gimp_color_selection_set_show_alpha ()</h3>
+<pre class="programlisting">void                gimp_color_selection_set_show_alpha (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> show_alpha);</pre>
 <p>
 Sets the <em class="parameter"><code>show_alpha</code></em> property of the <em class="parameter"><code>selection</code></em> widget.</p>
@@ -202,12 +190,12 @@ Sets the <em class="parameter"><code>show_alpha</code></em> property of the <em 
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>selection</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>selection</code></em> :</span></p></td>
 <td>  A <a class="link" href="GimpColorSelection.html" title="GimpColorSelection"><span class="type">GimpColorSelection</span></a> widget.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>show_alpha</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>show_alpha</code></em> :</span></p></td>
 <td> The new <em class="parameter"><code>show_alpha</code></em> setting.
 </td>
 </tr>
@@ -216,10 +204,9 @@ Sets the <em class="parameter"><code>show_alpha</code></em> property of the <em 
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2624654"></a><h3>
-<a name="gimp-color-selection-get-show-alpha"></a>gimp_color_selection_get_show_alpha ()</h3>
-<a class="indexterm" name="id2624667"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-color-selection-get-show-alpha"></a><h3>gimp_color_selection_get_show_alpha ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_color_selection_get_show_alpha (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection);</pre>
 <p>
 Returns the <em class="parameter"><code>selection</code></em>'s <em class="parameter"><code>show_alpha</code></em> property.</p>
@@ -230,14 +217,14 @@ Returns the <em class="parameter"><code>selection</code></em>'s <em class="param
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>selection</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>selection</code></em> :</span></p></td>
 <td> A <a class="link" href="GimpColorSelection.html" title="GimpColorSelection"><span class="type">GimpColorSelection</span></a> widget.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> <a
-href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
 ><span class="type">TRUE</span></a> if the <a class="link" href="GimpColorSelection.html" title="GimpColorSelection"><span class="type">GimpColorSelection</span></a> has alpha controls.
 </td>
 </tr>
@@ -246,11 +233,10 @@ href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621456"></a><h3>
-<a name="gimp-color-selection-set-color"></a>gimp_color_selection_set_color ()</h3>
-<a class="indexterm" name="id2621468"></a><pre class="programlisting">void                gimp_color_selection_set_color      (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
+<a name="gimp-color-selection-set-color"></a><h3>gimp_color_selection_set_color ()</h3>
+<pre class="programlisting">void                gimp_color_selection_set_color      (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
                                                          const <a
-href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
 <p>
 Sets the <a class="link" href="GimpColorSelection.html" title="GimpColorSelection"><span class="type">GimpColorSelection</span></a>'s current color to the new <em class="parameter"><code>color</code></em>.</p>
@@ -261,12 +247,12 @@ Sets the <a class="link" href="GimpColorSelection.html" title="GimpColorSelectio
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>selection</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>selection</code></em> :</span></p></td>
 <td> A <a class="link" href="GimpColorSelection.html" title="GimpColorSelection"><span class="type">GimpColorSelection</span></a> widget.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
 <td>     The <em class="parameter"><code>color</code></em> to set as current color.
 </td>
 </tr>
@@ -275,11 +261,10 @@ Sets the <a class="link" href="GimpColorSelection.html" title="GimpColorSelectio
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621567"></a><h3>
-<a name="gimp-color-selection-get-color"></a>gimp_color_selection_get_color ()</h3>
-<a class="indexterm" name="id2621580"></a><pre class="programlisting">void                gimp_color_selection_get_color      (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
+<a name="gimp-color-selection-get-color"></a><h3>gimp_color_selection_get_color ()</h3>
+<pre class="programlisting">void                gimp_color_selection_get_color      (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
                                                          <a
-href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
 <p>
 This function returns the <a class="link" href="GimpColorSelection.html" title="GimpColorSelection"><span class="type">GimpColorSelection</span></a>'s current color.</p>
@@ -290,12 +275,12 @@ This function returns the <a class="link" href="GimpColorSelection.html" title="
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>selection</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>selection</code></em> :</span></p></td>
 <td> A <a class="link" href="GimpColorSelection.html" title="GimpColorSelection"><span class="type">GimpColorSelection</span></a> widget.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
 <td>     Return location for the <em class="parameter"><code>selection</code></em>'s current <em class="parameter"><code>color</code></em>.
 </td>
 </tr>
@@ -304,11 +289,10 @@ This function returns the <a class="link" href="GimpColorSelection.html" title="
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621679"></a><h3>
-<a name="gimp-color-selection-set-old-color"></a>gimp_color_selection_set_old_color ()</h3>
-<a class="indexterm" name="id2621692"></a><pre class="programlisting">void                gimp_color_selection_set_old_color  (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
+<a name="gimp-color-selection-set-old-color"></a><h3>gimp_color_selection_set_old_color ()</h3>
+<pre class="programlisting">void                gimp_color_selection_set_old_color  (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
                                                          const <a
-href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
 <p>
 Sets the <a class="link" href="GimpColorSelection.html" title="GimpColorSelection"><span class="type">GimpColorSelection</span></a>'s old color.</p>
@@ -319,12 +303,12 @@ Sets the <a class="link" href="GimpColorSelection.html" title="GimpColorSelectio
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>selection</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>selection</code></em> :</span></p></td>
 <td> A <a class="link" href="GimpColorSelection.html" title="GimpColorSelection"><span class="type">GimpColorSelection</span></a> widget.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
 <td>     The <em class="parameter"><code>color</code></em> to set as old color.
 </td>
 </tr>
@@ -333,11 +317,10 @@ Sets the <a class="link" href="GimpColorSelection.html" title="GimpColorSelectio
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621784"></a><h3>
-<a name="gimp-color-selection-get-old-color"></a>gimp_color_selection_get_old_color ()</h3>
-<a class="indexterm" name="id2621797"></a><pre class="programlisting">void                gimp_color_selection_get_old_color  (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
+<a name="gimp-color-selection-get-old-color"></a><h3>gimp_color_selection_get_old_color ()</h3>
+<pre class="programlisting">void                gimp_color_selection_get_old_color  (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
                                                          <a
-href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
 <p>
 This function returns the <a class="link" href="GimpColorSelection.html" title="GimpColorSelection"><span class="type">GimpColorSelection</span></a>'s old color.</p>
@@ -348,12 +331,12 @@ This function returns the <a class="link" href="GimpColorSelection.html" title="
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>selection</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>selection</code></em> :</span></p></td>
 <td> A <a class="link" href="GimpColorSelection.html" title="GimpColorSelection"><span class="type">GimpColorSelection</span></a> widget.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
 <td>     Return location for the <em class="parameter"><code>selection</code></em>'s old <em class="parameter"><code>color</code></em>.
 </td>
 </tr>
@@ -362,9 +345,8 @@ This function returns the <a class="link" href="GimpColorSelection.html" title="
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621895"></a><h3>
-<a name="gimp-color-selection-reset"></a>gimp_color_selection_reset ()</h3>
-<a class="indexterm" name="id2621907"></a><pre class="programlisting">void                gimp_color_selection_reset          (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection);</pre>
+<a name="gimp-color-selection-reset"></a><h3>gimp_color_selection_reset ()</h3>
+<pre class="programlisting">void                gimp_color_selection_reset          (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection);</pre>
 <p>
 Sets the <a class="link" href="GimpColorSelection.html" title="GimpColorSelection"><span class="type">GimpColorSelection</span></a>'s current color to its old color.</p>
 <p>
@@ -373,7 +355,7 @@ Sets the <a class="link" href="GimpColorSelection.html" title="GimpColorSelectio
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>selection</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>selection</code></em> :</span></p></td>
 <td> A <a class="link" href="GimpColorSelection.html" title="GimpColorSelection"><span class="type">GimpColorSelection</span></a> widget.
 </td>
 </tr></tbody>
@@ -381,9 +363,8 @@ Sets the <a class="link" href="GimpColorSelection.html" title="GimpColorSelectio
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621972"></a><h3>
-<a name="gimp-color-selection-color-changed"></a>gimp_color_selection_color_changed ()</h3>
-<a class="indexterm" name="id2621985"></a><pre class="programlisting">void                gimp_color_selection_color_changed  (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection);</pre>
+<a name="gimp-color-selection-color-changed"></a><h3>gimp_color_selection_color_changed ()</h3>
+<pre class="programlisting">void                gimp_color_selection_color_changed  (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection);</pre>
 <p>
 Emits the "color-changed" signal.</p>
 <p>
@@ -392,7 +373,7 @@ Emits the "color-changed" signal.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>selection</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>selection</code></em> :</span></p></td>
 <td> A <a class="link" href="GimpColorSelection.html" title="GimpColorSelection"><span class="type">GimpColorSelection</span></a> widget.
 </td>
 </tr></tbody>
@@ -400,11 +381,10 @@ Emits the "color-changed" signal.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622043"></a><h3>
-<a name="gimp-color-selection-set-config"></a>gimp_color_selection_set_config ()</h3>
-<a class="indexterm" name="id2622058"></a><pre class="programlisting">void                gimp_color_selection_set_config     (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
+<a name="gimp-color-selection-set-config"></a><h3>gimp_color_selection_set_config ()</h3>
+<pre class="programlisting">void                gimp_color_selection_set_config     (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *selection,
                                                          <a
-href="../libgimpconfig/GimpColorConfig.html"
+href="/usr/share/gtk-doc/html/libgimpconfig/GimpColorConfig.html"
 >GimpColorConfig</a> *config);</pre>
 <p>
 Sets the color management configuration to use with this color selection.</p>
@@ -415,12 +395,12 @@ Sets the color management configuration to use with this color selection.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>selection</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>selection</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
@@ -431,24 +411,22 @@ Sets the color management configuration to use with this color selection.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2622140"></a><h2>Property Details</h2>
+<a name="GimpColorSelection.property-details"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2622150"></a><h3>
-<a name="GimpColorSelection--config"></a>The <code class="literal">"config"</code> property</h3>
-<a class="indexterm" name="id2622164"></a><pre class="programlisting">  "config"                   <a
-href="../libgimpconfig/GimpColorConfig.html"
->GimpColorConfig</a>       : Write</pre>
+<a name="GimpColorSelection--config"></a><h3>The <code class="literal">"config"</code> property</h3>
+<pre class="programlisting">  "config"                   <a
+href="/usr/share/gtk-doc/html/libgimpconfig/GimpColorConfig.html"
+>GimpColorConfig</a>*      : Write</pre>
 <p></p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2622186"></a><h2>Signal Details</h2>
+<a name="GimpColorSelection.signal-details"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2622197"></a><h3>
-<a name="GimpColorSelection-color-changed"></a>The <code class="literal">"color-changed"</code> signal</h3>
-<a class="indexterm" name="id2622213"></a><pre class="programlisting">void                user_function                      (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *gimpcolorselection,
+<a name="GimpColorSelection-color-changed"></a><h3>The <code class="literal">"color-changed"</code> signal</h3>
+<pre class="programlisting">void                user_function                      (<a class="link" href="GimpColorSelection.html" title="GimpColorSelection">GimpColorSelection</a> *gimpcolorselection,
                                                         <a
-href="../glib/glib-Basic-Types.html#gpointer"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 >gpointer</a>            user_data)               : Run First</pre>
 <p>
 
@@ -457,24 +435,22 @@ href="../glib/glib-Basic-Types.html#gpointer"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>gimpcolorselection</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>gimpcolorselection</code></em> :</span></p></td>
 <td>the object which received the signal.
 
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2622284"></a><div class="refsect2" lang="en"><a name="id2622285"></a></div>
+</div>
+<div class="footer">
 <hr>
-<div class="refsect2" lang="en"><a name="id2622286"></a></div>
-</div>
-</div>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

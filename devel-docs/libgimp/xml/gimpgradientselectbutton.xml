@@ -4,7 +4,7 @@
 
 <refentry id="GimpGradientSelectButton">
 <refmeta>
-<refentrytitle role="top_of_page">GimpGradientSelectButton</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpGradientSelectButton.top_of_page">GimpGradientSelectButton</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpGradientSelectButton.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpGradientSelectButton-struct">GimpGradientSelectButton</link>;
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-gradient-select-button-new">gimp_gradient_select_button_new</link>     (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *gradient_name);
@@ -30,14 +27,12 @@ const <link linkend="gchar">gchar</link>*        <link linkend="gimp-gradient-se
 <link linkend="void">void</link>                <link linkend="gimp-gradient-select-button-set-gradient">gimp_gradient_select_button_set_gradient</link>
                                                         (<link linkend="GimpGradientSelectButton">GimpGradientSelectButton</link> *button,
                                                          const <link linkend="gchar">gchar</link> *gradient_name);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpGradientSelectButton.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -53,7 +48,7 @@ const <link linkend="gchar">gchar</link>*        <link linkend="gimp-gradient-se
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpGradientSelectButton.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpGradientSelectButton implements
@@ -62,42 +57,40 @@ GimpGradientSelectButton implements
 </refsect1>
 
 
-<refsect1 role="properties">
+<refsect1 id="GimpGradientSelectButton.properties" role="properties">
 <title role="properties.title">Properties</title>
 <synopsis>
-
-  &quot;<link linkend="GimpGradientSelectButton--gradient-name">gradient-name</link>&quot;            <link linkend="gchararray">gchararray</link>            : Read / Write
-  &quot;<link linkend="GimpGradientSelectButton--title">title</link>&quot;                    <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only
+  &quot;<link linkend="GimpGradientSelectButton--gradient-name">gradient-name</link>&quot;            <link linkend="gchar">gchar</link>*                : Read / Write
+  &quot;<link linkend="GimpGradientSelectButton--title">title</link>&quot;                    <link linkend="gchar">gchar</link>*                : Read / Write / Construct Only
 </synopsis>
 </refsect1>
 
-<refsect1 role="signal_proto">
+<refsect1 id="GimpGradientSelectButton.signals" role="signal_proto">
 <title role="signal_proto.title">Signals</title>
 <synopsis>
-
   &quot;<link linkend="GimpGradientSelectButton-gradient-set">gradient-set</link>&quot;                                   : Run First
 </synopsis>
 </refsect1>
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpGradientSelectButton.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpGradientSelectButton.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpGradientSelectButton-struct" role="struct"/>GimpGradientSelectButton</title>
-<indexterm><primary>GimpGradientSelectButton</primary></indexterm><programlisting>typedef struct _GimpGradientSelectButton GimpGradientSelectButton;</programlisting>
+<refsect2 id="GimpGradientSelectButton-struct" role="struct">
+<title>GimpGradientSelectButton</title>
+<indexterm zone="GimpGradientSelectButton-struct"><primary>GimpGradientSelectButton</primary></indexterm><programlisting>typedef struct _GimpGradientSelectButton GimpGradientSelectButton;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-gradient-select-button-new" role="function" condition="since:GIMP 2.4"/>gimp_gradient_select_button_new ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_gradient_select_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_gradient_select_button_new     (const <link linkend="gchar">gchar</link> *title,
+<refsect2 id="gimp-gradient-select-button-new" role="function" condition="since:GIMP 2.4">
+<title>gimp_gradient_select_button_new ()</title>
+<indexterm zone="gimp-gradient-select-button-new" role="GIMP 2.4"><primary>gimp_gradient_select_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_gradient_select_button_new     (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *gradient_name);</programlisting>
 <para>
 Creates a new <link linkend="GtkWidget"><type>GtkWidget</type></link> that completely controls the selection of
@@ -117,9 +110,9 @@ plug-in dialog.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-gradient-select-button-get-gradient" role="function" condition="since:GIMP 2.4"/>gimp_gradient_select_button_get_gradient ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_gradient_select_button_get_gradient</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_gradient_select_button_get_gradient
+<refsect2 id="gimp-gradient-select-button-get-gradient" role="function" condition="since:GIMP 2.4">
+<title>gimp_gradient_select_button_get_gradient ()</title>
+<indexterm zone="gimp-gradient-select-button-get-gradient" role="GIMP 2.4"><primary>gimp_gradient_select_button_get_gradient</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_gradient_select_button_get_gradient
                                                         (<link linkend="GimpGradientSelectButton">GimpGradientSelectButton</link> *button);</programlisting>
 <para>
 Retrieves the name of currently selected gradient.</para>
@@ -134,9 +127,9 @@ Retrieves the name of currently selected gradient.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-gradient-select-button-set-gradient" role="function" condition="since:GIMP 2.4"/>gimp_gradient_select_button_set_gradient ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_gradient_select_button_set_gradient</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_gradient_select_button_set_gradient
+<refsect2 id="gimp-gradient-select-button-set-gradient" role="function" condition="since:GIMP 2.4">
+<title>gimp_gradient_select_button_set_gradient ()</title>
+<indexterm zone="gimp-gradient-select-button-set-gradient" role="GIMP 2.4"><primary>gimp_gradient_select_button_set_gradient</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_gradient_select_button_set_gradient
                                                         (<link linkend="GimpGradientSelectButton">GimpGradientSelectButton</link> *button,
                                                          const <link linkend="gchar">gchar</link> *gradient_name);</programlisting>
 <para>
@@ -154,10 +147,10 @@ Sets the current gradient for the gradient select button.</para>
 </para></refsect2>
 
 </refsect1>
-<refsect1 role="property_details">
+<refsect1 id="GimpGradientSelectButton.property-details" role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpGradientSelectButton--gradient-name"/>The <literal>&quot;gradient-name&quot;</literal> property</title>
-<indexterm role="GIMP 2.4"><primary>GimpGradientSelectButton:gradient-name</primary></indexterm><programlisting>  &quot;gradient-name&quot;            <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
+<refsect2 id="GimpGradientSelectButton--gradient-name"><title>The <literal>&quot;gradient-name&quot;</literal> property</title>
+<indexterm zone="GimpGradientSelectButton--gradient-name" role="GIMP 2.4"><primary>GimpGradientSelectButton:gradient-name</primary></indexterm><programlisting>  &quot;gradient-name&quot;            <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
 <para>
 The name of the currently selected gradient.</para>
 <para>
@@ -166,8 +159,8 @@ The name of the currently selected gradient.</para>
 <para>Since  GIMP 2.4
 </para>
 </refsect2>
-<refsect2><title><anchor id="GimpGradientSelectButton--title"/>The <literal>&quot;title&quot;</literal> property</title>
-<indexterm role="GIMP 2.4"><primary>GimpGradientSelectButton:title</primary></indexterm><programlisting>  &quot;title&quot;                    <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only</programlisting>
+<refsect2 id="GimpGradientSelectButton--title"><title>The <literal>&quot;title&quot;</literal> property</title>
+<indexterm zone="GimpGradientSelectButton--title" role="GIMP 2.4"><primary>GimpGradientSelectButton:title</primary></indexterm><programlisting>  &quot;title&quot;                    <link linkend="gchar">gchar</link>*                : Read / Write / Construct Only</programlisting>
 <para>
 The title to be used for the gradient selection popup dialog.</para>
 <para>
@@ -179,10 +172,10 @@ The title to be used for the gradient selection popup dialog.</para>
 
 </refsect1>
 
-<refsect1 role="signals">
+<refsect1 id="GimpGradientSelectButton.signal-details" role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpGradientSelectButton-gradient-set"/>The <literal>&quot;gradient-set&quot;</literal> signal</title>
-<indexterm role="GIMP 2.4"><primary>GimpGradientSelectButton::gradient-set</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpGradientSelectButton">GimpGradientSelectButton</link> *widget,
+<refsect2 id="GimpGradientSelectButton-gradient-set"><title>The <literal>&quot;gradient-set&quot;</literal> signal</title>
+<indexterm zone="GimpGradientSelectButton-gradient-set" role="GIMP 2.4"><primary>GimpGradientSelectButton::gradient-set</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpGradientSelectButton">GimpGradientSelectButton</link> *widget,
                                                         <link linkend="gchar">gchar</link>                    *gradient_name,
                                                         <link linkend="gint">gint</link>                      width,
                                                         <link linkend="gpointer">gpointer</link>                  grad_data,
@@ -216,6 +209,4 @@ The ::gradient-set signal is emitted when the user selects a gradient.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

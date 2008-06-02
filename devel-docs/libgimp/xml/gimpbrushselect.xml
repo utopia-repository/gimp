@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpbrushselect">
 <refmeta>
-<refentrytitle role="top_of_page">gimpbrushselect</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimpbrushselect.top_of_page">gimpbrushselect</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimpbrushselect.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="void">void</link>                (<link linkend="GimpRunBrushCallback">*GimpRunBrushCallback</link>)             (const <link linkend="gchar">gchar</link> *brush_name,
                                                          <link linkend="gdouble">gdouble</link> opacity,
                                                          <link linkend="gint">gint</link> spacing,
@@ -62,18 +59,18 @@ const <link linkend="gchar">gchar</link>*        <link linkend="gimp-brush-selec
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimpbrushselect.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Functions providing a brush selection dialog.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimpbrushselect.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpRunBrushCallback" role="function"/>GimpRunBrushCallback ()</title>
-<indexterm><primary>GimpRunBrushCallback</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpRunBrushCallback)             (const <link linkend="gchar">gchar</link> *brush_name,
+<refsect2 id="GimpRunBrushCallback" role="function">
+<title>GimpRunBrushCallback ()</title>
+<indexterm zone="GimpRunBrushCallback"><primary>GimpRunBrushCallback</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpRunBrushCallback)             (const <link linkend="gchar">gchar</link> *brush_name,
                                                          <link linkend="gdouble">gdouble</link> opacity,
                                                          <link linkend="gint">gint</link> spacing,
                                                          <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
@@ -115,9 +112,9 @@ Functions providing a brush selection dialog.
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-brush-select-new" role="function"/>gimp_brush_select_new ()</title>
-<indexterm><primary>gimp_brush_select_new</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_brush_select_new               (const <link linkend="gchar">gchar</link> *title,
+<refsect2 id="gimp-brush-select-new" role="function">
+<title>gimp_brush_select_new ()</title>
+<indexterm zone="gimp-brush-select-new"><primary>gimp_brush_select_new</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_brush_select_new               (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *brush_name,
                                                          <link linkend="gdouble">gdouble</link> opacity,
                                                          <link linkend="gint">gint</link> spacing,
@@ -153,9 +150,9 @@ Functions providing a brush selection dialog.
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-brush-select-destroy" role="function"/>gimp_brush_select_destroy ()</title>
-<indexterm><primary>gimp_brush_select_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_brush_select_destroy           (const <link linkend="gchar">gchar</link> *brush_callback);</programlisting>
+<refsect2 id="gimp-brush-select-destroy" role="function">
+<title>gimp_brush_select_destroy ()</title>
+<indexterm zone="gimp-brush-select-destroy"><primary>gimp_brush_select_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_brush_select_destroy           (const <link linkend="gchar">gchar</link> *brush_callback);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -165,9 +162,9 @@ Functions providing a brush selection dialog.
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-brushes-popup" role="function"/>gimp_brushes_popup ()</title>
-<indexterm><primary>gimp_brushes_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_brushes_popup                  (const <link linkend="gchar">gchar</link> *brush_callback,
+<refsect2 id="gimp-brushes-popup" role="function">
+<title>gimp_brushes_popup ()</title>
+<indexterm zone="gimp-brushes-popup"><primary>gimp_brushes_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_brushes_popup                  (const <link linkend="gchar">gchar</link> *brush_callback,
                                                          const <link linkend="gchar">gchar</link> *popup_title,
                                                          const <link linkend="gchar">gchar</link> *initial_brush,
                                                          <link linkend="gdouble">gdouble</link> opacity,
@@ -202,9 +199,9 @@ This procedure opens the brush selection dialog.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-brushes-close-popup" role="function"/>gimp_brushes_close_popup ()</title>
-<indexterm><primary>gimp_brushes_close_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_brushes_close_popup            (const <link linkend="gchar">gchar</link> *brush_callback);</programlisting>
+<refsect2 id="gimp-brushes-close-popup" role="function">
+<title>gimp_brushes_close_popup ()</title>
+<indexterm zone="gimp-brushes-close-popup"><primary>gimp_brushes_close_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_brushes_close_popup            (const <link linkend="gchar">gchar</link> *brush_callback);</programlisting>
 <para>
 Close the brush selection dialog.
 </para>
@@ -219,9 +216,9 @@ This procedure closes an opened brush selection dialog.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-brushes-set-popup" role="function"/>gimp_brushes_set_popup ()</title>
-<indexterm><primary>gimp_brushes_set_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_brushes_set_popup              (const <link linkend="gchar">gchar</link> *brush_callback,
+<refsect2 id="gimp-brushes-set-popup" role="function">
+<title>gimp_brushes_set_popup ()</title>
+<indexterm zone="gimp-brushes-set-popup"><primary>gimp_brushes_set_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_brushes_set_popup              (const <link linkend="gchar">gchar</link> *brush_callback,
                                                          const <link linkend="gchar">gchar</link> *brush_name,
                                                          <link linkend="gdouble">gdouble</link> opacity,
                                                          <link linkend="gint">gint</link> spacing,
@@ -258,6 +255,4 @@ Sets the current brush in a brush selection dialog.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

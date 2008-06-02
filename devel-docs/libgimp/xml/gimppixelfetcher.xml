@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimppixelfetcher">
 <refmeta>
-<refentrytitle role="top_of_page">gimppixelfetcher</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimppixelfetcher.top_of_page">gimppixelfetcher</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimppixelfetcher.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 enum                <link linkend="GimpPixelFetcherEdgeMode">GimpPixelFetcherEdgeMode</link>;
                     <link linkend="GimpPixelFetcher">GimpPixelFetcher</link>;
 <link linkend="GimpPixelFetcher">GimpPixelFetcher</link>*   <link linkend="gimp-pixel-fetcher-new">gimp_pixel_fetcher_new</link>              (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
@@ -50,7 +47,7 @@ enum                <link linkend="GimpPixelFetcherEdgeMode">GimpPixelFetcherEdg
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimppixelfetcher.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 These functions provide neighbourhood-based algorithms which get
@@ -61,11 +58,11 @@ plug-in code more readable and shorter.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimppixelfetcher.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpPixelFetcherEdgeMode" role="enum"/>enum GimpPixelFetcherEdgeMode</title>
-<indexterm><primary>GimpPixelFetcherEdgeMode</primary></indexterm><programlisting>typedef enum
+<refsect2 id="GimpPixelFetcherEdgeMode" role="enum">
+<title>enum GimpPixelFetcherEdgeMode</title>
+<indexterm zone="GimpPixelFetcherEdgeMode"><primary>GimpPixelFetcherEdgeMode</primary></indexterm><programlisting>typedef enum
 {
   GIMP_PIXEL_FETCHER_EDGE_NONE,
   GIMP_PIXEL_FETCHER_EDGE_WRAP,
@@ -77,15 +74,15 @@ plug-in code more readable and shorter.
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="GimpPixelFetcher" role="struct"/>GimpPixelFetcher</title>
-<indexterm><primary>GimpPixelFetcher</primary></indexterm><programlisting>typedef struct _GimpPixelFetcher GimpPixelFetcher;</programlisting>
+<refsect2 id="GimpPixelFetcher" role="struct">
+<title>GimpPixelFetcher</title>
+<indexterm zone="GimpPixelFetcher"><primary>GimpPixelFetcher</primary></indexterm><programlisting>typedef struct _GimpPixelFetcher GimpPixelFetcher;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-pixel-fetcher-new" role="function"/>gimp_pixel_fetcher_new ()</title>
-<indexterm><primary>gimp_pixel_fetcher_new</primary></indexterm><programlisting><link linkend="GimpPixelFetcher">GimpPixelFetcher</link>*   gimp_pixel_fetcher_new              (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
+<refsect2 id="gimp-pixel-fetcher-new" role="function">
+<title>gimp_pixel_fetcher_new ()</title>
+<indexterm zone="gimp-pixel-fetcher-new"><primary>gimp_pixel_fetcher_new</primary></indexterm><programlisting><link linkend="GimpPixelFetcher">GimpPixelFetcher</link>*   gimp_pixel_fetcher_new              (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
                                                          <link linkend="gboolean">gboolean</link> shadow);</programlisting>
 <para>
 Initialize a pixel region from the drawable.</para>
@@ -102,9 +99,9 @@ Initialize a pixel region from the drawable.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a pointer to a <link linkend="GimpPixelRgn"><type>GimpPixelRgn</type></link> structure (or NULL).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-pixel-fetcher-set-edge-mode" role="function"/>gimp_pixel_fetcher_set_edge_mode ()</title>
-<indexterm><primary>gimp_pixel_fetcher_set_edge_mode</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_fetcher_set_edge_mode    (<link linkend="GimpPixelFetcher">GimpPixelFetcher</link> *pf,
+<refsect2 id="gimp-pixel-fetcher-set-edge-mode" role="function">
+<title>gimp_pixel_fetcher_set_edge_mode ()</title>
+<indexterm zone="gimp-pixel-fetcher-set-edge-mode"><primary>gimp_pixel_fetcher_set_edge_mode</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_fetcher_set_edge_mode    (<link linkend="GimpPixelFetcher">GimpPixelFetcher</link> *pf,
                                                          <link linkend="GimpPixelFetcherEdgeMode">GimpPixelFetcherEdgeMode</link> mode);</programlisting>
 <para>
 Change the edage mode of a previously initialized pixel region.</para>
@@ -118,9 +115,9 @@ Change the edage mode of a previously initialized pixel region.</para>
 <listitem><simpara> the new edge mode from <link linkend="GimpPixelFetcherEdgeMode"><type>GimpPixelFetcherEdgeMode</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-pixel-fetcher-set-bg-color" role="function"/>gimp_pixel_fetcher_set_bg_color ()</title>
-<indexterm><primary>gimp_pixel_fetcher_set_bg_color</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_fetcher_set_bg_color     (<link linkend="GimpPixelFetcher">GimpPixelFetcher</link> *pf,
+<refsect2 id="gimp-pixel-fetcher-set-bg-color" role="function">
+<title>gimp_pixel_fetcher_set_bg_color ()</title>
+<indexterm zone="gimp-pixel-fetcher-set-bg-color"><primary>gimp_pixel_fetcher_set_bg_color</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_fetcher_set_bg_color     (<link linkend="GimpPixelFetcher">GimpPixelFetcher</link> *pf,
                                                          const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <para>
 Change the background color of a previously initialized pixel region.</para>
@@ -134,9 +131,9 @@ Change the background color of a previously initialized pixel region.</para>
 <listitem><simpara> the color to be used as bg color.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-pixel-fetcher-get-pixel" role="function"/>gimp_pixel_fetcher_get_pixel ()</title>
-<indexterm><primary>gimp_pixel_fetcher_get_pixel</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_fetcher_get_pixel        (<link linkend="GimpPixelFetcher">GimpPixelFetcher</link> *pf,
+<refsect2 id="gimp-pixel-fetcher-get-pixel" role="function">
+<title>gimp_pixel_fetcher_get_pixel ()</title>
+<indexterm zone="gimp-pixel-fetcher-get-pixel"><primary>gimp_pixel_fetcher_get_pixel</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_fetcher_get_pixel        (<link linkend="GimpPixelFetcher">GimpPixelFetcher</link> *pf,
                                                          <link linkend="gint">gint</link> x,
                                                          <link linkend="gint">gint</link> y,
                                                          <link linkend="guchar">guchar</link> *pixel);</programlisting>
@@ -158,9 +155,9 @@ Get a pixel from the pixel region.</para>
 <listitem><simpara> the memory location where to return the pixel.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-pixel-fetcher-put-pixel" role="function"/>gimp_pixel_fetcher_put_pixel ()</title>
-<indexterm><primary>gimp_pixel_fetcher_put_pixel</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_fetcher_put_pixel        (<link linkend="GimpPixelFetcher">GimpPixelFetcher</link> *pf,
+<refsect2 id="gimp-pixel-fetcher-put-pixel" role="function">
+<title>gimp_pixel_fetcher_put_pixel ()</title>
+<indexterm zone="gimp-pixel-fetcher-put-pixel"><primary>gimp_pixel_fetcher_put_pixel</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_fetcher_put_pixel        (<link linkend="GimpPixelFetcher">GimpPixelFetcher</link> *pf,
                                                          <link linkend="gint">gint</link> x,
                                                          <link linkend="gint">gint</link> y,
                                                          const <link linkend="guchar">guchar</link> *pixel);</programlisting>
@@ -182,9 +179,9 @@ Set a pixel in the pixel region.</para>
 <listitem><simpara> the pixel to set.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-pixel-fetcher-destroy" role="function"/>gimp_pixel_fetcher_destroy ()</title>
-<indexterm><primary>gimp_pixel_fetcher_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_fetcher_destroy          (<link linkend="GimpPixelFetcher">GimpPixelFetcher</link> *pf);</programlisting>
+<refsect2 id="gimp-pixel-fetcher-destroy" role="function">
+<title>gimp_pixel_fetcher_destroy ()</title>
+<indexterm zone="gimp-pixel-fetcher-destroy"><primary>gimp_pixel_fetcher_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_fetcher_destroy          (<link linkend="GimpPixelFetcher">GimpPixelFetcher</link> *pf);</programlisting>
 <para>
 Close a previously initializd pixel region.</para>
 <para>
@@ -200,6 +197,4 @@ Close a previously initializd pixel region.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

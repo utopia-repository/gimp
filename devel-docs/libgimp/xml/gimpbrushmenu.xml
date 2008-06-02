@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpbrushmenu">
 <refmeta>
-<refentrytitle role="top_of_page">gimpbrushmenu</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimpbrushmenu.top_of_page">gimpbrushmenu</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimpbrushmenu.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-brush-select-widget-new">gimp_brush_select_widget_new</link>        (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *brush_name,
                                                          <link linkend="gdouble">gdouble</link> opacity,
@@ -46,18 +43,18 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimpbrushmenu.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 A widget for selecting brushes.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimpbrushmenu.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-brush-select-widget-new" role="function" condition="deprecated:"/>gimp_brush_select_widget_new ()</title>
-<indexterm role="deprecated"><primary>gimp_brush_select_widget_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_brush_select_widget_new        (const <link linkend="gchar">gchar</link> *title,
+<refsect2 id="gimp-brush-select-widget-new" role="function" condition="deprecated:">
+<title>gimp_brush_select_widget_new ()</title>
+<indexterm zone="gimp-brush-select-widget-new" role="deprecated"><primary>gimp_brush_select_widget_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_brush_select_widget_new        (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *brush_name,
                                                          <link linkend="gdouble">gdouble</link> opacity,
                                                          <link linkend="gint">gint</link> spacing,
@@ -96,9 +93,9 @@ a plug-in dialog.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A <link linkend="GtkWidget"><type>GtkWidget</type></link> that you can use in your UI.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-brush-select-widget-close" role="function" condition="deprecated:"/>gimp_brush_select_widget_close ()</title>
-<indexterm role="deprecated"><primary>gimp_brush_select_widget_close</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_brush_select_widget_close      (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
+<refsect2 id="gimp-brush-select-widget-close" role="function" condition="deprecated:">
+<title>gimp_brush_select_widget_close ()</title>
+<indexterm zone="gimp-brush-select-widget-close" role="deprecated"><primary>gimp_brush_select_widget_close</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_brush_select_widget_close      (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
 <warning><para><literal>gimp_brush_select_widget_close</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 Closes the popup window associated with <parameter>widget</parameter>.</para>
@@ -109,9 +106,9 @@ Closes the popup window associated with <parameter>widget</parameter>.</para>
 <listitem><simpara> A brush select widget.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-brush-select-widget-set" role="function" condition="deprecated:"/>gimp_brush_select_widget_set ()</title>
-<indexterm role="deprecated"><primary>gimp_brush_select_widget_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_brush_select_widget_set        (<link linkend="GtkWidget">GtkWidget</link> *widget,
+<refsect2 id="gimp-brush-select-widget-set" role="function" condition="deprecated:">
+<title>gimp_brush_select_widget_set ()</title>
+<indexterm zone="gimp-brush-select-widget-set" role="deprecated"><primary>gimp_brush_select_widget_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_brush_select_widget_set        (<link linkend="GtkWidget">GtkWidget</link> *widget,
                                                          const <link linkend="gchar">gchar</link> *brush_name,
                                                          <link linkend="gdouble">gdouble</link> opacity,
                                                          <link linkend="gint">gint</link> spacing,
@@ -146,6 +143,4 @@ call to <link linkend="gimp-brush-select-widget-new"><function>gimp_brush_select
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

@@ -4,7 +4,7 @@
 
 <refentry id="GimpColorProfileComboBox">
 <refmeta>
-<refentrytitle role="top_of_page">GimpColorProfileComboBox</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpColorProfileComboBox.top_of_page">GimpColorProfileComboBox</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpColorProfileComboBox.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpColorProfileComboBox-struct">GimpColorProfileComboBox</link>;
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-color-profile-combo-box-new">gimp_color_profile_combo_box_new</link>    (<link linkend="GtkWidget">GtkWidget</link> *dialog,
                                                          const <link linkend="gchar">gchar</link> *history);
@@ -37,14 +34,12 @@
                                                          const <link linkend="gchar">gchar</link> *label);
 <link linkend="gchar">gchar</link>*              <link linkend="gimp-color-profile-combo-box-get-active">gimp_color_profile_combo_box_get_active</link>
                                                         (<link linkend="GimpColorProfileComboBox">GimpColorProfileComboBox</link> *combo);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpColorProfileComboBox.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -59,7 +54,7 @@
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpColorProfileComboBox.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpColorProfileComboBox implements
@@ -68,35 +63,34 @@ GimpColorProfileComboBox implements
 </refsect1>
 
 
-<refsect1 role="properties">
+<refsect1 id="GimpColorProfileComboBox.properties" role="properties">
 <title role="properties.title">Properties</title>
 <synopsis>
-
-  &quot;<link linkend="GimpColorProfileComboBox--dialog">dialog</link>&quot;                   <link linkend="GtkDialog">GtkDialog</link>             : Read / Write / Construct Only
-  &quot;<link linkend="GimpColorProfileComboBox--model">model</link>&quot;                    <link linkend="GimpColorProfileStore">GimpColorProfileStore</link>  : Read / Write
+  &quot;<link linkend="GimpColorProfileComboBox--dialog">dialog</link>&quot;                   <link linkend="GtkDialog">GtkDialog</link>*            : Read / Write / Construct Only
+  &quot;<link linkend="GimpColorProfileComboBox--model">model</link>&quot;                    <link linkend="GimpColorProfileStore">GimpColorProfileStore</link>*  : Read / Write
 </synopsis>
 </refsect1>
 
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpColorProfileComboBox.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpColorProfileComboBox.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpColorProfileComboBox-struct" role="struct"/>GimpColorProfileComboBox</title>
-<indexterm><primary>GimpColorProfileComboBox</primary></indexterm><programlisting>typedef struct _GimpColorProfileComboBox GimpColorProfileComboBox;</programlisting>
+<refsect2 id="GimpColorProfileComboBox-struct" role="struct">
+<title>GimpColorProfileComboBox</title>
+<indexterm zone="GimpColorProfileComboBox-struct"><primary>GimpColorProfileComboBox</primary></indexterm><programlisting>typedef struct _GimpColorProfileComboBox GimpColorProfileComboBox;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-color-profile-combo-box-new" role="function" condition="since:GIMP 2.4"/>gimp_color_profile_combo_box_new ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_color_profile_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_color_profile_combo_box_new    (<link linkend="GtkWidget">GtkWidget</link> *dialog,
+<refsect2 id="gimp-color-profile-combo-box-new" role="function" condition="since:GIMP 2.4">
+<title>gimp_color_profile_combo_box_new ()</title>
+<indexterm zone="gimp-color-profile-combo-box-new" role="GIMP 2.4"><primary>gimp_color_profile_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_color_profile_combo_box_new    (<link linkend="GtkWidget">GtkWidget</link> *dialog,
                                                          const <link linkend="gchar">gchar</link> *history);</programlisting>
 <para>
 Create a combo-box widget for selecting color profiles. The combo-box
@@ -120,9 +114,9 @@ typically created using the following code snippet:
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-color-profile-combo-box-new-with-model" role="function" condition="since:GIMP 2.4"/>gimp_color_profile_combo_box_new_with_model ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_color_profile_combo_box_new_with_model</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_color_profile_combo_box_new_with_model
+<refsect2 id="gimp-color-profile-combo-box-new-with-model" role="function" condition="since:GIMP 2.4">
+<title>gimp_color_profile_combo_box_new_with_model ()</title>
+<indexterm zone="gimp-color-profile-combo-box-new-with-model" role="GIMP 2.4"><primary>gimp_color_profile_combo_box_new_with_model</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_color_profile_combo_box_new_with_model
                                                         (<link linkend="GtkWidget">GtkWidget</link> *dialog,
                                                          <link linkend="GtkTreeModel">GtkTreeModel</link> *model);</programlisting>
 <para>
@@ -148,9 +142,9 @@ See also <link linkend="gimp-color-profile-combo-box-new"><function>gimp_color_p
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-color-profile-combo-box-add" role="function" condition="since:GIMP 2.4"/>gimp_color_profile_combo_box_add ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_color_profile_combo_box_add</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_profile_combo_box_add    (<link linkend="GimpColorProfileComboBox">GimpColorProfileComboBox</link> *combo,
+<refsect2 id="gimp-color-profile-combo-box-add" role="function" condition="since:GIMP 2.4">
+<title>gimp_color_profile_combo_box_add ()</title>
+<indexterm zone="gimp-color-profile-combo-box-add" role="GIMP 2.4"><primary>gimp_color_profile_combo_box_add</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_profile_combo_box_add    (<link linkend="GimpColorProfileComboBox">GimpColorProfileComboBox</link> *combo,
                                                          const <link linkend="gchar">gchar</link> *filename,
                                                          const <link linkend="gchar">gchar</link> *label);</programlisting>
 <para>
@@ -172,9 +166,9 @@ This function delegates to the underlying
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-color-profile-combo-box-set-active" role="function" condition="since:GIMP 2.4"/>gimp_color_profile_combo_box_set_active ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_color_profile_combo_box_set_active</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_profile_combo_box_set_active
+<refsect2 id="gimp-color-profile-combo-box-set-active" role="function" condition="since:GIMP 2.4">
+<title>gimp_color_profile_combo_box_set_active ()</title>
+<indexterm zone="gimp-color-profile-combo-box-set-active" role="GIMP 2.4"><primary>gimp_color_profile_combo_box_set_active</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_profile_combo_box_set_active
                                                         (<link linkend="GimpColorProfileComboBox">GimpColorProfileComboBox</link> *combo,
                                                          const <link linkend="gchar">gchar</link> *filename,
                                                          const <link linkend="gchar">gchar</link> *label);</programlisting>
@@ -196,9 +190,9 @@ with the given <parameter>label</parameter> (or <parameter>filename</parameter> 
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-color-profile-combo-box-get-active" role="function" condition="since:GIMP 2.4"/>gimp_color_profile_combo_box_get_active ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_color_profile_combo_box_get_active</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_color_profile_combo_box_get_active
+<refsect2 id="gimp-color-profile-combo-box-get-active" role="function" condition="since:GIMP 2.4">
+<title>gimp_color_profile_combo_box_get_active ()</title>
+<indexterm zone="gimp-color-profile-combo-box-get-active" role="GIMP 2.4"><primary>gimp_color_profile_combo_box_get_active</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_color_profile_combo_box_get_active
                                                         (<link linkend="GimpColorProfileComboBox">GimpColorProfileComboBox</link> *combo);</programlisting>
 <para>
 </para>
@@ -217,10 +211,10 @@ with the given <parameter>label</parameter> (or <parameter>filename</parameter> 
 </para></refsect2>
 
 </refsect1>
-<refsect1 role="property_details">
+<refsect1 id="GimpColorProfileComboBox.property-details" role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpColorProfileComboBox--dialog"/>The <literal>&quot;dialog&quot;</literal> property</title>
-<indexterm role="GIMP 2.4"><primary>GimpColorProfileComboBox:dialog</primary></indexterm><programlisting>  &quot;dialog&quot;                   <link linkend="GtkDialog">GtkDialog</link>             : Read / Write / Construct Only</programlisting>
+<refsect2 id="GimpColorProfileComboBox--dialog"><title>The <literal>&quot;dialog&quot;</literal> property</title>
+<indexterm zone="GimpColorProfileComboBox--dialog" role="GIMP 2.4"><primary>GimpColorProfileComboBox:dialog</primary></indexterm><programlisting>  &quot;dialog&quot;                   <link linkend="GtkDialog">GtkDialog</link>*            : Read / Write / Construct Only</programlisting>
 <para>
 <link linkend="GtkDialog"><type>GtkDialog</type></link> to present when the user selects the
 "Select color profile from disk..." item.</para>
@@ -229,8 +223,8 @@ with the given <parameter>label</parameter> (or <parameter>filename</parameter> 
 </para><para>Since  GIMP 2.4
 </para>
 </refsect2>
-<refsect2><title><anchor id="GimpColorProfileComboBox--model"/>The <literal>&quot;model&quot;</literal> property</title>
-<indexterm role="GIMP 2.4"><primary>GimpColorProfileComboBox:model</primary></indexterm><programlisting>  &quot;model&quot;                    <link linkend="GimpColorProfileStore">GimpColorProfileStore</link>  : Read / Write</programlisting>
+<refsect2 id="GimpColorProfileComboBox--model"><title>The <literal>&quot;model&quot;</literal> property</title>
+<indexterm zone="GimpColorProfileComboBox--model" role="GIMP 2.4"><primary>GimpColorProfileComboBox:model</primary></indexterm><programlisting>  &quot;model&quot;                    <link linkend="GimpColorProfileStore">GimpColorProfileStore</link>*  : Read / Write</programlisting>
 <para>
 Overrides the "model" property of the <link linkend="GtkComboBox"><type>GtkComboBox</type></link> class.
 <link linkend="GimpColorProfileComboBox"><type>GimpColorProfileComboBox</type></link> requires the model to be a
@@ -246,6 +240,4 @@ Overrides the "model" property of the <link linkend="GtkComboBox"><type>GtkCombo
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

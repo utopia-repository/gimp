@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimppixbuf">
 <refmeta>
-<refentrytitle role="top_of_page">gimppixbuf</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimppixbuf.top_of_page">gimppixbuf</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimppixbuf.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 enum                <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link>;
 <link linkend="GdkPixbuf">GdkPixbuf</link>*          <link linkend="gimp-image-get-thumbnail">gimp_image_get_thumbnail</link>            (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gint">gint</link> width,
@@ -57,18 +54,18 @@ enum                <link linkend="GimpPixbufTransparency">GimpPixbufTransparenc
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimppixbuf.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Get a thumbnail pixbuf for a drawable or image.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimppixbuf.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpPixbufTransparency" role="enum"/>enum GimpPixbufTransparency</title>
-<indexterm><primary>GimpPixbufTransparency</primary></indexterm><programlisting>typedef enum
+<refsect2 id="GimpPixbufTransparency" role="enum">
+<title>enum GimpPixbufTransparency</title>
+<indexterm zone="GimpPixbufTransparency"><primary>GimpPixbufTransparency</primary></indexterm><programlisting>typedef enum
 {
   GIMP_PIXBUF_KEEP_ALPHA,
   GIMP_PIXBUF_SMALL_CHECKS,
@@ -78,9 +75,9 @@ Get a thumbnail pixbuf for a drawable or image.
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-image-get-thumbnail" role="function" condition="since:GIMP 2.2"/>gimp_image_get_thumbnail ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_image_get_thumbnail</primary></indexterm><programlisting><link linkend="GdkPixbuf">GdkPixbuf</link>*          gimp_image_get_thumbnail            (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-image-get-thumbnail" role="function" condition="since:GIMP 2.2">
+<title>gimp_image_get_thumbnail ()</title>
+<indexterm zone="gimp-image-get-thumbnail" role="GIMP 2.2"><primary>gimp_image_get_thumbnail</primary></indexterm><programlisting><link linkend="GdkPixbuf">GdkPixbuf</link>*          gimp_image_get_thumbnail            (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gint">gint</link> width,
                                                          <link linkend="gint">gint</link> height,
                                                          <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link> alpha);</programlisting>
@@ -107,9 +104,9 @@ The thumbnail will be not larger than the requested size.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-get-thumbnail" role="function" condition="since:GIMP 2.2"/>gimp_drawable_get_thumbnail ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_get_thumbnail</primary></indexterm><programlisting><link linkend="GdkPixbuf">GdkPixbuf</link>*          gimp_drawable_get_thumbnail         (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-get-thumbnail" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_get_thumbnail ()</title>
+<indexterm zone="gimp-drawable-get-thumbnail" role="GIMP 2.2"><primary>gimp_drawable_get_thumbnail</primary></indexterm><programlisting><link linkend="GdkPixbuf">GdkPixbuf</link>*          gimp_drawable_get_thumbnail         (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> width,
                                                          <link linkend="gint">gint</link> height,
                                                          <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link> alpha);</programlisting>
@@ -137,9 +134,9 @@ size.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-get-sub-thumbnail" role="function" condition="since:GIMP 2.2"/>gimp_drawable_get_sub_thumbnail ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_get_sub_thumbnail</primary></indexterm><programlisting><link linkend="GdkPixbuf">GdkPixbuf</link>*          gimp_drawable_get_sub_thumbnail     (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-get-sub-thumbnail" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_get_sub_thumbnail ()</title>
+<indexterm zone="gimp-drawable-get-sub-thumbnail" role="GIMP 2.2"><primary>gimp_drawable_get_sub_thumbnail</primary></indexterm><programlisting><link linkend="GdkPixbuf">GdkPixbuf</link>*          gimp_drawable_get_sub_thumbnail     (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> src_x,
                                                          <link linkend="gint">gint</link> src_y,
                                                          <link linkend="gint">gint</link> src_width,
@@ -183,9 +180,9 @@ size.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-layer-new-from-pixbuf" role="function" condition="since:GIMP 2.4"/>gimp_layer_new_from_pixbuf ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_layer_new_from_pixbuf</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_layer_new_from_pixbuf          (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-layer-new-from-pixbuf" role="function" condition="since:GIMP 2.4">
+<title>gimp_layer_new_from_pixbuf ()</title>
+<indexterm zone="gimp-layer-new-from-pixbuf" role="GIMP 2.4"><primary>gimp_layer_new_from_pixbuf</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_layer_new_from_pixbuf          (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="GdkPixbuf">GdkPixbuf</link> *pixbuf,
                                                          <link linkend="gdouble">gdouble</link> opacity,
@@ -202,8 +199,8 @@ you will still need to add the layer to it.
 </para>
 <para>
 If you pass <parameter>progress_end</parameter> &gt; <parameter>progress_start</parameter> to this function,
-@<link linkend="gimp-progress-update"><function>gimp_progress_update()</function></link> will be called for. You have to call
-@<link linkend="gimp-progress-init"><function>gimp_progress_init()</function></link> beforehand.</para>
+<link linkend="gimp-progress-update"><function>gimp_progress_update()</function></link> will be called for. You have to call
+<link linkend="gimp-progress-init"><function>gimp_progress_init()</function></link> beforehand then.</para>
 <para>
 
 </para><variablelist role="params">
@@ -239,6 +236,4 @@ If you pass <parameter>progress_end</parameter> &gt; <parameter>progress_start</
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

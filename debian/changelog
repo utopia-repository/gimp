@@ -1,3 +1,10 @@
+gimp (2.4.6-1) unstable; urgency=low
+
+  * New upstream releases
+    - Fixes weird floating rectangle after drag-n-drop (Closes: #317992)
+
+ -- Ari Pollak <ari@debian.org>  Mon, 02 Jun 2008 18:16:42 -0400
+
 gimp (2.4.5-1) unstable; urgency=low
 
   * New upstream release

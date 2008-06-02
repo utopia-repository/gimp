@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpdrawabletransform">
 <refmeta>
-<refentrytitle role="top_of_page">gimpdrawabletransform</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimpdrawabletransform.top_of_page">gimpdrawabletransform</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimpdrawabletransform.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="gint32">gint32</link>              <link linkend="gimp-drawable-transform-flip-simple">gimp_drawable_transform_flip_simple</link> (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="GimpOrientationType">GimpOrientationType</link> flip_type,
                                                          <link linkend="gboolean">gboolean</link> auto_center,
@@ -190,18 +187,18 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimpdrawabletransform.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimpdrawabletransform.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-drawable-transform-flip-simple" role="function" condition="since:GIMP 2.2"/>gimp_drawable_transform_flip_simple ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_flip_simple</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_flip_simple (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-transform-flip-simple" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_transform_flip_simple ()</title>
+<indexterm zone="gimp-drawable-transform-flip-simple" role="GIMP 2.2"><primary>gimp_drawable_transform_flip_simple</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_flip_simple (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="GimpOrientationType">GimpOrientationType</link> flip_type,
                                                          <link linkend="gboolean">gboolean</link> auto_center,
                                                          <link linkend="gdouble">gdouble</link> axis,
@@ -242,9 +239,9 @@ created and flipped drawable.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-transform-flip" role="function" condition="since:GIMP 2.2"/>gimp_drawable_transform_flip ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_flip</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_flip        (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-transform-flip" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_transform_flip ()</title>
+<indexterm zone="gimp-drawable-transform-flip" role="GIMP 2.2"><primary>gimp_drawable_transform_flip</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_flip        (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> x0,
                                                          <link linkend="gdouble">gdouble</link> y0,
                                                          <link linkend="gdouble">gdouble</link> x1,
@@ -306,9 +303,9 @@ transform.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-transform-flip-default" role="function" condition="since:GIMP 2.2"/>gimp_drawable_transform_flip_default ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_flip_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_flip_default
+<refsect2 id="gimp-drawable-transform-flip-default" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_transform_flip_default ()</title>
+<indexterm zone="gimp-drawable-transform-flip-default" role="GIMP 2.2"><primary>gimp_drawable_transform_flip_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_flip_default
                                                         (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> x0,
                                                          <link linkend="gdouble">gdouble</link> y0,
@@ -352,9 +349,9 @@ uses no interpolation/supersampling at all, or default values
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-transform-perspective" role="function" condition="since:GIMP 2.2"/>gimp_drawable_transform_perspective ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_perspective</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_perspective (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-transform-perspective" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_transform_perspective ()</title>
+<indexterm zone="gimp-drawable-transform-perspective" role="GIMP 2.2"><primary>gimp_drawable_transform_perspective</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_perspective (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> x0,
                                                          <link linkend="gdouble">gdouble</link> y0,
                                                          <link linkend="gdouble">gdouble</link> x1,
@@ -438,9 +435,9 @@ to have been projected via a perspective transform.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-transform-perspective-default" role="function" condition="since:GIMP 2.2"/>gimp_drawable_transform_perspective_default ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_perspective_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_perspective_default
+<refsect2 id="gimp-drawable-transform-perspective-default" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_transform_perspective_default ()</title>
+<indexterm zone="gimp-drawable-transform-perspective-default" role="GIMP 2.2"><primary>gimp_drawable_transform_perspective_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_perspective_default
                                                         (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> x0,
                                                          <link linkend="gdouble">gdouble</link> y0,
@@ -501,9 +498,9 @@ which uses no interpolation/supersampling at all, or default values
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-transform-rotate-simple" role="function" condition="since:GIMP 2.2"/>gimp_drawable_transform_rotate_simple ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_rotate_simple</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_rotate_simple
+<refsect2 id="gimp-drawable-transform-rotate-simple" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_transform_rotate_simple ()</title>
+<indexterm zone="gimp-drawable-transform-rotate-simple" role="GIMP 2.2"><primary>gimp_drawable_transform_rotate_simple</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_rotate_simple
                                                         (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="GimpRotationType">GimpRotationType</link> rotate_type,
                                                          <link linkend="gboolean">gboolean</link> auto_center,
@@ -548,9 +545,9 @@ this will be the newly created and rotated drawable.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-transform-rotate" role="function" condition="since:GIMP 2.2"/>gimp_drawable_transform_rotate ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_rotate</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_rotate      (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-transform-rotate" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_transform_rotate ()</title>
+<indexterm zone="gimp-drawable-transform-rotate" role="GIMP 2.2"><primary>gimp_drawable_transform_rotate</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_rotate      (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> angle,
                                                          <link linkend="gboolean">gboolean</link> auto_center,
                                                          <link linkend="gint">gint</link> center_x,
@@ -610,9 +607,9 @@ this will be the newly created and rotated drawable.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-transform-rotate-default" role="function" condition="since:GIMP 2.2"/>gimp_drawable_transform_rotate_default ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_rotate_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_rotate_default
+<refsect2 id="gimp-drawable-transform-rotate-default" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_transform_rotate_default ()</title>
+<indexterm zone="gimp-drawable-transform-rotate-default" role="GIMP 2.2"><primary>gimp_drawable_transform_rotate_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_rotate_default
                                                         (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> angle,
                                                          <link linkend="gboolean">gboolean</link> auto_center,
@@ -657,9 +654,9 @@ which uses no interpolation/supersampling at all, or default values
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-transform-scale" role="function" condition="since:GIMP 2.2"/>gimp_drawable_transform_scale ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_scale</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_scale       (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-transform-scale" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_transform_scale ()</title>
+<indexterm zone="gimp-drawable-transform-scale" role="GIMP 2.2"><primary>gimp_drawable_transform_scale</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_scale       (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> x0,
                                                          <link linkend="gdouble">gdouble</link> y0,
                                                          <link linkend="gdouble">gdouble</link> x1,
@@ -718,9 +715,9 @@ this will be the newly created and scaled drawable.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-transform-scale-default" role="function" condition="since:GIMP 2.2"/>gimp_drawable_transform_scale_default ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_scale_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_scale_default
+<refsect2 id="gimp-drawable-transform-scale-default" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_transform_scale_default ()</title>
+<indexterm zone="gimp-drawable-transform-scale-default" role="GIMP 2.2"><primary>gimp_drawable_transform_scale_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_scale_default
                                                         (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> x0,
                                                          <link linkend="gdouble">gdouble</link> y0,
@@ -764,9 +761,9 @@ uses no interpolation/supersampling at all, or default values
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-transform-shear" role="function" condition="since:GIMP 2.2"/>gimp_drawable_transform_shear ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_shear</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_shear       (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-transform-shear" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_transform_shear ()</title>
+<indexterm zone="gimp-drawable-transform-shear" role="GIMP 2.2"><primary>gimp_drawable_transform_shear</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_shear       (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="GimpOrientationType">GimpOrientationType</link> shear_type,
                                                          <link linkend="gdouble">gdouble</link> magnitude,
                                                          <link linkend="GimpTransformDirection">GimpTransformDirection</link> transform_direction,
@@ -821,9 +818,9 @@ indicates the extent (in pixels) to shear by.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-transform-shear-default" role="function" condition="since:GIMP 2.2"/>gimp_drawable_transform_shear_default ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_shear_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_shear_default
+<refsect2 id="gimp-drawable-transform-shear-default" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_transform_shear_default ()</title>
+<indexterm zone="gimp-drawable-transform-shear-default" role="GIMP 2.2"><primary>gimp_drawable_transform_shear_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_shear_default
                                                         (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="GimpOrientationType">GimpOrientationType</link> shear_type,
                                                          <link linkend="gdouble">gdouble</link> magnitude,
@@ -860,9 +857,9 @@ uses no interpolation/supersampling at all, or default values
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-transform-2d" role="function" condition="since:GIMP 2.2"/>gimp_drawable_transform_2d ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_2d</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_2d          (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-transform-2d" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_transform_2d ()</title>
+<indexterm zone="gimp-drawable-transform-2d" role="GIMP 2.2"><primary>gimp_drawable_transform_2d</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_2d          (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> source_x,
                                                          <link linkend="gdouble">gdouble</link> source_y,
                                                          <link linkend="gdouble">gdouble</link> scale_x,
@@ -936,9 +933,9 @@ Otherwise, this will be the newly created and transformed drawable.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-transform-2d-default" role="function" condition="since:GIMP 2.2"/>gimp_drawable_transform_2d_default ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_2d_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_2d_default  (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-transform-2d-default" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_transform_2d_default ()</title>
+<indexterm zone="gimp-drawable-transform-2d-default" role="GIMP 2.2"><primary>gimp_drawable_transform_2d_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_2d_default  (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> source_x,
                                                          <link linkend="gdouble">gdouble</link> source_y,
                                                          <link linkend="gdouble">gdouble</link> scale_x,
@@ -993,9 +990,9 @@ uses no interpolation/supersampling at all, or default values
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-transform-matrix" role="function" condition="since:GIMP 2.2"/>gimp_drawable_transform_matrix ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_matrix</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_matrix      (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-transform-matrix" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_transform_matrix ()</title>
+<indexterm zone="gimp-drawable-transform-matrix" role="GIMP 2.2"><primary>gimp_drawable_transform_matrix</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_matrix      (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> coeff_0_0,
                                                          <link linkend="gdouble">gdouble</link> coeff_0_1,
                                                          <link linkend="gdouble">gdouble</link> coeff_0_2,
@@ -1075,9 +1072,9 @@ Otherwise, this will be the newly created and transformed drawable.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-transform-matrix-default" role="function" condition="since:GIMP 2.2"/>gimp_drawable_transform_matrix_default ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_matrix_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_matrix_default
+<refsect2 id="gimp-drawable-transform-matrix-default" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_transform_matrix_default ()</title>
+<indexterm zone="gimp-drawable-transform-matrix-default" role="GIMP 2.2"><primary>gimp_drawable_transform_matrix_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_transform_matrix_default
                                                         (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> coeff_0_0,
                                                          <link linkend="gdouble">gdouble</link> coeff_0_1,
@@ -1147,6 +1144,4 @@ which uses no interpolation/supersampling at all, or default values
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

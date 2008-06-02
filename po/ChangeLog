@@ -1,3 +1,97 @@
+2008-05-28  Ihar Hrachyshka <ihar.hrachyshka@gmail.com>
+
+	* be.po: Updated Belarusian translation by Hleb Vałoška.
+
+2008-05-27  Claude Paroz  <claude@2xlibre.net>
+
+	* fr.po: Updated French translation by Julien Hardelin.
+
+2008-05-24  Mugurel Tudor  <mugurelu@gnome.ro>
+
+	* ro.po: Updated Romanian translation by
+	Cristian Secară <cristi AT secarica DOT ro>
+
+2008-05-23  Ihar Hrachyshka <ihar.hrachyshka@gmail.com>
+
+	* be.po: Updated Belarusian translation by Hleb Vałoška.
+
+2008-05-22  Wadim Dziedzic  <wadimd@svn.gnome.org>
+
+	* pl.po: Updated polish translation
+
+2008-05-18  Wadim Dziedzic  <wadimd@svn.gnome.org>
+
+	* pl.po: Updated polish translation
+
+2008-05-16  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: small fix in italian translation.
+
+2008-05-12  Gil Forcada  <gforcada@gnome.org>
+
+	* ca.po: Updated Catalan translation by Joaquim Perez.
+
+2008-05-7  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by .
+
+2008-05-02  João S. O. Bueno  <gwidion@mpc.com.br>
+
+	* pt_BR.po: Updated Brazilian Portuguese translation
+
+2008-04-24  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2008-04-06  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	* hu.po: Translation updated by Árpád Bíró
+
+2008-04-05  Jorge Gonzalez  <jorgegonz@svn.gnome.org>   
+
+	* es.po: Updated Spanish translation by Francisco Vila
+
+2008-04-05  Changwoo Ryu  <cwryu@debian.org>
+
+	* ko.po: Updated Korean translation by Choi, Ji-Hui.
+
+2008-04-03  Ulf-D. Ehlert  <ulfehlert@svn.gnome.org>
+
+	* de.po: Minor fixes in German translation.
+
+2008-04-03  Jordi Mallach  <jordi@sindominio.net>
+
+	* ca@valencia.po: Add new Valencian-Catalan translation,
+	based on the Catalan file.
+
+2008-04-02  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2008-03-28  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation.
+
+2008-03-21  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2008-03-12  Åsmund Skjæveland  <aasmunds@ulrik.uio.no>
+
+	* nn.po: Added Norwegian Nynorsk translation from Kolbjørn Stuestøl <kol-stue@online.no>.
+
+2008-03-09  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+
+2008-03-05  Gil Forcada  <gforcada@gnome.org>
+
+	* ca.po: Updated Catalan translation by Joaquim Perez.
+
+2008-03-05  Stéphane Raimbault  <stephane.raimbault@gmail.com>
+
+	* fr.po: Updated French translation.
+
 2008-02-22  Changwoo Ryu  <cwryu@debian.org>
 
 	* ko.po: Updated Korean translation by Choi, Ji-Hui.

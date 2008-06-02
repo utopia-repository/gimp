@@ -4,7 +4,7 @@
 
 <refentry id="GimpSelectButton">
 <refmeta>
-<refentrytitle role="top_of_page">GimpSelectButton</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpSelectButton.top_of_page">GimpSelectButton</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,23 +15,18 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpSelectButton.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpSelectButton-struct">GimpSelectButton</link>;
 <link linkend="void">void</link>                <link linkend="gimp-select-button-close-popup">gimp_select_button_close_popup</link>      (<link linkend="GimpSelectButton">GimpSelectButton</link> *button);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpSelectButton.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -51,7 +46,7 @@
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpSelectButton.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpSelectButton implements
@@ -63,24 +58,24 @@ GimpSelectButton implements
 
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpSelectButton.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpSelectButton.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpSelectButton-struct" role="struct"/>GimpSelectButton</title>
-<indexterm><primary>GimpSelectButton</primary></indexterm><programlisting>typedef struct _GimpSelectButton GimpSelectButton;</programlisting>
+<refsect2 id="GimpSelectButton-struct" role="struct">
+<title>GimpSelectButton</title>
+<indexterm zone="GimpSelectButton-struct"><primary>GimpSelectButton</primary></indexterm><programlisting>typedef struct _GimpSelectButton GimpSelectButton;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-select-button-close-popup" role="function" condition="since:GIMP 2.4"/>gimp_select_button_close_popup ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_select_button_close_popup</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_select_button_close_popup      (<link linkend="GimpSelectButton">GimpSelectButton</link> *button);</programlisting>
+<refsect2 id="gimp-select-button-close-popup" role="function" condition="since:GIMP 2.4">
+<title>gimp_select_button_close_popup ()</title>
+<indexterm zone="gimp-select-button-close-popup" role="GIMP 2.4"><primary>gimp_select_button_close_popup</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_select_button_close_popup      (<link linkend="GimpSelectButton">GimpSelectButton</link> *button);</programlisting>
 <para>
 Closes the popup window associated with <parameter>button</parameter>.</para>
 <para>
@@ -97,6 +92,4 @@ Closes the popup window associated with <parameter>button</parameter>.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

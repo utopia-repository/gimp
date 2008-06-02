@@ -1,3 +1,277 @@
+2008-05-29  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.4.6 release.
+
+2008-05-29  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/sel_gauss.c (matrixmult_mmx): avoid division by
+	zero in the grayscale code path (bug #529280).
+
+2008-05-26  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/jpeg/jpeg-save.c (save_image): fixed logic that decides
+	if an EXIF block should be written (bug #529469).
+
+2008-05-24  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/display/gimpdisplayshell-callbacks.c
+	(gimp_display_shell_canvas_tool_events): fixed use of
+	gdk_device_get_history(). Fixes airbrush tool with tablets on
+	newer X.org releases.
+
+2008-05-19  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/psd-save.c (save_layer_and_mask): corrected
+	"layer mask disabled" flag in layer mask data section (bug #526811).
+
+2008-05-18  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	* plug-ins/script-fu/tinyscheme/scheme.c: Reverting previous
+	change.  I figured it would break something. It breaks the 'while'
+	macro by preventing use of a named let.
+
+2008-05-16  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	Merged from trunk:
+
+	* plug-ins/script-fu/tinyscheme/scheme.c: Added extra checks to stop
+	bad syntax in LET from causing a segmentation fault in Linux.
+	See bug #508020.
+
+2008-05-14  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/core/gimpbrushclipboard.c
+	(gimp_brush_clipboard_buffer_changed): for an opaque buffer,
+	initialize the brush mask with 255 instead of 0.  Fixes bug #532886.
+
+2008-05-10  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/tools/gimprectangletool.c: Fix emission of rectangle-changed
+	signal.
+
+	* app/tools/gimpcroptool.c
+	* app/tools/gimprectangleselecttool.c: Use the rectangle-changed
+	signal to update the default aspect ratio. Fixes bug #530519.
+
+2008-05-10  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	* app/tools/gimprectangletool.c
+	(gimp_rectangle_tool_button_press): Active the tool control
+	earlier.
+	(gimp_rectangle_tool_synthesize_motion): Bail out if the tool
+	control is active, we don't want to synthesize a motion in this
+	case as it emits unwanted rectangle-changed signals.
+
+2008-05-10  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	* app/tools/gimprectangleselecttool.c
+	(gimp_rectangle_select_tool_cancel): Don't forget updating the
+	default aspect ratio when cancelling a rectangle select.
+
+2008-05-10  Manish Singh  <yosh@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/poppler.c: Support poppler 0.8.x.
+
+2008-05-10  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	* app/tools/gimprectangletool.c
+	(gimp_rectangle_tool_button_release): Update the tool options
+	after a release; the rectangle might change if a rubber-banding is
+	cancelled.
+
+2008-05-10  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	* app/tools/gimpcroptool.c: Add a GimpRectangleTool::cancel()
+	implementation that updates default aspect ratio when cancelling a
+	crop.
+
+2008-05-10  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	* app/tools/gimpcroptool.[ch]: Keep track of the current image and
+	manage a subscription to "size-changed" so that default aspect
+	ratio is properly updated. (Bug #532057.)
+	(gimp_crop_tool_execute): No need to explicitly call
+	gimp_crop_tool_update_option_defaults() any longer.
+
+2008-05-06  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* libgimpwidgets/gimpcolorprofilestore.c
+	(gimp_color_profile_store_load_profile): check if the file exists
+	before adding it to the history. Fixes bug #528958.
+
+2008-05-05  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/unsharp-mask.c (gen_convolve_matrix): fixed
+	algorithm to calculate the center value. Fixes bug #530077.
+
+2008-04-28  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/base/hue-saturation.c (hue_saturation): applied patch from
+	Michael Deal that fixes use of the overlap option (bug #527085).
+
+2008-04-21  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/curve_bend.c (run): fixed handling of
+	"argc-lower-val-y" PDB parameter.
+
+2008-04-16  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/config/test-config.c: initialize the units vtable in
+	libgimpbase instead of trying to override symbols from it.
+	Fixes bug #528160.
+
+2008-04-07  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/MapObject/mapobject_main.c (query): fixed description
+	of 'lighttype' parameter (bug #526679).
+
+2008-04-03  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	* app/core/gimpimage-convert.c (gimp_image_convert): don't accept
+	palettes with more than 256 colors.
+
+	* tools/pdbgen/pdb/convert.pdb: fail here too for palettes
+	with > 256 colors. Fixes bug #525471.
+
+	* app/pdb/convert_cmds.c: regenerated.
+
+2008-04-03  Jordi Mallach  <jordi@sindominio.net>
+
+	* configure.in (ALL_LINGUAS): Add Valencian-Catalan (ca@valencia).
+
+2008-03-30  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	* app/widgets/gimpcontainertreeview-dnd.c
+	(gimp_container_tree_view_drag_drop): Make all code paths result
+	in a call to gtk_drag_finish() if we return TRUE. Fixes bug #317992.
+
+2008-03-30  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/core/gimparea.c (gimp_area_list_free): don't leak the memory
+	allocated for the GSList.
+
+2008-03-30  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/xcf/xcf-load.c (xcf_load_image): don't leak the grid.
+
+2008-03-30  Sven Neumann  <sven@gimp.org>
+
+	Merged Bill's changes for bug #521433 from trunk with some minor
+	cleanups:
+
+	* app/paint/gimpbrushcore.[ch]: made
+	gimp_brush_core_get_brush_mask() public.
+
+	* app/paint/gimpheal.c: respect the brush mask.
+
+2008-03-24  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/dicom.c (dicom_loader): fixed potential crash on
+	empty 16 bit images.
+
+2008-03-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* libgimp/gimppixbuf.c: fixed gtk-doc syntax.
+
+2008-03-22  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimpcurvestool.c (gimp_curves_tool_initialize): set
+	the curve type to the type of the initial curve, which is SMOOTH.
+	Fixes bug #523873.
+
+2008-03-13  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/tiff-load.c (load_image): set the original
+	filename only if all pages were loaded as layers; if a subset was
+	loaded, set the filename to "<filename>.tiff-n-of-m-pages" so a
+	simple "save" won't overwrite the original file without the user
+	changing the filename explicitely.
+
+2008-03-13  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/tiff-load.c (load_image): set a filename on the
+	image, even when not all images are imported as layers (bug #521436).
+
+2008-03-12  Åsmund Skjæveland  <aasmunds@ulrik.uio.no>
+
+	* configure.in: Added nn to ALL_LINGUAS.
+	
+2008-03-09  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk (slightly modified):
+
+	Fix mishandling of the "antialias" GParamSpec. Fixes bug #521069:
+
+	* app/tools/gimpselectionoptions.c (gimp_selection_options_reset):
+	don't set the default for "antialias" depending on the tool
+	type (which is impossible since the antialias GParamSpec only
+	exists once, and not once for each subclass).
+
+	* app/tools/gimpforegroundselectoptions.c: override the antialias
+	property here and default to FALSE.
+
+2008-03-08  Sven Neumann  <sven@gimp.org>
+
+	* app/about.h: reverted the last change, it breaks the string freeze.
+
+2008-03-08  Martin Nordholts  <martinn@svn.gnome.org>
+
+	* app/about.h: It's 2008 now (bug #521202).
+
+2008-02-29  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.4.6 (interface age 6).
+
 2008-02-29  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.4.5 release.

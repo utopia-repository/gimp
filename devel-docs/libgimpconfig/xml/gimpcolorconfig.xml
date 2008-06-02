@@ -4,7 +4,7 @@
 
 <refentry id="GimpColorConfig">
 <refmeta>
-<refentrytitle role="top_of_page">GimpColorConfig</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpColorConfig.top_of_page">GimpColorConfig</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCONFIG Library</refmiscinfo>
 </refmeta>
@@ -15,24 +15,19 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpColorConfig.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpColorConfig-struct">GimpColorConfig</link>;
 enum                <link linkend="GimpColorManagementMode">GimpColorManagementMode</link>;
 enum                <link linkend="GimpColorRenderingIntent">GimpColorRenderingIntent</link>;
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpColorConfig.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----GimpColorConfig
 </synopsis>
@@ -41,7 +36,7 @@ enum                <link linkend="GimpColorRenderingIntent">GimpColorRenderingI
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpColorConfig.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpColorConfig implements
@@ -50,17 +45,16 @@ GimpColorConfig implements
 </refsect1>
 
 
-<refsect1 role="properties">
+<refsect1 id="GimpColorConfig.properties" role="properties">
 <title role="properties.title">Properties</title>
 <synopsis>
-
   &quot;<link linkend="GimpColorConfig--cmyk-profile">cmyk-profile</link>&quot;             <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct
-  &quot;<link linkend="GimpColorConfig--display-module">display-module</link>&quot;           <link linkend="gchararray">gchararray</link>            : Read / Write / Construct
+  &quot;<link linkend="GimpColorConfig--display-module">display-module</link>&quot;           <link linkend="gchar">gchar</link>*                : Read / Write / Construct
   &quot;<link linkend="GimpColorConfig--display-profile">display-profile</link>&quot;          <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct
   &quot;<link linkend="GimpColorConfig--display-profile-from-gdk">display-profile-from-gdk</link>&quot; <link linkend="gboolean">gboolean</link>              : Read / Write / Construct
   &quot;<link linkend="GimpColorConfig--display-rendering-intent">display-rendering-intent</link>&quot; <link linkend="GimpColorRenderingIntent">GimpColorRenderingIntent</link>  : Read / Write / Construct
   &quot;<link linkend="GimpColorConfig--mode">mode</link>&quot;                     <link linkend="GimpColorManagementMode">GimpColorManagementMode</link>  : Read / Write / Construct
-  &quot;<link linkend="GimpColorConfig--out-of-gamut-color">out-of-gamut-color</link>&quot;       <link linkend="GimpRGB">GimpRGB</link>               : Read / Write / Construct
+  &quot;<link linkend="GimpColorConfig--out-of-gamut-color">out-of-gamut-color</link>&quot;       <link linkend="GimpRGB">GimpRGB</link>*              : Read / Write / Construct
   &quot;<link linkend="GimpColorConfig--printer-profile">printer-profile</link>&quot;          <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct
   &quot;<link linkend="GimpColorConfig--rgb-profile">rgb-profile</link>&quot;              <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct
   &quot;<link linkend="GimpColorConfig--simulation-gamut-check">simulation-gamut-check</link>&quot;   <link linkend="gboolean">gboolean</link>              : Read / Write / Construct
@@ -70,18 +64,18 @@ GimpColorConfig implements
 
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpColorConfig.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpColorConfig.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpColorConfig-struct" role="struct"/>GimpColorConfig</title>
-<indexterm><primary>GimpColorConfig</primary></indexterm><programlisting>typedef struct {
+<refsect2 id="GimpColorConfig-struct" role="struct">
+<title>GimpColorConfig</title>
+<indexterm zone="GimpColorConfig-struct"><primary>GimpColorConfig</primary></indexterm><programlisting>typedef struct {
   GimpColorManagementMode     mode;
   gchar                      *rgb_profile;
   gchar                      *cmyk_profile;
@@ -100,9 +94,9 @@ GimpColorConfig implements
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="GimpColorManagementMode" role="enum"/>enum GimpColorManagementMode</title>
-<indexterm><primary>GimpColorManagementMode</primary></indexterm><programlisting>typedef enum
+<refsect2 id="GimpColorManagementMode" role="enum">
+<title>enum GimpColorManagementMode</title>
+<indexterm zone="GimpColorManagementMode"><primary>GimpColorManagementMode</primary></indexterm><programlisting>typedef enum
 {
   GIMP_COLOR_MANAGEMENT_OFF,       /*&lt; desc="No color management"   &gt;*/
   GIMP_COLOR_MANAGEMENT_DISPLAY,   /*&lt; desc="Color managed display" &gt;*/
@@ -112,9 +106,9 @@ GimpColorConfig implements
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="GimpColorRenderingIntent" role="enum"/>enum GimpColorRenderingIntent</title>
-<indexterm><primary>GimpColorRenderingIntent</primary></indexterm><programlisting>typedef enum
+<refsect2 id="GimpColorRenderingIntent" role="enum">
+<title>enum GimpColorRenderingIntent</title>
+<indexterm zone="GimpColorRenderingIntent"><primary>GimpColorRenderingIntent</primary></indexterm><programlisting>typedef enum
 {
   GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,            /*&lt; desc="Perceptual"            &gt;*/
   GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC, /*&lt; desc="Relative colorimetric" &gt;*/
@@ -127,49 +121,49 @@ GimpColorConfig implements
 </para></refsect2>
 
 </refsect1>
-<refsect1 role="property_details">
+<refsect1 id="GimpColorConfig.property-details" role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpColorConfig--cmyk-profile"/>The <literal>&quot;cmyk-profile&quot;</literal> property</title>
-<indexterm><primary>GimpColorConfig:cmyk-profile</primary></indexterm><programlisting>  &quot;cmyk-profile&quot;             <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct</programlisting>
+<refsect2 id="GimpColorConfig--cmyk-profile"><title>The <literal>&quot;cmyk-profile&quot;</literal> property</title>
+<indexterm zone="GimpColorConfig--cmyk-profile"><primary>GimpColorConfig:cmyk-profile</primary></indexterm><programlisting>  &quot;cmyk-profile&quot;             <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct</programlisting>
 <para>The CMYK color profile used to convert between RGB and CMYK.</para><para>Default value: NULL</para>
 </refsect2>
-<refsect2><title><anchor id="GimpColorConfig--display-module"/>The <literal>&quot;display-module&quot;</literal> property</title>
-<indexterm><primary>GimpColorConfig:display-module</primary></indexterm><programlisting>  &quot;display-module&quot;           <link linkend="gchararray">gchararray</link>            : Read / Write / Construct</programlisting>
+<refsect2 id="GimpColorConfig--display-module"><title>The <literal>&quot;display-module&quot;</literal> property</title>
+<indexterm zone="GimpColorConfig--display-module"><primary>GimpColorConfig:display-module</primary></indexterm><programlisting>  &quot;display-module&quot;           <link linkend="gchar">gchar</link>*                : Read / Write / Construct</programlisting>
 <para></para><para>Default value: "CdisplayLcms"</para>
 </refsect2>
-<refsect2><title><anchor id="GimpColorConfig--display-profile"/>The <literal>&quot;display-profile&quot;</literal> property</title>
-<indexterm><primary>GimpColorConfig:display-profile</primary></indexterm><programlisting>  &quot;display-profile&quot;          <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct</programlisting>
+<refsect2 id="GimpColorConfig--display-profile"><title>The <literal>&quot;display-profile&quot;</literal> property</title>
+<indexterm zone="GimpColorConfig--display-profile"><primary>GimpColorConfig:display-profile</primary></indexterm><programlisting>  &quot;display-profile&quot;          <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct</programlisting>
 <para>The color profile of your (primary) monitor.</para><para>Default value: NULL</para>
 </refsect2>
-<refsect2><title><anchor id="GimpColorConfig--display-profile-from-gdk"/>The <literal>&quot;display-profile-from-gdk&quot;</literal> property</title>
-<indexterm><primary>GimpColorConfig:display-profile-from-gdk</primary></indexterm><programlisting>  &quot;display-profile-from-gdk&quot; <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<refsect2 id="GimpColorConfig--display-profile-from-gdk"><title>The <literal>&quot;display-profile-from-gdk&quot;</literal> property</title>
+<indexterm zone="GimpColorConfig--display-profile-from-gdk"><primary>GimpColorConfig:display-profile-from-gdk</primary></indexterm><programlisting>  &quot;display-profile-from-gdk&quot; <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para>When enabled, GIMP will try to use the display color profile from the windowing system.  The configured monitor profile is then only used as a fallback.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2><title><anchor id="GimpColorConfig--display-rendering-intent"/>The <literal>&quot;display-rendering-intent&quot;</literal> property</title>
-<indexterm><primary>GimpColorConfig:display-rendering-intent</primary></indexterm><programlisting>  &quot;display-rendering-intent&quot; <link linkend="GimpColorRenderingIntent">GimpColorRenderingIntent</link>  : Read / Write / Construct</programlisting>
+<refsect2 id="GimpColorConfig--display-rendering-intent"><title>The <literal>&quot;display-rendering-intent&quot;</literal> property</title>
+<indexterm zone="GimpColorConfig--display-rendering-intent"><primary>GimpColorConfig:display-rendering-intent</primary></indexterm><programlisting>  &quot;display-rendering-intent&quot; <link linkend="GimpColorRenderingIntent">GimpColorRenderingIntent</link>  : Read / Write / Construct</programlisting>
 <para>Sets how colors are mapped for your display.</para><para>Default value: GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL</para>
 </refsect2>
-<refsect2><title><anchor id="GimpColorConfig--mode"/>The <literal>&quot;mode&quot;</literal> property</title>
-<indexterm><primary>GimpColorConfig:mode</primary></indexterm><programlisting>  &quot;mode&quot;                     <link linkend="GimpColorManagementMode">GimpColorManagementMode</link>  : Read / Write / Construct</programlisting>
+<refsect2 id="GimpColorConfig--mode"><title>The <literal>&quot;mode&quot;</literal> property</title>
+<indexterm zone="GimpColorConfig--mode"><primary>GimpColorConfig:mode</primary></indexterm><programlisting>  &quot;mode&quot;                     <link linkend="GimpColorManagementMode">GimpColorManagementMode</link>  : Read / Write / Construct</programlisting>
 <para>Mode of operation for color management.</para><para>Default value: GIMP_COLOR_MANAGEMENT_DISPLAY</para>
 </refsect2>
-<refsect2><title><anchor id="GimpColorConfig--out-of-gamut-color"/>The <literal>&quot;out-of-gamut-color&quot;</literal> property</title>
-<indexterm><primary>GimpColorConfig:out-of-gamut-color</primary></indexterm><programlisting>  &quot;out-of-gamut-color&quot;       <link linkend="GimpRGB">GimpRGB</link>               : Read / Write / Construct</programlisting>
+<refsect2 id="GimpColorConfig--out-of-gamut-color"><title>The <literal>&quot;out-of-gamut-color&quot;</literal> property</title>
+<indexterm zone="GimpColorConfig--out-of-gamut-color"><primary>GimpColorConfig:out-of-gamut-color</primary></indexterm><programlisting>  &quot;out-of-gamut-color&quot;       <link linkend="GimpRGB">GimpRGB</link>*              : Read / Write / Construct</programlisting>
 <para>The color to use for marking colors which are out of gamut.</para></refsect2>
-<refsect2><title><anchor id="GimpColorConfig--printer-profile"/>The <literal>&quot;printer-profile&quot;</literal> property</title>
-<indexterm><primary>GimpColorConfig:printer-profile</primary></indexterm><programlisting>  &quot;printer-profile&quot;          <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct</programlisting>
+<refsect2 id="GimpColorConfig--printer-profile"><title>The <literal>&quot;printer-profile&quot;</literal> property</title>
+<indexterm zone="GimpColorConfig--printer-profile"><primary>GimpColorConfig:printer-profile</primary></indexterm><programlisting>  &quot;printer-profile&quot;          <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct</programlisting>
 <para>The color profile used for simulating a printed version (softproof).</para><para>Default value: NULL</para>
 </refsect2>
-<refsect2><title><anchor id="GimpColorConfig--rgb-profile"/>The <literal>&quot;rgb-profile&quot;</literal> property</title>
-<indexterm><primary>GimpColorConfig:rgb-profile</primary></indexterm><programlisting>  &quot;rgb-profile&quot;              <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct</programlisting>
+<refsect2 id="GimpColorConfig--rgb-profile"><title>The <literal>&quot;rgb-profile&quot;</literal> property</title>
+<indexterm zone="GimpColorConfig--rgb-profile"><primary>GimpColorConfig:rgb-profile</primary></indexterm><programlisting>  &quot;rgb-profile&quot;              <link linkend="GimpConfigPath">GimpConfigPath</link>        : Read / Write / Construct</programlisting>
 <para>The default RGB working space color profile.</para><para>Default value: NULL</para>
 </refsect2>
-<refsect2><title><anchor id="GimpColorConfig--simulation-gamut-check"/>The <literal>&quot;simulation-gamut-check&quot;</literal> property</title>
-<indexterm><primary>GimpColorConfig:simulation-gamut-check</primary></indexterm><programlisting>  &quot;simulation-gamut-check&quot;   <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<refsect2 id="GimpColorConfig--simulation-gamut-check"><title>The <literal>&quot;simulation-gamut-check&quot;</literal> property</title>
+<indexterm zone="GimpColorConfig--simulation-gamut-check"><primary>GimpColorConfig:simulation-gamut-check</primary></indexterm><programlisting>  &quot;simulation-gamut-check&quot;   <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para>When enabled, the print simulation will mark colors which can not be represented in the target color space.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2><title><anchor id="GimpColorConfig--simulation-rendering-intent"/>The <literal>&quot;simulation-rendering-intent&quot;</literal> property</title>
-<indexterm><primary>GimpColorConfig:simulation-rendering-intent</primary></indexterm><programlisting>  &quot;simulation-rendering-intent&quot; <link linkend="GimpColorRenderingIntent">GimpColorRenderingIntent</link>  : Read / Write / Construct</programlisting>
+<refsect2 id="GimpColorConfig--simulation-rendering-intent"><title>The <literal>&quot;simulation-rendering-intent&quot;</literal> property</title>
+<indexterm zone="GimpColorConfig--simulation-rendering-intent"><primary>GimpColorConfig:simulation-rendering-intent</primary></indexterm><programlisting>  &quot;simulation-rendering-intent&quot; <link linkend="GimpColorRenderingIntent">GimpColorRenderingIntent</link>  : Read / Write / Construct</programlisting>
 <para>Sets how colors are converted from RGB working space to the print simulation device.</para><para>Default value: GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL</para>
 </refsect2>
 
@@ -178,6 +172,4 @@ GimpColorConfig implements
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

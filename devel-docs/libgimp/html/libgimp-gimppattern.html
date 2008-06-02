@@ -1,21 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimppattern</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-data.html" title="Data Objects">
 <link rel="prev" href="libgimp-gimppalettes.html" title="gimppalettes">
 <link rel="next" href="libgimp-gimppatterns.html" title="gimppatterns">
-<meta name="generator" content="GTK-Doc V1.9 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
+<link rel="part" href="libgimp.html" title="Part I. GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="chapter" href="libgimp-data.html" title="Data Objects">
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
+<link rel="part" href="libgimpui.html" title="Part II. GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
@@ -31,87 +31,81 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimppatterns.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2585445" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2712038" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimp-gimppattern.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libgimp-gimppattern.description" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppattern"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2585445"></a><span class="refentrytitle">gimppattern</span>
-</h2>
-<p>gimppattern &#8212; Functions operating on a single pattern.</p>
+<h2><span class="refentrytitle"><a name="libgimp-gimppattern.top_of_page"></a>gimppattern</span></h2>
+<p>gimppattern — Functions operating on a single pattern.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="libgimp-gimppattern.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimppattern.html#gimp-pattern-get-info">gimp_pattern_get_info</a>               (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppattern.html#gimp-pattern-get-info" title="gimp_pattern_get_info ()">gimp_pattern_get_info</a>               (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *name,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *width,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *height,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *bpp);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimppattern.html#gimp-pattern-get-pixels">gimp_pattern_get_pixels</a>             (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppattern.html#gimp-pattern-get-pixels" title="gimp_pattern_get_pixels ()">gimp_pattern_get_pixels</a>             (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *name,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *width,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *height,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *bpp,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *num_color_bytes,
                                                          <a
-href="../glib/glib-Basic-Types.html#guint8"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint8"
 >guint8</a> **color_bytes);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2712038"></a><h2>Description</h2>
+<a name="libgimp-gimppattern.description"></a><h2>Description</h2>
 <p>
 Functions operating on a single pattern.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2712052"></a><h2>Details</h2>
+<a name="libgimp-gimppattern.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2712063"></a><h3>
-<a name="gimp-pattern-get-info"></a>gimp_pattern_get_info ()</h3>
-<a class="indexterm" name="id2712076"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-pattern-get-info"></a><h3>gimp_pattern_get_info ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_pattern_get_info               (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *name,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *width,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *height,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *bpp);</pre>
 <p>
 Retrieve information about the specified pattern.
@@ -126,27 +120,27 @@ This includes the pattern extents (width and height).</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
 <td> The pattern name.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
 <td> The pattern width.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
 <td> The pattern height.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>bpp</code></em> :</span></p></td>
 <td> The pattern bpp.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 
 </td>
@@ -158,27 +152,26 @@ This includes the pattern extents (width and height).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2712211"></a><h3>
-<a name="gimp-pattern-get-pixels"></a>gimp_pattern_get_pixels ()</h3>
-<a class="indexterm" name="id2712224"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-pattern-get-pixels"></a><h3>gimp_pattern_get_pixels ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_pattern_get_pixels             (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *name,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *width,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *height,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *bpp,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *num_color_bytes,
                                                          <a
-href="../glib/glib-Basic-Types.html#guint8"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint8"
 >guint8</a> **color_bytes);</pre>
 <p>
 Retrieve information about the specified pattern (including pixels).
@@ -194,37 +187,37 @@ pixel data.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
 <td> The pattern name.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
 <td> The pattern width.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
 <td> The pattern height.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>bpp</code></em> :</span></p></td>
 <td> The pattern bpp.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>num_color_bytes</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>num_color_bytes</code></em> :</span></p></td>
 <td> Number of pattern bytes.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>color_bytes</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>color_bytes</code></em> :</span></p></td>
 <td> The pattern data.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 
 </td>
@@ -235,11 +228,9 @@ pixel data.</p>
 </p>
 </div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2712853"></a><div class="refsect2" lang="en"><a name="id2712854"></a></div>
+</div>
+<div class="footer">
 <hr>
-<div class="refsect2" lang="en"><a name="id2712855"></a></div>
-</div>
-</div>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

@@ -4,7 +4,7 @@
 
 <refentry id="libgimpbase-gimprectangle">
 <refmeta>
-<refentrytitle role="top_of_page">gimprectangle</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimpbase-gimprectangle.top_of_page">gimprectangle</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimpbase-gimprectangle.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-rectangle-intersect">gimp_rectangle_intersect</link>            (<link linkend="gint">gint</link> x1,
                                                          <link linkend="gint">gint</link> y1,
                                                          <link linkend="gint">gint</link> width1,
@@ -45,18 +42,18 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimpbase-gimprectangle.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimpbase-gimprectangle.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-rectangle-intersect" role="function" condition="since:GIMP 2.4"/>gimp_rectangle_intersect ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_rectangle_intersect</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_rectangle_intersect            (<link linkend="gint">gint</link> x1,
+<refsect2 id="gimp-rectangle-intersect" role="function" condition="since:GIMP 2.4">
+<title>gimp_rectangle_intersect ()</title>
+<indexterm zone="gimp-rectangle-intersect" role="GIMP 2.4"><primary>gimp_rectangle_intersect</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_rectangle_intersect            (<link linkend="gint">gint</link> x1,
                                                          <link linkend="gint">gint</link> y1,
                                                          <link linkend="gint">gint</link> width1,
                                                          <link linkend="gint">gint</link> height1,
@@ -120,6 +117,4 @@ Calculates the intersection of two rectangles.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

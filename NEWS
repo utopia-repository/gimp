@@ -7,6 +7,40 @@ This is the stable branch of GIMP. No new features are being added
 here, just bug-fixes.
 
 
+Changes in GIMP 2.4.6
+=====================
+
+- fixed handling of the "antialias" tool option (bug #521069)
+- when loading a TIFF image, always set a filename on it (bug #521436)
+- fixed initial state of curve type in Curves tool (bug #523873)
+- fixed potential crash in the Dicom load plug-in
+- respect the brush mask in the Heal tool (bug #521433)
+- plugged some minor memory leaks
+- fixed a glitch in the DND code (bug #317992)
+- gimp-image-convert() must not accept palettes with > 256 colors (bug #525471)
+- fixed parameter description in the Map Object plug-in (bug #526679)
+- fixed compilation of unit tests on Mac OS X (bug #528160)
+- fixed handling of "argc-lower-val-y" PDB parameter in Curve Bend plug-in
+- fixed overlap problem in Hue-Saturation tool (bug #528160)
+- fixed asymmetry in Unsharp Mask plug-in (bug #530077)
+- don't show non-existant color profiles in the selector (bug #528958)
+- fixed issues with default aspect ratio in the Crop tool (bug #532057)
+- fixed compilation of the PDF import plug-in with libpoppler 0.8
+- fixed bug in clipboard brush code (bug #532886)
+- corrected layer mask flag in PSD save plug-in (bug #526811)
+- fixed an issue with tablets and newer X.Org releases
+- keep the JPEG save plug-in from writing an empty EXIF tag (bug #529469)
+- fixed crash in Selective Gaussion Blur plug-in (bug #529280)
+- added new translations (Belarusian, Catalan, Norwegian Nynorsk)
+- translation fixes and updates
+  (ar, ca, de, el, es, fi, fr, hu, it, ko, pl, pt_BR, ro, sv)
+
+Contributors:
+
+   Sven Neumann, Michael Natterer, Martin Nordholts, Bill Skaggs,
+   Manish Singh, Kevin Cozens, Michael Deal
+
+
 Changes in GIMP 2.4.5
 =====================
 

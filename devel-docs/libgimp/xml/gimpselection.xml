@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpselection">
 <refmeta>
-<refentrytitle role="top_of_page">gimpselection</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimpselection.top_of_page">gimpselection</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimpselection.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-selection-bounds">gimp_selection_bounds</link>               (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gboolean">gboolean</link> *non_empty,
                                                          <link linkend="gint">gint</link> *x1,
@@ -68,7 +65,7 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimpselection.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Functions for manipulating selections.
@@ -76,11 +73,11 @@ Functions for manipulating selections.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimpselection.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-selection-bounds" role="function"/>gimp_selection_bounds ()</title>
-<indexterm><primary>gimp_selection_bounds</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_bounds               (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-selection-bounds" role="function">
+<title>gimp_selection_bounds ()</title>
+<indexterm zone="gimp-selection-bounds"><primary>gimp_selection_bounds</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_bounds               (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gboolean">gboolean</link> *non_empty,
                                                          <link linkend="gint">gint</link> *x1,
                                                          <link linkend="gint">gint</link> *y1,
@@ -122,9 +119,9 @@ pixel. This means the width of the selection can be calculated as
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-all" role="function"/>gimp_selection_all ()</title>
-<indexterm><primary>gimp_selection_all</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_all                  (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<refsect2 id="gimp-selection-all" role="function">
+<title>gimp_selection_all ()</title>
+<indexterm zone="gimp-selection-all"><primary>gimp_selection_all</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_all                  (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Select all of the image.
 </para>
@@ -140,9 +137,9 @@ image. Every pixel in the selection channel is set to 255.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-none" role="function"/>gimp_selection_none ()</title>
-<indexterm><primary>gimp_selection_none</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_none                 (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<refsect2 id="gimp-selection-none" role="function">
+<title>gimp_selection_none ()</title>
+<indexterm zone="gimp-selection-none"><primary>gimp_selection_none</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_none                 (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Deselect the entire image.
 </para>
@@ -158,9 +155,9 @@ selection channel is set to 0.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-clear" role="function" condition="deprecated:"/>gimp_selection_clear ()</title>
-<indexterm role="deprecated"><primary>gimp_selection_clear</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_clear                (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<refsect2 id="gimp-selection-clear" role="function" condition="deprecated:">
+<title>gimp_selection_clear ()</title>
+<indexterm zone="gimp-selection-clear" role="deprecated"><primary>gimp_selection_clear</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_clear                (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <warning><para><literal>gimp_selection_clear</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-selection-none"><function>gimp_selection_none()</function></link> instead.</para>
@@ -173,9 +170,9 @@ This procedure is deprecated! Use <link linkend="gimp-selection-none"><function>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-is-empty" role="function"/>gimp_selection_is_empty ()</title>
-<indexterm><primary>gimp_selection_is_empty</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_is_empty             (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<refsect2 id="gimp-selection-is-empty" role="function">
+<title>gimp_selection_is_empty ()</title>
+<indexterm zone="gimp-selection-is-empty"><primary>gimp_selection_is_empty</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_is_empty             (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Determine whether the selection is empty.
 </para>
@@ -191,9 +188,9 @@ is empty.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Is the selection empty?
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-float" role="function"/>gimp_selection_float ()</title>
-<indexterm><primary>gimp_selection_float</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_selection_float                (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-selection-float" role="function">
+<title>gimp_selection_float ()</title>
+<indexterm zone="gimp-selection-float"><primary>gimp_selection_float</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_selection_float                (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> offx,
                                                          <link linkend="gint">gint</link> offy);</programlisting>
@@ -225,9 +222,9 @@ positioning of the new floating selection.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The floated layer.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-load" role="function"/>gimp_selection_load ()</title>
-<indexterm><primary>gimp_selection_load</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_load                 (<link linkend="gint32">gint32</link> channel_ID);</programlisting>
+<refsect2 id="gimp-selection-load" role="function">
+<title>gimp_selection_load ()</title>
+<indexterm zone="gimp-selection-load"><primary>gimp_selection_load</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_load                 (<link linkend="gint32">gint32</link> channel_ID);</programlisting>
 <para>
 Transfer the specified channel to the selection mask.
 </para>
@@ -242,9 +239,9 @@ This procedure loads the specified channel into the selection mask.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-save" role="function"/>gimp_selection_save ()</title>
-<indexterm><primary>gimp_selection_save</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_selection_save                 (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<refsect2 id="gimp-selection-save" role="function">
+<title>gimp_selection_save ()</title>
+<indexterm zone="gimp-selection-save"><primary>gimp_selection_save</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_selection_save                 (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Copy the selection mask to a new channel.
 </para>
@@ -261,9 +258,9 @@ image's list of channels.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The new channel.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-value" role="function"/>gimp_selection_value ()</title>
-<indexterm><primary>gimp_selection_value</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_selection_value                (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-selection-value" role="function">
+<title>gimp_selection_value ()</title>
+<indexterm zone="gimp-selection-value"><primary>gimp_selection_value</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_selection_value                (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gint">gint</link> x,
                                                          <link linkend="gint">gint</link> y);</programlisting>
 <para>
@@ -287,9 +284,9 @@ coordinates. If the coordinates lie out of bounds, 0 is returned.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Value of the selection.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-grow" role="function"/>gimp_selection_grow ()</title>
-<indexterm><primary>gimp_selection_grow</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_grow                 (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-selection-grow" role="function">
+<title>gimp_selection_grow ()</title>
+<indexterm zone="gimp-selection-grow"><primary>gimp_selection_grow</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_grow                 (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gint">gint</link> steps);</programlisting>
 <para>
 Grow the image's selection
@@ -309,9 +306,9 @@ boundary in all directions by the specified pixel amount.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-shrink" role="function"/>gimp_selection_shrink ()</title>
-<indexterm><primary>gimp_selection_shrink</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_shrink               (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-selection-shrink" role="function">
+<title>gimp_selection_shrink ()</title>
+<indexterm zone="gimp-selection-shrink"><primary>gimp_selection_shrink</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_shrink               (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gint">gint</link> steps);</programlisting>
 <para>
 Shrink the image's selection
@@ -332,9 +329,9 @@ of pixels.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-invert" role="function"/>gimp_selection_invert ()</title>
-<indexterm><primary>gimp_selection_invert</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_invert               (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<refsect2 id="gimp-selection-invert" role="function">
+<title>gimp_selection_invert ()</title>
+<indexterm zone="gimp-selection-invert"><primary>gimp_selection_invert</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_invert               (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Invert the selection mask.
 </para>
@@ -350,9 +347,9 @@ selection channel, its new value is calculated as (255 - old-value).</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-feather" role="function"/>gimp_selection_feather ()</title>
-<indexterm><primary>gimp_selection_feather</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_feather              (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-selection-feather" role="function">
+<title>gimp_selection_feather ()</title>
+<indexterm zone="gimp-selection-feather"><primary>gimp_selection_feather</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_feather              (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gdouble">gdouble</link> radius);</programlisting>
 <para>
 Feather the image's selection
@@ -372,9 +369,9 @@ using a gaussian blur.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-sharpen" role="function"/>gimp_selection_sharpen ()</title>
-<indexterm><primary>gimp_selection_sharpen</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_sharpen              (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<refsect2 id="gimp-selection-sharpen" role="function">
+<title>gimp_selection_sharpen ()</title>
+<indexterm zone="gimp-selection-sharpen"><primary>gimp_selection_sharpen</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_sharpen              (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Sharpen the selection mask.
 </para>
@@ -392,9 +389,9 @@ might exist in the selection mask's boundary.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-border" role="function"/>gimp_selection_border ()</title>
-<indexterm><primary>gimp_selection_border</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_border               (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-selection-border" role="function">
+<title>gimp_selection_border ()</title>
+<indexterm zone="gimp-selection-border"><primary>gimp_selection_border</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_border               (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gint">gint</link> radius);</programlisting>
 <para>
 Border the image's selection
@@ -415,9 +412,9 @@ selection at every point within the specified radius.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-translate" role="function"/>gimp_selection_translate ()</title>
-<indexterm><primary>gimp_selection_translate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_translate            (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-selection-translate" role="function">
+<title>gimp_selection_translate ()</title>
+<indexterm zone="gimp-selection-translate"><primary>gimp_selection_translate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_translate            (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gint">gint</link> offx,
                                                          <link linkend="gint">gint</link> offy);</programlisting>
 <para>
@@ -444,9 +441,9 @@ because of this call are lost.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-layer-alpha" role="function"/>gimp_selection_layer_alpha ()</title>
-<indexterm><primary>gimp_selection_layer_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_layer_alpha          (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
+<refsect2 id="gimp-selection-layer-alpha" role="function">
+<title>gimp_selection_layer_alpha ()</title>
+<indexterm zone="gimp-selection-layer-alpha"><primary>gimp_selection_layer_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_layer_alpha          (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
 Transfer the specified layer's alpha channel to the selection mask.
 </para>
@@ -466,9 +463,9 @@ selection mask value is set to 0.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-selection-combine" role="function"/>gimp_selection_combine ()</title>
-<indexterm><primary>gimp_selection_combine</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_combine              (<link linkend="gint32">gint32</link> channel_ID,
+<refsect2 id="gimp-selection-combine" role="function">
+<title>gimp_selection_combine ()</title>
+<indexterm zone="gimp-selection-combine"><primary>gimp_selection_combine</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_selection_combine              (<link linkend="gint32">gint32</link> channel_ID,
                                                          <link linkend="GimpChannelOps">GimpChannelOps</link> operation);</programlisting>
 <para>
 Combines the specified channel with the selection mask.
@@ -494,6 +491,4 @@ mask.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

@@ -4,7 +4,7 @@
 
 <refentry id="GimpColorScales">
 <refmeta>
-<refentrytitle role="top_of_page">GimpColorScales</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpColorScales.top_of_page">GimpColorScales</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,22 +15,17 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpColorScales.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpColorScales-struct">GimpColorScales</link>;
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpColorScales.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -46,7 +41,7 @@
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpColorScales.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpColorScales implements
@@ -58,7 +53,7 @@ GimpColorScales implements
 
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpColorScales.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 The <link linkend="GimpColorScales"><type>GimpColorScales</type></link> widget is an implementation of a <link linkend="GimpColorSelector"><type>GimpColorSelector</type></link>.
@@ -67,11 +62,11 @@ HSV and RGB color channels.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpColorScales.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpColorScales-struct" role="struct"/>GimpColorScales</title>
-<indexterm><primary>GimpColorScales</primary></indexterm><programlisting>typedef struct _GimpColorScales GimpColorScales;</programlisting>
+<refsect2 id="GimpColorScales-struct" role="struct">
+<title>GimpColorScales</title>
+<indexterm zone="GimpColorScales-struct"><primary>GimpColorScales</primary></indexterm><programlisting>typedef struct _GimpColorScales GimpColorScales;</programlisting>
 <para>
 
 </para></refsect2>
@@ -81,6 +76,4 @@ HSV and RGB color channels.
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

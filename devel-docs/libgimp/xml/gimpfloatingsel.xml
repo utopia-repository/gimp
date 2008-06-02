@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpfloatingsel">
 <refmeta>
-<refentrytitle role="top_of_page">gimpfloatingsel</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimpfloatingsel.top_of_page">gimpfloatingsel</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimpfloatingsel.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-floating-sel-remove">gimp_floating_sel_remove</link>            (<link linkend="gint32">gint32</link> floating_sel_ID);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-floating-sel-anchor">gimp_floating_sel_anchor</link>            (<link linkend="gint32">gint32</link> floating_sel_ID);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-floating-sel-to-layer">gimp_floating_sel_to_layer</link>          (<link linkend="gint32">gint32</link> floating_sel_ID);
@@ -42,7 +39,7 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimpfloatingsel.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Functions for removing or attaching floating selections.
@@ -50,11 +47,11 @@ Functions for removing or attaching floating selections.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimpfloatingsel.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-floating-sel-remove" role="function"/>gimp_floating_sel_remove ()</title>
-<indexterm><primary>gimp_floating_sel_remove</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_floating_sel_remove            (<link linkend="gint32">gint32</link> floating_sel_ID);</programlisting>
+<refsect2 id="gimp-floating-sel-remove" role="function">
+<title>gimp_floating_sel_remove ()</title>
+<indexterm zone="gimp-floating-sel-remove"><primary>gimp_floating_sel_remove</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_floating_sel_remove            (<link linkend="gint32">gint32</link> floating_sel_ID);</programlisting>
 <para>
 Remove the specified floating selection from its associated
 drawable.
@@ -71,9 +68,9 @@ any side effects. The associated drawable is then set to active.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-floating-sel-anchor" role="function"/>gimp_floating_sel_anchor ()</title>
-<indexterm><primary>gimp_floating_sel_anchor</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_floating_sel_anchor            (<link linkend="gint32">gint32</link> floating_sel_ID);</programlisting>
+<refsect2 id="gimp-floating-sel-anchor" role="function">
+<title>gimp_floating_sel_anchor ()</title>
+<indexterm zone="gimp-floating-sel-anchor"><primary>gimp_floating_sel_anchor</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_floating_sel_anchor            (<link linkend="gint32">gint32</link> floating_sel_ID);</programlisting>
 <para>
 Anchor the specified floating selection to its associated drawable.
 </para>
@@ -91,9 +88,9 @@ after this operation.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-floating-sel-to-layer" role="function"/>gimp_floating_sel_to_layer ()</title>
-<indexterm><primary>gimp_floating_sel_to_layer</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_floating_sel_to_layer          (<link linkend="gint32">gint32</link> floating_sel_ID);</programlisting>
+<refsect2 id="gimp-floating-sel-to-layer" role="function">
+<title>gimp_floating_sel_to_layer ()</title>
+<indexterm zone="gimp-floating-sel-to-layer"><primary>gimp_floating_sel_to_layer</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_floating_sel_to_layer          (<link linkend="gint32">gint32</link> floating_sel_ID);</programlisting>
 <para>
 Transforms the specified floating selection into a layer.
 </para>
@@ -115,9 +112,9 @@ selection is above an auxillary channel or a layer mask.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-floating-sel-attach" role="function"/>gimp_floating_sel_attach ()</title>
-<indexterm><primary>gimp_floating_sel_attach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_floating_sel_attach            (<link linkend="gint32">gint32</link> layer_ID,
+<refsect2 id="gimp-floating-sel-attach" role="function">
+<title>gimp_floating_sel_attach ()</title>
+<indexterm zone="gimp-floating-sel-attach"><primary>gimp_floating_sel_attach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_floating_sel_attach            (<link linkend="gint32">gint32</link> layer_ID,
                                                          <link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Attach the specified layer as floating to the specified drawable.
@@ -137,9 +134,9 @@ drawable.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-floating-sel-rigor" role="function"/>gimp_floating_sel_rigor ()</title>
-<indexterm><primary>gimp_floating_sel_rigor</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_floating_sel_rigor             (<link linkend="gint32">gint32</link> floating_sel_ID,
+<refsect2 id="gimp-floating-sel-rigor" role="function">
+<title>gimp_floating_sel_rigor ()</title>
+<indexterm zone="gimp-floating-sel-rigor"><primary>gimp_floating_sel_rigor</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_floating_sel_rigor             (<link linkend="gint32">gint32</link> floating_sel_ID,
                                                          <link linkend="gboolean">gboolean</link> undo);</programlisting>
 <para>
 Rigor the floating selection.
@@ -158,9 +155,9 @@ This procedure rigors the floating selection.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-floating-sel-relax" role="function"/>gimp_floating_sel_relax ()</title>
-<indexterm><primary>gimp_floating_sel_relax</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_floating_sel_relax             (<link linkend="gint32">gint32</link> floating_sel_ID,
+<refsect2 id="gimp-floating-sel-relax" role="function">
+<title>gimp_floating_sel_relax ()</title>
+<indexterm zone="gimp-floating-sel-relax"><primary>gimp_floating_sel_relax</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_floating_sel_relax             (<link linkend="gint32">gint32</link> floating_sel_ID,
                                                          <link linkend="gboolean">gboolean</link> undo);</programlisting>
 <para>
 Relax the floating selection.
@@ -185,6 +182,4 @@ This procedure relaxes the floating selection.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

@@ -4,7 +4,7 @@
 
 <refentry id="GimpUnitMenu">
 <refmeta>
-<refentrytitle role="top_of_page">GimpUnitMenu</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpUnitMenu.top_of_page">GimpUnitMenu</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpUnitMenu.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpUnitMenu-struct">GimpUnitMenu</link>;
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-unit-menu-new">gimp_unit_menu_new</link>                  (const <link linkend="gchar">gchar</link> *format,
                                                          <link linkend="GimpUnit">GimpUnit</link> unit,
@@ -34,14 +31,12 @@
 <link linkend="gint">gint</link>                <link linkend="gimp-unit-menu-get-pixel-digits">gimp_unit_menu_get_pixel_digits</link>     (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *menu);
 <link linkend="void">void</link>                <link linkend="gimp-unit-menu-set-pixel-digits">gimp_unit_menu_set_pixel_digits</link>     (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *menu,
                                                          <link linkend="gint">gint</link> digits);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpUnitMenu.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -57,7 +52,7 @@
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpUnitMenu.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpUnitMenu implements
@@ -67,16 +62,15 @@ GimpUnitMenu implements
 
 
 
-<refsect1 role="signal_proto">
+<refsect1 id="GimpUnitMenu.signals" role="signal_proto">
 <title role="signal_proto.title">Signals</title>
 <synopsis>
-
   &quot;<link linkend="GimpUnitMenu-unit-changed">unit-changed</link>&quot;                                   : Run First
 </synopsis>
 </refsect1>
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpUnitMenu.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 This widget provides a <link linkend="GtkOptionMenu"><type>GtkOptionMenu</type></link> which contains a list of <link linkend="GimpUnit"><type>GimpUnit</type></link>'s.
@@ -96,17 +90,17 @@ Whenever the user selects a unit from the menu or the dialog, the
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpUnitMenu.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpUnitMenu-struct" role="struct"/>GimpUnitMenu</title>
-<indexterm><primary>GimpUnitMenu</primary></indexterm><programlisting>typedef struct _GimpUnitMenu GimpUnitMenu;</programlisting>
+<refsect2 id="GimpUnitMenu-struct" role="struct">
+<title>GimpUnitMenu</title>
+<indexterm zone="GimpUnitMenu-struct"><primary>GimpUnitMenu</primary></indexterm><programlisting>typedef struct _GimpUnitMenu GimpUnitMenu;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-unit-menu-new" role="function"/>gimp_unit_menu_new ()</title>
-<indexterm><primary>gimp_unit_menu_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_unit_menu_new                  (const <link linkend="gchar">gchar</link> *format,
+<refsect2 id="gimp-unit-menu-new" role="function">
+<title>gimp_unit_menu_new ()</title>
+<indexterm zone="gimp-unit-menu-new"><primary>gimp_unit_menu_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_unit_menu_new                  (const <link linkend="gchar">gchar</link> *format,
                                                          <link linkend="GimpUnit">GimpUnit</link> unit,
                                                          <link linkend="gboolean">gboolean</link> show_pixels,
                                                          <link linkend="gboolean">gboolean</link> show_percent,
@@ -173,9 +167,9 @@ The <parameter>format</parameter> string supports the following percent expansio
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A pointer to the new <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link> widget.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-unit-menu-set-unit" role="function"/>gimp_unit_menu_set_unit ()</title>
-<indexterm><primary>gimp_unit_menu_set_unit</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_unit_menu_set_unit             (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *menu,
+<refsect2 id="gimp-unit-menu-set-unit" role="function">
+<title>gimp_unit_menu_set_unit ()</title>
+<indexterm zone="gimp-unit-menu-set-unit"><primary>gimp_unit_menu_set_unit</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_unit_menu_set_unit             (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *menu,
                                                          <link linkend="GimpUnit">GimpUnit</link> unit);</programlisting>
 <para>
 Sets a new <link linkend="GimpUnit"><type>GimpUnit</type></link> for the specified <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link>.</para>
@@ -189,9 +183,9 @@ Sets a new <link linkend="GimpUnit"><type>GimpUnit</type></link> for the specifi
 <listitem><simpara> The new unit.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-unit-menu-get-unit" role="function"/>gimp_unit_menu_get_unit ()</title>
-<indexterm><primary>gimp_unit_menu_get_unit</primary></indexterm><programlisting><link linkend="GimpUnit">GimpUnit</link>            gimp_unit_menu_get_unit             (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *menu);</programlisting>
+<refsect2 id="gimp-unit-menu-get-unit" role="function">
+<title>gimp_unit_menu_get_unit ()</title>
+<indexterm zone="gimp-unit-menu-get-unit"><primary>gimp_unit_menu_get_unit</primary></indexterm><programlisting><link linkend="GimpUnit">GimpUnit</link>            gimp_unit_menu_get_unit             (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *menu);</programlisting>
 <para>
 Returns the <link linkend="GimpUnit"><type>GimpUnit</type></link> the user has selected from the <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link>.</para>
 <para>
@@ -203,9 +197,9 @@ Returns the <link linkend="GimpUnit"><type>GimpUnit</type></link> the user has s
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The unit the user has selected.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-unit-menu-get-pixel-digits" role="function"/>gimp_unit_menu_get_pixel_digits ()</title>
-<indexterm><primary>gimp_unit_menu_get_pixel_digits</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_unit_menu_get_pixel_digits     (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *menu);</programlisting>
+<refsect2 id="gimp-unit-menu-get-pixel-digits" role="function">
+<title>gimp_unit_menu_get_pixel_digits ()</title>
+<indexterm zone="gimp-unit-menu-get-pixel-digits"><primary>gimp_unit_menu_get_pixel_digits</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_unit_menu_get_pixel_digits     (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *menu);</programlisting>
 <para>
 Retrieve the number of digits for a pixel size as set by
 <link linkend="gimp-unit-set-pixel-digits"><function>gimp_unit_set_pixel_digits()</function></link>.</para>
@@ -218,9 +212,9 @@ Retrieve the number of digits for a pixel size as set by
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the configured number of digits for a pixel size
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-unit-menu-set-pixel-digits" role="function"/>gimp_unit_menu_set_pixel_digits ()</title>
-<indexterm><primary>gimp_unit_menu_set_pixel_digits</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_unit_menu_set_pixel_digits     (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *menu,
+<refsect2 id="gimp-unit-menu-set-pixel-digits" role="function">
+<title>gimp_unit_menu_set_pixel_digits ()</title>
+<indexterm zone="gimp-unit-menu-set-pixel-digits"><primary>gimp_unit_menu_set_pixel_digits</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_unit_menu_set_pixel_digits     (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *menu,
                                                          <link linkend="gint">gint</link> digits);</programlisting>
 <para>
 A GimpUnitMenu can be setup to control the number of digits shown
@@ -246,10 +240,10 @@ here. You should do this after attaching your spinbuttons.</para>
 
 </refsect1>
 
-<refsect1 role="signals">
+<refsect1 id="GimpUnitMenu.signal-details" role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpUnitMenu-unit-changed"/>The <literal>&quot;unit-changed&quot;</literal> signal</title>
-<indexterm><primary>GimpUnitMenu::unit-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *arg0,
+<refsect2 id="GimpUnitMenu-unit-changed"><title>The <literal>&quot;unit-changed&quot;</literal> signal</title>
+<indexterm zone="GimpUnitMenu-unit-changed"><primary>GimpUnitMenu::unit-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *arg0,
                                                         <link linkend="gpointer">gpointer</link>      user_data)      : Run First</programlisting>
 <para>
 This signal is emitted whenever the user selects a <link linkend="GimpUnit"><type>GimpUnit</type></link> from
@@ -263,7 +257,7 @@ the <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link>.</para>
 </refsect1>
 
 
-<refsect1>
+<refsect1 id="GimpUnitMenu.see-also">
 <title>See Also</title>
 <para>
 <link linkend="GimpUnit"><type>GimpUnit</type></link>
@@ -276,6 +270,4 @@ the <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link>.</para>
 </para>
 </refsect1>
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

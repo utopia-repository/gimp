@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpdrawable">
 <refmeta>
-<refentrytitle role="top_of_page">gimpdrawable</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimpdrawable.top_of_page">gimpdrawable</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimpdrawable.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpDrawable">GimpDrawable</link>;
 <link linkend="GimpDrawable">GimpDrawable</link>*       <link linkend="gimp-drawable-get">gimp_drawable_get</link>                   (<link linkend="gint32">gint32</link> drawable_ID);
 <link linkend="void">void</link>                <link linkend="gimp-drawable-detach">gimp_drawable_detach</link>                (<link linkend="GimpDrawable">GimpDrawable</link> *drawable);
@@ -143,7 +140,7 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimpdrawable.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Functions to manipulate drawables.
@@ -151,11 +148,11 @@ Functions to manipulate drawables.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimpdrawable.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpDrawable" role="struct"/>GimpDrawable</title>
-<indexterm><primary>GimpDrawable</primary></indexterm><programlisting>typedef struct {
+<refsect2 id="GimpDrawable" role="struct">
+<title>GimpDrawable</title>
+<indexterm zone="GimpDrawable"><primary>GimpDrawable</primary></indexterm><programlisting>typedef struct {
   gint32    drawable_id;   /* drawable ID */
   guint     width;         /* width of drawble */
   guint     height;        /* height of drawble */
@@ -169,9 +166,9 @@ Functions to manipulate drawables.
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-get" role="function"/>gimp_drawable_get ()</title>
-<indexterm><primary>gimp_drawable_get</primary></indexterm><programlisting><link linkend="GimpDrawable">GimpDrawable</link>*       gimp_drawable_get                   (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-get" role="function">
+<title>gimp_drawable_get ()</title>
+<indexterm zone="gimp-drawable-get"><primary>gimp_drawable_get</primary></indexterm><programlisting><link linkend="GimpDrawable">GimpDrawable</link>*       gimp_drawable_get                   (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 This function creates a <link linkend="GimpDrawable"><type>GimpDrawable</type></link> structure for the core
 drawable identified by <parameter>drawable_ID</parameter>. The returned structure
@@ -197,9 +194,9 @@ transferred back to the core.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a new <link linkend="GimpDrawable"><type>GimpDrawable</type></link> wrapper
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-detach" role="function"/>gimp_drawable_detach ()</title>
-<indexterm><primary>gimp_drawable_detach</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_drawable_detach                (<link linkend="GimpDrawable">GimpDrawable</link> *drawable);</programlisting>
+<refsect2 id="gimp-drawable-detach" role="function">
+<title>gimp_drawable_detach ()</title>
+<indexterm zone="gimp-drawable-detach"><primary>gimp_drawable_detach</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_drawable_detach                (<link linkend="GimpDrawable">GimpDrawable</link> *drawable);</programlisting>
 <para>
 This function is called when a plug-in is finished working
 with a drawable.  It forces all tile data held in the tile
@@ -213,9 +210,9 @@ then frees all associated memory. You must not access the
 <listitem><simpara> The <link linkend="GimpDrawable"><type>GimpDrawable</type></link> to detach from the core
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-flush" role="function"/>gimp_drawable_flush ()</title>
-<indexterm><primary>gimp_drawable_flush</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_drawable_flush                 (<link linkend="GimpDrawable">GimpDrawable</link> *drawable);</programlisting>
+<refsect2 id="gimp-drawable-flush" role="function">
+<title>gimp_drawable_flush ()</title>
+<indexterm zone="gimp-drawable-flush"><primary>gimp_drawable_flush</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_drawable_flush                 (<link linkend="GimpDrawable">GimpDrawable</link> *drawable);</programlisting>
 <para>
 This function causes all tile data in the tile list of <parameter>drawable</parameter> to be
 transferred to the core.  It is usually called in situations where a
@@ -230,9 +227,9 @@ unless <link linkend="gimp-drawable-flush"><function>gimp_drawable_flush()</func
 to the core.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-delete" role="function"/>gimp_drawable_delete ()</title>
-<indexterm><primary>gimp_drawable_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_delete                (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-delete" role="function">
+<title>gimp_drawable_delete ()</title>
+<indexterm zone="gimp-drawable-delete"><primary>gimp_drawable_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_delete                (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Delete a drawable.
 </para>
@@ -251,9 +248,9 @@ which has not yet been added to an image.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-is-valid" role="function" condition="since:GIMP 2.4"/>gimp_drawable_is_valid ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_drawable_is_valid</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_is_valid              (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-is-valid" role="function" condition="since:GIMP 2.4">
+<title>gimp_drawable_is_valid ()</title>
+<indexterm zone="gimp-drawable-is-valid" role="GIMP 2.4"><primary>gimp_drawable_is_valid</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_is_valid              (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Returns TRUE if the drawable is valid.
 </para>
@@ -271,9 +268,9 @@ to an existing drawable.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-get-name" role="function"/>gimp_drawable_get_name ()</title>
-<indexterm><primary>gimp_drawable_get_name</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_drawable_get_name              (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-get-name" role="function">
+<title>gimp_drawable_get_name ()</title>
+<indexterm zone="gimp-drawable-get-name"><primary>gimp_drawable_get_name</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_drawable_get_name              (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Get the name of the specified drawable.
 </para>
@@ -288,9 +285,9 @@ This procedure returns the specified drawable's name.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The drawable name.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-set-name" role="function"/>gimp_drawable_set_name ()</title>
-<indexterm><primary>gimp_drawable_set_name</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_set_name              (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-set-name" role="function">
+<title>gimp_drawable_set_name ()</title>
+<indexterm zone="gimp-drawable-set-name"><primary>gimp_drawable_set_name</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_set_name              (<link linkend="gint32">gint32</link> drawable_ID,
                                                          const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Set the name of the specified drawable.
@@ -309,9 +306,9 @@ This procedure sets the specified drawable's name.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-get-visible" role="function"/>gimp_drawable_get_visible ()</title>
-<indexterm><primary>gimp_drawable_get_visible</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_get_visible           (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-get-visible" role="function">
+<title>gimp_drawable_get_visible ()</title>
+<indexterm zone="gimp-drawable-get-visible"><primary>gimp_drawable_get_visible</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_get_visible           (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Get the visibility of the specified drawable.
 </para>
@@ -326,9 +323,9 @@ This procedure returns the specified drawable's visibility.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The drawable visibility.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-set-visible" role="function"/>gimp_drawable_set_visible ()</title>
-<indexterm><primary>gimp_drawable_set_visible</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_set_visible           (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-set-visible" role="function">
+<title>gimp_drawable_set_visible ()</title>
+<indexterm zone="gimp-drawable-set-visible"><primary>gimp_drawable_set_visible</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_set_visible           (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gboolean">gboolean</link> visible);</programlisting>
 <para>
 Set the visibility of the specified drawable.
@@ -347,9 +344,9 @@ This procedure sets the specified drawable's visibility.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-get-linked" role="function"/>gimp_drawable_get_linked ()</title>
-<indexterm><primary>gimp_drawable_get_linked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_get_linked            (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-get-linked" role="function">
+<title>gimp_drawable_get_linked ()</title>
+<indexterm zone="gimp-drawable-get-linked"><primary>gimp_drawable_get_linked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_get_linked            (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Get the linked state of the specified drawable.
 </para>
@@ -364,9 +361,9 @@ This procedure returns the specified drawable's linked state.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The drawable linked state (for moves).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-set-linked" role="function"/>gimp_drawable_set_linked ()</title>
-<indexterm><primary>gimp_drawable_set_linked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_set_linked            (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-set-linked" role="function">
+<title>gimp_drawable_set_linked ()</title>
+<indexterm zone="gimp-drawable-set-linked"><primary>gimp_drawable_set_linked</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_set_linked            (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gboolean">gboolean</link> linked);</programlisting>
 <para>
 Set the linked state of the specified drawable.
@@ -385,9 +382,9 @@ This procedure sets the specified drawable's linked state.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-get-tattoo" role="function"/>gimp_drawable_get_tattoo ()</title>
-<indexterm><primary>gimp_drawable_get_tattoo</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_drawable_get_tattoo            (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-get-tattoo" role="function">
+<title>gimp_drawable_get_tattoo ()</title>
+<indexterm zone="gimp-drawable-get-tattoo"><primary>gimp_drawable_get_tattoo</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_drawable_get_tattoo            (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Get the tattoo of the specified drawable.
 </para>
@@ -405,9 +402,9 @@ sessions.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The drawable tattoo.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-set-tattoo" role="function"/>gimp_drawable_set_tattoo ()</title>
-<indexterm><primary>gimp_drawable_set_tattoo</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_set_tattoo            (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-set-tattoo" role="function">
+<title>gimp_drawable_set_tattoo ()</title>
+<indexterm zone="gimp-drawable-set-tattoo"><primary>gimp_drawable_set_tattoo</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_set_tattoo            (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> tattoo);</programlisting>
 <para>
 Set the tattoo of the specified drawable.
@@ -429,9 +426,9 @@ sessions.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-get-pixel" role="function"/>gimp_drawable_get_pixel ()</title>
-<indexterm><primary>gimp_drawable_get_pixel</primary></indexterm><programlisting><link linkend="guint8">guint8</link>*             gimp_drawable_get_pixel             (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-get-pixel" role="function">
+<title>gimp_drawable_get_pixel ()</title>
+<indexterm zone="gimp-drawable-get-pixel"><primary>gimp_drawable_get_pixel</primary></indexterm><programlisting><link linkend="guint8">guint8</link>*             gimp_drawable_get_pixel             (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> x_coord,
                                                          <link linkend="gint">gint</link> y_coord,
                                                          <link linkend="gint">gint</link> *num_channels);</programlisting>
@@ -460,9 +457,9 @@ bytes-per-pixel value for the specified drawable.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The pixel value.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-set-pixel" role="function"/>gimp_drawable_set_pixel ()</title>
-<indexterm><primary>gimp_drawable_set_pixel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_set_pixel             (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-set-pixel" role="function">
+<title>gimp_drawable_set_pixel ()</title>
+<indexterm zone="gimp-drawable-set-pixel"><primary>gimp_drawable_set_pixel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_set_pixel             (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> x_coord,
                                                          <link linkend="gint">gint</link> y_coord,
                                                          <link linkend="gint">gint</link> num_channels,
@@ -497,9 +494,9 @@ just created yourself.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-get-tile" role="function"/>gimp_drawable_get_tile ()</title>
-<indexterm><primary>gimp_drawable_get_tile</primary></indexterm><programlisting><link linkend="GimpTile">GimpTile</link>*           gimp_drawable_get_tile              (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
+<refsect2 id="gimp-drawable-get-tile" role="function">
+<title>gimp_drawable_get_tile ()</title>
+<indexterm zone="gimp-drawable-get-tile"><primary>gimp_drawable_get_tile</primary></indexterm><programlisting><link linkend="GimpTile">GimpTile</link>*           gimp_drawable_get_tile              (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
                                                          <link linkend="gboolean">gboolean</link> shadow,
                                                          <link linkend="gint">gint</link> row,
                                                          <link linkend="gint">gint</link> col);</programlisting>
@@ -523,9 +520,9 @@ just created yourself.</para>
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-get-tile2" role="function"/>gimp_drawable_get_tile2 ()</title>
-<indexterm><primary>gimp_drawable_get_tile2</primary></indexterm><programlisting><link linkend="GimpTile">GimpTile</link>*           gimp_drawable_get_tile2             (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
+<refsect2 id="gimp-drawable-get-tile2" role="function">
+<title>gimp_drawable_get_tile2 ()</title>
+<indexterm zone="gimp-drawable-get-tile2"><primary>gimp_drawable_get_tile2</primary></indexterm><programlisting><link linkend="GimpTile">GimpTile</link>*           gimp_drawable_get_tile2             (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
                                                          <link linkend="gboolean">gboolean</link> shadow,
                                                          <link linkend="gint">gint</link> x,
                                                          <link linkend="gint">gint</link> y);</programlisting>
@@ -549,9 +546,9 @@ just created yourself.</para>
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-get-thumbnail-data" role="function"/>gimp_drawable_get_thumbnail_data ()</title>
-<indexterm><primary>gimp_drawable_get_thumbnail_data</primary></indexterm><programlisting><link linkend="guchar">guchar</link>*             gimp_drawable_get_thumbnail_data    (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-get-thumbnail-data" role="function">
+<title>gimp_drawable_get_thumbnail_data ()</title>
+<indexterm zone="gimp-drawable-get-thumbnail-data"><primary>gimp_drawable_get_thumbnail_data</primary></indexterm><programlisting><link linkend="guchar">guchar</link>*             gimp_drawable_get_thumbnail_data    (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> *width,
                                                          <link linkend="gint">gint</link> *height,
                                                          <link linkend="gint">gint</link> *bpp);</programlisting>
@@ -575,9 +572,9 @@ just created yourself.</para>
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-get-sub-thumbnail-data" role="function"/>gimp_drawable_get_sub_thumbnail_data ()</title>
-<indexterm><primary>gimp_drawable_get_sub_thumbnail_data</primary></indexterm><programlisting><link linkend="guchar">guchar</link>*             gimp_drawable_get_sub_thumbnail_data
+<refsect2 id="gimp-drawable-get-sub-thumbnail-data" role="function">
+<title>gimp_drawable_get_sub_thumbnail_data ()</title>
+<indexterm zone="gimp-drawable-get-sub-thumbnail-data"><primary>gimp_drawable_get_sub_thumbnail_data</primary></indexterm><programlisting><link linkend="guchar">guchar</link>*             gimp_drawable_get_sub_thumbnail_data
                                                         (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> src_x,
                                                          <link linkend="gint">gint</link> src_y,
@@ -618,9 +615,9 @@ just created yourself.</para>
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-get-color-uchar" role="function"/>gimp_drawable_get_color_uchar ()</title>
-<indexterm><primary>gimp_drawable_get_color_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_drawable_get_color_uchar       (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-get-color-uchar" role="function">
+<title>gimp_drawable_get_color_uchar ()</title>
+<indexterm zone="gimp-drawable-get-color-uchar"><primary>gimp_drawable_get_color_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_drawable_get_color_uchar       (<link linkend="gint32">gint32</link> drawable_ID,
                                                          const <link linkend="GimpRGB">GimpRGB</link> *color,
                                                          <link linkend="guchar">guchar</link> *color_uchar);</programlisting>
 <para>
@@ -638,9 +635,9 @@ just created yourself.</para>
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-merge-shadow" role="function"/>gimp_drawable_merge_shadow ()</title>
-<indexterm><primary>gimp_drawable_merge_shadow</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_merge_shadow          (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-merge-shadow" role="function">
+<title>gimp_drawable_merge_shadow ()</title>
+<indexterm zone="gimp-drawable-merge-shadow"><primary>gimp_drawable_merge_shadow</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_merge_shadow          (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gboolean">gboolean</link> undo);</programlisting>
 <para>
 Merge the shadow buffer with the specified drawable.
@@ -662,9 +659,9 @@ Requesting no undo is useful for such applications as 'auto-apply'.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-fill" role="function"/>gimp_drawable_fill ()</title>
-<indexterm><primary>gimp_drawable_fill</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_fill                  (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-fill" role="function">
+<title>gimp_drawable_fill ()</title>
+<indexterm zone="gimp-drawable-fill"><primary>gimp_drawable_fill</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_fill                  (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="GimpFillType">GimpFillType</link> fill_type);</programlisting>
 <para>
 Fill the drawable with the specified fill mode.
@@ -692,9 +689,9 @@ before adding it to the image. This operation cannot be undone.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-update" role="function"/>gimp_drawable_update ()</title>
-<indexterm><primary>gimp_drawable_update</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_update                (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-update" role="function">
+<title>gimp_drawable_update ()</title>
+<indexterm zone="gimp-drawable-update"><primary>gimp_drawable_update</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_update                (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> x,
                                                          <link linkend="gint">gint</link> y,
                                                          <link linkend="gint">gint</link> width,
@@ -728,9 +725,9 @@ image origin. Therefore, the entire drawable can be updated using
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-mask-bounds" role="function"/>gimp_drawable_mask_bounds ()</title>
-<indexterm><primary>gimp_drawable_mask_bounds</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_mask_bounds           (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-mask-bounds" role="function">
+<title>gimp_drawable_mask_bounds ()</title>
+<indexterm zone="gimp-drawable-mask-bounds"><primary>gimp_drawable_mask_bounds</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_mask_bounds           (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> *x1,
                                                          <link linkend="gint">gint</link> *y1,
                                                          <link linkend="gint">gint</link> *x2,
@@ -773,9 +770,9 @@ return value which is more useful in most cases.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if there is a selection.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-mask-intersect" role="function" condition="since:GIMP 2.2"/>gimp_drawable_mask_intersect ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_mask_intersect</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_mask_intersect        (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-mask-intersect" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_mask_intersect ()</title>
+<indexterm zone="gimp-drawable-mask-intersect" role="GIMP 2.2"><primary>gimp_drawable_mask_intersect</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_mask_intersect        (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> *x,
                                                          <link linkend="gint">gint</link> *y,
                                                          <link linkend="gint">gint</link> *width,
@@ -813,9 +810,9 @@ are the extents of the whole drawable.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-get-image" role="function"/>gimp_drawable_get_image ()</title>
-<indexterm><primary>gimp_drawable_get_image</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_get_image             (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-get-image" role="function">
+<title>gimp_drawable_get_image ()</title>
+<indexterm zone="gimp-drawable-get-image"><primary>gimp_drawable_get_image</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_drawable_get_image             (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Returns the drawable's image.
 </para>
@@ -830,9 +827,9 @@ This procedure returns the drawable's image.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The drawable's image.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-set-image" role="function" condition="deprecated:"/>gimp_drawable_set_image ()</title>
-<indexterm role="deprecated"><primary>gimp_drawable_set_image</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_set_image             (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-set-image" role="function" condition="deprecated:">
+<title>gimp_drawable_set_image ()</title>
+<indexterm zone="gimp-drawable-set-image" role="deprecated"><primary>gimp_drawable_set_image</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_set_image             (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint32">gint32</link> image_ID);</programlisting>
 <warning><para><literal>gimp_drawable_set_image</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -849,9 +846,9 @@ This procedure is deprecated!</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-has-alpha" role="function"/>gimp_drawable_has_alpha ()</title>
-<indexterm><primary>gimp_drawable_has_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_has_alpha             (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-has-alpha" role="function">
+<title>gimp_drawable_has_alpha ()</title>
+<indexterm zone="gimp-drawable-has-alpha"><primary>gimp_drawable_has_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_has_alpha             (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Returns TRUE if the drawable has an alpha channel.
 </para>
@@ -868,9 +865,9 @@ will be one of: { RGBA , GRAYA, INDEXEDA }.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Does the drawable have an alpha channel?
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-type-with-alpha" role="function"/>gimp_drawable_type_with_alpha ()</title>
-<indexterm><primary>gimp_drawable_type_with_alpha</primary></indexterm><programlisting><link linkend="GimpImageType">GimpImageType</link>       gimp_drawable_type_with_alpha       (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-type-with-alpha" role="function">
+<title>gimp_drawable_type_with_alpha ()</title>
+<indexterm zone="gimp-drawable-type-with-alpha"><primary>gimp_drawable_type_with_alpha</primary></indexterm><programlisting><link linkend="GimpImageType">GimpImageType</link>       gimp_drawable_type_with_alpha       (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Returns the drawable's type with alpha.
 </para>
@@ -888,9 +885,9 @@ the drawable's type is simply returned.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The drawable's type with alpha.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-type" role="function"/>gimp_drawable_type ()</title>
-<indexterm><primary>gimp_drawable_type</primary></indexterm><programlisting><link linkend="GimpImageType">GimpImageType</link>       gimp_drawable_type                  (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-type" role="function">
+<title>gimp_drawable_type ()</title>
+<indexterm zone="gimp-drawable-type"><primary>gimp_drawable_type</primary></indexterm><programlisting><link linkend="GimpImageType">GimpImageType</link>       gimp_drawable_type                  (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Returns the drawable's type.
 </para>
@@ -905,9 +902,9 @@ This procedure returns the drawable's type.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The drawable's type.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-is-rgb" role="function"/>gimp_drawable_is_rgb ()</title>
-<indexterm><primary>gimp_drawable_is_rgb</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_is_rgb                (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-is-rgb" role="function">
+<title>gimp_drawable_is_rgb ()</title>
+<indexterm zone="gimp-drawable-is-rgb"><primary>gimp_drawable_is_rgb</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_is_rgb                (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Returns whether the drawable is an RGB type.
 </para>
@@ -923,9 +920,9 @@ RGB, RGBA }.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the drawable is an RGB type.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-is-gray" role="function"/>gimp_drawable_is_gray ()</title>
-<indexterm><primary>gimp_drawable_is_gray</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_is_gray               (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-is-gray" role="function">
+<title>gimp_drawable_is_gray ()</title>
+<indexterm zone="gimp-drawable-is-gray"><primary>gimp_drawable_is_gray</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_is_gray               (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Returns whether the drawable is a grayscale type.
 </para>
@@ -941,9 +938,9 @@ Gray, GrayA }.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the drawable is a grayscale type.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-is-indexed" role="function"/>gimp_drawable_is_indexed ()</title>
-<indexterm><primary>gimp_drawable_is_indexed</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_is_indexed            (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-is-indexed" role="function">
+<title>gimp_drawable_is_indexed ()</title>
+<indexterm zone="gimp-drawable-is-indexed"><primary>gimp_drawable_is_indexed</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_is_indexed            (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Returns whether the drawable is an indexed type.
 </para>
@@ -959,9 +956,9 @@ Indexed, IndexedA }.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the drawable is an indexed type.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-bpp" role="function"/>gimp_drawable_bpp ()</title>
-<indexterm><primary>gimp_drawable_bpp</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_drawable_bpp                   (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-bpp" role="function">
+<title>gimp_drawable_bpp ()</title>
+<indexterm zone="gimp-drawable-bpp"><primary>gimp_drawable_bpp</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_drawable_bpp                   (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Returns the bytes per pixel.
 </para>
@@ -977,9 +974,9 @@ of channels) for the specified drawable.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Bytes per pixel.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-width" role="function"/>gimp_drawable_width ()</title>
-<indexterm><primary>gimp_drawable_width</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_drawable_width                 (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-width" role="function">
+<title>gimp_drawable_width ()</title>
+<indexterm zone="gimp-drawable-width"><primary>gimp_drawable_width</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_drawable_width                 (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Returns the width of the drawable.
 </para>
@@ -994,9 +991,9 @@ This procedure returns the specified drawable's width in pixels.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Width of drawable.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-height" role="function"/>gimp_drawable_height ()</title>
-<indexterm><primary>gimp_drawable_height</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_drawable_height                (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-height" role="function">
+<title>gimp_drawable_height ()</title>
+<indexterm zone="gimp-drawable-height"><primary>gimp_drawable_height</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_drawable_height                (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Returns the height of the drawable.
 </para>
@@ -1011,9 +1008,9 @@ This procedure returns the specified drawable's height in pixels.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Height of drawable.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-offsets" role="function"/>gimp_drawable_offsets ()</title>
-<indexterm><primary>gimp_drawable_offsets</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_offsets               (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-offsets" role="function">
+<title>gimp_drawable_offsets ()</title>
+<indexterm zone="gimp-drawable-offsets"><primary>gimp_drawable_offsets</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_offsets               (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> *offset_x,
                                                          <link linkend="gint">gint</link> *offset_y);</programlisting>
 <para>
@@ -1038,9 +1035,9 @@ The offsets of a channel will be returned as 0.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-is-layer" role="function"/>gimp_drawable_is_layer ()</title>
-<indexterm><primary>gimp_drawable_is_layer</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_is_layer              (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-is-layer" role="function">
+<title>gimp_drawable_is_layer ()</title>
+<indexterm zone="gimp-drawable-is-layer"><primary>gimp_drawable_is_layer</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_is_layer              (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Returns whether the drawable is a layer.
 </para>
@@ -1055,9 +1052,9 @@ This procedure returns TRUE if the specified drawable is a layer.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the drawable is a layer.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-is-layer-mask" role="function"/>gimp_drawable_is_layer_mask ()</title>
-<indexterm><primary>gimp_drawable_is_layer_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_is_layer_mask         (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-is-layer-mask" role="function">
+<title>gimp_drawable_is_layer_mask ()</title>
+<indexterm zone="gimp-drawable-is-layer-mask"><primary>gimp_drawable_is_layer_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_is_layer_mask         (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Returns whether the drawable is a layer mask.
 </para>
@@ -1073,9 +1070,9 @@ mask.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the drawable is a layer mask.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-is-channel" role="function"/>gimp_drawable_is_channel ()</title>
-<indexterm><primary>gimp_drawable_is_channel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_is_channel            (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<refsect2 id="gimp-drawable-is-channel" role="function">
+<title>gimp_drawable_is_channel ()</title>
+<indexterm zone="gimp-drawable-is-channel"><primary>gimp_drawable_is_channel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_is_channel            (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Returns whether the drawable is a channel.
 </para>
@@ -1090,9 +1087,9 @@ This procedure returns TRUE if the specified drawable is a channel.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the drawable is a channel.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-offset" role="function"/>gimp_drawable_offset ()</title>
-<indexterm><primary>gimp_drawable_offset</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_offset                (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-offset" role="function">
+<title>gimp_drawable_offset ()</title>
+<indexterm zone="gimp-drawable-offset"><primary>gimp_drawable_offset</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_offset                (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gboolean">gboolean</link> wrap_around,
                                                          <link linkend="GimpOffsetType">GimpOffsetType</link> fill_type,
                                                          <link linkend="gint">gint</link> offset_x,
@@ -1129,9 +1126,9 @@ specified by the 'fill-type' parameter.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-foreground-extract" role="function" condition="since:GIMP 2.4"/>gimp_drawable_foreground_extract ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_drawable_foreground_extract</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_foreground_extract    (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-foreground-extract" role="function" condition="since:GIMP 2.4">
+<title>gimp_drawable_foreground_extract ()</title>
+<indexterm zone="gimp-drawable-foreground-extract" role="GIMP 2.4"><primary>gimp_drawable_foreground_extract</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_foreground_extract    (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="GimpForegroundExtractMode">GimpForegroundExtractMode</link> mode,
                                                          <link linkend="gint32">gint32</link> mask_ID);</programlisting>
 <para>
@@ -1157,9 +1154,9 @@ http://www.inf.fu-berlin.de/inst/pubs/tr-b-05-07.pdf</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-parasite-find" role="function"/>gimp_drawable_parasite_find ()</title>
-<indexterm><primary>gimp_drawable_parasite_find</primary></indexterm><programlisting><link linkend="GimpParasite">GimpParasite</link>*       gimp_drawable_parasite_find         (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-parasite-find" role="function">
+<title>gimp_drawable_parasite_find ()</title>
+<indexterm zone="gimp-drawable-parasite-find"><primary>gimp_drawable_parasite_find</primary></indexterm><programlisting><link linkend="GimpParasite">GimpParasite</link>*       gimp_drawable_parasite_find         (<link linkend="gint32">gint32</link> drawable_ID,
                                                          const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Look up a parasite in a drawable
@@ -1179,9 +1176,9 @@ drawable.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The found parasite.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-parasite-list" role="function"/>gimp_drawable_parasite_list ()</title>
-<indexterm><primary>gimp_drawable_parasite_list</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_parasite_list         (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-parasite-list" role="function">
+<title>gimp_drawable_parasite_list ()</title>
+<indexterm zone="gimp-drawable-parasite-list"><primary>gimp_drawable_parasite_list</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_parasite_list         (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> *num_parasites,
                                                          <link linkend="gchar">gchar</link> ***parasites);</programlisting>
 <para>
@@ -1204,9 +1201,9 @@ Returns a list of all currently attached parasites.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-parasite-attach" role="function"/>gimp_drawable_parasite_attach ()</title>
-<indexterm><primary>gimp_drawable_parasite_attach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_parasite_attach       (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-parasite-attach" role="function">
+<title>gimp_drawable_parasite_attach ()</title>
+<indexterm zone="gimp-drawable-parasite-attach"><primary>gimp_drawable_parasite_attach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_parasite_attach       (<link linkend="gint32">gint32</link> drawable_ID,
                                                          const <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
 <para>
 Add a parasite to a drawable.
@@ -1226,9 +1223,9 @@ values.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-parasite-detach" role="function"/>gimp_drawable_parasite_detach ()</title>
-<indexterm><primary>gimp_drawable_parasite_detach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_parasite_detach       (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-parasite-detach" role="function">
+<title>gimp_drawable_parasite_detach ()</title>
+<indexterm zone="gimp-drawable-parasite-detach"><primary>gimp_drawable_parasite_detach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_parasite_detach       (<link linkend="gint32">gint32</link> drawable_ID,
                                                          const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Removes a parasite from a drawable.
@@ -1248,9 +1245,9 @@ values.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-attach-new-parasite" role="function"/>gimp_drawable_attach_new_parasite ()</title>
-<indexterm><primary>gimp_drawable_attach_new_parasite</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_attach_new_parasite   (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-drawable-attach-new-parasite" role="function">
+<title>gimp_drawable_attach_new_parasite ()</title>
+<indexterm zone="gimp-drawable-attach-new-parasite"><primary>gimp_drawable_attach_new_parasite</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_drawable_attach_new_parasite   (<link linkend="gint32">gint32</link> drawable_ID,
                                                          const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> flags,
                                                          <link linkend="gint">gint</link> size,
@@ -1288,6 +1285,4 @@ See Also: <link linkend="gimp-drawable-parasite-attach"><function>gimp_drawable_
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

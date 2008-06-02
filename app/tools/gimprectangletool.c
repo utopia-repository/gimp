@@ -719,6 +719,8 @@ gimp_rectangle_tool_button_press (GimpTool        *tool,
 
   gimp_draw_tool_pause (draw_tool);
 
+  gimp_tool_control_activate (tool->control);
+
   if (display != tool->display)
     {
       if (gimp_draw_tool_is_active (draw_tool))
@@ -882,8 +884,6 @@ gimp_rectangle_tool_button_press (GimpTool        *tool,
       private->other_side_y = other_side_y;
     }
 
-  gimp_tool_control_activate (tool->control);
-
   gimp_draw_tool_resume (draw_tool);
 }
 
@@ -960,6 +960,7 @@ gimp_rectangle_tool_button_release (GimpTool              *tool,
 
   gimp_rectangle_tool_update_highlight (rectangle);
   gimp_rectangle_tool_update_handle_sizes (rectangle);
+  gimp_rectangle_tool_update_options (rectangle, display);
 
   gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
 }
@@ -1158,8 +1159,6 @@ gimp_rectangle_tool_active_modifier_key (GimpTool        *tool,
                                                  private->lasty);
 
           gimp_rectangle_tool_update_highlight (rectangle);
-
-          gimp_rectangle_tool_rectangle_changed (rectangle);
         }
     }
 
@@ -1183,8 +1182,14 @@ gimp_rectangle_tool_active_modifier_key (GimpTool        *tool,
 
           gimp_rectangle_tool_update_highlight (rectangle);
 
-          gimp_rectangle_tool_rectangle_changed (rectangle);
-
+          /* Only emit the rectangle-changed signal if the button is
+           * not down. If it is down, the signal will and shall be
+           * emited on _button_release instead.
+           */
+          if (! (state & GDK_BUTTON1_MASK))
+            {
+              gimp_rectangle_tool_rectangle_changed (rectangle);
+            }
         }
       else if (state & GDK_BUTTON1_MASK)
         {
@@ -1199,8 +1204,6 @@ gimp_rectangle_tool_active_modifier_key (GimpTool        *tool,
                                                     private->other_side_y);
 
           gimp_rectangle_tool_update_highlight (rectangle);
-
-          gimp_rectangle_tool_rectangle_changed (rectangle);
         }
     }
 
@@ -2079,6 +2082,17 @@ gimp_rectangle_tool_synthesize_motion (GimpRectangleTool *rectangle,
 {
   GimpRectangleToolPrivate *private;
   GimpRectangleFunction     old_function;
+
+  /* We don't want to synthesize motions if the tool control is active
+   * since that means the mouse button is down and the rectangle will
+   * get updated in _motion anyway. The reason we want to prevent this
+   * function from executing is that is emits the rectangle-changed
+   * signal which we don't want in the middle of a rectangle change.
+   */
+  if (gimp_tool_control_is_active (GIMP_TOOL (rectangle)->control))
+    {
+      return;
+    }
 
   private = GIMP_RECTANGLE_TOOL_GET_PRIVATE (rectangle);
 

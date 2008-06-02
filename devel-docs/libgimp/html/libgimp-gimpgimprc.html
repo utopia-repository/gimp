@@ -1,21 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpgimprc</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpcontext.html" title="gimpcontext">
 <link rel="next" href="libgimp-gimphelp.html" title="gimphelp">
-<meta name="generator" content="GTK-Doc V1.9 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
+<link rel="part" href="libgimp.html" title="Part I. GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="chapter" href="libgimp-data.html" title="Data Objects">
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
+<link rel="part" href="libgimpui.html" title="Part II. GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
@@ -31,81 +31,75 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimphelp.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2581901" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2578284" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimp-gimpgimprc.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libgimp-gimpgimprc.description" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpgimprc"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2581901"></a><span class="refentrytitle">gimpgimprc</span>
-</h2>
-<p>gimpgimprc &#8212; Interactions with settings from .gimprc.</p>
+<h2><span class="refentrytitle"><a name="libgimp-gimpgimprc.top_of_page"></a>gimpgimprc</span></h2>
+<p>gimpgimprc — Interactions with settings from .gimprc.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="libgimp-gimpgimprc.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
 <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpgimprc.html#gimp-gimprc-query">gimp_gimprc_query</a>                   (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimpgimprc.html#gimp-gimprc-query" title="gimp_gimprc_query ()">gimp_gimprc_query</a>                   (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *token);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpgimprc.html#gimp-gimprc-set">gimp_gimprc_set</a>                     (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpgimprc.html#gimp-gimprc-set" title="gimp_gimprc_set ()">gimp_gimprc_set</a>                     (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *token,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *value);
 <a
-href="../libgimpconfig/GimpColorConfig.html"
->GimpColorConfig</a>*    <a class="link" href="libgimp-gimpgimprc.html#gimp-get-color-configuration">gimp_get_color_configuration</a>        (void);
+href="/usr/share/gtk-doc/html/libgimpconfig/GimpColorConfig.html"
+>GimpColorConfig</a>*    <a class="link" href="libgimp-gimpgimprc.html#gimp-get-color-configuration" title="gimp_get_color_configuration ()">gimp_get_color_configuration</a>        (void);
 <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpgimprc.html#gimp-get-default-comment">gimp_get_default_comment</a>            (void);
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimpgimprc.html#gimp-get-default-comment" title="gimp_get_default_comment ()">gimp_get_default_comment</a>            (void);
 <a
-href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
->GimpUnit</a>            <a class="link" href="libgimp-gimpgimprc.html#gimp-get-default-unit">gimp_get_default_unit</a>               (void);
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
+>GimpUnit</a>            <a class="link" href="libgimp-gimpgimprc.html#gimp-get-default-unit" title="gimp_get_default_unit ()">gimp_get_default_unit</a>               (void);
 <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpgimprc.html#gimp-get-module-load-inhibit">gimp_get_module_load_inhibit</a>        (void);
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimpgimprc.html#gimp-get-module-load-inhibit" title="gimp_get_module_load_inhibit ()">gimp_get_module_load_inhibit</a>        (void);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpgimprc.html#gimp-get-monitor-resolution">gimp_get_monitor_resolution</a>         (<a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpgimprc.html#gimp-get-monitor-resolution" title="gimp_get_monitor_resolution ()">gimp_get_monitor_resolution</a>         (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> *xres,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> *yres);
 <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpgimprc.html#gimp-get-theme-dir">gimp_get_theme_dir</a>                  (void);
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimpgimprc.html#gimp-get-theme-dir" title="gimp_get_theme_dir ()">gimp_get_theme_dir</a>                  (void);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578284"></a><h2>Description</h2>
+<a name="libgimp-gimpgimprc.description"></a><h2>Description</h2>
 <p>
 Interactions with settings from .gimprc.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578300"></a><h2>Details</h2>
+<a name="libgimp-gimpgimprc.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2578311"></a><h3>
-<a name="gimp-gimprc-query"></a>gimp_gimprc_query ()</h3>
-<a class="indexterm" name="id2578323"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
+<a name="gimp-gimprc-query"></a><h3>gimp_gimprc_query ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>*              gimp_gimprc_query                   (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *token);</pre>
 <p>
 Queries the gimprc file parser for information on a specified token.
@@ -127,12 +121,12 @@ to be issued on gimprc parsing and will not be queryable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>token</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>token</code></em> :</span></p></td>
 <td> The token to query for.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The value associated with the queried token.
 </td>
 </tr>
@@ -141,15 +135,14 @@ to be issued on gimprc parsing and will not be queryable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2586680"></a><h3>
-<a name="gimp-gimprc-set"></a>gimp_gimprc_set ()</h3>
-<a class="indexterm" name="id2586692"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-gimprc-set"></a><h3>gimp_gimprc_set ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_gimprc_set                     (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *token,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *value);</pre>
 <p>
 Sets a gimprc token to a value and saves it in the gimprc.
@@ -158,7 +151,7 @@ Sets a gimprc token to a value and saves it in the gimprc.
 This procedure is used to add or change additional information in
 the gimprc file that is considered extraneous to the operation of
 GIMP. Plug-ins that need configuration information can use this
-function to store it, and <a class="link" href="libgimp-gimpgimprc.html#gimp-gimprc-query"><code class="function">gimp_gimprc_query()</code></a> to retrieve it. This
+function to store it, and <a class="link" href="libgimp-gimpgimprc.html#gimp-gimprc-query" title="gimp_gimprc_query ()"><code class="function">gimp_gimprc_query()</code></a> to retrieve it. This
 will accept _only_ string values in UTF-8 encoding.</p>
 <p>
 
@@ -167,17 +160,17 @@ will accept _only_ string values in UTF-8 encoding.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>token</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>token</code></em> :</span></p></td>
 <td> The token to add or modify.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
 <td> The value to set the token to.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -186,10 +179,9 @@ will accept _only_ string values in UTF-8 encoding.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2586792"></a><h3>
-<a name="gimp-get-color-configuration"></a>gimp_get_color_configuration ()</h3>
-<a class="indexterm" name="id2575995"></a><pre class="programlisting"><a
-href="../libgimpconfig/GimpColorConfig.html"
+<a name="gimp-get-color-configuration"></a><h3>gimp_get_color_configuration ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/libgimpconfig/GimpColorConfig.html"
 >GimpColorConfig</a>*    gimp_get_color_configuration        (void);</pre>
 <p>
 Retrieve a copy of the current color management configuration.</p>
@@ -199,9 +191,9 @@ Retrieve a copy of the current color management configuration.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> A copy of the core's <a
-href="../libgimpconfig/GimpColorConfig.html"
+href="/usr/share/gtk-doc/html/libgimpconfig/GimpColorConfig.html"
 ><span class="type">GimpColorConfig</span></a>. You should unref
          this copy if you don't need it any longer.
 
@@ -213,10 +205,9 @@ href="../libgimpconfig/GimpColorConfig.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576051"></a><h3>
-<a name="gimp-get-default-comment"></a>gimp_get_default_comment ()</h3>
-<a class="indexterm" name="id2576063"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
+<a name="gimp-get-default-comment"></a><h3>gimp_get_default_comment ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>*              gimp_get_default_comment            (void);</pre>
 <p>
 Get the default image comment as specified in the Preferences.
@@ -229,7 +220,7 @@ Returns a copy of the default image comment.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> Default image comment.
 </td>
 </tr></tbody>
@@ -237,10 +228,9 @@ Returns a copy of the default image comment.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576108"></a><h3>
-<a name="gimp-get-default-unit"></a>gimp_get_default_unit ()</h3>
-<a class="indexterm" name="id2576121"></a><pre class="programlisting"><a
-href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
+<a name="gimp-get-default-unit"></a><h3>gimp_get_default_unit ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a>            gimp_get_default_unit               (void);</pre>
 <p>
 Get the default unit (taken from the user's locale).
@@ -253,7 +243,7 @@ Returns the default unit's integer ID.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> Default unit.
 
 </td>
@@ -264,10 +254,9 @@ Returns the default unit's integer ID.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576172"></a><h3>
-<a name="gimp-get-module-load-inhibit"></a>gimp_get_module_load_inhibit ()</h3>
-<a class="indexterm" name="id2576184"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
+<a name="gimp-get-module-load-inhibit"></a><h3>gimp_get_module_load_inhibit ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>*              gimp_get_module_load_inhibit        (void);</pre>
 <p>
 Get the list of modules which should not be loaded.
@@ -280,7 +269,7 @@ Returns a copy of the list of modules which should not be loaded.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The list of modules.
 </td>
 </tr></tbody>
@@ -288,15 +277,14 @@ Returns a copy of the list of modules which should not be loaded.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576229"></a><h3>
-<a name="gimp-get-monitor-resolution"></a>gimp_get_monitor_resolution ()</h3>
-<a class="indexterm" name="id2576241"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-get-monitor-resolution"></a><h3>gimp_get_monitor_resolution ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_get_monitor_resolution         (<a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> *xres,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> *yres);</pre>
 <p>
 Get the monitor resolution as specified in the Preferences.
@@ -313,17 +301,17 @@ reasonable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>xres</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>xres</code></em> :</span></p></td>
 <td> X resolution.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>yres</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>yres</code></em> :</span></p></td>
 <td> Y resolution.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -332,10 +320,9 @@ reasonable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2587763"></a><h3>
-<a name="gimp-get-theme-dir"></a>gimp_get_theme_dir ()</h3>
-<a class="indexterm" name="id2587776"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
+<a name="gimp-get-theme-dir"></a><h3>gimp_get_theme_dir ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>*              gimp_get_theme_dir                  (void);</pre>
 <p>
 Get the directory of the current GUI theme.
@@ -348,18 +335,16 @@ Returns a copy of the current GUI theme dir.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The GUI theme dir.
 </td>
 </tr></tbody>
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2587822"></a><div class="refsect2" lang="en"><a name="id2587823"></a></div>
+</div>
+<div class="footer">
 <hr>
-<div class="refsect2" lang="en"><a name="id2587824"></a></div>
-</div>
-</div>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

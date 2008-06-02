@@ -43,9 +43,9 @@
 <a name="id2601293"></a><span class="refentrytitle">GimpModule</span>
 </h2>
 <p>GimpModule &#8212; A <a
-href="../gobject/GTypeModule.html"
+href="/usr/share/gtk-doc/html/gobject/GTypeModule.html"
 ><span class="type">GTypeModule</span></a> subclass which implements module loading using <a
-href="../glib/glib-Dynamic-Loading-of-Modules.html#GModule"
+href="/usr/share/gtk-doc/html/glib/glib-Dynamic-Loading-of-Modules.html#GModule"
 ><span class="type">GModule</span></a>.</p>
 </td>
 <td valign="top" align="right"></td>
@@ -60,63 +60,63 @@ href="../glib/glib-Dynamic-Loading-of-Modules.html#GModule"
                     <a class="link" href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>;
 enum                <a class="link" href="GimpModule.html#GimpModuleState">GimpModuleState</a>;
 const <a class="link" href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>* (<a class="link" href="GimpModule.html#GimpModuleQueryFunc">*GimpModuleQueryFunc</a>)            (<a
-href="../gobject/GTypeModule.html"
+href="/usr/share/gtk-doc/html/gobject/GTypeModule.html"
 >GTypeModule</a> *module);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            (<a class="link" href="GimpModule.html#GimpModuleRegisterFunc">*GimpModuleRegisterFunc</a>)           (<a
-href="../gobject/GTypeModule.html"
+href="/usr/share/gtk-doc/html/gobject/GTypeModule.html"
 >GTypeModule</a> *module);
 #define             <a class="link" href="GimpModule.html#GIMP-MODULE-ABI-VERSION:CAPS">GIMP_MODULE_ABI_VERSION</a>
 #define             <a class="link" href="GimpModule.html#GIMP-MODULE-PARAM-SERIALIZE:CAPS">GIMP_MODULE_PARAM_SERIALIZE</a>
 <a class="link" href="GimpModule.html" title="GimpModule">GimpModule</a>*         <a class="link" href="GimpModule.html#gimp-module-new">gimp_module_new</a>                     (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *filename,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> load_inhibit,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> verbose);
 void                <a class="link" href="GimpModule.html#gimp-module-modified">gimp_module_modified</a>                (<a class="link" href="GimpModule.html" title="GimpModule">GimpModule</a> *module);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="GimpModule.html#gimp-module-query-module">gimp_module_query_module</a>            (<a class="link" href="GimpModule.html" title="GimpModule">GimpModule</a> *module);
 void                <a class="link" href="GimpModule.html#gimp-module-set-load-inhibit">gimp_module_set_load_inhibit</a>        (<a class="link" href="GimpModule.html" title="GimpModule">GimpModule</a> *module,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> load_inhibit);
 const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>*        <a class="link" href="GimpModule.html#gimp-module-state-name">gimp_module_state_name</a>              (<a class="link" href="GimpModule.html#GimpModuleState">GimpModuleState</a> state);
 <a
-href="../gobject/gobject-Type-Information.html#GType"
+href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 >GType</a>               <a class="link" href="GimpModule.html#gimp-module-register-enum">gimp_module_register_enum</a>           (<a
-href="../gobject/GTypeModule.html"
+href="/usr/share/gtk-doc/html/gobject/GTypeModule.html"
 >GTypeModule</a> *module,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *name,
                                                          const <a
-href="../gobject/gobject-Enumeration-and-Flag-Types.html#GEnumValue"
+href="/usr/share/gtk-doc/html/gobject/gobject-Enumeration-and-Flag-Types.html#GEnumValue"
 >GEnumValue</a> *const_static_values);
 <a class="link" href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>*     <a class="link" href="GimpModule.html#gimp-module-info-new">gimp_module_info_new</a>                (<a
-href="../glib/glib-Basic-Types.html#guint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"
 >guint32</a> abi_version,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *purpose,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *author,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *version,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *copyright,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *date);
 <a class="link" href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>*     <a class="link" href="GimpModule.html#gimp-module-info-copy">gimp_module_info_copy</a>               (const <a class="link" href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a> *info);
 void                <a class="link" href="GimpModule.html#gimp-module-info-free">gimp_module_info_free</a>               (<a class="link" href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a> *info);
@@ -128,10 +128,10 @@ void                <a class="link" href="GimpModule.html#gimp-module-info-free"
 <pre class="synopsis">
 
   <a
-href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 >GObject</a>
    +----<a
-href="../gobject/GTypeModule.html"
+href="/usr/share/gtk-doc/html/gobject/GTypeModule.html"
 >GTypeModule</a>
          +----GimpModule
 </pre>
@@ -141,7 +141,7 @@ href="../gobject/GTypeModule.html"
 <p>
 GimpModule implements
  <a
-href="../gobject/GTypePlugin.html"
+href="/usr/share/gtk-doc/html/gobject/GTypePlugin.html"
 >GTypePlugin</a>.</p>
 </div>
 <div class="refsect1" lang="en">
@@ -155,9 +155,9 @@ href="../gobject/GTypePlugin.html"
 <a name="id2592449"></a><h2>Description</h2>
 <p>
 A <a
-href="../gobject/GTypeModule.html"
+href="/usr/share/gtk-doc/html/gobject/GTypeModule.html"
 ><span class="type">GTypeModule</span></a> subclass which implements module loading using <a
-href="../glib/glib-Dynamic-Loading-of-Modules.html#GModule"
+href="/usr/share/gtk-doc/html/glib/glib-Dynamic-Loading-of-Modules.html#GModule"
 ><span class="type">GModule</span></a>.
 </p>
 </div>
@@ -181,14 +181,14 @@ href="../glib/glib-Dynamic-Loading-of-Modules.html#GModule"
 <p>
 <a class="link" href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a> is a generic mechanism to dynamically load modules into
 GIMP.  It is a <a
-href="../gobject/GTypeModule.html"
+href="/usr/share/gtk-doc/html/gobject/GTypeModule.html"
 ><span class="type">GTypeModule</span></a> subclass, implementing module loading
 using <a
-href="../glib/glib-Dynamic-Loading-of-Modules.html#GModule"
+href="/usr/share/gtk-doc/html/glib/glib-Dynamic-Loading-of-Modules.html#GModule"
 ><span class="type">GModule</span></a>.  <a class="link" href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a> does not know which functionality is
 implemented by the modules, it just provides a framework to get
 arbitrary <a
-href="../gobject/gobject-Type-Information.html#GType"
+href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 ><span class="type">GType</span></a> implementations loaded from disk.
 </p>
 </div>
@@ -213,42 +213,42 @@ This structure contains information about a loadable module.
 <tbody>
 <tr>
 <td><p><span class="term"><a
-href="../glib/glib-Basic-Types.html#guint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"
 >guint32</a>&#160;<em class="structfield"><code>abi_version</code></em>;</span></p></td>
 <td>The <a class="link" href="GimpModule.html#GIMP-MODULE-ABI-VERSION:CAPS"><span class="type">GIMP_MODULE_ABI_VERSION</span></a> the module was compiled against.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>&#160;*<em class="structfield"><code>purpose</code></em>;</span></p></td>
 <td>    The module's general purpose.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>&#160;*<em class="structfield"><code>author</code></em>;</span></p></td>
 <td>     The module's author.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>&#160;*<em class="structfield"><code>version</code></em>;</span></p></td>
 <td>    The module's version.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>&#160;*<em class="structfield"><code>copyright</code></em>;</span></p></td>
 <td>  The module's copyright.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>&#160;*<em class="structfield"><code>date</code></em>;</span></p></td>
 <td>       The module's release date.
 
@@ -298,7 +298,7 @@ The possible states a <a class="link" href="GimpModule.html" title="GimpModule">
 <td><p><span class="term"><a name="GIMP-MODULE-STATE-LOAD-FAILED:CAPS"></a><code class="literal">GIMP_MODULE_STATE_LOAD_FAILED</code></span></p></td>
 <td>
 <code class="function">gimp_module_register()</code> returned <a
-href="../glib/glib-Standard-Macros.html#FALSE:CAPS"
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
 ><span class="type">FALSE</span></a>.
 </td>
 </tr>
@@ -317,7 +317,7 @@ href="../glib/glib-Standard-Macros.html#FALSE:CAPS"
 <a name="id2532758"></a><h3>
 <a name="GimpModuleQueryFunc"></a>GimpModuleQueryFunc ()</h3>
 <a class="indexterm" name="id2532770"></a><pre class="programlisting">const <a class="link" href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>* (*GimpModuleQueryFunc)            (<a
-href="../gobject/GTypeModule.html"
+href="/usr/share/gtk-doc/html/gobject/GTypeModule.html"
 >GTypeModule</a> *module);</pre>
 <p>
 The signature of the query function a loadable GIMP module must
@@ -352,9 +352,9 @@ the module will just return a pointer to a constant structure).
 <a name="id2616546"></a><h3>
 <a name="GimpModuleRegisterFunc"></a>GimpModuleRegisterFunc ()</h3>
 <a class="indexterm" name="id2616556"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            (*GimpModuleRegisterFunc)           (<a
-href="../gobject/GTypeModule.html"
+href="/usr/share/gtk-doc/html/gobject/GTypeModule.html"
 >GTypeModule</a> *module);</pre>
 <p>
 The signature of the register function a loadable GIMP module must
@@ -377,9 +377,9 @@ it implements with the passed <em class="parameter"><code>module</code></em>.
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td>
 <a
-href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
 ><span class="type">TRUE</span></a> on success, <a
-href="../glib/glib-Standard-Macros.html#FALSE:CAPS"
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
 ><span class="type">FALSE</span></a> otherwise.
 
 
@@ -420,13 +420,13 @@ are compiled against.
 <a name="id2616727"></a><h3>
 <a name="gimp-module-new"></a>gimp_module_new ()</h3>
 <a class="indexterm" name="id2616737"></a><pre class="programlisting"><a class="link" href="GimpModule.html" title="GimpModule">GimpModule</a>*         gimp_module_new                     (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *filename,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> load_inhibit,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> verbose);</pre>
 <p>
 Creates a new <a class="link" href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a> instance.</p>
@@ -444,14 +444,14 @@ Creates a new <a class="link" href="GimpModule.html" title="GimpModule"><span cl
 <tr>
 <td><p><span class="term"><em class="parameter"><code>load_inhibit</code></em>&#160;:</span></p></td>
 <td> Pass <a
-href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
 ><code class="literal">TRUE</code></a> to exclude this module from auto-loading.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>verbose</code></em>&#160;:</span></p></td>
 <td>      Pass <a
-href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
 ><code class="literal">TRUE</code></a> to enable debugging output.
 </td>
 </tr>
@@ -488,7 +488,7 @@ manually (which you shouldn't do).</p>
 <a name="id2616922"></a><h3>
 <a name="gimp-module-query-module"></a>gimp_module_query_module ()</h3>
 <a class="indexterm" name="id2616933"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_module_query_module            (<a class="link" href="GimpModule.html" title="GimpModule">GimpModule</a> *module);</pre>
 <p>
 Queries the module without actually registering any of the types it
@@ -508,7 +508,7 @@ may implement. After successful query, the <em class="parameter"><code>info</cod
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> <a
-href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
 ><code class="literal">TRUE</code></a> on success.
 </td>
 </tr>
@@ -521,7 +521,7 @@ href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
 <a name="gimp-module-set-load-inhibit"></a>gimp_module_set_load_inhibit ()</h3>
 <a class="indexterm" name="id2617028"></a><pre class="programlisting">void                gimp_module_set_load_inhibit        (<a class="link" href="GimpModule.html" title="GimpModule">GimpModule</a> *module,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> load_inhibit);</pre>
 <p>
 Sets the <em class="parameter"><code>load_inhibit</code></em> property if the module. Emits "modified".</p>
@@ -539,7 +539,7 @@ Sets the <em class="parameter"><code>load_inhibit</code></em> property if the mo
 <tr>
 <td><p><span class="term"><em class="parameter"><code>load_inhibit</code></em>&#160;:</span></p></td>
 <td> Pass <a
-href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
 ><code class="literal">TRUE</code></a> to exclude this module from auto-loading.
 </td>
 </tr>
@@ -551,7 +551,7 @@ href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
 <a name="id2617113"></a><h3>
 <a name="gimp-module-state-name"></a>gimp_module_state_name ()</h3>
 <a class="indexterm" name="id2617123"></a><pre class="programlisting">const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>*        gimp_module_state_name              (<a class="link" href="GimpModule.html#GimpModuleState">GimpModuleState</a> state);</pre>
 <p>
 Returns the translated textual representation of a <a class="link" href="GimpModule.html#GimpModuleState"><span class="type">GimpModuleState</span></a>.
@@ -580,15 +580,15 @@ The returned string must not be freed.</p>
 <a name="id2617197"></a><h3>
 <a name="gimp-module-register-enum"></a>gimp_module_register_enum ()</h3>
 <a class="indexterm" name="id2617210"></a><pre class="programlisting"><a
-href="../gobject/gobject-Type-Information.html#GType"
+href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 >GType</a>               gimp_module_register_enum           (<a
-href="../gobject/GTypeModule.html"
+href="/usr/share/gtk-doc/html/gobject/GTypeModule.html"
 >GTypeModule</a> *module,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *name,
                                                          const <a
-href="../gobject/gobject-Enumeration-and-Flag-Types.html#GEnumValue"
+href="/usr/share/gtk-doc/html/gobject/gobject-Enumeration-and-Flag-Types.html#GEnumValue"
 >GEnumValue</a> *const_static_values);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -596,7 +596,7 @@ href="../gobject/gobject-Enumeration-and-Flag-Types.html#GEnumValue"
 </div>
 <p>
 This function is deprecated! Use <a
-href="../gobject/GTypeModule.html#g-type-module-register-enum"
+href="/usr/share/gtk-doc/html/gobject/GTypeModule.html#g-type-module-register-enum"
 ><code class="function">g_type_module_register_enum()</code></a> instead.</p>
 <p>
 
@@ -622,7 +622,7 @@ href="../gobject/GTypeModule.html#g-type-module-register-enum"
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> a new enum <a
-href="../gobject/gobject-Type-Information.html#GType"
+href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 ><span class="type">GType</span></a>
 </td>
 </tr>
@@ -634,22 +634,22 @@ href="../gobject/gobject-Type-Information.html#GType"
 <a name="id2617330"></a><h3>
 <a name="gimp-module-info-new"></a>gimp_module_info_new ()</h3>
 <a class="indexterm" name="id2617340"></a><pre class="programlisting"><a class="link" href="GimpModule.html#GimpModuleInfo">GimpModuleInfo</a>*     gimp_module_info_new                (<a
-href="../glib/glib-Basic-Types.html#guint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"
 >guint32</a> abi_version,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *purpose,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *author,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *version,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *copyright,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *date);</pre>
 <p>
 Creates a newly allocated <a class="link" href="GimpModule.html#GimpModuleInfo"><span class="type">GimpModuleInfo</span></a> struct.</p>
@@ -750,7 +750,7 @@ Frees the passed <a class="link" href="GimpModule.html#GimpModuleInfo"><span cla
 <a name="GimpModule-modified"></a>The <code class="literal">"modified"</code> signal</h3>
 <a class="indexterm" name="id2617677"></a><pre class="programlisting">void                user_function                      (<a class="link" href="GimpModule.html" title="GimpModule">GimpModule</a> *gimpmodule,
                                                         <a
-href="../glib/glib-Basic-Types.html#gpointer"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 >gpointer</a>    user_data)       : Run First</pre>
 <p>
 
@@ -776,12 +776,12 @@ href="../glib/glib-Basic-Types.html#gpointer"
 <a name="id2617741"></a><h2>See Also</h2>
 <p>
 <a
-href="../glib/glib-Dynamic-Loading-of-Modules.html#GModule"
+href="/usr/share/gtk-doc/html/glib/glib-Dynamic-Loading-of-Modules.html#GModule"
 ><span class="type">GModule</span></a>
 </p>
 <p>
 <a
-href="../gobject/GTypeModule.html"
+href="/usr/share/gtk-doc/html/gobject/GTypeModule.html"
 ><span class="type">GTypeModule</span></a>
 </p>
 </div>

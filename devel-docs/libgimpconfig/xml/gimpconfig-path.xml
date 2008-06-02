@@ -4,7 +4,7 @@
 
 <refentry id="libgimpconfig-gimpconfig-path">
 <refmeta>
-<refentrytitle role="top_of_page">gimpconfig-path</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimpconfig-gimpconfig-path.top_of_page">gimpconfig-path</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCONFIG Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimpconfig-gimpconfig-path.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 enum                <link linkend="GimpConfigPathType">GimpConfigPathType</link>;
 <link linkend="GParamSpec">GParamSpec</link>*         <link linkend="gimp-param-spec-config-path">gimp_param_spec_config_path</link>         (const <link linkend="gchar">gchar</link> *name,
                                                          const <link linkend="gchar">gchar</link> *nick,
@@ -37,7 +34,6 @@ enum                <link linkend="GimpConfigPathType">GimpConfigPathType</link>
 <link linkend="gchar">gchar</link>*              <link linkend="gimp-config-build-writable-path">gimp_config_build_writable_path</link>     (const <link linkend="gchar">gchar</link> *name);
 <link linkend="gchar">gchar</link>*              <link linkend="gimp-config-build-plug-in-path">gimp_config_build_plug_in_path</link>      (const <link linkend="gchar">gchar</link> *name);
 #define             <link linkend="GIMP-VALUE-HOLDS-CONFIG-PATH:CAPS">GIMP_VALUE_HOLDS_CONFIG_PATH</link>        (value)
-
 </synopsis>
 </refsynopsisdiv>
 
@@ -49,18 +45,18 @@ enum                <link linkend="GimpConfigPathType">GimpConfigPathType</link>
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimpconfig-gimpconfig-path.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimpconfig-gimpconfig-path.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpConfigPathType" role="enum"/>enum GimpConfigPathType</title>
-<indexterm><primary>GimpConfigPathType</primary></indexterm><programlisting>typedef enum
+<refsect2 id="GimpConfigPathType" role="enum">
+<title>enum GimpConfigPathType</title>
+<indexterm zone="GimpConfigPathType"><primary>GimpConfigPathType</primary></indexterm><programlisting>typedef enum
 {
   GIMP_CONFIG_PATH_FILE,
   GIMP_CONFIG_PATH_FILE_LIST,
@@ -71,9 +67,9 @@ enum                <link linkend="GimpConfigPathType">GimpConfigPathType</link>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-param-spec-config-path" role="function" condition="since:GIMP 2.4"/>gimp_param_spec_config_path ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_param_spec_config_path</primary></indexterm><programlisting><link linkend="GParamSpec">GParamSpec</link>*         gimp_param_spec_config_path         (const <link linkend="gchar">gchar</link> *name,
+<refsect2 id="gimp-param-spec-config-path" role="function" condition="since:GIMP 2.4">
+<title>gimp_param_spec_config_path ()</title>
+<indexterm zone="gimp-param-spec-config-path" role="GIMP 2.4"><primary>gimp_param_spec_config_path</primary></indexterm><programlisting><link linkend="GParamSpec">GParamSpec</link>*         gimp_param_spec_config_path         (const <link linkend="gchar">gchar</link> *name,
                                                          const <link linkend="gchar">gchar</link> *nick,
                                                          const <link linkend="gchar">gchar</link> *blurb,
                                                          <link linkend="GimpConfigPathType">GimpConfigPathType</link> type,
@@ -109,9 +105,9 @@ See <link linkend="g-param-spec-internal"><function>g_param_spec_internal()</fun
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-param-spec-config-path-type" role="function" condition="since:GIMP 2.4"/>gimp_param_spec_config_path_type ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_param_spec_config_path_type</primary></indexterm><programlisting><link linkend="GimpConfigPathType">GimpConfigPathType</link>  gimp_param_spec_config_path_type    (<link linkend="GParamSpec">GParamSpec</link> *pspec);</programlisting>
+<refsect2 id="gimp-param-spec-config-path-type" role="function" condition="since:GIMP 2.4">
+<title>gimp_param_spec_config_path_type ()</title>
+<indexterm zone="gimp-param-spec-config-path-type" role="GIMP 2.4"><primary>gimp_param_spec_config_path_type</primary></indexterm><programlisting><link linkend="GimpConfigPathType">GimpConfigPathType</link>  gimp_param_spec_config_path_type    (<link linkend="GParamSpec">GParamSpec</link> *pspec);</programlisting>
 <para>
 Tells whether the path param encodes a filename,
 dir name, or list of file or dir names.</para>
@@ -126,9 +122,9 @@ dir name, or list of file or dir names.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-config-path-expand" role="function" condition="since:GIMP 2.4"/>gimp_config_path_expand ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_path_expand</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_config_path_expand             (const <link linkend="gchar">gchar</link> *path,
+<refsect2 id="gimp-config-path-expand" role="function" condition="since:GIMP 2.4">
+<title>gimp_config_path_expand ()</title>
+<indexterm zone="gimp-config-path-expand" role="GIMP 2.4"><primary>gimp_config_path_expand</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_config_path_expand             (const <link linkend="gchar">gchar</link> *path,
                                                          <link linkend="gboolean">gboolean</link> recode,
                                                          <link linkend="GError">GError</link> **error);</programlisting>
 <para>
@@ -156,9 +152,9 @@ filesystem encoding.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-config-build-data-path" role="function" condition="since:GIMP 2.4"/>gimp_config_build_data_path ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_build_data_path</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_config_build_data_path         (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<refsect2 id="gimp-config-build-data-path" role="function" condition="since:GIMP 2.4">
+<title>gimp_config_build_data_path ()</title>
+<indexterm zone="gimp-config-build-data-path" role="GIMP 2.4"><primary>gimp_config_build_data_path</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_config_build_data_path         (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Creates a search path as it is used in the gimprc file.  The path
 returned by <link linkend="gimp-config-build-data-path"><function>gimp_config_build_data_path()</function></link> includes a directory
@@ -180,9 +176,9 @@ recode it using <link linkend="gimp-config-path-expand"><function>gimp_config_pa
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-config-build-writable-path" role="function" condition="since:GIMP 2.4"/>gimp_config_build_writable_path ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_build_writable_path</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_config_build_writable_path     (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<refsect2 id="gimp-config-build-writable-path" role="function" condition="since:GIMP 2.4">
+<title>gimp_config_build_writable_path ()</title>
+<indexterm zone="gimp-config-build-writable-path" role="GIMP 2.4"><primary>gimp_config_build_writable_path</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_config_build_writable_path     (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Creates a search path as it is used in the gimprc file.  The path
 returned by <link linkend="gimp-config-build-writable-path"><function>gimp_config_build_writable_path()</function></link> is just the writable
@@ -203,9 +199,9 @@ recode it using <link linkend="gimp-config-path-expand"><function>gimp_config_pa
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-config-build-plug-in-path" role="function" condition="since:GIMP 2.4"/>gimp_config_build_plug_in_path ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_build_plug_in_path</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_config_build_plug_in_path      (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<refsect2 id="gimp-config-build-plug-in-path" role="function" condition="since:GIMP 2.4">
+<title>gimp_config_build_plug_in_path ()</title>
+<indexterm zone="gimp-config-build-plug-in-path" role="GIMP 2.4"><primary>gimp_config_build_plug_in_path</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_config_build_plug_in_path      (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Creates a search path as it is used in the gimprc file.  The path
 returned by <link linkend="gimp-config-build-plug-in-path"><function>gimp_config_build_plug_in_path()</function></link> includes a directory
@@ -227,9 +223,9 @@ recode it using <link linkend="gimp-config-path-expand"><function>gimp_config_pa
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="GIMP-VALUE-HOLDS-CONFIG-PATH:CAPS" role="macro"/>GIMP_VALUE_HOLDS_CONFIG_PATH()</title>
-<indexterm><primary>GIMP_VALUE_HOLDS_CONFIG_PATH</primary></indexterm><programlisting>#define GIMP_VALUE_HOLDS_CONFIG_PATH(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_CONFIG_PATH))
+<refsect2 id="GIMP-VALUE-HOLDS-CONFIG-PATH:CAPS" role="macro">
+<title>GIMP_VALUE_HOLDS_CONFIG_PATH()</title>
+<indexterm zone="GIMP-VALUE-HOLDS-CONFIG-PATH:CAPS"><primary>GIMP_VALUE_HOLDS_CONFIG_PATH</primary></indexterm><programlisting>#define GIMP_VALUE_HOLDS_CONFIG_PATH(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_CONFIG_PATH))
 </programlisting>
 <para>
 
@@ -246,6 +242,4 @@ recode it using <link linkend="gimp-config-path-expand"><function>gimp_config_pa
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-GimpItemComboBox">
 <refmeta>
-<refentrytitle role="top_of_page">GimpItemComboBox</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-GimpItemComboBox.top_of_page">GimpItemComboBox</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-GimpItemComboBox.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 <anchor id="GimpDrawableComboBox"/><anchor id="GimpChannelComboBox"/><anchor id="GimpLayerComboBox"/><anchor id="GimpVectorsComboBox"/>
 <synopsis>
-
-
-
 <link linkend="gboolean">gboolean</link>            (<link linkend="GimpItemConstraintFunc">*GimpItemConstraintFunc</link>)           (<link linkend="gint32">gint32</link> image_id,
                                                          <link linkend="gint32">gint32</link> item_id,
                                                          <link linkend="gpointer">gpointer</link> data);
@@ -39,14 +36,12 @@ typedef             <link linkend="GimpDrawableConstraintFunc">GimpDrawableConst
 typedef             <link linkend="GimpVectorsConstraintFunc">GimpVectorsConstraintFunc</link>;
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-vectors-combo-box-new">gimp_vectors_combo_box_new</link>          (<link linkend="GimpVectorsConstraintFunc">GimpVectorsConstraintFunc</link> constraint,
                                                          <link linkend="gpointer">gpointer</link> data);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="libgimp-GimpItemComboBox.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -58,7 +53,6 @@ typedef             <link linkend="GimpVectorsConstraintFunc">GimpVectorsConstra
                                              +----GimpDrawableComboBox
 </synopsis>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -70,7 +64,6 @@ typedef             <link linkend="GimpVectorsConstraintFunc">GimpVectorsConstra
                                              +----GimpChannelComboBox
 </synopsis>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -82,7 +75,6 @@ typedef             <link linkend="GimpVectorsConstraintFunc">GimpVectorsConstra
                                              +----GimpLayerComboBox
 </synopsis>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -98,7 +90,7 @@ typedef             <link linkend="GimpVectorsConstraintFunc">GimpVectorsConstra
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="libgimp-GimpItemComboBox.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpDrawableComboBox implements
@@ -119,18 +111,18 @@ GimpVectorsComboBox implements
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-GimpItemComboBox.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-GimpItemComboBox.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpItemConstraintFunc" role="function"/>GimpItemConstraintFunc ()</title>
-<indexterm><primary>GimpItemConstraintFunc</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            (*GimpItemConstraintFunc)           (<link linkend="gint32">gint32</link> image_id,
+<refsect2 id="GimpItemConstraintFunc" role="function">
+<title>GimpItemConstraintFunc ()</title>
+<indexterm zone="GimpItemConstraintFunc"><primary>GimpItemConstraintFunc</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            (*GimpItemConstraintFunc)           (<link linkend="gint32">gint32</link> image_id,
                                                          <link linkend="gint32">gint32</link> item_id,
                                                          <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
@@ -150,22 +142,22 @@ GimpVectorsComboBox implements
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="GimpDrawableComboBox-struct" role="struct"/>GimpDrawableComboBox</title>
-<indexterm><primary>GimpDrawableComboBox</primary></indexterm><programlisting>typedef struct _GimpDrawableComboBox GimpDrawableComboBox;</programlisting>
+<refsect2 id="GimpDrawableComboBox-struct" role="struct">
+<title>GimpDrawableComboBox</title>
+<indexterm zone="GimpDrawableComboBox-struct"><primary>GimpDrawableComboBox</primary></indexterm><programlisting>typedef struct _GimpDrawableComboBox GimpDrawableComboBox;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="GimpDrawableConstraintFunc" role="typedef"/>GimpDrawableConstraintFunc</title>
-<indexterm><primary>GimpDrawableConstraintFunc</primary></indexterm><programlisting>typedef GimpItemConstraintFunc GimpDrawableConstraintFunc;
+<refsect2 id="GimpDrawableConstraintFunc" role="typedef">
+<title>GimpDrawableConstraintFunc</title>
+<indexterm zone="GimpDrawableConstraintFunc"><primary>GimpDrawableConstraintFunc</primary></indexterm><programlisting>typedef GimpItemConstraintFunc GimpDrawableConstraintFunc;
 </programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-drawable-combo-box-new" role="function" condition="since:GIMP 2.2"/>gimp_drawable_combo_box_new ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_drawable_combo_box_new         (<link linkend="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</link> constraint,
+<refsect2 id="gimp-drawable-combo-box-new" role="function" condition="since:GIMP 2.2">
+<title>gimp_drawable_combo_box_new ()</title>
+<indexterm zone="gimp-drawable-combo-box-new" role="GIMP 2.2"><primary>gimp_drawable_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_drawable_combo_box_new         (<link linkend="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</link> constraint,
                                                          <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 Creates a new <link linkend="GimpIntComboBox"><type>GimpIntComboBox</type></link> filled with all currently opened
@@ -192,15 +184,15 @@ of the selected drawable.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="GimpChannelComboBox-struct" role="struct"/>GimpChannelComboBox</title>
-<indexterm><primary>GimpChannelComboBox</primary></indexterm><programlisting>typedef struct _GimpChannelComboBox GimpChannelComboBox;</programlisting>
+<refsect2 id="GimpChannelComboBox-struct" role="struct">
+<title>GimpChannelComboBox</title>
+<indexterm zone="GimpChannelComboBox-struct"><primary>GimpChannelComboBox</primary></indexterm><programlisting>typedef struct _GimpChannelComboBox GimpChannelComboBox;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-channel-combo-box-new" role="function" condition="since:GIMP 2.2"/>gimp_channel_combo_box_new ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_channel_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_channel_combo_box_new          (<link linkend="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</link> constraint,
+<refsect2 id="gimp-channel-combo-box-new" role="function" condition="since:GIMP 2.2">
+<title>gimp_channel_combo_box_new ()</title>
+<indexterm zone="gimp-channel-combo-box-new" role="GIMP 2.2"><primary>gimp_channel_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_channel_combo_box_new          (<link linkend="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</link> constraint,
                                                          <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 Creates a new <link linkend="GimpIntComboBox"><type>GimpIntComboBox</type></link> filled with all currently opened
@@ -219,15 +211,15 @@ channels. See <link linkend="gimp-drawable-combo-box"><function>gimp_drawable_co
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="GimpLayerComboBox-struct" role="struct"/>GimpLayerComboBox</title>
-<indexterm><primary>GimpLayerComboBox</primary></indexterm><programlisting>typedef struct _GimpLayerComboBox GimpLayerComboBox;</programlisting>
+<refsect2 id="GimpLayerComboBox-struct" role="struct">
+<title>GimpLayerComboBox</title>
+<indexterm zone="GimpLayerComboBox-struct"><primary>GimpLayerComboBox</primary></indexterm><programlisting>typedef struct _GimpLayerComboBox GimpLayerComboBox;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-layer-combo-box-new" role="function" condition="since:GIMP 2.2"/>gimp_layer_combo_box_new ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_layer_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_layer_combo_box_new            (<link linkend="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</link> constraint,
+<refsect2 id="gimp-layer-combo-box-new" role="function" condition="since:GIMP 2.2">
+<title>gimp_layer_combo_box_new ()</title>
+<indexterm zone="gimp-layer-combo-box-new" role="GIMP 2.2"><primary>gimp_layer_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_layer_combo_box_new            (<link linkend="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</link> constraint,
                                                          <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 Creates a new <link linkend="GimpIntComboBox"><type>GimpIntComboBox</type></link> filled with all currently opened
@@ -246,22 +238,22 @@ layers. See <link linkend="gimp-drawable-combo-box"><function>gimp_drawable_comb
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="GimpVectorsComboBox-struct" role="struct"/>GimpVectorsComboBox</title>
-<indexterm><primary>GimpVectorsComboBox</primary></indexterm><programlisting>typedef struct _GimpVectorsComboBox GimpVectorsComboBox;</programlisting>
+<refsect2 id="GimpVectorsComboBox-struct" role="struct">
+<title>GimpVectorsComboBox</title>
+<indexterm zone="GimpVectorsComboBox-struct"><primary>GimpVectorsComboBox</primary></indexterm><programlisting>typedef struct _GimpVectorsComboBox GimpVectorsComboBox;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="GimpVectorsConstraintFunc" role="typedef"/>GimpVectorsConstraintFunc</title>
-<indexterm><primary>GimpVectorsConstraintFunc</primary></indexterm><programlisting>typedef GimpItemConstraintFunc GimpVectorsConstraintFunc;
+<refsect2 id="GimpVectorsConstraintFunc" role="typedef">
+<title>GimpVectorsConstraintFunc</title>
+<indexterm zone="GimpVectorsConstraintFunc"><primary>GimpVectorsConstraintFunc</primary></indexterm><programlisting>typedef GimpItemConstraintFunc GimpVectorsConstraintFunc;
 </programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vectors-combo-box-new" role="function" condition="since:GIMP 2.4"/>gimp_vectors_combo_box_new ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_vectors_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_vectors_combo_box_new          (<link linkend="GimpVectorsConstraintFunc">GimpVectorsConstraintFunc</link> constraint,
+<refsect2 id="gimp-vectors-combo-box-new" role="function" condition="since:GIMP 2.4">
+<title>gimp_vectors_combo_box_new ()</title>
+<indexterm zone="gimp-vectors-combo-box-new" role="GIMP 2.4"><primary>gimp_vectors_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_vectors_combo_box_new          (<link linkend="GimpVectorsConstraintFunc">GimpVectorsConstraintFunc</link> constraint,
                                                          <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 Creates a new <link linkend="GimpIntComboBox"><type>GimpIntComboBox</type></link> filled with all currently opened
@@ -294,6 +286,4 @@ of the selected vectors object.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

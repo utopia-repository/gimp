@@ -4,7 +4,7 @@
 
 <refentry id="GimpProgressBar">
 <refmeta>
-<refentrytitle role="top_of_page">GimpProgressBar</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpProgressBar.top_of_page">GimpProgressBar</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,23 +15,18 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpProgressBar.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpProgressBar-struct">GimpProgressBar</link>;
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-progress-bar-new">gimp_progress_bar_new</link>               (void);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpProgressBar.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -45,7 +40,7 @@
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpProgressBar.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpProgressBar implements
@@ -57,7 +52,7 @@ GimpProgressBar implements
 
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpProgressBar.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 A widget providing a progress bar that automatically redirects any progress
@@ -65,17 +60,17 @@ calls to itself.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpProgressBar.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpProgressBar-struct" role="struct"/>GimpProgressBar</title>
-<indexterm><primary>GimpProgressBar</primary></indexterm><programlisting>typedef struct _GimpProgressBar GimpProgressBar;</programlisting>
+<refsect2 id="GimpProgressBar-struct" role="struct">
+<title>GimpProgressBar</title>
+<indexterm zone="GimpProgressBar-struct"><primary>GimpProgressBar</primary></indexterm><programlisting>typedef struct _GimpProgressBar GimpProgressBar;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-progress-bar-new" role="function" condition="since:GIMP 2.2"/>gimp_progress_bar_new ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_progress_bar_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_progress_bar_new               (void);</programlisting>
+<refsect2 id="gimp-progress-bar-new" role="function" condition="since:GIMP 2.2">
+<title>gimp_progress_bar_new ()</title>
+<indexterm zone="gimp-progress-bar-new" role="GIMP 2.2"><primary>gimp_progress_bar_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_progress_bar_new               (void);</programlisting>
 <para>
 Creates a new <link linkend="GimpProgressBar"><type>GimpProgressBar</type></link> widget.</para>
 <para>
@@ -92,6 +87,4 @@ Creates a new <link linkend="GimpProgressBar"><type>GimpProgressBar</type></link
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

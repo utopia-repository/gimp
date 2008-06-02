@@ -1,21 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpdrawable</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpdisplay.html" title="gimpdisplay">
 <link rel="next" href="libgimp-gimpdrawabletransform.html" title="gimpdrawabletransform">
-<meta name="generator" content="GTK-Doc V1.9 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
+<link rel="part" href="libgimp.html" title="Part I. GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="chapter" href="libgimp-data.html" title="Data Objects">
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
+<link rel="part" href="libgimpui.html" title="Part II. GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
@@ -31,438 +31,432 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpdrawabletransform.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2591890" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2644042" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimp-gimpdrawable.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libgimp-gimpdrawable.description" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpdrawable"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2591890"></a><span class="refentrytitle">gimpdrawable</span>
-</h2>
-<p>gimpdrawable &#8212; Functions to manipulate drawables.</p>
+<h2><span class="refentrytitle"><a name="libgimp-gimpdrawable.top_of_page"></a>gimpdrawable</span></h2>
+<p>gimpdrawable — Functions to manipulate drawables.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="libgimp-gimpdrawable.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
-                    <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a>;
-<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a>*       <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get">gimp_drawable_get</a>                   (<a
-href="../glib/glib-Basic-Types.html#gint32"
+                    <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a>;
+<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a>*       <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get" title="gimp_drawable_get ()">gimp_drawable_get</a>                   (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
-void                <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-detach">gimp_drawable_detach</a>                (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable);
-void                <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-flush">gimp_drawable_flush</a>                 (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable);
+void                <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-detach" title="gimp_drawable_detach ()">gimp_drawable_detach</a>                (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable);
+void                <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-flush" title="gimp_drawable_flush ()">gimp_drawable_flush</a>                 (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-delete">gimp_drawable_delete</a>                (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-delete" title="gimp_drawable_delete ()">gimp_drawable_delete</a>                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-valid">gimp_drawable_is_valid</a>              (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-valid" title="gimp_drawable_is_valid ()">gimp_drawable_is_valid</a>              (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-name">gimp_drawable_get_name</a>              (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-name" title="gimp_drawable_get_name ()">gimp_drawable_get_name</a>              (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-set-name">gimp_drawable_set_name</a>              (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-set-name" title="gimp_drawable_set_name ()">gimp_drawable_set_name</a>              (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *name);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-visible">gimp_drawable_get_visible</a>           (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-visible" title="gimp_drawable_get_visible ()">gimp_drawable_get_visible</a>           (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-set-visible">gimp_drawable_set_visible</a>           (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-set-visible" title="gimp_drawable_set_visible ()">gimp_drawable_set_visible</a>           (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> visible);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-linked">gimp_drawable_get_linked</a>            (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-linked" title="gimp_drawable_get_linked ()">gimp_drawable_get_linked</a>            (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-set-linked">gimp_drawable_set_linked</a>            (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-set-linked" title="gimp_drawable_set_linked ()">gimp_drawable_set_linked</a>            (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> linked);
 <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a>                <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-tattoo">gimp_drawable_get_tattoo</a>            (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-tattoo" title="gimp_drawable_get_tattoo ()">gimp_drawable_get_tattoo</a>            (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-set-tattoo">gimp_drawable_set_tattoo</a>            (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-set-tattoo" title="gimp_drawable_set_tattoo ()">gimp_drawable_set_tattoo</a>            (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> tattoo);
 <a
-href="../glib/glib-Basic-Types.html#guint8"
->guint8</a>*             <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-pixel">gimp_drawable_get_pixel</a>             (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint8"
+>guint8</a>*             <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-pixel" title="gimp_drawable_get_pixel ()">gimp_drawable_get_pixel</a>             (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> x_coord,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> y_coord,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *num_channels);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-set-pixel">gimp_drawable_set_pixel</a>             (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-set-pixel" title="gimp_drawable_set_pixel ()">gimp_drawable_set_pixel</a>             (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> x_coord,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> y_coord,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> num_channels,
                                                          const <a
-href="../glib/glib-Basic-Types.html#guint8"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint8"
 >guint8</a> *pixel);
-<a class="link" href="libgimp-gimptile.html#GimpTile">GimpTile</a>*           <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-tile">gimp_drawable_get_tile</a>              (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
+<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a>*           <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-tile" title="gimp_drawable_get_tile ()">gimp_drawable_get_tile</a>              (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> shadow,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> row,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> col);
-<a class="link" href="libgimp-gimptile.html#GimpTile">GimpTile</a>*           <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-tile2">gimp_drawable_get_tile2</a>             (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
+<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a>*           <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-tile2" title="gimp_drawable_get_tile2 ()">gimp_drawable_get_tile2</a>             (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> shadow,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> x,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> y);
 <a
-href="../glib/glib-Basic-Types.html#guchar"
->guchar</a>*             <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-thumbnail-data">gimp_drawable_get_thumbnail_data</a>    (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
+>guchar</a>*             <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-thumbnail-data" title="gimp_drawable_get_thumbnail_data ()">gimp_drawable_get_thumbnail_data</a>    (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *width,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *height,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *bpp);
 <a
-href="../glib/glib-Basic-Types.html#guchar"
->guchar</a>*             <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-sub-thumbnail-data">gimp_drawable_get_sub_thumbnail_data</a>
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
+>guchar</a>*             <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-sub-thumbnail-data" title="gimp_drawable_get_sub_thumbnail_data ()">gimp_drawable_get_sub_thumbnail_data</a>
                                                         (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> src_x,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> src_y,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> src_width,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> src_height,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *dest_width,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *dest_height,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *bpp);
-void                <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-color-uchar">gimp_drawable_get_color_uchar</a>       (<a
-href="../glib/glib-Basic-Types.html#gint32"
+void                <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-color-uchar" title="gimp_drawable_get_color_uchar ()">gimp_drawable_get_color_uchar</a>       (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
                                                          <a
-href="../glib/glib-Basic-Types.html#guchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 >guchar</a> *color_uchar);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-merge-shadow">gimp_drawable_merge_shadow</a>          (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-merge-shadow" title="gimp_drawable_merge_shadow ()">gimp_drawable_merge_shadow</a>          (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> undo);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-fill">gimp_drawable_fill</a>                  (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-fill" title="gimp_drawable_fill ()">gimp_drawable_fill</a>                  (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpFillType">GimpFillType</a> fill_type);
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpFillType" title="enum GimpFillType">GimpFillType</a> fill_type);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-update">gimp_drawable_update</a>                (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-update" title="gimp_drawable_update ()">gimp_drawable_update</a>                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> x,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> y,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> width,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> height);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-mask-bounds">gimp_drawable_mask_bounds</a>           (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-mask-bounds" title="gimp_drawable_mask_bounds ()">gimp_drawable_mask_bounds</a>           (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *x1,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *y1,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *x2,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *y2);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-mask-intersect">gimp_drawable_mask_intersect</a>        (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-mask-intersect" title="gimp_drawable_mask_intersect ()">gimp_drawable_mask_intersect</a>        (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *x,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *y,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *width,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *height);
 <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-image">gimp_drawable_get_image</a>             (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a>              <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-image" title="gimp_drawable_get_image ()">gimp_drawable_get_image</a>             (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-set-image">gimp_drawable_set_image</a>             (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-set-image" title="gimp_drawable_set_image ()">gimp_drawable_set_image</a>             (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-has-alpha">gimp_drawable_has_alpha</a>             (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-has-alpha" title="gimp_drawable_has_alpha ()">gimp_drawable_has_alpha</a>             (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
->GimpImageType</a>       <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-type-with-alpha">gimp_drawable_type_with_alpha</a>       (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
+>GimpImageType</a>       <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-type-with-alpha" title="gimp_drawable_type_with_alpha ()">gimp_drawable_type_with_alpha</a>       (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
->GimpImageType</a>       <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-type">gimp_drawable_type</a>                  (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
+>GimpImageType</a>       <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-type" title="gimp_drawable_type ()">gimp_drawable_type</a>                  (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-rgb">gimp_drawable_is_rgb</a>                (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-rgb" title="gimp_drawable_is_rgb ()">gimp_drawable_is_rgb</a>                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-gray">gimp_drawable_is_gray</a>               (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-gray" title="gimp_drawable_is_gray ()">gimp_drawable_is_gray</a>               (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-indexed">gimp_drawable_is_indexed</a>            (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-indexed" title="gimp_drawable_is_indexed ()">gimp_drawable_is_indexed</a>            (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a>                <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-bpp">gimp_drawable_bpp</a>                   (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-bpp" title="gimp_drawable_bpp ()">gimp_drawable_bpp</a>                   (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a>                <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-width">gimp_drawable_width</a>                 (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-width" title="gimp_drawable_width ()">gimp_drawable_width</a>                 (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a>                <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-height">gimp_drawable_height</a>                (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-height" title="gimp_drawable_height ()">gimp_drawable_height</a>                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-offsets">gimp_drawable_offsets</a>               (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-offsets" title="gimp_drawable_offsets ()">gimp_drawable_offsets</a>               (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *offset_x,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *offset_y);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-layer">gimp_drawable_is_layer</a>              (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-layer" title="gimp_drawable_is_layer ()">gimp_drawable_is_layer</a>              (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-layer-mask">gimp_drawable_is_layer_mask</a>         (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-layer-mask" title="gimp_drawable_is_layer_mask ()">gimp_drawable_is_layer_mask</a>         (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-channel">gimp_drawable_is_channel</a>            (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-channel" title="gimp_drawable_is_channel ()">gimp_drawable_is_channel</a>            (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-offset">gimp_drawable_offset</a>                (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-offset" title="gimp_drawable_offset ()">gimp_drawable_offset</a>                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> wrap_around,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpOffsetType">GimpOffsetType</a> fill_type,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpOffsetType" title="enum GimpOffsetType">GimpOffsetType</a> fill_type,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> offset_x,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> offset_y);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-foreground-extract">gimp_drawable_foreground_extract</a>    (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-foreground-extract" title="gimp_drawable_foreground_extract ()">gimp_drawable_foreground_extract</a>    (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpForegroundExtractMode"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpForegroundExtractMode"
 >GimpForegroundExtractMode</a> mode,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> mask_ID);
 <a
-href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
->GimpParasite</a>*       <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-parasite-find">gimp_drawable_parasite_find</a>         (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
+>GimpParasite</a>*       <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-parasite-find" title="gimp_drawable_parasite_find ()">gimp_drawable_parasite_find</a>         (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *name);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-parasite-list">gimp_drawable_parasite_list</a>         (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-parasite-list" title="gimp_drawable_parasite_list ()">gimp_drawable_parasite_list</a>         (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *num_parasites,
                                                          <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> ***parasites);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-parasite-attach">gimp_drawable_parasite_attach</a>       (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-parasite-attach" title="gimp_drawable_parasite_attach ()">gimp_drawable_parasite_attach</a>       (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 >GimpParasite</a> *parasite);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-parasite-detach">gimp_drawable_parasite_detach</a>       (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-parasite-detach" title="gimp_drawable_parasite_detach ()">gimp_drawable_parasite_detach</a>       (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *name);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-attach-new-parasite">gimp_drawable_attach_new_parasite</a>   (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-attach-new-parasite" title="gimp_drawable_attach_new_parasite ()">gimp_drawable_attach_new_parasite</a>   (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *name,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> flags,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> size,
                                                          <a
-href="../glib/glib-Basic-Types.html#gconstpointer"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gconstpointer"
 >gconstpointer</a> data);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2644042"></a><h2>Description</h2>
+<a name="libgimp-gimpdrawable.description"></a><h2>Description</h2>
 <p>
 Functions to manipulate drawables.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2644055"></a><h2>Details</h2>
+<a name="libgimp-gimpdrawable.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2644064"></a><h3>
-<a name="GimpDrawable"></a>GimpDrawable</h3>
-<a class="indexterm" name="id2644075"></a><pre class="programlisting">typedef struct {
+<a name="GimpDrawable"></a><h3>GimpDrawable</h3>
+<pre class="programlisting">typedef struct {
   gint32    drawable_id;   /* drawable ID */
   guint     width;         /* width of drawble */
   guint     height;        /* height of drawble */
@@ -479,13 +473,12 @@ Functions to manipulate drawables.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644096"></a><h3>
-<a name="gimp-drawable-get"></a>gimp_drawable_get ()</h3>
-<a class="indexterm" name="id2644106"></a><pre class="programlisting"><a class="link" href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a>*       gimp_drawable_get                   (<a
-href="../glib/glib-Basic-Types.html#gint32"
+<a name="gimp-drawable-get"></a><h3>gimp_drawable_get ()</h3>
+<pre class="programlisting"><a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a>*       gimp_drawable_get                   (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
-This function creates a <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable"><span class="type">GimpDrawable</span></a> structure for the core
+This function creates a <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="type">GimpDrawable</span></a> structure for the core
 drawable identified by <em class="parameter"><code>drawable_ID</code></em>. The returned structure
 contains some basic information about the drawable and can also
 hold tile data for transfer to and from the core.
@@ -498,7 +491,7 @@ lists each time, which will usually produce undesired results.
 </p>
 <p>
 When a plug-in has finished working with a drawable, before exiting
-it should call <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-detach"><code class="function">gimp_drawable_detach()</code></a> to make sure that all tile data is
+it should call <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-detach" title="gimp_drawable_detach ()"><code class="function">gimp_drawable_detach()</code></a> to make sure that all tile data is
 transferred back to the core.</p>
 <p>
 
@@ -507,13 +500,13 @@ transferred back to the core.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> the ID of the drawable
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
-<td> a new <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable"><span class="type">GimpDrawable</span></a> wrapper
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> a new <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="type">GimpDrawable</span></a> wrapper
 </td>
 </tr>
 </tbody>
@@ -521,46 +514,44 @@ transferred back to the core.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644203"></a><h3>
-<a name="gimp-drawable-detach"></a>gimp_drawable_detach ()</h3>
-<a class="indexterm" name="id2644213"></a><pre class="programlisting">void                gimp_drawable_detach                (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable);</pre>
+<a name="gimp-drawable-detach"></a><h3>gimp_drawable_detach ()</h3>
+<pre class="programlisting">void                gimp_drawable_detach                (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable);</pre>
 <p>
 This function is called when a plug-in is finished working
 with a drawable.  It forces all tile data held in the tile
-list of the <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable"><span class="type">GimpDrawable</span></a> to be transferred to the core, and
+list of the <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="type">GimpDrawable</span></a> to be transferred to the core, and
 then frees all associated memory. You must not access the
-<em class="parameter"><code>drawable</code></em> after having called <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-detach"><code class="function">gimp_drawable_detach()</code></a>.</p>
+<em class="parameter"><code>drawable</code></em> after having called <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-detach" title="gimp_drawable_detach ()"><code class="function">gimp_drawable_detach()</code></a>.</p>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>drawable</code></em>&#160;:</span></p></td>
-<td> The <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable"><span class="type">GimpDrawable</span></a> to detach from the core
+<td><p><span class="term"><em class="parameter"><code>drawable</code></em> :</span></p></td>
+<td> The <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="type">GimpDrawable</span></a> to detach from the core
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644287"></a><h3>
-<a name="gimp-drawable-flush"></a>gimp_drawable_flush ()</h3>
-<a class="indexterm" name="id2644298"></a><pre class="programlisting">void                gimp_drawable_flush                 (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable);</pre>
+<a name="gimp-drawable-flush"></a><h3>gimp_drawable_flush ()</h3>
+<pre class="programlisting">void                gimp_drawable_flush                 (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable);</pre>
 <p>
 This function causes all tile data in the tile list of <em class="parameter"><code>drawable</code></em> to be
 transferred to the core.  It is usually called in situations where a
 plug-in acts on a drawable, and then needs to read the results of its
 actions.  Data transferred back from the core will not generally be valid
-unless <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-flush"><code class="function">gimp_drawable_flush()</code></a> has been called beforehand.</p>
+unless <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-flush" title="gimp_drawable_flush ()"><code class="function">gimp_drawable_flush()</code></a> has been called beforehand.</p>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>drawable</code></em>&#160;:</span></p></td>
-<td> The <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable"><span class="type">GimpDrawable</span></a> whose tile data is to be transferred
+<td><p><span class="term"><em class="parameter"><code>drawable</code></em> :</span></p></td>
+<td> The <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="type">GimpDrawable</span></a> whose tile data is to be transferred
 to the core.
 </td>
 </tr></tbody>
@@ -568,12 +559,11 @@ to the core.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644367"></a><h3>
-<a name="gimp-drawable-delete"></a>gimp_drawable_delete ()</h3>
-<a class="indexterm" name="id2644378"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-delete"></a><h3>gimp_drawable_delete ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_delete                (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Delete a drawable.
@@ -591,12 +581,12 @@ which has not yet been added to an image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable to delete.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -605,12 +595,11 @@ which has not yet been added to an image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644440"></a><h3>
-<a name="gimp-drawable-is-valid"></a>gimp_drawable_is_valid ()</h3>
-<a class="indexterm" name="id2644452"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-is-valid"></a><h3>gimp_drawable_is_valid ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_is_valid              (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Returns TRUE if the drawable is valid.
@@ -625,12 +614,12 @@ to an existing drawable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable to check.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> Whether the drawable ID is valid.
 
 </td>
@@ -642,12 +631,11 @@ to an existing drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644517"></a><h3>
-<a name="gimp-drawable-get-name"></a>gimp_drawable_get_name ()</h3>
-<a class="indexterm" name="id2644527"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
+<a name="gimp-drawable-get-name"></a><h3>gimp_drawable_get_name ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>*              gimp_drawable_get_name              (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Get the name of the specified drawable.
@@ -661,12 +649,12 @@ This procedure returns the specified drawable's name.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The drawable name.
 </td>
 </tr>
@@ -675,15 +663,14 @@ This procedure returns the specified drawable's name.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644585"></a><h3>
-<a name="gimp-drawable-set-name"></a>gimp_drawable_set_name ()</h3>
-<a class="indexterm" name="id2644595"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-set-name"></a><h3>gimp_drawable_set_name ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_set_name              (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *name);</pre>
 <p>
 Set the name of the specified drawable.
@@ -697,17 +684,17 @@ This procedure sets the specified drawable's name.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
 <td> The new drawable name.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -716,12 +703,11 @@ This procedure sets the specified drawable's name.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644672"></a><h3>
-<a name="gimp-drawable-get-visible"></a>gimp_drawable_get_visible ()</h3>
-<a class="indexterm" name="id2644683"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-get-visible"></a><h3>gimp_drawable_get_visible ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_get_visible           (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Get the visibility of the specified drawable.
@@ -735,12 +721,12 @@ This procedure returns the specified drawable's visibility.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The drawable visibility.
 </td>
 </tr>
@@ -749,15 +735,14 @@ This procedure returns the specified drawable's visibility.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644741"></a><h3>
-<a name="gimp-drawable-set-visible"></a>gimp_drawable_set_visible ()</h3>
-<a class="indexterm" name="id2644752"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-set-visible"></a><h3>gimp_drawable_set_visible ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_set_visible           (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> visible);</pre>
 <p>
 Set the visibility of the specified drawable.
@@ -771,17 +756,17 @@ This procedure sets the specified drawable's visibility.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>visible</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>visible</code></em> :</span></p></td>
 <td> The new drawable visibility.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -790,12 +775,11 @@ This procedure sets the specified drawable's visibility.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644831"></a><h3>
-<a name="gimp-drawable-get-linked"></a>gimp_drawable_get_linked ()</h3>
-<a class="indexterm" name="id2644841"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-get-linked"></a><h3>gimp_drawable_get_linked ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_get_linked            (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Get the linked state of the specified drawable.
@@ -809,12 +793,12 @@ This procedure returns the specified drawable's linked state.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The drawable linked state (for moves).
 </td>
 </tr>
@@ -823,15 +807,14 @@ This procedure returns the specified drawable's linked state.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644901"></a><h3>
-<a name="gimp-drawable-set-linked"></a>gimp_drawable_set_linked ()</h3>
-<a class="indexterm" name="id2644911"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-set-linked"></a><h3>gimp_drawable_set_linked ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_set_linked            (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> linked);</pre>
 <p>
 Set the linked state of the specified drawable.
@@ -845,17 +828,17 @@ This procedure sets the specified drawable's linked state.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>linked</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>linked</code></em> :</span></p></td>
 <td> The new drawable linked state.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -864,12 +847,11 @@ This procedure sets the specified drawable's linked state.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2644990"></a><h3>
-<a name="gimp-drawable-get-tattoo"></a>gimp_drawable_get_tattoo ()</h3>
-<a class="indexterm" name="id2645000"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint"
+<a name="gimp-drawable-get-tattoo"></a><h3>gimp_drawable_get_tattoo ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a>                gimp_drawable_get_tattoo            (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Get the tattoo of the specified drawable.
@@ -886,12 +868,12 @@ sessions.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The drawable tattoo.
 </td>
 </tr>
@@ -900,15 +882,14 @@ sessions.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645062"></a><h3>
-<a name="gimp-drawable-set-tattoo"></a>gimp_drawable_set_tattoo ()</h3>
-<a class="indexterm" name="id2645072"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-set-tattoo"></a><h3>gimp_drawable_set_tattoo ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_set_tattoo            (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> tattoo);</pre>
 <p>
 Set the tattoo of the specified drawable.
@@ -925,17 +906,17 @@ sessions.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>tattoo</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>tattoo</code></em> :</span></p></td>
 <td> The new drawable tattoo.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -944,21 +925,20 @@ sessions.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645152"></a><h3>
-<a name="gimp-drawable-get-pixel"></a>gimp_drawable_get_pixel ()</h3>
-<a class="indexterm" name="id2645163"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#guint8"
+<a name="gimp-drawable-get-pixel"></a><h3>gimp_drawable_get_pixel ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint8"
 >guint8</a>*             gimp_drawable_get_pixel             (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> x_coord,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> y_coord,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *num_channels);</pre>
 <p>
 Gets the value of the pixel at the specified coordinates.
@@ -974,27 +954,27 @@ bytes-per-pixel value for the specified drawable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>x_coord</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>x_coord</code></em> :</span></p></td>
 <td> The x coordinate.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>y_coord</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>y_coord</code></em> :</span></p></td>
 <td> The y coordinate.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>num_channels</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>num_channels</code></em> :</span></p></td>
 <td> The number of channels for the pixel.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The pixel value.
 </td>
 </tr>
@@ -1003,24 +983,23 @@ bytes-per-pixel value for the specified drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645282"></a><h3>
-<a name="gimp-drawable-set-pixel"></a>gimp_drawable_set_pixel ()</h3>
-<a class="indexterm" name="id2645292"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-set-pixel"></a><h3>gimp_drawable_set_pixel ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_set_pixel             (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> x_coord,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> y_coord,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> num_channels,
                                                          const <a
-href="../glib/glib-Basic-Types.html#guint8"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint8"
 >guint8</a> *pixel);</pre>
 <p>
 Sets the value of the pixel at the specified coordinates.
@@ -1038,32 +1017,32 @@ just created yourself.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>x_coord</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>x_coord</code></em> :</span></p></td>
 <td> The x coordinate.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>y_coord</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>y_coord</code></em> :</span></p></td>
 <td> The y coordinate.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>num_channels</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>num_channels</code></em> :</span></p></td>
 <td> The number of channels for the pixel.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>pixel</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>pixel</code></em> :</span></p></td>
 <td> The pixel value.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1072,17 +1051,16 @@ just created yourself.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645432"></a><h3>
-<a name="gimp-drawable-get-tile"></a>gimp_drawable_get_tile ()</h3>
-<a class="indexterm" name="id2645442"></a><pre class="programlisting"><a class="link" href="libgimp-gimptile.html#GimpTile">GimpTile</a>*           gimp_drawable_get_tile              (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
+<a name="gimp-drawable-get-tile"></a><h3>gimp_drawable_get_tile ()</h3>
+<pre class="programlisting"><a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a>*           gimp_drawable_get_tile              (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> shadow,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> row,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> col);</pre>
 <p>
 
@@ -1091,27 +1069,27 @@ href="../glib/glib-Basic-Types.html#gint"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>shadow</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>shadow</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>row</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>row</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>col</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>col</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1122,17 +1100,16 @@ href="../glib/glib-Basic-Types.html#gint"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645550"></a><h3>
-<a name="gimp-drawable-get-tile2"></a>gimp_drawable_get_tile2 ()</h3>
-<a class="indexterm" name="id2645560"></a><pre class="programlisting"><a class="link" href="libgimp-gimptile.html#GimpTile">GimpTile</a>*           gimp_drawable_get_tile2             (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
+<a name="gimp-drawable-get-tile2"></a><h3>gimp_drawable_get_tile2 ()</h3>
+<pre class="programlisting"><a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a>*           gimp_drawable_get_tile2             (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> shadow,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> x,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> y);</pre>
 <p>
 
@@ -1141,27 +1118,27 @@ href="../glib/glib-Basic-Types.html#gint"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>shadow</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>shadow</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1172,21 +1149,20 @@ href="../glib/glib-Basic-Types.html#gint"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645668"></a><h3>
-<a name="gimp-drawable-get-thumbnail-data"></a>gimp_drawable_get_thumbnail_data ()</h3>
-<a class="indexterm" name="id2645680"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#guchar"
+<a name="gimp-drawable-get-thumbnail-data"></a><h3>gimp_drawable_get_thumbnail_data ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 >guchar</a>*             gimp_drawable_get_thumbnail_data    (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *width,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *height,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *bpp);</pre>
 <p>
 
@@ -1195,27 +1171,27 @@ href="../glib/glib-Basic-Types.html#gint"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>bpp</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1226,34 +1202,33 @@ href="../glib/glib-Basic-Types.html#gint"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645789"></a><h3>
-<a name="gimp-drawable-get-sub-thumbnail-data"></a>gimp_drawable_get_sub_thumbnail_data ()</h3>
-<a class="indexterm" name="id2645802"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#guchar"
+<a name="gimp-drawable-get-sub-thumbnail-data"></a><h3>gimp_drawable_get_sub_thumbnail_data ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 >guchar</a>*             gimp_drawable_get_sub_thumbnail_data
                                                         (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> src_x,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> src_y,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> src_width,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> src_height,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *dest_width,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *dest_height,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *bpp);</pre>
 <p>
 
@@ -1262,47 +1237,47 @@ href="../glib/glib-Basic-Types.html#gint"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src_x</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>src_x</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src_y</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>src_y</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src_width</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>src_width</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src_height</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>src_height</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest_width</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>dest_width</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest_height</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>dest_height</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>bpp</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1313,16 +1288,15 @@ href="../glib/glib-Basic-Types.html#gint"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2645988"></a><h3>
-<a name="gimp-drawable-get-color-uchar"></a>gimp_drawable_get_color_uchar ()</h3>
-<a class="indexterm" name="id2646000"></a><pre class="programlisting">void                gimp_drawable_get_color_uchar       (<a
-href="../glib/glib-Basic-Types.html#gint32"
+<a name="gimp-drawable-get-color-uchar"></a><h3>gimp_drawable_get_color_uchar ()</h3>
+<pre class="programlisting">void                gimp_drawable_get_color_uchar       (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
                                                          <a
-href="../glib/glib-Basic-Types.html#guchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 >guchar</a> *color_uchar);</pre>
 <p>
 
@@ -1331,17 +1305,17 @@ href="../glib/glib-Basic-Types.html#guchar"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>color_uchar</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>color_uchar</code></em> :</span></p></td>
 <td>
 
 
@@ -1352,15 +1326,14 @@ href="../glib/glib-Basic-Types.html#guchar"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646080"></a><h3>
-<a name="gimp-drawable-merge-shadow"></a>gimp_drawable_merge_shadow ()</h3>
-<a class="indexterm" name="id2646091"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-merge-shadow"></a><h3>gimp_drawable_merge_shadow ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_merge_shadow          (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> undo);</pre>
 <p>
 Merge the shadow buffer with the specified drawable.
@@ -1377,17 +1350,17 @@ Requesting no undo is useful for such applications as 'auto-apply'.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>undo</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>undo</code></em> :</span></p></td>
 <td> Push merge to undo stack?
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1396,14 +1369,13 @@ Requesting no undo is useful for such applications as 'auto-apply'.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646178"></a><h3>
-<a name="gimp-drawable-fill"></a>gimp_drawable_fill ()</h3>
-<a class="indexterm" name="id2646192"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-fill"></a><h3>gimp_drawable_fill ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_fill                  (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpFillType">GimpFillType</a> fill_type);</pre>
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpFillType" title="enum GimpFillType">GimpFillType</a> fill_type);</pre>
 <p>
 Fill the drawable with the specified fill mode.
 </p>
@@ -1425,17 +1397,17 @@ before adding it to the image. This operation cannot be undone.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>fill_type</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>fill_type</code></em> :</span></p></td>
 <td> The type of fill.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1444,24 +1416,23 @@ before adding it to the image. This operation cannot be undone.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646289"></a><h3>
-<a name="gimp-drawable-update"></a>gimp_drawable_update ()</h3>
-<a class="indexterm" name="id2646302"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-update"></a><h3>gimp_drawable_update ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_update                (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> x,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> y,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> width,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> height);</pre>
 <p>
 Update the specified region of the drawable.
@@ -1478,32 +1449,32 @@ image origin. Therefore, the entire drawable can be updated using
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
 <td> x coordinate of upper left corner of update region.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
 <td> y coordinate of upper left corner of update region.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
 <td> Width of update region.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
 <td> Height of update region.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1512,24 +1483,23 @@ image origin. Therefore, the entire drawable can be updated using
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646458"></a><h3>
-<a name="gimp-drawable-mask-bounds"></a>gimp_drawable_mask_bounds ()</h3>
-<a class="indexterm" name="id2646473"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-mask-bounds"></a><h3>gimp_drawable_mask_bounds ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_mask_bounds           (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *x1,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *y1,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *x2,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *y2);</pre>
 <p>
 Find the bounding box of the current selection in relation to the
@@ -1546,7 +1516,7 @@ the upper left corner of this pixel. This means the width of the
 selection can be calculated as (x2 - x1), its height as (y2 - y1).
 Note that the returned boolean does NOT correspond with the returned
 region being empty or not, it always returns whether the selection
-is non_empty. See <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-mask-intersect"><code class="function">gimp_drawable_mask_intersect()</code></a> for a boolean
+is non_empty. See <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-mask-intersect" title="gimp_drawable_mask_intersect ()"><code class="function">gimp_drawable_mask_intersect()</code></a> for a boolean
 return value which is more useful in most cases.</p>
 <p>
 
@@ -1555,32 +1525,32 @@ return value which is more useful in most cases.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>x1</code></em> :</span></p></td>
 <td> x coordinate of the upper left corner of selection bounds.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>y1</code></em> :</span></p></td>
 <td> y coordinate of the upper left corner of selection bounds.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>x2</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>x2</code></em> :</span></p></td>
 <td> x coordinate of the lower right corner of selection bounds.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>y2</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>y2</code></em> :</span></p></td>
 <td> y coordinate of the lower right corner of selection bounds.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE if there is a selection.
 </td>
 </tr>
@@ -1589,24 +1559,23 @@ return value which is more useful in most cases.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646649"></a><h3>
-<a name="gimp-drawable-mask-intersect"></a>gimp_drawable_mask_intersect ()</h3>
-<a class="indexterm" name="id2646665"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-mask-intersect"></a><h3>gimp_drawable_mask_intersect ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_mask_intersect        (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *x,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *y,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *width,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *height);</pre>
 <p>
 Find the bounding box of the current selection in relation to the
@@ -1614,7 +1583,7 @@ specified drawable.
 </p>
 <p>
 This procedure returns whether there is an intersection between the
-drawable and the selection. Unlike <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-mask-bounds"><code class="function">gimp_drawable_mask_bounds()</code></a>, the
+drawable and the selection. Unlike <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-mask-bounds" title="gimp_drawable_mask_bounds ()"><code class="function">gimp_drawable_mask_bounds()</code></a>, the
 intersection's bounds are returned as x, y, width, height. If there
 is no selection this function returns TRUE and the returned bounds
 are the extents of the whole drawable.</p>
@@ -1625,32 +1594,32 @@ are the extents of the whole drawable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
 <td> x coordinate of the upper left corner of the intersection.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
 <td> y coordinate of the upper left corner of the intersection.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
 <td> width of the intersection.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
 <td> height of the intersection.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE if the returned area is not empty.
 
 </td>
@@ -1662,12 +1631,11 @@ are the extents of the whole drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646841"></a><h3>
-<a name="gimp-drawable-get-image"></a>gimp_drawable_get_image ()</h3>
-<a class="indexterm" name="id2646855"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint32"
+<a name="gimp-drawable-get-image"></a><h3>gimp_drawable_get_image ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a>              gimp_drawable_get_image             (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Returns the drawable's image.
@@ -1681,12 +1649,12 @@ This procedure returns the drawable's image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The drawable's image.
 </td>
 </tr>
@@ -1695,15 +1663,14 @@ This procedure returns the drawable's image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2646920"></a><h3>
-<a name="gimp-drawable-set-image"></a>gimp_drawable_set_image ()</h3>
-<a class="indexterm" name="id2646937"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-set-image"></a><h3>gimp_drawable_set_image ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_set_image             (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -1718,17 +1685,17 @@ This procedure is deprecated!</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1737,12 +1704,11 @@ This procedure is deprecated!</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647032"></a><h3>
-<a name="gimp-drawable-has-alpha"></a>gimp_drawable_has_alpha ()</h3>
-<a class="indexterm" name="id2647046"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-has-alpha"></a><h3>gimp_drawable_has_alpha ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_has_alpha             (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Returns TRUE if the drawable has an alpha channel.
@@ -1758,12 +1724,12 @@ will be one of: { RGBA , GRAYA, INDEXEDA }.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> Does the drawable have an alpha channel?
 </td>
 </tr>
@@ -1772,12 +1738,11 @@ will be one of: { RGBA , GRAYA, INDEXEDA }.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647114"></a><h3>
-<a name="gimp-drawable-type-with-alpha"></a>gimp_drawable_type_with_alpha ()</h3>
-<a class="indexterm" name="id2647128"></a><pre class="programlisting"><a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
+<a name="gimp-drawable-type-with-alpha"></a><h3>gimp_drawable_type_with_alpha ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 >GimpImageType</a>       gimp_drawable_type_with_alpha       (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Returns the drawable's type with alpha.
@@ -1794,12 +1759,12 @@ the drawable's type is simply returned.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The drawable's type with alpha.
 </td>
 </tr>
@@ -1808,12 +1773,11 @@ the drawable's type is simply returned.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647198"></a><h3>
-<a name="gimp-drawable-type"></a>gimp_drawable_type ()</h3>
-<a class="indexterm" name="id2647212"></a><pre class="programlisting"><a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
+<a name="gimp-drawable-type"></a><h3>gimp_drawable_type ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 >GimpImageType</a>       gimp_drawable_type                  (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Returns the drawable's type.
@@ -1827,12 +1791,12 @@ This procedure returns the drawable's type.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The drawable's type.
 </td>
 </tr>
@@ -1841,12 +1805,11 @@ This procedure returns the drawable's type.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647277"></a><h3>
-<a name="gimp-drawable-is-rgb"></a>gimp_drawable_is_rgb ()</h3>
-<a class="indexterm" name="id2647291"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-is-rgb"></a><h3>gimp_drawable_is_rgb ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_is_rgb                (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Returns whether the drawable is an RGB type.
@@ -1861,12 +1824,12 @@ RGB, RGBA }.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE if the drawable is an RGB type.
 </td>
 </tr>
@@ -1875,12 +1838,11 @@ RGB, RGBA }.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647358"></a><h3>
-<a name="gimp-drawable-is-gray"></a>gimp_drawable_is_gray ()</h3>
-<a class="indexterm" name="id2647371"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-is-gray"></a><h3>gimp_drawable_is_gray ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_is_gray               (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Returns whether the drawable is a grayscale type.
@@ -1895,12 +1857,12 @@ Gray, GrayA }.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE if the drawable is a grayscale type.
 </td>
 </tr>
@@ -1909,12 +1871,11 @@ Gray, GrayA }.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647438"></a><h3>
-<a name="gimp-drawable-is-indexed"></a>gimp_drawable_is_indexed ()</h3>
-<a class="indexterm" name="id2647452"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-is-indexed"></a><h3>gimp_drawable_is_indexed ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_is_indexed            (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Returns whether the drawable is an indexed type.
@@ -1929,12 +1890,12 @@ Indexed, IndexedA }.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE if the drawable is an indexed type.
 </td>
 </tr>
@@ -1943,12 +1904,11 @@ Indexed, IndexedA }.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647519"></a><h3>
-<a name="gimp-drawable-bpp"></a>gimp_drawable_bpp ()</h3>
-<a class="indexterm" name="id2647533"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint"
+<a name="gimp-drawable-bpp"></a><h3>gimp_drawable_bpp ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a>                gimp_drawable_bpp                   (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Returns the bytes per pixel.
@@ -1963,12 +1923,12 @@ of channels) for the specified drawable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> Bytes per pixel.
 </td>
 </tr>
@@ -1977,12 +1937,11 @@ of channels) for the specified drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647600"></a><h3>
-<a name="gimp-drawable-width"></a>gimp_drawable_width ()</h3>
-<a class="indexterm" name="id2647613"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint"
+<a name="gimp-drawable-width"></a><h3>gimp_drawable_width ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a>                gimp_drawable_width                 (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Returns the width of the drawable.
@@ -1996,12 +1955,12 @@ This procedure returns the specified drawable's width in pixels.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> Width of drawable.
 </td>
 </tr>
@@ -2010,12 +1969,11 @@ This procedure returns the specified drawable's width in pixels.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647679"></a><h3>
-<a name="gimp-drawable-height"></a>gimp_drawable_height ()</h3>
-<a class="indexterm" name="id2647692"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint"
+<a name="gimp-drawable-height"></a><h3>gimp_drawable_height ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a>                gimp_drawable_height                (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Returns the height of the drawable.
@@ -2029,12 +1987,12 @@ This procedure returns the specified drawable's height in pixels.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> Height of drawable.
 </td>
 </tr>
@@ -2043,18 +2001,17 @@ This procedure returns the specified drawable's height in pixels.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647759"></a><h3>
-<a name="gimp-drawable-offsets"></a>gimp_drawable_offsets ()</h3>
-<a class="indexterm" name="id2647773"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-offsets"></a><h3>gimp_drawable_offsets ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_offsets               (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *offset_x,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *offset_y);</pre>
 <p>
 Returns the offsets for the drawable.
@@ -2070,22 +2027,22 @@ The offsets of a channel will be returned as 0.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>offset_x</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>offset_x</code></em> :</span></p></td>
 <td> x offset of drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>offset_y</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>offset_y</code></em> :</span></p></td>
 <td> y offset of drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2094,12 +2051,11 @@ The offsets of a channel will be returned as 0.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647884"></a><h3>
-<a name="gimp-drawable-is-layer"></a>gimp_drawable_is_layer ()</h3>
-<a class="indexterm" name="id2647898"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-is-layer"></a><h3>gimp_drawable_is_layer ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_is_layer              (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Returns whether the drawable is a layer.
@@ -2113,12 +2069,12 @@ This procedure returns TRUE if the specified drawable is a layer.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE if the drawable is a layer.
 </td>
 </tr>
@@ -2127,12 +2083,11 @@ This procedure returns TRUE if the specified drawable is a layer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647964"></a><h3>
-<a name="gimp-drawable-is-layer-mask"></a>gimp_drawable_is_layer_mask ()</h3>
-<a class="indexterm" name="id2647978"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-is-layer-mask"></a><h3>gimp_drawable_is_layer_mask ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_is_layer_mask         (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Returns whether the drawable is a layer mask.
@@ -2147,12 +2102,12 @@ mask.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE if the drawable is a layer mask.
 </td>
 </tr>
@@ -2161,12 +2116,11 @@ mask.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648044"></a><h3>
-<a name="gimp-drawable-is-channel"></a>gimp_drawable_is_channel ()</h3>
-<a class="indexterm" name="id2648058"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-is-channel"></a><h3>gimp_drawable_is_channel ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_is_channel            (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Returns whether the drawable is a channel.
@@ -2180,12 +2134,12 @@ This procedure returns TRUE if the specified drawable is a channel.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE if the drawable is a channel.
 </td>
 </tr>
@@ -2194,22 +2148,21 @@ This procedure returns TRUE if the specified drawable is a channel.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648125"></a><h3>
-<a name="gimp-drawable-offset"></a>gimp_drawable_offset ()</h3>
-<a class="indexterm" name="id2648139"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-offset"></a><h3>gimp_drawable_offset ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_offset                (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> wrap_around,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpOffsetType">GimpOffsetType</a> fill_type,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpOffsetType" title="enum GimpOffsetType">GimpOffsetType</a> fill_type,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> offset_x,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> offset_y);</pre>
 <p>
 Offset the drawable by the specified amounts in the X and Y
@@ -2229,32 +2182,32 @@ specified by the 'fill-type' parameter.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable to offset.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>wrap_around</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>wrap_around</code></em> :</span></p></td>
 <td> wrap image around or fill vacated regions.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>fill_type</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>fill_type</code></em> :</span></p></td>
 <td> fill vacated regions of drawable with background or transparent.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>offset_x</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>offset_x</code></em> :</span></p></td>
 <td> offset by this amount in X direction.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>offset_y</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>offset_y</code></em> :</span></p></td>
 <td> offset by this amount in Y direction.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2263,18 +2216,17 @@ specified by the 'fill-type' parameter.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648299"></a><h3>
-<a name="gimp-drawable-foreground-extract"></a>gimp_drawable_foreground_extract ()</h3>
-<a class="indexterm" name="id2648315"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-foreground-extract"></a><h3>gimp_drawable_foreground_extract ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_foreground_extract    (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpForegroundExtractMode"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpForegroundExtractMode"
 >GimpForegroundExtractMode</a> mode,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> mask_ID);</pre>
 <p>
 Extract the foreground of a drawable using a given trimap.
@@ -2289,22 +2241,22 @@ http://www.inf.fu-berlin.de/inst/pubs/tr-b-05-07.pdf</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>mode</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
 <td> The algorithm to use.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>mask_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>mask_ID</code></em> :</span></p></td>
 <td> Tri-Map.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 
 </td>
@@ -2316,15 +2268,14 @@ http://www.inf.fu-berlin.de/inst/pubs/tr-b-05-07.pdf</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648433"></a><h3>
-<a name="gimp-drawable-parasite-find"></a>gimp_drawable_parasite_find ()</h3>
-<a class="indexterm" name="id2648447"></a><pre class="programlisting"><a
-href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
+<a name="gimp-drawable-parasite-find"></a><h3>gimp_drawable_parasite_find ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 >GimpParasite</a>*       gimp_drawable_parasite_find         (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *name);</pre>
 <p>
 Look up a parasite in a drawable
@@ -2339,17 +2290,17 @@ drawable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
 <td> The name of the parasite to find.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The found parasite.
 </td>
 </tr>
@@ -2358,18 +2309,17 @@ drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648535"></a><h3>
-<a name="gimp-drawable-parasite-list"></a>gimp_drawable_parasite_list ()</h3>
-<a class="indexterm" name="id2648550"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-parasite-list"></a><h3>gimp_drawable_parasite_list ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_parasite_list         (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *num_parasites,
                                                          <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> ***parasites);</pre>
 <p>
 List all parasites.
@@ -2383,22 +2333,22 @@ Returns a list of all currently attached parasites.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>num_parasites</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>num_parasites</code></em> :</span></p></td>
 <td> The number of attached parasites.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>parasites</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>parasites</code></em> :</span></p></td>
 <td> The names of currently attached parasites.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2407,15 +2357,14 @@ Returns a list of all currently attached parasites.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648659"></a><h3>
-<a name="gimp-drawable-parasite-attach"></a>gimp_drawable_parasite_attach ()</h3>
-<a class="indexterm" name="id2648673"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-parasite-attach"></a><h3>gimp_drawable_parasite_attach ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_parasite_attach       (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 >GimpParasite</a> *parasite);</pre>
 <p>
 Add a parasite to a drawable.
@@ -2430,17 +2379,17 @@ values.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>parasite</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>parasite</code></em> :</span></p></td>
 <td> The parasite to attach to a drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2449,15 +2398,14 @@ values.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648761"></a><h3>
-<a name="gimp-drawable-parasite-detach"></a>gimp_drawable_parasite_detach ()</h3>
-<a class="indexterm" name="id2648776"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-parasite-detach"></a><h3>gimp_drawable_parasite_detach ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_parasite_detach       (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *name);</pre>
 <p>
 Removes a parasite from a drawable.
@@ -2472,17 +2420,17 @@ values.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
 <td> The name of the parasite to detach from a drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2491,24 +2439,23 @@ values.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648864"></a><h3>
-<a name="gimp-drawable-attach-new-parasite"></a>gimp_drawable_attach_new_parasite ()</h3>
-<a class="indexterm" name="id2648879"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-drawable-attach-new-parasite"></a><h3>gimp_drawable_attach_new_parasite ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_drawable_attach_new_parasite   (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *name,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> flags,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> size,
                                                          <a
-href="../glib/glib-Basic-Types.html#gconstpointer"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gconstpointer"
 >gconstpointer</a> data);</pre>
 <p>
 Convenience function that creates a parasite and attaches it
@@ -2520,55 +2467,53 @@ to GIMP.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
-<td> the ID of the <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable"><span class="type">GimpDrawable</span></a> to attach the <a
-href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
+<td> the ID of the <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="type">GimpDrawable</span></a> to attach the <a
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 ><span class="type">GimpParasite</span></a> to.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
 <td> the name of the <a
-href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 ><span class="type">GimpParasite</span></a> to create and attach.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
 <td> the flags set on the <a
-href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 ><span class="type">GimpParasite</span></a>.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>size</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
 <td> the size of the parasite data in bytes.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
 <td> a pointer to the data attached with the <a
-href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 ><span class="type">GimpParasite</span></a>.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on successful creation and attachment of
 the new parasite.
 
-See Also: <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-parasite-attach"><code class="function">gimp_drawable_parasite_attach()</code></a>
+See Also: <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-parasite-attach" title="gimp_drawable_parasite_attach ()"><code class="function">gimp_drawable_parasite_attach()</code></a>
 </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2649077"></a><div class="refsect2" lang="en"><a name="id2649078"></a></div>
+</div>
+<div class="footer">
 <hr>
-<div class="refsect2" lang="en"><a name="id2649079"></a></div>
-</div>
-</div>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

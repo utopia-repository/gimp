@@ -29,8 +29,6 @@
     <function name="gimp_module_info_copy ()" link="GimpModule.html#gimp-module-info-copy"/>
     <function name="gimp_module_info_free ()" link="GimpModule.html#gimp-module-info-free"/>
     <function name="The &quot;modified&quot; signal" link="GimpModule.html#GimpModule-modified"/>
-    <function name="" link="GimpModule.html#id2617767"/>
-    <function name="" link="GimpModule.html#id2617768"/>
     <function name="GimpModuleDB" link="GimpModuleDB.html#GimpModuleDB-struct"/>
     <function name="gimp_module_db_new ()" link="GimpModuleDB.html#gimp-module-db-new"/>
     <function name="gimp_module_db_set_load_inhibit ()" link="GimpModuleDB.html#gimp-module-db-set-load-inhibit"/>
@@ -40,7 +38,5 @@
     <function name="The &quot;add&quot; signal" link="GimpModuleDB.html#GimpModuleDB-add"/>
     <function name="The &quot;module-modified&quot; signal" link="GimpModuleDB.html#GimpModuleDB-module-modified"/>
     <function name="The &quot;remove&quot; signal" link="GimpModuleDB.html#GimpModuleDB-remove"/>
-    <function name="" link="GimpModuleDB.html#id2618001"/>
-    <function name="" link="GimpModuleDB.html#id2618002"/>
   </functions>
 </book>

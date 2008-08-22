@@ -63,8 +63,6 @@
     <function name="GIMP_VALUE_HOLDS_RGB()" link="libgimpcolor-GimpRGB.html#GIMP-VALUE-HOLDS-RGB:CAPS"/>
     <function name="gimp_value_get_rgb ()" link="libgimpcolor-GimpRGB.html#gimp-value-get-rgb"/>
     <function name="gimp_value_set_rgb ()" link="libgimpcolor-GimpRGB.html#gimp-value-set-rgb"/>
-    <function name="" link="libgimpcolor-GimpRGB.html#id2624004"/>
-    <function name="" link="libgimpcolor-GimpRGB.html#id2624005"/>
     <function name="GimpHSV" link="libgimpcolor-GimpHSV.html#GimpHSV"/>
     <function name="GimpHSL" link="libgimpcolor-GimpHSV.html#GimpHSL"/>
     <function name="gimp_hsv_set ()" link="libgimpcolor-GimpHSV.html#gimp-hsv-set"/>
@@ -72,8 +70,6 @@
     <function name="gimp_hsva_set ()" link="libgimpcolor-GimpHSV.html#gimp-hsva-set"/>
     <function name="GIMP_TYPE_HSV" link="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSV:CAPS"/>
     <function name="GIMP_TYPE_HSL" link="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSL:CAPS"/>
-    <function name="" link="libgimpcolor-GimpHSV.html#id2580455"/>
-    <function name="" link="libgimpcolor-GimpHSV.html#id2580456"/>
     <function name="GimpCMYK" link="libgimpcolor-GimpCMYK.html#GimpCMYK"/>
     <function name="gimp_cmyk_set ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyk-set"/>
     <function name="gimp_cmyk_set_uchar ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyk-set-uchar"/>
@@ -82,8 +78,6 @@
     <function name="gimp_cmyka_set_uchar ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyka-set-uchar"/>
     <function name="gimp_cmyka_get_uchar ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyka-get-uchar"/>
     <function name="GIMP_TYPE_CMYK" link="libgimpcolor-GimpCMYK.html#GIMP-TYPE-CMYK:CAPS"/>
-    <function name="" link="libgimpcolor-GimpCMYK.html#id2577544"/>
-    <function name="" link="libgimpcolor-GimpCMYK.html#id2577545"/>
     <function name="gimp_rgb_to_hsv ()" link="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsv"/>
     <function name="gimp_rgb_to_hsl ()" link="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsl"/>
     <function name="gimp_rgb_to_cmyk ()" link="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-cmyk"/>
@@ -101,20 +95,14 @@
     <function name="gimp_hsl_to_rgb_int ()" link="libgimpcolor-GimpColorSpace.html#gimp-hsl-to-rgb-int"/>
     <function name="gimp_rgb_to_hsv4 ()" link="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsv4"/>
     <function name="gimp_hsv_to_rgb4 ()" link="libgimpcolor-GimpColorSpace.html#gimp-hsv-to-rgb4"/>
-    <function name="" link="libgimpcolor-GimpColorSpace.html#id2625946"/>
-    <function name="" link="libgimpcolor-GimpColorSpace.html#id2625947"/>
     <function name="GimpColorManaged" link="libgimpcolor-GimpColorManaged.html#GimpColorManaged"/>
     <function name="GimpColorManagedInterface" link="libgimpcolor-GimpColorManaged.html#GimpColorManagedInterface"/>
     <function name="gimp_color_managed_get_icc_profile ()" link="libgimpcolor-GimpColorManaged.html#gimp-color-managed-get-icc-profile"/>
     <function name="gimp_color_managed_profile_changed ()" link="libgimpcolor-GimpColorManaged.html#gimp-color-managed-profile-changed"/>
-    <function name="" link="libgimpcolor-GimpColorManaged.html#id2624061"/>
-    <function name="" link="libgimpcolor-GimpColorManaged.html#id2624062"/>
     <function name="GimpProgressFunc ()" link="libgimpcolor-GimpAdaptiveSupersample.html#GimpProgressFunc"/>
     <function name="GimpPutPixelFunc ()" link="libgimpcolor-GimpAdaptiveSupersample.html#GimpPutPixelFunc"/>
     <function name="GimpRenderFunc ()" link="libgimpcolor-GimpAdaptiveSupersample.html#GimpRenderFunc"/>
     <function name="gimp_adaptive_supersample_area ()" link="libgimpcolor-GimpAdaptiveSupersample.html#gimp-adaptive-supersample-area"/>
-    <function name="" link="libgimpcolor-GimpAdaptiveSupersample.html#id2583434"/>
-    <function name="" link="libgimpcolor-GimpAdaptiveSupersample.html#id2583435"/>
     <function name="gimp_bilinear ()" link="libgimpcolor-GimpBilinear.html#gimp-bilinear"/>
     <function name="gimp_bilinear_8 ()" link="libgimpcolor-GimpBilinear.html#gimp-bilinear-8"/>
     <function name="gimp_bilinear_16 ()" link="libgimpcolor-GimpBilinear.html#gimp-bilinear-16"/>
@@ -122,7 +110,5 @@
     <function name="gimp_bilinear_rgb ()" link="libgimpcolor-GimpBilinear.html#gimp-bilinear-rgb"/>
     <function name="gimp_bilinear_rgba ()" link="libgimpcolor-GimpBilinear.html#gimp-bilinear-rgba"/>
     <function name="gimp_bilinear_pixels_8 ()" link="libgimpcolor-GimpBilinear.html#gimp-bilinear-pixels-8"/>
-    <function name="" link="libgimpcolor-GimpBilinear.html#id2627454"/>
-    <function name="" link="libgimpcolor-GimpBilinear.html#id2627455"/>
   </functions>
 </book>

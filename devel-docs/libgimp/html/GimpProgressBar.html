@@ -52,32 +52,18 @@
 <a name="GimpProgressBar.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="GimpProgressBar.html#GimpProgressBar-struct" title="GimpProgressBar">GimpProgressBar</a>;
-<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="GimpProgressBar.html#gimp-progress-bar-new" title="gimp_progress_bar_new ()">gimp_progress_bar_new</a>               (void);
+GtkWidget*          <a class="link" href="GimpProgressBar.html#gimp-progress-bar-new" title="gimp_progress_bar_new ()">gimp_progress_bar_new</a>               (void);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpProgressBar.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>
-                     +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkProgress.html"
->GtkProgress</a>
-                           +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkProgressBar.html"
->GtkProgressBar</a>
+  GObject
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkProgress
+                           +----GtkProgressBar
                                  +----GimpProgressBar
 </pre>
 </div>
@@ -106,9 +92,7 @@ calls to itself.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-progress-bar-new"></a><h3>gimp_progress_bar_new ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_progress_bar_new               (void);</pre>
+<pre class="programlisting">GtkWidget*          gimp_progress_bar_new               (void);</pre>
 <p>
 Creates a new <a class="link" href="GimpProgressBar.html" title="GimpProgressBar"><span class="type">GimpProgressBar</span></a> widget.</p>
 <p>

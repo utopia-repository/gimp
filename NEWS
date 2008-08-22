@@ -7,6 +7,29 @@ This is the stable branch of GIMP. No new features are being added
 here, just bug-fixes.
 
 
+Changes in GIMP 2.4.7
+=====================
+
+- fixed issue in GIF load plug-in (bug #535888)
+- fixed event handling in MIDI controller (bug #537960)
+- fixed handling of the 'Highlight' tool option in Crop and Rectangle
+  Select tools (bug #536582)
+- various fixes to the Python bindings:
+  - fixed crash with Python 2.5 on 64 bit systems (bug #540629)
+  - added missing validity checks (bug #536403)
+  - allow to pass None for PDB_DISPLAY
+- plugged a memory leak in gimp-text-get-extents-fontname PDB call
+- fixed potential timeout issues in org.gimp.GIMP.UI D-Bus service
+- fixed endianness issue in the ICO save plug-in (bug #529629)
+- translation fixes and updates (be, it, lt, nn, vi)
+
+Contributors:
+
+   Sven Neumann, Michael Natterer, Martin Nordholts, Manish Singh,
+   Lars-Peter Clausen, Rik Snel, S. Fielding, Joao S. O. Bueno,
+   Aurimas Juška
+
+
 Changes in GIMP 2.4.6
 =====================
 
@@ -21,7 +44,7 @@ Changes in GIMP 2.4.6
 - fixed parameter description in the Map Object plug-in (bug #526679)
 - fixed compilation of unit tests on Mac OS X (bug #528160)
 - fixed handling of "argc-lower-val-y" PDB parameter in Curve Bend plug-in
-- fixed overlap problem in Hue-Saturation tool (bug #528160)
+- fixed overlap problem in Hue-Saturation tool (bug #527085)
 - fixed asymmetry in Unsharp Mask plug-in (bug #530077)
 - don't show non-existant color profiles in the selector (bug #528958)
 - fixed issues with default aspect ratio in the Crop tool (bug #532057)

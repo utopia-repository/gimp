@@ -47,45 +47,15 @@
 <div class="refsynopsisdiv">
 <a name="libgimp-gimpfloatingsel.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpfloatingsel.html#gimp-floating-sel-remove" title="gimp_floating_sel_remove ()">gimp_floating_sel_remove</a>            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> floating_sel_ID);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpfloatingsel.html#gimp-floating-sel-anchor" title="gimp_floating_sel_anchor ()">gimp_floating_sel_anchor</a>            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> floating_sel_ID);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpfloatingsel.html#gimp-floating-sel-to-layer" title="gimp_floating_sel_to_layer ()">gimp_floating_sel_to_layer</a>          (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> floating_sel_ID);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpfloatingsel.html#gimp-floating-sel-attach" title="gimp_floating_sel_attach ()">gimp_floating_sel_attach</a>            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> layer_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpfloatingsel.html#gimp-floating-sel-rigor" title="gimp_floating_sel_rigor ()">gimp_floating_sel_rigor</a>             (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> floating_sel_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> undo);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpfloatingsel.html#gimp-floating-sel-relax" title="gimp_floating_sel_relax ()">gimp_floating_sel_relax</a>             (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> floating_sel_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> undo);
+gboolean            <a class="link" href="libgimp-gimpfloatingsel.html#gimp-floating-sel-remove" title="gimp_floating_sel_remove ()">gimp_floating_sel_remove</a>            (gint32 floating_sel_ID);
+gboolean            <a class="link" href="libgimp-gimpfloatingsel.html#gimp-floating-sel-anchor" title="gimp_floating_sel_anchor ()">gimp_floating_sel_anchor</a>            (gint32 floating_sel_ID);
+gboolean            <a class="link" href="libgimp-gimpfloatingsel.html#gimp-floating-sel-to-layer" title="gimp_floating_sel_to_layer ()">gimp_floating_sel_to_layer</a>          (gint32 floating_sel_ID);
+gboolean            <a class="link" href="libgimp-gimpfloatingsel.html#gimp-floating-sel-attach" title="gimp_floating_sel_attach ()">gimp_floating_sel_attach</a>            (gint32 layer_ID,
+                                                         gint32 drawable_ID);
+gboolean            <a class="link" href="libgimp-gimpfloatingsel.html#gimp-floating-sel-rigor" title="gimp_floating_sel_rigor ()">gimp_floating_sel_rigor</a>             (gint32 floating_sel_ID,
+                                                         gboolean undo);
+gboolean            <a class="link" href="libgimp-gimpfloatingsel.html#gimp-floating-sel-relax" title="gimp_floating_sel_relax ()">gimp_floating_sel_relax</a>             (gint32 floating_sel_ID,
+                                                         gboolean undo);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -99,11 +69,7 @@ Functions for removing or attaching floating selections.
 <a name="libgimp-gimpfloatingsel.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
 <a name="gimp-floating-sel-remove"></a><h3>gimp_floating_sel_remove ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_floating_sel_remove            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> floating_sel_ID);</pre>
+<pre class="programlisting">gboolean            gimp_floating_sel_remove            (gint32 floating_sel_ID);</pre>
 <p>
 Remove the specified floating selection from its associated
 drawable.
@@ -133,11 +99,7 @@ any side effects. The associated drawable is then set to active.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-floating-sel-anchor"></a><h3>gimp_floating_sel_anchor ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_floating_sel_anchor            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> floating_sel_ID);</pre>
+<pre class="programlisting">gboolean            gimp_floating_sel_anchor            (gint32 floating_sel_ID);</pre>
 <p>
 Anchor the specified floating selection to its associated drawable.
 </p>
@@ -168,11 +130,7 @@ after this operation.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-floating-sel-to-layer"></a><h3>gimp_floating_sel_to_layer ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_floating_sel_to_layer          (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> floating_sel_ID);</pre>
+<pre class="programlisting">gboolean            gimp_floating_sel_to_layer          (gint32 floating_sel_ID);</pre>
 <p>
 Transforms the specified floating selection into a layer.
 </p>
@@ -207,14 +165,8 @@ selection is above an auxillary channel or a layer mask.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-floating-sel-attach"></a><h3>gimp_floating_sel_attach ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_floating_sel_attach            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> layer_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID);</pre>
+<pre class="programlisting">gboolean            gimp_floating_sel_attach            (gint32 layer_ID,
+                                                         gint32 drawable_ID);</pre>
 <p>
 Attach the specified layer as floating to the specified drawable.
 </p>
@@ -248,14 +200,8 @@ drawable.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-floating-sel-rigor"></a><h3>gimp_floating_sel_rigor ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_floating_sel_rigor             (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> floating_sel_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> undo);</pre>
+<pre class="programlisting">gboolean            gimp_floating_sel_rigor             (gint32 floating_sel_ID,
+                                                         gboolean undo);</pre>
 <p>
 Rigor the floating selection.
 </p>
@@ -288,14 +234,8 @@ This procedure rigors the floating selection.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-floating-sel-relax"></a><h3>gimp_floating_sel_relax ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_floating_sel_relax             (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> floating_sel_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> undo);</pre>
+<pre class="programlisting">gboolean            gimp_floating_sel_relax             (gint32 floating_sel_ID,
+                                                         gboolean undo);</pre>
 <p>
 Relax the floating selection.
 </p>

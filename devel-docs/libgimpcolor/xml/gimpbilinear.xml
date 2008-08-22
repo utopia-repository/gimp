@@ -4,7 +4,7 @@
 
 <refentry id="libgimpcolor-GimpBilinear">
 <refmeta>
-<refentrytitle role="top_of_page">GimpBilinear</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimpcolor-GimpBilinear.top_of_page">GimpBilinear</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCOLOR Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimpcolor-GimpBilinear.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="gdouble">gdouble</link>             <link linkend="gimp-bilinear">gimp_bilinear</link>                       (<link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y,
                                                          <link linkend="gdouble">gdouble</link> *values);
@@ -57,18 +54,18 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimpcolor-GimpBilinear.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimpcolor-GimpBilinear.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-bilinear" role="function"/>gimp_bilinear ()</title>
-<indexterm><primary>gimp_bilinear</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_bilinear                       (<link linkend="gdouble">gdouble</link> x,
+<refsect2 id="gimp-bilinear" role="function">
+<title>gimp_bilinear ()</title>
+<indexterm zone="gimp-bilinear"><primary>gimp_bilinear</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_bilinear                       (<link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y,
                                                          <link linkend="gdouble">gdouble</link> *values);</programlisting>
 <para>
@@ -88,9 +85,9 @@
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-bilinear-8" role="function"/>gimp_bilinear_8 ()</title>
-<indexterm><primary>gimp_bilinear_8</primary></indexterm><programlisting><link linkend="guchar">guchar</link>              gimp_bilinear_8                     (<link linkend="gdouble">gdouble</link> x,
+<refsect2 id="gimp-bilinear-8" role="function">
+<title>gimp_bilinear_8 ()</title>
+<indexterm zone="gimp-bilinear-8"><primary>gimp_bilinear_8</primary></indexterm><programlisting><link linkend="guchar">guchar</link>              gimp_bilinear_8                     (<link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y,
                                                          <link linkend="guchar">guchar</link> *values);</programlisting>
 <para>
@@ -110,9 +107,9 @@
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-bilinear-16" role="function"/>gimp_bilinear_16 ()</title>
-<indexterm><primary>gimp_bilinear_16</primary></indexterm><programlisting><link linkend="guint16">guint16</link>             gimp_bilinear_16                    (<link linkend="gdouble">gdouble</link> x,
+<refsect2 id="gimp-bilinear-16" role="function">
+<title>gimp_bilinear_16 ()</title>
+<indexterm zone="gimp-bilinear-16"><primary>gimp_bilinear_16</primary></indexterm><programlisting><link linkend="guint16">guint16</link>             gimp_bilinear_16                    (<link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y,
                                                          <link linkend="guint16">guint16</link> *values);</programlisting>
 <para>
@@ -132,9 +129,9 @@
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-bilinear-32" role="function"/>gimp_bilinear_32 ()</title>
-<indexterm><primary>gimp_bilinear_32</primary></indexterm><programlisting><link linkend="guint32">guint32</link>             gimp_bilinear_32                    (<link linkend="gdouble">gdouble</link> x,
+<refsect2 id="gimp-bilinear-32" role="function">
+<title>gimp_bilinear_32 ()</title>
+<indexterm zone="gimp-bilinear-32"><primary>gimp_bilinear_32</primary></indexterm><programlisting><link linkend="guint32">guint32</link>             gimp_bilinear_32                    (<link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y,
                                                          <link linkend="guint32">guint32</link> *values);</programlisting>
 <para>
@@ -154,9 +151,9 @@
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-bilinear-rgb" role="function"/>gimp_bilinear_rgb ()</title>
-<indexterm><primary>gimp_bilinear_rgb</primary></indexterm><programlisting><link linkend="GimpRGB">GimpRGB</link>             gimp_bilinear_rgb                   (<link linkend="gdouble">gdouble</link> x,
+<refsect2 id="gimp-bilinear-rgb" role="function">
+<title>gimp_bilinear_rgb ()</title>
+<indexterm zone="gimp-bilinear-rgb"><primary>gimp_bilinear_rgb</primary></indexterm><programlisting><link linkend="GimpRGB">GimpRGB</link>             gimp_bilinear_rgb                   (<link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y,
                                                          <link linkend="GimpRGB">GimpRGB</link> *values);</programlisting>
 <para>
@@ -176,9 +173,9 @@
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-bilinear-rgba" role="function"/>gimp_bilinear_rgba ()</title>
-<indexterm><primary>gimp_bilinear_rgba</primary></indexterm><programlisting><link linkend="GimpRGB">GimpRGB</link>             gimp_bilinear_rgba                  (<link linkend="gdouble">gdouble</link> x,
+<refsect2 id="gimp-bilinear-rgba" role="function">
+<title>gimp_bilinear_rgba ()</title>
+<indexterm zone="gimp-bilinear-rgba"><primary>gimp_bilinear_rgba</primary></indexterm><programlisting><link linkend="GimpRGB">GimpRGB</link>             gimp_bilinear_rgba                  (<link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y,
                                                          <link linkend="GimpRGB">GimpRGB</link> *values);</programlisting>
 <para>
@@ -198,9 +195,9 @@
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-bilinear-pixels-8" role="function"/>gimp_bilinear_pixels_8 ()</title>
-<indexterm><primary>gimp_bilinear_pixels_8</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_bilinear_pixels_8              (<link linkend="guchar">guchar</link> *dest,
+<refsect2 id="gimp-bilinear-pixels-8" role="function">
+<title>gimp_bilinear_pixels_8 ()</title>
+<indexterm zone="gimp-bilinear-pixels-8"><primary>gimp_bilinear_pixels_8</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_bilinear_pixels_8              (<link linkend="guchar">guchar</link> *dest,
                                                          <link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y,
                                                          <link linkend="guint">guint</link> bpp,
@@ -246,6 +243,4 @@ following order: [0,0], [1,0], [0,1], [1,1].</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

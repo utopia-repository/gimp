@@ -4,7 +4,7 @@
 
 <refentry id="libgimpmath-GimpVector">
 <refmeta>
-<refentrytitle role="top_of_page">GimpVector</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimpmath-GimpVector.top_of_page">GimpVector</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPMATH Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimpmath-GimpVector.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpVector2">GimpVector2</link>;
                     <link linkend="GimpVector3">GimpVector3</link>;
                     <link linkend="GimpVector4">GimpVector4</link>;
@@ -140,7 +137,7 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimpmath-GimpVector.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Utilities to set up and manipulate vectors.
@@ -148,38 +145,38 @@ Utilities to set up and manipulate vectors.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimpmath-GimpVector.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpVector2" role="struct"/>GimpVector2</title>
-<indexterm><primary>GimpVector2</primary></indexterm><programlisting>typedef struct {
+<refsect2 id="GimpVector2" role="struct">
+<title>GimpVector2</title>
+<indexterm zone="GimpVector2"><primary>GimpVector2</primary></indexterm><programlisting>typedef struct {
   gdouble x, y;
 } GimpVector2;
 </programlisting>
 <para>
 A two dimensional vector.
 </para></refsect2>
-<refsect2>
-<title><anchor id="GimpVector3" role="struct"/>GimpVector3</title>
-<indexterm><primary>GimpVector3</primary></indexterm><programlisting>typedef struct {
+<refsect2 id="GimpVector3" role="struct">
+<title>GimpVector3</title>
+<indexterm zone="GimpVector3"><primary>GimpVector3</primary></indexterm><programlisting>typedef struct {
   gdouble x, y, z;
 } GimpVector3;
 </programlisting>
 <para>
 A three dimensional vector.
 </para></refsect2>
-<refsect2>
-<title><anchor id="GimpVector4" role="struct"/>GimpVector4</title>
-<indexterm><primary>GimpVector4</primary></indexterm><programlisting>typedef struct {
+<refsect2 id="GimpVector4" role="struct">
+<title>GimpVector4</title>
+<indexterm zone="GimpVector4"><primary>GimpVector4</primary></indexterm><programlisting>typedef struct {
   gdouble x, y, z, w;
 } GimpVector4;
 </programlisting>
 <para>
 A four dimensional vector.
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-new" role="function"/>gimp_vector2_new ()</title>
-<indexterm><primary>gimp_vector2_new</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_new                    (<link linkend="gdouble">gdouble</link> x,
+<refsect2 id="gimp-vector2-new" role="function">
+<title>gimp_vector2_new ()</title>
+<indexterm zone="gimp-vector2-new"><primary>gimp_vector2_new</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_new                    (<link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y);</programlisting>
 <para>
 Creates a <link linkend="GimpVector2"><type>GimpVector2</type></link> of coordinates <parameter>x</parameter> and <parameter>y</parameter>.</para>
@@ -195,9 +192,9 @@ Creates a <link linkend="GimpVector2"><type>GimpVector2</type></link> of coordin
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the resulting <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-set" role="function"/>gimp_vector2_set ()</title>
-<indexterm><primary>gimp_vector2_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector2_set                    (<link linkend="GimpVector2">GimpVector2</link> *vector,
+<refsect2 id="gimp-vector2-set" role="function">
+<title>gimp_vector2_set ()</title>
+<indexterm zone="gimp-vector2-set"><primary>gimp_vector2_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector2_set                    (<link linkend="GimpVector2">GimpVector2</link> *vector,
                                                          <link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y);</programlisting>
 <para>
@@ -215,9 +212,9 @@ Sets the X and Y coordinates of <parameter>vector</parameter> to <parameter>x</p
 <listitem><simpara> the Y coordinate.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-length" role="function"/>gimp_vector2_length ()</title>
-<indexterm><primary>gimp_vector2_length</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vector2_length                 (const <link linkend="GimpVector2">GimpVector2</link> *vector);</programlisting>
+<refsect2 id="gimp-vector2-length" role="function">
+<title>gimp_vector2_length ()</title>
+<indexterm zone="gimp-vector2-length"><primary>gimp_vector2_length</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vector2_length                 (const <link linkend="GimpVector2">GimpVector2</link> *vector);</programlisting>
 <para>
 Computes the length of a 2D vector.</para>
 <para>
@@ -229,9 +226,9 @@ Computes the length of a 2D vector.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the length of <parameter>vector</parameter> (a positive gdouble).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-length-val" role="function"/>gimp_vector2_length_val ()</title>
-<indexterm><primary>gimp_vector2_length_val</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vector2_length_val             (<link linkend="GimpVector2">GimpVector2</link> vector);</programlisting>
+<refsect2 id="gimp-vector2-length-val" role="function">
+<title>gimp_vector2_length_val ()</title>
+<indexterm zone="gimp-vector2-length-val"><primary>gimp_vector2_length_val</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vector2_length_val             (<link linkend="GimpVector2">GimpVector2</link> vector);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector2-length"><function>gimp_vector2_length()</function></link> but the
 vector is passed by value rather than by reference.</para>
@@ -244,9 +241,9 @@ vector is passed by value rather than by reference.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the length of <parameter>vector</parameter> (a positive gdouble).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-mul" role="function"/>gimp_vector2_mul ()</title>
-<indexterm><primary>gimp_vector2_mul</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector2_mul                    (<link linkend="GimpVector2">GimpVector2</link> *vector,
+<refsect2 id="gimp-vector2-mul" role="function">
+<title>gimp_vector2_mul ()</title>
+<indexterm zone="gimp-vector2-mul"><primary>gimp_vector2_mul</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector2_mul                    (<link linkend="GimpVector2">GimpVector2</link> *vector,
                                                          <link linkend="gdouble">gdouble</link> factor);</programlisting>
 <para>
 Multiplies each component of the <parameter>vector</parameter> by <parameter>factor</parameter>. Note that this
@@ -261,9 +258,9 @@ is equivalent to multiplying the vectors length by <parameter>factor</parameter>
 <listitem><simpara> a scalar.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-mul-val" role="function"/>gimp_vector2_mul_val ()</title>
-<indexterm><primary>gimp_vector2_mul_val</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_mul_val                (<link linkend="GimpVector2">GimpVector2</link> vector,
+<refsect2 id="gimp-vector2-mul-val" role="function">
+<title>gimp_vector2_mul_val ()</title>
+<indexterm zone="gimp-vector2-mul-val"><primary>gimp_vector2_mul_val</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_mul_val                (<link linkend="GimpVector2">GimpVector2</link> vector,
                                                          <link linkend="gdouble">gdouble</link> factor);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector2-mul"><function>gimp_vector2_mul()</function></link> but the vector is
@@ -280,9 +277,9 @@ passed by value rather than by reference.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the resulting <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-normalize" role="function"/>gimp_vector2_normalize ()</title>
-<indexterm><primary>gimp_vector2_normalize</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector2_normalize              (<link linkend="GimpVector2">GimpVector2</link> *vector);</programlisting>
+<refsect2 id="gimp-vector2-normalize" role="function">
+<title>gimp_vector2_normalize ()</title>
+<indexterm zone="gimp-vector2-normalize"><primary>gimp_vector2_normalize</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector2_normalize              (<link linkend="GimpVector2">GimpVector2</link> *vector);</programlisting>
 <para>
 Normalizes the <parameter>vector</parameter> so the length of the <parameter>vector</parameter> is 1.0. The nul
 vector will not be changed.</para>
@@ -293,9 +290,9 @@ vector will not be changed.</para>
 <listitem><simpara> a pointer to a <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-normalize-val" role="function"/>gimp_vector2_normalize_val ()</title>
-<indexterm><primary>gimp_vector2_normalize_val</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_normalize_val          (<link linkend="GimpVector2">GimpVector2</link> vector);</programlisting>
+<refsect2 id="gimp-vector2-normalize-val" role="function">
+<title>gimp_vector2_normalize_val ()</title>
+<indexterm zone="gimp-vector2-normalize-val"><primary>gimp_vector2_normalize_val</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_normalize_val          (<link linkend="GimpVector2">GimpVector2</link> vector);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector2-normalize"><function>gimp_vector2_normalize()</function></link> but the
 vector is passed by value rather than by reference.</para>
@@ -309,9 +306,9 @@ vector is passed by value rather than by reference.</para>
 direction but with a length of 1.0.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-neg" role="function"/>gimp_vector2_neg ()</title>
-<indexterm><primary>gimp_vector2_neg</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector2_neg                    (<link linkend="GimpVector2">GimpVector2</link> *vector);</programlisting>
+<refsect2 id="gimp-vector2-neg" role="function">
+<title>gimp_vector2_neg ()</title>
+<indexterm zone="gimp-vector2-neg"><primary>gimp_vector2_neg</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector2_neg                    (<link linkend="GimpVector2">GimpVector2</link> *vector);</programlisting>
 <para>
 Negates the <parameter>vector</parameter> (i.e. negate all its coordinates).</para>
 <para>
@@ -321,9 +318,9 @@ Negates the <parameter>vector</parameter> (i.e. negate all its coordinates).</pa
 <listitem><simpara> a pointer to a <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-neg-val" role="function"/>gimp_vector2_neg_val ()</title>
-<indexterm><primary>gimp_vector2_neg_val</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_neg_val                (<link linkend="GimpVector2">GimpVector2</link> vector);</programlisting>
+<refsect2 id="gimp-vector2-neg-val" role="function">
+<title>gimp_vector2_neg_val ()</title>
+<indexterm zone="gimp-vector2-neg-val"><primary>gimp_vector2_neg_val</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_neg_val                (<link linkend="GimpVector2">GimpVector2</link> vector);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector2-neg"><function>gimp_vector2_neg()</function></link> but the vector
 is passed by value rather than by reference.</para>
@@ -336,9 +333,9 @@ is passed by value rather than by reference.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the negated <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-add" role="function"/>gimp_vector2_add ()</title>
-<indexterm><primary>gimp_vector2_add</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector2_add                    (<link linkend="GimpVector2">GimpVector2</link> *result,
+<refsect2 id="gimp-vector2-add" role="function">
+<title>gimp_vector2_add ()</title>
+<indexterm zone="gimp-vector2-add"><primary>gimp_vector2_add</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector2_add                    (<link linkend="GimpVector2">GimpVector2</link> *result,
                                                          const <link linkend="GimpVector2">GimpVector2</link> *vector1,
                                                          const <link linkend="GimpVector2">GimpVector2</link> *vector2);</programlisting>
 <para>
@@ -357,9 +354,9 @@ stored in <parameter>result</parameter>.</para>
 <listitem><simpara> a pointer to the second <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-add-val" role="function"/>gimp_vector2_add_val ()</title>
-<indexterm><primary>gimp_vector2_add_val</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_add_val                (<link linkend="GimpVector2">GimpVector2</link> vector1,
+<refsect2 id="gimp-vector2-add-val" role="function">
+<title>gimp_vector2_add_val ()</title>
+<indexterm zone="gimp-vector2-add-val"><primary>gimp_vector2_add_val</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_add_val                (<link linkend="GimpVector2">GimpVector2</link> vector1,
                                                          <link linkend="GimpVector2">GimpVector2</link> vector2);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector2-add"><function>gimp_vector2_add()</function></link> but the vectors
@@ -376,9 +373,9 @@ are passed by value rather than by reference.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the resulting <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-sub" role="function"/>gimp_vector2_sub ()</title>
-<indexterm><primary>gimp_vector2_sub</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector2_sub                    (<link linkend="GimpVector2">GimpVector2</link> *result,
+<refsect2 id="gimp-vector2-sub" role="function">
+<title>gimp_vector2_sub ()</title>
+<indexterm zone="gimp-vector2-sub"><primary>gimp_vector2_sub</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector2_sub                    (<link linkend="GimpVector2">GimpVector2</link> *result,
                                                          const <link linkend="GimpVector2">GimpVector2</link> *vector1,
                                                          const <link linkend="GimpVector2">GimpVector2</link> *vector2);</programlisting>
 <para>
@@ -397,9 +394,9 @@ The resulting <link linkend="GimpVector2"><type>GimpVector2</type></link> is sto
 <listitem><simpara> a pointer to the second <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-sub-val" role="function"/>gimp_vector2_sub_val ()</title>
-<indexterm><primary>gimp_vector2_sub_val</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_sub_val                (<link linkend="GimpVector2">GimpVector2</link> vector1,
+<refsect2 id="gimp-vector2-sub-val" role="function">
+<title>gimp_vector2_sub_val ()</title>
+<indexterm zone="gimp-vector2-sub-val"><primary>gimp_vector2_sub_val</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_sub_val                (<link linkend="GimpVector2">GimpVector2</link> vector1,
                                                          <link linkend="GimpVector2">GimpVector2</link> vector2);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector2-sub"><function>gimp_vector2_sub()</function></link> but the vectors
@@ -416,9 +413,9 @@ are passed by value rather than by reference.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the resulting <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-inner-product" role="function"/>gimp_vector2_inner_product ()</title>
-<indexterm><primary>gimp_vector2_inner_product</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vector2_inner_product          (const <link linkend="GimpVector2">GimpVector2</link> *vector1,
+<refsect2 id="gimp-vector2-inner-product" role="function">
+<title>gimp_vector2_inner_product ()</title>
+<indexterm zone="gimp-vector2-inner-product"><primary>gimp_vector2_inner_product</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vector2_inner_product          (const <link linkend="GimpVector2">GimpVector2</link> *vector1,
                                                          const <link linkend="GimpVector2">GimpVector2</link> *vector2);</programlisting>
 <para>
 Computes the inner (dot) product of two 2D vectors.
@@ -435,9 +432,9 @@ This product is zero if and only if the two vectors are orthognal.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The inner product.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-inner-product-val" role="function"/>gimp_vector2_inner_product_val ()</title>
-<indexterm><primary>gimp_vector2_inner_product_val</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vector2_inner_product_val      (<link linkend="GimpVector2">GimpVector2</link> vector1,
+<refsect2 id="gimp-vector2-inner-product-val" role="function">
+<title>gimp_vector2_inner_product_val ()</title>
+<indexterm zone="gimp-vector2-inner-product-val"><primary>gimp_vector2_inner_product_val</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vector2_inner_product_val      (<link linkend="GimpVector2">GimpVector2</link> vector1,
                                                          <link linkend="GimpVector2">GimpVector2</link> vector2);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector2-inner-product"><function>gimp_vector2_inner_product()</function></link> but the
@@ -454,9 +451,9 @@ vectors are passed by value rather than by reference.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The inner product.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-cross-product" role="function"/>gimp_vector2_cross_product ()</title>
-<indexterm><primary>gimp_vector2_cross_product</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_cross_product          (const <link linkend="GimpVector2">GimpVector2</link> *vector1,
+<refsect2 id="gimp-vector2-cross-product" role="function">
+<title>gimp_vector2_cross_product ()</title>
+<indexterm zone="gimp-vector2-cross-product"><primary>gimp_vector2_cross_product</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_cross_product          (const <link linkend="GimpVector2">GimpVector2</link> *vector1,
                                                          const <link linkend="GimpVector2">GimpVector2</link> *vector2);</programlisting>
 <para>
 Compute the cross product of two vectors. The result is a
@@ -479,9 +476,9 @@ parallel or not, or to compute the area spawned by two vectors.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The cross product.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-cross-product-val" role="function"/>gimp_vector2_cross_product_val ()</title>
-<indexterm><primary>gimp_vector2_cross_product_val</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_cross_product_val      (<link linkend="GimpVector2">GimpVector2</link> vector1,
+<refsect2 id="gimp-vector2-cross-product-val" role="function">
+<title>gimp_vector2_cross_product_val ()</title>
+<indexterm zone="gimp-vector2-cross-product-val"><primary>gimp_vector2_cross_product_val</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_cross_product_val      (<link linkend="GimpVector2">GimpVector2</link> vector1,
                                                          <link linkend="GimpVector2">GimpVector2</link> vector2);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector2-cross-product"><function>gimp_vector2_cross_product()</function></link> but the
@@ -498,9 +495,9 @@ vectors are passed by value rather than by reference.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The cross product.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-rotate" role="function"/>gimp_vector2_rotate ()</title>
-<indexterm><primary>gimp_vector2_rotate</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector2_rotate                 (<link linkend="GimpVector2">GimpVector2</link> *vector,
+<refsect2 id="gimp-vector2-rotate" role="function">
+<title>gimp_vector2_rotate ()</title>
+<indexterm zone="gimp-vector2-rotate"><primary>gimp_vector2_rotate</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector2_rotate                 (<link linkend="GimpVector2">GimpVector2</link> *vector,
                                                          <link linkend="gdouble">gdouble</link> alpha);</programlisting>
 <para>
 Rotates the <parameter>vector</parameter> counterclockwise by <parameter>alpha</parameter> radians.</para>
@@ -514,9 +511,9 @@ Rotates the <parameter>vector</parameter> counterclockwise by <parameter>alpha</
 <listitem><simpara> an angle (in radians).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector2-rotate-val" role="function"/>gimp_vector2_rotate_val ()</title>
-<indexterm><primary>gimp_vector2_rotate_val</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_rotate_val             (<link linkend="GimpVector2">GimpVector2</link> vector,
+<refsect2 id="gimp-vector2-rotate-val" role="function">
+<title>gimp_vector2_rotate_val ()</title>
+<indexterm zone="gimp-vector2-rotate-val"><primary>gimp_vector2_rotate_val</primary></indexterm><programlisting><link linkend="GimpVector2">GimpVector2</link>         gimp_vector2_rotate_val             (<link linkend="GimpVector2">GimpVector2</link> vector,
                                                          <link linkend="gdouble">gdouble</link> alpha);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector2-rotate"><function>gimp_vector2_rotate()</function></link> but the vector
@@ -534,9 +531,9 @@ is passed by value rather than by reference.</para>
 radians.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-new" role="function"/>gimp_vector3_new ()</title>
-<indexterm><primary>gimp_vector3_new</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_new                    (<link linkend="gdouble">gdouble</link> x,
+<refsect2 id="gimp-vector3-new" role="function">
+<title>gimp_vector3_new ()</title>
+<indexterm zone="gimp-vector3-new"><primary>gimp_vector3_new</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_new                    (<link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y,
                                                          <link linkend="gdouble">gdouble</link> z);</programlisting>
 <para>
@@ -556,9 +553,9 @@ Creates a <link linkend="GimpVector3"><type>GimpVector3</type></link> of coordin
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the resulting <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-set" role="function"/>gimp_vector3_set ()</title>
-<indexterm><primary>gimp_vector3_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector3_set                    (<link linkend="GimpVector3">GimpVector3</link> *vector,
+<refsect2 id="gimp-vector3-set" role="function">
+<title>gimp_vector3_set ()</title>
+<indexterm zone="gimp-vector3-set"><primary>gimp_vector3_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector3_set                    (<link linkend="GimpVector3">GimpVector3</link> *vector,
                                                          <link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y,
                                                          <link linkend="gdouble">gdouble</link> z);</programlisting>
@@ -580,9 +577,9 @@ Sets the X, Y and Z coordinates of <parameter>vector</parameter> to <parameter>x
 <listitem><simpara> the Z coordinate.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-length" role="function"/>gimp_vector3_length ()</title>
-<indexterm><primary>gimp_vector3_length</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vector3_length                 (const <link linkend="GimpVector3">GimpVector3</link> *vector);</programlisting>
+<refsect2 id="gimp-vector3-length" role="function">
+<title>gimp_vector3_length ()</title>
+<indexterm zone="gimp-vector3-length"><primary>gimp_vector3_length</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vector3_length                 (const <link linkend="GimpVector3">GimpVector3</link> *vector);</programlisting>
 <para>
 Computes the length of a 3D vector.</para>
 <para>
@@ -594,9 +591,9 @@ Computes the length of a 3D vector.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the length of <parameter>vector</parameter> (a positive gdouble).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-length-val" role="function"/>gimp_vector3_length_val ()</title>
-<indexterm><primary>gimp_vector3_length_val</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vector3_length_val             (<link linkend="GimpVector3">GimpVector3</link> vector);</programlisting>
+<refsect2 id="gimp-vector3-length-val" role="function">
+<title>gimp_vector3_length_val ()</title>
+<indexterm zone="gimp-vector3-length-val"><primary>gimp_vector3_length_val</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vector3_length_val             (<link linkend="GimpVector3">GimpVector3</link> vector);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector3-length"><function>gimp_vector3_length()</function></link> but the vector
 is passed by value rather than by reference.</para>
@@ -609,9 +606,9 @@ is passed by value rather than by reference.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the length of <parameter>vector</parameter> (a positive gdouble).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-mul" role="function"/>gimp_vector3_mul ()</title>
-<indexterm><primary>gimp_vector3_mul</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector3_mul                    (<link linkend="GimpVector3">GimpVector3</link> *vector,
+<refsect2 id="gimp-vector3-mul" role="function">
+<title>gimp_vector3_mul ()</title>
+<indexterm zone="gimp-vector3-mul"><primary>gimp_vector3_mul</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector3_mul                    (<link linkend="GimpVector3">GimpVector3</link> *vector,
                                                          <link linkend="gdouble">gdouble</link> factor);</programlisting>
 <para>
 Multiplies each component of the <parameter>vector</parameter> by <parameter>factor</parameter>. Note that
@@ -626,9 +623,9 @@ this is equivalent to multiplying the vectors length by <parameter>factor</param
 <listitem><simpara> a scalar.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-mul-val" role="function"/>gimp_vector3_mul_val ()</title>
-<indexterm><primary>gimp_vector3_mul_val</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_mul_val                (<link linkend="GimpVector3">GimpVector3</link> vector,
+<refsect2 id="gimp-vector3-mul-val" role="function">
+<title>gimp_vector3_mul_val ()</title>
+<indexterm zone="gimp-vector3-mul-val"><primary>gimp_vector3_mul_val</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_mul_val                (<link linkend="GimpVector3">GimpVector3</link> vector,
                                                          <link linkend="gdouble">gdouble</link> factor);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector3-mul"><function>gimp_vector3_mul()</function></link> but the vector is
@@ -645,9 +642,9 @@ passed by value rather than by reference.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the resulting <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-normalize" role="function"/>gimp_vector3_normalize ()</title>
-<indexterm><primary>gimp_vector3_normalize</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector3_normalize              (<link linkend="GimpVector3">GimpVector3</link> *vector);</programlisting>
+<refsect2 id="gimp-vector3-normalize" role="function">
+<title>gimp_vector3_normalize ()</title>
+<indexterm zone="gimp-vector3-normalize"><primary>gimp_vector3_normalize</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector3_normalize              (<link linkend="GimpVector3">GimpVector3</link> *vector);</programlisting>
 <para>
 Normalizes the <parameter>vector</parameter> so the length of the <parameter>vector</parameter> is 1.0. The nul
 vector will not be changed.</para>
@@ -658,9 +655,9 @@ vector will not be changed.</para>
 <listitem><simpara> a pointer to a <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-normalize-val" role="function"/>gimp_vector3_normalize_val ()</title>
-<indexterm><primary>gimp_vector3_normalize_val</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_normalize_val          (<link linkend="GimpVector3">GimpVector3</link> vector);</programlisting>
+<refsect2 id="gimp-vector3-normalize-val" role="function">
+<title>gimp_vector3_normalize_val ()</title>
+<indexterm zone="gimp-vector3-normalize-val"><primary>gimp_vector3_normalize_val</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_normalize_val          (<link linkend="GimpVector3">GimpVector3</link> vector);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector3-normalize"><function>gimp_vector3_normalize()</function></link> but the
 vector is passed by value rather than by reference.</para>
@@ -674,9 +671,9 @@ vector is passed by value rather than by reference.</para>
 direction but with a length of 1.0.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-neg" role="function"/>gimp_vector3_neg ()</title>
-<indexterm><primary>gimp_vector3_neg</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector3_neg                    (<link linkend="GimpVector3">GimpVector3</link> *vector);</programlisting>
+<refsect2 id="gimp-vector3-neg" role="function">
+<title>gimp_vector3_neg ()</title>
+<indexterm zone="gimp-vector3-neg"><primary>gimp_vector3_neg</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector3_neg                    (<link linkend="GimpVector3">GimpVector3</link> *vector);</programlisting>
 <para>
 Negates the <parameter>vector</parameter> (i.e. negate all its coordinates).</para>
 <para>
@@ -686,9 +683,9 @@ Negates the <parameter>vector</parameter> (i.e. negate all its coordinates).</pa
 <listitem><simpara> a pointer to a <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-neg-val" role="function"/>gimp_vector3_neg_val ()</title>
-<indexterm><primary>gimp_vector3_neg_val</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_neg_val                (<link linkend="GimpVector3">GimpVector3</link> vector);</programlisting>
+<refsect2 id="gimp-vector3-neg-val" role="function">
+<title>gimp_vector3_neg_val ()</title>
+<indexterm zone="gimp-vector3-neg-val"><primary>gimp_vector3_neg_val</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_neg_val                (<link linkend="GimpVector3">GimpVector3</link> vector);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector3-neg"><function>gimp_vector3_neg()</function></link> but the vector
 is passed by value rather than by reference.</para>
@@ -701,9 +698,9 @@ is passed by value rather than by reference.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the negated <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-add" role="function"/>gimp_vector3_add ()</title>
-<indexterm><primary>gimp_vector3_add</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector3_add                    (<link linkend="GimpVector3">GimpVector3</link> *result,
+<refsect2 id="gimp-vector3-add" role="function">
+<title>gimp_vector3_add ()</title>
+<indexterm zone="gimp-vector3-add"><primary>gimp_vector3_add</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector3_add                    (<link linkend="GimpVector3">GimpVector3</link> *result,
                                                          const <link linkend="GimpVector3">GimpVector3</link> *vector1,
                                                          const <link linkend="GimpVector3">GimpVector3</link> *vector2);</programlisting>
 <para>
@@ -722,9 +719,9 @@ stored in <parameter>result</parameter>.</para>
 <listitem><simpara> a pointer to the second <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-add-val" role="function"/>gimp_vector3_add_val ()</title>
-<indexterm><primary>gimp_vector3_add_val</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_add_val                (<link linkend="GimpVector3">GimpVector3</link> vector1,
+<refsect2 id="gimp-vector3-add-val" role="function">
+<title>gimp_vector3_add_val ()</title>
+<indexterm zone="gimp-vector3-add-val"><primary>gimp_vector3_add_val</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_add_val                (<link linkend="GimpVector3">GimpVector3</link> vector1,
                                                          <link linkend="GimpVector3">GimpVector3</link> vector2);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector3-add"><function>gimp_vector3_add()</function></link> but the vectors
@@ -741,9 +738,9 @@ are passed by value rather than by reference.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the resulting <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-sub" role="function"/>gimp_vector3_sub ()</title>
-<indexterm><primary>gimp_vector3_sub</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector3_sub                    (<link linkend="GimpVector3">GimpVector3</link> *result,
+<refsect2 id="gimp-vector3-sub" role="function">
+<title>gimp_vector3_sub ()</title>
+<indexterm zone="gimp-vector3-sub"><primary>gimp_vector3_sub</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector3_sub                    (<link linkend="GimpVector3">GimpVector3</link> *result,
                                                          const <link linkend="GimpVector3">GimpVector3</link> *vector1,
                                                          const <link linkend="GimpVector3">GimpVector3</link> *vector2);</programlisting>
 <para>
@@ -762,9 +759,9 @@ The resulting <link linkend="GimpVector3"><type>GimpVector3</type></link> is sto
 <listitem><simpara> a pointer to the second <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-sub-val" role="function"/>gimp_vector3_sub_val ()</title>
-<indexterm><primary>gimp_vector3_sub_val</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_sub_val                (<link linkend="GimpVector3">GimpVector3</link> vector1,
+<refsect2 id="gimp-vector3-sub-val" role="function">
+<title>gimp_vector3_sub_val ()</title>
+<indexterm zone="gimp-vector3-sub-val"><primary>gimp_vector3_sub_val</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_sub_val                (<link linkend="GimpVector3">GimpVector3</link> vector1,
                                                          <link linkend="GimpVector3">GimpVector3</link> vector2);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector3-sub"><function>gimp_vector3_sub()</function></link> but the vectors
@@ -781,9 +778,9 @@ are passed by value rather than by reference.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the resulting <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-inner-product" role="function"/>gimp_vector3_inner_product ()</title>
-<indexterm><primary>gimp_vector3_inner_product</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vector3_inner_product          (const <link linkend="GimpVector3">GimpVector3</link> *vector1,
+<refsect2 id="gimp-vector3-inner-product" role="function">
+<title>gimp_vector3_inner_product ()</title>
+<indexterm zone="gimp-vector3-inner-product"><primary>gimp_vector3_inner_product</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vector3_inner_product          (const <link linkend="GimpVector3">GimpVector3</link> *vector1,
                                                          const <link linkend="GimpVector3">GimpVector3</link> *vector2);</programlisting>
 <para>
 Computes the inner (dot) product of two 3D vectors. This product
@@ -800,9 +797,9 @@ is zero if and only if the two vectors are orthognal.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The inner product.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-inner-product-val" role="function"/>gimp_vector3_inner_product_val ()</title>
-<indexterm><primary>gimp_vector3_inner_product_val</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vector3_inner_product_val      (<link linkend="GimpVector3">GimpVector3</link> vector1,
+<refsect2 id="gimp-vector3-inner-product-val" role="function">
+<title>gimp_vector3_inner_product_val ()</title>
+<indexterm zone="gimp-vector3-inner-product-val"><primary>gimp_vector3_inner_product_val</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_vector3_inner_product_val      (<link linkend="GimpVector3">GimpVector3</link> vector1,
                                                          <link linkend="GimpVector3">GimpVector3</link> vector2);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector3-inner-product"><function>gimp_vector3_inner_product()</function></link> but the
@@ -819,9 +816,9 @@ vectors are passed by value rather than by reference.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The inner product.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-cross-product" role="function"/>gimp_vector3_cross_product ()</title>
-<indexterm><primary>gimp_vector3_cross_product</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_cross_product          (const <link linkend="GimpVector3">GimpVector3</link> *vector1,
+<refsect2 id="gimp-vector3-cross-product" role="function">
+<title>gimp_vector3_cross_product ()</title>
+<indexterm zone="gimp-vector3-cross-product"><primary>gimp_vector3_cross_product</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_cross_product          (const <link linkend="GimpVector3">GimpVector3</link> *vector1,
                                                          const <link linkend="GimpVector3">GimpVector3</link> *vector2);</programlisting>
 <para>
 Compute the cross product of two vectors. The result is a
@@ -844,9 +841,9 @@ defined by <parameter>vector1</parameter> and <parameter>vector2</parameter>.</p
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The cross product.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-cross-product-val" role="function"/>gimp_vector3_cross_product_val ()</title>
-<indexterm><primary>gimp_vector3_cross_product_val</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_cross_product_val      (<link linkend="GimpVector3">GimpVector3</link> vector1,
+<refsect2 id="gimp-vector3-cross-product-val" role="function">
+<title>gimp_vector3_cross_product_val ()</title>
+<indexterm zone="gimp-vector3-cross-product-val"><primary>gimp_vector3_cross_product_val</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_cross_product_val      (<link linkend="GimpVector3">GimpVector3</link> vector1,
                                                          <link linkend="GimpVector3">GimpVector3</link> vector2);</programlisting>
 <para>
 This function is identical to <link linkend="gimp-vector3-cross-product"><function>gimp_vector3_cross_product()</function></link> but the
@@ -863,9 +860,9 @@ vectors are passed by value rather than by reference.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The cross product.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-rotate" role="function"/>gimp_vector3_rotate ()</title>
-<indexterm><primary>gimp_vector3_rotate</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector3_rotate                 (<link linkend="GimpVector3">GimpVector3</link> *vector,
+<refsect2 id="gimp-vector3-rotate" role="function">
+<title>gimp_vector3_rotate ()</title>
+<indexterm zone="gimp-vector3-rotate"><primary>gimp_vector3_rotate</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector3_rotate                 (<link linkend="GimpVector3">GimpVector3</link> *vector,
                                                          <link linkend="gdouble">gdouble</link> alpha,
                                                          <link linkend="gdouble">gdouble</link> beta,
                                                          <link linkend="gdouble">gdouble</link> gamma);</programlisting>
@@ -894,9 +891,9 @@ this function with only one of <parameter>alpha</parameter>, <parameter>beta</pa
 <listitem><simpara> the angle (in radian) of rotation around the X axis.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector3-rotate-val" role="function"/>gimp_vector3_rotate_val ()</title>
-<indexterm><primary>gimp_vector3_rotate_val</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_rotate_val             (<link linkend="GimpVector3">GimpVector3</link> vector,
+<refsect2 id="gimp-vector3-rotate-val" role="function">
+<title>gimp_vector3_rotate_val ()</title>
+<indexterm zone="gimp-vector3-rotate-val"><primary>gimp_vector3_rotate_val</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector3_rotate_val             (<link linkend="GimpVector3">GimpVector3</link> vector,
                                                          <link linkend="gdouble">gdouble</link> alpha,
                                                          <link linkend="gdouble">gdouble</link> beta,
                                                          <link linkend="gdouble">gdouble</link> gamma);</programlisting>
@@ -921,9 +918,9 @@ are passed by value rather than by reference.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the rotated vector.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector-2d-to-3d" role="function"/>gimp_vector_2d_to_3d ()</title>
-<indexterm><primary>gimp_vector_2d_to_3d</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector_2d_to_3d                (<link linkend="gint">gint</link> sx,
+<refsect2 id="gimp-vector-2d-to-3d" role="function">
+<title>gimp_vector_2d_to_3d ()</title>
+<indexterm zone="gimp-vector-2d-to-3d"><primary>gimp_vector_2d_to_3d</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector_2d_to_3d                (<link linkend="gint">gint</link> sx,
                                                          <link linkend="gint">gint</link> sy,
                                                          <link linkend="gint">gint</link> w,
                                                          <link linkend="gint">gint</link> h,
@@ -968,9 +965,9 @@ through the screen (<parameter>sx</parameter>, <parameter>sy</parameter>)->(<par
 <listitem><simpara> the resulting point.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector-2d-to-3d-val" role="function"/>gimp_vector_2d_to_3d_val ()</title>
-<indexterm><primary>gimp_vector_2d_to_3d_val</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector_2d_to_3d_val            (<link linkend="gint">gint</link> sx,
+<refsect2 id="gimp-vector-2d-to-3d-val" role="function">
+<title>gimp_vector_2d_to_3d_val ()</title>
+<indexterm zone="gimp-vector-2d-to-3d-val"><primary>gimp_vector_2d_to_3d_val</primary></indexterm><programlisting><link linkend="GimpVector3">GimpVector3</link>         gimp_vector_2d_to_3d_val            (<link linkend="gint">gint</link> sx,
                                                          <link linkend="gint">gint</link> sy,
                                                          <link linkend="gint">gint</link> w,
                                                          <link linkend="gint">gint</link> h,
@@ -1012,9 +1009,9 @@ value rather than by reference.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the computed <link linkend="GimpVector3"><type>GimpVector3</type></link> point.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-vector-3d-to-2d" role="function"/>gimp_vector_3d_to_2d ()</title>
-<indexterm><primary>gimp_vector_3d_to_2d</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector_3d_to_2d                (<link linkend="gint">gint</link> sx,
+<refsect2 id="gimp-vector-3d-to-2d" role="function">
+<title>gimp_vector_3d_to_2d ()</title>
+<indexterm zone="gimp-vector-3d-to-2d"><primary>gimp_vector_3d_to_2d</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_vector_3d_to_2d                (<link linkend="gint">gint</link> sx,
                                                          <link linkend="gint">gint</link> sy,
                                                          <link linkend="gint">gint</link> w,
                                                          <link linkend="gint">gint</link> h,
@@ -1063,7 +1060,7 @@ This is basically the opposite of <link linkend="gimp-vector-2d-to-3d"><function
 
 
 
-<refsect1>
+<refsect1 id="libgimpmath-GimpVector.see-also">
 <title>See Also</title>
 <para>
 <link linkend="GimpMatrix3"><type>GimpMatrix3</type></link>
@@ -1073,6 +1070,4 @@ This is basically the opposite of <link linkend="gimp-vector-2d-to-3d"><function
 </para>
 </refsect1>
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

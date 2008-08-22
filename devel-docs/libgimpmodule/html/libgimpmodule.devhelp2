@@ -29,8 +29,6 @@
     <keyword type="function" name="gimp_module_info_copy ()" link="GimpModule.html#gimp-module-info-copy"/>
     <keyword type="function" name="gimp_module_info_free ()" link="GimpModule.html#gimp-module-info-free"/>
     <keyword type="" name="The &quot;modified&quot; signal" link="GimpModule.html#GimpModule-modified"/>
-    <keyword type="" name="" link="GimpModule.html#id2617767"/>
-    <keyword type="" name="" link="GimpModule.html#id2617768"/>
     <keyword type="struct" name="GimpModuleDB" link="GimpModuleDB.html#GimpModuleDB-struct"/>
     <keyword type="function" name="gimp_module_db_new ()" link="GimpModuleDB.html#gimp-module-db-new"/>
     <keyword type="function" name="gimp_module_db_set_load_inhibit ()" link="GimpModuleDB.html#gimp-module-db-set-load-inhibit"/>
@@ -40,7 +38,5 @@
     <keyword type="" name="The &quot;add&quot; signal" link="GimpModuleDB.html#GimpModuleDB-add"/>
     <keyword type="" name="The &quot;module-modified&quot; signal" link="GimpModuleDB.html#GimpModuleDB-module-modified"/>
     <keyword type="" name="The &quot;remove&quot; signal" link="GimpModuleDB.html#GimpModuleDB-remove"/>
-    <keyword type="" name="" link="GimpModuleDB.html#id2618001"/>
-    <keyword type="" name="" link="GimpModuleDB.html#id2618002"/>
   </functions>
 </book>

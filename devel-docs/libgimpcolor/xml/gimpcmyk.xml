@@ -4,7 +4,7 @@
 
 <refentry id="libgimpcolor-GimpCMYK">
 <refmeta>
-<refentrytitle role="top_of_page">GimpCMYK</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimpcolor-GimpCMYK.top_of_page">GimpCMYK</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCOLOR Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimpcolor-GimpCMYK.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpCMYK">GimpCMYK</link>;
 <link linkend="void">void</link>                <link linkend="gimp-cmyk-set">gimp_cmyk_set</link>                       (<link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
                                                          <link linkend="gdouble">gdouble</link> cyan,
@@ -57,7 +54,6 @@
                                                          <link linkend="guchar">guchar</link> *black,
                                                          <link linkend="guchar">guchar</link> *alpha);
 #define             <link linkend="GIMP-TYPE-CMYK:CAPS">GIMP_TYPE_CMYK</link>
-
 </synopsis>
 </refsynopsisdiv>
 
@@ -69,27 +65,27 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimpcolor-GimpCMYK.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Definitions and Functions relating to CMYK colors.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimpcolor-GimpCMYK.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpCMYK" role="struct"/>GimpCMYK</title>
-<indexterm><primary>GimpCMYK</primary></indexterm><programlisting>typedef struct {
+<refsect2 id="GimpCMYK" role="struct">
+<title>GimpCMYK</title>
+<indexterm zone="GimpCMYK"><primary>GimpCMYK</primary></indexterm><programlisting>typedef struct {
   gdouble c, m, y, k, a;
 } GimpCMYK;
 </programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-cmyk-set" role="function"/>gimp_cmyk_set ()</title>
-<indexterm><primary>gimp_cmyk_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyk_set                       (<link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
+<refsect2 id="gimp-cmyk-set" role="function">
+<title>gimp_cmyk_set ()</title>
+<indexterm zone="gimp-cmyk-set"><primary>gimp_cmyk_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyk_set                       (<link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
                                                          <link linkend="gdouble">gdouble</link> cyan,
                                                          <link linkend="gdouble">gdouble</link> magenta,
                                                          <link linkend="gdouble">gdouble</link> yellow,
@@ -116,9 +112,9 @@ values are doubles in the range 0 to 1.</para>
 <listitem><simpara>   The blacK channel
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-cmyk-set-uchar" role="function"/>gimp_cmyk_set_uchar ()</title>
-<indexterm><primary>gimp_cmyk_set_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyk_set_uchar                 (<link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
+<refsect2 id="gimp-cmyk-set-uchar" role="function">
+<title>gimp_cmyk_set_uchar ()</title>
+<indexterm zone="gimp-cmyk-set-uchar"><primary>gimp_cmyk_set_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyk_set_uchar                 (<link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
                                                          <link linkend="guchar">guchar</link> cyan,
                                                          <link linkend="guchar">guchar</link> magenta,
                                                          <link linkend="guchar">guchar</link> yellow,
@@ -145,9 +141,9 @@ unsigned chars in the range 0 to 255.</para>
 <listitem><simpara>   The blacK channel
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-cmyk-get-uchar" role="function"/>gimp_cmyk_get_uchar ()</title>
-<indexterm><primary>gimp_cmyk_get_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyk_get_uchar                 (const <link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
+<refsect2 id="gimp-cmyk-get-uchar" role="function">
+<title>gimp_cmyk_get_uchar ()</title>
+<indexterm zone="gimp-cmyk-get-uchar"><primary>gimp_cmyk_get_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyk_get_uchar                 (const <link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
                                                          <link linkend="guchar">guchar</link> *cyan,
                                                          <link linkend="guchar">guchar</link> *magenta,
                                                          <link linkend="guchar">guchar</link> *yellow,
@@ -174,9 +170,9 @@ values are pointers to unsigned chars in the range 0 to 255.</para>
 <listitem><simpara>   The blacK channel
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-cmyka-set" role="function"/>gimp_cmyka_set ()</title>
-<indexterm><primary>gimp_cmyka_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyka_set                      (<link linkend="GimpCMYK">GimpCMYK</link> *cmyka,
+<refsect2 id="gimp-cmyka-set" role="function">
+<title>gimp_cmyka_set ()</title>
+<indexterm zone="gimp-cmyka-set"><primary>gimp_cmyka_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyka_set                      (<link linkend="GimpCMYK">GimpCMYK</link> *cmyka,
                                                          <link linkend="gdouble">gdouble</link> cyan,
                                                          <link linkend="gdouble">gdouble</link> magenta,
                                                          <link linkend="gdouble">gdouble</link> yellow,
@@ -207,9 +203,9 @@ doubles in the range 0 to 1.</para>
 <listitem><simpara>   The Alpha channel
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-cmyka-set-uchar" role="function"/>gimp_cmyka_set_uchar ()</title>
-<indexterm><primary>gimp_cmyka_set_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyka_set_uchar                (<link linkend="GimpCMYK">GimpCMYK</link> *cmyka,
+<refsect2 id="gimp-cmyka-set-uchar" role="function">
+<title>gimp_cmyka_set_uchar ()</title>
+<indexterm zone="gimp-cmyka-set-uchar"><primary>gimp_cmyka_set_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyka_set_uchar                (<link linkend="GimpCMYK">GimpCMYK</link> *cmyka,
                                                          <link linkend="guchar">guchar</link> cyan,
                                                          <link linkend="guchar">guchar</link> magenta,
                                                          <link linkend="guchar">guchar</link> yellow,
@@ -240,9 +236,9 @@ unsigned chars in the range 0 to 255.</para>
 <listitem><simpara>   The Alpha channel
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-cmyka-get-uchar" role="function"/>gimp_cmyka_get_uchar ()</title>
-<indexterm><primary>gimp_cmyka_get_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyka_get_uchar                (const <link linkend="GimpCMYK">GimpCMYK</link> *cmyka,
+<refsect2 id="gimp-cmyka-get-uchar" role="function">
+<title>gimp_cmyka_get_uchar ()</title>
+<indexterm zone="gimp-cmyka-get-uchar"><primary>gimp_cmyka_get_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyka_get_uchar                (const <link linkend="GimpCMYK">GimpCMYK</link> *cmyka,
                                                          <link linkend="guchar">guchar</link> *cyan,
                                                          <link linkend="guchar">guchar</link> *magenta,
                                                          <link linkend="guchar">guchar</link> *yellow,
@@ -273,9 +269,9 @@ Channel values are pointers to unsigned chars in the range 0 to 255.</para>
 <listitem><simpara>   The Alpha channel
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="GIMP-TYPE-CMYK:CAPS" role="macro"/>GIMP_TYPE_CMYK</title>
-<indexterm><primary>GIMP_TYPE_CMYK</primary></indexterm><programlisting>#define GIMP_TYPE_CMYK       (gimp_cmyk_get_type ())
+<refsect2 id="GIMP-TYPE-CMYK:CAPS" role="macro">
+<title>GIMP_TYPE_CMYK</title>
+<indexterm zone="GIMP-TYPE-CMYK:CAPS"><primary>GIMP_TYPE_CMYK</primary></indexterm><programlisting>#define GIMP_TYPE_CMYK       (gimp_cmyk_get_type ())
 </programlisting>
 <para>
 
@@ -286,6 +282,4 @@ Channel values are pointers to unsigned chars in the range 0 to 255.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

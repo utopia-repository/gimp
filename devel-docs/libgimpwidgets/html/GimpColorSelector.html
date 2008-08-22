@@ -59,38 +59,28 @@
 #define             <a class="link" href="GimpColorSelector.html#GIMP-COLOR-SELECTOR-SIZE:CAPS" title="GIMP_COLOR_SELECTOR_SIZE">GIMP_COLOR_SELECTOR_SIZE</a>
 #define             <a class="link" href="GimpColorSelector.html#GIMP-COLOR-SELECTOR-BAR-SIZE:CAPS" title="GIMP_COLOR_SELECTOR_BAR_SIZE">GIMP_COLOR_SELECTOR_BAR_SIZE</a>
 enum                <a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel">GimpColorSelectorChannel</a>;
-<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="GimpColorSelector.html#gimp-color-selector-new" title="gimp_color_selector_new ()">gimp_color_selector_new</a>             (<a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
->GType</a> selector_type,
+GtkWidget*          <a class="link" href="GimpColorSelector.html#gimp-color-selector-new" title="gimp_color_selector_new ()">gimp_color_selector_new</a>             (GType selector_type,
                                                          const <a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *rgb,
                                                          const <a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"
+href="../libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"
 >GimpHSV</a> *hsv,
                                                          <a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel">GimpColorSelectorChannel</a> channel);
 void                <a class="link" href="GimpColorSelector.html#gimp-color-selector-set-toggles-visible" title="gimp_color_selector_set_toggles_visible ()">gimp_color_selector_set_toggles_visible</a>
                                                         (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a> *selector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> visible);
+                                                         gboolean visible);
 void                <a class="link" href="GimpColorSelector.html#gimp-color-selector-set-toggles-sensitive" title="gimp_color_selector_set_toggles_sensitive ()">gimp_color_selector_set_toggles_sensitive</a>
                                                         (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a> *selector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> sensitive);
+                                                         gboolean sensitive);
 void                <a class="link" href="GimpColorSelector.html#gimp-color-selector-set-show-alpha" title="gimp_color_selector_set_show_alpha ()">gimp_color_selector_set_show_alpha</a>  (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a> *selector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> show_alpha);
+                                                         gboolean show_alpha);
 void                <a class="link" href="GimpColorSelector.html#gimp-color-selector-set-color" title="gimp_color_selector_set_color ()">gimp_color_selector_set_color</a>       (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a> *selector,
                                                          const <a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *rgb,
                                                          const <a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"
+href="../libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"
 >GimpHSV</a> *hsv);
 void                <a class="link" href="GimpColorSelector.html#gimp-color-selector-set-channel" title="gimp_color_selector_set_channel ()">gimp_color_selector_set_channel</a>     (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a> *selector,
                                                          <a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel">GimpColorSelectorChannel</a> channel);
@@ -98,34 +88,20 @@ void                <a class="link" href="GimpColorSelector.html#gimp-color-sele
 void                <a class="link" href="GimpColorSelector.html#gimp-color-selector-channel-changed" title="gimp_color_selector_channel_changed ()">gimp_color_selector_channel_changed</a> (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a> *selector);
 void                <a class="link" href="GimpColorSelector.html#gimp-color-selector-set-config" title="gimp_color_selector_set_config ()">gimp_color_selector_set_config</a>      (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a> *selector,
                                                          <a
-href="/usr/share/gtk-doc/html/libgimpconfig/GimpColorConfig.html"
+href="../libgimpconfig/GimpColorConfig.html"
 >GimpColorConfig</a> *config);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpColorSelector.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>
-                     +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
->GtkContainer</a>
-                           +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkBox.html"
->GtkBox</a>
-                                 +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkVBox.html"
->GtkVBox</a>
+  GObject
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkContainer
+                           +----GtkBox
+                                 +----GtkVBox
                                        +----GimpColorSelector
                                              +----<a class="link" href="GimpColorNotebook.html" title="GimpColorNotebook">GimpColorNotebook</a>
                                              +----<a class="link" href="GimpColorScales.html" title="GimpColorScales">GimpColorScales</a>
@@ -241,16 +217,12 @@ The suggested width for a color bar in a <a class="link" href="GimpColorSelector
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-color-selector-new"></a><h3>gimp_color_selector_new ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_color_selector_new             (<a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
->GType</a> selector_type,
+<pre class="programlisting">GtkWidget*          gimp_color_selector_new             (GType selector_type,
                                                          const <a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *rgb,
                                                          const <a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"
+href="../libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"
 >GimpHSV</a> *hsv,
                                                          <a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel">GimpColorSelectorChannel</a> channel);</pre>
 <p>
@@ -294,9 +266,7 @@ href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"
 <a name="gimp-color-selector-set-toggles-visible"></a><h3>gimp_color_selector_set_toggles_visible ()</h3>
 <pre class="programlisting">void                gimp_color_selector_set_toggles_visible
                                                         (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a> *selector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> visible);</pre>
+                                                         gboolean visible);</pre>
 <p>
 
 </p>
@@ -323,9 +293,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 <a name="gimp-color-selector-set-toggles-sensitive"></a><h3>gimp_color_selector_set_toggles_sensitive ()</h3>
 <pre class="programlisting">void                gimp_color_selector_set_toggles_sensitive
                                                         (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a> *selector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> sensitive);</pre>
+                                                         gboolean sensitive);</pre>
 <p>
 
 </p>
@@ -351,9 +319,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 <div class="refsect2" lang="en">
 <a name="gimp-color-selector-set-show-alpha"></a><h3>gimp_color_selector_set_show_alpha ()</h3>
 <pre class="programlisting">void                gimp_color_selector_set_show_alpha  (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a> *selector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> show_alpha);</pre>
+                                                         gboolean show_alpha);</pre>
 <p>
 
 </p>
@@ -380,10 +346,10 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 <a name="gimp-color-selector-set-color"></a><h3>gimp_color_selector_set_color ()</h3>
 <pre class="programlisting">void                gimp_color_selector_set_color       (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a> *selector,
                                                          const <a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *rgb,
                                                          const <a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"
+href="../libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"
 >GimpHSV</a> *hsv);</pre>
 <p>
 
@@ -478,7 +444,7 @@ href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"
 <a name="gimp-color-selector-set-config"></a><h3>gimp_color_selector_set_config ()</h3>
 <pre class="programlisting">void                gimp_color_selector_set_config      (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a> *selector,
                                                          <a
-href="/usr/share/gtk-doc/html/libgimpconfig/GimpColorConfig.html"
+href="../libgimpconfig/GimpColorConfig.html"
 >GimpColorConfig</a> *config);</pre>
 <p>
 Sets the color management configuration to use with this color selector.</p>
@@ -509,12 +475,8 @@ Sets the color management configuration to use with this color selector.</p>
 <div class="refsect2" lang="en">
 <a name="GimpColorSelector-channel-changed"></a><h3>The <code class="literal">"channel-changed"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a> *gimpcolorselector,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a>               arg1,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>           user_data)              : Run First</pre>
+                                                        gint               arg1,
+                                                        gpointer           user_data)              : Run First</pre>
 <p>
 
 </p>
@@ -543,15 +505,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <div class="refsect2" lang="en">
 <a name="GimpColorSelector-color-changed"></a><h3>The <code class="literal">"color-changed"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a> *gimpcolorselector,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>           arg1,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>           arg2,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>           user_data)              : Run First</pre>
+                                                        gpointer           arg1,
+                                                        gpointer           arg2,
+                                                        gpointer           user_data)              : Run First</pre>
 <p>
 
 </p>
@@ -585,14 +541,10 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <div class="refsect1" lang="en">
 <a name="GimpColorSelector.see-also"></a><h2>See Also</h2>
 <p>
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Dynamic-Loading-of-Modules.html#GModule"
-><span class="type">GModule</span></a>
+<span class="type">GModule</span>
 </p>
 <p>
-<a
-href="/usr/share/gtk-doc/html/gobject/GTypeModule.html"
-><span class="type">GTypeModule</span></a>
+<span class="type">GTypeModule</span>
 </p>
 <p>
 <span class="type">libgimp-gimpmodule</span>

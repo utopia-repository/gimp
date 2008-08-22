@@ -57,31 +57,17 @@
 <pre class="synopsis">
                     <a class="link" href="GimpIntStore.html#GimpIntStore-struct" title="GimpIntStore">GimpIntStore</a>;
 enum                <a class="link" href="GimpIntStore.html#GimpIntStoreColumns" title="enum GimpIntStoreColumns">GimpIntStoreColumns</a>;
-<a
-href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"
->GtkListStore</a>*       <a class="link" href="GimpIntStore.html#gimp-int-store-new" title="gimp_int_store_new ()">gimp_int_store_new</a>                  (void);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="GimpIntStore.html#gimp-int-store-lookup-by-value" title="gimp_int_store_lookup_by_value ()">gimp_int_store_lookup_by_value</a>      (<a
-href="/usr/share/gtk-doc/html/gtk/GtkTreeModel.html"
->GtkTreeModel</a> *model,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> value,
-                                                         <a
-href="/usr/share/gtk-doc/html/gtk/GtkTreeModel.html#GtkTreeIter"
->GtkTreeIter</a> *iter);
+GtkListStore*       <a class="link" href="GimpIntStore.html#gimp-int-store-new" title="gimp_int_store_new ()">gimp_int_store_new</a>                  (void);
+gboolean            <a class="link" href="GimpIntStore.html#gimp-int-store-lookup-by-value" title="gimp_int_store_lookup_by_value ()">gimp_int_store_lookup_by_value</a>      (GtkTreeModel *model,
+                                                         gint value,
+                                                         GtkTreeIter *iter);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpIntStore.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"
->GtkListStore</a>
+  GObject
+   +----GtkListStore
          +----GimpIntStore
                +----<a class="link" href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a>
 </pre>
@@ -90,22 +76,12 @@ href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"
 <a name="GimpIntStore.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpIntStore implements
- GtkBuildable,  <a
-href="/usr/share/gtk-doc/html/gtk/GtkTreeModel.html"
->GtkTreeModel</a>,  <a
-href="/usr/share/gtk-doc/html/gtk/gtk-GtkTreeView-drag-and-drop.html#GtkTreeDragSource"
->GtkTreeDragSource</a>,  <a
-href="/usr/share/gtk-doc/html/gtk/gtk-GtkTreeView-drag-and-drop.html#GtkTreeDragDest"
->GtkTreeDragDest</a> and  <a
-href="/usr/share/gtk-doc/html/gtk/GtkTreeSortable.html"
->GtkTreeSortable</a>.</p>
+ GtkBuildable,  GtkTreeModel,  GtkTreeDragSource,  GtkTreeDragDest and  GtkTreeSortable.</p>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpIntStore.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpIntStore.html#GimpIntStore--user-data-type" title='The "user-data-type" property'>user-data-type</a>"           <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
->GType</a>*                : Read / Write / Construct Only
+  "<a class="link" href="GimpIntStore.html#GimpIntStore--user-data-type" title='The "user-data-type" property'>user-data-type</a>"           GType*                : Read / Write / Construct Only
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -143,13 +119,9 @@ A model for integer based name-value pairs (e.g. enums)
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-int-store-new"></a><h3>gimp_int_store_new ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"
->GtkListStore</a>*       gimp_int_store_new                  (void);</pre>
+<pre class="programlisting">GtkListStore*       gimp_int_store_new                  (void);</pre>
 <p>
-Creates a <a
-href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"
-><span class="type">GtkListStore</span></a> with a number of useful columns.
+Creates a <span class="type">GtkListStore</span> with a number of useful columns.
 <a class="link" href="GimpIntStore.html" title="GimpIntStore"><span class="type">GimpIntStore</span></a> is especially useful if the items you want to store
 are identified using an integer value.</p>
 <p>
@@ -170,17 +142,9 @@ are identified using an integer value.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-int-store-lookup-by-value"></a><h3>gimp_int_store_lookup_by_value ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_int_store_lookup_by_value      (<a
-href="/usr/share/gtk-doc/html/gtk/GtkTreeModel.html"
->GtkTreeModel</a> *model,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> value,
-                                                         <a
-href="/usr/share/gtk-doc/html/gtk/GtkTreeModel.html#GtkTreeIter"
->GtkTreeIter</a> *iter);</pre>
+<pre class="programlisting">gboolean            gimp_int_store_lookup_by_value      (GtkTreeModel *model,
+                                                         gint value,
+                                                         GtkTreeIter *iter);</pre>
 <p>
 Iterate over the <em class="parameter"><code>model</code></em> looking for <em class="parameter"><code>value</code></em>.</p>
 <p>
@@ -206,12 +170,8 @@ Iterate over the <em class="parameter"><code>model</code></em> looking for <em c
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a> if the value has been located and <em class="parameter"><code>iter</code></em> is
-              valid, <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
-><code class="literal">FALSE</code></a> otherwise.
+<td> <code class="literal">TRUE</code> if the value has been located and <em class="parameter"><code>iter</code></em> is
+              valid, <code class="literal">FALSE</code> otherwise.
 
 </td>
 </tr>
@@ -225,13 +185,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
 <a name="GimpIntStore.property-details"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
 <a name="GimpIntStore--user-data-type"></a><h3>The <code class="literal">"user-data-type"</code> property</h3>
-<pre class="programlisting">  "user-data-type"           <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
->GType</a>*                : Read / Write / Construct Only</pre>
+<pre class="programlisting">  "user-data-type"           GType*                : Read / Write / Construct Only</pre>
 <p>
-Allows to set the <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
-><span class="type">GType</span></a> for the GIMP_INT_STORE_USER_DATA column.
+Allows to set the <span class="type">GType</span> for the GIMP_INT_STORE_USER_DATA column.
 </p>
 <p>
 You need to set this property when constructing the store if you want

@@ -48,9 +48,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="GimpButton.top_of_page"></a>GimpButton</span></h2>
-<p>GimpButton — A <a
-href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
-><span class="type">GtkButton</span></a> with a little extra functionality.</p>
+<p>GimpButton — A <span class="type">GtkButton</span> with a little extra functionality.</p>
 </td>
 <td valign="top" align="right"><img src="gimp-button.png"></td>
 </tr></table></div>
@@ -58,39 +56,21 @@ href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
 <a name="GimpButton.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="GimpButton.html#GimpButton-struct" title="GimpButton">GimpButton</a>;
-<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="GimpButton.html#gimp-button-new" title="gimp_button_new ()">gimp_button_new</a>                     (void);
+GtkWidget*          <a class="link" href="GimpButton.html#gimp-button-new" title="gimp_button_new ()">gimp_button_new</a>                     (void);
 void                <a class="link" href="GimpButton.html#gimp-button-extended-clicked" title="gimp_button_extended_clicked ()">gimp_button_extended_clicked</a>        (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a> *button,
-                                                         <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkModifierType"
->GdkModifierType</a> state);
+                                                         GdkModifierType state);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>
-                     +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
->GtkContainer</a>
-                           +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkBin.html"
->GtkBin</a>
-                                 +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
->GtkButton</a>
+  GObject
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkContainer
+                           +----GtkBin
+                                 +----GtkButton
                                        +----GimpButton
                                              +----<a class="link" href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a>
 </pre>
@@ -110,9 +90,7 @@ GimpButton implements
 <div class="refsect1" lang="en">
 <a name="GimpButton.description"></a><h2>Description</h2>
 <p>
-<a class="link" href="GimpButton.html" title="GimpButton"><span class="type">GimpButton</span></a> adds an extra signal to the <a
-href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
-><span class="type">GtkButton</span></a> widget that allows
+<a class="link" href="GimpButton.html" title="GimpButton"><span class="type">GimpButton</span></a> adds an extra signal to the <span class="type">GtkButton</span> widget that allows
 to distinguish a normal click from a click that was performed with
 modifier keys pressed.
 </p>
@@ -129,9 +107,7 @@ modifier keys pressed.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-button-new"></a><h3>gimp_button_new ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_button_new                     (void);</pre>
+<pre class="programlisting">GtkWidget*          gimp_button_new                     (void);</pre>
 <p>
 Creates a new <a class="link" href="GimpButton.html" title="GimpButton"><span class="type">GimpButton</span></a> widget.</p>
 <p>
@@ -150,9 +126,7 @@ Creates a new <a class="link" href="GimpButton.html" title="GimpButton"><span cl
 <div class="refsect2" lang="en">
 <a name="gimp-button-extended-clicked"></a><h3>gimp_button_extended_clicked ()</h3>
 <pre class="programlisting">void                gimp_button_extended_clicked        (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a> *button,
-                                                         <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkModifierType"
->GdkModifierType</a> state);</pre>
+                                                         GdkModifierType state);</pre>
 <p>
 Emits the button's "extended_clicked" signal.</p>
 <p>
@@ -168,9 +142,7 @@ Emits the button's "extended_clicked" signal.</p>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>state</code></em> :</span></p></td>
-<td>  a state as found in <span class="type">GdkEventButton-</span>&gt;state, e.g. <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GDK-SHIFT-MASK:CAPS"
-><span class="type">GDK_SHIFT_MASK</span></a>.
+<td>  a state as found in <span class="type">GdkEventButton-</span>&gt;state, e.g. <span class="type">GDK_SHIFT_MASK</span>.
 </td>
 </tr>
 </tbody>
@@ -182,12 +154,8 @@ href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GDK-SHIFT-MASK:CAPS"
 <div class="refsect2" lang="en">
 <a name="GimpButton-extended-clicked"></a><h3>The <code class="literal">"extended-clicked"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a>     *gimpbutton,
-                                                        <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkModifierType"
->GdkModifierType</a> arg1,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>        user_data)       : Run First</pre>
+                                                        GdkModifierType arg1,
+                                                        gpointer        user_data)       : Run First</pre>
 <p>
 
 </p>
